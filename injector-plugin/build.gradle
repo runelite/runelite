@@ -2,7 +2,6 @@ group = 'net.runelite.rs'
 description = 'Injector'
 
 def buildPath = buildDir.toString().replace('\\', '/') // this doesnt work in an ext block for some reason
-
 def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
 def vanillaJar = "${buildPath}/vanilla-${rsversion}.jar"
 
@@ -39,7 +38,7 @@ compileJava.doLast() {
         into "$buildDir"
     }
     def path = sourceSets.main.runtimeClasspath
-    def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
+    def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
     def inject = loader.loadClass('net.runelite.injector.Injector')
     String[] jarPaths = [
             deobfuscatedJar.toString(),
@@ -47,6 +46,7 @@ compileJava.doLast() {
             injectedClassesPath.toString()
     ]
     inject.main(jarPaths)
+    loader.close()
 }
 
 test {

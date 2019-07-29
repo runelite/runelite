@@ -1,9 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
- *
- *
- * Modified by farhan1666
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,21 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.aoewarnings;
+package net.runelite.http.api.ws.messages.party;
 
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.coords.LocalPoint;
-
-@Getter(AccessLevel.PACKAGE)
-@AllArgsConstructor
-class AoeProjectile
+import lombok.Value;
+import net.runelite.api.events.Event;
+@Value
+public class PartyChatMessage extends PartyMemberMessage implements Event
 {
-	private final Instant startTime;
-	private final LocalPoint targetPoint;
-	private final AoeProjectileInfo aoeProjectileInfo;
-	private final int projectileLifetime;
-	private final int finalTick;
+	private final String value;
 }

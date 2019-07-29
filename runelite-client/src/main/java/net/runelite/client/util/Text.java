@@ -46,6 +46,8 @@ public class Text
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 
+	public static final CharMatcher JAGEX_PRINTABLE_CHAR_MATCHER = new JagexPrintableCharMatcher();
+
 	/**
 	 * Splits comma separated values to list of strings
 	 *

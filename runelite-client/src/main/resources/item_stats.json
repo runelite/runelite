@@ -843,11 +843,11 @@
     "quest": true
   },
   "297": {
-    "name": "Glarial's urn",
+    "name": "Glarial's urn (empty)",
     "quest": true
   },
   "298": {
-    "name": "A key",
+    "name": "Key",
     "quest": true,
     "weight": 0.01
   },
@@ -1022,9 +1022,6 @@
     "name": "Lobster",
     "weight": 0.35
   },
-  "381": {
-    "name": "Burnt lobster"
-  },
   "383": {
     "name": "Raw shark",
     "weight": 0.7
@@ -1155,7 +1152,7 @@
     }
   },
   "430": {
-    "name": "Doctors' gown",
+    "name": "Medical gown",
     "quest": true,
     "equipable": true,
     "weight": 1.814,
@@ -1503,9 +1500,6 @@
   "561": {
     "name": "Nature rune"
   },
-  "562": {
-    "name": "Chaos rune"
-  },
   "563": {
     "name": "Law rune"
   },
@@ -1614,7 +1608,7 @@
     "weight": 0.5
   },
   "598": {
-    "name": "Bronze fire arrows",
+    "name": "Bronze fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -2154,9 +2148,6 @@
     "name": "Book on chemicals",
     "quest": true,
     "weight": 0.51
-  },
-  "713": {
-    "name": "Clue scroll"
   },
   "714": {
     "name": "Radimus notes",
@@ -3307,7 +3298,7 @@
     }
   },
   "942": {
-    "name": "Bronze fire arrows",
+    "name": "Bronze fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -3574,14 +3565,6 @@
     "name": "Bunny ears",
     "equipable": true,
     "weight": 0.226,
-    "equipment": {
-      "slot": 0
-    }
-  },
-  "1038": {
-    "name": "Red partyhat",
-    "equipable": true,
-    "weight": 0.056,
     "equipment": {
       "slot": 0
     }
@@ -6553,7 +6536,7 @@
     "weight": 5.0
   },
   "1485": {
-    "name": "Damp cloth",
+    "name": "Oily cloth",
     "quest": true,
     "weight": 0.012
   },
@@ -6664,7 +6647,7 @@
     "weight": 2.2
   },
   "1505": {
-    "name": "A magic scroll",
+    "name": "Ardougne teleport scroll",
     "quest": true,
     "weight": 0.02
   },
@@ -6848,10 +6831,6 @@
     "name": "Stake",
     "quest": true,
     "weight": 0.085
-  },
-  "1550": {
-    "name": "Garlic",
-    "weight": 0.028
   },
   "1552": {
     "name": "Seasoned sardine",
@@ -7841,10 +7820,6 @@
     "name": "Chopped tomato",
     "weight": 0.2
   },
-  "1871": {
-    "name": "Chopped onion",
-    "weight": 0.2
-  },
   "1873": {
     "name": "Chopped ugthanki",
     "weight": 0.2
@@ -8063,6 +8038,7 @@
   },
   "1978": {
     "name": "Cup of tea",
+    "quest": true,
     "weight": 0.1
   },
   "1980": {
@@ -8616,11 +8592,6 @@
     "weight": 0.225
   },
   "2339": {
-    "name": "Palm leaf",
-    "quest": true,
-    "weight": 0.1
-  },
-  "2340": {
     "name": "Palm leaf",
     "quest": true,
     "weight": 0.1
@@ -9418,7 +9389,7 @@
     "weight": 5.0
   },
   "2532": {
-    "name": "Iron fire arrows",
+    "name": "Iron fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9426,7 +9397,7 @@
     }
   },
   "2533": {
-    "name": "Iron fire arrows",
+    "name": "Iron fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9434,7 +9405,7 @@
     }
   },
   "2534": {
-    "name": "Steel fire arrows",
+    "name": "Steel fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9442,7 +9413,7 @@
     }
   },
   "2535": {
-    "name": "Steel fire arrows",
+    "name": "Steel fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9450,7 +9421,7 @@
     }
   },
   "2536": {
-    "name": "Mithril fire arrows",
+    "name": "Mithril fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9458,7 +9429,7 @@
     }
   },
   "2537": {
-    "name": "Mithril fire arrows",
+    "name": "Mithril fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9466,7 +9437,7 @@
     }
   },
   "2538": {
-    "name": "Adamant fire arrows",
+    "name": "Adamant fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9474,7 +9445,7 @@
     }
   },
   "2539": {
-    "name": "Adamant fire arrows",
+    "name": "Adamant fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9482,7 +9453,7 @@
     }
   },
   "2540": {
-    "name": "Rune fire arrows",
+    "name": "Rune fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -9490,7 +9461,7 @@
     }
   },
   "2541": {
-    "name": "Rune fire arrows",
+    "name": "Rune fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -10376,9 +10347,6 @@
     "name": "Clue scroll (easy)"
   },
   "2709": {
-    "name": "Clue scroll (easy)"
-  },
-  "2710": {
     "name": "Clue scroll (easy)"
   },
   "2711": {
@@ -12154,7 +12122,7 @@
     "weight": 0.056
   },
   "3207": {
-    "name": "Iorwerths message",
+    "name": "Iorwerth's message",
     "quest": true,
     "weight": 0.056
   },
@@ -12207,7 +12175,7 @@
     "weight": 32.0
   },
   "3220": {
-    "name": "Barrel of coal-tar",
+    "name": "Barrel of coal tar",
     "quest": true,
     "weight": 32.0
   },
@@ -15636,7 +15604,7 @@
     }
   },
   "4313": {
-    "name": "Crystal of seren",
+    "name": "Crystal singing for beginners",
     "weight": 0.51
   },
   "4315": {
@@ -16905,11 +16873,6 @@
     "quest": true,
     "weight": 0.03
   },
-  "4595": {
-    "name": "Karidian disguise",
-    "quest": true,
-    "weight": 0.1
-  },
   "4597": {
     "name": "Note",
     "quest": true,
@@ -17531,21 +17494,6 @@
       "rstr": 55
     }
   },
-  "4745": {
-    "name": "Torag's helm",
-    "equipable": true,
-    "weight": 2.721,
-    "equipment": {
-      "slot": 0,
-      "amagic": -6,
-      "arange": -2,
-      "dstab": 55,
-      "dslash": 58,
-      "dcrush": 54,
-      "dmagic": -1,
-      "drange": 62
-    }
-  },
   "4747": {
     "name": "Torag's hammers",
     "equipable": true,
@@ -17695,14 +17643,6 @@
     "equipment": {
       "slot": 13,
       "rstr": 45
-    }
-  },
-  "4803": {
-    "name": "Rune brutal",
-    "equipable": true,
-    "equipment": {
-      "slot": 13,
-      "rstr": 60
     }
   },
   "4808": {
@@ -18468,21 +18408,6 @@
   },
   "4904": {
     "name": "Guthan's helm 100",
-    "equipable": true,
-    "weight": 2.721,
-    "equipment": {
-      "slot": 0,
-      "amagic": -6,
-      "arange": -2,
-      "dstab": 55,
-      "dslash": 58,
-      "dcrush": 54,
-      "dmagic": -1,
-      "drange": 62
-    }
-  },
-  "4905": {
-    "name": "Guthan's helm 75",
     "equipable": true,
     "weight": 2.721,
     "equipment": {
@@ -22733,7 +22658,7 @@
     }
   },
   "6066": {
-    "name": "Mourner trousers",
+    "name": "Ripped mourner trousers",
     "quest": true,
     "weight": 2.267
   },
@@ -22904,7 +22829,7 @@
     "name": "Teleport crystal (1)"
   },
   "6103": {
-    "name": "Tiny elf crystal",
+    "name": "Crystal teleport seed",
     "weight": 0.001
   },
   "6104": {
@@ -24834,23 +24759,6 @@
       "prayer": 5
     }
   },
-  "6587": {
-    "name": "White claws",
-    "equipable": true,
-    "weight": 0.907,
-    "equipment": {
-      "slot": 3,
-      "astab": 10,
-      "aslash": 14,
-      "acrush": -4,
-      "dstab": 4,
-      "dslash": 7,
-      "dcrush": 2,
-      "str": 14,
-      "prayer": 1,
-      "aspeed": 4
-    }
-  },
   "6589": {
     "name": "White battleaxe",
     "equipable": true,
@@ -25936,10 +25844,6 @@
     "name": "Ballad",
     "quest": true,
     "weight": 0.005
-  },
-  "6794": {
-    "name": "Choc-ice",
-    "weight": 0.001
   },
   "6796": {
     "name": "Lamp",
@@ -34438,10 +34342,6 @@
     "name": "A green square",
     "quest": true
   },
-  "9612": {
-    "name": "A green pentagon",
-    "quest": true
-  },
   "9613": {
     "name": "A blue circle",
     "quest": true
@@ -34496,7 +34396,7 @@
     "weight": 1.0
   },
   "9626": {
-    "name": "Small crystal seed",
+    "name": "Crystal saw seed",
     "quest": true,
     "weight": 0.01
   },
@@ -40257,11 +40157,6 @@
     "quest": true,
     "weight": 0.004
   },
-  "11156": {
-    "name": "Astral rune shards",
-    "quest": true,
-    "weight": 0.453
-  },
   "11157": {
     "name": "Dreamy lamp",
     "quest": true,
@@ -40470,7 +40365,7 @@
     }
   },
   "11217": {
-    "name": "Dragon fire arrows",
+    "name": "Dragon fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -40478,7 +40373,7 @@
     }
   },
   "11222": {
-    "name": "Dragon fire arrows",
+    "name": "Dragon fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -40511,16 +40406,6 @@
   },
   "11230": {
     "name": "Dragon dart",
-    "equipable": true,
-    "equipment": {
-      "slot": 3,
-      "arange": 18,
-      "rstr": 20,
-      "aspeed": 3
-    }
-  },
-  "11231": {
-    "name": "Dragon dart(p)",
     "equipable": true,
     "equipment": {
       "slot": 3,
@@ -43653,9 +43538,6 @@
   "12087": {
     "name": "Clue scroll (elite)"
   },
-  "12088": {
-    "name": "Clue scroll (elite)"
-  },
   "12089": {
     "name": "Clue scroll (elite)"
   },
@@ -45176,7 +45058,7 @@
     "name": "Tai bwo wannai teleport"
   },
   "12410": {
-    "name": "Elf camp teleport"
+    "name": "Iorwerth camp teleport"
   },
   "12411": {
     "name": "Mos le'harmless teleport"
@@ -47142,7 +47024,7 @@
     "weight": 1.0,
     "equipment": {
       "slot": 3,
-      "amagic": 15,
+      "amagic": 25,
       "dstab": 2,
       "dslash": 3,
       "dcrush": 1,
@@ -47528,10 +47410,6 @@
   },
   "13060": {
     "name": "Ancient rune armour set (lg)",
-    "weight": 6.0
-  },
-  "13062": {
-    "name": "Ancient rune armour set (sk)",
     "weight": 6.0
   },
   "13064": {
@@ -48959,9 +48837,6 @@
   },
   "13252": {
     "name": "Sack pack"
-  },
-  "13254": {
-    "name": "Basket pack"
   },
   "13256": {
     "name": "Saradomin's light"
@@ -51732,7 +51607,7 @@
   },
   "19732": {
     "name": "Lucky impling jar",
-    "weight": 2.2
+    "weight": 2.267
   },
   "19734": {
     "name": "Clue scroll (medium)"
@@ -52015,10 +51890,6 @@
   },
   "19835": {
     "name": "Clue scroll (master)"
-  },
-  "19836": {
-    "name": "Reward casket (master)",
-    "weight": 5.0
   },
   "19837": {
     "name": "Torn clue scroll (part 1)",
@@ -52765,13 +52636,6 @@
     "equipable": true,
     "equipment": {
       "slot": 7
-    }
-  },
-  "20107": {
-    "name": "Ankou socks",
-    "equipable": true,
-    "equipment": {
-      "slot": 10
     }
   },
   "20110": {
@@ -55762,9 +55626,6 @@
   "20884": {
     "name": "Keystone crystal"
   },
-  "20885": {
-    "name": "Cavern grubs"
-  },
   "20886": {
     "name": "Creature keeper's journal"
   },
@@ -55782,9 +55643,6 @@
   },
   "20895": {
     "name": "Vanguard judgement"
-  },
-  "20897": {
-    "name": "Houndmaster's diary"
   },
   "20899": {
     "name": "Dark journal"
@@ -55851,9 +55709,6 @@
   },
   "20921": {
     "name": "Elder (+)(1)"
-  },
-  "20922": {
-    "name": "Elder (+)(2)"
   },
   "20923": {
     "name": "Elder (+)(3)"
@@ -57187,7 +57042,7 @@
     }
   },
   "21328": {
-    "name": "Amethyst fire arrows",
+    "name": "Amethyst fire arrow",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -57195,7 +57050,7 @@
     }
   },
   "21330": {
-    "name": "Amethyst fire arrows",
+    "name": "Amethyst fire arrow (lit)",
     "equipable": true,
     "equipment": {
       "slot": 13,
@@ -60961,21 +60816,6 @@
       "drange": 62
     }
   },
-  "22644": {
-    "name": "Morrigan's leather chaps",
-    "equipable": true,
-    "weight": 5.4,
-    "equipment": {
-      "slot": 7,
-      "amagic": -10,
-      "arange": 23,
-      "dstab": 35,
-      "dslash": 29,
-      "dcrush": 37,
-      "dmagic": 46,
-      "drange": 35
-    }
-  },
   "22647": {
     "name": "Zuriel's staff",
     "equipable": true,
@@ -63433,5 +63273,730 @@
       "str": 70,
       "aspeed": 4
     }
+  },
+  "23655": {
+    "name": "Crystal seedling",
+    "weight": 0.907
+  },
+  "23657": {
+    "name": "Crystal seedling (w)",
+    "weight": 0.907
+  },
+  "23659": {
+    "name": "Crystal sapling",
+    "weight": 0.9
+  },
+  "23661": {
+    "name": "Crystal acorn"
+  },
+  "23667": {
+    "name": "Dragonstone armour set"
+  },
+  "23673": {
+    "name": "Crystal axe",
+    "equipable": true,
+    "equipment": {
+      "slot": 3,
+      "astab": -2,
+      "aslash": 38,
+      "acrush": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23677": {
+    "name": "Dragon pickaxe(or)",
+    "equipable": true,
+    "weight": 2.2,
+    "equipment": {
+      "slot": 3,
+      "astab": 38,
+      "aslash": -2,
+      "acrush": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23680": {
+    "name": "Crystal pickaxe",
+    "equipable": true,
+    "weight": 1.0,
+    "equipment": {
+      "slot": 3,
+      "astab": 38,
+      "aslash": -2,
+      "acrush": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23682": {
+    "name": "Crystal pickaxe (inactive)",
+    "equipable": true,
+    "weight": 1.0,
+    "equipment": {
+      "slot": 3,
+      "astab": 38,
+      "aslash": -2,
+      "acrush": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23688": {
+    "name": "Divine super combat potion(3)"
+  },
+  "23691": {
+    "name": "Divine super combat potion(2)"
+  },
+  "23694": {
+    "name": "Divine super combat potion(1)"
+  },
+  "23697": {
+    "name": "Divine super attack potion(4)"
+  },
+  "23700": {
+    "name": "Divine super attack potion(3)"
+  },
+  "23703": {
+    "name": "Divine super attack potion(2)"
+  },
+  "23706": {
+    "name": "Divine super attack potion(1)"
+  },
+  "23709": {
+    "name": "Divine super strength potion(4)"
+  },
+  "23712": {
+    "name": "Divine super strength potion(3)"
+  },
+  "23715": {
+    "name": "Divine super strength potion(2)"
+  },
+  "23718": {
+    "name": "Divine super strength potion(1)"
+  },
+  "23721": {
+    "name": "Divine super defence potion(4)"
+  },
+  "23724": {
+    "name": "Divine super defence potion(3)"
+  },
+  "23727": {
+    "name": "Divine super defence potion(2)"
+  },
+  "23730": {
+    "name": "Divine super defence potion(1)"
+  },
+  "23733": {
+    "name": "Divine ranging potion(4)"
+  },
+  "23736": {
+    "name": "Divine ranging potion(3)"
+  },
+  "23739": {
+    "name": "Divine ranging potion(2)"
+  },
+  "23742": {
+    "name": "Divine ranging potion(1)"
+  },
+  "23745": {
+    "name": "Divine magic potion(4)"
+  },
+  "23748": {
+    "name": "Divine magic potion(3)"
+  },
+  "23751": {
+    "name": "Divine magic potion(2)"
+  },
+  "23754": {
+    "name": "Divine magic potion(1)"
+  },
+  "23762": {
+    "name": "Crystal harpoon",
+    "equipable": true,
+    "equipment": {
+      "slot": 3,
+      "astab": 38,
+      "aslash": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23764": {
+    "name": "Crystal harpoon (inactive)",
+    "equipable": true,
+    "equipment": {
+      "slot": 3,
+      "astab": 38,
+      "aslash": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23768": {
+    "name": "Crystal impling jar",
+    "weight": 2.267
+  },
+  "23771": {
+    "name": "Prifddinas teleport"
+  },
+  "23773": {
+    "name": "Scrawled notes"
+  },
+  "23775": {
+    "name": "Hand mirror",
+    "quest": true,
+    "weight": 0.01
+  },
+  "23776": {
+    "name": "Red crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23777": {
+    "name": "Yellow crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23778": {
+    "name": "Green crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23779": {
+    "name": "Cyan crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23780": {
+    "name": "Blue crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23781": {
+    "name": "Magenta crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23782": {
+    "name": "Black crystal"
+  },
+  "23784": {
+    "name": "Fractured crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23785": {
+    "name": "Ardougne knight helm",
+    "quest": true,
+    "equipable": true,
+    "weight": 2.721,
+    "equipment": {
+      "slot": 0,
+      "amagic": -6,
+      "arange": -2,
+      "dstab": 6,
+      "dslash": 7,
+      "dcrush": 5,
+      "dmagic": -1,
+      "drange": 6
+    }
+  },
+  "23787": {
+    "name": "Ardougne knight platebody",
+    "quest": true,
+    "equipable": true,
+    "weight": 9.979,
+    "equipment": {
+      "slot": 4,
+      "amagic": -30,
+      "arange": -10,
+      "dstab": 21,
+      "dslash": 20,
+      "dcrush": 12,
+      "dmagic": -6,
+      "drange": 20
+    }
+  },
+  "23789": {
+    "name": "Ardougne knight platelegs",
+    "quest": true,
+    "equipable": true,
+    "weight": 9.071,
+    "equipment": {
+      "slot": 7,
+      "amagic": -21,
+      "arange": -7,
+      "dstab": 11,
+      "dslash": 10,
+      "dcrush": 10,
+      "dmagic": -4,
+      "drange": 10
+    }
+  },
+  "23791": {
+    "name": "Ardougne knight tabard",
+    "quest": true,
+    "weight": 1.0
+  },
+  "23792": {
+    "name": "Blue liquid",
+    "quest": true,
+    "weight": 0.02
+  },
+  "23793": {
+    "name": "Green powder",
+    "quest": true,
+    "weight": 0.2
+  },
+  "23794": {
+    "name": "clear liquid",
+    "quest": true,
+    "weight": 0.02
+  },
+  "23795": {
+    "name": "Red powder",
+    "quest": true,
+    "weight": 0.02
+  },
+  "23796": {
+    "name": "Ode to eternity"
+  },
+  "23798": {
+    "name": "Elder cadantine",
+    "quest": true,
+    "weight": 0.007
+  },
+  "23800": {
+    "name": "Elder cadantine potion (unf)",
+    "quest": true,
+    "weight": 0.057
+  },
+  "23802": {
+    "name": "Crystal",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23806": {
+    "name": "Inversion potion",
+    "quest": true,
+    "weight": 0.056
+  },
+  "23808": {
+    "name": "Crystal seed",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23810": {
+    "name": "Crystal seed",
+    "quest": true,
+    "weight": 0.015
+  },
+  "23812": {
+    "name": "Orb of light",
+    "quest": true,
+    "weight": 0.01
+  },
+  "23814": {
+    "name": "Clue scroll",
+    "quest": true
+  },
+  "23815": {
+    "name": "Clue scroll",
+    "quest": true
+  },
+  "23816": {
+    "name": "Clue scroll",
+    "quest": true
+  },
+  "23817": {
+    "name": "Clue scroll",
+    "quest": true
+  },
+  "23820": {
+    "name": "Corrupted sceptre"
+  },
+  "23821": {
+    "name": "Corrupted axe"
+  },
+  "23822": {
+    "name": "Corrupted pickaxe"
+  },
+  "23823": {
+    "name": "Corrupted harpoon"
+  },
+  "23824": {
+    "name": "Corrupted shards"
+  },
+  "23830": {
+    "name": "Corrupted dust"
+  },
+  "23831": {
+    "name": "Corrupted spike"
+  },
+  "23832": {
+    "name": "Corrupted bowstring"
+  },
+  "23833": {
+    "name": "Corrupted orb"
+  },
+  "23834": {
+    "name": "Weapon frame"
+  },
+  "23835": {
+    "name": "Grym leaf"
+  },
+  "23836": {
+    "name": "Linum tirinum"
+  },
+  "23837": {
+    "name": "Corrupted ore"
+  },
+  "23838": {
+    "name": "Phren bark"
+  },
+  "23859": {
+    "name": "Gauntlet cape",
+    "equipable": true,
+    "equipment": {
+      "slot": 1
+    }
+  },
+  "23862": {
+    "name": "Crystal axe",
+    "equipable": true,
+    "equipment": {
+      "slot": 3,
+      "astab": -2,
+      "aslash": 38,
+      "acrush": 32,
+      "dslash": 1,
+      "str": 42,
+      "aspeed": 5
+    }
+  },
+  "23868": {
+    "name": "Crystal spike"
+  },
+  "23869": {
+    "name": "Crystalline bowstring"
+  },
+  "23870": {
+    "name": "Crystal orb"
+  },
+  "23872": {
+    "name": "Raw paddlefish"
+  },
+  "23874": {
+    "name": "Paddlefish"
+  },
+  "23878": {
+    "name": "Phren bark"
+  },
+  "23905": {
+    "name": "Tephra"
+  },
+  "23906": {
+    "name": "Refined tephra"
+  },
+  "23907": {
+    "name": "Imbued tephra",
+    "equipable": true
+  },
+  "23908": {
+    "name": "Zalcano shard",
+    "weight": 0.5
+  },
+  "23927": {
+    "name": "Crystal of ithell"
+  },
+  "23929": {
+    "name": "Crystal of iorwerth"
+  },
+  "23931": {
+    "name": "Crystal of trahaearn",
+    "quest": true
+  },
+  "23933": {
+    "name": "Crystal of cadarn"
+  },
+  "23935": {
+    "name": "Crystal of crwys"
+  },
+  "23937": {
+    "name": "Crystal of meilyr"
+  },
+  "23939": {
+    "name": "Crystal of hefin"
+  },
+  "23941": {
+    "name": "Crystal of amlodd"
+  },
+  "23943": {
+    "name": "Elven signet"
+  },
+  "23946": {
+    "name": "Eternal teleport crystal",
+    "quest": true
+  },
+  "23948": {
+    "name": "Elven dawn",
+    "weight": 0.55
+  },
+  "23951": {
+    "name": "Enhanced crystal key"
+  },
+  "23953": {
+    "name": "Crystal tool seed"
+  },
+  "23956": {
+    "name": "Crystal armour seed"
+  },
+  "23959": {
+    "name": "Enhanced crystal teleport seed"
+  },
+  "23962": {
+    "name": "Crystal shard"
+  },
+  "23971": {
+    "name": "Crystal helm",
+    "equipable": true,
+    "equipment": {
+      "slot": 0,
+      "amagic": -10,
+      "arange": 8,
+      "dstab": 12,
+      "dslash": 8,
+      "dcrush": 14,
+      "dmagic": 26,
+      "drange": 18,
+      "prayer": 2
+    }
+  },
+  "23973": {
+    "name": "Crystal helm (inactive)",
+    "equipable": true,
+    "equipment": {
+      "slot": 0,
+      "amagic": -10,
+      "arange": 8,
+      "dstab": 12,
+      "dslash": 8,
+      "dcrush": 14,
+      "dmagic": 26,
+      "drange": 18,
+      "prayer": 2
+    }
+  },
+  "23975": {
+    "name": "Crystal body",
+    "equipable": true,
+    "equipment": {
+      "slot": 4,
+      "amagic": -18,
+      "arange": 30,
+      "dstab": 34,
+      "dslash": 24,
+      "dcrush": 32,
+      "dmagic": 44,
+      "drange": 53,
+      "prayer": 3
+    }
+  },
+  "23979": {
+    "name": "Crystal legs",
+    "equipable": true,
+    "equipment": {
+      "slot": 7,
+      "amagic": -12,
+      "arange": 17,
+      "dstab": 20,
+      "dslash": 16,
+      "dcrush": 24,
+      "dmagic": 34,
+      "drange": 29,
+      "prayer": 2
+    }
+  },
+  "23981": {
+    "name": "Crystal legs (inactive)",
+    "equipable": true,
+    "equipment": {
+      "slot": 7,
+      "amagic": -12,
+      "arange": 17,
+      "dstab": 20,
+      "dslash": 16,
+      "dcrush": 24,
+      "dmagic": 34,
+      "drange": 29,
+      "prayer": 2
+    }
+  },
+  "23995": {
+    "name": "Blade of Saeldor",
+    "equipable": true,
+    "weight": 1.0,
+    "equipment": {
+      "slot": 3,
+      "astab": 55,
+      "aslash": 94,
+      "str": 89,
+      "aspeed": 4
+    }
+  },
+  "23997": {
+    "name": "Blade of Saeldor (inactive)",
+    "equipable": true,
+    "weight": 1.0,
+    "equipment": {
+      "slot": 3,
+      "astab": 55,
+      "aslash": 94,
+      "str": 89,
+      "aspeed": 4
+    }
+  },
+  "24000": {
+    "name": "Crystal grail",
+    "equipable": true,
+    "equipment": {
+      "slot": 3,
+      "aspeed": 4
+    }
+  },
+  "24030": {
+    "name": "Memoriam crystal (1)"
+  },
+  "24031": {
+    "name": "Memoriam crystal (2)"
+  },
+  "24032": {
+    "name": "Memoriam crystal (3)"
+  },
+  "24033": {
+    "name": "Memoriam crystal (4)"
+  },
+  "24034": {
+    "name": "Dragonstone full helm",
+    "equipable": true,
+    "equipment": {
+      "slot": 0,
+      "amagic": -6,
+      "arange": -2,
+      "dstab": 30,
+      "dslash": 32,
+      "dcrush": 27,
+      "dmagic": -1,
+      "drange": 30
+    }
+  },
+  "24037": {
+    "name": "Dragonstone platebody",
+    "equipable": true,
+    "equipment": {
+      "slot": 4,
+      "amagic": -30,
+      "arange": -10,
+      "dstab": 82,
+      "dslash": 80,
+      "dcrush": 72,
+      "dmagic": -6,
+      "drange": 80
+    }
+  },
+  "24040": {
+    "name": "Dragonstone platelegs",
+    "equipable": true,
+    "equipment": {
+      "slot": 7,
+      "amagic": -21,
+      "arange": -7,
+      "dstab": 51,
+      "dslash": 49,
+      "dcrush": 47,
+      "dmagic": -4,
+      "drange": 49
+    }
+  },
+  "24043": {
+    "name": "Dragonstone boots",
+    "equipable": true,
+    "equipment": {
+      "slot": 10,
+      "amagic": -3,
+      "arange": -1,
+      "dstab": 12,
+      "dslash": 13,
+      "dcrush": 14,
+      "str": 2
+    }
+  },
+  "24046": {
+    "name": "Dragonstone gauntlets",
+    "equipable": true,
+    "equipment": {
+      "slot": 9,
+      "astab": 8,
+      "aslash": 8,
+      "acrush": 8,
+      "amagic": 4,
+      "arange": 8,
+      "dstab": 8,
+      "dslash": 8,
+      "dcrush": 8,
+      "dmagic": 4,
+      "drange": 8,
+      "str": 8
+    }
+  },
+  "24049": {
+    "name": "Crazed scribbles"
+  },
+  "24051": {
+    "name": "A dear friend"
+  },
+  "24053": {
+    "name": "On leprechauns"
+  },
+  "24055": {
+    "name": "Bloody diary"
+  },
+  "24057": {
+    "name": "The eight clans"
+  },
+  "24059": {
+    "name": "Gollwyn's final statement"
+  },
+  "24061": {
+    "name": "Niff & harry"
+  },
+  "24063": {
+    "name": "Soggy journal"
+  },
+  "24065": {
+    "name": "Ebrill's journal"
+  },
+  "24067": {
+    "name": "Stained journal"
+  },
+  "24069": {
+    "name": "The truth behind the myth (excerpt)"
+  },
+  "24071": {
+    "name": "The living statues"
+  },
+  "24073": {
+    "name": "The spurned demon"
+  },
+  "24075": {
+    "name": "Legends of the mountain"
   }
 }

@@ -30,7 +30,7 @@ import lombok.Value;
  * An event where the client has joined or left a clan chat.
  */
 @Value
-public class ClanChanged
+public class ClanChanged implements Event
 {
 	/**
 	 * Whether or not the client is now in a clan chat.

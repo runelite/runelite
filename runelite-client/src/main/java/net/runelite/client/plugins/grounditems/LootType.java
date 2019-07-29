@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.plugins.grounditems;
 
-import com.google.inject.Guice;
-import net.runelite.client.rs.ClientUpdateCheckMode;
-import org.junit.Test;
-
-public class RuneLiteModuleTest
+enum LootType
 {
-	@Test
-	public void testConfigure()
-	{
-		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
-	}
+	UNKNOWN,
+	PVP,
+	PVM;
 }

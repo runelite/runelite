@@ -25,6 +25,7 @@
 package net.runelite.api.hooks;
 
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.events.Event;
 import net.runelite.api.widgets.WidgetItem;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -41,14 +42,14 @@ public interface Callbacks
 	 *
 	 * @param event the event
 	 */
-	<T> void post(Class<T> eventClass, Object event);
+	<T> void post(Class<T> eventClass, Event event);
 
 	/**
 	 * Post a deferred event, which gets delayed until the next cycle.
 	 *
 	 * @param event the event
 	 */
-	<T> void postDeferred(Class<T> eventClass, Object event);
+	<T> void postDeferred(Class<T> eventClass, Event event);
 
 	/**
 	 * Called each client cycle.

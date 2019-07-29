@@ -4,7 +4,7 @@ import net.runelite.api.Actor;
 import lombok.Value;
 
 @Value
-public class OverheadTextChanged
+public class OverheadTextChanged implements Event
 {
 	private final Actor actor;
 

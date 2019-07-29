@@ -319,6 +319,8 @@ import static net.runelite.api.ItemID.SLICE_OF_CAKE;
 import static net.runelite.api.ItemID.SPICY_CRUNCHIES;
 import static net.runelite.api.ItemID.SPICY_SAUCE;
 import static net.runelite.api.ItemID.SPICY_STEW;
+import static net.runelite.api.ItemID.SPIDER_ON_SHAFT_6299;
+import static net.runelite.api.ItemID.SPIDER_ON_STICK_6297;
 import static net.runelite.api.ItemID.SPINACH_ROLL;
 import static net.runelite.api.ItemID.SPRING_SQIRKJUICE;
 import static net.runelite.api.ItemID.SQUARE_SANDWICH;
@@ -501,6 +503,7 @@ public class ItemStatChanges
 		add(combo(2, food(8), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
 		add(range(food(5), food(7)), THIN_SNAIL_MEAT);
 		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
+		add(range(food(7), food(10)), SPIDER_ON_STICK_6297, SPIDER_ON_SHAFT_6299);
 
 		// Dorgeshuun Cuisine
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,

@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -97,6 +96,10 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
 	name = "CoX Scouter",
@@ -199,6 +202,28 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 	private boolean raidStarted;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
+	private WSClient ws;
+
+	@Getter
+	private final List<String> roomWhitelist = new ArrayList<>();
+
+	@Getter
+	private final List<String> roomBlacklist = new ArrayList<>();
+
+	@Getter
+	private final List<String> rotationWhitelist = new ArrayList<>();
+
+	@Getter
+	private final List<String> layoutWhitelist = new ArrayList<>();
+
+	@Getter
+	private Raid raid;
+
 	private boolean inRaidChambers;
 	private boolean enhanceScouterTitle;
 	private boolean hideBackground;
@@ -211,7 +236,6 @@ public class RaidsPlugin extends Plugin
 	private boolean displayFloorBreak;
 	private boolean showRecommendedItems;
 	private boolean alwaysShowWorldAndCC;
-	private boolean layoutMessage;
 	private boolean colorTightrope;
 	private boolean crabHandler;
 	private boolean enableRotationWhitelist;
@@ -232,7 +256,8 @@ public class RaidsPlugin extends Plugin
 	private Color rareCrabColor;
 	private Color scavPrepColor;
 	private Color tightropeColor;
-	private Raid raid;
+	private boolean displayLayoutMessage;
+	private String layoutMessage;
 	private RaidsTimer timer;
 	private WidgetOverlay widgetOverlay;
 	private NavigationButton navButton;
@@ -244,10 +269,6 @@ public class RaidsPlugin extends Plugin
 	private String tooltip;
 	private String goodCrabs;
 	private String layoutFullCode;
-	private List<String> roomWhitelist = new ArrayList<>();
-	private List<String> roomBlacklist = new ArrayList<>();
-	private List<String> rotationWhitelist = new ArrayList<>();
-	private List<String> layoutWhitelist = new ArrayList<>();
 	private List<String> partyMembers = new ArrayList<>();
 	private List<String> startingPartyMembers = new ArrayList<>();
 	private Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
@@ -688,7 +709,7 @@ public class RaidsPlugin extends Plugin
 
 	private void sendRaidLayoutMessage()
 	{
-		if (!this.layoutMessage)
+		if (!this.displayLayoutMessage)
 		{
 			return;
 		}
@@ -724,6 +745,22 @@ public class RaidsPlugin extends Plugin
 					.append("The following are some places you can sell this raid: Scout Trading in We do Raids discord, and Buying Cox Rotations in Oblivion discord.")
 					.build())
 				.build());
+		}
+		
+		final PartyMember localMember = party.getLocalMember();
+
+		if (party.getMembers().isEmpty() || localMember == null)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(layoutMessage)
+				.build());
+		}
+		else
+		{
+			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
+			message.setMemberId(localMember.getMemberId());
+			ws.send(message);
 		}
 	}
 
@@ -828,28 +865,28 @@ public class RaidsPlugin extends Plugin
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			list.addAll(Text.fromCSV(input.toLowerCase()));
 		}
 	}
 
 	int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		List<String> bosses = Text.fromCSV(rotation);
 
 		if (rotationWhitelist.contains(rotation))
 		{
-			return bosses.length;
+			return bosses.size();
 		}
 
 		for (String whitelisted : rotationWhitelist)
 		{
 			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+			List<String> whitelistedBosses = Text.fromCSV(whitelisted);
 
-			for (int i = 0; i < whitelistedBosses.length; i++)
+			for (int i = 0; i < whitelistedBosses.size(); i++)
 			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
+				if (i < bosses.size() && whitelistedBosses.get(i).equals(bosses.get(i)))
 				{
 					matches++;
 				}
@@ -1240,7 +1277,7 @@ public class RaidsPlugin extends Plugin
 		this.showRecommendedItems = config.showRecommendedItems();
 		this.recommendedItems = config.recommendedItems();
 		this.alwaysShowWorldAndCC = config.alwaysShowWorldAndCC();
-		this.layoutMessage = config.layoutMessage();
+		this.displayLayoutMessage = config.displayLayoutMessage();
 		this.colorTightrope = config.colorTightrope();
 		this.tightropeColor = config.tightropeColor();
 		this.crabHandler = config.crabHandler();

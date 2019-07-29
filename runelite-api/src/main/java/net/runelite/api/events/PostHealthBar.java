@@ -28,7 +28,7 @@ import net.runelite.api.HealthBar;
 import lombok.Data;
 
 @Data
-public class PostHealthBar
+public class PostHealthBar implements Event
 {
 	private HealthBar healthBar;
 }

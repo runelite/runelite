@@ -13,7 +13,7 @@ compileJava.outputs.upToDateWhen {false}
 
 compileJava.doLast {
     def path = sourceSets.main.runtimeClasspath
-    def loader = new URLClassLoader(path.collect { f -> f.toURL() } as URL[])
+    def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
     def assemble = loader.loadClass('net.runelite.script.AssembleMojo')
     String[] assembleArgs = [
             "${project.rootDir}/runelite-client/src/main/scripts",
@@ -27,4 +27,6 @@ compileJava.doLast {
             "${project.rootDir}/runelite-client/src/main/resources/runelite/index"
     ]
     index.main(indexArgs)
+
+    loader.close()
 }

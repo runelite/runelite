@@ -79,8 +79,8 @@ public class WildernessLocationsMapOverlay extends Overlay
 			final int y1 = worldLocation.getWorldArea().getY();
 			final int y2 = worldLocation.getWorldArea().getY() + worldLocation.getWorldArea().getHeight();
 			final int plane = worldLocation.getWorldArea().getPlane();
-			final Point point = mapWorldPointToGraphicsPoint(new WorldPoint(x1, y2, plane));
-			final Point point1 = mapWorldPointToGraphicsPoint(new WorldPoint(x2, y1, plane));
+			final Point point = mapWorldPointToGraphicsPoint(new WorldPoint(x1, y1, plane));
+			final Point point1 = mapWorldPointToGraphicsPoint(new WorldPoint(x2, y2, plane));
 			if (point == null || point1 == null)
 			{
 				continue;
@@ -89,7 +89,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 			int height = point.getY() - point1.getY();
 
 
-			Rectangle rectangle = new Rectangle(point.getX(), point1.getY(), width, height);
+			Rectangle rectangle = new Rectangle(point.getX(), point.getY(), width, height);
 
 			// These would be unreadable unless font color is black
 			if (worldLocation.equals(WorldLocation.ICE_GATE) || worldLocation.equals(WorldLocation.ICE_ROCK))
@@ -97,7 +97,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 				graphics.setColor(Color.BLACK);
 				if (plugin.isWorldMapNames())
 				{
-					graphics.drawString(worldLocation.getName(), point.getX(), point.getY());
+					graphics.drawString(worldLocation.getName(), point.getX(), point1.getY());
 				}
 				if (plugin.isOutlineLocations())
 				{

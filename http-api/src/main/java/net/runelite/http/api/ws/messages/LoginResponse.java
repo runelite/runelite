@@ -24,13 +24,14 @@
  */
 package net.runelite.http.api.ws.messages;
 
+import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.WebsocketMessage;
 
 /**
  * Called after a successful login to the server
  * @author Adam
  */
-public class LoginResponse extends WebsocketMessage
+public class LoginResponse extends WebsocketMessage implements Event
 {
 	private String username;
 

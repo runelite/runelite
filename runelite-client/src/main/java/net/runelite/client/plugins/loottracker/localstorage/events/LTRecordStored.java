@@ -25,10 +25,11 @@
 package net.runelite.client.plugins.loottracker.localstorage.events;
 
 import lombok.Data;
+import net.runelite.api.events.Event;
 import net.runelite.client.plugins.loottracker.localstorage.LTRecord;
 
 @Data
-public class LTRecordStored
+public class LTRecordStored implements Event
 {
 	private final LTRecord record;
 }

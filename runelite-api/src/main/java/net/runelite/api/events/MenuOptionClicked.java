@@ -42,7 +42,7 @@ import net.runelite.api.MenuEntry;
  * it seems that this event still triggers with the "Cancel" action.
  */
 @Data
-public class MenuOptionClicked
+public class MenuOptionClicked implements Event
 {
 	public MenuOptionClicked(MenuEntry entry)
 	{

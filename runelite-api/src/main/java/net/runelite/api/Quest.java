@@ -120,8 +120,8 @@ public enum Quest
 	MONKEY_MADNESS_II(396, "Monkey Madness II", Varbits.QUEST_MONKEY_MADNESS_II),
 	MONKS_FRIEND(397, "Monk's Friend", VarPlayer.QUEST_MONKS_FRIEND),
 	MOUNTAIN_DAUGHTER(398, "Mountain Daughter", Varbits.QUEST_MOUNTAIN_DAUGHTER),
-	MOURNINGS_ENDS_PART_I(399, "Mourning's Ends Part I", VarPlayer.QUEST_MOURNINGS_ENDS_PART_I),
-	MOURNINGS_ENDS_PART_II(400, "Mourning's Ends Part II", Varbits.QUEST_MOURNINGS_ENDS_PART_II),
+	MOURNINGS_END_PART_I(399, "Mourning's End Part I", VarPlayer.QUEST_MOURNINGS_END_PART_I),
+	MOURNINGS_END_PART_II(400, "Mourning's End Part II", Varbits.QUEST_MOURNINGS_END_PART_II),
 	MURDER_MYSTERY(401, "Murder Mystery", VarPlayer.QUEST_MURDER_MYSTERY),
 	MY_ARMS_BIG_ADVENTURE(402, "My Arm's Big Adventure", Varbits.QUEST_MY_ARMS_BIG_ADVENTURE),
 	NATURE_SPIRIT(403, "Nature Spirit", VarPlayer.QUEST_NATURE_SPIRIT),
@@ -173,6 +173,7 @@ public enum Quest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters", Varbits.QUEST_ZOGRE_FLESH_EATERS),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus", Varbits.QUEST_THE_ASCENT_OF_ARCEUUS),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower", Varbits.QUEST_THE_FORSAKEN_TOWER),
+	SONG_OF_THE_ELVES(603, "Song of the Elves", Varbits.QUEST_SONG_OF_THE_ELVES),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss", VarPlayer.QUEST_ENTER_THE_ABYSS),
@@ -186,7 +187,8 @@ public enum Quest
 	THE_MAGE_ARENA(327, "The Mage Arena", VarPlayer.QUEST_THE_MAGE_ARENA),
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor", Varbits.QUEST_LAIR_OF_TARN_RAZORLOR),
 	FAMILY_PEST(329, "Family Pest", Varbits.QUEST_FAMILY_PEST),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II", Varbits.QUEST_THE_MAGE_ARENA_II);
+	THE_MAGE_ARENA_II(330, "The Mage Arena II", Varbits.QUEST_THE_MAGE_ARENA_II),
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge", Varbits.QUEST_IN_SEARCH_OF_KNOWLEDGE);
 
 	@Getter
 	private final int id;

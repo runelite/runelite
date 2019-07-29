@@ -32,7 +32,7 @@ import lombok.Data;
  * An event where a {@link GroundObject} on a {@link Tile} has been removed.
  */
 @Data
-public class GroundObjectDespawned
+public class GroundObjectDespawned implements Event
 {
 	/**
 	 * The affected tile.

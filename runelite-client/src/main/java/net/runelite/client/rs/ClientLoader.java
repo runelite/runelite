@@ -26,23 +26,20 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.io.ByteStreams;
-import lombok.extern.slf4j.Slf4j;
-
+import java.net.URLClassLoader;
+import java.applet.Applet;
+import java.io.IOException;
+import java.net.URL;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.applet.Applet;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	public static boolean useLocalInjected = false;
 	private final ClientConfigLoader clientConfigLoader;
 	private final ClientUpdateCheckMode updateCheckMode;
 
@@ -55,34 +52,46 @@ public class ClientLoader
 		this.clientConfigLoader = clientConfigLoader;
 	}
 
+	public Applet load()
+	{
+		try
+		{
+			final RSConfig config = clientConfigLoader.fetch();
+
+			switch (updateCheckMode)
+			{
+				case AUTO:
+				default:
+					return loadRLPlus(config);
+				case VANILLA:
+					return loadVanilla(config);
+				case NONE:
+					return null;
+				case RSPS:
+					RuneLite.allowPrivateServer = true;
+					return loadRLPlus(config);
+			}
+		}
+		catch (IOException | InstantiationException | IllegalAccessException e)
+		{
+			log.error("Error loading RS!", e);
+			return null;
+		}
+		catch (ClassNotFoundException e)
+		{
+			log.error("Unable to load client - class not found. This means you"
+				+ " are not running RuneLite with Maven as the injected client"
+				+ " is not in your classpath.");
+
+			log.error("Error loading RS!", e);
+			return null;
+		}
+	}
+
 	private static Applet loadRLPlus(final RSConfig config)
 	throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
-		{
-			@Override
-			protected Class<?> findClass(String name) throws ClassNotFoundException
-			{
-				String path = "/injected-client/".concat(name.replace('.', '/')).concat(".class");
-				InputStream inputStream = ClientLoader.class.getResourceAsStream(path);
-				if (inputStream == null)
-				{
-					throw new ClassNotFoundException(name + " " + path);
-				}
-				byte[] data;
-				try
-				{
-					data = ByteStreams.toByteArray(inputStream);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-					throw new RuntimeException("Failed to load class: " + name + " " + path);
-				}
-				return defineClass(name, data, 0, data.length);
-			}
-		};
-		Class<?> clientClass = rsClassLoader.loadClass("client");
+		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
 		return loadFromClass(config, clientClass);
 	}
 
@@ -107,38 +116,5 @@ public class ClientLoader
 		final Applet rs = (Applet) clientClass.newInstance();
 		rs.setStub(new RSAppletStub(config));
 		return rs;
-	}
-
-	public Applet load()
-	{
-		try
-		{
-			final RSConfig config = clientConfigLoader.fetch();
-
-			switch (updateCheckMode)
-			{
-				case AUTO:
-				default:
-					return loadRLPlus(config);
-				case VANILLA:
-					return loadVanilla(config);
-				case NONE:
-					return null;
-			}
-		}
-		catch (IOException | InstantiationException | IllegalAccessException e)
-		{
-			log.error("Error loading RS!", e);
-			return null;
-		}
-		catch (ClassNotFoundException e)
-		{
-			log.error("Unable to load client - class not found. This means you"
-				+ " are not running RuneLite with Maven as the injected client"
-				+ " is not in your classpath.");
-
-			log.error("Error loading RS!", e);
-			return null;
-		}
 	}
 }

@@ -32,7 +32,7 @@ import lombok.Data;
  * An event where the experience level of a {@link Skill} has been modified.
  */
 @Data
-public class ExperienceChanged
+public class ExperienceChanged implements Event
 {
 	/**
 	 * The modified skill.

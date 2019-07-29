@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -69,14 +70,20 @@ public class PrivateServerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateConfig();
-		addSubscriptions();
+		if (RuneLite.allowPrivateServer)
+		{
+			updateConfig();
+			addSubscriptions();
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
+		if (RuneLite.allowPrivateServer)
+		{
+			eventBus.unregister(this);
+		}
 	}
 
 	private void addSubscriptions()

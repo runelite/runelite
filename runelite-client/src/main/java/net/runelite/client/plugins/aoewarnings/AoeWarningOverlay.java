@@ -34,14 +34,12 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -71,53 +69,50 @@ public class AoeWarningOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		WorldPoint lp = client.getLocalPlayer().getWorldLocation();
-		for (WorldPoint point : plugin.getLightningTrail())
-		{
-			OverlayUtil.drawTiles(graphics, client, point, lp, new Color(0, 150, 200), 2, 150, 50);
-		}
 
-		for (WorldPoint point : plugin.getAcidTrail())
-		{
-			OverlayUtil.drawTiles(graphics, client, point, lp, new Color(69, 241, 44), 2, 150, 50);
-		}
+		plugin.getLightningTrail().forEach(o ->
+			OverlayUtil.drawTiles(graphics, client, o, lp, new Color(0, 150, 200), 2, 150, 50));
 
-		for (WorldPoint point : plugin.getCrystalSpike())
-		{
-			OverlayUtil.drawTiles(graphics, client, point, lp, new Color(255, 0, 84), 2, 150, 50);
-		}
+		plugin.getAcidTrail().forEach(o ->
+			OverlayUtil.drawTiles(graphics, client, o.getWorldLocation(), lp, new Color(69, 241, 44), 2, 150, 50));
 
-		for (WorldPoint point : plugin.getWintertodtSnowFall())
-		{
-			OverlayUtil.drawTiles(graphics, client, point, lp, new Color(255, 0, 84), 2, 150, 50);
-		}
+		plugin.getCrystalSpike().forEach(o ->
+			OverlayUtil.drawTiles(graphics, client, o.getWorldLocation(), lp, new Color(255, 0, 84), 2, 150, 50));
+
+		plugin.getWintertodtSnowFall().forEach(o ->
+			OverlayUtil.drawTiles(graphics, client, o.getWorldLocation(), lp, new Color(255, 0, 84), 2, 150, 50));
 
 		Instant now = Instant.now();
-		Map<Projectile, AoeProjectile> projectiles = plugin.getProjectiles();
-		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext(); )
+		Set<ProjectileContainer> projectiles = plugin.getProjectiles();
+		projectiles.forEach(proj ->
 		{
-			AoeProjectile aoeProjectile = it.next();
-			Color color;
-			if (now.isAfter(aoeProjectile.getStartTime().plus(Duration.ofMillis(aoeProjectile.getProjectileLifetime()))))
+			if (proj.getTargetPoint() == null)
 			{
-				it.remove();
-				continue;
+				return;
 			}
 
-			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, aoeProjectile.getTargetPoint(), aoeProjectile.getAoeProjectileInfo().getAoeSize());
+			Color color;
+
+			if (now.isAfter(proj.getStartTime().plus(Duration.ofMillis(proj.getLifetime()))))
+			{
+				return;
+			}
+
+			final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, proj.getTargetPoint(), proj.getAoeProjectileInfo().getAoeSize());
+
 			if (tilePoly == null)
 			{
-				continue;
+				return;
 			}
 
-			// how far through the projectiles lifetime between 0-1.
-			double progress = (System.currentTimeMillis() - aoeProjectile.getStartTime().toEpochMilli()) / (double) aoeProjectile.getProjectileLifetime();
+			final double progress = (System.currentTimeMillis() - proj.getStartTime().toEpochMilli()) / (double) proj.getLifetime();
 
-			int tickProgress = aoeProjectile.getFinalTick() - client.getTickCount();
+			final int tickProgress = proj.getFinalTick() - client.getTickCount();
 
 			int fillAlpha, outlineAlpha;
 			if (plugin.isConfigFadeEnabled())
 			{
-				fillAlpha = (int) ((1 - progress) * FILL_START_ALPHA);//alpha drop off over lifetime
+				fillAlpha = (int) ((1 - progress) * FILL_START_ALPHA);
 				outlineAlpha = (int) ((1 - progress) * OUTLINE_START_ALPHA);
 			}
 			else
@@ -165,7 +160,8 @@ public class AoeWarningOverlay extends Overlay
 
 			graphics.setColor(new Color(setAlphaComponent(plugin.getOverlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
-		}
+		});
+		projectiles.removeIf(proj -> now.isAfter(proj.getStartTime().plus(Duration.ofMillis(proj.getLifetime()))));
 		return null;
 	}
 

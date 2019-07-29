@@ -196,11 +196,11 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 12,
 		parent = "scouterConfig",
-		keyName = "layoutMessage",
+		keyName = "displayLayoutMessage",
 		name = "Send raid layout message when entering raid",
 		description = "Sends game message with raid layout on entering new raid"
 	)
-	default boolean layoutMessage()
+	default boolean displayLayoutMessage()
 	{
 		return true;
 	}

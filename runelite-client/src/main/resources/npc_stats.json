@@ -1237,17 +1237,6 @@
     "rangeDef": 5,
     "undead": true
   },
-  "98": {
-    "name": "Soulless",
-    "hitpoints": 24,
-    "combatLevel": 18,
-    "attackSpeed": 4,
-    "attackLevel": 13,
-    "strengthLevel": 13,
-    "defenceLevel": 18,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
   "99": {
     "name": "Death wing",
     "hitpoints": 80,
@@ -6142,7 +6131,7 @@
     "undead": true
   },
   "891": {
-    "name": "Moss giant",
+    "name": "Moss Guardian",
     "hitpoints": 120,
     "combatLevel": 84,
     "attackSpeed": 6,
@@ -6170,14 +6159,6 @@
     "rangeLevel": 100,
     "magicLevel": 100,
     "demon": true
-  },
-  "924": {
-    "name": "Skeleton",
-    "hitpoints": 18,
-    "combatLevel": 13,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "undead": true
   },
   "925": {
     "name": "Rock",
@@ -6711,18 +6692,22 @@
   },
   "976": {
     "name": "Dagannoth",
+    "hitpoints": 160,
     "combatLevel": 100
   },
   "977": {
     "name": "Dagannoth",
+    "hitpoints": 160,
     "combatLevel": 100
   },
   "978": {
     "name": "Dagannoth",
+    "hitpoints": 160,
     "combatLevel": 100
   },
   "979": {
     "name": "Dagannoth",
+    "hitpoints": 160,
     "combatLevel": 100
   },
   "980": {
@@ -6972,18 +6957,6 @@
     "attackLevel": 2,
     "strengthLevel": 3,
     "defenceLevel": 2,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "1039": {
-    "name": "Albino bat",
-    "hitpoints": 33,
-    "combatLevel": 52,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "attackLevel": 57,
-    "strengthLevel": 57,
-    "defenceLevel": 30,
     "rangeLevel": 1,
     "magicLevel": 1
   },
@@ -7321,36 +7294,6 @@
     "rangeLevel": 130,
     "magicLevel": 1
   },
-  "1114": {
-    "name": "Mourner",
-    "hitpoints": 19,
-    "combatLevel": 11,
-    "attackSpeed": 4,
-    "attackLevel": 8,
-    "strengthLevel": 8,
-    "defenceLevel": 8,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 6,
-    "slashDef": 6,
-    "crushDef": 9,
-    "bonusAttack": 6,
-    "bonusStrength": 2
-  },
-  "1115": {
-    "name": "Mourner",
-    "hitpoints": 25,
-    "combatLevel": 24,
-    "attackSpeed": 4,
-    "attackLevel": 20,
-    "strengthLevel": 20,
-    "defenceLevel": 20,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 3,
-    "slashDef": 2,
-    "crushDef": 4
-  },
   "1118": {
     "name": "Man",
     "hitpoints": 7,
@@ -7495,22 +7438,6 @@
     "magicDef": 80,
     "bonusStrength": 100
   },
-  "1136": {
-    "name": "Mourner",
-    "hitpoints": 13,
-    "combatLevel": 18,
-    "attackSpeed": 4,
-    "attackLevel": 17,
-    "strengthLevel": 17,
-    "defenceLevel": 17,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 5,
-    "slashDef": 5,
-    "crushDef": 7,
-    "bonusAttack": 5,
-    "bonusStrength": 5
-  },
   "1139": {
     "name": "Woman",
     "hitpoints": 13,
@@ -7574,48 +7501,6 @@
     "rangeDef": 79,
     "bonusAttack": 20,
     "bonusStrength": 22
-  },
-  "1148": {
-    "name": "Mourner",
-    "hitpoints": 25,
-    "combatLevel": 24,
-    "attackSpeed": 4,
-    "attackLevel": 20,
-    "strengthLevel": 20,
-    "defenceLevel": 20,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 2,
-    "slashDef": 1,
-    "crushDef": 3
-  },
-  "1149": {
-    "name": "Mourner",
-    "hitpoints": 19,
-    "combatLevel": 13,
-    "attackSpeed": 4,
-    "attackLevel": 10,
-    "strengthLevel": 10,
-    "defenceLevel": 10,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 3,
-    "slashDef": 2,
-    "crushDef": 4
-  },
-  "1150": {
-    "name": "Mourner",
-    "hitpoints": 13,
-    "combatLevel": 12,
-    "attackSpeed": 4,
-    "attackLevel": 10,
-    "strengthLevel": 10,
-    "defenceLevel": 10,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 3,
-    "slashDef": 2,
-    "crushDef": 4
   },
   "1153": {
     "name": "Ogre",
@@ -8044,7 +7929,8 @@
     "attackSpeed": 4,
     "attackLevel": 64,
     "strengthLevel": 47,
-    "defenceLevel": 42
+    "defenceLevel": 42,
+    "poisonImmune": true
   },
   "1282": {
     "name": "Riyl Shade",
@@ -14274,7 +14160,7 @@
     "magicLevel": 25
   },
   "2887": {
-    "name": "Fancy dress shop owner",
+    "name": "Asyff",
     "hitpoints": 40,
     "combatLevel": 45,
     "attackSpeed": 4,
@@ -17217,7 +17103,7 @@
     "magicLevel": 1
   },
   "3428": {
-    "name": "Elf warrior",
+    "name": "Iorwerth Archer",
     "hitpoints": 105,
     "combatLevel": 90,
     "slayerLevel": 1,
@@ -17234,7 +17120,7 @@
     "magicDef": 60
   },
   "3429": {
-    "name": "Elf warrior",
+    "name": "Iorwerth Warrior",
     "hitpoints": 105,
     "combatLevel": 108,
     "slayerLevel": 1,
@@ -19421,22 +19307,6 @@
     "rangeDef": 100,
     "magicDef": 90
   },
-  "4006": {
-    "name": "Mourner",
-    "hitpoints": 105,
-    "combatLevel": 108,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "attackLevel": 95,
-    "strengthLevel": 95,
-    "defenceLevel": 80,
-    "magicLevel": 1,
-    "stabDef": 50,
-    "slashDef": 70,
-    "crushDef": 70,
-    "rangeDef": 50,
-    "magicDef": 60
-  },
   "4043": {
     "name": "Pirate",
     "hitpoints": 20
@@ -21504,117 +21374,6 @@
     "attackLevel": 5,
     "strengthLevel": 1,
     "defenceLevel": 1,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "4545": {
-    "name": "Sir Jerro",
-    "hitpoints": 57,
-    "combatLevel": 62,
-    "attackSpeed": 5,
-    "attackLevel": 54,
-    "strengthLevel": 54,
-    "defenceLevel": 54,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 87,
-    "slashDef": 84,
-    "crushDef": 76,
-    "rangeDef": 79,
-    "bonusAttack": 20,
-    "bonusStrength": 22
-  },
-  "4546": {
-    "name": "Sir Carl",
-    "hitpoints": 57,
-    "combatLevel": 62,
-    "attackSpeed": 5,
-    "attackLevel": 54,
-    "strengthLevel": 54,
-    "defenceLevel": 54,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 87,
-    "slashDef": 84,
-    "crushDef": 76,
-    "rangeDef": 79,
-    "bonusAttack": 20,
-    "bonusStrength": 22
-  },
-  "4547": {
-    "name": "Sir Harry",
-    "hitpoints": 57,
-    "combatLevel": 62,
-    "attackSpeed": 5,
-    "attackLevel": 54,
-    "strengthLevel": 54,
-    "defenceLevel": 54,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 87,
-    "slashDef": 84,
-    "crushDef": 76,
-    "rangeDef": 79,
-    "bonusAttack": 20,
-    "bonusStrength": 22
-  },
-  "4554": {
-    "name": "Kalrag",
-    "hitpoints": 78,
-    "combatLevel": 89,
-    "attackSpeed": 4,
-    "attackLevel": 78,
-    "strengthLevel": 78,
-    "defenceLevel": 78,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 20,
-    "slashDef": 17,
-    "crushDef": 12,
-    "rangeDef": 13,
-    "magicDef": 13
-  },
-  "4555": {
-    "name": "Othainian",
-    "hitpoints": 87,
-    "combatLevel": 91,
-    "attackSpeed": 4,
-    "attackLevel": 76,
-    "strengthLevel": 78,
-    "defenceLevel": 77,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "4556": {
-    "name": "Doomion",
-    "hitpoints": 87,
-    "combatLevel": 91,
-    "attackSpeed": 4,
-    "attackLevel": 76,
-    "strengthLevel": 78,
-    "defenceLevel": 77,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "4557": {
-    "name": "Holthion",
-    "hitpoints": 87,
-    "combatLevel": 91,
-    "attackSpeed": 4,
-    "attackLevel": 76,
-    "strengthLevel": 78,
-    "defenceLevel": 77,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "4559": {
-    "name": "Disciple of Iban",
-    "hitpoints": 20,
-    "combatLevel": 13,
-    "attackSpeed": 4,
-    "attackLevel": 8,
-    "strengthLevel": 8,
-    "defenceLevel": 12,
     "rangeLevel": 1,
     "magicLevel": 1
   },
@@ -23699,56 +23458,8 @@
     "bonusAttack": 15,
     "undead": true
   },
-  "5285": {
-    "name": "Mourner",
-    "hitpoints": 19,
-    "combatLevel": 11,
-    "attackSpeed": 4,
-    "attackLevel": 8,
-    "strengthLevel": 8,
-    "defenceLevel": 8,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 6,
-    "slashDef": 6,
-    "crushDef": 9,
-    "bonusAttack": 6,
-    "bonusStrength": 2
-  },
-  "5286": {
-    "name": "Mourner",
-    "hitpoints": 19,
-    "combatLevel": 11,
-    "attackSpeed": 4,
-    "attackLevel": 8,
-    "strengthLevel": 8,
-    "defenceLevel": 8,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 6,
-    "slashDef": 6,
-    "crushDef": 9,
-    "bonusAttack": 6,
-    "bonusStrength": 2
-  },
-  "5287": {
-    "name": "Mourner",
-    "hitpoints": 19,
-    "combatLevel": 11,
-    "attackSpeed": 4,
-    "attackLevel": 8,
-    "strengthLevel": 8,
-    "defenceLevel": 8,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 6,
-    "slashDef": 6,
-    "crushDef": 9,
-    "bonusAttack": 6,
-    "bonusStrength": 2
-  },
   "5293": {
-    "name": "Elf warrior",
+    "name": "Elf Warrior",
     "hitpoints": 105,
     "combatLevel": 108,
     "slayerLevel": 1,
@@ -23764,7 +23475,7 @@
     "magicDef": 60
   },
   "5294": {
-    "name": "Elf warrior",
+    "name": "Elf Warrior",
     "hitpoints": 105,
     "combatLevel": 108,
     "slayerLevel": 1,
@@ -23780,7 +23491,7 @@
     "magicDef": 60
   },
   "5295": {
-    "name": "Elf warrior",
+    "name": "Elf Archer",
     "hitpoints": 105,
     "combatLevel": 90,
     "slayerLevel": 1,
@@ -23797,7 +23508,7 @@
     "magicDef": 60
   },
   "5296": {
-    "name": "Elf warrior",
+    "name": "Elf Archer",
     "hitpoints": 105,
     "combatLevel": 90,
     "slayerLevel": 1,
@@ -23806,38 +23517,6 @@
     "strengthLevel": 10,
     "defenceLevel": 80,
     "rangeLevel": 90,
-    "magicLevel": 1,
-    "stabDef": 50,
-    "slashDef": 70,
-    "crushDef": 70,
-    "rangeDef": 50,
-    "magicDef": 60
-  },
-  "5311": {
-    "name": "Mourner",
-    "hitpoints": 105,
-    "combatLevel": 108,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "attackLevel": 95,
-    "strengthLevel": 95,
-    "defenceLevel": 80,
-    "magicLevel": 1,
-    "stabDef": 50,
-    "slashDef": 70,
-    "crushDef": 70,
-    "rangeDef": 50,
-    "magicDef": 60
-  },
-  "5312": {
-    "name": "Mourner",
-    "hitpoints": 105,
-    "combatLevel": 108,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "attackLevel": 95,
-    "strengthLevel": 95,
-    "defenceLevel": 80,
     "magicLevel": 1,
     "stabDef": 50,
     "slashDef": 70,
@@ -27416,7 +27095,7 @@
     "bonusAttack": 10
   },
   "6325": {
-    "name": "Moss giant (hard)",
+    "name": "Moss Guardian (hard)",
     "hitpoints": 240,
     "combatLevel": 182,
     "attackSpeed": 6,
@@ -28268,7 +27947,7 @@
     "bonusAttack": 10
   },
   "6386": {
-    "name": "Moss giant",
+    "name": "Moss Guardian",
     "hitpoints": 120,
     "combatLevel": 84,
     "attackSpeed": 6,
@@ -37795,23 +37474,6 @@
     "magicDef": 150,
     "bonusMagicDamage": 10
   },
-  "8710": {
-    "name": "Shaeded Beast",
-    "hitpoints": 210,
-    "combatLevel": 186,
-    "attackSpeed": 4,
-    "attackLevel": 50,
-    "strengthLevel": 80,
-    "defenceLevel": 50,
-    "rangeLevel": 1,
-    "magicLevel": 250,
-    "stabDef": 50,
-    "slashDef": 30,
-    "crushDef": 100,
-    "rangeDef": 50,
-    "magicDef": 150,
-    "bonusMagicDamage": 10
-  },
   "8713": {
     "name": "Sarachnis",
     "hitpoints": 400,
@@ -37861,5 +37523,109 @@
     "slashDef": 50,
     "crushDef": 50,
     "magicDef": 150
+  },
+  "8917": {
+    "name": "Fragment of Seren",
+    "hitpoints": 1000,
+    "combatLevel": 494,
+    "attackSpeed": 7,
+    "attackLevel": 242,
+    "strengthLevel": 288,
+    "defenceLevel": 102,
+    "rangeLevel": 235,
+    "magicLevel": 102,
+    "stab": 236,
+    "slash": 236,
+    "crush": 236,
+    "range": 224,
+    "stabDef": 320,
+    "slashDef": 220,
+    "crushDef": 320,
+    "rangeDef": 480,
+    "magicDef": 10
+  },
+  "8918": {
+    "name": "Fragment of Seren",
+    "hitpoints": 1000,
+    "combatLevel": 494,
+    "attackSpeed": 7,
+    "attackLevel": 242,
+    "strengthLevel": 288,
+    "defenceLevel": 102,
+    "rangeLevel": 235,
+    "magicLevel": 102,
+    "stab": 236,
+    "slash": 236,
+    "crush": 236,
+    "range": 224,
+    "stabDef": 320,
+    "slashDef": 220,
+    "crushDef": 320,
+    "rangeDef": 480,
+    "magicDef": 10
+  },
+  "8919": {
+    "name": "Fragment of Seren",
+    "hitpoints": 1000,
+    "combatLevel": 494,
+    "attackSpeed": 7,
+    "attackLevel": 242,
+    "strengthLevel": 288,
+    "defenceLevel": 102,
+    "rangeLevel": 235,
+    "magicLevel": 102,
+    "stab": 236,
+    "slash": 236,
+    "crush": 236,
+    "range": 224,
+    "stabDef": 320,
+    "slashDef": 220,
+    "crushDef": 320,
+    "rangeDef": 480,
+    "magicDef": 10
+  },
+  "8920": {
+    "name": "Fragment of Seren",
+    "hitpoints": 1000,
+    "combatLevel": 494,
+    "attackSpeed": 7,
+    "attackLevel": 242,
+    "strengthLevel": 288,
+    "defenceLevel": 102,
+    "rangeLevel": 235,
+    "magicLevel": 102,
+    "stab": 236,
+    "slash": 236,
+    "crush": 236,
+    "range": 224,
+    "stabDef": 320,
+    "slashDef": 220,
+    "crushDef": 320,
+    "rangeDef": 480,
+    "magicDef": 10
+  },
+  "9021": {
+    "name": "Crystalline Hunllef",
+    "hitpoints": 600,
+    "combatLevel": 674,
+    "attackSpeed": 5
+  },
+  "9022": {
+    "name": "Crystalline Hunllef",
+    "hitpoints": 600,
+    "combatLevel": 674,
+    "attackSpeed": 5
+  },
+  "9023": {
+    "name": "Crystalline Hunllef",
+    "hitpoints": 600,
+    "combatLevel": 674,
+    "attackSpeed": 5
+  },
+  "9024": {
+    "name": "Crystalline Hunllef",
+    "hitpoints": 600,
+    "combatLevel": 674,
+    "attackSpeed": 5
   }
 }
