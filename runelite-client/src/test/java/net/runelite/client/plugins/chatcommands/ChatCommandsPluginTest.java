@@ -38,11 +38,11 @@ import net.runelite.client.config.ConfigManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Matchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChatCommandsPluginTest
@@ -140,6 +140,28 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "herbiboar", 4091);
+	}
+
+	@Test
+	public void testGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage gauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>123</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(gauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "gauntlet", 123);
+	}
+
+	@Test
+	public void testCorruptedGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage corruptedGauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Corrupted Gauntlet completion count is: <col=ff0000>4729</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(corruptedGauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "corrupted gauntlet", 4729);
 	}
 
 	@Test
