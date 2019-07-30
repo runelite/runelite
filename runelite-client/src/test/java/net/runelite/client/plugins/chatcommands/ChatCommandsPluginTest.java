@@ -266,4 +266,34 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("prifddinas agility course"), eq(61));
 		verify(configManager).setConfiguration(eq("killcount.adam"), eq("prifddinas agility course"), eq(2));
 	}
+
+	@Test
+	public void testZukNewPb()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>104:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tzkal-zuk"), eq(104 * 60 + 31));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("tzkal-zuk"), eq(2));
+	}
+
+	@Test
+	public void testZukKill()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>172:18</col>. Personal best: 134:52", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tzkal-zuk"), eq(134 * 60 + 52));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("tzkal-zuk"), eq(3));
+	}
 }
