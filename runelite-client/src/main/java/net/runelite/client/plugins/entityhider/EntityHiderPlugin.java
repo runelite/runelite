@@ -108,6 +108,7 @@ public class EntityHiderPlugin extends Plugin
 		client.setNPCsHidden(config.hideNPCs());
 		client.setNPCsHidden2D(config.hideNPCs2D());
 		client.setNPCsNames(config.hideNPCsNames());
+		client.setNPCsHiddenOnDeath(config.hideNPCsOnDeath());
 
 		client.setAttackersHidden(config.hideAttackers());
 

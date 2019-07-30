@@ -70,6 +70,8 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	@Inject
 	public static String hideNPCsNames;
 
+	@Inject
+	public static String hideNPCsOnDeath;
 
 	@Inject
 	@Override
@@ -139,6 +141,13 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	public void setNPCsNames(String NPCs)
 	{
 		hideNPCsNames = NPCs;
+	}
+
+	@Inject
+	@Override
+	public void setNPCsHiddenOnDeath(String NPCs)
+	{
+		hideNPCsOnDeath = NPCs;
 	}
 
 	@Inject
