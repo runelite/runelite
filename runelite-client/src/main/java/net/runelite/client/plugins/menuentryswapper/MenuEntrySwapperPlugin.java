@@ -279,7 +279,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private String getSellFiftyItems;
 	private boolean getEasyConstruction;
 	private String getEasyConstructionItems;
-	private boolean getSwapSmithing;
 	private boolean getSwapTanning;
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
@@ -955,18 +954,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			else if (option.equalsIgnoreCase("use"))
 			{
 				swap(client, "escape", option, target);
-			}
-		}
-
-		else if (this.getSwapSmithing && option.contains("smith"))
-		{
-			if (option.equalsIgnoreCase("Smith 1"))
-			{
-				swap(client, "Smith All", option, target);
-			}
-			else if (option.equalsIgnoreCase("Smith 1 Set"))
-			{
-				swap(client, "Smith All Sets", option, target);
 			}
 		}
 
@@ -1866,7 +1853,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSellFiftyItems = config.getSellFiftyItems();
 		this.getEasyConstruction = config.getEasyConstruction();
 		this.getEasyConstructionItems = config.getEasyConstructionItems();
-		this.getSwapSmithing = config.getSwapSmithing();
 		this.getSwapTanning = config.getSwapTanning();
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();
