@@ -296,4 +296,34 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tzkal-zuk"), eq(134 * 60 + 52));
 		verify(configManager).setConfiguration(eq("killcount.adam"), eq("tzkal-zuk"), eq(3));
 	}
+
+	@Test
+	public void testGgNewPb()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:36</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>179</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(96));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("grotesque guardians"), eq(179));
+	}
+
+	@Test
+	public void testGgKill()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:41</col>. Personal best: 2:14", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>32</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(2 * 60 + 14));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("grotesque guardians"), eq(32));
+	}
 }
