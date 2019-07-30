@@ -112,6 +112,8 @@ public class EntityHiderPlugin extends Plugin
 		client.setAttackersHidden(config.hideAttackers());
 
 		client.setProjectilesHidden(config.hideProjectiles());
+
+		client.setDeadNPCsHidden(config.hideDeadNPCs());
 	}
 
 	@Override
@@ -136,6 +138,8 @@ public class EntityHiderPlugin extends Plugin
 		client.setAttackersHidden(false);
 
 		client.setProjectilesHidden(false);
+
+		client.setDeadNPCsHidden(false);
 	}
 
 	private boolean isPlayerRegionAllowed()

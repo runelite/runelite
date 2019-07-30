@@ -153,4 +153,15 @@ public interface EntityHiderConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		position = 12,
+		keyName = "hideDeadNPCs",
+		name = "Hide Dead NPCs",
+		description = "Configures whether or not NPCs that just died are hidden"
+	)
+	default boolean hideDeadNPCs()
+	{
+		return false;
+	}
+
 }

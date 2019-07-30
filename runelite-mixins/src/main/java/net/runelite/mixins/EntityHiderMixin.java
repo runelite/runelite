@@ -79,6 +79,9 @@ public abstract class EntityHiderMixin implements RSScene
 	@Shadow("hideProjectiles")
 	private static boolean hideProjectiles;
 
+	@Shadow("hideDeadNPCs")
+	private static boolean hideDeadNPCs;
+
 	@Copy("newGameObject")
 	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13);
 
@@ -162,6 +165,11 @@ public abstract class EntityHiderMixin implements RSScene
 				{
 					return true;
 				}
+			}
+
+			if (hideDeadNPCs && npc.getHealthRatio() == 0)
+			{
+				return false;
 			}
 
 			for (String name : names)
