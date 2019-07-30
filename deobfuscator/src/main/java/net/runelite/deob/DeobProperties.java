@@ -24,18 +24,39 @@
  */
 package net.runelite.deob;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class DeobProperties
 {
-	public static String getRevision() throws IOException
+	private static final Properties properties;
+	static
 	{
-		Properties properties = new Properties();
-		InputStream resourceAsStream = DeobProperties.class.getResourceAsStream("/deob.properties");
-		properties.load(resourceAsStream);
+		properties = new Properties();
+		try (InputStream resourceAsStream = DeobProperties.class.getResourceAsStream("/deob.properties"))
+		{
+			properties.load(resourceAsStream);
+		}
+		catch (IOException e)
+		{
+			//yes
+		}
+	}
 
-		return "420";
+	public static String getRevision()
+	{
+		return properties.getProperty("rs.version");
+	}
+
+	public static File getVanilla()
+	{
+		return new File(properties.getProperty("vanilla.jar"));
+	}
+
+	public static File getRsClient()
+	{
+		return new File(properties.getProperty("rs.client"));
 	}
 }
