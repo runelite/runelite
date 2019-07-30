@@ -35,7 +35,7 @@ enum Rock
 {
 	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
 	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
-	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365)
+	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -43,7 +43,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMillis(2400) : super.respawnTime;
 			}
 		},
-	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367)
+	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -51,11 +51,11 @@ enum Rock
 				return inMiningGuild ? Duration.ofMillis(14400) : super.respawnTime;
 			}
 		},
-	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369),
+	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
 	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
-	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371),
+	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
 	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
-	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373)
+	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -63,7 +63,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(1) : super.respawnTime;
 			}
 		},
-	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375)
+	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
@@ -71,7 +71,7 @@ enum Rock
 				return inMiningGuild ? Duration.ofMinutes(2) : super.respawnTime;
 			}
 		},
-	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377)
+	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
 		{
 			@Override
 			Duration getRespawnTime(boolean inMiningGuild)
