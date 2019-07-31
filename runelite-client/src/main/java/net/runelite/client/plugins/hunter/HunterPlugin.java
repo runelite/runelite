@@ -262,8 +262,8 @@ public class HunterPlugin extends Plugin
 
 			// Ferret shaking box
 			case ObjectID.BOX_TRAP_9394:
-			case ObjectID.BOX_TRAP_9397:
 			case ObjectID.BOX_TRAP_9396:
+			case ObjectID.BOX_TRAP_9397:
 
 			// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
