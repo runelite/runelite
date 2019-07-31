@@ -204,7 +204,7 @@ class LootTrackerBox extends JPanel
 
 	boolean isCollapsed()
 	{
-		return itemContainer.isVisible() == false;
+		return !itemContainer.isVisible();
 	}
 
 	private void applyDimmer(boolean brighten, JPanel panel)
@@ -213,16 +213,7 @@ class LootTrackerBox extends JPanel
 		{
 			Color color = component.getForeground();
 
-			if (brighten)
-			{
-				color = color.brighter();
-			}
-			else
-			{
-				color = color.darker();
-			}
-
-			component.setForeground(color);
+			component.setForeground(brighten ? color.brighter() : color.darker());
 		}
 	}
 
