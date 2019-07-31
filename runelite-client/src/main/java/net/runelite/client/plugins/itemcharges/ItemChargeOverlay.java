@@ -170,7 +170,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x, bounds.y + 1 + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()));
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
 		textComponent.setColor(plugin.getColor(charges));
 		textComponent.render(graphics);

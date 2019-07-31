@@ -30,7 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -101,7 +100,6 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
@@ -1017,37 +1015,6 @@ public class ConfigPanel extends PluginPanel
 
 					item.add(button, BorderLayout.EAST);
 				}
-
-				if (cid.getType() == Font.class)
-				{
-					JComboBox box = new JComboBox(FontManager.getAvailableFontNames());
-					box.setPreferredSize(new Dimension(150, 25));
-					box.setRenderer(new ComboBoxListRenderer());
-					box.setForeground(Color.WHITE);
-					box.setFocusable(false);
-					String currentlyConfigured = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-					if (FontManager.lookupFont(currentlyConfigured) != null)
-					{
-						box.setSelectedItem(currentlyConfigured);
-						box.setToolTipText(currentlyConfigured);
-					}
-					else
-					{
-						log.debug("Selected font wasn't found on this system, resetting font back to runescape regular");
-						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), FontManager.getRunescapeFont());
-					}
-					box.addItemListener(e ->
-					{
-						if (e.getStateChange() == ItemEvent.SELECTED && box.getSelectedItem() != null)
-						{
-							final Font selected = FontManager.lookupFont(box.getSelectedItem().toString());
-							configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), selected);
-							box.setToolTipText(box.getSelectedItem().toString());
-						}
-					});
-					item.add(box, BorderLayout.EAST);
-				}
-
 				mainPanel.add(item);
 			}
 		}

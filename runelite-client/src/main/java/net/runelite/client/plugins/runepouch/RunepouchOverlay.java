@@ -90,10 +90,6 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		Point location = itemWidget.getCanvasLocation();
 		StringBuilder tooltipBuilder = new StringBuilder();
 
-		// location.getY() + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()
-		// this will draw the character exactly on the border
-		int yLocation = location.getY() + 1 +
-			graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent();
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
@@ -129,12 +125,9 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			int yOffset = (1 + (graphics.getFontMetrics().getMaxAscent()) * i);
 
 			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (plugin.isShowIcons() ? 13 : 6),
-				yLocation + yOffset);
 
-			graphics.setColor(plugin.getFontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (plugin.isShowIcons() ? 12 : 5),
-				yLocation + yOffset);
+				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
 			graphics.setColor(plugin.getFontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (plugin.isShowIcons() ? 11 : 4),
@@ -149,13 +142,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					//TODO :: SEE WHAT ONE IS RIGHT?
-					//new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getMaxAscent() * i - 1),
-					//image);
-					//or
-					//new Point(location.getX(), location.getY() + (1 + graphics.getFontMetrics().getMaxAscent()) * i),
-					//image);
-					new Point(location.getX(), location.getY() + (1 + graphics.getFontMetrics().getMaxAscent()) * i),
+					new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getHeight() * i - 1),
 					image);
 			}
 		}

@@ -39,7 +39,7 @@ import net.runelite.client.ui.FontManager;
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
 {
-	private static final int SEPARATOR = 2;
+	private static final int SEPARATOR = 3;
 	private static final int DEFAULT_SIZE = 32;
 
 	@Getter
@@ -63,15 +63,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			return new Dimension();
 		}
 
-		if (graphics.getFont().equals(FontManager.getRunescapeFont()) && getSize() > DEFAULT_SIZE)
-		{
-			graphics.setFont(FontManager.getRunescapeFont());
-		}
-		else
-		{
-			graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
-		}
-
+		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
 		final int baseX = preferredLocation.x;
 		final int baseY = preferredLocation.y;
 
@@ -99,7 +91,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(color);
 			textComponent.setText(text);
-			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - metrics.getMaxDescent() - SEPARATOR));
+			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
 			textComponent.render(graphics);
 		}
 

@@ -116,7 +116,7 @@ class ProfilesPanel extends PluginPanel
 		JPanel helpPanel = new JPanel(new BorderLayout());
 		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
-		helpLabel.setFont(FontManager.getSmallFont(getFont()));
+		helpLabel.setFont(FontManager.getRunescapeSmallFont());
 		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
 		// helpPanel.setSize(MINIMUM_SIZE);
 		helpPanel.add(helpLabel, BorderLayout.NORTH);

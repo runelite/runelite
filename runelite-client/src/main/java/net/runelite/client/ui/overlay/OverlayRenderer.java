@@ -56,7 +56,6 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.MiscUtils;
@@ -122,10 +121,9 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private void updateConfig()
 	{
 		// Overlay Fonts
-		Font clientFont = runeLiteConfig.clientFont();
-		this.standardFont = FontManager.getFontFromType(clientFont, runeLiteConfig.fontType());
-		this.tooltipFont = FontManager.getFontFromType(clientFont, runeLiteConfig.tooltipFontType());
-		this.interfaceFont = FontManager.getFontFromType(clientFont, runeLiteConfig.interfaceFontType());
+		this.standardFont = runeLiteConfig.fontType().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFontType().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFontType().getFont();
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -486,7 +484,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(this.standardFont);
+			subGraphics.setFont(this.standardFont); // TODO MAKE USE CONFIG SYSTEM
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{

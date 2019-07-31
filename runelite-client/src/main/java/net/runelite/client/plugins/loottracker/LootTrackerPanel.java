@@ -349,8 +349,8 @@ class LootTrackerPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
-		overallKillsLabel.setFont(FontManager.getSmallFont(getFont()));
-		overallGpLabel.setFont(FontManager.getSmallFont(getFont()));
+		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallGpLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallGpLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
