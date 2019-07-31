@@ -89,6 +89,9 @@ public class NightmareZonePlugin extends Plugin
 	@Inject
 	private NightmareZoneOverlay overlay;
 
+	@Inject
+	private NightmareZoneMinimapOverlay minimapOverlay;
+	
 	@Getter
 	private int pointsPerHour;
 	
@@ -102,6 +105,7 @@ public class NightmareZonePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 		overlay.removeAbsorptionCounter();
 	}
 
@@ -110,6 +114,7 @@ public class NightmareZonePlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		infoBoxManager.removeIf(t -> t instanceof PowerupTimer);
+		overlayManager.remove(minimapOverlay);
 		overlay.removeAbsorptionCounter();
 
 		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);

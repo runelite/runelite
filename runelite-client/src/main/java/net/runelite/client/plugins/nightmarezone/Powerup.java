@@ -28,14 +28,15 @@ import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 import net.runelite.api.SpriteID;
+import java.awt.Color;
 import java.util.Map;
 
 enum Powerup
 {
-	RECURRENT_DAMAGE("Recurrent damage", 45, ObjectID.RECURRENT_DAMAGE, SpriteID.MINIMAP_ORB_HITPOINTS),
-	ZAPPER("Zapper", 60, ObjectID.ZAPPER_26256, SpriteID.MINIMAP_ORB_PRAYER),
-	POWER_SURGE("Power surge", 45, ObjectID.POWER_SURGE, SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
-	ULTIMATE_FORCE("Ultimate force", 0, ObjectID.ULTIMATE_FORCE, SpriteID.MINIMAP_ORB_RUN);
+	RECURRENT_DAMAGE("Recurrent damage", 45, ObjectID.RECURRENT_DAMAGE, SpriteID.MINIMAP_ORB_HITPOINTS, Color.RED),
+	ZAPPER("Zapper", 60, ObjectID.ZAPPER_26256, SpriteID.MINIMAP_ORB_PRAYER, Color.MAGENTA),
+	POWER_SURGE("Power surge", 45, ObjectID.POWER_SURGE, SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE, Color.YELLOW),
+	ULTIMATE_FORCE("Ultimate force", 0, ObjectID.ULTIMATE_FORCE, SpriteID.MINIMAP_ORB_RUN, Color.GRAY);
 
 	private static final Map<Integer, Powerup> POWERUPS;
 
@@ -55,14 +56,17 @@ enum Powerup
 	private final int activityTime;
 	@Getter
 	private final int spriteId;
+	@Getter
+	private final Color color;
 	private final int gameObjectId;
 
-	Powerup(String name, int activityTime, int gameObjectId, int spriteId)
+	Powerup(String name, int activityTime, int gameObjectId, int spriteId, Color color)
 	{
 		this.name = name;
 		this.activityTime = activityTime;
 		this.gameObjectId = gameObjectId;
 		this.spriteId = spriteId;
+		this.color = color;
 	}
 
 	static Powerup getPowerup(int gameObjectId)
