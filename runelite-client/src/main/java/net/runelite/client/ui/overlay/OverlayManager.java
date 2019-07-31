@@ -218,6 +218,17 @@ public class OverlayManager
 	}
 
 	/**
+	 * Returns whether an overlay exists which matches the given predicate.
+	 *
+	 * @param filter Filter predicate function
+	 * @return {@code true} if any overlays match the given filter, {@code false} otherwise
+	 */
+	public synchronized boolean anyMatch(Predicate<Overlay> filter)
+	{
+		return overlays.stream().anyMatch(filter);
+	}
+
+	/**
 	 * Clear all overlays
 	 */
 	public synchronized void clear()

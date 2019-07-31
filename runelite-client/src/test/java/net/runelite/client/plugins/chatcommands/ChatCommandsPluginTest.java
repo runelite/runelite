@@ -143,6 +143,28 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage gauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>123</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(gauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "gauntlet", 123);
+	}
+
+	@Test
+	public void testCorruptedGauntlet()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage corruptedGauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Corrupted Gauntlet completion count is: <col=ff0000>4729</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(corruptedGauntletMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "corrupted gauntlet", 4729);
+	}
+
+	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
@@ -225,5 +247,23 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "duel arena losses", 999);
+	}
+
+	@Test
+	public void testAgilityLap()
+	{
+		final String NEW_PB = "Lap duration: <col=ff0000>1:01</col> (new personal best).";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("prifddinas agility course"), eq(61));
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("prifddinas agility course"), eq(2));
 	}
 }

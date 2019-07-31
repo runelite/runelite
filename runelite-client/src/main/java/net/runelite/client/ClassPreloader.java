@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatfilter;
+package net.runelite.client;
 
-import com.google.common.base.CharMatcher;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.FontManager;
 
-class JagexPrintableCharMatcher extends CharMatcher
+/**
+ * Loads some slow to initialize classes (hopefully) before they are needed to streamline client startup
+ */
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
+class ClassPreloader
 {
-	@Override
-	public boolean matches(char c)
+	static void preload()
 	{
-		// Characters which are printable
-		return (c >= 32 && c <= 126)
-			|| c == 128
-			|| (c >= 160 && c <= 255);
+		// This needs to enumerate the system fonts for some reason, and that takes a while
+		FontManager.getRunescapeSmallFont();
+
+		// This needs to load a timezone database that is mildly large
+		ZoneId.of("Europe/London");
+
+		// This just needs to call 20 different DateTimeFormatter constructors, which are slow
+		Object unused = DateTimeFormatter.BASIC_ISO_DATE;
 	}
 }

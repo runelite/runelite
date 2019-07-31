@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.util;
 
-package net.runelite.client.rs;
+import com.google.common.base.CharMatcher;
 
-import java.io.IOException;
-import org.junit.Test;
-
-/**
- *
- * @author Adam
- */
-public class ClientConfigLoaderTest
+class JagexPrintableCharMatcher extends CharMatcher
 {
-	@Test
-	public void test() throws IOException
+	@Override
+	public boolean matches(char c)
 	{
-		final RSConfig config = ClientConfigLoader.fetch();
-
-		for (String key : config.getClassLoaderProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
-		}
-
-		System.out.println("Applet properties:");
-
-		for (String key : config.getAppletProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
-		}
+		// Characters which are printable
+		return (c >= 32 && c <= 126)
+			|| c == 128
+			|| (c >= 160 && c <= 255);
 	}
-
 }

@@ -56,6 +56,7 @@ import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
@@ -111,7 +112,7 @@ public class RuneLite
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PartyService partyService;
+	private Provider<PartyService> partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -181,20 +182,6 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
-
-		if (developerMode)
-		{
-			boolean assertions = false;
-			assert assertions = true;
-			if (!assertions)
-			{
-				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
-			}
-		}
-
-		PROFILES_DIR.mkdirs();
-
 		if (options.has("debug"))
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -210,10 +197,32 @@ public class RuneLite
 			}
 		});
 
+		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+
+		new Thread(() ->
+		{
+			clientLoader.get();
+			ClassPreloader.preload();
+		}, "Preloader").start();
+
+		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
+
+		if (developerMode)
+		{
+			boolean assertions = false;
+			assert assertions = true;
+			if (!assertions)
+			{
+				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+			}
+		}
+
+		PROFILES_DIR.mkdirs();
+
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
+			clientLoader,
 			developerMode));
 
 		injector.getInstance(RuneLite.class).start();
@@ -267,13 +276,13 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
-		eventBus.register(partyService);
 
 		if (!isOutdated)
 		{
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
 
+			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
 			eventBus.register(clanManager.get());
 			eventBus.register(itemManager.get());
