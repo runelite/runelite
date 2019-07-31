@@ -68,7 +68,10 @@ public abstract class EntityHiderMixin implements RSScene
 	private static boolean hideNPCs;
 
 	@Shadow("hideNPCsNames")
-	private  static String hideNPCsNames;
+	private static String hideNPCsNames;
+
+	@Shadow("hideNPCsOnDeath")
+	private static String hideNPCsOnDeath;
 
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
@@ -78,6 +81,9 @@ public abstract class EntityHiderMixin implements RSScene
 
 	@Shadow("hideProjectiles")
 	private static boolean hideProjectiles;
+
+	@Shadow("hideDeadNPCs")
+	private static boolean hideDeadNPCs;
 
 	@Copy("newGameObject")
 	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13);
@@ -155,6 +161,7 @@ public abstract class EntityHiderMixin implements RSScene
 		{
 			RSNPC npc = (RSNPC) renderable;
 			String[] names = hideNPCsNames.split(",");
+			String[] removeOnDeath = hideNPCsOnDeath.split(",");
 
 			if (!hideAttackers)
 			{
@@ -164,16 +171,29 @@ public abstract class EntityHiderMixin implements RSScene
 				}
 			}
 
+			if (hideDeadNPCs && npc.getHealthRatio() == 0)
+			{
+				return false;
+			}
+
 			for (String name : names)
 			{
 				if (name != null && !name.equals(""))
 				{
-					if (npc.getName() != null)
+					if (npc.getName() != null && npc.getName().startsWith(name))
 					{
-						if (npc.getName().startsWith(name))
-						{
-							return false;
-						}
+						return false;
+					}
+				}
+			}
+
+			for (String name : removeOnDeath)
+			{
+				if (name != null && !name.equals(""))
+				{
+					if (npc.getName() != null && npc.getName().startsWith(name) && npc.getHealthRatio() == 0)
+					{
+						return false;
 					}
 				}
 			}

@@ -26,6 +26,7 @@ package net.runelite.asm;
 
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.deob.DeobAnnotations;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
@@ -129,6 +130,17 @@ public class Field
 	public void setType(Type type)
 	{
 		this.type = type;
+	}
+
+	public Type getObfuscatedType()
+	{
+		Type type = DeobAnnotations.getObfuscatedType(this);
+		if (type == null)
+		{
+			type = getType();
+		}
+
+		return type;
 	}
 
 	public Object getValue()

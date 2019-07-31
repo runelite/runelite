@@ -25,10 +25,13 @@
 
 package net.runelite.asm.attributes;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 
@@ -109,5 +112,29 @@ public class Code
 	public Instructions getInstructions()
 	{
 		return instructions;
+	}
+
+	public List<Integer> getLineNumbers()
+	{
+		final List<Integer> lineNumbers = new ArrayList<>();
+
+		for (Instruction i : instructions.getInstructions())
+		{
+			if (!(i instanceof Label))
+			{
+				continue;
+			}
+
+			Integer lineNumber = ((Label) i).getLineNumber();
+			if (lineNumber == null)
+			{
+				continue;
+			}
+
+			lineNumbers.add(lineNumber);
+		}
+
+		lineNumbers.sort(Integer::compareTo);
+		return lineNumbers;
 	}
 }

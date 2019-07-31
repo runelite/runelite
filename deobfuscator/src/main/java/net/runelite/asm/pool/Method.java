@@ -43,7 +43,7 @@ public class Method
 	@Override
 	public String toString()
 	{
-		return clazz + "." + name + type;
+		return clazz.getName() + "." + name + type;
 	}
 
 	@Override

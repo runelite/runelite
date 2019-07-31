@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.signature.Signature;
+import static net.runelite.deob.DeobAnnotations.*;
 
 public class ClassGroup
 {
@@ -141,5 +142,18 @@ public class ClassGroup
 		}
 
 		return m;
+	}
+
+	public ClassFile findObfuscatedName(String name)
+	{
+		for (ClassFile cf : classes)
+		{
+			if (name.equals(getObfuscatedName(cf.getAnnotations())))
+			{
+				return cf;
+			}
+		}
+
+		return findClass(name);
 	}
 }
