@@ -104,7 +104,7 @@ import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
-import net.runelite.client.plugins.menuentryswapper.util.teleEquippedMode;
+import net.runelite.client.plugins.menuentryswapper.util.ConstructionCapeMode;
 import static net.runelite.client.util.MenuUtil.swap;
 
 import net.runelite.client.plugins.pvptools.PvpToolsConfig;
@@ -214,7 +214,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean shiftModifier = false;
-	
+
 	private boolean getWithdrawOne;
 	private String getWithdrawOneItems;
 	private boolean getWithdrawFive;
@@ -227,11 +227,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getWithdrawAll;
 	private String getWithdrawAllItems;
 	private boolean swapMax;
-	private boolean teleEquippedCape;
-	private teleEquippedMode telecapeMode;
 	private MaxCapeMode maxMode;
 	private boolean getSwapArdougneCape;
 	private boolean getSwapConstructionCape;
+	private ConstructionCapeMode constructionCapeMode;
 	private boolean getSwapCraftingCape;
 	private boolean getSwapMagicCape;
 	private boolean getSwapExplorersRing;
@@ -610,9 +609,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				if (this.hideDropRunecraftingPouch && (
 					entry.getTarget().contains("Small pouch")
-								|| entry.getTarget().contains("Medium pouch")
-								|| entry.getTarget().contains("Large pouch")
-								|| entry.getTarget().contains("Giant pouch")))
+						|| entry.getTarget().contains("Medium pouch")
+						|| entry.getTarget().contains("Large pouch")
+						|| entry.getTarget().contains("Giant pouch")))
 				{
 					continue;
 				}
@@ -990,7 +989,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		else if (target.contains("construct. cape") && this.getSwapConstructionCape)
 		{
-			swap(client, "Tele to poh", option, target);
+			swap(client, constructionCapeMode.toString(), option, target);
 		}
 
 		else if (target.contains("magic cape") && this.getSwapMagicCape)
@@ -1098,7 +1097,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		
+
 		if (option.equals("talk-to") || option.equals("attack"))
 		{
 			if (this.swapPickpocket)
@@ -1228,12 +1227,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap(client, "pay-toll(10gp)", option, target, true);
 		}
-		
+
 		else if (this.swapHardWoodGrove && option.equals("open") && target.equals("hardwood grove doors"))
 		{
 			swap(client, "quick-pay(100)", option, target, true);
 		}
-		
+
 		else if (this.swapTravel && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap(client, "travel", option, target, true);
@@ -1362,7 +1361,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap(client, "quick-leave", option, target, true);
 		}
-		
+
 		else if (this.swapAdmire && option.equals("admire"))
 		{
 			swap(client, "teleport", option, target, true);
@@ -1551,12 +1550,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addSwap("remove", "burning amulet", this.getBurningAmuletMode.toString());
 		}
 
-		if (this.teleEquippedCape)
-		{
-			menuManager.addSwap("remove", "tele to poh", this.telecapeMode.toString());
-			menuManager.addSwap("remove", "teleport", this.telecapeMode.toString());
-		}
-
 		if (this.getCombatBracelet)
 		{
 			menuManager.addSwap("remove", "combat bracelet", this.getCombatBraceletMode.toString());
@@ -1635,7 +1628,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwaps("ring of wealth");
 		menuManager.removeSwaps("max cape");
 		menuManager.removeSwaps("quest point cape");
-		
+
 	}
 
 	private void delete(int target)
@@ -1801,11 +1794,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getWithdrawAll = config.getWithdrawAll();
 		this.getWithdrawAllItems = config.getWithdrawAllItems();
 		this.swapMax = config.swapMax();
-		this.teleEquippedCape = config.teleEquippedCape();
-		this.telecapeMode = config.telecapeMode();
 		this.maxMode = config.maxMode();
 		this.getSwapArdougneCape = config.getSwapArdougneCape();
 		this.getSwapConstructionCape = config.getSwapConstructionCape();
+		this.constructionCapeMode = config.constructionCapeMode();
 		this.getSwapCraftingCape = config.getSwapCraftingCape();
 		this.getSwapMagicCape = config.getSwapMagicCape();
 		this.getSwapExplorersRing = config.getSwapExplorersRing();
