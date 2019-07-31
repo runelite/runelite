@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Levi <me@levischuck.com>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.worldhopper;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,64 +38,43 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-/**
- * The built in FPS overlay has a few problems that this one does not have, most of all: it is distracting.
- * 1. The built in one also shows memory, which constantly fluctuates and garbage collects.
- * It is useful for devs profiling memory.
- * 2. The built in one shifts around constantly because it is not monospace.
- * This locks "FPS:" into one position (the far top right corner of the canvas),
- * along with a locked position for the FPS value.
- */
-@Singleton
-public class FpsOverlay extends Overlay
+class WorldHopperPingOverlay extends Overlay
 {
-	private static final int Y_OFFSET = 1;
+	private static final int Y_OFFSET = 11;
 	private static final int X_OFFSET = 1;
-	private static final String FPS_STRING = " FPS";
 
-	// Local dependencies
 	private final Client client;
-	private final FpsPlugin plugin;
-
-	// Often changing values
-	private boolean isFocused = true;
+	private final WorldHopperPlugin worldHopperPlugin;
 
 	@Inject
-	private FpsOverlay(final FpsPlugin plugin, final Client client)
+	private WorldHopperPingOverlay(Client client, WorldHopperPlugin worldHopperPlugin)
 	{
 		this.client = client;
-		this.plugin = plugin;
+		this.worldHopperPlugin = worldHopperPlugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
-	void onFocusChanged(FocusChanged event)
-	{
-		isFocused = event.isFocused();
-	}
-
-	private boolean isEnforced()
-	{
-		return FpsLimitMode.ALWAYS == plugin.getLimitMode()
-			|| (FpsLimitMode.UNFOCUSED == plugin.getLimitMode() && !isFocused);
-	}
-
-	private Color getFpsValueColor()
-	{
-		return isEnforced() ? Color.red : Color.yellow;
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isDrawFps())
+		if (!worldHopperPlugin.isDisplayPing())
 		{
 			return null;
 		}
 
-		// On resizable bottom line mode the logout button is at the top right, so offset the overlay
-		// to account for it
+		final int ping = worldHopperPlugin.getCurrentPing();
+		if (ping < 0)
+		{
+			return null;
+		}
+
+		final String text = ping + " ms";
+		final int textWidth = graphics.getFontMetrics().stringWidth(text);
+		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
+
+		// Adjust ping offset for logout button
 		Widget logoutButton = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON);
 		int xOffset = X_OFFSET;
 		if (logoutButton != null && !logoutButton.isHidden())
@@ -105,13 +82,9 @@ public class FpsOverlay extends Overlay
 			xOffset += logoutButton.getWidth();
 		}
 
-		final String text = client.getFPS() + FPS_STRING;
-		final int textWidth = graphics.getFontMetrics().stringWidth(text);
-		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
-
 		final int width = (int) client.getRealDimensions().getWidth();
 		final Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
-		OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
+		OverlayUtil.renderTextLocation(graphics, point, text, Color.YELLOW);
 
 		return null;
 	}

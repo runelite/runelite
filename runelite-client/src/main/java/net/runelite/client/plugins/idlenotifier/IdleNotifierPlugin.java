@@ -195,11 +195,12 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
-				/* Cooking(Fire, Range) */
+			case WOODCUTTING_CRYSTAL:
+			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-				/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
+			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -214,7 +215,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
-				/* Fletching(Cutting, Stringing) */
+			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -228,11 +229,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-				/* Smithing(Anvil, Furnace, Cannonballs */
+			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-				/* Fishing */
+			/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
 			case FISHING_BIG_NET:
@@ -246,7 +247,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_BAREHAND:
-				/* Mining(Normal) */
+			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -255,16 +256,32 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_ADAMANT_PICKAXE:
 			case MINING_RUNE_PICKAXE:
 			case MINING_DRAGON_PICKAXE:
-			case MINING_DRAGON_PICKAXE_ORN:
+			case MINING_DRAGON_PICKAXE_UPGRADED:
+			case MINING_DRAGON_PICKAXE_OR:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
+			case MINING_CRYSTAL_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
-				/* Herblore */
+			/* Mining(Motherlode) */
+			case MINING_MOTHERLODE_BRONZE:
+			case MINING_MOTHERLODE_IRON:
+			case MINING_MOTHERLODE_STEEL:
+			case MINING_MOTHERLODE_BLACK:
+			case MINING_MOTHERLODE_MITHRIL:
+			case MINING_MOTHERLODE_ADAMANT:
+			case MINING_MOTHERLODE_RUNE:
+			case MINING_MOTHERLODE_DRAGON:
+			case MINING_MOTHERLODE_DRAGON_UPGRADED:
+			case MINING_MOTHERLODE_DRAGON_OR:
+			case MINING_MOTHERLODE_INFERNAL:
+			case MINING_MOTHERLODE_3A:
+			case MINING_MOTHERLODE_CRYSTAL:
+			/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-				/* Magic */
+			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_PLANK_MAKE:
 			case MAGIC_LUNAR_STRING_JEWELRY:
@@ -273,16 +290,16 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_ENCHANTING_AMULET_1:
 			case MAGIC_ENCHANTING_AMULET_2:
 			case MAGIC_ENCHANTING_AMULET_3:
-				/* Prayer */
+			/* Prayer */
 			case USING_GILDED_ALTAR:
-				/* Farming */
+			/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
 			case FARMING_HARVEST_BUSH:
 			case FARMING_HARVEST_HERB:
 			case FARMING_HARVEST_FRUIT_TREE:
 			case FARMING_HARVEST_FLOWER:
 			case FARMING_HARVEST_ALLOTMENT:
-				/* Misc */
+			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
