@@ -366,7 +366,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (this.screenshotPlayerDeath && client.getLocalPlayer().equals(e.getActor()))
 		{
-			takeScreenshot("Death");
+			takeScreenshot("Death - " + format(new Date()));
 		}
 
 
