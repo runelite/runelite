@@ -70,7 +70,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("customcursor") && (event.getKey().equals("cursorStyle") || event.getKey().equals("bigScreenStyle")))
+		if (event.getGroup().equals("customcursor") && (event.getKey().equals("cursorStyle") || event.getKey().equals("largeCursorStyle")))
 		{
 			updateCursor();
 		}
@@ -80,7 +80,7 @@ public class CustomCursorPlugin extends Plugin
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
 
-		if (config.bigScreenMode() && (clientUI.getWidth() >= 1600) && (clientUI.getHeight() >= 900)) //slightly lower to avoid OS buffers
+		if (config.largeCursorMode()) //slightly lower to avoid OS buffers
 		{
 			clientUI.setCursor(upscaleCursor(selectedCursor.getCursorImage()), selectedCursor.toString());
 		}

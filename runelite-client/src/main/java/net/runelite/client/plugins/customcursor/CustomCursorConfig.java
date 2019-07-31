@@ -44,11 +44,11 @@ public interface CustomCursorConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "bigScreenStyle",
-		name = "Big screen mode",
-		description = "Enlarges the cursor when having a screen resolution of 1920x1080 or above."
+		keyName = "largeCursorStyle",
+		name = "Large cursor mode",
+		description = "Enlarges the cursor on the current screen."
 	)
-	default boolean bigScreenMode()
+	default boolean largeCursorMode()
 	{
 		return false;
 	}
