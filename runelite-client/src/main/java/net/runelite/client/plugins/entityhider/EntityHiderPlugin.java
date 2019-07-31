@@ -38,6 +38,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Entity Hider",
@@ -107,8 +108,8 @@ public class EntityHiderPlugin extends Plugin
 
 		client.setNPCsHidden(config.hideNPCs());
 		client.setNPCsHidden2D(config.hideNPCs2D());
-		client.setNPCsNames(config.hideNPCsNames());
-		client.setNPCsHiddenOnDeath(config.hideNPCsOnDeath());
+		client.setNPCsNames(Text.fromCSV(config.hideNPCsNames()));
+		client.setNPCsHiddenOnDeath(Text.fromCSV(config.hideNPCsOnDeath()));
 
 		client.setAttackersHidden(config.hideAttackers());
 
