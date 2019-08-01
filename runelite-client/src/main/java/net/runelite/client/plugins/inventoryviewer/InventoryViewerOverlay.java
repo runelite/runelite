@@ -27,7 +27,6 @@ package net.runelite.client.plugins.inventoryviewer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.nio.Buffer;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -38,7 +37,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.inventorytags.InventoryTagsConfig;
-import net.runelite.client.plugins.inventoryviewer.InventoryViewerConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
@@ -65,11 +63,7 @@ class InventoryViewerOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private InventoryViewerOverlay(Client client,
-								   ConfigManager configManager,
-								   InventoryViewerConfig config,
-								   InventoryTagsConfig configTag,
-								   ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ConfigManager configManager, InventoryViewerConfig config, InventoryTagsConfig configTag, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);

@@ -31,16 +31,16 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("inventoryviewer")
 public interface InventoryViewerConfig extends Config
 {
-    String GROUP = "inventoryviewer";
+	String GROUP = "inventoryviewer";
 
-    @ConfigItem(
-        position = 4,
-        keyName = "showMarkInvViewer",
-        name = "Display markers",
-        description = "Display markers configured in Inventory Tags when active"
-    )
-    default boolean getMarkViewer()
-    {
-        return false;
-    }
+	@ConfigItem(
+		position = 4,
+		keyName = "showMarkInvViewer",
+		name = "Display markers",
+		description = "Display markers configured in Inventory Tags when active"
+	)
+	default boolean getMarkViewer()
+	{
+		return false;
+	}
 }
