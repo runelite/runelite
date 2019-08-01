@@ -86,7 +86,7 @@ public class CoxInfoBox extends Overlay
 			if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
 			{
 				InfoBoxComponent prayComponent = new InfoBoxComponent();
-				BufferedImage prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
+				BufferedImage prayImg = scaleImg(getPrayerImage(plugin.getPrayAgainstOlm()));
 				prayComponent.setImage(prayImg);
 				prayComponent.setColor(Color.WHITE);
 				prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())

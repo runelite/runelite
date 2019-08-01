@@ -34,43 +34,25 @@ import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 
+@Getter(AccessLevel.PACKAGE)
 class NPCContainer
 {
 
-	@Getter(AccessLevel.PACKAGE)
 	private NPC npc;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int npcIndex;
-
-	@Getter(AccessLevel.PACKAGE)
 	private String npcName;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int npcSize;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private int ticksUntilAttack;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private int intermissionPeriod;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private int npcSpeed;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private Actor npcInteracting;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private Specials specials;
-
 	@Setter(AccessLevel.PACKAGE)
-	@Getter(AccessLevel.PACKAGE)
 	private Attackstyle attackStyle;
 
 
