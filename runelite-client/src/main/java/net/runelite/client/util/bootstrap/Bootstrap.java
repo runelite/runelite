@@ -355,7 +355,7 @@ public class Bootstrap
 			artifacts[47].name = "injected-client-" + projectVersion + ".jar";
 			artifacts[47].hash = getChecksumFile("./injected-client/build/libs/" + artifacts[47].name);
 			artifacts[47].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[47].name;
-			artifacts[47].size = Long.toString(getFileSize("./http-api/build/libs/" + artifacts[47].name));
+			artifacts[47].size = Long.toString(getFileSize("./injected-client/build/libs/" + artifacts[47].name));
 			copyTodir("./injected-client/build/libs/" + artifacts[47].name, Bootstrapper.localLocation);
 		}
 		catch (IOException | NoSuchAlgorithmException e)
