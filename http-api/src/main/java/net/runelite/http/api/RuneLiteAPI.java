@@ -197,7 +197,7 @@ public class RuneLiteAPI
 
 	public static String getVersion()
 	{
-		return version;
+		return upstreamVersion;
 	}
 
 	public static int getRsVersion()
