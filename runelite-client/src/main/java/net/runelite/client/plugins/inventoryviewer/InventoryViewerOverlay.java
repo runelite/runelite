@@ -127,9 +127,9 @@ class InventoryViewerOverlay extends Overlay
 				{
 					ColorModel taggedImageCM = image.getColorModel();
 					BufferedImage taggedImage = new BufferedImage(taggedImageCM,
-																  image.copyData(null),
-																  taggedImageCM.isAlphaPremultiplied(),
-														null);
+							image.copyData(null),
+							taggedImageCM.isAlphaPremultiplied(),
+							null);
 					Graphics2D graphic = taggedImage.createGraphics();
 					graphic.drawImage(getOutline(item), 0, 0, null); // drawing the outline over the sprite
 					graphic.dispose();
@@ -150,8 +150,8 @@ class InventoryViewerOverlay extends Overlay
 	private BufferedImage getOutline(Item item)
 	{
 		Color color = getBoundColor(item.getId());
-
-		if(color != null){
+		if (color != null)
+		{
 			return itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
 		}
 

@@ -30,7 +30,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.inventorytags.InventoryTagsConfig;
-import net.runelite.client.plugins.inventoryviewer.InventoryViewerConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
