@@ -3,6 +3,7 @@ package net.runelite.client.plugins.boosts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
@@ -59,6 +60,7 @@ class CombatIconsOverlay extends Overlay
 		
 		panelComponent.getChildren().clear();
 		panelComponent.setPreferredSize(new Dimension(28, 0));
+		panelComponent.setGap(new Point(0, 18));
 		panelComponent.setWrapping(2);
 		panelComponent.setBackgroundColor(null);
 		panelComponent.setBorder(new Rectangle());

@@ -107,4 +107,6 @@ public class ProjectileID
 	public static final int HUNLEFF_RANGE_ATTACK = 1711;
 	public static final int HUNLEFF_CORRUPTED_RANGE_ATTACK = 1712;
 
+	public static final int ZALCANO_PROJECTILE = 1728;
+
 }
