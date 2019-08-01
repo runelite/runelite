@@ -136,6 +136,7 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.setText(right);
 		rightLineComponent.setColor(rightColor);
 		rightLineComponent.render(graphics);
+		y += metrics.getHeight();
 
 		final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
 		bounds.setLocation(preferredLocation);

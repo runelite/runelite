@@ -14,7 +14,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 public class Bootstrap
 {
-	private String projectVersion = "1.5.30-SNAPSHOT";
+	private String projectVersion = "1.5.31-SNAPSHOT";
 	String buildCommit = "6fe334c02648d3f8b38625e3175e3f547d54aa37";
 	Client client = new Client();
 	String[] clientJvm9Arguments = new String[]{
