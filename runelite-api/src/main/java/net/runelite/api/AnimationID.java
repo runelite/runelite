@@ -71,6 +71,8 @@ public final class AnimationID
 	public static final int FLETCHING_STRING_YEW_LONGBOW = 6688;
 	public static final int FLETCHING_STRING_MAGIC_SHORTBOW = 6683;
 	public static final int FLETCHING_STRING_MAGIC_LONGBOW = 6689;
+	public static final int FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT = 8481;
+	public static final int FLETCHING_ATTACH_HEADS = 8480;
 	public static final int GEM_CUTTING_OPAL = 890;
 	public static final int GEM_CUTTING_JADE = 891;
 	public static final int GEM_CUTTING_REDTOPAZ = 892;
