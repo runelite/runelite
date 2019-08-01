@@ -30,6 +30,8 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
@@ -40,8 +42,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLite;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
@@ -53,13 +53,29 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 @Singleton
 public class RuneLiteSplashScreen
 {
-	private final RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
+	private static final String RUNELITE_VERSION = "runelite.version";
+	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
+	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
 
 	private JFrame frame;
 	private final JPanel panel = new JPanel();
 	private JLabel messageLabel;
 	private JLabel subMessageLabel;
 	private final JProgressBar progressBar = new JProgressBar();
+
+	private final Properties properties = new Properties();
+
+	public RuneLiteSplashScreen()
+	{
+		try (InputStream in = getClass().getResourceAsStream("/runelite.plus.properties"))
+		{
+			properties.load(in);
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to load propertries", ex);
+		}
+	}
 
 	/**
 	 * This is not done in the constructor in order to avoid processing in case the user chooses to not load
@@ -90,7 +106,7 @@ public class RuneLiteSplashScreen
 		panel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		final GridBagLayout layout = new GridBagLayout();
 		layout.columnWeights = new double[]{1};
-		layout.rowWeights = new double[]{1, 0, 0, 1, 0, 1};
+		layout.rowWeights = new double[]{1, 0, 0, 1, 0, 0, 1};
 		panel.setLayout(layout);
 
 		// logo
@@ -119,7 +135,7 @@ public class RuneLiteSplashScreen
 		panel.add(title, titleConstraints);
 
 		// version
-		final JLabel version = new JLabel("RuneLite Version : " + runeLiteProperties.getVersion());
+		final JLabel version = new JLabel("RuneLite Version : " + properties.getProperty(RUNELITE_VERSION));
 		version.setForeground(Color.GREEN);
 		version.setFont(FontManager.getRunescapeSmallFont());
 		version.setForeground(version.getForeground().darker());
@@ -128,34 +144,42 @@ public class RuneLiteSplashScreen
 		panel.add(version, versionConstraints);
 
 		// version
-		final JLabel litVersion = new JLabel("Plus Version : " + RuneLite.PLUS_VERSION);
+		final JLabel litVersion = new JLabel("Plus Version : " + properties.getProperty(RUNELITE_PLUS_VERSION));
 		litVersion.setForeground(Color.GREEN);
 		litVersion.setFont(FontManager.getRunescapeSmallFont());
 		litVersion.setForeground(litVersion.getForeground().darker());
 		final GridBagConstraints litVersionConstraints = new GridBagConstraints();
 		litVersionConstraints.gridy = 3;
-		litVersionConstraints.weightx = 4;
 		panel.add(litVersion, litVersionConstraints);
+
+		// build date
+		final JLabel litBuildDate = new JLabel("Build date : " + properties.getProperty(RUNELITE_PLUS_DATE));
+		litBuildDate.setForeground(Color.GREEN);
+		litBuildDate.setFont(FontManager.getRunescapeSmallFont());
+		litBuildDate.setForeground(litBuildDate.getForeground().darker());
+		final GridBagConstraints litBuildDateConstraints = new GridBagConstraints();
+		litBuildDateConstraints.gridy = 4;
+		panel.add(litBuildDate, litBuildDateConstraints);
 
 
 		// progressbar
 		final GridBagConstraints progressConstraints = new GridBagConstraints();
 		progressConstraints.fill = GridBagConstraints.HORIZONTAL;
 		progressConstraints.anchor = GridBagConstraints.SOUTH;
-		progressConstraints.gridy = 4;
+		progressConstraints.gridy = 5;
 		panel.add(progressBar, progressConstraints);
 
 		// main message
 		messageLabel.setFont(FontManager.getRunescapeSmallFont());
 		final GridBagConstraints messageConstraints = new GridBagConstraints();
-		messageConstraints.gridy = 5;
+		messageConstraints.gridy = 6;
 		panel.add(messageLabel, messageConstraints);
 
 		// alternate message
 		final GridBagConstraints subMessageConstraints = new GridBagConstraints();
 		subMessageLabel.setForeground(subMessageLabel.getForeground().darker());
 		subMessageLabel.setFont(FontManager.getRunescapeSmallFont());
-		subMessageConstraints.gridy = 6;
+		subMessageConstraints.gridy = 7;
 		panel.add(subMessageLabel, subMessageConstraints);
 
 		frame.setContentPane(panel);
@@ -235,7 +259,7 @@ public class RuneLiteSplashScreen
 				final GridBagConstraints progressConstraints = new GridBagConstraints();
 				progressConstraints.fill = GridBagConstraints.HORIZONTAL;
 				progressConstraints.anchor = GridBagConstraints.SOUTH;
-				progressConstraints.gridy = 4;
+				progressConstraints.gridy = 5;
 				panel.add(progressBar, progressConstraints);
 				panel.validate();
 			}

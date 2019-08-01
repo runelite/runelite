@@ -28,11 +28,12 @@ allprojects {
     apply plugin: 'checkstyle'
 
     group = 'net.runelite'
-    version = '1.5.30-SNAPSHOT'
+    version = '1.5.31-SNAPSHOT'
 
     ext {
         rsversion = 181
         cacheversion = 165
+        plusVersion = '2.1.2.0'
 
         gitCommit = localGitCommit
         gitCommitShort = localGitCommitShort
