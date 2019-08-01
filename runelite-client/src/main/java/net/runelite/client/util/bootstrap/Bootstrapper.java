@@ -32,7 +32,7 @@ public class Bootstrapper
 		}
 		else
 		{
-			remoteLocation = "/live/";
+			remoteLocation = "live/";
 			localLocation = "./live/";
 			Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 			File dir = new File("./live/");
