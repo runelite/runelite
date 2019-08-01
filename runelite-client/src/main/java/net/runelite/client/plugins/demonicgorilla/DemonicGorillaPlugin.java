@@ -179,8 +179,7 @@ public class DemonicGorillaPlugin extends Plugin
 			npcId == NpcID.DEMONIC_GORILLA_7149;
 	}
 
-	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
-											   final DemonicGorilla.AttackStyle... protectedStyles)
+	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla, final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
 			gorilla.getNextPosibleAttackStyles().isEmpty())
