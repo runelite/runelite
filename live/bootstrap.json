@@ -1,4 +1,5 @@
 {
+  "projectVersion": "1.5.31-SNAPSHOT",
   "buildCommit": "6fe334c02648d3f8b38625e3175e3f547d54aa37",
   "client": {
     "artifactId": "client",
@@ -6,7 +7,7 @@
     "extension": "jar",
     "groupId": "net.runelite",
     "properties": "",
-    "version": "1.5.30"
+    "version": "1.5.31"
   },
   "clientJvm9Arguments": [
     "-XX:+DisableAttachMechanism",
@@ -44,27 +45,27 @@
       "size": "265176"
     },
     {
-      "hash": "37abf0103ce5318bfda004fabc004c75ed0dc6d392a8459175692ab7eac97083",
-      "name": "naturalmouse-2.0.0.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/naturalmouse-2.0.0.jar",
+      "hash": "7f0f013961c81d7069d0c0afc569de9ef4791b700be37fab417b0f5352294b73",
+      "name": "naturalmouse-2.0.1.jar",
+      "path": "https://repo1.maven.org/maven2/com/github/joonasvali/naturalmouse/naturalmouse/2.0.1/naturalmouse-2.0.1.jar",
       "size": "3168921"
     },
     {
-      "hash": "50d1e07f11827672249dee9ce8a23691fc59f663deed084bb7b52a4f778d5fbc",
-      "name": "jcl-core-2.9-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/jcl-core-2.9-SNAPSHOT.jar",
+      "hash": "72c88d597188ab386ec4de598203675d6286de569812454d732e379c9ecb0ed7",
+      "name": "jcl-core-2.8jar",
+      "path": "https://repo1.maven.org/maven2/org/xeustechnologies/jcl-core/2.8/jcl-core-2.8.jar",
       "size": "3168921"
     },
     {
-      "hash": "0ee2a90d5f9b611b5a28cbf73b9ed5b04343d5ba6593798d343783f63e2071ad",
-      "name": "client-1.5.30-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.30-SNAPSHOT.jar",
-      "size": "6291757"
+      "hash": "f6117a8dbbdedba06bcea89c02f0a11b6bc32b9f45742ea51e7e7ea2fa94441e",
+      "name": "client-1.5.31-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/client-1.5.31-SNAPSHOT.jar",
+      "size": "6336486"
     },
     {
-      "hash": "18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79",
-      "name": "slf4j-api-1.7.25.jar",
-      "path": "https://mvn.runelite.net/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar",
+      "hash": "6d9e5b86cfd1dd44c676899285b5bb4fa0d371cf583e8164f9c8a0366553242b",
+      "name": "slf4j-api-1.7.26.jar",
+      "path": "https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.26/slf4j-api-1.7.26.jar",
       "size": "41203"
     },
     {
@@ -80,21 +81,21 @@
       "size": "471901"
     },
     {
-      "hash": "9f0c8d50fa4b79b6ff1502dbec8502179d6b9497cacbe17a13074001aed537ec",
-      "name": "jopt-simple-5.0.1.jar",
-      "path": "https://mvn.runelite.net/net/sf/jopt-simple/jopt-simple/5.0.1/jopt-simple-5.0.1.jar",
+      "hash": "df26cc58f235f477db07f753ba5a3ab243ebe5789d9f89ecf68dd62ea9a66c28",
+      "name": "jopt-simple-5.0.4.jar",
+      "path": "https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar",
       "size": "78826"
     },
     {
-      "hash": "5be9a7d05ba0ccd74708bc8018ae412255f85843c0b92302e9b9befa6ed52564",
-      "name": "guava-23.2-jre.jar",
-      "path": "https://mvn.runelite.net/com/google/guava/guava/23.2-jre/guava-23.2-jre.jar",
+      "hash": "73e4d6ae5f0e8f9d292a4db83a2479b5468f83d972ac1ff36d6d0b43943b4f91",
+      "name": "guava-28.0-jre.jar",
+      "path": "https://repo1.maven.org/maven2/com/google/guava/guava/28.0-jre/guava-28.0-jre.jar",
       "size": "2649860"
     },
     {
-      "hash": "905721a0eea90a81534abb7ee6ef4ea2e5e645fa1def0a5cd88402df1b46c9ed",
-      "name": "jsr305-1.3.9.jar",
-      "path": "https://mvn.runelite.net/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar",
+      "hash": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+      "name": "jsr305-3.0.2.jar",
+      "path": "https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
       "size": "33015"
     },
     {
@@ -116,9 +117,9 @@
       "size": "3482"
     },
     {
-      "hash": "9264c6931c431e928dc64adc842584d5f57d17b2f3aff29221f2b3fdea673dad",
-      "name": "guice-4.1.0-no_aop.jar",
-      "path": "https://mvn.runelite.net/com/google/inject/guice/4.1.0/guice-4.1.0-no_aop.jar",
+      "hash": "d258ff1bd9b8b527872f8402648226658ad3149f1f40e74b0566d69e7e042fbc",
+      "name": "guice-4.2.2-no_aop.jar",
+      "path": "https://repo1.maven.org/maven2/com/google/inject/guice/4.2.2/guice-4.2.2.jar",
       "size": "428603"
     },
     {
@@ -242,39 +243,39 @@
       "size": "1440662"
     },
     {
-      "hash": "84c8667555ee8dd91fef44b451419f6f16f71f727d5fc475a10c2663eba83abb",
-      "name": "jna-platform-4.5.1.jar",
-      "path": "https://mvn.runelite.net/net/java/dev/jna/jna-platform/4.5.1/jna-platform-4.5.1.jar",
+      "hash": "890391047a225a7a599f33e665f9bedaee2037d9fe6f1b23d9d2369d69f0f28f",
+      "name": "jna-platform-5.4.0.jar",
+      "path": "https://repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.4.0/jna-platform-5.4.0.jar",
       "size": "2327547"
     },
     {
-      "hash": "b157f7ff5f79a64a082df67358dc00f58d320d620fcb0fb09f7c69090d59e164",
-      "name": "runelite-api-1.5.30-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.30-SNAPSHOT.jar",
-      "size": "1033870"
+      "hash": "8f448de4035690380860e4fd47e12b5576451a284826b2166866dba376cab772",
+      "name": "runelite-api-1.5.31-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runelite-api-1.5.31-SNAPSHOT.jar",
+      "size": "1069250"
     },
     {
-      "hash": "e8e743c2eb9e59f2990a5bdc48f061b7138890f065c0d603ecb8cdf0b0b158f7",
-      "name": "runescape-api-1.5.30-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runescape-api-1.5.30-SNAPSHOT.jar",
-      "size": "58398"
+      "hash": "bf6931329a9472abd758c7ea0025367c67df034d90de6f846a6ac0b693c55390",
+      "name": "runescape-api-1.5.31-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/runescape-api-1.5.31-SNAPSHOT.jar",
+      "size": "56550"
     },
     {
-      "hash": "4164ba6337441640f0a8e672bb930eaefddf6b0cb5a797588221fc4e1b9e5542",
-      "name": "http-api-1.5.30-SNAPSHOT.jar",
-      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.30-SNAPSHOT.jar",
-      "size": "139679"
+      "hash": "268a765bb6bdd94e8f969e60eef01633be7c3716c8612504d024a4e189adb8d8",
+      "name": "http-api-1.5.31-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/http-api-1.5.31-SNAPSHOT.jar",
+      "size": "138723"
     },
     {
-      "hash": "f55abda036da75e1af45bd43b9dfa79b2a3d90905be9cb38687c6621597a8165",
-      "name": "okhttp-3.7.0.jar",
-      "path": "https://mvn.runelite.net/com/squareup/okhttp3/okhttp/3.7.0/okhttp-3.7.0.jar",
+      "hash": "0e0392ea5c0d303bca20e13b2340086d7a347b22ad625f967989ee8723b6ac3c",
+      "name": "okhttp-4.0.1.jar",
+      "path": "https://repo1.maven.org/maven2/com/squareup/okhttp3/okhttp/4.0.1/okhttp-4.0.1.jar",
       "size": "394987"
     },
     {
-      "hash": "bfe7dfe483c37137966a1690f0c7d0b448ba217902c1fed202aaffdbba3291ae",
-      "name": "okio-1.12.0.jar",
-      "path": "https://mvn.runelite.net/com/squareup/okio/okio/1.12.0/okio-1.12.0.jar",
+      "hash": "e58c97406a6bb1138893750299ac63c6aa04b38b6b49eae1bfcad1a63ef9ba1b",
+      "name": "okio-2.2.2.jar",
+      "path": "https://repo1.maven.org/maven2/com/squareup/okio/okio/2.2.2/okio-2.2.2.jar",
       "size": "81088"
     },
     {
@@ -306,6 +307,24 @@
       "name": "reactive-streams-1.0.2.jar",
       "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/reactive-streams-1.0.2.jar",
       "size": "27750"
+    },
+    {
+      "hash": "f76f9812a703ba5085af8f51769e60e8ecd5e99b55b2ced097cf2343e972ad7b",
+      "name": "kotlin-stdlib-1.3.40.jar",
+      "path": "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.3.40/kotlin-stdlib-1.3.40.jar",
+      "size": "27750"
+    },
+    {
+      "hash": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26",
+      "name": "failureaccess-1.0.1.jar",
+      "path": "https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar",
+      "size": "27750"
+    },
+    {
+      "hash": "3a902785766620dffeeb26e248ce75b265e058520105973f9cbe0a2161739433",
+      "name": "injected-client-1.5.31-SNAPSHOT.jar",
+      "path": "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client-1.5.31-SNAPSHOT.jar",
+      "size": "0"
     }
   ]
 }
