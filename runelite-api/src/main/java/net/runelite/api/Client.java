@@ -1452,16 +1452,16 @@ public interface Client extends GameShell
 	/**
 	 * Sets which NPCs are hidden
 	 *
-	 * @param names the names of the npcs seperated by ','
+	 * @param names the names of the npcs
 	 */
-	void setNPCsNames(String names);
+	void setNPCsNames(List<String> names);
 
 	/**
 	 * Sets which NPCs are hidden on death
 	 *
-	 * @param names the names of the npcs seperated by ','
+	 * @param names the names of the npcs
 	 */
-	void setNPCsHiddenOnDeath(String names);
+	void setNPCsHiddenOnDeath(List<String> names);
 
 	/**
 	 * Sets whether 2D sprites (ie. overhead prayers) related to

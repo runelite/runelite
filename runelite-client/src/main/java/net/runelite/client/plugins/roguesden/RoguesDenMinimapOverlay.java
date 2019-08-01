@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mta;
+package net.runelite.client.plugins.roguesden;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.ui.FontManager;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Singleton
-public class MTASceneOverlay extends Overlay
+class RoguesDenMinimapOverlay extends Overlay
 {
-	private final MTAPlugin plugin;
+	private Client client;
+	private RoguesDenPlugin plugin;
 
 	@Inject
-	public MTASceneOverlay(final MTAPlugin plugin)
+	public RoguesDenMinimapOverlay(Client client, RoguesDenPlugin plugin)
 	{
-		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.client = client;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (MTARoom room : plugin.getRooms())
+		if (!plugin.isHasGem())
 		{
-			if (room.inside())
+			return null;
+		}
+
+		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
+		{
+			final LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.getTile());
+
+			if (localPoint == null || obstacle.getTile().getPlane() != client.getPlane())
 			{
-				graphics.setFont(FontManager.getRunescapeBoldFont());
-				room.under(graphics);
+				continue;
+			}
+
+			final Point minimapPoint = Perspective.localToMinimap(client, localPoint);
+
+			if (minimapPoint != null)
+			{
+				OverlayUtil.renderMinimapLocation(graphics, minimapPoint, obstacle.getObjectId() == -1 ? Color.GREEN : Color.RED);
 			}
 		}
 

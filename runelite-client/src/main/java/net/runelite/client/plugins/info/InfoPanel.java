@@ -117,7 +117,7 @@ public class InfoPanel extends PluginPanel
 		versionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		versionPanel.setLayout(new GridLayout(0, 1));
 
-		final Font smallFont = FontManager.getSmallFont(getFont());
+		final Font smallFont = FontManager.getRunescapeSmallFont();
 
 		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
 		version.setFont(smallFont);
@@ -207,7 +207,7 @@ public class InfoPanel extends PluginPanel
 	/**
 	 * Builds a link panel with a given icon, text and url to redirect to.
 	 */
-	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, String url)
+	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, String url)
 	{
 		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.browse(url));
 	}
@@ -215,7 +215,7 @@ public class InfoPanel extends PluginPanel
 	/**
 	 * Builds a link panel with a given icon, text and callable to call.
 	 */
-	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, Runnable callback)
+	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, Runnable callback)
 	{
 		JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -269,11 +269,11 @@ public class InfoPanel extends PluginPanel
 
 		JLabel topLine = new JLabel(topText);
 		topLine.setForeground(Color.WHITE);
-		topLine.setFont(FontManager.getSmallFont(getFont()));
+		topLine.setFont(FontManager.getRunescapeSmallFont());
 
 		JLabel bottomLine = new JLabel(bottomText);
 		bottomLine.setForeground(Color.WHITE);
-		bottomLine.setFont(FontManager.getSmallFont(getFont()));
+		bottomLine.setFont(FontManager.getRunescapeSmallFont());
 
 		textContainer.add(topLine);
 		textContainer.add(bottomLine);

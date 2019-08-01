@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
+import net.runelite.client.plugins.menuentryswapper.util.ConstructionCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.DigsitePendantMode;
 import net.runelite.client.plugins.menuentryswapper.util.DuelingRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
@@ -47,7 +48,6 @@ import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
-import net.runelite.client.plugins.menuentryswapper.util.teleEquippedMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 
 
@@ -219,36 +219,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "teleEquippedCape",
-		name = "Teleport Equipped Cape",
-		description = "Makes Teleport/Tele to POH the left click option on equip screen",
-		position = 1,
-		group = "Equipment swapper"
-	)
-	default boolean teleEquippedCape()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "telecapeMode",
-		name = "ModeTeleCape",
-		description = "",
-		position = 2,
-		group = "Equipment swapper",
-		hidden = true,
-		unhide = "teleEquippedCape"
-	)
-	default teleEquippedMode telecapeMode()
-	{
-		return teleEquippedMode.TELEPORT;
-	}
-
-	@ConfigItem(
 		keyName = "maxMode",
 		name = "Mode",
 		description = "",
-		position = 3,
+		position = 1,
 		group = "Equipment swapper",
 		hidden = true,
 		unhide = "swapMax"
@@ -262,7 +236,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapArdougneCape",
 		name = "Swap Ardougne Cape",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
-		position = 4,
+		position = 2,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapArdougneCape()
@@ -274,7 +248,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapConstructionCape",
 		name = "Swap Construction Cape",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
-		position = 5,
+		position = 3,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapConstructionCape()
@@ -283,10 +257,24 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "constructionCapeMode",
+		name = "Mode",
+		description = "",
+		position = 4,
+		group = "Equipment swapper",
+		hidden = true,
+		unhide = "swapConstructionCape"
+	)
+	default ConstructionCapeMode constructionCapeMode()
+	{
+		return ConstructionCapeMode.TELE_TO_POH;
+	}
+
+	@ConfigItem(
 		keyName = "swapCraftingCape",
 		name = "Swap Crafting Cape",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
-		position = 6,
+		position = 5,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapCraftingCape()
@@ -298,7 +286,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapMagicCape",
 		name = "Swap Magic Cape",
 		description = "Enables swapping of 'Spellbook' and 'Wear'.",
-		position = 7,
+		position = 6,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapMagicCape()
@@ -310,7 +298,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapExplorersRing",
 		name = "Swap Explorer's Ring",
 		description = "Enables swapping of 'Spellbook' and 'Wear'.",
-		position = 8,
+		position = 7,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapExplorersRing()
@@ -322,19 +310,19 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapAdmire",
 		name = "Admire",
 		description = "Swap 'Admire' with 'Teleport', 'Spellbook' and 'Perks' (max cape) for mounted skill capes.",
-		position = 9,
+		position = 8,
 		group = "Equipment swapper"
 	)
 	default boolean swapAdmire()
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		keyName = "swapQuestCape",
 		name = "Swap Quest Cape",
 		description = "Enables swapping Quest cape options in worn interface.",
-		position = 10,
+		position = 9,
 		group = "Equipment swapper"
 	)
 	default boolean swapQuestCape()
@@ -346,7 +334,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "questCapeMode",
 		name = "Mode",
 		description = "",
-		position = 11,
+		position = 10,
 		group = "Equipment swapper",
 		hidden = true,
 		unhide = "swapQuestCape"
@@ -652,20 +640,20 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Don't open implings if bank has a clue.",
 		position = 23,
 		group = "Miscellaneous"
-)
-default boolean swapImps()
+	)
+	default boolean swapImps()
 	{
 		return false;
 	}
 
-@ConfigItem(
+	@ConfigItem(
 		keyName = "charterOption",
 		name = "Trader Crew",
 		description = "Configure whether you want Charter or Trade to be the first option of Trader Crewmembers.",
 		position = 24,
 		group = "Miscellaneous"
-)
-default CharterOption charterOption()
+	)
+	default CharterOption charterOption()
 	{
 		return CharterOption.TRADE;
 	}
@@ -1665,9 +1653,9 @@ default CharterOption charterOption()
 	)
 
 	default boolean hideCastToB()
-		{
-			return true;
-		}
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "hideCastIgnoredToB",

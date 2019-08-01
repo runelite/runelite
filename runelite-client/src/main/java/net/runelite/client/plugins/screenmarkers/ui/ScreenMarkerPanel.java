@@ -162,7 +162,7 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		save.setVisible(false);
-		save.setFont(FontManager.getSmallFont(getFont()));
+		save.setFont(FontManager.getRunescapeSmallFont());
 		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		save.addMouseListener(new MouseAdapter()
 		{
@@ -191,7 +191,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		cancel.setVisible(false);
-		cancel.setFont(FontManager.getSmallFont(getFont()));
+		cancel.setFont(FontManager.getRunescapeSmallFont());
 		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		cancel.addMouseListener(new MouseAdapter()
 		{
@@ -217,7 +217,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		rename.setFont(FontManager.getSmallFont(getFont()));
+		rename.setFont(FontManager.getRunescapeSmallFont());
 		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
 		rename.addMouseListener(new MouseAdapter()
 		{

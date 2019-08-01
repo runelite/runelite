@@ -256,7 +256,7 @@ public enum WorldLocation
 				s = entry.getValue();
 				return s;
 			}
-			int distTo = worldArea.distanceTo(worldArea);
+			int distTo = worldArea.distanceTo(worldPoint);
 			if (distTo < dist)
 			{
 				dist = distTo;

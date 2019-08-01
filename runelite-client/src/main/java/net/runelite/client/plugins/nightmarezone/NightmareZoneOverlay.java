@@ -102,14 +102,19 @@ class NightmareZoneOverlay extends Overlay
 
 		renderAbsorptionCounter();
 
+		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+		final int totalPoints = currentPoints + client.getVar(VarPlayer.NMZ_REWARD_POINTS);
+
 		panelComponent.getChildren().clear();
+
 		TableComponent tableComponent = new TableComponent();
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
-		tableComponent.addRow("Points:", StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)));
+		tableComponent.addRow("Points:", StackFormatter.formatNumber(currentPoints));
+		tableComponent.addRow("Points/Hour:", StackFormatter.formatNumber(plugin.getPointsPerHour()));
 		
 		if (plugin.isShowtotalpoints())
 		{
-			tableComponent.addRow("Total:", StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS) + client.getVar(Varbits.NMZ_POINTS)));
+			tableComponent.addRow("Total:", StackFormatter.formatNumber(totalPoints));
 		}
 		
 		panelComponent.getChildren().add(tableComponent);

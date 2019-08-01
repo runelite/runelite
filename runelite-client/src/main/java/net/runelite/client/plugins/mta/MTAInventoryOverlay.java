@@ -53,7 +53,7 @@ public class MTAInventoryOverlay extends Overlay
 		{
 			if (room.inside())
 			{
-				graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
+				graphics.setFont(FontManager.getRunescapeBoldFont());
 				room.over(graphics);
 			}
 		}

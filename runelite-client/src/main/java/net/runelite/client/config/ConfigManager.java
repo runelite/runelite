@@ -29,7 +29,6 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
@@ -66,7 +65,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -508,10 +506,6 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
-		if (type == Font.class)
-		{
-			return FontManager.getFontOrDefault(FontManager.lookupFont(str));
-		}
 		if (type == Instant.class)
 		{
 			return Instant.parse(str);
@@ -567,10 +561,6 @@ public class ConfigManager
 		if (object instanceof Enum)
 		{
 			return ((Enum) object).name();
-		}
-		if (object instanceof Font)
-		{
-			return FontManager.getFontName((Font)object);
 		}
 		if (object instanceof Dimension)
 		{

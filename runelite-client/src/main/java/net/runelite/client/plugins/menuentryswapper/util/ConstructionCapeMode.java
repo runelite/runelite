@@ -1,13 +1,13 @@
 package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum teleEquippedMode
+public enum ConstructionCapeMode
 {
 	TELE_TO_POH("Tele to POH"),
-	TELEPORT("teleport");
+	TELEPORT("Teleport");
 
 	private final String name;
 
-	teleEquippedMode(String name)
+	ConstructionCapeMode(String name)
 	{
 		this.name = name;
 	}

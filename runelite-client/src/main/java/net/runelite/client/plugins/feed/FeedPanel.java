@@ -223,14 +223,14 @@ class FeedPanel extends PluginPanel
 		Color darkerForeground = UIManager.getColor("Label.foreground").darker();
 
 		JLabel titleLabel = new JLabel(item.getTitle());
-		titleLabel.setFont(FontManager.getSmallFont(getFont()));
+		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setBackground(null);
 		titleLabel.setForeground(darkerForeground);
 		titleLabel.setPreferredSize(new Dimension(CONTENT_WIDTH - TIME_WIDTH, 0));
 
 		Duration duration = Duration.between(Instant.ofEpochMilli(item.getTimestamp()), Instant.now());
 		JLabel timeLabel = new JLabel(durationToString(duration));
-		timeLabel.setFont(FontManager.getSmallFont(getFont()));
+		timeLabel.setFont(FontManager.getRunescapeSmallFont());
 		timeLabel.setForeground(darkerForeground);
 
 		titleAndTime.add(titleLabel, BorderLayout.WEST);
@@ -239,9 +239,9 @@ class FeedPanel extends PluginPanel
 		JPanel content = new JPanel(new BorderLayout());
 		content.setBackground(null);
 
-		JLabel contentLabel = new JLabel(lineBreakText(item.getContent(), FontManager.getSmallFont(getFont())));
+		JLabel contentLabel = new JLabel(lineBreakText(item.getContent(), FontManager.getRunescapeSmallFont()));
 		contentLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
-		contentLabel.setFont(FontManager.getSmallFont(getFont()));
+		contentLabel.setFont(FontManager.getRunescapeSmallFont());
 		contentLabel.setForeground(darkerForeground);
 
 		content.add(contentLabel, BorderLayout.CENTER);
