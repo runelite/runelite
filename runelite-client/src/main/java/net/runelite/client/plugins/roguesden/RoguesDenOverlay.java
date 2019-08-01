@@ -28,10 +28,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.Area;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -39,18 +44,22 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 @Singleton
 public class RoguesDenOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
+	private static final Color OBJECT_BORDER_COLOR = Color.RED;
+	private static final Color OBJECT_COLOR = new Color(OBJECT_BORDER_COLOR.getRed(), OBJECT_BORDER_COLOR.getGreen(), OBJECT_BORDER_COLOR.getBlue(), 50);
+	private static final Color OBJECT_BORDER_HOVER_COLOR = OBJECT_BORDER_COLOR.darker();
 
 	private final Client client;
 	private final RoguesDenPlugin plugin;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	public RoguesDenOverlay(final Client client, final RoguesDenPlugin plugin)
+	public RoguesDenOverlay(final Client client, final RoguesDenPlugin plugin, ModelOutlineRenderer modelOutliner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
+		this.modelOutliner = modelOutliner;
 	}
 
 	@Override
@@ -61,33 +70,74 @@ public class RoguesDenOverlay extends Overlay
 			return null;
 		}
 
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-
 		plugin.getObstaclesHull().forEach((obstacle, tile) ->
 		{
-			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			if (tile.getPlane() == client.getPlane())
 			{
-				Polygon p = tile.getGameObjects()[0].getConvexHull();
-				if (p != null)
+				final Area clickBox = obstacle.getClickbox();
+				if (clickBox != null)
 				{
-					graphics.setColor(Color.CYAN);
-					graphics.drawPolygon(p);
+					final Point mouse = client.getMouseCanvasPosition();
+					if (clickBox.contains(mouse.getX(), mouse.getY()))
+					{
+						graphics.setColor(OBJECT_BORDER_HOVER_COLOR);
+					}
+					else
+					{
+						graphics.setColor(OBJECT_BORDER_COLOR);
+					}
+
+					graphics.draw(clickBox);
+					graphics.setColor(OBJECT_COLOR);
+					graphics.fill(clickBox);
+				}
+				else
+				{
+					Polygon p;
+					if (obstacle instanceof GameObject)
+					{
+						p = ((GameObject) obstacle).getConvexHull();
+					}
+					else
+					{
+						p = obstacle.getCanvasTilePoly();
+					}
+
+					if (p != null)
+					{
+						graphics.setColor(OBJECT_COLOR);
+						graphics.drawPolygon(p);
+					}
 				}
 			}
 		});
 
-		plugin.getObstaclesTile().forEach((obstacle, tile) ->
+		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
 		{
-			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			final LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.getTile());
+
+			if (localPoint == null || obstacle.getTile().getPlane() != client.getPlane())
 			{
-				Polygon p = obstacle.getCanvasTilePoly();
-				if (p != null)
+				continue;
+			}
+
+			if (!obstacle.getHint().isEmpty())
+			{
+				final Polygon polygon = Perspective.getCanvasTilePoly(client, localPoint);
+				if (polygon != null)
 				{
-					graphics.setColor(Color.CYAN);
-					graphics.drawPolygon(p);
+					graphics.setColor(obstacle.getTileColor());
+					graphics.drawPolygon(polygon);
 				}
 			}
-		});
+
+			final Point textLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, obstacle.getHint(), 0);
+			if (textLocation != null)
+			{
+				graphics.setColor(Color.LIGHT_GRAY);
+				graphics.drawString(obstacle.getHint(), textLocation.getX(), textLocation.getY());
+			}
+		}
 
 		return null;
 	}
