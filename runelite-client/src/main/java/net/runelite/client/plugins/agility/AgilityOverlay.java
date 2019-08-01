@@ -34,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -94,25 +93,21 @@ class AgilityOverlay extends Overlay
 					return;
 				}
 
-				// A Portal is visible if it has a clickbox
-				if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()) && object.getClickbox() != null)
-				{
-					final Polygon polygon = ((GameObject) object).getConvexHull();
-					if (polygon != null)
-					{
-						Color portalColor = config.getPortalColor();
-						Color fillColor = new Color(portalColor.getRed(), portalColor.getGreen(), portalColor.getBlue(), 50);
-						boolean isHovered = object.getClickbox().contains(mousePosition.getX(), mousePosition.getY());
-						graphics.setColor(isHovered ? portalColor.darker() : portalColor);
-						graphics.drawPolygon(polygon);
-						graphics.setColor(fillColor);
-						graphics.fillPolygon(polygon);
-					}
-					return;
-				}
-
 				Area objectClickbox = object.getClickbox();
-				if (objectClickbox != null)
+				// A Portal is visible if it has a clickbox
+				if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()) && objectClickbox != null)
+				{
+					Color portalColor = config.getPortalColor();
+					Color fillColor = new Color(portalColor.getRed(), portalColor.getGreen(), portalColor.getBlue(), 50);
+					boolean isHovered = objectClickbox.contains(mousePosition.getX(), mousePosition.getY());
+					graphics.setColor(isHovered ? portalColor.darker() : portalColor);
+					graphics.draw(objectClickbox);
+					graphics.setColor(fillColor);
+					graphics.fill(objectClickbox);
+					// TODO: replace with setHintArrow(TileObject) when available
+					client.setHintArrow(object.getWorldLocation());
+				}
+				else if (objectClickbox != null)
 				{
 					AgilityShortcut agilityShortcut = obstacle.getShortcut();
 					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
