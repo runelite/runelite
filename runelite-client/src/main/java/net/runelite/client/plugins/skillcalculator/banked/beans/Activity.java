@@ -232,7 +232,7 @@ public enum Activity
 		CriticalItem.SHAIKAHAN_BONES, null, null),
 	BABYDRAGON_BONES(ItemID.BABYDRAGON_BONES, "Babydragon bones", Skill.PRAYER, 1, 30.0,
 		CriticalItem.BABYDRAGON_BONES, null, null),
-	WYRM_BONES(ItemID.WYRM_BONES, "Babydragon bones", Skill.PRAYER, 1, 50,
+	WYRM_BONES(ItemID.WYRM_BONES, "Wyrm bones", Skill.PRAYER, 1, 50,
 		CriticalItem.WYRM_BONES, null, null),
 	WYVERN_BONES(ItemID.WYVERN_BONES, "Wyvern bones", Skill.PRAYER, 1, 72.0,
 		CriticalItem.WYVERN_BONES, null, null),
