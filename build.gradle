@@ -52,6 +52,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java-library'
+    apply plugin: 'maven'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     tasks.withType(JavaCompile) {
@@ -66,6 +67,9 @@ subprojects {
         maven { url "http://repo.runelite.net" }
         maven { url "http://repo.maven.apache.org/maven2" }
         maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+        if (System.getenv("NEXUS-URL") != null) {
+            maven { url System.getenv("NEXUS-URL") }
+        }
     }
 
     checkstyle {
@@ -76,6 +80,16 @@ subprojects {
         showViolations = true
         ignoreFailures = false
         maxWarnings = 0
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: System.getenv("NEXUS-URL")) {
+                    authentication(userName: System.getenv("NEXUS-USER"), password: System.getenv("NEXUS-PASSWORD"))
+                }
+            }
+        }
     }
 }
 
