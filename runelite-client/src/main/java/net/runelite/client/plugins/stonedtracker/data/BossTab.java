@@ -80,6 +80,8 @@ public enum BossTab
 	// Other Bosses
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, "Other"),
 	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, "Other"),
+	THE_GAUNTLET("The Gauntlet", ItemID.YOUNGLLEF, "Other"),
+
 	// Dagannoth Kings
 	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, "Dagannoth Kings"),
 	DAGANNOTH_PRIME("Dagannoth Prime", ItemID.PET_DAGANNOTH_PRIME, "Dagannoth Kings"),

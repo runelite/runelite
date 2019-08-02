@@ -109,18 +109,27 @@ public class LootRecordWriter
 
 		try (final BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
-
 			// read line by line
 			String line;
+			int totalBrackets = 0;
 			while ((line = br.readLine()) != null)
 			{
-				sb.append(line).append("\n");
-			}
+				if (line.contains("{"))
+				{
+					totalBrackets++;
+				}
+				else if (line.contains("}"))
+				{
+					totalBrackets--;
+				}
+				sb.append(line);
 
-			if (sb.length() > 0)
-			{
-				final LTRecord r = RuneLiteAPI.GSON.fromJson(sb.toString(), LTRecord.class);
-				data.add(r);
+				if (totalBrackets == 0 && sb.length() > 0)
+				{
+					final LTRecord r = RuneLiteAPI.GSON.fromJson(sb.toString(), LTRecord.class);
+					data.add(r);
+					sb.setLength(0);
+				}
 			}
 		}
 		catch (FileNotFoundException e)

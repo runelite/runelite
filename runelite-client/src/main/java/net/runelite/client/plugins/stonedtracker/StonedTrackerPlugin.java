@@ -266,6 +266,7 @@ public class StonedTrackerPlugin extends Plugin
 
 	public boolean clearStoredDataByName(final String name)
 	{
+		lootNames.remove(name);
 		return writer.deleteLootTrackerRecords(name);
 	}
 }

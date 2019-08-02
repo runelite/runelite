@@ -188,7 +188,7 @@ class LootPanel extends JPanel
 
 		// Track total price of all tracked items for this panel
 		// Also ensure it is placed in correct location by preserving its gridy value
-		long totalValue = 0;
+		long totalValue = consolidated.values().stream().mapToLong(e -> e.getPrice() * e.getQuantity()).sum();
 		final int totalValueIndex = c.gridy;
 		c.gridy++;
 
@@ -200,7 +200,6 @@ class LootPanel extends JPanel
 
 		if (itemsToDisplay.size() > 0)
 		{
-			totalValue = itemsToDisplay.stream().mapToLong(e -> e.getPrice() * e.getQuantity()).sum();
 			if (itemBreakdown)
 			{
 				for (final LTItemEntry e : itemsToDisplay)
