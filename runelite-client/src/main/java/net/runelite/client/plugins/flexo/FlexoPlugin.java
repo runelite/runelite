@@ -143,13 +143,11 @@ public class FlexoPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("flexo") || (!event.getGroup().equals("stretchedmode")) )
+		if (event.getGroup().equals("flexo") || event.getGroup().equals("stretchedmode"))
 		{
-			return;
+			updateConfig();
+			updateMouseMotionFactory();
 		}
-
-		updateConfig();
-		updateMouseMotionFactory();
 	}
 
 	private void onBeforeRender(BeforeRender event)
