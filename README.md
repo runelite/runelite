@@ -28,7 +28,12 @@ We have migrated the project to Gradle. Information on how to setup and build th
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
 ```
-Jar/IntelliJ
+Gradle  
+enter  
+run --args='--rs=RSPS'  
+into the tasks box
+
+Jar
 Use -rs=RSPS arg.
 
 Exe
