@@ -31,8 +31,10 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -59,7 +61,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -80,123 +82,77 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @Singleton
+@Getter(AccessLevel.PACKAGE)
 public class CoxPlugin extends Plugin
 {
 	private static final int ANIMATION_ID_G1 = 430;
 	private static final String OLM_HAND_CRIPPLE = "The Great Olm\'s left claw clenches to protect itself temporarily.";
 	private static final Pattern TP_REGEX = Pattern.compile("You have been paired with <col=ff0000>(.*)</col>! The magical power will enact soon...");
-	@Setter
-	@Getter(AccessLevel.PACKAGE)
-	protected PrayAgainst prayAgainstOlm;
-	@Getter(AccessLevel.PACKAGE)
-	protected long lastPrayTime;
-	private int sleepcount = 0;
-	private boolean needOlm = false;
-	private GraphicsObject teleportObject;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private Client client;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private ChatMessageManager chatMessageManager;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private CoxOverlay coxOverlay;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private CoxInfoBox coxInfoBox;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private CoxConfig config;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean HandCripple;
-	@Getter(AccessLevel.PACKAGE)
+	private boolean handCripple;
 	private boolean runOlm;
-	@Getter(AccessLevel.PACKAGE)
 	private int vanguards;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean tektonActive;
-	@Getter(AccessLevel.PACKAGE)
 	private NPC hand;
-	@Getter(AccessLevel.PACKAGE)
 	private NPC Olm_NPC;
-	@Getter(AccessLevel.PACKAGE)
-	private NPC OlmMelee_NPC;
-	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> Olm_Crystals = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> Olm_Heal = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> Olm_TP = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> Olm_PSN = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
-	private List<Actor> burnTarget = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
-	private Actor teleportTarget;
-	@Getter(AccessLevel.PACKAGE)
+	private Set<Victim> victims = new HashSet<>();
 	private Actor acidTarget;
-	@Getter(AccessLevel.PACKAGE)
 	private int crippleTimer = 45;
-	@Getter(AccessLevel.PACKAGE)
-	private int burnTicks = 41;
-	@Getter(AccessLevel.PACKAGE)
-	private int acidTicks = 25;
-	@Getter(AccessLevel.PACKAGE)
 	private int teleportTicks = 10;
-	@Getter(AccessLevel.PACKAGE)
 	private int tektonAttackTicks;
-	@Getter(AccessLevel.PACKAGE)
 	private int OlmPhase = 0;
-	@Getter(AccessLevel.PACKAGE)
 	private int Olm_TicksUntilAction = -1;
-	@Getter(AccessLevel.PACKAGE)
 	private int Olm_ActionCycle = -1; //4:0 = auto 3:0 = null 2:0 = auto 1:0 = spec + actioncycle =4
-	@Getter(AccessLevel.PACKAGE)
 	private int Olm_NextSpec = -1; // 1= crystals 2=lightnig 3=portals 4= heal hand if p4
-	@Getter(AccessLevel.PACKAGE)
-	private float percent;
-	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, NPCContainer> npcContainer = new HashMap<>();
-
-	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private PrayAgainst prayAgainstOlm;
+	private long lastPrayTime;
+	private int sleepcount = 0;
+	private boolean needOlm = false;
 	private boolean muttadile;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean tekton;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean tektonTickCounter;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean guardians;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean guardinTickCounter;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean vangHighlight;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean vangHealth;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean configPrayAgainstOlm;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean timers;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean tpOverlay;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean olmTick;
-	@Getter(AccessLevel.PACKAGE)
 	private Color muttaColor;
-	@Getter(AccessLevel.PACKAGE)
 	private Color guardColor;
-	@Getter(AccessLevel.PACKAGE)
 	private Color tektonColor;
-	@Getter(AccessLevel.PACKAGE)
 	private Color burnColor;
-	@Getter(AccessLevel.PACKAGE)
 	private Color acidColor;
-	@Getter(AccessLevel.PACKAGE)
 	private Color tpColor;
-	@Getter(AccessLevel.PACKAGE)
 	private CoxConfig.FontStyle fontStyle;
-	@Getter(AccessLevel.PACKAGE)
 	private int textSize;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean shadows;
 
 	@Provides
@@ -213,16 +169,12 @@ public class CoxPlugin extends Plugin
 
 		overlayManager.add(coxOverlay);
 		overlayManager.add(coxInfoBox);
-		HandCripple = false;
+		handCripple = false;
 		hand = null;
-		acidTarget = null;
-		teleportTarget = null;
 		Olm_TP.clear();
 		prayAgainstOlm = null;
-		burnTarget.clear();
+		victims.clear();
 		crippleTimer = 45;
-		burnTicks = 40;
-		acidTicks = 25;
 		teleportTicks = 10;
 		vanguards = 0;
 	}
@@ -231,7 +183,6 @@ public class CoxPlugin extends Plugin
 	protected void shutDown()
 	{
 		eventBus.unregister(this);
-
 		overlayManager.remove(coxOverlay);
 		overlayManager.remove(coxInfoBox);
 	}
@@ -240,203 +191,231 @@ public class CoxPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
 		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
 		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	private void onConfigChanged(ConfigChanged event)
 	{
-		if (inRaid())
+		if (event.getGroup().equals("Cox"))
 		{
-			if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+			updateConfig();
+		}
+	}
+
+	private void onChatMessage(ChatMessage event)
+	{
+		if (!inRaid())
+		{
+			return;
+		}
+
+		if (event.getType() == ChatMessageType.GAMEMESSAGE)
+		{
+			final Matcher tpMatcher = TP_REGEX.matcher(event.getMessage());
+
+			if (tpMatcher.matches())
 			{
-				Matcher tpMatcher = TP_REGEX.matcher(chatMessage.getMessage());
-				if (tpMatcher.matches())
+				for (Player player : client.getPlayers())
 				{
-					log.info("TP Matcher has found a match");
-					for (Actor actor : client.getPlayers())
+					if (player.getName().equals(tpMatcher.group(1)))
 					{
-						if (actor.getName().equals(tpMatcher.group(1)))
-						{
-							log.info("Teleport Target Assigned");
-							teleportTarget = actor;
-						}
+						victims.add(new Victim(player, Victim.Type.TELEPORT));
 					}
 				}
-				switch (Text.standardize(chatMessage.getMessageNode().getValue()))
-				{
-					case "the great olm rises with the power of acid.":
-					case "the great olm rises with the power of crystal.":
-					case "the great olm rises with the power of flame.":
-					case "the great olm is giving its all. this is its final stand.":
-						if (!runOlm)
-						{
-							Olm_ActionCycle = -1;
-							Olm_TicksUntilAction = 4;
-						}
-						else
-						{
-							Olm_ActionCycle = -1;
-							Olm_TicksUntilAction = 3;
-						}
-						OlmPhase = 0;
-						runOlm = true;
-						needOlm = true;
-						crippleTimer = 45;
-						Olm_NextSpec = -1;
-						break;
-					case "the great olm fires a sphere of aggression your way. your prayers have been sapped.":
-						prayAgainstOlm = PrayAgainst.MELEE;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm fires a sphere of aggression your way.":
-						prayAgainstOlm = PrayAgainst.MELEE;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm fires a sphere of magical power your way. your prayers have been sapped.":
-						prayAgainstOlm = PrayAgainst.MAGIC;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm fires a sphere of magical power your way.":
-						prayAgainstOlm = PrayAgainst.MAGIC;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm fires a sphere of accuracy and dexterity your way. your prayers have been sapped.":
-						prayAgainstOlm = PrayAgainst.RANGED;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm fires a sphere of accuracy and dexterity your way.":
-						prayAgainstOlm = PrayAgainst.RANGED;
-						lastPrayTime = System.currentTimeMillis();
-						break;
-					case "the great olm's left claw clenches to protect itself temporarily.":
-						HandCripple = true;
+			}
 
-				}
+			switch (Text.standardize(event.getMessageNode().getValue()))
+			{
+				case "the great olm rises with the power of acid.":
+				case "the great olm rises with the power of crystal.":
+				case "the great olm rises with the power of flame.":
+				case "the great olm is giving its all. this is its final stand.":
+					if (!runOlm)
+					{
+						Olm_ActionCycle = -1;
+						Olm_TicksUntilAction = 4;
+					}
+					else
+					{
+						Olm_ActionCycle = -1;
+						Olm_TicksUntilAction = 3;
+					}
+					OlmPhase = 0;
+					runOlm = true;
+					needOlm = true;
+					crippleTimer = 45;
+					Olm_NextSpec = -1;
+					break;
+				case "the great olm fires a sphere of aggression your way. your prayers have been sapped.":
+				case "the great olm fires a sphere of aggression your way.":
+					prayAgainstOlm = PrayAgainst.MELEE;
+					lastPrayTime = System.currentTimeMillis();
+					break;
+				case "the great olm fires a sphere of magical power your way. your prayers have been sapped.":
+				case "the great olm fires a sphere of magical power your way.":
+					prayAgainstOlm = PrayAgainst.MAGIC;
+					lastPrayTime = System.currentTimeMillis();
+					break;
+				case "the great olm fires a sphere of accuracy and dexterity your way. your prayers have been sapped.":
+				case "the great olm fires a sphere of accuracy and dexterity your way.":
+					prayAgainstOlm = PrayAgainst.RANGED;
+					lastPrayTime = System.currentTimeMillis();
+					break;
+				case "the great olm's left claw clenches to protect itself temporarily.":
+					handCripple = true;
+
 			}
 		}
 	}
 
-	private void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		if (inRaid())
+		if (!inRaid())
 		{
-			Projectile projectile = event.getProjectile();
-			if (projectile.getId() == ProjectileID.OLM_MAGE_ATTACK)
-			{
+			return;
+		}
+
+		final Projectile projectile = event.getProjectile();
+
+		switch (projectile.getId())
+		{
+			case ProjectileID.OLM_MAGE_ATTACK:
 				prayAgainstOlm = PrayAgainst.MAGIC;
 				lastPrayTime = System.currentTimeMillis();
-			}
-			if (projectile.getId() == ProjectileID.OLM_RANGE_ATTACK)
-			{
+				break;
+			case ProjectileID.OLM_RANGE_ATTACK:
 				prayAgainstOlm = PrayAgainst.RANGED;
 				lastPrayTime = System.currentTimeMillis();
-			}
-			if (projectile.getId() == ProjectileID.OLM_ACID_TRAIL)
-			{
+				break;
+			case ProjectileID.OLM_ACID_TRAIL:
 				acidTarget = projectile.getInteracting();
-			}
+				break;
 		}
 	}
 
-	private void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
+	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
-		if (inRaid())
+		if (!inRaid())
 		{
-			Actor actor = graphicChanged.getActor();
-			if (actor.getSpotAnimation() == GraphicID.OLM_BURN)
+			return;
+		}
+
+		if (!(event.getActor() instanceof Player))
+		{
+			return;
+		}
+
+		final Player player = (Player) event.getActor();
+
+		if (player.getSpotAnimation() == GraphicID.OLM_BURN)
+		{
+			int add = 0;
+
+			for (Victim victim : victims)
 			{
-				if (!burnTarget.contains(actor))
+				if (victim.getPlayer().getName().equals(player.getName()))
 				{
-					burnTarget.add(actor);
+					add++;
 				}
 			}
+
+			if (add == 0)
+			{
+				victims.add(new Victim(player, Victim.Type.BURN));
+			}
 		}
 	}
 
-	private void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (inRaid())
 		{
-			NPC npc = npcSpawned.getNpc();
-			switch (npc.getId())
-			{
-				case NpcID.TEKTON:
-				case NpcID.TEKTON_7541:
-				case NpcID.TEKTON_7542:
-				case NpcID.TEKTON_7545:
-				case NpcID.TEKTON_ENRAGED:
-				case NpcID.TEKTON_ENRAGED_7544:
-					npcContainer.put(npc, new NPCContainer(npc));
-					tektonAttackTicks = 27;
-					break;
-				case NpcID.MUTTADILE:
-				case NpcID.MUTTADILE_7562:
-				case NpcID.MUTTADILE_7563:
-				case NpcID.GUARDIAN:
-				case NpcID.GUARDIAN_7570:
-					npcContainer.put(npc, new NPCContainer(npc));
-					break;
-				case NpcID.VANGUARD:
-				case NpcID.VANGUARD_7526:
-				case NpcID.VANGUARD_7527:
-				case NpcID.VANGUARD_7528:
-				case NpcID.VANGUARD_7529:
-					vanguards++;
-					npcContainer.put(npc, new NPCContainer(npc));
-					break;
-				case NpcID.GREAT_OLM_LEFT_CLAW:
-				case NpcID.GREAT_OLM_LEFT_CLAW_7555:
-					hand = npc;
-					break;
-			}
+			return;
+		}
+
+		final NPC npc = event.getNpc();
+
+		switch (npc.getId())
+		{
+			case NpcID.TEKTON:
+			case NpcID.TEKTON_7541:
+			case NpcID.TEKTON_7542:
+			case NpcID.TEKTON_7545:
+			case NpcID.TEKTON_ENRAGED:
+			case NpcID.TEKTON_ENRAGED_7544:
+				npcContainer.put(npc, new NPCContainer(npc));
+				tektonAttackTicks = 27;
+				break;
+			case NpcID.MUTTADILE:
+			case NpcID.MUTTADILE_7562:
+			case NpcID.MUTTADILE_7563:
+			case NpcID.GUARDIAN:
+			case NpcID.GUARDIAN_7570:
+				npcContainer.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.VANGUARD:
+			case NpcID.VANGUARD_7526:
+			case NpcID.VANGUARD_7527:
+			case NpcID.VANGUARD_7528:
+			case NpcID.VANGUARD_7529:
+				vanguards++;
+				npcContainer.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.GREAT_OLM_LEFT_CLAW:
+			case NpcID.GREAT_OLM_LEFT_CLAW_7555:
+				hand = npc;
+				break;
 		}
 	}
 
 	private void onNpcDespawned(NpcDespawned event)
 	{
-		if (inRaid())
+		if (!inRaid())
 		{
-			NPC npc = event.getNpc();
-			switch (npc.getId())
-			{
-				case NpcID.TEKTON:
-				case NpcID.TEKTON_7541:
-				case NpcID.TEKTON_7542:
-				case NpcID.TEKTON_7545:
-				case NpcID.TEKTON_ENRAGED:
-				case NpcID.TEKTON_ENRAGED_7544:
-				case NpcID.MUTTADILE:
-				case NpcID.MUTTADILE_7562:
-				case NpcID.MUTTADILE_7563:
-				case NpcID.GUARDIAN:
-				case NpcID.GUARDIAN_7570:
-				case NpcID.GUARDIAN_7571:
-				case NpcID.GUARDIAN_7572:
-					if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
-					{
-						npcContainer.remove(event.getNpc());
-					}
-					break;
-				case NpcID.VANGUARD:
-				case NpcID.VANGUARD_7526:
-				case NpcID.VANGUARD_7527:
-				case NpcID.VANGUARD_7528:
-				case NpcID.VANGUARD_7529:
-					if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
-					{
-						npcContainer.remove(event.getNpc());
-					}
-					vanguards--;
-					break;
-				case NpcID.GREAT_OLM_RIGHT_CLAW_7553:
-				case NpcID.GREAT_OLM_RIGHT_CLAW:
-					HandCripple = false;
-					break;
-			}
+			return;
+		}
+
+		final NPC npc = event.getNpc();
+
+		switch (npc.getId())
+		{
+			case NpcID.TEKTON:
+			case NpcID.TEKTON_7541:
+			case NpcID.TEKTON_7542:
+			case NpcID.TEKTON_7545:
+			case NpcID.TEKTON_ENRAGED:
+			case NpcID.TEKTON_ENRAGED_7544:
+			case NpcID.MUTTADILE:
+			case NpcID.MUTTADILE_7562:
+			case NpcID.MUTTADILE_7563:
+			case NpcID.GUARDIAN:
+			case NpcID.GUARDIAN_7570:
+			case NpcID.GUARDIAN_7571:
+			case NpcID.GUARDIAN_7572:
+				if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
+				{
+					npcContainer.remove(event.getNpc());
+				}
+				break;
+			case NpcID.VANGUARD:
+			case NpcID.VANGUARD_7526:
+			case NpcID.VANGUARD_7527:
+			case NpcID.VANGUARD_7528:
+			case NpcID.VANGUARD_7529:
+				if (npcContainer.remove(event.getNpc()) != null && !npcContainer.isEmpty())
+				{
+					npcContainer.remove(event.getNpc());
+				}
+				vanguards--;
+				break;
+			case NpcID.GREAT_OLM_RIGHT_CLAW_7553:
+			case NpcID.GREAT_OLM_RIGHT_CLAW:
+				handCripple = false;
+				break;
 		}
 	}
 
@@ -449,7 +428,7 @@ public class CoxPlugin extends Plugin
 			sleepcount = 0;
 			Olm_Heal.clear();
 			npcContainer.clear();
-			burnTarget.clear();
+			victims.clear();
 			Olm_NPC = null;
 			hand = null;
 			prayAgainstOlm = null;
@@ -457,7 +436,8 @@ public class CoxPlugin extends Plugin
 			return;
 		}
 
-		npcHandler();
+		handleNpcs();
+		handleVictims();
 
 		if (needOlm = true)
 		{
@@ -472,57 +452,32 @@ public class CoxPlugin extends Plugin
 			}
 		}
 
-		if (teleportTarget != null)
-		{
-			log.info(teleportTarget.getName());
-			Player target = (Player) teleportTarget;
-			client.setHintArrow(target);
-			teleportTicks--;
-			if (teleportTicks <= 0)
-			{
-				client.clearHintArrow();
-				teleportTarget = null;
-				teleportTicks = 10;
-			}
-		}
-
-		if (acidTarget != null)
-		{
-			acidTicks--;
-			if (acidTicks <= 0)
-			{
-				acidTarget = null;
-				acidTicks = 25;
-			}
-		}
-
-		if (burnTarget.size() > 0)
-		{
-			burnTicks--;
-			if (burnTicks <= 0)
-			{
-				burnTarget.clear();
-				burnTicks = 41;
-			}
-		}
-
-		if (HandCripple)
+		if (handCripple)
 		{
 			crippleTimer--;
 			if (crippleTimer <= 0)
 			{
-				HandCripple = false;
+				handCripple = false;
 				crippleTimer = 45;
 			}
 		}
 
 		if (runOlm)
 		{
-			olmHandler();
+			handleOlm();
 		}
 	}
 
-	private void npcHandler()
+	private void handleVictims()
+	{
+		if (victims.size() > 0)
+		{
+			victims.forEach(Victim::updateTicks);
+			victims.removeIf(victim -> victim.getTicks() <= 0);
+		}
+	}
+
+	private void handleNpcs()
 	{
 		for (NPCContainer npcs : getNpcContainer().values())
 		{
@@ -605,7 +560,7 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
-	private void olmHandler()
+	private void handleOlm()
 	{
 		Olm_Crystals.clear();
 		Olm_Heal.clear();
@@ -704,14 +659,6 @@ public class CoxPlugin extends Plugin
 	boolean inRaid()
 	{
 		return client.getVar(Varbits.IN_RAID) == 1;
-	}
-
-	private void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (configChanged.getGroup().equals("Cox"))
-		{
-			updateConfig();
-		}
 	}
 
 	private void updateConfig()

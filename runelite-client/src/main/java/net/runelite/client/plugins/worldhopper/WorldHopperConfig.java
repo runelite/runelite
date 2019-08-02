@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,5 +123,16 @@ public interface WorldHopperConfig extends Config
 	default SubscriptionFilterMode subscriptionFilter()
 	{
 		return SubscriptionFilterMode.BOTH;
+	}
+
+	@ConfigItem(
+		keyName = "displayPing",
+		name = "Display current ping",
+		description = "Displays ping to current game world",
+		position = 7
+	)
+	default boolean displayPing()
+	{
+		return false;
 	}
 }

@@ -1,3 +1,6 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.github.johnrengelman.shadow' version '5.1.0'
     id 'java'
@@ -58,6 +61,23 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compileOnly group: 'net.runelite', name: 'orange-extensions', version: '1.0'
+}
+
+static def getDate() {
+    return new SimpleDateFormat("MM-dd-yyyy", Locale.forLanguageTag("en-US")).format(new Date())
+}
+
+def buildDate = getDate()
+
+processResources {
+    from file("src/main/resources/runelite.plus.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "project.version": project.version,
+                "rs.version": rsversion.toString(),
+                "runelite.plus.version": plusVersion.toString(),
+                "runelite.plus.builddate": buildDate.toString()
+        ])
+    }
 }
 
 tasks.withType(AbstractArchiveTask) {

@@ -278,7 +278,7 @@ public class WorldMapOverlay extends Overlay
 		graphics.setColor(JagexColors.TOOLTIP_BORDER);
 		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
 		graphics.setColor(JagexColors.TOOLTIP_TEXT);
-		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + fm.getMaxAscent());
+		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
 	}
 
 	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)

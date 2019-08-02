@@ -24,18 +24,29 @@
  */
 package net.runelite.client;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLitePlusConfig;
-import net.runelite.http.api.RuneLiteAPI;
 
 @Singleton
 @Slf4j
 public class RuneLiteProperties
 {
-	private static final String DISCORD_APP_ID_PLUS = "560644885250572289";
+	private static final String RUNELITE_TITLE = "runelite.plus.title";
+	private static final String RUNELITE_VERSION = "runelite.version";
+	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
+	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
+	private static final String RUNESCAPE_VERSION = "runescape.version";
+	private static final String DISCORD_APP_ID = "runelite.plus.discord.appid";
+	private static final String DISCORD_INVITE = "runelite.discord.invite";
+	private static final String GITHUB_LINK = "runelite.github.link";
+	private static final String WIKI_LINK = "runelite.wiki.link";
+	private static final String PATREON_LINK = "runelite.patreon.link";
+	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
 
 	private final Properties properties = new Properties();
 
@@ -45,6 +56,15 @@ public class RuneLiteProperties
 	public RuneLiteProperties(final RuneLitePlusConfig runeLiteConfig)
 	{
 		this.runeLitePlusConfig = runeLiteConfig;
+
+		try (InputStream in = getClass().getResourceAsStream("/runelite.plus.properties"))
+		{
+			properties.load(in);
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to load propertries", ex);
+		}
 	}
 
 	public RuneLiteProperties()
@@ -54,7 +74,7 @@ public class RuneLiteProperties
 
 	public String getTitle()
 	{
-		final StringBuilder sb = new StringBuilder("RuneLitePlus");
+		final StringBuilder sb = new StringBuilder(properties.getProperty(RUNELITE_TITLE));
 		String proxy;
 		if ((proxy = System.getProperty("socksProxyHost")) != null)
 		{
@@ -65,41 +85,46 @@ public class RuneLiteProperties
 
 	public String getVersion()
 	{
-		return RuneLiteAPI.getVersion();
+		return properties.getProperty(RUNELITE_VERSION);
 	}
 
 	public String getPlusVersion()
 	{
-		return RuneLite.PLUS_VERSION;
+		return properties.getProperty(RUNELITE_PLUS_VERSION);
+	}
+
+	public String getPlusDate()
+	{
+		return properties.getProperty(RUNELITE_PLUS_DATE);
 	}
 
 	public String getRunescapeVersion()
 	{
-		return "" + RuneLiteAPI.getRsVersion();
+		return properties.getProperty(RUNESCAPE_VERSION);
 	}
 
 	public String getDiscordAppId()
 	{
-		return DISCORD_APP_ID_PLUS;
+		return properties.getProperty(DISCORD_APP_ID);
 	}
 
 	public String getDiscordInvite()
 	{
-		return "https://discord.gg/HN5gf3m";
+		return properties.getProperty(DISCORD_INVITE);
 	}
 
 	public String getGithubLink()
 	{
-		return "https://github.com/runelite-extended/runelite";
+		return properties.getProperty(GITHUB_LINK);
 	}
 
 	public String getWikiLink()
 	{
-		return "https://github.com/runelite-extended/runelite/wiki";
+		return properties.getProperty(WIKI_LINK);
 	}
 
 	public String getPatreonLink()
 	{
-		return "https://www.patreon.com/RuneLitePlus";
+		return properties.getProperty(PATREON_LINK);
 	}
 }

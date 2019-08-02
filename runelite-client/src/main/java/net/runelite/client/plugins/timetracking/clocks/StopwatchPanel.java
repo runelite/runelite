@@ -129,7 +129,7 @@ class StopwatchPanel extends ClockPanel
 	private JLabel createSmallLabel(String text)
 	{
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
-		label.setFont(FontManager.getSmallFont(getFont()));
+		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setForeground(LAP_DATA_COLOR);
 
 		return label;

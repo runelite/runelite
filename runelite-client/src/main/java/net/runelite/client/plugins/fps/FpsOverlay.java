@@ -26,14 +26,14 @@ package net.runelite.client.plugins.fps;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -51,6 +51,10 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class FpsOverlay extends Overlay
 {
+	private static final int Y_OFFSET = 1;
+	private static final int X_OFFSET = 1;
+	private static final String FPS_STRING = " FPS";
+
 	// Local dependencies
 	private final Client client;
 	private final FpsPlugin plugin;
@@ -84,62 +88,30 @@ public class FpsOverlay extends Overlay
 		return isEnforced() ? Color.red : Color.yellow;
 	}
 
-	private static Color getPingColor(int ping)
-	{
-		if (ping >= 100 || ping < 0)
-		{
-			return Color.red;
-		}
-		else if (ping >= 50)
-		{
-			return Color.yellow;
-		}
-		return Color.green;
-	}
-
-	private int calculateOffset()
-	{
-		if ((client.getVar(Varbits.SIDE_PANELS) == 1) && client.isResized())
-		{
-			return 27;
-		}
-
-		return 2;
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isDrawFps() && !plugin.isDrawPing())
+		if (!plugin.isDrawFps())
 		{
 			return null;
 		}
 
-		final int offset = calculateOffset();
+		// On resizable bottom line mode the logout button is at the top right, so offset the overlay
+		// to account for it
+		Widget logoutButton = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON);
+		int xOffset = X_OFFSET;
+		if (logoutButton != null && !logoutButton.isHidden())
+		{
+			xOffset += logoutButton.getWidth();
+		}
+
+		final String text = client.getFPS() + FPS_STRING;
+		final int textWidth = graphics.getFontMetrics().stringWidth(text);
+		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
+
 		final int width = (int) client.getRealDimensions().getWidth();
-		final FontMetrics fontMetrics = graphics.getFontMetrics();
-
-		int baseYOffset = (fontMetrics.getAscent() - fontMetrics.getDescent()) + 1;
-
-		if (plugin.isDrawFps())
-		{
-			final String fpsText = String.format("%d FPS", client.getFPS());
-			final int textWidth = fontMetrics.stringWidth(fpsText);
-
-			final Point point = new Point(width - textWidth - offset, baseYOffset);
-			OverlayUtil.renderTextLocation(graphics, point, fpsText, getFpsValueColor());
-
-			baseYOffset += 11;
-		}
-
-		if (plugin.isDrawPing())
-		{
-			final String pingText = String.format("%dms", plugin.getPing());
-			final int textWidth = fontMetrics.stringWidth(pingText);
-
-			final Point point = new Point(width - textWidth - offset, baseYOffset);
-			OverlayUtil.renderTextLocation(graphics, point, pingText, getPingColor(plugin.getPing()));
-		}
+		final Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
+		OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
 
 		return null;
 	}

@@ -24,6 +24,9 @@
  */
 package net.runelite.mixins;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -40,6 +43,12 @@ import net.runelite.rs.api.RSScene;
 @Mixin(RSScene.class)
 public abstract class EntityHiderMixin implements RSScene
 {
+	@Inject
+	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
+
+	@Inject
+	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+
 	@Shadow("client")
 	private static RSClient client;
 
@@ -68,7 +77,10 @@ public abstract class EntityHiderMixin implements RSScene
 	private static boolean hideNPCs;
 
 	@Shadow("hideNPCsNames")
-	private  static String hideNPCsNames;
+	private static List<String> hideNPCsNames;
+
+	@Shadow("hideNPCsOnDeath")
+	private static List<String> hideNPCsOnDeath;
 
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
@@ -78,6 +90,9 @@ public abstract class EntityHiderMixin implements RSScene
 
 	@Shadow("hideProjectiles")
 	private static boolean hideProjectiles;
+
+	@Shadow("hideDeadNPCs")
+	private static boolean hideDeadNPCs;
 
 	@Copy("newGameObject")
 	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13);
@@ -154,7 +169,6 @@ public abstract class EntityHiderMixin implements RSScene
 		else if (renderable instanceof RSNPC)
 		{
 			RSNPC npc = (RSNPC) renderable;
-			String[] names = hideNPCsNames.split(",");
 
 			if (!hideAttackers)
 			{
@@ -164,16 +178,29 @@ public abstract class EntityHiderMixin implements RSScene
 				}
 			}
 
-			for (String name : names)
+			if (hideDeadNPCs && npc.getHealthRatio() == 0)
+			{
+				return false;
+			}
+
+			for (String name : hideNPCsNames)
 			{
 				if (name != null && !name.equals(""))
 				{
-					if (npc.getName() != null)
+					if (npc.getName() != null && matches(name, npc.getName()))
 					{
-						if (npc.getName().startsWith(name))
-						{
-							return false;
-						}
+						return false;
+					}
+				}
+			}
+
+			for (String name : hideNPCsOnDeath)
+			{
+				if (name != null && !name.equals(""))
+				{
+					if (npc.getName() != null && matches(name, npc.getName()) && npc.getHealthRatio() == 0)
+					{
+						return false;
 					}
 				}
 			}
@@ -186,5 +213,35 @@ public abstract class EntityHiderMixin implements RSScene
 		}
 
 		return true;
+	}
+
+	@Inject
+	static private boolean matches(String pattern, String text)
+	{
+		String standardized = TAG_REGEXP.matcher(text)
+			.replaceAll("")
+			.replace('\u00A0', ' ')
+			.toLowerCase();
+
+		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern.toLowerCase());
+		final StringBuffer buffer = new StringBuffer();
+
+		buffer.append("(?i)");
+		while (matcher.find())
+		{
+			if (matcher.group(1) != null)
+			{
+				matcher.appendReplacement(buffer, ".*");
+			}
+			else
+			{
+				matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
+			}
+		}
+
+		matcher.appendTail(buffer);
+		final String replaced = buffer.toString();
+
+		return standardized.matches(replaced);
 	}
 }

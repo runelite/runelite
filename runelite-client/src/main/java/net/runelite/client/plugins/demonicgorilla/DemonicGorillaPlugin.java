@@ -24,12 +24,14 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -54,7 +56,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -69,6 +71,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class DemonicGorillaPlugin extends Plugin
 {
+	private static final Set<Integer> DEMONIC_PROJECTILES = ImmutableSet.of(ProjectileID.DEMONIC_GORILLA_RANGED, ProjectileID.DEMONIC_GORILLA_MAGIC, ProjectileID.DEMONIC_GORILLA_BOULDER);
+
 	@Inject
 	private Client client;
 
@@ -118,7 +122,7 @@ public class DemonicGorillaPlugin extends Plugin
 
 	private void addSubscriptions()
 	{
-		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
 		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
@@ -175,8 +179,7 @@ public class DemonicGorillaPlugin extends Plugin
 			npcId == NpcID.DEMONIC_GORILLA_7149;
 	}
 
-	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
-											final DemonicGorilla.AttackStyle... protectedStyles)
+	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla, final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
 			gorilla.getNextPosibleAttackStyles().isEmpty())
@@ -545,35 +548,27 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	private void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		Projectile projectile = event.getProjectile();
-		int projectileId = projectile.getId();
-		if (projectileId != ProjectileID.DEMONIC_GORILLA_RANGED &&
-			projectileId != ProjectileID.DEMONIC_GORILLA_MAGIC &&
-			projectileId != ProjectileID.DEMONIC_GORILLA_BOULDER)
+		final Projectile projectile = event.getProjectile();
+		final int projectileId = projectile.getId();
+
+		if (!DEMONIC_PROJECTILES.contains(projectileId))
 		{
 			return;
 		}
 
-		// The event fires once before the projectile starts moving,
-		// and we only want to check each projectile once
-		if (client.getGameCycle() >= projectile.getStartMovementCycle())
-		{
-			return;
-		}
+		final WorldPoint loc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 		if (projectileId == ProjectileID.DEMONIC_GORILLA_BOULDER)
 		{
-			recentBoulders.add(WorldPoint.fromLocal(client, event.getPosition()));
+			recentBoulders.add(loc);
 		}
 		else
 		{
-			WorldPoint projectileSourcePosition = WorldPoint.fromLocal(
-				client, projectile.getX1(), projectile.getY1(), client.getPlane());
 			for (DemonicGorilla gorilla : gorillas.values())
 			{
-				if (gorilla.getNpc().getWorldLocation().distanceTo(projectileSourcePosition) == 0)
+				if (gorilla.getNpc().getWorldLocation().distanceTo(loc) == 0)
 				{
 					gorilla.setRecentProjectileId(projectile.getId());
 				}

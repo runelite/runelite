@@ -35,6 +35,7 @@ import net.runelite.asm.attributes.code.LocalVariable;
 import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
+import net.runelite.deob.DeobAnnotations;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -191,6 +192,17 @@ public class Method
 	public void setDescriptor(Signature signature)
 	{
 		this.arguments = signature;
+	}
+
+	public Signature getObfuscatedSignature()
+	{
+		Signature sig = DeobAnnotations.getObfuscatedSignature(this);
+		if (sig == null)
+		{
+			sig = arguments;
+		}
+
+		return sig;
 	}
 
 	public boolean isNative()

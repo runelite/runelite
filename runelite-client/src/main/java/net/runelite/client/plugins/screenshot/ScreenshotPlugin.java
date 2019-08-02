@@ -115,9 +115,9 @@ import okhttp3.Response;
 import org.jetbrains.annotations.Nullable;
 
 @PluginDescriptor(
-		name = "Screenshot",
-		description = "Enable the manual and automatic taking of screenshots",
-		tags = {"external", "images", "imgur", "integration", "notifications"}
+	name = "Screenshot",
+	description = "Enable the manual and automatic taking of screenshots",
+	tags = {"external", "images", "imgur", "integration", "notifications"}
 )
 @Slf4j
 @Singleton
@@ -136,8 +136,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-			"You feel something weird sneaking into your backpack",
-			"You have a funny feeling like you would have been followed");
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
 
 	private static String format(Date date)
 	{
@@ -253,25 +253,25 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-				.tab(false)
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(() -> takeScreenshot(format(new Date())))
-				.popup(ImmutableMap
-						.<String, Runnable>builder()
-						.put("Open screenshot folder...", () ->
-						{
-							try
-							{
-								Desktop.getDesktop().open(SCREENSHOT_DIR);
-							}
-							catch (IOException ex)
-							{
-								log.warn("Error opening screenshot dir", ex);
-							}
-						})
-						.build())
-				.build();
+			.tab(false)
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(() -> takeScreenshot(format(new Date())))
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					try
+					{
+						Desktop.getDesktop().open(SCREENSHOT_DIR);
+					}
+					catch (IOException ex)
+					{
+						log.warn("Error opening screenshot dir", ex);
+					}
+				})
+				.build())
+			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
 
@@ -302,7 +302,7 @@ public class ScreenshotPlugin extends Plugin
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN
-				&& reportButton == null)
+			&& reportButton == null)
 		{
 			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
 		}
@@ -358,9 +358,17 @@ public class ScreenshotPlugin extends Plugin
 
 	private void onAnimationChanged(AnimationChanged e)
 	{
-		//this got refactored somewhere, but some things were missing
-		if (!this.screenshotFriendDeath || !this.screenshotPlayerDeath)
+
+		if (e.getActor().getAnimation() != 836)
+		{
 			return;
+		}
+
+		if (this.screenshotPlayerDeath && client.getLocalPlayer().equals(e.getActor()))
+		{
+			takeScreenshot("Death - " + format(new Date()));
+		}
+
 
 		if (!(e.getActor() instanceof Player))
 			return;
@@ -705,7 +713,7 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-				executor.submit(() -> takeScreenshot(fileName, img, subdirectory));
+			executor.submit(() -> takeScreenshot(fileName, img, subdirectory));
 
 		};
 
@@ -721,8 +729,8 @@ public class ScreenshotPlugin extends Plugin
 	private void takeScreenshot(String fileName, Image image, @Nullable String subdirectory)
 	{
 		BufferedImage screenshot = this.includeFrame
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
 		Graphics graphics = screenshot.getGraphics();
 
@@ -826,10 +834,10 @@ public class ScreenshotPlugin extends Plugin
 		{
 			RequestBody body = RequestBody.Companion.create(json, JSON);
 			request = new Request.Builder()
-					.url(IMGUR_IMAGE_UPLOAD_URL)
-					.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-					.post(body)
-					.build();
+				.url(IMGUR_IMAGE_UPLOAD_URL)
+				.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+				.post(body)
+				.build();
 		}
 
 		if (request != null)
@@ -848,13 +856,13 @@ public class ScreenshotPlugin extends Plugin
 					try (InputStream in = response.body().byteStream())
 					{
 						ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-								.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+							.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
 
 						if (imageUploadResponse.isSuccess())
 						{
 							String link = imageUploadResponse.getData().getLink();
 
-						Clipboard.store(link);
+							Clipboard.store(link);
 
 							if (notifyWhenTaken)
 							{

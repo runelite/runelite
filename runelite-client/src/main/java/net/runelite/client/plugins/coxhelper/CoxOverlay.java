@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.coxhelper;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,6 +33,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
@@ -53,6 +55,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class CoxOverlay extends Overlay
 {
+	private static final Set<Integer> GAP = ImmutableSet.of(
+		34, 33, 26, 25, 18, 17, 10, 9, 2, 1
+	);
 	private final Client client;
 	private final CoxPlugin plugin;
 
@@ -105,7 +110,6 @@ public class CoxOverlay extends Overlay
 							if (plugin.isTektonTickCounter())
 							{
 								ticksLeft = npcs.getTicksUntilAttack();
-								int attackTicksleft = plugin.getTektonAttackTicks();
 								if (ticksLeft > 0)
 								{
 									if (ticksLeft == 1)
@@ -214,67 +218,67 @@ public class CoxOverlay extends Overlay
 
 			if (plugin.isTimers())
 			{
-				if (plugin.getBurnTarget().size() > 0)
+				if (plugin.getVictims().size() > 0)
 				{
-					for (Actor actor : plugin.getBurnTarget())
+					plugin.getVictims().forEach(victim ->
 					{
-						final int ticksLeft = plugin.getBurnTicks();
+						final int ticksLeft = victim.getTicks();
 						String ticksLeftStr = String.valueOf(ticksLeft);
 						Color tickcolor;
-						if (ticksLeft >= 0)
+						switch (victim.getType())
 						{
-							if (ticksLeft == 34 ||
-								ticksLeft == 33 ||
-								ticksLeft == 26 ||
-								ticksLeft == 25 ||
-								ticksLeft == 18 ||
-								ticksLeft == 17 ||
-								ticksLeft == 10 ||
-								ticksLeft == 9 ||
-								ticksLeft == 2 ||
-								ticksLeft == 1)
-							{
-								tickcolor = new Color(255, 0, 0, 255);
-								ticksLeftStr = "GAP";
-							}
-							else
-							{
-								tickcolor = new Color(255, 255, 255, 255);
-							}
-							Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
-							renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
+							case ACID:
+								if (ticksLeft > 0)
+								{
+									if (ticksLeft > 1)
+									{
+										tickcolor = new Color(69, 241, 44, 255);
+									}
+									else
+									{
+										tickcolor = new Color(255, 255, 255, 255);
+									}
+									Point canvasPoint = victim.getPlayer().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+									renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
+								}
+								break;
+							case BURN:
+								if (ticksLeft > 0)
+								{
+									if (GAP.contains(ticksLeft))
+									{
+										tickcolor = new Color(255, 0, 0, 255);
+										ticksLeftStr = "GAP";
+									}
+									else
+									{
+										tickcolor = new Color(255, 255, 255, 255);
+									}
+									Point canvasPoint = victim.getPlayer().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+									renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
+								}
+								break;
+							case TELEPORT:
+								if (plugin.isTpOverlay())
+								{
+									if (ticksLeft > 0)
+									{
+										if (ticksLeft > 1)
+										{
+											tickcolor = new Color(193, 255, 245, 255);
+										}
+										else
+										{
+											tickcolor = new Color(255, 255, 255, 255);
+										}
+										Point canvasPoint = victim.getPlayer().getCanvasTextLocation(graphics, ticksLeftStr, 0);
+										renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
+									}
+									renderActorOverlay(graphics, victim.getPlayer(), new Color(193, 255, 245, 255), 2, 100, 10);
+								}
+								break;
 						}
-					}
-				}
-
-				if (plugin.getAcidTarget() != null)
-				{
-					Actor actor = plugin.getAcidTarget();
-					renderActorOverlay(graphics, actor, plugin.getAcidColor(), 2, 100, 10);
-					final int ticksLeft = plugin.getAcidTicks();
-					Color tickcolor;
-					if (ticksLeft > 0)
-					{
-						if (ticksLeft > 1)
-						{
-							tickcolor = new Color(69, 241, 44, 255);
-						}
-						else
-						{
-							tickcolor = new Color(255, 255, 255, 255);
-						}
-						final String ticksLeftStr = String.valueOf(ticksLeft);
-						Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
-						renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
-					}
-				}
-			}
-
-			if (plugin.isTpOverlay())
-			{
-				if (plugin.getTeleportTarget() != null)
-				{
-					renderActorOverlay(graphics, plugin.getTeleportTarget(), new Color(193, 255, 245, 255), 2, 100, 10);
+					});
 				}
 			}
 

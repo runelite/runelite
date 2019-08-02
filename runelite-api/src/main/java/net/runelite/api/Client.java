@@ -1452,9 +1452,16 @@ public interface Client extends GameShell
 	/**
 	 * Sets which NPCs are hidden
 	 *
-	 * @param names the names of the npcs seperated by ','
+	 * @param names the names of the npcs
 	 */
-	void setNPCsNames(String names);
+	void setNPCsNames(List<String> names);
+
+	/**
+	 * Sets which NPCs are hidden on death
+	 *
+	 * @param names the names of the npcs
+	 */
+	void setNPCsHiddenOnDeath(List<String> names);
 
 	/**
 	 * Sets whether 2D sprites (ie. overhead prayers) related to
@@ -1477,6 +1484,13 @@ public interface Client extends GameShell
 	 * @param state new projectile hidden state
 	 */
 	void setProjectilesHidden(boolean state);
+
+	/**
+	 * Sets whether dead NPCs are hidden.
+	 *
+	 * @param state new NPC hidden state
+	 */
+	void setDeadNPCsHidden(boolean state);
 
 	/**
 	 * Gets an array of tile collision data.
@@ -1678,9 +1692,9 @@ public interface Client extends GameShell
 	MouseRecorder getMouseRecorder();
 
 	void setPrintMenuActions(boolean b);
-	
+
 	String getSelectedSpellName();
-	
+
 	boolean isSpellSelected();
 
 	/**
@@ -1707,7 +1721,7 @@ public interface Client extends GameShell
 	 * Set spells excluded from above hiding
 	 */
 	void setUnhiddenCasts(Set<String> casts);
-	
+
 	/**
 	 * Sorts the current menu entries in the same way the client does this.
 	 * The last entry will be the left click one after this.

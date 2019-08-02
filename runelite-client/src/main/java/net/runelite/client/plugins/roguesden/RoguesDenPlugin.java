@@ -25,18 +25,19 @@
 package net.runelite.client.plugins.roguesden;
 
 import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.MYSTIC_JEWEL;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -45,24 +46,27 @@ import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
-		name = "Rogues' Den",
-		description = "Mark tiles and clickboxes to help traverse the maze",
-		tags = {"agility", "maze", "minigame", "overlay", "thieving"}
+	name = "Rogues' Den",
+	description = "Mark tiles and clickboxes to help traverse the maze",
+	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )
-@Singleton
 public class RoguesDenPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<TileObject, Tile> obstaclesHull = new HashMap<>();
+	private final HashMap<TileObject, Tile> obstaclesHull = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<TileObject, Tile> obstaclesTile = new HashMap<>();
+	private final HashMap<TileObject, Tile> obstaclesTile = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean hasGem;
@@ -77,6 +81,9 @@ public class RoguesDenPlugin extends Plugin
 	private RoguesDenOverlay overlay;
 
 	@Inject
+	private RoguesDenMinimapOverlay minimapOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Override
@@ -85,6 +92,7 @@ public class RoguesDenPlugin extends Plugin
 		addSubscriptions();
 
 		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
@@ -93,6 +101,7 @@ public class RoguesDenPlugin extends Plugin
 		eventBus.unregister(this);
 
 		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 		obstaclesHull.clear();
 		obstaclesTile.clear();
 		hasGem = false;
@@ -108,6 +117,12 @@ public class RoguesDenPlugin extends Plugin
 		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
 		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
+		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
+		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
+		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventBus.subscribe(DecorativeObjectChanged.class, this, this::onDecorativeObjectChanged);
+		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
 	}
 
 	private void onItemContainerChanged(ItemContainerChanged event)
@@ -117,16 +132,16 @@ public class RoguesDenPlugin extends Plugin
 			return;
 		}
 
-		for (Item item : event.getItemContainer().getItems())
-		{
-			if (item.getId() == ItemID.MYSTIC_JEWEL)
-			{
-				hasGem = true;
-				return;
-			}
-		}
+		hasGem = ItemUtil.containsItemId(event.getItemContainer().getItems(), MYSTIC_JEWEL);
+	}
 
-		hasGem = false;
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			obstaclesHull.clear();
+			obstaclesTile.clear();
+		}
 	}
 
 	private void onGameObjectSpawned(GameObjectSpawned event)
@@ -159,27 +174,48 @@ public class RoguesDenPlugin extends Plugin
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			obstaclesHull.clear();
-			obstaclesTile.clear();
-		}
+		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
-	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
+	private void onWallObjectChanged(WallObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
+	}
+
+	private void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getWallObject(), null);
+	}
+
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getDecorativeObject());
+	}
+
+	private void onDecorativeObjectChanged(DecorativeObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
+	}
+
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getDecorativeObject(), null);
+	}
+
+	private void onTileObject(final Tile tile, final TileObject oldObject, final TileObject newObject)
 	{
 		obstaclesHull.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_HULL.contains(newObject.getId()))
+		if (newObject != null)
 		{
-			obstaclesHull.put(newObject, tile);
-		}
+			WorldPoint point = tile.getWorldLocation();
 
-		obstaclesTile.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_TILE.contains(newObject.getId()))
-		{
-			obstaclesTile.put(newObject, tile);
+			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point);
+			if (obstacle != null && obstacle.getObjectId() == newObject.getId())
+			{
+				obstaclesHull.put(newObject, tile);
+			}
 		}
 	}
 }

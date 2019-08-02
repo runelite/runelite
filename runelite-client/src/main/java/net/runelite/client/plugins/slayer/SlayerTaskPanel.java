@@ -195,8 +195,8 @@ public class SlayerTaskPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
-		overallKillsLabel.setFont(FontManager.getSmallFont(getFont()));
-		overallTimeLabel.setFont(FontManager.getSmallFont(getFont()));
+		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallTimeLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallTimeLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);

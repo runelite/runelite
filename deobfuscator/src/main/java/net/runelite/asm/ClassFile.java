@@ -30,6 +30,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
+import static net.runelite.deob.DeobAnnotations.*;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -306,6 +307,20 @@ public class ClassFile
 			}
 		}
 		return null;
+	}
+
+	public Method findObfStaticMethod(String name, Signature type)
+	{
+		for (Method m : methods)
+		{
+			if (m.isStatic() &&
+				name.equals(getObfuscatedName(m.getAnnotations())) &&
+				type.equals(getObfuscatedSignature(m)))
+			{
+				return m;
+			}
+		}
+		return findMethodDeepStatic(name, type);
 	}
 
 	public Method findMethod(String name)

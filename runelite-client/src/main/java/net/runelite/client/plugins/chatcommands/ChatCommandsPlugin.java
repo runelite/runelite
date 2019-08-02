@@ -87,12 +87,12 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap) count is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
-	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+)");
-	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?:Fight|Lap) duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
+	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>[0-9:]+</col>\\. Personal best: ([0-9:]+)");
+	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
@@ -113,6 +113,7 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean logKills;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
+	private int lastPb = -1;
 
 	@Inject
 	private Client client;
@@ -244,7 +245,17 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
-			lastBossKill = boss;
+			// We either already have the pb, or need to remember the boss for the upcoming pb
+			if (lastPb > -1)
+			{
+				log.debug("Got out-of-order personal best for {}: {}", boss, lastPb);
+				setPb(boss, lastPb);
+				lastPb = -1;
+			}
+			else
+			{
+				lastBossKill = boss;
+			}
 			return;
 		}
 
@@ -312,19 +323,16 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Barrows Chests", kc);
 		}
 
-		if (lastBossKill != null)
+		matcher = KILL_DURATION_PATTERN.matcher(message);
+		if (matcher.find())
 		{
-			matcher = KILL_DURATION_PATTERN.matcher(message);
-			if (matcher.find())
-			{
-				matchPb(matcher);
-			}
+			matchPb(matcher);
+		}
 
-			matcher = NEW_PB_PATTERN.matcher(message);
-			if (matcher.find())
-			{
-				matchPb(matcher);
-			}
+		matcher = NEW_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
 		}
 
 		lastBossKill = null;
@@ -337,8 +345,19 @@ public class ChatCommandsPlugin extends Plugin
 		if (s.length == 2)
 		{
 			int seconds = Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]);
-			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
-			setPb(lastBossKill, seconds);
+			if (lastBossKill != null)
+			{
+				// Most bosses sent boss kill message, and then pb message, so we
+				// use the remembered lastBossKill
+				log.debug("Got personal best for {}: {}", lastBossKill, seconds);
+				setPb(lastBossKill, seconds);
+				lastPb = -1;
+			}
+			else
+			{
+				// Some bosses send the pb message, and then the kill message!
+				lastPb = seconds;
+			}
 		}
 	}
 
@@ -1381,6 +1400,16 @@ public class ChatCommandsPlugin extends Plugin
 			case "prif":
 			case "prifddinas":
 				return "Prifddinas Agility Course";
+
+			// The Gauntlet
+			case "gaunt":
+			case "gauntlet":
+				return "Gauntlet";
+
+			// Corrupted Gauntlet
+			case "cgaunt":
+			case "cgauntlet":
+				return "Corrupted Gauntlet";
 
 			default:
 				return WordUtils.capitalize(boss);

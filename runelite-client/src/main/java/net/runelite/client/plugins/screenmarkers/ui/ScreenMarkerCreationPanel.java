@@ -71,7 +71,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		setBorder(new EmptyBorder(8, 8, 8, 8));
 		setLayout(new BorderLayout());
 
-		instructionsLabel.setFont(FontManager.getSmallFont(getFont()));
+		instructionsLabel.setFont(FontManager.getRunescapeSmallFont());
 		instructionsLabel.setForeground(Color.WHITE);
 
 		JPanel actionsContainer = new JPanel(new GridLayout(1, 2, 8, 0));

@@ -77,15 +77,15 @@ public class ProgressBar extends DimmableJPanel
 			topIndent = 2;
 		}
 
-		leftLabel.setFont(FontManager.getSmallFont(getFont()));
+		leftLabel.setFont(FontManager.getRunescapeSmallFont());
 		leftLabel.setForeground(Color.WHITE);
 		leftLabel.setBorder(new EmptyBorder(topIndent, 5, 0, 0));
 
-		rightLabel.setFont(FontManager.getSmallFont(getFont()));
+		rightLabel.setFont(FontManager.getRunescapeSmallFont());
 		rightLabel.setForeground(Color.WHITE);
 		rightLabel.setBorder(new EmptyBorder(topIndent, 0, 0, 5));
 
-		centerLabel.setFont(FontManager.getSmallFont(getFont()));
+		centerLabel.setFont(FontManager.getRunescapeSmallFont());
 		centerLabel.setForeground(Color.WHITE);
 		centerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		centerLabel.setBorder(new EmptyBorder(topIndent, 0, 0, 0));

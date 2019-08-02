@@ -27,7 +27,6 @@ package net.runelite.client.plugins.cannon;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -52,7 +51,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -60,7 +59,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ItemUtil;
@@ -77,57 +75,39 @@ public class CannonPlugin extends Plugin
 	private static final ImmutableSet<Integer> CANNON_PARTS = ImmutableSet.of(
 		ItemID.CANNON_BASE, ItemID.CANNON_STAND, ItemID.CANNON_BARRELS, ItemID.CANNON_FURNACE
 	);
-
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
-
 	@Getter(AccessLevel.PACKAGE)
 	private int cballsLeft;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean cannonPlaced;
-
 	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint cannonPosition;
-
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject cannon;
-
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> spotPoints = new ArrayList<>();
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private CannonOverlay cannonOverlay;
-
 	@Inject
 	private CannonSpotOverlay cannonSpotOverlay;
-
 	@Inject
 	private CannonConfig config;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private EventBus eventbus;
-
 	private boolean lock;
-
 	private boolean showEmptyCannonNotification;
 	private boolean showInfobox;
 	@Getter(AccessLevel.PACKAGE)
@@ -178,7 +158,7 @@ public class CannonPlugin extends Plugin
 		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventbus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventbus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
+		eventbus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
 		eventbus.subscribe(ChatMessage.class, this, this::onChatMessage);
 		eventbus.subscribe(GameTick.class, this, this::onGameTick);
 	}
@@ -211,37 +191,13 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
-
-	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkSpots()
-	{
-		if (!this.showCannonSpots)
-		{
-			return;
-		}
-
-		spotPoints.clear();
-		for (WorldPoint spot : CannonSpots.getCannonSpots())
-		{
-			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
-			{
-				continue;
-			}
-
-			spotPoints.add(spot);
-		}
 	}
 
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
+		final GameObject gameObject = event.getGameObject();
 
-		Player localPlayer = client.getLocalPlayer();
+		final Player localPlayer = client.getLocalPlayer();
 		if (gameObject.getId() == CANNON_BASE && !cannonPlaced &&
 			localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2 &&
 			localPlayer.getAnimation() == AnimationID.BURYING_BONES)
@@ -251,22 +207,15 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	private void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		Projectile projectile = event.getProjectile();
+		final Projectile projectile = event.getProjectile();
 
 		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
 		{
-			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
+			final WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
-			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0 &&
-				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
-				// the message event runs before the projectile event. However they run
-				// in the opposite order on the server. So if both fires in the same tick,
-				// we don't want to update the cannonball counter if it was set to a specific
-				// amount.
-				!skipProjectileCheckThisTick)
+			if (projectileLoc.equals(cannonPosition) && !skipProjectileCheckThisTick)
 			{
 				cballsLeft--;
 			}

@@ -111,8 +111,8 @@ class XpPanel extends PluginPanel
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-		overallExpGained.setFont(FontManager.getSmallFont(getFont()));
-		overallExpHour.setFont(FontManager.getSmallFont(getFont()));
+		overallExpGained.setFont(FontManager.getRunescapeSmallFont());
+		overallExpHour.setFont(FontManager.getRunescapeSmallFont());
 
 		overallInfo.add(overallExpGained);
 		overallInfo.add(overallExpHour);

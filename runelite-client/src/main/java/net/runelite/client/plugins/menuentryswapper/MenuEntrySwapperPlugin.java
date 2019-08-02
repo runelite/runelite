@@ -87,6 +87,7 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
+import net.runelite.client.plugins.menuentryswapper.util.ConstructionCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.DigsitePendantMode;
 import net.runelite.client.plugins.menuentryswapper.util.DuelingRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
@@ -102,7 +103,6 @@ import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
-import net.runelite.client.plugins.menuentryswapper.util.teleEquippedMode;
 import net.runelite.client.plugins.pvptools.PvpToolsConfig;
 import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import static net.runelite.client.util.MenuUtil.swap;
@@ -187,6 +187,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean configuringShiftClick = false;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean shiftModifier = false;
+
 	private boolean getWithdrawOne;
 	private String getWithdrawOneItems;
 	private boolean getWithdrawFive;
@@ -199,11 +200,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getWithdrawAll;
 	private String getWithdrawAllItems;
 	private boolean swapMax;
-	private boolean teleEquippedCape;
-	private teleEquippedMode telecapeMode;
 	private MaxCapeMode maxMode;
 	private boolean getSwapArdougneCape;
 	private boolean getSwapConstructionCape;
+	private ConstructionCapeMode constructionCapeMode;
 	private boolean getSwapCraftingCape;
 	private boolean getSwapMagicCape;
 	private boolean getSwapExplorersRing;
@@ -251,7 +251,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private String getSellFiftyItems;
 	private boolean getEasyConstruction;
 	private String getEasyConstructionItems;
-	private boolean getSwapSmithing;
 	private boolean getSwapTanning;
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
@@ -1093,12 +1092,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.addPriorityEntry("Sell-50", item));
 		}
 
-		if (this.getSwapSmithing)
-		{
-			menuManager.addPriorityEntry("Smith All");
-			menuManager.addPriorityEntry("Smith All Sets");
-		}
-
 		if (this.getSwapTanning)
 		{
 			menuManager.addPriorityEntry("Tan All");
@@ -1128,8 +1121,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getSwapConstructionCape)
 		{
-			menuManager.addPriorityEntry("Tele to poh", "Construct. cape");
-			menuManager.addPriorityEntry("Tele to poh", "Construct. cape(t)");
+			menuManager.addPriorityEntry(constructionCapeMode.toString(), "Construct. cape");
+			menuManager.addPriorityEntry(constructionCapeMode.toString(), "Construct. cape(t)");
 		}
 
 		if (this.getSwapMagicCape)
@@ -1394,12 +1387,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.swapHardWoodGrove)
 		{
 			menuManager.addPriorityEntry("Quick-pay(100)", "Hardwood grove doors");
-		}
-
-		if (this.teleEquippedCape)
-		{
-			menuManager.addPriorityEntry(this.telecapeMode.toString(), "tele to poh");
-			menuManager.addPriorityEntry(this.telecapeMode.toString(), "teleport");
 		}
 
 		if (this.getCombatBracelet)
@@ -1808,11 +1795,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getWithdrawAll = config.getWithdrawAll();
 		this.getWithdrawAllItems = config.getWithdrawAllItems();
 		this.swapMax = config.swapMax();
-		this.teleEquippedCape = config.teleEquippedCape();
-		this.telecapeMode = config.telecapeMode();
 		this.maxMode = config.maxMode();
 		this.getSwapArdougneCape = config.getSwapArdougneCape();
 		this.getSwapConstructionCape = config.getSwapConstructionCape();
+		this.constructionCapeMode = config.constructionCapeMode();
 		this.getSwapCraftingCape = config.getSwapCraftingCape();
 		this.getSwapMagicCape = config.getSwapMagicCape();
 		this.getSwapExplorersRing = config.getSwapExplorersRing();
@@ -1860,7 +1846,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSellFiftyItems = config.getSellFiftyItems();
 		this.getEasyConstruction = config.getEasyConstruction();
 		this.getEasyConstructionItems = config.getEasyConstructionItems();
-		this.getSwapSmithing = config.getSwapSmithing();
 		this.getSwapTanning = config.getSwapTanning();
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();

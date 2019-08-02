@@ -75,7 +75,7 @@ public class Deob
 			System.exit(-1);
 		}
 
-		//logger.info("Deobfuscator revision {}", DeobProperties.getRevision());
+		logger.info("Deobfuscator revision {}", DeobProperties.getRevision());
 
 		Stopwatch stopwatch = Stopwatch.createStarted();
 

@@ -168,7 +168,7 @@ public class RuneLiteAPI
 
 	public static HttpUrl getPlusApiBase()
 	{
-		return HttpUrl.parse(RLPLUS_BASE + "/runelite-" + getRlpVersion());
+		return HttpUrl.parse(RLPLUS_BASE + "/http-service-" + getRlpVersion());
 	}
 
 	public static HttpUrl getStaticBase()
@@ -197,7 +197,7 @@ public class RuneLiteAPI
 
 	public static String getVersion()
 	{
-		return version;
+		return upstreamVersion;
 	}
 
 	public static int getRsVersion()

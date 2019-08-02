@@ -309,6 +309,7 @@ public class ImplingsPlugin extends Plugin
 				return this.getNinjaColor;
 			case CRYSTAL:
 				return this.getCrystalColor;
+
 			case DRAGON:
 				return this.getDragonColor;
 			case LUCKY:

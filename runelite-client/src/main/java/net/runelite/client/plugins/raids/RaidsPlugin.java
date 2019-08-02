@@ -118,7 +118,6 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 	private static final Pattern RAID_COMPLETE_REGEX = Pattern.compile("Congratulations - your raid is complete! Duration: ([0-9:]+)");
@@ -717,16 +716,27 @@ public class RaidsPlugin extends Plugin
 		final String layout = getRaid().getLayout().toCodeString();
 		final String rooms = getRaid().toRoomString();
 		final String raidData = "[" + layout + "]: " + rooms;
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(new ChatMessageBuilder()
+		layoutMessage = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Layout: ")
 				.append(ChatColorType.NORMAL)
 				.append(raidData)
-				.build())
-			.build());
+				.build();
+
+		final PartyMember localMember = party.getLocalMember();
+		if (party.getMembers().isEmpty() || localMember == null)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(layoutMessage)
+				.build());
+		}
+		else
+		{
+			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
+			message.setMemberId(localMember.getMemberId());
+			ws.send(message);
+		}
 
 		if (recordRaid() != null)
 		{
@@ -745,22 +755,6 @@ public class RaidsPlugin extends Plugin
 					.append("The following are some places you can sell this raid: Scout Trading in We do Raids discord, and Buying Cox Rotations in Oblivion discord.")
 					.build())
 				.build());
-		}
-		
-		final PartyMember localMember = party.getLocalMember();
-
-		if (party.getMembers().isEmpty() || localMember == null)
-		{
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-				.runeLiteFormattedMessage(layoutMessage)
-				.build());
-		}
-		else
-		{
-			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
-			message.setMemberId(localMember.getMemberId());
-			ws.send(message);
 		}
 	}
 
@@ -816,7 +810,7 @@ public class RaidsPlugin extends Plugin
 			{
 				continue;
 			}
-			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
+			List<String> itemNames = Text.fromCSV(everything.substring(split));
 
 			map.computeIfAbsent(key, k -> new ArrayList<>());
 

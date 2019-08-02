@@ -27,6 +27,7 @@
 
 package net.runelite.client.plugins.zulrah;
 
+import javax.annotation.Nullable;
 import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
 import net.runelite.api.coords.LocalPoint;
@@ -101,6 +102,7 @@ public class ZulrahInstance
 		stage = 0;
 	}
 
+	@Nullable
 	public ZulrahPhase getPhase()
 	{
 		ZulrahPhase patternPhase = null;
@@ -116,6 +118,7 @@ public class ZulrahInstance
 		this.phase = phase;
 	}
 
+	@Nullable
 	public ZulrahPhase getNextPhase()
 	{
 		if (pattern != null)

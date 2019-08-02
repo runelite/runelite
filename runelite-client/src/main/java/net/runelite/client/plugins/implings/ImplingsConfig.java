@@ -235,7 +235,7 @@ public interface ImplingsConfig extends Config
 	
 	@ConfigItem(
 		position = 19,
-		keyName = "showcrystal",
+		keyName = "showCrystal",
 		name = "Show Crystal implings",
 		description = "Configures whether or not Crystal impling tags are displayed"
 	)
@@ -252,7 +252,7 @@ public interface ImplingsConfig extends Config
 	)
 	default Color getCrystalColor()
 	{
-		return new Color(2, 255, 251);
+		return new Color(93, 188, 210);
 	}
 
 	@ConfigItem(
