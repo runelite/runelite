@@ -41,16 +41,13 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.peer.RobotPeer;
 import java.util.Random;
 import java.util.logging.Logger;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ClientUI;
-import sun.awt.ComponentFactory;
 
 public class Flexo extends Robot
 {
@@ -65,7 +62,7 @@ public class Flexo extends Robot
 	public static int minDelay = 45;
 	public static MouseMotionFactory currentMouseMotionFactory;
 	public boolean pausedIndefinitely = false;
-	private RobotPeer peer;
+	private Robot peer;
 
 	public Flexo() throws AWTException
 	{
@@ -79,34 +76,17 @@ public class Flexo extends Robot
 
 	private void init(GraphicsDevice screen) throws AWTException
 	{
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		if (toolkit instanceof ComponentFactory)
+		try
 		{
-			peer = ((ComponentFactory) toolkit).createRobot(this, screen);
-			RobotDisposer disposer = new RobotDisposer(peer);
-			sun.java2d.Disposer.addRecord(anchor, disposer);
+			peer = new Robot();
+		}
+		catch (Exception e)
+		{
+			client.getLogger().error("Flexo not supported on this system configuration.");
 		}
 	}
 
 	private transient Object anchor = new Object();
-
-	static class RobotDisposer implements sun.java2d.DisposerRecord
-	{
-		private final RobotPeer peer;
-
-		private RobotDisposer(RobotPeer peer)
-		{
-			this.peer = peer;
-		}
-
-		public void dispose()
-		{
-			if (peer != null)
-			{
-				peer.dispose();
-			}
-		}
-	}
 
 	private void pauseMS(int delayMS)
 	{
@@ -313,10 +293,9 @@ public class Flexo extends Robot
 
 	}
 
-	@Override
 	public Color getPixelColor(int x, int y)
 	{
-		return new Color(peer.getRGBPixel(x, y));
+		return peer.getPixelColor(x, y);
 	}
 
 	@Override
