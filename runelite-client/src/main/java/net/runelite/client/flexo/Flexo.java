@@ -65,7 +65,7 @@ public class Flexo extends Robot
 	public static int minDelay = 45;
 	public static MouseMotionFactory currentMouseMotionFactory;
 	public boolean pausedIndefinitely = false;
-	private RobotPeer peer;
+	private Robot peer;
 
 	public Flexo() throws AWTException
 	{
@@ -82,10 +82,10 @@ public class Flexo extends Robot
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if (toolkit instanceof ComponentFactory)
 		{
-			peer = ((ComponentFactory) toolkit).createRobot(this, screen);
-			RobotDisposer disposer = new RobotDisposer(peer);
-			sun.java2d.Disposer.addRecord(anchor, disposer);
+			peer = new Robot();
+			return;
 		}
+		client.getLogger().error("Flexo not supported on this system configuration.");
 	}
 
 	private transient Object anchor = new Object();
@@ -313,10 +313,9 @@ public class Flexo extends Robot
 
 	}
 
-	@Override
 	public Color getPixelColor(int x, int y)
 	{
-		return new Color(peer.getRGBPixel(x, y));
+		return peer.getPixelColor(x, y);
 	}
 
 	@Override
