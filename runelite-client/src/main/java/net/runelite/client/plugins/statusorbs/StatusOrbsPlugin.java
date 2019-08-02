@@ -88,9 +88,6 @@ public class StatusOrbsPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private StatusOrbsConfig config;
 
 	@Inject
@@ -452,39 +449,6 @@ public class StatusOrbsPlugin extends Plugin
 	{
 		client.getWidgetSpriteCache().reset();
 		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
-	}
-
-	/**
-	 * Migrates configs from runenergy and regenmeter to this plugin and deletes the old config values.
-	 * This method should be removed after a reasonable amount of time.
-	 */
-	@Deprecated
-	private void migrateConfigs()
-	{
-		migrateConfig("regenmeter", "showHitpoints");
-		migrateConfig("regenmeter", "showSpecial");
-		migrateConfig("regenmeter", "showWhenNoChange");
-		migrateConfig("regenmeter", "notifyBeforeHpRegenDuration");
-
-		migrateConfig("runenergy", "replaceOrbText");
-	}
-
-	/**
-	 * Wrapper for migrating individual config options
-	 * This method should be removed after a reasonable amount of time.
-	 *
-	 * @param group old group name
-	 * @param key   key name to migrate
-	 */
-	@Deprecated
-	private void migrateConfig(String group, String key)
-	{
-		String value = configManager.getConfiguration(group, key);
-		if (value != null)
-		{
-			configManager.setConfiguration("statusorbs", key, value);
-			configManager.unsetConfiguration(group, key);
-		}
 	}
 
 	private void updateConfig()
