@@ -9235,5 +9235,172 @@
   "giant egg sac": [
     23517,
     23520
+],
+  "crystal seedling": [
+    23655,
+    23657
+  ],
+  "crystal axe": [
+    23673,
+    23675,
+    23862
+  ],
+  "crystal pickaxe": [
+    23680,
+    23682,
+    23863
+  ],
+  "divine super combat potion": [
+    23685,
+    23688,
+    23691,
+    23694
+  ],
+  "divine super attack potion": [
+    23697,
+    23700,
+    23703,
+    23706
+  ],
+  "divine super strength potion": [
+    23709,
+    23712,
+    23715,
+    23718
+  ],
+  "divine super defence potion": [
+    23721,
+    23724,
+    23727,
+    23730
+  ],
+  "divine ranging potion": [
+    23733,
+    23736,
+    23739,
+    23742
+  ],
+  "divine magic potion": [
+    23745,
+    23748,
+    23751,
+    23754
+  ],
+  "crystal harpoon": [
+    23762,
+    23764,
+    23864
+  ],
+  "crystal dust": [
+    23804,
+    23867,
+    23964
+  ],
+  "crystal seed": [
+    23808,
+    23810
+  ],
+  "weapon frame": [
+    23834,
+    23871
+  ],
+  "grym leaf": [
+    23835,
+    23875
+  ],
+  "linum tirinum": [
+    23836,
+    23876
+  ],
+  "phren bark": [
+    23838,
+    23878
+  ],
+  "corrupted body": [
+    23843,
+    23844,
+    23845
+  ],
+  "corrupted legs": [
+    23846,
+    23847,
+    23848
+  ],
+  "corrupted halberd": [
+    23849,
+    23850,
+    23851
+  ],
+  "corrupted staff": [
+    23852,
+    23853,
+    23854
+  ],
+  "corrupted bow": [
+    23855,
+    23856,
+    23857
+  ],
+  "egniol potion": [
+    23882,
+    23883,
+    23884,
+    23885
+  ],
+  "crystal helm": [
+    23886,
+    23887,
+    23888,
+    23971,
+    23973
+  ],
+  "crystal body": [
+    23889,
+    23890,
+    23891,
+    23975,
+    23977
+  ],
+  "crystal legs": [
+    23892,
+    23893,
+    23894,
+    23979,
+    23981
+  ],
+  "crystal staff": [
+    23898,
+    23899,
+    23900
+  ],
+  "crystal crown": [
+    23911,
+    23913,
+    23915,
+    23917,
+    23919,
+    23921,
+    23923,
+    23925
+  ],
+  "blade of saeldor": [
+    23995,
+    23997
+  ],
+  "elven top": [
+    24009,
+    24015,
+    24021,
+    24027
+  ],
+  "elven skirt": [
+    24012,
+    24018
+  ],
+  "memoriam crystal": [
+    24030,
+    24031,
+    24032,
+    24033
   ]
 }
