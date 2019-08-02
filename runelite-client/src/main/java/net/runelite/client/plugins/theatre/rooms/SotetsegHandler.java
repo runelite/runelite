@@ -6,9 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -22,7 +24,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
@@ -43,7 +45,7 @@ public class SotetsegHandler extends RoomHandler
 	private final List<WorldPoint> blackUnderworld = new ArrayList<>();
 	private final List<WorldPoint> redUnderworld = new ArrayList<>();
 	private final List<Point> gridPath = new ArrayList<>();
-	private final Map<Projectile, WorldPoint> soteyProjectiles = new HashMap<>();
+	private final Set<Projectile> soteyProjectiles = new HashSet<>();
 	private NPC npc;
 
 	public SotetsegHandler(final Client client, final TheatrePlugin plugin)
@@ -120,7 +122,7 @@ public class SotetsegHandler extends RoomHandler
 		{
 
 			Map<Projectile, String> projectileMap = new HashMap<>();
-			for (Projectile p : soteyProjectiles.keySet())
+			for (Projectile p : soteyProjectiles)
 			{
 				final int ticksRemaining = p.getRemainingCycles() / 30;
 				int id = p.getId();
@@ -140,15 +142,14 @@ public class SotetsegHandler extends RoomHandler
 		}
 	}
 
-	public void onProjectileMoved(ProjectileMoved event)
+	public void onProjectileSpawned(ProjectileSpawned event)
 	{
-		Projectile projectile = event.getProjectile();
+		final Projectile projectile = event.getProjectile();
 
 		//1604 ball
-		if (event.getPosition().getX() == playerX && event.getPosition().getY() == playerY || event.getProjectile().getId() == 1604)
+		if (projectile.getId() == 1604 && projectile.getInteracting() == client.getLocalPlayer())
 		{
-			WorldPoint p = WorldPoint.fromLocal(client, event.getPosition());
-			soteyProjectiles.put(projectile, p);
+			soteyProjectiles.add(projectile);
 		}
 	}
 
@@ -241,7 +242,7 @@ public class SotetsegHandler extends RoomHandler
 		//Remove projectiles that are about to die
 		if (!soteyProjectiles.isEmpty())
 		{
-			soteyProjectiles.keySet().removeIf(p -> p.getRemainingCycles() < 1);
+			soteyProjectiles.removeIf(p -> p.getRemainingCycles() <= 0);
 		}
 
 		boolean sotetsegFighting = false;
