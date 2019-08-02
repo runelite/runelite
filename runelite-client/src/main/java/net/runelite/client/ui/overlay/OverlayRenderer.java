@@ -34,6 +34,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -469,14 +470,16 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
-		final Graphics2D subGraphics = (Graphics2D) graphics.create();
-
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
-			subGraphics.setClip(client.getViewportXOffset(),
+			graphics.setClip(client.getViewportXOffset(),
 				client.getViewportYOffset(),
 				client.getViewportWidth(),
 				client.getViewportHeight());
+		}
+		else
+		{
+			graphics.setClip(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		}
 
 		final OverlayPosition position = overlay.getPosition();
@@ -484,23 +487,29 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(this.standardFont); // TODO MAKE USE CONFIG SYSTEM
+			graphics.setFont(this.standardFont); // TODO MAKE USE CONFIG SYSTEM
+
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(this.tooltipFont);
+			graphics.setFont(this.tooltipFont);
 		}
 		else
 		{
-			subGraphics.setFont(this.interfaceFont);
+			graphics.setFont(this.interfaceFont);
 		}
 
-		subGraphics.translate(point.x, point.y);
+		// Reset the default color
+		graphics.setColor(Color.WHITE);
+
+		// Get transform so we can reset it after drawing
+		AffineTransform transform = graphics.getTransform();
+		graphics.translate(point.x, point.y);
 
 		final Dimension overlayDimension;
 		try
 		{
-			overlayDimension = overlay.render(subGraphics);
+			overlayDimension = overlay.render(graphics);
 		}
 		catch (Exception ex)
 		{
@@ -509,7 +518,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		finally
 		{
-			subGraphics.dispose();
+			graphics.setTransform(transform);
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
