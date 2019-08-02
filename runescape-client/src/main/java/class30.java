@@ -205,42 +205,42 @@ public class class30 {
 		}
 		if (var0 == 3120) {
 			if (Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1) {
-				Client.field774 |= 1;
+				Client.drawPlayerNames |= 1;
 			} else {
-				Client.field774 &= -2;
+				Client.drawPlayerNames &= -2;
 			}
 
 			return 1;
 		}
 		if (var0 == 3121) {
 			if (Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1) {
-				Client.field774 |= 2;
+				Client.drawPlayerNames |= 2;
 			} else {
-				Client.field774 &= -3;
+				Client.drawPlayerNames &= -3;
 			}
 
 			return 1;
 		}
 		if (var0 == 3122) {
 			if (Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1) {
-				Client.field774 |= 4;
+				Client.drawPlayerNames |= 4;
 			} else {
-				Client.field774 &= -5;
+				Client.drawPlayerNames &= -5;
 			}
 
 			return 1;
 		}
 		if (var0 == 3123) {
 			if (Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1) {
-				Client.field774 |= 8;
+				Client.drawPlayerNames |= 8;
 			} else {
-				Client.field774 &= -9;
+				Client.drawPlayerNames &= -9;
 			}
 
 			return 1;
 		}
 		if (var0 == 3124) {
-			Client.field774 = 0;
+			Client.drawPlayerNames = 0;
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.SETSHOWMOUSECROSS) {

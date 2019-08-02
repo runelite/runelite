@@ -416,57 +416,71 @@ public class Timer {
 						Login.Login_loadingText = "Loading config - " + class215.archive2.loadPercent() + "%";
 						Login.Login_loadingPercent = 60;
 					} else {
+						// floorovl def inlined
 						Archive var31 = class215.archive2;
 						FloorOverlayDefinition.FloorOverlayDefinition_archive = var31;
-						WorldMapSprite.setFloorUnderlayDefinitionArchive(class215.archive2);
-						GrandExchangeEvents.method66(class215.archive2, NPCDefinition.archive7);
+						// ---
+						WorldMapSprite.FloorUnderlayDefinition_setArchives(class215.archive2);
+						GrandExchangeEvents.KitDefinition_setArchives(class215.archive2, NPCDefinition.archive7);
+						// object def inlined
 						var25 = class215.archive2;
 						var2 = NPCDefinition.archive7;
 						boolean var34 = Client.isLowDetail;
 						ObjectDefinition.ObjectDefinition_archive = var25;
 						ObjectDefinition.ObjectDefinition_modelsArchive = var2;
 						ObjectDefinition.ObjectDefinition_isLowDetail = var34;
-						FaceNormal.setNpcDefinitionArchives(class215.archive2, NPCDefinition.archive7);
-						TileItem.method2054(class215.archive2);
+						// ---
+						FaceNormal.NpcDefinition_setArchives(class215.archive2, NPCDefinition.archive7);
+						TileItem.StructDefinition_setArchives(class215.archive2);
+						// item def inlined
 						Archive var27 = class215.archive2;
 						Archive var5 = NPCDefinition.archive7;
 						boolean var6 = Client.isMembersWorld;
 						Font var7 = Coord.fontPlain11;
 						Messages.ItemDefinition_archive = var27;
 						ItemDefinition.ItemDefinition_modelArchive = var5;
-						ModelData0.inMembersWorld = var6;
+						ModelData0.ItemDefinition_inMembersWorld = var6;
 						ItemDefinition.ItemDefinition_fileCount = Messages.ItemDefinition_archive.getGroupFileCount(10);
 						HealthBar.ItemDefinition_fontPlain11 = var7;
+						// sequence def inlined
 						Archive var8 = class215.archive2;
 						Archive var9 = class197.archive0;
 						Archive var10 = class167.archive1;
 						SequenceDefinition.SequenceDefinition_archive = var8;
 						SequenceDefinition.SequenceDefinition_animationsArchive = var9;
 						SequenceDefinition.SequenceDefinition_skeletonsArchive = var10;
+						// spotanim def inlined
 						Archive var11 = class215.archive2;
 						Archive var12 = NPCDefinition.archive7;
 						SpotAnimationDefinition.SpotAnimationDefinition_archive = var11;
 						class43.SpotAnimationDefinition_modelArchive = var12;
+						// varbit def inlined
 						Archive var13 = class215.archive2;
 						VarbitDefinition.VarbitDefinition_archive = var13;
-						GrandExchangeEvents.method68(class215.archive2);
-						UrlRequest.method3317(class43.archive3, NPCDefinition.archive7, Client.archive8, class2.archive13);
-						WorldMapData_0.method173(class215.archive2);
+						// ---
+						GrandExchangeEvents.VarpDefinition_setArchives(class215.archive2);
+						UrlRequest.Widget_setArchives(class43.archive3, NPCDefinition.archive7, Client.archive8, class2.archive13);
+						WorldMapData_0.InvDefinition_setArchives(class215.archive2);
+						// enum def inlined
 						Archive var14 = class215.archive2;
 						EnumDefinition.EnumDefinition_archive = var14;
-						GrandExchangeOfferWorldComparator.setVarcIntArchive(class215.archive2);
-						KeyHandler.method794(class215.archive2);
+						// ---
+						GrandExchangeOfferWorldComparator.VarcInt_setArchives(class215.archive2);
+						KeyHandler.ParamDefinition_setArchives(class215.archive2);
 						Clock.varcs = new Varcs();
+						// hitsplat def inlined
 						Archive var15 = class215.archive2;
 						Archive var16 = Client.archive8;
 						Archive var17 = class2.archive13;
 						HitSplatDefinition.HitSplatDefinition_archive = var15;
 						HitSplatDefinition.HitSplatDefinition_spritesArchive = var16;
 						HitSplatDefinition.HitSplatDefinition_fontsArchive = var17;
+						// healthbar def inlined
 						Archive var18 = class215.archive2;
 						Archive var19 = Client.archive8;
 						HealthBarDefinition.HealthBarDefinition_archive = var18;
 						HealthBarDefinition.HealthBarDefinition_spritesArchive = var19;
+						// worldmap element inlined
 						Archive var20 = class215.archive2;
 						Archive var21 = Client.archive8;
 						WorldMapElement.WorldMapElement_archive = var21;
@@ -483,6 +497,7 @@ public class Timer {
 								}
 							}
 						}
+						// ---
 
 						Login.Login_loadingText = "Loaded config";
 						Login.Login_loadingPercent = 60;

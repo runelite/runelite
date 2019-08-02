@@ -96,7 +96,7 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 			int var12;
 			if (0L != var7) {
 				var12 = GrandExchangeOfferWorldComparator.scene.getObjectFlags(var0, var2, var3, var7);
-				int var14 = class43.method770(var7);
+				int var14 = class43.getObjectIdFromTag(var7);
 				int var15 = var12 & 31;
 				int var16 = var12 >> 6 & 3;
 				ObjectDefinition var13;

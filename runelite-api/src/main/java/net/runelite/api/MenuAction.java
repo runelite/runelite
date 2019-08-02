@@ -155,6 +155,8 @@ public enum MenuAction
 	WIDGET_TYPE_5(29),
 	/**
 	 * Interaction with widget (type 6).
+	 *
+	 * This is the continue button on message boxes
 	 */
 	WIDGET_TYPE_6(30),
 	/**

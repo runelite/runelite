@@ -92,7 +92,8 @@ public class GrandExchangeEvents {
 		signature = "(Lhp;Lhp;B)V",
 		garbageValue = "-127"
 	)
-	public static void method66(AbstractArchive var0, AbstractArchive var1) {
+	@Export("KitDefinition_setArchives")
+	public static void KitDefinition_setArchives(AbstractArchive var0, AbstractArchive var1) {
 		KitDefinition.KitDefinition_archive = var0;
 		class288.KitDefinition_modelsArchive = var1;
 		KitDefinition.KitDefinition_fileCount = KitDefinition.KitDefinition_archive.getGroupFileCount(3);
@@ -103,7 +104,8 @@ public class GrandExchangeEvents {
 		signature = "(Lhp;B)V",
 		garbageValue = "1"
 	)
-	public static void method68(AbstractArchive var0) {
+	@Export("VarpDefinition_setArchives")
+	public static void VarpDefinition_setArchives(AbstractArchive var0) {
 		VarpDefinition.VarpDefinition_archive = var0;
 		VarpDefinition.VarpDefinition_fileCount = VarpDefinition.VarpDefinition_archive.getGroupFileCount(16);
 	}
@@ -186,10 +188,10 @@ public class GrandExchangeEvents {
 			}
 
 			for (var11 = 0; var11 < 104; ++var11) {
-				ServerBuild.field3103[var11] = 0;
-				Tiles.field508[var11] = 0;
-				Tiles.field507[var11] = 0;
-				DynamicObject.field1301[var11] = 0;
+				ServerBuild.Tiles_hue[var11] = 0;
+				Tiles.Tiles_saturation[var11] = 0;
+				Tiles.Tiles_lightness[var11] = 0;
+				DynamicObject.Tiles_hueMultiplier[var11] = 0;
 				Fonts.field3689[var11] = 0;
 			}
 
@@ -200,14 +202,14 @@ public class GrandExchangeEvents {
 					if (var13 >= 0 && var13 < 104) {
 						var14 = Tiles.field504[var2][var13][var12] & 255;
 						if (var14 > 0) {
-							FloorUnderlayDefinition var45 = ItemContainer.method1117(var14 - 1);
-							var10000 = ServerBuild.field3103;
+							FloorUnderlayDefinition var45 = ItemContainer.FloorUnderlayDefinition_get(var14 - 1);
+							var10000 = ServerBuild.Tiles_hue;
 							var10000[var12] += var45.hue;
-							var10000 = Tiles.field508;
+							var10000 = Tiles.Tiles_saturation;
 							var10000[var12] += var45.saturation;
-							var10000 = Tiles.field507;
+							var10000 = Tiles.Tiles_lightness;
 							var10000[var12] += var45.lightness;
-							var10000 = DynamicObject.field1301;
+							var10000 = DynamicObject.Tiles_hueMultiplier;
 							var10000[var12] += var45.hueMultiplier;
 							var10002 = Fonts.field3689[var12]++;
 						}
@@ -234,13 +236,13 @@ public class GrandExchangeEvents {
 								var47 = var46;
 							}
 
-							var10000 = ServerBuild.field3103;
+							var10000 = ServerBuild.Tiles_hue;
 							var10000[var12] -= var47.hue;
-							var10000 = Tiles.field508;
+							var10000 = Tiles.Tiles_saturation;
 							var10000[var12] -= var47.saturation;
-							var10000 = Tiles.field507;
+							var10000 = Tiles.Tiles_lightness;
 							var10000[var12] -= var47.lightness;
-							var10000 = DynamicObject.field1301;
+							var10000 = DynamicObject.Tiles_hueMultiplier;
 							var10000[var12] -= var47.hueMultiplier;
 							var10002 = Fonts.field3689[var12]--;
 						}
@@ -257,19 +259,19 @@ public class GrandExchangeEvents {
 					for (var17 = -5; var17 < 109; ++var17) {
 						var18 = var17 + 5;
 						if (var18 >= 0 && var18 < 104) {
-							var12 += ServerBuild.field3103[var18];
-							var13 += Tiles.field508[var18];
-							var14 += Tiles.field507[var18];
-							var15 += DynamicObject.field1301[var18];
+							var12 += ServerBuild.Tiles_hue[var18];
+							var13 += Tiles.Tiles_saturation[var18];
+							var14 += Tiles.Tiles_lightness[var18];
+							var15 += DynamicObject.Tiles_hueMultiplier[var18];
 							var16 += Fonts.field3689[var18];
 						}
 
 						var19 = var17 - 5;
 						if (var19 >= 0 && var19 < 104) {
-							var12 -= ServerBuild.field3103[var19];
-							var13 -= Tiles.field508[var19];
-							var14 -= Tiles.field507[var19];
-							var15 -= DynamicObject.field1301[var19];
+							var12 -= ServerBuild.Tiles_hue[var19];
+							var13 -= Tiles.Tiles_saturation[var19];
+							var14 -= Tiles.Tiles_lightness[var19];
+							var15 -= DynamicObject.Tiles_hueMultiplier[var19];
 							var16 -= Fonts.field3689[var19];
 						}
 
@@ -380,7 +382,7 @@ public class GrandExchangeEvents {
 									if (var51 >= 0) {
 										var40 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var51);
 										var39 = -1;
-									} else if (var35.primaryRgb == 16711935) {
+									} else if (var35.primaryRgb == 0xff00ff) {
 										var39 = -2;
 										var51 = -1;
 										var40 = -2;
@@ -631,10 +633,10 @@ public class GrandExchangeEvents {
 		if (MouseHandler.MouseHandler_currentButton == 1 || !DevicePcmPlayerProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
 			if (var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
 				var0.scrollY -= 4;
-				Strings.method4120(var0);
+				Strings.invalidateWidget(var0);
 			} else if (var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
 				var0.scrollY += 4;
-				Strings.method4120(var0);
+				Strings.invalidateWidget(var0);
 			} else if (var5 >= var1 - Client.field882 && var5 < Client.field882 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
 				var7 = var3 * (var3 - 32) / var4;
 				if (var7 < 8) {
@@ -644,7 +646,7 @@ public class GrandExchangeEvents {
 				int var8 = var6 - var2 - 16 - var7 / 2;
 				int var9 = var3 - 32 - var7;
 				var0.scrollY = var8 * (var4 - var3) / var9;
-				Strings.method4120(var0);
+				Strings.invalidateWidget(var0);
 				Client.field719 = true;
 			}
 		}
@@ -653,7 +655,7 @@ public class GrandExchangeEvents {
 			var7 = var0.width;
 			if (var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
 				var0.scrollY += Client.mouseWheelRotation * 45;
-				Strings.method4120(var0);
+				Strings.invalidateWidget(var0);
 			}
 		}
 

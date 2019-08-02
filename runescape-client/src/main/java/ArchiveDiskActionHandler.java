@@ -74,7 +74,7 @@ public class ArchiveDiskActionHandler implements Runnable {
 						field3144 = 600;
 					}
 				} else {
-					EnumDefinition.method4550(100L);
+					EnumDefinition.sleepMillis(100L);
 					synchronized(ArchiveDiskActionHandler_lock) {
 						if (field3144 <= 1) {
 							field3144 = 0;

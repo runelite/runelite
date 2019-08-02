@@ -55,7 +55,7 @@ public abstract class RouteStrategy {
 	)
 	static final void method3593() {
 		Client.packetWriter.close();
-		class197.FloorUnderlayDefinition_clearCached();
+		class197.FloorOverlayDefinition_clearCached();
 		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
 		KitDefinition.KitDefinition_cached.clear();
 		TileItemPile.ObjectDefinition_clearCached();

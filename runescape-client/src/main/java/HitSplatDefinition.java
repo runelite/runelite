@@ -132,7 +132,7 @@ public class HitSplatDefinition extends DualNode {
 
 	HitSplatDefinition() {
 		this.fontId = -1;
-		this.field3333 = 16777215;
+		this.field3333 = 0xffffff;
 		this.field3344 = 70;
 		this.field3334 = -1;
 		this.field3336 = -1;

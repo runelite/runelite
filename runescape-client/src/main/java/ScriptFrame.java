@@ -353,10 +353,10 @@ public class ScriptFrame {
 		signature = "(III)V",
 		garbageValue = "-881674814"
 	)
-	static void method1086(int var0, int var1) {
+	static void resumePauseWidget(int parentID, int childID) {
 		PacketBufferNode var2 = Archive.method4265(ClientPacket.field2273, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeIntLE16(var0);
-		var2.packetBuffer.method5530(var1);
+		var2.packetBuffer.writeIntLE16(parentID);
+		var2.packetBuffer.method5530(childID);
 		Client.packetWriter.method2219(var2);
 	}
 

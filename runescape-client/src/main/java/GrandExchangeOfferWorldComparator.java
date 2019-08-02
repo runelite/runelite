@@ -43,8 +43,8 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
 		signature = "(Lhp;B)V",
 		garbageValue = "0"
 	)
-	@Export("setVarcIntArchive")
-	public static void setVarcIntArchive(AbstractArchive var0) {
+	@Export("VarcInt_setArchives")
+	public static void VarcInt_setArchives(AbstractArchive var0) {
 		VarcInt.VarcInt_archive = var0;
 	}
 

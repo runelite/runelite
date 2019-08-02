@@ -38,7 +38,8 @@ public class ItemContainer extends Node {
 		signature = "(IB)Lic;",
 		garbageValue = "-70"
 	)
-	public static FloorUnderlayDefinition method1117(int var0) {
+	@Export("FloorUnderlayDefinition_get")
+	public static FloorUnderlayDefinition FloorUnderlayDefinition_get(int var0) {
 		FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;

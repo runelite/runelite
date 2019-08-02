@@ -239,7 +239,7 @@ public class WorldMapID {
 			}
 
 			Client.isSpellSelected = false;
-			Strings.method4120(var0);
+			Strings.invalidateWidget(var0);
 		}
 	}
 

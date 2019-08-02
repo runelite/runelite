@@ -49,7 +49,8 @@ public final class TileItem extends Entity {
 		signature = "(Lhp;B)V",
 		garbageValue = "97"
 	)
-	public static void method2054(AbstractArchive var0) {
+	@Export("StructDefinition_setArchives")
+	public static void StructDefinition_setArchives(AbstractArchive var0) {
 		StructDefinition.StructDefinition_archive = var0;
 	}
 
@@ -82,6 +83,6 @@ public final class TileItem extends Entity {
 		WorldMapEvent.field359 = var0;
 		Client.field848 = var1;
 		WorldMapCacheName.selectedSpellFlags = var2;
-		Strings.method4120(var4);
+		Strings.invalidateWidget(var4);
 	}
 }

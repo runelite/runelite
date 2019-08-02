@@ -17,8 +17,8 @@ public class ModelData0 {
 	@ObfuscatedName("b")
 	public static short[] field1870;
 	@ObfuscatedName("i")
-	@Export("inMembersWorld")
-	public static boolean inMembersWorld;
+	@Export("ItemDefinition_inMembersWorld")
+	public static boolean ItemDefinition_inMembersWorld;
 
 	ModelData0() {
 	}
@@ -81,7 +81,7 @@ public class ModelData0 {
 			var4.rawY = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			var4.xAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
 			var4.yAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
-			Strings.method4120(var4);
+			Strings.invalidateWidget(var4);
 			WorldMapSprite.client.alignWidget(var4);
 			if (var3 != -1 && var4.type == 0) {
 				WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var3 >> 16], var4, false);
@@ -95,7 +95,7 @@ public class ModelData0 {
 			var4.rawHeight = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			var4.widthAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
 			var4.heightAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
-			Strings.method4120(var4);
+			Strings.invalidateWidget(var4);
 			WorldMapSprite.client.alignWidget(var4);
 			if (var3 != -1 && var4.type == 0) {
 				WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var3 >> 16], var4, false);
@@ -107,7 +107,7 @@ public class ModelData0 {
 			boolean var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
 			if (var5 != var4.isHidden) {
 				var4.isHidden = var5;
-				Strings.method4120(var4);
+				Strings.invalidateWidget(var4);
 			}
 
 			return 1;

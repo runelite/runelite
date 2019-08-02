@@ -370,7 +370,7 @@ public class Rasterizer2D extends DualNode {
 			var3 = Rasterizer2D_yClipEnd - var1;
 		}
 
-		var4 = (var5 * (var4 & 16711935) >> 8 & 16711935) + (var5 * (var4 & 65280) >> 8 & 65280);
+		var4 = (var5 * (var4 & 0xff00ff) >> 8 & 0xff00ff) + (var5 * (var4 & 0xff00) >> 8 & 0xff00);
 		int var6 = 256 - var5;
 		int var7 = Rasterizer2D_width - var2;
 		int var8 = var0 + Rasterizer2D_width * var1;
@@ -378,7 +378,7 @@ public class Rasterizer2D extends DualNode {
 		for (int var9 = 0; var9 < var3; ++var9) {
 			for (int var10 = -var2; var10 < 0; ++var10) {
 				int var11 = Rasterizer2D_pixels[var8];
-				var11 = ((var11 & 16711935) * var6 >> 8 & 16711935) + (var6 * (var11 & 65280) >> 8 & 65280);
+				var11 = ((var11 & 0xff00ff) * var6 >> 8 & 0xff00ff) + (var6 * (var11 & 0xff00) >> 8 & 0xff00);
 				Rasterizer2D_pixels[var8++] = var11 + var4;
 			}
 
@@ -452,7 +452,7 @@ public class Rasterizer2D extends DualNode {
 			for (int var10 = -var3; var10 < 0; ++var10) {
 				int var11 = 65536 - var6 >> 8;
 				int var12 = var6 >> 8;
-				int var13 = (var12 * (var5 & 16711935) + var11 * (var4 & 16711935) & -16711936) + (var12 * (var5 & 65280) + var11 * (var4 & 65280) & 16711680) >>> 8;
+				int var13 = (var12 * (var5 & 0xff00ff) + var11 * (var4 & 0xff00ff) & 0xff00ff00) + (var12 * (var5 & 0xff00) + var11 * (var4 & 0xff00) & 0xff0000) >>> 8;
 
 				for (int var14 = -var2; var14 < 0; ++var14) {
 					Rasterizer2D_pixels[var9++] = var13;
@@ -496,21 +496,21 @@ public class Rasterizer2D extends DualNode {
 			for (int var12 = -var3; var12 < 0; ++var12) {
 				int var13 = 65536 - var8 >> 8;
 				int var14 = var8 >> 8;
-				int var15 = (var13 * var6 + var14 * var7 & 65280) >>> 8;
+				int var15 = (var13 * var6 + var14 * var7 & 0xff00) >>> 8;
 				if (var15 == 0) {
 					var11 += Rasterizer2D_width;
 					var8 += var9;
 				} else {
-					int var16 = (var14 * (var5 & 16711935) + var13 * (var4 & 16711935) & -16711936) + (var14 * (var5 & 65280) + var13 * (var4 & 65280) & 16711680) >>> 8;
+					int var16 = (var14 * (var5 & 0xff00ff) + var13 * (var4 & 0xff00ff) & 0xff00ff00) + (var14 * (var5 & 0xff00) + var13 * (var4 & 0xff00) & 0xff0000) >>> 8;
 					int var17 = 255 - var15;
-					int var18 = ((var16 & 16711935) * var15 >> 8 & 16711935) + (var15 * (var16 & 65280) >> 8 & 65280);
+					int var18 = ((var16 & 0xff00ff) * var15 >> 8 & 0xff00ff) + (var15 * (var16 & 0xff00) >> 8 & 0xff00);
 
 					for (int var19 = -var2; var19 < 0; ++var19) {
 						int var20 = Rasterizer2D_pixels[var11];
 						if (var20 == 0) {
 							Rasterizer2D_pixels[var11++] = var18;
 						} else {
-							var20 = ((var20 & 16711935) * var17 >> 8 & 16711935) + (var17 * (var20 & 65280) >> 8 & 65280);
+							var20 = ((var20 & 0xff00ff) * var17 >> 8 & 0xff00ff) + (var17 * (var20 & 0xff00) >> 8 & 0xff00);
 							Rasterizer2D_pixels[var11++] = var18 + var20;
 						}
 					}
@@ -592,7 +592,7 @@ public class Rasterizer2D extends DualNode {
 							int var20 = var19 >>> 24;
 							int var21 = 255 - var20;
 							int var22 = Rasterizer2D_pixels[var14];
-							int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + (var20 * (var19 & 65280) + var21 * (var22 & 65280) & 16711680) >> 8;
+							int var23 = ((var19 & 0xff00ff) * var20 + (var22 & 0xff00ff) * var21 & 0xff00ff00) + (var20 * (var19 & 0xff00) + var21 * (var22 & 0xff00) & 0xff0000) >> 8;
 							Rasterizer2D_pixels[var14++] = var23;
 						}
 

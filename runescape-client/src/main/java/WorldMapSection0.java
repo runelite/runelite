@@ -351,7 +351,7 @@ public class WorldMapSection0 implements WorldMapSection {
 		Rasterizer3D.method2976(16, 16);
 		Rasterizer3D.field1768 = false;
 		if (var9.placeholderTemplate != -1) {
-			var22.drawAt2(0, 0);
+			var22.drawTransBgAt(0, 0);
 		}
 
 		int var16 = var9.zoom2d;
@@ -366,7 +366,7 @@ public class WorldMapSection0 implements WorldMapSection {
 		var21.calculateBoundsCylinder();
 		var21.method2866(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var21.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
 		if (var9.notedId != -1) {
-			var22.drawAt2(0, 0);
+			var22.drawTransBgAt(0, 0);
 		}
 
 		if (var2 >= 1) {
@@ -374,7 +374,7 @@ public class WorldMapSection0 implements WorldMapSection {
 		}
 
 		if (var2 >= 2) {
-			var8.outline(16777215);
+			var8.outline(0xffffff);
 		}
 
 		if (var3 != 0) {
@@ -383,7 +383,7 @@ public class WorldMapSection0 implements WorldMapSection {
 
 		Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
 		if (var9.noteTemplate != -1) {
-			var22.drawAt2(0, 0);
+			var22.drawTransBgAt(0, 0);
 		}
 
 		if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
@@ -397,7 +397,7 @@ public class WorldMapSection0 implements WorldMapSection {
 				var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
 			}
 
-			var19.draw(var20, 0, 9, 16776960, 1);
+			var19.draw(var20, 0, 9, 0xffff00, 1);
 		}
 
 		if (!var5) {
@@ -418,23 +418,26 @@ public class WorldMapSection0 implements WorldMapSection {
 	)
 	@Export("addSequenceSoundEffect")
 	static void addSequenceSoundEffect(SequenceDefinition var0, int var1, int var2, int var3) {
-		if (Client.soundEffectCount < 50 && Client.field892 != 0) {
-			if (var0.soundEffects != null && var1 < var0.soundEffects.length) {
-				int var4 = var0.soundEffects[var1];
-				if (var4 != 0) {
-					int var5 = var4 >> 8;
-					int var6 = var4 >> 4 & 7;
-					int var7 = var4 & 15;
-					Client.soundEffectIds[Client.soundEffectCount] = var5;
-					Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
-					Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
-					Client.soundEffects[Client.soundEffectCount] = null;
-					int var8 = (var2 - 64) / 128;
-					int var9 = (var3 - 64) / 128;
-					Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
-					++Client.soundEffectCount;
-				}
-			}
+		if (Client.soundEffectCount >= 50 || Client.field892 == 0) {
+			return;
 		}
+		if (var0.soundEffects == null || var1 >= var0.soundEffects.length) {
+			return;
+		}
+		int var4 = var0.soundEffects[var1];
+		if (var4 == 0) {
+			return;
+		}
+		int var5 = var4 >> 8;
+		int var6 = var4 >> 4 & 7;
+		int var7 = var4 & 15;
+		Client.soundEffectIds[Client.soundEffectCount] = var5;
+		Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
+		Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
+		Client.soundEffects[Client.soundEffectCount] = null;
+		int var8 = (var2 - 64) / 128;
+		int var9 = (var3 - 64) / 128;
+		Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
+		++Client.soundEffectCount;
 	}
 }

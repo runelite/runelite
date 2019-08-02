@@ -687,7 +687,7 @@ public class class40 {
 		if (var0.buttonType == 2 && !Client.isSpellSelected) {
 			var3 = FontName.method5318(var0);
 			if (var3 != null) {
-				class188.insertMenuItemNoShift(var3, ClientPreferences.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
+				class188.insertMenuItemNoShift(var3, ClientPreferences.colorStartTag(0xff00) + var0.spellName, 25, 0, -1, var0.id);
 			}
 		}
 
@@ -703,7 +703,7 @@ public class class40 {
 			class188.insertMenuItemNoShift(var0.buttonText, "", 29, 0, 0, var0.id);
 		}
 
-		if (var0.buttonType == 6 && Client.field850 == null) {
+		if (var0.buttonType == 6 && Client.meslayerContinueWidget == null) {
 			class188.insertMenuItemNoShift(var0.buttonText, "", 30, 0, -1, var0.id);
 		}
 

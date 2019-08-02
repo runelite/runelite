@@ -524,7 +524,7 @@ public class GrandExchangeOffer {
 		WorldMapElement var6;
 		if (var0 == ScriptOpcodes.MEC_TEXT) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = class222.getWorldMapElement(var3);
+			var6 = class222.WorldMapElement_get(var3);
 			if (var6.name == null) {
 				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
 			} else {
@@ -535,13 +535,13 @@ public class GrandExchangeOffer {
 		}
 		if (var0 == ScriptOpcodes.MEC_TEXTSIZE) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = class222.getWorldMapElement(var3);
+			var6 = class222.WorldMapElement_get(var3);
 			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var6.textSize;
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.MEC_CATEGORY) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = class222.getWorldMapElement(var3);
+			var6 = class222.WorldMapElement_get(var3);
 			if (var6 == null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
 			} else {
@@ -552,7 +552,7 @@ public class GrandExchangeOffer {
 		}
 		if (var0 == ScriptOpcodes.MEC_SPRITE) {
 			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var6 = class222.getWorldMapElement(var3);
+			var6 = class222.WorldMapElement_get(var3);
 			if (var6 == null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = -1;
 			} else {

@@ -34,26 +34,26 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	@ObfuscatedGetter(
 		intValue = 1710921911
 	)
-	@Export("MouseHandler_currentButton0")
-	public static volatile int MouseHandler_currentButton0;
+	@Export("MouseHandler_currentButtonVolatile")
+	public static volatile int MouseHandler_currentButtonVolatile;
 	@ObfuscatedName("i")
 	@ObfuscatedGetter(
 		intValue = 1256133149
 	)
-	@Export("MouseHandler_x0")
-	public static volatile int MouseHandler_x0;
+	@Export("MouseHandler_xVolatile")
+	public static volatile int MouseHandler_xVolatile;
 	@ObfuscatedName("c")
 	@ObfuscatedGetter(
 		intValue = 1661434067
 	)
-	@Export("MouseHandler_y0")
-	public static volatile int MouseHandler_y0;
+	@Export("MouseHandler_yVolatile")
+	public static volatile int MouseHandler_yVolatile;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
 		longValue = -8614064843857647631L
 	)
-	@Export("MouseHandler_millis0")
-	public static volatile long MouseHandler_millis0;
+	@Export("MouseHandler_lastMovedVolatile")
+	public static volatile long MouseHandler_lastMovedVolatile;
 	@ObfuscatedName("m")
 	@ObfuscatedGetter(
 		intValue = 1270652981
@@ -76,26 +76,26 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	@ObfuscatedGetter(
 		intValue = -1163235529
 	)
-	@Export("MouseHandler_lastButton0")
-	public static volatile int MouseHandler_lastButton0;
+	@Export("MouseHandler_lastButtonVolatile")
+	public static volatile int MouseHandler_lastButtonVolatile;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
 		intValue = -1839013683
 	)
-	@Export("MouseHandler_lastPressedX0")
-	public static volatile int MouseHandler_lastPressedX0;
+	@Export("MouseHandler_lastPressedXVolatile")
+	public static volatile int MouseHandler_lastPressedXVolatile;
 	@ObfuscatedName("y")
 	@ObfuscatedGetter(
 		intValue = -62123151
 	)
-	@Export("MouseHandler_lastPressedY0")
-	public static volatile int MouseHandler_lastPressedY0;
+	@Export("MouseHandler_lastPressedYVolatile")
+	public static volatile int MouseHandler_lastPressedYVolatile;
 	@ObfuscatedName("g")
 	@ObfuscatedGetter(
 		longValue = -4691083224527858071L
 	)
-	@Export("MouseHandler_lastPressedTimeMillis0")
-	public static volatile long MouseHandler_lastPressedTimeMillis0;
+	@Export("MouseHandler_lastPressedTimeMillisVolatile")
+	public static volatile long MouseHandler_lastPressedTimeMillisVolatile;
 	@ObfuscatedName("a")
 	@ObfuscatedGetter(
 		intValue = 1647189949
@@ -130,18 +130,18 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	static {
 		MouseHandler_instance = new MouseHandler();
 		MouseHandler_idleCycles = 0;
-		MouseHandler_currentButton0 = 0;
-		MouseHandler_x0 = -1;
-		MouseHandler_y0 = -1;
-		MouseHandler_millis0 = -1L;
+		MouseHandler_currentButtonVolatile = 0;
+		MouseHandler_xVolatile = -1;
+		MouseHandler_yVolatile = -1;
+		MouseHandler_lastMovedVolatile = -1L;
 		MouseHandler_currentButton = 0;
 		MouseHandler_x = 0;
 		MouseHandler_y = 0;
 		MouseHandler_millis = 0L;
-		MouseHandler_lastButton0 = 0;
-		MouseHandler_lastPressedX0 = 0;
-		MouseHandler_lastPressedY0 = 0;
-		MouseHandler_lastPressedTimeMillis0 = 0L;
+		MouseHandler_lastButtonVolatile = 0;
+		MouseHandler_lastPressedXVolatile = 0;
+		MouseHandler_lastPressedYVolatile = 0;
+		MouseHandler_lastPressedTimeMillisVolatile = 0L;
 		MouseHandler_lastButton = 0;
 		MouseHandler_lastPressedX = 0;
 		MouseHandler_lastPressedY = 0;
@@ -168,9 +168,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	public final synchronized void mouseMoved(MouseEvent var1) {
 		if (MouseHandler_instance != null) {
 			MouseHandler_idleCycles = 0;
-			MouseHandler_x0 = var1.getX();
-			MouseHandler_y0 = var1.getY();
-			MouseHandler_millis0 = var1.getWhen();
+			MouseHandler_xVolatile = var1.getX();
+			MouseHandler_yVolatile = var1.getY();
+			MouseHandler_lastMovedVolatile = var1.getWhen();
 		}
 
 	}
@@ -178,12 +178,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	public final synchronized void mousePressed(MouseEvent var1) {
 		if (MouseHandler_instance != null) {
 			MouseHandler_idleCycles = 0;
-			MouseHandler_lastPressedX0 = var1.getX();
-			MouseHandler_lastPressedY0 = var1.getY();
-			MouseHandler_lastPressedTimeMillis0 = DirectByteArrayCopier.currentTimeMs();
-			MouseHandler_lastButton0 = this.getButton(var1);
-			if (MouseHandler_lastButton0 != 0) {
-				MouseHandler_currentButton0 = MouseHandler_lastButton0;
+			MouseHandler_lastPressedXVolatile = var1.getX();
+			MouseHandler_lastPressedYVolatile = var1.getY();
+			MouseHandler_lastPressedTimeMillisVolatile = DirectByteArrayCopier.currentTimeMs();
+			MouseHandler_lastButtonVolatile = this.getButton(var1);
+			if (MouseHandler_lastButtonVolatile != 0) {
+				MouseHandler_currentButtonVolatile = MouseHandler_lastButtonVolatile;
 			}
 		}
 
@@ -196,7 +196,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	public final synchronized void mouseReleased(MouseEvent var1) {
 		if (MouseHandler_instance != null) {
 			MouseHandler_idleCycles = 0;
-			MouseHandler_currentButton0 = 0;
+			MouseHandler_currentButtonVolatile = 0;
 		}
 
 		if (var1.isPopupTrigger()) {
@@ -218,7 +218,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 
 	public final synchronized void focusLost(FocusEvent var1) {
 		if (MouseHandler_instance != null) {
-			MouseHandler_currentButton0 = 0;
+			MouseHandler_currentButtonVolatile = 0;
 		}
 
 	}
@@ -226,9 +226,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	public final synchronized void mouseExited(MouseEvent var1) {
 		if (MouseHandler_instance != null) {
 			MouseHandler_idleCycles = 0;
-			MouseHandler_x0 = -1;
-			MouseHandler_y0 = -1;
-			MouseHandler_millis0 = var1.getWhen();
+			MouseHandler_xVolatile = -1;
+			MouseHandler_yVolatile = -1;
+			MouseHandler_lastMovedVolatile = var1.getWhen();
 		}
 
 	}

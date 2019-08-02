@@ -438,9 +438,10 @@ public class Archive extends AbstractArchive {
 		signature = "(IB)V",
 		garbageValue = "35"
 	)
-	static final void method4269(int var0) {
+	@Export("drawInterfaceModelComponents")
+	static final void drawInterfaceModelComponents(int var0) {
 		if (class162.loadInterface(var0)) {
-			class225.method4122(Widget.Widget_interfaceComponents[var0], -1);
+			class225.drawModelComponents(Widget.Widget_interfaceComponents[var0], -1);
 		}
 	}
 }

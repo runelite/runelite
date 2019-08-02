@@ -29,7 +29,7 @@ public final class RasterProvider extends AbstractRasterProvider {
 		super.height = var2;
 		super.pixels = new int[var2 * var1 + 1];
 		DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
-		DirectColorModel var5 = new DirectColorModel(32, 16711680, 65280, 255);
+		DirectColorModel var5 = new DirectColorModel(32, 0xff0000, 0xff00, 255);
 		WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
 		this.image = new BufferedImage(var5, var6, false, new Hashtable());
 		this.setComponent(var3);

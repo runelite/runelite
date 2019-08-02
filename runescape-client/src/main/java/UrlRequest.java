@@ -46,13 +46,14 @@ public class UrlRequest {
 		signature = "(Lhp;Lhp;Lhp;Lhp;I)V",
 		garbageValue = "-354587299"
 	)
-	public static void method3317(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
+	@Export("Widget_setArchives")
+	public static void Widget_setArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
 		Widget.Widget_archive = var0;
 		ViewportMouse.Widget_modelsArchive = var1;
 		class216.Widget_spritesArchive = var2;
 		DirectByteArrayCopier.Widget_fontsArchive = var3;
 		Widget.Widget_interfaceComponents = new Widget[Widget.Widget_archive.getGroupCount()][];
-		ViewportMouse.loadedInterfaces = new boolean[Widget.Widget_archive.getGroupCount()];
+		ViewportMouse.Widget_loadedInterfaces = new boolean[Widget.Widget_archive.getGroupCount()];
 	}
 
 	@ObfuscatedName("e")
@@ -129,8 +130,8 @@ public class UrlRequest {
 				var9 = (var2 - var8) / 2;
 				if (var4) {
 					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, 0xff000000);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, 0xff000000);
 				}
 
 				var0 += var9;
@@ -145,8 +146,8 @@ public class UrlRequest {
 				var9 = (var3 - var8) / 2;
 				if (var4) {
 					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, 0xff000000);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, 0xff000000);
 				}
 
 				var1 += var9;

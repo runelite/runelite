@@ -123,8 +123,8 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 	@Export("init")
 	void init() {
 		this.element = ViewportMouse.getObjectDefinition(this.objectDefId).transform().mapIconId;
-		this.label = this.region.createMapLabel(class222.getWorldMapElement(this.element));
-		WorldMapElement var1 = class222.getWorldMapElement(this.getElement());
+		this.label = this.region.createMapLabel(class222.WorldMapElement_get(this.element));
+		WorldMapElement var1 = class222.WorldMapElement_get(this.getElement());
 		Sprite var2 = var1.getSpriteBool(false);
 		if (var2 != null) {
 			this.subWidth = var2.subWidth;

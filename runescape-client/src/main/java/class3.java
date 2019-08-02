@@ -165,7 +165,7 @@ public class class3 implements Enumerated {
 
 			int[] var19 = RouteStrategy.sceneMinimapSprite.pixels;
 			var26 = var1 * 4 + (103 - var2) * 2048 + 24624;
-			var14 = class43.method770(var5);
+			var14 = class43.getObjectIdFromTag(var5);
 			ObjectDefinition var15 = ViewportMouse.getObjectDefinition(var14);
 			if (var15.mapSceneId != -1) {
 				IndexedSprite var16 = ClanChat.mapSceneSprites[var15.mapSceneId];
@@ -242,7 +242,7 @@ public class class3 implements Enumerated {
 			var7 = GrandExchangeOfferWorldComparator.scene.getObjectFlags(var0, var1, var2, var5);
 			var8 = var7 >> 6 & 3;
 			var9 = var7 & 31;
-			var10 = class43.method770(var5);
+			var10 = class43.getObjectIdFromTag(var5);
 			ObjectDefinition var20 = ViewportMouse.getObjectDefinition(var10);
 			if (var20.mapSceneId != -1) {
 				IndexedSprite var28 = ClanChat.mapSceneSprites[var20.mapSceneId];
@@ -281,7 +281,7 @@ public class class3 implements Enumerated {
 
 		var5 = GrandExchangeOfferWorldComparator.scene.getFloorDecorationTag(var0, var1, var2);
 		if (var5 != 0L) {
-			var7 = class43.method770(var5);
+			var7 = class43.getObjectIdFromTag(var5);
 			ObjectDefinition var21 = ViewportMouse.getObjectDefinition(var7);
 			if (var21.mapSceneId != -1) {
 				IndexedSprite var22 = ClanChat.mapSceneSprites[var21.mapSceneId];

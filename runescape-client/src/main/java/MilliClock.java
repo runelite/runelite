@@ -67,7 +67,7 @@ public class MilliClock extends Clock {
 		garbageValue = "-333181863"
 	)
 	@Export("wait")
-	public int wait(int var1, int var2) {
+	public int wait(int tickLength, int fiveOrOne) {
 		int var3 = this.field2014;
 		int var4 = this.field2013;
 		this.field2014 = 300;
@@ -77,7 +77,7 @@ public class MilliClock extends Clock {
 			this.field2014 = var3;
 			this.field2013 = var4;
 		} else if (this.field2012 > this.field2011[this.field2016]) {
-			this.field2014 = (int)((long)(var1 * 2560) / (this.field2012 - this.field2011[this.field2016]));
+			this.field2014 = (int)((long)(tickLength * 2560) / (this.field2012 - this.field2011[this.field2016]));
 		}
 
 		if (this.field2014 < 25) {
@@ -86,11 +86,11 @@ public class MilliClock extends Clock {
 
 		if (this.field2014 > 256) {
 			this.field2014 = 256;
-			this.field2013 = (int)((long)var1 - (this.field2012 - this.field2011[this.field2016]) / 10L);
+			this.field2013 = (int)((long) tickLength - (this.field2012 - this.field2011[this.field2016]) / 10L);
 		}
 
-		if (this.field2013 > var1) {
-			this.field2013 = var1;
+		if (this.field2013 > tickLength) {
+			this.field2013 = tickLength;
 		}
 
 		this.field2011[this.field2016] = this.field2012;
@@ -104,11 +104,11 @@ public class MilliClock extends Clock {
 			}
 		}
 
-		if (this.field2013 < var2) {
-			this.field2013 = var2;
+		if (this.field2013 < fiveOrOne) {
+			this.field2013 = fiveOrOne;
 		}
 
-		EnumDefinition.method4550((long)this.field2013);
+		EnumDefinition.sleepMillis((long)this.field2013);
 
 		for (var5 = 0; this.field2015 < 256; this.field2015 += this.field2014) {
 			++var5;

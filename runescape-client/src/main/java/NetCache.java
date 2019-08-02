@@ -144,7 +144,7 @@ public class NetCache {
 		int var3;
 		int var4;
 		for (var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
-			var4 = WorldMapIcon_1.fontBold12.stringWidth(WorldMapLabel.method417(var3));
+			var4 = WorldMapIcon_1.fontBold12.stringWidth(WorldMapLabel.getMenuText(var3));
 			if (var4 > var2) {
 				var2 = var4;
 			}

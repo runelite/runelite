@@ -15,15 +15,16 @@ public class class49 {
 		garbageValue = "135"
 	)
 	static void method815() {
-		if (Login.Login_username == null || Login.Login_username.length() <= 0) {
-			if (WorldMapLabelSize.clientPreferences.rememberedUsername != null) {
-				Login.Login_username = WorldMapLabelSize.clientPreferences.rememberedUsername;
-				Client.Login_isUsernameRemembered = true;
-			} else {
-				Client.Login_isUsernameRemembered = false;
-			}
-
+		if (Login.Login_username != null && Login.Login_username.length() > 0) {
+			return;
 		}
+		if (WorldMapLabelSize.clientPreferences.rememberedUsername != null) {
+			Login.Login_username = WorldMapLabelSize.clientPreferences.rememberedUsername;
+			Client.Login_isUsernameRemembered = true;
+		} else {
+			Client.Login_isUsernameRemembered = false;
+		}
+
 	}
 
 	@ObfuscatedName("e")
@@ -43,16 +44,17 @@ public class class49 {
 			return null;
 		}
 		byte[] var5 = UserComparator4.archive12.takeFileFlat(var4);
-		if (var5 != null) {
-			if (var5.length <= 1) {
-				return null;
-			}
+		if (var5 == null) {
+			return null;
+		}
+		if (var5.length <= 1) {
+			return null;
+		}
 
-			var2 = World.newScript(var5);
-			if (var2 != null) {
-				Script.Script_cached.put(var2, (long)(var0 << 16));
-				return var2;
-			}
+		var2 = World.newScript(var5);
+		if (var2 != null) {
+			Script.Script_cached.put(var2, (long)(var0 << 16));
+			return var2;
 		}
 
 		return null;
@@ -63,8 +65,8 @@ public class class49 {
 		signature = "(CS)Z",
 		garbageValue = "8230"
 	)
-	@Export("isCharDigit")
-	public static boolean isCharDigit(char var0) {
+	@Export("isDigit")
+	public static boolean isDigit(char var0) {
 		return var0 >= '0' && var0 <= '9';
 	}
 }

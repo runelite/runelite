@@ -98,7 +98,7 @@ public class DevicePcmPlayer extends PcmPlayer {
 
 		for (int var2 = 0; var2 < var1; ++var2) {
 			int var3 = super.samples[var2];
-			if ((var3 + 8388608 & -16777216) != 0) {
+			if ((var3 + 8388608 & 0xff000000) != 0) {
 				var3 = 8388607 ^ var3 >> 31;
 			}
 

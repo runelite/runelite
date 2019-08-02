@@ -52,7 +52,7 @@ public class WorldMapDecoration {
 			var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
 		}
 
-		Strings.method4120(var3);
+		Strings.invalidateWidget(var3);
 		if (var0 == ScriptOpcodes.CC_SETOBJECT || var0 == ScriptOpcodes.CC_SETOBJECT_NONUM || var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			int var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];

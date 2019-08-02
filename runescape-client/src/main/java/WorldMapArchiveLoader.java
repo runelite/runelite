@@ -23,15 +23,15 @@ public class WorldMapArchiveLoader {
 	@Export("percentLoaded")
 	int percentLoaded;
 	@ObfuscatedName("i")
-	@Export("isLoaded")
-	boolean isLoaded;
+	@Export("loaded")
+	boolean loaded;
 
 	@ObfuscatedSignature(
 		signature = "(Lhp;)V"
 	)
 	WorldMapArchiveLoader(AbstractArchive var1) {
 		this.percentLoaded = 0;
-		this.isLoaded = false;
+		this.loaded = false;
 		this.archive = var1;
 	}
 
@@ -46,7 +46,7 @@ public class WorldMapArchiveLoader {
 			if (var1 != this.cacheName) {
 				this.cacheName = var1;
 				this.percentLoaded = 0;
-				this.isLoaded = false;
+				this.loaded = false;
 				this.load();
 			}
 		}
@@ -81,7 +81,7 @@ public class WorldMapArchiveLoader {
 			}
 
 			this.percentLoaded = 100;
-			this.isLoaded = true;
+			this.loaded = true;
 		}
 
 		return this.percentLoaded;
@@ -92,9 +92,9 @@ public class WorldMapArchiveLoader {
 		signature = "(I)Z",
 		garbageValue = "1906092832"
 	)
-	@Export("getIsLoaded")
-	boolean getIsLoaded() {
-		return this.isLoaded;
+	@Export("isLoaded")
+	boolean isLoaded() {
+		return this.loaded;
 	}
 
 	@ObfuscatedName("p")

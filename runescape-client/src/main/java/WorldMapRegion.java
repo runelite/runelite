@@ -38,8 +38,8 @@ public class WorldMapRegion {
 	@ObfuscatedGetter(
 		intValue = -862345975
 	)
-	@Export("regionx")
-	int regionx;
+	@Export("regionX")
+	int regionX;
 	@ObfuscatedName("b")
 	@ObfuscatedGetter(
 		intValue = -908569217
@@ -82,12 +82,12 @@ public class WorldMapRegion {
 	}
 
 	WorldMapRegion(int var1, int var2, int var3, HashMap var4) {
-		this.regionx = var1;
+		this.regionX = var1;
 		this.regionY = var2;
 		this.worldMapData1List = new LinkedList();
 		this.icon0List = new LinkedList();
 		this.iconMap = new HashMap();
-		this.backgroundColor = var3 | -16777216;
+		this.backgroundColor = var3 | 0xff000000;
 		this.fonts = var4;
 	}
 
@@ -96,16 +96,17 @@ public class WorldMapRegion {
 		signature = "(IIII)V",
 		garbageValue = "1947241845"
 	)
-	void method506(int var1, int var2, int var3) {
-		Sprite var4 = PlayerType.getWorldMapRegionCachedSprite(this.regionx, this.regionY, this.pixelsPerTile);
-		if (var4 != null) {
-			if (var3 == this.pixelsPerTile * 64) {
-				var4.drawAt(var1, var2);
-			} else {
-				var4.method6144(var1, var2, var3, var3);
-			}
-
+	void method506(int x, int y, int size) {
+		Sprite var4 = PlayerType.getWorldMapRegionCachedSprite(this.regionX, this.regionY, this.pixelsPerTile);
+		if (var4 == null) {
+			return;
 		}
+		if (size == this.pixelsPerTile * 64) {
+			var4.drawAt(x, y);
+		} else {
+			var4.drawScaledWorldmap(x, y, size, size);
+		}
+
 	}
 
 	@ObfuscatedName("k")
@@ -132,7 +133,7 @@ public class WorldMapRegion {
 
 		while (var3.hasNext()) {
 			WorldMapData_1 var4 = (WorldMapData_1)var3.next();
-			if (var4.getRegionX() == this.regionx && var4.getRegionY() == this.regionY) {
+			if (var4.getRegionX() == this.regionX && var4.getRegionY() == this.regionY) {
 				this.worldMapData1List.add(var4);
 			}
 		}
@@ -199,7 +200,7 @@ public class WorldMapRegion {
 	)
 	@Export("getIcon")
 	void getIcon(ObjectDefinition var1, int var2, int var3, int var4, AbstractWorldMapData var5) {
-		Coord var6 = new Coord(var2, var3 + this.regionx * 64, this.regionY * 64 + var4);
+		Coord var6 = new Coord(var2, var3 + this.regionX * 64, this.regionY * 64 + var4);
 		Coord var7 = null;
 		if (this.worldMapData_0 != null) {
 			var7 = new Coord(this.worldMapData_0.minPlane + var2, var3 + this.worldMapData_0.regionXLow * 64, var4 + this.worldMapData_0.regionYLow * 64);
@@ -212,7 +213,7 @@ public class WorldMapRegion {
 		if (var1.transforms != null) {
 			var10 = new WorldMapIcon_1(var7, var6, var1.id, this);
 		} else {
-			WorldMapElement var9 = class222.getWorldMapElement(var1.mapIconId);
+			WorldMapElement var9 = class222.WorldMapElement_get(var1.mapIconId);
 			var10 = new WorldMapIcon_0(var7, var6, var9.objectId, this.createMapLabel(var9));
 		}
 
@@ -248,7 +249,7 @@ public class WorldMapRegion {
 
 		while (var2.hasNext()) {
 			WorldMapIcon_0 var3 = (WorldMapIcon_0)var2.next();
-			if (var3.coord2.x >> 6 == this.regionx && var3.coord2.y >> 6 == this.regionY) {
+			if (var3.coord2.x >> 6 == this.regionX && var3.coord2.y >> 6 == this.regionY) {
 				WorldMapIcon_0 var4 = new WorldMapIcon_0(var3.coord2, var3.coord2, var3.element, this.method502(var3.element));
 				this.icon0List.add(var4);
 			}
@@ -321,7 +322,7 @@ public class WorldMapRegion {
 	void drawTile(int var1, class40 var2, IndexedSprite[] var3, AbstractArchive var4, AbstractArchive var5) {
 		this.pixelsPerTile = var1;
 		if (this.worldMapData_0 != null || !this.worldMapData1List.isEmpty()) {
-			if (PlayerType.getWorldMapRegionCachedSprite(this.regionx, this.regionY, var1) == null) {
+			if (PlayerType.getWorldMapRegionCachedSprite(this.regionX, this.regionY, var1) == null) {
 				boolean var6 = true;
 				var6 &= this.loadGeography(var4);
 				int var8;
@@ -349,7 +350,7 @@ public class WorldMapRegion {
 						this.method435(var2, var3, var9);
 					}
 
-					int var12 = this.regionx;
+					int var12 = this.regionX;
 					int var13 = this.regionY;
 					int var14 = this.pixelsPerTile;
 					WorldMapRegion_cachedSprites.put(var11, Widget.getWorldMapSpriteHash(var12, var13, var14), var11.pixels.length * 4);
@@ -378,21 +379,23 @@ public class WorldMapRegion {
 		signature = "(Ljava/util/HashSet;IIB)V",
 		garbageValue = "82"
 	)
-	void method433(HashSet var1, int var2, int var3) {
+	@Export("flashElements")
+	void flashElements(HashSet flashingElements, int flashCycle, int cyclesPerFlash) {
 		Iterator var4 = this.iconMap.values().iterator();
 
 		while (var4.hasNext()) {
 			AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
-			if (var5.hasValidElement()) {
-				int var6 = var5.getElement();
-				if (var1.contains(var6)) {
-					WorldMapElement var7 = class222.getWorldMapElement(var6);
-					this.method493(var7, var5.screenX, var5.screenY, var2, var3);
-				}
+			if (!var5.hasValidElement()) {
+				continue;
+			}
+			int var6 = var5.getElement();
+			if (flashingElements.contains(var6)) {
+				WorldMapElement var7 = class222.WorldMapElement_get(var6);
+				this.drawBackgroundCircle(var7, var5.screenX, var5.screenY, flashCycle, cyclesPerFlash);
 			}
 		}
 
-		this.method443(var1, var2, var3);
+		this.method443(flashingElements, flashCycle, cyclesPerFlash);
 	}
 
 	@ObfuscatedName("a")
@@ -477,7 +480,7 @@ public class WorldMapRegion {
 			Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, this.backgroundColor);
 		}
 
-		int var8 = 16711935;
+		int var8 = 0xff00ff;
 		int var9;
 		if (var7 != -1) {
 			int var10 = this.backgroundColor;
@@ -500,7 +503,7 @@ public class WorldMapRegion {
 			if (var11 == null) {
 				var9 = var10;
 			} else if (var11.secondaryRgb >= 0) {
-				var9 = var11.secondaryRgb | -16777216;
+				var9 = var11.secondaryRgb | 0xff000000;
 			} else {
 				int var14;
 				byte var15;
@@ -531,8 +534,8 @@ public class WorldMapRegion {
 						var17 = var18 + (var14 & 65408);
 					}
 
-					var9 = Rasterizer3D.Rasterizer3D_colorPalette[var17] | -16777216;
-				} else if (var11.primaryRgb == 16711935) {
+					var9 = Rasterizer3D.Rasterizer3D_colorPalette[var17] | 0xff000000;
+				} else if (var11.primaryRgb == 0xff00ff) {
 					var9 = var10;
 				} else {
 					var17 = class192.method3679(var11.hue, var11.saturation, var11.lightness);
@@ -559,7 +562,7 @@ public class WorldMapRegion {
 						var14 = var18 + (var17 & 65408);
 					}
 
-					var9 = Rasterizer3D.Rasterizer3D_colorPalette[var14] | -16777216;
+					var9 = Rasterizer3D.Rasterizer3D_colorPalette[var14] | 0xff000000;
 				}
 			}
 
@@ -586,96 +589,97 @@ public class WorldMapRegion {
 	void method520(int var1, int var2, AbstractWorldMapData var3, class40 var4) {
 		for (int var5 = 1; var5 < var3.planes; ++var5) {
 			int var6 = var3.floorOverlayIds[var5][var1][var2] - 1;
-			if (var6 > -1) {
-				int var8 = this.backgroundColor;
-				FloorOverlayDefinition var10 = (FloorOverlayDefinition)FloorOverlayDefinition.FloorOverlayDefinition_cached.get((long)var6);
-				FloorOverlayDefinition var9;
-				if (var10 != null) {
-					var9 = var10;
-				} else {
-					byte[] var11 = FloorOverlayDefinition.FloorOverlayDefinition_archive.takeFile(4, var6);
-					var10 = new FloorOverlayDefinition();
-					if (var11 != null) {
-						var10.decode(new Buffer(var11), var6);
-					}
-
-					var10.postDecode();
-					FloorOverlayDefinition.FloorOverlayDefinition_cached.put(var10, (long)var6);
-					var9 = var10;
+			if (var6 <= -1) {
+				continue;
+			}
+			int var8 = this.backgroundColor;
+			FloorOverlayDefinition var10 = (FloorOverlayDefinition)FloorOverlayDefinition.FloorOverlayDefinition_cached.get((long)var6);
+			FloorOverlayDefinition var9;
+			if (var10 != null) {
+				var9 = var10;
+			} else {
+				byte[] var11 = FloorOverlayDefinition.FloorOverlayDefinition_archive.takeFile(4, var6);
+				var10 = new FloorOverlayDefinition();
+				if (var11 != null) {
+					var10.decode(new Buffer(var11), var6);
 				}
 
-				int var7;
-				if (var9 == null) {
-					var7 = var8;
-				} else if (var9.secondaryRgb >= 0) {
-					var7 = var9.secondaryRgb | -16777216;
-				} else {
-					int var12;
-					byte var13;
-					int var16;
-					int var17;
-					if (var9.texture >= 0) {
-						var12 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var9.texture);
-						var13 = 96;
-						if (var12 == -2) {
-							var16 = 12345678;
-						} else if (var12 == -1) {
-							if (var13 < 0) {
-								var13 = 0;
-							} else if (var13 > 127) {
-								var13 = 127;
-							}
+				var10.postDecode();
+				FloorOverlayDefinition.FloorOverlayDefinition_cached.put(var10, (long)var6);
+				var9 = var10;
+			}
 
-							var17 = 127 - var13;
-							var16 = var17;
-						} else {
-							var17 = var13 * (var12 & 127) / 128;
-							if (var17 < 2) {
-								var17 = 2;
-							} else if (var17 > 126) {
-								var17 = 126;
-							}
-
-							var16 = var17 + (var12 & 65408);
+			int var7;
+			if (var9 == null) {
+				var7 = var8;
+			} else if (var9.secondaryRgb >= 0) {
+				var7 = var9.secondaryRgb | 0xff000000;
+			} else {
+				int var12;
+				byte var13;
+				int var16;
+				int var17;
+				if (var9.texture >= 0) {
+					var12 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var9.texture);
+					var13 = 96;
+					if (var12 == -2) {
+						var16 = 12345678;
+					} else if (var12 == -1) {
+						if (var13 < 0) {
+							var13 = 0;
+						} else if (var13 > 127) {
+							var13 = 127;
 						}
 
-						var7 = Rasterizer3D.Rasterizer3D_colorPalette[var16] | -16777216;
-					} else if (var9.primaryRgb == 16711935) {
-						var7 = var8;
+						var17 = 127 - var13;
+						var16 = var17;
 					} else {
-						var16 = class192.method3679(var9.hue, var9.saturation, var9.lightness);
-						var13 = 96;
-						if (var16 == -2) {
-							var12 = 12345678;
-						} else if (var16 == -1) {
-							if (var13 < 0) {
-								var13 = 0;
-							} else if (var13 > 127) {
-								var13 = 127;
-							}
-
-							var17 = 127 - var13;
-							var12 = var17;
-						} else {
-							var17 = var13 * (var16 & 127) / 128;
-							if (var17 < 2) {
-								var17 = 2;
-							} else if (var17 > 126) {
-								var17 = 126;
-							}
-
-							var12 = var17 + (var16 & 65408);
+						var17 = var13 * (var12 & 127) / 128;
+						if (var17 < 2) {
+							var17 = 2;
+						} else if (var17 > 126) {
+							var17 = 126;
 						}
 
-						var7 = Rasterizer3D.Rasterizer3D_colorPalette[var12] | -16777216;
+						var16 = var17 + (var12 & 65408);
 					}
-				}
 
-				if (var3.field165[var5][var1][var2] == 0) {
-					Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, var7);
+					var7 = Rasterizer3D.Rasterizer3D_colorPalette[var16] | 0xff000000;
+				} else if (var9.primaryRgb == 0xff00ff) {
+					var7 = var8;
 				} else {
-					var4.method698(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), 0, var7, this.pixelsPerTile, this.pixelsPerTile, var3.field165[var5][var1][var2], var3.field166[var5][var1][var2]);
+					var16 = class192.method3679(var9.hue, var9.saturation, var9.lightness);
+					var13 = 96;
+					if (var16 == -2) {
+						var12 = 12345678;
+					} else if (var16 == -1) {
+						if (var13 < 0) {
+							var13 = 0;
+						} else if (var13 > 127) {
+							var13 = 127;
+						}
+
+						var17 = 127 - var13;
+						var12 = var17;
+					} else {
+						var17 = var13 * (var16 & 127) / 128;
+						if (var17 < 2) {
+							var17 = 2;
+						} else if (var17 > 126) {
+							var17 = 126;
+						}
+
+						var12 = var17 + (var16 & 65408);
+					}
+
+					var7 = Rasterizer3D.Rasterizer3D_colorPalette[var12] | 0xff000000;
 				}
+			}
+
+			if (var3.field165[var5][var1][var2] == 0) {
+				Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, var7);
+			} else {
+				var4.method698(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), 0, var7, this.pixelsPerTile, this.pixelsPerTile, var3.field165[var5][var1][var2], var3.field166[var5][var1][var2]);
 			}
 		}
 
@@ -812,7 +816,7 @@ public class WorldMapRegion {
 			if (var12 != null && var12.hasValidElement()) {
 				var12.screenX = var10;
 				var12.screenY = var11;
-				WorldMapElement var13 = class222.getWorldMapElement(var12.getElement());
+				WorldMapElement var13 = class222.WorldMapElement_get(var12.getElement());
 				if (!var3.contains(var13.getObjectId())) {
 					this.method445(var12, var10, var11, var5);
 				}
@@ -832,9 +836,9 @@ public class WorldMapRegion {
 		while (var4.hasNext()) {
 			AbstractWorldMapIcon var5 = (AbstractWorldMapIcon)var4.next();
 			if (var5.hasValidElement()) {
-				WorldMapElement var6 = class222.getWorldMapElement(var5.getElement());
+				WorldMapElement var6 = class222.WorldMapElement_get(var5.getElement());
 				if (var6 != null && var1.contains(var6.getObjectId())) {
-					this.method493(var6, var5.screenX, var5.screenY, var2, var3);
+					this.drawBackgroundCircle(var6, var5.screenX, var5.screenY, var2, var3);
 				}
 			}
 		}
@@ -846,16 +850,18 @@ public class WorldMapRegion {
 		signature = "(Liw;IIIIB)V",
 		garbageValue = "14"
 	)
-	void method493(WorldMapElement var1, int var2, int var3, int var4, int var5) {
+	@Export("drawBackgroundCircle")
+	void drawBackgroundCircle(WorldMapElement var1, int var2, int var3, int var4, int var5) {
 		Sprite var6 = var1.getSpriteBool(false);
-		if (var6 != null) {
-			var6.drawAt2(var2 - var6.subWidth / 2, var3 - var6.subHeight / 2);
-			if (var4 % var5 < var5 / 2) {
-				Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 15, 16776960, 128);
-				Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 7, 16777215, 256);
-			}
-
+		if (var6 == null) {
+			return;
 		}
+		var6.drawTransBgAt(var2 - var6.subWidth / 2, var3 - var6.subHeight / 2);
+		if (var4 % var5 < var5 / 2) {
+			Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 15, 0xffff00, 128);
+			Rasterizer2D.Rasterizer2D_drawCircleAlpha(var2, var3, 7, 0xffffff, 256);
+		}
+
 	}
 
 	@ObfuscatedName("ag")
@@ -864,7 +870,7 @@ public class WorldMapRegion {
 		garbageValue = "-89"
 	)
 	void method445(AbstractWorldMapIcon var1, int var2, int var3, float var4) {
-		WorldMapElement var5 = class222.getWorldMapElement(var1.getElement());
+		WorldMapElement var5 = class222.WorldMapElement_get(var1.getElement());
 		this.method446(var5, var2, var3);
 		this.method447(var1, var5, var2, var3, var4);
 	}
@@ -879,7 +885,7 @@ public class WorldMapRegion {
 		if (var4 != null) {
 			int var5 = this.method455(var4, var1.horizontalAlignment);
 			int var6 = this.method450(var4, var1.verticalAlignment);
-			var4.drawAt2(var5 + var2, var3 + var6);
+			var4.drawTransBgAt(var5 + var2, var3 + var6);
 		}
 
 	}
@@ -891,11 +897,12 @@ public class WorldMapRegion {
 	)
 	void method447(AbstractWorldMapIcon var1, WorldMapElement var2, int var3, int var4, float var5) {
 		WorldMapLabel var6 = var1.getLabel();
-		if (var6 != null) {
-			if (var6.size.method184(var5)) {
-				Font var7 = (Font)this.fonts.get(var6.size);
-				var7.drawLines(var6.text, var3 - var6.width / 2, var4, var6.width, var6.height, -16777216 | var2.field3217, 0, 1, 0, var7.ascent / 2);
-			}
+		if (var6 == null) {
+			return;
+		}
+		if (var6.size.method184(var5)) {
+			Font var7 = (Font)this.fonts.get(var6.size);
+			var7.drawLines(var6.text, var3 - var6.width / 2, var4, var6.width, var6.height, 0xff000000 | var2.field3217, 0, 1, 0, var7.ascent / 2);
 		}
 	}
 
@@ -962,7 +969,7 @@ public class WorldMapRegion {
 		garbageValue = "1732767815"
 	)
 	WorldMapLabel method502(int var1) {
-		WorldMapElement var2 = class222.getWorldMapElement(var1);
+		WorldMapElement var2 = class222.WorldMapElement_get(var1);
 		return this.createMapLabel(var2);
 	}
 
@@ -1009,31 +1016,31 @@ public class WorldMapRegion {
 	)
 	List method440(int var1, int var2, int var3, int var4, int var5) {
 		LinkedList var6 = new LinkedList();
-		if (var4 >= var1 && var5 >= var2) {
-			if (var4 < var3 + var1 && var5 < var3 + var2) {
-				Iterator var7 = this.iconMap.values().iterator();
-
-				AbstractWorldMapIcon var8;
-				while (var7.hasNext()) {
-					var8 = (AbstractWorldMapIcon)var7.next();
-					if (var8.hasValidElement() && var8.fitsScreen(var4, var5)) {
-						var6.add(var8);
-					}
-				}
-
-				var7 = this.icon0List.iterator();
-
-				while (var7.hasNext()) {
-					var8 = (AbstractWorldMapIcon)var7.next();
-					if (var8.hasValidElement() && var8.fitsScreen(var4, var5)) {
-						var6.add(var8);
-					}
-				}
-
-				return var6;
-			}
+		if (var4 < var1 || var5 < var2) {
 			return var6;
 		}
+		if (var4 >= var3 + var1 || var5 >= var3 + var2) {
+			return var6;
+		}
+		Iterator var7 = this.iconMap.values().iterator();
+
+		AbstractWorldMapIcon var8;
+		while (var7.hasNext()) {
+			var8 = (AbstractWorldMapIcon)var7.next();
+			if (var8.hasValidElement() && var8.fitsScreen(var4, var5)) {
+				var6.add(var8);
+			}
+		}
+
+		var7 = this.icon0List.iterator();
+
+		while (var7.hasNext()) {
+			var8 = (AbstractWorldMapIcon)var7.next();
+			if (var8.hasValidElement() && var8.fitsScreen(var4, var5)) {
+				var6.add(var8);
+			}
+		}
+
 		return var6;
 	}
 

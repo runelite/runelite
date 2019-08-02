@@ -9,8 +9,8 @@ public class class222 {
 		signature = "(II)Liw;",
 		garbageValue = "-673469339"
 	)
-	@Export("getWorldMapElement")
-	public static WorldMapElement getWorldMapElement(int var0) {
+	@Export("WorldMapElement_get")
+	public static WorldMapElement WorldMapElement_get(int var0) {
 		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
 	}
 }

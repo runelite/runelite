@@ -76,9 +76,9 @@ public class class188 {
 		var0.drawCentered("Select a world", Login.xPadding + 62, 15, 0, -1);
 		if (FriendSystem.worldSelectStars != null) {
 			FriendSystem.worldSelectStars[1].drawAt(Login.xPadding + 140, 1);
-			var1.draw("Members only world", Login.xPadding + 152, 10, 16777215, -1);
+			var1.draw("Members only world", Login.xPadding + 152, 10, 0xffffff, -1);
 			FriendSystem.worldSelectStars[0].drawAt(Login.xPadding + 140, 12);
-			var1.draw("Free world", Login.xPadding + 152, 21, 16777215, -1);
+			var1.draw("Free world", Login.xPadding + 152, 21, 0xffffff, -1);
 		}
 
 		if (class225.worldSelectArrows != null) {
@@ -95,7 +95,7 @@ public class class188 {
 				class225.worldSelectArrows[1].drawAt(var22 + 15, 4);
 			}
 
-			var0.draw("World", var22 + 32, 17, 16777215, -1);
+			var0.draw("World", var22 + 32, 17, 0xffffff, -1);
 			int var23 = Login.xPadding + 390;
 			if (World.sortOption1[0] == 1 && World.sortOption2[0] == 0) {
 				class225.worldSelectArrows[2].drawAt(var23, 4);
@@ -109,7 +109,7 @@ public class class188 {
 				class225.worldSelectArrows[1].drawAt(var23 + 15, 4);
 			}
 
-			var0.draw("Players", var23 + 32, 17, 16777215, -1);
+			var0.draw("Players", var23 + 32, 17, 0xffffff, -1);
 			var4 = Login.xPadding + 500;
 			if (World.sortOption1[0] == 2 && World.sortOption2[0] == 0) {
 				class225.worldSelectArrows[2].drawAt(var4, 4);
@@ -123,7 +123,7 @@ public class class188 {
 				class225.worldSelectArrows[1].drawAt(var4 + 15, 4);
 			}
 
-			var0.draw("Location", var4 + 32, 17, 16777215, -1);
+			var0.draw("Location", var4 + 32, 17, 0xffffff, -1);
 			var5 = Login.xPadding + 610;
 			if (World.sortOption1[0] == 3 && World.sortOption2[0] == 0) {
 				class225.worldSelectArrows[2].drawAt(var5, 4);
@@ -137,11 +137,11 @@ public class class188 {
 				class225.worldSelectArrows[1].drawAt(var5 + 15, 4);
 			}
 
-			var0.draw("Type", var5 + 32, 17, 16777215, -1);
+			var0.draw("Type", var5 + 32, 17, 0xffffff, -1);
 		}
 
 		Rasterizer2D.Rasterizer2D_fillRectangle(Login.xPadding + 708, 4, 50, 16, 0);
-		var1.drawCentered("Cancel", Login.xPadding + 708 + 25, 16, 16777215, -1);
+		var1.drawCentered("Cancel", Login.xPadding + 708 + 25, 16, 0xffffff, -1);
 		Login.hoveredWorldIndex = -1;
 		if (WorldMapID.worldSelectBackSprites != null) {
 			byte var27 = 88;
@@ -217,7 +217,7 @@ public class class188 {
 						var20 = 6;
 					}
 				} else if (var24.isDeadman()) {
-					var21 = 16711680;
+					var21 = 0xff0000;
 					if (var24.isMembersOnly()) {
 						var20 = 5;
 					} else {
@@ -237,7 +237,7 @@ public class class188 {
 
 				if (MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var11 && MouseHandler.MouseHandler_x < var27 + var12 && MouseHandler.MouseHandler_y < var11 + var28 && var18) {
 					Login.hoveredWorldIndex = var16;
-					WorldMapID.worldSelectBackSprites[var20].drawAtTransOverlay(var12, var11, 128, 16777215);
+					WorldMapID.worldSelectBackSprites[var20].drawTransOverlayAt(var12, var11, 128, 0xffffff);
 					var14 = true;
 				} else {
 					WorldMapID.worldSelectBackSprites[var20].drawAt(var12, var11);
@@ -248,7 +248,7 @@ public class class188 {
 				}
 
 				var0.drawCentered(Integer.toString(var24.id), var12 + 15, var28 / 2 + var11 + 5, var21, -1);
-				var1.drawCentered(var19, var12 + 60, var28 / 2 + var11 + 5, 268435455, -1);
+				var1.drawCentered(var19, var12 + 60, var28 / 2 + var11 + 5, 0xfffffff, -1);
 				var11 = var11 + var7 + var28;
 				++var13;
 				if (var13 >= var5) {
@@ -301,6 +301,6 @@ public class class188 {
 		if (var1.length() > 9) {
 			return " " + ClientPreferences.colorStartTag(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>";
 		}
-		return var1.length() > 6 ? " " + ClientPreferences.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>" : " " + ClientPreferences.colorStartTag(16776960) + var1 + "</col>";
+		return var1.length() > 6 ? " " + ClientPreferences.colorStartTag(0xffffff) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>" : " " + ClientPreferences.colorStartTag(0xffff00) + var1 + "</col>";
 	}
 }

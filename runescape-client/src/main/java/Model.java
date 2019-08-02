@@ -545,120 +545,123 @@ public class Model extends Entity {
 	@ObfuscatedName("k")
 	@Export("calculateBoundingBox")
 	void calculateBoundingBox(int var1) {
-		if (this.xMidOffset == -1) {
-			int var2 = 0;
-			int var3 = 0;
-			int var4 = 0;
-			int var5 = 0;
-			int var6 = 0;
-			int var7 = 0;
-			int var8 = Model_cosine[var1];
-			int var9 = Model_sine[var1];
-
-			for (int var10 = 0; var10 < this.verticesCount; ++var10) {
-				int var11 = Rasterizer3D.method3040(this.verticesX[var10], this.verticesZ[var10], var8, var9);
-				int var12 = this.verticesY[var10];
-				int var13 = Rasterizer3D.method3061(this.verticesX[var10], this.verticesZ[var10], var8, var9);
-				if (var11 < var2) {
-					var2 = var11;
-				}
-
-				if (var11 > var5) {
-					var5 = var11;
-				}
-
-				if (var12 < var3) {
-					var3 = var12;
-				}
-
-				if (var12 > var6) {
-					var6 = var12;
-				}
-
-				if (var13 < var4) {
-					var4 = var13;
-				}
-
-				if (var13 > var7) {
-					var7 = var13;
-				}
-			}
-
-			this.xMid = (var5 + var2) / 2;
-			this.yMid = (var6 + var3) / 2;
-			this.zMid = (var7 + var4) / 2;
-			this.xMidOffset = (var5 - var2 + 1) / 2;
-			this.yMidOffset = (var6 - var3 + 1) / 2;
-			this.zMidOffset = (var7 - var4 + 1) / 2;
-			if (this.xMidOffset < 32) {
-				this.xMidOffset = 32;
-			}
-
-			if (this.zMidOffset < 32) {
-				this.zMidOffset = 32;
-			}
-
-			if (this.isSingleTile) {
-				this.xMidOffset += 8;
-				this.zMidOffset += 8;
-			}
-
+		if (this.xMidOffset != -1) {
+			return;
 		}
+		int var2 = 0;
+		int var3 = 0;
+		int var4 = 0;
+		int var5 = 0;
+		int var6 = 0;
+		int var7 = 0;
+		int var8 = Model_cosine[var1];
+		int var9 = Model_sine[var1];
+
+		for (int var10 = 0; var10 < this.verticesCount; ++var10) {
+			int var11 = Rasterizer3D.method3040(this.verticesX[var10], this.verticesZ[var10], var8, var9);
+			int var12 = this.verticesY[var10];
+			int var13 = Rasterizer3D.method3061(this.verticesX[var10], this.verticesZ[var10], var8, var9);
+			if (var11 < var2) {
+				var2 = var11;
+			}
+
+			if (var11 > var5) {
+				var5 = var11;
+			}
+
+			if (var12 < var3) {
+				var3 = var12;
+			}
+
+			if (var12 > var6) {
+				var6 = var12;
+			}
+
+			if (var13 < var4) {
+				var4 = var13;
+			}
+
+			if (var13 > var7) {
+				var7 = var13;
+			}
+		}
+
+		this.xMid = (var5 + var2) / 2;
+		this.yMid = (var6 + var3) / 2;
+		this.zMid = (var7 + var4) / 2;
+		this.xMidOffset = (var5 - var2 + 1) / 2;
+		this.yMidOffset = (var6 - var3 + 1) / 2;
+		this.zMidOffset = (var7 - var4 + 1) / 2;
+		if (this.xMidOffset < 32) {
+			this.xMidOffset = 32;
+		}
+
+		if (this.zMidOffset < 32) {
+			this.zMidOffset = 32;
+		}
+
+		if (this.isSingleTile) {
+			this.xMidOffset += 8;
+			this.zMidOffset += 8;
+		}
+
 	}
 
 	@ObfuscatedName("l")
 	@Export("calculateBoundsCylinder")
 	public void calculateBoundsCylinder() {
-		if (this.boundsType != 1) {
-			this.boundsType = 1;
-			super.height = 0;
-			this.bottomY = 0;
-			this.xzRadius = 0;
+		if (this.boundsType == 1) {
+			return;
+		}
+		this.boundsType = 1;
+		super.height = 0;
+		this.bottomY = 0;
+		this.xzRadius = 0;
 
-			for (int var1 = 0; var1 < this.verticesCount; ++var1) {
-				int var2 = this.verticesX[var1];
-				int var3 = this.verticesY[var1];
-				int var4 = this.verticesZ[var1];
-				if (-var3 > super.height) {
-					super.height = -var3;
-				}
-
-				if (var3 > this.bottomY) {
-					this.bottomY = var3;
-				}
-
-				int var5 = var2 * var2 + var4 * var4;
-				if (var5 > this.xzRadius) {
-					this.xzRadius = var5;
-				}
+		for (int var1 = 0; var1 < this.verticesCount; ++var1) {
+			int var2 = this.verticesX[var1];
+			int var3 = this.verticesY[var1];
+			int var4 = this.verticesZ[var1];
+			if (-var3 > super.height) {
+				super.height = -var3;
 			}
 
-			this.xzRadius = (int)(Math.sqrt((double)this.xzRadius) + 0.99D);
-			this.radius = (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + super.height * super.height)) + 0.99D);
-			this.diameter = this.radius + (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + this.bottomY * this.bottomY)) + 0.99D);
+			if (var3 > this.bottomY) {
+				this.bottomY = var3;
+			}
+
+			int var5 = var2 * var2 + var4 * var4;
+			if (var5 > this.xzRadius) {
+				this.xzRadius = var5;
+			}
 		}
+
+		this.xzRadius = (int)(Math.sqrt((double)this.xzRadius) + 0.99D);
+		this.radius = (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + super.height * super.height)) + 0.99D);
+		this.diameter = this.radius + (int)(Math.sqrt((double)(this.xzRadius * this.xzRadius + this.bottomY * this.bottomY)) + 0.99D);
 	}
 
 	@ObfuscatedName("b")
 	void method2910() {
-		if (this.boundsType != 2) {
-			this.boundsType = 2;
-			this.xzRadius = 0;
-
-			for (int var1 = 0; var1 < this.verticesCount; ++var1) {
-				int var2 = this.verticesX[var1];
-				int var3 = this.verticesY[var1];
-				int var4 = this.verticesZ[var1];
-				int var5 = var2 * var2 + var4 * var4 + var3 * var3;
-				if (var5 > this.xzRadius) {
-					this.xzRadius = var5;
-				}
-			}
-
-			this.xzRadius = (int)(Math.sqrt((double)this.xzRadius) + 0.99D);
-			this.radius = this.xzRadius;
-			this.diameter = this.xzRadius + this.xzRadius;
+		if (this.boundsType == 2) {
+			return;
 		}
+		this.boundsType = 2;
+		this.xzRadius = 0;
+
+		for (int var1 = 0; var1 < this.verticesCount; ++var1) {
+			int var2 = this.verticesX[var1];
+			int var3 = this.verticesY[var1];
+			int var4 = this.verticesZ[var1];
+			int var5 = var2 * var2 + var4 * var4 + var3 * var3;
+			if (var5 > this.xzRadius) {
+				this.xzRadius = var5;
+			}
+		}
+
+		this.xzRadius = (int)(Math.sqrt((double)this.xzRadius) + 0.99D);
+		this.radius = this.xzRadius;
+		this.diameter = this.xzRadius + this.xzRadius;
 	}
 
 	@ObfuscatedName("i")
@@ -680,22 +683,21 @@ public class Model extends Entity {
 	)
 	@Export("animate")
 	public void animate(Frames var1, int var2) {
-		if (this.vertexLabels != null) {
-			if (var2 != -1) {
-				Animation var3 = var1.frames[var2];
-				Skeleton var4 = var3.skeleton;
-				Model_transformTempX = 0;
-				Model_transformTempY = 0;
-				Model_transformTempZ = 0;
-
-				for (int var5 = 0; var5 < var3.transformCount; ++var5) {
-					int var6 = var3.transformSkeletonLabels[var5];
-					this.transform(var4.transformTypes[var6], var4.labels[var6], var3.transformXs[var5], var3.transformYs[var5], var3.transformZs[var5]);
-				}
-
-				this.resetBounds();
-			}
+		if (this.vertexLabels == null || var2 == -1) {
+			return;
 		}
+		Animation var3 = var1.frames[var2];
+		Skeleton var4 = var3.skeleton;
+		Model_transformTempX = 0;
+		Model_transformTempY = 0;
+		Model_transformTempZ = 0;
+
+		for (int var5 = 0; var5 < var3.transformCount; ++var5) {
+			int var6 = var3.transformSkeletonLabels[var5];
+			this.transform(var4.transformTypes[var6], var4.labels[var6], var3.transformXs[var5], var3.transformYs[var5], var3.transformZs[var5]);
+		}
+
+		this.resetBounds();
 	}
 
 	@ObfuscatedName("r")
@@ -704,50 +706,51 @@ public class Model extends Entity {
 	)
 	@Export("animate2")
 	public void animate2(Frames var1, int var2, Frames var3, int var4, int[] var5) {
-		if (var2 != -1) {
-			if (var5 != null && var4 != -1) {
-				Animation var6 = var1.frames[var2];
-				Animation var7 = var3.frames[var4];
-				Skeleton var8 = var6.skeleton;
-				Model_transformTempX = 0;
-				Model_transformTempY = 0;
-				Model_transformTempZ = 0;
-				byte var9 = 0;
-				int var13 = var9 + 1;
-				int var10 = var5[var9];
+		if (var2 == -1) {
+			return;
+		}
+		if (var5 == null || var4 == -1) {
+			this.animate(var1, var2);
+			return;
+		}
+		Animation var6 = var1.frames[var2];
+		Animation var7 = var3.frames[var4];
+		Skeleton var8 = var6.skeleton;
+		Model_transformTempX = 0;
+		Model_transformTempY = 0;
+		Model_transformTempZ = 0;
+		byte var9 = 0;
+		int var13 = var9 + 1;
+		int var10 = var5[var9];
 
-				int var11;
-				int var12;
-				for (var11 = 0; var11 < var6.transformCount; ++var11) {
-					for (var12 = var6.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
-					}
+		int var11;
+		int var12;
+		for (var11 = 0; var11 < var6.transformCount; ++var11) {
+			for (var12 = var6.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
+			}
 
-					if (var12 != var10 || var8.transformTypes[var12] == 0) {
-						this.transform(var8.transformTypes[var12], var8.labels[var12], var6.transformXs[var11], var6.transformYs[var11], var6.transformZs[var11]);
-					}
-				}
-
-				Model_transformTempX = 0;
-				Model_transformTempY = 0;
-				Model_transformTempZ = 0;
-				var9 = 0;
-				var13 = var9 + 1;
-				var10 = var5[var9];
-
-				for (var11 = 0; var11 < var7.transformCount; ++var11) {
-					for (var12 = var7.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
-					}
-
-					if (var12 == var10 || var8.transformTypes[var12] == 0) {
-						this.transform(var8.transformTypes[var12], var8.labels[var12], var7.transformXs[var11], var7.transformYs[var11], var7.transformZs[var11]);
-					}
-				}
-
-				this.resetBounds();
-			} else {
-				this.animate(var1, var2);
+			if (var12 != var10 || var8.transformTypes[var12] == 0) {
+				this.transform(var8.transformTypes[var12], var8.labels[var12], var6.transformXs[var11], var6.transformYs[var11], var6.transformZs[var11]);
 			}
 		}
+
+		Model_transformTempX = 0;
+		Model_transformTempY = 0;
+		Model_transformTempZ = 0;
+		var9 = 0;
+		var13 = var9 + 1;
+		var10 = var5[var9];
+
+		for (var11 = 0; var11 < var7.transformCount; ++var11) {
+			for (var12 = var7.transformSkeletonLabels[var11]; var12 > var10; var10 = var5[var13++]) {
+			}
+
+			if (var12 == var10 || var8.transformTypes[var12] == 0) {
+				this.transform(var8.transformTypes[var12], var8.labels[var12], var7.transformXs[var11], var7.transformYs[var11], var7.transformZs[var11]);
+			}
+		}
+
+		this.resetBounds();
 	}
 
 	@ObfuscatedName("v")

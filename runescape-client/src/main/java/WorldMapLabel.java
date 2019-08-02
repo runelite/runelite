@@ -115,7 +115,8 @@ public class WorldMapLabel {
 		signature = "(IB)Ljava/lang/String;",
 		garbageValue = "108"
 	)
-	static String method417(int var0) {
+	@Export("getMenuText")
+	static String getMenuText(int var0) {
 		if (var0 < 0) {
 			return "";
 		}
@@ -127,7 +128,8 @@ public class WorldMapLabel {
 		signature = "(IIIZI)V",
 		garbageValue = "-1379117889"
 	)
-	public static void method418(int var0, int var1, int var2, boolean var3) {
+	@Export("changePlane")
+	public static void changePlane(int var0, int var1, int var2, boolean var3) {
 		PacketBufferNode var4 = Archive.method4265(ClientPacket.field2296, Client.packetWriter.isaacCipher);
 		var4.packetBuffer.writeIntME(var3 ? Client.field855 : 0);
 		var4.packetBuffer.writeShortLE(var1);

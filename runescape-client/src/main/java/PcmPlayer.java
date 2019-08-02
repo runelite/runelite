@@ -174,90 +174,91 @@ public class PcmPlayer {
 	)
 	@Export("run")
 	public final synchronized void run() {
-		if (this.samples != null) {
-			long var1 = DirectByteArrayCopier.currentTimeMs();
+		if (this.samples == null) {
+			return;
+		}
+		long var1 = DirectByteArrayCopier.currentTimeMs();
 
-			try {
-				if (0L != this.field1416) {
-					if (var1 < this.field1416) {
+		try {
+			if (0L != this.field1416) {
+				if (var1 < this.field1416) {
+					return;
+				}
+
+				this.open(this.capacity);
+				this.field1416 = 0L;
+				this.field1421 = true;
+			}
+
+			int var3 = this.position();
+			if (this.field1419 - var3 > this.field1417) {
+				this.field1417 = this.field1419 - var3;
+			}
+
+			int var4 = this.field1413 + this.field1414;
+			if (var4 + 256 > 16384) {
+				var4 = 16128;
+			}
+
+			if (var4 + 256 > this.capacity) {
+				this.capacity += 1024;
+				if (this.capacity > 16384) {
+					this.capacity = 16384;
+				}
+
+				this.close();
+				this.open(this.capacity);
+				var3 = 0;
+				this.field1421 = true;
+				if (var4 + 256 > this.capacity) {
+					var4 = this.capacity - 256;
+					this.field1413 = var4 - this.field1414;
+				}
+			}
+
+			while (var3 < var4) {
+				this.fill(this.samples, 256);
+				this.write();
+				var3 += 256;
+			}
+
+			if (var1 > this.field1420) {
+				if (!this.field1421) {
+					if (this.field1417 == 0 && this.field1418 == 0) {
+						this.close();
+						this.field1416 = 2000L + var1;
 						return;
 					}
 
-					this.open(this.capacity);
-					this.field1416 = 0L;
-					this.field1421 = true;
+					this.field1413 = Math.min(this.field1418, this.field1417);
+					this.field1418 = this.field1417;
+				} else {
+					this.field1421 = false;
 				}
 
-				int var3 = this.position();
-				if (this.field1419 - var3 > this.field1417) {
-					this.field1417 = this.field1419 - var3;
-				}
-
-				int var4 = this.field1413 + this.field1414;
-				if (var4 + 256 > 16384) {
-					var4 = 16128;
-				}
-
-				if (var4 + 256 > this.capacity) {
-					this.capacity += 1024;
-					if (this.capacity > 16384) {
-						this.capacity = 16384;
-					}
-
-					this.close();
-					this.open(this.capacity);
-					var3 = 0;
-					this.field1421 = true;
-					if (var4 + 256 > this.capacity) {
-						var4 = this.capacity - 256;
-						this.field1413 = var4 - this.field1414;
-					}
-				}
-
-				while (var3 < var4) {
-					this.fill(this.samples, 256);
-					this.write();
-					var3 += 256;
-				}
-
-				if (var1 > this.field1420) {
-					if (!this.field1421) {
-						if (this.field1417 == 0 && this.field1418 == 0) {
-							this.close();
-							this.field1416 = 2000L + var1;
-							return;
-						}
-
-						this.field1413 = Math.min(this.field1418, this.field1417);
-						this.field1418 = this.field1417;
-					} else {
-						this.field1421 = false;
-					}
-
-					this.field1417 = 0;
-					this.field1420 = 2000L + var1;
-				}
-
-				this.field1419 = var3;
-			} catch (Exception var7) {
-				this.close();
-				this.field1416 = var1 + 2000L;
+				this.field1417 = 0;
+				this.field1420 = 2000L + var1;
 			}
 
-			try {
-				if (var1 > 500000L + this.timeMs) {
-					var1 = this.timeMs;
-				}
-
-				while (var1 > 5000L + this.timeMs) {
-					this.skip(256);
-					this.timeMs += (long)(256000 / CollisionMap.PcmPlayer_sampleRate);
-				}
-			} catch (Exception var6) {
-				this.timeMs = var1;
-			}
-
+			this.field1419 = var3;
+		} catch (Exception var7) {
+			this.close();
+			this.field1416 = var1 + 2000L;
 		}
+
+		try {
+			if (var1 > 500000L + this.timeMs) {
+				var1 = this.timeMs;
+			}
+
+			while (var1 > 5000L + this.timeMs) {
+				this.skip(256);
+				this.timeMs += (long)(256000 / CollisionMap.PcmPlayer_sampleRate);
+			}
+		} catch (Exception var6) {
+			this.timeMs = var1;
+		}
+
 	}
 
 	@ObfuscatedName("aw")
@@ -473,7 +474,8 @@ public class PcmPlayer {
 		signature = "(B)[Lll;",
 		garbageValue = "69"
 	)
-	public static FillMode[] method2405() {
+	@Export("FillMode_values")
+	public static FillMode[] FillMode_values() {
 		return new FillMode[]{FillMode.GRADIENT, FillMode.SOLID, FillMode.GRADIENTALPHA};
 	}
 

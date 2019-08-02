@@ -214,11 +214,11 @@ public class MusicPatchPcmStream extends PcmStream {
 		if (var0.isMembersOnly() != Client.isMembersWorld) {
 			Client.isMembersWorld = var0.isMembersOnly();
 			boolean var1 = var0.isMembersOnly();
-			if (var1 != ModelData0.inMembersWorld) {
+			if (var1 != ModelData0.ItemDefinition_inMembersWorld) {
 				ItemDefinition.ItemDefinition_cached.clear();
 				ItemDefinition.ItemDefinition_cachedModels.clear();
 				ItemDefinition.ItemDefinition_cachedSprites.clear();
-				ModelData0.inMembersWorld = var1;
+				ModelData0.ItemDefinition_inMembersWorld = var1;
 			}
 		}
 

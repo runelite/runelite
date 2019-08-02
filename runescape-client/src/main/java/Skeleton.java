@@ -181,7 +181,7 @@ public class Skeleton extends Node {
 				Calendar.field2507 = var12;
 			}
 
-			Strings.method4120(var6);
+			Strings.invalidateWidget(var6);
 			return 1;
 		}
 		Widget var9;
@@ -189,13 +189,13 @@ public class Skeleton extends Node {
 			var9 = var2 ? Interpreter.field1111 : Calendar.field2507;
 			Widget var10 = class80.getWidget(var9.id);
 			var10.children[var9.childIndex] = null;
-			Strings.method4120(var10);
+			Strings.invalidateWidget(var10);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CC_DELETEALL) {
 			var9 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			var9.children = null;
-			Strings.method4120(var9);
+			Strings.invalidateWidget(var9);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CC_FIND) {

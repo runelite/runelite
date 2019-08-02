@@ -41,7 +41,8 @@ public class class173 {
 		signature = "(I)Lfu;",
 		garbageValue = "-1483717574"
 	)
-	public static Clock method3589() {
+	@Export("newClock")
+	public static Clock newClock() {
 		try {
 			return new NanoClock();
 		} catch (Throwable var1) {

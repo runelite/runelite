@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -39,7 +40,8 @@ public class Strings {
 		signature = "(Lhj;I)V",
 		garbageValue = "-2041903885"
 	)
-	static void method4120(Widget var0) {
+	@Export("invalidateWidget")
+	static void invalidateWidget(Widget var0) {
 		if (var0.cycle == Client.field741) {
 			Client.field843[var0.rootIndex] = true;
 		}

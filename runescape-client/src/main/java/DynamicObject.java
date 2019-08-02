@@ -9,7 +9,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("DynamicObject")
 public class DynamicObject extends Entity {
 	@ObfuscatedName("x")
-	static int[] field1301;
+	static int[] Tiles_hueMultiplier;
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
 		intValue = -982722193

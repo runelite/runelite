@@ -166,60 +166,58 @@ public class WorldMapSection1 implements WorldMapSection {
 	)
 	@Export("parseIntCustomRadix")
 	static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
-		if (var1 >= 2 && var1 <= 36) {
-			boolean var3 = false;
-			boolean var4 = false;
-			int var5 = 0;
-			int var6 = var0.length();
+		if (var1 < 2 || var1 > 36) {
+			throw new IllegalArgumentException("" + var1);
+		}
+		boolean var3 = false;
+		boolean var4 = false;
+		int var5 = 0;
+		int var6 = var0.length();
 
-			for (int var7 = 0; var7 < var6; ++var7) {
-				char var8 = var0.charAt(var7);
-				if (var7 == 0) {
-					if (var8 == '-') {
-						var3 = true;
-						continue;
-					}
-
-					if (var8 == '+') {
-						continue;
-					}
+		for (int var7 = 0; var7 < var6; ++var7) {
+			char var8 = var0.charAt(var7);
+			if (var7 == 0) {
+				if (var8 == '-') {
+					var3 = true;
+					continue;
 				}
 
-				int var10;
-				if (var8 >= '0' && var8 <= '9') {
-					var10 = var8 - '0';
-				} else if (var8 >= 'A' && var8 <= 'Z') {
-					var10 = var8 - '7';
-				} else {
-					if (var8 < 'a' || var8 > 'z') {
-						throw new NumberFormatException();
-					}
-
-					var10 = var8 - 'W';
+				if (var8 == '+') {
+					continue;
 				}
-
-				if (var10 >= var1) {
-					throw new NumberFormatException();
-				}
-
-				if (var3) {
-					var10 = -var10;
-				}
-
-				int var9 = var10 + var5 * var1;
-				if (var9 / var1 != var5) {
-					throw new NumberFormatException();
-				}
-
-				var5 = var9;
-				var4 = true;
 			}
 
-			if (!var4) {
+			int var10;
+			if (var8 >= '0' && var8 <= '9') {
+				var10 = var8 - '0';
+			} else if (var8 >= 'A' && var8 <= 'Z') {
+				var10 = var8 - '7';
+			} else if (var8 >= 'a' && var8 <= 'z') {
+				var10 = var8 - 'W';
+			} else {
 				throw new NumberFormatException();
 			}
-			return var5;
+
+			if (var10 >= var1) {
+				throw new NumberFormatException();
+			}
+
+			if (var3) {
+				var10 = -var10;
+			}
+
+			int var9 = var10 + var5 * var1;
+			if (var9 / var1 != var5) {
+				throw new NumberFormatException();
+			}
+
+			var5 = var9;
+			var4 = true;
 		}
-		throw new IllegalArgumentException("" + var1);
+
+		if (!var4) {
+			throw new NumberFormatException();
+		}
+		return var5;
 	}
 }

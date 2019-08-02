@@ -1058,37 +1058,37 @@ public class Scene {
 
 	@ObfuscatedName("ak")
 	@Export("draw")
-	public void draw(int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (var1 < 0) {
-			var1 = 0;
-		} else if (var1 >= this.xSize * 128) {
-			var1 = this.xSize * 128 - 1;
+	public void draw(int camX, int camY, int camZ, int camPitch, int camYaw, int plane) {
+		if (camX < 0) {
+			camX = 0;
+		} else if (camX >= this.xSize * 128) {
+			camX = this.xSize * 128 - 1;
 		}
 
-		if (var3 < 0) {
-			var3 = 0;
-		} else if (var3 >= this.ySize * 128) {
-			var3 = this.ySize * 128 - 1;
+		if (camZ < 0) {
+			camZ = 0;
+		} else if (camZ >= this.ySize * 128) {
+			camZ = this.ySize * 128 - 1;
 		}
 
-		if (var4 < 128) {
-			var4 = 128;
-		} else if (var4 > 383) {
-			var4 = 383;
+		if (camPitch < 128) {
+			camPitch = 128;
+		} else if (camPitch > 383) {
+			camPitch = 383;
 		}
 
 		++Scene_drawnCount;
-		Scene_cameraPitchSine = Rasterizer3D.Rasterizer3D_sine[var4];
-		Scene_cameraPitchCosine = Rasterizer3D.Rasterizer3D_cosine[var4];
-		Scene_cameraYawSine = Rasterizer3D.Rasterizer3D_sine[var5];
-		Scene_cameraYawCosine = Rasterizer3D.Rasterizer3D_cosine[var5];
-		visibleTiles = visibilityMap[(var4 - 128) / 32][var5 / 64];
-		Scene_cameraX = var1;
-		Scene_cameraY = var2;
-		Scene_cameraZ = var3;
-		Scene_cameraXTile = var1 / 128;
-		Scene_cameraYTile = var3 / 128;
-		Scene_plane = var6;
+		Scene_cameraPitchSine = Rasterizer3D.Rasterizer3D_sine[camPitch];
+		Scene_cameraPitchCosine = Rasterizer3D.Rasterizer3D_cosine[camPitch];
+		Scene_cameraYawSine = Rasterizer3D.Rasterizer3D_sine[camYaw];
+		Scene_cameraYawCosine = Rasterizer3D.Rasterizer3D_cosine[camYaw];
+		visibleTiles = visibilityMap[(camPitch - 128) / 32][camYaw / 64];
+		Scene_cameraX = camX;
+		Scene_cameraY = camY;
+		Scene_cameraZ = camZ;
+		Scene_cameraXTile = camX / 128;
+		Scene_cameraYTile = camZ / 128;
+		Scene_plane = plane;
 		Scene_cameraXTileMin = Scene_cameraXTile - 25;
 		if (Scene_cameraXTileMin < 0) {
 			Scene_cameraXTileMin = 0;
@@ -1122,22 +1122,23 @@ public class Scene {
 			for (var9 = Scene_cameraXTileMin; var9 < Scene_cameraXTileMax; ++var9) {
 				for (var10 = Scene_cameraYTileMin; var10 < Scene_cameraYTileMax; ++var10) {
 					Tile var11 = var8[var9][var10];
-					if (var11 != null) {
-						if (var11.minPlane > var6 || !visibleTiles[var9 - Scene_cameraXTile + 25][var10 - Scene_cameraYTile + 25] && this.tileHeights[var7][var9][var10] - var2 < 2000) {
-							var11.drawPrimary = false;
-							var11.drawSecondary = false;
-							var11.drawGameObjectEdges = 0;
+					if (var11 == null) {
+						continue;
+					}
+					if (var11.minPlane > plane || !visibleTiles[var9 - Scene_cameraXTile + 25][var10 - Scene_cameraYTile + 25] && this.tileHeights[var7][var9][var10] - camY < 2000) {
+						var11.drawPrimary = false;
+						var11.drawSecondary = false;
+						var11.drawGameObjectEdges = 0;
+					} else {
+						var11.drawPrimary = true;
+						var11.drawSecondary = true;
+						if (var11.gameObjectsCount > 0) {
+							var11.drawGameObjects = true;
 						} else {
-							var11.drawPrimary = true;
-							var11.drawSecondary = true;
-							if (var11.gameObjectsCount > 0) {
-								var11.drawGameObjects = true;
-							} else {
-								var11.drawGameObjects = false;
-							}
-
-							++tileUpdateCount;
+							var11.drawGameObjects = false;
 						}
+
+						++tileUpdateCount;
 					}
 				}
 			}
@@ -1154,46 +1155,47 @@ public class Scene {
 			for (var9 = -25; var9 <= 0; ++var9) {
 				var10 = var9 + Scene_cameraXTile;
 				var16 = Scene_cameraXTile - var9;
-				if (var10 >= Scene_cameraXTileMin || var16 < Scene_cameraXTileMax) {
-					for (var12 = -25; var12 <= 0; ++var12) {
-						var13 = var12 + Scene_cameraYTile;
-						var14 = Scene_cameraYTile - var12;
-						if (var10 >= Scene_cameraXTileMin) {
-							if (var13 >= Scene_cameraYTileMin) {
-								var15 = var8[var10][var13];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, true);
-								}
-							}
-
-							if (var14 < Scene_cameraYTileMax) {
-								var15 = var8[var10][var14];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, true);
-								}
+				if (var10 < Scene_cameraXTileMin && var16 >= Scene_cameraXTileMax) {
+					continue;
+				}
+				for (var12 = -25; var12 <= 0; ++var12) {
+					var13 = var12 + Scene_cameraYTile;
+					var14 = Scene_cameraYTile - var12;
+					if (var10 >= Scene_cameraXTileMin) {
+						if (var13 >= Scene_cameraYTileMin) {
+							var15 = var8[var10][var13];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, true);
 							}
 						}
 
-						if (var16 < Scene_cameraXTileMax) {
-							if (var13 >= Scene_cameraYTileMin) {
-								var15 = var8[var16][var13];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, true);
-								}
+						if (var14 < Scene_cameraYTileMax) {
+							var15 = var8[var10][var14];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, true);
 							}
+						}
+					}
 
-							if (var14 < Scene_cameraYTileMax) {
-								var15 = var8[var16][var14];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, true);
-								}
+					if (var16 < Scene_cameraXTileMax) {
+						if (var13 >= Scene_cameraYTileMin) {
+							var15 = var8[var16][var13];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, true);
 							}
 						}
 
-						if (tileUpdateCount == 0) {
-							checkClick = false;
-							return;
+						if (var14 < Scene_cameraYTileMax) {
+							var15 = var8[var16][var14];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, true);
+							}
 						}
+					}
+
+					if (tileUpdateCount == 0) {
+						checkClick = false;
+						return;
 					}
 				}
 			}
@@ -1205,46 +1207,47 @@ public class Scene {
 			for (var9 = -25; var9 <= 0; ++var9) {
 				var10 = var9 + Scene_cameraXTile;
 				var16 = Scene_cameraXTile - var9;
-				if (var10 >= Scene_cameraXTileMin || var16 < Scene_cameraXTileMax) {
-					for (var12 = -25; var12 <= 0; ++var12) {
-						var13 = var12 + Scene_cameraYTile;
-						var14 = Scene_cameraYTile - var12;
-						if (var10 >= Scene_cameraXTileMin) {
-							if (var13 >= Scene_cameraYTileMin) {
-								var15 = var8[var10][var13];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, false);
-								}
-							}
-
-							if (var14 < Scene_cameraYTileMax) {
-								var15 = var8[var10][var14];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, false);
-								}
+				if (var10 < Scene_cameraXTileMin && var16 >= Scene_cameraXTileMax) {
+					continue;
+				}
+				for (var12 = -25; var12 <= 0; ++var12) {
+					var13 = var12 + Scene_cameraYTile;
+					var14 = Scene_cameraYTile - var12;
+					if (var10 >= Scene_cameraXTileMin) {
+						if (var13 >= Scene_cameraYTileMin) {
+							var15 = var8[var10][var13];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, false);
 							}
 						}
 
-						if (var16 < Scene_cameraXTileMax) {
-							if (var13 >= Scene_cameraYTileMin) {
-								var15 = var8[var16][var13];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, false);
-								}
+						if (var14 < Scene_cameraYTileMax) {
+							var15 = var8[var10][var14];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, false);
 							}
+						}
+					}
 
-							if (var14 < Scene_cameraYTileMax) {
-								var15 = var8[var16][var14];
-								if (var15 != null && var15.drawPrimary) {
-									this.drawTile(var15, false);
-								}
+					if (var16 < Scene_cameraXTileMax) {
+						if (var13 >= Scene_cameraYTileMin) {
+							var15 = var8[var16][var13];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, false);
 							}
 						}
 
-						if (tileUpdateCount == 0) {
-							checkClick = false;
-							return;
+						if (var14 < Scene_cameraYTileMax) {
+							var15 = var8[var16][var14];
+							if (var15 != null && var15.drawPrimary) {
+								this.drawTile(var15, false);
+							}
 						}
+					}
+
+					if (tileUpdateCount == 0) {
+						checkClick = false;
+						return;
 					}
 				}
 			}

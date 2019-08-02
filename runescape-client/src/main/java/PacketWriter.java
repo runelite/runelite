@@ -112,23 +112,24 @@ public class PacketWriter {
 		garbageValue = "294803591"
 	)
 	final void method2234() throws IOException {
-		if (this.socket != null && this.bufferSize > 0) {
-			this.buffer.offset = 0;
+		if (this.socket == null || this.bufferSize <= 0) {
+			return;
+		}
+		this.buffer.offset = 0;
 
-			while (true) {
-				PacketBufferNode var1 = (PacketBufferNode)this.packetBufferNodes.last();
-				if (var1 == null || var1.index > this.buffer.array.length - this.buffer.offset) {
-					this.socket.write(this.buffer.array, 0, this.buffer.offset);
-					this.field1319 = 0;
-					break;
-				}
-
-				this.buffer.writeBytes(var1.packetBuffer.array, 0, var1.index);
-				this.bufferSize -= var1.index;
-				var1.remove();
-				var1.packetBuffer.method5477();
-				var1.method3620();
+		while (true) {
+			PacketBufferNode var1 = (PacketBufferNode)this.packetBufferNodes.last();
+			if (var1 == null || var1.index > this.buffer.array.length - this.buffer.offset) {
+				this.socket.write(this.buffer.array, 0, this.buffer.offset);
+				this.field1319 = 0;
+				break;
 			}
+
+			this.buffer.writeBytes(var1.packetBuffer.array, 0, var1.index);
+			this.bufferSize -= var1.index;
+			var1.remove();
+			var1.packetBuffer.method5477();
+			var1.method3620();
 		}
 
 	}

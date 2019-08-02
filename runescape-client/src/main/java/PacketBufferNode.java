@@ -247,10 +247,10 @@ public class PacketBufferNode extends Node {
 				FaceNormal.field1887 = new int[4][105][105];
 				class32.field282 = new byte[4][105][105];
 				Tiles.field515 = new int[105][105];
-				ServerBuild.field3103 = new int[104];
-				Tiles.field508 = new int[104];
-				Tiles.field507 = new int[104];
-				DynamicObject.field1301 = new int[104];
+				ServerBuild.Tiles_hue = new int[104];
+				Tiles.Tiles_saturation = new int[104];
+				Tiles.Tiles_lightness = new int[104];
+				DynamicObject.Tiles_hueMultiplier = new int[104];
 				Fonts.field3689 = new int[104];
 				var1 = class13.regionLandArchives.length;
 
@@ -411,113 +411,117 @@ public class PacketBufferNode extends Node {
 							label447:
 							for (var4 = 0; var4 < 13; ++var4) {
 								var51 = Client.instanceChunkTemplates[var49][var3][var4];
-								if (var51 != -1) {
-									var6 = var51 >> 24 & 3;
-									var7 = var51 >> 1 & 3;
-									var52 = var51 >> 14 & 1023;
-									var9 = var51 >> 3 & 2047;
-									var10 = (var52 / 8 << 8) + var9 / 8;
+								if (var51 == -1) {
+									continue;
+								}
+								var6 = var51 >> 24 & 3;
+								var7 = var51 >> 1 & 3;
+								var52 = var51 >> 14 & 1023;
+								var9 = var51 >> 3 & 2047;
+								var10 = (var52 / 8 << 8) + var9 / 8;
 
-									for (var11 = 0; var11 < DirectByteArrayCopier.regions.length; ++var11) {
-										if (DirectByteArrayCopier.regions[var11] == var10 && class80.regionMapArchives[var11] != null) {
-											byte[] var54 = class80.regionMapArchives[var11];
-											int var13 = var3 * 8;
-											int var14 = var4 * 8;
-											int var15 = (var52 & 7) * 8;
-											int var16 = (var9 & 7) * 8;
-											Scene var17 = GrandExchangeOfferWorldComparator.scene;
-											CollisionMap[] var18 = Client.collisionMaps;
-											Buffer var19 = new Buffer(var54);
-											int var20 = -1;
+								for (var11 = 0; var11 < DirectByteArrayCopier.regions.length; ++var11) {
+									if (DirectByteArrayCopier.regions[var11] != var10 || class80.regionMapArchives[var11] == null) {
+										continue;
+									}
+									byte[] var54 = class80.regionMapArchives[var11];
+									int var13 = var3 * 8;
+									int var14 = var4 * 8;
+									int var15 = (var52 & 7) * 8;
+									int var16 = (var9 & 7) * 8;
+									Scene var17 = GrandExchangeOfferWorldComparator.scene;
+									CollisionMap[] var18 = Client.collisionMaps;
+									Buffer var19 = new Buffer(var54);
+									int var20 = -1;
 
-											while (true) {
-												int var21 = var19.method5509();
-												if (var21 == 0) {
-													continue label447;
-												}
+									while (true) {
+										int var21 = var19.method5509();
+										if (var21 == 0) {
+											continue label447;
+										}
 
-												var20 += var21;
-												int var22 = 0;
+										var20 += var21;
+										int var22 = 0;
 
-												while (true) {
-													int var23 = var19.readUShortSmart();
-													if (var23 == 0) {
-														break;
-													}
-
-													var22 += var23 - 1;
-													int var24 = var22 & 63;
-													int var25 = var22 >> 6 & 63;
-													int var26 = var22 >> 12;
-													int var27 = var19.readUnsignedByte();
-													int var28 = var27 >> 2;
-													int var29 = var27 & 3;
-													if (var6 == var26 && var25 >= var15 && var25 < var15 + 8 && var24 >= var16 && var24 < var16 + 8) {
-														ObjectDefinition var30 = ViewportMouse.getObjectDefinition(var20);
-														int var33 = var25 & 7;
-														int var34 = var24 & 7;
-														int var36 = var30.sizeX;
-														int var37 = var30.sizeY;
-														int var38;
-														if ((var29 & 1) == 1) {
-															var38 = var36;
-															var36 = var37;
-															var37 = var38;
-														}
-
-														int var35 = var7 & 3;
-														int var32;
-														if (var35 == 0) {
-															var32 = var33;
-														} else if (var35 == 1) {
-															var32 = var34;
-														} else if (var35 == 2) {
-															var32 = 7 - var33 - (var36 - 1);
-														} else {
-															var32 = 7 - var34 - (var37 - 1);
-														}
-
-														var38 = var32 + var13;
-														int var41 = var25 & 7;
-														int var42 = var24 & 7;
-														int var44 = var30.sizeX;
-														int var45 = var30.sizeY;
-														int var46;
-														if ((var29 & 1) == 1) {
-															var46 = var44;
-															var44 = var45;
-															var45 = var46;
-														}
-
-														int var43 = var7 & 3;
-														int var40;
-														if (var43 == 0) {
-															var40 = var42;
-														} else if (var43 == 1) {
-															var40 = 7 - var41 - (var44 - 1);
-														} else if (var43 == 2) {
-															var40 = 7 - var42 - (var45 - 1);
-														} else {
-															var40 = var41;
-														}
-
-														var46 = var40 + var14;
-														if (var38 > 0 && var46 > 0 && var38 < 103 && var46 < 103) {
-															int var47 = var49;
-															if ((Tiles.Tiles_renderFlags[1][var38][var46] & 2) == 2) {
-																var47 = var49 - 1;
-															}
-
-															CollisionMap var48 = null;
-															if (var47 >= 0) {
-																var48 = var18[var47];
-															}
-
-															GrandExchangeOfferOwnWorldComparator.method1236(var49, var38, var46, var20, var29 + var7 & 3, var28, var17, var48);
-														}
-													}
-												}
+										while (true) {
+											int var23 = var19.readUShortSmart();
+											if (var23 == 0) {
+												break;
 											}
+
+											var22 += var23 - 1;
+											int var24 = var22 & 63;
+											int var25 = var22 >> 6 & 63;
+											int var26 = var22 >> 12;
+											int var27 = var19.readUnsignedByte();
+											int var28 = var27 >> 2;
+											int var29 = var27 & 3;
+											if (var6 != var26 || var25 < var15 || var25 >= var15 + 8 || var24 < var16 || var24 >= var16 + 8) {
+												continue;
+											}
+											ObjectDefinition var30 = ViewportMouse.getObjectDefinition(var20);
+											int var33 = var25 & 7;
+											int var34 = var24 & 7;
+											int var36 = var30.sizeX;
+											int var37 = var30.sizeY;
+											int var38;
+											if ((var29 & 1) == 1) {
+												var38 = var36;
+												var36 = var37;
+												var37 = var38;
+											}
+
+											int var35 = var7 & 3;
+											int var32;
+											if (var35 == 0) {
+												var32 = var33;
+											} else if (var35 == 1) {
+												var32 = var34;
+											} else if (var35 == 2) {
+												var32 = 7 - var33 - (var36 - 1);
+											} else {
+												var32 = 7 - var34 - (var37 - 1);
+											}
+
+											var38 = var32 + var13;
+											int var41 = var25 & 7;
+											int var42 = var24 & 7;
+											int var44 = var30.sizeX;
+											int var45 = var30.sizeY;
+											int var46;
+											if ((var29 & 1) == 1) {
+												var46 = var44;
+												var44 = var45;
+												var45 = var46;
+											}
+
+											int var43 = var7 & 3;
+											int var40;
+											if (var43 == 0) {
+												var40 = var42;
+											} else if (var43 == 1) {
+												var40 = 7 - var41 - (var44 - 1);
+											} else if (var43 == 2) {
+												var40 = 7 - var42 - (var45 - 1);
+											} else {
+												var40 = var41;
+											}
+
+											var46 = var40 + var14;
+											if (var38 <= 0 || var46 <= 0 || var38 >= 103 || var46 >= 103) {
+												continue;
+											}
+											int var47 = var49;
+											if ((Tiles.Tiles_renderFlags[1][var38][var46] & 2) == 2) {
+												var47 = var49 - 1;
+											}
+
+											CollisionMap var48 = null;
+											if (var47 >= 0) {
+												var48 = var18[var47];
+											}
+
+											GrandExchangeOfferOwnWorldComparator.method1236(var49, var38, var46, var20, var29 + var7 & 3, var28, var17, var48);
 										}
 									}
 								}

@@ -74,8 +74,8 @@ public final class TilePaint {
 			Sprite var6 = var4[var5] = new Sprite();
 			var6.width = SpriteBuffer.SpriteBuffer_spriteWidth;
 			var6.height = SpriteBuffer.SpriteBuffer_spriteHeight;
-			var6.yOffset = Varps.SpriteBuffer_xOffsets[var5];
-			var6.xOffset = SpriteBuffer.SpriteBuffer_yOffsets[var5];
+			var6.xOffset = Varps.SpriteBuffer_xOffsets[var5];
+			var6.yOffset = SpriteBuffer.SpriteBuffer_yOffsets[var5];
 			var6.subWidth = SpriteBuffer.SpriteBuffer_spriteWidths[var5];
 			var6.subHeight = class216.SpriteBuffer_spriteHeights[var5];
 			int var7 = var6.subHeight * var6.subWidth;

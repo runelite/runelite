@@ -25,12 +25,13 @@ public class Node {
 	@ObfuscatedName("fz")
 	@Export("remove")
 	public void remove() {
-		if (this.next != null) {
-			this.next.previous = this.previous;
-			this.previous.next = this.next;
-			this.previous = null;
-			this.next = null;
+		if (this.next == null) {
+			return;
 		}
+		this.next.previous = this.previous;
+		this.previous.next = this.next;
+		this.previous = null;
+		this.next = null;
 	}
 
 	@ObfuscatedName("fn")

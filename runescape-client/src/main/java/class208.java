@@ -135,7 +135,7 @@ public class class208 {
 		}
 		if (var0 == ScriptOpcodes.CHAR_ISNUMERIC) {
 			var10 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class49.isCharDigit((char) var10) ? 1 : 0;
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class49.isDigit((char) var10) ? 1 : 0;
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.STRING_LENGTH) {

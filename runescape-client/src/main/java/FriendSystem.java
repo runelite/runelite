@@ -84,7 +84,8 @@ public class FriendSystem {
 		signature = "(B)V",
 		garbageValue = "9"
 	)
-	final void method1762() {
+	@Export("processFriendUpdates")
+	final void processFriendUpdates() {
 		for (FriendLoginUpdate var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.last(); var1 != null; var1 = (FriendLoginUpdate)this.friendsList.friendLoginUpdates.previous()) {
 			if ((long)var1.field3661 < DirectByteArrayCopier.currentTimeMs() / 1000L - 5L) {
 				if (var1.world > 0) {
@@ -342,7 +343,7 @@ public class FriendSystem {
 		garbageValue = "-77884497"
 	)
 	public static int method1784(int var0) {
-		return class43.method770(ViewportMouse.ViewportMouse_entityTags[var0]);
+		return class43.getObjectIdFromTag(ViewportMouse.ViewportMouse_entityTags[var0]);
 	}
 
 	@ObfuscatedName("ag")

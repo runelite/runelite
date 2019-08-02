@@ -257,46 +257,47 @@ public class KitDefinition extends DualNode {
 					Client.soundEffects[var0] = var9;
 				}
 
-				if (Client.queuedSoundEffectDelays[var0] < 0) {
-					int var2;
-					if (Client.soundLocations[var0] != 0) {
-						int var3 = (Client.soundLocations[var0] & 255) * 128;
-						int var4 = Client.soundLocations[var0] >> 16 & 255;
-						int var5 = var4 * 128 + 64 - Client.localPlayer.x;
-						if (var5 < 0) {
-							var5 = -var5;
-						}
-
-						int var6 = Client.soundLocations[var0] >> 8 & 255;
-						int var7 = var6 * 128 + 64 - Client.localPlayer.y;
-						if (var7 < 0) {
-							var7 = -var7;
-						}
-
-						int var8 = var5 + var7 - 128;
-						if (var8 > var3) {
-							Client.queuedSoundEffectDelays[var0] = -100;
-							continue;
-						}
-
-						if (var8 < 0) {
-							var8 = 0;
-						}
-
-						var2 = (var3 - var8) * Client.field892 / var3;
-					} else {
-						var2 = Client.soundEffectVolume;
-					}
-
-					if (var2 > 0) {
-						RawSound var10 = var9.toRawSound().resample(AttackOption.decimator);
-						RawPcmStream var11 = RawPcmStream.createRawPcmStream(var10, 100, var2);
-						var11.setNumLoops(Client.queuedSoundEffectLoops[var0] - 1);
-						SecureRandomCallable.pcmStreamMixer.addSubStream(var11);
-					}
-
-					Client.queuedSoundEffectDelays[var0] = -100;
+				if (Client.queuedSoundEffectDelays[var0] >= 0) {
+					continue;
 				}
+				int var2;
+				if (Client.soundLocations[var0] != 0) {
+					int var3 = (Client.soundLocations[var0] & 255) * 128;
+					int var4 = Client.soundLocations[var0] >> 16 & 255;
+					int var5 = var4 * 128 + 64 - Client.localPlayer.x;
+					if (var5 < 0) {
+						var5 = -var5;
+					}
+
+					int var6 = Client.soundLocations[var0] >> 8 & 255;
+					int var7 = var6 * 128 + 64 - Client.localPlayer.y;
+					if (var7 < 0) {
+						var7 = -var7;
+					}
+
+					int var8 = var5 + var7 - 128;
+					if (var8 > var3) {
+						Client.queuedSoundEffectDelays[var0] = -100;
+						continue;
+					}
+
+					if (var8 < 0) {
+						var8 = 0;
+					}
+
+					var2 = (var3 - var8) * Client.field892 / var3;
+				} else {
+					var2 = Client.soundEffectVolume;
+				}
+
+				if (var2 > 0) {
+					RawSound var10 = var9.toRawSound().resample(AttackOption.decimator);
+					RawPcmStream var11 = RawPcmStream.createRawPcmStream(var10, 100, var2);
+					var11.setNumLoops(Client.queuedSoundEffectLoops[var0] - 1);
+					SecureRandomCallable.pcmStreamMixer.addSubStream(var11);
+				}
+
+				Client.queuedSoundEffectDelays[var0] = -100;
 			} else {
 				--Client.soundEffectCount;
 
@@ -312,21 +313,22 @@ public class KitDefinition extends DualNode {
 			}
 		}
 
-		if (Client.field699) {
-			boolean var12;
-			if (class197.field2402 != 0) {
-				var12 = true;
-			} else {
-				var12 = Interpreter.midiPcmStream.isReady();
+		if (!Client.field699) {
+			return;
+		}
+		boolean var12;
+		if (class197.field2402 != 0) {
+			var12 = true;
+		} else {
+			var12 = Interpreter.midiPcmStream.isReady();
+		}
+
+		if (!var12) {
+			if (Client.field911 != 0 && Client.field889 != -1) {
+				class169.method3503(WorldMapRegion.archive6, Client.field889, 0, Client.field911, false);
 			}
 
-			if (!var12) {
-				if (Client.field911 != 0 && Client.field889 != -1) {
-					class169.method3503(WorldMapRegion.archive6, Client.field889, 0, Client.field911, false);
-				}
-
-				Client.field699 = false;
-			}
+			Client.field699 = false;
 		}
 
 	}

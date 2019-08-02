@@ -78,7 +78,8 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		signature = "(Lhp;I)V",
 		garbageValue = "-1590503408"
 	)
-	public static void method173(AbstractArchive var0) {
+	@Export("InvDefinition_setArchives")
+	public static void InvDefinition_setArchives(AbstractArchive var0) {
 		InvDefinition.InvDefinition_archive = var0;
 	}
 }

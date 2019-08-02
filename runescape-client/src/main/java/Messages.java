@@ -421,9 +421,9 @@ public class Messages {
 								}
 
 								if (var16.isIf3) {
-									Client.selectedSpellName = var16.dataText + ClientPreferences.colorStartTag(16777215);
+									Client.selectedSpellName = var16.dataText + ClientPreferences.colorStartTag(0xffffff);
 								} else {
-									Client.selectedSpellName = ClientPreferences.colorStartTag(65280) + var16.spellName + ClientPreferences.colorStartTag(16777215);
+									Client.selectedSpellName = ClientPreferences.colorStartTag(0xff00) + var16.spellName + ClientPreferences.colorStartTag(0xffffff);
 								}
 							}
 
@@ -458,10 +458,10 @@ public class Messages {
 									}
 								}
 							} else if (var2 == 30) {
-								if (Client.field850 == null) {
-									ScriptFrame.method1086(var1, var0);
-									Client.field850 = Client.getWidgetChild(var1, var0);
-									Strings.method4120(Client.field850);
+								if (Client.meslayerContinueWidget == null) {
+									ScriptFrame.resumePauseWidget(var1, var0);
+									Client.meslayerContinueWidget = Client.getWidgetChild(var1, var0);
+									Strings.invalidateWidget(Client.meslayerContinueWidget);
 								}
 							} else if (var2 == 31) {
 								var8 = Archive.method4265(ClientPacket.field2266, Client.packetWriter.isaacCipher);
@@ -539,8 +539,8 @@ public class Messages {
 									WorldMapIcon_1.selectedItemSlot = var0;
 									MouseRecorder.selectedItemWidget = var1;
 									class4.selectedItemId = var3;
-									Strings.method4120(var16);
-									Client.selectedItemName = ClientPreferences.colorStartTag(16748608) + WorldMapArea.getItemDefinition(var3).name + ClientPreferences.colorStartTag(16777215);
+									Strings.invalidateWidget(var16);
+									Client.selectedItemName = ClientPreferences.colorStartTag(16748608) + WorldMapArea.getItemDefinition(var3).name + ClientPreferences.colorStartTag(0xffffff);
 									if (Client.selectedItemName == null) {
 										Client.selectedItemName = "null";
 									}
@@ -821,7 +821,7 @@ public class Messages {
 
 		if (Client.isItemSelected != 0) {
 			Client.isItemSelected = 0;
-			Strings.method4120(class80.getWidget(MouseRecorder.selectedItemWidget));
+			Strings.invalidateWidget(class80.getWidget(MouseRecorder.selectedItemWidget));
 		}
 
 		if (Client.isSpellSelected) {
@@ -829,7 +829,7 @@ public class Messages {
 		}
 
 		if (ItemContainer.field549 != null && Client.field759 == 0) {
-			Strings.method4120(ItemContainer.field549);
+			Strings.invalidateWidget(ItemContainer.field549);
 		}
 
 	}
@@ -841,109 +841,111 @@ public class Messages {
 	)
 	static void method2163(int var0, int var1, int var2, int var3, String var4) {
 		Widget var5 = Client.getWidgetChild(var1, var2);
-		if (var5 != null) {
-			if (var5.onOp != null) {
-				ScriptEvent var6 = new ScriptEvent();
-				var6.widget = var5;
-				var6.opIndex = var0;
-				var6.targetName = var4;
-				var6.args = var5.onOp;
-				LoginPacket.runScriptEvent(var6);
+		if (var5 == null) {
+			return;
+		}
+		if (var5.onOp != null) {
+			ScriptEvent var6 = new ScriptEvent();
+			var6.widget = var5;
+			var6.opIndex = var0;
+			var6.targetName = var4;
+			var6.args = var5.onOp;
+			LoginPacket.runScriptEvent(var6);
+		}
+
+		boolean var11 = true;
+		if (var5.contentType > 0) {
+			var11 = GrandExchangeOfferAgeComparator.method149(var5);
+		}
+
+		if (!var11) {
+			return;
+		}
+		int var8 = class268.getWidgetClickMask(var5);
+		int var9 = var0 - 1;
+		boolean var7 = (var8 >> var9 + 1 & 1) != 0;
+		if (var7) {
+			PacketBufferNode var10;
+			if (var0 == 1) {
+				var10 = Archive.method4265(ClientPacket.field2271, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
 			}
 
-			boolean var11 = true;
-			if (var5.contentType > 0) {
-				var11 = GrandExchangeOfferAgeComparator.method149(var5);
+			if (var0 == 2) {
+				var10 = Archive.method4265(ClientPacket.field2255, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
 			}
 
-			if (var11) {
-				int var8 = class268.getWidgetClickMask(var5);
-				int var9 = var0 - 1;
-				boolean var7 = (var8 >> var9 + 1 & 1) != 0;
-				if (var7) {
-					PacketBufferNode var10;
-					if (var0 == 1) {
-						var10 = Archive.method4265(ClientPacket.field2271, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 2) {
-						var10 = Archive.method4265(ClientPacket.field2255, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 3) {
-						var10 = Archive.method4265(ClientPacket.field2206, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 4) {
-						var10 = Archive.method4265(ClientPacket.field2222, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 5) {
-						var10 = Archive.method4265(ClientPacket.field2243, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 6) {
-						var10 = Archive.method4265(ClientPacket.field2264, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 7) {
-						var10 = Archive.method4265(ClientPacket.field2288, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 8) {
-						var10 = Archive.method4265(ClientPacket.field2251, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 9) {
-						var10 = Archive.method4265(ClientPacket.field2287, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-					if (var0 == 10) {
-						var10 = Archive.method4265(ClientPacket.field2289, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
-						Client.packetWriter.method2219(var10);
-					}
-
-				}
+			if (var0 == 3) {
+				var10 = Archive.method4265(ClientPacket.field2206, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
 			}
+
+			if (var0 == 4) {
+				var10 = Archive.method4265(ClientPacket.field2222, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 5) {
+				var10 = Archive.method4265(ClientPacket.field2243, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 6) {
+				var10 = Archive.method4265(ClientPacket.field2264, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 7) {
+				var10 = Archive.method4265(ClientPacket.field2288, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 8) {
+				var10 = Archive.method4265(ClientPacket.field2251, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 9) {
+				var10 = Archive.method4265(ClientPacket.field2287, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
+			if (var0 == 10) {
+				var10 = Archive.method4265(ClientPacket.field2289, Client.packetWriter.isaacCipher);
+				var10.packetBuffer.writeInt(var1);
+				var10.packetBuffer.writeShort(var2);
+				var10.packetBuffer.writeShort(var3);
+				Client.packetWriter.method2219(var10);
+			}
+
 		}
 	}
 }

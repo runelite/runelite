@@ -635,9 +635,11 @@ public class Widget extends Node {
 	@Export("children")
 	public Widget[] children;
 	@ObfuscatedName("fi")
-	public boolean field2642;
+	@Export("containsMouse")
+	public boolean containsMouse;
 	@ObfuscatedName("fk")
-	public boolean field2589;
+	@Export("isClicked")
+	public boolean isClicked;
 	@ObfuscatedName("fg")
 	@ObfuscatedGetter(
 		intValue = -1473790409
@@ -773,8 +775,8 @@ public class Widget extends Node {
 		this.itemQuantity = 0;
 		this.modelFrame = 0;
 		this.modelFrameCycle = 0;
-		this.field2642 = false;
-		this.field2589 = false;
+		this.containsMouse = false;
+		this.isClicked = false;
 		this.field2689 = -1;
 		this.field2592 = 0;
 		this.field2603 = 0;
@@ -1275,15 +1277,15 @@ public class Widget extends Node {
 			return null;
 		}
 		if (this.spriteFlipV) {
-			var5.method6128();
+			var5.flipVertically();
 		}
 
 		if (this.spriteFlipH) {
-			var5.method6117();
+			var5.flipHorizontally();
 		}
 
 		if (this.outline > 0) {
-			var5.method6115(this.outline);
+			var5.pad(this.outline);
 		}
 
 		if (this.outline >= 1) {
@@ -1291,7 +1293,7 @@ public class Widget extends Node {
 		}
 
 		if (this.outline >= 2) {
-			var5.outline(16777215);
+			var5.outline(0xffffff);
 		}
 
 		if (this.spriteShadow != 0) {

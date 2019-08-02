@@ -122,9 +122,9 @@ public class GrandExchangeEvent {
 			}
 		}
 
-		if (Client.field850 != null) {
-			Strings.method4120(Client.field850);
-			Client.field850 = null;
+		if (Client.meslayerContinueWidget != null) {
+			Strings.invalidateWidget(Client.meslayerContinueWidget);
+			Client.meslayerContinueWidget = null;
 		}
 
 	}

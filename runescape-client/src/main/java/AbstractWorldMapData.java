@@ -284,7 +284,7 @@ public abstract class AbstractWorldMapData {
 							int var9 = var8 - var7;
 							String var6;
 							if (var9 < -9) {
-								var6 = ClientPreferences.colorStartTag(16711680);
+								var6 = ClientPreferences.colorStartTag(0xff0000);
 							} else if (var9 < -6) {
 								var6 = ClientPreferences.colorStartTag(16723968);
 							} else if (var9 < -3) {
@@ -292,7 +292,7 @@ public abstract class AbstractWorldMapData {
 							} else if (var9 < 0) {
 								var6 = ClientPreferences.colorStartTag(16756736);
 							} else if (var9 > 9) {
-								var6 = ClientPreferences.colorStartTag(65280);
+								var6 = ClientPreferences.colorStartTag(0xff00);
 							} else if (var9 > 6) {
 								var6 = ClientPreferences.colorStartTag(4259584);
 							} else if (var9 > 3) {
@@ -300,21 +300,21 @@ public abstract class AbstractWorldMapData {
 							} else if (var9 > 0) {
 								var6 = ClientPreferences.colorStartTag(12648192);
 							} else {
-								var6 = ClientPreferences.colorStartTag(16776960);
+								var6 = ClientPreferences.colorStartTag(0xffff00);
 							}
 
 							var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
 						}
 
 						if (var0.isFollower && Client.followerOpsLowPriority) {
-							class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+							class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(0xffff00) + var4, 1003, var1, var2, var3);
 						}
 
 						if (Client.isItemSelected == 1) {
-							class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(16776960) + var4, 7, var1, var2, var3);
+							class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffff00) + var4, 7, var1, var2, var3);
 						} else if (Client.isSpellSelected) {
 							if ((WorldMapCacheName.selectedSpellFlags & 2) == 2) {
-								class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(16776960) + var4, 8, var1, var2, var3);
+								class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffff00) + var4, 8, var1, var2, var3);
 							}
 						} else {
 							int var10 = var0.isFollower && Client.followerOpsLowPriority ? 2000 : 0;
@@ -343,7 +343,7 @@ public abstract class AbstractWorldMapData {
 											var8 = var10 + 13;
 										}
 
-										class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(16776960) + var4, var8, var1, var2, var3);
+										class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(0xffff00) + var4, var8, var1, var2, var3);
 									}
 								}
 							}
@@ -378,14 +378,14 @@ public abstract class AbstractWorldMapData {
 												var8 = var12 + 13;
 											}
 
-											class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(16776960) + var4, var8, var1, var2, var3);
+											class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(0xffff00) + var4, var8, var1, var2, var3);
 										}
 									}
 								}
 							}
 
 							if (!var0.isFollower || !Client.followerOpsLowPriority) {
-								class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
+								class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(0xffff00) + var4, 1003, var1, var2, var3);
 							}
 						}
 

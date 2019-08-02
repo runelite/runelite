@@ -34,7 +34,8 @@ public class Varcs {
 	@ObfuscatedGetter(
 		longValue = -277979548816975331L
 	)
-	long field1272;
+		@Export("lastWrittenMs")
+	long lastWrittenMs;
 
 	Varcs() {
 		this.unwrittenChanges = false;
@@ -252,7 +253,7 @@ public class Varcs {
 		}
 
 		this.unwrittenChanges = false;
-		this.field1272 = DirectByteArrayCopier.currentTimeMs();
+		this.lastWrittenMs = DirectByteArrayCopier.currentTimeMs();
 	}
 
 	@ObfuscatedName("u")
@@ -354,7 +355,7 @@ public class Varcs {
 	)
 	@Export("tryWrite")
 	void tryWrite() {
-		if (this.unwrittenChanges && this.field1272 < DirectByteArrayCopier.currentTimeMs() - 60000L) {
+		if (this.unwrittenChanges && this.lastWrittenMs < DirectByteArrayCopier.currentTimeMs() - 60000L) {
 			this.write();
 		}
 

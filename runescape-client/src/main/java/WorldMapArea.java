@@ -427,7 +427,7 @@ public class WorldMapArea {
 			var1.genPlaceholder(getItemDefinition(var1.placeholderTemplate), getItemDefinition(var1.placeholder));
 		}
 
-		if (!ModelData0.inMembersWorld && var1.isMembersOnly) {
+		if (!ModelData0.ItemDefinition_inMembersWorld && var1.isMembersOnly) {
 			var1.name = "Members object";
 			var1.isTradable = false;
 			var1.groundActions = null;
@@ -608,7 +608,7 @@ public class WorldMapArea {
 						var22.offset += var7;
 						NetCache.field3175 += var7;
 						if (var6 == VarpDefinition.NetCache_responseArchiveBuffer.offset) {
-							if (16711935L == class226.NetCache_currentResponse.key) {
+							if (0xff00ffL == class226.NetCache_currentResponse.key) {
 								AbstractRasterProvider.NetCache_reference = VarpDefinition.NetCache_responseArchiveBuffer;
 
 								for (var8 = 0; var8 < 256; ++var8) {
@@ -638,7 +638,7 @@ public class WorldMapArea {
 
 								NetCache.NetCache_crcMismatches = 0;
 								NetCache.NetCache_ioExceptions = 0;
-								class226.NetCache_currentResponse.archive.write((int)(class226.NetCache_currentResponse.key & 65535L), VarpDefinition.NetCache_responseArchiveBuffer.array, (class226.NetCache_currentResponse.key & 16711680L) == 16711680L, class215.field2545);
+								class226.NetCache_currentResponse.archive.write((int)(class226.NetCache_currentResponse.key & 65535L), VarpDefinition.NetCache_responseArchiveBuffer.array, (class226.NetCache_currentResponse.key & 0xff0000L) == 0xff0000L, class215.field2545);
 							}
 
 							class226.NetCache_currentResponse.remove();

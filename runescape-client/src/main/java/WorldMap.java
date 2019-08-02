@@ -237,7 +237,8 @@ public class WorldMap {
 	)
 	int field4011;
 	@ObfuscatedName("bi")
-	final int[] field4020;
+	@Export("menuOpcodes")
+	final int[] menuOpcodes;
 	@ObfuscatedName("bg")
 	List field3972;
 	@ObfuscatedName("bh")
@@ -314,7 +315,7 @@ public class WorldMap {
 		this.field3988 = new HashSet();
 		this.elementsDisabled = false;
 		this.field4011 = 0;
-		this.field4020 = new int[]{1008, 1009, 1010, 1011, 1012};
+		this.menuOpcodes = new int[]{1008, 1009, 1010, 1011, 1012};
 		this.field4005 = new HashSet();
 		this.mouseCoord = null;
 		this.showCoord = false;
@@ -373,49 +374,51 @@ public class WorldMap {
 		garbageValue = "-2047217979"
 	)
 	@Export("onCycle")
-	public void onCycle(int var1, int var2, boolean var3, int var4, int var5, int var6, int var7) {
-		if (this.cacheLoader.getIsLoaded()) {
-			this.smoothZoom();
-			this.scrollToTarget();
-			if (var3) {
-				int var8 = (int)Math.ceil((double)((float)var6 / this.zoom));
-				int var9 = (int)Math.ceil((double)((float)var7 / this.zoom));
-				List var10 = this.worldMapManager.method607(this.centerTileX - var8 / 2 - 1, this.centerTileY - var9 / 2 - 1, var8 / 2 + this.centerTileX + 1, var9 / 2 + this.centerTileY + 1, var4, var5, var6, var7, var1, var2);
-				HashSet var11 = new HashSet();
+	public void onCycle(int mouseX, int mouseY, boolean mouseOver, int xOffset, int yOffset, int width, int height) {
+		if (!this.cacheLoader.isLoaded()) {
+			return;
+		}
+		this.smoothZoom();
+		this.scrollToTarget();
+		if (!mouseOver) {
+			return;
+		}
+		int var8 = (int)Math.ceil((double)((float)width / this.zoom));
+		int var9 = (int)Math.ceil((double)((float)height / this.zoom));
+		List var10 = this.worldMapManager.method607(this.centerTileX - var8 / 2 - 1, this.centerTileY - var9 / 2 - 1, var8 / 2 + this.centerTileX + 1, var9 / 2 + this.centerTileY + 1, xOffset, yOffset, width, height, mouseX, mouseY);
+		HashSet var11 = new HashSet();
 
-				Iterator var12;
-				AbstractWorldMapIcon var13;
-				ScriptEvent var14;
-				WorldMapEvent var15;
-				for (var12 = var10.iterator(); var12.hasNext(); LoginPacket.runScriptEvent(var14)) {
-					var13 = (AbstractWorldMapIcon)var12.next();
-					var11.add(var13);
-					var14 = new ScriptEvent();
-					var15 = new WorldMapEvent(var13.getElement(), var13.coord1, var13.coord2);
-					var14.setArgs(new Object[]{var15, var1, var2});
-					if (this.field4005.contains(var13)) {
-						var14.setType(17);
-					} else {
-						var14.setType(15);
-					}
-				}
-
-				var12 = this.field4005.iterator();
-
-				while (var12.hasNext()) {
-					var13 = (AbstractWorldMapIcon)var12.next();
-					if (!var11.contains(var13)) {
-						var14 = new ScriptEvent();
-						var15 = new WorldMapEvent(var13.getElement(), var13.coord1, var13.coord2);
-						var14.setArgs(new Object[]{var15, var1, var2});
-						var14.setType(16);
-						LoginPacket.runScriptEvent(var14);
-					}
-				}
-
-				this.field4005 = var11;
+		Iterator var12;
+		AbstractWorldMapIcon var13;
+		ScriptEvent var14;
+		WorldMapEvent var15;
+		for (var12 = var10.iterator(); var12.hasNext(); LoginPacket.runScriptEvent(var14)) {
+			var13 = (AbstractWorldMapIcon)var12.next();
+			var11.add(var13);
+			var14 = new ScriptEvent();
+			var15 = new WorldMapEvent(var13.getElement(), var13.coord1, var13.coord2);
+			var14.setArgs(new Object[]{var15, mouseX, mouseY});
+			if (this.field4005.contains(var13)) {
+				var14.setType(17);
+			} else {
+				var14.setType(15);
 			}
 		}
+
+		var12 = this.field4005.iterator();
+
+		while (var12.hasNext()) {
+			var13 = (AbstractWorldMapIcon)var12.next();
+			if (!var11.contains(var13)) {
+				var14 = new ScriptEvent();
+				var15 = new WorldMapEvent(var13.getElement(), var13.coord1, var13.coord2);
+				var14.setArgs(new Object[]{var15, mouseX, mouseY});
+				var14.setType(16);
+				LoginPacket.runScriptEvent(var14);
+			}
+		}
+
+		this.field4005 = var11;
 	}
 
 	@ObfuscatedName("p")
@@ -423,11 +426,11 @@ public class WorldMap {
 		signature = "(IIZZB)V",
 		garbageValue = "24"
 	)
-	public void method6301(int var1, int var2, boolean var3, boolean var4) {
+	public void method6301(int var1, int var2, boolean isClicked, boolean wasClicked) {
 		long var5 = DirectByteArrayCopier.currentTimeMs();
-		this.method6302(var1, var2, var4, var5);
-		if (!this.hasTarget() && (var4 || var3)) {
-			if (var4) {
+		this.method6302(var1, var2, wasClicked, var5);
+		if (!this.hasTarget() && (wasClicked || isClicked)) {
+			if (wasClicked) {
 				this.field4001 = var1;
 				this.field3989 = var2;
 				this.field4006 = this.centerTileX;
@@ -443,7 +446,7 @@ public class WorldMap {
 			this.method6306();
 		}
 
-		if (var4) {
+		if (wasClicked) {
 			this.field3982 = var5;
 			this.field4000 = var1;
 			this.field4012 = var2;
@@ -460,7 +463,7 @@ public class WorldMap {
 			if (this.mouseCoord != null && var3) {
 				boolean var8 = Client.staffModLevel >= 2;
 				if (var8 && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
-					WorldMapLabel.method418(this.mouseCoord.x, this.mouseCoord.y, this.mouseCoord.plane, false);
+					WorldMapLabel.changePlane(this.mouseCoord.x, this.mouseCoord.y, this.mouseCoord.plane, false);
 				} else {
 					boolean var9 = true;
 					if (this.field4013) {
@@ -729,60 +732,60 @@ public class WorldMap {
 		garbageValue = "-365948534"
 	)
 	@Export("draw")
-	public void draw(int var1, int var2, int var3, int var4, int var5) {
+	public void draw(int x, int y, int width, int height, int cycle) {
 		int[] var6 = new int[4];
 		Rasterizer2D.Rasterizer2D_getClipArray(var6);
-		Rasterizer2D.Rasterizer2D_setClip(var1, var2, var3 + var1, var2 + var4);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
+		Rasterizer2D.Rasterizer2D_setClip(x, y, width + x, y + height);
+		Rasterizer2D.Rasterizer2D_fillRectangle(x, y, width, height, 0xff000000);
 		int var7 = this.cacheLoader.getPercentLoaded();
 		if (var7 < 100) {
-			this.drawLoading(var1, var2, var3, var4, var7);
-		} else {
-			if (!this.worldMapManager.isLoaded()) {
-				this.worldMapManager.load(this.WorldMap_archive, this.currentMapArea.getInternalName(), Client.isMembersWorld);
-				if (!this.worldMapManager.isLoaded()) {
-					return;
-				}
-			}
-
-			if (this.flashingElements != null) {
-				++this.flashCycle;
-				if (this.flashCycle % this.cyclesPerFlash == 0) {
-					this.flashCycle = 0;
-					++this.flashCount;
-				}
-
-				if (this.flashCount >= this.maxFlashCount && !this.perpetualFlash) {
-					this.flashingElements = null;
-				}
-			}
-
-			int var8 = (int)Math.ceil((double)((float)var3 / this.zoom));
-			int var9 = (int)Math.ceil((double)((float)var4 / this.zoom));
-			this.worldMapManager.drawTiles(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, var1, var2, var3 + var1, var2 + var4);
-			boolean var10;
-			if (!this.elementsDisabled) {
-				var10 = false;
-				if (var5 - this.field4011 > 100) {
-					this.field4011 = var5;
-					var10 = true;
-				}
-
-				this.worldMapManager.method605(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, var1, var2, var3 + var1, var2 + var4, this.field3988, this.flashingElements, this.flashCycle, this.cyclesPerFlash, var10);
-			}
-
-			this.method6319(var1, var2, var3, var4, var8, var9);
-			var10 = Client.staffModLevel >= 2;
-			if (var10 && this.showCoord && this.mouseCoord != null) {
-				this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 16776960, -1);
-			}
-
-			this.worldMapDisplayWidth = var8;
-			this.worldMapDisplayHeight = var9;
-			this.worldMapDisplayX = var1;
-			this.worldMapDisplayY = var2;
-			Rasterizer2D.Rasterizer2D_setClipArray(var6);
+			this.drawLoading(x, y, width, height, var7);
+			return;
 		}
+		if (!this.worldMapManager.isLoaded()) {
+			this.worldMapManager.load(this.WorldMap_archive, this.currentMapArea.getInternalName(), Client.isMembersWorld);
+			if (!this.worldMapManager.isLoaded()) {
+				return;
+			}
+		}
+
+		if (this.flashingElements != null) {
+			++this.flashCycle;
+			if (this.flashCycle % this.cyclesPerFlash == 0) {
+				this.flashCycle = 0;
+				++this.flashCount;
+			}
+
+			if (this.flashCount >= this.maxFlashCount && !this.perpetualFlash) {
+				this.flashingElements = null;
+			}
+		}
+
+		int var8 = (int)Math.ceil((double)((float)width / this.zoom));
+		int var9 = (int)Math.ceil((double)((float)height / this.zoom));
+		this.worldMapManager.drawTiles(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, x, y, width + x, y + height);
+		boolean var10;
+		if (!this.elementsDisabled) {
+			var10 = false;
+			if (cycle - this.field4011 > 100) {
+				this.field4011 = cycle;
+				var10 = true;
+			}
+
+			this.worldMapManager.drawElements(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, x, y, width + x, y + height, this.field3988, this.flashingElements, this.flashCycle, this.cyclesPerFlash, var10);
+		}
+
+		this.method6319(x, y, width, height, var8, var9);
+		var10 = Client.staffModLevel >= 2;
+		if (var10 && this.showCoord && this.mouseCoord != null) {
+			this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 0xffff00, -1);
+		}
+
+		this.worldMapDisplayWidth = var8;
+		this.worldMapDisplayHeight = var9;
+		this.worldMapDisplayX = x;
+		this.worldMapDisplayY = y;
+		Rasterizer2D.Rasterizer2D_setClipArray(var6);
 	}
 
 	@ObfuscatedName("z")
@@ -794,17 +797,17 @@ public class WorldMap {
 		if (this.sprite == null) {
 			return true;
 		}
-		if (this.sprite.subWidth == var1 && this.sprite.subHeight == var2) {
-			if (this.worldMapManager.pixelsPerTile != this.cachedPixelsPerTile) {
-				return true;
-			}
-			if (this.field4030 != Client.field924) {
-				return true;
-			}
-			if (var3 <= 0 && var4 <= 0) {
-				return var3 + var1 < var5 || var2 + var4 < var6;
-			}
+		if (this.sprite.subWidth != var1 || this.sprite.subHeight != var2) {
 			return true;
+		}
+		if (this.worldMapManager.pixelsPerTile != this.cachedPixelsPerTile) {
+			return true;
+		}
+		if (this.field4030 != Client.field924) {
+			return true;
+		}
+		if (var3 <= 0 && var4 <= 0) {
+			return var3 + var1 < var5 || var2 + var4 < var6;
 		}
 		return true;
 	}
@@ -815,39 +818,40 @@ public class WorldMap {
 		garbageValue = "-125"
 	)
 	void method6319(int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (PendingSpawn.field944 != null) {
-			int var7 = 512 / (this.worldMapManager.pixelsPerTile * 2);
-			int var8 = var3 + 512;
-			int var9 = var4 + 512;
-			float var10 = 1.0F;
-			var8 = (int)((float)var8 / var10);
-			var9 = (int)((float)var9 / var10);
-			int var11 = this.getDisplayX() - var5 / 2 - var7;
-			int var12 = this.getDisplayY() - var6 / 2 - var7;
-			int var13 = var1 - (var7 + var11 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
-			int var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
-			if (this.method6318(var8, var9, var13, var14, var3, var4)) {
-				if (this.sprite != null && this.sprite.subWidth == var8 && this.sprite.subHeight == var9) {
-					Arrays.fill(this.sprite.pixels, 0);
-				} else {
-					this.sprite = new Sprite(var8, var9);
-				}
-
-				this.minCachedTileX = this.getDisplayX() - var5 / 2 - var7;
-				this.minCachedTileY = this.getDisplayY() - var6 / 2 - var7;
-				this.cachedPixelsPerTile = this.worldMapManager.pixelsPerTile;
-				PendingSpawn.field944.method4321(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
-				this.field4030 = Client.field924;
-				var13 = var1 - (var11 + var7 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
-				var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
-			}
-
-			Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
-			if (1.0F == var10) {
-				this.sprite.method6135(var13, var14, 192);
+		if (PendingSpawn.field944 == null) {
+			return;
+		}
+		int var7 = 512 / (this.worldMapManager.pixelsPerTile * 2);
+		int var8 = var3 + 512;
+		int var9 = var4 + 512;
+		float var10 = 1.0F;
+		var8 = (int)((float)var8 / var10);
+		var9 = (int)((float)var9 / var10);
+		int var11 = this.getDisplayX() - var5 / 2 - var7;
+		int var12 = this.getDisplayY() - var6 / 2 - var7;
+		int var13 = var1 - (var7 + var11 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
+		int var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
+		if (this.method6318(var8, var9, var13, var14, var3, var4)) {
+			if (this.sprite != null && this.sprite.subWidth == var8 && this.sprite.subHeight == var9) {
+				Arrays.fill(this.sprite.pixels, 0);
 			} else {
-				this.sprite.method6217(var13, var14, (int)(var10 * (float)var8), (int)((float)var9 * var10), 192);
+				this.sprite = new Sprite(var8, var9);
 			}
+
+			this.minCachedTileX = this.getDisplayX() - var5 / 2 - var7;
+			this.minCachedTileY = this.getDisplayY() - var6 / 2 - var7;
+			this.cachedPixelsPerTile = this.worldMapManager.pixelsPerTile;
+			PendingSpawn.field944.method4321(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
+			this.field4030 = Client.field924;
+			var13 = var1 - (var11 + var7 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
+			var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
+		}
+
+		Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
+		if (1.0F == var10) {
+			this.sprite.method6135(var13, var14, 192);
+		} else {
+			this.sprite.method6217(var13, var14, (int)(var10 * (float)var8), (int)((float)var9 * var10), 192);
 		}
 
 	}
@@ -859,7 +863,7 @@ public class WorldMap {
 	)
 	@Export("drawOverview")
 	public void drawOverview(int var1, int var2, int var3, int var4) {
-		if (this.cacheLoader.getIsLoaded()) {
+		if (this.cacheLoader.isLoaded()) {
 			if (!this.worldMapManager.isLoaded()) {
 				this.worldMapManager.load(this.WorldMap_archive, this.currentMapArea.getInternalName(), Client.isMembersWorld);
 				if (!this.worldMapManager.isLoaded()) {
@@ -887,13 +891,13 @@ public class WorldMap {
 		garbageValue = "1955930802"
 	)
 	@Export("drawLoading")
-	void drawLoading(int var1, int var2, int var3, int var4, int var5) {
+	void drawLoading(int x, int y, int width, int height, int percentLoaded) {
 		byte var6 = 20;
-		int var7 = var3 / 2 + var1;
-		int var8 = var4 / 2 + var2 - 18 - var6;
-		Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
+		int var7 = width / 2 + x;
+		int var8 = height / 2 + y - 18 - var6;
+		Rasterizer2D.Rasterizer2D_fillRectangle(x, y, width, height, 0xff000000);
 		Rasterizer2D.Rasterizer2D_drawRectangle(var7 - 152, var8, 304, 34, -65536);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
+		Rasterizer2D.Rasterizer2D_fillRectangle(var7 - 150, var8 + 2, percentLoaded * 3, 30, -65536);
 		this.font.drawCentered("Loading...", var7, var6 + var8, -1, -1);
 	}
 
@@ -958,7 +962,7 @@ public class WorldMap {
 	)
 	@Export("isCacheLoaded")
 	public boolean isCacheLoaded() {
-		return this.cacheLoader.getIsLoaded();
+		return this.cacheLoader.isLoaded();
 	}
 
 	@ObfuscatedName("az")
@@ -1168,8 +1172,8 @@ public class WorldMap {
 		this.flashCycle = 0;
 
 		for (int var2 = 0; var2 < UserComparator1.WorldMapElement_count; ++var2) {
-			if (class222.getWorldMapElement(var2) != null && class222.getWorldMapElement(var2).category == var1) {
-				this.flashingElements.add(class222.getWorldMapElement(var2).objectId);
+			if (class222.WorldMapElement_get(var2) != null && class222.WorldMapElement_get(var2).category == var1) {
+				this.flashingElements.add(class222.WorldMapElement_get(var2).objectId);
 			}
 		}
 
@@ -1225,8 +1229,8 @@ public class WorldMap {
 		}
 
 		for (int var3 = 0; var3 < UserComparator1.WorldMapElement_count; ++var3) {
-			if (class222.getWorldMapElement(var3) != null && class222.getWorldMapElement(var3).category == var1) {
-				int var4 = class222.getWorldMapElement(var3).objectId;
+			if (class222.WorldMapElement_get(var3) != null && class222.WorldMapElement_get(var3).category == var1) {
+				int var4 = class222.WorldMapElement_get(var3).objectId;
 				if (!var2) {
 					this.enabledElementIds.add(var4);
 				} else {
@@ -1284,34 +1288,37 @@ public class WorldMap {
 		signature = "(IIIIIII)V",
 		garbageValue = "90618974"
 	)
-	public void method6482(int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (this.cacheLoader.getIsLoaded()) {
-			int var7 = (int)Math.ceil((double)((float)var3 / this.zoom));
-			int var8 = (int)Math.ceil((double)((float)var4 / this.zoom));
-			List var9 = this.worldMapManager.method607(this.centerTileX - var7 / 2 - 1, this.centerTileY - var8 / 2 - 1, var7 / 2 + this.centerTileX + 1, var8 / 2 + this.centerTileY + 1, var1, var2, var3, var4, var5, var6);
-			if (!var9.isEmpty()) {
-				Iterator var10 = var9.iterator();
-
-				boolean var13;
-				do {
-					if (!var10.hasNext()) {
-						return;
-					}
-
-					AbstractWorldMapIcon var11 = (AbstractWorldMapIcon)var10.next();
-					WorldMapElement var12 = class222.getWorldMapElement(var11.getElement());
-					var13 = false;
-
-					for (int var14 = this.field4020.length - 1; var14 >= 0; --var14) {
-						if (var12.strings[var14] != null) {
-							class188.insertMenuItemNoShift(var12.strings[var14], var12.string1, this.field4020[var14], var11.getElement(), var11.coord1.packed(), var11.coord2.packed());
-							var13 = true;
-						}
-					}
-				} while(!var13);
-
-			}
+	@Export("addElementMenuOptions")
+	public void addElementMenuOptions(int xOffset, int yOffset, int width, int height, int mouseX, int mouseY) {
+		if (!this.cacheLoader.isLoaded()) {
+			return;
 		}
+		int var7 = (int)Math.ceil((double)((float)width / this.zoom));
+		int var8 = (int)Math.ceil((double)((float)height / this.zoom));
+		List var9 = this.worldMapManager.method607(this.centerTileX - var7 / 2 - 1, this.centerTileY - var8 / 2 - 1, var7 / 2 + this.centerTileX + 1, var8 / 2 + this.centerTileY + 1, xOffset, yOffset, width, height, mouseX, mouseY);
+		if (var9.isEmpty()) {
+			return;
+		}
+		Iterator var10 = var9.iterator();
+
+		boolean var13;
+		do {
+			if (!var10.hasNext()) {
+				return;
+			}
+
+			AbstractWorldMapIcon var11 = (AbstractWorldMapIcon)var10.next();
+			WorldMapElement var12 = class222.WorldMapElement_get(var11.getElement());
+			var13 = false;
+
+			for (int var14 = this.menuOpcodes.length - 1; var14 >= 0; --var14) {
+				if (var12.menuActions[var14] != null) {
+					class188.insertMenuItemNoShift(var12.menuActions[var14], var12.menuTargetName, this.menuOpcodes[var14], var11.getElement(), var11.coord1.packed(), var11.coord2.packed());
+					var13 = true;
+				}
+			}
+		} while(!var13);
+
 	}
 
 	@ObfuscatedName("bx")
@@ -1320,7 +1327,7 @@ public class WorldMap {
 		garbageValue = "719601861"
 	)
 	public Coord method6352(int var1, Coord var2) {
-		if (!this.cacheLoader.getIsLoaded()) {
+		if (!this.cacheLoader.isLoaded()) {
 			return null;
 		}
 		if (!this.worldMapManager.isLoaded()) {
@@ -1397,7 +1404,7 @@ public class WorldMap {
 	)
 	@Export("iconStart")
 	public AbstractWorldMapIcon iconStart() {
-		if (!this.cacheLoader.getIsLoaded()) {
+		if (!this.cacheLoader.isLoaded()) {
 			return null;
 		}
 		if (!this.worldMapManager.isLoaded()) {

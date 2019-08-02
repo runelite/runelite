@@ -59,11 +59,11 @@ public class WorldMapElement extends DualNode {
 	@Export("textSize")
 	public int textSize;
 	@ObfuscatedName("u")
-	@Export("strings")
-	public String[] strings;
+	@Export("menuActions")
+	public String[] menuActions;
 	@ObfuscatedName("x")
-	@Export("string1")
-	public String string1;
+	@Export("menuTargetName")
+	public String menuTargetName;
 	@ObfuscatedName("r")
 	int[] field3221;
 	@ObfuscatedName("v")
@@ -117,7 +117,7 @@ public class WorldMapElement extends DualNode {
 		this.sprite1 = -1;
 		this.sprite2 = -1;
 		this.textSize = 0;
-		this.strings = new String[5];
+		this.menuActions = new String[5];
 		this.field3222 = Integer.MAX_VALUE;
 		this.field3223 = Integer.MAX_VALUE;
 		this.field3224 = Integer.MIN_VALUE;
@@ -164,72 +164,72 @@ public class WorldMapElement extends DualNode {
 			var1.readMedium();
 		} else if (var2 == 6) {
 			this.textSize = var1.readUnsignedByte();
-		} else {
-			int var3;
-			if (var2 == 7) {
-				var3 = var1.readUnsignedByte();
-				if ((var3 & 1) == 0) {
-				}
-
-				if ((var3 & 2) == 2) {
-				}
-			} else if (var2 == 8) {
-				var1.readUnsignedByte();
-			} else if (var2 >= 10 && var2 <= 14) {
-				this.strings[var2 - 10] = var1.readStringCp1252NullTerminated();
-			} else if (var2 == 15) {
-				var3 = var1.readUnsignedByte();
-				this.field3221 = new int[var3 * 2];
-
-				int var4;
-				for (var4 = 0; var4 < var3 * 2; ++var4) {
-					this.field3221[var4] = var1.readShort();
-				}
-
-				var1.readInt();
-				var4 = var1.readUnsignedByte();
-				this.field3228 = new int[var4];
-
-				int var5;
-				for (var5 = 0; var5 < this.field3228.length; ++var5) {
-					this.field3228[var5] = var1.readInt();
-				}
-
-				this.field3214 = new byte[var3];
-
-				for (var5 = 0; var5 < var3; ++var5) {
-					this.field3214[var5] = var1.readByte();
-				}
-			} else if (var2 != 16) {
-				if (var2 == 17) {
-					this.string1 = var1.readStringCp1252NullTerminated();
-				} else if (var2 == 18) {
-					var1.method5511();
-				} else if (var2 == 19) {
-					this.category = var1.readUnsignedShort();
-				} else if (var2 == 21) {
-					var1.readInt();
-				} else if (var2 == 22) {
-					var1.readInt();
-				} else if (var2 == 23) {
-					var1.readUnsignedByte();
-					var1.readUnsignedByte();
-					var1.readUnsignedByte();
-				} else if (var2 == 24) {
-					var1.readShort();
-					var1.readShort();
-				} else if (var2 == 25) {
-					var1.method5511();
-				} else if (var2 == 28) {
-					var1.readUnsignedByte();
-				} else if (var2 == 29) {
-					HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3461, HorizontalAlignment.field3460, HorizontalAlignment.HorizontalAlignment_centered};
-					this.horizontalAlignment = (HorizontalAlignment)SoundSystem.findEnumerated(var6, var1.readUnsignedByte());
-				} else if (var2 == 30) {
-					VerticalAlignment[] var7 = new VerticalAlignment[]{VerticalAlignment.VerticalAlignment_centered, VerticalAlignment.field3195, VerticalAlignment.field3194};
-					this.verticalAlignment = (VerticalAlignment)SoundSystem.findEnumerated(var7, var1.readUnsignedByte());
-				}
+		} else if (var2 == 7) {
+			int var3 = var1.readUnsignedByte();
+			if ((var3 & 1) == 0)
+			{
 			}
+
+			if ((var3 & 2) == 2)
+			{
+			}
+		} else if (var2 == 8) {
+			var1.readUnsignedByte();
+		} else if (var2 >= 10 && var2 <= 14) {
+			this.menuActions[var2 - 10] = var1.readStringCp1252NullTerminated();
+		} else if (var2 == 15) {
+			int var3 = var1.readUnsignedByte();
+			this.field3221 = new int[var3 * 2];
+
+			int var4;
+			for (var4 = 0; var4 < var3 * 2; ++var4) {
+				this.field3221[var4] = var1.readShort();
+			}
+
+			var1.readInt();
+			var4 = var1.readUnsignedByte();
+			this.field3228 = new int[var4];
+
+			int var5;
+			for (var5 = 0; var5 < this.field3228.length; ++var5) {
+				this.field3228[var5] = var1.readInt();
+			}
+
+			this.field3214 = new byte[var3];
+
+			for (var5 = 0; var5 < var3; ++var5) {
+				this.field3214[var5] = var1.readByte();
+			}
+		} else if (var2 == 16) {
+			return;
+		}
+		if (var2 == 17) {
+			this.menuTargetName = var1.readStringCp1252NullTerminated();
+		} else if (var2 == 18) {
+			var1.method5511();
+		} else if (var2 == 19) {
+			this.category = var1.readUnsignedShort();
+		} else if (var2 == 21) {
+			var1.readInt();
+		} else if (var2 == 22) {
+			var1.readInt();
+		} else if (var2 == 23) {
+			var1.readUnsignedByte();
+			var1.readUnsignedByte();
+			var1.readUnsignedByte();
+		} else if (var2 == 24) {
+			var1.readShort();
+			var1.readShort();
+		} else if (var2 == 25) {
+			var1.method5511();
+		} else if (var2 == 28) {
+			var1.readUnsignedByte();
+		} else if (var2 == 29) {
+			HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3461, HorizontalAlignment.field3460, HorizontalAlignment.HorizontalAlignment_centered};
+			this.horizontalAlignment = (HorizontalAlignment) SoundSystem.findEnumerated(var6, var1.readUnsignedByte());
+		} else if (var2 == 30) {
+			VerticalAlignment[] var7 = new VerticalAlignment[]{VerticalAlignment.VerticalAlignment_centered, VerticalAlignment.field3195, VerticalAlignment.field3194};
+			this.verticalAlignment = (VerticalAlignment) SoundSystem.findEnumerated(var7, var1.readUnsignedByte());
 		}
 
 	}
@@ -240,19 +240,20 @@ public class WorldMapElement extends DualNode {
 		garbageValue = "2017602837"
 	)
 	public void method4370() {
-		if (this.field3221 != null) {
-			for (int var1 = 0; var1 < this.field3221.length; var1 += 2) {
-				if (this.field3221[var1] < this.field3222) {
-					this.field3222 = this.field3221[var1];
-				} else if (this.field3221[var1] > this.field3224) {
-					this.field3224 = this.field3221[var1];
-				}
+		if (this.field3221 == null) {
+			return;
+		}
+		for (int var1 = 0; var1 < this.field3221.length; var1 += 2) {
+			if (this.field3221[var1] < this.field3222) {
+				this.field3222 = this.field3221[var1];
+			} else if (this.field3221[var1] > this.field3224) {
+				this.field3224 = this.field3221[var1];
+			}
 
-				if (this.field3221[var1 + 1] < this.field3223) {
-					this.field3223 = this.field3221[var1 + 1];
-				} else if (this.field3221[var1 + 1] > this.field3231) {
-					this.field3231 = this.field3221[var1 + 1];
-				}
+			if (this.field3221[var1 + 1] < this.field3223) {
+				this.field3223 = this.field3221[var1 + 1];
+			} else if (this.field3221[var1 + 1] > this.field3231) {
+				this.field3231 = this.field3221[var1 + 1];
 			}
 		}
 
@@ -309,19 +310,21 @@ public class WorldMapElement extends DualNode {
 	static final void method4368(boolean var0) {
 		class186.playPcmPlayers();
 		++Client.packetWriter.field1319;
-		if (Client.packetWriter.field1319 >= 50 || var0) {
-			Client.packetWriter.field1319 = 0;
-			if (!Client.field701 && Client.packetWriter.getSocket() != null) {
-				PacketBufferNode var1 = Archive.method4265(ClientPacket.field2225, Client.packetWriter.isaacCipher);
-				Client.packetWriter.method2219(var1);
-
-				try {
-					Client.packetWriter.method2234();
-				} catch (IOException var3) {
-					Client.field701 = true;
-				}
-			}
-
+		if (Client.packetWriter.field1319 < 50 && !var0) {
+			return;
 		}
+		Client.packetWriter.field1319 = 0;
+		if (Client.field701 || Client.packetWriter.getSocket() == null) {
+			return;
+		}
+		PacketBufferNode var1 = Archive.method4265(ClientPacket.field2225, Client.packetWriter.isaacCipher);
+		Client.packetWriter.method2219(var1);
+
+		try {
+			Client.packetWriter.method2234();
+		} catch (IOException var3) {
+			Client.field701 = true;
+		}
+
 	}
 }

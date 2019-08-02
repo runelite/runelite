@@ -1043,14 +1043,14 @@ public abstract class AbstractFont extends Rasterizer2D {
 	@ObfuscatedName("at")
 	@Export("AbstractFont_placeGlyphAlpha")
 	static void AbstractFont_placeGlyphAlpha(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-		var2 = ((var2 & 65280) * var9 & 16711680) + (var9 * (var2 & 16711935) & -16711936) >> 8;
+		var2 = ((var2 & 0xff00) * var9 & 0xff0000) + (var9 * (var2 & 0xff00ff) & 0xff00ff00) >> 8;
 		var9 = 256 - var9;
 
 		for (int var10 = -var6; var10 < 0; ++var10) {
 			for (int var11 = -var5; var11 < 0; ++var11) {
 				if (var1[var3++] != 0) {
 					int var12 = var0[var4];
-					var0[var4++] = (((var12 & 65280) * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8) + var2;
+					var0[var4++] = (((var12 & 0xff00) * var9 & 0xff0000) + ((var12 & 0xff00ff) * var9 & 0xff00ff00) >> 8) + var2;
 				} else {
 					++var4;
 				}

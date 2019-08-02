@@ -78,8 +78,8 @@ public class class197 {
 		signature = "(B)V",
 		garbageValue = "-1"
 	)
-	@Export("FloorUnderlayDefinition_clearCached")
-	public static void FloorUnderlayDefinition_clearCached() {
+	@Export("FloorOverlayDefinition_clearCached")
+	public static void FloorOverlayDefinition_clearCached() {
 		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
 	}
 
@@ -304,7 +304,7 @@ public class class197 {
 		int var3 = (int)var0.key;
 		var0.remove();
 		int var5;
-		if (var1 && var2 != -1 && ViewportMouse.loadedInterfaces[var2]) {
+		if (var1 && var2 != -1 && ViewportMouse.Widget_loadedInterfaces[var2]) {
 			Widget.Widget_archive.clearFilesGroup(var2);
 			if (Widget.Widget_interfaceComponents[var2] != null) {
 				boolean var7 = true;
@@ -323,7 +323,7 @@ public class class197 {
 					Widget.Widget_interfaceComponents[var2] = null;
 				}
 
-				ViewportMouse.loadedInterfaces[var2] = false;
+				ViewportMouse.Widget_loadedInterfaces[var2] = false;
 			}
 		}
 
@@ -335,7 +335,7 @@ public class class197 {
 
 		Widget var8 = class80.getWidget(var3);
 		if (var8 != null) {
-			Strings.method4120(var8);
+			Strings.invalidateWidget(var8);
 		}
 
 		for (var5 = 0; var5 < Client.menuOptionsCount; ++var5) {

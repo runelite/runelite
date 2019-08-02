@@ -369,7 +369,7 @@ final class class1 implements class0 {
 							if (var5 == 0) {
 								BoundaryObject var36 = GrandExchangeOfferWorldComparator.scene.method3088(class42.plane, var7, var8);
 								if (var36 != null) {
-									var39 = class43.method770(var36.tag);
+									var39 = class43.getObjectIdFromTag(var36.tag);
 									if (var3 == 2) {
 										var36.entity1 = new DynamicObject(var39, 2, var4 + 4, class42.plane, var7, var8, var9, false, var36.entity1);
 										var36.entity2 = new DynamicObject(var39, 2, var4 + 1 & 3, class42.plane, var7, var8, var9, false, var36.entity2);
@@ -382,7 +382,7 @@ final class class1 implements class0 {
 							if (var5 == 1) {
 								WallDecoration var43 = GrandExchangeOfferWorldComparator.scene.method3118(class42.plane, var7, var8);
 								if (var43 != null) {
-									var39 = class43.method770(var43.tag);
+									var39 = class43.getObjectIdFromTag(var43.tag);
 									if (var3 != 4 && var3 != 5) {
 										if (var3 == 6) {
 											var43.entity1 = new DynamicObject(var39, 4, var4 + 4, class42.plane, var7, var8, var9, false, var43.entity1);
@@ -405,14 +405,14 @@ final class class1 implements class0 {
 								}
 
 								if (var44 != null) {
-									var44.entity = new DynamicObject(class43.method770(var44.tag), var3, var4, class42.plane, var7, var8, var9, false, var44.entity);
+									var44.entity = new DynamicObject(class43.getObjectIdFromTag(var44.tag), var3, var4, class42.plane, var7, var8, var9, false, var44.entity);
 								}
 							}
 
 							if (var5 == 3) {
 								FloorDecoration var45 = GrandExchangeOfferWorldComparator.scene.getFloorDecoration(class42.plane, var7, var8);
 								if (var45 != null) {
-									var45.entity = new DynamicObject(class43.method770(var45.tag), 22, var4, class42.plane, var7, var8, var9, false, var45.entity);
+									var45.entity = new DynamicObject(class43.getObjectIdFromTag(var45.tag), 22, var4, class42.plane, var7, var8, var9, false, var45.entity);
 								}
 							}
 						}

@@ -120,25 +120,25 @@ public class Texture extends Node {
 			byte[] var17 = var7.pixels;
 			int[] var11 = var7.palette;
 			int var12 = this.field1619[var6];
-			if ((var12 & -16777216) == 16777216) {
+			if ((var12 & 0xff000000) == 16777216) {
 			}
 
-			if ((var12 & -16777216) == 33554432) {
+			if ((var12 & 0xff000000) == 33554432) {
 			}
 
 			int var13;
 			int var14;
 			int var15;
 			int var16;
-			if ((var12 & -16777216) == 50331648) {
-				var13 = var12 & 16711935;
+			if ((var12 & 0xff000000) == 50331648) {
+				var13 = var12 & 0xff00ff;
 				var14 = var12 >> 8 & 255;
 
 				for (var15 = 0; var15 < var11.length; ++var15) {
 					var16 = var11[var15];
 					if (var16 >> 8 == (var16 & 65535)) {
 						var16 &= 255;
-						var11[var15] = var13 * var16 >> 8 & 16711935 | var14 * var16 & 65280;
+						var11[var15] = var13 * var16 >> 8 & 0xff00ff | var14 * var16 & 0xff00;
 					}
 				}
 			}

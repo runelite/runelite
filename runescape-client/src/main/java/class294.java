@@ -66,7 +66,7 @@ public class class294 {
 
 		if (0L != var1) {
 			int var6 = GrandExchangeOfferWorldComparator.scene.getObjectFlags(var0.plane, var0.x, var0.y, var1);
-			var3 = class43.method770(var1);
+			var3 = class43.getObjectIdFromTag(var1);
 			var4 = var6 & 31;
 			var5 = var6 >> 6 & 3;
 		}

@@ -65,16 +65,13 @@ public class SoundSystem implements Runnable {
 			ByteArrayPool.ByteArrayPool_medium[++ByteArrayPool.ByteArrayPool_mediumCount - 1] = var0;
 		} else if (var0.length == 30000 && ByteArrayPool.ByteArrayPool_largeCount < 50) {
 			ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0;
-		} else {
-			if (class189.ByteArrayPool_arrays != null) {
-				for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) {
-					if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && class43.ByteArrayPool_altSizeArrayCounts[var1] < class189.ByteArrayPool_arrays[var1].length) {
-						class189.ByteArrayPool_arrays[var1][class43.ByteArrayPool_altSizeArrayCounts[var1]++] = var0;
-						return;
-					}
+		} else if (class189.ByteArrayPool_arrays != null) {
+			for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) {
+				if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && class43.ByteArrayPool_altSizeArrayCounts[var1] < class189.ByteArrayPool_arrays[var1].length) {
+					class189.ByteArrayPool_arrays[var1][class43.ByteArrayPool_altSizeArrayCounts[var1]++] = var0;
+					return;
 				}
 			}
-
 		}
 	}
 

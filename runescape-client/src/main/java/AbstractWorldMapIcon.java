@@ -105,7 +105,7 @@ public abstract class AbstractWorldMapIcon {
 		if (!this.hasValidElement()) {
 			return false;
 		}
-		WorldMapElement var3 = class222.getWorldMapElement(this.getElement());
+		WorldMapElement var3 = class222.WorldMapElement_get(this.getElement());
 		int var4 = this.getSubWidth();
 		int var5 = this.getSubHeight();
 		switch(var3.horizontalAlignment.value) {

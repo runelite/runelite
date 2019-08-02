@@ -806,7 +806,7 @@ public class ClientPacket implements ClientPacketMarker
 						var29 = 16;
 						var30 = var7.getBoundaryObjectTag(var0, var2, var3);
 						if (var30 != 0L) {
-							var29 = ViewportMouse.getObjectDefinition(class43.method770(var30)).int2;
+							var29 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var30)).int2;
 						}
 
 						if (var9.animationId == -1 && var9.transforms == null) {
@@ -820,7 +820,7 @@ public class ClientPacket implements ClientPacketMarker
 						var29 = 8;
 						var30 = var7.getBoundaryObjectTag(var0, var2, var3);
 						if (var30 != 0L) {
-							var29 = ViewportMouse.getObjectDefinition(class43.method770(var30)).int2 / 2;
+							var29 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var30)).int2 / 2;
 						}
 
 						if (var9.animationId == -1 && var9.transforms == null) {
@@ -843,7 +843,7 @@ public class ClientPacket implements ClientPacketMarker
 						var29 = 8;
 						var30 = var7.getBoundaryObjectTag(var0, var2, var3);
 						if (var30 != 0L) {
-							var29 = ViewportMouse.getObjectDefinition(class43.method770(var30)).int2 / 2;
+							var29 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var30)).int2 / 2;
 						}
 
 						int var28 = var5 + 2 & 3;

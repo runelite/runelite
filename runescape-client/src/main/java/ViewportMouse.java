@@ -36,8 +36,8 @@ public class ViewportMouse {
 	)
 	static int field1746;
 	@ObfuscatedName("i")
-	@Export("loadedInterfaces")
-	public static boolean[] loadedInterfaces;
+	@Export("Widget_loadedInterfaces")
+	public static boolean[] Widget_loadedInterfaces;
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "Lhp;"

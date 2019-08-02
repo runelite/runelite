@@ -62,12 +62,13 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@ObfuscatedGetter(
 		intValue = 798302801
 	)
-	static int field448;
+	@Export("cycleDurationMillis")
+	static int cycleDurationMillis;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
 		intValue = 369880599
 	)
-	static int field443;
+	static int fiveOrOne;
 	@ObfuscatedName("m")
 	@ObfuscatedGetter(
 		intValue = 1519220993
@@ -90,8 +91,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	static int field465;
 	@ObfuscatedName("au")
-	@Export("hasFocus")
-	static volatile boolean hasFocus;
+	@Export("volatileFocus")
+	static volatile boolean volatileFocus;
 	@ObfuscatedName("ah")
 	@ObfuscatedGetter(
 		longValue = -5454616642198733289L
@@ -190,13 +191,13 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		field466 = 0;
 		stopTimeMs = 0L;
 		isKilled = false;
-		field448 = 20;
-		field443 = 1;
+		cycleDurationMillis = 20;
+		fiveOrOne = 1;
 		fps = 0;
 		field452 = new long[32];
 		field453 = new long[32];
 		field465 = 500;
-		hasFocus = true;
+		volatileFocus = true;
 		garbageCollectorLastCollectionTime = -1L;
 		garbageCollectorLastCheckTimeMs = -1L;
 	}
@@ -243,16 +244,17 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	@Export("post")
 	final void post(Object var1) {
-		if (this.eventQueue != null) {
-			for (int var2 = 0; var2 < 50 && this.eventQueue.peekEvent() != null; ++var2) {
-				EnumDefinition.method4550(1L);
-			}
-
-			if (var1 != null) {
-				this.eventQueue.postEvent(new ActionEvent(var1, 1001, "dummy"));
-			}
-
+		if (this.eventQueue == null) {
+			return;
 		}
+		for (int var2 = 0; var2 < 50 && this.eventQueue.peekEvent() != null; ++var2) {
+			EnumDefinition.sleepMillis(1L);
+		}
+
+		if (var1 != null) {
+			this.eventQueue.postEvent(new ActionEvent(var1, 1001, "dummy"));
+		}
+
 	}
 
 	@ObfuscatedName("k")
@@ -444,7 +446,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		var2.removeMouseListener(MouseHandler.MouseHandler_instance);
 		var2.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
 		var2.removeFocusListener(MouseHandler.MouseHandler_instance);
-		MouseHandler.MouseHandler_currentButton0 = 0;
+		MouseHandler.MouseHandler_currentButtonVolatile = 0;
 		if (this.mouseWheelHandler != null) {
 			this.mouseWheelHandler.removeFrom(this.canvas);
 		}
@@ -587,7 +589,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 
 		synchronized(this) {
-			class267.field3557 = hasFocus;
+			class267.hasFocus = volatileFocus;
 		}
 
 		this.doCycle();
@@ -876,7 +878,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	public final void destroy() {
 		if (this == gameShell && !isKilled) {
 			stopTimeMs = DirectByteArrayCopier.currentTimeMs();
-			EnumDefinition.method4550(5000L);
+			EnumDefinition.sleepMillis(5000L);
 			this.kill();
 		}
 	}
@@ -894,7 +896,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 					if (var2.startsWith("1.6.0_")) {
 						int var3;
-						for (var3 = 6; var3 < var2.length() && class49.isCharDigit(var2.charAt(var3)); ++var3) {
+						for (var3 = 6; var3 < var2.length() && class49.isDigit(var2.charAt(var3)); ++var3) {
 						}
 
 						String var4 = var2.substring(6, var3);
@@ -904,17 +906,17 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 						}
 					}
 
-					field443 = 5;
+					fiveOrOne = 5;
 				}
 			}
 
 			this.setFocusCycleRoot(true);
 			this.addCanvas();
 			this.setUp();
-			clock = class173.method3589();
+			clock = class173.newClock();
 
 			while (0L == stopTimeMs || DirectByteArrayCopier.currentTimeMs() < stopTimeMs) {
-				field449 = clock.wait(field448, field443);
+				field449 = clock.wait(cycleDurationMillis, fiveOrOne);
 
 				for (int var5 = 0; var5 < field449; ++var5) {
 					this.method953();
@@ -951,12 +953,12 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	}
 
 	public final void focusGained(FocusEvent var1) {
-		hasFocus = true;
+		volatileFocus = true;
 		this.field464 = true;
 	}
 
 	public final void focusLost(FocusEvent var1) {
-		hasFocus = false;
+		volatileFocus = false;
 	}
 
 	public final void windowActivated(WindowEvent var1) {

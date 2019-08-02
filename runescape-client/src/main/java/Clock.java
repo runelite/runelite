@@ -30,7 +30,7 @@ public abstract class Clock {
 		garbageValue = "-333181863"
 	)
 	@Export("wait")
-	public abstract int wait(int var1, int var2);
+	public abstract int wait(int tickLength, int fiveOrOne);
 
 	@ObfuscatedName("fx")
 	@ObfuscatedSignature(

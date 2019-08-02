@@ -6,3 +6,6 @@ dependencies {
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 }
+tasks.withType(JavaCompile) {
+    options.compilerArgs.addAll('-g:source,vars,lines', '-Xlint:-unchecked')
+}

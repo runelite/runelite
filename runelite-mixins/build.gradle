@@ -1,9 +1,10 @@
 description = 'RuneLite Mixins'
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     compileOnly group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     implementation project(':runescape-api')
     compileOnly group: 'com.google.guava', name: 'guava', version: '28.0-jre'
     compileOnly group: 'javax.inject', name: 'javax.inject', version: '1'
+}
+tasks.withType(JavaCompile){
+    options.compilerArgs.addAll('-source', '7', '-Xlint:-unchecked')
 }

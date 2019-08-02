@@ -248,7 +248,8 @@ public class ObjectDefinition extends DualNode {
 	@Export("int6")
 	public int int6;
 	@ObfuscatedName("ay")
-	public int[] field3367;
+	@Export("soundEffectIds")
+	public int[] soundEffectIds;
 	@ObfuscatedName("af")
 	@ObfuscatedSignature(
 		signature = "Lla;"
@@ -472,10 +473,10 @@ public class ObjectDefinition extends DualNode {
 				this.int6 = var1.readUnsignedShort();
 				this.int4 = var1.readUnsignedByte();
 				var3 = var1.readUnsignedByte();
-				this.field3367 = new int[var3];
+				this.soundEffectIds = new int[var3];
 
 				for (var4 = 0; var4 < var3; ++var4) {
-					this.field3367[var4] = var1.readUnsignedShort();
+					this.soundEffectIds[var4] = var1.readUnsignedShort();
 				}
 			} else if (var2 == 81) {
 				this.clipType = var1.readUnsignedByte() * 65536;
@@ -889,14 +890,15 @@ public class ObjectDefinition extends DualNode {
 		signature = "(I)Z",
 		garbageValue = "-2033078684"
 	)
-	public boolean method4598() {
+	@Export("hasSound")
+	public boolean hasSound() {
 		if (this.transforms == null) {
-			return this.ambientSoundId != -1 || this.field3367 != null;
+			return this.ambientSoundId != -1 || this.soundEffectIds != null;
 		}
 		for (int var1 = 0; var1 < this.transforms.length; ++var1) {
 			if (this.transforms[var1] != -1) {
 				ObjectDefinition var2 = ViewportMouse.getObjectDefinition(this.transforms[var1]);
-				if (var2.ambientSoundId != -1 || var2.field3367 != null) {
+				if (var2.ambientSoundId != -1 || var2.soundEffectIds != null) {
 					return true;
 				}
 			}

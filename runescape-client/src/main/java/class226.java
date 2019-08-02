@@ -67,7 +67,7 @@ public class class226 {
 		if (var2 == 1) {
 			var3 = var0.readBits(2);
 			var4 = Players.Players_regions[var1];
-			Players.Players_regions[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+			Players.Players_regions[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 0xfffffff);
 			return false;
 		}
 		int var5;

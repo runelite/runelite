@@ -370,13 +370,13 @@ final class class4 implements class0 {
 			Client.viewportTempY = Client.overheadTextYs[var18] = var20;
 			String var30 = Client.overheadText[var18];
 			if (Client.chatEffects == 0) {
-				int var25 = 16776960;
+				int var25 = 0xffff00;
 				if (Client.overheadTextColors[var18] < 6) {
 					var25 = Client.field870[Client.overheadTextColors[var18]];
 				}
 
 				if (Client.overheadTextColors[var18] == 6) {
-					var25 = Client.viewportDrawCount % 20 < 10 ? 16711680 : 16776960;
+					var25 = Client.viewportDrawCount % 20 < 10 ? 0xff0000 : 0xffff00;
 				}
 
 				if (Client.overheadTextColors[var18] == 7) {
@@ -391,20 +391,20 @@ final class class4 implements class0 {
 				if (Client.overheadTextColors[var18] == 9) {
 					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
 					if (var26 < 50) {
-						var25 = var26 * 1280 + 16711680;
+						var25 = var26 * 1280 + 0xff0000;
 					} else if (var26 < 100) {
-						var25 = 16776960 - (var26 - 50) * 327680;
+						var25 = 0xffff00 - (var26 - 50) * 327680;
 					} else if (var26 < 150) {
-						var25 = (var26 - 100) * 5 + 65280;
+						var25 = (var26 - 100) * 5 + 0xff00;
 					}
 				}
 
 				if (Client.overheadTextColors[var18] == 10) {
 					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
 					if (var26 < 50) {
-						var25 = var26 * 5 + 16711680;
+						var25 = var26 * 5 + 0xff0000;
 					} else if (var26 < 100) {
-						var25 = 16711935 - (var26 - 50) * 327680;
+						var25 = 0xff00ff - (var26 - 50) * 327680;
 					} else if (var26 < 150) {
 						var25 = (var26 - 100) * 327680 + 255 - (var26 - 100) * 5;
 					}
@@ -413,11 +413,11 @@ final class class4 implements class0 {
 				if (Client.overheadTextColors[var18] == 11) {
 					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
 					if (var26 < 50) {
-						var25 = 16777215 - var26 * 327685;
+						var25 = 0xffffff - var26 * 327685;
 					} else if (var26 < 100) {
-						var25 = (var26 - 50) * 327685 + 65280;
+						var25 = (var26 - 50) * 327685 + 0xff00;
 					} else if (var26 < 150) {
-						var25 = 16777215 - (var26 - 100) * 327680;
+						var25 = 0xffffff - (var26 - 100) * 327680;
 					}
 				}
 
@@ -458,14 +458,14 @@ final class class4 implements class0 {
 					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
 				}
 			} else {
-				WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, 16776960, 0);
+				WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, 0xffff00, 0);
 			}
 		}
 
 		if (Client.hintArrowType == 2) {
 			class32.worldToScreen(Client.hintArrowSubX * 64 + (Client.hintArrowX - MusicPatchNode2.baseX * 64 << 7), (Client.hintArrowY - class1.baseY * 64 << 7) + Client.hintArrowSubY * 4096, Client.hintArrowHeight * 4);
 			if (Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
-				class173.headIconHintSprites[0].drawAt2(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
+				class173.headIconHintSprites[0].drawTransBgAt(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
 			}
 		}
 

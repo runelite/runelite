@@ -53,25 +53,25 @@ public class PlayerAppearance {
 		garbageValue = "646936980"
 	)
 	@Export("update")
-	public void update(int[] var1, int[] var2, boolean var3, int var4) {
-		if (var1 == null) {
-			var1 = new int[12];
+	public void update(int[] equipment, int[] bodyColors, boolean isFemale, int npcTransformId) {
+		if (equipment == null) {
+			equipment = new int[12];
 
 			for (int var5 = 0; var5 < 7; ++var5) {
 				for (int var6 = 0; var6 < KitDefinition.KitDefinition_fileCount; ++var6) {
 					KitDefinition var7 = ArchiveDiskAction.getKitDefinition(var6);
-					if (var7 != null && !var7.nonSelectable && var7.bodypartID == var5 + (var3 ? 7 : 0)) {
-						var1[equipmentIndices[var5]] = var6 + 256;
+					if (var7 != null && !var7.nonSelectable && var7.bodypartID == var5 + (isFemale ? 7 : 0)) {
+						equipment[equipmentIndices[var5]] = var6 + 256;
 						break;
 					}
 				}
 			}
 		}
 
-		this.equipment = var1;
-		this.bodyColors = var2;
-		this.isFemale = var3;
-		this.npcTransformId = var4;
+		this.equipment = equipment;
+		this.bodyColors = bodyColors;
+		this.isFemale = isFemale;
+		this.npcTransformId = npcTransformId;
 		this.setHash();
 	}
 
@@ -81,32 +81,34 @@ public class PlayerAppearance {
 		garbageValue = "7431"
 	)
 	public void method3992(int var1, boolean var2) {
-		if (var1 != 1 || !this.isFemale) {
-			int var3 = this.equipment[equipmentIndices[var1]];
-			if (var3 != 0) {
-				var3 -= 256;
-
-				KitDefinition var4;
-				do {
-					if (!var2) {
-						--var3;
-						if (var3 < 0) {
-							var3 = KitDefinition.KitDefinition_fileCount - 1;
-						}
-					} else {
-						++var3;
-						if (var3 >= KitDefinition.KitDefinition_fileCount) {
-							var3 = 0;
-						}
-					}
-
-					var4 = ArchiveDiskAction.getKitDefinition(var3);
-				} while(var4 == null || var4.nonSelectable || var4.bodypartID != (this.isFemale ? 7 : 0) + var1);
-
-				this.equipment[equipmentIndices[var1]] = var3 + 256;
-				this.setHash();
-			}
+		if (var1 == 1 && this.isFemale) {
+			return;
 		}
+		int var3 = this.equipment[equipmentIndices[var1]];
+		if (var3 == 0) {
+			return;
+		}
+		var3 -= 256;
+
+		KitDefinition var4;
+		do {
+			if (!var2) {
+				--var3;
+				if (var3 < 0) {
+					var3 = KitDefinition.KitDefinition_fileCount - 1;
+				}
+			} else {
+				++var3;
+				if (var3 >= KitDefinition.KitDefinition_fileCount) {
+					var3 = 0;
+				}
+			}
+
+			var4 = ArchiveDiskAction.getKitDefinition(var3);
+		} while(var4 == null || var4.nonSelectable || var4.bodypartID != (this.isFemale ? 7 : 0) + var1);
+
+		this.equipment[equipmentIndices[var1]] = var3 + 256;
+		this.setHash();
 	}
 
 	@ObfuscatedName("e")
@@ -117,33 +119,27 @@ public class PlayerAppearance {
 	public void method3993(int var1, boolean var2) {
 		int var3 = this.bodyColors[var1];
 		boolean var4;
-		if (!var2) {
-			do {
+		do {
+			if (var2) {
 				--var3;
-				if (var3 < 0) {
+				if (var3 < 0)
+				{
 					var3 = class247.field3291[var1].length - 1;
 				}
-
-				if (var1 == 4 && var3 >= 8) {
-					var4 = false;
-				} else {
-					var4 = true;
-				}
-			} while(!var4);
-		} else {
-			do {
+			} else {
 				++var3;
 				if (var3 >= class247.field3291[var1].length) {
 					var3 = 0;
 				}
+			}
 
-				if (var1 == 4 && var3 >= 8) {
-					var4 = false;
-				} else {
-					var4 = true;
-				}
-			} while(!var4);
-		}
+			if (var1 == 4 && var3 >= 8) {
+				var4 = false;
+			} else {
+				var4 = true;
+			}
+		} while(!var4);
+
 
 		this.bodyColors[var1] = var3;
 		this.setHash();
@@ -154,7 +150,8 @@ public class PlayerAppearance {
 		signature = "(ZI)V",
 		garbageValue = "-1889308905"
 	)
-	public void method4006(boolean var1) {
+	@Export("changeSex")
+	public void changeSex(boolean var1) {
 		if (this.isFemale != var1) {
 			this.update((int[])null, this.bodyColors, var1, -1);
 		}
@@ -165,7 +162,8 @@ public class PlayerAppearance {
 		signature = "(Lkf;I)V",
 		garbageValue = "318518244"
 	)
-	public void method3995(Buffer var1) {
+	@Export("write")
+	public void write(Buffer var1) {
 		var1.writeByte(this.isFemale ? 1 : 0);
 
 		int var2;

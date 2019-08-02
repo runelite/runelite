@@ -195,16 +195,16 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		}
 
 		if (var1 == 324) {
-			Client.playerAppearance.method4006(false);
+			Client.playerAppearance.changeSex(false);
 		}
 
 		if (var1 == 325) {
-			Client.playerAppearance.method4006(true);
+			Client.playerAppearance.changeSex(true);
 		}
 
 		if (var1 == 326) {
 			PacketBufferNode var4 = Archive.method4265(ClientPacket.field2215, Client.packetWriter.isaacCipher);
-			Client.playerAppearance.method3995(var4.packetBuffer);
+			Client.playerAppearance.write(var4.packetBuffer);
 			Client.packetWriter.method2219(var4);
 			return true;
 		}

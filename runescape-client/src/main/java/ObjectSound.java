@@ -23,17 +23,20 @@ public final class ObjectSound extends Node {
 	@ObfuscatedGetter(
 		intValue = 621824935
 	)
-	int field1078;
+	@Export("plane")
+	int plane;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
 		intValue = 1620734975
 	)
-	int field1083;
+	@Export("x")
+	int x;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
 		intValue = -1755977344
 	)
-	int field1090;
+	@Export("y")
+	int y;
 	@ObfuscatedName("k")
 	@ObfuscatedGetter(
 		intValue = 75852160
@@ -113,7 +116,7 @@ public final class ObjectSound extends Node {
 			this.field1091 = var2.int4 * 128;
 			this.field1086 = var2.int5;
 			this.field1081 = var2.int6;
-			this.soundEffectIds = var2.field3367;
+			this.soundEffectIds = var2.soundEffectIds;
 		} else {
 			this.soundEffectId = -1;
 			this.field1091 = 0;

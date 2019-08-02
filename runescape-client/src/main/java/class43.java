@@ -32,7 +32,8 @@ public final class class43 {
 	static int cameraY;
 
 	@ObfuscatedName("l")
-	public static int method770(long var0) {
-		return (int)(var0 >>> 17 & 4294967295L);
+	@Export("getObjectIdFromTag")
+	public static int getObjectIdFromTag(long var0) {
+		return (int)(var0 >>> 17 & 0xffffffffL);
 	}
 }

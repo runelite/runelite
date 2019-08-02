@@ -62,7 +62,7 @@ public class CollisionMap {
 				if (var1 != 0 && var2 != 0 && var1 < this.xSize - 5 && var2 < this.ySize - 5) {
 					this.flags[var1][var2] = 16777216;
 				} else {
-					this.flags[var1][var2] = 16777215;
+					this.flags[var1][var2] = 0xffffff;
 				}
 			}
 		}

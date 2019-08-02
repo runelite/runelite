@@ -46,7 +46,7 @@ public class class191 {
 			WorldMapIcon_1.field188 = null;
 			FontName.drawInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
 			if (WorldMapIcon_1.field188 != null) {
-				FontName.drawInterface(WorldMapIcon_1.field188, -1412584499, var1, var2, var3, var4, WorldMapDecorationType.field2742, ClientPacket.field2305, var7);
+				FontName.drawInterface(WorldMapIcon_1.field188, 0xabcdabcd, var1, var2, var3, var4, WorldMapDecorationType.field2742, ClientPacket.field2305, var7);
 				WorldMapIcon_1.field188 = null;
 			}
 

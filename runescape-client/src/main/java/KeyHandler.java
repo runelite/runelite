@@ -178,7 +178,8 @@ public final class KeyHandler implements KeyListener, FocusListener {
 		signature = "(Lhp;I)V",
 		garbageValue = "-939658474"
 	)
-	public static void method794(AbstractArchive var0) {
+	@Export("ParamDefinition_setArchives")
+	public static void ParamDefinition_setArchives(AbstractArchive var0) {
 		ParamDefinition.ParamDefinition_archive = var0;
 	}
 
@@ -195,10 +196,10 @@ public final class KeyHandler implements KeyListener, FocusListener {
 		FaceNormal.field1887 = null;
 		class32.field282 = null;
 		Tiles.field515 = null;
-		ServerBuild.field3103 = null;
-		Tiles.field508 = null;
-		Tiles.field507 = null;
-		DynamicObject.field1301 = null;
+		ServerBuild.Tiles_hue = null;
+		Tiles.Tiles_saturation = null;
+		Tiles.Tiles_lightness = null;
+		DynamicObject.Tiles_hueMultiplier = null;
 		Fonts.field3689 = null;
 	}
 

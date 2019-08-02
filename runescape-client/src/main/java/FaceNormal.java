@@ -43,8 +43,8 @@ public class FaceNormal {
 		signature = "(Lhp;Lhp;B)V",
 		garbageValue = "-92"
 	)
-	@Export("setNpcDefinitionArchives")
-	public static void setNpcDefinitionArchives(AbstractArchive var0, AbstractArchive var1) {
+	@Export("NpcDefinition_setArchives")
+	public static void NpcDefinition_setArchives(AbstractArchive var0, AbstractArchive var1) {
 		NPCDefinition.NpcDefinition_archive = var0;
 		NPCDefinition.NpcDefinition_modelArchive = var1;
 	}
@@ -80,8 +80,8 @@ public class FaceNormal {
 	static void method3264() {
 		Client.mouseLastLastPressedTimeMillis = 1L;
 		class40.mouseRecorder.index = 0;
-		class267.field3557 = true;
-		Client.field667 = true;
+		class267.hasFocus = true;
+		Client.hadFocus = true;
 		Client.field879 = -1L;
 		class192.method3678();
 		Client.packetWriter.method2218();
@@ -158,7 +158,7 @@ public class FaceNormal {
 		Client.followerIndex = -1;
 		if (Client.rootInterface != -1) {
 			var0 = Client.rootInterface;
-			if (var0 != -1 && ViewportMouse.loadedInterfaces[var0]) {
+			if (var0 != -1 && ViewportMouse.Widget_loadedInterfaces[var0]) {
 				Widget.Widget_archive.clearFilesGroup(var0);
 				if (Widget.Widget_interfaceComponents[var0] != null) {
 					boolean var5 = true;
@@ -177,7 +177,7 @@ public class FaceNormal {
 						Widget.Widget_interfaceComponents[var0] = null;
 					}
 
-					ViewportMouse.loadedInterfaces[var0] = false;
+					ViewportMouse.Widget_loadedInterfaces[var0] = false;
 				}
 			}
 		}
@@ -188,7 +188,7 @@ public class FaceNormal {
 
 		Client.rootInterface = -1;
 		Client.interfaceParents = new NodeHashTable(8);
-		Client.field850 = null;
+		Client.meslayerContinueWidget = null;
 		Strings.method4121();
 		Client.playerAppearance.update((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
 

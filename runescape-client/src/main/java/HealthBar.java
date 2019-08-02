@@ -77,19 +77,19 @@ public class HealthBar extends Node {
 	@Export("get")
 	HealthBarUpdate get(int var1) {
 		HealthBarUpdate var2 = (HealthBarUpdate)this.updates.last();
-		if (var2 != null && var2.cycle <= var1) {
-			for (HealthBarUpdate var3 = (HealthBarUpdate)this.updates.previous(); var3 != null && var3.cycle <= var1; var3 = (HealthBarUpdate)this.updates.previous()) {
-				var2.remove();
-				var2 = var3;
-			}
+		if (var2 == null || var2.cycle > var1) {
+			return null;
+		}
+		for (HealthBarUpdate var3 = (HealthBarUpdate)this.updates.previous(); var3 != null && var3.cycle <= var1; var3 = (HealthBarUpdate)this.updates.previous()) {
+			var2.remove();
+			var2 = var3;
+		}
 
-			if (this.definition.int5 + var2.cycle + var2.cycleOffset > var1) {
-				return var2;
-			}
+		if (this.definition.int5 + var2.cycle + var2.cycleOffset <= var1) {
 			var2.remove();
 			return null;
 		}
-		return null;
+		return var2;
 	}
 
 	@ObfuscatedName("e")
