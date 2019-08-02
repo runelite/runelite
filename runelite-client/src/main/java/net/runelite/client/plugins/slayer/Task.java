@@ -28,6 +28,7 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -228,6 +229,7 @@ enum Task
 		this.expectedKillExp = expectedKillExp;
 	}
 
+	@Nullable
 	static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());

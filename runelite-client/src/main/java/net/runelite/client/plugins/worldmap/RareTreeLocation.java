@@ -50,7 +50,10 @@ enum RareTreeLocation
 		new WorldPoint(2899, 2897, 0),
 
 		// Feldip Hills
-		new WorldPoint(2333, 3049, 0)),
+		new WorldPoint(2333, 3049, 0),
+
+		// Prifddinas
+		new WorldPoint(3309, 6123, 0)),
 
 	SWAYING("Swaying tree", 40,
 		// The Fremennik Trials
@@ -78,7 +81,11 @@ enum RareTreeLocation
 		new WorldPoint(2726, 3501, 0),
 		new WorldPoint(2728, 3481, 0),
 		new WorldPoint(2748, 3466, 0),
-		new WorldPoint(2710, 3570, 0)),
+		new WorldPoint(2710, 3570, 0),
+
+		// Prifddinas
+		new WorldPoint(2209, 3427, 0),
+		new WorldPoint(3233, 6179, 0)),
 
 	MAHOGANY("Mahogany tree", 50,
 		// Zeah
@@ -92,7 +99,10 @@ enum RareTreeLocation
 		new WorldPoint(3824, 3053, 0),
 
 		// Karamja
-		new WorldPoint(2946, 2908, 0)),
+		new WorldPoint(2946, 2908, 0),
+
+		// Prifddinas
+		new WorldPoint(3301, 6129, 0)),
 
 	TEAK_MAHOGANY("Teak/Mahogany trees", 50,
 		// Miscellania
@@ -125,6 +135,10 @@ enum RareTreeLocation
 
 		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
+
+		// Prifddinas
+		new WorldPoint(3288, 6066, 0),
+		new WorldPoint(3305, 6032, 0),
 
 		// Kandarin
 		new WorldPoint(2315, 3610, 0),
@@ -201,6 +215,9 @@ enum RareTreeLocation
 
 		// Tirannwn
 		new WorldPoint(2284, 3141, 0),
+
+		// Prifddinas
+		new WorldPoint(3229, 6101, 0),
 
 		// Kandarin
 		new WorldPoint(2371, 3427, 0),

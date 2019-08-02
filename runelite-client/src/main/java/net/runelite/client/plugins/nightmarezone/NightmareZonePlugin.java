@@ -25,8 +25,11 @@
 package net.runelite.client.plugins.nightmarezone;
 
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -51,6 +54,7 @@ import net.runelite.client.util.Text;
 public class NightmareZonePlugin extends Plugin
 {
 	private static final int[] NMZ_MAP_REGION = {9033};
+	private static final Duration HOUR = Duration.ofHours(1);
 
 	@Inject
 	private Notifier notifier;
@@ -66,6 +70,11 @@ public class NightmareZonePlugin extends Plugin
 
 	@Inject
 	private NightmareZoneOverlay overlay;
+
+	@Getter
+	private int pointsPerHour;
+	
+	private Instant nmzSessionStartTime;
 
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
@@ -90,6 +99,8 @@ public class NightmareZonePlugin extends Plugin
 		{
 			nmzWidget.setHidden(false);
 		}
+
+		resetPointsPerHour();
 	}
 
 	@Subscribe
@@ -114,11 +125,22 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			if (nmzSessionStartTime != null)
+			{
+				resetPointsPerHour();
+			}
+
 			return;
 		}
+
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+
+		if (config.moveOverlay())
+		{
+			pointsPerHour = calculatePointsPerHour();
 		}
 	}
 
@@ -191,6 +213,32 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = false;
 			}
 		}
+	}
+
+	private int calculatePointsPerHour()
+	{
+		Instant now = Instant.now();
+		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+
+		if (nmzSessionStartTime == null)
+		{
+			nmzSessionStartTime = now;
+		}
+
+		Duration timeSinceStart = Duration.between(nmzSessionStartTime, now);
+
+		if (!timeSinceStart.isZero())
+		{
+			return (int) ((double) currentPoints * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
+
+		return 0;
+	}
+
+	private void resetPointsPerHour()
+	{
+		nmzSessionStartTime = null;
+		pointsPerHour = 0;
 	}
 
 	public boolean isInNightmareZone()

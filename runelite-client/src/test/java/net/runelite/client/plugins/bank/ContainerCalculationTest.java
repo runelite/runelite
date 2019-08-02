@@ -67,17 +67,9 @@ public class ContainerCalculationTest
 	@Test
 	public void testCalculate()
 	{
-		Item coins = mock(Item.class);
-		when(coins.getId())
-			.thenReturn(ItemID.COINS_995);
-		when(coins.getQuantity())
-			.thenReturn(Integer.MAX_VALUE);
+		Item coins = new Item(ItemID.COINS_995, Integer.MAX_VALUE);
 
-		Item whip = mock(Item.class);
-		when(whip.getId())
-			.thenReturn(ItemID.ABYSSAL_WHIP);
-		when(whip.getQuantity())
-			.thenReturn(1_000_000_000);
+		Item whip = new Item(ItemID.ABYSSAL_WHIP, 1_000_000_000);
 
 		Item[] items = ImmutableList.of(
 			coins,

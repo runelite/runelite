@@ -236,6 +236,28 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 19,
+		keyName = "showCrystal",
+		name = "Show Crystal implings",
+		description = "Configures whether or not Crystal implings are displayed"
+	)
+	default boolean showCrystal()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "crystalColor",
+		name = "Crystal impling color",
+		description = "Text color for Crystal implings"
+	)
+	default Color getCrystalColor()
+	{
+		return new Color(93, 188, 210);
+	}
+
+	@ConfigItem(
+		position = 21,
 		keyName = "showdragon",
 		name = "Show Dragon implings",
 		description = "Configures whether or not Dragon impling tags are displayed"
@@ -246,7 +268,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 22,
 		keyName = "dragonColor",
 		name = "Dragon impling color",
 		description = "Text color for Dragon implings"
@@ -257,7 +279,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 23,
 		keyName = "showlucky",
 		name = "Show Lucky implings",
 		description = "Configures whether or not Lucky impling tags are displayed"
@@ -268,7 +290,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 22,
+		position = 24,
 		keyName = "luckyColor",
 		name = "Lucky impling color",
 		description = "Text color for Lucky implings"
@@ -279,7 +301,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
+		position = 25,
 		keyName = "showspawn",
 		name = "Show Spawn locations",
 		description = "Configures whether or not spawn locations are displayed in Puro Puro"
@@ -290,7 +312,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
+		position = 26,
 		keyName = "spawnColor",
 		name = "Impling spawn color",
 		description = "Text color for impling spawns in Puro Puro"
@@ -301,7 +323,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 25,
+		position = 27,
 		keyName = "showname",
 		name = "Show name on minimap",
 		description = "Configures whether or not impling names are displayed on minimap"

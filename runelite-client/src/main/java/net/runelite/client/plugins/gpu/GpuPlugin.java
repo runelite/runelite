@@ -643,7 +643,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_DYNAMIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 

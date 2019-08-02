@@ -33,10 +33,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
@@ -56,6 +58,7 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
+@Slf4j
 public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
 	private static final int BORDER = 5;
@@ -431,14 +434,16 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
-		final Graphics2D subGraphics = (Graphics2D) graphics.create();
-
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
-			subGraphics.setClip(client.getViewportXOffset(),
+			graphics.setClip(client.getViewportXOffset(),
 				client.getViewportYOffset(),
 				client.getViewportWidth(),
 				client.getViewportHeight());
+		}
+		else
+		{
+			graphics.setClip(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		}
 
 		final OverlayPosition position = overlay.getPosition();
@@ -446,20 +451,40 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+			graphics.setFont(runeLiteConfig.fontType().getFont());
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			graphics.setFont(runeLiteConfig.tooltipFontType().getFont());
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
 		}
 
-		subGraphics.translate(point.x, point.y);
-		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
-		subGraphics.dispose();
+		// Reset the default color
+		graphics.setColor(Color.WHITE);
+
+		// Get transform so we can reset it after drawing
+		AffineTransform transform = graphics.getTransform();
+		graphics.translate(point.x, point.y);
+
+		final Dimension overlayDimension;
+		try
+		{
+			overlayDimension = overlay.render(graphics);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+			return;
+		}
+		finally
+		{
+			graphics.setTransform(transform);
+		}
+
+		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
 		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
