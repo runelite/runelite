@@ -125,7 +125,8 @@ public enum class192 implements Enumerated {
 		signature = "(IIIB)I",
 		garbageValue = "69"
 	)
-	static int method3679(int var0, int var1, int var2) {
+	@Export("WorldMap_hslToRgb")
+	static int WorldMap_hslToRgb(int var0, int var1, int var2) {
 		if (var2 > 179) {
 			var1 /= 2;
 		}

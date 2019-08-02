@@ -419,26 +419,27 @@ public class Scene {
 	)
 	@Export("newBoundaryObject")
 	public void newBoundaryObject(int var1, int var2, int var3, int var4, Entity var5, Entity var6, int var7, int var8, long var9, int var11) {
-		if (var5 != null || var6 != null) {
-			BoundaryObject var12 = new BoundaryObject();
-			var12.tag = var9;
-			var12.flags = var11;
-			var12.x = var2 * 128 + 64;
-			var12.y = var3 * 128 + 64;
-			var12.tileHeight = var4;
-			var12.entity1 = var5;
-			var12.entity2 = var6;
-			var12.orientationA = var7;
-			var12.orientationB = var8;
-
-			for (int var13 = var1; var13 >= 0; --var13) {
-				if (this.tiles[var13][var2][var3] == null) {
-					this.tiles[var13][var2][var3] = new Tile(var13, var2, var3);
-				}
-			}
-
-			this.tiles[var1][var2][var3].boundaryObject = var12;
+		if (var5 == null && var6 == null) {
+			return;
 		}
+		BoundaryObject var12 = new BoundaryObject();
+		var12.tag = var9;
+		var12.flags = var11;
+		var12.x = var2 * 128 + 64;
+		var12.y = var3 * 128 + 64;
+		var12.tileHeight = var4;
+		var12.entity1 = var5;
+		var12.entity2 = var6;
+		var12.orientationA = var7;
+		var12.orientationB = var8;
+
+		for (int var13 = var1; var13 >= 0; --var13) {
+			if (this.tiles[var13][var2][var3] == null) {
+				this.tiles[var13][var2][var3] = new Tile(var13, var2, var3);
+			}
+		}
+
+		this.tiles[var1][var2][var3].boundaryObject = var12;
 	}
 
 	@ObfuscatedName("u")
@@ -447,28 +448,29 @@ public class Scene {
 	)
 	@Export("newWallDecoration")
 	public void newWallDecoration(int var1, int var2, int var3, int var4, Entity var5, Entity var6, int var7, int var8, int var9, int var10, long var11, int var13) {
-		if (var5 != null) {
-			WallDecoration var14 = new WallDecoration();
-			var14.tag = var11;
-			var14.flags = var13;
-			var14.x = var2 * 128 + 64;
-			var14.y = var3 * 128 + 64;
-			var14.tileHeight = var4;
-			var14.entity1 = var5;
-			var14.entity2 = var6;
-			var14.orientation = var7;
-			var14.orientation2 = var8;
-			var14.xOffset = var9;
-			var14.yOffset = var10;
-
-			for (int var15 = var1; var15 >= 0; --var15) {
-				if (this.tiles[var15][var2][var3] == null) {
-					this.tiles[var15][var2][var3] = new Tile(var15, var2, var3);
-				}
-			}
-
-			this.tiles[var1][var2][var3].wallDecoration = var14;
+		if (var5 == null) {
+			return;
 		}
+		WallDecoration var14 = new WallDecoration();
+		var14.tag = var11;
+		var14.flags = var13;
+		var14.x = var2 * 128 + 64;
+		var14.y = var3 * 128 + 64;
+		var14.tileHeight = var4;
+		var14.entity1 = var5;
+		var14.entity2 = var6;
+		var14.orientation = var7;
+		var14.orientation2 = var8;
+		var14.xOffset = var9;
+		var14.yOffset = var10;
+
+		for (int var15 = var1; var15 >= 0; --var15) {
+			if (this.tiles[var15][var2][var3] == null) {
+				this.tiles[var15][var2][var3] = new Tile(var15, var2, var3);
+			}
+		}
+
+		this.tiles[var1][var2][var3].wallDecoration = var14;
 	}
 
 	@ObfuscatedName("x")

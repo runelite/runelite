@@ -572,17 +572,18 @@ public class ObjectDefinition extends DualNode {
 		signature = "(II[[IIIIB)Leo;",
 		garbageValue = "-18"
 	)
-	public final Entity method4591(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
+	@Export("getEntity")
+	public final Entity getEntity(int type, int rotation, int[][] tileHeights, int xPacked, int avgHeight, int yPacked) {
 		long var7;
 		if (this.field3359 == null) {
-			var7 = (long)(var2 + (this.id << 10));
+			var7 = (long)(rotation + (this.id << 10));
 		} else {
-			var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
+			var7 = (long)(rotation + (type << 3) + (this.id << 10));
 		}
 
 		Object var9 = (Entity)ObjectDefinition_cachedEntities.get(var7);
 		if (var9 == null) {
-			ModelData var10 = this.getModelData(var1, var2);
+			ModelData var10 = this.getModelData(type, rotation);
 			if (var10 == null) {
 				return null;
 			}
@@ -605,9 +606,9 @@ public class ObjectDefinition extends DualNode {
 
 		if (this.clipType * 256 >= 0) {
 			if (var9 instanceof Model) {
-				var9 = ((Model)var9).contourGround(var3, var4, var5, var6, true, this.clipType * 256);
+				var9 = ((Model)var9).contourGround(tileHeights, xPacked, avgHeight, yPacked, true, this.clipType * 256);
 			} else if (var9 instanceof ModelData) {
-				var9 = ((ModelData)var9).method2776(var3, var4, var5, var6, true, this.clipType * 256);
+				var9 = ((ModelData)var9).method2776(tileHeights, xPacked, avgHeight, yPacked, true, this.clipType * 256);
 			}
 		}
 
@@ -620,17 +621,17 @@ public class ObjectDefinition extends DualNode {
 		garbageValue = "-1160623337"
 	)
 	@Export("getModel")
-	public final Model getModel(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
+	public final Model getModel(int type, int rotation, int[][] tileHeights, int xPacked, int avgHeight, int yPacked) {
 		long var7;
 		if (this.field3359 == null) {
-			var7 = (long)(var2 + (this.id << 10));
+			var7 = (long)(rotation + (this.id << 10));
 		} else {
-			var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
+			var7 = (long)(rotation + (type << 3) + (this.id << 10));
 		}
 
 		Model var9 = (Model)ObjectDefinition_cachedModels.get(var7);
 		if (var9 == null) {
-			ModelData var10 = this.getModelData(var1, var2);
+			ModelData var10 = this.getModelData(type, rotation);
 			if (var10 == null) {
 				return null;
 			}
@@ -640,7 +641,7 @@ public class ObjectDefinition extends DualNode {
 		}
 
 		if (this.clipType * 256 >= 0) {
-			var9 = var9.contourGround(var3, var4, var5, var6, true, this.clipType * 256);
+			var9 = var9.contourGround(tileHeights, xPacked, avgHeight, yPacked, true, this.clipType * 256);
 		}
 
 		return var9;
@@ -693,13 +694,13 @@ public class ObjectDefinition extends DualNode {
 		garbageValue = "828225621"
 	)
 	@Export("getModelData")
-	final ModelData getModelData(int var1, int var2) {
+	final ModelData getModelData(int type, int rotation) {
 		ModelData var3 = null;
 		boolean var4;
 		int var5;
 		int var7;
 		if (this.field3359 == null) {
-			if (var1 != 10) {
+			if (type != 10) {
 				return null;
 			}
 
@@ -708,7 +709,7 @@ public class ObjectDefinition extends DualNode {
 			}
 
 			var4 = this.isRotated;
-			if (var1 == 2 && var2 > 3) {
+			if (type == 2 && rotation > 3) {
 				var4 = !var4;
 			}
 
@@ -746,7 +747,7 @@ public class ObjectDefinition extends DualNode {
 			int var9 = -1;
 
 			for (var5 = 0; var5 < this.field3359.length; ++var5) {
-				if (this.field3359[var5] == var1) {
+				if (this.field3359[var5] == type) {
 					var9 = var5;
 					break;
 				}
@@ -757,7 +758,7 @@ public class ObjectDefinition extends DualNode {
 			}
 
 			var5 = this.field3362[var9];
-			boolean var10 = this.isRotated ^ var2 > 3;
+			boolean var10 = this.isRotated ^ rotation > 3;
 			if (var10) {
 				var5 += 65536;
 			}
@@ -790,18 +791,18 @@ public class ObjectDefinition extends DualNode {
 			var11 = true;
 		}
 
-		ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, null == this.recolorFrom, this.retextureFrom == null, true);
-		if (var1 == 4 && var2 > 3) {
+		ModelData var8 = new ModelData(var3, rotation == 0 && !var4 && !var11, null == this.recolorFrom, this.retextureFrom == null, true);
+		if (type == 4 && rotation > 3) {
 			var8.method2781(256);
 			var8.method2782(45, 0, -45);
 		}
 
-		var2 &= 3;
-		if (var2 == 1) {
+		rotation &= 3;
+		if (rotation == 1) {
 			var8.method2778();
-		} else if (var2 == 2) {
+		} else if (rotation == 2) {
 			var8.method2797();
-		} else if (var2 == 3) {
+		} else if (rotation == 3) {
 			var8.method2780();
 		}
 

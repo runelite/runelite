@@ -528,80 +528,82 @@ public class Rasterizer2D extends DualNode {
 		signature = "(IIIIII[BIZ)V",
 		garbageValue = "1"
 	)
-	@Export("raster2d7")
-	public static void raster2d7(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
-		if (var0 + var2 >= 0 && var3 + var1 >= 0) {
-			if (var0 < Rasterizer2D_width && var1 < Rasterizer2D_height) {
-				int var8 = 0;
-				int var9 = 0;
-				if (var0 < 0) {
-					var8 -= var0;
-					var2 += var0;
-				}
+	@Export("Rasterizer2D_drawGradientPixels")
+	public static void Rasterizer2D_drawGradientPixels(int x, int y, int w, int h, int bgCol, int fgCol, byte[] pixels, int pxPerTile) {
+		if (x + w < 0 || h + y < 0) {
+			return;
+		}
+		if (x >= Rasterizer2D_width || y >= Rasterizer2D_height) {
+			return;
+		}
+		int var8 = 0;
+		int var9 = 0;
+		if (x < 0) {
+			var8 -= x;
+			w += x;
+		}
 
-				if (var1 < 0) {
-					var9 -= var1;
-					var3 += var1;
-				}
+		if (y < 0) {
+			var9 -= y;
+			h += y;
+		}
 
-				if (var0 + var2 > Rasterizer2D_width) {
-					var2 = Rasterizer2D_width - var0;
-				}
+		if (x + w > Rasterizer2D_width) {
+			w = Rasterizer2D_width - x;
+		}
 
-				if (var3 + var1 > Rasterizer2D_height) {
-					var3 = Rasterizer2D_height - var1;
-				}
+		if (h + y > Rasterizer2D_height) {
+			h = Rasterizer2D_height - y;
+		}
 
-				int var10 = var6.length / var7;
-				int var11 = Rasterizer2D_width - var2;
-				int var12 = var4 >>> 24;
-				int var13 = var5 >>> 24;
-				int var14;
-				int var15;
-				int var16;
-				int var17;
-				int var18;
-				if (var12 == 255 && var13 == 255) {
-					var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
+		int var10 = pixels.length / pxPerTile;
+		int var11 = Rasterizer2D_width - w;
+		int var12 = bgCol >>> 24;
+		int var13 = fgCol >>> 24;
+		int var14;
+		int var15;
+		int var16;
+		int var17;
+		int var18;
+		if (var12 == 255 && var13 == 255) {
+			var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
 
-					for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
-						for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-							var17 = (var15 - var1) % var10;
-							var18 = (var16 - var0) % var7;
-							if (var6[var18 + var17 * var7] != 0) {
-								Rasterizer2D_pixels[var14++] = var5;
-							} else {
-								Rasterizer2D_pixels[var14++] = var4;
-							}
-						}
-
-						var14 += var11;
-					}
-				} else {
-					var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
-
-					for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
-						for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
-							var17 = (var15 - var1) % var10;
-							var18 = (var16 - var0) % var7;
-							int var19 = var4;
-							if (var6[var18 + var17 * var7] != 0) {
-								var19 = var5;
-							}
-
-							int var20 = var19 >>> 24;
-							int var21 = 255 - var20;
-							int var22 = Rasterizer2D_pixels[var14];
-							int var23 = ((var19 & 0xff00ff) * var20 + (var22 & 0xff00ff) * var21 & 0xff00ff00) + (var20 * (var19 & 0xff00) + var21 * (var22 & 0xff00) & 0xff0000) >> 8;
-							Rasterizer2D_pixels[var14++] = var23;
-						}
-
-						var14 += var11;
+			for (var15 = var9 + y; var15 < h + var9 + y; ++var15) {
+				for (var16 = x + var8; var16 < x + var8 + w; ++var16) {
+					var17 = (var15 - y) % var10;
+					var18 = (var16 - x) % pxPerTile;
+					if (pixels[var18 + var17 * pxPerTile] != 0) {
+						Rasterizer2D_pixels[var14++] = fgCol;
+					} else {
+						Rasterizer2D_pixels[var14++] = bgCol;
 					}
 				}
 
+				var14 += var11;
+			}
+		} else {
+			var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
+
+			for (var15 = var9 + y; var15 < h + var9 + y; ++var15) {
+				for (var16 = x + var8; var16 < x + var8 + w; ++var16) {
+					var17 = (var15 - y) % var10;
+					var18 = (var16 - x) % pxPerTile;
+					int var19 = bgCol;
+					if (pixels[var18 + var17 * pxPerTile] != 0) {
+						var19 = fgCol;
+					}
+
+					int var20 = var19 >>> 24;
+					int var21 = 255 - var20;
+					int var22 = Rasterizer2D_pixels[var14];
+					int var23 = ((var19 & 0xff00ff) * var20 + (var22 & 0xff00ff) * var21 & 0xff00ff00) + (var20 * (var19 & 0xff00) + var21 * (var22 & 0xff00) & 0xff0000) >> 8;
+					Rasterizer2D_pixels[var14++] = var23;
+				}
+
+				var14 += var11;
 			}
 		}
+
 	}
 
 	@ObfuscatedName("de")
