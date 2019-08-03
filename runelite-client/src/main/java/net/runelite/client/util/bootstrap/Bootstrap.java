@@ -331,31 +331,31 @@ public class Bootstrap
 			artifacts[3].name = "client-" + projectVersion + ".jar";
 			artifacts[3].hash = getChecksumFile("./runelite-client/build/libs/" + artifacts[3].name);
 			artifacts[3].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[3].name;
-			artifacts[3].size = Long.toString(getFileSize("./runelite-client/target/" + artifacts[3].name));
+			artifacts[3].size = Long.toString(getFileSize("./runelite-client/build/libs/" + artifacts[3].name));
 			copyTodir("./runelite-client/build/libs/" + artifacts[3].name, Bootstrapper.localLocation);
 			artifacts[35] = new Artifact();
 			artifacts[35].name = "runelite-api-" + projectVersion + ".jar";
 			artifacts[35].hash = getChecksumFile("./runelite-api/build/libs/" + artifacts[35].name);
 			artifacts[35].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[35].name;
-			artifacts[35].size = Long.toString(getFileSize("./runelite-api/target/" + artifacts[35].name));
+			artifacts[35].size = Long.toString(getFileSize("./runelite-api/build/libs/" + artifacts[35].name));
 			copyTodir("./runelite-api/build/libs/" + artifacts[35].name, Bootstrapper.localLocation);
 			artifacts[36] = new Artifact();
 			artifacts[36].name = "runescape-api-" + projectVersion + ".jar";
 			artifacts[36].hash = getChecksumFile("./runescape-api/build/libs/" + artifacts[36].name);
 			artifacts[36].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[36].name;
-			artifacts[36].size = Long.toString(getFileSize("./runescape-api/target/" + artifacts[36].name));
+			artifacts[36].size = Long.toString(getFileSize("./runescape-api/build/libs/" + artifacts[36].name));
 			copyTodir("./runescape-api/build/libs/" + artifacts[36].name, Bootstrapper.localLocation);
 			artifacts[37] = new Artifact();
 			artifacts[37].name = "http-api-" + projectVersion + ".jar";
 			artifacts[37].hash = getChecksumFile("./http-api/build/libs/" + artifacts[37].name);
 			artifacts[37].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[37].name;
-			artifacts[37].size = Long.toString(getFileSize("./http-api/target/" + artifacts[37].name));
+			artifacts[37].size = Long.toString(getFileSize("./http-api/build/libs/" + artifacts[37].name));
 			copyTodir("./http-api/build/libs/" + artifacts[37].name, Bootstrapper.localLocation);
 			artifacts[47] = new Artifact();
 			artifacts[47].name = "injected-client-" + projectVersion + ".jar";
 			artifacts[47].hash = getChecksumFile("./injected-client/build/libs/" + artifacts[47].name);
 			artifacts[47].path = "https://raw.githubusercontent.com/runelite-extended/maven-repo/master/" + Bootstrapper.remoteLocation + artifacts[47].name;
-			artifacts[47].size = Long.toString(getFileSize("./http-api/target/" + artifacts[47].name));
+			artifacts[47].size = Long.toString(getFileSize("./injected-client/build/libs/" + artifacts[47].name));
 			copyTodir("./injected-client/build/libs/" + artifacts[47].name, Bootstrapper.localLocation);
 		}
 		catch (IOException | NoSuchAlgorithmException e)
