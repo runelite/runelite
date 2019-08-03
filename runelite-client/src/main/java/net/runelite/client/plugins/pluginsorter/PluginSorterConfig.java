@@ -64,7 +64,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color pvmColor()
 	{
-		return new Color(255, 179, 71, 70);
+		return new Color(119, 221, 119, 70);
 	}
 
 	@ConfigItem(
