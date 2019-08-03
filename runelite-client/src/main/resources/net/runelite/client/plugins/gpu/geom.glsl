@@ -50,11 +50,13 @@ in vec4 vColor[];
 in float vHsl[];
 in vec4 vUv[];
 in float vFogAmount[];
+in float vGrayAmount[];
 
 out vec4 Color;
 out float fHsl;
 out vec4 fUv;
 out float fogAmount;
+out float grayAmount;
 
 #include to_screen.glsl
 
@@ -74,6 +76,7 @@ void main() {
   fHsl = vHsl[0];
   fUv = vUv[0];
   fogAmount = vFogAmount[0];
+  grayAmount = vGrayAmount[0];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
@@ -82,6 +85,7 @@ void main() {
   fHsl = vHsl[1];
   fUv = vUv[1];
   fogAmount = vFogAmount[1];
+  grayAmount = vGrayAmount[1];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
@@ -90,6 +94,7 @@ void main() {
   fHsl = vHsl[2];
   fUv = vUv[2];
   fogAmount = vFogAmount[2];
+  grayAmount = vGrayAmount[2];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
