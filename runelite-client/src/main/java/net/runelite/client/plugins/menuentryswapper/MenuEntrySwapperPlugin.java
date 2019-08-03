@@ -1341,7 +1341,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.removeSwaps("Tree");
 				break;
 			case CONFIGURE:
-				menuManager.addPriorityEntry("Configure");
+				menuManager.addPriorityEntry("Configure", "Fairy ring");
 				break;
 			case LAST_DESTINATION:
 				menuManager.addPriorityEntry("Last-destination");
@@ -1590,7 +1590,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.removeSwaps("Tree");
 				break;
 			case CONFIGURE:
-				menuManager.removePriorityEntry("Configure");
+				menuManager.removePriorityEntry("Configure", "Fairy ring");
 				break;
 			case LAST_DESTINATION:
 				menuManager.removePriorityEntry("Last-destination");
