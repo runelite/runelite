@@ -27,7 +27,7 @@ package net.runelite.client.plugins.raidsthieving.BatSolver;
 // There are three distinct Thieving rooms, distinguished by the position of the entrance relative to the exit
 // e.g. If you enter the room and must turn left to get to the exit and trough, this is a LEFT_TURN
 
-import net.runelite.client.plugins.raidsthieving.InstancePoint;
+import net.runelite.api.coords.WorldPoint;
 
 public enum ThievingRoomType
 {
@@ -44,7 +44,7 @@ public enum ThievingRoomType
 		this.y = y;
 	}
 
-	public static ThievingRoomType identifyByInstancePoint(InstancePoint point)
+	public static ThievingRoomType identifyByInstancePoint(WorldPoint point)
 	{
 		for (ThievingRoomType type : ThievingRoomType.values())
 		{
@@ -57,5 +57,4 @@ public enum ThievingRoomType
 
 		return null;
 	}
-
 }
