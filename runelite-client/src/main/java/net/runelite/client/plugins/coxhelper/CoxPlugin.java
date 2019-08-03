@@ -86,7 +86,6 @@ import net.runelite.client.util.Text;
 public class CoxPlugin extends Plugin
 {
 	private static final int ANIMATION_ID_G1 = 430;
-	private static final String OLM_HAND_CRIPPLE = "The Great Olm\'s left claw clenches to protect itself temporarily.";
 	private static final Pattern TP_REGEX = Pattern.compile("You have been paired with <col=ff0000>(.*)</col>! The magical power will enact soon...");
 	@Inject
 	@Getter(AccessLevel.NONE)
@@ -115,10 +114,8 @@ public class CoxPlugin extends Plugin
 	private boolean tektonActive;
 	private NPC hand;
 	private NPC Olm_NPC;
-	private List<WorldPoint> Olm_Crystals = new ArrayList<>();
 	private List<WorldPoint> Olm_Heal = new ArrayList<>();
 	private List<WorldPoint> Olm_TP = new ArrayList<>();
-	private List<WorldPoint> Olm_PSN = new ArrayList<>();
 	private Set<Victim> victims = new HashSet<>();
 	private Actor acidTarget;
 	private int crippleTimer = 45;
@@ -133,7 +130,6 @@ public class CoxPlugin extends Plugin
 	private PrayAgainst prayAgainstOlm;
 	private long lastPrayTime;
 	private int sleepcount = 0;
-	private boolean needOlm = false;
 	private boolean muttadile;
 	private boolean tekton;
 	private boolean tektonTickCounter;
@@ -246,7 +242,6 @@ public class CoxPlugin extends Plugin
 					}
 					OlmPhase = 0;
 					runOlm = true;
-					needOlm = true;
 					crippleTimer = 45;
 					Olm_NextSpec = -1;
 					break;
@@ -332,7 +327,7 @@ public class CoxPlugin extends Plugin
 
 	private void onNpcSpawned(NpcSpawned event)
 	{
-		if (inRaid())
+		if (!inRaid())
 		{
 			return;
 		}
@@ -369,6 +364,8 @@ public class CoxPlugin extends Plugin
 			case NpcID.GREAT_OLM_LEFT_CLAW_7555:
 				hand = npc;
 				break;
+			case NpcID.GREAT_OLM:
+				Olm_NPC = npc;
 		}
 	}
 
@@ -423,7 +420,6 @@ public class CoxPlugin extends Plugin
 	{
 		if (!inRaid())
 		{
-			needOlm = false;
 			OlmPhase = 0;
 			sleepcount = 0;
 			Olm_Heal.clear();
@@ -438,19 +434,6 @@ public class CoxPlugin extends Plugin
 
 		handleNpcs();
 		handleVictims();
-
-		if (needOlm = true)
-		{
-			for (NPC monster : client.getNpcs())
-			{
-				if (monster.getId() == NpcID.GREAT_OLM)
-				{
-					needOlm = false;
-					Olm_NPC = monster;
-					break;
-				}
-			}
-		}
 
 		if (handCripple)
 		{
@@ -562,7 +545,6 @@ public class CoxPlugin extends Plugin
 
 	private void handleOlm()
 	{
-		Olm_Crystals.clear();
 		Olm_Heal.clear();
 		Olm_TP.clear();
 		client.clearHintArrow();
@@ -605,20 +587,6 @@ public class CoxPlugin extends Plugin
 
 		for (GraphicsObject o : client.getGraphicsObjects())
 		{
-			if (o.getId() == GraphicID.OLM_CRYSTAL)
-			{
-				WorldPoint newloc;
-				for (int x = -1; x <= 1; x++)
-				{
-					for (int y = -1; y <= 1; y++)
-					{
-						newloc = WorldPoint.fromLocal(client, o.getLocation());
-						newloc = newloc.dx(x);
-						newloc = newloc.dy(y);
-						Olm_Crystals.add(newloc);
-					}
-				}
-			}
 			if (sleepcount <= 0)
 			{
 				if (o.getId() == 1338)
