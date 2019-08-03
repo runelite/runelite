@@ -33,8 +33,10 @@ public final class Tiles {
 	@ObfuscatedName("c")
 	static int[][] field515;
 	@ObfuscatedName("m")
+	@Export("Tiles_saturation")
 	static int[] Tiles_saturation;
 	@ObfuscatedName("u")
+	@Export("Tiles_lightness")
 	static int[] Tiles_lightness;
 	@ObfuscatedName("j")
 	static final int[] field512;

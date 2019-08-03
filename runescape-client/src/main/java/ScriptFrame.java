@@ -353,6 +353,7 @@ public class ScriptFrame {
 		signature = "(III)V",
 		garbageValue = "-881674814"
 	)
+	@Export("resumePauseWidget")
 	static void resumePauseWidget(int parentID, int childID) {
 		PacketBufferNode var2 = Archive.method4265(ClientPacket.field2273, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeIntLE16(parentID);
