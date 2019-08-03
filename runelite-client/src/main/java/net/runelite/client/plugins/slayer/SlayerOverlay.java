@@ -117,8 +117,6 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		graphics.setFont(FontManager.getRunescapeBoldFont());
-
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 
