@@ -44,9 +44,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -67,11 +64,12 @@ import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -199,8 +197,6 @@ public class ScreenshotPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
-	private final Map<Player, Integer> dying = new HashMap<>();
-
 	private NavigationButton titleBarButton;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.hotkey)
@@ -293,7 +289,8 @@ public class ScreenshotPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
@@ -310,23 +307,6 @@ public class ScreenshotPlugin extends Plugin
 
 	void onGameTick(GameTick event)
 	{
-		if (this.screenshotFriendDeath)
-		{
-			for (Iterator<Player> it = dying.keySet().iterator(); it.hasNext();)
-			{
-				Player key = it.next();
-				if (key.getAnimation() != 836)
-				{
-					it.remove();
-				}
-				dying.replace(key, dying.get(key) - 1);
-				if (dying.get(key) == 0)
-				{
-					takeScreenshot(key.getName() + " ded " + format(new Date()), "Deaths");
-					it.remove();
-				}
-			}
-		}
 		if (!shouldTakeScreenshot)
 		{
 			return;
@@ -356,51 +336,22 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void onAnimationChanged(AnimationChanged e)
+	private void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
-
-		if (e.getActor().getAnimation() != 836)
+		if (this.screenshotPlayerDeath && client.getLocalPlayer().getName() != null)
 		{
-			return;
+			takeScreenshot(client.getLocalPlayer().getName() + " ded " + format(new Date()), "Deaths");
 		}
+	}
 
-		if (this.screenshotPlayerDeath && client.getLocalPlayer().equals(e.getActor()))
+	private void onPlayerDeath(PlayerDeath event)
+	{
+		int tob = client.getVar(Varbits.THEATRE_OF_BLOOD);
+		if (this.screenshotFriendDeath && event.getPlayer().getName() != null
+			&& (event.getPlayer().isFriend() || event.getPlayer().isClanMember()
+			|| (client.getVar(Varbits.IN_RAID) == 1 || tob == 2 || tob == 3)))
 		{
-			takeScreenshot("Death - " + format(new Date()));
-		}
-
-
-		if (!(e.getActor() instanceof Player))
-			return;
-		Player p = (Player) e.getActor();
-
-
-		if (p.getAnimation() != 836)
-		{
-			return;
-		}
-		if (p.getName().equals(client.getLocalPlayer().getName()))
-		{
-
-			if (this.screenshotPlayerDeath)
-			{
-				dying.put(p, 3);
-				return;
-			}
-			else
-			{
-				return;
-			}
-		}
-		if (this.screenshotFriendDeath)
-		{
-			int tob = client.getVar(Varbits.THEATRE_OF_BLOOD);
-
-			if (client.getVar(Varbits.IN_RAID) == 1 || tob == 2 || tob == 3 || p.isFriend())
-			{
-				//this is the same as the tick counter had, just want to make ss at right timing
-				dying.put(p, 3);
-			}
+			takeScreenshot(event.getPlayer().getName() + " ded " + format(new Date()), "Deaths");
 		}
 	}
 

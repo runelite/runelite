@@ -38,6 +38,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.OverheadTextChanged;
@@ -253,6 +254,11 @@ public abstract class RSActorMixin implements RSActor
 
 				LocalPlayerDeath event = LocalPlayerDeath.INSTANCE;
 				client.getCallbacks().post(LocalPlayerDeath.class, event);
+			}
+			else if (this != client.getLocalPlayer() && this instanceof Player)
+			{
+				final PlayerDeath event = new PlayerDeath((Player) this);
+				client.getCallbacks().post(PlayerDeath.class, event);
 			}
 			else if (this instanceof RSNPC)
 			{
