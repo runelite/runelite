@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup("raidsthievingplugin")
 public interface RaidsThievingConfig extends Config
@@ -55,7 +55,7 @@ public interface RaidsThievingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 3,
 		keyName = "batNotify",
 		name = "Notify when found",
 		description = "Send notification if you see bats being found."

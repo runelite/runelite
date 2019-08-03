@@ -24,26 +24,27 @@
  */
 package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.HashMap;
 import java.util.TreeSet;
-import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SOLUTION_SETS;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
 
 public class BatSolver
 {
 	private Map<Integer, Integer> numberOfSolutionsWithPoison;
 	private final SolutionSet solution;
-
+	private final ThievingRoomType roomType;
 	private final Set<Integer> grubsChests;
 
 	public BatSolver(final ThievingRoomType roomType)
 	{
-		solution = new SolutionSet(roomType);
+		solution = new SolutionSet();
 		grubsChests = new HashSet<>();
+		this.roomType = roomType;
 	}
 
 	public void addEmptyChest(int chestId)
@@ -63,12 +64,15 @@ public class BatSolver
 	public Set<Integer> matchSolutions()
 	{
 		Set<Integer> possibleEmptyChests = new TreeSet<>();
-		for (SolutionSet knownSolution : SolutionSet.SOLUTION_SETS)
+
+		List<Set<Integer>> sols = SolutionSet.SOLUTION_SETS.get(roomType).stream()
+			.filter(this::matchSolution)
+			.map(SolutionSet::getEmptyChests)
+			.collect(Collectors.toList());
+
+		for (Set<Integer> sol : sols)
 		{
-			if (knownSolution.getType() == solution.getType() && matchSolution(knownSolution))
-			{
-				possibleEmptyChests.addAll(knownSolution.getEmptyChests());
-			}
+			possibleEmptyChests.addAll(sol);
 		}
 
 		return possibleEmptyChests;
@@ -101,24 +105,12 @@ public class BatSolver
 		return matchesAll && everMatched;
 	}
 
-	private ThievingRoomType getType()
-	{
-		return solution.getType();
-	}
-
-
 	private void calculateChanceOfPoison()
 	{
-		if (getType() == null)
-		{
-			numberOfSolutionsWithPoison = null;
-			return;
-		}
-
 		numberOfSolutionsWithPoison = new HashMap<>();
 		for (SolutionSet sol : getPosssibleSolutions())
 		{
-			if (getType() == sol.getType() && (solution.getEmptyChests().size() == 0 || matchSolution(sol)))
+			if (solution.getEmptyChests().size() == 0 || matchSolution(sol))
 			{
 				for (Integer i : sol.getEmptyChests())
 				{
@@ -138,7 +130,7 @@ public class BatSolver
 	private List<SolutionSet> getPosssibleSolutions()
 	{
 		List<SolutionSet> possibleSolutions = new ArrayList<>();
-		for (SolutionSet soln : SOLUTION_SETS)
+		for (SolutionSet soln : SolutionSet.SOLUTION_SETS.get(roomType))
 		{
 			// Check if we've found grubs in one of the chests, invalidating it as an solution
 			boolean foundMatch = false;

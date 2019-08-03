@@ -27,7 +27,7 @@ package net.runelite.client.plugins.raidsthieving;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.GameObject;
+import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 
 /**
@@ -54,26 +54,27 @@ public class ThievingChest
 	@Setter(AccessLevel.PACKAGE)
 	private boolean poison;
 
-
 	@Setter(AccessLevel.PUBLIC)
 	private int chestId;
 
-	private final WorldPoint localPoint;
+	private final WorldPoint worldPoint;
+
 	@Getter(AccessLevel.PUBLIC)
-	private final InstancePoint instancePoint;
+	private final Point instancePoint;
 
 	/**
 	 * Constructor for a ThievingChest object
 	 *
-	 * @param gameObject The gameobject thats corresponds with this trap.
+	 * @param worldPoint The world location of the gameobject that corresponds with this trap.
+	 * @param instancePoint The world location accounting for instances of the gameobject that corresponds with this trap.
 	 */
-	ThievingChest(GameObject gameObject, InstancePoint instancePoint)
+	ThievingChest(final WorldPoint worldPoint, final WorldPoint instancePoint)
 	{
 		this.everOpened = false;
 		this.poison = false;
 		this.empty = false;
-		localPoint = gameObject.getWorldLocation();
-		this.instancePoint = instancePoint;
+		this.worldPoint = worldPoint;
+		this.instancePoint = new Point(instancePoint.getX(), instancePoint.getY());
 		this.chestId = -1;
 	}
 
