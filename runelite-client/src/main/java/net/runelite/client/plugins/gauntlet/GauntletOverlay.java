@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, kThisIsCvpv <https://github.com/kThisIsCvpv>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * Copyright (c) 2019, kyle <https://github.com/Kyleeld>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,8 +47,11 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Vertex;
 import net.runelite.client.graphics.ModelOutlineRenderer;
+import static net.runelite.client.plugins.gauntlet.GauntletConfig.CounterDisplay.BOTH;
+import static net.runelite.client.plugins.gauntlet.GauntletConfig.CounterDisplay.ONBOSS;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -55,18 +59,24 @@ import static net.runelite.client.util.ImageUtil.resizeImage;
 
 public class GauntletOverlay extends Overlay
 {
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private GauntletCounter GauntletCounter;
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int MAX_DISTANCE = 2400;
 	private final Client client;
 	private final GauntletPlugin plugin;
+	private final GauntletConfig config;
 	private final ModelOutlineRenderer outlineRenderer;
 	private int timeout;
 
 	@Inject
-	private GauntletOverlay(Client client, GauntletPlugin plugin, ModelOutlineRenderer outlineRenderer)
+	private GauntletOverlay(Client client, GauntletConfig config, GauntletPlugin plugin, ModelOutlineRenderer outlineRenderer)
 	{
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		this.outlineRenderer = outlineRenderer;
 
 		setPosition(OverlayPosition.DYNAMIC);
@@ -115,10 +125,13 @@ public class GauntletOverlay extends Overlay
 				}
 				else
 				{
-					graphics.setColor(color);
-					graphics.draw(polygon);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 50));
-					graphics.fill(polygon);
+					if (plugin.isAttackVisualOutline())
+					{
+						graphics.setColor(color);
+						graphics.draw(polygon);
+						graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 50));
+						graphics.fill(polygon);
+					}
 					if (plugin.isUniqueAttackVisual())
 					{
 						Rectangle bounds = polygon.getBounds();
@@ -172,7 +185,7 @@ public class GauntletOverlay extends Overlay
 				final NPC boss = hunllef.getNpc();
 				final LocalPoint point = boss.getLocalLocation();
 
-				if (plugin.isFlash())
+				if (plugin.isFlash() && plugin.isFlashOnWrongAttack())
 				{
 					final Color flash = graphics.getColor();
 					graphics.setColor(FLASH_COLOR);
@@ -249,47 +262,45 @@ public class GauntletOverlay extends Overlay
 					}
 				}
 
-				// This section handles any text overlays.
-				String textOverlay = "";
-
-				// Handles the counter for the boss.
-				if (plugin.isCountBossAttacks())
+				if (plugin.getCountAttacks() == ONBOSS || plugin.getCountAttacks() == BOTH)
 				{
+					String textOverlay;
+
 					textOverlay = Integer.toString(hunllef.getBossAttacks());
-				}
 
-				// Handles the counter for the player.
-				if (plugin.isCountPlayerAttacks())
-				{
 					if (textOverlay.length() > 0)
 					{
 						textOverlay += " | ";
 					}
+
 					textOverlay += Integer.toString(hunllef.getPlayerAttacks());
-				}
 
-				// Handles drawing the text onto the boss.
-				if (textOverlay.length() > 0)
-				{
-					Point textLoc = Perspective.getCanvasTextLocation(client, graphics, point, textOverlay, boss.getLogicalHeight() / 2);
-
-					if (textLoc == null)
+					if (textOverlay.length() > 0)
 					{
-						return null;
+						Point textLoc = Perspective.getCanvasTextLocation(client, graphics, point, textOverlay, boss.getLogicalHeight() / 2);
+
+						if (textLoc == null)
+						{
+							return null;
+						}
+
+						textLoc = new Point(textLoc.getX(), textLoc.getY() + 35);
+
+						Font oldFont = graphics.getFont();
+
+						graphics.setFont(new Font("Arial", Font.BOLD, 20));
+						Point pointShadow = new Point(textLoc.getX() + 1, textLoc.getY() + 1);
+
+						OverlayUtil.renderTextLocation(graphics, pointShadow, textOverlay, Color.BLACK);
+						OverlayUtil.renderTextLocation(graphics, textLoc, textOverlay, phase.getColor());
+
+						graphics.setFont(oldFont);
 					}
-
-					textLoc = new Point(textLoc.getX(), textLoc.getY() + 35);
-
-					Font oldFont = graphics.getFont();
-
-					graphics.setFont(new Font("Arial", Font.BOLD, 20));
-					Point pointShadow = new Point(textLoc.getX() + 1, textLoc.getY() + 1);
-
-					OverlayUtil.renderTextLocation(graphics, pointShadow, textOverlay, Color.BLACK);
-					OverlayUtil.renderTextLocation(graphics, textLoc, textOverlay, phase.getColor());
-
-					graphics.setFont(oldFont);
 				}
+			}
+			if (plugin.getHunllef() == null)
+			{
+				overlayManager.remove(GauntletCounter);
 			}
 		}
 		else
@@ -320,14 +331,10 @@ public class GauntletOverlay extends Overlay
 					if (plugin.isHighlightResourcesIcons())
 					{
 						BufferedImage icon = resizeImage(object.getImage(), plugin.getResourceIconSize(), plugin.getResourceIconSize());
-
-						if (icon != null)
-						{
-							Rectangle bounds = polygon.getBounds();
-							int startX = (int) bounds.getCenterX() - (icon.getWidth() / 2);
-							int startY = (int) bounds.getCenterY() - (icon.getHeight() / 2);
-							graphics.drawImage(icon, startX, startY, null);
-						}
+						Rectangle bounds = polygon.getBounds();
+						int startX = (int) bounds.getCenterX() - (icon.getWidth() / 2);
+						int startY = (int) bounds.getCenterY() - (icon.getHeight() / 2);
+						graphics.drawImage(icon, startX, startY, null);
 					}
 				}
 			});
