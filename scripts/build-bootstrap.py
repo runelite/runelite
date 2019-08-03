@@ -3,6 +3,7 @@ import glob
 import os
 import ntpath
 import hashlib
+import re
 from shutil import copyfile
 
 jar_folder = '../runelite-client/target/'
@@ -38,6 +39,17 @@ art['path'] = url + name
 art['size'] = size
 
 data['artifacts'][0] = art
+
+
+client = data['client']
+
+p = re.compile('client-([0-9]+\.[0-9]+\.[0-9]+)-')
+m = p.match(name)
+version = m.group(1)
+client['version'] = version 
+
+data['client'] = client
+
 
 copyfile(latest_file, json_folder + name)
 
