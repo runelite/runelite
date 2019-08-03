@@ -48,7 +48,7 @@ dependencies {
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2', classifier: 'natives-linux-amd64'
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: '2.3.2', classifier: 'natives-linux-i586'
     runtime project(':runescape-api')
-    runtimeOnly files("${injectedClassesPath}")
+    runtime project(':injected-client')
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
@@ -92,8 +92,6 @@ jar {
 }
 
 shadowJar {
-    dependsOn ':injected-client:injector'
-
     archiveClassifier.set("shaded")
 
     exclude("net/runelite/injector/**")

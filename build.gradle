@@ -40,7 +40,7 @@ allprojects {
         gitDirty = localGitDirty
 
         rootPath = rootDir.toString().replace('\\', '/')
-        injectedClassesPath = rootPath + "/injected-client/build/libs/injected-client-" + version + ".jar"
+        injectedClassesPath = rootPath + "/injector-plugin/out/injected-client/"
     }
 }
 

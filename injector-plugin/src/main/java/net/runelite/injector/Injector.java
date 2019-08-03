@@ -26,6 +26,9 @@ package net.runelite.injector;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.google.common.io.Files;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.util.JarUtil;
 
@@ -69,7 +72,13 @@ public class Injector
 
 	private void save(File out) throws IOException
 	{
-		JarUtil.saveJar(vanilla, out);
+		out.mkdirs();
+		for (ClassFile cf : vanilla.getClasses())
+		{
+			File f = new File(out, cf.getClassName() + ".class");
+			byte[] data = JarUtil.writeClass(vanilla, cf);
+			Files.write(data, f);
+		}
 	}
 
 

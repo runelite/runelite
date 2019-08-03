@@ -22,26 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-description = 'Injected Client'
 
-compileJava {
-    dependsOn ':injector-plugin:assemble'
+/**
+ * @author ThatGamerBlue
+ *
+ * This file exists to force gradle to execute the compileJava task
+ * so we can hijack it and run the injector-plugin
+ */
+public class Placeholder
+{
 }
-
-compileJava.outputs.upToDateWhen { false }
-
-compileJava.doLast() {
-    copy {
-        File f = file("build/classes/java/main")
-        f.deleteDir()
-        f.mkdirs()
-        from ("${injectedClassesPath}")
-        into ("build/classes/java/main")
-    }
-}
-
-classes.doLast() {
-    File f = file("build/classes/java/main/Placeholder.class")
-    f.delete()
-}
-

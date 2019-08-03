@@ -26,6 +26,7 @@
  */
 package net.runelite.client.rs;
 
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.applet.Applet;
 import java.io.IOException;
@@ -33,6 +34,8 @@ import java.net.URL;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
+import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 
@@ -91,7 +94,31 @@ public class ClientLoader
 	private static Applet loadRLPlus(final RSConfig config)
 	throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
+		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+		{
+			@Override
+			protected Class<?> findClass(String name) throws ClassNotFoundException
+			{
+				String path = name.replace('.', '/').concat(".class");
+				InputStream inputStream = ClientLoader.class.getResourceAsStream(path);
+				if (inputStream == null)
+				{
+					throw new ClassNotFoundException(name + " " + path);
+				}
+				byte[] data;
+				try
+				{
+					data = ByteStreams.toByteArray(inputStream);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+					throw new RuntimeException("Failed to load class: " + name + " " + path);
+				}
+				return defineClass(name, data, 0, data.length);
+			}
+		};
+		Class<?> clientClass = rsClassLoader.loadClass("client");
 		return loadFromClass(config, clientClass);
 	}
 
