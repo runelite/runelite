@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -99,6 +100,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FOURTH_OPTION,
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
+
+	private static final Set<String> EAT_SWAP_TARGETS = ImmutableSet.of(
+        "chocolate bar",
+        "greenman's ale(m)",
+        "toad's legs",
+        "red banana",
+        "tchiki nuts",
+        "tchiki nut paste",
+        "sliced red banana",
+        "stuffed snake",
+        "cooked jubbly",
+        "cooked fishcake"
+    );
 
 	@Inject
 	private Client client;
@@ -593,6 +607,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+		else if (config.swapEat() && (option.equals("eat") || option.equals("drink")))
+        {
+		    if (EAT_SWAP_TARGETS.contains(target))
+		    {
+                swap("use", option, target, true);
+            }
 		}
 	}
 

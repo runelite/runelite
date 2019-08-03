@@ -301,4 +301,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapEat",
+		name = "Eat/Drink",
+		description = "Swap Eat/Drink with Use for certain items, such as quest items and herblore secondaries"
+	)
+	default boolean swapEat()
+	{
+		return true;
+	}
+
 }
