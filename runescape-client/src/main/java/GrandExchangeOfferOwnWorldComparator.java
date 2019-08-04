@@ -144,7 +144,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 		if (objectType == 22) {
 			if (!Client.isLowDetail || var8.int1 != 0 || var8.interactType == 1 || var8.boolean2) {
 				if (var8.animationId == -1 && var8.transforms == null) {
-					var22 = var8.method4591(22, rotation, var15, var17, var16, var18);
+					var22 = var8.getEntity(22, rotation, var15, var17, var16, var18);
 				} else {
 					var22 = new DynamicObject(objectID, 22, rotation, plane, x, y, var8.animationId, true, (Entity)null);
 				}
@@ -157,7 +157,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			}
 		} else if (objectType == 10 || objectType == 11) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(10, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(10, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 10, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -186,7 +186,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType >= 12) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(objectType, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(objectType, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, objectType, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -203,7 +203,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType == 0) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(0, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(0, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 0, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -261,7 +261,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType == 1) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(1, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(1, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 1, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -288,8 +288,8 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			Object var29;
 			Object var30;
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var29 = var8.method4591(2, rotation + 4, var15, var17, var16, var18);
-				var30 = var8.method4591(2, var28, var15, var17, var16, var18);
+				var29 = var8.getEntity(2, rotation + 4, var15, var17, var16, var18);
+				var30 = var8.getEntity(2, var28, var15, var17, var16, var18);
 			} else {
 				var29 = new DynamicObject(objectID, 2, rotation + 4, plane, x, y, var8.animationId, true, (Entity) null);
 				var30 = new DynamicObject(objectID, 2, var28, plane, x, y, var8.animationId, true, (Entity) null);
@@ -330,7 +330,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType == 3) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(3, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(3, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 3, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -354,7 +354,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType == 9) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(objectType, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(objectType, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, objectType, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -370,7 +370,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		} else if (objectType == 4) {
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(4, rotation, var15, var17, var16, var18);
+				var22 = var8.getEntity(4, rotation, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 4, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -385,7 +385,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			}
 
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var33 = var8.method4591(4, rotation, var15, var17, var16, var18);
+				var33 = var8.getEntity(4, rotation, var15, var17, var16, var18);
 			} else {
 				var33 = new DynamicObject(objectID, 4, rotation, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -400,7 +400,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			}
 
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var33 = var8.method4591(4, rotation + 4, var15, var17, var16, var18);
+				var33 = var8.getEntity(4, rotation + 4, var15, var17, var16, var18);
 			} else {
 				var33 = new DynamicObject(objectID, 4, rotation + 4, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -409,7 +409,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 		} else if (objectType == 7) {
 			int var23 = rotation + 2 & 3;
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var22 = var8.method4591(4, var23 + 4, var15, var17, var16, var18);
+				var22 = var8.getEntity(4, var23 + 4, var15, var17, var16, var18);
 			} else {
 				var22 = new DynamicObject(objectID, 4, var23 + 4, plane, x, y, var8.animationId, true, (Entity) null);
 			}
@@ -426,8 +426,8 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			Object var26;
 			Object var33;
 			if (var8.animationId == -1 && var8.transforms == null) {
-				var33 = var8.method4591(4, rotation + 4, var15, var17, var16, var18);
-				var26 = var8.method4591(4, var27 + 4, var15, var17, var16, var18);
+				var33 = var8.getEntity(4, rotation + 4, var15, var17, var16, var18);
+				var26 = var8.getEntity(4, var27 + 4, var15, var17, var16, var18);
 			} else {
 				var33 = new DynamicObject(objectID, 4, rotation + 4, plane, x, y, var8.animationId, true, (Entity) null);
 				var26 = new DynamicObject(objectID, 4, var27 + 4, plane, x, y, var8.animationId, true, (Entity) null);

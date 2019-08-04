@@ -1338,10 +1338,10 @@ public final class Client extends GameShell implements Usernamed {
 		instanceChunkTemplates = new int[4][13][13];
 		field713 = new int[]{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
 		field718 = 0;
-		field715 = 2301979;
-		field716 = 5063219;
-		field720 = 3353893;
-		field772 = 7759444;
+		field715 = 0x23201b;
+		field716 = 0x4d4233;
+		field720 = 0x332d25;
+		field772 = 0x766654;
 		field719 = false;
 		field882 = 0;
 		camAngleX = 128;

@@ -734,7 +734,7 @@ public class Decimator {
 					var85.drawTransAt(var56 + var65 - var29, var66, var73);
 				}
 
-				var86.drawAlpha(var45, var55 + var65, var69, var95.field3333, 0, var73);
+				var86.drawAlpha(var45, var55 + var65, var69, var95.textColor, 0, var73);
 				if (var81 != null) {
 					if (var30 != null) {
 						var30.drawTransAt(var65 + var57 - var38, var66, var73);
@@ -754,7 +754,7 @@ public class Decimator {
 						var33.drawTransAt(var60 + var65 - var41, var66, var73);
 					}
 
-					var44.drawAlpha(var46, var65 + var61, var72, var81.field3333, 0, var73);
+					var44.drawAlpha(var46, var65 + var61, var72, var81.textColor, 0, var73);
 				}
 			} else {
 				if (var82 != null) {
@@ -775,7 +775,7 @@ public class Decimator {
 					var85.drawTransBgAt(var65 + var56 - var29, var66);
 				}
 
-				var86.draw(var45, var65 + var55, var69, var95.field3333 | 0xff000000, 0);
+				var86.draw(var45, var65 + var55, var69, var95.textColor | 0xff000000, 0);
 				if (var81 == null) {
 					continue;
 				}
@@ -797,7 +797,7 @@ public class Decimator {
 					var33.drawTransBgAt(var60 + var65 - var41, var66);
 				}
 
-				var44.draw(var46, var61 + var65, var72, var81.field3333 | 0xff000000, 0);
+				var44.draw(var46, var61 + var65, var72, var81.textColor | 0xff000000, 0);
 			}
 		}
 

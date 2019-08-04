@@ -1244,10 +1244,10 @@ public class ModelData extends Entity {
 
 	@ObfuscatedName("y")
 	@Export("recolor")
-	public void recolor(short var1, short var2) {
+	public void recolor(short from, short to) {
 		for (int var3 = 0; var3 < this.faceCount; ++var3) {
-			if (this.faceColors[var3] == var1) {
-				this.faceColors[var3] = var2;
+			if (this.faceColors[var3] == from) {
+				this.faceColors[var3] = to;
 			}
 		}
 

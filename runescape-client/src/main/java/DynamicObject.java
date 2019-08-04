@@ -9,6 +9,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("DynamicObject")
 public class DynamicObject extends Entity {
 	@ObfuscatedName("x")
+	@Export("Tiles_hueMultiplier")
 	static int[] Tiles_hueMultiplier;
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(

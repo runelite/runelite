@@ -109,13 +109,13 @@ public abstract class RSRasterizer2DMixin implements RSClient
 		}
 	}
 
-	@Copy("raster2d7")
+	@Copy("Rasterizer2D_drawGradientPixels")
 	public static void rs$raster2d7(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("raster2d7")
+	@Replace("Rasterizer2D_drawGradientPixels")
 	public static void rl$raster2d7(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7)
 	{
 		final int width = client.getGraphicsPixelsWidth();

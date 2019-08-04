@@ -538,7 +538,7 @@ public class WorldMapRegion {
 				} else if (var11.primaryRgb == 0xff00ff) {
 					var9 = var10;
 				} else {
-					var17 = class192.method3679(var11.hue, var11.saturation, var11.lightness);
+					var17 = class192.WorldMap_hslToRgb(var11.hue, var11.saturation, var11.lightness);
 					var15 = 96;
 					if (var17 == -2) {
 						var14 = 12345678;
@@ -648,7 +648,7 @@ public class WorldMapRegion {
 				} else if (var9.primaryRgb == 0xff00ff) {
 					var7 = var8;
 				} else {
-					var16 = class192.method3679(var9.hue, var9.saturation, var9.lightness);
+					var16 = class192.WorldMap_hslToRgb(var9.hue, var9.saturation, var9.lightness);
 					var13 = 96;
 					if (var16 == -2) {
 						var12 = 12345678;
