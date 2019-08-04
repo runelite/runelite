@@ -45,11 +45,14 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -115,6 +118,7 @@ public class BankPlugin extends Plugin
 
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
+	private String searchString;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -128,6 +132,7 @@ public class BankPlugin extends Plugin
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
+		searchString = null;
 	}
 
 	@Subscribe
@@ -207,6 +212,24 @@ public class BankPlugin extends Plugin
 		}
 
 		updateSeedVaultTotal();
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() != ScriptID.BANKMAIN_SEARCH_REFRESH)
+		{
+			return;
+		}
+
+		// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
+		// and the bank wasn't laid out this tick, lay it out early
+		final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
+		if (searchString != inputText && client.getGameCycle() % 40 != 0)
+		{
+			clientThread.invokeLater(bankSearch::layoutBank);
+			searchString = inputText;
+		}
 	}
 
 	@Subscribe
