@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
@@ -116,8 +115,6 @@ class SlayerOverlay extends WidgetItemOverlay
 		{
 			return;
 		}
-
-		graphics.setFont(FontManager.getRunescapeBoldFont());
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
