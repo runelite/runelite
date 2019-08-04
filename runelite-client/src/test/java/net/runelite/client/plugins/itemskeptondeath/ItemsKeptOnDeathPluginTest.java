@@ -41,7 +41,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -82,9 +81,20 @@ public class ItemsKeptOnDeathPluginTest
 	{
 		// Mock Item Composition and necessary ItemManager methods for this item
 		ItemDefinition c = mock(ItemDefinition.class);
-
+		when(c.getId())
+			.thenReturn(id);
 		when(c.getName())
 			.thenReturn(name);
+		when(c.isTradeable())
+			.thenReturn(tradeable);
+		when(c.getPrice())
+			.thenReturn(price);
+
+		if (!tradeable)
+		{
+			when(c.getNote()).thenReturn(-1);
+			when(c.getLinkedNoteId()).thenReturn(-1);
+		}
 
 		when(itemManager.getItemDefinition(id)).thenReturn(c);
 		when(itemManager.canonicalize(id)).thenReturn(id);

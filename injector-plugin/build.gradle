@@ -24,6 +24,7 @@ dependencies {
     compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
     annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
     vanilla "net.runelite.rs:vanilla:${rsversion}"
+    testImplementation project(path: ':deobfuscator', configuration: 'testArchives')
 }
 
 compileJava {
@@ -47,12 +48,4 @@ compileJava.doLast() {
     ]
     inject.main(jarPaths)
     loader.close()
-}
-
-test {
-    exclude '**/*'
-}
-
-compileTestJava {
-    exclude '**/*'
 }
