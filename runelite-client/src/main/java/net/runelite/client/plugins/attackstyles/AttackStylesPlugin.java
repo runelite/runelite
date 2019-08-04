@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -129,6 +130,7 @@ public class AttackStylesPlugin extends Plugin
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
 
+	@Nullable
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
