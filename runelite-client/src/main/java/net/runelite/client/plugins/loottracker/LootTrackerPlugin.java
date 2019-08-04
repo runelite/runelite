@@ -573,7 +573,7 @@ public class LootTrackerPlugin extends Plugin
 
 	boolean isIgnored(String name)
 	{
-		return ignoredItems.contains(name);
+		return ignoredItems.equals(name);
 	}
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
