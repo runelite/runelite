@@ -51,6 +51,7 @@ import net.runelite.client.ui.ColorScheme;
 @Slf4j
 class LootPanel extends JPanel
 {
+	private final String name;
 	private final Collection<LTRecord> records;
 	private final Collection<UniqueItem> uniques;
 	private final boolean hideUniques;
@@ -64,6 +65,7 @@ class LootPanel extends JPanel
 	private boolean cancelPlayback = false;
 
 	LootPanel(
+		final String name,
 		final Collection<LTRecord> records,
 		final Collection<UniqueItem> uniques,
 		final boolean hideUnqiues,
@@ -71,6 +73,7 @@ class LootPanel extends JPanel
 		final boolean itemBreakdown,
 		final ItemManager itemManager)
 	{
+		this.name = name;
 		this.records = records;
 		this.uniques = uniques;
 		this.hideUniques = hideUnqiues;
@@ -148,7 +151,6 @@ class LootPanel extends JPanel
 		// Also add all Item IDs for uniques to a Set for easy hiding later on.
 		for (final UniqueItem item : this.uniques)
 		{
-
 			final int id = item.getItemID();
 			final int linkedId = item.getLinkedID();
 			uniqueIds.add(id);
@@ -171,20 +173,59 @@ class LootPanel extends JPanel
 		}
 
 		// Attach Kill Count Panel(s)
-		if (records.size() > 0)
+		final int amount = records.size();
+		String currentText;
+		String loggedText;
+
+		log.info(name);
+
+		switch (name)
 		{
-			final int amount = records.size();
+			case "Wintertodt":
+				currentText = "Current Killcount:";
+				loggedText = "Crates logged:";
+				break;
+			case "Herbiboar":
+				currentText = "Herbiboars looted:";
+				loggedText = "Loots logged:";
+				break;
+			case "Brimstone Chest":
+			case "Crystal Chest":
+			case "Larran's big chest":
+			case "Larran's small chest":
+			case "Elven Crystal Chest":
+				currentText = "Chests opened:";
+				loggedText = "Chests logged:";
+				break;
+			case  "Clue Scroll (Beginner)":
+			case  "Clue Scroll (Easy)":
+			case  "Clue Scroll (Medium)":
+			case  "Clue Scroll (Hard)":
+			case  "Clue Scroll (Elite)":
+			case  "Clue Scroll (Master)":
+				currentText = "Clues completed:";
+				loggedText = "Clues logged:";
+				break;
+			default:
+				currentText = "Current Killcount:";
+				loggedText = "Kills logged:";
+				break;
+		}
+
+		if (amount > 0)
+		{
 			final LTRecord entry = Iterators.get(records.iterator(), (amount - 1));
 			if (entry.getKillCount() != -1)
 			{
-				final TextPanel p = new TextPanel("Current Killcount:", entry.getKillCount());
+				final TextPanel p = new TextPanel(currentText, entry.getKillCount());
 				this.add(p, c);
 				c.gridy++;
 			}
-			final TextPanel p2 = new TextPanel("Kills Logged:", amount);
-			this.add(p2, c);
-			c.gridy++;
 		}
+
+		final TextPanel p2 = new TextPanel(loggedText, amount);
+		this.add(p2, c);
+		c.gridy++;
 
 		// Track total price of all tracked items for this panel
 		// Also ensure it is placed in correct location by preserving its gridy value

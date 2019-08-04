@@ -80,7 +80,19 @@ public enum BossTab
 	// Other Bosses
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, "Other"),
 	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, "Other"),
+	SARACHNIS("Sarachnis", ItemID.SRARACHA, "Other"),
 	THE_GAUNTLET("The Gauntlet", ItemID.YOUNGLLEF, "Other"),
+
+	// Skilling
+	WINTERTODT("Wintertodt", ItemID.PHOENIX, "Skilling"),
+	HERBIBOAR("Herbiboar", ItemID.HERBI, "Skilling"),
+
+	// Chests
+	BRIMSTONE_CHEST("Brimstone Chest", ItemID.BRIMSTONE_KEY, "Chests"),
+	CRYSTAL_CHEST("Crystal Chest", ItemID.CRYSTAL_KEY, "Chests"),
+	LARRANS_BIG_CHEST("Larran's big chest", ItemID.LARRANS_KEY, "Chests"),
+	LARRENS_SMALL_CHEST("Larran's small chest", ItemID.LARRANS_KEY, "Chests"),
+	ELVEN_CRYSTAL_CHEST("Elven Crystal Chest", ItemID.ENHANCED_CRYSTAL_KEY, "Chests"),
 
 	// Dagannoth Kings
 	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, "Dagannoth Kings"),

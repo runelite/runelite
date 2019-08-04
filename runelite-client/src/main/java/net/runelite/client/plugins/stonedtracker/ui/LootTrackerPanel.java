@@ -131,7 +131,7 @@ public class LootTrackerPanel extends PluginPanel
 		uniques = uniques.stream().sorted(Comparator.comparingInt(UniqueItem::getPosition)).collect(Collectors.toList());
 
 		final JPanel title = createLootViewTitle(name);
-		lootPanel = new LootPanel(data, uniques, plugin.config.hideUniques(), plugin.config.itemSortType(), plugin.config.itemBreakdown(), itemManager);
+		lootPanel = new LootPanel(name, data, uniques, plugin.config.hideUniques(), plugin.config.itemSortType(), plugin.config.itemBreakdown(), itemManager);
 
 		this.add(title, BorderLayout.NORTH);
 		this.add(wrapContainer(lootPanel), BorderLayout.CENTER);
