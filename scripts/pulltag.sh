@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd ..
 
 # Get new tags from remote
 git fetch upstream --tags
@@ -8,9 +8,6 @@ git fetch upstream --tags
 latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 
 # Checkout latest tag
-git checkout tags/$latestTag
-git pull upstream master
-
-# Checkout master
-git checkout master
+git pull origin master
+git pull upstream tags/$latestTag
 
