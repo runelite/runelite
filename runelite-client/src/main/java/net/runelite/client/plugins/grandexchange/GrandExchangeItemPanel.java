@@ -52,7 +52,7 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
+	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, double
 		haPrice, int geItemLimit, int natRunePrice)
 	{
 		BorderLayout layout = new BorderLayout();
@@ -153,23 +153,24 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		String haPriceLabelText = StackFormatter.formatNumber(haPrice.intValue()) + " alch";
+		String haPriceLabelText = StackFormatter.formatNumber((int)haPrice) + " alch";
 		haPriceLabel.setText(haPriceLabelText);
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndProfitPanel.add(haPriceLabel, BorderLayout.WEST);
 
 		// Profit Margin
-		JLabel profitLabel = new JLabel();
 		// Determine Profit Margin, assumes both Nature Runes and item are bought, then high alched
-		int profitMargin = haPrice.intValue() - (natRunePrice + gePrice);
+		int profitMargin = (int)haPrice - (natRunePrice + gePrice);
 		String profitMarginLabelText = " (" + StackFormatter.quantityToStackSize(profitMargin) + ")";
+		Color profitColor = (profitMargin >= 0) ? ColorScheme.GRAND_EXCHANGE_PRICE : ColorScheme.PROGRESS_ERROR_COLOR;
+
+		JLabel profitLabel = new JLabel();
 		profitLabel.setText(profitMarginLabelText);
-		profitLabel.setForeground((profitMargin >= 0) ? ColorScheme.GRAND_EXCHANGE_PRICE : ColorScheme.PROGRESS_ERROR_COLOR);
+		profitLabel.setForeground(profitColor);
+
 		// Add it to center of panel so that it occurs after the end of the west text (Alch amount)
 		alchAndProfitPanel.add(profitLabel, BorderLayout.CENTER);
-
 		rightPanel.add(alchAndProfitPanel);
-
 		add(rightPanel, BorderLayout.CENTER);
 	}
 
