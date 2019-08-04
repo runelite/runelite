@@ -53,7 +53,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color externalColor()
 	{
-		return Color.MAGENTA;
+		return new Color(177, 156, 217, 70);
 	}
 
 	@ConfigItem(
@@ -64,7 +64,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color pvmColor()
 	{
-		return Color.GREEN;
+		return new Color(119, 221, 119, 70);
 	}
 
 	@ConfigItem(
@@ -75,9 +75,9 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color pvpColor()
 	{
-		return Color.RED;
+		return new Color(255, 105, 97, 70);
 	}
-	
+
 	@ConfigItem(
 		position = 4,
 		keyName = "skillingColor",
@@ -86,7 +86,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color skillingColor()
 	{
-		return Color.YELLOW;
+		return new Color(252, 252, 100, 70);
 	}
 
 	@ConfigItem(
@@ -97,7 +97,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color utilityColor()
 	{
-		return Color.CYAN;
+		return new Color(144, 212, 237, 70);
 	}
 
 }
