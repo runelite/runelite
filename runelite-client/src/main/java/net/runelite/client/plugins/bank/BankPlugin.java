@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.bank;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.util.Arrays;
@@ -36,12 +37,17 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.SpriteID;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -96,6 +102,7 @@ public class BankPlugin extends Plugin
 	private ContainerCalculation seedVaultCalculation;
 
 	private boolean forceRightClickFlag;
+	private String searchString;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -108,6 +115,7 @@ public class BankPlugin extends Plugin
 	{
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
+		searchString = "";
 	}
 
 	@Subscribe
@@ -174,6 +182,35 @@ public class BankPlugin extends Plugin
 		}
 
 		updateSeedVaultTotal();
+	}
+
+	@Subscribe
+	public void onVarClientStrChanged(VarClientStrChanged event)
+	{
+		String searchVar = client.getVar(VarClientStr.INPUT_TEXT);
+
+		if (!searchVar.equals(searchString))
+		{
+			Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+			if (searchButtonBackground != null && searchButtonBackground.hasListener())
+			{
+				searchButtonBackground.setOnTimerListener((Object[]) null);
+				searchButtonBackground.setHasListener(false);
+			}
+
+			clientThread.invokeLater(() -> bankSearch.layoutBank());
+			searchString = searchVar;
+		}
+
+		if (client.getVar(VarClientInt.INPUT_TYPE) != InputType.SEARCH.getType() && Strings.isNullOrEmpty(client.getVar(VarClientStr.INPUT_TEXT)))
+		{
+			Widget searchBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+			if (searchBackground != null)
+			{
+				searchBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+			}
+		}
+
 	}
 
 	@Subscribe

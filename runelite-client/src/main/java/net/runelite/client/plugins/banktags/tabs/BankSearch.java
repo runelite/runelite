@@ -68,19 +68,6 @@ public class BankSearch
 	{
 		clientThread.invoke(() ->
 		{
-			Widget bankContainer = client.getWidget(WidgetInfo.BANK_CONTAINER);
-			if (bankContainer == null || bankContainer.isHidden())
-			{
-				return;
-			}
-
-			Object[] widgetIds = bankContainer.getOnLoadListener();
-
-			// In case the widget ids array is incorrect, do not proceed
-			if (widgetIds == null || widgetIds.length < 21)
-			{
-				return;
-			}
 			// This ensures that any chatbox input (e.g from search) will not remain visible when
 			// selecting/changing tab
 			if (closeInput)
@@ -91,21 +78,40 @@ public class BankSearch
 			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());
 			client.setVar(VarClientStr.INPUT_TEXT, search);
 
-			client.runScript(ScriptID.BANK_LAYOUT,
-				WidgetInfo.BANK_CONTAINER.getId(),
-				widgetIds[INNER_CONTAINER_IDX],
-				widgetIds[SETTINGS_IDX],
-				widgetIds[ITEM_CONTAINER_IDX],
-				widgetIds[SCROLLBAR_IDX],
-				widgetIds[BOTTOM_BAR_IDX],
-				widgetIds[TITLE_BAR_IDX],
-				widgetIds[ITEM_COUNT_IDX],
-				widgetIds[SEARCH_BUTTON_BACKGROUND_IDX],
-				widgetIds[TAB_BAR_IDX],
-				widgetIds[INCINERATOR_IDX],
-				widgetIds[INCINERATOR_CONFIRM_IDX],
-				widgetIds[HIDDEN_WIDGET_IDX]);
+			layoutBank();
 		});
+	}
+
+	public void layoutBank()
+	{
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_CONTAINER);
+		if (bankContainer == null || bankContainer.isHidden())
+		{
+			return;
+		}
+
+		Object[] widgetIds = bankContainer.getOnLoadListener();
+
+		// In case the widget ids array is incorrect, do not proceed
+		if (widgetIds == null || widgetIds.length < 21)
+		{
+			return;
+		}
+
+		client.runScript(ScriptID.BANK_LAYOUT,
+			WidgetInfo.BANK_CONTAINER.getId(),
+			widgetIds[INNER_CONTAINER_IDX],
+			widgetIds[SETTINGS_IDX],
+			widgetIds[ITEM_CONTAINER_IDX],
+			widgetIds[SCROLLBAR_IDX],
+			widgetIds[BOTTOM_BAR_IDX],
+			widgetIds[TITLE_BAR_IDX],
+			widgetIds[ITEM_COUNT_IDX],
+			widgetIds[SEARCH_BUTTON_BACKGROUND_IDX],
+			widgetIds[TAB_BAR_IDX],
+			widgetIds[INCINERATOR_IDX],
+			widgetIds[INCINERATOR_CONFIRM_IDX],
+			widgetIds[HIDDEN_WIDGET_IDX]);
 	}
 
 	public void reset(Boolean closeChat)
