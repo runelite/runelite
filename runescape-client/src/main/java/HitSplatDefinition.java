@@ -55,7 +55,8 @@ public class HitSplatDefinition extends DualNode {
 	@ObfuscatedGetter(
 		intValue = -1445466235
 	)
-	public int field3333;
+	@Export("textColor")
+	public int textColor;
 	@ObfuscatedName("r")
 	@ObfuscatedGetter(
 		intValue = -1814689987
@@ -132,7 +133,7 @@ public class HitSplatDefinition extends DualNode {
 
 	HitSplatDefinition() {
 		this.fontId = -1;
-		this.field3333 = 0xffffff;
+		this.textColor = 0xffffff;
 		this.field3344 = 70;
 		this.field3334 = -1;
 		this.field3336 = -1;
@@ -175,7 +176,7 @@ public class HitSplatDefinition extends DualNode {
 		if (var2 == 1) {
 			this.fontId = var1.method5511();
 		} else if (var2 == 2) {
-			this.field3333 = var1.readMedium();
+			this.textColor = var1.readMedium();
 		} else if (var2 == 3) {
 			this.field3334 = var1.method5511();
 		} else if (var2 == 4) {

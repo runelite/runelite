@@ -42,11 +42,11 @@ public class class40 {
 		signature = "(IIIIIIIII)V",
 		garbageValue = "1804465340"
 	)
-	void method698(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+	void method698(int x, int y, int var3, int col, int w, int h, int var7, int var8) {
 		if (var7 != 0 && this.pixelsPerTile != 0 && this.tileTemplates != null) {
 			var8 = this.method699(var8, var7);
 			var7 = this.method712(var7);
-			Rasterizer2D.raster2d7(var1, var2, var5, var6, var3, var4, this.tileTemplates[var7 - 1][var8], this.pixelsPerTile);
+			Rasterizer2D.Rasterizer2D_drawGradientPixels(x, y, w, h, var3, col, this.tileTemplates[var7 - 1][var8], this.pixelsPerTile);
 		}
 	}
 

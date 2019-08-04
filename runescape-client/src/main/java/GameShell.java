@@ -68,6 +68,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@ObfuscatedGetter(
 		intValue = 369880599
 	)
+	@Export("fiveOrOne")
 	static int fiveOrOne;
 	@ObfuscatedName("m")
 	@ObfuscatedGetter(

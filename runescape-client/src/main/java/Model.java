@@ -374,89 +374,90 @@ public class Model extends Entity {
 		int var8 = var2 + this.xzRadius;
 		int var9 = var4 - this.xzRadius;
 		int var10 = var4 + this.xzRadius;
-		if (var7 >= 0 && var8 + 128 >> 7 < var1.length && var9 >= 0 && var10 + 128 >> 7 < var1[0].length) {
-			var7 >>= 7;
-			var8 = var8 + 127 >> 7;
-			var9 >>= 7;
-			var10 = var10 + 127 >> 7;
-			if (var3 == var1[var7][var9] && var3 == var1[var8][var9] && var3 == var1[var7][var10] && var3 == var1[var8][var10]) {
-				return this;
-			}
-			Model var11;
-			if (var5) {
-				var11 = new Model();
-				var11.verticesCount = this.verticesCount;
-				var11.indicesCount = this.indicesCount;
-				var11.field1691 = this.field1691;
-				var11.verticesX = this.verticesX;
-				var11.verticesZ = this.verticesZ;
-				var11.indices1 = this.indices1;
-				var11.indices2 = this.indices2;
-				var11.indices3 = this.indices3;
-				var11.faceColors1 = this.faceColors1;
-				var11.faceColors2 = this.faceColors2;
-				var11.faceColors3 = this.faceColors3;
-				var11.faceRenderPriorities = this.faceRenderPriorities;
-				var11.faceAlphas = this.faceAlphas;
-				var11.field1688 = this.field1688;
-				var11.faceTextures = this.faceTextures;
-				var11.field1690 = this.field1690;
-				var11.field1692 = this.field1692;
-				var11.field1693 = this.field1693;
-				var11.field1694 = this.field1694;
-				var11.vertexLabels = this.vertexLabels;
-				var11.faceLabelsAlpha = this.faceLabelsAlpha;
-				var11.isSingleTile = this.isSingleTile;
-				var11.verticesY = new int[var11.verticesCount];
-			} else {
-				var11 = this;
-			}
-
-			int var12;
-			int var13;
-			int var14;
-			int var15;
-			int var16;
-			int var17;
-			int var18;
-			int var19;
-			int var20;
-			int var21;
-			if (var6 == 0) {
-				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-					var13 = var2 + this.verticesX[var12];
-					var14 = var4 + this.verticesZ[var12];
-					var15 = var13 & 127;
-					var16 = var14 & 127;
-					var17 = var13 >> 7;
-					var18 = var14 >> 7;
-					var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
-					var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
-					var21 = var19 * (128 - var16) + var20 * var16 >> 7;
-					var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
-				}
-			} else {
-				for (var12 = 0; var12 < var11.verticesCount; ++var12) {
-					var13 = (-this.verticesY[var12] << 16) / super.height;
-					if (var13 < var6) {
-						var14 = var2 + this.verticesX[var12];
-						var15 = var4 + this.verticesZ[var12];
-						var16 = var14 & 127;
-						var17 = var15 & 127;
-						var18 = var14 >> 7;
-						var19 = var15 >> 7;
-						var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-						var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
-						int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-						var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
-					}
-				}
-			}
-
-			var11.resetBounds();
-			return var11;
+		if (var7 < 0 || var8 + 128 >> 7 >= var1.length || var9 < 0 || var10 + 128 >> 7 >= var1[0].length) {
+			return this;
 		}
-		return this;
+		var7 >>= 7;
+		var8 = var8 + 127 >> 7;
+		var9 >>= 7;
+		var10 = var10 + 127 >> 7;
+		if (var3 == var1[var7][var9] && var3 == var1[var8][var9] && var3 == var1[var7][var10] && var3 == var1[var8][var10]) {
+			return this;
+		}
+		Model var11;
+		if (var5) {
+			var11 = new Model();
+			var11.verticesCount = this.verticesCount;
+			var11.indicesCount = this.indicesCount;
+			var11.field1691 = this.field1691;
+			var11.verticesX = this.verticesX;
+			var11.verticesZ = this.verticesZ;
+			var11.indices1 = this.indices1;
+			var11.indices2 = this.indices2;
+			var11.indices3 = this.indices3;
+			var11.faceColors1 = this.faceColors1;
+			var11.faceColors2 = this.faceColors2;
+			var11.faceColors3 = this.faceColors3;
+			var11.faceRenderPriorities = this.faceRenderPriorities;
+			var11.faceAlphas = this.faceAlphas;
+			var11.field1688 = this.field1688;
+			var11.faceTextures = this.faceTextures;
+			var11.field1690 = this.field1690;
+			var11.field1692 = this.field1692;
+			var11.field1693 = this.field1693;
+			var11.field1694 = this.field1694;
+			var11.vertexLabels = this.vertexLabels;
+			var11.faceLabelsAlpha = this.faceLabelsAlpha;
+			var11.isSingleTile = this.isSingleTile;
+			var11.verticesY = new int[var11.verticesCount];
+		} else {
+			var11 = this;
+		}
+
+		int var12;
+		int var13;
+		int var14;
+		int var15;
+		int var16;
+		int var17;
+		int var18;
+		int var19;
+		int var20;
+		int var21;
+		if (var6 == 0) {
+			for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+				var13 = var2 + this.verticesX[var12];
+				var14 = var4 + this.verticesZ[var12];
+				var15 = var13 & 127;
+				var16 = var14 & 127;
+				var17 = var13 >> 7;
+				var18 = var14 >> 7;
+				var19 = var1[var17][var18] * (128 - var15) + var1[var17 + 1][var18] * var15 >> 7;
+				var20 = var1[var17][var18 + 1] * (128 - var15) + var15 * var1[var17 + 1][var18 + 1] >> 7;
+				var21 = var19 * (128 - var16) + var20 * var16 >> 7;
+				var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
+			}
+		} else {
+			for (var12 = 0; var12 < var11.verticesCount; ++var12) {
+				var13 = (-this.verticesY[var12] << 16) / super.height;
+				if (var13 >= var6) {
+					continue;
+				}
+				var14 = var2 + this.verticesX[var12];
+				var15 = var4 + this.verticesZ[var12];
+				var16 = var14 & 127;
+				var17 = var15 & 127;
+				var18 = var14 >> 7;
+				var19 = var15 >> 7;
+				var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
+				var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
+				int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
+				var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
+			}
+		}
+
+		var11.resetBounds();
+		return var11;
 	}
 
 	@ObfuscatedName("w")
@@ -769,16 +770,17 @@ public class Model extends Entity {
 
 			for (var8 = 0; var8 < var6; ++var8) {
 				int var9 = var2[var8];
-				if (var9 < this.vertexLabels.length) {
-					int[] var10 = this.vertexLabels[var9];
+				if (var9 >= this.vertexLabels.length) {
+					continue;
+				}
+				int[] var10 = this.vertexLabels[var9];
 
-					for (var11 = 0; var11 < var10.length; ++var11) {
-						var12 = var10[var11];
-						Model_transformTempX += this.verticesX[var12];
-						Model_transformTempY += this.verticesY[var12];
-						Model_transformTempZ += this.verticesZ[var12];
-						++var7;
-					}
+				for (var11 = 0; var11 < var10.length; ++var11) {
+					var12 = var10[var11];
+					Model_transformTempX += this.verticesX[var12];
+					Model_transformTempY += this.verticesY[var12];
+					Model_transformTempZ += this.verticesZ[var12];
+					++var7;
 				}
 			}
 
@@ -792,132 +794,115 @@ public class Model extends Entity {
 				Model_transformTempZ = var5;
 			}
 
-		} else {
-			int[] var10000;
-			int[] var18;
-			int var19;
-			if (var1 == 1) {
-				for (var7 = 0; var7 < var6; ++var7) {
-					var8 = var2[var7];
-					if (var8 < this.vertexLabels.length) {
-						var18 = this.vertexLabels[var8];
-
-						for (var19 = 0; var19 < var18.length; ++var19) {
-							var11 = var18[var19];
-							var10000 = this.verticesX;
-							var10000[var11] += var3;
-							var10000 = this.verticesY;
-							var10000[var11] += var4;
-							var10000 = this.verticesZ;
-							var10000[var11] += var5;
-						}
-					}
+		} else if (var1 == 1) {
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2[var7];
+				if (var8 >= this.vertexLabels.length) {
+					continue;
 				}
+				int[] var18 = this.vertexLabels[var8];
 
-			} else if (var1 == 2) {
-				for (var7 = 0; var7 < var6; ++var7) {
-					var8 = var2[var7];
-					if (var8 < this.vertexLabels.length) {
-						var18 = this.vertexLabels[var8];
-
-						for (var19 = 0; var19 < var18.length; ++var19) {
-							var11 = var18[var19];
-							var10000 = this.verticesX;
-							var10000[var11] -= Model_transformTempX;
-							var10000 = this.verticesY;
-							var10000[var11] -= Model_transformTempY;
-							var10000 = this.verticesZ;
-							var10000[var11] -= Model_transformTempZ;
-							var12 = (var3 & 255) * 8;
-							int var13 = (var4 & 255) * 8;
-							int var14 = (var5 & 255) * 8;
-							int var15;
-							int var16;
-							int var17;
-							if (var14 != 0) {
-								var15 = Model_sine[var14];
-								var16 = Model_cosine[var14];
-								var17 = var15 * this.verticesY[var11] + var16 * this.verticesX[var11] >> 16;
-								this.verticesY[var11] = var16 * this.verticesY[var11] - var15 * this.verticesX[var11] >> 16;
-								this.verticesX[var11] = var17;
-							}
-
-							if (var12 != 0) {
-								var15 = Model_sine[var12];
-								var16 = Model_cosine[var12];
-								var17 = var16 * this.verticesY[var11] - var15 * this.verticesZ[var11] >> 16;
-								this.verticesZ[var11] = var15 * this.verticesY[var11] + var16 * this.verticesZ[var11] >> 16;
-								this.verticesY[var11] = var17;
-							}
-
-							if (var13 != 0) {
-								var15 = Model_sine[var13];
-								var16 = Model_cosine[var13];
-								var17 = var15 * this.verticesZ[var11] + var16 * this.verticesX[var11] >> 16;
-								this.verticesZ[var11] = var16 * this.verticesZ[var11] - var15 * this.verticesX[var11] >> 16;
-								this.verticesX[var11] = var17;
-							}
-
-							var10000 = this.verticesX;
-							var10000[var11] += Model_transformTempX;
-							var10000 = this.verticesY;
-							var10000[var11] += Model_transformTempY;
-							var10000 = this.verticesZ;
-							var10000[var11] += Model_transformTempZ;
-						}
-					}
+				for (int var19 = 0; var19 < var18.length; ++var19) {
+					var11 = var18[var19];
+					this.verticesX[var11] += var3;
+					this.verticesY[var11] += var4;
+					this.verticesZ[var11] += var5;
 				}
-
-			} else if (var1 == 3) {
-				for (var7 = 0; var7 < var6; ++var7) {
-					var8 = var2[var7];
-					if (var8 < this.vertexLabels.length) {
-						var18 = this.vertexLabels[var8];
-
-						for (var19 = 0; var19 < var18.length; ++var19) {
-							var11 = var18[var19];
-							var10000 = this.verticesX;
-							var10000[var11] -= Model_transformTempX;
-							var10000 = this.verticesY;
-							var10000[var11] -= Model_transformTempY;
-							var10000 = this.verticesZ;
-							var10000[var11] -= Model_transformTempZ;
-							this.verticesX[var11] = var3 * this.verticesX[var11] / 128;
-							this.verticesY[var11] = var4 * this.verticesY[var11] / 128;
-							this.verticesZ[var11] = var5 * this.verticesZ[var11] / 128;
-							var10000 = this.verticesX;
-							var10000[var11] += Model_transformTempX;
-							var10000 = this.verticesY;
-							var10000[var11] += Model_transformTempY;
-							var10000 = this.verticesZ;
-							var10000[var11] += Model_transformTempZ;
-						}
-					}
-				}
-
-			} else if (var1 == 5) {
-				if (this.faceLabelsAlpha != null && this.faceAlphas != null) {
-					for (var7 = 0; var7 < var6; ++var7) {
-						var8 = var2[var7];
-						if (var8 < this.faceLabelsAlpha.length) {
-							var18 = this.faceLabelsAlpha[var8];
-
-							for (var19 = 0; var19 < var18.length; ++var19) {
-								var11 = var18[var19];
-								var12 = (this.faceAlphas[var11] & 255) + var3 * 8;
-								if (var12 < 0) {
-									var12 = 0;
-								} else if (var12 > 255) {
-									var12 = 255;
-								}
-
-								this.faceAlphas[var11] = (byte)var12;
-							}
-						}
-					}
-				}
-
 			}
+
+		} else if (var1 == 2) {
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2[var7];
+				if (var8 >= this.vertexLabels.length) {
+					continue;
+				}
+				int[] var18 = this.vertexLabels[var8];
+
+				for (int var19 = 0; var19 < var18.length; ++var19) {
+					var11 = var18[var19];
+					this.verticesX[var11] -= Model_transformTempX;
+					this.verticesY[var11] -= Model_transformTempY;
+					this.verticesZ[var11] -= Model_transformTempZ;
+					var12 = (var3 & 255) * 8;
+					int var13 = (var4 & 255) * 8;
+					int var14 = (var5 & 255) * 8;
+					int var15;
+					int var16;
+					int var17;
+					if (var14 != 0) {
+						var15 = Model_sine[var14];
+						var16 = Model_cosine[var14];
+						var17 = var15 * this.verticesY[var11] + var16 * this.verticesX[var11] >> 16;
+						this.verticesY[var11] = var16 * this.verticesY[var11] - var15 * this.verticesX[var11] >> 16;
+						this.verticesX[var11] = var17;
+					}
+
+					if (var12 != 0) {
+						var15 = Model_sine[var12];
+						var16 = Model_cosine[var12];
+						var17 = var16 * this.verticesY[var11] - var15 * this.verticesZ[var11] >> 16;
+						this.verticesZ[var11] = var15 * this.verticesY[var11] + var16 * this.verticesZ[var11] >> 16;
+						this.verticesY[var11] = var17;
+					}
+
+					if (var13 != 0) {
+						var15 = Model_sine[var13];
+						var16 = Model_cosine[var13];
+						var17 = var15 * this.verticesZ[var11] + var16 * this.verticesX[var11] >> 16;
+						this.verticesZ[var11] = var16 * this.verticesZ[var11] - var15 * this.verticesX[var11] >> 16;
+						this.verticesX[var11] = var17;
+					}
+
+					this.verticesX[var11] += Model_transformTempX;
+					this.verticesY[var11] += Model_transformTempY;
+					this.verticesZ[var11] += Model_transformTempZ;
+				}
+			}
+
+		} else if (var1 == 3) {
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2[var7];
+				if (var8 < this.vertexLabels.length) {
+					int[] var18 = this.vertexLabels[var8];
+
+					for (int var19 = 0; var19 < var18.length; ++var19) {
+						var11 = var18[var19];
+						this.verticesX[var11] -= Model_transformTempX;
+						this.verticesY[var11] -= Model_transformTempY;
+						this.verticesZ[var11] -= Model_transformTempZ;
+						this.verticesX[var11] = var3 * this.verticesX[var11] / 128;
+						this.verticesY[var11] = var4 * this.verticesY[var11] / 128;
+						this.verticesZ[var11] = var5 * this.verticesZ[var11] / 128;
+						this.verticesX[var11] += Model_transformTempX;
+						this.verticesY[var11] += Model_transformTempY;
+						this.verticesZ[var11] += Model_transformTempZ;
+					}
+				}
+			}
+		} else if (var1 == 5) {
+			if (this.faceLabelsAlpha == null || this.faceAlphas == null) {
+				return;
+			}
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2[var7];
+				if (var8 >= this.faceLabelsAlpha.length) {
+					continue;
+				}
+				int[] var18 = this.faceLabelsAlpha[var8];
+
+				for (int var19 = 0; var19 < var18.length; ++var19) {
+					var11 = var18[var19];
+					var12 = (this.faceAlphas[var11] & 255) + var3 * 8;
+					if (var12 < 0) {
+						var12 = 0;
+					} else if (var12 > 255) {
+						var12 = 255;
+					}
+
+					this.faceAlphas[var11] = (byte) var12;
+				}
+			}
+
 		}
 	}
 
@@ -975,12 +960,9 @@ public class Model extends Entity {
 	@Export("offsetBy")
 	public void offsetBy(int var1, int var2, int var3) {
 		for (int var4 = 0; var4 < this.verticesCount; ++var4) {
-			int[] var10000 = this.verticesX;
-			var10000[var4] += var1;
-			var10000 = this.verticesY;
-			var10000[var4] += var2;
-			var10000 = this.verticesZ;
-			var10000[var4] += var3;
+			this.verticesX[var4] += var1;
+			this.verticesY[var4] += var2;
+			this.verticesZ[var4] += var3;
 		}
 
 		this.resetBounds();
@@ -1604,136 +1586,141 @@ public class Model extends Entity {
 		int var12 = var2 * var7 + var3 * var11 >> 16;
 		int var13 = var3 * this.xzRadius >> 16;
 		int var14 = var12 + var13;
-		if (var14 > 50 && var12 < 3500) {
-			int var15 = var8 * var4 + var5 * var6 >> 16;
-			int var16 = (var15 - this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
-			if (var16 / var14 < Rasterizer3D.Rasterizer3D_clipMidX2) {
-				int var17 = (var15 + this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
-				if (var17 / var14 > Rasterizer3D.Rasterizer3D_clipNegativeMidX) {
-					int var18 = var3 * var7 - var11 * var2 >> 16;
-					int var19 = var2 * this.xzRadius >> 16;
-					int var20 = (var18 + var19) * Rasterizer3D.Rasterizer3D_zoom;
-					if (var20 / var14 > Rasterizer3D.Rasterizer3D_clipNegativeMidY) {
-						int var21 = (var3 * super.height >> 16) + var19;
-						int var22 = (var18 - var21) * Rasterizer3D.Rasterizer3D_zoom;
-						if (var22 / var14 < Rasterizer3D.Rasterizer3D_clipMidY2) {
-							int var23 = var13 + (var2 * super.height >> 16);
-							boolean var24 = false;
-							boolean var25 = false;
-							if (var12 - var23 <= 50) {
-								var25 = true;
-							}
+		if (var14 <= 50 || var12 >= 3500) {
+			return;
+		}
+		int var15 = var8 * var4 + var5 * var6 >> 16;
+		int var16 = (var15 - this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
+		if (var16 / var14 >= Rasterizer3D.Rasterizer3D_clipMidX2) {
+			return;
+		}
+		int var17 = (var15 + this.xzRadius) * Rasterizer3D.Rasterizer3D_zoom;
+		if (var17 / var14 <= Rasterizer3D.Rasterizer3D_clipNegativeMidX) {
+			return;
+		}
+		int var18 = var3 * var7 - var11 * var2 >> 16;
+		int var19 = var2 * this.xzRadius >> 16;
+		int var20 = (var18 + var19) * Rasterizer3D.Rasterizer3D_zoom;
+		if (var20 / var14 <= Rasterizer3D.Rasterizer3D_clipNegativeMidY) {
+			return;
+		}
+		int var21 = (var3 * super.height >> 16) + var19;
+		int var22 = (var18 - var21) * Rasterizer3D.Rasterizer3D_zoom;
+		if (var22 / var14 >= Rasterizer3D.Rasterizer3D_clipMidY2) {
+			return;
+		}
+		int var23 = var13 + (var2 * super.height >> 16);
+		boolean var24 = false;
+		boolean var25 = false;
+		if (var12 - var23 <= 50) {
+			var25 = true;
+		}
 
-							boolean var26 = var25 || this.field1691 > 0;
-							int var27 = ViewportMouse.ViewportMouse_x;
-							int var29 = ViewportMouse.ViewportMouse_y;
-							boolean var31 = ViewportMouse.ViewportMouse_isInViewport;
-							boolean var34 = 0L != var9;
-							boolean var35;
-							if (var34) {
-								var35 = (int)(var9 >>> 16 & 1L) == 1;
-								var34 = !var35;
-							}
+		boolean var26 = var25 || this.field1691 > 0;
+		int var27 = ViewportMouse.ViewportMouse_x;
+		int var29 = ViewportMouse.ViewportMouse_y;
+		boolean var31 = ViewportMouse.ViewportMouse_isInViewport;
+		boolean var34 = 0L != var9;
+		boolean var35;
+		if (var34) {
+			var35 = (int)(var9 >>> 16 & 1L) == 1;
+			var34 = !var35;
+		}
 
-							var35 = false;
-							int var37;
-							int var38;
-							int var39;
-							if (var34 && var31) {
-								boolean var36 = false;
-								if (field1732) {
-									var36 = Frames.boundingBoxCheck(this, var6, var7, var8);
-								} else {
-									var37 = var12 - var13;
-									if (var37 <= 50) {
-										var37 = 50;
-									}
+		var35 = false;
+		int var37;
+		int var38;
+		int var39;
+		if (var34 && var31) {
+			boolean var36 = false;
+			if (field1732) {
+				var36 = Frames.boundingBoxCheck(this, var6, var7, var8);
+			} else {
+				var37 = var12 - var13;
+				if (var37 <= 50) {
+					var37 = 50;
+				}
 
-									if (var15 > 0) {
-										var16 /= var14;
-										var17 /= var37;
-									} else {
-										var17 /= var14;
-										var16 /= var37;
-									}
+				if (var15 > 0) {
+					var16 /= var14;
+					var17 /= var37;
+				} else {
+					var17 /= var14;
+					var16 /= var37;
+				}
 
-									if (var18 > 0) {
-										var22 /= var14;
-										var20 /= var37;
-									} else {
-										var20 /= var14;
-										var22 /= var37;
-									}
+				if (var18 > 0) {
+					var22 /= var14;
+					var20 /= var37;
+				} else {
+					var20 /= var14;
+					var22 /= var37;
+				}
 
-									var38 = var27 - Rasterizer3D.Rasterizer3D_clipMidX;
-									var39 = var29 - Rasterizer3D.Rasterizer3D_clipMidY;
-									if (var38 > var16 && var38 < var17 && var39 > var22 && var39 < var20) {
-										var36 = true;
-									}
-								}
+				var38 = var27 - Rasterizer3D.Rasterizer3D_clipMidX;
+				var39 = var29 - Rasterizer3D.Rasterizer3D_clipMidY;
+				if (var38 > var16 && var38 < var17 && var39 > var22 && var39 < var20) {
+					var36 = true;
+				}
+			}
 
-								if (var36) {
-									if (this.isSingleTile) {
-										ViewportMouse.ViewportMouse_entityTags[++ViewportMouse.ViewportMouse_entityCount - 1] = var9;
-									} else {
-										var35 = true;
-									}
-								}
-							}
-
-							int var49 = Rasterizer3D.Rasterizer3D_clipMidX;
-							var37 = Rasterizer3D.Rasterizer3D_clipMidY;
-							var38 = 0;
-							var39 = 0;
-							if (var1 != 0) {
-								var38 = Model_sine[var1];
-								var39 = Model_cosine[var1];
-							}
-
-							for (int var40 = 0; var40 < this.verticesCount; ++var40) {
-								int var41 = this.verticesX[var40];
-								int var42 = this.verticesY[var40];
-								int var43 = this.verticesZ[var40];
-								int var44;
-								if (var1 != 0) {
-									var44 = var43 * var38 + var41 * var39 >> 16;
-									var43 = var43 * var39 - var41 * var38 >> 16;
-									var41 = var44;
-								}
-
-								var41 += var6;
-								var42 += var7;
-								var43 += var8;
-								var44 = var43 * var4 + var5 * var41 >> 16;
-								var43 = var5 * var43 - var41 * var4 >> 16;
-								var41 = var44;
-								var44 = var3 * var42 - var43 * var2 >> 16;
-								var43 = var42 * var2 + var3 * var43 >> 16;
-								field1714[var40] = var43 - var12;
-								if (var43 >= 50) {
-									modelViewportXs[var40] = var41 * Rasterizer3D.Rasterizer3D_zoom / var43 + var49;
-									modelViewportYs[var40] = var44 * Rasterizer3D.Rasterizer3D_zoom / var43 + var37;
-								} else {
-									modelViewportXs[var40] = -5000;
-									var24 = true;
-								}
-
-								if (var26) {
-									field1715[var40] = var41;
-									field1716[var40] = var44;
-									field1717[var40] = var43;
-								}
-							}
-
-							try {
-								this.draw0(var24, var35, this.isSingleTile, var9);
-							} catch (Exception var48) {
-							}
-
-						}
-					}
+			if (var36) {
+				if (this.isSingleTile) {
+					ViewportMouse.ViewportMouse_entityTags[++ViewportMouse.ViewportMouse_entityCount - 1] = var9;
+				} else {
+					var35 = true;
 				}
 			}
 		}
+
+		int var49 = Rasterizer3D.Rasterizer3D_clipMidX;
+		var37 = Rasterizer3D.Rasterizer3D_clipMidY;
+		var38 = 0;
+		var39 = 0;
+		if (var1 != 0) {
+			var38 = Model_sine[var1];
+			var39 = Model_cosine[var1];
+		}
+
+		for (int var40 = 0; var40 < this.verticesCount; ++var40) {
+			int var41 = this.verticesX[var40];
+			int var42 = this.verticesY[var40];
+			int var43 = this.verticesZ[var40];
+			int var44;
+			if (var1 != 0) {
+				var44 = var43 * var38 + var41 * var39 >> 16;
+				var43 = var43 * var39 - var41 * var38 >> 16;
+				var41 = var44;
+			}
+
+			var41 += var6;
+			var42 += var7;
+			var43 += var8;
+			var44 = var43 * var4 + var5 * var41 >> 16;
+			var43 = var5 * var43 - var41 * var4 >> 16;
+			var41 = var44;
+			var44 = var3 * var42 - var43 * var2 >> 16;
+			var43 = var42 * var2 + var3 * var43 >> 16;
+			field1714[var40] = var43 - var12;
+			if (var43 >= 50) {
+				modelViewportXs[var40] = var41 * Rasterizer3D.Rasterizer3D_zoom / var43 + var49;
+				modelViewportYs[var40] = var44 * Rasterizer3D.Rasterizer3D_zoom / var43 + var37;
+			} else {
+				modelViewportXs[var40] = -5000;
+				var24 = true;
+			}
+
+			if (var26) {
+				field1715[var40] = var41;
+				field1716[var40] = var44;
+				field1717[var40] = var43;
+			}
+		}
+
+		try {
+			this.draw0(var24, var35, this.isSingleTile, var9);
+		} catch (Exception var48) {
+		}
+
 	}
 }
