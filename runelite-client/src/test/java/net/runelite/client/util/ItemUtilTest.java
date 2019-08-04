@@ -37,7 +37,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -85,7 +84,6 @@ public class ItemUtilTest
 		return i;
 	}
 
-	@Ignore
 	@Test
 	public void toGameItemMap()
 	{
@@ -98,7 +96,6 @@ public class ItemUtilTest
 		assertEquals(ALL_MAP, itemMap2);
 	}
 
-	@Ignore
 	@Test
 	public void containsAllItemIds()
 	{
@@ -107,7 +104,6 @@ public class ItemUtilTest
 		assertFalse(ItemUtil.containsAllItemIds(items, MIX_IDS));
 	}
 
-	@Ignore
 	@Test
 	public void containsAnyItemId()
 	{
@@ -116,7 +112,6 @@ public class ItemUtilTest
 		assertTrue(ItemUtil.containsAnyItemId(items, MIX_IDS));
 	}
 
-	@Ignore
 	@Test
 	public void containsItemId()
 	{
@@ -124,7 +119,6 @@ public class ItemUtilTest
 		assertFalse(ItemUtil.containsItemId(items, ItemID.TWISTED_BOW));
 	}
 
-	@Ignore
 	@Test
 	public void containsAllGameItems()
 	{
