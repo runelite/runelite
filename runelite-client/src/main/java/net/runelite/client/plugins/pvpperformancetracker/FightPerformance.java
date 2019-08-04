@@ -26,8 +26,12 @@ package net.runelite.client.plugins.pvpperformancetracker;
 
 import lombok.Getter;
 
+// Basic class to hold information about PvP fight performances. A "successful" attack
+// is dealt by not attacking with the style of the opponent's overhead. For example,
+// attacking with range or melee against someone using protect from magic is a successful
+// attack. Using melee against someone using protect from magic is not successful.
 @Getter
-public class PvpPerformanceStats
+public class FightPerformance
 {
     private String playerName;
     private int playerAttackCount;
@@ -37,7 +41,31 @@ public class PvpPerformanceStats
     private int opponentAttackCount;
     private int opponentSuccessCount;
 
-    PvpPerformanceStats(String playerName, String opponentName)
+    static FightPerformance getTestInstance(boolean random)
+    {
+        if (random)
+        {
+            int attacks = (int)(Math.random() * 35.0 + 20.0);
+            int successful = attacks - (int)(Math.random() * (attacks / 2));
+            int oAttacks = (int)(Math.random() * 35.0 + 20.0);
+            int oSuccessful = oAttacks - (int)(Math.random() * (oAttacks / 2));
+
+            return new FightPerformance(
+                "qwerty" + (int)(Math.random() * 99.0),
+                "asdf" + (int)(Math.random() * 99.0),
+                attacks,
+                successful,
+                oAttacks,
+                oSuccessful
+            );
+        }
+        else
+        {
+            return new FightPerformance("Matsyir", "0123456789@#", 55, 32, 57, 43);
+        }
+    }
+
+    FightPerformance(String playerName, String opponentName)
     {
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -47,16 +75,15 @@ public class PvpPerformanceStats
         opponentSuccessCount = 0;
     }
 
-    PvpPerformanceStats(boolean debug)
+    private FightPerformance(String playerName, String opponentName, int playerAttackCount, int playerSuccessCount, int opponentAttackCount, int opponentSuccessCount)
     {
-        this.playerName = "Matsyir";
-        this.opponentName = "Tester";
-        playerAttackCount = 55;
-        playerSuccessCount = 32;
-        opponentAttackCount = 57;
-        opponentSuccessCount = 43;
+        this.playerName = playerName;
+        this.opponentName = opponentName;
+        this.playerAttackCount = playerAttackCount;
+        this.playerSuccessCount = playerSuccessCount;
+        this.opponentAttackCount = opponentAttackCount;
+        this.opponentSuccessCount = opponentSuccessCount;
     }
-
 
     public void addAttack(String playerName, boolean success)
     {
@@ -79,20 +106,26 @@ public class PvpPerformanceStats
     }
 
     // Return a simple string to display the current player's success rate.
+    // ex. "42/59 (71%)". The name is not included as it will be in a separate view.
+    // Would round to 1 decimal space, but the overlay size is restrictive.
     public String getPlayerDisplayString()
     {
-        // The success rate is the percentage of successful attacks, rounded to 1 decimal place.
-        double playerSuccessRate = Math.round((double)playerSuccessCount /
-                (double)playerAttackCount * 10.0) / 10.0;
-        return playerName + ": " + playerSuccessCount + "/" + playerAttackCount + "(" + playerSuccessRate + "%)";
+        // The success rate is the percentage of successful attacks.
+        int playerSuccessRate = (int)Math.round(((double)playerSuccessCount / (double)playerAttackCount) * 100);
+        return playerSuccessCount + "/" + playerAttackCount + " (" + playerSuccessRate + "%)";
     }
 
     // Return a simple string to display the current opponent's success rate.
     public String getOpponentDisplayString()
     {
-        // The success rate is the percentage of successful attacks, rounded to 1 decimal place.
-        double opponentSuccessRate = Math.round((double)opponentSuccessCount /
-                (double)opponentAttackCount * 10.0) / 10.0;
-        return opponentName + ": " + opponentSuccessCount + "/" + opponentAttackCount + "(" + opponentSuccessRate + "%)";
+        // The success rate is the percentage of successful attacks.
+        int opponentSuccessRate = (int)Math.round(((double)opponentSuccessCount / (double)opponentAttackCount) * 100);
+        return opponentSuccessCount + "/" + opponentAttackCount + " (" + opponentSuccessRate + "%)";
+    }
+
+    // returns true if player success count > opponent success count.
+    public boolean playerWinning()
+    {
+        return playerSuccessCount >= opponentSuccessCount;
     }
 }

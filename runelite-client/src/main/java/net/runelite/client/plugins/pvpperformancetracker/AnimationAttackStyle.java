@@ -16,6 +16,11 @@ public enum AnimationAttackStyle
     ),
     // Melee attack animations
     Melee(HeadIcon.MELEE,
+        AnimationID.MELEE_RUNE_SCIM_SLASH,
+        AnimationID.MELEE_RUNE_BATTLEAXE_SLASH,
+        AnimationID.MELEE_RUNE_BATTLEAXE_CRUSH,
+        AnimationID.MELEE_RUNE_2H_CRUSH,
+        AnimationID.MELEE_RUNE_2H_SLASH,
         AnimationID.MELEE_DRAGON_DAGGER_SPEC,
         AnimationID.MELEE_ABYSSAL_WHIP,
         AnimationID.MELEE_ELDER_MAUL
@@ -26,6 +31,7 @@ public enum AnimationAttackStyle
     ),
     // Ranged attack animations
     Ranged(HeadIcon.RANGED,
+        AnimationID.RANGED_MAPLE_SHORTBOW,
         AnimationID.RANGED_RUNE_CROSSBOW
     );
 

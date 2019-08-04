@@ -63,6 +63,8 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	@Inject
 	private PvpPerformanceTrackerOverlay overlay;
 
+	private PvpPerformanceTrackerPanel panel;
+
 	// the last time someone in the fight attacked, or when the fight was initiated.
 	private Instant lastFightTime;
 	private Player currentOpponent;
@@ -70,9 +72,9 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	private boolean opponentAttacking;
 
 	@Getter
-	private PvpPerformanceStats currentFight;
+	private FightPerformance currentFight;
 	@Getter
-	private List<PvpPerformanceStats> fightHistory;
+	private List<FightPerformance> fightHistory;
 
 	@Provides
 	PvpPerformanceTrackerConfig provideConfig(ConfigManager configManager)
@@ -86,7 +88,8 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		lastFightTime = Instant.MIN;
 		playerAttacking = false;
 		opponentAttacking = false;
-		currentFight = new PvpPerformanceStats(true);
+		fightHistory = new ArrayList<FightPerformance>();
+		currentFight = FightPerformance.getTestInstance(true);
 		overlayManager.add(overlay);
 	}
 
@@ -113,7 +116,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 				fightHistory.add(currentFight);
 			}
 			currentOpponent = (Player)opponent;
-			currentFight = new PvpPerformanceStats(client.getLocalPlayer().getName(), currentOpponent.getName());
+			currentFight = new FightPerformance(client.getLocalPlayer().getName(), currentOpponent.getName());
 			lastFightTime = Instant.now();
 		}
 	}

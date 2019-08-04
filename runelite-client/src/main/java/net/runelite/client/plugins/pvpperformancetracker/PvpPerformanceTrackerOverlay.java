@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.pvpperformancetracker;
 
+import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -47,11 +48,10 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 	private PvpPerformanceTrackerOverlay(PvpPerformanceTrackerPlugin plugin, PvpPerformanceTrackerConfig config)
 	{
 		super(plugin);
-		setPosition(OverlayPosition.TOP_RIGHT);
-		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
-		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+		setPosition(OverlayPosition.TOP_RIGHT);
+		setPriority(OverlayPriority.LOW);
 		panelComponent.setWrapping(4);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "PvP Performance overlay"));
 	}
@@ -67,12 +67,27 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		panelComponent.getChildren().add(TitleComponent.builder()
-				.text(currentFight.getPlayerDisplayString())
+		// Only display the title if it's enabled (pointless in my opinion, since you can just see
+		// what the panel is displaying, but I understand the preference of having overlays labelled)
+		if (config.showOverlayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text((config.restrictToLms() ? "LMS" : "PvP") + " Performance")
 				.build());
-		panelComponent.getChildren().add(TitleComponent.builder()
-				.text(currentFight.getOpponentDisplayString())
-				.build());
+		}
+
+		// First line: Player's stats (you: success rate counters + % value)
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("You:")
+			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
+			.right(currentFight.getPlayerDisplayString())
+			.build());
+		// Second line: Opponent's stats (foe: success rate counters + % value)
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Foe:")
+			.leftColor(!plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
+			.right(currentFight.getOpponentDisplayString())
+			.build());
 
 		return panelComponent.render(graphics);
 	}

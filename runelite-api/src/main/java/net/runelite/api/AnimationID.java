@@ -205,14 +205,21 @@ public final class AnimationID
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// Melee Attack Animations
+	public static final int MELEE_RUNE_SCIM_SLASH = 390;
+	public static final int MELEE_RUNE_BATTLEAXE_SLASH = 395;
+	public static final int MELEE_RUNE_BATTLEAXE_CRUSH = 401;
+	public static final int MELEE_RUNE_2H_CRUSH = 406;
+	public static final int MELEE_RUNE_2H_SLASH = 407;
 	public static final int MELEE_DRAGON_DAGGER_SPEC = 1062;
 	public static final int MELEE_ABYSSAL_WHIP = 1658;
-	public static final int MELEE_ELDER_MAUL = 7516; // Only tested 1 style, think they're all the same.
+	public static final int MELEE_ELDER_MAUL = 7516; // Only tested 1 style, think they're all crush.
 
 	// Magic Attack/Casting Animations
 	public static final int MAGIC_ANCIENT_BARRAGE = 1979; // Confirmed the same for Ice & Blood w/ diff weapons. Possibly also bursting.
 
 	// Ranged Attack Animations
+	public static final int RANGED_MAPLE_SHORTBOW = 426; // Confirmed same w/ addy & iron arrows. Assumed same for all arrows.
 	public static final int RANGED_RUNE_CROSSBOW = 4230;
+	//public static final int RANGED_HEAVY_BALLISTA = 7218; // Tested w/ dragon javelins. UNCERTAIN, NEEDS CONFIRM.
 
 }
