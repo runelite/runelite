@@ -43,7 +43,7 @@ data['artifacts'][0] = art
 
 client = data['client']
 
-p = re.compile('client-([0-9]+\.[0-9]+\.[0-9]+)-')
+p = re.compile('client-(([0-9]+\.)+[0-9]+)-')
 m = p.match(name)
 version = m.group(1)
 client['version'] = version 
