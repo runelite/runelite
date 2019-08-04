@@ -64,6 +64,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -212,7 +213,6 @@ public class ConfigPanel extends PluginPanel
 
 		initializePluginList();
 		refreshPluginList();
-
 	}
 
 	static class configTextArea extends JTextArea
@@ -747,7 +747,7 @@ public class ConfigPanel extends PluginPanel
 						JLabel sliderValueLabel = new JLabel();
 						JSlider slider = new JSlider(min, max, value);
 						sliderValueLabel.setText(String.valueOf(slider.getValue()));
-						slider.setPreferredSize(new Dimension(85, 25));
+						slider.setPreferredSize(new Dimension(80, 25));
 						slider.addChangeListener((l) ->
 							{
 								sliderValueLabel.setText(String.valueOf(slider.getValue()));
@@ -775,33 +775,47 @@ public class ConfigPanel extends PluginPanel
 								return null;
 							}
 						});
+
+						JPanel subPanel = new JPanel();
+						subPanel.setPreferredSize(new Dimension(110, 25));
+						subPanel.setLayout(new BorderLayout());
+
 						spinner.addChangeListener((ce) ->
 						{
 							changeConfiguration(listItem, config, spinner, cd, cid);
-							spinner.setVisible(false);
+
 							sliderValueLabel.setText(String.valueOf(spinner.getValue()));
-							sliderValueLabel.setVisible(true);
 							slider.setValue((Integer) spinner.getValue());
-							slider.setVisible(true);
+
+							subPanel.add(sliderValueLabel, BorderLayout.WEST);
+							subPanel.add(slider, BorderLayout.EAST);
+							subPanel.remove(spinner);
+
+							validate();
+							repaint();
 						});
-						spinner.setVisible(false);
 
 						sliderValueLabel.addMouseListener(new MouseAdapter()
 						{
 							public void mouseClicked(MouseEvent e)
 							{
 								spinner.setValue(slider.getValue());
-								spinner.setVisible(true);
-								sliderValueLabel.setVisible(false);
-								slider.setVisible(false);
+
+								subPanel.remove(sliderValueLabel);
+								subPanel.remove(slider);
+								subPanel.add(spinner, BorderLayout.EAST);
+
+								validate();
+								repaint();
+
+								final JTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+								tf.requestFocusInWindow();
+								SwingUtilities.invokeLater(tf::selectAll);
 							}
 						});
 
-						JPanel subPanel = new JPanel();
-
-						subPanel.add(spinner);
-						subPanel.add(sliderValueLabel);
-						subPanel.add(slider);
+						subPanel.add(sliderValueLabel, BorderLayout.WEST);
+						subPanel.add(slider, BorderLayout.EAST);
 
 						item.add(subPanel, BorderLayout.EAST);
 					}
