@@ -161,6 +161,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean chestLooted;
 
 	private List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredNpcs = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
 
@@ -228,6 +229,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGroup().equals("loottracker"))
 		{
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
+			ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 		}
 	}
@@ -236,6 +238,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -322,6 +325,11 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		if (ignoredNpcs.contains(name))
+		{
+			return;
+		}
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
