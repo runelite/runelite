@@ -68,13 +68,13 @@ public class ThievingChest
 	 * @param worldPoint The world location of the gameobject that corresponds with this trap.
 	 * @param instancePoint The world location accounting for instances of the gameobject that corresponds with this trap.
 	 */
-	ThievingChest(final WorldPoint worldPoint, final WorldPoint instancePoint)
+	ThievingChest(final WorldPoint worldPoint, final Point instancePoint)
 	{
 		this.everOpened = false;
 		this.poison = false;
 		this.empty = false;
 		this.worldPoint = worldPoint;
-		this.instancePoint = new Point(instancePoint.getX(), instancePoint.getY());
+		this.instancePoint = instancePoint;
 		this.chestId = -1;
 	}
 

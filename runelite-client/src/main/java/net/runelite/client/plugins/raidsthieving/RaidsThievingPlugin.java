@@ -30,10 +30,12 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -65,6 +67,8 @@ import java.util.Map;
 @Singleton
 public class RaidsThievingPlugin extends Plugin
 {
+	private static final double CHUNK_OFFSET = 3.5;
+
 	@Inject
 	private Client client;
 	@Inject
@@ -133,7 +137,7 @@ public class RaidsThievingPlugin extends Plugin
 	{
 		GameObject obj = event.getGameObject();
 		WorldPoint worldLoc = obj.getWorldLocation();
-		WorldPoint instanceLoc = WorldPoint.fromLocalInstance(client, obj.getLocalLocation());
+		Point instanceLoc = buildFromPoint(worldLoc, client);
 
 		if (obj.getId() == ObjectID.TROUGH_29746)
 		{
@@ -268,6 +272,51 @@ public class RaidsThievingPlugin extends Plugin
 	int getChestId(WorldPoint worldPoint)
 	{
 		return chests.get(worldPoint).getChestId();
+	}
+
+	private static Point buildFromPoint(WorldPoint worldPoint, Client client)
+	{
+		Point point = new Point(worldPoint.getX(), worldPoint.getY());
+		Point base = new Point(client.getBaseX(), client.getBaseY());
+		int plane = worldPoint.getPlane();
+
+		int deltaX = point.getX() - base.getX();
+		int deltaY = point.getY() - base.getY();
+		int chunkIndexX = deltaX / CHUNK_SIZE;
+		int chunkIndexY = deltaY / CHUNK_SIZE;
+
+		int chunkData = client.getInstanceTemplateChunks()[plane][chunkIndexX][chunkIndexY];
+		int rotation = chunkData >> 1 & 0x3;
+		int y = (chunkData >> 3 & 0x7FF) * 8;
+		int x = (chunkData >> 14 & 0x3FF) * 8;
+
+		return buildFromTile(base, point, rotation, new Point(x, y));
+	}
+
+	private static Point buildFromTile(Point base, Point tile, int rot, Point chunkOrigin)
+	{
+		int deltaX = tile.getX() - base.getX();
+		int deltaY = tile.getY() - base.getY();
+
+		double chunkOffsetX = (deltaX % CHUNK_SIZE) - CHUNK_OFFSET;
+		double chunkOffsetY = (deltaY % CHUNK_SIZE) - CHUNK_OFFSET;
+
+		for (int i = 0; i < rot; i++)
+		{
+			double temp = chunkOffsetX;
+			chunkOffsetX = -chunkOffsetY;
+			chunkOffsetY = temp;
+		}
+
+		chunkOffsetX += CHUNK_OFFSET;
+		chunkOffsetY += CHUNK_OFFSET;
+
+		int invariantChunkOffsetX = (int) chunkOffsetX;
+		int invariantChunkOffsetY = (int) chunkOffsetY;
+
+		return new Point(
+			chunkOrigin.getX() + invariantChunkOffsetX,
+			chunkOrigin.getY() + invariantChunkOffsetY);
 	}
 
 	private void updateConfig()
