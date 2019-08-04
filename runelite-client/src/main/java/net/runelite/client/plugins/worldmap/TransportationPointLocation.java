@@ -175,7 +175,7 @@ enum TransportationPointLocation
 	TELEPORT_RUNE_ARDOUGNE("Teleport to Rune Essence", new WorldPoint(2681, 3325, 0)),
 	TELEPORT_RUNE_YANILLE("Teleport to Rune Essence", new WorldPoint(2592, 3089, 0)),
 	TELEPORT_SORCERESS_GARDEN("Teleport to Sorceress's Garden", new WorldPoint(3320, 3141, 0)),
-	TELEPORT_PRIFDDINAS_LIBRARY("Teleport to Priffdinas Library", new WorldPoint(3254, 6082, 2)),
+	TELEPORT_PRIFDDINAS_LIBRARY("Teleport to Prifddinas Library", new WorldPoint(3254, 6082, 2)),
 
 	//Other
 	ALTER_KOUREND_UNDERGROUND("Altar to Skotizo", new WorldPoint(1662, 10047, 0)),

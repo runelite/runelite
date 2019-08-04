@@ -596,8 +596,8 @@ public class SlayerPluginTest
 	public void testTaskLookup() throws IOException
 	{
 		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
-		task.setTask("task");
-		task.setLocation("loc");
+		task.setTask("Abyssal demons");
+		task.setLocation("Abyss");
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
