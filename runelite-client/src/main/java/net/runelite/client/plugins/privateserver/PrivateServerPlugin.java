@@ -104,7 +104,7 @@ public class PrivateServerPlugin extends Plugin
 
 		if (event.getGroup().equals("privateserver") && event.getKey().equals("codebase"))
 		{
-			StringFileUtils.writeStringToFile("./codebase", config.codebase());
+			StringFileUtils.writeStringToFile(RuneLite.RUNELITE_DIR + "/codebase", config.codebase());
 			String message = "Client restart required after codebase change\n";
 			JOptionPane.showMessageDialog(new JFrame(), message, "Restart required",
 				JOptionPane.WARNING_MESSAGE);
