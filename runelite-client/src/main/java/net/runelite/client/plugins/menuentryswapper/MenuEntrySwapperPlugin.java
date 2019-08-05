@@ -76,7 +76,9 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.menus.ComparableEntry;
+import net.runelite.client.menus.AbstractComparableEntry;
+import static net.runelite.client.menus.ComparableEntries.newBankComparableEntry;
+import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -178,7 +180,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean buildingMode;
 	private boolean inTobRaid = false;
 	private boolean inCoxRaid = false;
-	private final Map<ComparableEntry, ComparableEntry> customSwaps = new HashMap<>();
+	private final Map<AbstractComparableEntry, AbstractComparableEntry> customSwaps = new HashMap<>();
 	private List<String> bankItemNames = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	private boolean configuringShiftClick = false;
@@ -925,7 +927,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void loadCustomSwaps(String config)
 	{
-		Map<ComparableEntry, ComparableEntry> tmp = new HashMap<>();
+		Map<AbstractComparableEntry, AbstractComparableEntry> tmp = new HashMap<>();
 
 		if (!Strings.isNullOrEmpty(config))
 		{
@@ -957,7 +959,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					targetFrom = splitFrom[1].trim();
 				}
 
-				ComparableEntry fromEntry = new ComparableEntry(optionFrom, targetFrom);
+				AbstractComparableEntry fromEntry = newBaseComparableEntry(optionFrom, targetFrom);
 
 				String[] splitTo = Text.standardize(to).split(",");
 				String optionTo = splitTo[0].trim();
@@ -971,26 +973,26 @@ public class MenuEntrySwapperPlugin extends Plugin
 					targetTo = splitTo[1].trim();
 				}
 
-				ComparableEntry toEntry = new ComparableEntry(optionTo, targetTo);
+				AbstractComparableEntry toEntry = newBaseComparableEntry(optionTo, targetTo);
 
 				tmp.put(fromEntry, toEntry);
 			}
 		}
 
-		for (Map.Entry<ComparableEntry, ComparableEntry> e : customSwaps.entrySet())
+		for (Map.Entry<AbstractComparableEntry, AbstractComparableEntry> e : customSwaps.entrySet())
 		{
-			ComparableEntry key = e.getKey();
-			ComparableEntry value = e.getValue();
+			AbstractComparableEntry key = e.getKey();
+			AbstractComparableEntry value = e.getValue();
 			menuManager.removeSwap(key, value);
 		}
 
 		customSwaps.clear();
 		customSwaps.putAll(tmp);
 
-		for (Map.Entry<ComparableEntry, ComparableEntry> entry : customSwaps.entrySet())
+		for (Map.Entry<AbstractComparableEntry, AbstractComparableEntry> entry : customSwaps.entrySet())
 		{
-			ComparableEntry a1 = entry.getKey();
-			ComparableEntry a2 = entry.getValue();
+			AbstractComparableEntry a1 = entry.getKey();
+			AbstractComparableEntry a2 = entry.getValue();
 			menuManager.addSwap(a1, a2);
 		}
 	}
@@ -1006,8 +1008,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-1", item).setPriority(10);
-				menuManager.addPriorityEntry("Deposit-1", item).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-1", item)).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-1", item)).setPriority(10);
 			});
 		}
 
@@ -1015,8 +1017,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawFiveItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-5", item).setPriority(10);
-				menuManager.addPriorityEntry("Deposit-5", item).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-5", item)).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-5", item)).setPriority(10);
 			});
 		}
 
@@ -1024,8 +1026,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawTenItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-10", item).setPriority(10);
-				menuManager.addPriorityEntry("Deposit-10", item).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-10", item)).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-10", item)).setPriority(10);
 			});
 		}
 
@@ -1033,8 +1035,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawXItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-", item).setPriority(10);
-				menuManager.addPriorityEntry("Deposit-", item).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-" + this.getWithdrawXAmount, item)).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-" + this.getWithdrawXAmount, item)).setPriority(10);
 			});
 		}
 
@@ -1042,8 +1044,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-All", item).setPriority(10);
-				menuManager.addPriorityEntry("Deposit-All", item).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-All", item)).setPriority(10);
+				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-All", item)).setPriority(10);
 			});
 		}
 
@@ -1470,8 +1472,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		});
 		Text.fromCSV(this.getWithdrawXItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-", item);
-			menuManager.removePriorityEntry("Deposit-", item);
+			menuManager.removePriorityEntry("Withdraw-" + this.getWithdrawXAmount, item);
+			menuManager.removePriorityEntry("Deposit-" + this.getWithdrawXAmount, item);
 		});
 		Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
 		{
