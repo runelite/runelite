@@ -141,12 +141,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
-		MenuAction.NPC_FIRST_OPTION,
-		MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION,
-		MenuAction.NPC_FOURTH_OPTION,
-		MenuAction.NPC_FIFTH_OPTION,
-		MenuAction.EXAMINE_NPC);
+		MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION, MenuAction.NPC_THIRD_OPTION,
+		MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.EXAMINE_NPC
+	);
 	private static final Splitter NEWLINE_SPLITTER = Splitter
 		.on("\n")
 		.omitEmptyStrings()
@@ -323,7 +320,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-
 		addSwaps();
 		loadConstructionItems(config.getEasyConstructionItems());
 
@@ -376,11 +372,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		updateConfig();
-
-		loadConstructionItems(this.getEasyConstructionItems);
 		removeSwaps();
+		updateConfig();
 		addSwaps();
+		loadConstructionItems(this.getEasyConstructionItems);
 
 		if (!CONFIG_GROUP.equals(event.getGroup()))
 		{
@@ -1011,8 +1006,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-1", item);
-				menuManager.addPriorityEntry("Deposit-1", item);
+				menuManager.addPriorityEntry("Withdraw-1", item).setPriority(10);
+				menuManager.addPriorityEntry("Deposit-1", item).setPriority(10);
 			});
 		}
 
@@ -1020,8 +1015,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawFiveItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-5", item);
-				menuManager.addPriorityEntry("Deposit-5", item);
+				menuManager.addPriorityEntry("Withdraw-5", item).setPriority(10);
+				menuManager.addPriorityEntry("Deposit-5", item).setPriority(10);
 			});
 		}
 
@@ -1029,8 +1024,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawTenItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-10", item);
-				menuManager.addPriorityEntry("Deposit-10", item);
+				menuManager.addPriorityEntry("Withdraw-10", item).setPriority(10);
+				menuManager.addPriorityEntry("Deposit-10", item).setPriority(10);
 			});
 		}
 
@@ -1038,8 +1033,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawXItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-", item);
-				menuManager.addPriorityEntry("Deposit-", item);
+				menuManager.addPriorityEntry("Withdraw-", item).setPriority(10);
+				menuManager.addPriorityEntry("Deposit-", item).setPriority(10);
 			});
 		}
 
@@ -1047,49 +1042,49 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
 			{
-				menuManager.addPriorityEntry("Withdraw-All", item);
-				menuManager.addPriorityEntry("Deposit-All", item);
+				menuManager.addPriorityEntry("Withdraw-All", item).setPriority(10);
+				menuManager.addPriorityEntry("Deposit-All", item).setPriority(10);
 			});
 		}
 
 		if (this.getSwapBuyOne)
 		{
-			Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.addPriorityEntry("Buy-1", item));
+			Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.addPriorityEntry("Buy 1", item).setPriority(100));
 		}
 
 		if (this.getSwapBuyFive)
 		{
-			Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.addPriorityEntry("Buy-5", item));
+			Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.addPriorityEntry("Buy 5", item).setPriority(100));
 		}
 
 		if (this.getSwapBuyTen)
 		{
-			Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.addPriorityEntry("Buy-10", item));
+			Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.addPriorityEntry("Buy 10", item).setPriority(100));
 		}
 
 		if (this.getSwapBuyFifty)
 		{
-			Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.addPriorityEntry("Buy-50", item));
+			Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.addPriorityEntry("Buy 50", item).setPriority(100));
 		}
 
 		if (this.getSwapSellOne)
 		{
-			Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.addPriorityEntry("Sell-1", item));
+			Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.addPriorityEntry("Sell 1", item).setPriority(100));
 		}
 
 		if (this.getSwapSellFive)
 		{
-			Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.addPriorityEntry("Sell-5", item));
+			Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.addPriorityEntry("Sell 5", item).setPriority(100));
 		}
 
 		if (this.getSwapSellTen)
 		{
-			Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.addPriorityEntry("Sell-10", item));
+			Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.addPriorityEntry("Sell 10", item).setPriority(100));
 		}
 
 		if (this.getSwapSellFifty)
 		{
-			Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.addPriorityEntry("Sell-50", item));
+			Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.addPriorityEntry("Sell 50", item).setPriority(100));
 		}
 
 		if (this.getSwapTanning)
@@ -1104,7 +1099,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getSwapSawmillPlanks)
 		{
-			menuManager.addPriorityEntry("Buy All");
+			//Not much we can do for this one, Buy all is the only thing, there is no target.
+			menuManager.addPriorityEntry("Buy All").setPriority(10);
 		}
 
 		if (this.getSwapArdougneCape)
@@ -1121,8 +1117,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getSwapConstructionCape)
 		{
-			menuManager.addPriorityEntry(constructionCapeMode.toString(), "Construct. cape");
-			menuManager.addPriorityEntry(constructionCapeMode.toString(), "Construct. cape(t)");
+			menuManager.addPriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
+			menuManager.addPriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
 		}
 
 		if (this.getSwapMagicCape)
@@ -1140,7 +1136,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapPickpocket)
 		{
-			menuManager.addPriorityEntry("Pickpocket");
+			menuManager.addPriorityEntry("Pickpocket").setPriority(1);
 		}
 
 		if (this.swapHardWoodGrove)
@@ -1150,23 +1146,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBankExchange)
 		{
-			menuManager.addPriorityEntry("Bank");
-			menuManager.addPriorityEntry("Exchange");
+			menuManager.addPriorityEntry("Bank").setPriority(1);
+			menuManager.addPriorityEntry("Exchange").setPriority(10);
 		}
 
 		if (this.swapContract)
 		{
-			menuManager.addPriorityEntry("Contract");
+			menuManager.addPriorityEntry("Contract").setPriority(10);
 		}
 
 		if (this.swapInteract)
 		{
-			menuManager.addPriorityEntry("Repairs");
-			menuManager.addPriorityEntry("Claim-slime");
-			menuManager.addPriorityEntry("Decant");
-			menuManager.addPriorityEntry("Claim");
-			menuManager.addPriorityEntry("Heal");
-			menuManager.addPriorityEntry("Help");
+			menuManager.addPriorityEntry("Repairs").setPriority(10);
+			menuManager.addPriorityEntry("Claim-slime").setPriority(10);
+			menuManager.addPriorityEntry("Decant").setPriority(10);
+			menuManager.addPriorityEntry("Claim").setPriority(10);
+			menuManager.addPriorityEntry("Heal").setPriority(10);
+			menuManager.addPriorityEntry("Help").setPriority(10);
 		}
 
 		if (this.swapAssignment)
@@ -1176,14 +1172,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapPlank)
 		{
-			menuManager.addPriorityEntry("Buy-plank");
+			menuManager.addPriorityEntry("Buy-plank").setPriority(10);
 		}
 
 		if (this.swapTrade)
 		{
-			menuManager.addPriorityEntry("Trade");
-			menuManager.addPriorityEntry("Trade-with");
-			menuManager.addPriorityEntry("Shop");
+			menuManager.addPriorityEntry("Trade").setPriority(1);
+			menuManager.addPriorityEntry("Trade-with").setPriority(1);
+			menuManager.addPriorityEntry("Shop").setPriority(1);
 		}
 
 		if (this.swapMinigame)
@@ -1204,10 +1200,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addPriorityEntry("Jatizso");
 			menuManager.addPriorityEntry("Neitiznot");
 			menuManager.addPriorityEntry("Rellekka");
-			//missing target for this bad boy.
-			/*menuManager.addPriorityEntry("Follow");*/
+			menuManager.addPriorityEntry("Follow", "Elkoy").setPriority(10);
 			menuManager.addPriorityEntry("Transport");
-			menuManager.addPriorityEntry("Teleport", "Mage of zamorak");
+			menuManager.addPriorityEntry("Teleport", "Mage of zamorak").setPriority(10);
 		}
 
 		if (this.swapPay)
@@ -1255,9 +1250,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBoxTrap)
 		{
-			menuManager.addPriorityEntry("Reset");
-			menuManager.addPriorityEntry("Lay");
-			menuManager.addPriorityEntry("Activate");
+			menuManager.addPriorityEntry("Reset", "Box trap");
+			menuManager.addPriorityEntry("Lay", "Box trap");
+			menuManager.addPriorityEntry("Activate", "Box trap");
 		}
 
 		if (this.swapChase)
@@ -1276,17 +1271,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addPriorityEntry("Quick-start");
 			menuManager.addPriorityEntry("Quick-pass");
 			menuManager.addPriorityEntry("Quick-open");
-			menuManager.addPriorityEntry("Quick-enter");
 			menuManager.addPriorityEntry("Quick-leave");
 		}
 
 		if (this.swapAdmire)
 		{
-			menuManager.addPriorityEntry("Teleport", "Mounted Strength Cape");
-			menuManager.addPriorityEntry("Teleport", "Mounted Construction Cape");
-			menuManager.addPriorityEntry("Teleport", "Mounted Crafting Cape");
-			menuManager.addPriorityEntry("Teleport", "Mounted Hunter Cape");
-			menuManager.addPriorityEntry("Teleport", "Mounted Fishing Cape");
+			menuManager.addPriorityEntry("Teleport", "Mounted Strength Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Construction Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Crafting Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Hunter Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Fishing Cape").setPriority(10);
 			menuManager.addPriorityEntry("Spellbook", "Mounted Magic Cape");
 			menuManager.addPriorityEntry("Perks", "Mounted Max Cape");
 		}
@@ -1313,13 +1307,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.rockCake)
 		{
-			menuManager.addPriorityEntry("Guzzle");
+			menuManager.addPriorityEntry("Guzzle", "Dwarven rock cake");
 		}
 
 		if (this.swapTeleportItem)
 		{
-			menuManager.addPriorityEntry("Rub");
-			menuManager.addPriorityEntry("Teleport");
+			menuManager.addSwap("Wear", "", "Rub");
+			menuManager.addSwap("Wield", "", "Rub");
+			menuManager.addSwap("Wear", "", "Teleport");
+			menuManager.addSwap("Wield", "", "Teleport");
 		}
 
 		if (this.swapCoalBag)
@@ -1355,23 +1351,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 		switch (this.swapOccultMode)
 		{
 			case LUNAR:
-				menuManager.addPriorityEntry("Lunar");
+				menuManager.addPriorityEntry("Lunar", "Altar of the Occult");
 				break;
 			case ANCIENT:
-				menuManager.addPriorityEntry("Ancient");
+				menuManager.addPriorityEntry("Ancient", "Altar of the Occult");
 				break;
 			case ARCEUUS:
-				menuManager.addPriorityEntry("Arceuus");
+				menuManager.addPriorityEntry("Arceuus", "Altar of the Occult");
 				break;
 		}
 
 		switch (this.swapObeliskMode)
 		{
 			case SET_DESTINATION:
-				menuManager.addPriorityEntry("Set destination");
+				menuManager.addPriorityEntry("Set destination", "Obelisk");
 				break;
 			case TELEPORT_TO_DESTINATION:
-				menuManager.addPriorityEntry("Teleport to destination");
+				menuManager.addPriorityEntry("Teleport to destination", "Obelisk");
 				break;
 		}
 
@@ -1395,54 +1391,54 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getCombatBracelet)
 		{
-			menuManager.addPriorityEntry(this.getCombatBraceletMode.toString(), "combat bracelet");
+			menuManager.addPriorityEntry(this.getCombatBraceletMode.toString());
 		}
 
 		if (this.getGamesNecklace)
 		{
-			menuManager.addPriorityEntry(this.getGamesNecklaceMode.toString(), "games necklace");
+			menuManager.addPriorityEntry(this.getGamesNecklaceMode.toString());
 		}
 
 		if (this.getDuelingRing)
 		{
-			menuManager.addPriorityEntry(this.getDuelingRingMode.toString(), "ring of dueling");
+			menuManager.addPriorityEntry(this.getDuelingRingMode.toString());
 		}
 
 		if (this.getGlory)
 		{
-			menuManager.addPriorityEntry(this.getGloryMode.toString(), "amulet of glory");
-			menuManager.addPriorityEntry(this.getGloryMode.toString(), "amulet of eternal glory");
+			menuManager.addPriorityEntry(this.getGloryMode.toString());
+			menuManager.addPriorityEntry(this.getGloryMode.toString());
 		}
 
 		if (this.getSkillsNecklace)
 		{
-			menuManager.addPriorityEntry(this.getSkillsNecklaceMode.toString(), "skills necklace");
+			menuManager.addPriorityEntry(this.getSkillsNecklaceMode.toString());
 		}
 
 		if (this.getNecklaceofPassage)
 		{
-			menuManager.addPriorityEntry(this.getNecklaceofPassageMode.toString(), "necklace of passage");
+			menuManager.addPriorityEntry(this.getNecklaceofPassageMode.toString());
 		}
 
 		if (this.getDigsitePendant)
 		{
-			menuManager.addPriorityEntry(this.getDigsitePendantMode.toString(), "digsite pendant");
+			menuManager.addPriorityEntry(this.getDigsitePendantMode.toString());
 		}
 
 		if (this.getSlayerRing)
 		{
-			menuManager.addPriorityEntry(this.getSlayerRingMode.toString(), "slayer ring");
-			menuManager.addPriorityEntry(this.getSlayerRingMode.toString(), "slayer ring (eternal)");
+			menuManager.addPriorityEntry(this.getSlayerRingMode.toString());
+			menuManager.addPriorityEntry(this.getSlayerRingMode.toString());
 		}
 
 		if (this.getXericsTalisman)
 		{
-			menuManager.addPriorityEntry(this.getXericsTalismanMode.toString(), "xeric's talisman");
+			menuManager.addPriorityEntry(this.getXericsTalismanMode.toString());
 		}
 
 		if (this.getRingofWealth)
 		{
-			menuManager.addPriorityEntry(this.getRingofWealthMode.toString(), "ring of wealth");
+			menuManager.addPriorityEntry(this.getRingofWealthMode.toString());
 		}
 
 		if (this.swapMax)
@@ -1482,30 +1478,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.removePriorityEntry("Withdraw-All", item);
 			menuManager.removePriorityEntry("Deposit-All", item);
 		});
-		Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.removePriorityEntry("Buy-1", item));
-		Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.removePriorityEntry("Buy-5", item));
-		Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.removePriorityEntry("Buy-10", item));
-		Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.removePriorityEntry("Buy-50", item));
-		Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.removePriorityEntry("Sell-1", item));
-		Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.removePriorityEntry("Sell-5", item));
-		Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.removePriorityEntry("Sell-10", item));
-		Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.removePriorityEntry("Sell-50", item));
-		menuManager.removeSwaps("burning amulet");
-		menuManager.removeSwaps("combat bracelet");
-		menuManager.removeSwaps("games necklace");
-		menuManager.removeSwaps("ring of dueling");
-		menuManager.removeSwaps("amulet of glory");
-		menuManager.removeSwaps("amulet of eternal glory");
-		menuManager.removeSwaps("skills necklace");
-		menuManager.removeSwaps("necklace of passage");
-		menuManager.removeSwaps("digsite pendant");
-		menuManager.removeSwaps("slayer ring");
-		menuManager.removeSwaps("xeric's talisman");
-		menuManager.removeSwaps("ring of wealth");
-		menuManager.removeSwaps("max cape");
-		menuManager.removeSwaps("quest point cape");
+		Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.removePriorityEntry("Buy 1", item));
+		Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.removePriorityEntry("Buy 5", item));
+		Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.removePriorityEntry("Buy 10", item));
+		Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.removePriorityEntry("Buy 50", item));
+		Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.removePriorityEntry("Sell 1", item));
+		Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.removePriorityEntry("Sell 5", item));
+		Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.removePriorityEntry("Sell 10", item));
+		Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.removePriorityEntry("Sell 50", item));
 		menuManager.removeSwaps("Fairy ring");
 		menuManager.removeSwaps("Tree");
+		menuManager.removePriorityEntry(this.getGloryMode.toString());
+		menuManager.removePriorityEntry(this.getGloryMode.toString());
+		menuManager.removePriorityEntry(this.getSkillsNecklaceMode.toString());
+		menuManager.removePriorityEntry(this.getNecklaceofPassageMode.toString());
+		menuManager.removePriorityEntry(this.getDigsitePendantMode.toString());
+		menuManager.removePriorityEntry(this.getSlayerRingMode.toString());
+		menuManager.removePriorityEntry(this.getSlayerRingMode.toString());
+		menuManager.removePriorityEntry(this.getXericsTalismanMode.toString());
+		menuManager.removePriorityEntry(this.getRingofWealthMode.toString());
+		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
+		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
 		menuManager.removePriorityEntry("Smith All");
 		menuManager.removePriorityEntry("Smith All Sets");
 		menuManager.removePriorityEntry("Tan All");
@@ -1564,9 +1557,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Pay-toll(10gp)", "Gate");
 		menuManager.removePriorityEntry("Travel", "Trapdoor");
 		menuManager.removePriorityEntry("Harpoon");
-		menuManager.removePriorityEntry("Reset");
-		menuManager.removePriorityEntry("Lay");
-		menuManager.removePriorityEntry("Activate");
+		menuManager.removePriorityEntry("Reset", "Box trap");
+		menuManager.removePriorityEntry("Lay", "Box trap");
+		menuManager.removePriorityEntry("Activate", "Box trap");
 		menuManager.removePriorityEntry("Chase");
 		menuManager.removePriorityEntry("Empty", "Birdhouse");
 		menuManager.removePriorityEntry("Quick-enter");
@@ -1575,16 +1568,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Quick-open");
 		menuManager.removePriorityEntry("Quick-enter");
 		menuManager.removePriorityEntry("Quick-leave");
-		menuManager.removePriorityEntry("Teleport");
-		menuManager.removePriorityEntry("Spellbook");
-		menuManager.removePriorityEntry("Perks");
+		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Crafting Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape");
+		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape");
+		menuManager.removePriorityEntry("Perks", "Mounted Max Cape");
 		menuManager.removePriorityEntry("Private");
 		menuManager.removePriorityEntry("Pick-lots");
 		menuManager.removePriorityEntry("Search");
 		menuManager.removePriorityEntry("Search for traps");
-		menuManager.removePriorityEntry("Guzzle");
-		menuManager.removePriorityEntry("Rub");
-		menuManager.removePriorityEntry("Teleport");
+		menuManager.removePriorityEntry("Guzzle", "Dwarven rock cake");
+		menuManager.removeSwap("Wear", "", "Rub");
+		menuManager.removeSwap("Wield", "", "Rub");
+		menuManager.removeSwap("Wear", "", "Teleport");
+		menuManager.removeSwap("Wield", "", "Teleport");
 
 		switch (this.swapFairyRingMode)
 		{
@@ -1604,23 +1603,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 		switch (this.swapOccultMode)
 		{
 			case LUNAR:
-				menuManager.removePriorityEntry("Lunar");
+				menuManager.removePriorityEntry("Lunar", "Altar of the Occult");
 				break;
 			case ANCIENT:
-				menuManager.removePriorityEntry("Ancient");
+				menuManager.removePriorityEntry("Ancient", "Altar of the Occult");
 				break;
 			case ARCEUUS:
-				menuManager.removePriorityEntry("Arceuus");
+				menuManager.removePriorityEntry("Arceuus", "Altar of the Occult");
 				break;
 		}
 
 		switch (this.swapObeliskMode)
 		{
 			case SET_DESTINATION:
-				menuManager.removePriorityEntry("Set destination");
+				menuManager.removePriorityEntry("Set destination", "Obelisk");
 				break;
 			case TELEPORT_TO_DESTINATION:
-				menuManager.removePriorityEntry("Teleport to destination");
+				menuManager.removePriorityEntry("Teleport to destination", "Obelisk");
 				break;
 		}
 
