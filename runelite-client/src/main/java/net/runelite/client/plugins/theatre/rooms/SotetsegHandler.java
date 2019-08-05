@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.theatre.rooms;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -19,6 +20,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.ProjectileID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -33,12 +35,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class SotetsegHandler extends RoomHandler
 {
-
+	private static final Set<Integer> SOTE_PROJ = ImmutableSet.of(
+		ProjectileID.SOTETSEG_MAGE, ProjectileID.SOTETSEG_BOMB, ProjectileID.SOTETSEG_RANGE
+	);
 	@Getter(AccessLevel.PUBLIC)
 	private final Map<GroundObject, Tile> redTiles = new LinkedHashMap<>();
-	//My variables
-	private int playerX;
-	private int playerY;
 	@Getter(AccessLevel.PUBLIC)
 	private List<WorldPoint> redOverworld = new ArrayList<>();
 	private final List<WorldPoint> blackOverworld = new ArrayList<>();
@@ -147,7 +148,7 @@ public class SotetsegHandler extends RoomHandler
 		final Projectile projectile = event.getProjectile();
 
 		//1604 ball
-		if (projectile.getId() == 1604 && projectile.getInteracting() == client.getLocalPlayer())
+		if (SOTE_PROJ.contains(projectile.getId()) && projectile.getInteracting() == client.getLocalPlayer())
 		{
 			soteyProjectiles.add(projectile);
 		}
@@ -234,18 +235,13 @@ public class SotetsegHandler extends RoomHandler
 			return;
 		}
 
-		//Update player position every game tick
-		playerX = client.getLocalPlayer().getLocalLocation().getX();
-		playerY = client.getLocalPlayer().getLocalLocation().getY();
-
-
-		//Remove projectiles that are about to die
 		if (!soteyProjectiles.isEmpty())
 		{
 			soteyProjectiles.removeIf(p -> p.getRemainingCycles() <= 0);
 		}
 
 		boolean sotetsegFighting = false;
+
 		for (NPC npc : client.getNpcs())
 		{
 			if (npc.getId() == NpcID.SOTETSEG_8388)
