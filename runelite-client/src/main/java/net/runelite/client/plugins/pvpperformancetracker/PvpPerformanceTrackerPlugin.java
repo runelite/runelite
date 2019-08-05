@@ -50,9 +50,13 @@ import static net.runelite.client.plugins.pvpperformancetracker.AnimationAttackS
 )
 public class PvpPerformanceTrackerPlugin extends Plugin
 {
+    private abstract class PvpPlayer implements Player
+    {
+        public boolean isAttacking;
+    }
 	// Delay to assume a fight is over. May seem long, but sometimes people barrage &
 	// stand under for a while to eat.
-	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(20);
+	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
 
 	@Inject
 	private Client client;
@@ -88,7 +92,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		lastFightTime = Instant.MIN;
 		playerAttacking = false;
 		opponentAttacking = false;
-		fightHistory = new ArrayList<FightPerformance>();
+		fightHistory = new ArrayList<>();
 		currentFight = FightPerformance.getTestInstance(true);
 		overlayManager.add(overlay);
 	}
@@ -131,8 +135,8 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 			// and also check the opponent's animation for an attack. If they attacked,
 			// the function will also add the attack to the current fight stats, taking
 			// into account the opponent's overhead prayer.
-			checkAnimation(true);
-			checkAnimation(false);
+            checkPlayerAnimation();
+            checkOpponentAnimation();
 		}
 	}
 
@@ -140,39 +144,82 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	{
 		// If there was no fight actions in the last 20s (NEW_FIGHT_DELAY), set opponent to
 		// null, which will get set next time the player targets a Player.
-		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
+		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0 ||
+            (currentOpponent != null && currentOpponent.getAnimation() != AnimationID.DEATH))
 		{
 			currentOpponent = null;
 		}
 		return currentOpponent != null;
 	}
 
-	// check a player's animation, and if they are doing an attack animation, add an attack
-	// to the current fight stats. Check opponent's overhead to see if the attack was"successful".
-	// forPlayer bool: when true, checking animations for the local player. False will check the opponent.
-	private void checkAnimation(boolean forPlayer)
+
+//	private void checkAnimation(boolean forPlayer)
+//	{
+//		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
+//		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
+//		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
+//		if (animationStyle == None || animationStyle == null)
+//		{
+//			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
+//			playerAttacking = !forPlayer && playerAttacking;
+//			opponentAttacking = forPlayer && opponentAttacking;
+//			return;
+//		}
+//
+//		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
+//		if (forPlayer ? !playerAttacking : !opponentAttacking)
+//		{
+//			lastFightTime = Instant.now();
+//			currentFight.addAttack(player.getName(), opponent.getOverheadIcon() != animationStyle.getProtection());
+//
+//			// similar shorthand as above, but = true.
+//			playerAttacking = forPlayer || playerAttacking;
+//			opponentAttacking = !forPlayer || opponentAttacking;
+//		}
+//	}
+
+    // check player's animation, and if they are doing an attack animation, add an attack
+    // to the current fight stats. Check opponent's overhead to see if the attack was"successful".
+    // forPlayer bool: when true, checking animations for the local player. False will check the opponent.
+	private void checkPlayerAnimation()
 	{
-		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
-		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
+		Player player = client.getLocalPlayer();
+		Player opponent = currentOpponent;
 		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
 		if (animationStyle == None || animationStyle == null)
 		{
-			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }. 8ln => 2ln
-			playerAttacking = !forPlayer && playerAttacking;
-			opponentAttacking = forPlayer && opponentAttacking;
+			playerAttacking = false;
 			return;
 		}
 
 		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
-		if (forPlayer ? !playerAttacking : !opponentAttacking)
+		if (playerAttacking)
 		{
 			lastFightTime = Instant.now();
 			currentFight.addAttack(player.getName(), opponent.getOverheadIcon() != animationStyle.getProtection());
-
-			// similar shorthand as above, but = true.
-			playerAttacking = forPlayer || playerAttacking;
-			opponentAttacking = !forPlayer || opponentAttacking;
+			playerAttacking = true;
 		}
 	}
+
+	// same as above but for opponent.
+    private void checkOpponentAnimation()
+    {
+        Player player = client.getLocalPlayer();
+        Player opponent = currentOpponent;
+        AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(opponent.getAnimation());
+        if (animationStyle == None || animationStyle == null)
+        {
+            opponentAttacking = false;
+            return;
+        }
+
+        // Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
+        if (opponentAttacking)
+        {
+            lastFightTime = Instant.now();
+            currentFight.addAttack(opponent.getName(), player.getOverheadIcon() != animationStyle.getProtection());
+            opponentAttacking = true;
+        }
+    }
 
 }

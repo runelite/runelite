@@ -59,7 +59,7 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		PvpPerformanceStats currentFight = plugin.getCurrentFight();
+		FightPerformance currentFight = plugin.getCurrentFight();
 		if (currentFight == null || !config.showCurrentFightOverlay() || config.restrictToLms())
 		{
 			return null;
@@ -68,7 +68,7 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		panelComponent.getChildren().clear();
 
 		// Only display the title if it's enabled (pointless in my opinion, since you can just see
-		// what the panel is displaying, but I understand the preference of having overlays labelled)
+		// what the panel is displaying, but I can understand the preference of having overlays labelled)
 		if (config.showOverlayTitle())
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
@@ -85,7 +85,7 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		// Second line: Opponent's stats (foe: success rate counters + % value)
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Foe:")
-			.leftColor(!plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
+			.leftColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
 			.right(currentFight.getOpponentDisplayString())
 			.build());
 

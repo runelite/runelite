@@ -36,10 +36,12 @@ public class FightPerformance
     private String playerName;
     private int playerAttackCount;
     private int playerSuccessCount;
+    private double playerSuccessRate; // success rate in percentage
 
     private String opponentName;
     private int opponentAttackCount;
     private int opponentSuccessCount;
+    private double opponentSuccessRate; // success rate in percentage
 
     static FightPerformance getTestInstance(boolean random)
     {
@@ -71,8 +73,10 @@ public class FightPerformance
         this.opponentName = opponentName;
         playerAttackCount = 0;
         playerSuccessCount = 0;
+        playerSuccessRate = 0;
         opponentAttackCount = 0;
         opponentSuccessCount = 0;
+        opponentSuccessRate = 0;
     }
 
     private FightPerformance(String playerName, String opponentName, int playerAttackCount, int playerSuccessCount, int opponentAttackCount, int opponentSuccessCount)
@@ -81,27 +85,31 @@ public class FightPerformance
         this.opponentName = opponentName;
         this.playerAttackCount = playerAttackCount;
         this.playerSuccessCount = playerSuccessCount;
+        this.playerSuccessRate = this.playerSuccessCount / this.playerAttackCount;
         this.opponentAttackCount = opponentAttackCount;
         this.opponentSuccessCount = opponentSuccessCount;
+        this.opponentSuccessRate = this.opponentSuccessCount / this.opponentAttackCount;
     }
 
     public void addAttack(String playerName, boolean success)
     {
-        if (playerName == playerName)
+        if (playerName.equals(this.playerName))
         {
             playerAttackCount++;
             if (success)
             {
                 playerSuccessCount++;
             }
+            playerSuccessRate = playerSuccessCount / playerAttackCount * 100;
         }
-        else if (playerName == opponentName)
+        else if (playerName.equals(opponentName))
         {
             opponentAttackCount++;
             if (success)
             {
                 opponentSuccessCount++;
             }
+            opponentSuccessRate = opponentSuccessCount / opponentAttackCount * 100;
         }
     }
 
@@ -111,21 +119,31 @@ public class FightPerformance
     public String getPlayerDisplayString()
     {
         // The success rate is the percentage of successful attacks.
-        int playerSuccessRate = (int)Math.round(((double)playerSuccessCount / (double)playerAttackCount) * 100);
-        return playerSuccessCount + "/" + playerAttackCount + " (" + playerSuccessRate + "%)";
+        //int playerSuccessRate = (int)Math.round(((double)playerSuccessCount / (double)playerAttackCount) * 100);
+        return playerSuccessCount + "/" + playerAttackCount + " (" + Math.round(playerSuccessRate) + "%)";
     }
 
     // Return a simple string to display the current opponent's success rate.
     public String getOpponentDisplayString()
     {
         // The success rate is the percentage of successful attacks.
-        int opponentSuccessRate = (int)Math.round(((double)opponentSuccessCount / (double)opponentAttackCount) * 100);
-        return opponentSuccessCount + "/" + opponentAttackCount + " (" + opponentSuccessRate + "%)";
+        //int opponentSuccessRate = (int)Math.round(((double)opponentSuccessCount / (double)opponentAttackCount) * 100);
+        return opponentSuccessCount + "/" + opponentAttackCount + " (" + Math.round(opponentSuccessRate) + "%)";
     }
 
-    // returns true if player success count > opponent success count.
+    // returns true if player success rate > opponent success rate.
+    // could be wrong in some cases, if someone is eating a lot and genuinely not attacking much,
+    // they could have a higher success rate than the person clearly winning. Although it is hard to
+    // judge by comparing attack counts since someone using rune knives/msb against ballista/ags
+    // is fairly common.
     public boolean playerWinning()
     {
-        return playerSuccessCount >= opponentSuccessCount;
+        return playerSuccessRate > opponentSuccessRate;
+    }
+
+    // returns true if opponent success rate > player success rate.
+    public boolean opponentWinning()
+    {
+        return opponentSuccessRate > playerSuccessRate;
     }
 }

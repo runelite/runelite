@@ -209,25 +209,50 @@ public final class AnimationID
 
 	// Combat Animations
 	public static final int COMBAT_SHIELD_BLOCK = 1156;
+	public static final int GRANITE_MAUL_BLOCK = 1666;
 	public static final int COMBAT_DEFENDER_BLOCK = 4177; // Not certain about being used only with defender
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
 	// Melee Attack Animations
-	public static final int MELEE_RUNE_SCIM_SLASH = 390;
+    public static final int MELEE_SWORD_STAB = 386; // tested w/ dragon sword
+	public static final int MELEE_SCIM_SLASH = 390; // tested w/ rune & dragon
 	public static final int MELEE_RUNE_BATTLEAXE_SLASH = 395;
 	public static final int MELEE_RUNE_BATTLEAXE_CRUSH = 401;
 	public static final int MELEE_RUNE_2H_CRUSH = 406;
 	public static final int MELEE_RUNE_2H_SLASH = 407;
+	public static final int MELEE_ANCIENT_STAFF_CRUSH = 414;
+	public static final int MELEE_STAFF_CRUSH = 419; // Common staff bash animation. Air/fire/etc staves, smoke battlestaff
+    public static final int MELEE_PUNCH = 422;
 	public static final int MELEE_DRAGON_DAGGER_SPEC = 1062;
-	public static final int MELEE_ABYSSAL_WHIP = 1658;
+	public static final int MELEE_ABYSSAL_WHIP = 1658; // tentacle whip is the same
+	public static final int MELEE_GRANITE_MAUL = 1665;
+	public static final int MELEE_GRANITE_MAUL_SPEC = 1667;
+    public static final int MELEE_DHAROKS_GREATAXE_SLASH = 2067;
+    public static final int MELEE_BARRELCHEST_ANCHOR_CRUSH = 5865;
+    public static final int MELEE_GODSWORD_SLASH = 7045; // tested with AGS & ZGS, probably same for all godswords
+    public static final int MELEE_DRAGON_CLAWS_SPEC = 7514;
 	public static final int MELEE_ELDER_MAUL = 7516; // Only tested 1 style, think they're all crush.
+    public static final int MELEE_ARMADYL_GODSWORD_SPEC = 7644;
 
 	// Magic Attack/Casting Animations
-	public static final int MAGIC_ANCIENT_BARRAGE = 1979; // Confirmed the same for Ice & Blood w/ diff weapons. Possibly also bursting.
+    public static final int MAGIC_STANDARD_BIND = 1161; // tested with entangle
+	public static final int MAGIC_STANDARD_STRIKE_BOLT_BLAST = 1162; // strike, bolt and blast (tested different weapons)
+	public static final int MAGIC_STANDARD_WAVE = 1167; // wave (tested different weapons)
+	public static final int MAGIC_STANDARD_SURGE = 7855; // surge (tested different weapons)
+    public static final int MAGIC_ANCIENT_SINGLE_TARGET = 1978; // Rush & Blitz animations (tested all 8, different weapons)
+	public static final int MAGIC_ANCIENT_MULTI_TARGET = 1979; // Burst & Barrage animations (tested all 8, different weapons)
 
 	// Ranged Attack Animations
-	public static final int RANGED_MAPLE_SHORTBOW = 426; // Confirmed same w/ addy & iron arrows. Assumed same for all arrows.
-	public static final int RANGED_RUNE_CROSSBOW = 4230;
-	//public static final int RANGED_HEAVY_BALLISTA = 7218; // Tested w/ dragon javelins. UNCERTAIN, NEEDS CONFIRM.
+	public static final int RANGED_SHORTBOW = 426; // Confirmed same w/ 3 types of arrows, with maple, magic, and hunter's shortbow
+    public static final int RANGED_RUNE_KNIFE_PVP = 929; // 1 tick animation, has 1 tick delay between attacks. likely same for all knives
+    public static final int RANGED_MAGIC_SHORTBOW_SPEC = 1074;
+    public static final int RANGED_RUNE_CROSSBOW_PVP = 4230; // Tested w/ dragonstone bolts (e)
+    public static final int RANGED_HEAVY_BALLISTA = 7218; // Tested w/ dragon javelins.
+    public static final int RANGED_DRAGON_THROWNAXE_SPEC = 7521;
+	public static final int RANGED_RUNE_CROSSBOW = 7552;
+	public static final int RANGED_LIGHT_BALLISTA = 7555; // Tested w/ dragon & iron javelins.
+    public static final int RANGED_RUNE_KNIFE = 7617; // 1 tick animation, has 1 tick delay between attacks. likely same for all knives
+    public static final int RANGED_DRAGON_KNIFE = 8194;
+    public static final int RANGED_DRAGON_KNIFE_POISONED = 8195; // not exactly sure if poison is the only distinction (collected while watching fights)
 
 }
