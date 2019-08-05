@@ -69,12 +69,6 @@ public class TagManager
 		this.clueScrollService = clueScrollService;
 	}
 
-	private static class placeholdernumbernames{
-		public static long B = 1000000000;
-		public static long M = 1000000;
-		public static long K = 1000;
-	}
-
 	String getTagString(int itemId, boolean variation)
 	{
 		itemId = getItemId(itemId, variation);
