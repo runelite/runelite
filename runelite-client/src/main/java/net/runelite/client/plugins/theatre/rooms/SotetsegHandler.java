@@ -20,6 +20,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.ProjectileID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -34,7 +35,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class SotetsegHandler extends RoomHandler
 {
-	private static final Set<Integer> SOTE_PROJ = ImmutableSet.of(1604, 1607, 1606);
+	private static final Set<Integer> SOTE_PROJ = ImmutableSet.of(
+		ProjectileID.SOTETSEG_MAGE, ProjectileID.SOTETSEG_BOMB, ProjectileID.SOTETSEG_RANGE
+	);
 	@Getter(AccessLevel.PUBLIC)
 	private final Map<GroundObject, Tile> redTiles = new LinkedHashMap<>();
 	@Getter(AccessLevel.PUBLIC)
