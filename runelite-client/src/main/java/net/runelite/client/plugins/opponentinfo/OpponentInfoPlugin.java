@@ -149,13 +149,21 @@ public class OpponentInfoPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (lastOpponent != null
-			&& lastTime != null
-			&& client.getLocalPlayer().getInteracting() == null)
+		if (lastOpponent != null)
 		{
-			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
+			if (lastTime != null
+				&& client.getLocalPlayer().getInteracting() == null
+				&& Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 			{
 				lastOpponent = null;
+			}
+		}
+		else
+		{
+			lastOpponent = client.getLocalPlayer().getInteracting();
+			if (lastOpponent != null)
+			{
+				lastTime = Instant.now();
 			}
 		}
 	}
