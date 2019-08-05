@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-import java.awt.Image;
+import com.google.common.base.CharMatcher;
 
-/**
- * Represents the clients primary image buffer.
- */
-public interface MainBufferProvider extends BufferProvider
+class JagexPrintableCharMatcher extends CharMatcher
 {
-	/**
-	 * Gets the image currently loaded in the buffer.
-	 *
-	 * @return the loaded image
-	 */
-	Image getImage();
+	@Override
+	public boolean matches(char c)
+	{
+		// Characters which are printable
+		return (c >= 32 && c <= 126)
+			|| c == 128
+			|| (c >= 160 && c <= 255);
+	}
 }

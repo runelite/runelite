@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.grounditems;
 
-import java.awt.Image;
-
-/**
- * Represents the clients primary image buffer.
- */
-public interface MainBufferProvider extends BufferProvider
+enum LootType
 {
-	/**
-	 * Gets the image currently loaded in the buffer.
-	 *
-	 * @return the loaded image
-	 */
-	Image getImage();
+	UNKNOWN,
+	PVP,
+	PVM;
 }

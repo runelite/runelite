@@ -34,6 +34,12 @@ public interface ZoomConfig extends Config
 {
 	int OUTER_LIMIT_MIN = -400;
 	int OUTER_LIMIT_MAX = 400;
+	/**
+	 * The largest (most zoomed in) value that can be used without the client crashing.
+	 *
+	 * Larger values trigger an overflow in the engine's fov to scale code.
+	 */
+	int INNER_ZOOM_LIMIT = 1004;
 
 	@ConfigItem(
 		keyName = "inner",
@@ -91,7 +97,7 @@ public interface ZoomConfig extends Config
 	)
 	@Range(
 		min = OUTER_LIMIT_MIN,
-		max = OUTER_LIMIT_MAX
+		max = INNER_ZOOM_LIMIT
 	)
 	default int ctrlZoomValue()
 	{

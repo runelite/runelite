@@ -31,6 +31,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,8 +53,10 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -66,6 +71,13 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
+	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
+	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
+	private static final int TIMER_OVERLAY_DIAMETER = 10;
+	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
+	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
+	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
+	private static final int KRAKEN_REGION = 9116;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -73,6 +85,7 @@ public class GroundItemsOverlay extends Overlay
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
+	private final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
@@ -163,6 +176,7 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHighlightBoxBounds(null);
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
+		final boolean groundItemTimers = config.groundItemTimers();
 
 		for (GroundItem item : groundItemList)
 		{
@@ -333,6 +347,11 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
+			if (groundItemTimers || plugin.isHotKeyPressed())
+			{
+				drawTimerOverlay(graphics, textX, textY, item);
+			}
+
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
@@ -340,6 +359,79 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	{
+		// We can only accurately guess despawn times for our own pvm loot and dropped items
+		if (groundItem.getLootType() != LootType.PVM && !groundItem.isDropped())
+		{
+			return;
+		}
+
+		// Loot appears to others after 1 minute, and despawns after 2 minutes
+		// Dropped items appear to others after 1 minute, and despawns after 3 minutes
+		// Items in instances never appear to anyone and despawn after 30 minutes
+
+		Instant spawnTime = groundItem.getSpawnTime();
+		if (spawnTime == null)
+		{
+			return;
+		}
+
+		Instant despawnTime;
+		Instant now = Instant.now();
+		Color fillColor;
+		if (client.isInInstancedRegion())
+		{
+			// Items in the Kraken instance appear to never despawn?
+			if (isInKraken())
+			{
+				return;
+			}
+
+			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			fillColor = PRIVATE_TIMER_COLOR;
+		}
+		else
+		{
+			if (groundItem.isDropped())
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+			}
+			else
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+			}
+
+			// If it has not yet been a minute, the item is private
+			if (spawnTime.plus(1, ChronoUnit.MINUTES).isAfter(now))
+			{
+				fillColor = PRIVATE_TIMER_COLOR;
+			}
+			else
+			{
+				fillColor = PUBLIC_TIMER_COLOR;
+			}
+		}
+
+		if (now.isBefore(spawnTime) || now.isAfter(despawnTime))
+		{
+			// that's weird
+			return;
+		}
+
+		float percent = (float) (now.toEpochMilli() - spawnTime.toEpochMilli()) / (despawnTime.toEpochMilli() - spawnTime.toEpochMilli());
+
+		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
+		// Shift over to not be on top of the text
+		int x = textX - TIMER_OVERLAY_DIAMETER;
+		int y = textY - TIMER_OVERLAY_DIAMETER / 2;
+		progressPieComponent.setPosition(new Point(x, y));
+		progressPieComponent.setFill(fillColor);
+		progressPieComponent.setBorderColor(fillColor);
+		progressPieComponent.setProgress(1 - percent); // inverse so pie drains over time
+		progressPieComponent.render(graphics);
 	}
 
 	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
@@ -377,6 +469,11 @@ public class GroundItemsOverlay extends Overlay
 				);
 		}
 
+	}
+
+	private boolean isInKraken()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
 	}
 
 }

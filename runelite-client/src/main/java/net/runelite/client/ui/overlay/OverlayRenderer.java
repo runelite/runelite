@@ -33,6 +33,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -433,14 +434,16 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
-		final Graphics2D subGraphics = (Graphics2D) graphics.create();
-
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
-			subGraphics.setClip(client.getViewportXOffset(),
+			graphics.setClip(client.getViewportXOffset(),
 				client.getViewportYOffset(),
 				client.getViewportWidth(),
 				client.getViewportHeight());
+		}
+		else
+		{
+			graphics.setClip(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		}
 
 		final OverlayPosition position = overlay.getPosition();
@@ -448,23 +451,28 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+			graphics.setFont(runeLiteConfig.fontType().getFont());
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			graphics.setFont(runeLiteConfig.tooltipFontType().getFont());
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
 		}
 
-		subGraphics.translate(point.x, point.y);
+		// Reset the default color
+		graphics.setColor(Color.WHITE);
+
+		// Get transform so we can reset it after drawing
+		AffineTransform transform = graphics.getTransform();
+		graphics.translate(point.x, point.y);
 
 		final Dimension overlayDimension;
 		try
 		{
-			overlayDimension = overlay.render(subGraphics);
+			overlayDimension = overlay.render(graphics);
 		}
 		catch (Exception ex)
 		{
@@ -473,7 +481,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		finally
 		{
-			subGraphics.dispose();
+			graphics.setTransform(transform);
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
