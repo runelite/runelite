@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.theatre.rooms;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -33,12 +34,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class SotetsegHandler extends RoomHandler
 {
-
+	private static final Set<Integer> SOTE_PROJ = ImmutableSet.of(1604, 1607, 1606);
 	@Getter(AccessLevel.PUBLIC)
 	private final Map<GroundObject, Tile> redTiles = new LinkedHashMap<>();
-	//My variables
-	private int playerX;
-	private int playerY;
 	@Getter(AccessLevel.PUBLIC)
 	private List<WorldPoint> redOverworld = new ArrayList<>();
 	private final List<WorldPoint> blackOverworld = new ArrayList<>();
@@ -147,7 +145,7 @@ public class SotetsegHandler extends RoomHandler
 		final Projectile projectile = event.getProjectile();
 
 		//1604 ball
-		if (projectile.getId() == 1604 && projectile.getInteracting() == client.getLocalPlayer())
+		if (SOTE_PROJ.contains(projectile.getId()) && projectile.getInteracting() == client.getLocalPlayer())
 		{
 			soteyProjectiles.add(projectile);
 		}
@@ -234,18 +232,13 @@ public class SotetsegHandler extends RoomHandler
 			return;
 		}
 
-		//Update player position every game tick
-		playerX = client.getLocalPlayer().getLocalLocation().getX();
-		playerY = client.getLocalPlayer().getLocalLocation().getY();
-
-
-		//Remove projectiles that are about to die
 		if (!soteyProjectiles.isEmpty())
 		{
 			soteyProjectiles.removeIf(p -> p.getRemainingCycles() <= 0);
 		}
 
 		boolean sotetsegFighting = false;
+
 		for (NPC npc : client.getNpcs())
 		{
 			if (npc.getId() == NpcID.SOTETSEG_8388)
