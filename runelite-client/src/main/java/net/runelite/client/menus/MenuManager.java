@@ -63,6 +63,7 @@ import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
+import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -84,10 +85,10 @@ public class MenuManager
 	//Used to manage custom non-player menu options
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
 	private final Set<String> npcMenuOptions = new HashSet<>();
-	private final HashSet<ComparableEntry> priorityEntries = new HashSet<>();
-	private LinkedHashMap<MenuEntry, ComparableEntry> currentPriorityEntries = new LinkedHashMap<>();
-	private final HashSet<ComparableEntry> hiddenEntries = new HashSet<>();
-	private final HashMap<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
+	private final HashSet<AbstractComparableEntry> priorityEntries = new HashSet<>();
+	private LinkedHashMap<MenuEntry, AbstractComparableEntry> currentPriorityEntries = new LinkedHashMap<>();
+	private final HashSet<AbstractComparableEntry> hiddenEntries = new HashSet<>();
+	private final HashMap<AbstractComparableEntry, AbstractComparableEntry> swaps = new HashMap<>();
 
 	private MenuEntry leftClickEntry = null;
 	private MenuEntry firstEntry = null;
@@ -161,7 +162,7 @@ public class MenuManager
 		prioritizer:
 		for (MenuEntry entry : oldEntries)
 		{
-			for (ComparableEntry p : priorityEntries)
+			for (AbstractComparableEntry p : priorityEntries)
 			{
 				// Create list of priority entries, and remove from menus
 				if (p.matches(entry))
@@ -180,7 +181,7 @@ public class MenuManager
 			if (newEntries.size() > 0)
 			{
 				// Swap first matching entry to top
-				for (ComparableEntry src : swaps.keySet())
+				for (AbstractComparableEntry src : swaps.keySet())
 				{
 					if (!src.matches(entry))
 					{
@@ -189,7 +190,7 @@ public class MenuManager
 
 					MenuEntry swapFrom = null;
 
-					ComparableEntry from = swaps.get(src);
+					AbstractComparableEntry from = swaps.get(src);
 
 					for (MenuEntry e : newEntries)
 					{
@@ -246,7 +247,7 @@ public class MenuManager
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		for (ComparableEntry e : hiddenEntries)
+		for (AbstractComparableEntry e : hiddenEntries)
 		{
 			if (e.matches(event.getMenuEntry()))
 			{
@@ -513,12 +514,12 @@ public class MenuManager
 	/**
 	 * Adds to the set of menu entries which when present, will remove all entries except for this one
 	 */
-	public ComparableEntry addPriorityEntry(String option, String target)
+	public AbstractComparableEntry addPriorityEntry(String option, String target)
 	{
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
 
 		priorityEntries.add(entry);
 
@@ -530,7 +531,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
 
 		priorityEntries.removeIf(entry::equals);
 	}
@@ -540,12 +541,19 @@ public class MenuManager
 	 * Adds to the set of menu entries which when present, will remove all entries except for this one
 	 * This method will add one with strict option, but not-strict target (contains for target, equals for option)
 	 */
-	public ComparableEntry addPriorityEntry(String option)
+	public AbstractComparableEntry addPriorityEntry(String option)
 	{
 		option = Text.standardize(option);
 
-		ComparableEntry entry = new ComparableEntry(option, "", false);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
 
+		priorityEntries.add(entry);
+
+		return entry;
+	}
+
+	public AbstractComparableEntry addPriorityEntry(AbstractComparableEntry entry)
+	{
 		priorityEntries.add(entry);
 
 		return entry;
@@ -555,7 +563,7 @@ public class MenuManager
 	{
 		option = Text.standardize(option);
 
-		ComparableEntry entry = new ComparableEntry(option, "", false);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
 
 		priorityEntries.removeIf(entry::equals);
 	}
@@ -584,8 +592,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		ComparableEntry swapFrom = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
-		ComparableEntry swapTo = new ComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
 
 		if (swapTo.equals(swapFrom))
 		{
@@ -605,8 +613,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		ComparableEntry swapFrom = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
-		ComparableEntry swapTo = new ComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
 
 		removeSwap(swapFrom, swapTo);
 	}
@@ -627,7 +635,7 @@ public class MenuManager
 	/**
 	 * Adds to the map of swaps - Pre-baked entry
 	 */
-	public void addSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
+	public void addSwap(AbstractComparableEntry swapFrom, AbstractComparableEntry swapTo)
 	{
 		if (swapTo.equals(swapFrom))
 		{
@@ -650,8 +658,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		ComparableEntry swapFrom = new ComparableEntry(option, target, id, type, false, false);
-		ComparableEntry swapTo = new ComparableEntry(option2, target2, id2, type2, false, false);
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, id, type, false, false);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, id2, type2, false, false);
 
 		if (swapTo.equals(swapFrom))
 		{
@@ -670,13 +678,13 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		ComparableEntry swapFrom = new ComparableEntry(option, target, id, type, false, false);
-		ComparableEntry swapTo = new ComparableEntry(option2, target2, id2, type2, false, false);
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, id, type, false, false);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, id2, type2, false, false);
 
 		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
 	}
 
-	public void removeSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
+	public void removeSwap(AbstractComparableEntry swapFrom, AbstractComparableEntry swapTo)
 	{
 		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
 	}
@@ -699,7 +707,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
 
 		hiddenEntries.add(entry);
 	}
@@ -709,7 +717,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
 
 		hiddenEntries.removeIf(entry::equals);
 	}
@@ -722,7 +730,7 @@ public class MenuManager
 	{
 		option = Text.standardize(option);
 
-		ComparableEntry entry = new ComparableEntry(option, "", false);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
 
 		hiddenEntries.add(entry);
 	}
@@ -731,7 +739,7 @@ public class MenuManager
 	{
 		option = Text.standardize(option);
 
-		ComparableEntry entry = new ComparableEntry(option, "", false);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
 
 		hiddenEntries.removeIf(entry::equals);
 	}
@@ -744,7 +752,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
 
 		hiddenEntries.add(entry);
 	}
@@ -754,7 +762,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		ComparableEntry entry = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
 
 		hiddenEntries.remove(entry);
 	}
@@ -762,12 +770,12 @@ public class MenuManager
 	/**
 	 * Adds to the set of hidden entries - Pre-baked Comparable entry
 	 */
-	public void addHiddenEntry(ComparableEntry entry)
+	public void addHiddenEntry(AbstractComparableEntry entry)
 	{
 		hiddenEntries.add(entry);
 	}
 
-	public void removeHiddenEntry(ComparableEntry entry)
+	public void removeHiddenEntry(AbstractComparableEntry entry)
 	{
 		hiddenEntries.remove(entry);
 	}
@@ -782,7 +790,7 @@ public class MenuManager
 		for (int i = 0; i < menuOptionCount; i++)
 		{
 			final MenuEntry entry = entries[i];
-			for (ComparableEntry prio : priorityEntries)
+			for (AbstractComparableEntry prio : priorityEntries)
 			{
 				if (!prio.matches(entry))
 				{
@@ -824,9 +832,9 @@ public class MenuManager
 			return;
 		}
 
-		Set<ComparableEntry> values = new HashSet<>();
+		Set<AbstractComparableEntry> values = new HashSet<>();
 
-		for (Map.Entry<ComparableEntry, ComparableEntry> pair : swaps.entrySet())
+		for (Map.Entry<AbstractComparableEntry, AbstractComparableEntry> pair : swaps.entrySet())
 		{
 			if (pair.getKey().matches(first))
 			{
@@ -845,7 +853,7 @@ public class MenuManager
 		for (int i = menuOptionCount - 2; i > 0; i--)
 		{
 			final MenuEntry entry = entries[i];
-			for (ComparableEntry swap : values)
+			for (AbstractComparableEntry swap : values)
 			{
 				if (!swap.matches(entry))
 				{

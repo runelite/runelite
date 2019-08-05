@@ -30,7 +30,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.menus.ComparableEntry;
+import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.menus.MenuManager;
 
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ class BarbarianAssaultMenu
 {
 	private final MenuManager menuManager;
 	private final BarbarianAssaultPlugin game;
-	private final List<ComparableEntry> tracker = new ArrayList<>();
+	private final List<AbstractComparableEntry> tracker = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hornUpdated = false;
@@ -76,7 +76,7 @@ class BarbarianAssaultMenu
 	void clearHiddenMenus()
 	{
 		// Clears menus from MenuManager and tracker
-		for (Iterator<ComparableEntry> iterator = tracker.iterator(); iterator.hasNext();)
+		for (Iterator<AbstractComparableEntry> iterator = tracker.iterator(); iterator.hasNext();)
 		{
 			menuManager.removeHiddenEntry(iterator.next());
 			iterator.remove();
