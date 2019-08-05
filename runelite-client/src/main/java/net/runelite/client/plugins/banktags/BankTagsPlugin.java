@@ -44,14 +44,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.DraggingWidgetChanged;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.*;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -91,10 +84,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+			"(To show only tagged items, start your search with 'tag:')<br>"+
+			"(To search by value start your search with 'value:')";
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+			"(To show only tagged items, start your search with 'tag:')<br>"+
+			"(To search by value start your search with 'value:')";
 
 	@Inject
 	private ItemManager itemManager;
@@ -192,8 +187,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				{
 					search = search.substring(TAG_SEARCH.length()).trim();
 				}
-
-				if (tagManager.findTag(itemId, search))
+				if (tagManager.findTag(itemId, search, client))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
@@ -206,6 +200,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if(event.getContainerId()== InventoryID.BANK.getId())
+		{
+			tagManager.setBankItems(event.getItemContainer().getItems());
 		}
 	}
 

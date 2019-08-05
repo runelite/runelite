@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -54,7 +57,7 @@ public class TagManager
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
-
+	private Item[] bankItems;
 	@Inject
 	private TagManager(
 		final ItemManager itemManager,
@@ -64,6 +67,12 @@ public class TagManager
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.clueScrollService = clueScrollService;
+	}
+
+	private static class placeholdernumbernames{
+		public static long B = 1000000000;
+		public static long M = 1000000;
+		public static long K = 1000;
 	}
 
 	String getTagString(int itemId, boolean variation)
@@ -121,16 +130,109 @@ public class TagManager
 		setTagString(itemId, Text.toCSV(tags), variation);
 	}
 
-	boolean findTag(int itemId, String search)
+	boolean findTag(int itemId, String search, Client client)
 	{
 		if (search.equals("clue") && testClue(itemId))
 		{
 			return true;
 		}
+		else if(search.startsWith("value:") && testValue(itemId, search)) {
+				return true;
+		}
 
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
 		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
+	}
+
+	private boolean testValue(int itemId, String search) {
+		search = search.replace("value:","");
+		int qty = getItemQuantity(itemId);
+		try {
+			char prefix;
+			if(search.contains("-"))
+			{
+				prefix = '-';
+			}
+			else {
+				prefix = search.charAt(0);
+			}
+			if(prefix != '-' && prefix != '<' && prefix != '>')
+			{
+				//assume the user wants to do a greater than search
+				prefix = '>';
+			}
+			char suffix = search.charAt(search.length() - 1);
+			long modifier = getModifier(Character.toString(suffix));
+			if(prefix=='<')
+			{
+				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
+				return (itemManager.getItemPrice(itemId) * qty) < (value * modifier);
+			}
+			else if(prefix=='>')
+			{
+				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
+				return (itemManager.getItemPrice(itemId) * qty) > (value * modifier);
+			}
+			else if(prefix=='-')
+			{
+				try {
+					String[] range = search.split("-");
+					long modifierA = getModifier(range[0]);
+					long modifierB = getModifier(range[1]);
+					long A = Long.parseLong(range[0].replaceAll("[^0-9]", "")) * modifierA;
+					long B = Long.parseLong(range[1].replaceAll("[^0-9]", "")) * modifierB;
+					return (itemManager.getItemPrice(itemId) * qty) >= A && (itemManager.getItemPrice(itemId) * qty) <= B;
+				}
+				catch(IndexOutOfBoundsException e)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			return false;
+		}
+		catch(StringIndexOutOfBoundsException e)
+		{
+			return false;
+		}
+	}
+
+	private int getItemQuantity(int itemId)
+	{
+		for (Item item:bankItems) {
+			if(item.getId()==itemId)
+			{
+				return item.getQuantity();
+			}
+		}
+		return 0;
+	}
+
+	private long getModifier(String query)
+	{
+		long modifier;
+		switch (query.toLowerCase().charAt(query.length()-1)){
+			case 'k':
+				modifier = 1000;
+				break;
+			case 'm':
+				modifier = 1000000;
+				break;
+			case 'b':
+				modifier = 1000000000;
+				break;
+			default:
+				modifier = 1;
+				break;
+		}
+		return modifier;
 	}
 
 	public List<Integer> getItemsForTag(String tag)
@@ -227,5 +329,9 @@ public class TagManager
 		}
 
 		return false;
+	}
+
+	public void setBankItems(Item[] items) {
+		bankItems = items;
 	}
 }
