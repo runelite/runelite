@@ -187,7 +187,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				{
 					search = search.substring(TAG_SEARCH.length()).trim();
 				}
-				if (tagManager.findTag(itemId, search, client))
+				if (tagManager.findTag(itemId, search))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
@@ -208,7 +208,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	{
 		if(event.getContainerId()== InventoryID.BANK.getId())
 		{
-			tagManager.setBankItems(event.getItemContainer().getItems());
+			BankItemCache.setBankItems(event.getItemContainer().getItems());
 		}
 	}
 

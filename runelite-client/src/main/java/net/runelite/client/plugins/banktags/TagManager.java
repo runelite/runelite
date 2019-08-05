@@ -57,7 +57,7 @@ public class TagManager
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
-	private Item[] bankItems;
+
 	@Inject
 	private TagManager(
 		final ItemManager itemManager,
@@ -124,7 +124,7 @@ public class TagManager
 		setTagString(itemId, Text.toCSV(tags), variation);
 	}
 
-	boolean findTag(int itemId, String search, Client client)
+	boolean findTag(int itemId, String search)
 	{
 		if (search.equals("clue") && testClue(itemId))
 		{
@@ -141,7 +141,7 @@ public class TagManager
 
 	private boolean testValue(int itemId, String search) {
 		search = search.replace("value:","");
-		int qty = getItemQuantity(itemId);
+		int qty = BankItemCache.getItemQuantity(itemId);
 		try {
 			char prefix;
 			if(search.contains("-"))
@@ -198,16 +198,6 @@ public class TagManager
 		}
 	}
 
-	private int getItemQuantity(int itemId)
-	{
-		for (Item item:bankItems) {
-			if(item.getId()==itemId)
-			{
-				return item.getQuantity();
-			}
-		}
-		return 0;
-	}
 
 	private long getModifier(String query)
 	{
@@ -323,9 +313,5 @@ public class TagManager
 		}
 
 		return false;
-	}
-
-	public void setBankItems(Item[] items) {
-		bankItems = items;
 	}
 }
