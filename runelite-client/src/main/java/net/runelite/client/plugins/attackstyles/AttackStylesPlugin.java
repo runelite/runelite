@@ -105,11 +105,7 @@ public class AttackStylesPlugin extends Plugin
 
 	private void start()
 	{
-		updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
-		updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
-		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
-		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+		resetWarnings();
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
@@ -185,39 +181,33 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
-			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
-			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
-			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+			resetWarnings();
 		}
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
-		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
-		}
+		int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+		int currentEquippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+		int currentCastingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
+		if (attackStyleVarbit != currentAttackStyleVarbit || equippedWeaponTypeVarbit != currentEquippedWeaponTypeVarbit || castingModeVarbit != currentCastingModeVarbit)
 		{
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(true);
-		}
+			boolean weaponSwitch = currentEquippedWeaponTypeVarbit != equippedWeaponTypeVarbit;
 
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
-		{
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
+			attackStyleVarbit = currentAttackStyleVarbit;
+			equippedWeaponTypeVarbit = currentEquippedWeaponTypeVarbit;
+			castingModeVarbit = currentCastingModeVarbit;
+
+			updateAttackStyle(equippedWeaponTypeVarbit, attackStyleVarbit,
 				castingModeVarbit);
-			updateWarning(false);
+			updateWarning(weaponSwitch);
+
+			if (weaponSwitch)
+			{
+				processWidgets();
+			}
 		}
 	}
 
@@ -250,6 +240,15 @@ public class AttackStylesPlugin extends Plugin
 			}
 			processWidgets();
 		}
+	}
+
+	private void resetWarnings()
+	{
+		updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
+		updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
+		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
+		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
+		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 	}
 
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
