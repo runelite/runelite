@@ -35,15 +35,8 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
+
+import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -81,15 +74,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
-
+	private Item[] bankItems;
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
 			"(To show only tagged items, start your search with 'tag:')<br>"+
-			"(To search by value start your search with 'value:')";
+			"(To search by value start your search with 'ha:' or 'ge:')";
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')<br>"+
-			"(To search by value start your search with 'value:')";
+			"(To search by value start your search with 'ha:' or 'ge:')";
 
 	@Inject
 	private ItemManager itemManager;
@@ -187,7 +180,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				{
 					search = search.substring(TAG_SEARCH.length()).trim();
 				}
-				if (tagManager.findTag(itemId, search))
+				if(search.startsWith("ge:")||search.startsWith("ha:") && testValue(itemId, search)) {
+					intStack[intStackSize - 2] = 1;
+				}
+				else if (tagManager.findTag(itemId, search))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
@@ -208,7 +204,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	{
 		if(event.getContainerId()== InventoryID.BANK.getId())
 		{
-			BankItemCache.setBankItems(event.getItemContainer().getItems());
+			bankItems = event.getItemContainer().getItems();
 		}
 	}
 
@@ -395,5 +391,124 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		{
 			shiftPressed = false;
 		}
+	}
+
+	private boolean testValue(int itemId, String search) {
+		final long storePrice = itemManager.getItemComposition(itemId).getPrice();
+		final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
+		Boolean gePrice = true;
+		if(search.startsWith("ha:"))
+		{
+			gePrice = false;
+		}
+		search = search.replace("ha:","").replace("ge:","");
+		int qty = getItemQuantity(itemId);
+		try {
+			char prefix;
+			if(search.contains("-"))
+			{
+				prefix = '-';
+			}
+			else {
+				prefix = search.charAt(0);
+			}
+			if(prefix != '-' && prefix != '<' && prefix != '>')
+			{
+				//assume the user wants to do a greater than search
+				prefix = '>';
+			}
+			char suffix = search.charAt(search.length() - 1);
+			long modifier = getModifier(Character.toString(suffix));
+			if(prefix=='<')
+			{
+				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
+				if(gePrice)
+				{
+					return (itemManager.getItemPrice(itemId) * qty) < (value * modifier);
+				}
+				else
+				{
+					return (alchPrice * qty) < (value * modifier);
+				}
+			}
+			else if(prefix=='>')
+			{
+				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
+				if(gePrice)
+				{
+					return (itemManager.getItemPrice(itemId) * qty) > (value * modifier);
+				}
+				else
+				{
+					return (alchPrice * qty) > (value * modifier);
+				}
+			}
+			else if(prefix=='-')
+			{
+				try {
+					String[] range = search.split("-");
+					long modifierA = getModifier(range[0]);
+					long modifierB = getModifier(range[1]);
+					long A = Long.parseLong(range[0].replaceAll("[^0-9]", "")) * modifierA;
+					long B = Long.parseLong(range[1].replaceAll("[^0-9]", "")) * modifierB;
+					if(gePrice)
+					{
+						return (itemManager.getItemPrice(itemId) * qty) >= A && (itemManager.getItemPrice(itemId) * qty) <= B;
+					}
+					else
+					{
+						return (alchPrice * qty) >= A && (alchPrice * qty) <=B;
+					}
+				}
+				catch(IndexOutOfBoundsException e)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			return false;
+		}
+		catch(StringIndexOutOfBoundsException e)
+		{
+			return false;
+		}
+	}
+
+
+	private long getModifier(String query)
+	{
+		long modifier;
+		switch (query.toLowerCase().charAt(query.length()-1)){
+			case 'k':
+				modifier = 1000;
+				break;
+			case 'm':
+				modifier = 1000000;
+				break;
+			case 'b':
+				modifier = 1000000000;
+				break;
+			default:
+				modifier = 1;
+				break;
+		}
+		return modifier;
+	}
+
+	public int getItemQuantity(int itemId)
+	{
+		for (Item item:bankItems) {
+			if(item.getId()==itemId)
+			{
+				return item.getQuantity();
+			}
+		}
+		return 0;
 	}
 }

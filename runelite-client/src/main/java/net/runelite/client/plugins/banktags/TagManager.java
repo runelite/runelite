@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -130,93 +128,10 @@ public class TagManager
 		{
 			return true;
 		}
-		else if(search.startsWith("value:") && testValue(itemId, search)) {
-				return true;
-		}
 
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
 		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
-	}
-
-	private boolean testValue(int itemId, String search) {
-		search = search.replace("value:","");
-		int qty = BankItemCache.getItemQuantity(itemId);
-		try {
-			char prefix;
-			if(search.contains("-"))
-			{
-				prefix = '-';
-			}
-			else {
-				prefix = search.charAt(0);
-			}
-			if(prefix != '-' && prefix != '<' && prefix != '>')
-			{
-				//assume the user wants to do a greater than search
-				prefix = '>';
-			}
-			char suffix = search.charAt(search.length() - 1);
-			long modifier = getModifier(Character.toString(suffix));
-			if(prefix=='<')
-			{
-				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
-				return (itemManager.getItemPrice(itemId) * qty) < (value * modifier);
-			}
-			else if(prefix=='>')
-			{
-				long value = Long.parseLong(search.replaceAll("[^0-9]", ""));
-				return (itemManager.getItemPrice(itemId) * qty) > (value * modifier);
-			}
-			else if(prefix=='-')
-			{
-				try {
-					String[] range = search.split("-");
-					long modifierA = getModifier(range[0]);
-					long modifierB = getModifier(range[1]);
-					long A = Long.parseLong(range[0].replaceAll("[^0-9]", "")) * modifierA;
-					long B = Long.parseLong(range[1].replaceAll("[^0-9]", "")) * modifierB;
-					return (itemManager.getItemPrice(itemId) * qty) >= A && (itemManager.getItemPrice(itemId) * qty) <= B;
-				}
-				catch(IndexOutOfBoundsException e)
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			return false;
-		}
-		catch(StringIndexOutOfBoundsException e)
-		{
-			return false;
-		}
-	}
-
-
-	private long getModifier(String query)
-	{
-		long modifier;
-		switch (query.toLowerCase().charAt(query.length()-1)){
-			case 'k':
-				modifier = 1000;
-				break;
-			case 'm':
-				modifier = 1000000;
-				break;
-			case 'b':
-				modifier = 1000000000;
-				break;
-			default:
-				modifier = 1;
-				break;
-		}
-		return modifier;
 	}
 
 	public List<Integer> getItemsForTag(String tag)
