@@ -302,6 +302,7 @@ public interface RSClient extends RSGameShell, Client
 	int getMenuOptionCount();
 
 	@Import("menuOptionsCount")
+	@Override
 	void setMenuOptionCount(int menuOptionCount);
 
 	@Import("menuActions")

@@ -24,7 +24,8 @@
  */
 package net.runelite.client.menus;
 
-import joptsimple.internal.Strings;
+import com.google.common.base.Strings;
+import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -95,7 +96,7 @@ public class ComparableEntry
 		this.priority = 0;
 	}
 
-	boolean matches(MenuEntry entry)
+	boolean matches(@Nonnull MenuEntry entry)
 	{
 		String opt = Text.standardize(entry.getOption());
 

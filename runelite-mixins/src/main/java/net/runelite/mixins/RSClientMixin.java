@@ -682,6 +682,11 @@ public abstract class RSClientMixin implements RSClient
 
 		for (MenuEntry entry : entries)
 		{
+			if (entry == null)
+			{
+				continue;
+			}
+
 			menuOptions[count] = entry.getOption();
 			menuTargets[count] = entry.getTarget();
 			menuIdentifiers[count] = entry.getIdentifier();
@@ -1385,8 +1390,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@MethodHook("openMenu")
-	public void menuOpened(int var1, int var2)
+	public void menuOpened(int x, int y)
 	{
+		sortMenuEntries();
 		final MenuOpened event = new MenuOpened();
 		event.setMenuEntries(getMenuEntries());
 		callbacks.post(MenuOpened.class, event);

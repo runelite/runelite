@@ -573,6 +573,12 @@ public interface Client extends GameShell
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
+	 * Set the amount of menu entries the client has.
+	 * If you decrement this count, it's the same as removing the last one
+	 */
+	void setMenuOptionCount(int count);
+
+	/**
 	 * Checks whether a right-click menu is currently open.
 	 *
 	 * @return true if a menu is open, false otherwise
