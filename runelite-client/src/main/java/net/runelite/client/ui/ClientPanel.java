@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.client.RuneLite;
 import net.runelite.client.util.StringFileUtils;
 
 final class ClientPanel extends JPanel
@@ -63,7 +64,7 @@ final class ClientPanel extends JPanel
 				+ "Please restart client.\n";
 			JOptionPane.showMessageDialog(new JFrame(), message, "Bad Codebase",
 				JOptionPane.ERROR_MESSAGE);
-			StringFileUtils.writeStringToFile("./codebase", "http://oldschool17.runescape.com/");
+			StringFileUtils.writeStringToFile(RuneLite.RUNELITE_DIR + "/codebase", "http://127.0.0.1/");
 			System.exit(0);
 		}
 		client.start();
