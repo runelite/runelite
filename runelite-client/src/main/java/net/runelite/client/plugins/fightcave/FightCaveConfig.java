@@ -63,7 +63,7 @@ public interface FightCaveConfig extends Config
 		position = 2,
 		keyName = "tickTimersWidget",
 		name = "Tick Timers in Prayer",
-		description = "Adds an overlay to the Praayer Interface with the ticks until next attack for that prayer.",
+		description = "Adds an overlay to the Prayer Interface with the ticks until next attack for that prayer.",
 		parent = "mainConfig"
 	)
 	default boolean tickTimersWidget()
