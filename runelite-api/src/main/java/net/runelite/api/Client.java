@@ -434,6 +434,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the dragged widget, null if not dragging any widget
 	 */
+	@Nullable
 	Widget getDraggedWidget();
 
 	/**
@@ -444,6 +445,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
 	 */
+	@Nullable
 	Widget getDraggedOnWidget();
 
 	/**
