@@ -338,6 +338,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the logged in player
 	 */
+	@Nullable
 	Player getLocalPlayer();
 
 	/**
