@@ -49,11 +49,13 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
+import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
@@ -64,7 +66,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 public class ClientLoader implements Supplier<Applet>
 {
 	private ClientUpdateCheckMode updateCheckMode;
-	private Applet client = null;
+	private Object client = null;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
@@ -78,10 +80,15 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			client = doLoad();
 		}
-		return client;
+
+		if (client instanceof Throwable)
+		{
+			throw new RuntimeException((Throwable) client);
+		}
+		return (Applet) client;
 	}
 
-	private Applet doLoad()
+	private Object doLoad()
 	{
 		if (updateCheckMode == NONE)
 		{
@@ -172,6 +179,15 @@ public class ClientLoader implements Supplier<Applet>
 				Map<String, String> hashes;
 				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
 				{
+					if (is == null)
+					{
+						SwingUtilities.invokeLater(() ->
+							new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
+								"the client you need to re-run maven")
+								.addBuildingGuide()
+								.open());
+						throw new NullPointerException();
+					}
 					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
 					{
 					}.getType());
@@ -264,15 +280,10 @@ public class ClientLoader implements Supplier<Applet>
 			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
 			| SecurityException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the client patch"
-					+ " is not in your classpath.");
-			}
-
 			log.error("Error loading RS!", e);
-			return null;
+
+			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			return e;
 		}
 	}
 

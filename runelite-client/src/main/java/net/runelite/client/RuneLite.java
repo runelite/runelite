@@ -37,6 +37,7 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -60,6 +61,7 @@ import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -78,6 +80,7 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 
 	@Getter
 	private static Injector injector;
@@ -219,7 +222,11 @@ public class RuneLite
 				assert assertions = true;
 				if (!assertions)
 				{
-					throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+					SwingUtilities.invokeLater(() ->
+						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+							.addBuildingGuide()
+							.open());
+					return;
 				}
 			}
 
@@ -237,6 +244,13 @@ public class RuneLite
 			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 			final long uptime = rb.getUptime();
 			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+		}
+		catch (Exception e)
+		{
+			log.warn("Failure during startup", e);
+			SwingUtilities.invokeLater(() ->
+				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+					.open());
 		}
 		finally
 		{
