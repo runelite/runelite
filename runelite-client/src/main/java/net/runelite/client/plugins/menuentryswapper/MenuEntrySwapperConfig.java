@@ -301,4 +301,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapTeleportCrystal",
+			name = "Teleport Crystal",
+			description = "Swap the default teleport crystal location from Lletya to Prifddinas"
+	)
+	default boolean swapCrystal() {return true; }
+
 }

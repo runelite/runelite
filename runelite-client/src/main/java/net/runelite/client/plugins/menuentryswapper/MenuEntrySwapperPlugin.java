@@ -371,6 +371,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+
 		if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
@@ -593,6 +594,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+
+		if (config.swapCrystal() && option.equals("lletya"))
+		{
+			swap("prifddinas", option, target, true);
 		}
 	}
 
