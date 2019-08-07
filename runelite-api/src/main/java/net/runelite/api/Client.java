@@ -418,6 +418,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the selected tile
 	 */
+	@Nullable
 	Tile getSelectedSceneTile();
 
 	/**
