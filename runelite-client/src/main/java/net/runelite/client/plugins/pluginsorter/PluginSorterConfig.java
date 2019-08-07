@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.pluginsorter;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -45,6 +46,7 @@ public interface PluginSorterConfig extends Config
 		return pluginsHidden;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 1,
 		keyName = "externalColor",
@@ -53,9 +55,10 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color externalColor()
 	{
-		return new Color(177, 156, 217, 70);
+		return new Color(177, 156, 217, 255);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "pvmColor",
@@ -64,9 +67,10 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color pvmColor()
 	{
-		return new Color(119, 221, 119, 70);
+		return new Color(119, 221, 119, 255);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 3,
 		keyName = "pvpColor",
@@ -75,9 +79,10 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color pvpColor()
 	{
-		return new Color(255, 105, 97, 70);
+		return new Color(255, 105, 97, 255);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "skillingColor",
@@ -86,9 +91,10 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color skillingColor()
 	{
-		return new Color(252, 252, 100, 70);
+		return new Color(252, 252, 100, 255);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
 		keyName = "utilityColor",
@@ -97,7 +103,7 @@ public interface PluginSorterConfig extends Config
 	)
 	default Color utilityColor()
 	{
-		return new Color(144, 212, 237, 70);
+		return new Color(144, 212, 237, 255);
 	}
 
 }
