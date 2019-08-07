@@ -27,10 +27,14 @@ package net.runelite.client.ui.overlay;
 import com.google.common.base.MoreObjects;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -462,11 +466,15 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
 		}
 
-		// Reset the default color
-		graphics.setColor(Color.WHITE);
+		// Save graphics2d properties so we can restore them later
+		final AffineTransform transform = graphics.getTransform();
+		final Stroke stroke = graphics.getStroke();
+		final Composite composite = graphics.getComposite();
+		final Paint paint = graphics.getPaint();
+		final Color color = graphics.getColor();
+		final RenderingHints renderingHints = graphics.getRenderingHints();
+		final Color background = graphics.getBackground();
 
-		// Get transform so we can reset it after drawing
-		AffineTransform transform = graphics.getTransform();
 		graphics.translate(point.x, point.y);
 
 		final Dimension overlayDimension;
@@ -481,7 +489,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		finally
 		{
+			// Restore graphics2d properties
 			graphics.setTransform(transform);
+			graphics.setStroke(stroke);
+			graphics.setComposite(composite);
+			graphics.setPaint(paint);
+			graphics.setColor(color);
+			graphics.setRenderingHints(renderingHints);
+			graphics.setBackground(background);
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
