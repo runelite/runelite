@@ -142,6 +142,11 @@ public class XpTrackerPlugin extends Plugin
 	{
 		xpPanel = new XpPanel(this, xpTrackerConfig, client, skillIconManager);
 
+		for (Skill skill : Skill.values())
+		{
+			resetSkillState(skill);
+		}
+
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
