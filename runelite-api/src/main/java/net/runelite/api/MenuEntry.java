@@ -24,8 +24,11 @@
  */
 package net.runelite.api;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -83,4 +86,18 @@ public class MenuEntry
 			src.isForceLeftClick()
 		);
 	}
+
+	private static final Matcher TAG_REGEXP = Pattern.compile("<[^>]*>").matcher("");
+
+	@Getter(lazy = true)
+	private final String standardizedOption = standardize(option);
+	@Getter(lazy = true)
+	private final String standardizedTarget = standardize(LEVEL_MATCHER.reset(target).replaceAll(""));
+
+	public String standardize(String string)
+	{
+		return TAG_REGEXP.reset(string).replaceAll("").replace('\u00A0', ' ').trim();
+	}
+
+	private static final Matcher LEVEL_MATCHER = Pattern.compile("\\(level-[0-9]*\\)").matcher("");
 }

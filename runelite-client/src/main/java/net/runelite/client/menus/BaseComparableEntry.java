@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import joptsimple.internal.Strings;
 import lombok.EqualsAndHashCode;
 import net.runelite.api.MenuEntry;
-import static net.runelite.client.menus.MenuManager.LEVEL_PATTERN;
 import net.runelite.client.util.Text;
 
 @EqualsAndHashCode(callSuper = true)
@@ -52,7 +51,7 @@ public class BaseComparableEntry extends AbstractComparableEntry
 
 	public boolean matches(@Nonnull MenuEntry entry)
 	{
-		String opt = Text.standardize(entry.getOption());
+		String opt = entry.getStandardizedOption();
 
 		if (strictOption && !opt.equals(option) || !strictOption && !opt.contains(option))
 		{
@@ -61,7 +60,7 @@ public class BaseComparableEntry extends AbstractComparableEntry
 
 		if (strictTarget || !Strings.isNullOrEmpty(target))
 		{
-			String tgt = Text.standardize(LEVEL_PATTERN.matcher(entry.getTarget()).replaceAll(""));
+			String tgt = entry.getStandardizedTarget();
 
 			if (strictTarget && !tgt.equals(target) || !strictTarget && !tgt.contains(target))
 			{

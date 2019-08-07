@@ -40,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -75,7 +74,6 @@ public class MenuManager
 	 */
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
-	static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
 
 	private final Client client;
 	private final EventBus eventBus;
