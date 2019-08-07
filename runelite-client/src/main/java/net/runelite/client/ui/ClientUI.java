@@ -261,7 +261,7 @@ public class ClientUI
 			return;
 		}
 
-		final Client client = (Client)this.client;
+		final Client client = (Client) this.client;
 		final ClientThread clientThread = clientThreadProvider.get();
 
 		// Keep scheduling event until we get our name
@@ -293,11 +293,10 @@ public class ClientUI
 
 	/**
 	 * Initialize UI.
-	 *
 	 * @param runelite runelite instance that will be shut down on exit
 	 * @throws Exception exception that can occur during creation of the UI
 	 */
-	public void open(final RuneLite runelite) throws Exception
+	public void init(final RuneLite runelite) throws Exception
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
@@ -453,7 +452,13 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
+		});
+	}
 
+	public void show()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
 			// Layout frame
 			frame.pack();
 			frame.revalidateMinimumSize();
@@ -603,10 +608,10 @@ public class ClientUI
 	}
 
 	/**
-	 * Changes cursor for client window. Requires ${@link ClientUI#open(RuneLite)} to be called first.
+	 * Changes cursor for client window. Requires ${@link ClientUI#init(RuneLite)} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
 	 * @param image cursor image
-	 * @param name cursor name
+	 * @param name  cursor name
 	 */
 	public void setCursor(final BufferedImage image, final String name)
 	{
