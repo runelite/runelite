@@ -118,7 +118,7 @@ public class XpTrackerPlugin extends Plugin
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 	private long lastTickMillis = 0;
-	private boolean fetchXp;
+	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
 
 	private final XpClient xpClient = new XpClient();
@@ -152,6 +152,9 @@ public class XpTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		// Initialize the last xp if already logged in
+		fetchXp = true;
 	}
 
 	@Override
@@ -206,6 +209,7 @@ public class XpTrackerPlugin extends Plugin
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				xpClient.update(username);
+				lastXp = totalXp;
 			}
 		}
 	}
