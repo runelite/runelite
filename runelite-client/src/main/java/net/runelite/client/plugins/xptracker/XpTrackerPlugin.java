@@ -391,6 +391,32 @@ public class XpTrackerPlugin extends Plugin
 		{
 			initializeTracker = false;
 
+			// Check for xp gained while logged out
+			for (Skill skill : Skill.values())
+			{
+				if (skill == Skill.OVERALL || !xpState.isInitialized(skill))
+				{
+					continue;
+				}
+
+				XpStateSingle skillState = xpState.getSkill(skill);
+				final int currentXp = client.getSkillExperience(skill);
+				if (skillState.getCurrentXp() != currentXp)
+				{
+					if (currentXp < skillState.getCurrentXp())
+					{
+						log.debug("Xp is going backwards! {} {} -> {}", skill, skillState.getCurrentXp(), currentXp);
+						resetState();
+						break;
+					}
+
+					log.debug("Skill xp for {} changed when offline: {} -> {}", skill, skillState.getCurrentXp(), currentXp);
+					// Offset start xp for offline gains
+					long diff = skillState.getCurrentXp() - currentXp;
+					skillState.setStartXp(skillState.getStartXp() + diff);
+				}
+			}
+
 			// Initialize the tracker with the initial xp if not already initialized
 			for (Skill skill : Skill.values())
 			{
