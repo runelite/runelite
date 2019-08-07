@@ -96,7 +96,7 @@ public class MenuEntry
 
 	public String standardize(String string)
 	{
-		return TAG_REGEXP.reset(string).replaceAll("").replace('\u00A0', ' ').trim();
+		return TAG_REGEXP.reset(string).replaceAll("").replace('\u00A0', ' ').trim().toLowerCase();
 	}
 
 	private static final Matcher LEVEL_MATCHER = Pattern.compile("\\(level-[0-9]*\\)").matcher("");
