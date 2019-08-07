@@ -29,7 +29,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,7 +54,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -183,15 +181,12 @@ public class MultiIndicatorsPlugin extends Plugin
 	// sometimes the lines get offset (seems to happen when there is a delay
 	// due to map reloading when walking/running "Loading - please wait")
 	// resetting the lines generation logic fixes this
-	@Schedule(
-		period = 1800,
-		unit = ChronoUnit.MILLIS
-	)
+
 	public void update()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			findLinesInScene();
+			clientThread.invokeLater(this::findLinesInScene);
 		}
 
 	}
@@ -293,10 +288,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		// Generate lines for multicombat zones
 		if (this.multicombatZoneVisibility == ZoneVisibility.HIDE)
 		{
-			for (int i = 0; i < multicombatPathToDisplay.length; i++)
-			{
-				multicombatPathToDisplay[i] = null;
-			}
+			Arrays.fill(multicombatPathToDisplay, null);
 		}
 		else
 		{

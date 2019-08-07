@@ -38,6 +38,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -102,6 +104,18 @@ public class MultiIndicatorsMinimapOverlay extends Overlay
 		{
 			return null;
 		}
+
+		Widget w;
+		if (client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA) != null)
+		{
+			w = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+		}
+		else
+		{
+			w = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
+		}
+		Rectangle minimapClip = w.getBounds();
+		graphics.setClip(minimapClip);
 
 		GeneralPath multicombatPath = plugin.getMulticombatPathToDisplay()[client.getPlane()];
 		GeneralPath pvpPath = plugin.getPvpPathToDisplay()[client.getPlane()];

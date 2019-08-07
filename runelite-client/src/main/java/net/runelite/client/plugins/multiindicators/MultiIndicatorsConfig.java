@@ -74,7 +74,7 @@ public interface MultiIndicatorsConfig extends Config
 	)
 	default boolean showWildernessLevelLines()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
