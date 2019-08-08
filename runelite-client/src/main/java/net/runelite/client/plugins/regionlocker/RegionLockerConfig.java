@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.regionlocker;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -110,6 +111,7 @@ public interface RegionLockerConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 			keyName = "mapOverlayColor",
 			name = "Map overlay color",
@@ -121,66 +123,36 @@ public interface RegionLockerConfig extends Config
 		return new Color(200, 16, 0, 100);
 	}
 
-	@ConfigItem(
-			keyName = "mapOverlayAlpha",
-			name = "Map overlay alpha",
-			description = "How transparent the map overlay will be (0-255)",
-			position = 9
-	)
-	default int mapOverlayAlpha()
-	{
-		return 100;
-	}
-
+	@Alpha
 	@ConfigItem(
 			keyName = "unlockableOverlayColor",
 			name = "Unlockable overlay color",
 			description = "The color the map overlay will draw the unlockable chunks in",
-			position = 10
+			position = 9
 	)
 	default Color unlockableOverlayColor()
 	{
 		return new Color(60, 200, 160, 100);
 	}
 
-	@ConfigItem(
-			keyName = "unlockableOverlayAlpha",
-			name = "Map overlay alpha",
-			description = "How transparent the map overlay for unlockable chunks will be (0-255)",
-			position = 11
-	)
-	default int unlockableOverlayAlpha()
-	{
-		return 100;
-	}
-
+	@Alpha
 	@ConfigItem(
 			keyName = "blacklistedOverlayColor",
 			name = "Blacklisted overlay color",
 			description = "The color the map overlay will draw the blacklisted chunks in",
-			position = 12
+			position = 10
 	)
 	default Color blacklistedOverlayColor()
 	{
 		return new Color(0, 0, 0, 200);
 	}
 
-	@ConfigItem(
-			keyName = "blacklistedOverlayAlpha",
-			name = "Blacklisted overlay alpha",
-			description = "How transparent the map overlay for blacklisted chunks will be (0-255)",
-			position = 13
-	)
-	default int blacklistedOverlayAlpha()
-	{
-		return 200;
-	}
-
+	@Alpha
 	@ConfigItem(
 			keyName = "regionBorderColor",
 			name = "Chunk border color",
 			description = "The color of the chunk borders",
-			position = 14
+			position = 11
 	)
 	default Color regionBorderColor()
 	{
@@ -188,32 +160,21 @@ public interface RegionLockerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "regionBorderAlpha",
-			name = "Chunk border alpha",
-			description = "How transparent the chunk borders will be (0-255)",
-			position = 15
-	)
-	default int regionBorderAlpha()
-	{
-		return 200;
-	}
-
-	@ConfigItem(
 			keyName = "regionBorderWidth",
 			name = "Chunk border width",
 			description = "How wide the region border will be",
-			position = 16
+			position = 12
 	)
 	default int regionBorderWidth()
 	{
-		return 4;
+		return 1;
 	}
 
 	@ConfigItem(
 			keyName = "drawMapGrid",
 			name = "Draw map grid",
 			description = "Draw the grid of chunks on the map",
-			position = 17
+			position = 13
 	)
 	default boolean drawMapGrid()
 	{
@@ -224,7 +185,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "drawRegionId",
 			name = "Draw region IDs",
 			description = "Draw the chunk ID for each chunk on the map",
-			position = 18
+			position = 14
 	)
 	default boolean drawRegionId()
 	{
@@ -235,7 +196,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "unlockKey",
 			name = "Unlock hotkey",
 			description = "When you hold this key you can click on the map to unlock a chunk",
-			position = 19
+			position = 15
 	)
 	default Keybind unlockKey()
 	{
@@ -246,7 +207,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "blacklistKey",
 			name = "Blacklist hotkey",
 			description = "When you hold this key you can click on the map to blacklist a chunk",
-			position = 20
+			position = 16
 	)
 	default Keybind blacklistKey()
 	{
@@ -257,7 +218,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "unlockedRegions",
 			name = "Unlocked chunks",
 			description = "List of unlocked regions seperated by a ',' symbol",
-			position = 21
+			position = 17
 	)
 	default String unlockedRegions()
 	{
@@ -268,7 +229,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "unlockableRegions",
 			name = "Unlockable chunks",
 			description = "List of unlockable regions seperated by a ',' symbol",
-			position = 22
+			position = 18
 	)
 	default String unlockableRegions()
 	{
@@ -279,7 +240,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "blacklistedRegions",
 			name = "Blacklisted chunks",
 			description = "List of blacklisted regions seperated by a ',' symbol",
-			position = 23
+			position = 19
 	)
 	default String blacklistedRegions()
 	{

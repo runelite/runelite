@@ -28,15 +28,15 @@ package net.runelite.client.plugins.goaltracker;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
 public class GoalTrackerInput implements KeyListener
 {
-	private final Keybind HOTKEY = Keybind.ALT;
-
 	@Inject
 	private GoalTrackerPlugin plugin;
+
+	@Inject
+	private GoalTrackerConfig config;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -47,7 +47,7 @@ public class GoalTrackerInput implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (HOTKEY.matches(e))
+		if (config.hotKey().matches(e))
 		{
 			plugin.setHotkeyPressed(true);
 		}
@@ -56,7 +56,7 @@ public class GoalTrackerInput implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (HOTKEY.matches(e))
+		if (config.hotKey().matches(e))
 		{
 			plugin.setHotkeyPressed(false);
 		}

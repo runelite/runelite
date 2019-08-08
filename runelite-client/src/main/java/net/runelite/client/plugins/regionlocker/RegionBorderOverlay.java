@@ -79,7 +79,6 @@ class RegionBorderOverlay extends Overlay
 
 		graphics.setStroke(new BasicStroke(config.regionBorderWidth()));
 		Color c = config.regionBorderColor();
-		c = new Color(c.getRed(), c.getGreen(), c.getBlue(), config.regionBorderAlpha());
 		graphics.setColor(c);
 
 		GeneralPath path = new GeneralPath();

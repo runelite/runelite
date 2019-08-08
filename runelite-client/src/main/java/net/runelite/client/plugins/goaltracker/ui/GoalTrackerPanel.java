@@ -24,7 +24,11 @@
  */
 package net.runelite.client.plugins.goaltracker.ui;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
+import java.io.FileWriter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import lombok.Getter;
 import net.runelite.client.plugins.goaltracker.Goal;
 import net.runelite.client.plugins.goaltracker.GoalTrackerPlugin;
@@ -60,6 +64,10 @@ public class GoalTrackerPanel extends PluginPanel
 {
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon IMPORT_ICON;
+	private static final ImageIcon IMPORT_HOVER_ICON;
+	private static final ImageIcon EXPORT_ICON;
+	private static final ImageIcon EXPORT_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
@@ -67,7 +75,8 @@ public class GoalTrackerPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addGoal = new JLabel(ADD_ICON);
-	private final JLabel importButton = new JLabel("Import...");
+	private final JLabel importButton = new JLabel(IMPORT_ICON);
+	private final JLabel exportButton = new JLabel(EXPORT_ICON);
 	private final JLabel title = new JLabel();
 
 	private final JPanel goalView = new JPanel(new GridBagLayout());
@@ -91,6 +100,14 @@ public class GoalTrackerPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(GoalTrackerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage importIcon = ImageUtil.getResourceStreamFromClass(GoalTrackerPlugin.class, "import.png");
+		IMPORT_ICON = new ImageIcon(importIcon);
+		IMPORT_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(importIcon, 0.53f));
+
+		final BufferedImage exportIcon = ImageUtil.getResourceStreamFromClass(GoalTrackerPlugin.class, "export.png");
+		EXPORT_ICON = new ImageIcon(exportIcon);
+		EXPORT_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(exportIcon, 0.53f));
 	}
 
 	public void init()
@@ -103,7 +120,7 @@ public class GoalTrackerPanel extends PluginPanel
 
 		JPanel actionWrapper = new JPanel(new BorderLayout(8, 0));
 
-		title.setText("Goal Tracker Beta");
+		title.setText("Goal Tracker");
 		title.setForeground(Color.WHITE);
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -112,7 +129,8 @@ public class GoalTrackerPanel extends PluginPanel
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> onSearchBarChanged());
 
-		actionWrapper.add(importButton, BorderLayout.CENTER);
+		actionWrapper.add(importButton, BorderLayout.WEST);
+		actionWrapper.add(exportButton, BorderLayout.CENTER);
 		actionWrapper.add(addGoal, BorderLayout.EAST);
 
 		northPanel.add(title, BorderLayout.WEST);
@@ -148,7 +166,6 @@ public class GoalTrackerPanel extends PluginPanel
 			}
 		});
 
-		importButton.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		importButton.setToolTipText("Import goals file...");
 		importButton.addMouseListener(new MouseAdapter()
 		{
@@ -156,6 +173,9 @@ public class GoalTrackerPanel extends PluginPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				JFileChooser fc = new JFileChooser();
+				fc.setDialogType(JFileChooser.OPEN_DIALOG);
+				fc.setDialogTitle("Choose a goals json file to import");
+				fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
 				int returnVal = fc.showOpenDialog(GoalTrackerPanel.this);
 				if (returnVal != JFileChooser.APPROVE_OPTION) return;
 
@@ -164,7 +184,7 @@ public class GoalTrackerPanel extends PluginPanel
 				if (plugin.getGoals().size() > 0)
 				{
 					int confirm = JOptionPane.showConfirmDialog(GoalTrackerPanel.this,
-							"Are you sure you want to import this file? This will delete all your current goals.",
+							"Are you sure you want to import this file? This will DELETE all your current goals.",
 							"Warning", JOptionPane.OK_CANCEL_OPTION);
 
 					if (confirm != 0) return;
@@ -202,13 +222,64 @@ public class GoalTrackerPanel extends PluginPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				importButton.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
+				importButton.setIcon(IMPORT_HOVER_ICON);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				importButton.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+				importButton.setIcon(IMPORT_ICON);
+			}
+		});
+
+		exportButton.setToolTipText("Export goals file...");
+		exportButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogType(JFileChooser.SAVE_DIALOG);
+				fc.setDialogTitle("Save your goals to a json file");
+				fc.setSelectedFile(new File("goals.json"));
+				fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+				int returnVal = fc.showOpenDialog(GoalTrackerPanel.this);
+				if (returnVal != JFileChooser.APPROVE_OPTION) return;
+
+				File file = fc.getSelectedFile();
+
+				if (file == null) return;
+				if (!file.getName().toLowerCase().endsWith(".json"))
+				{
+					file = new File(file.getParentFile(), file.getName() + ".json");
+				}
+
+				try
+				{
+					final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+					final String json = gson.toJson(plugin.getGoals());
+					FileWriter fw = new FileWriter(file);
+					fw.write(json);
+					fw.close();
+				}
+				catch (IOException ex)
+				{
+					JOptionPane.showConfirmDialog(GoalTrackerPanel.this,
+							"Cannot write file!",
+							"Error", JOptionPane.DEFAULT_OPTION);
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				exportButton.setIcon(EXPORT_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				exportButton.setIcon(EXPORT_ICON);
 			}
 		});
 

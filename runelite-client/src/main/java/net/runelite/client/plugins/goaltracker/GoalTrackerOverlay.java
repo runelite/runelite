@@ -62,6 +62,9 @@ public class GoalTrackerOverlay extends Overlay
 	private GoalTrackerPlugin plugin;
 
 	@Inject
+	private GoalTrackerConfig config;
+
+	@Inject
 	private TooltipManager tooltipManager;
 
 	@Inject
@@ -75,7 +78,8 @@ public class GoalTrackerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		drawRegionOverlay(graphics);
+		if (config.enableTooltip() || config.drawMapOverlay())
+			drawRegionOverlay(graphics);
 
 		return null;
 	}
@@ -126,7 +130,6 @@ public class GoalTrackerOverlay extends Overlay
 				Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
 				Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
 
-
 				Goal[] goals = plugin.getGoals().stream().filter(g -> g.getChunk() == regionId).toArray(Goal[]::new);
 				long completed = Arrays.stream(goals).filter(Goal::isCompleted).count();
 				long total = goals.length;
@@ -141,7 +144,7 @@ public class GoalTrackerOverlay extends Overlay
 					).toArray(Goal[]::new);
 				}
 
-				if (plugin.isHotkeyPressed() && regionRect.contains(mousePos.getX(), mousePos.getY()))
+				if (config.enableTooltip() && plugin.isHotkeyPressed() && regionRect.contains(mousePos.getX(), mousePos.getY()))
 				{
 					final String tooltip = buildTooltip(goals, reqs);
 
@@ -151,13 +154,13 @@ public class GoalTrackerOverlay extends Overlay
 					}
 				}
 
-				if ((total > 0 && completed < total) || reqs.length > 0)
+				if (config.drawMapOverlay() && ((total > 0 && completed < total) || reqs.length > 0))
 				{
 					Color color;
 					if (total > 0)
 						color = getProgressColor(completed, total);
 					else
-						color = Color.MAGENTA;
+						color = config.requiredChunkColor();
 					graphics.setColor(color);
 					graphics.drawRect(xPos + 1, yPos + 1, regionPixelSize - 2, regionPixelSize - 2);
 					//graphics.drawString(Integer.toString(total), xPos + LABEL_PADDING, yPos - LABEL_PADDING);
@@ -200,15 +203,15 @@ public class GoalTrackerOverlay extends Overlay
 		Color color;
 		if (count == 0)
 		{
-			color = Color.RED;
+			color = config.noProgressColor();
 		}
 		else if (count == total)
 		{
-			color = Color.GREEN;
+			color = config.completedColor();
 		}
 		else
 		{
-			color = Color.YELLOW;
+			color = config.inProgressColor();
 		}
 		return color;
 	}

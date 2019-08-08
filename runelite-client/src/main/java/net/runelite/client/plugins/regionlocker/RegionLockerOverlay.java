@@ -124,24 +124,18 @@ class RegionLockerOverlay extends Overlay
 				if (containsRegion || unlockable || blacklisted)
 				{
 					Color color;
-					int alpha;
 					if (blacklisted)
 					{
 						color = config.blacklistedOverlayColor();
-						alpha = config.blacklistedOverlayAlpha();
 					}
 					else if (unlockable)
 					{
 						color = config.unlockableOverlayColor();
-						alpha = config.unlockableOverlayAlpha();
 					}
 					else
 					{
 						color = config.mapOverlayColor();
-						alpha = config.mapOverlayAlpha();
 					}
-					alpha = Math.max(0, Math.min(255, alpha));
-					color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 					if (regionRect.contains(mousePos.getX(), mousePos.getY()))
 						color = color.brighter();
 					graphics.setColor(color);

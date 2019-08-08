@@ -42,6 +42,7 @@ public class RequirementsPanel extends JPanel
 	private final Goal goal;
 
 	private boolean expanded = true;
+	private boolean hovering = false;
 
 	private GridBagConstraints gbc;
 
@@ -129,13 +130,15 @@ public class RequirementsPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				expandButton.setIcon(expanded ? EXPAND_LESS_HOVER_ICON : EXPAND_MORE_HOVER_ICON);
+				hovering = true;
+				updateHeader();
 				requirementsLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
+				hovering = false;
 				updateHeader();
 				requirementsLabel.setForeground(Color.WHITE);
 			}
@@ -221,7 +224,10 @@ public class RequirementsPanel extends JPanel
 	public void updateHeader()
 	{
 		nameWrapper.setToolTipText(expanded ? "View less..." : "View more...");
-		expandButton.setIcon(expanded ? EXPAND_LESS_ICON : EXPAND_MORE_ICON);
+		if (hovering)
+			expandButton.setIcon(expanded ? EXPAND_LESS_HOVER_ICON : EXPAND_MORE_HOVER_ICON);
+		else
+			expandButton.setIcon(expanded ? EXPAND_LESS_ICON : EXPAND_MORE_ICON);
 	}
 
 	public void updateRequirements()
