@@ -77,6 +77,14 @@ class InventoryGridOverlay extends Overlay
 
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
+		final int if1DraggedItemIndex = client.getIf1DraggedItemIndex();
+		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
+		final int itemId = draggedItem.getId();
+
+		if (itemId == -1)
+		{
+			return null;
+		}
 
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
@@ -87,8 +95,7 @@ class InventoryGridOverlay extends Overlay
 
 			if (plugin.isShowItem() && inBounds)
 			{
-				final WidgetItem draggedItem = inventoryWidget.getWidgetItem(client.getIf1DraggedItemIndex());
-				final BufferedImage draggedItemImage = itemManager.getImage(draggedItem.getId());
+				final BufferedImage draggedItemImage = itemManager.getImage(itemId);
 				final int x = (int) bounds.getX();
 				final int y = (int) bounds.getY();
 

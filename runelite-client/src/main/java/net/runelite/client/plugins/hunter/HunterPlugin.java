@@ -209,6 +209,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.SHAKING_BOX: // Black chinchompa caught
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
 			case ObjectID.SHAKING_BOX_9383: // Red chinchompa caught
+			case ObjectID.SHAKING_BOX_9384: // Ferret caught
 			case ObjectID.BOULDER_20648: // Prickly kebbit caught
 			case ObjectID.BOULDER_20649: // Sabre-tooth kebbit caught
 			case ObjectID.BOULDER_20650: // Barb-tailed kebbit caught
@@ -261,25 +262,30 @@ public class HunterPlugin extends Plugin
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
-				// Black chin shaking box
+			// Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
 			case ObjectID.BOX_TRAP_2029:
 
-				// Red chin shaking box
+			// Red chin shaking box
 			case ObjectID.BOX_TRAP_9381:
 			case ObjectID.BOX_TRAP_9390:
 			case ObjectID.BOX_TRAP_9391:
 			case ObjectID.BOX_TRAP_9392:
 			case ObjectID.BOX_TRAP_9393:
 
-				// Grey chin shaking box
+			// Grey chin shaking box
 			case ObjectID.BOX_TRAP_9386:
 			case ObjectID.BOX_TRAP_9387:
 			case ObjectID.BOX_TRAP_9388:
 
-				// Bird traps
+			// Ferret shaking box
+			case ObjectID.BOX_TRAP_9394:
+			case ObjectID.BOX_TRAP_9396:
+			case ObjectID.BOX_TRAP_9397:
+
+			// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
 			case ObjectID.BIRD_SNARE_9349:
@@ -287,7 +293,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE_9376:
 			case ObjectID.BIRD_SNARE_9378:
 
-				// Deadfall trap
+			// Deadfall trap
 			case ObjectID.DEADFALL_19218:
 			case ObjectID.DEADFALL_19851:
 			case ObjectID.DEADFALL_20128:
@@ -295,7 +301,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_20130:
 			case ObjectID.DEADFALL_20131:
 
-				// Net trap
+			// Net trap
 			case ObjectID.NET_TRAP_9003:
 			case ObjectID.NET_TRAP_9005:
 			case ObjectID.NET_TRAP_8972:
@@ -305,7 +311,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8993:
 			case ObjectID.NET_TRAP_8997:
 
-				// Maniacal monkey boulder trap
+			// Maniacal monkey boulder trap
 			case ObjectID.MONKEY_TRAP_28828:
 			case ObjectID.MONKEY_TRAP_28829:
 				if (myTrap != null)
