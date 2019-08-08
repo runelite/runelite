@@ -54,6 +54,10 @@ public enum InventoryID
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
 	/**
+	 * Kingdom Of Miscellania reward inventory.
+	 */
+	KINGDOM_OF_MISCELLANIA(390),
+	/**
 	 * Chambers of Xeric chest inventory.
 	 */
 	CHAMBERS_OF_XERIC_CHEST(581),

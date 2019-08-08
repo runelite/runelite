@@ -391,6 +391,10 @@ public class LootTrackerPlugin extends Plugin
 				// Clue Scrolls use same InventoryID as Barrows
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
+			case (WidgetID.KINGDOM_GROUP_ID):
+				eventType = "Kingdom of Miscellania";
+				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
+				break;
 			default:
 				return;
 		}
