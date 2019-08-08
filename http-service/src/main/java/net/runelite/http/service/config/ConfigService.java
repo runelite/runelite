@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.config;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.mongodb.client.MongoClient;
@@ -166,7 +167,8 @@ public class ConfigService
 		return true;
 	}
 
-	private static Object parseJsonString(String value)
+	@VisibleForTesting
+	static Object parseJsonString(String value)
 	{
 		Object jsonValue;
 		try
