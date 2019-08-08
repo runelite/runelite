@@ -121,7 +121,7 @@ public class ConfigService
 		return new Configuration(config);
 	}
 
-	public void setKey(
+	public boolean setKey(
 		int userId,
 		String key,
 		@Nullable String value
@@ -129,39 +129,41 @@ public class ConfigService
 	{
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
-			return;
+			return false;
 		}
 
 		String[] split = key.split("\\.", 2);
 		if (split.length != 2)
 		{
-			return;
+			return false;
 		}
 
 		Object jsonValue = parseJsonString(value);
 		mongoCollection.updateOne(eq("_userId", userId),
 			set(split[0] + "." + split[1].replace('.', ':'), jsonValue),
 			upsertUpdateOptions);
+		return true;
 	}
 
-	public void unsetKey(
+	public boolean unsetKey(
 		int userId,
 		String key
 	)
 	{
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
-			return;
+			return false;
 		}
 
 		String[] split = key.split("\\.", 2);
 		if (split.length != 2)
 		{
-			return;
+			return false;
 		}
 
 		mongoCollection.updateOne(eq("_userId", userId),
 			unset(split[0] + "." + split[1].replace('.', ':')));
+		return true;
 	}
 
 	private static Object parseJsonString(String value)
