@@ -65,7 +65,9 @@ public enum AgilityShortcut
 			// Asgarnian Ice Dungeon
 			STEPS,
 			// Fossil Island Wyvern Cave
-			STAIRS_31485),
+			STAIRS_31485,
+			// Trollweiss Mountain Cave
+			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847),
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
