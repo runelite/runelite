@@ -183,7 +183,7 @@ enum DiscordGameEventType
 	DUNGEON_GRAND_TREE_TUNNELS("Grand Tree Tunnels", DiscordAreaType.DUNGEONS, 9882),
 	DUNGEON_HAM("H.A.M Dungeon", DiscordAreaType.DUNGEONS, 12694, 10321),
 	DUNGEON_IORWERTH("Iorwerth Dungeon", DiscordAreaType.DUNGEONS, 12738, 12993, 12994),
-	DUNGEON_JATIZSO_MINES("Jatizo Mines", DiscordAreaType.DUNGEONS, 9631),
+	DUNGEON_JATIZSO_MINES("Jatizso Mines", DiscordAreaType.DUNGEONS, 9631),
 	DUNGEON_JIGGIG_BURIAL_TOMB("Jiggig Burial Tomb", DiscordAreaType.DUNGEONS, 9875, 9874),
 	DUNGEON_JOGRE("Jogre Dungeon", DiscordAreaType.DUNGEONS, 11412),
 	DUNGEON_KARAMJA_VOLCANO("Karamja Volcano", DiscordAreaType.DUNGEONS, 11413, 11414),
@@ -223,7 +223,7 @@ enum DiscordGameEventType
 	DUNGEON_WATERFALL("Waterfall Dungeon", DiscordAreaType.DUNGEONS, 10394),
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
-	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_YANILLE_AGILITY("Yanille Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
 	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
