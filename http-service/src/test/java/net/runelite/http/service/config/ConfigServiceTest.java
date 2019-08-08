@@ -26,6 +26,7 @@ package net.runelite.http.service.config;
 
 import com.google.common.collect.ImmutableMap;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ConfigServiceTest
@@ -39,5 +40,16 @@ public class ConfigServiceTest
 		assertEquals("test", ConfigService.parseJsonString("test"));
 		assertEquals("test", ConfigService.parseJsonString("\"test\""));
 		assertEquals(ImmutableMap.of("key", "value"), ConfigService.parseJsonString("{\"key\": \"value\"}"));
+	}
+
+	@Test
+	public void testValidateJson()
+	{
+		assertTrue(ConfigService.validateJson("1"));
+		assertTrue(ConfigService.validateJson("3.14"));
+		assertTrue(ConfigService.validateJson("test"));
+		assertTrue(ConfigService.validateJson("\"test\""));
+		assertTrue(ConfigService.validateJson("key:value"));
+		assertTrue(ConfigService.validateJson("{\"key\": \"value\"}"));
 	}
 }
