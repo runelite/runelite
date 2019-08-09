@@ -22,51 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 
-public class SlotLimitationRequirement implements ItemRequirement
+public class AnyRequirementCollection implements ItemRequirement
 {
-	private final String description;
-	private final EquipmentInventorySlot[] slots;
+	private final String name;
+	private final ItemRequirement[] requirements;
 
-	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
+	public AnyRequirementCollection(String name, ItemRequirement... requirements)
 	{
-		this.description = description;
-		this.slots = slots;
+		this.name = name;
+		this.requirements = requirements;
 	}
 
 	@Override
 	public boolean fulfilledBy(int itemId)
 	{
+		for (ItemRequirement requirement : requirements)
+		{
+			if (requirement.fulfilledBy(itemId))
+			{
+				return true;
+			}
+		}
+
 		return false;
 	}
 
 	@Override
 	public boolean fulfilledBy(Item[] items)
 	{
-		for (EquipmentInventorySlot slot : slots)
+		for (ItemRequirement requirement : requirements)
 		{
-			if (slot.getSlotIdx() >= items.length)
+			if (requirement.fulfilledBy(items))
 			{
-				continue; //We can't check the slot, because there is nothing in it, the array hasn't been resized
-			}
-
-			if (items[slot.getSlotIdx()].getId() != -1)
-			{
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
 	public String getCollectiveName(Client client)
 	{
-		return description;
+		return name;
 	}
 }

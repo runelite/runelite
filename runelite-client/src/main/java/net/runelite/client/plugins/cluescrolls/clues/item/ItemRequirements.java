@@ -22,47 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
+import net.runelite.api.EquipmentInventorySlot;
 
-public class RangeItemRequirement implements ItemRequirement
+public class ItemRequirements
 {
-	private final String name;
-	private final int startItemId;
-	private final int endItemId;
-
-	public RangeItemRequirement(String name, int startItemId, int endItemId)
+	public static SingleItemRequirement item(int itemId)
 	{
-		this.name = name;
-		this.startItemId = startItemId;
-		this.endItemId = endItemId;
+		return new SingleItemRequirement(itemId);
 	}
 
-	@Override
-	public boolean fulfilledBy(int itemId)
+	public static RangeItemRequirement range(int startItemId, int endItemId)
 	{
-		return itemId >= startItemId && itemId <= endItemId;
+		return range(null, startItemId, endItemId);
 	}
 
-	@Override
-	public boolean fulfilledBy(Item[] items)
+	public static RangeItemRequirement range(String name, int startItemId, int endItemId)
 	{
-		for (Item item : items)
-		{
-			if (item.getId() >= startItemId && item.getId() <= endItemId)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return new RangeItemRequirement(name, startItemId, endItemId);
 	}
 
-	@Override
-	public String getCollectiveName(Client client)
+	public static AnyRequirementCollection any(String name, ItemRequirement... requirements)
 	{
-		return name;
+		return new AnyRequirementCollection(name, requirements);
+	}
+
+	public static AllRequirementsCollection all(ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(requirements);
+	}
+
+	public static AllRequirementsCollection all(String name, ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(name, requirements);
+	}
+
+	public static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
+	{
+		return new SlotLimitationRequirement(description, slots);
+	}
+
+	public static MultipleOfItemRequirement xOfItem(int itemId, int quantity)
+	{
+		return new MultipleOfItemRequirement(itemId, quantity);
 	}
 }

@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -125,11 +126,8 @@ public class AttackStylesPlugin extends Plugin
 
 	private void start()
 	{
-		updateWarnedSkills(warnForAttack, Skill.ATTACK);
-		updateWarnedSkills(warnForStrength, Skill.STRENGTH);
-		updateWarnedSkills(warnForDefence, Skill.DEFENCE);
-		updateWarnedSkills(warnForRanged, Skill.RANGED);
-		updateWarnedSkills(warnForMagic, Skill.MAGIC);
+		resetWarnings();
+
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
@@ -161,6 +159,7 @@ public class AttackStylesPlugin extends Plugin
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
+	@Nullable
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
@@ -212,38 +211,32 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			updateWarnedSkills(this.warnForAttack, Skill.ATTACK);
-			updateWarnedSkills(this.warnForStrength, Skill.STRENGTH);
-			updateWarnedSkills(this.warnForDefence, Skill.DEFENCE);
-			updateWarnedSkills(this.warnForRanged, Skill.RANGED);
-			updateWarnedSkills(this.warnForMagic, Skill.MAGIC);
+			resetWarnings();
 		}
 	}
 
 	void onVarbitChanged(VarbitChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
-		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
-		}
+		int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+		int currentEquippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+		int currentCastingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
+		if (attackStyleVarbit != currentAttackStyleVarbit || equippedWeaponTypeVarbit != currentEquippedWeaponTypeVarbit || castingModeVarbit != currentCastingModeVarbit)
 		{
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(true);
-		}
+			boolean weaponSwitch = currentEquippedWeaponTypeVarbit != equippedWeaponTypeVarbit;
 
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
-		{
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
+			attackStyleVarbit = currentAttackStyleVarbit;
+			equippedWeaponTypeVarbit = currentEquippedWeaponTypeVarbit;
+			castingModeVarbit = currentCastingModeVarbit;
+
+			updateAttackStyle(equippedWeaponTypeVarbit, attackStyleVarbit,
 				castingModeVarbit);
-			updateWarning(false);
+			updateWarning(weaponSwitch);
+
+			if (weaponSwitch)
+			{
+				processWidgets();
+			}
 		}
 	}
 
@@ -289,6 +282,15 @@ public class AttackStylesPlugin extends Plugin
 		this.warnForMagic = config.warnForMagic();
 		this.hideAutoRetaliate = config.hideAutoRetaliate();
 		this.removeWarnedStyles = config.removeWarnedStyles();
+	}
+
+	private void resetWarnings()
+	{
+		updateWarnedSkills(this.warnForAttack, Skill.ATTACK);
+		updateWarnedSkills(this.warnForStrength, Skill.STRENGTH);
+		updateWarnedSkills(this.warnForDefence, Skill.DEFENCE);
+		updateWarnedSkills(this.warnForRanged, Skill.RANGED);
+		updateWarnedSkills(this.warnForMagic, Skill.MAGIC);
 	}
 
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
