@@ -74,14 +74,6 @@ public final class ScriptID
 	public static final int CHAT_TEXT_INPUT_REBUILD = 222;
 
 	/**
-	 * Layouts the bank widgets
-	 *
-	 * Takes 13 widget ids of various parts of the bank interface
-	 */
-	@ScriptArguments(integer = 17)
-	public static final int BANK_LAYOUT = 277;
-
-	/**
 	 * Closes the chatbox input
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>
@@ -89,14 +81,17 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
-	public static final int RESET_CHATBOX_INPUT = 299;
+	public static final int MESSAGE_LAYER_CLOSE = 299;
 
 	/**
 	 * Readies the chatbox panel for things like the chatbox input
-	 * Inverse of RESET_CHATBOX_INPUT
+	 * Inverse of MESSAGE_LAYER_CLOSE
+	 * <ul>
+	 * <li> int (InputType) message layer type we are changing to </li>
+	 * </ul>
 	 */
 	@ScriptArguments(integer = 1)
-	public static final int CLEAR_CHATBOX_PANEL = 677;
+	public static final int MESSAGE_LAYER_OPEN = 677;
 
 	/**
 	 * Builds the chatbox input widget
