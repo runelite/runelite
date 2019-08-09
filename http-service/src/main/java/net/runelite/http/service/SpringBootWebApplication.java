@@ -161,7 +161,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return createSql2oFromDataSource(dataSource);
 	}
 
-	@Bean
+	@Bean(destroyMethod = "")
 	public MongoClient mongoClient(@Value("${mongo.host:}") String host, @Value("${mongo.jndiName:}") String jndiName) throws NamingException
 	{
 		if (!Strings.isNullOrEmpty(jndiName))
