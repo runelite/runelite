@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -55,6 +56,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+import org.springframework.jndi.JndiTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
@@ -160,9 +162,21 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean
-	public MongoClient mongoClient(@Value("${mongo.host}") String host)
+	public MongoClient mongoClient(@Value("${mongo.host:}") String host, @Value("${mongo.jndiName:}") String jndiName) throws NamingException
 	{
-		return MongoClients.create(host);
+		if (!Strings.isNullOrEmpty(jndiName))
+		{
+			JndiTemplate jndiTemplate = new JndiTemplate();
+			return jndiTemplate.lookup(jndiName, MongoClient.class);
+		}
+		else if (!Strings.isNullOrEmpty(host))
+		{
+			return MongoClients.create(host);
+		}
+		else
+		{
+			throw new RuntimeException("Either mongo.host or mongo.jndiName must be set");
+		}
 	}
 
 	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)
