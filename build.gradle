@@ -79,8 +79,8 @@ subprojects {
     uploadArchives {
         repositories {
             mavenDeployer {
-                repository(url: System.getenv("NEXUS-URL")) {
-                    authentication(userName: System.getenv("NEXUS-USER"), password: System.getenv("NEXUS-PASSWORD"))
+                repository(url: System.getenv("NEXUS_URL")) {
+                    authentication(userName: System.getenv("NEXUS_USER"), password: System.getenv("NEXUS_PASSWORD"))
                 }
             }
         }
