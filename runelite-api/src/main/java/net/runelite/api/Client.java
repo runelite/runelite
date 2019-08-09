@@ -1253,11 +1253,10 @@ public interface Client extends GameEngine
 	 *
 	 * This method must be ran on the client thread and is not reentrant
 	 *
-	 * @param id the script ID
-	 * @param args additional arguments to execute the script with
+	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	void runScript(int id, Object... args);
+	void runScript(Object... args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.
