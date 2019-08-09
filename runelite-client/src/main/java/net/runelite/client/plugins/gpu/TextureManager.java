@@ -52,7 +52,7 @@ class TextureManager
 
 		int textureArrayId = GLUtil.glGenTexture(gl);
 		gl.glBindTexture(gl.GL_TEXTURE_2D_ARRAY, textureArrayId);
-		gl.glTexStorage3D(gl.GL_TEXTURE_2D_ARRAY, 1, gl.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
+		gl.glTexStorage3D(gl.GL_TEXTURE_2D_ARRAY, 8, gl.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
 
 		gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 		gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
@@ -64,6 +64,8 @@ class TextureManager
 		textureProvider.setBrightness(1.0d);
 
 		updateTextures(textureProvider, gl, textureArrayId);
+
+		gl.glGenerateMipmap(gl.GL_TEXTURE_2D_ARRAY);
 
 		textureProvider.setBrightness(save);
 

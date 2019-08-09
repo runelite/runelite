@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.REDWOOD;
@@ -42,17 +42,21 @@ enum Tree
 		this.treeIds = treeIds;
 	}
 
-	private static final Map<Integer, Tree> TREES = new HashMap<>();
+	private static final Map<Integer, Tree> TREES;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Tree> builder = new ImmutableMap.Builder<>();
+
 		for (Tree tree : values())
 		{
 			for (int treeId : tree.treeIds)
 			{
-				TREES.put(treeId, tree);
+				builder.put(treeId, tree);
 			}
 		}
+
+		TREES = builder.build();
 	}
 
 	static Tree findTree(int objectId)

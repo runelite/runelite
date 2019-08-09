@@ -164,7 +164,10 @@ class OpponentInfoOverlay extends Overlay
 			progressBarComponent.setBackgroundColor(HP_RED);
 			progressBarComponent.setForegroundColor(HP_GREEN);
 
-			if (lastMaxHealth != null && !opponentInfoConfig.showPercent())
+			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
+
+			if ((displayStyle == HitpointsDisplayStyle.HITPOINTS || displayStyle == HitpointsDisplayStyle.BOTH)
+				&& lastMaxHealth != null)
 			{
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
@@ -194,11 +197,15 @@ class OpponentInfoOverlay extends Overlay
 						// so we know nothing about the upper limit except that it can't be higher than maxHealth
 						maxHealth = lastMaxHealth;
 					}
-					// Take the average of min and max possible healts
+					// Take the average of min and max possible healths
 					health = (minHealth + maxHealth + 1) / 2;
 				}
 
-				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+				// Show both the hitpoint and percentage values if enabled in the config
+				final ProgressBarComponent.LabelDisplayMode progressBarDisplayMode = displayStyle == HitpointsDisplayStyle.BOTH ?
+					ProgressBarComponent.LabelDisplayMode.BOTH : ProgressBarComponent.LabelDisplayMode.FULL;
+
+				progressBarComponent.setLabelDisplayMode(progressBarDisplayMode);
 				progressBarComponent.setMaximum(lastMaxHealth);
 				progressBarComponent.setValue(health);
 			}

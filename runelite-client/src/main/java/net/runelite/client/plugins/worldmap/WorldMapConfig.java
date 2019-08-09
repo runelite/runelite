@@ -166,8 +166,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
-		name = "Show quest names",
-		description = "Indicates the names of quests and highlights incomplete ones",
+		name = "Show quest names and status",
+		description = "Indicates the names of quests and shows completion status",
 		position = 13
 	)
 	default boolean questStartTooltips()
@@ -204,6 +204,17 @@ public interface WorldMapConfig extends Config
 		position = 16
 	)
 	default boolean rareTreeLevelIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS,
+		name = "Show transporation tooltips",
+		description = "Indicates types and destinations of Transporation",
+		position = 17
+	)
+	default boolean transportationTeleportTooltips()
 	{
 		return true;
 	}

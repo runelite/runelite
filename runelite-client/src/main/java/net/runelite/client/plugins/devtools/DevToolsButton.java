@@ -37,6 +37,7 @@ class DevToolsButton extends JButton
 	{
 		super(title);
 		addActionListener((ev) -> setActive(!active));
+		this.setToolTipText(title);
 	}
 
 	void setActive(boolean active)

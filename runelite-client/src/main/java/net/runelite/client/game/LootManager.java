@@ -38,7 +38,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
+import net.runelite.api.TileItem;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -109,7 +109,7 @@ public class LootManager
 				case NpcID.LIZARD:
 
 				case NpcID.ZYGOMITE:
-				case NpcID.ZYGOMITE_474:
+				case NpcID.ZYGOMITE_1024:
 				case NpcID.ANCIENT_ZYGOMITE:
 
 					// these monsters die with >0 hp, so we just look for coincident
@@ -156,7 +156,7 @@ public class LootManager
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		final Item item = itemSpawned.getItem();
+		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
@@ -167,7 +167,7 @@ public class LootManager
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
+		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
 		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
@@ -175,7 +175,7 @@ public class LootManager
 	@Subscribe
 	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
-		final Item item = itemQuantityChanged.getItem();
+		final TileItem item = itemQuantityChanged.getItem();
 		final Tile tile = itemQuantityChanged.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();

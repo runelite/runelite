@@ -59,11 +59,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
@@ -81,6 +81,7 @@ import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -128,11 +129,6 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
-	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
-
 	static String format(Date date)
 	{
 		synchronized (TIME_FORMAT)
@@ -147,6 +143,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer barrowsNumber;
 
 	private Integer chambersOfXericNumber;
+
+	private Integer chambersOfXericChallengeNumber;
 
 	private Integer theatreOfBloodNumber;
 
@@ -236,6 +234,8 @@ public class ScreenshotPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
+
+		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
@@ -244,16 +244,6 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN
-			&& reportButton == null)
-		{
-			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
-		}
 	}
 
 	@Subscribe
@@ -298,9 +288,21 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	{
+		if (config.screenshotKills())
+		{
+			final Player player = playerLootReceived.getPlayer();
+			final String name = player.getName();
+			String fileName = "Kill " + name + " " + format(new Date());
+			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.TRANSACTION_COMPLETE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.TRADE)
 		{
 			return;
 		}
@@ -338,6 +340,16 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				chambersOfXericChallengeNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
@@ -351,12 +363,6 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + format(new Date());
-			takeScreenshot(fileName);
-		}
-
-		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
-		{
-			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
 		}
 
@@ -450,14 +456,22 @@ public class ScreenshotPlugin extends Plugin
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				if (chambersOfXericNumber == null)
+				if (chambersOfXericNumber != null)
+				{
+					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+					chambersOfXericNumber = null;
+					break;
+				}
+				else if (chambersOfXericChallengeNumber != null)
+				{
+					fileName = "Chambers of Xeric Challenge Mode(" + chambersOfXericChallengeNumber + ")";
+					chambersOfXericChallengeNumber = null;
+					break;
+				}
+				else
 				{
 					return;
 				}
-
-				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
-				chambersOfXericNumber = null;
-				break;
 			}
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			{
@@ -625,6 +639,14 @@ public class ScreenshotPlugin extends Plugin
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
 
+			// To make sure that screenshots don't get overwritten, check if file exists,
+			// and if it does create file with same name and suffix.
+			int i = 1;
+			while (screenshotFile.exists())
+			{
+				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+			}
+
 			ImageIO.write(screenshot, "PNG", screenshotFile);
 
 			if (config.uploadScreenshot())
@@ -715,6 +737,12 @@ public class ScreenshotPlugin extends Plugin
 	int getChambersOfXericNumber()
 	{
 		return chambersOfXericNumber;
+	}
+
+	@VisibleForTesting
+	int getChambersOfXericChallengeNumber()
+	{
+		return chambersOfXericChallengeNumber;
 	}
 
 	@VisibleForTesting

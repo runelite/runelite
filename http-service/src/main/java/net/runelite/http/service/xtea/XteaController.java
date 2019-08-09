@@ -30,6 +30,7 @@ import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class XteaController
 		xteaService.submit(xteaRequest);
 	}
 
-	@RequestMapping
+	@GetMapping
 	public List<XteaKey> get()
 	{
 		return xteaService.get().stream()
@@ -57,7 +58,7 @@ public class XteaController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("/{region}")
+	@GetMapping("/{region}")
 	public XteaKey getRegion(@PathVariable int region)
 	{
 		XteaEntry xteaRegion = xteaService.getRegion(region);

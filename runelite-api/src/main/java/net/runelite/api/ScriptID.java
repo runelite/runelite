@@ -46,6 +46,29 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Rebuilds the chatbox
+	 */
+	public static final int BUILD_CHATBOX = 216;
+
+	/**
+	 * Opens the Private Message chat interface
+	 *
+	 * Jagex refers to this script as {@code meslayer_mode6}
+	 * <ul>
+	 * <li> String Player to send private message to</li>
+	 * </ul>
+	 */
+	public static final int OPEN_PRIVATE_MESSAGE_INTERFACE = 107;
+
+	/**
+	 * Rebuilds the text input widget inside the chat interface
+	 * <ul>
+	 * <li> String Message Prefix. Only used inside the GE search interfaces
+	 * </ul>
+	 */
+	public static final int CHAT_TEXT_INPUT_REBUILD = 222;
+
+	/**
 	 * Layouts the bank widgets
 	 *
 	 * Takes 13 widget ids of various parts of the bank interface
@@ -73,6 +96,29 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
+	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
+	 * <ul>
+	 * <li> int (boolean) Item kept on death </li>
+	 * <li> int Item Quantity </li>
+	 * <li> String Item Name </li>
+	 * </ul>
+	 */
+	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
+
+	/**
+	 * Checks the state of the given stash unit.
+	 * <ul>
+	 * <li>int (loc) The stash unit object id</li>
+	 *  <li>int Bitpacked stash unit states</li>
+	 *  <li>int Bitpacked stash unit states 2</li>
+	 *  <li>int Bitpacked stash unit states 3</li>
+	 * </ul>
+	 *
+	 * Returns a pair of booleans indicating if the stash unit is built and if it is filled
+	 */
+	public static final int WATSON_STASH_UNIT_CHECK = 1479;
+
+	/**
 	 * Queries the completion state of a quest by its struct id
 	 * <ul>
 	 * <li> int (struct) The id of the quest
@@ -94,13 +140,15 @@ public final class ScriptID
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
 
 	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
+	 * Handles zoom input
+	 *
+	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
+	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position </li>
 	 * </ul>
 	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
+	public static final int CAMERA_DO_ZOOM = 42;
 
 	/**
 	 * Does nothing

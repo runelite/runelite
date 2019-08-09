@@ -78,7 +78,7 @@ public class PuzzleSolver implements Runnable
 
 	public boolean hasExceededWaitDuration()
 	{
-		return stopwatch.elapsed().compareTo(MAX_WAIT_DURATION) > 0;
+		return stopwatch != null && stopwatch.elapsed().compareTo(MAX_WAIT_DURATION) > 0;
 	}
 
 	public boolean hasFailed()

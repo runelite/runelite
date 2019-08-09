@@ -342,7 +342,8 @@ public class ItemVariationMappingTest
 	@Test
 	public void testMappedNames()
 	{
-		ITEMS_MAP.forEach((key, value) -> {
+		ITEMS_MAP.forEach((key, value) ->
+		{
 			assertEquals(value, (Integer) ItemVariationMapping.map(key));
 		});
 	}

@@ -27,6 +27,8 @@ package net.runelite.client.plugins.party;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -34,6 +36,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -58,6 +61,8 @@ public class PartyStatsOverlay extends Overlay
 		this.plugin = plugin;
 		this.party = party;
 		this.config = config;
+		body.setBorder(new Rectangle());
+		body.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
 	}
 
@@ -102,11 +107,12 @@ public class PartyStatsOverlay extends Overlay
 
 				final TitleComponent name = TitleComponent.builder()
 					.text(v.getName())
+					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 
 				panel.getChildren().add(name);
 
-				if (v.getHitpoints() > 0)
+				if (v.getMaxHitpoints() > 0)
 				{
 					final ProgressBarComponent hpBar = new ProgressBarComponent();
 					hpBar.setBackgroundColor(HP_BG);
@@ -117,7 +123,7 @@ public class PartyStatsOverlay extends Overlay
 					panel.getChildren().add(hpBar);
 				}
 
-				if (v.getPrayer() > 0)
+				if (v.getMaxPrayer() > 0)
 				{
 					final ProgressBarComponent prayBar = new ProgressBarComponent();
 					prayBar.setBackgroundColor(PRAY_BG);

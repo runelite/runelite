@@ -25,28 +25,33 @@
 package net.runelite.api;
 
 /**
- * Represents the wall of a tile, which is an un-passable boundary.
+ * Represents one or two walls on a tile
  */
 public interface WallObject extends TileObject
 {
 	/**
-	 * Gets the first orientation of the wall.
-	 *
-	 * @return the first orientation, 0-2048 where 0 is north
+	 * A bitfield with the orientation of a wall
+	 * 1 = East
+	 * 2 = North
+	 * 4 = West
+	 * 8 = South
 	 */
 	int getOrientationA();
 
 	/**
-	 * Gets the second orientation value of the wall.
-	 *
-	 * @return the second orientation, 0-2048 where 0 is north
+	 * A bitfield containing the orientation of the second wall on this tile,
+	 * or 0 if there is no second wall.
+	 * @see #getOrientationA
 	 */
 	int getOrientationB();
 
 	/**
-	 * Gets the boundary configuration of the wall.
-	 *
-	 * @return the boundary configuration
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * object type id = bits & 0x20
+	 * orientation (0-3) = bits >>> 6 & 3
+	 * supports items = bits >>> 8 & 1
+	 * }</pre>
 	 */
 	int getConfig();
 

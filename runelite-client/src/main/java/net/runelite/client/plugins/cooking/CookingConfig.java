@@ -42,4 +42,15 @@ public interface CookingConfig extends Config
 	{
 		return 5;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "fermentTimer",
+		name = "Show wine ferment timer",
+		description = "Configures if the timer before wines are fermented is shown"
+	)
+	default boolean fermentTimer()
+	{
+		return true;
+	}
 }

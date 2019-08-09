@@ -5,47 +5,47 @@
 .string_var_count   1
    sload                  0              ; load input
    iload                  0              ; load chat type
-   load_string            "chatboxInput" ; event name
-   runelite_callback                     ; invoke callback
-   pop_int                               ; pop chat type
-   string_length                         ; get string length of chat message
-   load_int               0              ; load 0
+   sconst                 "chatboxInput" ; event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop chat type
+   string_length         ; get string length of chat message
+   iconst                 0              ; load 0
    if_icmpne              LABEL100       ; if length is not 0, continue
-   return
+   return                
 LABEL100:
    get_varbit             4394
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL4
    jump                   LABEL24
 LABEL4:
    iload                  0
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL8
    jump                   LABEL16
 LABEL8:
-   get_localplayer_name
-   load_string            ": "
-   load_string            "<col=2020ef>"
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=2020ef>"
    sload                  0
-   load_string            "</col>"
-   string_append          5
-   send_game_message
+   sconst                 "</col>"
+   join_string            5
+   mes                   
    jump                   LABEL23
 LABEL16:
-   get_localplayer_name
-   load_string            ": "
-   load_string            "<col=0000ff>"
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=0000ff>"
    sload                  0
-   load_string            "</col>"
-   string_append          5
-   send_game_message
+   sconst                 "</col>"
+   join_string            5
+   mes                   
 LABEL23:
    jump                   LABEL27
 LABEL24:
    sload                  0
    iload                  0
-   chatbox_input
+   chat_sendpublic       
 LABEL27:
-   get_gamecycle
-   put_varc               61
-   return
+   clientclock           
+   set_varc_int           61
+   return                

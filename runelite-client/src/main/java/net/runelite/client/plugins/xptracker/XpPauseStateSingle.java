@@ -39,7 +39,7 @@ class XpPauseStateSingle
 	@Getter
 	private long lastChangeMillis;
 	@Getter
-	private int xp;
+	private long xp;
 
 	boolean isPaused()
 	{
@@ -66,7 +66,7 @@ class XpPauseStateSingle
 		return pauseReasons.add(XpPauseReason.PAUSE_MANUAL);
 	}
 
-	boolean xpChanged(int xp)
+	boolean xpChanged(long xp)
 	{
 		this.xp = xp;
 		this.lastChangeMillis = System.currentTimeMillis();

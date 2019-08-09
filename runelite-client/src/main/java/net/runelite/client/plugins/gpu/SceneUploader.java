@@ -300,7 +300,7 @@ class SceneUploader
 		int vertexCx = localX + Perspective.LOCAL_TILE_SIZE;
 		int vertexCy = localY;
 		int vertexCz = seHeight;
-		final int c2 = nwColor;
+		final int c2 = seColor;
 
 		// 1,1
 		int vertexAx = localX + Perspective.LOCAL_TILE_SIZE;
@@ -312,7 +312,7 @@ class SceneUploader
 		int vertexBx = localX;
 		int vertexBy = localY + Perspective.LOCAL_TILE_SIZE;
 		int vertexBz = nwHeight;
-		final int c4 = seColor;
+		final int c4 = nwColor;
 
 		vertexBuffer.put(vertexAx, vertexAz, vertexAy, c3);
 		vertexBuffer.put(vertexBx, vertexBz, vertexBy, c4);

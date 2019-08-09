@@ -24,12 +24,14 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.http.api.ws.messages.party.PartyMessage;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Value
-public class TilePing extends PartyMessage
+@EqualsAndHashCode(callSuper = true)
+public class TilePing extends PartyMemberMessage
 {
 	private final WorldPoint point;
 }

@@ -28,6 +28,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
@@ -40,6 +41,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 public class SpriteManager
@@ -49,6 +53,9 @@ public class SpriteManager
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	public Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
@@ -72,6 +79,11 @@ public class SpriteManager
 		}
 
 		SpritePixels[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
+		if (sp == null)
+		{
+			return null;
+		}
+
 		BufferedImage img = sp[file].toBufferedImage();
 
 		cache.put(key, img);
@@ -100,6 +112,15 @@ public class SpriteManager
 		});
 	}
 
+	public void getSpriteAsync(int archive, int file, InfoBox infoBox)
+	{
+		getSpriteAsync(archive, file, img ->
+		{
+			infoBox.setImage(img);
+			infoBoxManager.updateInfoBoxImage(infoBox);
+		});
+	}
+
 	/**
 	 * Calls setIcon on c, ensuring it is repainted when this changes
 	 */
@@ -125,6 +146,38 @@ public class SpriteManager
 			{
 				c.setIcon(new ImageIcon(img));
 			});
+		});
+	}
+
+	public void addSpriteOverrides(SpriteOverride[] add)
+	{
+		if (add.length <= 0)
+		{
+			return;
+		}
+
+		clientThread.invokeLater(() ->
+		{
+			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			Class<?> owner = add[0].getClass();
+			for (SpriteOverride o : add)
+			{
+				BufferedImage image = ImageUtil.getResourceStreamFromClass(owner, o.getFileName());
+				SpritePixels sp = ImageUtil.getImageSpritePixels(image, client);
+				overrides.put(o.getSpriteId(), sp);
+			}
+		});
+	}
+
+	public void removeSpriteOverrides(SpriteOverride[] remove)
+	{
+		clientThread.invokeLater(() ->
+		{
+			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			for (SpriteOverride o : remove)
+			{
+				overrides.remove(o.getSpriteId());
+			}
 		});
 	}
 }

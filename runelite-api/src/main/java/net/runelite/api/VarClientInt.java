@@ -46,6 +46,8 @@ public enum VarClientInt
 
 	MEMBERSHIP_STATUS(103),
 
+	INVENTORY_TAB(171),
+
 	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;

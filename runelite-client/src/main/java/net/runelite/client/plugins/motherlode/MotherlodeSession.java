@@ -26,13 +26,14 @@ package net.runelite.client.plugins.motherlode;
 
 import java.time.Duration;
 import java.time.Instant;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 
 @Slf4j
+@Singleton
 public class MotherlodeSession
 {
 	private static final Duration HOUR = Duration.ofHours(1);
@@ -105,27 +106,27 @@ public class MotherlodeSession
 		}
 	}
 
-	void updateOreFound(Item ore)
+	void updateOreFound(int item, int count)
 	{
-		switch (ore.getId())
+		switch (item)
 		{
 			case ItemID.GOLDEN_NUGGET:
-				nuggetsFound += ore.getQuantity();
+				nuggetsFound += count;
 				break;
 			case ItemID.COAL:
-				coalFound++;
+				coalFound += count;
 				break;
 			case ItemID.GOLD_ORE:
-				goldFound++;
+				goldFound += count;
 				break;
 			case ItemID.MITHRIL_ORE:
-				mithrilFound++;
+				mithrilFound += count;
 				break;
 			case ItemID.ADAMANTITE_ORE:
-				adamantiteFound++;
+				adamantiteFound += count;
 				break;
 			case ItemID.RUNITE_ORE:
-				runiteFound++;
+				runiteFound += count;
 				break;
 			default:
 				log.debug("Invalid ore specified. The ore count will not be updated.");

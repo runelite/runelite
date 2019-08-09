@@ -139,7 +139,7 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.equipmentStats())
 		{
-			final ItemStats stats = itemManager.getItemStats(itemId);
+			final ItemStats stats = itemManager.getItemStats(itemId, false);
 
 			if (stats != null)
 			{
@@ -189,7 +189,10 @@ public class ItemStatOverlay extends Overlay
 	private String buildStatBonusString(ItemStats s)
 	{
 		final StringBuilder b = new StringBuilder();
-		b.append(getChangeString("Weight", s.getWeight(), true, false));
+		if (config.showWeight())
+		{
+			b.append(getChangeString("Weight", s.getWeight(), true, false));
+		}
 
 		ItemStats other = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
@@ -205,7 +208,7 @@ public class ItemStatOverlay extends Overlay
 				final Item item = items[slot];
 				if (item != null)
 				{
-					other = itemManager.getItemStats(item.getId());
+					other = itemManager.getItemStats(item.getId(), false);
 				}
 			}
 
@@ -258,7 +261,7 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.relative())
 		{
-			b.append(c.getRelative());
+			b.append(c.getFormattedRelative());
 		}
 
 		if (config.theoretical())
@@ -267,7 +270,7 @@ public class ItemStatOverlay extends Overlay
 			{
 				b.append("/");
 			}
-			b.append(c.getTheoretical());
+			b.append(c.getFormattedTheoretical());
 		}
 
 		if (config.absolute() && (config.relative() || config.theoretical()))

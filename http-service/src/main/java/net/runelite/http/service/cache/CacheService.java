@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.ConfigType;
@@ -103,7 +104,7 @@ public class CacheService
 	{
 		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
-			.append(hashStr.substring(0, 2))
+			.append(hashStr, 0, 2)
 			.append('/')
 			.append(hashStr.substring(2))
 			.toString();
@@ -233,6 +234,11 @@ public class CacheService
 	public List<ItemDefinition> getItems() throws IOException
 	{
 		CacheEntry cache = findMostRecent();
+		if (cache == null)
+		{
+			return Collections.emptyList();
+		}
+
 		IndexEntry indexEntry = findIndexForCache(cache, IndexType.CONFIGS.getNumber());
 		ArchiveEntry archiveEntry = findArchiveForIndex(indexEntry, ConfigType.ITEM.getId());
 		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);

@@ -32,9 +32,9 @@ public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
 
-	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
-		super(image, plugin, String.valueOf(plugin.getFavor()));
+		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
 	}
 

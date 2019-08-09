@@ -63,7 +63,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showEssence()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -74,7 +74,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showRunes()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -85,7 +85,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showSand()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -96,7 +96,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showFlax()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -107,6 +107,28 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showBonemeal()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "showDynamite",
+		name = "Show Claimable Dynamite",
+		description = "Show a message when you can collect Dynamite from Thirus."
+	)
+	default boolean showDynamite()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "showArrows",
+		name = "Show Claimable Ogre Arrows",
+		description = "Show a message when you can collect ogre arrows from Rantz."
+	)
+	default boolean showArrows()
+	{
+		return false;
 	}
 }

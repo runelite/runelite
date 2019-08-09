@@ -74,4 +74,16 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAlchProfit",
+		name = "Show High Alchemy Profit",
+		description = "Show the profit from casting high alchemy on items",
+		position = 5
+	)
+	default boolean showAlchProfit()
+	{
+		return false;
+	}
+
 }

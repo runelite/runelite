@@ -29,14 +29,24 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GraphicChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Matchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,12 +59,23 @@ public class CookingPluginTest
 		"You cook the karambwan. It looks delicious.",
 		"You roast a lobster.",
 		"You cook a bass.",
-		"You squeeze the grapes into the jug. The wine begins to ferment.",
 		"You successfully bake a tasty garden pie."
 	};
 
 	@Inject
 	CookingPlugin cookingPlugin;
+
+	@Mock
+	@Bind
+	Client client;
+
+	@Mock
+	@Bind
+	InfoBoxManager infoBoxManager;
+
+	@Mock
+	@Bind
+	ItemManager itemManager;
 
 	@Mock
 	@Bind
@@ -79,12 +100,28 @@ public class CookingPluginTest
 	{
 		for (String message : COOKING_MESSAGES)
 		{
-			ChatMessage chatMessage = new ChatMessage(ChatMessageType.FILTERED, "", message, "");
+			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", message, "", 0);
 			cookingPlugin.onChatMessage(chatMessage);
 		}
 
 		CookingSession cookingSession = cookingPlugin.getSession();
 		assertNotNull(cookingSession);
 		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+	}
+
+	@Test
+	public void testOnGraphicChanged()
+	{
+		Player player = mock(Player.class);
+		when(player.getGraphic()).thenReturn(GraphicID.WINE_MAKE);
+
+		when(config.fermentTimer()).thenReturn(true);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		GraphicChanged graphicChanged = new GraphicChanged();
+		graphicChanged.setActor(player);
+		cookingPlugin.onGraphicChanged(graphicChanged);
+
+		verify(infoBoxManager).addInfoBox(any(FermentTimer.class));
 	}
 }

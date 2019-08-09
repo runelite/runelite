@@ -54,6 +54,17 @@ public interface TileIndicatorsConfig extends Config
 		return true;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightHoveredColor",
+		name = "Color of current hovered highlighting",
+		description = "Configures the highlight color of hovered tile"
+	)
+	default Color highlightHoveredColor()
+	{
+		return new Color(0, 0, 0, 0);
+	}
+
 	@ConfigItem(
 		keyName = "highlightHoveredTile",
 		name = "Highlight hovered tile",

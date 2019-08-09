@@ -34,6 +34,7 @@ import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 import net.runelite.http.api.ws.messages.party.UserJoin;
 import net.runelite.http.api.ws.messages.party.UserPart;
 import net.runelite.http.api.ws.messages.party.UserSync;
@@ -52,6 +53,7 @@ public class WebsocketGsonFactory
 		messages.add(UserJoin.class);
 		messages.add(UserPart.class);
 		messages.add(UserSync.class);
+		messages.add(PartyChatMessage.class);
 		MESSAGES = messages;
 	}
 

@@ -78,7 +78,7 @@ public class DiscordService implements AutoCloseable
 			discordRPC = DiscordRPC.INSTANCE;
 			discordEventHandlers = new DiscordEventHandlers();
 		}
-		catch (UnsatisfiedLinkError e)
+		catch (Error e)
 		{
 			log.warn("Failed to load Discord library, Discord support will be disabled.");
 		}
@@ -150,9 +150,12 @@ public class DiscordService implements AutoCloseable
 			? "default"
 			: discordPresence.getLargeImageKey();
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
-		discordRichPresence.smallImageKey = Strings.isNullOrEmpty(discordPresence.getSmallImageKey())
-			? "default"
-			: discordPresence.getSmallImageKey();
+
+		if (!Strings.isNullOrEmpty(discordPresence.getSmallImageKey()))
+		{
+			discordRichPresence.smallImageKey = discordPresence.getSmallImageKey();
+		}
+
 		discordRichPresence.smallImageText = discordPresence.getSmallImageText();
 		discordRichPresence.partyId = discordPresence.getPartyId();
 		discordRichPresence.partySize = discordPresence.getPartySize();

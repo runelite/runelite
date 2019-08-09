@@ -167,6 +167,20 @@ public class TagManager
 		}
 	}
 
+	public void renameTag(String oldTag, String newTag)
+	{
+		List<Integer> items = getItemsForTag(Text.standardize(oldTag));
+		items.forEach(id ->
+		{
+			Collection<String> tags = getTags(id, id < 0);
+
+			tags.remove(Text.standardize(oldTag));
+			tags.add(Text.standardize(newTag));
+
+			setTags(id, tags, id < 0);
+		});
+	}
+
 	private int getItemId(int itemId, boolean variation)
 	{
 		itemId = Math.abs(itemId);

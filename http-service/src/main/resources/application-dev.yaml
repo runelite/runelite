@@ -1,0 +1,31 @@
+# Enable debug logging
+debug: true
+logging.level.net.runelite: DEBUG
+
+# Development data sources
+datasource:
+  runelite:
+    jndiName:
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/runelite
+    username: runelite
+    password: runelite
+  runelite-cache:
+    jndiName:
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/cache
+    username: runelite
+    password: runelite
+  runelite-tracker:
+    jndiName:
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/xptracker
+    username: runelite
+    password: runelite
+
+# Development oauth callback (without proxy)
+oauth:
+  callback: http://localhost:8080/account/callback

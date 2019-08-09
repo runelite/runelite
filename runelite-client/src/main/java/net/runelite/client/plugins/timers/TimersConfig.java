@@ -92,6 +92,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed"
+	)
+	default boolean showDivine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showCannon",
 		name = "Cannon timer",
 		description = "Configures whether cannon timer is displayed"
@@ -197,6 +207,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether Abyssal Sire stun timer is displayed"
 	)
 	default boolean showAbyssalSireStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDfsSpecial",
+		name = "Dragonfire Shield special timer",
+		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
+	)
+	default boolean showDFSSpecial()
 	{
 		return true;
 	}

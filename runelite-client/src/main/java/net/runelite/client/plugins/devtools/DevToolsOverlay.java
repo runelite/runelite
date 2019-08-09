@@ -43,8 +43,8 @@ import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.TileItem;
 import net.runelite.api.GroundObject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -272,9 +272,9 @@ class DevToolsOverlay extends Overlay
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				Node current = itemLayer.getBottom();
-				while (current instanceof Item)
+				while (current instanceof TileItem)
 				{
-					Item item = (Item) current;
+					TileItem item = (TileItem) current;
 					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
 					current = current.getNext();
 				}
@@ -343,6 +343,12 @@ class DevToolsOverlay extends Overlay
 			}
 
 			Polygon p = decorObject.getConvexHull();
+			if (p != null)
+			{
+				graphics.drawPolygon(p);
+			}
+
+			p = decorObject.getConvexHull2();
 			if (p != null)
 			{
 				graphics.drawPolygon(p);
@@ -451,6 +457,7 @@ class DevToolsOverlay extends Overlay
 
 		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
 		if (widgetItem == null
+			|| widgetItem.getId() < 0
 			|| widgetItem.getId() == ITEM_EMPTY
 			|| widgetItem.getId() == ITEM_FILLED)
 		{

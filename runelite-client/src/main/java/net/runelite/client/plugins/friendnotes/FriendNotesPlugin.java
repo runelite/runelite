@@ -167,7 +167,7 @@ public class FriendNotesPlugin extends Plugin
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
 			// Friends have color tags
-			setHoveredFriend(Text.removeTags(event.getTarget()));
+			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
@@ -197,13 +197,13 @@ public class FriendNotesPlugin extends Plugin
 				return;
 			}
 
-			//Friends have color tags
-			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
-
 			// Handle clicks on "Add Note" or "Edit Note"
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
 			{
 				event.consume();
+
+				//Friends have color tags
+				final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
 				final String note = getFriendNote(sanitizedTarget);
 
 				// Open the new chatbox input dialog
@@ -234,7 +234,16 @@ public class FriendNotesPlugin extends Plugin
 		{
 			// Migrate a friend's note to their new display name
 			final Friend friend = (Friend) nameable;
-			migrateFriendNote(friend.getName(), friend.getPrevName());
+			String name = friend.getName();
+			String prevName = friend.getPrevName();
+
+			if (prevName != null)
+			{
+				migrateFriendNote(
+					Text.toJagexName(name),
+					Text.toJagexName(prevName)
+				);
+			}
 		}
 	}
 
@@ -242,7 +251,7 @@ public class FriendNotesPlugin extends Plugin
 	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
-		final String displayName = event.getName();
+		final String displayName = Text.toJagexName(event.getName());
 		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}

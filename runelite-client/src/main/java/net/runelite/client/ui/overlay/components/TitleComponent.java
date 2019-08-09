@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
@@ -47,17 +49,26 @@ public class TitleComponent implements LayoutableRenderableEntity
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
+	@Builder.Default
+	@Getter
+	private final Rectangle bounds = new Rectangle();
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
+		final int baseX = preferredLocation.x;
+		final int baseY = preferredLocation.y;
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final TextComponent titleComponent = new TextComponent();
 		titleComponent.setText(text);
 		titleComponent.setColor(color);
-		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, metrics.getHeight()));
-		final Dimension dimension = titleComponent.render(graphics);
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, dimension.height);
+		titleComponent.setPosition(new Point(
+			baseX + ((preferredSize.width - metrics.stringWidth(text)) / 2),
+			baseY + metrics.getHeight()));
+		final Dimension rendered = titleComponent.render(graphics);
+		final Dimension dimension = new Dimension(preferredSize.width, rendered.height);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 }

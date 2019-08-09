@@ -49,7 +49,7 @@ public class LootTrackerService
 		+ "  `type` enum('NPC', 'PLAYER', 'EVENT', 'UNKNOWN') NOT NULL,\n"
 		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
 		+ "  PRIMARY KEY (id),\n"
-		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE,\n"
+		+ "  FOREIGN KEY (accountId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,\n"
 		+ "  INDEX idx_acc (accountId, time),"
 		+ "  INDEX idx_time (time)"
 		+ ") ENGINE=InnoDB";
@@ -66,7 +66,7 @@ public class LootTrackerService
 	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (LAST_INSERT_ID(), :itemId, :itemQuantity)";
 
-	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit";
+	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit OFFSET :offset";
 
 	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM kills WHERE accountId = :accountId";
 	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM kills WHERE accountId = :accountId AND eventId = :eventId";
@@ -119,7 +119,7 @@ public class LootTrackerService
 		}
 	}
 
-	public Collection<LootRecord> get(int accountId, int limit)
+	public Collection<LootRecord> get(int accountId, int limit, int offset)
 	{
 		List<LootResult> lootResults;
 
@@ -128,6 +128,7 @@ public class LootTrackerService
 			lootResults = con.createQuery(SELECT_LOOT_QUERY)
 				.addParameter("accountId", accountId)
 				.addParameter("limit", limit)
+				.addParameter("offset", offset)
 				.executeAndFetch(LootResult.class);
 		}
 
@@ -141,7 +142,7 @@ public class LootTrackerService
 			{
 				if (!gameItems.isEmpty())
 				{
-					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
+					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
 					lootRecords.add(lootRecord);
 
 					gameItems = new ArrayList<>();
@@ -156,7 +157,7 @@ public class LootTrackerService
 
 		if (!gameItems.isEmpty())
 		{
-			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
+			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
 			lootRecords.add(lootRecord);
 		}
 

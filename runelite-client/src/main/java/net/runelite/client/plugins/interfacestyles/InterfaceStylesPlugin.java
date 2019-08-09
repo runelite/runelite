@@ -28,16 +28,18 @@ package net.runelite.client.plugins.interfacestyles;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.HealthBar;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.BeforeMenuRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetPositioned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -69,6 +71,8 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	private SpritePixels[] defaultCrossSprites;
+
 	@Provides
 	InterfaceStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -88,6 +92,8 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
+			restoreHealthBars();
+			restoreCrossSprites();
 		});
 	}
 
@@ -101,9 +107,44 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned widgetPositioned)
+	public void onClientTick(ClientTick event)
 	{
 		adjustWidgetDimensions();
+	}
+
+	@Subscribe
+	public void onPostHealthBar(PostHealthBar postHealthBar)
+	{
+		if (!config.hdHealthBars())
+		{
+			return;
+		}
+
+		HealthBar healthBar = postHealthBar.getHealthBar();
+		HealthbarOverride override = HealthbarOverride.get(healthBar.getHealthBarFrontSpriteId());
+
+		// Check if this is the health bar we are replacing
+		if (override != null)
+		{
+			// Increase padding to show some more green at very low hp percentages
+			healthBar.setPadding(override.getPadding());
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() != GameState.LOGIN_SCREEN)
+		{
+			return;
+		}
+
+		/*
+		 * The cross sprites aren't loaded yet when the initial config change event is received.
+		 * So run the overriding for cross sprites when we reach the login screen,
+		 * at which point the cross sprites will have been loaded.
+		 */
+		overrideCrossSprites();
 	}
 
 	private void updateAllOverrides()
@@ -113,6 +154,18 @@ public class InterfaceStylesPlugin extends Plugin
 		overrideWidgetSprites();
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
+		overrideHealthBars();
+		overrideCrossSprites();
+	}
+
+	@Subscribe
+	public void onBeforeMenuRender(BeforeMenuRender event)
+	{
+		if (config.hdMenu())
+		{
+			client.draw2010Menu();
+			event.consume();
+		}
 	}
 
 	private void overrideSprites()
@@ -123,7 +176,8 @@ public class InterfaceStylesPlugin extends Plugin
 			{
 				if (skin == config.skin())
 				{
-					SpritePixels spritePixels = getFileSpritePixels(String.valueOf(spriteOverride.getSpriteID()), null);
+					String file = config.skin().toString() + "/" + spriteOverride.getSpriteID() + ".png";
+					SpritePixels spritePixels = getFileSpritePixels(file);
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
 					{
@@ -154,7 +208,8 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			if (widgetOverride.getSkin() == config.skin())
 			{
-				SpritePixels spritePixels = getFileSpritePixels(widgetOverride.getName(), "widget");
+				String file = config.skin().toString() + "/widget/" + widgetOverride.getName() + ".png";
+				SpritePixels spritePixels = getFileSpritePixels(file);
 
 				if (spritePixels != null)
 				{
@@ -178,32 +233,17 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 	}
 
-	private SpritePixels getFileSpritePixels(String file, String subfolder)
+	private SpritePixels getFileSpritePixels(String file)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(config.skin().toString() + "/");
-
-		if (subfolder != null)
+		try
 		{
-			stringBuilder.append(subfolder + "/");
+			log.debug("Loading: {}", file);
+			BufferedImage image = ImageUtil.getResourceStreamFromClass(this.getClass(), file);
+			return ImageUtil.getImageSpritePixels(image, client);
 		}
-
-		stringBuilder.append(file + ".png");
-		String filePath = stringBuilder.toString();
-
-		try (InputStream inputStream = InterfaceStylesPlugin.class.getResourceAsStream(filePath))
-		{
-			log.debug("Loading: " + filePath);
-			BufferedImage spriteImage = ImageIO.read(inputStream);
-			return ImageUtil.getImageSpritePixels(spriteImage, client);
-		}
-		catch (IOException ex)
+		catch (RuntimeException ex)
 		{
 			log.debug("Unable to load image: ", ex);
-		}
-		catch (IllegalArgumentException ex)
-		{
-			log.debug("Input stream of file path " + filePath + " could not be read: ", ex);
 		}
 
 		return null;
@@ -243,6 +283,82 @@ public class InterfaceStylesPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private void overrideHealthBars()
+	{
+		if (config.hdHealthBars())
+		{
+			spriteManager.addSpriteOverrides(HealthbarOverride.values());
+			// Reset health bar caches to apply the override
+			clientThread.invokeLater(client::resetHealthBarCaches);
+		}
+		else
+		{
+			restoreHealthBars();
+		}
+	}
+
+	private void restoreHealthBars()
+	{
+		spriteManager.removeSpriteOverrides(HealthbarOverride.values());
+		clientThread.invokeLater(client::resetHealthBarCaches);
+	}
+
+	private void overrideCrossSprites()
+	{
+		if (config.rsCrossSprites())
+		{
+			// If we've already replaced them,
+			// we don't need to replace them again
+			if (defaultCrossSprites != null)
+			{
+				return;
+			}
+
+			SpritePixels[] crossSprites = client.getCrossSprites();
+
+			if (crossSprites == null)
+			{
+				return;
+			}
+
+			defaultCrossSprites = new SpritePixels[crossSprites.length];
+			System.arraycopy(crossSprites, 0, defaultCrossSprites, 0, defaultCrossSprites.length);
+
+			for (int i = 0; i < crossSprites.length; i++)
+			{
+				SpritePixels newSprite = getFileSpritePixels("rs3/cross_sprites/" + i + ".png");
+
+				if (newSprite == null)
+				{
+					continue;
+				}
+
+				crossSprites[i] = newSprite;
+			}
+		}
+		else
+		{
+			restoreCrossSprites();
+		}
+	}
+
+	private void restoreCrossSprites()
+	{
+		if (defaultCrossSprites == null)
+		{
+			return;
+		}
+
+		SpritePixels[] crossSprites = client.getCrossSprites();
+
+		if (crossSprites != null && defaultCrossSprites.length == crossSprites.length)
+		{
+			System.arraycopy(defaultCrossSprites, 0, crossSprites, 0, defaultCrossSprites.length);
+		}
+
+		defaultCrossSprites = null;
 	}
 
 	private void restoreWidgetDimensions()

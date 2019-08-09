@@ -94,6 +94,8 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 50));
 		add("Enter the mining guild wearing full prospector.",
 			new SkillRequirement(Skill.MINING, 60));
+		add("Kill the Blue Dragon under the Heroes' Guild.",
+			new QuestRequirement(Quest.HEROES_QUEST));
 		add("Crack a wall safe within Rogues Den.",
 			new SkillRequirement(Skill.THIEVING, 50));
 		add("Recharge your prayer in the Port Sarim church while wearing full Proselyte.",

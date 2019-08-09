@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.discord;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -53,7 +53,7 @@ enum DiscordGameEventType
 	TRAINING_COOKING(Skill.COOKING),
 	TRAINING_WOODCUTTING(Skill.WOODCUTTING),
 	TRAINING_FLETCHING(Skill.FLETCHING),
-	TRAINING_FISHING(Skill.FISHING),
+	TRAINING_FISHING(Skill.FISHING, 1),
 	TRAINING_FIREMAKING(Skill.FIREMAKING),
 	TRAINING_CRAFTING(Skill.CRAFTING),
 	TRAINING_SMITHING(Skill.SMITHING),
@@ -83,12 +83,13 @@ enum DiscordGameEventType
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
 	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
+	BOSS_ZALCANO("Zalcano", DiscordAreaType.BOSSES, 13250),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
 	// Cities
 	CITY_AL_KHARID("Al Kharid" , DiscordAreaType.CITIES, 13105, 13106),
 	CITY_APE_ATOLL("Ape Atoll" , DiscordAreaType.CITIES, 10795, 11051, 10974, 11050),
-	CITY_ARCEUUS_HOUSE("Arceuus House" , DiscordAreaType.CITIES, 6459, 6715, 6458, 6714),
+	CITY_ARCEUUS_HOUSE("Arceuus" , DiscordAreaType.CITIES, 6459, 6715, 6458, 6714),
 	CITY_ARDOUGNE("Ardougne" , DiscordAreaType.CITIES, 10548, 10547, 10292, 10291, 10036, 10035, 9780, 9779),
 	CITY_BARBARIAN_VILLAGE("Barbarian Village" , DiscordAreaType.CITIES, 12341),
 	CITY_BANDIT_CAMP("Bandit Camp" , DiscordAreaType.CITIES, 12591),
@@ -106,13 +107,14 @@ enum DiscordGameEventType
 	CITY_FALADOR("Falador" , DiscordAreaType.CITIES, 11828, 11572, 11571, 11827, 12084),
 	CITY_GOBLIN_VILLAGE("Goblin Village" , DiscordAreaType.CITIES, 11830),
 	CITY_GUTANOTH("Gu'Tanoth" , DiscordAreaType.CITIES, 10031),
-	CITY_HOSIDIUS_HOUSE("Hosidius House" , DiscordAreaType.CITIES, 6713, 6712, 6455, 6711, 6710, 6965, 6966, 7222, 7223, 6967),
+	CITY_GWENITH("Gwenith", DiscordAreaType.CITIES, 8501, 8757, 9013),
+	CITY_HOSIDIUS_HOUSE("Hosidius" , DiscordAreaType.CITIES, 6713, 6712, 6455, 6711, 6710, 6965, 6966, 7222, 7223, 6967),
 	CITY_JATISZO("Jatizso" , DiscordAreaType.CITIES, 9531),
 	CITY_JIGGIG("Jiggig" , DiscordAreaType.CITIES, 9775),
 	CITY_KARAMJA("Karamja" , DiscordAreaType.CITIES, 11569, 11568, 11567, 11566, 11313, 11312, 11311),
 	CITY_KELDAGRIM("Keldagrim" , DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
 	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265),
-	CITY_LOVAKENGJ_HOUSE("Lovakengj House" , DiscordAreaType.CITIES, 5692, 5948, 5691, 5947, 6203, 6202, 5690, 5946),
+	CITY_LOVAKENGJ_HOUSE("Lovakengj" , DiscordAreaType.CITIES, 5692, 5948, 5691, 5947, 6203, 6202, 5690, 5946),
 	CITY_LUMBRIDGE("Lumbridge" , DiscordAreaType.CITIES, 12850),
 	CITY_LUNAR_ISLE("Lunar Isle" , DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
 	CITY_MEIYERDITCH("Meiyerditch" , DiscordAreaType.CITIES, 14132, 14388, 14387, 14386, 14385),
@@ -128,11 +130,12 @@ enum DiscordGameEventType
 	CITY_PORT_KHAZARD("Port Khazard" , DiscordAreaType.CITIES, 10545),
 	CITY_PORT_PHASMATYS("Port Phasmatys" , DiscordAreaType.CITIES, 14646),
 	CITY_PORT_SARIM("Port Sarim" , DiscordAreaType.CITIES, 12082),
-	CITY_PISCARILIUS_HOUSE("Piscarilius House" , DiscordAreaType.CITIES, 6971, 7227, 6970, 7226),
+	CITY_PISCARILIUS_HOUSE("Port Piscarilius" , DiscordAreaType.CITIES, 6971, 7227, 6970, 7226),
+	CITY_PRIFDDINAS("Prifddinas", DiscordAreaType.CITIES, 12894, 12895, 13150, 13151),
 	CITY_RELLEKKA("Rellekka" , DiscordAreaType.CITIES, 10553),
 	CITY_RIMMINGTON("Rimmington" , DiscordAreaType.CITIES, 11826, 11570),
 	CITY_SEERS_VILLAGE("Seers' Village" , DiscordAreaType.CITIES, 10806),
-	CITY_SHAYZIEN_HOUSE("Shayzien House" , DiscordAreaType.CITIES, 5944, 5943, 6200, 6199, 5688),
+	CITY_SHAYZIEN_HOUSE("Shayzien" , DiscordAreaType.CITIES, 5944, 5943, 6200, 6199, 5688),
 	CITY_SHILO_VILLAGE("Shilo Village" , DiscordAreaType.CITIES, 11310),
 	CITY_SOPHANEM("Sophanem" , DiscordAreaType.CITIES, 13099),
 	CITY_TAI_BWO_WANNAI("Tai Bwo Wannai" , DiscordAreaType.CITIES, 11056, 11055),
@@ -179,7 +182,8 @@ enum DiscordGameEventType
 	DUNGEON_GOBLIN_CAVE("Goblin Cave", DiscordAreaType.DUNGEONS, 10393),
 	DUNGEON_GRAND_TREE_TUNNELS("Grand Tree Tunnels", DiscordAreaType.DUNGEONS, 9882),
 	DUNGEON_HAM("H.A.M Dungeon", DiscordAreaType.DUNGEONS, 12694, 10321),
-	DUNGEON_JATIZSO_MINES("Jatizo Mines", DiscordAreaType.DUNGEONS, 9631),
+	DUNGEON_IORWERTH("Iorwerth Dungeon", DiscordAreaType.DUNGEONS, 12738, 12993, 12994),
+	DUNGEON_JATIZSO_MINES("Jatizso Mines", DiscordAreaType.DUNGEONS, 9631),
 	DUNGEON_JIGGIG_BURIAL_TOMB("Jiggig Burial Tomb", DiscordAreaType.DUNGEONS, 9875, 9874),
 	DUNGEON_JOGRE("Jogre Dungeon", DiscordAreaType.DUNGEONS, 11412),
 	DUNGEON_KARAMJA_VOLCANO("Karamja Volcano", DiscordAreaType.DUNGEONS, 11413, 11414),
@@ -210,6 +214,7 @@ enum DiscordGameEventType
 	DUNGEON_THE_WARRENS("The Warrens", DiscordAreaType.DUNGEONS, 7070, 7326),
 	DUNGEON_TOLNA("Dungeon of Tolna", DiscordAreaType.DUNGEONS, 13209),
 	DUNGEON_TOWER_OF_LIFE("Tower of Life Basement", DiscordAreaType.DUNGEONS, 12100),
+	DUNGEON_TRAHAEARN_MINE("Trahaearn Mine", DiscordAreaType.DUNGEONS, 13249),
 	DUNGEON_TUNNEL_OF_CHAOS("Tunnel of Chaos", DiscordAreaType.DUNGEONS, 12625),
 	DUNGEON_UNDERGROUND_PASS("Underground Pass", DiscordAreaType.DUNGEONS, 9369, 9370),
 	DUNGEON_VARROCKSEWERS("Varrock Sewers", DiscordAreaType.DUNGEONS, 12954, 13210),
@@ -218,7 +223,7 @@ enum DiscordGameEventType
 	DUNGEON_WATERFALL("Waterfall Dungeon", DiscordAreaType.DUNGEONS, 10394),
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
-	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_YANILLE_AGILITY("Yanille Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
 	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
@@ -231,6 +236,7 @@ enum DiscordGameEventType
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 13135, 13134, 13133, 13131, 13130, 13387, 13386),
 	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362),
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
+	MG_GAUNTLET("Gauntlet", DiscordAreaType.MINIGAMES, 12995),
 	MG_INFERNO("The Inferno", DiscordAreaType.MINIGAMES, 9043),
 	MG_LAST_MAN_STANDING("Last Man Standing", DiscordAreaType.MINIGAMES, 13660, 13659, 13658, 13916, 13915, 13914),
 	MG_MAGE_TRAINING_ARENA("Mage Training Arena", DiscordAreaType.MINIGAMES, 13462, 13463),
@@ -250,16 +256,18 @@ enum DiscordGameEventType
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
 	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD);
 
-	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
-	private static final List<DiscordGameEventType> FROM_VARBITS = new ArrayList<>();
+	private static final Map<Integer, DiscordGameEventType> FROM_REGION;
+	private static final List<DiscordGameEventType> FROM_VARBITS;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
+		ImmutableList.Builder<DiscordGameEventType> fromVarbitsBuilder = ImmutableList.builder();
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
 			if (discordGameEventType.getVarbits() != null)
 			{
-				FROM_VARBITS.add(discordGameEventType);
+				fromVarbitsBuilder.add(discordGameEventType);
 				continue;
 			}
 
@@ -270,10 +278,11 @@ enum DiscordGameEventType
 
 			for (int region : discordGameEventType.getRegionIds())
 			{
-				assert !FROM_REGION.containsKey(region);
-				FROM_REGION.put(region, discordGameEventType);
+				regionMapBuilder.put(region, discordGameEventType);
 			}
 		}
+		FROM_REGION = regionMapBuilder.build();
+		FROM_VARBITS = fromVarbitsBuilder.build();
 	}
 
 	private String imageKey;

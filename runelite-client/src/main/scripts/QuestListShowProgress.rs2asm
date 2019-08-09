@@ -1,0 +1,198 @@
+.id                 1354
+.int_stack_count    3
+.string_stack_count 0
+.int_var_count      7
+.string_var_count   0
+   iconst                 0
+   istore                 3
+   iconst                 0
+   istore                 4
+   iconst                 0
+   istore                 5
+   invoke                 1340
+   istore                 6
+LABEL8:
+   iload                  5
+   iload                  6
+   if_icmplt              LABEL12
+   jump                   LABEL56
+LABEL12:
+   iload                  0
+   iload                  5
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL18
+   jump                   LABEL51
+LABEL18:
+   iload                  5
+   invoke                 1357
+   istore                 3
+   iload                  3
+   iconst                 2
+   if_icmpeq              LABEL25
+   jump                   LABEL28
+LABEL25:
+   iconst                 901389
+   istore                 4
+   jump                   LABEL37
+LABEL28:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL32
+   jump                   LABEL35
+LABEL32:
+   iconst                 16776960
+   istore                 4
+   jump                   LABEL37
+LABEL35:
+   iconst                 16711680
+   istore                 4
+LABEL37:
+   iload                  4
+   cc_setcolour          
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iconst                 16777215
+   sconst                 "Iii"
+   cc_setonmouseover     
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  4
+   sconst                 "Iii"
+   cc_setonmouseleave    
+LABEL51:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+   jump                   LABEL8
+LABEL56:
+   iconst                 0
+   invoke                 2245
+   istore                 6
+   istore                 5
+LABEL60:
+   iload                  5
+   iload                  6
+   if_icmplt              LABEL64
+   jump                   LABEL108
+LABEL64:
+   iload                  1
+   iload                  5
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL70
+   jump                   LABEL103
+LABEL70:
+   iload                  5
+   invoke                 1358
+   istore                 3
+   iload                  3
+   iconst                 2
+   if_icmpeq              LABEL77
+   jump                   LABEL80
+LABEL77:
+   iconst                 901389
+   istore                 4
+   jump                   LABEL89
+LABEL80:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL84
+   jump                   LABEL87
+LABEL84:
+   iconst                 16776960
+   istore                 4
+   jump                   LABEL89
+LABEL87:
+   iconst                 16711680
+   istore                 4
+LABEL89:
+   iload                  4
+   cc_setcolour          
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iconst                 16777215
+   sconst                 "Iii"
+   cc_setonmouseover     
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  4
+   sconst                 "Iii"
+   cc_setonmouseleave    
+LABEL103:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+   jump                   LABEL60
+LABEL108:
+   iconst                 0
+   invoke                 2265
+   istore                 6
+   istore                 5
+LABEL112:
+   iload                  5
+   iload                  6
+   if_icmplt              LABEL116
+   jump                   LABEL160
+LABEL116:
+   iload                  2
+   iload                  5
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL122
+   jump                   LABEL155
+LABEL122:
+   iload                  5
+   invoke                 1359
+   istore                 3
+   iload                  3
+   iconst                 2
+   if_icmpeq              LABEL129
+   jump                   LABEL132
+LABEL129:
+   iconst                 901389
+   istore                 4
+   jump                   LABEL141
+LABEL132:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL136
+   jump                   LABEL139
+LABEL136:
+   iconst                 16776960
+   istore                 4
+   jump                   LABEL141
+LABEL139:
+   iconst                 16711680
+   istore                 4
+LABEL141:
+   iload                  4
+   cc_setcolour          
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iconst                 16777215
+   sconst                 "Iii"
+   cc_setonmouseover     
+   iconst                 85
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  4
+   sconst                 "Iii"
+   cc_setonmouseleave    
+LABEL155:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+   jump                   LABEL112
+LABEL160:
+   sconst                 "questProgressUpdated"
+   runelite_callback     
+   return                

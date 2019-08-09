@@ -98,6 +98,31 @@ public class StackFormatterTest
 	}
 
 	@Test
+	public void quantityToPreciseStackSize()
+	{
+		assertEquals("0", StackFormatter.quantityToRSDecimalStack(0));
+		assertEquals("8500", StackFormatter.quantityToRSDecimalStack(8_500, true));
+		assertEquals("10K", StackFormatter.quantityToRSDecimalStack(10_000, true));
+		assertEquals("21.7K", StackFormatter.quantityToRSDecimalStack(21_710, true));
+		assertEquals("100K", StackFormatter.quantityToRSDecimalStack(100_000, true));
+		assertEquals("100.3K", StackFormatter.quantityToRSDecimalStack(100_310, true));
+		assertEquals("1M", StackFormatter.quantityToRSDecimalStack(1_000_000, true));
+		assertEquals("8.45M", StackFormatter.quantityToRSDecimalStack(8_450_000, true));
+		assertEquals("8.451M", StackFormatter.quantityToRSDecimalStack(8_451_000, true));
+		assertEquals("10M", StackFormatter.quantityToRSDecimalStack(10_000_000, true));
+		assertEquals("12.8M", StackFormatter.quantityToRSDecimalStack(12_800_000, true));
+		assertEquals("12.85M", StackFormatter.quantityToRSDecimalStack(12_850_000, true));
+		assertEquals("12.851M", StackFormatter.quantityToRSDecimalStack(12_851_000, true));
+		assertEquals("100M", StackFormatter.quantityToRSDecimalStack(100_000_000, true));
+		assertEquals("250.1M", StackFormatter.quantityToRSDecimalStack(250_100_000, true));
+		assertEquals("250.151M", StackFormatter.quantityToRSDecimalStack(250_151_000, true));
+		assertEquals("1B", StackFormatter.quantityToRSDecimalStack(1_000_000_000, true));
+		assertEquals("1.5B", StackFormatter.quantityToRSDecimalStack(1500_000_000, true));
+		assertEquals("1.55B", StackFormatter.quantityToRSDecimalStack(1550_000_000, true));
+		assertEquals("2.147B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE, true));
+	}
+
+	@Test
 	public void stackSizeToQuantity() throws ParseException
 	{
 		assertEquals(0, StackFormatter.stackSizeToQuantity("0"));

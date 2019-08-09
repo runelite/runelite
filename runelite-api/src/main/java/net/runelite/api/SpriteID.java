@@ -1172,7 +1172,7 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_XP_ACTIVATED = 1197;
 	public static final int MINIMAP_ORB_XP_HOVERED = 1198;
 	public static final int MINIMAP_ORB_XP_ACTIVATED_HOVERED = 1199;
-	public static final int UNKNOWN_BLACK_BLOBS = 1200;
+	public static final int MINIMAP_CLICK_MASK = 1200;
 	public static final int OPTIONS_ZOOM_SLIDER_THUMB = 1201;
 	public static final int EMOTE_SIT_UP = 1202;
 	public static final int EMOTE_STAR_JUMP = 1203;
@@ -1564,6 +1564,28 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
+	/* Unmapped: 1627~1701 */
+	public static final int BUTTON_FRIENDS = 1702;
+	public static final int BUTTON_IGNORES = 1703;
+	/* Unmapped: 1704~1707 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
+	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
+	/* Unmapped: 1712~2175 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_30PX = 2176;
+	public static final int HEALTHBAR_DEFAULT_BACK_30PX = 2177;
+	public static final int HEALTHBAR_DEFAULT_FRONT_50PX = 2178;
+	public static final int HEALTHBAR_DEFAULT_BACK_50PX = 2179;
+	public static final int HEALTHBAR_DEFAULT_FRONT_60PX = 2180;
+	public static final int HEALTHBAR_DEFAULT_BACK_60PX = 2181;
+	public static final int HEALTHBAR_DEFAULT_FRONT_80PX = 2182;
+	public static final int HEALTHBAR_DEFAULT_BACK_80PX = 2183;
+	public static final int HEALTHBAR_DEFAULT_FRONT_100PX = 2184;
+	public static final int HEALTHBAR_DEFAULT_BACK_100PX = 2185;
+	public static final int HEALTHBAR_DEFAULT_FRONT_120PX = 2186;
+	public static final int HEALTHBAR_DEFAULT_BACK_120PX = 2187;
+	public static final int HEALTHBAR_DEFAULT_FRONT_140PX = 2188;
+	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
+	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
+	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
 }

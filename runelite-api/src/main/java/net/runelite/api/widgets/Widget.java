@@ -79,6 +79,7 @@ public interface Widget
 
 	/**
 	 * Gets the current click configuration of the widget.
+	 * @see WidgetConfig
 	 *
 	 * @see WidgetConfig
 	 */
@@ -552,6 +553,13 @@ public interface Widget
 	void setOnMouseOverListener(Object... args);
 
 	/**
+	 * Sets a script to be ran every frame when the mouse is in the widget bounds
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnMouseRepeatListener(Object... args);
+
+	/**
 	 * Sets a script to be ran when the mouse leaves the widget bounds
 	 *
 	 * @param args A ScriptID, then the args for the script
@@ -564,6 +572,20 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnTimerListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the target mode has been activated for this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnTargetEnterListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the target mode has been deactivated for this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnTargetLeaveListener(Object... args);
 
 	/**
 	 * If this widget has any listeners on it
@@ -769,4 +791,34 @@ public interface Widget
 	 * Sets if the rectangle is filled or just stroked
 	 */
 	void setFilled(boolean filled);
+
+	/**
+	 * Verb for spell targets
+	 */
+	String getTargetVerb();
+
+	/**
+	 * Verb for spell targets
+	 */
+	void setTargetVerb(String targetVerb);
+
+	/**
+	 * Can widgets under this widgets be clicked in this widgets bounding box
+	 */
+	boolean getNoClickThrough();
+
+	/**
+	 * Can widgets under this widgets be clicked in this widgets bounding box
+	 */
+	void setNoClickThrough(boolean noClickThrough);
+
+	/**
+	 * Can widgets under this widgets be scrolled in this widgets bounding box
+	 */
+	boolean getNoScrollThrough();
+
+	/**
+	 * Can widgets under this widgets be scrolled in this widgets bounding box
+	 */
+	void setNoScrollThrough(boolean noScrollThrough);
 }

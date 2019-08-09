@@ -30,5 +30,5 @@
 ; Send a private message
    sload                  0
    sload                  1
-   privmsg
-   return
+   chat_sendprivate      
+   return                

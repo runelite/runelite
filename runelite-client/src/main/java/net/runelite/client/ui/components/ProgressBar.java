@@ -49,7 +49,7 @@ public class ProgressBar extends DimmableJPanel
 	private int value;
 
 	@Setter
-	private List<Double> positions = Collections.emptyList();
+	private List<Integer> positions = Collections.emptyList();
 
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
@@ -94,11 +94,10 @@ public class ProgressBar extends DimmableJPanel
 		super.paint(g);
 		g.setColor(getForeground());
 		g.fillRect(0, 0, topWidth, 16);
-		g.setColor(getForeground().darker());
 
-		for (final Double position : positions)
+		for (final Integer position : positions)
 		{
-			final int xCord = (int) (getSize().width * position);
+			final int xCord = getSize().width * position / maximumValue;
 			if (xCord > topWidth)
 			{
 				g.fillRect(xCord, 0, 1, 16);

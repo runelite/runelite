@@ -42,16 +42,20 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
+import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
@@ -62,6 +66,7 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
@@ -75,11 +80,12 @@ import net.runelite.client.util.DeferredEventBus;
 @Slf4j
 public class Hooks implements Callbacks
 {
-	private static final long CHECK = 600; // ms - how often to run checks
+	private static final long CHECK = Constants.GAME_TICK_LENGTH; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
+	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
 
 	private static final GameTick GAME_TICK = new GameTick();
 	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
@@ -123,6 +129,31 @@ public class Hooks implements Callbacks
 
 	private long lastCheck;
 	private boolean shouldProcessGameTick;
+
+	private static MainBufferProvider lastMainBufferProvider;
+	private static Graphics2D lastGraphics;
+
+	/**
+	 * Get the Graphics2D for the MainBufferProvider image
+	 * This caches the Graphics2D instance so it can be reused
+	 * @param mainBufferProvider
+	 * @return
+	 */
+	private static Graphics2D getGraphics(MainBufferProvider mainBufferProvider)
+	{
+		if (lastGraphics == null || lastMainBufferProvider != mainBufferProvider)
+		{
+			if (lastGraphics != null)
+			{
+				log.debug("Graphics reset!");
+				lastGraphics.dispose();
+			}
+
+			lastMainBufferProvider = mainBufferProvider;
+			lastGraphics = (Graphics2D) mainBufferProvider.getImage().getGraphics();
+		}
+		return lastGraphics;
+	}
 
 	@Override
 	public void post(Object event)
@@ -186,8 +217,8 @@ public class Hooks implements Callbacks
 	 * When the world map opens it loads about ~100mb of data into memory, which
 	 * represents about half of the total memory allocated by the client.
 	 * This gets cached and never released, which causes GC pressure which can affect
-	 * performance. This method reinitailzies the world map cache, which allows the
-	 * data to be garbage collecged, and causes the map data from disk each time
+	 * performance. This method reinitializes the world map cache, which allows the
+	 * data to be garbage collected, and causes the map data from disk each time
 	 * is it opened.
 	 */
 	private void checkWorldMap()
@@ -289,9 +320,7 @@ public class Hooks implements Callbacks
 			return;
 		}
 
-		Image image = mainBufferProvider.getImage();
-		final Image finalImage;
-		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		final Graphics2D graphics2d = getGraphics(mainBufferProvider);
 
 		try
 		{
@@ -307,8 +336,6 @@ public class Hooks implements Callbacks
 		// Draw clientUI overlays
 		clientUi.paintOverlays(graphics2d);
 
-		graphics2d.dispose();
-
 		if (client.isGpu())
 		{
 			// processDrawComplete gets called on GPU by the gpu plugin at the end of its
@@ -317,6 +344,8 @@ public class Hooks implements Callbacks
 		}
 
 		// Stretch the game image if the user has that enabled
+		Image image = mainBufferProvider.getImage();
+		final Image finalImage;
 		if (client.isStretchedEnabled())
 		{
 			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
@@ -386,8 +415,7 @@ public class Hooks implements Callbacks
 	public void drawScene()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = image.createGraphics();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
 
 		try
 		{
@@ -397,18 +425,13 @@ public class Hooks implements Callbacks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
-		finally
-		{
-			graphics2d.dispose();
-		}
 	}
 
 	@Override
 	public void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = image.createGraphics();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
 
 		try
 		{
@@ -418,17 +441,12 @@ public class Hooks implements Callbacks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
-		finally
-		{
-			graphics2d.dispose();
-		}
 	}
 
 	public static void drawAfterWidgets()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = image.createGraphics();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
 
 		try
 		{
@@ -439,10 +457,10 @@ public class Hooks implements Callbacks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
-		finally
-		{
-			graphics2d.dispose();
-		}
+
+		// WidgetItemOverlays render at ABOVE_WIDGETS, reset widget item
+		// list for next frame.
+		overlayManager.getItemWidgets().clear();
 	}
 
 	@Override
@@ -452,6 +470,11 @@ public class Hooks implements Callbacks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+		// Replay deferred events, otherwise if two npc
+		// update packets get processed in one frame, a
+		// despawn event could be published prior to the
+		// spawn event, which is deferred
+		deferredEventBus.replay();
 	}
 
 	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
@@ -484,5 +507,22 @@ public class Hooks implements Callbacks
 			}
 			pixelPos += pixelJump;
 		}
+	}
+
+	@Override
+	public void drawItem(int itemId, WidgetItem widgetItem)
+	{
+		// Empty bank item
+		if (widgetItem.getId() != NullItemID.NULL_6512)
+		{
+			overlayManager.getItemWidgets().add(widgetItem);
+		}
+	}
+
+	public static boolean drawMenu()
+	{
+		BeforeMenuRender event = new BeforeMenuRender();
+		client.getCallbacks().post(event);
+		return event.isConsumed();
 	}
 }

@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
@@ -65,22 +66,31 @@ class ObjectIndicatorsOverlay extends Overlay
 			}
 
 			final Polygon polygon;
+			Polygon polygon2 = null;
 
 			if (object instanceof GameObject)
 			{
 				polygon = ((GameObject) object).getConvexHull();
+			}
+			else if (object instanceof DecorativeObject)
+			{
+				polygon = ((DecorativeObject) object).getConvexHull();
+				polygon2 = ((DecorativeObject) object).getConvexHull2();
 			}
 			else
 			{
 				polygon = object.getCanvasTilePoly();
 			}
 
-			if (polygon == null)
+			if (polygon != null)
 			{
-				continue;
+				OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
 			}
 
-			OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
+			if (polygon2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics, polygon2, config.markerColor());
+			}
 		}
 
 		return null;

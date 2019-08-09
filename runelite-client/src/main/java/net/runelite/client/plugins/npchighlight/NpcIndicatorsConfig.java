@@ -89,6 +89,17 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "highlightMenuNames",
+		name = "Highlight menu names",
+		description = "Highlight NPC names in right click menu"
+	)
+	default boolean highlightMenuNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")

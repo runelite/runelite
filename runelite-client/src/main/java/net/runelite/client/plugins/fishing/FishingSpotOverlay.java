@@ -46,11 +46,13 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ImageUtil;
 
 class FishingSpotOverlay extends Overlay
 {
 	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
+	private static final int ONE_TICK_AERIAL_FISHING = 3;
 
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
@@ -124,6 +126,13 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotTiles())
 			{
 				Polygon poly = npc.getCanvasTilePoly();
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+				{
+					color = Color.GREEN;
+				}
+
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
@@ -133,6 +142,13 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotIcons())
 			{
 				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+				{
+					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), Color.GREEN);
+				}
+
 				if (fishImage != null)
 				{
 					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
@@ -147,6 +163,13 @@ class FishingSpotOverlay extends Overlay
 			{
 				String text = spot.getName();
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+				{
+					color = Color.GREEN;
+				}
+
 				if (textLocation != null)
 				{
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());

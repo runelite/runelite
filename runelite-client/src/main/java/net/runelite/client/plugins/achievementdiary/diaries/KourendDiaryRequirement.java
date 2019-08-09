@@ -128,7 +128,6 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 90),
 			new SkillRequirement(Skill.MINING, 38),
 			new SkillRequirement(Skill.CRAFTING, 38),
-			new QuestRequirement(Quest.MONKEY_MADNESS_I),
 			new FavourRequirement(Favour.ARCEUUS, 100));
 		add("Create your own Battlestaff from scratch within the Farming Guild.",
 			new SkillRequirement(Skill.FARMING, 85),

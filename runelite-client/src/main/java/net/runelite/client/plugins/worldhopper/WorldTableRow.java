@@ -244,7 +244,7 @@ class WorldTableRow extends JPanel
 			return;
 		}
 		else if (world.getTypes().contains(WorldType.PVP)
-			|| world.getTypes().contains(WorldType.PVP_HIGH_RISK)
+			|| world.getTypes().contains(WorldType.HIGH_RISK)
 			|| world.getTypes().contains(WorldType.DEADMAN)
 			|| world.getTypes().contains(WorldType.SEASONAL_DEADMAN))
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,136 +24,264 @@
  */
 package net.runelite.http.service.config;
 
-import java.io.IOException;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
+import static com.mongodb.client.model.Updates.set;
+import static com.mongodb.client.model.Updates.unset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import javax.annotation.Nullable;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
-import net.runelite.http.service.account.AuthFilter;
-import net.runelite.http.service.account.beans.SessionEntry;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
-import org.springframework.web.bind.annotation.RestController;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/config")
+@Service
 public class ConfigService
 {
-	private static final String CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS `config` (\n"
-		+ "  `user` int(11) NOT NULL,\n"
-		+ "  `key` tinytext NOT NULL,\n"
-		+ "  `value` text NOT NULL,\n"
-		+ "  UNIQUE KEY `user_key` (`user`,`key`(64))\n"
-		+ ") ENGINE=InnoDB;";
+	private static final int MAX_DEPTH = 8;
+	private static final int MAX_VALUE_LENGTH = 262144;
 
-	private static final String CONFIG_FK = "ALTER TABLE `config`\n"
-		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	private final Gson GSON = RuneLiteAPI.GSON;
+	private final UpdateOptions upsertUpdateOptions = new UpdateOptions().upsert(true);
 
-	private final Sql2o sql2o;
-	private final AuthFilter auth;
+	private final MongoCollection<Document> mongoCollection;
 
 	@Autowired
 	public ConfigService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		AuthFilter auth
+		MongoClient mongoClient
 	)
 	{
-		this.sql2o = sql2o;
-		this.auth = auth;
 
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery(CREATE_CONFIG)
-				.executeUpdate();
+		MongoDatabase database = mongoClient.getDatabase("config");
+		MongoCollection<Document> collection = database.getCollection("config");
+		this.mongoCollection = collection;
 
-			try
-			{
-				con.createQuery(CONFIG_FK)
-					.executeUpdate();
-			}
-			catch (Sql2oException ex)
-			{
-				// Ignore, happens when index already exists
-			}
-		}
+		// Create unique index on _userId
+		IndexOptions indexOptions = new IndexOptions().unique(true);
+		collection.createIndex(Indexes.ascending("_userId"), indexOptions);
 	}
 
-	@RequestMapping
-	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
+	private Document getConfig(int userId)
 	{
-		SessionEntry session = auth.handle(request, response);
+		return mongoCollection.find(eq("_userId", userId)).first();
+	}
 
-		if (session == null)
+	public Configuration get(int userId)
+	{
+		Map<String, Object> configMap = getConfig(userId);
+
+		if (configMap == null || configMap.isEmpty())
 		{
-			return null;
+			return new Configuration(Collections.emptyList());
 		}
 
-		List<ConfigEntry> config;
+		List<ConfigEntry> config = new ArrayList<>();
 
-		try (Connection con = sql2o.open())
+		for (String group : configMap.keySet())
 		{
-			config = con.createQuery("select `key`, value from config where user = :user")
-				.addParameter("user", session.getUser())
-				.executeAndFetch(ConfigEntry.class);
+			// Reserved keys
+			if (group.startsWith("_") || group.startsWith("$"))
+			{
+				continue;
+			}
+
+			Map<String, Object> groupMap = (Map) configMap.get(group);
+
+			for (Map.Entry<String, Object> entry : groupMap.entrySet())
+			{
+				String key = entry.getKey();
+				Object value = entry.getValue();
+
+				if (value instanceof Map || value instanceof Collection)
+				{
+					value = GSON.toJson(entry.getValue());
+				}
+				else if (value == null)
+				{
+					continue;
+				}
+
+				ConfigEntry configEntry = new ConfigEntry();
+				configEntry.setKey(group + "." + key.replace(':', '.'));
+				configEntry.setValue(value.toString());
+				config.add(configEntry);
+			}
 		}
 
 		return new Configuration(config);
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = PUT)
-	public void setKey(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		@PathVariable String key,
-		@RequestBody(required = false) String value
-	) throws IOException
+	public boolean setKey(
+		int userId,
+		String key,
+		@Nullable String value
+	)
 	{
-		SessionEntry session = auth.handle(request, response);
-
-		if (session == null)
+		if (key.startsWith("$") || key.startsWith("_"))
 		{
-			return;
+			return false;
 		}
 
-		try (Connection con = sql2o.open())
+		String[] split = key.split("\\.", 2);
+		if (split.length != 2)
 		{
-			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update `key` = :key, value = :value")
-				.addParameter("user", session.getUser())
-				.addParameter("key", key)
-				.addParameter("value", value != null ? value : "")
-				.executeUpdate();
+			return false;
+		}
+
+		if (!validateJson(value))
+		{
+			return false;
+		}
+
+		Object jsonValue = parseJsonString(value);
+		mongoCollection.updateOne(eq("_userId", userId),
+			set(split[0] + "." + split[1].replace('.', ':'), jsonValue),
+			upsertUpdateOptions);
+		return true;
+	}
+
+	public boolean unsetKey(
+		int userId,
+		String key
+	)
+	{
+		if (key.startsWith("$") || key.startsWith("_"))
+		{
+			return false;
+		}
+
+		String[] split = key.split("\\.", 2);
+		if (split.length != 2)
+		{
+			return false;
+		}
+
+		mongoCollection.updateOne(eq("_userId", userId),
+			unset(split[0] + "." + split[1].replace('.', ':')));
+		return true;
+	}
+
+	@VisibleForTesting
+	static Object parseJsonString(String value)
+	{
+		Object jsonValue;
+		try
+		{
+			jsonValue = RuneLiteAPI.GSON.fromJson(value, Object.class);
+
+			if (jsonValue instanceof Double || jsonValue instanceof Float)
+			{
+				Number number = (Number) jsonValue;
+				if (Math.floor(number.doubleValue()) == number.doubleValue() && !Double.isInfinite(number.doubleValue()))
+				{
+					// value is an int or long. 'number' might be truncated so parse it from 'value'
+					try
+					{
+						jsonValue = Integer.parseInt(value);
+					}
+					catch (NumberFormatException ex)
+					{
+						try
+						{
+							jsonValue = Long.parseLong(value);
+						}
+						catch (NumberFormatException ex2)
+						{
+
+						}
+					}
+				}
+			}
+		}
+		catch (JsonSyntaxException ex)
+		{
+			jsonValue = value;
+		}
+		return jsonValue;
+	}
+
+	@VisibleForTesting
+	static boolean validateJson(String value)
+	{
+		try
+		{
+			// I couldn't figure out a better way to do this than a second json parse
+			JsonElement jsonElement = RuneLiteAPI.GSON.fromJson(value, JsonElement.class);
+			return validateObject(jsonElement, 1);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			// the client submits the string representation of objects which is not always valid json,
+			// eg. a value with a ':' in it. We just ignore it now. We can't json encode the values client
+			// side due to them already being strings, which prevents gson from being able to convert them
+			// to ints/floats/maps etc.
+			return value.length() < MAX_VALUE_LENGTH;
 		}
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = DELETE)
-	public void unsetKey(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		@PathVariable String key
-	) throws IOException
+	private static boolean validateObject(JsonElement jsonElement, int depth)
 	{
-		SessionEntry session = auth.handle(request, response);
-
-		if (session == null)
+		if (depth >= MAX_DEPTH)
 		{
-			return;
+			return false;
 		}
 
-		try (Connection con = sql2o.open())
+		if (jsonElement.isJsonObject())
 		{
-			con.createQuery("delete from config where user = :user and `key` = :key")
-				.addParameter("user", session.getUser())
-				.addParameter("key", key)
-				.executeUpdate();
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet())
+			{
+				JsonElement element = entry.getValue();
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
 		}
+		else if (jsonElement.isJsonArray())
+		{
+			JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+			for (int i = 0; i < jsonArray.size(); ++i)
+			{
+				JsonElement element = jsonArray.get(i);
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
+		}
+		else if (jsonElement.isJsonPrimitive())
+		{
+			JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+			String value = jsonPrimitive.getAsString();
+			if (value.length() >= MAX_VALUE_LENGTH)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

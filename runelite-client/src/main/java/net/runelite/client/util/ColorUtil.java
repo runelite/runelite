@@ -27,6 +27,7 @@ package net.runelite.client.util;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
 
 public class ColorUtil
 {
@@ -225,5 +226,17 @@ public class ColorUtil
 		{
 			return null;
 		}
+	}
+
+	/**
+	 * Creates color from passed object hash code
+	 * @param object object with hashCode
+	 * @return color
+	 */
+	public static Color fromObject(@Nonnull final Object object)
+	{
+		int i = object.hashCode();
+		float h = (i % 360) / 360f;
+		return Color.getHSBColor(h, 1, 1);
 	}
 }

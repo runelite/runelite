@@ -25,12 +25,15 @@
  */
 package net.runelite.client.plugins.virtuallevels;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
@@ -38,7 +41,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Virtual Levels",
-	description = "Configuration for the virtual levels plugin.",
+	description = "Shows virtual levels (beyond 99) and virtual skill total on the skills tab.",
 	tags = {"skill", "total", "max"},
 	enabledByDefault = false
 )
@@ -47,10 +50,19 @@ public class VirtualLevelsPlugin extends Plugin
 	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
 
 	@Inject
+	private VirtualLevelsConfig config;
+
+	@Inject
 	private Client client;
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Provides
+	VirtualLevelsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(VirtualLevelsConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -66,6 +78,17 @@ public class VirtualLevelsPlugin extends Plugin
 		{
 			clientThread.invoke(this::simulateSkillChange);
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("virtuallevels"))
+		{
+			return;
+		}
+
+		clientThread.invoke(this::simulateSkillChange);
 	}
 
 	@Subscribe
@@ -93,6 +116,10 @@ public class VirtualLevelsPlugin extends Plugin
 				intStack[intStackSize - 1] = Experience.MAX_VIRT_LEVEL;
 				break;
 			case "skillTabTotalLevel":
+				if (!config.virtualTotalLevel())
+				{
+					break;
+				}
 				int level = 0;
 
 				for (Skill s : Skill.values())

@@ -78,7 +78,7 @@ public class KitDumperTest
 
 				KitDefinition def = loader.load(file.getFileId(), b);
 
-				Files.write(gson.toJson(def), new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;
 			}
 		}

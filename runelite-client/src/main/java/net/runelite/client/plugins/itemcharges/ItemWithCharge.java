@@ -24,13 +24,21 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
 
 @AllArgsConstructor
 @Getter
@@ -41,6 +49,31 @@ enum ItemWithCharge
 	ABRACE3(ABYSSAL_BRACELET, ABYSSAL_BRACELET3, 3),
 	ABRACE4(ABYSSAL_BRACELET, ABYSSAL_BRACELET4, 4),
 	ABRACE5(ABYSSAL_BRACELET, ABYSSAL_BRACELET5, 5),
+	BASKET_APPLES1(FRUIT_BASKET, APPLES1, 1),
+	BASKET_APPLES2(FRUIT_BASKET, APPLES2, 2),
+	BASKET_APPLES3(FRUIT_BASKET, APPLES3, 3),
+	BASKET_APPLES4(FRUIT_BASKET, APPLES4, 4),
+	BASKET_APPLES5(FRUIT_BASKET, APPLES5, 5),
+	BASKET_BANANAS1(FRUIT_BASKET, BANANAS1, 1),
+	BASKET_BANANAS2(FRUIT_BASKET, BANANAS2, 2),
+	BASKET_BANANAS3(FRUIT_BASKET, BANANAS3, 3),
+	BASKET_BANANAS4(FRUIT_BASKET, BANANAS4, 4),
+	BASKET_BANANAS5(FRUIT_BASKET, BANANAS5, 5),
+	BASKET_ORANGES1(FRUIT_BASKET, ORANGES1, 1),
+	BASKET_ORANGES2(FRUIT_BASKET, ORANGES2, 2),
+	BASKET_ORANGES3(FRUIT_BASKET, ORANGES3, 3),
+	BASKET_ORANGES4(FRUIT_BASKET, ORANGES4, 4),
+	BASKET_ORANGES5(FRUIT_BASKET, ORANGES5, 5),
+	BASKET_STRAWBERRIES1(FRUIT_BASKET, STRAWBERRIES1, 1),
+	BASKET_STRAWBERRIES2(FRUIT_BASKET, STRAWBERRIES2, 2),
+	BASKET_STRAWBERRIES3(FRUIT_BASKET, STRAWBERRIES3, 3),
+	BASKET_STRAWBERRIES4(FRUIT_BASKET, STRAWBERRIES4, 4),
+	BASKET_STRAWBERRIES5(FRUIT_BASKET, STRAWBERRIES5, 5),
+	BASKET_TOMATOES1(FRUIT_BASKET, TOMATOES1, 1),
+	BASKET_TOMATOES2(FRUIT_BASKET, TOMATOES2, 2),
+	BASKET_TOMATOES3(FRUIT_BASKET, TOMATOES3, 3),
+	BASKET_TOMATOES4(FRUIT_BASKET, TOMATOES4, 4),
+	BASKET_TOMATOES5(FRUIT_BASKET, TOMATOES5, 5),
 	BELLOWS0(BELLOWS, OGRE_BELLOWS, 0),
 	BELLOWS1(BELLOWS, OGRE_BELLOWS_1, 1),
 	BELLOWS2(BELLOWS, OGRE_BELLOWS_2, 2),
@@ -138,6 +171,36 @@ enum ItemWithCharge
 	ROW3(TELEPORT, RING_OF_WEALTH_3, 3),
 	ROW4(TELEPORT, RING_OF_WEALTH_4, 4),
 	ROW5(TELEPORT, RING_OF_WEALTH_5, 5),
+	SACK_CABBAGES1(SACK, CABBAGES1, 1),
+	SACK_CABBAGES2(SACK, CABBAGES2, 2),
+	SACK_CABBAGES3(SACK, CABBAGES3, 3),
+	SACK_CABBAGES4(SACK, CABBAGES4, 4),
+	SACK_CABBAGES5(SACK, CABBAGES5, 5),
+	SACK_CABBAGES6(SACK, CABBAGES6, 6),
+	SACK_CABBAGES7(SACK, CABBAGES7, 7),
+	SACK_CABBAGES8(SACK, CABBAGES8, 8),
+	SACK_CABBAGES9(SACK, CABBAGES9, 9),
+	SACK_CABBAGES10(SACK, CABBAGES10, 10),
+	SACK_ONIONS1(SACK, ONIONS1, 1),
+	SACK_ONIONS2(SACK, ONIONS2, 2),
+	SACK_ONIONS3(SACK, ONIONS3, 3),
+	SACK_ONIONS4(SACK, ONIONS4, 4),
+	SACK_ONIONS5(SACK, ONIONS5, 5),
+	SACK_ONIONS6(SACK, ONIONS6, 6),
+	SACK_ONIONS7(SACK, ONIONS7, 7),
+	SACK_ONIONS8(SACK, ONIONS8, 8),
+	SACK_ONIONS9(SACK, ONIONS9, 9),
+	SACK_ONIONS10(SACK, ONIONS10, 10),
+	SACK_POTATOES1(SACK, POTATOES1, 1),
+	SACK_POTATOES2(SACK, POTATOES2, 2),
+	SACK_POTATOES3(SACK, POTATOES3, 3),
+	SACK_POTATOES4(SACK, POTATOES4, 4),
+	SACK_POTATOES5(SACK, POTATOES5, 5),
+	SACK_POTATOES6(SACK, POTATOES6, 6),
+	SACK_POTATOES7(SACK, POTATOES7, 7),
+	SACK_POTATOES8(SACK, POTATOES8, 8),
+	SACK_POTATOES9(SACK, POTATOES9, 9),
+	SACK_POTATOES10(SACK, POTATOES10, 10),
 	SKILLS1(TELEPORT, SKILLS_NECKLACE1, 1),
 	SKILLS2(TELEPORT, SKILLS_NECKLACE2, 2),
 	SKILLS3(TELEPORT, SKILLS_NECKLACE3, 3),
@@ -168,14 +231,18 @@ enum ItemWithCharge
 	private final int id;
 	private final int charges;
 
-	private static final Map<Integer, ItemWithCharge> ID_MAP = new HashMap<>();
+	private static final Map<Integer, ItemWithCharge> ID_MAP;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ItemWithCharge> builder = new ImmutableMap.Builder<>();
+
 		for (ItemWithCharge itemCharge : values())
 		{
-			ID_MAP.put(itemCharge.getId(), itemCharge);
+			builder.put(itemCharge.getId(), itemCharge);
 		}
+
+		ID_MAP = builder.build();
 	}
 
 	@Nullable

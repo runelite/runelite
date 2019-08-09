@@ -90,7 +90,6 @@ public class LootTrackerClient
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.get()
 			.url(url)
 			.build();
 
@@ -98,7 +97,7 @@ public class LootTrackerClient
 		{
 			if (!response.isSuccessful())
 			{
-				log.debug("Error looking up loot: {}", response.message());
+				log.debug("Error looking up loot: {}", response);
 				return null;
 			}
 

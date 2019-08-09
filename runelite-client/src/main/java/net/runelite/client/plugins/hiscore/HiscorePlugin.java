@@ -210,7 +210,7 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.SERVER))
+		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.GAMEMESSAGE))
 		{
 			return;
 		}

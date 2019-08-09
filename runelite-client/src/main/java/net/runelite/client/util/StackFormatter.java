@@ -62,6 +62,14 @@ public class StackFormatter
 	);
 
 	/**
+	 * A more precise decimal number formatter, outputting thousandths
+	 */
+	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
+		"#,###.###",
+		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+	);
+
+	/**
 	 * Convert a quantity to a nicely formatted stack size.
 	 * See the StackFormatterTest to see expected output.
 	 *
@@ -153,6 +161,24 @@ public class StackFormatter
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
+		return quantityToRSDecimalStack(quantity, false);
+	}
+
+	/**
+	 * Convert a quantity to stack size as it would
+	 * appear in RuneScape. (with decimals)
+	 * <p>
+	 * This differs from quantityToRSStack in that it displays
+	 * decimals. Ex: 27100 is 27.1k (not 27k)
+	 * <p>
+	 *
+	 * @param quantity The quantity to convert.
+	 * @param precise If true, the returned string will have thousandths precision if quantity is larger than 1 million.
+	 * @return The stack size as it would appear in RS, with decimals,
+	 * with K after 100,000 and M after 10,000,000
+	 */
+	public static String quantityToRSDecimalStack(int quantity, boolean precise)
+	{
 		String quantityStr = String.valueOf(quantity);
 		if (quantityStr.length() <= 4)
 		{
@@ -160,7 +186,13 @@ public class StackFormatter
 		}
 
 		int power = (int) Math.log10(quantity);
-		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
+
+		// Output thousandths for values above a million
+		NumberFormat format = precise && power >= 6
+			? PRECISE_DECIMAL_FORMATTER
+			: DECIMAL_FORMATTER;
+
+		return format.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
 
 	/**

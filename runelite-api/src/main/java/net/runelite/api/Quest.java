@@ -51,6 +51,7 @@ public enum Quest
 	SHIELD_OF_ARRAV(316, "Shield of Arrav"),
 	VAMPIRE_SLAYER(317, "Vampire Slayer"),
 	WITCHS_POTION(318, "Witch's Potion"),
+	X_MARKS_THE_SPOT(550, "X Marks the Spot"),
 
 	//Members' Quests
 	ANIMAL_MAGNETISM(331, "Animal Magnetism"),
@@ -121,8 +122,8 @@ public enum Quest
 	MONKEY_MADNESS_II(396, "Monkey Madness II"),
 	MONKS_FRIEND(397, "Monk's Friend"),
 	MOUNTAIN_DAUGHTER(398, "Mountain Daughter"),
-	MOURNINGS_ENDS_PART_I(399, "Mourning's Ends Part I"),
-	MOURNINGS_ENDS_PART_II(400, "Mourning's Ends Part II"),
+	MOURNINGS_END_PART_I(399, "Mourning's End Part I"),
+	MOURNINGS_END_PART_II(400, "Mourning's End Part II"),
 	MURDER_MYSTERY(401, "Murder Mystery"),
 	MY_ARMS_BIG_ADVENTURE(402, "My Arm's Big Adventure"),
 	NATURE_SPIRIT(403, "Nature Spirit"),
@@ -174,6 +175,7 @@ public enum Quest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters"),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus"),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower"),
+	SONG_OF_THE_ELVES(603, "Song of the Elves"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
@@ -187,7 +189,8 @@ public enum Quest
 	THE_MAGE_ARENA(327, "The Mage Arena"),
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor"),
 	FAMILY_PEST(329, "Family Pest"),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II");
+	THE_MAGE_ARENA_II(330, "The Mage Arena II"),
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge");
 
 	@Getter
 	private final int id;

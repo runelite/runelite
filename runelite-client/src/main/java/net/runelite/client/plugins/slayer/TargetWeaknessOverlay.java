@@ -59,7 +59,7 @@ class TargetWeaknessOverlay extends Overlay
 		this.itemManager = itemManager;
 		this.npcManager = npcManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
 	@Override

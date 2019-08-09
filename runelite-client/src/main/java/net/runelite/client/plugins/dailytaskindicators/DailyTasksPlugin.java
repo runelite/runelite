@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2018-2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,9 +63,10 @@ public class DailyTasksPlugin extends Plugin
 	private static final String SAND_MESSAGE = "You have sand waiting to be collected from Bert.";
 	private static final int SAND_QUEST_COMPLETE = 160;
 	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
+	private static final String ARROWS_MESSAGE = "You have ogre arrows waiting to be collected from Rantz.";
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
-	private static final String RELOG_MESSAGE = " (Requires relog)";
+	private static final String DYNAMITE_MESSAGE = "You have dynamite waiting to be collected from Thirus.";
 
 	@Inject
 	private Client client;
@@ -86,10 +87,15 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void startUp()
+	{
+		loggingIn = true;
+	}
+
+	@Override
+	public void shutDown()
 	{
 		lastReset = 0L;
-		loggingIn = false;
 	}
 
 	@Subscribe
@@ -108,7 +114,6 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
-			&& client.getGameState() == GameState.LOGGED_IN
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
@@ -149,97 +154,87 @@ public class DailyTasksPlugin extends Plugin
 			{
 				checkBonemeal(dailyReset);
 			}
+
+			if (config.showDynamite())
+			{
+				checkDynamite(dailyReset);
+			}
+
+			if (config.showArrows())
+			{
+				checkArrows(dailyReset);
+			}
 		}
 	}
 
 	private void checkHerbBoxes(boolean dailyReset)
 	{
 		if (client.getAccountType() == AccountType.NORMAL
-			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST)
+			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
+			&& (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(HERB_BOX_MESSAGE);
 		}
 	}
 
 	private void checkStaves(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0)
-			{
-				sendChatMessage(STAVES_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(STAVES_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(STAVES_MESSAGE);
 		}
 	}
 
 	private void checkEssence(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
+			&& (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
-			{
-				sendChatMessage(ESSENCE_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(ESSENCE_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(ESSENCE_MESSAGE);
 		}
 	}
 
 	private void checkRunes(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0)
-			{
-				sendChatMessage(RUNES_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(RUNES_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(RUNES_MESSAGE);
 		}
 	}
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0)
-			{
-				sendChatMessage(SAND_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(SAND_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(SAND_MESSAGE);
 		}
 	}
 
 	private void checkFlax(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_FLAX_STATE) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_FLAX_STATE) == 0)
-			{
-				sendChatMessage(FLAX_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(FLAX_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(FLAX_MESSAGE);
+		}
+	}
+
+	private void checkArrows(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_WESTERN_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_ARROWS_STATE) == 0
+			|| dailyReset))
+		{
+			sendChatMessage(ARROWS_MESSAGE);
 		}
 	}
 
@@ -257,14 +252,20 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max)
+			if (collected < max || dailyReset)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
-			else if (dailyReset)
-			{
-				sendChatMessage(BONEMEAL_MESSAGE + RELOG_MESSAGE);
-			}
+		}
+	}
+
+	private void checkDynamite(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1
+			&& (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
+			|| dailyReset))
+		{
+			sendChatMessage(DYNAMITE_MESSAGE);
 		}
 	}
 
@@ -277,7 +278,7 @@ public class DailyTasksPlugin extends Plugin
 
 		chatMessageManager.queue(
 			QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(message)
 				.build());
 	}

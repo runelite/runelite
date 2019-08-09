@@ -36,9 +36,19 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "hideButton",
 		name = "Hide when outside of the library",
-		description = "Don't show the button in the sidebar when your not in the library"
+		description = "Don't show the button in the sidebar when you're not in the library"
 	)
 	default boolean hideButton()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideDuplicateBook",
+		name = "Hide duplicate book",
+		description = "Don't show the duplicate book locations in the library"
+	)
+	default boolean hideDuplicateBook()
 	{
 		return true;
 	}

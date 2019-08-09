@@ -187,6 +187,11 @@ public class FarmingTracker
 
 		PatchState state = patch.getImplementation().forVarbitValue(value);
 
+		if (state == null)
+		{
+			return null;
+		}
+
 		int stage = state.getStage();
 		int stages = state.getStages();
 		int tickrate = state.getTickRate() * 60;
