@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
 import net.runelite.api.Item;
@@ -45,18 +44,14 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -183,36 +178,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 	private static final String UNICODE_CHECK_MARK = "\u2713";
 	private static final String UNICODE_BALLOT_X = "\u2717";
-
-	private static SingleItemRequirement item(int itemId)
-	{
-		return new SingleItemRequirement(itemId);
-	}
-
-	private static RangeItemRequirement range(int startItemId, int endItemId)
-	{
-		return range(null, startItemId, endItemId);
-	}
-
-	private static RangeItemRequirement range(String name, int startItemId, int endItemId)
-	{
-		return new RangeItemRequirement(name, startItemId, endItemId);
-	}
-
-	private static AnyRequirementCollection any(String name, ItemRequirement... requirements)
-	{
-		return new AnyRequirementCollection(name, requirements);
-	}
-
-	private static AllRequirementsCollection all(ItemRequirement... requirements)
-	{
-		return new AllRequirementsCollection(requirements);
-	}
-
-	private static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
-	{
-		return new SlotLimitationRequirement(description, slots);
-	}
 
 	private final String text;
 	private final String locationName;
