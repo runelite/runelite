@@ -33,11 +33,11 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableWebMvc
-public class SpringWebMvcConfigurer implements WebMvcConfigurer
+public class SpringWebMvcConfigurer extends WebMvcConfigurerAdapter
 {
 	/**
 	 * Configure .js as application/json to trick Cloudflare into caching json responses

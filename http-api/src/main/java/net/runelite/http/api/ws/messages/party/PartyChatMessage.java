@@ -24,9 +24,11 @@
  */
 package net.runelite.http.api.ws.messages.party;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import net.runelite.api.events.Event;
 @Value
+@EqualsAndHashCode(callSuper = true)
 public class PartyChatMessage extends PartyMemberMessage implements Event
 {
 	private final String value;
