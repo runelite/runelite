@@ -1373,12 +1373,12 @@ public class ChatCommandsPlugin extends Plugin
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
-				return "Gauntlet";
+				return "The Gauntlet";
 
 			// Corrupted Gauntlet
 			case "cgaunt":
 			case "cgauntlet":
-				return "Corrupted Gauntlet";
+				return "The Corrupted Gauntlet";
 
 			default:
 				return WordUtils.capitalize(boss);
