@@ -89,6 +89,14 @@ class SkillCalculator extends JPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addKeyListener(e -> onSearch());
+		searchBar.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				onSearch();
+			}
+		});
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 

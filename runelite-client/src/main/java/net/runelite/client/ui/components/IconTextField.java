@@ -126,6 +126,7 @@ public class IconTextField extends JPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				setText(null);
+				IconTextField.this.dispatchEvent(mouseEvent);
 			}
 
 			@Override
