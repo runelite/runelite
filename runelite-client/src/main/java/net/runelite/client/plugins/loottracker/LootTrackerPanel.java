@@ -378,7 +378,7 @@ class LootTrackerPanel extends PluginPanel
 	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
 		records.add(record);
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
