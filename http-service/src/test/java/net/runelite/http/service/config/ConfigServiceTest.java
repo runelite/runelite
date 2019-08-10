@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.http.service.config;
 
-import lombok.Value;
+import com.google.common.collect.ImmutableMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-/**
- * An event where the position of a {@link net.runelite.api.widgets.Widget}
- * relative to its parent has changed.
- */
-@Value
-public class WidgetPositioned
+public class ConfigServiceTest
 {
+	@Test
+	public void testParseJsonString()
+	{
+		assertEquals(1, ConfigService.parseJsonString("1"));
+		assertEquals(3.14, ConfigService.parseJsonString("3.14"));
+		assertEquals(1L << 32, ConfigService.parseJsonString("4294967296"));
+		assertEquals("test", ConfigService.parseJsonString("test"));
+		assertEquals("test", ConfigService.parseJsonString("\"test\""));
+		assertEquals(ImmutableMap.of("key", "value"), ConfigService.parseJsonString("{\"key\": \"value\"}"));
+	}
+
+	@Test
+	public void testValidateJson()
+	{
+		assertTrue(ConfigService.validateJson("1"));
+		assertTrue(ConfigService.validateJson("3.14"));
+		assertTrue(ConfigService.validateJson("test"));
+		assertTrue(ConfigService.validateJson("\"test\""));
+		assertTrue(ConfigService.validateJson("key:value"));
+		assertTrue(ConfigService.validateJson("{\"key\": \"value\"}"));
+	}
 }

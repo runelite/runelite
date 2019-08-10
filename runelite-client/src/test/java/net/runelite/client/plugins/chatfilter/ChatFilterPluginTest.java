@@ -54,7 +54,6 @@ public class ChatFilterPluginTest
 	private ChatFilterConfig chatFilterConfig;
 
 	@Mock
-	@Bind
 	private Player localPlayer;
 
 	@Inject
@@ -118,6 +117,16 @@ public class ChatFilterPluginTest
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertNull(chatFilterPlugin.censorMessage("te\u008Cst"));
+	}
+
+	@Test
+	public void testReplayedMessage()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredWords()).thenReturn("hello osrs");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("hello\u00A0osrs"));
 	}
 
 	@Test

@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,7 +56,7 @@ public class CrystalMathLabs extends Plugin
 	/**
 	 * Amount of EXP that must be gained for an update to be submitted.
 	 */
-	private static final int XP_THRESHOLD = 1000;
+	private static final int XP_THRESHOLD = 10000;
 
 	@Inject
 	private Client client;
@@ -65,6 +64,12 @@ public class CrystalMathLabs extends Plugin
 	private String lastUsername;
 	private boolean fetchXp;
 	private long lastXp;
+
+	@Override
+	protected void startUp()
+	{
+		fetchXp = true;
+	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
@@ -75,7 +80,7 @@ public class CrystalMathLabs extends Plugin
 			if (!Objects.equals(client.getUsername(), lastUsername))
 			{
 				lastUsername = client.getUsername();
-				lastXp = getTotalXp();
+				fetchXp = true;
 			}
 		}
 		else if (state == GameState.LOGIN_SCREEN)
@@ -86,12 +91,13 @@ public class CrystalMathLabs extends Plugin
 				return;
 			}
 
-			long totalXp = getTotalXp();
+			long totalXp = client.getOverallExperience();
 			// Don't submit update unless xp threshold is reached
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				log.debug("Submitting update for {}", local.getName());
 				sendUpdateRequest(local.getName());
+				lastXp = totalXp;
 			}
 		}
 	}
@@ -101,19 +107,9 @@ public class CrystalMathLabs extends Plugin
 	{
 		if (fetchXp)
 		{
-			lastXp = getTotalXp();
+			lastXp = client.getOverallExperience();
 			fetchXp = false;
 		}
-	}
-
-	private long getTotalXp()
-	{
-		long total = 0;
-		for (Skill skill : Skill.values())
-		{
-			total += client.getSkillExperience(skill);
-		}
-		return total;
 	}
 
 	private void sendUpdateRequest(String username)

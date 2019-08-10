@@ -96,6 +96,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.explorerRing();
 		}
+		else if (itemId == ItemID.RING_OF_FORGING)
+		{
+			if (!config.showRingOfForgingCount())
+			{
+				return;
+			}
+
+			charges = config.ringOfForging();
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
@@ -134,6 +143,6 @@ class ItemChargeOverlay extends WidgetItemOverlay
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
 			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
-			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges();
+			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount();
 	}
 }

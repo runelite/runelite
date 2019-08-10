@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client;
 
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.Item;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.FontManager;
 
-public class SlotLimitationRequirement implements ItemRequirement
+/**
+ * Loads some slow to initialize classes (hopefully) before they are needed to streamline client startup
+ */
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
+class ClassPreloader
 {
-	private String description;
-	private EquipmentInventorySlot[] slots;
-
-	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
+	static void preload()
 	{
-		this.description = description;
-		this.slots = slots;
-	}
+		// This needs to enumerate the system fonts for some reason, and that takes a while
+		FontManager.getRunescapeSmallFont();
 
-	@Override
-	public boolean fulfilledBy(int itemId)
-	{
-		return false;
-	}
+		// This needs to load a timezone database that is mildly large
+		ZoneId.of("Europe/London");
 
-	@Override
-	public boolean fulfilledBy(Item[] items)
-	{
-		for (EquipmentInventorySlot slot : slots)
-		{
-			if (slot.getSlotIdx() >= items.length)
-			{
-				continue; //We can't check the slot, because there is nothing in it, the array hasn't been resized
-			}
-
-			if (items[slot.getSlotIdx()].getId() != -1)
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	public String getCollectiveName(Client client)
-	{
-		return description;
+		// This just needs to call 20 different DateTimeFormatter constructors, which are slow
+		Object unused = DateTimeFormatter.BASIC_ISO_DATE;
 	}
 }

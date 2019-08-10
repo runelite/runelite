@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
@@ -346,6 +347,7 @@ public interface Client extends GameEngine
 	 * @return the corresponding item composition
 	 * @see ItemID
 	 */
+	@Nonnull
 	ItemComposition getItemDefinition(int id);
 
 	/**
@@ -688,8 +690,7 @@ public interface Client extends GameEngine
 	 * @param varbit the variable
 	 * @param value the new value
 	 */
-	@VisibleForDevtools
-	void setSetting(Varbits varbit, int value);
+	void setVarbit(Varbits varbit, int value);
 
 	/**
 	 * Gets the value of a given variable.
@@ -1644,4 +1645,9 @@ public interface Client extends GameEngine
 	void draw2010Menu();
 
 	void resetHealthBarCaches();
+
+	/**
+	 * Returns the max item index + 1 from cache
+	 */
+	int getItemCount();
 }

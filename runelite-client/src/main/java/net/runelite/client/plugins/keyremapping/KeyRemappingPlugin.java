@@ -88,6 +88,8 @@ public class KeyRemappingPlugin extends Plugin
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				lockChat();
+				// Clear any typed text
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
 		});
 	}
@@ -178,8 +180,6 @@ public class KeyRemappingPlugin extends Plugin
 		if (chatboxInput != null)
 		{
 			chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
-			// Typed text can be non-empty on plugin start, so clear it now
-			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 		}
 	}
 

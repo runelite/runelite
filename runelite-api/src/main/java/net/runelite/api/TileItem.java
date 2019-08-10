@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatfilter;
+package net.runelite.api;
 
-import com.google.common.base.CharMatcher;
-
-class JagexPrintableCharMatcher extends CharMatcher
+/**
+ * Represents an item inside an {@link ItemLayer}.
+ */
+public interface TileItem extends Renderable
 {
-	@Override
-	public boolean matches(char c)
-	{
-		// Characters which are printable
-		return (c >= 32 && c <= 126)
-			|| c == 128
-			|| (c >= 161 && c <= 255);
-	}
+	/**
+	 * Gets the items ID.
+	 *
+	 * @return the ID of the item
+	 * @see ItemID
+	 */
+	int getId();
+
+	/**
+	 * Gets the items quantity.
+	 *
+	 * @return the items quantity
+	 */
+	int getQuantity();
 }

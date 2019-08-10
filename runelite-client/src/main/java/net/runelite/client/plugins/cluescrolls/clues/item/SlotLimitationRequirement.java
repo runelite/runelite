@@ -22,16 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 
-public interface ItemRequirement
+public class SlotLimitationRequirement implements ItemRequirement
 {
-	boolean fulfilledBy(int itemId);
+	private String description;
+	private EquipmentInventorySlot[] slots;
 
-	boolean fulfilledBy(Item[] items);
+	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
+	{
+		this.description = description;
+		this.slots = slots;
+	}
 
-	String getCollectiveName(Client client);
+	@Override
+	public boolean fulfilledBy(int itemId)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean fulfilledBy(Item[] items)
+	{
+		for (EquipmentInventorySlot slot : slots)
+		{
+			if (slot.getSlotIdx() >= items.length)
+			{
+				continue; //We can't check the slot, because there is nothing in it, the array hasn't been resized
+			}
+
+			if (items[slot.getSlotIdx()].getId() != -1)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public String getCollectiveName(Client client)
+	{
+		return description;
+	}
 }
