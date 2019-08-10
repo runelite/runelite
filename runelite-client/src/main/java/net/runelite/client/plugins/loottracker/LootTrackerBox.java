@@ -69,6 +69,7 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
+	@Getter
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;

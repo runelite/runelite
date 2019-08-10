@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2019, Eingin <https://github.com/eingin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,62 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.loottracker;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import java.util.Comparator;
 
-@ConfigGroup("loottracker")
-public interface LootTrackerConfig extends Config
+public enum LootEntrySorting
 {
-	@ConfigItem(
-		keyName = "ignoredItems",
-		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
-	)
-	default String getIgnoredItems()
+	FIRST("Most Recent Drop",
+		(LootTrackerBox a, LootTrackerBox b) ->
+		{
+			long aMax = a.getRecords()
+				.stream()
+				.mapToLong(LootTrackerRecord::getTimestamp)
+				.max()
+				.orElse(0);
+
+			long bMax = b.getRecords()
+				.stream()
+				.mapToLong(LootTrackerRecord::getTimestamp)
+				.max()
+				.orElse(0);
+
+			return Long.compare(aMax, bMax);
+		}),
+	LAST("Oldest Drop",
+		(LootTrackerBox a, LootTrackerBox b) ->
+		{
+			long aMax = a.getRecords()
+				.stream()
+				.mapToLong(LootTrackerRecord::getTimestamp)
+				.max()
+				.orElse(0);
+
+			long bMax = b.getRecords()
+				.stream()
+				.mapToLong(LootTrackerRecord::getTimestamp)
+				.max()
+				.orElse(0);
+
+			return Long.compare(bMax, aMax);
+		}),
+	HIGHEST_VALUE("Highest Value",
+		(LootTrackerBox a, LootTrackerBox b) ->
+			Long.compare(a.getTotalPrice(), b.getTotalPrice())
+	),
+	LOWEST_VALUE("Lowest Value",
+		(LootTrackerBox a, LootTrackerBox b) ->
+			Long.compare(b.getTotalPrice(), a.getTotalPrice())
+	);
+
+
+	private final String name;
+
+	@Getter
+	private final Comparator<LootTrackerBox> sorter;
+
+	LootEntrySorting(String name, Comparator<LootTrackerBox> sorter)
 	{
-		return "";
+		this.name = name;
+		this.sorter = sorter;
 	}
 
-	@ConfigItem(
-		keyName = "ignoredItems",
-		name = "",
-		description = ""
-	)
-	void setIgnoredItems(String key);
-
-	@ConfigItem(
-		keyName = "lootSorting",
-		name = "Loot Sorting",
-		description = "How the entries in the loot tracking panel are sorted."
-	)
-	default LootEntrySorting getLootSorting()
+	@Override
+	public String toString()
 	{
-		return LootEntrySorting.LAST;
-	}
-
-	@ConfigItem(
-		keyName = "saveLoot",
-		name = "Submit loot tracker data",
-		description = "Submit loot tracker data (requires being logged in)"
-	)
-	default boolean saveLoot()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "syncPanel",
-		name = "Synchronize panel contents",
-		description = "Synchronize you local loot tracker with your online (requires being logged in). This means" +
-			" that panel is filled with portion of your remote data on startup and deleting data in panel deletes them" +
-			" also on server."
-	)
-	default boolean syncPanel()
-	{
-		return true;
+		return name;
 	}
 }

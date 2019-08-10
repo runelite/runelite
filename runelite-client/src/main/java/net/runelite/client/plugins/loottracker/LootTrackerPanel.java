@@ -383,8 +383,7 @@ class LootTrackerPanel extends PluginPanel
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
 		{
-			box.rebuild();
-			updateOverall();
+			rebuild();
 		}
 	}
 
@@ -482,6 +481,15 @@ class LootTrackerPanel extends PluginPanel
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
+		boxes.sort(config.getLootSorting().getSorter());
+		boxes.forEach(box ->
+		{
+			logsContainer.add(box, 0);
+			if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
+			{
+				logsContainer.remove(boxes.remove(0));
+			}
+		});
 		logsContainer.revalidate();
 		logsContainer.repaint();
 	}
@@ -581,12 +589,6 @@ class LootTrackerPanel extends PluginPanel
 
 		// Add box to panel
 		boxes.add(box);
-		logsContainer.add(box, 0);
-
-		if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
-		{
-			logsContainer.remove(boxes.remove(0));
-		}
 
 		return box;
 	}
