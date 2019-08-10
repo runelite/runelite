@@ -39,7 +39,7 @@ public abstract class VarbitMixin implements RSClient
 
 	@Inject
 	@Override
-	public void setSetting(Varbits varbit, int value)
+	public void setVarbit(Varbits varbit, int value)
 	{
 		int varbitId = varbit.getId();
 		setVarbitValue(getVarps(), varbitId, value);

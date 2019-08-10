@@ -709,7 +709,7 @@ public interface Client extends GameShell
 	 * @param varbit the variable
 	 * @param value the new value
 	 */
-	void setSetting(Varbits varbit, int value);
+	void setVarbit(Varbits varbit, int value);
 
 	/**
 	 * Gets the value of a given variable.
