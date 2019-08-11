@@ -102,16 +102,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.EXAMINE_NPC);
 
 	private static final Set<String> EAT_SWAP_TARGETS = ImmutableSet.of(
-        "chocolate bar",
-        "greenman's ale(m)",
-        "toad's legs",
-        "red banana",
-        "tchiki nuts",
-        "tchiki nut paste",
-        "sliced red banana",
-        "stuffed snake",
-        "cooked jubbly",
-        "cooked fishcake"
+		"lemon",
+		"orange",
+		"lime",
+		"chocolate bar",
+		"greenman's ale(m)",
+		"toad's legs",
+		"red banana",
+		"tchiki nuts",
+		"tchiki nut paste",
+		"sliced red banana",
+		"stuffed snake",
+		"cooked jubbly",
+		"cooked fishcake"
     );
 
 	@Inject
