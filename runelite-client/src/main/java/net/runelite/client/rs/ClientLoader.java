@@ -83,7 +83,7 @@ public class ClientLoader
 		catch (ClassNotFoundException e)
 		{
 			log.error("Unable to load client - class not found. This means you"
-				+ " are not running RuneLite with Maven as the injected client"
+				+ " are not running RuneLite with Gradle as the injected client"
 				+ " is not in your classpath.");
 
 			log.error("Error loading RS!", e);
