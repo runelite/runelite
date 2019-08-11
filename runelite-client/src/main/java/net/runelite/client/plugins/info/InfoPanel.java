@@ -29,13 +29,11 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -51,7 +49,6 @@ import static net.runelite.client.RuneLite.LOGS_DIR;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.ui.ColorScheme;
@@ -80,12 +77,6 @@ public class InfoPanel extends PluginPanel
 	@Inject
 	@Nullable
 	private Client client;
-
-	@Inject
-	private RuneLiteProperties runeLiteProperties;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Inject
 	private SessionManager sessionManager;
@@ -119,10 +110,10 @@ public class InfoPanel extends PluginPanel
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
+		JLabel version = new JLabel(htmlLabel("RuneLite version: ", RuneLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
-		JLabel plusVersion = new JLabel(htmlLabel("RuneLitePlus version: ", runeLiteProperties.getPlusVersion()));
+		JLabel plusVersion = new JLabel(htmlLabel("RuneLitePlus version: ", RuneLiteProperties.getPlusVersion()));
 		version.setFont(smallFont);
 
 		JLabel revision = new JLabel();
@@ -177,14 +168,13 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "License info", "for distribution", "https://github.com/runelite-extended/runelite/blob/master/LICENSE"));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open logs directory", "(for bug reports)", LOGS_DIR));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", "https://discord.gg/HN5gf3m"));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the RuneLitePlus devs", runeLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the RuneLitePlus devs", RuneLiteProperties.getPatreonLink()));
 		/*		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));*/
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
 
 		updateLoggedIn();
-		// eventBus.register(this);
 	}
 
 	/**
@@ -192,16 +182,7 @@ public class InfoPanel extends PluginPanel
 	 */
 	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, File dir)
 	{
-		return buildLinkPanel(icon, topText, bottomText, () ->
-		{
-			try
-			{
-				Desktop.getDesktop().open(dir);
-			}
-			catch (IOException ex)
-			{
-			}
-		});
+		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.openLocalFile(dir));
 	}
 
 	/**

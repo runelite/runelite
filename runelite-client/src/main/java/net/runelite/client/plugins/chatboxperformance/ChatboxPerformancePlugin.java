@@ -62,7 +62,7 @@ public class ChatboxPerformancePlugin extends Plugin
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
+			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ChatboxPerformancePlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
+			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 		}
 		eventBus.unregister(this);
 	}

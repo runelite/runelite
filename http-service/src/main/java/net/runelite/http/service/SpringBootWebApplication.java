@@ -26,10 +26,13 @@ package net.runelite.http.service;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.google.common.base.Strings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -43,6 +46,7 @@ import okhttp3.OkHttpClient;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -52,6 +56,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+import org.springframework.jndi.JndiTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
@@ -70,7 +75,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("RuneLitePlus API started");
+				log.info("RuneLite API started");
 			}
 
 			@Override
@@ -126,7 +131,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return getDataSource(dataSourceProperties);
 	}
 
-	@Bean(value = "runelite-cache2", destroyMethod = "")
+	@Bean(value = "runelite-cache", destroyMethod = "")
 	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
@@ -145,7 +150,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	public Sql2o cacheSql2o(@Qualifier("runelite-cache2") DataSource dataSource)
+	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}
@@ -154,6 +159,24 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
+	}
+
+	@Bean(destroyMethod = "")
+	public MongoClient mongoClient(@Value("${mongo.host:}") String host, @Value("${mongo.jndiName:}") String jndiName) throws NamingException
+	{
+		if (!Strings.isNullOrEmpty(jndiName))
+		{
+			JndiTemplate jndiTemplate = new JndiTemplate();
+			return jndiTemplate.lookup(jndiName, MongoClient.class);
+		}
+		else if (!Strings.isNullOrEmpty(host))
+		{
+			return MongoClients.create(host);
+		}
+		else
+		{
+			throw new RuntimeException("Either mongo.host or mongo.jndiName must be set");
+		}
 	}
 
 	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)

@@ -80,13 +80,13 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final String PLUS_VERSION = "2.1.1.0";
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	private static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+	private static final File LOG_FILE = new File(LOGS_DIR, "client.log");
+	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
 	public static boolean allowPrivateServer = false;
 
 	@Getter
@@ -260,6 +260,13 @@ public class RuneLite
 			}
 		}
 
+		if (!options.has("no-splash"))
+		{
+			RuneLiteSplashScreen.init();
+		}
+
+		RuneLiteSplashScreen.stage(0, "Initializing client");
+
 		PROFILES_DIR.mkdirs();
 
 		if (options.has("debug"))
@@ -273,18 +280,12 @@ public class RuneLite
 			log.error("Uncaught exception:", throwable);
 			if (throwable instanceof AbstractMethodError)
 			{
-				log.error("Classes are out of date; Build with maven again.");
+				log.error("Classes are out of date; Build with Gradle again.");
 			}
 		});
 
-		if (!options.has("no-splash"))
-		{
-			splashScreen.open(4);
-		}
 
-		// The submessage is shown in case the connection is slow
-		splashScreen.setMessage("Starting RuneLite Injector");
-		splashScreen.setSubMessage(" ");
+		RuneLiteSplashScreen.stage(.2, "Starting RuneLitePlus injector");
 
 		final long start = System.currentTimeMillis();
 
@@ -293,7 +294,6 @@ public class RuneLite
 			true));
 
 		injector.getInstance(RuneLite.class).start();
-		splashScreen.setProgress(1, 5);
 		final long end = System.currentTimeMillis();
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();
@@ -312,14 +312,13 @@ public class RuneLite
 		}
 
 		// Load user configuration
-		splashScreen.setMessage("Loading configuration");
+
+		RuneLiteSplashScreen.stage(.57, "Loading user config");
 		configManager.load();
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
-		splashScreen.setProgress(2, 5);
-
-		splashScreen.setMessage("Loading plugins");
+		RuneLiteSplashScreen.stage(.58, "Loading session data");
 
 		// Begin watching for new plugins
 		pluginManager.watch();
@@ -330,26 +329,18 @@ public class RuneLite
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
 		pluginManager.loadCorePlugins();
+		RuneLiteSplashScreen.stage(.70, "Finalizing configuration");
 
 		// Plugins have provided their config, so set default config
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
-		splashScreen.setProgress(3, 5);
 
-		splashScreen.setMessage("Starting Session");
 		// Start client session
+		RuneLiteSplashScreen.stage(.80, "Starting core interface");
 		clientSessionManager.start();
-		splashScreen.setProgress(4, 5);
-
-		// Load the session, including saved configuration
-		splashScreen.setMessage("Loading interface");
-		splashScreen.setProgress(5, 5);
 
 		// Initialize UI
-		clientUI.open(this);
-
-		// Close the splash screen
-		splashScreen.close();
+		clientUI.init(this);
 
 		if (!isOutdated)
 		{
@@ -384,6 +375,11 @@ public class RuneLite
 		{
 			scheduler.registerObject(modelOutlineRenderer.get());
 		}
+
+		// Close the splash screen
+		RuneLiteSplashScreen.close();
+
+		clientUI.show();
 	}
 
 	public void shutdown()

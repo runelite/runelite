@@ -93,7 +93,7 @@ public class RuneLiteAPI
 		catch (NumberFormatException e)
 		{
 			e.printStackTrace();
-			throw new RuntimeException("Version string has not been substituted; Re-run maven");
+			throw new RuntimeException("Version string has not been substituted; Re-run Gradle");
 		}
 		catch (IOException ex)
 		{

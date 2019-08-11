@@ -6,6 +6,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.6.RELEASE'
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
     implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.3.0.Final'
+    api project(':runelite-api')
     api project(':http-api')
     api project(':cache')
     implementation group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
@@ -14,6 +15,7 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     implementation group: 'com.github.scribejava', name: 'scribejava-apis', version: '6.7.0'
     implementation group: 'io.minio', name: 'minio', version: '6.0.8'
+    implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '3.10.2'
     implementation(group: 'redis.clients', name: 'jedis', version: '3.1.0') {
         exclude(module: 'commons-pool2')
     }
@@ -25,5 +27,6 @@ dependencies {
     providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.1.6.RELEASE'
     providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.3.0.Final'
     providedCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.2'
 }

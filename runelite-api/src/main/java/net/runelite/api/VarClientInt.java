@@ -42,6 +42,10 @@ public enum VarClientInt
 */
 	TOOLTIP_VISIBLE(2),
 
+	/**
+	 * Current message layer mode
+	 * @see net.runelite.api.vars.InputType
+	 */
 	INPUT_TYPE(5),
 
 	MEMBERSHIP_STATUS(103),

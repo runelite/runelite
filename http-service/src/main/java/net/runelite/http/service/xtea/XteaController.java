@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class XteaController
 {
 	@Autowired
-	private XteaEndpoint xteaService;
+	private XteaService xteaService;
 
 	@RequestMapping(method = POST)
 	public void submit(@RequestBody XteaRequest xteaRequest)

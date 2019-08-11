@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMember;
@@ -94,7 +95,7 @@ public class ClanManager
 			}
 		});
 
-	private int modIconsLength;
+	private int offset;
 
 	@Inject
 	private ClanManager(
@@ -115,6 +116,7 @@ public class ClanManager
 		return clanRanksCache.getUnchecked(playerName);
 	}
 
+	@Nullable
 	public BufferedImage getClanImage(final ClanMemberRank clanMemberRank)
 	{
 		if (clanMemberRank == ClanMemberRank.UNRANKED)
@@ -127,13 +129,12 @@ public class ClanManager
 
 	public int getIconNumber(final ClanMemberRank clanMemberRank)
 	{
-		return modIconsLength - CLANCHAT_IMAGES.length + clanMemberRank.ordinal() - 1;
+		return offset + clanMemberRank.ordinal() - 1;
 	}
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN
-			&& modIconsLength == 0)
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && offset == 0)
 		{
 			loadClanChatIcons();
 		}
@@ -146,19 +147,31 @@ public class ClanManager
 
 	private void loadClanChatIcons()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + CLANCHAT_IMAGES.length);
-		int curPosition = newModIcons.length - CLANCHAT_IMAGES.length;
-
-		for (int i = 0; i < CLANCHAT_IMAGES.length; i++, curPosition++)
 		{
-			final int resource = CLANCHAT_IMAGES[i];
-			clanChatImages[i] = clanChatImageFromSprite(spriteManager.getSprite(resource, 0));
-			newModIcons[curPosition] = ImageUtil.getImageIndexedSprite(clanChatImages[i], client);
+			IndexedSprite[] modIcons = client.getModIcons();
+			offset = modIcons.length;
+
+			IndexedSprite blank = ImageUtil.getImageIndexedSprite(
+				new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
+				client);
+
+			modIcons = Arrays.copyOf(modIcons, offset + CLANCHAT_IMAGES.length);
+			Arrays.fill(modIcons, offset, modIcons.length, blank);
+
+			client.setModIcons(modIcons);
 		}
 
-		client.setModIcons(newModIcons);
-		modIconsLength = newModIcons.length;
+		for (int i = 0; i < CLANCHAT_IMAGES.length; i++)
+		{
+			final int fi = i;
+
+			spriteManager.getSpriteAsync(CLANCHAT_IMAGES[i], 0, sprite ->
+			{
+				IndexedSprite[] modIcons = client.getModIcons();
+				clanChatImages[fi] = clanChatImageFromSprite(sprite);
+				modIcons[offset + fi] = ImageUtil.getImageIndexedSprite(clanChatImages[fi], client);
+			});
+		}
 	}
 
 	private static String sanitize(String lookup)

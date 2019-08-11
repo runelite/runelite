@@ -709,7 +709,7 @@ public interface Client extends GameShell
 	 * @param varbit the variable
 	 * @param value the new value
 	 */
-	void setSetting(Varbits varbit, int value);
+	void setVarbit(Varbits varbit, int value);
 
 	/**
 	 * Gets the value of a given variable.
@@ -1255,11 +1255,10 @@ public interface Client extends GameShell
 	 *
 	 * This method must be ran on the client thread and is not reentrant
 	 *
-	 * @param id the script ID
-	 * @param args additional arguments to execute the script with
+	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	void runScript(int id, Object... args);
+	void runScript(Object... args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.

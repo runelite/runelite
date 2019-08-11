@@ -92,6 +92,7 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.SkillChallengeClue;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -234,6 +235,18 @@ public class ClueScrollPlugin extends Plugin
 			worldMapPointsSet = false;
 		}
 
+		if (clue instanceof SkillChallengeClue)
+		{
+			String text = Text.removeTags(event.getMessage());
+			if (text.equals("Skill challenge completed.") ||
+				text.equals("You have completed your master level challenge!") ||
+				text.startsWith("You have completed Charlie's task,") ||
+				text.equals("You have completed this challenge scroll."))
+			{
+				((SkillChallengeClue) clue).setChallengeCompleted(true);
+			}
+		}
+
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
 			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
 		{
@@ -249,7 +262,7 @@ public class ClueScrollPlugin extends Plugin
 		{
 			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getIdentifier());
 
-			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
+			if (itemComposition != null && (itemComposition.getName().startsWith("Clue scroll") || itemComposition.getName().startsWith("Challenge scroll")))
 			{
 				clueItemId = itemComposition.getId();
 				updateClue(MapClue.forItemId(clueItemId));
@@ -544,6 +557,13 @@ public class ClueScrollPlugin extends Plugin
 		if (hotColdClue != null)
 		{
 			return hotColdClue;
+		}
+
+		final SkillChallengeClue skillChallengeClue = SkillChallengeClue.forText(text, clueScrollText.getText());
+
+		if (skillChallengeClue != null)
+		{
+			return skillChallengeClue;
 		}
 
 		// three step cryptic clues need unedited text to check which steps are already done
