@@ -312,7 +312,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				lastViewportWidth = lastViewportHeight = lastCanvasWidth = lastCanvasHeight = -1;
 				lastStretchedCanvasWidth = lastStretchedCanvasHeight = -1;
 				lastAntiAliasingMode = null;
-
+				lastAnisotropicFilteringMode = null;
 				textureArrayId = -1;
 
 				// increase size of model cache for dynamic objects since we are extending scene size
@@ -1033,6 +1033,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 				else
 				{
+					// Reset texture filters and anisotropic filtering to default values if turned off.
+					if (lastAnisotropicFilteringMode.getSamples() > 1f && gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
+					{
+						gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+					}
+
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
 					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 				}
 			}
