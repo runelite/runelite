@@ -215,6 +215,8 @@ public class TabInterface
 
 		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
 		{
+			// the server will resync the last opened vanilla tab when the bank is opened
+			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 			openTag(config.tab());
 		}
 	}
@@ -327,7 +329,7 @@ public class TabInterface
 		switch (event.getOp())
 		{
 			case Tab.OPEN_TAG:
-				client.setVarbitValue(client.getVarps(), Varbits.CURRENT_BANK_TAB.getId(), 0);
+				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 				Widget clicked = event.getSource();
 
 				TagTab tab = tabManager.find(Text.removeTags(clicked.getName()));
@@ -336,7 +338,7 @@ public class TabInterface
 				{
 					bankSearch.reset(true);
 
-					clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT, 0, 0));
+					clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 				}
 				else
 				{

@@ -34,6 +34,7 @@ import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,11 +49,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
+import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.ui.SplashScreen;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -62,7 +66,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 public class ClientLoader implements Supplier<Applet>
 {
 	private ClientUpdateCheckMode updateCheckMode;
-	private Applet client = null;
+	private Object client = null;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
@@ -76,10 +80,15 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			client = doLoad();
 		}
-		return client;
+
+		if (client instanceof Throwable)
+		{
+			throw new RuntimeException((Throwable) client);
+		}
+		return (Applet) client;
 	}
 
-	private Applet doLoad()
+	private Object doLoad()
 	{
 		if (updateCheckMode == NONE)
 		{
@@ -88,6 +97,7 @@ public class ClientLoader implements Supplier<Applet>
 
 		try
 		{
+			SplashScreen.stage(0, null, "Fetching applet viewer config");
 			RSConfig config = ClientConfigLoader.fetch();
 
 			Map<String, byte[]> zipFile = new HashMap<>();
@@ -102,7 +112,26 @@ public class ClientLoader implements Supplier<Applet>
 
 				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 				{
-					JarInputStream jis = new JarInputStream(response.body().byteStream());
+					int length = (int) response.body().contentLength();
+					if (length < 0)
+					{
+						length = 3 * 1024 * 1024;
+					}
+					final int flength = length;
+					InputStream istream = new FilterInputStream(response.body().byteStream())
+					{
+						private int read = 0;
+
+						@Override
+						public int read(byte[] b, int off, int len) throws IOException
+						{
+							int thisRead = super.read(b, off, len);
+							this.read += thisRead;
+							SplashScreen.stage(.05, .35, null, "Downloading Old School RuneScape", this.read, flength, true);
+							return thisRead;
+						}
+					};
+					JarInputStream jis = new JarInputStream(istream);
 
 					byte[] tmp = new byte[4096];
 					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
@@ -146,9 +175,19 @@ public class ClientLoader implements Supplier<Applet>
 
 			if (updateCheckMode == AUTO)
 			{
+				SplashScreen.stage(.35, null, "Patching");
 				Map<String, String> hashes;
 				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
 				{
+					if (is == null)
+					{
+						SwingUtilities.invokeLater(() ->
+							new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
+								"the client you need to re-run maven")
+								.addBuildingGuide()
+								.open());
+						throw new NullPointerException();
+					}
 					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
 					{
 					}.getType());
@@ -197,10 +236,13 @@ public class ClientLoader implements Supplier<Applet>
 					file.setValue(patchOs.toByteArray());
 
 					++patchCount;
+					SplashScreen.stage(.38, .45, null, "Patching", patchCount, zipFile.size(), false);
 				}
 
 				log.debug("Patched {} classes", patchCount);
 			}
+
+			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
 
 			String initialClass = config.getInitialClass();
 
@@ -230,21 +272,18 @@ public class ClientLoader implements Supplier<Applet>
 				log.info("client-patch {}", ((Client) rs).getBuildID());
 			}
 
+			SplashScreen.stage(.5, null, "Starting core classes");
+
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
 			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
 			| SecurityException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the client patch"
-					+ " is not in your classpath.");
-			}
-
 			log.error("Error loading RS!", e);
-			return null;
+
+			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			return e;
 		}
 	}
 

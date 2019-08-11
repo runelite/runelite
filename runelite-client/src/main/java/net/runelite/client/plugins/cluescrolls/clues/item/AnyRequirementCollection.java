@@ -22,36 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
-public class RangeItemRequirement implements ItemRequirement
+public class AnyRequirementCollection implements ItemRequirement
 {
 	private String name;
-	private int startItemId;
-	private int endItemId;
+	private ItemRequirement[] requirements;
 
-	public RangeItemRequirement(String name, int startItemId, int endItemId)
+	public AnyRequirementCollection(String name, ItemRequirement... requirements)
 	{
 		this.name = name;
-		this.startItemId = startItemId;
-		this.endItemId = endItemId;
+		this.requirements = requirements;
 	}
 
 	@Override
 	public boolean fulfilledBy(int itemId)
 	{
-		return itemId >= startItemId && itemId <= endItemId;
+		for (ItemRequirement requirement : requirements)
+		{
+			if (requirement.fulfilledBy(itemId))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
 	public boolean fulfilledBy(Item[] items)
 	{
-		for (Item item : items)
+		for (ItemRequirement requirement : requirements)
 		{
-			if (item.getId() >= startItemId && item.getId() <= endItemId)
+			if (requirement.fulfilledBy(items))
 			{
 				return true;
 			}

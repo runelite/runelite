@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,35 +24,24 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+@Target(ElementType.FIELD)
+@interface ScriptArguments
 {
-	TOOLTIP_TIMEOUT(1),
+	/**
+	 * The number of int arguments the script takes
+	 */
+	int integer() default 0;
 
 	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
+	 * The number of string arguments the script takes
 	 */
-	TOOLTIP_VISIBLE(2),
-
-	/**
-	 * Current message layer mode
-	 * @see net.runelite.api.vars.InputType
-	 */
-	INPUT_TYPE(5),
-
-	MEMBERSHIP_STATUS(103),
-
-	INVENTORY_TAB(171),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	int string() default 0;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
-public class VerificationException extends Exception
+import net.runelite.api.EquipmentInventorySlot;
+
+public class ItemRequirements
 {
-	public VerificationException(String message)
+	public static SingleItemRequirement item(int itemId)
 	{
-		super(message);
+		return new SingleItemRequirement(itemId);
 	}
 
-	public VerificationException(String message, Throwable cause)
+	public static RangeItemRequirement range(int startItemId, int endItemId)
 	{
-		super(message, cause);
+		return range(null, startItemId, endItemId);
+	}
+
+	public static RangeItemRequirement range(String name, int startItemId, int endItemId)
+	{
+		return new RangeItemRequirement(name, startItemId, endItemId);
+	}
+
+	public static AnyRequirementCollection any(String name, ItemRequirement... requirements)
+	{
+		return new AnyRequirementCollection(name, requirements);
+	}
+
+	public static AllRequirementsCollection all(ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(requirements);
+	}
+
+	public static AllRequirementsCollection all(String name, ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(name, requirements);
+	}
+
+	public static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
+	{
+		return new SlotLimitationRequirement(description, slots);
+	}
+
+	public static MultipleOfItemRequirement xOfItem(int itemId, int quantity)
+	{
+		return new MultipleOfItemRequirement(itemId, quantity);
 	}
 }

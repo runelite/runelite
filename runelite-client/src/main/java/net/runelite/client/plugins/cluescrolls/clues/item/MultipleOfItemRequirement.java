@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 
-public interface ItemRequirement
+public class MultipleOfItemRequirement implements ItemRequirement
 {
-	boolean fulfilledBy(int itemId);
+	private int itemId;
+	private int quantity;
 
-	boolean fulfilledBy(Item[] items);
+	public MultipleOfItemRequirement(int itemId, int quantity)
+	{
+		this.itemId = itemId;
+		this.quantity = quantity;
+	}
 
-	String getCollectiveName(Client client);
+	@Override
+	public boolean fulfilledBy(int itemId)
+	{
+		return itemId == this.itemId && this.quantity == 1;
+	}
+
+	@Override
+	public boolean fulfilledBy(Item[] items)
+	{
+		for (Item item : items)
+		{
+			if (item.getId() == itemId && item.getQuantity() >= quantity)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public String getCollectiveName(Client client)
+	{
+		ItemComposition definition = client.getItemDefinition(itemId);
+
+		if (definition == null)
+		{
+			return "N/A";
+		}
+
+		return definition.getName() + " x" + this.quantity;
+	}
 }

@@ -1007,20 +1007,26 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				if (afEnabled)
 				{
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+
 					switch (anisotropicFilteringMode)
 					{
 						case BILINEAR:
 							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
 							break;
 						case TRILINEAR:
+							break;
 						default:
-							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
-
-							if (anisotropicFilteringMode != anisotropicFilteringMode.TRILINEAR && gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
+							if (gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
 							{
 								final float maxSamples = glGetFloat(gl, gl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
 								final float samples = Math.min(anisotropicFilteringMode.getSamples(), maxSamples);
 								gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, samples);
+							}
+							else
+							{
+								log.warn("Ansiotropic filtering specified but no support detected. Defaulting to trilinear filtering.");
 							}
 							break;
 					}
