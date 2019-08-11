@@ -146,8 +146,8 @@ public abstract class ScriptVMMixin implements RSClient
 	{
 		assert isClientThread();
 		assert currentScript == null;
-		Object[] cargs = new Object[args.length + 1];
-		// cargs[0] = id;
+		Object[] cargs = new Object[args.length];
+		assert cargs[0] instanceof Integer || cargs[0] instanceof JavaScriptCallback : "The first argument should always be a ScriptID!";
 		System.arraycopy(args, 0, cargs, 1, args.length);
 		RSScriptEvent se = createScriptEvent();
 		se.setArguments(cargs);
