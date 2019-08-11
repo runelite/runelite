@@ -43,6 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.DynamicObject;
+import net.runelite.api.Entity;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.TileItem;
@@ -55,7 +56,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -310,10 +310,10 @@ class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						Renderable renderable = gameObject.getRenderable();
-						if (renderable instanceof DynamicObject)
+						Entity entity = gameObject.getRenderable();
+						if (entity instanceof DynamicObject)
 						{
-							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) renderable).getAnimationID(), TURQOISE);
+							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) entity).getAnimationID(), TURQOISE);
 						}
 						else
 						{

@@ -1,8 +1,8 @@
 package net.runelite.mixins;
 
+import net.runelite.api.Entity;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
 import java.awt.geom.Area;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -36,38 +36,38 @@ public abstract class RSBoundaryObjectMixin implements RSBoundaryObject
 	@Inject
 	public Model getModelA()
 	{
-		Renderable renderable = getRenderable1();
-		if (renderable == null)
+		Entity entity = getRenderable1();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 
 	@Inject
 	public Model getModelB()
 	{
-		Renderable renderable = getRenderable2();
-		if (renderable == null)
+		Entity entity = getRenderable2();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 

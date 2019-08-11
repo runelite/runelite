@@ -1,8 +1,8 @@
 package net.runelite.mixins;
 
 import java.awt.geom.Area;
+import net.runelite.api.Entity;
 import net.runelite.api.Model;
-import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSTileItemPile;
@@ -38,19 +38,19 @@ public abstract class RSTileItemPileMixin implements RSTileItemPile
 	@Override
 	public Model getModelBottom()
 	{
-		Renderable renderable = getBottom();
-		if (renderable == null)
+		Entity entity = getBottom();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 
@@ -58,19 +58,19 @@ public abstract class RSTileItemPileMixin implements RSTileItemPile
 	@Override
 	public Model getModelMiddle()
 	{
-		Renderable renderable = getMiddle();
-		if (renderable == null)
+		Entity entity = getMiddle();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 
@@ -78,19 +78,19 @@ public abstract class RSTileItemPileMixin implements RSTileItemPile
 	@Override
 	public Model getModelTop()
 	{
-		Renderable renderable = getTop();
-		if (renderable == null)
+		Entity entity = getTop();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 }

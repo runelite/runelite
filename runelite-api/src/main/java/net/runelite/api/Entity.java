@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,33 +25,21 @@
 package net.runelite.api;
 
 /**
- * Represents the paint of a tile in the current scene.
+ * Represents an object that can be rendered.
  */
-public interface SceneTilePaint
+public interface Entity extends Node
 {
 	/**
-	 * Gets the RGB value of the paint.
-	 *
-	 * @return the paint RGB
+	 * Gets the model of the object.
 	 */
-	int getRBG();
+	Model getModel();
 
-	int getSwColor();
+	/**
+	 * Gets the height of the model.
+	 */
+	int getModelHeight();
 
-	int getSeColor();
+	void setModelHeight(int modelHeight);
 
-	int getNwColor();
-
-	int getNeColor();
-
-	int getTexture();
-
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
-
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBufferLen();
-	void setBufferLen(int bufferLen);
+	void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 }

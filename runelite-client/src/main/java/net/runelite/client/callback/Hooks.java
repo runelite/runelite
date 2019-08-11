@@ -43,10 +43,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.Entity;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
@@ -473,16 +473,16 @@ public class Hooks implements Callbacks
 		deferredEventBus.replay();
 	}
 
-	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+	public static void renderDraw(Entity entity, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
 		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
 		if (drawCallbacks != null)
 		{
-			drawCallbacks.draw(renderable, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+			drawCallbacks.draw(entity, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 		}
 		else
 		{
-			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+			entity.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 		}
 	}
 

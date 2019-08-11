@@ -60,10 +60,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
+import net.runelite.api.Entity;
 import net.runelite.api.Scene;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
+import net.runelite.api.TileModel;
+import net.runelite.api.TilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.events.ConfigChanged;
@@ -757,7 +757,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTilePaint paint, int tileZ, int tileX, int tileY,
+							TilePaint paint, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
 		if (paint.getBufferLen() > 0)
@@ -783,7 +783,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTileModel model, int tileZ, int tileX, int tileY,
+							TileModel model, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
 		if (model.getBufferLen() > 0)
@@ -1397,9 +1397,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	/**
-	 * Draw a renderable in the scene
+	 * Draw a entity in the scene
 	 *
-	 * @param renderable
+	 * @param entity
 	 * @param orientation
 	 * @param pitchSin
 	 * @param pitchCos
@@ -1411,12 +1411,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 * @param hash
 	 */
 	@Override
-	public void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+	public void draw(Entity entity, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
 		// Model may be in the scene buffer
-		if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
+		if (entity instanceof Model && ((Model) entity).getSceneId() == sceneUploader.sceneId)
 		{
-			Model model = (Model) renderable;
+			Model model = (Model) entity;
 
 			model.calculateBoundsCylinder();
 			model.calculateExtreme(orientation);
@@ -1476,10 +1476,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			// Temporary model (animated or otherwise not a static Model on the scene)
-			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
+			Model model = entity instanceof Model ? (Model) entity : entity.getModel();
 			if (model != null)
 			{
-				// Apply height to renderable from the model
+				// Apply height to entity from the model
 				model.setModelHeight(model.getModelHeight());
 
 				model.calculateBoundsCylinder();

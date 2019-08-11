@@ -73,14 +73,14 @@ public interface Tile
 	 *
 	 * @return the paint
 	 */
-	SceneTilePaint getSceneTilePaint();
+	TilePaint getSceneTilePaint();
 
 	/**
 	 * Gets the model of the tile in the scene.
 	 *
 	 * @return the tile model
 	 */
-	SceneTileModel getSceneTileModel();
+	TileModel getSceneTileModel();
 
 	/**
 	 * Gets the location coordinate of the tile in the world.

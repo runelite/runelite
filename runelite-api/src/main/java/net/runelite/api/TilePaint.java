@@ -25,57 +25,26 @@
 package net.runelite.api;
 
 /**
- * Represents the model of a tile in the current scene.
+ * Represents the paint of a tile in the current scene.
  */
-public interface SceneTileModel
+public interface TilePaint
 {
 	/**
-	 * Gets the underlay color of the tile.
+	 * Gets the RGB value of the paint.
 	 *
-	 * @return the underlay color
+	 * @return the paint RGB
 	 */
-	int getModelUnderlay();
+	int getRBG();
 
-	/**
-	 * Gets the overlay color of the tile.
-	 *
-	 * @return the overlay color
-	 */
-	int getModelOverlay();
+	int getSwColor();
 
-	/**
-	 * Gets the shape mask type.
-	 *
-	 * @return the shape mask
-	 */
-	int getShape();
+	int getSeColor();
 
-	/**
-	 * Gets the rotation of the tile.
-	 *
-	 * @return the rotation
-	 */
-	int getRotation();
+	int getNwColor();
 
-	int[] getFaceX();
+	int getNeColor();
 
-	int[] getFaceY();
-
-	int[] getFaceZ();
-
-	int[] getVertexX();
-
-	int[] getVertexY();
-
-	int[] getVertexZ();
-
-	int[] getTriangleColorA();
-
-	int[] getTriangleColorB();
-
-	int[] getTriangleColorC();
-
-	int[] getTriangleTextureId();
+	int getTexture();
 
 	int getBufferOffset();
 	void setBufferOffset(int bufferOffset);

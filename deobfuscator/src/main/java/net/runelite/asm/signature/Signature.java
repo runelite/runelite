@@ -174,4 +174,9 @@ public class Signature
 			return new Signature(arguments, rv);
 		}
 	}
+
+	public Signature rsApiToRsClient()
+	{
+		return new Signature(this.toString().replaceAll("net/runelite/(rs/)?api/(RS)?", ""));
+	}
 }

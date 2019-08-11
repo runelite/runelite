@@ -60,6 +60,8 @@ import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.visitors.ClassFileVisitor;
 import net.runelite.deob.DeobAnnotations;
+import static net.runelite.injector.InjectUtil.findStaticMethod;
+import static net.runelite.injector.InjectUtil.toDeobClass;
 import static net.runelite.injector.InjectUtil.toObClass;
 import static net.runelite.injector.InjectUtil.toObField;
 import org.objectweb.asm.ClassReader;
@@ -329,9 +331,17 @@ public class MixinInjector
 			}
 
 			String deobMethodName = (String) copyAnnotation.getElement().getValue();
+			Method deobMethod;
+			if (method.isStatic())
+			{
+				deobMethod = findStaticMethod(inject.getDeobfuscated(), deobMethodName, method.getDescriptor().rsApiToRsClient());
+			}
+			else
+			{
+				ClassFile deobCf = toDeobClass(cf, inject.getDeobfuscated());
+				deobMethod = deobCf.findMethod(deobMethodName, method.getDescriptor().rsApiToRsClient());
+			}
 
-			ClassFile deobCf = inject.toDeobClass(cf);
-			Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 			if (deobMethod == null)
 			{

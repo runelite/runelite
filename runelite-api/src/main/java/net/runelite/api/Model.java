@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Represents the model of an object.
  */
-public interface Model extends Renderable
+public interface Model extends Entity
 {
 	/**
 	 * Gets a list of all vertices of the model.

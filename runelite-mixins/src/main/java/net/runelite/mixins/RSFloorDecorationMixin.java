@@ -2,7 +2,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
+import net.runelite.api.Entity;
 import java.awt.geom.Area;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -37,19 +37,19 @@ public abstract class RSFloorDecorationMixin implements RSFloorDecoration
 	@Override
 	public Model getModel()
 	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
+		Entity entity = getRenderable();
+		if (entity == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (entity instanceof Model)
 		{
-			return (Model) renderable;
+			return (Model) entity;
 		}
 		else
 		{
-			return renderable.getModel();
+			return entity.getModel();
 		}
 	}
 

@@ -35,7 +35,7 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Represents a RuneScape actor/entity.
  */
-public interface Actor extends Renderable
+public interface Actor extends Entity
 {
 	/**
 	 * Gets the combat level of the actor.
