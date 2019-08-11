@@ -76,7 +76,6 @@ public class SotetsegHandler extends RoomHandler
 	private void reset()
 	{
 		npc = null;
-		soteyProjectiles.clear();
 		redTiles.clear();
 		redOverworld.clear();
 		blackOverworld.clear();
