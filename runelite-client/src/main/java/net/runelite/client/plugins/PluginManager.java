@@ -54,6 +54,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -74,6 +75,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
 
 @Singleton
@@ -216,6 +218,8 @@ public class PluginManager
 	public void startCorePlugins()
 	{
 		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
+		int loaded = 0;
+
 		for (Plugin plugin : scannedPlugins)
 		{
 			try
@@ -227,12 +231,17 @@ public class PluginManager
 				log.warn("Unable to start plugin {}. {}", plugin.getClass().getSimpleName(), ex);
 				plugins.remove(plugin);
 			}
+
+			loaded++;
+
+			RuneLiteSplashScreen.stage(.80, 1, "Starting plugins", loaded, scannedPlugins.size());
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
+		RuneLiteSplashScreen.stage(.59, "Loading plugins");
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
 			.build();
@@ -295,6 +304,7 @@ public class PluginManager
 
 		List<List<Class<? extends Plugin>>> sortedPlugins = topologicalGroupSort(graph);
 		sortedPlugins = Lists.reverse(sortedPlugins);
+		AtomicInteger loaded = new AtomicInteger();
 
 		final long start = System.currentTimeMillis();
 
@@ -312,13 +322,17 @@ public class PluginManager
 					try
 					{
 						plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
+						scannedPlugins.add(plugin);
 					}
 					catch (PluginInstantiationException e)
 					{
 						log.warn("Error instantiating plugin!", e);
 						return;
 					}
-					scannedPlugins.add(plugin);
+
+					loaded.getAndIncrement();
+
+					RuneLiteSplashScreen.stage(.60, .70, "Loading plugins", loaded.get(), scannedPlugins.size());
 				})));
 			curGroup.forEach(future ->
 			{

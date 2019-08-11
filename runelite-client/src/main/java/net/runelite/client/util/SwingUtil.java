@@ -25,7 +25,9 @@
 package net.runelite.client.util;
 
 import java.awt.AWTException;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -42,18 +44,26 @@ import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
@@ -291,6 +301,136 @@ public class SwingUtil
 
 		navigationButton.setOnSelect(button::doClick);
 		return button;
+	}
+
+	/**
+	 * Creates a custom {@link JButton} with a flat design for use inside {@link JOptionPane}.
+	 * The button will display the passed {@code text} and set the value of the pane to {@code buttonOption} on click
+	 *
+	 * @param text         text to be displayed inside the button
+	 * @param buttonOption the code to be set via {@link JOptionPane#setValue(Object)}
+	 * @return newly created {@link JButton}
+	 */
+	public static JButton createFlatButton(final String text, final int buttonOption)
+	{
+		final Border BUTTON_BORDER = new EmptyBorder(5, 17, 5, 17);
+		final Border BORDERED_BUTTON_BORDER = new CompoundBorder(
+			new MatteBorder(1, 1, 1, 1, Color.BLACK),
+			new EmptyBorder(4, 16, 4, 16)
+		);
+
+		final JButton button = new JButton(text);
+		button.setForeground(Color.WHITE);
+		button.setBackground(Color.BLACK);
+		button.setFont(FontManager.getRunescapeFont());
+		button.setBorder(BUTTON_BORDER);
+
+		button.setBorderPainted(false);
+		button.setFocusPainted(false);
+		button.setContentAreaFilled(false);
+		button.setOpaque(true);
+
+		// Selecting the button option requires us to determine which parent element is the JOptionPane
+		button.addActionListener(e -> {
+			JComponent component = (JComponent) e.getSource();
+			while (component != null)
+			{
+				if (component instanceof JOptionPane)
+				{
+					((JOptionPane) component).setValue(buttonOption);
+					component = null;
+				}
+				else
+				{
+					component = component.getParent() == null ? null : (JComponent) component.getParent();
+				}
+			}
+		});
+
+		// Use change listener instead of mouse listener for buttons
+		button.getModel().addChangeListener(e ->
+		{
+			final ButtonModel model = (ButtonModel) e.getSource();
+			button.setBackground(model.isRollover() ? ColorScheme.DARKER_GRAY_HOVER_COLOR : Color.BLACK);
+			button.setBorderPainted(model.isPressed());
+			button.setBorder(model.isPressed() ? BORDERED_BUTTON_BORDER : BUTTON_BORDER);
+		});
+
+		return button;
+	}
+
+	/**
+	 * Opens a {@link JDialog} with a stylized {@link JOptionPane} ignoring UIManager defaults.
+	 * The buttons should be created via the {@link #createFlatButton(String, int)} function to look correctly
+	 *
+	 * @param component  The frame the dialog should be attached to. nullable
+	 * @param content    The string content to be added to the content pane
+	 * @param optionType The JOptionPane option type of dialog pane to create
+	 * @param buttons    Buttons to display, created via {@link #createFlatButton(String, int)}
+	 * @return The Integer value representing the button selected
+	 */
+	public static int showRuneLiteOptionPane(final JComponent component, final String content, final int optionType, final JButton[] buttons)
+	{
+		final JLabel contentLabel = new JLabel(content);
+		contentLabel.setFont(FontManager.getRunescapeFont());
+		contentLabel.setForeground(Color.WHITE);
+		contentLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		final JPanel p = new JPanel(new BorderLayout());
+		p.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		p.setForeground(Color.WHITE);
+		p.add(contentLabel, BorderLayout.NORTH);
+
+		final JOptionPane pane = new JOptionPane(p,
+			JOptionPane.ERROR_MESSAGE,
+			optionType,
+			null,
+			buttons,
+			buttons[1]);
+		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		pane.setForeground(Color.WHITE);
+		stylizeJPanels(pane);
+
+		final Frame frame = component == null ? JOptionPane.getRootFrame() : JOptionPane.getFrameForComponent(component);
+		final JDialog dialog = new JDialog(frame, "RuneLitePlus Error", true);
+		dialog.setContentPane(pane);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setAlwaysOnTop(true);
+		dialog.setAutoRequestFocus(true);
+		dialog.setLocationRelativeTo(null);
+		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/runeliteplus_transparent.png"));
+
+		// Listen for value changes and close dialog when necessary
+		pane.addPropertyChangeListener(e -> {
+			String prop = e.getPropertyName();
+
+			if (dialog.isVisible()
+				&& (e.getSource() == pane)
+				&& (prop.equals(JOptionPane.VALUE_PROPERTY)))
+			{
+				dialog.setVisible(false);
+			}
+		});
+
+		dialog.pack();
+		// Try to center dialog based on its size
+		dialog.setLocation(dialog.getX() - dialog.getSize().width / 2, dialog.getY() - dialog.getSize().height / 2);
+		dialog.setVisible(true);
+
+		return (Integer) pane.getValue();
+	}
+
+	private static void stylizeJPanels(final JComponent component)
+	{
+		for (final Component c : component.getComponents())
+		{
+			if (c instanceof JPanel)
+			{
+				c.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+				c.setForeground(Color.WHITE);
+				stylizeJPanels((JComponent) c);
+			}
+		}
 	}
 
 	/**

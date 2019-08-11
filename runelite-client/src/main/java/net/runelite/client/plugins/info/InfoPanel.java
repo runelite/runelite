@@ -29,13 +29,11 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -184,16 +182,7 @@ public class InfoPanel extends PluginPanel
 	 */
 	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, File dir)
 	{
-		return buildLinkPanel(icon, topText, bottomText, () ->
-		{
-			try
-			{
-				Desktop.getDesktop().open(dir);
-			}
-			catch (IOException ex)
-			{
-			}
-		});
+		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.openLocalFile(dir));
 	}
 
 	/**
