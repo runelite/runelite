@@ -131,8 +131,7 @@ public class RuneLiteSplashScreen extends JFrame
 		});
 	}
 
-	public static void stage(double startProgress, double endProgress,
-							 String progressText, int done, int total)
+	public static void stage(double startProgress, double endProgress, String progressText, int done, int total)
 	{
 		String progress = done + " / " + total;
 		stage(startProgress + ((endProgress - startProgress) * done / total), progressText + " " + progress);
