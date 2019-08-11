@@ -24,16 +24,12 @@
  */
 package net.runelite.client;
 
+import com.google.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.RuneLitePlusConfig;
 
 @Singleton
-@Slf4j
 public class RuneLiteProperties
 {
 	private static final String RUNELITE_TITLE = "runelite.plus.title";
@@ -47,32 +43,25 @@ public class RuneLiteProperties
 	private static final String WIKI_LINK = "runelite.wiki.link";
 	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
+	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
+	private static final String BUILDING_LINK = "runelite.wiki.building.link";
+	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
 
-	private final Properties properties = new Properties();
+	private static final Properties properties = new Properties();
 
-	private final RuneLitePlusConfig runeLitePlusConfig;
-
-	@Inject
-	public RuneLiteProperties(final RuneLitePlusConfig runeLiteConfig)
+	static
 	{
-		this.runeLitePlusConfig = runeLiteConfig;
-
-		try (InputStream in = getClass().getResourceAsStream("/runelite.plus.properties"))
+		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("/runelite.plus.properties"))
 		{
 			properties.load(in);
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load propertries", ex);
+			throw new RuntimeException(ex);
 		}
 	}
 
-	public RuneLiteProperties()
-	{
-		runeLitePlusConfig = null;
-	}
-
-	public String getTitle()
+	public static String getTitle()
 	{
 		final StringBuilder sb = new StringBuilder(properties.getProperty(RUNELITE_TITLE));
 		String proxy;
@@ -83,48 +72,63 @@ public class RuneLiteProperties
 		return sb.toString();
 	}
 
-	public String getVersion()
+	public static String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
 	}
 
-	public String getPlusVersion()
+	public static String getPlusVersion()
 	{
 		return properties.getProperty(RUNELITE_PLUS_VERSION);
 	}
 
-	public String getPlusDate()
+	public static String getPlusDate()
 	{
 		return properties.getProperty(RUNELITE_PLUS_DATE);
 	}
 
-	public String getRunescapeVersion()
+	public static String getRunescapeVersion()
 	{
 		return properties.getProperty(RUNESCAPE_VERSION);
 	}
 
-	public String getDiscordAppId()
+	public static String getDiscordAppId()
 	{
 		return properties.getProperty(DISCORD_APP_ID);
 	}
 
-	public String getDiscordInvite()
+	public static String getDiscordInvite()
 	{
 		return properties.getProperty(DISCORD_INVITE);
 	}
 
-	public String getGithubLink()
+	public static String getGithubLink()
 	{
 		return properties.getProperty(GITHUB_LINK);
 	}
 
-	public String getWikiLink()
+	public static String getWikiLink()
 	{
 		return properties.getProperty(WIKI_LINK);
 	}
 
-	public String getPatreonLink()
+	public static String getPatreonLink()
 	{
 		return properties.getProperty(PATREON_LINK);
+	}
+
+	public static String getTroubleshootingLink()
+	{
+		return properties.getProperty(TROUBLESHOOTING_LINK);
+	}
+
+	public static String getBuildingLink()
+	{
+		return properties.getProperty(BUILDING_LINK);
+	}
+
+	public static String getDNSChangeLink()
+	{
+		return properties.getProperty(DNS_CHANGE_LINK);
 	}
 }

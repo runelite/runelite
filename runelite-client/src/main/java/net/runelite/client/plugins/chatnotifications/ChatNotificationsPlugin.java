@@ -74,9 +74,6 @@ public class ChatNotificationsPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-	private RuneLiteProperties runeLiteProperties;
-
-	@Inject
 	private EventBus eventBus;
 
 	//Custom Highlights
@@ -183,7 +180,7 @@ public class ChatNotificationsPlugin extends Plugin
 				break;
 			case CONSOLE:
 				// Don't notify for notification messages
-				if (chatMessage.getName().equals(runeLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
 				{
 					return;
 				}

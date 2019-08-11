@@ -346,10 +346,7 @@ public class RuneLite
 		splashScreen.setProgress(5, 5);
 
 		// Initialize UI
-		clientUI.open(this);
-
-		// Close the splash screen
-		splashScreen.close();
+		clientUI.init(this);
 
 		if (!isOutdated)
 		{
@@ -373,6 +370,11 @@ public class RuneLite
 			overlayManager.add(arrowWorldOverlay.get());
 			overlayManager.add(arrowMinimapOverlay.get());
 		}
+
+		// Close the splash screen
+		splashScreen.close();
+
+		clientUI.show();
 
 		// Start plugins
 		pluginManager.startCorePlugins();

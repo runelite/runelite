@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,24 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+@Target(ElementType.FIELD)
+@interface ScriptArguments
 {
-	TOOLTIP_TIMEOUT(1),
-
-/**
- * 0 = no tooltip displayed
- * 1 = tooltip displaying
-*/
-	TOOLTIP_VISIBLE(2),
+	/**
+	 * The number of int arguments the script takes
+	 */
+	int integer() default 0;
 
 	/**
-	 * Current message layer mode
-	 * @see net.runelite.api.vars.InputType
+	 * The number of string arguments the script takes
 	 */
-	INPUT_TYPE(5),
-
-	MEMBERSHIP_STATUS(103),
-
-	/**
-	 *  0 = Combat
-	 *  1 = Stats
-	 *  2 = Quest
-	 *  3 = Inventory
-	 *  4 = Equipment
-	 *  5 = Prayer
-	 *  6 = Spellbook
-	 *  7 = Clan
-	 *  8 = Account Managment
-	 *  9 = Friends
-	 *  10 = Logout
-	 *  11 = Options
-	 *  12 = Emotes
-	 *  13 = Music
-	 */
-	PLAYER_INTERFACE_CONTAINER_OPENED(171),
-
-	INVENTORY_TAB(171),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	int string() default 0;
 }

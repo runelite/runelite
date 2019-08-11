@@ -623,6 +623,8 @@ public interface Widget
 	 */
 	Object[] getOnLoadListener();
 
+	Object[] getOnInvTransmitListener();
+
 	/**
 	 * Returns the archive id of the font used
 	 *

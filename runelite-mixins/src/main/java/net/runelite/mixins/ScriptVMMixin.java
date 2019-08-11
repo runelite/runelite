@@ -142,12 +142,12 @@ public abstract class ScriptVMMixin implements RSClient
 
 	@Inject
 	@Override
-	public void runScript(int id, Object... args)
+	public void runScript(Object... args)
 	{
 		assert isClientThread();
 		assert currentScript == null;
 		Object[] cargs = new Object[args.length + 1];
-		cargs[0] = id;
+		// cargs[0] = id;
 		System.arraycopy(args, 0, cargs, 1, args.length);
 		RSScriptEvent se = createScriptEvent();
 		se.setArguments(cargs);
