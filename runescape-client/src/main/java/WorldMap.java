@@ -1372,8 +1372,8 @@ public class WorldMap {
 		signature = "(IILhv;Lhv;B)V",
 		garbageValue = "8"
 	)
-	@Export("menuAction")
-	public void menuAction(int var1, int var2, Coord var3, Coord var4) {
+	@Export("handleMapClick")
+	public void handleMapClick(int var1, int var2, Coord var3, Coord var4) {
 		ScriptEvent var5 = new ScriptEvent();
 		WorldMapEvent var6 = new WorldMapEvent(var2, var3, var4);
 		var5.setArgs(new Object[]{var6});
