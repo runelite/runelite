@@ -74,7 +74,7 @@ public interface GroundItemsConfig extends Config
 	@Alpha
 	default Color highlightedColor()
 	{
-		return Color.decode("#AA00FF");
+		return Color.decode("#C46AFF");
 	}
 
 	@ConfigItem(
