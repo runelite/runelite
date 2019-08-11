@@ -1629,10 +1629,22 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideDestroyLootingBag",
+		name = "Hide Destroy on Looting bag",
+		description = "Hides the 'Destroy' option when right clicking a Looting bag.",
+		position = 5,
+		group = "Untradeables"
+	)
+	default boolean hideDestroyLootingBag()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hideDropRunecraftingPouch",
 		name = "Hide Drop on RC pouches",
 		description = "Hides the 'Drop' option when right clicking a Small, Medium, Large, or Giant pouch.",
-		position = 5,
+		position = 6,
 		group = "Untradeables"
 	)
 	default boolean hideDropRunecraftingPouch()
