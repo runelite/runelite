@@ -148,15 +148,6 @@ public final class ScriptID
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
 
 	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
-
-	/**
 	 * Handles zoom input
 	 *
 	 * Updates the VarClientInts (73, 74) to this same value
@@ -197,15 +188,18 @@ public final class ScriptID
 	/**
 	 * Join a clan, duh
 	 */
+	@ScriptArguments(string = 1)
 	public static final int CUSTOM_JOIN_CLAN = 10690;
 
 	/**
 	 * Send a public message
 	 */
+	@ScriptArguments(string = 1)
 	public static final int PUBLICMSG = 13337;
 
 	/**
 	 * Clicking bank pin buttons runs this
 	 */
+	@ScriptArguments(integer = 20)
 	public static final int BANK_PIN_OP = 685;
 }
