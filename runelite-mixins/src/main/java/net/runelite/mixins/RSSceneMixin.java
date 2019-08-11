@@ -24,10 +24,10 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.Entity;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
+import net.runelite.api.TileModel;
+import net.runelite.api.TilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
@@ -391,10 +391,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("newWallDecoration")
-	abstract public void rs$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12);
+	abstract public void rs$addBoundaryDecoration(int plane, int x, int y, int floor, Entity var5, Entity var6, int var7, int var8, int var9, int var10, long hash, int var12);
 
 	@Replace("newWallDecoration")
-	public void rl$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12)
+	public void rl$addBoundaryDecoration(int plane, int x, int y, int floor, Entity var5, Entity var6, int var7, int var8, int var9, int var10, long hash, int var12)
 	{
 		rs$addBoundaryDecoration(plane, x, y, floor, var5, var6, var7, var8, var9, var10, hash, var12);
 		Tile tile = getTiles()[plane][x][y];
@@ -409,10 +409,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("newGroundItemPile")
-	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8);
+	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Entity var5, long var6, Entity var7, Entity var8);
 
 	@Replace("newGroundItemPile")
-	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8)
+	public void rl$addItemPile(int plane, int x, int y, int hash, Entity var5, long var6, Entity var7, Entity var8)
 	{
 		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
 		Tile tile = getTiles()[plane][x][y];
@@ -427,10 +427,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("newFloorDecoration")
-	abstract public void rs$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7);
+	abstract public void rs$groundObjectSpawned(int plane, int x, int y, int floor, Entity var5, long hash, int var7);
 
 	@Replace("newFloorDecoration")
-	public void rl$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7)
+	public void rl$groundObjectSpawned(int plane, int x, int y, int floor, Entity var5, long hash, int var7)
 	{
 		rs$groundObjectSpawned(plane, x, y, floor, var5, hash, var7);
 		Tile tile = getTiles()[plane][x][y];
@@ -445,10 +445,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("newBoundaryObject")
-	abstract public void rs$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10);
+	abstract public void rs$addBoundary(int plane, int x, int y, int floor, Entity var5, Entity var6, int var7, int var8, long hash, int var10);
 
 	@Replace("newBoundaryObject")
-	public void rl$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10)
+	public void rl$addBoundary(int plane, int x, int y, int floor, Entity var5, Entity var6, int var7, int var8, long hash, int var10)
 	{
 		rs$addBoundary(plane, x, y, floor, var5, var6, var7, var8, hash, var10);
 		Tile tile = getTiles()[plane][x][y];
@@ -463,10 +463,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("drawTileUnderlay")
-	abstract public void rs$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
+	abstract public void rs$drawTileUnderlay(TilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
 
 	@Replace("drawTileUnderlay")
-	public void rl$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y)
+	public void rl$drawTileUnderlay(TilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y)
 	{
 		if (!client.isGpu())
 		{
@@ -590,10 +590,10 @@ public abstract class RSSceneMixin implements RSScene
 	}
 
 	@Copy("drawTileOverlay")
-	abstract public void rs$drawTileOverlay(SceneTileModel tile, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
+	abstract public void rs$drawTileOverlay(TileModel tile, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
 
 	@Replace("drawTileOverlay")
-	public void rl$drawTileOverlay(SceneTileModel tile, int pitchSin, int pitchCos, int yawSin, int yawCos, int tileX, int tileY)
+	public void rl$drawTileOverlay(TileModel tile, int pitchSin, int pitchCos, int yawSin, int yawCos, int tileX, int tileY)
 	{
 		if (!client.isGpu())
 		{

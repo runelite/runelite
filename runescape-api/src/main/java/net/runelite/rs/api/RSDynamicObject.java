@@ -1,10 +1,10 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.DynamicObject;
-import net.runelite.api.Renderable;
+import net.runelite.api.Entity;
 import net.runelite.mapping.Import;
 
-public interface RSDynamicObject extends RSEntity, DynamicObject, Renderable
+public interface RSDynamicObject extends RSEntity, DynamicObject, Entity
 {
 	@Import("id")
 	int getId();

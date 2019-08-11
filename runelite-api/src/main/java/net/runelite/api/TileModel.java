@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,64 @@
 package net.runelite.api;
 
 /**
- * Represents an object that can be rendered.
+ * Represents the model of a tile in the current scene.
  */
-public interface Renderable extends Node
+public interface TileModel
 {
 	/**
-	 * Gets the model of the object.
+	 * Gets the underlay color of the tile.
+	 *
+	 * @return the underlay color
 	 */
-	Model getModel();
+	int getModelUnderlay();
 
 	/**
-	 * Gets the height of the model.
+	 * Gets the overlay color of the tile.
+	 *
+	 * @return the overlay color
 	 */
-	int getModelHeight();
+	int getModelOverlay();
 
-	void setModelHeight(int modelHeight);
+	/**
+	 * Gets the shape mask type.
+	 *
+	 * @return the shape mask
+	 */
+	int getShape();
 
-	void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+	/**
+	 * Gets the rotation of the tile.
+	 *
+	 * @return the rotation
+	 */
+	int getRotation();
+
+	int[] getFaceX();
+
+	int[] getFaceY();
+
+	int[] getFaceZ();
+
+	int[] getVertexX();
+
+	int[] getVertexY();
+
+	int[] getVertexZ();
+
+	int[] getTriangleColorA();
+
+	int[] getTriangleColorB();
+
+	int[] getTriangleColorC();
+
+	int[] getTriangleTextureId();
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getBufferLen();
+	void setBufferLen(int bufferLen);
 }

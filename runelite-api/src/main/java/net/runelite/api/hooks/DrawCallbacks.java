@@ -24,22 +24,22 @@
  */
 package net.runelite.api.hooks;
 
-import net.runelite.api.Renderable;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
+import net.runelite.api.Entity;
+import net.runelite.api.TileModel;
+import net.runelite.api.TilePaint;
 import net.runelite.api.Texture;
 
 public interface DrawCallbacks
 {
-	void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+	void draw(Entity entity, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 
 	void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-						SceneTilePaint paint, int tileZ, int tileX, int tileY,
+						TilePaint paint, int tileZ, int tileX, int tileY,
 						int zoom, int centerX, int centerY);
 
 
 	void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-						SceneTileModel model, int tileZ, int tileX, int tileY,
+						TileModel model, int tileZ, int tileX, int tileY,
 						int zoom, int centerX, int centerY);
 
 	void draw();

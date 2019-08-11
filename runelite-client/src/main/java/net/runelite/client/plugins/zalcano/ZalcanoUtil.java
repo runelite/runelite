@@ -33,6 +33,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DynamicObject;
+import net.runelite.api.Entity;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.InventoryID;
@@ -43,7 +44,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
-import net.runelite.api.Renderable;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -123,10 +123,10 @@ public class ZalcanoUtil
 				{
 					if (client.getLocalPlayer().getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= 2400)
 					{
-						Renderable renderable = gameObject.getRenderable();
-						if (renderable instanceof DynamicObject)
+						Entity entity = gameObject.getRenderable();
+						if (entity instanceof DynamicObject)
 						{
-							if (((DynamicObject) renderable).getAnimationID() == AnimationID.ZALCANO_ROCK_GLOWING)
+							if (((DynamicObject) entity).getAnimationID() == AnimationID.ZALCANO_ROCK_GLOWING)
 							{
 								return gameObject;
 							}
@@ -149,8 +149,8 @@ public class ZalcanoUtil
 				{
 					if (client.getLocalPlayer().getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= 2400)
 					{
-						Renderable renderable = gameObject.getRenderable();
-						if (renderable instanceof DynamicObject)
+						Entity entity = gameObject.getRenderable();
+						if (entity instanceof DynamicObject)
 						{
 							list.add(gameObject);
 						}

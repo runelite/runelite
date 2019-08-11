@@ -1,9 +1,9 @@
 package net.runelite.rs.api;
 
-import net.runelite.api.SceneTileModel;
+import net.runelite.api.TileModel;
 import net.runelite.mapping.Import;
 
-public interface RSTileModel extends SceneTileModel
+public interface RSTileModel extends TileModel
 {
 	@Import("underlayRgb")
 	@Override

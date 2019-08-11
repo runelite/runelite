@@ -22,7 +22,7 @@ public class RenderDraw
 	private static final net.runelite.asm.pool.Method renderDraw = new net.runelite.asm.pool.Method(
 		new Class("net.runelite.client.callback.Hooks"),
 		"renderDraw",
-		new Signature("(Lnet/runelite/api/Renderable;IIIIIIIIJ)V")
+		new Signature("(Lnet/runelite/api/Entity;IIIIIIIIJ)V")
 	);
 	private final Inject inject;
 

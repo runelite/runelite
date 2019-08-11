@@ -1,9 +1,9 @@
 package net.runelite.rs.api;
 
-import net.runelite.api.SceneTilePaint;
+import net.runelite.api.TilePaint;
 import net.runelite.mapping.Import;
 
-public interface RSTilePaint extends SceneTilePaint
+public interface RSTilePaint extends TilePaint
 {
 	@Import("rgb")
 	@Override

@@ -29,7 +29,7 @@ import net.runelite.api.coords.LocalPoint;
 /**
  * Represents a graphics object.
  */
-public interface GraphicsObject extends Renderable
+public interface GraphicsObject extends Entity
 {
 	/**
 	 * The graphics object ID.

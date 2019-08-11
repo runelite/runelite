@@ -39,13 +39,22 @@ compileJava.doLast() {
         into "$buildDir"
     }
     def path = sourceSets.main.runtimeClasspath
-    def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
-    def inject = loader.loadClass('net.runelite.injector.Injector')
-    String[] jarPaths = [
-            deobfuscatedJar.toString(),
-            vanillaJar.toString(),
-            injectedClassesPath.toString()
-    ]
-    inject.main(jarPaths)
-    loader.close()
+    def loader
+    try {
+        loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
+        def inject = loader.loadClass('net.runelite.injector.Injector')
+        String[] jarPaths = [
+                deobfuscatedJar.toString(),
+                vanillaJar.toString(),
+                injectedClassesPath.toString()
+        ]
+        inject.main(jarPaths)
+    } finally {
+        if (loader) {
+            loader.close()
+        }
+    }
+}
+test {
+    
 }

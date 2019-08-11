@@ -1,6 +1,6 @@
 package net.runelite.api;
 
-public interface DynamicObject extends Renderable
+public interface DynamicObject extends Entity
 {
 	int getAnimationID();
 }
