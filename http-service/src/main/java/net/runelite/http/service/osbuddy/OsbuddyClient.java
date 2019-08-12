@@ -43,8 +43,8 @@ public class OsbuddyClient
 	{
 		HttpUrl httpUrl = new HttpUrl.Builder()
 			.scheme("https")
-			.host("rsbuddy.com")
-			.addPathSegment("exchange")
+			.host("storage.googleapis.com")
+			.addPathSegment("osb-exchange")
 			.addPathSegment("summary.json")
 			.build();
 
