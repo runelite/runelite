@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'application'
 
 ext {
-    grgit = org.ajoberstar.grgit.Grgit.open(dir: '.')
+    grgit = org.ajoberstar.grgit.Grgit.open(dir: "${rootProject.projectDir}")
     localGitCommit = grgit.head().id
     localGitCommitShort = grgit.head().getAbbreviatedId(7)
     localGitDirty = !grgit.status().clean
