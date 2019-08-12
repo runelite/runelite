@@ -29,36 +29,7 @@ import java.time.Duration;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.ASH_PILE;
-import static net.runelite.api.ObjectID.ROCKS_10943;
-import static net.runelite.api.ObjectID.ROCKS_11161;
-import static net.runelite.api.ObjectID.ROCKS_11360;
-import static net.runelite.api.ObjectID.ROCKS_11361;
-import static net.runelite.api.ObjectID.ROCKS_11364;
-import static net.runelite.api.ObjectID.ROCKS_11365;
-import static net.runelite.api.ObjectID.ROCKS_11366;
-import static net.runelite.api.ObjectID.ROCKS_11367;
-import static net.runelite.api.ObjectID.ROCKS_11368;
-import static net.runelite.api.ObjectID.ROCKS_11369;
-import static net.runelite.api.ObjectID.ROCKS_11370;
-import static net.runelite.api.ObjectID.ROCKS_11371;
-import static net.runelite.api.ObjectID.ROCKS_11372;
-import static net.runelite.api.ObjectID.ROCKS_11373;
-import static net.runelite.api.ObjectID.ROCKS_11374;
-import static net.runelite.api.ObjectID.ROCKS_11375;
-import static net.runelite.api.ObjectID.ROCKS_11376;
-import static net.runelite.api.ObjectID.ROCKS_11377;
-import static net.runelite.api.ObjectID.ROCKS_11380;
-import static net.runelite.api.ObjectID.ROCKS_11381;
-import static net.runelite.api.ObjectID.ROCKS_11386;
-import static net.runelite.api.ObjectID.ROCKS_11387;
-import static net.runelite.api.ObjectID.ROCKS_36203;
-import static net.runelite.api.ObjectID.ROCKS_36204;
-import static net.runelite.api.ObjectID.ROCKS_36205;
-import static net.runelite.api.ObjectID.ROCKS_36206;
-import static net.runelite.api.ObjectID.ROCKS_36207;
-import static net.runelite.api.ObjectID.ROCKS_36208;
-import static net.runelite.api.ObjectID.ROCKS_36209;
+import static net.runelite.api.ObjectID.*;
 
 enum Rock
 {
