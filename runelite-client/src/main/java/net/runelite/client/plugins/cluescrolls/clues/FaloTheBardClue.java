@@ -31,37 +31,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Item;
-import static net.runelite.api.ItemID.ARMADYL_HELMET;
-import static net.runelite.api.ItemID.BARRELCHEST_ANCHOR;
-import static net.runelite.api.ItemID.BARROWS_GLOVES;
-import static net.runelite.api.ItemID.BASALT;
-import static net.runelite.api.ItemID.BOOK_OF_BALANCE;
-import static net.runelite.api.ItemID.BOOK_OF_DARKNESS;
-import static net.runelite.api.ItemID.BOOK_OF_LAW;
-import static net.runelite.api.ItemID.BOOK_OF_WAR;
-import static net.runelite.api.ItemID.COOKING_GAUNTLETS;
-import static net.runelite.api.ItemID.CRYSTAL_BOW_110;
-import static net.runelite.api.ItemID.CRYSTAL_BOW_110_I;
-import static net.runelite.api.ItemID.DRAGON_DEFENDER;
-import static net.runelite.api.ItemID.DRAGON_SCIMITAR;
-import static net.runelite.api.ItemID.FIGHTER_TORSO;
-import static net.runelite.api.ItemID.GREENMANS_ALEM;
-import static net.runelite.api.ItemID.HOLY_BOOK;
-import static net.runelite.api.ItemID.INFERNAL_AXE;
-import static net.runelite.api.ItemID.IVANDIS_FLAIL;
-import static net.runelite.api.ItemID.LAVA_DRAGON_BONES;
-import static net.runelite.api.ItemID.MARK_OF_GRACE;
-import static net.runelite.api.ItemID.NEW_CRYSTAL_BOW;
-import static net.runelite.api.ItemID.NEW_CRYSTAL_BOW_I;
-import static net.runelite.api.ItemID.NUMULITE;
-import static net.runelite.api.ItemID.ROD_OF_IVANDIS_1;
-import static net.runelite.api.ItemID.ROD_OF_IVANDIS_10;
-import static net.runelite.api.ItemID.RUNE_PLATEBODY;
-import static net.runelite.api.ItemID.TZHAARKETOM;
-import static net.runelite.api.ItemID.UNHOLY_BOOK;
-import static net.runelite.api.ItemID.WARRIOR_GUILD_TOKEN;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -80,7 +52,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
-		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", range(NEW_CRYSTAL_BOW, CRYSTAL_BOW_110), range(NEW_CRYSTAL_BOW_I, CRYSTAL_BOW_110_I))),
+		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
