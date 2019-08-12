@@ -38,17 +38,25 @@ enum Rock
 	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(int region)
 			{
-				return inMiningGuild ? Duration.ofMillis(2400) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.ofMillis(2400) : super.respawnTime;
 			}
 		},
 	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(int region)
 			{
-				return inMiningGuild ? Duration.ofMillis(14400) : super.respawnTime;
+				switch (region)
+				{
+					case MINING_GUILD:
+						return Duration.ofMillis(14400);
+					case MISCELLANIA:
+						return Duration.ofMillis(6600);
+					default:
+						return super.respawnTime;
+				}
 			}
 		},
 	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
@@ -58,25 +66,25 @@ enum Rock
 	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(int region)
 			{
-				return inMiningGuild ? Duration.ofMinutes(1) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.ofMinutes(1) : super.respawnTime;
 			}
 		},
 	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(int region)
 			{
-				return inMiningGuild ? Duration.ofMinutes(2) : super.respawnTime;
+				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.ofMinutes(2) : super.respawnTime;
 			}
 		},
 	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
 		{
 			@Override
-			Duration getRespawnTime(boolean inMiningGuild)
+			Duration getRespawnTime(int region)
 			{
-				return inMiningGuild ? Duration.ofMinutes(6) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.ofMinutes(6) : super.respawnTime;
 			}
 		},
 	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
@@ -84,6 +92,9 @@ enum Rock
 	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
 	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
 
+	private static final int WILDERNESS_RESOURCE_AREA = 12605;
+	private static final int MISCELLANIA = 10044;
+	private static final int MINING_GUILD = 12183;
 	private static final Map<Integer, Rock> ROCKS;
 
 	static
@@ -111,7 +122,7 @@ enum Rock
 		this.ids = ids;
 	}
 
-	Duration getRespawnTime(boolean inMiningGuild)
+	Duration getRespawnTime(int region)
 	{
 		return respawnTime;
 	}
