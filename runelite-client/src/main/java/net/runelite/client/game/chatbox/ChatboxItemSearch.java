@@ -44,6 +44,7 @@ import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 
 @Singleton
 public class ChatboxItemSearch extends ChatboxTextInput
@@ -294,8 +295,10 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			// The client assigns "null" to item names of items it doesn't know about
 			if (!name.equals("null") && name.toLowerCase().contains(search))
 			{
-				// This may already be in the map due to canonicalize mapping the item to something we've already seen
-				results.putIfAbsent(itemComposition.getId(), itemComposition);
+				int itemId = ItemVariationMapping.map(itemComposition.getId());
+
+				// This may already be in the map due to canonicalize and itemvariation mapping
+				results.putIfAbsent(itemId, itemComposition);
 			}
 		}
 	}
