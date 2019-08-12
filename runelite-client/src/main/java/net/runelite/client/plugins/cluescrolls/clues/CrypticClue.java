@@ -255,7 +255,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the chests upstairs in Al Kharid Palace.", CLOSED_CHEST_375, new WorldPoint(3301, 3169, 1), "The chest is located, in the northeast corner, on the first floor of the Al Kharid Palace"),
 		new CrypticClue("Search the boxes just outside the Armour shop in East Ardougne.", BOXES_361, new WorldPoint(2654, 3299, 0), "Outside Zenesha's Plate Mail Body Shop"),
 		new CrypticClue("Surrounded by white walls and gems.", "Herquin", new WorldPoint(2945, 3335, 0), "Talk to Herquin, the gem store owner in Falador."),
-		new CrypticClue("Monk's residence in the far west. See robe storage device.", DRAWERS_350, new WorldPoint(1742, 3490, 1), "Search the drawers upstairs in the chapel found on the southern coast of Hosidius, directly south of the player-owned house portal."),
+		new CrypticClue("Monk's residence in the far west. See robe storage device.", DRAWERS_350, new WorldPoint(1742, 3490, 1), "Search the drawers in the south tent of the monk's camp on the southern coast of Hosidius, directly south of the player-owned house portal."),
 		new CrypticClue("Search the drawers in Catherby's Archery shop.", DRAWERS_350, new WorldPoint(2825, 3442, 0), "Hickton's Archery Emporium in Catherby."),
 		new CrypticClue("The hand ain't listening.", "The Face", new WorldPoint(3019, 3232, 0), "Talk to The Face located by the manhole just north of the Port Sarim fishing shop."),
 		new CrypticClue("Search the chest in the left-hand tower of Camelot Castle.", CLOSED_CHEST_25592, new WorldPoint(2748, 3495, 2), "Located on the second floor of the western tower of Camelot."),
