@@ -36,7 +36,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class SotetsegHandler extends RoomHandler
 {
 	private static final Set<Integer> SOTE_PROJ = ImmutableSet.of(
-		ProjectileID.SOTETSEG_MAGE, ProjectileID.SOTETSEG_BOMB, ProjectileID.SOTETSEG_RANGE
+		ProjectileID.SOTETSEG_MAGE, ProjectileID.SOTETSEG_RANGE
 	);
 	@Getter(AccessLevel.PUBLIC)
 	private final Map<GroundObject, Tile> redTiles = new LinkedHashMap<>();
@@ -146,8 +146,11 @@ public class SotetsegHandler extends RoomHandler
 	{
 		final Projectile projectile = event.getProjectile();
 
-		//1604 ball
 		if (SOTE_PROJ.contains(projectile.getId()) && projectile.getInteracting() == client.getLocalPlayer())
+		{
+			soteyProjectiles.add(projectile);
+		}
+		else if (projectile.getId() == ProjectileID.SOTETSEG_BOMB)
 		{
 			soteyProjectiles.add(projectile);
 		}
