@@ -911,7 +911,8 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	private void notifyWith(Player local, String message) {
+	private void notifyWith(Player local, String message) 
+	{
 		notifier.notify("[" + local.getName() + "] " + message);
 	}
 
