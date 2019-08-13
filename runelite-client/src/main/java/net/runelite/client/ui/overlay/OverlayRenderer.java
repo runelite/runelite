@@ -208,7 +208,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final Stroke stroke = graphics.getStroke();
 		final Composite composite = graphics.getComposite();
 		final Paint paint = graphics.getPaint();
-		final Color color = graphics.getColor();
 		final RenderingHints renderingHints = graphics.getRenderingHints();
 		final Color background = graphics.getBackground();
 
@@ -301,7 +300,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			graphics.setStroke(stroke);
 			graphics.setComposite(composite);
 			graphics.setPaint(paint);
-			graphics.setColor(color);
 			graphics.setRenderingHints(renderingHints);
 			graphics.setBackground(background);
 		}
