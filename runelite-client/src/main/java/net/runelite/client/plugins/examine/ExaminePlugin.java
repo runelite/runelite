@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -224,26 +225,32 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		final ItemDefinition Itemdefinition;
+		final ItemDefinition itemDefinition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			Itemdefinition = itemManager.getItemDefinition(itemId);
 
-			if (Itemdefinition != null)
+			if (itemId == ItemID.COINS_995)
 			{
-				final int id = itemManager.canonicalize(Itemdefinition.getId());
-				executor.submit(() -> getItemPrice(id, Itemdefinition, itemQuantity));
+				return;
+			}
+
+			itemDefinition = itemManager.getItemDefinition(itemId);
+
+			if (itemDefinition != null)
+			{
+				final int id = itemManager.canonicalize(itemDefinition.getId());
+				executor.submit(() -> getItemPrice(id, itemDefinition, itemQuantity));
 			}
 		}
 		else
 		{
-			Itemdefinition = null;
+			itemDefinition = null;
 		}
 
 		// Don't submit examine info for tradeable items, which we already have from the RS item api
-		if (Itemdefinition != null && Itemdefinition.isTradeable())
+		if (itemDefinition != null && itemDefinition.isTradeable())
 		{
 			return;
 		}

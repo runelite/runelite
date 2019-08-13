@@ -313,8 +313,6 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 				continue;
 			}
 
-			final ItemDefinition c = itemManager.getItemDefinition(i.getId());
-
 			// Bonds are always kept and do not count towards the limit.
 			if (id == ItemID.OLD_SCHOOL_BOND || id == ItemID.OLD_SCHOOL_BOND_UNTRADEABLE)
 			{
@@ -356,7 +354,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
 				&& !isTradeable(itemManager.getItemDefinition(id)) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || BrokenOnDeathItem.isBrokenOnDeath(i.getId())))
+				&& (wildyLevel <= 0 || BrokenOnDeathItem.getRepairPrice(i.getId()) != null))
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}
@@ -448,8 +446,6 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 		final DynamicPriceItem dynamicPrice = DynamicPriceItem.find(canonicalizedItemId);
 		if (dynamicPrice != null)
 		{
-			final ItemDefinition c1 = itemManager.getItemDefinition(canonicalizedItemId);
-			exchangePrice = c1.getPrice();
 			final int basePrice = itemManager.getItemPrice(dynamicPrice.getChargedId(), true);
 			return dynamicPrice.calculateDeathPrice(basePrice);
 		}
@@ -462,19 +458,29 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			// Grab base item price
 			exchangePrice = itemManager.getItemPrice(fixedPrice.getBaseId(), true);
 		}
-		else
+
+		// Jagex uses the repair price when determining which items are kept on death.
+		final Integer repairPrice = BrokenOnDeathItem.getRepairPrice(canonicalizedItemId);
+		if (repairPrice != null)
 		{
-			// Account for items whose death value comes from their tradeable variant (barrows) or components (ornate kits)
-			for (final int mappedID : ItemMapping.map(canonicalizedItemId))
-			{
-				exchangePrice += itemManager.getItemPrice(mappedID, true);
-			}
+			exchangePrice = repairPrice;
 		}
 
 		if (exchangePrice == 0)
 		{
-			final ItemDefinition c1 = itemManager.getItemDefinition(canonicalizedItemId);
-			exchangePrice = c1.getPrice();
+			// Account for items whose death value comes from their tradeable variant (barrows) or components (ornate kits)
+			// ItemMapping.map will always return a collection with at least the passed ID
+			for (final int mappedID : ItemMapping.map(canonicalizedItemId))
+			{
+				exchangePrice += itemManager.getItemPrice(mappedID, true);
+			}
+
+			// If for some reason it still has no price default to the items store price
+			if (exchangePrice == 0)
+			{
+				final ItemDefinition c1 = itemManager.getItemDefinition(canonicalizedItemId);
+				exchangePrice = c1.getPrice();
+			}
 		}
 
 		// Apply fixed price offset

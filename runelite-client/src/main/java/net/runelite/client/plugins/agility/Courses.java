@@ -47,7 +47,7 @@ enum Courses
 	SEERS(570.0, 435, 10806),
 	POLLNIVNEACH(890.0, 540, 13358),
 	RELLEKA(780.0, 475, 10553),
-	PRIFDDINAS(1199.0, 968, 12895),
+	PRIFDDINAS(1337.0, 1037, 12895),
 	ARDOUGNE(793.0, 529, 10547);
 
 	private final static Map<Integer, Courses> coursesByRegion;
