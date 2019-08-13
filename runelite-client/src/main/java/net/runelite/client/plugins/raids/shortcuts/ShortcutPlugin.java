@@ -19,12 +19,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Raid Shortcuts",
+	name = "Raids Shortcuts",
 	description = "Highlights Raid Shortcuts",
-	tags = {"boulder", "cox", "raids", "highlight"}
+	tags = {"boulder", "cox", "raids", "highlight"},
+	type = PluginType.PVM
 )
 @Slf4j
 @Singleton
