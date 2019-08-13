@@ -203,6 +203,7 @@ enum Task
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
 	SCORPIONS("Scorpions", ItemID.ENSOULED_SCORPION_HEAD,
 		asList("Scorpia"), Collections.emptyList()),
+	SARACHNIS("Sarachnis", ItemID.SRARACHA),
 	SEA_SNAKES("Sea snakes", ItemID.SNAKE_CORPSE),
 	SHADES("Shades", ItemID.SHADE_ROBE_TOP,
 		asList("Loar Shadow", "Loar Shade", "Phrin Shadow", "Phrin Shade", "Riyl Shadow", "Riyl Shade", "Asyn Shadow", "Asyn Shade", "Fiyr Shadow", "Fiyr Shade"), Collections.emptyList()),
