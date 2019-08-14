@@ -852,27 +852,25 @@ public class ConfigPanel extends PluginPanel
 					textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 					textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
-					textField.addFocusListener(new FocusAdapter()
+					DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
+					listener.addChangeListener(e ->
 					{
-						@Override
-						public void focusLost(FocusEvent e)
+						ConfigItem configItem = cid.getItem();
+						if (configItem.parse())
 						{
-							ConfigItem item = cid.getItem();
-							if (item.parse())
-							{
-								Boolean result = parse(item, textField.getText());
+							Boolean result = parse(configItem, textField.getText());
 
-								if (result != null && result)
-								{
-									changeConfiguration(listItem, config, textField, cd, cid);
-								}
-							}
-							else
+							if (result != null && result)
 							{
 								changeConfiguration(listItem, config, textField, cd, cid);
 							}
 						}
+						else
+						{
+							changeConfiguration(listItem, config, textField, cd, cid);
+						}
 					});
+					textField.getDocument().addDocumentListener(listener);
 
 					if (cid.getItem().parse())
 					{
@@ -880,7 +878,7 @@ public class ConfigPanel extends PluginPanel
 						parsingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 						parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
 
-						DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
+						listener = new DeferredDocumentChangedListener();
 						listener.addChangeListener(e ->
 						{
 							if (cid.getItem().parse())
