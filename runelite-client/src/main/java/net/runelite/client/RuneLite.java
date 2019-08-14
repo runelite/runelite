@@ -87,6 +87,7 @@ public class RuneLite
 	private static final File LOG_FILE = new File(LOGS_DIR, "client.log");
 	private static final RuneLiteProperties PROPERTIES = new RuneLiteProperties();
 	public static boolean allowPrivateServer = false;
+	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
 
 	@Getter
 	private static Injector injector;

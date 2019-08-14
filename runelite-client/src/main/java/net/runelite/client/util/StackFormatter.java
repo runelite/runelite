@@ -28,9 +28,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.client.RuneLite;
 
 /**
  * A set of utility functions to use when
@@ -68,6 +72,34 @@ public class StackFormatter
 		"#,###.###",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
+
+	/**
+	 * Attempts to call the platform to get a localized time string based on
+	 * the users preferences. Falls back on using locale default if it is on a
+	 * platform that has no consistent way of obtaining this information.
+	 *
+	 * @param localDateTime The LocalDateTime object to format as a string
+	 * @return The formatted string.
+	 */
+	public static String getPlatformTimeStringFromLocalDateTime(LocalDateTime localDateTime)
+	{
+		if (OSType.getOSType() == OSType.Windows)
+		{
+			return WinApi.getTimeFormatString(localDateTime);
+		}
+		return StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(localDateTime.toLocalTime());
+	}
+
+	/**
+	 * Get a localized DateTimeFormatter for use.
+	 *
+	 * @param formatStyle The format style to use for the formatter
+	 * @return The localized DateTimeFormatter
+	 */
+	public static DateTimeFormatter getLocalizedDateTimeFormatter(FormatStyle formatStyle)
+	{
+		return DateTimeFormatter.ofLocalizedTime(formatStyle).withLocale(RuneLite.SYSTEM_LOCALE);
+	}
 
 	/**
 	 * Convert a quantity to a nicely formatted stack size.
