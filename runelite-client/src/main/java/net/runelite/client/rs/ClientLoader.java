@@ -38,7 +38,6 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -58,6 +57,7 @@ import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.compress.compressors.CompressorException;
@@ -65,6 +65,8 @@ import org.apache.commons.compress.compressors.CompressorException;
 @Slf4j
 public class ClientLoader implements Supplier<Applet>
 {
+	private static final int NUM_ATTEMPTS = 6;
+
 	private ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
 
@@ -98,77 +100,118 @@ public class ClientLoader implements Supplier<Applet>
 		try
 		{
 			SplashScreen.stage(0, null, "Fetching applet viewer config");
-			RSConfig config = ClientConfigLoader.fetch();
+
+			HostSupplier hostSupplier = new HostSupplier();
+
+			String host = null;
+			RSConfig config;
+			for (int attempt = 0; ; attempt++)
+			{
+				try
+				{
+					config = ClientConfigLoader.fetch(host);
+					break;
+				}
+				catch (IOException e)
+				{
+					log.info("Failed to get jav_config from host \"{}\" ({})", host, e.getMessage());
+
+					if (attempt >= NUM_ATTEMPTS)
+					{
+						throw e;
+					}
+
+					host = hostSupplier.get();
+				}
+			}
 
 			Map<String, byte[]> zipFile = new HashMap<>();
 			{
 				Certificate[] jagexCertificateChain = getJagexCertificateChain();
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
-				Request request = new Request.Builder()
-					.url(url)
-					.build();
+				HttpUrl url = HttpUrl.parse(codebase + initialJar);
 
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+				for (int attempt = 0; ; attempt++)
 				{
-					int length = (int) response.body().contentLength();
-					if (length < 0)
-					{
-						length = 3 * 1024 * 1024;
-					}
-					final int flength = length;
-					InputStream istream = new FilterInputStream(response.body().byteStream())
-					{
-						private int read = 0;
+					zipFile.clear();
 
-						@Override
-						public int read(byte[] b, int off, int len) throws IOException
+					Request request = new Request.Builder()
+						.url(url)
+						.build();
+
+					try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+					{
+						int length = (int) response.body().contentLength();
+						if (length < 0)
 						{
-							int thisRead = super.read(b, off, len);
-							this.read += thisRead;
-							SplashScreen.stage(.05, .35, null, "Downloading Old School RuneScape", this.read, flength, true);
-							return thisRead;
+							length = 3 * 1024 * 1024;
 						}
-					};
-					JarInputStream jis = new JarInputStream(istream);
-
-					byte[] tmp = new byte[4096];
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-					for (; ; )
-					{
-						JarEntry metadata = jis.getNextJarEntry();
-						if (metadata == null)
+						final int flength = length;
+						InputStream istream = new FilterInputStream(response.body().byteStream())
 						{
-							break;
-						}
+							private int read = 0;
 
-						buffer.reset();
+							@Override
+							public int read(byte[] b, int off, int len) throws IOException
+							{
+								int thisRead = super.read(b, off, len);
+								this.read += thisRead;
+								SplashScreen.stage(.05, .35, null, "Downloading Old School RuneScape", this.read, flength, true);
+								return thisRead;
+							}
+						};
+						JarInputStream jis = new JarInputStream(istream);
+
+						byte[] tmp = new byte[4096];
+						ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
 						for (; ; )
 						{
-							int n = jis.read(tmp);
-							if (n <= -1)
+							JarEntry metadata = jis.getNextJarEntry();
+							if (metadata == null)
 							{
 								break;
 							}
-							buffer.write(tmp, 0, n);
-						}
 
-						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
+							buffer.reset();
+							for (; ; )
+							{
+								int n = jis.read(tmp);
+								if (n <= -1)
+								{
+									break;
+								}
+								buffer.write(tmp, 0, n);
+							}
+
+							if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
+							{
+								if (metadata.getName().startsWith("META-INF/"))
+								{
+									// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
+									// anything in META-INF anyway.
+									continue;
+								}
+								else
+								{
+									throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
+								}
+							}
+
+							zipFile.put(metadata.getName(), buffer.toByteArray());
+						}
+						break;
+					}
+					catch (IOException e)
+					{
+						log.info("Failed to download gamepack from \"{}\" ({})", url, e.getMessage());
+
+						if (attempt >= NUM_ATTEMPTS)
 						{
-							if (metadata.getName().startsWith("META-INF/"))
-							{
-								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
-								// anything in META-INF anyway.
-								continue;
-							}
-							else
-							{
-								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
-							}
+							throw e;
 						}
 
-						zipFile.put(metadata.getName(), buffer.toByteArray());
+						url = url.newBuilder().host(hostSupplier.get()).build();
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.rs;
 
 import java.io.IOException;
-import org.junit.Test;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.worlds.WorldClient;
 
-/**
- *
- * @author Adam
- */
-public class ClientConfigLoaderTest
+@Slf4j
+class HostSupplier implements Supplier<String>
 {
-	@Test
-	public void test() throws IOException
+	private final Random random = new Random(System.nanoTime());
+	private Queue<String> hosts = new ArrayDeque<>();
+
+	@Override
+	public String get()
 	{
-		final RSConfig config = ClientConfigLoader.fetch(null);
-
-		for (String key : config.getClassLoaderProperties().keySet())
+		if (!hosts.isEmpty())
 		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
+			return hosts.poll();
 		}
 
-		System.out.println("Applet properties:");
-
-		for (String key : config.getAppletProperties().keySet())
+		try
 		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
+			List<String> newHosts = new WorldClient()
+				.lookupWorlds()
+				.getWorlds()
+				.stream()
+				.map(i -> i.getAddress())
+				.collect(Collectors.toList());
+
+			Collections.shuffle(newHosts, random);
+
+			hosts.addAll(newHosts.subList(0, 16));
 		}
+		catch (IOException e)
+		{
+			log.warn("Unable to retrieve world list", e);
+		}
+
+		while (hosts.size() < 2)
+		{
+			hosts.add("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM");
+		}
+
+		return hosts.poll();
 	}
-
 }
