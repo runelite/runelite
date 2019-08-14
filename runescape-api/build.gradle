@@ -1,5 +1,6 @@
 group = 'net.runelite.rs'
 description = 'RuneScape API'
+
 dependencies {
     api project(':runelite-api')
 }

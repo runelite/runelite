@@ -5,26 +5,30 @@ def buildPath = buildDir.toString().replace('\\', '/') // this doesnt work in an
 def deobfuscatedJar = "${rootPath}/runescape-client/build/libs/rs-client-${project.version}.jar"
 def vanillaJar = "${buildPath}/vanilla-${rsversion}.jar"
 
-
 configurations {
     vanilla
 }
 
 dependencies {
+    annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: sisu
+
+    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: mavenPluginAnnotations
+
+    implementation group: 'com.google.guava', name: 'guava', version: guava
+    implementation group: 'org.apache.maven', name: 'maven-plugin-api', version: mavenPluginApi
+    implementation group: 'org.ow2.asm', name: 'asm', version: asm
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: asm
     implementation project(':deobfuscator')
     implementation project(':mixins')
     implementation project(':runelite-api')
     implementation project(':runescape-api')
-    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
-    implementation group: 'org.apache.maven', name: 'maven-plugin-api', version: '3.6.1'
-    implementation group: 'org.ow2.asm', name: 'asm-debug-all', version: '5.2'
+
+    testImplementation group: 'junit', name: 'junit', version: junit
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: mockito
     testImplementation project(':deobfuscator')
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
-    compileOnly group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.6.0'
-    annotationProcessor group: 'org.eclipse.sisu', name: 'org.eclipse.sisu.inject', version: '0.3.3'
-    vanilla "net.runelite.rs:vanilla:${rsversion}"
     testImplementation project(path: ':deobfuscator', configuration: 'testArchives')
+
+    vanilla "net.runelite.rs:vanilla:${rsversion}"
 }
 
 compileJava {
@@ -54,7 +58,4 @@ compileJava.doLast() {
             loader.close()
         }
     }
-}
-test {
-    
 }

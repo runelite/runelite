@@ -1,11 +1,14 @@
 group = 'net.runelite.rs'
 description = 'RuneScape Client'
+
 dependencies {
     implementation project(':runescape-api')
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+
+    testImplementation group: 'junit', name: 'junit', version: junit
+    testImplementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4j
 }
+
 tasks.withType(JavaCompile) {
     options.compilerArgs.addAll('-g:source,vars,lines', '-Xlint:-unchecked')
 }

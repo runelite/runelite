@@ -32,6 +32,7 @@ import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;
 import io.minio.errors.InvalidArgumentException;
 import io.minio.errors.InvalidBucketNameException;
+import io.minio.errors.InvalidResponseException;
 import io.minio.errors.NoResponseException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class CacheUploader implements Runnable
 
 			minioClient.putObject(minioBucket, path, new ByteArrayInputStream(data), data.length, "binary/octet-stream");
 		}
-		catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidArgumentException | InvalidBucketNameException | NoResponseException | IOException | InvalidKeyException | NoSuchAlgorithmException | XmlPullParserException ex)
+		catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidArgumentException | InvalidBucketNameException | NoResponseException | IOException | InvalidKeyException | NoSuchAlgorithmException | XmlPullParserException | InvalidResponseException ex)
 		{
 			logger.warn("unable to upload data to store", ex);
 		}

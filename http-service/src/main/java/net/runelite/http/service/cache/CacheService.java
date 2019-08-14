@@ -35,6 +35,7 @@ import io.minio.errors.InvalidArgumentException;
 import io.minio.errors.InvalidBucketNameException;
 import io.minio.errors.InvalidEndpointException;
 import io.minio.errors.InvalidPortException;
+import io.minio.errors.InvalidResponseException;
 import io.minio.errors.NoResponseException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,9 +114,7 @@ public class CacheService
 		{
 			return ByteStreams.toByteArray(in);
 		}
-		catch (InvalidBucketNameException | NoSuchAlgorithmException | InsufficientDataException
-			| IOException | InvalidKeyException | NoResponseException | XmlPullParserException
-			| ErrorResponseException | InternalException | InvalidArgumentException ex)
+		catch (InvalidBucketNameException | NoSuchAlgorithmException | InsufficientDataException | IOException | InvalidKeyException | NoResponseException | XmlPullParserException | ErrorResponseException | InternalException | InvalidArgumentException | InvalidResponseException ex)
 		{
 			log.warn(null, ex);
 			return null;

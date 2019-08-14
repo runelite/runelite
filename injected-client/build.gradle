@@ -44,4 +44,3 @@ classes.doLast() {
     File f = file("build/classes/java/main/Placeholder.class")
     f.delete()
 }
-

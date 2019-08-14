@@ -1,3 +1,5 @@
+import org.ajoberstar.grgit.Grgit
+
 buildscript {
     repositories {
         maven {
@@ -10,17 +12,69 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.21.0"
-    id "com.gradle.build-scan" version "2.3"
+    id "com.github.ben-manes.versions" version "0.22.0" apply false
+    id "com.gradle.build-scan" version "2.4"
 }
 
 apply plugin: 'application'
 
 ext {
-    grgit = org.ajoberstar.grgit.Grgit.open(dir: "${rootProject.projectDir}")
+    grgit = Grgit.open(dir: "${rootProject.projectDir}")
     localGitCommit = grgit.head().id
     localGitCommitShort = grgit.head().getAbbreviatedId(7)
     localGitDirty = !grgit.status().clean
+
+    // Dependencies versions
+    annotations = '17.0.0'
+    antlr = '4.7.2'
+    apacheCommonsCompress = '1.18'
+    apacheCommonsCsv = '1.7'
+    apacheCommonsText = '1.7'
+    asm = '7.1'
+    commonsCli = '1.4'
+    discord = '1.1'
+    fernflower = '20171017'
+    findbugs = '3.0.2'
+    gson = '2.8.5'
+    guava = '28.0-jre'
+    guice = '4.2.2'
+    h2 = '1.4.199'
+    hamcrest = '2.1'
+    httpcore = '4.4.11'
+    httpmime = '4.5.9'
+    javassist = '3.25.0-GA'
+    javaxInject = '1'
+    jbsdiff = '1.0'
+    jclCore = '2.8'
+    jedis = '3.1.0'
+    jna = '5.4.0'
+    jogamp = '2.3.2'
+    jopt = '5.0.4'
+    junit = '4.12'
+    logback = '1.2.3'
+    lombok = '1.18.8'
+    mapstruct = '1.3.0.Final'
+    mariadbJdbc = '2.4.3'
+    mavenPluginAnnotations = '3.6.0'
+    mavenPluginApi = '3.6.1'
+    minio = '6.0.9'
+    mockito = '3.0.0'
+    mongodbDriverSync = '3.11.0'
+    mysqlConnectorJava = '8.0.17'
+    netty = '4.1.37.Final'
+    okhttp3 = '4.1.0'
+    orangeExtensions = '1.0'
+    plexus = '3.2.1'
+    rxjava = '2.2.11'
+    rxrelay = '2.1.0'
+    scribejava = '6.7.0'
+    sisu = '0.3.3'
+    slf4j = '1.7.26'
+    springJdbc = '5.1.9.RELEASE'
+    springboot = '2.1.7.RELEASE'
+    sql2o = '1.6.0'
+    substance = '8.0.02'
+    trident = '1.5.00'
 }
 
 allprojects {
@@ -47,12 +101,14 @@ allprojects {
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven'
+    apply plugin: "com.github.ben-manes.versions"
+
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
-
 
     repositories {
         mavenLocal()
@@ -61,6 +117,7 @@ subprojects {
         maven { url "http://repo.runelite.net" }
         maven { url "http://repo.maven.apache.org/maven2" }
         maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+
         if (System.getenv("NEXUS-URL") != null) {
             maven { url System.getenv("NEXUS-URL") }
         }

@@ -1,10 +1,13 @@
 description = 'RuneLite Mixins'
+
 dependencies {
-    compileOnly group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    compileOnly group: 'com.google.guava', name: 'guava', version: guava
+    compileOnly group: 'javax.inject', name: 'javax.inject', version: javaxInject
+    compileOnly group: 'org.slf4j', name: 'slf4j-api', version: slf4j
+
     implementation project(':runescape-api')
-    compileOnly group: 'com.google.guava', name: 'guava', version: '28.0-jre'
-    compileOnly group: 'javax.inject', name: 'javax.inject', version: '1'
 }
+
 tasks.withType(JavaCompile){
     options.compilerArgs.addAll('-source', '7', '-Xlint:-unchecked')
 }
