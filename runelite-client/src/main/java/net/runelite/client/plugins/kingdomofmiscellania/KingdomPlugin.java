@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2019, Parker <https://github.com/Judaxx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,18 +26,28 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
+import java.text.NumberFormat;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -45,8 +56,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Kingdom of Miscellania",
-	description = "Show amount of favor when inside Miscellania",
-	tags = {"favor", "favour", "managing", "overlay"},
+	description = "Show various informations about your Kingdom of Miscellania",
+	tags = {"favor", "favour", "managing", "overlay", "indication", "notification"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -57,6 +68,15 @@ public class KingdomPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private KingdomConfig config;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -71,10 +91,20 @@ public class KingdomPlugin extends Plugin
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
+	private boolean showInfoboxAnywhere;
+	private int notifyFavorThreshold;
+	private int notifyCofferThreshold;
+
+	@Provides
+	KingdomConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KingdomConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
 		addSubscriptions();
 	}
 
@@ -90,29 +120,44 @@ public class KingdomPlugin extends Plugin
 	{
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		if (isInKingdom())
-		{
-			favor = client.getVar(Varbits.KINGDOM_FAVOR);
-			coffer = client.getVar(Varbits.KINGDOM_COFFER);
-			processInfobox();
-		}
+		updateKingdomVarbits();
+		processInfobox();
 	}
 
 	public void onGameStateChanged(GameStateChanged event)
 	{
+
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			processInfobox();
+			clientThread.invokeLater(() ->
+			{
+				updateKingdomVarbits();
+				processInfobox();
+				notifyFavor();
+				notifyCoffer();
+			});
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("kingdomofmiscellania"))
+		{
+			return;
+		}
+
+		updateConfig();
+		processInfobox();
 	}
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && isInKingdom())
+		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && (isInKingdom() || this.showInfoboxAnywhere))
 		{
 			addKingdomInfobox();
 		}
@@ -123,13 +168,23 @@ public class KingdomPlugin extends Plugin
 
 	}
 
+	private void updateKingdomVarbits()
+	{
+		if (!hasCompletedQuest())
+		{
+			return;
+		}
+
+		this.favor = client.getVar(Varbits.KINGDOM_FAVOR);
+		this.coffer = client.getVar(Varbits.KINGDOM_COFFER);
+	}
+
 	private void addKingdomInfobox()
 	{
 		if (counter == null)
 		{
 			counter = new KingdomCounter(itemManager.getImage(TEAK_CHEST), this);
 			infoBoxManager.addInfoBox(counter);
-			log.debug("Added Kingdom Infobox");
 		}
 	}
 
@@ -139,7 +194,6 @@ public class KingdomPlugin extends Plugin
 		{
 			infoBoxManager.removeInfoBox(counter);
 			counter = null;
-			log.debug("Removed Kingdom Infobox");
 		}
 	}
 
@@ -159,4 +213,40 @@ public class KingdomPlugin extends Plugin
 		return (favor * 100) / 127;
 	}
 
+	private void notifyFavor()
+	{
+		if (hasCompletedQuest() && getFavorPercent(favor) < this.notifyFavorThreshold)
+		{
+			sendChatMessage("Your favor with your kingdom is below " + this.notifyFavorThreshold + "%.");
+		}
+	}
+
+	private void notifyCoffer()
+	{
+		if (hasCompletedQuest() && coffer < this.notifyCofferThreshold)
+		{
+			sendChatMessage("Your kingdom's coffer has less than " + NumberFormat.getIntegerInstance().format(this.notifyCofferThreshold) + " coins in it.");
+		}
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append(chatMessage)
+			.build();
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+	}
+
+	private void updateConfig()
+	{
+		this.showInfoboxAnywhere = config.showInfoboxAnywhere();
+		this.notifyFavorThreshold = config.notifyFavorThreshold();
+		this.notifyCofferThreshold = config.notifyCofferThreshold();
+	}
 }

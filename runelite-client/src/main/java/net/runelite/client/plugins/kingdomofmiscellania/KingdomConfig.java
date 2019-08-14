@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * Copyright (c) 2019, Parker <https://github.com/Judaxx>
  * All rights reserved.
  *
@@ -11,7 +10,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,37 +23,44 @@
  */
 package net.runelite.client.plugins.kingdomofmiscellania;
 
-import java.awt.image.BufferedImage;
-import javax.inject.Singleton;
-import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Singleton
-class KingdomCounter extends Counter
+@ConfigGroup("kingdomofmiscellania")
+public interface KingdomConfig extends Config
 {
-	private final KingdomPlugin plugin;
-
-	KingdomCounter(final BufferedImage image, final KingdomPlugin plugin)
+	@ConfigItem(
+		keyName = "showInfoboxAnywhere",
+		name = "Show kingdom infobox anywhere",
+		description = "Show the infobox containing your favor/coffer amount even when outside Miscellania",
+		position = 0
+	)
+	default boolean showInfoboxAnywhere()
 	{
-		super(image, plugin, plugin.getFavor());
-		this.plugin = plugin;
+		return false;
 	}
 
-	@Override
-	public String getText()
+	@ConfigItem(
+		keyName = "notifyFavorThreshold",
+		name = "Notify chat favor",
+		description = "Sends a message to your chatbox when your kingdom favor percentage is below the threshold. Leave at 0 to disable.",
+		position = 1
+
+	)
+	default int notifyFavorThreshold()
 	{
-		return KingdomPlugin.getFavorPercent(plugin.getFavor()) + "%";
+		return 0;
 	}
 
-	@Override
-	public String getTooltip()
+	@ConfigItem(
+		keyName = "notifyCofferThreshold",
+		name = "Notify chat coffer value",
+		description = "Sends a message to your chatbox when your kingdom's coffer is below the threshold. Leave at 0 to disable.",
+		position = 2
+	)
+	default int notifyCofferThreshold()
 	{
-		return new StringBuilder("Favor: ")
-			.append(plugin.getFavor())
-			.append("/127")
-			.append("</br>")
-			.append("Coffer: ")
-			.append(StackFormatter.quantityToRSStackSize(plugin.getCoffer()))
-			.toString();
+		return 0;
 	}
 }
