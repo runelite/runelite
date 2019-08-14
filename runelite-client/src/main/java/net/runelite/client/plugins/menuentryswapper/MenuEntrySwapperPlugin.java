@@ -1174,7 +1174,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapAssignment)
 		{
-			menuManager.addPriorityEntry("Assignment");
+			menuManager.addPriorityEntry("Assignment").setPriority(100);
 		}
 
 		if (this.swapPlank)
