@@ -132,6 +132,13 @@ public interface Client extends GameEngine
 	GameState getGameState();
 
 	/**
+	 * Sets the current game state
+	 *
+	 * @param gameState
+	 */
+	void setGameState(GameState gameState);
+
+	/**
 	 * Gets the current logged in username.
 	 *
 	 * @return the logged in username
