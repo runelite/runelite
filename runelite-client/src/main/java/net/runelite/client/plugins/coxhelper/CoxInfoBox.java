@@ -26,7 +26,6 @@ package net.runelite.client.plugins.coxhelper;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -46,6 +45,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 public class CoxInfoBox extends Overlay
@@ -65,7 +65,6 @@ public class CoxInfoBox extends Overlay
 		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
-
 	}
 
 	@Override
@@ -85,17 +84,21 @@ public class CoxInfoBox extends Overlay
 
 			if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
 			{
+				final int scale = plugin.getPrayAgainstSize();
 				InfoBoxComponent prayComponent = new InfoBoxComponent();
-				BufferedImage prayImg = scaleImg(getPrayerImage(plugin.getPrayAgainstOlm()));
+				BufferedImage prayImg = ImageUtil.resizeImage(
+					getPrayerImage(plugin.getPrayAgainstOlm()), scale, scale
+				);
 				prayComponent.setImage(prayImg);
 				prayComponent.setColor(Color.WHITE);
 				prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())
 					? ComponentConstants.STANDARD_BACKGROUND_COLOR
-					: NOT_ACTIVATED_BACKGROUND_COLOR);
-				prayComponent.setPreferredSize(new Dimension(40, 40));
+					: NOT_ACTIVATED_BACKGROUND_COLOR
+				);
+				prayComponent.setPreferredSize(new Dimension(scale + 4, scale + 4));
 				prayAgainstPanel.getChildren().add(prayComponent);
 
-				prayAgainstPanel.setPreferredSize(new Dimension(40, 40));
+				prayAgainstPanel.setPreferredSize(new Dimension(scale + 4, scale + 4));
 				prayAgainstPanel.setBorder(new Rectangle(0, 0, 0, 0));
 				return prayAgainstPanel.render(graphics);
 			}
@@ -155,28 +158,8 @@ public class CoxInfoBox extends Overlay
 				return spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MELEE, 0);
 			case RANGED:
 				return spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
+			default:
+				return spriteManager.getSprite(SpriteID.BARBARIAN_ASSAULT_EAR_ICON, 0);
 		}
-		return null;
-	}
-
-	private BufferedImage scaleImg(final BufferedImage img)
-	{
-		if (img == null)
-		{
-			return null;
-		}
-		final double width = img.getWidth(null);
-		final double height = img.getHeight(null);
-		final double size = 36; // Limit size to 2 as that is minimum size not causing breakage
-		final double scalex = size / width;
-		final double scaley = size / height;
-		final double scale = Math.min(scalex, scaley);
-		final int newWidth = (int) (width * scale);
-		final int newHeight = (int) (height * scale);
-		final BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-		final Graphics g = scaledImage.createGraphics();
-		g.drawImage(img, 0, 0, newWidth, newHeight, null);
-		g.dispose();
-		return scaledImage;
 	}
 }

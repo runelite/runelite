@@ -141,6 +141,7 @@ public class CoxPlugin extends Plugin
 	private boolean timers;
 	private boolean tpOverlay;
 	private boolean olmTick;
+	private int prayAgainstSize;
 	private Color muttaColor;
 	private Color guardColor;
 	private Color tektonColor;
@@ -162,7 +163,6 @@ public class CoxPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-
 		overlayManager.add(coxOverlay);
 		overlayManager.add(coxInfoBox);
 		handCripple = false;
@@ -651,5 +651,6 @@ public class CoxPlugin extends Plugin
 		this.fontStyle = config.fontStyle();
 		this.textSize = config.textSize();
 		this.shadows = config.shadows();
+		this.prayAgainstSize = config.prayAgainstOlmSize();
 	}
 }

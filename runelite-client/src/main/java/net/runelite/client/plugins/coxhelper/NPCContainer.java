@@ -51,8 +51,6 @@ class NPCContainer
 	@Setter(AccessLevel.PACKAGE)
 	private Actor npcInteracting;
 	@Setter(AccessLevel.PACKAGE)
-	private Specials specials;
-	@Setter(AccessLevel.PACKAGE)
 	private Attackstyle attackStyle;
 
 
@@ -66,26 +64,12 @@ class NPCContainer
 		this.ticksUntilAttack = 0;
 		this.intermissionPeriod = 0;
 		this.attackStyle = Attackstyle.UNKNOWN;
-		this.specials = Specials.UNKNOWN;
 		final NPCDefinition composition = npc.getTransformedDefinition();
 
 		if (composition != null)
 		{
 			this.npcSize = composition.getSize();
 		}
-	}
-
-	@AllArgsConstructor
-	@Getter(AccessLevel.PACKAGE)
-	public enum Specials
-	{
-		PORTALS("Portals"),
-		LIGHTNING("Lightning"),
-		CRYSTALS("Crystals"),
-		HEAL("Heal"),
-		UNKNOWN("Unknown");
-
-		private String name = "";
 	}
 
 	@AllArgsConstructor

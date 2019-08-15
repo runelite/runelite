@@ -39,7 +39,6 @@ import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -55,9 +54,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 public class CoxOverlay extends Overlay
 {
-	private static final Set<Integer> GAP = ImmutableSet.of(
-		34, 33, 26, 25, 18, 17, 10, 9, 2, 1
-	);
+	private static final Set<Integer> GAP = ImmutableSet.of(34, 33, 26, 25, 18, 17, 10, 9, 2, 1);
 	private final Client client;
 	private final CoxPlugin plugin;
 
@@ -76,13 +73,13 @@ public class CoxOverlay extends Overlay
 	{
 		for (WorldPoint point : plugin.getOlm_Heal())
 		{
-			drawTile(graphics, point, plugin.getTpColor(), 2, 150, 50);
+			drawTile(graphics, point, plugin.getTpColor(), 2, 150);
 		}
 
 		for (WorldPoint point : plugin.getOlm_TP())
 		{
 			client.setHintArrow(point);
-			drawTile(graphics, point, plugin.getTpColor(), 2, 150, 50);
+			drawTile(graphics, point, plugin.getTpColor(), 2, 150);
 		}
 
 		if (plugin.inRaid())
@@ -105,11 +102,14 @@ public class CoxOverlay extends Overlay
 							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 1, false);
 							for (WorldPoint p : hitSquares)
 							{
-								drawTile(graphics, p, plugin.getTektonColor(), 0, 0, 50);
+								drawTile(graphics, p, plugin.getTektonColor(), 0, 0);
 							}
 							if (plugin.isTektonTickCounter())
 							{
 								ticksLeft = npcs.getTicksUntilAttack();
+								final int attackTicksleft = plugin.getTektonAttackTicks();
+								String attacksLeftStr;
+								Color attackcolor;
 								if (ticksLeft > 0)
 								{
 									if (ticksLeft == 1)
@@ -124,12 +124,6 @@ public class CoxOverlay extends Overlay
 									Point canvasPoint = npcs.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
 									renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), color, canvasPoint);
 								}
-							}
-							if (plugin.isTektonTickCounter())
-							{
-								final int attackTicksleft = plugin.getTektonAttackTicks();
-								String attacksLeftStr;
-								Color attackcolor;
 								if (attackTicksleft >= 0 && plugin.isTektonActive())
 								{
 									if (attackTicksleft <= 1)
@@ -160,7 +154,7 @@ public class CoxOverlay extends Overlay
 							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 1, false);
 							for (WorldPoint p : hitSquares)
 							{
-								drawTile(graphics, p, plugin.getMuttaColor(), 0, 0, 50);
+								drawTile(graphics, p, plugin.getMuttaColor(), 0, 0);
 							}
 						}
 						break;
@@ -173,7 +167,7 @@ public class CoxOverlay extends Overlay
 							hitSquares = getHitSquares(npcs.getNpc().getWorldLocation(), npcs.getNpcSize(), 2, true);
 							for (WorldPoint p : hitSquares)
 							{
-								drawTile(graphics, p, plugin.getGuardColor(), 0, 0, 50);
+								drawTile(graphics, p, plugin.getGuardColor(), 0, 0);
 							}
 						}
 						if (plugin.isGuardinTickCounter())
@@ -274,7 +268,7 @@ public class CoxOverlay extends Overlay
 										Point canvasPoint = victim.getPlayer().getCanvasTextLocation(graphics, ticksLeftStr, 0);
 										renderTextLocation(graphics, ticksLeftStr, plugin.getTextSize(), plugin.getFontStyle().getFont(), tickcolor, canvasPoint);
 									}
-									renderActorOverlay(graphics, victim.getPlayer(), new Color(193, 255, 245, 255), 2, 100, 10);
+									renderActorOverlay(graphics, victim.getPlayer(), new Color(193, 255, 245, 255));
 								}
 								break;
 						}
@@ -290,9 +284,9 @@ public class CoxOverlay extends Overlay
 				{
 					if (boss != null)
 					{
-						int tick = plugin.getOlm_TicksUntilAction();
-						int cycle = plugin.getOlm_ActionCycle();
-						int spec = plugin.getOlm_NextSpec();
+						final int tick = plugin.getOlm_TicksUntilAction();
+						final int cycle = plugin.getOlm_ActionCycle();
+						final int spec = plugin.getOlm_NextSpec();
 						final String tickStr = String.valueOf(tick);
 						String cycleStr = "?";
 						switch (cycle)
@@ -341,7 +335,7 @@ public class CoxOverlay extends Overlay
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha, int fillAlpha)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 		if (point.distanceTo(playerLocation) >= 32)
@@ -363,43 +357,22 @@ public class CoxOverlay extends Overlay
 		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.draw(poly);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 50));
 		graphics.fill(poly);
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
+	private void renderActorOverlay(Graphics2D graphics, Actor actor, Color color)
 	{
-		int size = 1;
-		NPCDefinition composition = actor.getTransformedDefinition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-		LocalPoint lp = actor.getLocalLocation();
-		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+		final int size = 1;
+		final LocalPoint lp = actor.getLocalLocation();
+		final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
 		if (tilePoly != null)
 		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(outlineWidth));
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100));
+			graphics.setStroke(new BasicStroke(2));
 			graphics.draw(tilePoly);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-			graphics.fill(tilePoly);
-		}
-	}
-
-	private void renderActorOverlay(Graphics2D graphics, Actor actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
-	{
-		int size = 1;
-		LocalPoint lp = actor.getLocalLocation();
-		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-		if (tilePoly != null)
-		{
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(outlineWidth));
-			graphics.draw(tilePoly);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
 			graphics.fill(tilePoly);
 		}
 	}
@@ -444,8 +417,8 @@ public class CoxOverlay extends Overlay
 
 	private List<WorldPoint> getHitSquares(WorldPoint npcLoc, int npcSize, int thickness, boolean includeUnder)
 	{
-		List<WorldPoint> little = new WorldArea(npcLoc, npcSize, npcSize).toWorldPointList();
-		List<WorldPoint> big = new WorldArea(npcLoc.getX() - thickness, npcLoc.getY() - thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
+		final List<WorldPoint> little = new WorldArea(npcLoc, npcSize, npcSize).toWorldPointList();
+		final List<WorldPoint> big = new WorldArea(npcLoc.getX() - thickness, npcLoc.getY() - thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
 		if (!includeUnder)
 		{
 			big.removeIf(little::contains);

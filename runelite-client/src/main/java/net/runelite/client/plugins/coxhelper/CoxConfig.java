@@ -41,7 +41,7 @@ public interface CoxConfig extends Config
 {
 	@Getter
 	@AllArgsConstructor
-	public enum FontStyle
+	enum FontStyle
 	{
 		BOLD("Bold", Font.BOLD),
 		ITALIC("Italic", Font.ITALIC),
@@ -67,6 +67,7 @@ public interface CoxConfig extends Config
 	{
 		return new Stub();
 	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "muttadile",
@@ -205,6 +206,22 @@ public interface CoxConfig extends Config
 	default boolean prayAgainstOlm()
 	{
 		return true;
+	}
+
+	@Range(
+		min = 40,
+		max = 100
+	)
+	@ConfigItem(
+		position = 11,
+		keyName = "prayAgainstOlmSize",
+		name = "Olm Prayer Size",
+		description = "Change the Size of the Olm Infobox.",
+		parent = "olmStub"
+	)
+	default int prayAgainstOlmSize()
+	{
+		return 40;
 	}
 
 	@ConfigItem(
