@@ -6,11 +6,12 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
-public class BankComparableEntry extends AbstractComparableEntry
+public class EquipmentComparableEntry extends AbstractComparableEntry
 {
-	public BankComparableEntry(String option, String itemName)
+	public EquipmentComparableEntry(String option, String itemName)
 	{
 		this.setOption(Text.standardize(option));
 		this.setTarget(Text.standardize(itemName));
@@ -20,11 +21,12 @@ public class BankComparableEntry extends AbstractComparableEntry
 	{
 		final int groupId = WidgetInfo.TO_GROUP(entry.getParam1());
 
-		if (groupId != WidgetID.BANK_GROUP_ID && groupId != WidgetID.BANK_INVENTORY_GROUP_ID)
+		if (groupId != WidgetID.EQUIPMENT_GROUP_ID)
 		{
 			return false;
 		}
 
-		return Text.standardize(entry.getOption()).contains(this.getOption()) && Text.standardize(entry.getTarget()).equals(this.getTarget());
+		return StringUtils.equalsIgnoreCase(entry.getOption(), this.getOption())
+			&& Text.standardize(entry.getTarget()).contains(this.getTarget());
 	}
 }
