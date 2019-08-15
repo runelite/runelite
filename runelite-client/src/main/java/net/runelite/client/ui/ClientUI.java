@@ -248,6 +248,11 @@ public class ClientUI
 				pluginToolbar.addComponent(event.getButton(), button);
 				pluginToolbar.revalidate();
 			}
+
+			if (navigationButton.getOnReady() != null)
+			{
+				navigationButton.getOnReady().run();
+			}
 		});
 	}
 

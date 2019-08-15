@@ -57,6 +57,11 @@ public class NavigationButton
 	private final String tooltip = "";
 
 	/**
+	 * On button having been fully initialized and added to frame.
+	 */
+	private Runnable onReady;
+
+	/**
 	 * Button selection state
 	 */
 	private boolean selected;
