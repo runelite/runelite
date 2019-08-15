@@ -67,6 +67,8 @@ public class ItemPricesPlugin extends Plugin
 	private boolean hideInventory;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showAlchProfit;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWhileAlching;
 
 	@Provides
 	ItemPricesConfig getConfig(ConfigManager configManager)
@@ -107,5 +109,6 @@ public class ItemPricesPlugin extends Plugin
 		this.showEA = config.showEA();
 		this.hideInventory = config.hideInventory();
 		this.showAlchProfit = config.showAlchProfit();
+		this.showWhileAlching = config.showWhileAlching();
 	}
 }
