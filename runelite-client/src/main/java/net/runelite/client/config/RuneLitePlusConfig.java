@@ -26,11 +26,6 @@
  */
 package net.runelite.client.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
-
 @ConfigGroup("runeliteplus")
 public interface RuneLitePlusConfig extends Config
 {
@@ -75,10 +70,21 @@ public interface RuneLitePlusConfig extends Config
 		keyName = "enablePlugins",
 		name = "Enable loading of external plugins",
 		description = "Enable loading of external plugins",
-		position = 10
+		position = 3
 	)
 	default boolean enablePlugins()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "detachHotkey",
+		name = "Detach Cam",
+		description = "Detach Camera hotkey, press this and it will activate detatched camera.",
+		position = 4
+	)
+	default Keybind detachHotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 }
