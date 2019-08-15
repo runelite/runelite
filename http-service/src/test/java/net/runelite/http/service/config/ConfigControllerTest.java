@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -67,6 +68,8 @@ public class ConfigControllerTest
 	{
 		when(authFilter.handle(any(HttpServletRequest.class), any(HttpServletResponse.class)))
 			.thenReturn(mock(SessionEntry.class));
+
+		when(configService.setKey(anyInt(), anyString(), anyString())).thenReturn(true);
 	}
 
 	@Test

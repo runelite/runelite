@@ -24,7 +24,7 @@
  */
 package net.runelite.client.rs;
 
-class VerificationException extends Exception
+public class VerificationException extends Exception
 {
 	public VerificationException(String message)
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.http.service.config;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import com.google.common.collect.ImmutableMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-public class SingleItemRequirement implements ItemRequirement
+public class ConfigServiceTest
 {
-	private int itemId;
-
-	public SingleItemRequirement(int itemId)
+	@Test
+	public void testParseJsonString()
 	{
-		this.itemId = itemId;
+		assertEquals(1, ConfigService.parseJsonString("1"));
+		assertEquals(3.14, ConfigService.parseJsonString("3.14"));
+		assertEquals(1L << 32, ConfigService.parseJsonString("4294967296"));
+		assertEquals("test", ConfigService.parseJsonString("test"));
+		assertEquals("test", ConfigService.parseJsonString("\"test\""));
+		assertEquals(ImmutableMap.of("key", "value"), ConfigService.parseJsonString("{\"key\": \"value\"}"));
 	}
 
-	@Override
-	public boolean fulfilledBy(int itemId)
+	@Test
+	public void testValidateJson()
 	{
-		return this.itemId == itemId;
-	}
-
-	@Override
-	public boolean fulfilledBy(Item[] items)
-	{
-		for (Item item : items)
-		{
-			if (item.getId() == itemId)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	@Override
-	public String getCollectiveName(Client client)
-	{
-		ItemComposition definition = client.getItemDefinition(itemId);
-
-		if (definition == null)
-		{
-			return "N/A";
-		}
-
-		return definition.getName();
+		assertTrue(ConfigService.validateJson("1"));
+		assertTrue(ConfigService.validateJson("3.14"));
+		assertTrue(ConfigService.validateJson("test"));
+		assertTrue(ConfigService.validateJson("\"test\""));
+		assertTrue(ConfigService.validateJson("key:value"));
+		assertTrue(ConfigService.validateJson("{\"key\": \"value\"}"));
 	}
 }

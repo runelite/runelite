@@ -37,6 +37,7 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -60,6 +61,8 @@ import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
@@ -77,6 +80,7 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 
 	@Getter
 	private static Injector injector;
@@ -197,40 +201,61 @@ public class RuneLite
 			}
 		});
 
-		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+		SplashScreen.init();
+		SplashScreen.stage(0, "Retrieving client", "");
 
-		new Thread(() ->
+		try
 		{
-			clientLoader.get();
-			ClassPreloader.preload();
-		}, "Preloader").start();
+			final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
-		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
-
-		if (developerMode)
-		{
-			boolean assertions = false;
-			assert assertions = true;
-			if (!assertions)
+			new Thread(() ->
 			{
-				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+				clientLoader.get();
+				ClassPreloader.preload();
+			}, "Preloader").start();
+
+			final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
+
+			if (developerMode)
+			{
+				boolean assertions = false;
+				assert assertions = true;
+				if (!assertions)
+				{
+					SwingUtilities.invokeLater(() ->
+						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+							.addBuildingGuide()
+							.open());
+					return;
+				}
 			}
+
+			PROFILES_DIR.mkdirs();
+
+			final long start = System.currentTimeMillis();
+
+			injector = Guice.createInjector(new RuneLiteModule(
+				clientLoader,
+				developerMode));
+
+			injector.getInstance(RuneLite.class).start();
+
+			final long end = System.currentTimeMillis();
+			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+			final long uptime = rb.getUptime();
+			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
 		}
-
-		PROFILES_DIR.mkdirs();
-
-		final long start = System.currentTimeMillis();
-
-		injector = Guice.createInjector(new RuneLiteModule(
-			clientLoader,
-			developerMode));
-
-		injector.getInstance(RuneLite.class).start();
-
-		final long end = System.currentTimeMillis();
-		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-		final long uptime = rb.getUptime();
-		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+		catch (Exception e)
+		{
+			log.warn("Failure during startup", e);
+			SwingUtilities.invokeLater(() ->
+				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+					.open());
+		}
+		finally
+		{
+			SplashScreen.stop();
+		}
 	}
 
 	public void start() throws Exception
@@ -243,6 +268,8 @@ public class RuneLite
 			// Inject members into client
 			injector.injectMembers(client);
 		}
+
+		SplashScreen.stage(.57, null, "Loading configuration");
 
 		// Load user configuration
 		configManager.load();
@@ -257,6 +284,8 @@ public class RuneLite
 		// This will initialize configuration
 		pluginManager.loadCorePlugins();
 
+		SplashScreen.stage(.70, null, "Finalizing configuration");
+
 		// Plugins have provided their config, so set default config
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
@@ -264,8 +293,10 @@ public class RuneLite
 		// Start client session
 		clientSessionManager.start();
 
+		SplashScreen.stage(.75, null, "Starting core interface");
+
 		// Initialize UI
-		clientUI.open(this);
+		clientUI.init(this);
 
 		// Initialize Discord service
 		discordService.init();
@@ -301,6 +332,10 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+
+		SplashScreen.stop();
+
+		clientUI.show();
 	}
 
 	public void shutdown()
