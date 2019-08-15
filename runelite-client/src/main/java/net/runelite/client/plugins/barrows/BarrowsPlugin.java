@@ -35,13 +35,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.SpriteID;
@@ -58,13 +54,8 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -72,7 +63,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.ui.overlay.infobox.LoopTimer;
-import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
@@ -127,16 +117,10 @@ public class BarrowsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
 	private SpriteManager spriteManager;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private BarrowsConfig config;
@@ -154,7 +138,6 @@ public class BarrowsPlugin extends Plugin
 	private boolean showMinimap;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showBrotherLoc;
-	private boolean showChestValue;
 	@Getter(AccessLevel.PACKAGE)
 	private Color brotherLocColor;
 	@Getter(AccessLevel.PACKAGE)
@@ -230,7 +213,6 @@ public class BarrowsPlugin extends Plugin
 	{
 		this.showMinimap = config.showMinimap();
 		this.showBrotherLoc = config.showBrotherLoc();
-		this.showChestValue = config.showChestValue();
 		this.brotherLocColor = config.brotherLocColor();
 		this.deadBrotherLocColor = config.deadBrotherLocColor();
 		this.showPuzzleAnswer = config.showPuzzleAnswer();
@@ -317,35 +299,7 @@ public class BarrowsPlugin extends Plugin
 
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && this.showChestValue)
-		{
-			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
-			Item[] items = new Item[0];
-			if (barrowsRewardContainer != null)
-			{
-				items = barrowsRewardContainer.getItems();
-			}
-			long chestPrice = 0;
-
-			for (Item item : items)
-			{
-				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
-				chestPrice += itemStack;
-			}
-
-			final ChatMessageBuilder message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your chest is worth around ")
-				.append(StackFormatter.formatNumber(chestPrice))
-				.append(" coins.")
-				.append(ChatColorType.NORMAL);
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.ITEM_EXAMINE)
-				.runeLiteFormattedMessage(message.build())
-				.build());
-		}
-		else if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
 		{
 			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
 			puzzleAnswer = null;
