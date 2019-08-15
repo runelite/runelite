@@ -207,7 +207,7 @@ public class FreezeTimersPlugin extends Plugin
 		}
 	}
 
-	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		final Player localPlayer = client.getLocalPlayer();
 		final long currentTime = System.currentTimeMillis();

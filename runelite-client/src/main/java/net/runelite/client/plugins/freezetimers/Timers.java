@@ -25,6 +25,7 @@ package net.runelite.client.plugins.freezetimers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Singleton;
@@ -37,7 +38,7 @@ public class Timers
 {
 	private final Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 
-	public void setTimerEnd(Actor actor, TimerType type, long n)
+	void setTimerEnd(Actor actor, TimerType type, long n)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -47,7 +48,7 @@ public class Timers
 		timerMap.get(actor).put(type, n + type.getImmunityTime());
 	}
 
-	public void setTimerReApply(Actor actor, TimerType type, long n)
+	void setTimerReApply(Actor actor, TimerType type, long n)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -57,7 +58,7 @@ public class Timers
 		timerMap.get(actor).put(type, n);
 	}
 
-	public long getTimerEnd(Actor actor, TimerType type)
+	long getTimerEnd(Actor actor, TimerType type)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -67,7 +68,7 @@ public class Timers
 		return timerMap.get(actor).getOrDefault(type, (long) type.getImmunityTime()) - type.getImmunityTime();
 	}
 
-	public long getTimerReApply(Actor actor, TimerType type)
+	long getTimerReApply(Actor actor, TimerType type)
 	{
 		if (!timerMap.containsKey(actor))
 		{
@@ -77,15 +78,23 @@ public class Timers
 		return timerMap.get(actor).getOrDefault(type, (long) 0);
 	}
 
-	public List<Actor> getAllActorsOnTimer(TimerType type)
+	List<Actor> getAllActorsOnTimer(TimerType type)
 	{
-		List<Actor> actors = new ArrayList<Actor>();
+		final List<Actor> actors = new ArrayList<>();
+		final Iterator<Actor> it = timerMap.keySet().iterator();
 
-		for (Actor actor : timerMap.keySet())
+		while (it.hasNext())
 		{
-			if (areAllTimersZero(actor))
+			final Actor actor = it.next();
+
+			for (TimerType timerType : TimerType.values())
 			{
-				continue;
+				if (getTimerReApply(actor, timerType) > System.currentTimeMillis())
+				{
+					break;
+				}
+				it.remove();
+				break;
 			}
 
 			final long end = getTimerReApply(actor, type);
@@ -99,7 +108,7 @@ public class Timers
 		return actors;
 	}
 
-	public boolean areAllTimersZero(Actor actor)
+	boolean areAllTimersZero(Actor actor)
 	{
 		for (TimerType type : TimerType.values())
 		{
@@ -108,7 +117,6 @@ public class Timers
 				return false;
 			}
 		}
-		timerMap.remove(actor);
 		return true;
 	}
 }
