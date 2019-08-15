@@ -43,21 +43,21 @@ public interface PvpPerformanceTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showCurrentFightOverlay",
-			name = "Current Fight Overlay",
-			description = "Display an overlay of statistics while fighting.",
-			position = 1
+		keyName = "showCurrentFightOverlay",
+		name = "Current Fight Overlay",
+		description = "Display an overlay of statistics while fighting.",
+		position = 1
 	)
 	default boolean showCurrentFightOverlay()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-			keyName = "showOverlayTitle",
-			name = "Show Overlay Title",
-			description = "If enabled, the overlay will have a title to say it's the PvP Performance Tracker.",
-			position = 2
+		keyName = "showOverlayTitle",
+		name = "Show Overlay Title",
+		description = "If enabled, the overlay will have a title to say it's the PvP Performance Tracker.",
+		position = 2
 	)
 	default boolean showOverlayTitle()
 	{

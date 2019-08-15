@@ -80,13 +80,13 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		// First line: Player's stats (you: success rate counters + % value)
 		// Would have preferred to have usernames but they are too long.
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("You:")
+			.left(plugin.getCurrentFight().getPlayerName().substring(0, 5))//.left("You:")
 			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
 			.right(currentFight.getPlayerDisplayString())
 			.build());
 		// Second line: Opponent's stats (foe: success rate counters + % value)
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Foe:")
+			.left(plugin.getCurrentFight().getOpponentName().substring(0, 5))//.left("Foe:")
 			.leftColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
 			.right(currentFight.getOpponentDisplayString())
 			.build());
