@@ -27,6 +27,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import net.runelite.cache.fs.Store;
 import net.runelite.data.dump.MediaWiki;
 import net.runelite.data.dump.wiki.NpcStatsDumper;
@@ -40,9 +43,16 @@ public class App
 
 	public static void main(String[] args) throws IOException
 	{
-		final File home = new File(System.getProperty("user.home"));
-		final Store cacheStore = new Store(new File(home,
-			"jagexcache" + File.separator + "oldschool" + File.separator + "LIVE"));
+		Path path = Paths.get(System.getProperty("user.home"), "jagexcache" + File.separator + "oldschool" + File.separator + "LIVE");
+		final File jagexcache = new File(String.valueOf(path));
+
+		if (!Files.exists(path))
+		{
+			return;
+		}
+
+		final Store cacheStore = new Store(jagexcache);
+
 		cacheStore.load();
 
 		// Try to make this go faster (probably not very smart)
