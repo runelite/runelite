@@ -277,6 +277,12 @@
       "xp": 76.5
     },
     {
+      "level": 77,
+      "icon": 12625,
+      "name": "Stamina Potion (4)",
+      "xp": 102
+    },
+    {
       "level": 78,
       "icon": 189,
       "name": "Zamorak Brew (3)",

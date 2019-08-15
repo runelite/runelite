@@ -27,10 +27,14 @@ package net.runelite.client.ui.overlay;
 import com.google.common.base.MoreObjects;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -199,6 +203,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final Point mouse = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 
+		// Save graphics2d properties so we can restore them later
+		final AffineTransform transform = graphics.getTransform();
+		final Stroke stroke = graphics.getStroke();
+		final Composite composite = graphics.getComposite();
+		final Paint paint = graphics.getPaint();
+		final RenderingHints renderingHints = graphics.getRenderingHints();
+		final Color background = graphics.getBackground();
+
 		for (Overlay overlay : overlays)
 		{
 			OverlayPosition overlayPosition = overlay.getPosition();
@@ -263,26 +275,33 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
+
 				final Rectangle bounds = overlay.getBounds();
 
-				if (bounds.isEmpty())
+				if (!bounds.isEmpty())
 				{
-					continue;
-				}
+					if (inOverlayDraggingMode)
+					{
+						final Color previous = graphics.getColor();
+						graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+						graphics.draw(bounds);
+						graphics.setColor(previous);
+					}
 
-				if (inOverlayDraggingMode)
-				{
-					final Color previous = graphics.getColor();
-					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
-					graphics.draw(bounds);
-					graphics.setColor(previous);
-				}
-
-				if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
-				{
-					menuEntries = createRightClickMenuEntries(overlay);
+					if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
+					{
+						menuEntries = createRightClickMenuEntries(overlay);
+					}
 				}
 			}
+
+			// Restore graphics2d properties
+			graphics.setTransform(transform);
+			graphics.setStroke(stroke);
+			graphics.setComposite(composite);
+			graphics.setPaint(paint);
+			graphics.setRenderingHints(renderingHints);
+			graphics.setBackground(background);
 		}
 	}
 
@@ -462,11 +481,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
 		}
 
-		// Reset the default color
-		graphics.setColor(Color.WHITE);
-
-		// Get transform so we can reset it after drawing
-		AffineTransform transform = graphics.getTransform();
 		graphics.translate(point.x, point.y);
 
 		final Dimension overlayDimension;
@@ -478,10 +492,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			log.warn("Error during overlay rendering", ex);
 			return;
-		}
-		finally
-		{
-			graphics.setTransform(transform);
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());

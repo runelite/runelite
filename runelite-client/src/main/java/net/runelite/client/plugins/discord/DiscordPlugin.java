@@ -92,9 +92,6 @@ public class DiscordPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private RuneLiteProperties properties;
-
-	@Inject
 	private DiscordState discordState;
 
 	@Inject
@@ -125,7 +122,7 @@ public class DiscordPlugin extends Plugin
 			.tab(false)
 			.tooltip("Join Discord")
 			.icon(icon)
-			.onClick(() -> LinkBrowser.browse(properties.getDiscordInvite()))
+			.onClick(() -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
 			.build();
 
 		clientToolbar.addNavigation(discordButton);
