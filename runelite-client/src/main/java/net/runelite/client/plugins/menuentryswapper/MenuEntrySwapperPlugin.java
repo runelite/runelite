@@ -1215,7 +1215,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.swapPay)
 		{
 			menuManager.addPriorityEntry("Pay");
-			menuManager.addPriorityEntry("Pay (");
+			menuManager.addPriorityEntry("Pay (", false);
 		}
 
 		if (this.swapQuick)
@@ -1360,7 +1360,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.addPriorityEntry("Configure", "Fairy ring");
 				break;
 			case LAST_DESTINATION:
-				menuManager.addPriorityEntry("Last-destination", "Fairy ring");
+				menuManager.addPriorityEntry("Last-destination", false);
 				break;
 		}
 
@@ -1561,7 +1561,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Transport");
 		menuManager.removePriorityEntry("Teleport", "Mage of zamorak");
 		menuManager.removePriorityEntry("Pay");
-		menuManager.removePriorityEntry("Pay (");
+		menuManager.removePriorityEntry("Pay (", false);
 		menuManager.removePriorityEntry("Quick-travel");
 		menuManager.removePriorityEntry("Enchant");
 		menuManager.removePriorityEntry("Edgeville", "Lever");
@@ -1620,7 +1620,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.removePriorityEntry("Configure", "Fairy ring");
 				break;
 			case LAST_DESTINATION:
-				menuManager.removePriorityEntry("Last-destination");
+				menuManager.removePriorityEntry("Last-destination", false);
 				break;
 		}
 
