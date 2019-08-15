@@ -80,7 +80,7 @@ public class MessagePanel extends JPanel
 		c.gridy++;
 
 		// alternate message action
-		messageArea = new JLabel("<html><div style='text-align:center;'>Fork of RuneLite that provides more functionality and less restrictions while staying open source.</div></html>")
+		messageArea = new JLabel("<html><div style='text-align:center;'>Fork of RuneLite that provides more functionality and less restrictions whilst staying open source.</div></html>")
 		{
 			@Override
 			public Dimension getPreferredSize()
