@@ -17,6 +17,7 @@ include ':injected-client'
 include ':runelite-plugin-archetype'
 include ':http-service'
 include ':http-service-plus'
+include ':wiki-scraper'
 
 project(':http-api').projectDir = "$rootDir/http-api" as File
 project(':cache').projectDir = "$rootDir/cache" as File
@@ -36,3 +37,5 @@ project(':injected-client').projectDir = "$rootDir/injected-client" as File
 project(':runelite-plugin-archetype').projectDir = "$rootDir/runelite-plugin-archetype" as File
 project(':http-service').projectDir = "$rootDir/http-service" as File
 project(':http-service-plus').projectDir = "$rootDir/http-service-plus" as File
+project(':wiki-scraper').projectDir = "$rootDir/wiki-scraper" as File
+
