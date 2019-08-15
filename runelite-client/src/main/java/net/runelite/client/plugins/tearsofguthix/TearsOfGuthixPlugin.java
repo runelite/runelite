@@ -112,7 +112,7 @@ public class TearsOfGuthixPlugin extends Plugin
 				streams.clear();
 		}
 
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGGED_IN && client.getLocalPlayer() != null)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{
