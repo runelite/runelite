@@ -57,6 +57,7 @@ public class InfoPanel extends JPanel
 	private static final String RUNELITE_VERSION = "runelite.version";
 	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
 	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
+	private static final Color DARK_GREY = new Color(10, 10, 10, 255);
 
 	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/runeliteplus_transparent.png");
 	static final Dimension PANEL_SIZE = new Dimension(200, RuneLiteSplashScreen.FRAME_SIZE.height);
@@ -141,7 +142,7 @@ public class InfoPanel extends JPanel
 		textButton.setBackground(null);
 		textButton.setPreferredSize(VERSION_SIZE);
 		textButton.setMinimumSize(VERSION_SIZE);
-		textButton.setBorder(new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
+		textButton.setBorder(new MatteBorder(1, 0, 0, 0, DARK_GREY));
 
 		return textButton;
 	}
@@ -155,7 +156,7 @@ public class InfoPanel extends JPanel
 		btn.setForeground(Color.WHITE);
 		btn.setFont(FontManager.getRunescapeFont());
 		btn.setBorder(new CompoundBorder(
-			new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY),
+			new MatteBorder(1, 0, 0, 0, DARK_GREY),
 			new EmptyBorder(3, 0, 3, 0))
 		);
 		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
