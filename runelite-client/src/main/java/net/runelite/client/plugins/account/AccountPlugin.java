@@ -24,22 +24,17 @@
  */
 package net.runelite.client.plugins.account;
 
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Account",
@@ -63,81 +58,22 @@ public class AccountPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
-	private NavigationButton loginButton;
-	private NavigationButton logoutButton;
-
-	private static final BufferedImage LOGIN_IMAGE, LOGOUT_IMAGE;
-
-	static
-	{
-		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
-		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
-	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		addSubscriptions();
-
-		loginButton = NavigationButton.builder()
-			.tab(false)
-			.icon(LOGIN_IMAGE)
-			.tooltip("Login to RuneLite")
-			.onClick(this::loginClick)
-			.build();
-
-		logoutButton = NavigationButton.builder()
-			.tab(false)
-			.icon(LOGOUT_IMAGE)
-			.tooltip("Logout of RuneLite")
-			.onClick(this::logoutClick)
-			.build();
-
-		addAndRemoveButtons();
-	}
-
-	private void addAndRemoveButtons()
-	{
-		clientToolbar.removeNavigation(loginButton);
-		clientToolbar.removeNavigation(logoutButton);
-		clientToolbar.addNavigation(sessionManager.getAccountSession() == null
-			? loginButton
-			: logoutButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		eventBus.unregister(this);
-
-		clientToolbar.removeNavigation(loginButton);
-		clientToolbar.removeNavigation(logoutButton);
 	}
 
 	private void addSubscriptions()
 	{
-		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
 		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
-	}
-
-	private void loginClick()
-	{
-		executor.execute(sessionManager::login);
-	}
-
-	private void logoutClick()
-	{
-		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-			"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
-			JOptionPane.YES_NO_OPTION))
-		{
-			executor.execute(sessionManager::logout);
-		}
-	}
-
-	private void onSessionClose(SessionClose e)
-	{
-		addAndRemoveButtons();
 	}
 
 	private void onSessionOpen(SessionOpen sessionOpen)
@@ -150,8 +86,6 @@ public class AccountPlugin extends Plugin
 		}
 
 		log.debug("Session opened as {}", session.getUsername());
-
-		addAndRemoveButtons();
 	}
 
 }
