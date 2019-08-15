@@ -57,8 +57,8 @@ class RegionLockerOverlay extends Overlay
 	private RegionLockerOverlay(Client client, RegionLockerConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ABOVE_MAP);
+		setPriority(OverlayPriority.HIGHEST);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.config = config;
 	}

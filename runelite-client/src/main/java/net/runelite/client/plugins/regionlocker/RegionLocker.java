@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.Text;
@@ -38,6 +39,7 @@ public class RegionLocker
 	private final RegionLockerConfig config;
 	private final ConfigManager configManager;
 
+	@Getter
 	private static Map<String, RegionTypes> regions = new HashMap<>();
 
 	public static boolean renderLockedRegions;

@@ -193,10 +193,21 @@ public interface RegionLockerConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "chunkPickerButton",
+			name = "Enable Chunk Picker button",
+			description = "Adds a button in the navigation bar to go to the Chunk Picker website",
+			position = 15
+	)
+	default boolean chunkPickerButton()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "unlockKey",
 			name = "Unlock hotkey",
 			description = "When you hold this key you can click on the map to unlock a chunk",
-			position = 15
+			position = 16
 	)
 	default Keybind unlockKey()
 	{
@@ -207,7 +218,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "blacklistKey",
 			name = "Blacklist hotkey",
 			description = "When you hold this key you can click on the map to blacklist a chunk",
-			position = 16
+			position = 17
 	)
 	default Keybind blacklistKey()
 	{
@@ -218,7 +229,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "unlockedRegions",
 			name = "Unlocked chunks",
 			description = "List of unlocked regions seperated by a ',' symbol",
-			position = 17
+			position = 18
 	)
 	default String unlockedRegions()
 	{
@@ -229,7 +240,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "unlockableRegions",
 			name = "Unlockable chunks",
 			description = "List of unlockable regions seperated by a ',' symbol",
-			position = 18
+			position = 19
 	)
 	default String unlockableRegions()
 	{
@@ -240,7 +251,7 @@ public interface RegionLockerConfig extends Config
 			keyName = "blacklistedRegions",
 			name = "Blacklisted chunks",
 			description = "List of blacklisted regions seperated by a ',' symbol",
-			position = 19
+			position = 20
 	)
 	default String blacklistedRegions()
 	{

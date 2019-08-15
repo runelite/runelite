@@ -26,6 +26,7 @@ package net.runelite.client.plugins.regionlocker;
 
 import com.google.inject.Provides;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -48,7 +49,11 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -64,6 +69,9 @@ public class RegionLockerPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -99,6 +107,7 @@ public class RegionLockerPlugin extends Plugin
 	private boolean blockKeyPressed = false;
 
 	private RegionLocker regionLocker;
+	private NavigationButton titleBarButton;
 
 	@Provides
 	RegionLockerConfig provideConfig(ConfigManager configManager)
@@ -115,6 +124,7 @@ public class RegionLockerPlugin extends Plugin
 		overlayManager.add(regionBorderOverlay);
 		keyManager.registerKeyListener(inputListener);
 		setKeys();
+		setButton(config.chunkPickerButton());
 	}
 
 	@Override
@@ -125,6 +135,7 @@ public class RegionLockerPlugin extends Plugin
 		overlayManager.remove(regionBorderOverlay);
 		keyManager.unregisterKeyListener(inputListener);
 		RegionLocker.renderLockedRegions = false;
+		setButton(false);
 	}
 
 	@Subscribe
@@ -136,7 +147,7 @@ public class RegionLockerPlugin extends Plugin
 		}
 
 		setKeys();
-
+		setButton(config.chunkPickerButton());
 		regionLocker.readConfig();
 	}
 
@@ -185,6 +196,27 @@ public class RegionLockerPlugin extends Plugin
 	{
 		RegionLockerInput.UNLOCK_KEY = config.unlockKey();
 		RegionLockerInput.BLOCK_KEY = config.blacklistKey();
+	}
+
+	private void setButton(boolean enabled)
+	{
+		if (enabled)
+		{
+			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "chunk.png");
+
+			titleBarButton = NavigationButton.builder()
+					.tab(false)
+					.tooltip("Go to Chunk Picker")
+					.icon(iconImage)
+					.onClick(() -> LinkBrowser.browse(ChunkPickerLink.getUrl()))
+					.build();
+
+			clientToolbar.addNavigation(titleBarButton);
+		}
+		else
+		{
+			clientToolbar.removeNavigation(titleBarButton);
+		}
 	}
 
 	private void chunkAmountLookup(ChatMessage chatMessage, String message)
