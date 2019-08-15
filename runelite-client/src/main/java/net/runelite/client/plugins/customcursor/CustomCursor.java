@@ -41,7 +41,8 @@ public enum CustomCursor
 	BANDOS_GODSWORD("Bandos Godsword", "cursor-bandos-godsword.png"),
 	MOUSE("Mouse", "cursor-mouse.png"),
 	SARADOMIN_GODSWORD("Saradomin Godsword", "cursor-saradomin-godsword.png"),
-	ZAMORAK_GODSWORD("Zamorak Godsword", "cursor-zamorak-godsword.png");
+	ZAMORAK_GODSWORD("Zamorak Godsword", "cursor-zamorak-godsword.png"),
+	SKILL_SPECS("Skill Specs", "cursor-skill-specs.png");
 
 	private final String name;
 	@Getter(AccessLevel.PUBLIC)
