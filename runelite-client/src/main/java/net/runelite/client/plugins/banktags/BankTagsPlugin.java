@@ -32,6 +32,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -85,16 +86,17 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 {
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
+	public static final Pattern TAG_SEARCH_PATTERN = Pattern.compile("^(?:tag:|#)(.+)");
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+			"(To show only tagged items, start your search with 'tag:' or '#')";
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+			"(To show only tagged items, start your search with 'tag:' or '#')";
 
 	@Inject
 	private ItemManager itemManager;
@@ -187,18 +189,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				String itemName = stringStack[stringStackSize - 2];
 				String search = stringStack[stringStackSize - 1];
 
-				boolean tagSearch = search.startsWith(TAG_SEARCH);
-				if (tagSearch)
-				{
-					search = search.substring(TAG_SEARCH.length()).trim();
-				}
+				Matcher tagMatcher = TAG_SEARCH_PATTERN.matcher(search);
+				search = tagMatcher.replaceAll("$1").trim();
 
 				if (tagManager.findTag(itemId, search))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
 				}
-				else if (!tagSearch)
+				else if (!tagMatcher.matches())
 				{
 					intStack[intStackSize - 2] = itemName.contains(search) ? 1 : 0;
 				}
