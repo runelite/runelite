@@ -37,12 +37,14 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLitePlusConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -68,9 +70,22 @@ public class RuneLitePlusPlugin extends Plugin
 
 	@Inject
 	private EventBus eventbus;
+
+	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			detach = !detach;
+			client.setOculusOrbState(detach ? 1 : 0);
+			client.setOculusOrbNormalSpeed(detach ? 36 : 12);
+		}
+	};
 	private int entered = -1;
 	private int enterIdx;
 	private boolean expectInput;
+	private boolean detach;
+	private Keybind keybind;
 
 	@Override
 	protected void startUp() throws Exception
@@ -80,6 +95,8 @@ public class RuneLitePlusPlugin extends Plugin
 		entered = -1;
 		enterIdx = 0;
 		expectInput = false;
+		this.keybind = config.detachHotkey();
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
@@ -91,6 +108,7 @@ public class RuneLitePlusPlugin extends Plugin
 		enterIdx = 0;
 		expectInput = false;
 		keyManager.unregisterKeyListener(keyListener);
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -99,6 +117,8 @@ public class RuneLitePlusPlugin extends Plugin
 		{
 			return;
 		}
+
+		this.keybind = config.detachHotkey();
 
 		if (!config.keyboardPin())
 		{
