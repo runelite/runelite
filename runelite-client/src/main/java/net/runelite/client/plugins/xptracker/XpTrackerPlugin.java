@@ -512,7 +512,7 @@ public class XpTrackerPlugin extends Plugin
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId()
-			|| TO_GROUP(event.getIdentifier()) != WidgetID.SKILLS_GROUP_ID)
+			|| TO_GROUP(event.getActionParam1()) != WidgetID.SKILLS_GROUP_ID)
 		{
 			return;
 		}
