@@ -239,6 +239,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final Point mouse = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 
+		// Save graphics2d properties so we can restore them later
+		final AffineTransform transform = graphics.getTransform();
+		final Stroke stroke = graphics.getStroke();
+		final Composite composite = graphics.getComposite();
+		final Paint paint = graphics.getPaint();
+		final RenderingHints renderingHints = graphics.getRenderingHints();
+		final Color background = graphics.getBackground();
+
 		for (Overlay overlay : overlays)
 		{
 			OverlayPosition overlayPosition = overlay.getPosition();
@@ -303,26 +311,33 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
+
 				final Rectangle bounds = overlay.getBounds();
 
-				if (bounds.isEmpty())
+				if (!bounds.isEmpty())
 				{
-					continue;
-				}
+					if (inOverlayDraggingMode)
+					{
+						final Color previous = graphics.getColor();
+						graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+						graphics.draw(bounds);
+						graphics.setColor(previous);
+					}
 
-				if (inOverlayDraggingMode)
-				{
-					final Color previous = graphics.getColor();
-					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
-					graphics.draw(bounds);
-					graphics.setColor(previous);
-				}
-
-				if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
-				{
-					menuEntries = createRightClickMenuEntries(overlay);
+					if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
+					{
+						menuEntries = createRightClickMenuEntries(overlay);
+					}
 				}
 			}
+
+			// Restore graphics2d properties
+			graphics.setTransform(transform);
+			graphics.setStroke(stroke);
+			graphics.setComposite(composite);
+			graphics.setPaint(paint);
+			graphics.setRenderingHints(renderingHints);
+			graphics.setBackground(background);
 		}
 	}
 
@@ -503,15 +518,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			graphics.setFont(this.interfaceFont);
 		}
 
-		// Save graphics2d properties so we can restore them later
-		final AffineTransform transform = graphics.getTransform();
-		final Stroke stroke = graphics.getStroke();
-		final Composite composite = graphics.getComposite();
-		final Paint paint = graphics.getPaint();
-		final Color color = graphics.getColor();
-		final RenderingHints renderingHints = graphics.getRenderingHints();
-		final Color background = graphics.getBackground();
-
 		graphics.translate(point.x, point.y);
 
 		final Dimension overlayDimension;
@@ -523,17 +529,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			log.warn("Error during overlay rendering", ex);
 			return;
-		}
-		finally
-		{
-			// Restore graphics2d properties
-			graphics.setTransform(transform);
-			graphics.setStroke(stroke);
-			graphics.setComposite(composite);
-			graphics.setPaint(paint);
-			graphics.setColor(color);
-			graphics.setRenderingHints(renderingHints);
-			graphics.setBackground(background);
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
