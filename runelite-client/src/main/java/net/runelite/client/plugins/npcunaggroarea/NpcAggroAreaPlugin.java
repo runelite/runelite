@@ -307,9 +307,15 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		// Most NPCs stop aggroing when the player has more than double
 		// its combat level.
-		int playerLvl = client.getLocalPlayer().getCombatLevel();
-		int npcLvl = composition.getCombatLevel();
-		String npcName = composition.getName().toLowerCase();
+		final Player localPlayer = client.getLocalPlayer();
+		if (localPlayer == null)
+		{
+			return false;
+		}
+
+		final int playerLvl = localPlayer.getCombatLevel();
+		final int npcLvl = composition.getCombatLevel();
+		final String npcName = composition.getName().toLowerCase();
 		if (npcLvl > 0 && playerLvl > npcLvl * 2 && !isInWilderness(npc.getWorldLocation()))
 		{
 			return false;
