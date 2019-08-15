@@ -170,6 +170,7 @@ public class ConfigManager
 			return;
 		}
 
+		handler.invalidate();
 		properties.clear();
 
 		for (ConfigEntry entry : configuration.getConfig())
@@ -278,6 +279,7 @@ public class ConfigManager
 
 	private synchronized void loadFromFile()
 	{
+		handler.invalidate();
 		properties.clear();
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
@@ -405,6 +407,7 @@ public class ConfigManager
 		}
 
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{
@@ -435,6 +438,7 @@ public class ConfigManager
 		}
 
 		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{

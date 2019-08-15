@@ -60,7 +60,14 @@ class AttackStylesOverlay extends Overlay
 
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
-			final String attackStyleString = plugin.getAttackStyle().getName();
+			final AttackStyle attackStyle = plugin.getAttackStyle();
+
+			if (attackStyle == null)
+			{
+				return null;
+			}
+
+			final String attackStyleString = attackStyle.getName();
 
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text(attackStyleString)

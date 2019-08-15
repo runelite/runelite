@@ -512,6 +512,12 @@
     },
     {
       "level": 84,
+      "icon": 21930,
+      "name": "Dragon Bolts",
+      "xp": 12
+    },
+    {
+      "level": 84,
       "icon": 21318,
       "name": "Amethyst Javelin",
       "xp": 13.5

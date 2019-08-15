@@ -298,6 +298,9 @@ public class RuneliteColorPicker extends JDialog
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
+				//  force update hex color because focus lost events fire after window closing
+				updateHex();
+
 				if (onClose != null)
 				{
 					onClose.accept(selectedColor);

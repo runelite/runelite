@@ -31,7 +31,7 @@ redis:
   host: http://localhost:6379
 
 mongo:
-  host: mongodb://localhost:27017
+  jndiName: java:comp/env/mongodb/runelite
 
 # Twitter client for feed
 runelite:

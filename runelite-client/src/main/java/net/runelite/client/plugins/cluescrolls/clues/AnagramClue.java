@@ -163,7 +163,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("RUG DETER", "Gertrude", new WorldPoint(3151, 3412, 0), "West of Varrock, south of the Cooks' Guild"),
 		new AnagramClue("SIR SHARE RED", "Hairdresser", new WorldPoint(2944, 3381, 0), "Western Falador"),
 		new AnagramClue("TAUNT ROOF", "Fortunato", new WorldPoint(3080, 3250, 0), "Draynor Village Market"),
-		new AnagramClue("HICK JET", "Jethick", new WorldPoint(2541, 3305, 0), "West Ardougne", "38")
+		new AnagramClue("HICK JET", "Jethick", new WorldPoint(2541, 3305, 0), "West Ardougne", "38"),
+		new AnagramClue("RUE GO", "Goreu", new WorldPoint(2335, 3162, 0), "Lletya")
 	);
 
 	private final String text;

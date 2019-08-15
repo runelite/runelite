@@ -137,7 +137,8 @@ public enum STASHUnit
 	NORTH_OF_MOUNT_KARUULM(NullObjectID.NULL_34647, new WorldPoint(1308, 3840, 0)),
 	GYPSY_TENT_ENTRANCE(NullObjectID.NULL_34736, new WorldPoint(3206, 3422, 0)),
 	FINE_CLOTHES_ENTRANCE(NullObjectID.NULL_34737, new WorldPoint(3209, 3416, 0)),
-	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, new WorldPoint(3233, 3200, 0));
+	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, new WorldPoint(3233, 3200, 0)),
+	CRYSTALLINE_MAPLE_TREES(NullObjectID.NULL_34953, new WorldPoint(2213, 3427, 0));
 
 	private final int objectId;
 	private final WorldPoint[] worldPoints;
