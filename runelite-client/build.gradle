@@ -42,7 +42,7 @@ dependencies {
     implementation(group: 'io.sigpipe', name: 'jbsdiff', version: jbsdiff) {
         exclude(module: 'xz')
     }
-
+    implementation group: 'com.github.joonasvali.naturalmouse', name: 'naturalmouse', version: '[1.0.0,)'
     runtime group: 'net.runelite.pushingpixels', name: 'trident', version: trident
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: jogamp, classifier: 'natives-linux-amd64'
     runtime group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: jogamp, classifier: 'natives-linux-i586'
