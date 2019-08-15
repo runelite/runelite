@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, Gamer1120 <https://github.com/Gamer1120>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +31,18 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Renderable;
+import net.runelite.api.Scene;
+import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -39,6 +51,15 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class HerbiboarOverlay extends Overlay
 {
+
+	@Inject
+	@Getter
+	private Client client;
+
+	@Getter
+	@Setter
+	private WorldPoint herbiboarLocation;
+
 	private final HerbiboarPlugin plugin;
 	private final HerbiboarConfig config;
 
@@ -64,7 +85,7 @@ class HerbiboarOverlay extends Overlay
 		int finishId = plugin.getFinishId();
 
 		// Draw start objects
-		if (config.isStartShown() && (currentTrail == null && finishId == 0))
+		if (config.isStartShown() && currentTrail == null && finishId == 0 && plugin.getHerbiboarLocation() == null)
 		{
 			plugin.getStarts().values().forEach((obj) ->
 			{
@@ -73,9 +94,17 @@ class HerbiboarOverlay extends Overlay
 		}
 
 		// Draw trails
+		Set<Integer> shownTrailIds;
 		if (config.isTrailShown())
 		{
-			Set<Integer> shownTrailIds = plugin.getShownTrails();
+			if (config.isOnlyCurrentTrailShown())
+			{
+				shownTrailIds = plugin.getCurrentTrailIds();
+			}
+			else
+			{
+				shownTrailIds = plugin.getShownTrails();
+			}
 			plugin.getTrails().values().forEach((x) ->
 			{
 				int id = x.getId();
@@ -145,7 +174,37 @@ class HerbiboarOverlay extends Overlay
 				}
 			}
 		}
-
+		// Draw herbiboar
+		WorldPoint herbiboarLocation = plugin.getHerbiboarLocation();
+		if (herbiboarLocation != null)
+		{
+			LocalPoint localHerbiboarLocation = LocalPoint.fromWorld(client, herbiboarLocation);
+			final Scene scene = client.getScene();
+			final Tile[][][] tiles = scene.getTiles();
+			final Tile tile = tiles[client.getPlane()][localHerbiboarLocation.getSceneX()][localHerbiboarLocation.getSceneY()];
+			for (GameObject object : tile.getGameObjects())
+			{
+				if (object != null)
+				{
+					Renderable renderable = object.getRenderable();
+					if (renderable instanceof NPC)
+					{
+						if (((NPC) renderable).getId() == NpcID.HERBIBOAR || ((NPC) renderable).getId() == NpcID.HERBIBOAR_7786)
+						{
+							Area clickbox = object.getClickbox();
+							if (clickbox != null)
+							{
+								Color col = config.getObjectColor();
+								graphics.setColor(col);
+								graphics.draw(clickbox);
+								graphics.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 20));
+								graphics.fill(clickbox);
+							}
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
 }

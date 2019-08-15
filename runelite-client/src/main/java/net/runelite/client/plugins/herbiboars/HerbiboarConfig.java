@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, Gamer1120 <https://github.com/Gamer1120>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,6 +123,17 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 8,
+		keyName = "showOnlyCurrentTrail",
+		name = "Show Current Trail Only",
+		description = "Only show the trail that you currently have to follow to get to the next object you have to inspect. Requires that the \"Show Trail\" option is enabled"
+	)
+	default boolean isOnlyCurrentTrailShown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
 		keyName = "colorTrail",
 		name = "Trail Color",
 		description = "Color for mushrooms, mud, seaweed, etc"

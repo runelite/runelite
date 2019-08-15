@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, Gamer1120 <https://github.com/Gamer1120>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,16 +35,19 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
 import static net.runelite.api.ObjectID.ROCK_30519;
 import static net.runelite.api.ObjectID.ROCK_30521;
 import static net.runelite.api.ObjectID.ROCK_30522;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -135,6 +139,18 @@ public class HerbiboarPlugin extends Plugin
 	@Setter
 	private int finishId;
 
+	@Getter
+	@Setter
+	private Set<Integer> previousShownTrailIds;
+
+	@Getter
+	@Setter
+	private Integer previousTrailId = null;
+
+	@Getter
+	@Setter
+	private WorldPoint herbiboarLocation = null;
+
 	@Provides
 	HerbiboarConfig getConfig(ConfigManager configManager)
 	{
@@ -194,6 +210,44 @@ public class HerbiboarPlugin extends Plugin
 		{
 			resetTrailData();
 		}
+
+	}
+
+	public Set<Integer> getCurrentTrailIds()
+	{
+		Set<Integer> shownTrailIds;
+		if (currentTrail == null)
+		{
+			if (finishId <= 0)
+			{
+				previousTrailId = null;
+				shownTrailIds = new HashSet<>();
+			}
+			else
+			{
+				shownTrailIds = new HashSet<>();
+				shownTrailIds.add(previousTrailId);
+				shownTrailIds.add(previousTrailId + 1);
+			}
+		}
+		else if (previousTrailId == null)
+		{
+			previousTrailId = currentTrail.getTrailId();
+			shownTrailIds = getShownTrails();
+		}
+		else if (currentTrail.getTrailId() == previousTrailId)
+		{
+			shownTrailIds = previousShownTrailIds;
+		}
+		else
+		{
+			shownTrailIds = new HashSet<>();
+			shownTrailIds.add(previousTrailId);
+			shownTrailIds.add(previousTrailId + 1);
+			previousTrailId = currentTrail.getTrailId();
+		}
+		previousShownTrailIds = shownTrailIds;
+		return shownTrailIds;
 	}
 
 	private void resetTrailData()
@@ -243,6 +297,32 @@ public class HerbiboarPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onGameObject(event.getTile(), null, event.getGameObject());
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (!(event.getActor() instanceof NPC))
+		{
+			return;
+		}
+
+		NPC npc = (NPC) event.getActor();
+		// Herbiboar spawns
+		if (npc.getId() == NpcID.HERBIBOAR_7786 && npc.getAnimation() == 7687)
+		{
+			herbiboarLocation = npc.getWorldLocation();
+		}
+		// Herbiboar is stunned
+		else if (npc.getId() == NpcID.HERBIBOAR && npc.getAnimation() == 7689)
+		{
+			herbiboarLocation = npc.getWorldLocation();
+		}
+		// Herbiboar is harvested
+		else if (npc.getId() == NpcID.HERBIBOAR_7786 && npc.getAnimation() == 7690)
+		{
+			herbiboarLocation = null;
+		}
 	}
 
 	@Subscribe
