@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
@@ -36,6 +37,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -114,6 +117,8 @@ public class XpTrackerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	private NavigationButton navButton;
+	@Setter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
@@ -412,7 +417,7 @@ public class XpTrackerPlugin extends Plugin
 
 					log.debug("Skill xp for {} changed when offline: {} -> {}", skill, skillState.getCurrentXp(), currentXp);
 					// Offset start xp for offline gains
-					long diff = skillState.getCurrentXp() - currentXp;
+					long diff = currentXp - skillState.getCurrentXp();
 					skillState.setStartXp(skillState.getStartXp() + diff);
 				}
 			}
@@ -510,6 +515,11 @@ public class XpTrackerPlugin extends Plugin
 				removeOverlay(skill);
 				break;
 		}
+	}
+
+	XpStateSingle getSkillState(Skill skill)
+	{
+		return xpState.getSkill(skill);
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
