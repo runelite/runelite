@@ -60,7 +60,8 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		FightPerformance currentFight = plugin.getCurrentFight();
-		if (currentFight == null || !config.showCurrentFightOverlay() || config.restrictToLms())
+		if (currentFight == null || !config.showCurrentFightOverlay() ||
+			(config.restrictToLms() && !plugin.isAtLMS()))
 		{
 			return null;
 		}
@@ -77,6 +78,7 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		}
 
 		// First line: Player's stats (you: success rate counters + % value)
+		// Would have preferred to have usernames but they are too long.
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("You:")
 			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)

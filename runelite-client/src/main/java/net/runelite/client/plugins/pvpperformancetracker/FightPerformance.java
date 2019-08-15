@@ -132,10 +132,10 @@ public class FightPerformance
     }
 
     // returns true if player success rate > opponent success rate.
-    // could be wrong in some cases, if someone is eating a lot and genuinely not attacking much,
+    // could be "wrong" in some cases, if someone is eating a lot and genuinely not attacking much,
     // they could have a higher success rate than the person clearly winning. Although it is hard to
     // judge by comparing attack counts since someone using rune knives/msb against ballista/ags
-    // is fairly common.
+    // is fairly common, which would be opposite to the above.
     public boolean playerWinning()
     {
         return playerSuccessRate > opponentSuccessRate;

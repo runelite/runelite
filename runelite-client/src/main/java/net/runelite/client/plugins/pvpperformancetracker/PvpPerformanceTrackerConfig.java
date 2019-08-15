@@ -34,7 +34,7 @@ public interface PvpPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "restrictToLms",
 		name = "Restrict to LMS",
-		description = "Restricts use within the LMS map & lobby. WARNING: cannot guarantee accuracy outside LMS, as we must specify each weapon's combat style.",
+		description = "Restricts use within the LMS area. WARNING: cannot guarantee accuracy outside LMS, as we must specify each weapon's combat style.",
 		position = 0
 	)
 	default boolean restrictToLms()
@@ -64,14 +64,14 @@ public interface PvpPerformanceTrackerConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-			keyName = "saveFightHistory",
-			name = "Save Fight History",
-			description = "Enables the Panel & keeps fight statistics saved through client restarts.",
-			position = 3
-	)
-	default boolean saveFightHistory()
-	{
-		return true;
-	}
+//	@ConfigItem(
+//			keyName = "saveFightHistory",
+//			name = "Save Fight History",
+//			description = "Enables the Panel & keeps fight statistics saved through client restarts.",
+//			position = 3
+//	)
+//	default boolean saveFightHistory()
+//	{
+//		return true;
+//	}
 }

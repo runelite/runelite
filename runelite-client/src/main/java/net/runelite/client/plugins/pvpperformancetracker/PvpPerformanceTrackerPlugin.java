@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.pvpperformancetracker;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.*;
@@ -34,6 +35,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -50,14 +52,15 @@ import static net.runelite.client.plugins.pvpperformancetracker.AnimationAttackS
 )
 public class PvpPerformanceTrackerPlugin extends Plugin
 {
-    private abstract class PvpPlayer implements Player
-    {
-        public boolean isAttacking;
-    }
 	// Delay to assume a fight is over. May seem long, but sometimes people barrage &
 	// stand under for a while to eat.
 	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
 
+	// Last man standing map regions (thanks to loottracker plugin)
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
+
+	@Inject
+	private PvpPerformanceTrackerConfig config;
 	@Inject
 	private Client client;
 
@@ -66,8 +69,6 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 
 	@Inject
 	private PvpPerformanceTrackerOverlay overlay;
-
-	private PvpPerformanceTrackerPanel panel;
 
 	// the last time someone in the fight attacked, or when the fight was initiated.
 	private Instant lastFightTime;
@@ -128,6 +129,10 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		if (config.restrictToLms() && !isAtLMS()) {
+			return;
+		}
+
 		// check if local player has a Player target, or did recently.
 		if (hasOpponent())
 		{
@@ -221,5 +226,24 @@ public class PvpPerformanceTrackerPlugin extends Plugin
             opponentAttacking = true;
         }
     }
+
+	/**
+	 * Is player at the Last Man Standing minigame
+	 * (Thanks to loottracker plugin)
+	 */
+	protected boolean isAtLMS()
+	{
+		final int[] mapRegions = client.getMapRegions();
+
+		for (int region : LAST_MAN_STANDING_REGIONS)
+		{
+			if (ArrayUtils.contains(mapRegions, region))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 }
