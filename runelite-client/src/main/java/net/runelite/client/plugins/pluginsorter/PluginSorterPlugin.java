@@ -189,7 +189,7 @@ public class PluginSorterPlugin extends Plugin
 		List<PluginListItem> tempList = new ArrayList<>(ConfigPanel.pluginList);
 		if (tempList.size() > 0)
 		{
-			tempList.addAll(1, removedPlugins);
+			tempList.addAll(2, removedPlugins);
 		}
 		else
 		{
