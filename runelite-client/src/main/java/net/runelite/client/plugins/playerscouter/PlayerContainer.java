@@ -31,30 +31,25 @@ import lombok.ToString;
 import net.runelite.api.Player;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
-/*
-You may be asking, why in the fuck is there so much information
-being gathered? The answer is, why not. Always plan for the future.
-Better to have too much than to have too little.
- */
 @Getter(AccessLevel.PACKAGE)
 @Setter(AccessLevel.PACKAGE)
 @ToString(exclude = "player")
 class PlayerContainer
 {
-	private boolean httpRetry;
-	private boolean scouted;
 	private HiscoreResult skills;
-	private int prayer;
-	private int risk;
-	private int scoutTimer;
-	private int weapon;
-	private int wildyLevel;
 	private LinkedHashMap<Integer, Integer> gear;
 	private LinkedHashMap<Integer, Integer> riskedGear;
 	private Player player;
 	private String location;
 	private String name;
 	private String targetString;
+	private boolean httpRetry;
+	private boolean scouted;
+	private int prayer;
+	private int risk;
+	private int scoutTimer;
+	private int weapon;
+	private int wildyLevel;
 
 	PlayerContainer(Player player)
 	{
@@ -66,8 +61,8 @@ class PlayerContainer
 		this.prayer = -1;
 		this.risk = 0;
 		this.riskedGear = new LinkedHashMap<>();
-		this.scouted = false;
 		this.scoutTimer = 500;
+		this.scouted = false;
 		this.skills = null;
 		this.targetString = "";
 		this.weapon = 0;
