@@ -462,10 +462,21 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSackCharges",
+		name = "Show Sack Quantity",
+		description = "Configures if the number of vegetables in sacks is shown",
+		position = 25
+	)
+	default boolean showSackCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 25
+		position = 26
 	)
 	default boolean showInfoboxes()
 	{

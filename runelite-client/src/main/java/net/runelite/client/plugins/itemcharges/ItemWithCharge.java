@@ -157,6 +157,37 @@ import static net.runelite.api.ItemID.WATERSKIN1;
 import static net.runelite.api.ItemID.WATERSKIN2;
 import static net.runelite.api.ItemID.WATERSKIN3;
 import static net.runelite.api.ItemID.WATERSKIN4;
+import static net.runelite.api.ItemID.EMPTY_SACK;
+import static net.runelite.api.ItemID.POTATOES1;
+import static net.runelite.api.ItemID.POTATOES2;
+import static net.runelite.api.ItemID.POTATOES3;
+import static net.runelite.api.ItemID.POTATOES4;
+import static net.runelite.api.ItemID.POTATOES5;
+import static net.runelite.api.ItemID.POTATOES6;
+import static net.runelite.api.ItemID.POTATOES7;
+import static net.runelite.api.ItemID.POTATOES8;
+import static net.runelite.api.ItemID.POTATOES9;
+import static net.runelite.api.ItemID.POTATOES10;
+import static net.runelite.api.ItemID.CABBAGES1;
+import static net.runelite.api.ItemID.CABBAGES2;
+import static net.runelite.api.ItemID.CABBAGES3;
+import static net.runelite.api.ItemID.CABBAGES4;
+import static net.runelite.api.ItemID.CABBAGES5;
+import static net.runelite.api.ItemID.CABBAGES6;
+import static net.runelite.api.ItemID.CABBAGES7;
+import static net.runelite.api.ItemID.CABBAGES8;
+import static net.runelite.api.ItemID.CABBAGES9;
+import static net.runelite.api.ItemID.CABBAGES10;
+import static net.runelite.api.ItemID.ONIONS1;
+import static net.runelite.api.ItemID.ONIONS2;
+import static net.runelite.api.ItemID.ONIONS3;
+import static net.runelite.api.ItemID.ONIONS4;
+import static net.runelite.api.ItemID.ONIONS5;
+import static net.runelite.api.ItemID.ONIONS6;
+import static net.runelite.api.ItemID.ONIONS7;
+import static net.runelite.api.ItemID.ONIONS8;
+import static net.runelite.api.ItemID.ONIONS9;
+import static net.runelite.api.ItemID.ONIONS10;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
@@ -164,6 +195,7 @@ import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
 
 @AllArgsConstructor
 @Getter(AccessLevel.PACKAGE)
@@ -295,7 +327,38 @@ enum ItemWithCharge
 	WSKIN1(WATERSKIN, WATERSKIN1, 1),
 	WSKIN2(WATERSKIN, WATERSKIN2, 2),
 	WSKIN3(WATERSKIN, WATERSKIN3, 3),
-	WSKIN4(WATERSKIN, WATERSKIN4, 4);
+	WSKIN4(WATERSKIN, WATERSKIN4, 4),
+	EMPTYSACK(SACK, EMPTY_SACK, 0),
+	POTAT1(SACK, POTATOES1, 1),
+	POTAT2(SACK, POTATOES2, 2),
+	POTAT3(SACK, POTATOES3, 3),
+	POTAT4(SACK, POTATOES4, 4),
+	POTAT5(SACK, POTATOES5, 5),
+	POTAT6(SACK, POTATOES6, 6),
+	POTAT7(SACK, POTATOES7, 7),
+	POTAT8(SACK, POTATOES8, 8),
+	POTAT9(SACK, POTATOES9, 9),
+	POTAT10(SACK, POTATOES10, 10),
+	CABAG1(SACK, CABBAGES1, 1),
+	CABAG2(SACK, CABBAGES2, 2),
+	CABAG3(SACK, CABBAGES3, 3),
+	CABAG4(SACK, CABBAGES4, 4),
+	CABAG5(SACK, CABBAGES5, 5),
+	CABAG6(SACK, CABBAGES6, 6),
+	CABAG7(SACK, CABBAGES7, 7),
+	CABAG8(SACK, CABBAGES8, 8),
+	CABAG9(SACK, CABBAGES9, 9),
+	CABAG10(SACK, CABBAGES10, 10),
+	ONIO1(SACK, ONIONS1, 1),
+	ONIO2(SACK, ONIONS2, 2),
+	ONIO3(SACK, ONIONS3, 3),
+	ONIO4(SACK, ONIONS4, 4),
+	ONIO5(SACK, ONIONS5, 5),
+	ONIO6(SACK, ONIONS6, 6),
+	ONIO7(SACK, ONIONS7, 7),
+	ONIO8(SACK, ONIONS8, 8),
+	ONIO9(SACK, ONIONS9, 9),
+	ONIO10(SACK, ONIONS10, 10);
 
 	private final ItemChargeType type;
 	private final int id;
