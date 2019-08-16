@@ -1531,7 +1531,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Pickpocket");
-		menuManager.removePriorityEntry("Collect");
+		menuManager.removePriorityEntry("Collect-notes");
 		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
 		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Exchange");
