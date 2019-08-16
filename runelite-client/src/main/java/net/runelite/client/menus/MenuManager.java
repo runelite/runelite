@@ -569,6 +569,11 @@ public class MenuManager
 		return entry;
 	}
 
+	public void removePriorityEntry(AbstractComparableEntry entry)
+	{
+		priorityEntries.removeIf(entry::equals);
+	}
+
 	public void removePriorityEntry(String option)
 	{
 		option = Text.standardize(option);

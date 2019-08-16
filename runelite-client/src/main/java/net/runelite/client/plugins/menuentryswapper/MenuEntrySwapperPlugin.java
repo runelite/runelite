@@ -90,6 +90,7 @@ import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
 import net.runelite.client.plugins.menuentryswapper.util.ConstructionCapeMode;
+import net.runelite.client.plugins.menuentryswapper.util.ConstructionMode;
 import net.runelite.client.plugins.menuentryswapper.util.DigsitePendantMode;
 import net.runelite.client.plugins.menuentryswapper.util.DuelingRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
@@ -187,130 +188,130 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean shiftModifier = false;
 
-	private boolean getWithdrawOne;
-	private String getWithdrawOneItems;
-	private boolean getWithdrawFive;
+	private ConstructionMode getConstructionMode;
+	private BurningAmuletMode getBurningAmuletMode;
+	private CharterOption charterOption;
+	private CombatBraceletMode getCombatBraceletMode;
+	private ConstructionCapeMode constructionCapeMode;
+	private DigsitePendantMode getDigsitePendantMode;
+	private DuelingRingMode getDuelingRingMode;
+	private FairyRingMode swapFairyRingMode;
+	private GamesNecklaceMode getGamesNecklaceMode;
+	private GloryMode getGloryMode;
+	private HouseMode swapHomePortalMode;
+	private MaxCapeMode maxMode;
+	private NecklaceOfPassageMode getNecklaceofPassageMode;
+	private ObeliskMode swapObeliskMode;
+	private OccultAltarMode swapOccultMode;
+	private QuestCapeMode questCapeMode;
+	private RingOfWealthMode getRingofWealthMode;
+	private Set<String> hideCastIgnoredCoX;
+	private Set<String> hideCastIgnoredToB;
+	private SkillsNecklaceMode getSkillsNecklaceMode;
+	private SlayerRingMode getSlayerRingMode;
+	private String configCustomSwaps;
+	private String getBuyFiftyItems;
+	private String getBuyFiveItems;
+	private String getBuyOneItems;
+	private String getBuyTenItems;
+	private String getRemovedObjects;
+	private String getSellFiftyItems;
+	private String getSellFiveItems;
+	private String getSellOneItems;
+	private String getSellTenItems;
+	private String getWithdrawAllItems;
 	private String getWithdrawFiveItems;
-	private boolean getWithdrawTen;
+	private String getWithdrawOneItems;
 	private String getWithdrawTenItems;
-	private boolean getWithdrawX;
 	private String getWithdrawXAmount;
 	private String getWithdrawXItems;
-	private boolean getWithdrawAll;
-	private String getWithdrawAllItems;
-	private boolean swapMax;
-	private MaxCapeMode maxMode;
-	private boolean getSwapArdougneCape;
-	private boolean getSwapConstructionCape;
-	private ConstructionCapeMode constructionCapeMode;
-	private boolean getSwapCraftingCape;
-	private boolean getSwapMagicCape;
-	private boolean getSwapExplorersRing;
-	private boolean swapAdmire;
-	private boolean swapQuestCape;
-	private QuestCapeMode questCapeMode;
-	private String configCustomSwaps;
-	private boolean shiftClickCustomization;
-	private boolean swapCoalBag;
-	private boolean swapBirdhouseEmpty;
-	private boolean swapBones;
-	private boolean swapChase;
-	private boolean swapHarpoon;
-	private OccultAltarMode swapOccultMode;
-	private HouseMode swapHomePortalMode;
-	private boolean swapPrivate;
-	private boolean swapPick;
-	private boolean swapQuick;
-	private boolean swapBoxTrap;
-	private boolean rockCake;
-	private boolean swapRogueschests;
-	private boolean swapClimbUpDown;
-	private boolean swapStun;
-	private boolean swapSearch;
-	private boolean swapHardWoodGrove;
-	private boolean getRemoveObjects;
-	private String getRemovedObjects;
-	private boolean swapImps;
-	private CharterOption charterOption;
-	private boolean getSwapBuyOne;
-	private String getBuyOneItems;
-	private boolean getSwapBuyFive;
-	private String getBuyFiveItems;
-	private boolean getSwapBuyTen;
-	private String getBuyTenItems;
-	private boolean getSwapBuyFifty;
-	private String getBuyFiftyItems;
-	private boolean getSwapSellOne;
-	private String getSellOneItems;
-	private boolean getSwapSellFive;
-	private String getSellFiveItems;
-	private boolean getSwapSellTen;
-	private String getSellTenItems;
-	private boolean getSwapSellFifty;
-	private String getSellFiftyItems;
+	private XericsTalismanMode getXericsTalismanMode;
+	private boolean getBurningAmulet;
+	private boolean getCombatBracelet;
+	private boolean getDigsitePendant;
+	private boolean getDuelingRing;
 	private boolean getEasyConstruction;
-	private String getEasyConstructionItems;
-	private boolean getSwapTanning;
+	private boolean getGamesNecklace;
+	private boolean getGlory;
+	private boolean getNecklaceofPassage;
+	private boolean getRemoveObjects;
+	private boolean getRingofWealth;
+	private boolean getSkillsNecklace;
+	private boolean getSlayerRing;
+	private boolean getSwapArdougneCape;
+	private boolean getSwapBuyFifty;
+	private boolean getSwapBuyFive;
+	private boolean getSwapBuyOne;
+	private boolean getSwapBuyTen;
+	private boolean getSwapConstructionCape;
+	private boolean getSwapCraftingCape;
+	private boolean getSwapExplorersRing;
+	private boolean getSwapMagicCape;
+	private boolean getSwapPuro;
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
-	private boolean getSwapPuro;
-	private boolean swapAssignment;
-	private boolean swapBankExchange;
-	private boolean swapContract;
-	private boolean swapInteract;
-	private boolean swapPickpocket;
-	private boolean swapPay;
-	private boolean swapAbyssTeleport;
-	private boolean swapTrade;
-	private boolean swapTravel;
-	private boolean swapMinigame;
-	private boolean swapPlank;
-	private boolean swapMetamorphosis;
-	private boolean swapEnchant;
-	private FairyRingMode swapFairyRingMode;
-	private ObeliskMode swapObeliskMode;
-	private boolean swapTeleportItem;
-	private boolean swapWildernessLever;
-	private boolean swapNexus;
-	private boolean getGamesNecklace;
-	private GamesNecklaceMode getGamesNecklaceMode;
-	private boolean getDuelingRing;
-	private DuelingRingMode getDuelingRingMode;
-	private boolean getGlory;
-	private GloryMode getGloryMode;
-	private boolean getSkillsNecklace;
-	private SkillsNecklaceMode getSkillsNecklaceMode;
-	private boolean getNecklaceofPassage;
-	private NecklaceOfPassageMode getNecklaceofPassageMode;
-	private boolean getDigsitePendant;
-	private DigsitePendantMode getDigsitePendantMode;
-	private boolean getCombatBracelet;
-	private CombatBraceletMode getCombatBraceletMode;
-	private boolean getBurningAmulet;
-	private BurningAmuletMode getBurningAmuletMode;
+	private boolean getSwapSellFifty;
+	private boolean getSwapSellFive;
+	private boolean getSwapSellOne;
+	private boolean getSwapSellTen;
+	private boolean getSwapTanning;
+	private boolean getWithdrawAll;
+	private boolean getWithdrawFive;
+	private boolean getWithdrawOne;
+	private boolean getWithdrawTen;
+	private boolean getWithdrawX;
 	private boolean getXericsTalisman;
-	private XericsTalismanMode getXericsTalismanMode;
-	private boolean getRingofWealth;
-	private RingOfWealthMode getRingofWealthMode;
-	private boolean getSlayerRing;
-	private SlayerRingMode getSlayerRingMode;
+	private boolean hideBait;
+	private boolean hideCastCoX;
+	private boolean hideCastToB;
+	private boolean hideDestroyBoltpouch;
+	private boolean hideDestroyCoalbag;
+	private boolean hideDestroyGembag;
+	private boolean hideDestroyHerbsack;
+	private boolean hideDestroyLootingBag;
+	private boolean hideDestroyRunepouch;
+	private boolean hideDropRunecraftingPouch;
 	private boolean hideExamine;
-	private boolean hideTradeWith;
-	private boolean hideReport;
 	private boolean hideLookup;
 	private boolean hideNet;
-	private boolean hideBait;
-	private boolean hideDestroyRunepouch;
-	private boolean hideDestroyCoalbag;
-	private boolean hideDestroyHerbsack;
-	private boolean hideDestroyBoltpouch;
-	private boolean hideDestroyGembag;
-	private boolean hideDestroyLootingBag;
-	private boolean hideDropRunecraftingPouch;
-	private boolean hideCastToB;
-	private Set<String> hideCastIgnoredToB;
-	private boolean hideCastCoX;
-	private Set<String> hideCastIgnoredCoX;
+	private boolean hideReport;
+	private boolean hideTradeWith;
+	private boolean rockCake;
+	private boolean shiftClickCustomization;
+	private boolean swapAbyssTeleport;
+	private boolean swapAdmire;
+	private boolean swapAssignment;
+	private boolean swapBankExchange;
+	private boolean swapBirdhouseEmpty;
+	private boolean swapBones;
+	private boolean swapBoxTrap;
+	private boolean swapChase;
+	private boolean swapClimbUpDown;
+	private boolean swapCoalBag;
+	private boolean swapContract;
+	private boolean swapEnchant;
+	private boolean swapHardWoodGrove;
+	private boolean swapHarpoon;
+	private boolean swapImps;
+	private boolean swapInteract;
+	private boolean swapMax;
+	private boolean swapMetamorphosis;
+	private boolean swapMinigame;
+	private boolean swapNexus;
+	private boolean swapPay;
+	private boolean swapPick;
+	private boolean swapPickpocket;
+	private boolean swapPlank;
+	private boolean swapPrivate;
+	private boolean swapQuestCape;
+	private boolean swapQuick;
+	private boolean swapRogueschests;
+	private boolean swapSearch;
+	private boolean swapStun;
+	private boolean swapTeleportItem;
+	private boolean swapTrade;
+	private boolean swapTravel;
+	private boolean swapWildernessLever;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -324,7 +325,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		updateConfig();
 		addSubscriptions();
 		addSwaps();
-		loadConstructionItems(config.getEasyConstructionItems());
+		loadConstructionItems();
 
 		if (config.shiftClickCustomization())
 		{
@@ -345,7 +346,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		eventBus.unregister(this);
 
 		disableCustomization();
-		loadConstructionItems("");
 		loadCustomSwaps(""); // Removes all custom swaps
 		removeSwaps();
 
@@ -378,7 +378,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		removeSwaps();
 		updateConfig();
 		addSwaps();
-		loadConstructionItems(this.getEasyConstructionItems);
+		loadConstructionItems();
 
 		if (!CONFIG_GROUP.equals(event.getGroup()))
 		{
@@ -492,7 +492,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		loadConstructionItems(this.getEasyConstructionItems);
+		loadConstructionItems();
 	}
 
 	private void onVarbitChanged(VarbitChanged event)
@@ -721,7 +721,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
 		final int eventId = event.getIdentifier();
 		final String option = Text.standardize(event.getOption());
 		final String target = Text.standardize(event.getTarget());
@@ -871,15 +870,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.shiftClickCustomization && shiftModifier && !option.equals("use"))
 		{
-			Integer customOption = getSwapConfig(eventId);
+			final Integer customOption = getSwapConfig(eventId);
 
 			if (customOption != null && customOption == -1)
 			{
-				menuManager.addPriorityEntry("Use");
-			}
-			else
-			{
-				menuManager.removePriorityEntry("Use");
+				swap(client, "use", option, target, true);
 			}
 		}
 	}
@@ -1004,11 +999,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void addSwaps()
 	{
-		if (this.getBurningAmulet)
-		{
-			menuManager.addPriorityEntry(this.getBurningAmuletMode.toString(), "burning amulet");
-		}
-
 		if (this.getWithdrawOne)
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
@@ -1153,8 +1143,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBankExchange)
 		{
-			menuManager.addPriorityEntry("Bank").setPriority(1);
-			menuManager.addPriorityEntry("Exchange").setPriority(10);
+			menuManager.addPriorityEntry("Collect-notes").setPriority(1);
+			menuManager.addPriorityEntry("Bank");
+			menuManager.addPriorityEntry("Exchange");
 		}
 
 		if (this.swapContract)
@@ -1312,7 +1303,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapSearch)
 		{
-			menuManager.addPriorityEntry("Search");
+			menuManager.addPriorityEntry("Search").setPriority(1);
 		}
 
 		if (this.swapRogueschests)
@@ -1403,6 +1394,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.swapHardWoodGrove)
 		{
 			menuManager.addPriorityEntry("Quick-pay(100)", "Hardwood grove doors");
+		}
+
+		if (this.getBurningAmulet)
+		{
+			menuManager.addPriorityEntry(new EquipmentComparableEntry(this.getBurningAmuletMode.toString(), "burning amulet"));
 		}
 
 		if (this.getCombatBracelet)
@@ -1530,6 +1526,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Pickpocket");
+		menuManager.removePriorityEntry("Collect-notes");
 		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
 		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Exchange");
@@ -1608,6 +1605,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwap("Wield", "", "Rub");
 		menuManager.removeSwap("Wear", "", "Teleport");
 		menuManager.removeSwap("Wield", "", "Teleport");
+		menuManager.removePriorityEntry(this.getConstructionMode.getBuild());
+		menuManager.removePriorityEntry(this.getConstructionMode.getRemove());
 
 		switch (this.swapFairyRingMode)
 		{
@@ -1689,39 +1688,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void loadConstructionItems(String from)
+	private void loadConstructionItems()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| Strings.isNullOrEmpty(from) && leftClickConstructionItems.isEmpty())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		if (!leftClickConstructionItems.isEmpty())
+		if (!buildingMode)
 		{
-			leftClickConstructionItems.forEach(item ->
-			{
-				menuManager.removePriorityEntry("build", item);
-				menuManager.removePriorityEntry("remove", item);
-			});
-
-			leftClickConstructionItems.clear();
+			menuManager.removePriorityEntry(this.getConstructionMode.getBuild());
+			menuManager.removePriorityEntry(this.getConstructionMode.getRemove());
+			return;
 		}
 
-		if (this.getEasyConstruction && !Strings.isNullOrEmpty(from) && buildingMode)
+		if (this.getEasyConstruction)
 		{
-			Text.fromCSV(from).forEach(item ->
-			{
-				if (leftClickConstructionItems.contains(item))
-				{
-					return;
-				}
-
-				menuManager.addPriorityEntry("build", item);
-				menuManager.addPriorityEntry("remove", item);
-
-				leftClickConstructionItems.add(item);
-			});
+			menuManager.addPriorityEntry(this.getConstructionMode.getBuild()).setPriority(100);
+			menuManager.addPriorityEntry(this.getConstructionMode.getRemove()).setPriority(100);
 		}
 	}
 
@@ -1732,7 +1716,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		menuManager.addPriorityEntry("climb-up");
+		menuManager.addPriorityEntry("climb-up").setPriority(100);
 	}
 
 	void stopShift()
@@ -1747,7 +1731,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		menuManager.addPriorityEntry("climb-down");
+		menuManager.addPriorityEntry("climb-down").setPriority(100);
 	}
 
 	void stopControl()
@@ -1872,7 +1856,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSwapSellFifty = config.getSwapSellFifty();
 		this.getSellFiftyItems = config.getSellFiftyItems();
 		this.getEasyConstruction = config.getEasyConstruction();
-		this.getEasyConstructionItems = config.getEasyConstructionItems();
 		this.getSwapTanning = config.getSwapTanning();
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();
@@ -1911,6 +1894,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getCombatBraceletMode = config.getCombatBraceletMode();
 		this.getBurningAmulet = config.getBurningAmulet();
 		this.getBurningAmuletMode = config.getBurningAmuletMode();
+		this.getConstructionMode = config.getConstructionMode();
 		this.getXericsTalisman = config.getXericsTalisman();
 		this.getXericsTalismanMode = config.getXericsTalismanMode();
 		this.getRingofWealth = config.getRingofWealth();
