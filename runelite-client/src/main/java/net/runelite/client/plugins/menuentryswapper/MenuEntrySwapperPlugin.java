@@ -870,15 +870,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.shiftClickCustomization && shiftModifier && !option.equals("use"))
 		{
-			Integer customOption = getSwapConfig(eventId);
+			final Integer customOption = getSwapConfig(eventId);
 
 			if (customOption != null && customOption == -1)
 			{
-				menuManager.addPriorityEntry("Use");
-			}
-			else
-			{
-				menuManager.removePriorityEntry("Use");
+				swap(client, "use", option, target, true);
 			}
 		}
 	}
