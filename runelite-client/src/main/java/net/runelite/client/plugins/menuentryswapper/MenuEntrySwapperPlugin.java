@@ -1004,11 +1004,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void addSwaps()
 	{
-		if (this.getBurningAmulet)
-		{
-			menuManager.addPriorityEntry(this.getBurningAmuletMode.toString(), "burning amulet");
-		}
-
 		if (this.getWithdrawOne)
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
@@ -1153,8 +1148,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBankExchange)
 		{
-			menuManager.addPriorityEntry("Bank").setPriority(1);
-			menuManager.addPriorityEntry("Exchange").setPriority(10);
+			menuManager.addPriorityEntry("Collect-notes").setPriority(1);
+			menuManager.addPriorityEntry("Bank");
+			menuManager.addPriorityEntry("Exchange");
 		}
 
 		if (this.swapContract)
@@ -1312,7 +1308,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapSearch)
 		{
-			menuManager.addPriorityEntry("Search");
+			menuManager.addPriorityEntry("Search").setPriority(1);
 		}
 
 		if (this.swapRogueschests)
@@ -1403,6 +1399,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.swapHardWoodGrove)
 		{
 			menuManager.addPriorityEntry("Quick-pay(100)", "Hardwood grove doors");
+		}
+
+		if (this.getBurningAmulet)
+		{
+			menuManager.addPriorityEntry(new EquipmentComparableEntry(this.getBurningAmuletMode.toString(), "burning amulet"));
 		}
 
 		if (this.getCombatBracelet)
@@ -1530,6 +1531,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Pickpocket");
+		menuManager.removePriorityEntry("Collect");
 		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
 		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Exchange");
@@ -1717,8 +1719,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 					return;
 				}
 
-				menuManager.addPriorityEntry("build", item);
-				menuManager.addPriorityEntry("remove", item);
+				menuManager.addPriorityEntry("build", item).setPriority(100);
+				menuManager.addPriorityEntry("remove", item).setPriority(100);
 
 				leftClickConstructionItems.add(item);
 			});
