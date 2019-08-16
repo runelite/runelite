@@ -1734,7 +1734,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		menuManager.addPriorityEntry("climb-up");
+		menuManager.addPriorityEntry("climb-up").setPriority(100);
 	}
 
 	void stopShift()
@@ -1749,7 +1749,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		menuManager.addPriorityEntry("climb-down");
+		menuManager.addPriorityEntry("climb-down").setPriority(100);
 	}
 
 	void stopControl()
