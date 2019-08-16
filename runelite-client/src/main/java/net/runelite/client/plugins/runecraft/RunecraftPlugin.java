@@ -258,7 +258,7 @@ public class RunecraftPlugin extends Plugin
 			}
 		}
 	}
-	
+
 	private void hide(String option, String target)
 	{
 		final MenuEntry[] entries = client.getMenuEntries();
@@ -345,6 +345,12 @@ public class RunecraftPlugin extends Plugin
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			final Item[] items = event.getItemContainer().getItems();
+
+			if (items.length == 0)
+			{
+				return;
+			}
+
 			wearingTiara = this.Lavas && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
 			wearingCape = this.Lavas && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
 		}
