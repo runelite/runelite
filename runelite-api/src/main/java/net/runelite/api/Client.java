@@ -131,11 +131,11 @@ public interface Client extends GameShell
 	GameState getGameState();
 
 	/**
-	 * Sets the current game state.
+	 * Sets the current game state
 	 *
-	 * @param gameState new game state
+	 * @param gameState
 	 */
-	void setGameState(int gameState);
+	void setGameState(GameState gameState);
 
 	/**
 	 * Gets the current logged in username.
