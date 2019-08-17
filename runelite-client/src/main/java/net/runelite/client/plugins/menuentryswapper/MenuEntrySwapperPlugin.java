@@ -1143,7 +1143,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBankExchange)
 		{
-			menuManager.addPriorityEntry("Collect-notes").setPriority(1);
+			menuManager.addPriorityEntry(new BankComparableEntry("collect", "", false));
 			menuManager.addPriorityEntry("Bank");
 			menuManager.addPriorityEntry("Exchange");
 		}
@@ -1510,7 +1510,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Pickpocket");
 		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
-		menuManager.removePriorityEntry("Collect-notes");
+		menuManager.removePriorityEntry(new BankComparableEntry("collect", "", false));
 		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Exchange");
 		menuManager.removePriorityEntry("Contract");

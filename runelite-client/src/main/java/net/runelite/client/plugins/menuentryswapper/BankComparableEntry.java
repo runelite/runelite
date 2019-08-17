@@ -21,7 +21,7 @@ public class BankComparableEntry extends AbstractComparableEntry
 	{
 		final int groupId = WidgetInfo.TO_GROUP(entry.getParam1());
 
-		if (groupId != WidgetID.BANK_GROUP_ID && groupId != WidgetID.BANK_INVENTORY_GROUP_ID)
+		if (groupId != WidgetID.BANK_GROUP_ID && groupId != WidgetID.BANK_INVENTORY_GROUP_ID && groupId != WidgetID.GRAND_EXCHANGE_GROUP_ID)
 		{
 			return false;
 		}
