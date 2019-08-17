@@ -1463,28 +1463,28 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-1", item);
-			menuManager.removePriorityEntry("Deposit-1", item);
+			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-1", item));
+			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-1", item));
 		});
 		Text.fromCSV(this.getWithdrawFiveItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-5", item);
-			menuManager.removePriorityEntry("Deposit-5", item);
+			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-5", item));
+			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-5", item));
 		});
 		Text.fromCSV(this.getWithdrawTenItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-10", item);
-			menuManager.removePriorityEntry("Deposit-10", item);
+			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-10", item));
+			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-10", item));
 		});
 		Text.fromCSV(this.getWithdrawXItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-" + this.getWithdrawXAmount, item);
-			menuManager.removePriorityEntry("Deposit-" + this.getWithdrawXAmount, item);
+			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-" + this.getWithdrawXAmount, item));
+			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-" + this.getWithdrawXAmount, item));
 		});
 		Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
 		{
-			menuManager.removePriorityEntry("Withdraw-All", item);
-			menuManager.removePriorityEntry("Deposit-All", item);
+			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-All", item));
+			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-All", item));
 		});
 		Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.removePriorityEntry("Buy 1", item));
 		Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.removePriorityEntry("Buy 5", item));
@@ -1494,24 +1494,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.removePriorityEntry("Sell 5", item));
 		Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.removePriorityEntry("Sell 10", item));
 		Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.removePriorityEntry("Sell 50", item));
-		menuManager.removeSwaps("Fairy ring");
-		menuManager.removeSwaps("Tree");
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getBurningAmuletMode.toString(), "burning amulet"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getCombatBraceletMode.toString(), "combat bracelet"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGamesNecklaceMode.toString(), "games necklace"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDuelingRingMode.toString(), "ring of dueling"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGloryMode.toString(), "glory"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSkillsNecklaceMode.toString(), "skills necklace"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getNecklaceofPassageMode.toString(), "necklace of passage"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDigsitePendantMode.toString(), "digsite pendant"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSlayerRingMode.toString(), "slayer ring"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getXericsTalismanMode.toString(), "talisman"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getRingofWealthMode.toString(), "ring of wealth"));
-		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
-		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
-		menuManager.removePriorityEntry(new InventoryComparableEntry("Use", "bone", false));
-		menuManager.removePriorityEntry("Smith All");
-		menuManager.removePriorityEntry("Smith All Sets");
 		menuManager.removePriorityEntry("Tan All");
 		menuManager.removePriorityEntry("Buy-plank", "Sawmill operator");
 		menuManager.removePriorityEntry("Buy All");
@@ -1519,16 +1501,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Monastery Teleport");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape(t)");
-		menuManager.removePriorityEntry("Tele to poh", "Construct. cape");
-		menuManager.removePriorityEntry("Tele to poh", "Construct. cape(t)");
+		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
+		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
 		menuManager.removePriorityEntry("Spellbook", "Magic cape");
 		menuManager.removePriorityEntry("Spellbook", "Magic cape(t)");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 2");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Pickpocket");
-		menuManager.removePriorityEntry("Collect-notes");
 		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
+		menuManager.removePriorityEntry("Collect-notes");
 		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Exchange");
 		menuManager.removePriorityEntry("Contract");
@@ -1555,7 +1537,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Jatizso");
 		menuManager.removePriorityEntry("Neitiznot");
 		menuManager.removePriorityEntry("Rellekka");
-		menuManager.removePriorityEntry("Follow");
+		menuManager.removePriorityEntry("Follow", "Elkoy");
 		menuManager.removePriorityEntry("Transport");
 		menuManager.removePriorityEntry("Teleport", "Mage of zamorak");
 		menuManager.removePriorityEntry("Pay");
@@ -1586,7 +1568,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Quick-start");
 		menuManager.removePriorityEntry("Quick-pass");
 		menuManager.removePriorityEntry("Quick-open");
-		menuManager.removePriorityEntry("Quick-enter");
 		menuManager.removePriorityEntry("Quick-leave");
 		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape");
@@ -1594,8 +1575,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape");
 		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape");
-		menuManager.removePriorityEntry("Empty", "Coal bag");
-		menuManager.removePriorityEntry("Fill", "Coal bag");
 		menuManager.removePriorityEntry("Perks", "Mounted Max Cape");
 		menuManager.removePriorityEntry("Private");
 		menuManager.removePriorityEntry("Pick-lots");
@@ -1604,6 +1583,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Guzzle", "Dwarven rock cake");
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Rub", "", false));
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Teleport", "", false));
+		menuManager.removePriorityEntry("Fill", "Coal bag");
+		menuManager.removePriorityEntry(newBankComparableEntry("Empty", "Coal bag"));
+		menuManager.removePriorityEntry(new InventoryComparableEntry("Use", "bone", false));
+		menuManager.removePriorityEntry("Teleport menu", "Portal nexus");
+		menuManager.removePriorityEntry("Quick-pay", "Hardwood grove doors");
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getBurningAmuletMode.toString(), "burning amulet"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getCombatBraceletMode.toString(), "combat bracelet"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGamesNecklaceMode.toString(), "games necklace"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDuelingRingMode.toString(), "ring of dueling"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGloryMode.toString(), "glory"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSkillsNecklaceMode.toString(), "skills necklace"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getNecklaceofPassageMode.toString(), "necklace of passage"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDigsitePendantMode.toString(), "digsite pendant"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSlayerRingMode.toString(), "slayer ring"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getXericsTalismanMode.toString(), "talisman"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getRingofWealthMode.toString(), "ring of wealth"));
+		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
+		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
 		menuManager.removePriorityEntry(this.getConstructionMode.getBuild());
 		menuManager.removePriorityEntry(this.getConstructionMode.getRemove());
 
