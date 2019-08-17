@@ -114,7 +114,7 @@ public class InfoPanel extends PluginPanel
 		version.setFont(smallFont);
 
 		JLabel plusVersion = new JLabel(htmlLabel("RuneLitePlus version: ", RuneLiteProperties.getPlusVersion()));
-		version.setFont(smallFont);
+		plusVersion.setFont(smallFont);
 
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
