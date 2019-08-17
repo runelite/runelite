@@ -25,10 +25,7 @@
 package net.runelite.client.plugins.profiles;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -42,6 +39,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.annotation.Nullable;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -63,6 +61,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
@@ -72,71 +71,60 @@ class ProfilesPanel extends PluginPanel
 {
 	private static final int iterations = 100000;
 	private static final String UNLOCK_PASSWORD = "Encryption Password";
-	private static final String LOAD_ACCOUNTS = "Load Accounts";
 	private static final String ACCOUNT_USERNAME = "Account Username";
 	private static final String ACCOUNT_LABEL = "Account Label";
 	private static final String PASSWORD_LABEL = "Account Password";
 	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
-		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart " +
-		"RunelitePlus, enter your encryption password and click load accounts to see the accounts you entered";
-	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
-	private static final Dimension HELP_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 130);
+		"field then press %s. <br /><br /> You can now add as many accounts as you would like. <br /><br /> The next time you restart " +
+		"RunelitePlus, enter your encryption password and click load accounts to see the accounts you entered.";
 
-	private static final Dimension MINIMUM_SIZE = new Dimension(0, 30);
+	@Inject
+	@Nullable
+	private Client client;
 
-	private final Client client;
-	private static ProfilesConfig profilesConfig;
+	@Inject
+	private ProfilesConfig profilesConfig;
 
 	private final JPasswordField txtDecryptPassword = new JPasswordField(UNLOCK_PASSWORD);
 	private final JTextField txtAccountLabel = new JTextField(ACCOUNT_LABEL);
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
-	private final GridBagConstraints c;
+	private final JPanel accountPanel = new JPanel();
+	private final JPanel loginPanel = new JPanel();
 
-	@Inject
-	public ProfilesPanel(final Client client, final ProfilesConfig config)
+	void init()
 	{
-		super();
-		this.client = client;
-		profilesConfig = config;
+		final String LOAD_ACCOUNTS = profilesConfig.salt().length() == 0 ? "Save" : "Unlock";
 
-		setBorder(new EmptyBorder(18, 10, 0, 10));
+		setLayout(new BorderLayout(0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setLayout(new GridBagLayout());
+		setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.weighty = 0;
-		c.insets = new Insets(0, 0, 4, 0);
+		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JPanel helpPanel = new JPanel(new BorderLayout());
+		JPanel helpPanel = new JPanel();
 		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
-		helpLabel.setFont(FontManager.getRunescapeSmallFont());
-		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
-		// helpPanel.setSize(MINIMUM_SIZE);
-		helpPanel.add(helpLabel, BorderLayout.NORTH);
+		helpPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		helpPanel.setLayout(new DynamicGridLayout(1, 1));
 
-		add(helpPanel);
-		c.gridy = c.gridy + 3;
-		c.gridy++;
+		JLabel helpLabel = new JLabel(htmlLabel(String.format(HELP, profilesConfig.salt().length() == 0 ? "save" : "unlock")));
+		helpLabel.setFont(smallFont);
+
+		helpPanel.add(helpLabel);
+
+		loginPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		loginPanel.setBorder(new EmptyBorder(10, 10, 10, 3));
+		loginPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
 		txtDecryptPassword.setEchoChar((char) 0);
-		txtDecryptPassword.setPreferredSize(PREFERRED_SIZE);
-		txtDecryptPassword.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-		txtDecryptPassword.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		txtDecryptPassword.setMinimumSize(MINIMUM_SIZE);
+		txtDecryptPassword.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtDecryptPassword.setToolTipText(UNLOCK_PASSWORD);
 		txtDecryptPassword.addFocusListener(new FocusListener()
 		{
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				txtDecryptPassword.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				if (String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
 				{
 					txtDecryptPassword.setText("");
@@ -147,7 +135,6 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				txtDecryptPassword.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 				if (txtDecryptPassword.getPassword().length == 0)
 				{
 					txtDecryptPassword.setText(UNLOCK_PASSWORD);
@@ -156,13 +143,7 @@ class ProfilesPanel extends PluginPanel
 			}
 		});
 
-		add(txtDecryptPassword, c);
-		c.gridy++;
-
 		JButton btnLoadAccounts = new JButton(LOAD_ACCOUNTS);
-		btnLoadAccounts.setPreferredSize(PREFERRED_SIZE);
-		btnLoadAccounts.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		btnLoadAccounts.setMinimumSize(MINIMUM_SIZE);
 		btnLoadAccounts.setToolTipText(LOAD_ACCOUNTS);
 		btnLoadAccounts.addMouseListener(new MouseListener()
 		{
@@ -175,20 +156,26 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
+				try
+				{
+					remove(loginPanel);
+					add(accountPanel, BorderLayout.CENTER);
 
+					profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
+					add(profilesPanel, BorderLayout.SOUTH);
+
+					redrawProfiles();
+				}
+				catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
+				{
+					showErrorMessage("Unable to load data", "Incorrect password!");
+				}
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				try
-				{
-					redrawProfiles();
-				}
-				catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
-				{
-					showErrorMessage("Unable to load data", "Incorrect password!");
-				}
+
 			}
 
 			@Override
@@ -204,13 +191,14 @@ class ProfilesPanel extends PluginPanel
 			}
 		});
 
-		add(btnLoadAccounts, c);
-		c.gridy++;
+		loginPanel.add(txtDecryptPassword);
+		loginPanel.add(btnLoadAccounts);
 
-		txtAccountLabel.setPreferredSize(PREFERRED_SIZE);
-		txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-		txtAccountLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		txtAccountLabel.setMinimumSize(MINIMUM_SIZE);
+		accountPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		accountPanel.setBorder(new EmptyBorder(10, 10, 10, 3));
+		accountPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+
+		txtAccountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtAccountLabel.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -219,7 +207,6 @@ class ProfilesPanel extends PluginPanel
 				if (txtAccountLabel.getText().equals(ACCOUNT_LABEL))
 				{
 					txtAccountLabel.setText("");
-					txtAccountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
 
@@ -228,21 +215,14 @@ class ProfilesPanel extends PluginPanel
 			{
 				if (txtAccountLabel.getText().isEmpty())
 				{
-					txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 					txtAccountLabel.setText(ACCOUNT_LABEL);
 				}
 			}
 		});
 
-		add(txtAccountLabel, c);
-		c.gridy++;
-
 		// Do not hide username characters until they focus or if in streamer mode
 		txtAccountLogin.setEchoChar((char) 0);
-		txtAccountLogin.setPreferredSize(PREFERRED_SIZE);
-		txtAccountLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-		txtAccountLogin.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		txtAccountLogin.setMinimumSize(MINIMUM_SIZE);
+		txtAccountLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtAccountLogin.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -251,11 +231,10 @@ class ProfilesPanel extends PluginPanel
 				if (ACCOUNT_USERNAME.equals(String.valueOf(txtAccountLogin.getPassword())))
 				{
 					txtAccountLogin.setText("");
-					if (config.isStreamerMode())
+					if (profilesConfig.isStreamerMode())
 					{
 						txtAccountLogin.setEchoChar('*');
 					}
-					txtAccountLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
 
@@ -264,22 +243,15 @@ class ProfilesPanel extends PluginPanel
 			{
 				if (txtAccountLogin.getPassword().length == 0)
 				{
-					txtAccountLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 					txtAccountLogin.setText(ACCOUNT_USERNAME);
 					txtAccountLogin.setEchoChar((char) 0);
 				}
 			}
 		});
 
-		add(txtAccountLogin, c);
-		c.gridy++;
-
 		txtPasswordLogin.setEchoChar((char) 0);
-		txtPasswordLogin.setPreferredSize(PREFERRED_SIZE);
-		txtPasswordLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-		txtPasswordLogin.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		txtPasswordLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtPasswordLogin.setToolTipText(PASSWORD_LABEL);
-		txtPasswordLogin.setMinimumSize(MINIMUM_SIZE);
 		txtPasswordLogin.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -289,7 +261,6 @@ class ProfilesPanel extends PluginPanel
 				{
 					txtPasswordLogin.setText("");
 					txtPasswordLogin.setEchoChar('*');
-					txtPasswordLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
 
@@ -298,25 +269,14 @@ class ProfilesPanel extends PluginPanel
 			{
 				if (txtPasswordLogin.getPassword().length == 0)
 				{
-					txtPasswordLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 					txtPasswordLogin.setText(PASSWORD_LABEL);
 					txtPasswordLogin.setEchoChar((char) 0);
 				}
 			}
 		});
 
-
-		if (config.rememberPassword())
-		{
-			add(txtPasswordLogin, c);
-			c.gridy++;
-		}
-		c.insets = new Insets(0, 0, 15, 0);
-
 		JButton btnAddAccount = new JButton("Add Account");
-		btnAddAccount.setPreferredSize(PREFERRED_SIZE);
 		btnAddAccount.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		btnAddAccount.setMinimumSize(MINIMUM_SIZE);
 		btnAddAccount.addActionListener(e ->
 		{
 			String labelText = String.valueOf(txtAccountLabel.getText());
@@ -328,7 +288,7 @@ class ProfilesPanel extends PluginPanel
 				return;
 			}
 			String data;
-			if (config.rememberPassword() && txtPasswordLogin.getPassword() != null)
+			if (profilesConfig.rememberPassword() && txtPasswordLogin.getPassword() != null)
 			{
 				data = labelText + ":" + loginText + ":" + passwordText;
 			}
@@ -344,7 +304,7 @@ class ProfilesPanel extends PluginPanel
 					return;
 				}
 			}
-			catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
+			catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
 			{
 				log.error(e.toString());
 			}
@@ -352,15 +312,12 @@ class ProfilesPanel extends PluginPanel
 			this.addAccount(data);
 
 			txtAccountLabel.setText(ACCOUNT_LABEL);
-			txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 			txtAccountLogin.setText(ACCOUNT_USERNAME);
 			txtAccountLogin.setEchoChar((char) 0);
-			txtAccountLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 			txtPasswordLogin.setText(PASSWORD_LABEL);
 			txtPasswordLogin.setEchoChar((char) 0);
-			txtPasswordLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 		});
 
 		txtAccountLogin.addKeyListener(new KeyAdapter()
@@ -408,21 +365,23 @@ class ProfilesPanel extends PluginPanel
 			}
 		});
 
-		add(btnAddAccount, c);
-		c.gridy++;
+		accountPanel.add(txtAccountLabel);
+		accountPanel.add(txtAccountLogin);
+		if (profilesConfig.rememberPassword())
+		{
+			accountPanel.add(txtPasswordLogin);
+		}
+		accountPanel.add(btnAddAccount);
 
-		profilesPanel.setLayout(new GridBagLayout());
-		add(profilesPanel, c);
-		c.gridy = 0;
-		c.insets = new Insets(0, 0, 5, 0);
+		add(helpPanel, BorderLayout.NORTH);
+		add(loginPanel, BorderLayout.CENTER);
 
 		// addAccounts(config.profilesData());
 	}
 
-	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException
+	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		profilesPanel.removeAll();
-		c.gridy = 0;
 		addAccounts(getProfileData());
 
 		revalidate();
@@ -432,8 +391,7 @@ class ProfilesPanel extends PluginPanel
 	private void addAccount(String data)
 	{
 		ProfilePanel profile = new ProfilePanel(client, data, profilesConfig, this);
-		c.gridy++;
-		profilesPanel.add(profile, c);
+		profilesPanel.add(profile);
 
 		revalidate();
 		repaint();
@@ -450,13 +408,13 @@ class ProfilesPanel extends PluginPanel
 		Arrays.stream(data.split("\\n")).forEach(this::addAccount);
 	}
 
-	private boolean addProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
+	private boolean addProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		return setProfileData(
 			getProfileData() + data + "\n");
 	}
 
-	void removeProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
+	void removeProfile(String data) throws InvalidKeySpecException,  NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		setProfileData(
 			getProfileData().replaceAll(data + "\\n", ""));
@@ -492,7 +450,7 @@ class ProfilesPanel extends PluginPanel
 		return factory.generateSecret(spec);
 	}
 
-	private String getProfileData() throws InvalidKeySpecException, NoSuchAlgorithmException
+	private String getProfileData() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		String tmp = profilesConfig.profilesData();
 		if (tmp.startsWith("¬"))
@@ -508,7 +466,7 @@ class ProfilesPanel extends PluginPanel
 		return tmp;
 	}
 
-	private boolean setProfileData(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
+	private boolean setProfileData(String data) throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
 		{
@@ -541,36 +499,20 @@ class ProfilesPanel extends PluginPanel
 	 * @param text text to encrypt
 	 * @return encrypted string
 	 */
-	private static byte[] encryptText(String text, SecretKey aesKey)
+	private static byte[] encryptText(String text, SecretKey aesKey) throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
-		try
-		{
-			Cipher cipher = Cipher.getInstance("AES");
-			SecretKeySpec newKey = new SecretKeySpec(aesKey.getEncoded(), "AES");
-			cipher.init(Cipher.ENCRYPT_MODE, newKey);
-			return cipher.doFinal(text.getBytes());
-		}
-		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
-		{
-			log.error(e.toString());
-		}
-		return new byte[0];
+		Cipher cipher = Cipher.getInstance("AES");
+		SecretKeySpec newKey = new SecretKeySpec(aesKey.getEncoded(), "AES");
+		cipher.init(Cipher.ENCRYPT_MODE, newKey);
+		return cipher.doFinal(text.getBytes());
 	}
 
-	private static String decryptText(byte[] enc, SecretKey aesKey)
+	private static String decryptText(byte[] enc, SecretKey aesKey)  throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
-		try
-		{
-			Cipher cipher = Cipher.getInstance("AES");
-			SecretKeySpec newKey = new SecretKeySpec(aesKey.getEncoded(), "AES");
-			cipher.init(Cipher.DECRYPT_MODE, newKey);
-			return new String(cipher.doFinal(enc));
-		}
-		catch (NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException e)
-		{
-			log.error(e.toString());
-		}
-		return "";
+		Cipher cipher = Cipher.getInstance("AES");
+		SecretKeySpec newKey = new SecretKeySpec(aesKey.getEncoded(), "AES");
+		cipher.init(Cipher.DECRYPT_MODE, newKey);
+		return new String(cipher.doFinal(enc));
 	}
 
 	private static void showErrorMessage(String title, String text)
@@ -581,4 +523,8 @@ class ProfilesPanel extends PluginPanel
 			JOptionPane.ERROR_MESSAGE));
 	}
 
+	private static String htmlLabel(String text)
+	{
+		return "<html><body><span style = 'color:white'>" + text + "</span></body></html>";
+	}
 }

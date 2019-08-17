@@ -24,18 +24,19 @@
  */
 package net.runelite.client.plugins.raids;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Singleton
@@ -48,32 +49,32 @@ class RaidsPanel extends PluginPanel
 
 	private final JButton reloadButton = new JButton("Reload Instance");
 	private final JButton reloadScouter = new JButton("Reload Raid Overlay");
-	private final JLabel reloadMessage = new JLabel("<html><center><h3>Instance Reload Helper </h3>Reloading an instance will cause your client to disconnect temporarily.<br></center></html>");
 
 	void init()
 	{
-
-		// this may or may not qualify as a hack
-		// but this lets the editor pane expand to fill the whole parent panel
-		getParent().setLayout(new FlowLayout());
-		getParent().add(this, BorderLayout.CENTER);
-
-		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setLayout(new GridLayout(2, 1));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JPanel reloadContainer = new JPanel();
-		JPanel scouterContainer = new JPanel();
-		JPanel buttons = new JPanel();
-		reloadContainer.setLayout(new BorderLayout());
-		buttons.setLayout(new BorderLayout());
-		buttons.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		reloadContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		scouterContainer.setLayout(new BorderLayout());
-		scouterContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		JPanel raidsPanel = new JPanel();
+		raidsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		raidsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		raidsPanel.setLayout(new GridLayout(2, 1));
 
-		JPanel reloadFrame = new JPanel();
-		JPanel scoutFrame = new JPanel();
+		JLabel title = new JLabel(htmlLabel("<center>Instance Reload Helper</center>"), SwingConstants.CENTER);
+		title.setFont(FontManager.getRunescapeFont());
+
+		JLabel subTitle = new JLabel(htmlLabel("Reloading an instance will cause your client to disconnect temporarily."));
+		subTitle.setFont(FontManager.getRunescapeSmallFont());
+
+		raidsPanel.add(title);
+		raidsPanel.add(subTitle);
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		buttonPanel.setLayout(new GridLayout(2, 1, 0, 5));
+
 		reloadButton.addActionListener((ActionEvent e) ->
 		{
 			if ((client.getGameState() == GameState.LOGGED_IN))
@@ -81,6 +82,7 @@ class RaidsPanel extends PluginPanel
 				client.setGameState(40);
 			}
 		});
+
 		reloadScouter.addActionListener((ActionEvent e) ->
 		{
 			if ((client.getGameState() == GameState.LOGGED_IN))
@@ -89,11 +91,15 @@ class RaidsPanel extends PluginPanel
 			}
 		});
 
-		reloadFrame.add(reloadButton);
-		scoutFrame.add(reloadScouter);
-		reloadContainer.add(reloadFrame, BorderLayout.NORTH);
-		reloadContainer.add(scoutFrame, BorderLayout.SOUTH);
-		add(reloadMessage, BorderLayout.PAGE_START);
-		add(reloadContainer, BorderLayout.CENTER);
+		buttonPanel.add(reloadButton);
+		buttonPanel.add(reloadScouter);
+
+		add(raidsPanel);
+		add(buttonPanel);
+	}
+
+	private static String htmlLabel(String text)
+	{
+		return "<html><body><span style = 'color:white'>" + text + "</span></body></html>";
 	}
 }

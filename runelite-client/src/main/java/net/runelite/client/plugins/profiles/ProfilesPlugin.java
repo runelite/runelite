@@ -77,7 +77,6 @@ public class ProfilesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-
 		updateConfig();
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 
@@ -87,6 +86,7 @@ public class ProfilesPlugin extends Plugin
 		}
 
 		panel = injector.getInstance(ProfilesPanel.class);
+		panel.init();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "profiles_icon.png");
 

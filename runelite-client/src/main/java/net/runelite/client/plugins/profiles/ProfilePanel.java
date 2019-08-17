@@ -30,8 +30,12 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -101,7 +105,7 @@ class ProfilePanel extends JPanel
 				{
 					parent.removeProfile(data);
 				}
-				catch (InvalidKeySpecException | NoSuchAlgorithmException ex)
+				catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
 				{
 					log.error(e.toString());
 				}
@@ -159,6 +163,10 @@ class ProfilePanel extends JPanel
 				if (SwingUtilities.isLeftMouseButton(e) && client.getGameState() == GameState.LOGIN_SCREEN)
 				{
 					client.setUsername(loginText);
+					if (config.rememberPassword() && password != null)
+					{
+						client.setPassword(password);
+					}
 				}
 			}
 		});
