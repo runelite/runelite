@@ -111,6 +111,7 @@ enum Task
 	JELLIES("Jellies", ItemID.JELLY, "Jelly"),
 	JUNGLE_HORROR("Jungle horrors", ItemID.ENSOULED_HORROR_HEAD),
 	KALPHITE("Kalphite", ItemID.KALPHITE_SOLDIER),
+	LIZARDS("Lizards", ItemID.ORANGE_SALAMANDER, "Desert lizard", "Sulphur lizard", "Small lizard", "Lizard"),
 	MAMMOTHS("Mammoths", ItemID.ATTACKER_HORN, "Mammoth"),
 	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS),
 	KILLERWATTS("Killerwatts", ItemID.KILLERWATT),
