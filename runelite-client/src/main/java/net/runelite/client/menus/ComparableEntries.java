@@ -71,6 +71,6 @@ public interface ComparableEntries
 	 */
 	static BankComparableEntry newBankComparableEntry(String option, String itemName)
 	{
-		return new BankComparableEntry(option, itemName);
+		return new BankComparableEntry(option, itemName, true);
 	}
 }

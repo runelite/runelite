@@ -50,10 +50,11 @@ public class MenuOptionClicked implements Event
 		authentic = true;
 	}
 
-	public MenuOptionClicked(MenuEntry entry, boolean authentic)
+	public MenuOptionClicked(MenuEntry entry, boolean authentic, int mouseButton)
 	{
 		menuEntry = entry;
 		this.authentic = authentic;
+		this.mouseButton = mouseButton;
 	}
 
 	/**
@@ -126,6 +127,11 @@ public class MenuOptionClicked implements Event
 	 * Whether or not the event has been consumed by a subscriber.
 	 */
 	private boolean consumed;
+
+	/**
+	 * The mouse button will be 1 if a non draggable widget was clicked,
+	 */
+	private int mouseButton;
 
 	/**
 	 * Marks the event as having been consumed.

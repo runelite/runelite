@@ -24,9 +24,19 @@
  */
 package net.runelite.mixins;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.EnumDefinition;
@@ -91,21 +101,6 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
-import net.runelite.api.vars.AccountType;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
-import net.runelite.api.widgets.WidgetType;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nullable;
-import javax.inject.Named;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -113,8 +108,11 @@ import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.rs.api.RSPacketBuffer;
-import org.slf4j.Logger;
+import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.rs.api.RSAbstractArchive;
 import net.runelite.rs.api.RSChatChannel;
 import net.runelite.rs.api.RSClanChat;
@@ -122,17 +120,19 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSEnumDefinition;
 import net.runelite.rs.api.RSFriendSystem;
 import net.runelite.rs.api.RSFriendsList;
-import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSIgnoreList;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNodeDeque;
 import net.runelite.rs.api.RSNodeHashTable;
+import net.runelite.rs.api.RSPacketBuffer;
 import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSSprite;
+import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSUsername;
 import net.runelite.rs.api.RSWidget;
+import org.slf4j.Logger;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
@@ -1328,7 +1328,8 @@ public abstract class RSClientMixin implements RSClient
 				widgetId,
 				false
 			),
-			authentic
+			authentic,
+			client.getMouseCurrentButton()
 		);
 
 		client.getCallbacks().post(MenuOptionClicked.class, menuOptionClicked);

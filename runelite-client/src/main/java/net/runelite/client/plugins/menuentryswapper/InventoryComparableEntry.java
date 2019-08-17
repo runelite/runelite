@@ -8,9 +8,9 @@ import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.util.Text;
 
 @EqualsAndHashCode(callSuper = true)
-public class BankComparableEntry extends AbstractComparableEntry
+public class InventoryComparableEntry extends AbstractComparableEntry
 {
-	public BankComparableEntry(String option, String itemName, boolean strictTarget)
+	public InventoryComparableEntry(String option, String itemName, boolean strictTarget)
 	{
 		this.setOption(Text.standardize(option));
 		this.setTarget(Text.standardize(itemName));
@@ -21,7 +21,7 @@ public class BankComparableEntry extends AbstractComparableEntry
 	{
 		final int groupId = WidgetInfo.TO_GROUP(entry.getParam1());
 
-		if (groupId != WidgetID.BANK_GROUP_ID && groupId != WidgetID.BANK_INVENTORY_GROUP_ID)
+		if (groupId != WidgetID.INVENTORY_GROUP_ID)
 		{
 			return false;
 		}

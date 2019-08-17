@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -37,12 +36,11 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
@@ -51,18 +49,19 @@ import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.menus.BaseComparableEntry;
+import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.menuentryswapper.BankComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.EquipmentComparableEntry;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.util.MenuUtil.swap;
-import net.runelite.client.util.Text;
 
 
 @PluginDescriptor(
@@ -71,89 +70,68 @@ import net.runelite.client.util.Text;
 	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )
 @Singleton
+@Getter(AccessLevel.PACKAGE)
 public class RunecraftPlugin extends Plugin
 {
-	private static final int FIRE_ALTAR = 10315;
-	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
+	private static final BankComparableEntry POUCH = new BankComparableEntry("fill", "pouch", false);
+	private static final BaseComparableEntry EMPTY = newBaseComparableEntry("empty", "pouch", false);
+	private static final EquipmentComparableEntry CASTLE_WARS = new EquipmentComparableEntry("castle wars", "ring of dueling");
+	private static final EquipmentComparableEntry DUEL_ARENA = new EquipmentComparableEntry("duel arena", "ring of dueling");
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
-	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
+	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
+	private static final int FIRE_ALTAR = 10315;
+	private static final Set<Integer> DEGRADED_POUCHES = ImmutableSet.of(
 		ItemID.MEDIUM_POUCH_5511,
 		ItemID.LARGE_POUCH_5513,
 		ItemID.GIANT_POUCH_5515
 	);
-
-	private boolean wearingTiara;
-	private boolean wearingCape;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean degradedPouchInInventory;
-
-	@Getter(AccessLevel.PACKAGE)
-	private NPC darkMage;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private Client client;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private AbyssOverlay abyssOverlay;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private RunecraftOverlay runecraftOverlay;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private RunecraftConfig config;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private Notifier notifier;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private MenuManager menuManager;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
 
-	private boolean Lavas;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean essPouch;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean hightlightDarkMage;
+	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
+	private boolean degradedPouchInInventory;
 	private boolean degradingNotification;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showRifts;
-	@Getter(AccessLevel.PACKAGE)
+	private boolean essPouch;
+	private boolean hightlightDarkMage;
+	private boolean lavas;
 	private boolean showAir;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean showBlood;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean showBody;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean showChaos;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showCosmic;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showDeath;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showEarth;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showFire;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showLaw;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showMind;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showNature;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showSoul;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showWater;
-	@Getter(AccessLevel.PACKAGE)
 	private boolean showClickBox;
+	private boolean showCosmic;
+	private boolean showDeath;
+	private boolean showEarth;
+	private boolean showFire;
+	private boolean showLaw;
+	private boolean showMind;
+	private boolean showNature;
+	private boolean showRifts;
+	private boolean showSoul;
+	private boolean showWater;
+	private NPC darkMage;
 
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
@@ -166,22 +144,20 @@ public class RunecraftPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-
-		overlayManager.add(abyssOverlay);
 		abyssOverlay.updateConfig();
+		overlayManager.add(abyssOverlay);
 		overlayManager.add(runecraftOverlay);
-		addSwaps();
+		handleSwaps();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		eventBus.unregister(this);
-
-		overlayManager.remove(abyssOverlay);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
+		overlayManager.remove(abyssOverlay);
 		overlayManager.remove(runecraftOverlay);
 		removeSwaps();
 	}
@@ -190,7 +166,6 @@ public class RunecraftPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
 		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
@@ -208,9 +183,10 @@ public class RunecraftPlugin extends Plugin
 
 		updateConfig();
 
-		if (event.getKey().equals("essPouch"))
+		if (event.getKey().equals("essPouch") || event.getKey().equals("Lavas"))
 		{
-			addSwaps();
+			removeSwaps();
+			handleSwaps();
 		}
 
 		abyssOverlay.updateConfig();
@@ -229,83 +205,9 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
-	private void onMenuEntryAdded(MenuEntryAdded entry)
-	{
-		if (wearingCape || wearingTiara)
-		{
-			final String option = Text.removeTags(entry.getOption()).toLowerCase();
-			final String target = Text.removeTags(entry.getTarget()).toLowerCase();
-
-			if (target.contains("ring of dueling") && option.contains("remove")) // Incompatible with easyscape
-			{
-				if (client.getLocalPlayer().getWorldLocation().getRegionID() != FIRE_ALTAR)
-				{ //changes duel ring teleport options based on location
-					swap(client, "duel arena", option, target);
-				}
-				else if (client.getLocalPlayer().getWorldLocation().getRegionID() == FIRE_ALTAR)
-				{
-					swap(client, "castle wars", option, target);
-				}
-			}
-			else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
-			{
-				hide(option, target);
-			}
-			else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
-			{
-				hide("use", target);
-				hide("drop", target);
-			}
-		}
-	}
-
-	private void hide(String option, String target)
-	{
-		final MenuEntry[] entries = client.getMenuEntries();
-		int index = searchIndex(entries, option, target);
-		if (index < 0)
-		{
-			return;
-		}
-
-		MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
-		int i2 = 0;
-
-		for (int i = 0; i < entries.length - 1; i++)
-		{
-			if (i == index)
-			{
-				continue;
-			}
-
-			newEntries[i2] = entries[i];
-			i2++;
-		}
-
-		client.setMenuEntries(newEntries);
-	}
-
-	private int searchIndex(MenuEntry[] entries, String option, String target)
-	{
-		for (int i = entries.length - 1; i >= 0; i--)
-		{
-			MenuEntry entry = entries[i];
-			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
-			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
-
-			if (entryOption.contains(option.toLowerCase())
-				&& (entryTarget.contains(target)))
-			{
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
-		DecorativeObject decorativeObject = event.getDecorativeObject();
+		final DecorativeObject decorativeObject = event.getDecorativeObject();
 		if (AbyssRifts.getRift(decorativeObject.getId()) != null)
 		{
 			abyssObjects.add(decorativeObject);
@@ -314,13 +216,14 @@ public class RunecraftPlugin extends Plugin
 
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
-		DecorativeObject decorativeObject = event.getDecorativeObject();
+		final DecorativeObject decorativeObject = event.getDecorativeObject();
 		abyssObjects.remove(decorativeObject);
 	}
 
 	private void onGameStateChanged(GameStateChanged event)
 	{
-		GameState gameState = event.getGameState();
+		final GameState gameState = event.getGameState();
+
 		switch (gameState)
 		{
 			case LOADING:
@@ -331,34 +234,28 @@ public class RunecraftPlugin extends Plugin
 			case LOGIN_SCREEN:
 				darkMage = null;
 				break;
+			case LOGGED_IN:
+				removeSwaps();
+				handleSwaps();
+				break;
 		}
 	}
 
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
-		{
+		final ItemContainer container = event.getItemContainer();
 
-			final Item[] items = event.getItemContainer().getItems();
+		if (container == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			final Item[] items = container.getItems();
 			degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
-		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
-		{
-			final Item[] items = event.getItemContainer().getItems();
-
-			if (items.length == 0)
-			{
-				return;
-			}
-
-			wearingTiara = this.Lavas && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
-			wearingCape = this.Lavas && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
 		}
 	}
 
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
+
 		if (npc.getId() == NpcID.DARK_MAGE)
 		{
 			darkMage = npc;
@@ -368,35 +265,61 @@ public class RunecraftPlugin extends Plugin
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc != null && npc.equals(darkMage))
+
+		if (npc != null && npc == darkMage)
 		{
 			darkMage = null;
 		}
 	}
 
-	private void addSwaps()
+	private void handleSwaps()
 	{
-		if (config.essPouch())
+		if (this.essPouch)
 		{
-			menuManager.addSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
-			menuManager.addSwap("fill", "pouch", "empty", "pouch", true, false);
+			menuManager.addPriorityEntry(POUCH).setPriority(100);
+			menuManager.addPriorityEntry(EMPTY).setPriority(10);
 		}
 		else
 		{
-			menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
-			menuManager.removeSwap("fill", "pouch", "empty", "pouch", true, false);
+			menuManager.removePriorityEntry(POUCH);
+			menuManager.removePriorityEntry(EMPTY);
+		}
+
+		if (client.getLocalPlayer() == null || !this.lavas)
+		{
+			menuManager.removeHiddenEntry("craft", "altar", false, false);
+			menuManager.removeHiddenEntry("use", "pure essence", false, true);
+			return;
+		}
+
+		menuManager.addHiddenEntry("craft", "altar", false, false);
+		menuManager.addHiddenEntry("use", "Pure essence", false, true);
+
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() != FIRE_ALTAR)
+		{
+			menuManager.addPriorityEntry(DUEL_ARENA).setPriority(100);
+			menuManager.removePriorityEntry(CASTLE_WARS);
+		}
+		else if (client.getLocalPlayer().getWorldLocation().getRegionID() == FIRE_ALTAR)
+		{
+			menuManager.addPriorityEntry(CASTLE_WARS).setPriority(100);
+			menuManager.removePriorityEntry(DUEL_ARENA);
 		}
 	}
 
 	private void removeSwaps()
 	{
-		menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
-		menuManager.removeSwap("fill", "pouch", "empty", "pouch", true, false);
+		menuManager.removeHiddenEntry("craft", "altar", false, false);
+		menuManager.removeHiddenEntry("use", "Pure essence", false, true);
+		menuManager.removePriorityEntry(POUCH);
+		menuManager.removePriorityEntry(EMPTY);
+		menuManager.removePriorityEntry(CASTLE_WARS);
+		menuManager.removePriorityEntry(DUEL_ARENA);
 	}
 
 	private void updateConfig()
 	{
-		this.Lavas = config.Lavas();
+		this.lavas = config.Lavas();
 		this.essPouch = config.essPouch();
 		this.hightlightDarkMage = config.hightlightDarkMage();
 		this.degradingNotification = config.degradingNotification();

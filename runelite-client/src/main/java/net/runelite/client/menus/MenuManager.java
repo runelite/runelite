@@ -429,9 +429,7 @@ public class MenuManager
 	{
 		if (!client.isMenuOpen() && event.isAuthentic())
 		{
-			// The mouse button will not be 0 if a non draggable widget was clicked,
-			// otherwise the left click entry will have been set in onWidgetPressed
-			if (client.getMouseCurrentButton() != 0)
+			if (event.getMouseButton() != 0)
 			{
 				leftClickEntry = rebuildLeftClickMenu();
 			}
