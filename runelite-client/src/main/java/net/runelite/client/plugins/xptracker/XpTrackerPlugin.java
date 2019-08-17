@@ -202,7 +202,7 @@ public class XpTrackerPlugin extends Plugin
 		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -360,7 +360,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private void onExperienceChanged(ExperienceChanged event)
+	void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);
@@ -418,7 +418,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
-	private void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		if (initializeTracker)
 		{
