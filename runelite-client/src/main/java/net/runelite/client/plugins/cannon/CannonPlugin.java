@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cannon;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -59,6 +60,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ItemUtil;
@@ -190,6 +192,29 @@ public class CannonPlugin extends Plugin
 					clientThread.invoke(this::addCounter);
 				}
 			}
+		}
+	}
+
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void checkSpots()
+	{
+		if (!config.showCannonSpots())
+		{
+			return;
+		}
+
+		spotPoints.clear();
+		for (WorldPoint spot : CannonSpots.getCannonSpots())
+		{
+			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
+			{
+				continue;
+			}
+
+			spotPoints.add(spot);
 		}
 	}
 
