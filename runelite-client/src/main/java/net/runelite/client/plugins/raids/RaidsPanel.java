@@ -79,7 +79,7 @@ class RaidsPanel extends PluginPanel
 		{
 			if ((client.getGameState() == GameState.LOGGED_IN))
 			{
-				client.setGameState(40);
+				client.setGameState(GameState.CONNECTION_LOST);
 			}
 		});
 
