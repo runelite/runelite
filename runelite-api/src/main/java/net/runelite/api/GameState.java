@@ -28,10 +28,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 /**
  * An enumeration of game states the client is in.
  */
+@Getter
 public enum GameState
 {
 	/**

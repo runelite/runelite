@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
@@ -38,6 +39,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -120,6 +122,8 @@ public class XpTrackerPlugin extends Plugin
 	private EventBus eventBus;
 
 	private NavigationButton navButton;
+	@Setter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
@@ -198,7 +202,7 @@ public class XpTrackerPlugin extends Plugin
 		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -356,7 +360,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private void onExperienceChanged(ExperienceChanged event)
+	void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);
@@ -414,7 +418,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
-	private void onGameTick(GameTick event)
+	void onGameTick(GameTick event)
 	{
 		if (initializeTracker)
 		{
@@ -441,7 +445,7 @@ public class XpTrackerPlugin extends Plugin
 
 					log.debug("Skill xp for {} changed when offline: {} -> {}", skill, skillState.getCurrentXp(), currentXp);
 					// Offset start xp for offline gains
-					long diff = skillState.getCurrentXp() - currentXp;
+					long diff = currentXp - skillState.getCurrentXp();
 					skillState.setStartXp(skillState.getStartXp() + diff);
 				}
 			}
@@ -537,6 +541,11 @@ public class XpTrackerPlugin extends Plugin
 				removeOverlay(skill);
 				break;
 		}
+	}
+
+	XpStateSingle getSkillState(Skill skill)
+	{
+		return xpState.getSkill(skill);
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
