@@ -594,6 +594,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+        else if (config.swapTeleportCrystal() && option.equals("lletya"))
+        {
+            swap("prifddinas", option, target, true);
+        }
 	}
 
 	@Subscribe

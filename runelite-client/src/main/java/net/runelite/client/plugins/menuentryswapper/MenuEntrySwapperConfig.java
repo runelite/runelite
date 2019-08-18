@@ -301,4 +301,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapTeleportCrystal",
+			name = "Teleport Crystal",
+			description = "Swap Lletya with Prifddinas on Teleport Crystal"
+	)
+	default boolean swapTeleportCrystal()
+	{
+		return false;
+	}
 }
