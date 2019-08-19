@@ -421,6 +421,52 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testCorrectlyCapturedTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("Dagannoth");
+		slayerPlugin.setAmount(143);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(142, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testIncorrectlyCapturedTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("Monster");
+		slayerPlugin.setAmount(98);
+
+		assert Task.getTask("Monster") == null;
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(97, slayerPlugin.getAmount());
+	}
+
+	@Test
 	public void testJadTaskKill()
 	{
 		final Player player = mock(Player.class);

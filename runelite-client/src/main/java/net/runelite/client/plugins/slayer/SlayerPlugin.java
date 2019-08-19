@@ -537,12 +537,9 @@ public class SlayerPlugin extends Plugin
 
 		final Task task = Task.getTask(taskName);
 
-		if (task == null)
-		{
-			return;
-		}
-
-		final int taskKillExp = task.getExpectedKillExp();
+		// null tasks are technically valid, it only means they arent explicitly defined in the Task enum
+		// allow them through so that if there is a task capture failure the counter will still work
+		final int taskKillExp = task != null ? task.getExpectedKillExp() : 0;
 
 		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
 		// to the expected exp gain for the task.
