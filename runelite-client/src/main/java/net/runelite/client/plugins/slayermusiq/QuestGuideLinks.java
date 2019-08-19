@@ -153,7 +153,18 @@ class QuestGuideLinks
 		new Link("Making History", "https://www.youtube.com/watch?v=bOTGi2zAuhs"),
 		new Link("The Hand in the Sand", "https://www.youtube.com/watch?v=gdNLcZ-l1Lw"),
 		new Link("The Slug Menace", "https://www.youtube.com/watch?v=BRQbdr3JEZ8"),
-		new Link("Another Slice of H.A.M.", "https://www.youtube.com/watch?v=Yq3db7827Lk")
+		new Link("Another Slice of H.A.M.", "https://www.youtube.com/watch?v=Yq3db7827Lk"),
+		new Link("Song of the Elves", "https://www.youtube.com/watch?v=oMGvdBCuxoY"),
+		//Miniquests
+		new Link("Alfred Grimhand's Barcrawl", "https://www.youtube.com/watch?v=hE2dmiDaoK4"),
+		new Link("Bear your Soul", "https://www.youtube.com/watch?v=Pb6N-_6HJNc"),
+		new Link("Curse of the Empty Lord", "https://www.youtube.com/watch?v=efv9mlHdeK0"),
+		new Link("Enter the Abyss", "https://www.youtube.com/watch?v=0rDADV0GKN8"),
+		new Link("Family Pest", "https://www.youtube.com/watch?v=Iie2_Si8iDg"),
+		new Link("The General's Shadow", "https://www.youtube.com/watch?v=4bIYZpRvewA"),
+		new Link("Lair of Tarn Razorlor", "https://www.youtube.com/watch?v=rEhSkhviK5E"),
+		new Link("The Mage Arena", "https://www.youtube.com/watch?v=UyncI4hgmtY"),
+		new Link("Skippy and the Mogres", "https://www.youtube.com/watch?v=cU0H6QVXcG0")
 	};
 
 	private static class Link
