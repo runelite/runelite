@@ -27,7 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 import com.google.common.base.Splitter;
 import java.util.Map;
 
-public class Parse
+public class CustomSwapParse
 {
 	public static boolean parse(String value)
 	{

@@ -36,6 +36,7 @@ import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -156,6 +157,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean inCoxRaid = false;
 	private final Map<AbstractComparableEntry, Integer> customSwaps = new HashMap<>();
 	private final Map<AbstractComparableEntry, Integer> customShiftSwaps = new HashMap<>();
+	private final Map<AbstractComparableEntry, AbstractComparableEntry> dePrioSwaps = new HashMap<>();
 	private List<String> bankItemNames = new ArrayList<>();
 	private ConstructionMode getConstructionMode;
 	private BurningAmuletMode getBurningAmuletMode;
@@ -709,6 +711,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void addSwaps()
 	{
+		final Map<String, String> tmp = NEWLINE_SPLITTER.withKeyValueSeparator(',').split(config.prioEntry());
+
+		for (Map.Entry<String, String> str : tmp.entrySet())
+		{
+			final AbstractComparableEntry a = newBaseComparableEntry("", str.getValue(), -1, -1, false, true);
+			final AbstractComparableEntry b = newBaseComparableEntry(str.getKey(), "", -1, -1, false, false);
+			dePrioSwaps.put(a, b);
+			menuManager.addSwap(a, b);
+		}
+
 		if (this.getWithdrawOne)
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
@@ -1171,6 +1183,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void removeSwaps()
 	{
+		final Iterator<Map.Entry<AbstractComparableEntry, AbstractComparableEntry>> dePrioIter = dePrioSwaps.entrySet().iterator();
+		dePrioIter.forEachRemaining((e) ->
+		{
+			menuManager.removeSwap(e.getKey(), e.getValue());
+			dePrioIter.remove();
+		});
 		Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 		{
 			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-1", item));
@@ -1664,7 +1682,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		final String customSwaps = config.customSwaps();
 
-		if (!Parse.parse(customSwaps) && oldParse(customSwaps))
+		if (!CustomSwapParse.parse(customSwaps) && oldParse(customSwaps))
 		{
 			final StringBuilder sb = new StringBuilder();
 
@@ -1696,7 +1714,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		// Ugly band-aid i'm sorry
 		configManager.setConfiguration("menuentryswapper", "customSwaps",
-			Arrays.stream(config.customSwaps().split("\n")).distinct().filter(swap -> !"walk here".equals(swap.split(":")[0].trim().toLowerCase())).filter(swap -> !"cancel".equals(swap.split(":")[0].trim().toLowerCase())).collect(Collectors.joining("\n"))
+			Arrays.stream(config.customSwaps()
+				.split("\n"))
+				.distinct()
+				.filter(swap -> !"walk here"
+					.equals(swap.
+						split(":")[0]
+						.trim()
+						.toLowerCase()))
+				.filter(swap -> !"cancel"
+					.equals(swap
+						.split(":")[0]
+						.trim()
+						.toLowerCase()))
+				.collect(Collectors.joining("\n"))
 		);
 	}
 }
