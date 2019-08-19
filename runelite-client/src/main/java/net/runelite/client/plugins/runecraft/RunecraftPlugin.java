@@ -74,7 +74,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class RunecraftPlugin extends Plugin
 {
 	private static final BankComparableEntry POUCH = new BankComparableEntry("fill", "pouch", false);
-	private static final BaseComparableEntry EMPTY = newBaseComparableEntry("empty", "pouch", false);
+	private static final BaseComparableEntry EMPTY_SMALL = newBaseComparableEntry("empty", "small pouch");
+	private static final BaseComparableEntry EMPTY_MEDIUM = newBaseComparableEntry("empty", "medium pouch");
+	private static final BaseComparableEntry EMPTY_LARGE = newBaseComparableEntry("empty", "large pouch");
+	private static final BaseComparableEntry EMPTY_GIANT = newBaseComparableEntry("empty", "giant pouch");
 	private static final EquipmentComparableEntry CASTLE_WARS = new EquipmentComparableEntry("castle wars", "ring of dueling");
 	private static final EquipmentComparableEntry DUEL_ARENA = new EquipmentComparableEntry("duel arena", "ring of dueling");
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
@@ -277,12 +280,18 @@ public class RunecraftPlugin extends Plugin
 		if (this.essPouch)
 		{
 			menuManager.addPriorityEntry(POUCH).setPriority(100);
-			menuManager.addPriorityEntry(EMPTY).setPriority(10);
+			menuManager.addPriorityEntry(EMPTY_SMALL).setPriority(10);
+			menuManager.addPriorityEntry(EMPTY_MEDIUM).setPriority(10);
+			menuManager.addPriorityEntry(EMPTY_LARGE).setPriority(10);
+			menuManager.addPriorityEntry(EMPTY_GIANT).setPriority(10);
 		}
 		else
 		{
 			menuManager.removePriorityEntry(POUCH);
-			menuManager.removePriorityEntry(EMPTY);
+			menuManager.removePriorityEntry(EMPTY_SMALL);
+			menuManager.removePriorityEntry(EMPTY_MEDIUM);
+			menuManager.removePriorityEntry(EMPTY_LARGE);
+			menuManager.removePriorityEntry(EMPTY_GIANT);
 		}
 
 		if (client.getLocalPlayer() == null || !this.lavas)
@@ -292,16 +301,17 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		menuManager.addHiddenEntry("craft", "altar", false, false);
-		menuManager.addHiddenEntry("use", "Pure essence", false, true);
-
 		if (client.getLocalPlayer().getWorldLocation().getRegionID() != FIRE_ALTAR)
 		{
+			menuManager.removeHiddenEntry("craft", "altar", false, false);
+			menuManager.removeHiddenEntry("use", "Pure essence", false, true);
 			menuManager.addPriorityEntry(DUEL_ARENA).setPriority(100);
 			menuManager.removePriorityEntry(CASTLE_WARS);
 		}
 		else if (client.getLocalPlayer().getWorldLocation().getRegionID() == FIRE_ALTAR)
 		{
+			menuManager.addHiddenEntry("craft", "altar", false, false);
+			menuManager.addHiddenEntry("use", "Pure essence", false, true);
 			menuManager.addPriorityEntry(CASTLE_WARS).setPriority(100);
 			menuManager.removePriorityEntry(DUEL_ARENA);
 		}
@@ -312,7 +322,10 @@ public class RunecraftPlugin extends Plugin
 		menuManager.removeHiddenEntry("craft", "altar", false, false);
 		menuManager.removeHiddenEntry("use", "Pure essence", false, true);
 		menuManager.removePriorityEntry(POUCH);
-		menuManager.removePriorityEntry(EMPTY);
+		menuManager.removePriorityEntry(EMPTY_SMALL);
+		menuManager.removePriorityEntry(EMPTY_MEDIUM);
+		menuManager.removePriorityEntry(EMPTY_LARGE);
+		menuManager.removePriorityEntry(EMPTY_GIANT);
 		menuManager.removePriorityEntry(CASTLE_WARS);
 		menuManager.removePriorityEntry(DUEL_ARENA);
 	}
