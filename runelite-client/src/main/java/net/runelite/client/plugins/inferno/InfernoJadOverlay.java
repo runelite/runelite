@@ -62,7 +62,28 @@ public class InfernoJadOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final InfernoJadAttack attack = plugin.getAttack();
+		if (!plugin.isShowPrayerHelp() || (plugin.getPrayerOverlayMode() != InfernoPrayerOverlayMode.BOTTOM_RIGHT
+			&& plugin.getPrayerOverlayMode() != InfernoPrayerOverlayMode.BOTH))
+		{
+			return null;
+		}
+
+		InfernoJad.Attack attack = null;
+		int leastTicks = 999;
+
+		for (InfernoJad jad : plugin.getJads())
+		{
+			if (jad.getNextAttack() == null || jad.getTicksTillNextAttack() < 1)
+			{
+				continue;
+			}
+
+			if (jad.getTicksTillNextAttack() < leastTicks)
+			{
+				leastTicks = jad.getTicksTillNextAttack();
+				attack = jad.getNextAttack();
+			}
+		}
 
 		if (attack == null)
 		{
@@ -80,9 +101,9 @@ public class InfernoJadOverlay extends Overlay
 		return imagePanelComponent.render(graphics);
 	}
 
-	private BufferedImage getPrayerImage(InfernoJadAttack attack)
+	private BufferedImage getPrayerImage(InfernoJad.Attack attack)
 	{
-		final int prayerSpriteID = attack == InfernoJadAttack.MAGIC ? SpriteID.PRAYER_PROTECT_FROM_MAGIC : SpriteID.PRAYER_PROTECT_FROM_MISSILES;
+		final int prayerSpriteID = attack == InfernoJad.Attack.MAGIC ? SpriteID.PRAYER_PROTECT_FROM_MAGIC : SpriteID.PRAYER_PROTECT_FROM_MISSILES;
 		return spriteManager.getSprite(prayerSpriteID, 0);
 	}
 }

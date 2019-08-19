@@ -24,30 +24,63 @@
  */
 package net.runelite.client.plugins.inferno;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.AnimationID;
+import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
 
-public enum InfernoJadAttack
+@Getter(AccessLevel.PACKAGE)
+public class InfernoJad
 {
-	MAGIC(AnimationID.JALTOK_JAD_MAGE_ATTACK, Prayer.PROTECT_FROM_MAGIC),
-	RANGE(AnimationID.JALTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
+	private static final int TICKS_AFTER_ANIMATION = 4;
 
-	private final int animation;
-	private final Prayer prayer;
+	private NPC npc;
+	private Attack nextAttack;
+	private int ticksTillNextAttack;
 
-	InfernoJadAttack(final int animation, final Prayer prayer)
+	InfernoJad(NPC npc)
 	{
-		this.animation = animation;
-		this.prayer = prayer;
+		this.npc = npc;
+		nextAttack = null;
+		ticksTillNextAttack = -1;
 	}
 
-	public int getAnimation()
+	void updateNextAttack(Attack nextAttack)
 	{
-		return animation;
+		this.nextAttack = nextAttack;
+		this.ticksTillNextAttack = TICKS_AFTER_ANIMATION;
 	}
 
-	public Prayer getPrayer()
+	void gameTick()
 	{
-		return prayer;
+		if (ticksTillNextAttack < 0)
+		{
+			return;
+		}
+
+		this.ticksTillNextAttack--;
+
+		if (ticksTillNextAttack < 0)
+		{
+			nextAttack = null;
+		}
+	}
+
+	@Getter(AccessLevel.PACKAGE)
+	enum Attack
+	{
+		MAGIC(AnimationID.JALTOK_JAD_MAGE_ATTACK, Prayer.PROTECT_FROM_MAGIC),
+		RANGE(AnimationID.JALTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
+
+		private final int animation;
+		private final Prayer prayer;
+
+		Attack(final int animation, final Prayer prayer)
+		{
+			this.animation = animation;
+			this.prayer = prayer;
+		}
 	}
 }
+

@@ -29,8 +29,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -86,7 +86,7 @@ public class InfernoPlugin extends Plugin
 	private InfernoJadOverlay jadOverlay;
 
 	@Inject
-	private InfernoInfobox infernoInfobox;
+	private InfernoPrayerOverlay prayerOverlay;
 
 	@Inject
 	private InfernoNibblerOverlay nibblerOverlay;
@@ -101,40 +101,46 @@ public class InfernoPlugin extends Plugin
 	private int currentWave = -1;
 
 	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, InfernoNPC> monsters;
+	private final Map<NPC, InfernoNPC> monsters = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private Map<Integer, ArrayList<InfernoNPC>> monsterCurrentAttackMap;
+	private final Map<Integer, ArrayList<InfernoNPC>> monsterCurrentAttackMap = new HashMap<>(6);
 
 	@Getter(AccessLevel.PACKAGE)
-	private List<NPC> nibblers;
+	private final List<NPC> nibblers = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private InfernoNPC[] priorityNPC;
+	private final InfernoNPC[] priorityNPC = new InfernoNPC[4];
 
 	@Getter(AccessLevel.PACKAGE)
-	@Nullable
-	private InfernoJadAttack attack;
+	private final List<InfernoJad> jads = new ArrayList<>();
 
-	private NPC jad;
+	@Getter(AccessLevel.PACKAGE)
+	private final List<NPC> activeHealers = new ArrayList<>();
+
+	@Getter
+	private long lastTick;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int currentWaveNumber;
 
-	private final List<Actor> waveMonsters;
-
-	public InfernoPlugin()
-	{
-		waveMonsters = new ArrayList<>();
-	}
+	private final List<Actor> waveMonsters = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displayNibblerOverlay;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showPrayerHelp;
+	@Getter(AccessLevel.PACKAGE)
+	private InfernoPrayerOverlayMode prayerOverlayMode;
 	private InfernoWaveDisplayMode waveDisplay;
 	private Color getWaveOverlayHeaderColor;
 	private Color getWaveTextColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean descendingBoxes;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateWhenPrayingCorrectly;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean indicateActiveHealers;
 
 	@Provides
 	InfernoConfig provideConfig(ConfigManager configManager)
@@ -153,7 +159,6 @@ public class InfernoPlugin extends Plugin
 		if (isInInferno())
 		{
 			overlayManager.add(infernoOverlay);
-			overlayManager.add(infernoInfobox);
 			overlayManager.add(nibblerOverlay);
 
 			if (this.waveDisplay != InfernoWaveDisplayMode.NONE)
@@ -162,21 +167,16 @@ public class InfernoPlugin extends Plugin
 			}
 
 			overlayManager.add(jadOverlay);
+			overlayManager.add(prayerOverlay);
 		}
 
 		waveOverlay.setWaveHeaderColor(this.getWaveOverlayHeaderColor);
 		waveOverlay.setWaveTextColor(this.getWaveTextColor);
 
-		monsters = new HashMap<>();
-		monsterCurrentAttackMap = new HashMap<>(6);
-
 		for (int i = 1; i <= 6; i++)
 		{
 			monsterCurrentAttackMap.put(i, new ArrayList<>());
 		}
-
-		nibblers = new ArrayList<>();
-		priorityNPC = new InfernoNPC[4];
 	}
 
 	@Override
@@ -184,14 +184,11 @@ public class InfernoPlugin extends Plugin
 	{
 		eventBus.unregister(this);
 
-		overlayManager.remove(infernoInfobox);
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(nibblerOverlay);
 		overlayManager.remove(waveOverlay);
 		overlayManager.remove(jadOverlay);
-		jad = null;
-		attack = null;
-		monsters = null;
+		overlayManager.remove(prayerOverlay);
 		currentWaveNumber = -1;
 	}
 
@@ -256,7 +253,7 @@ public class InfernoPlugin extends Plugin
 
 		if (id == NpcID.JALTOKJAD || id == NpcID.JALTOKJAD_7704)
 		{
-			jad = event.getNpc();
+			jads.add(new InfernoJad(npc));
 		}
 
 		final Actor actor = event.getActor();
@@ -286,11 +283,17 @@ public class InfernoPlugin extends Plugin
 			nibblers.remove(npc);
 		}
 
-		if (jad == event.getNpc())
+		final ListIterator<InfernoJad> iter = jads.listIterator();
+		while (iter.hasNext())
 		{
-			jad = null;
-			attack = null;
+			final InfernoJad possibleJad = iter.next();
+
+			if (possibleJad.getNpc() == npc)
+			{
+				iter.remove();
+			}
 		}
+
 		final Actor actor = event.getActor();
 		if (actor != null)
 		{
@@ -308,17 +311,16 @@ public class InfernoPlugin extends Plugin
 		if (!isInInferno())
 		{
 			currentWaveNumber = -1;
-			overlayManager.remove(infernoInfobox);
 			overlayManager.remove(infernoOverlay);
 			overlayManager.remove(nibblerOverlay);
 			overlayManager.remove(waveOverlay);
 			overlayManager.remove(jadOverlay);
+			overlayManager.remove(prayerOverlay);
 		}
 		else if (currentWaveNumber == -1)
 		{
 			currentWaveNumber = 1;
 			overlayManager.add(infernoOverlay);
-			overlayManager.add(infernoInfobox);
 			overlayManager.add(nibblerOverlay);
 
 			if (this.waveDisplay != InfernoWaveDisplayMode.NONE)
@@ -327,6 +329,7 @@ public class InfernoPlugin extends Plugin
 			}
 
 			overlayManager.add(jadOverlay);
+			overlayManager.add(prayerOverlay);
 		}
 	}
 
@@ -354,6 +357,24 @@ public class InfernoPlugin extends Plugin
 		}
 
 		clearMapAndPriority();
+
+		lastTick = System.currentTimeMillis();
+
+		for (InfernoJad jad : jads)
+		{
+			jad.gameTick();
+		}
+
+		activeHealers.clear();
+		for (NPC npc : client.getNpcs())
+		{
+			if (npc.getId() != NpcID.YTHURKOT_7701 || npc.getInteracting() == client.getLocalPlayer())
+			{
+				continue;
+			}
+
+			activeHealers.add(npc);
+		}
 
 		for (InfernoNPC monster : monsters.values())
 		{
@@ -417,18 +438,26 @@ public class InfernoPlugin extends Plugin
 
 	private void onAnimationChanged(final AnimationChanged event)
 	{
-		if (event.getActor() != jad)
+		InfernoJad jad = null;
+
+		for (InfernoJad possibleJad : jads)
 		{
-			return;
+			if (possibleJad.getNpc() == event.getActor())
+			{
+				jad = possibleJad;
+			}
 		}
 
-		if (jad.getAnimation() == InfernoJadAttack.MAGIC.getAnimation())
+		if (jad != null)
 		{
-			attack = InfernoJadAttack.MAGIC;
-		}
-		else if (jad.getAnimation() == InfernoJadAttack.RANGE.getAnimation())
-		{
-			attack = InfernoJadAttack.RANGE;
+			if (event.getActor().getAnimation() == InfernoJad.Attack.MAGIC.getAnimation())
+			{
+				jad.updateNextAttack(InfernoJad.Attack.MAGIC);
+			}
+			else if (event.getActor().getAnimation() == InfernoJad.Attack.RANGE.getAnimation())
+			{
+				jad.updateNextAttack(InfernoJad.Attack.RANGE);
+			}
 		}
 	}
 
@@ -515,8 +544,12 @@ public class InfernoPlugin extends Plugin
 	{
 		this.displayNibblerOverlay = config.displayNibblerOverlay();
 		this.showPrayerHelp = config.showPrayerHelp();
+		this.prayerOverlayMode = config.prayerOverlayMode();
 		this.waveDisplay = config.waveDisplay();
 		this.getWaveOverlayHeaderColor = config.getWaveOverlayHeaderColor();
 		this.getWaveTextColor = config.getWaveTextColor();
+		this.descendingBoxes = config.descendingBoxes();
+		this.indicateWhenPrayingCorrectly = config.indicateWhenPrayingCorrectly();
+		this.indicateActiveHealers = config.indicateActiveHealers();
 	}
 }
