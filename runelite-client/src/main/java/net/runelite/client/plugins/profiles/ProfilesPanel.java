@@ -156,20 +156,27 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
+				boolean error = false;
 				try
 				{
-					remove(loginPanel);
-					add(accountPanel, BorderLayout.CENTER);
-
-					profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
-					add(profilesPanel, BorderLayout.SOUTH);
-
 					redrawProfiles();
 				}
 				catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
 				{
+					error = true;
 					showErrorMessage("Unable to load data", "Incorrect password!");
 				}
+
+				if (error)
+				{
+					return;
+				}
+
+				remove(loginPanel);
+				add(accountPanel, BorderLayout.CENTER);
+
+				profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
+				add(profilesPanel, BorderLayout.SOUTH);
 			}
 
 			@Override
