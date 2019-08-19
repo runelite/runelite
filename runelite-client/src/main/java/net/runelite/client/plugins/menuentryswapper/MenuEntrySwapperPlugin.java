@@ -34,11 +34,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -1680,10 +1682,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			for (Map.Entry<String, String> entry : split.entrySet())
 			{
+				String val = entry.getValue();
+				if (!val.contains(","))
+				{
+					continue;
+				}
+
 				sb.append(entry.getValue()).append(":0\n");
 			}
 
 			configManager.setConfiguration("menuentryswapper", "customSwaps", sb.toString());
 		}
+
+		// Ugly band-aid i'm sorry
+		configManager.setConfiguration("menuentryswapper", "customSwaps",
+			Arrays.stream(config.customSwaps().split("\n")).distinct().filter(swap -> !"walk here".equals(swap.split(":")[0].trim().toLowerCase())).filter(swap -> !"cancel".equals(swap.split(":")[0].trim().toLowerCase())).collect(Collectors.joining("\n"))
+		);
 	}
 }
