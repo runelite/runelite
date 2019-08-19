@@ -56,7 +56,7 @@ public interface PvpPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "showOverlayTitle",
 		name = "Show Overlay Title",
-		description = "If enabled, the overlay will have a title to say it's the PvP Performance Tracker.",
+		description = "If enabled, the overlay will have a title to say it's the LMS Performance Tracker.",
 		position = 2
 	)
 	default boolean showOverlayTitle()
@@ -64,14 +64,14 @@ public interface PvpPerformanceTrackerConfig extends Config
 		return true;
 	}
 
-//	@ConfigItem(
-//			keyName = "saveFightHistory",
-//			name = "Save Fight History",
-//			description = "Enables the Panel & keeps fight statistics saved through client restarts.",
-//			position = 3
-//	)
-//	default boolean saveFightHistory()
-//	{
-//		return true;
-//	}
+	@ConfigItem(
+			keyName = "saveFightHistory",
+			name = "Save Fight History",
+			description = "Enables the Panel which displays previous fight statistics.",
+			position = 3
+	)
+	default boolean saveFightHistory()
+	{
+		return true;
+	}
 }

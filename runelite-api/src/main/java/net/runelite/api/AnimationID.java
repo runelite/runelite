@@ -236,7 +236,7 @@ public final class AnimationID
 
 	// Magic Attack/Casting Animations
     public static final int MAGIC_STANDARD_BIND = 1161; // tested with entangle
-	public static final int MAGIC_STANDARD_STRIKE_BOLT_BLAST = 1162; // strike, bolt and blast (tested different weapons)
+	public static final int MAGIC_STANDARD_STRIKE_BOLT_BLAST = 1162; // strike, bolt and blast (tested all spells, different weapons)
 	public static final int MAGIC_STANDARD_WAVE = 1167; // wave (tested different weapons)
 	public static final int MAGIC_STANDARD_SURGE = 7855; // surge (tested different weapons)
     public static final int MAGIC_ANCIENT_SINGLE_TARGET = 1978; // Rush & Blitz animations (tested all 8, different weapons)

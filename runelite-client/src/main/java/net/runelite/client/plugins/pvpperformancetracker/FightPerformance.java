@@ -45,6 +45,7 @@ public class FightPerformance
 	private double opponentSuccessRate; // success rate in percentage
 	private boolean opponentDied;
 
+	// get a testing instance, used for debugging purposes.
 	static FightPerformance getTestInstance(boolean random)
 	{
 		if (random)
@@ -69,6 +70,7 @@ public class FightPerformance
 		}
 	}
 
+	// proper constructor which initializes a fight using only Player names, starting stats at 0.
 	FightPerformance(String playerName, String opponentName)
 	{
 		this.playerName = playerName;
@@ -83,6 +85,7 @@ public class FightPerformance
 		opponentDied = false;
 	}
 
+	// used in getTestInstance, used for debugging purposes.
 	private FightPerformance(String playerName, String opponentName, int playerAttackCount, int playerSuccessCount, int opponentAttackCount, int opponentSuccessCount)
 	{
 		this.playerName = playerName;
@@ -135,7 +138,6 @@ public class FightPerformance
 	public String getPlayerDisplayString()
 	{
 		// The success rate is the percentage of successful attacks.
-		//int playerSuccessRate = (int)Math.round(((double)playerSuccessCount / (double)playerAttackCount) * 100);
 		return playerSuccessCount + "/" + playerAttackCount + " (" + Math.round(playerSuccessRate) + "%)";
 	}
 
@@ -143,15 +145,14 @@ public class FightPerformance
 	public String getOpponentDisplayString()
 	{
 		// The success rate is the percentage of successful attacks.
-		//int opponentSuccessRate = (int)Math.round(((double)opponentSuccessCount / (double)opponentAttackCount) * 100);
 		return opponentSuccessCount + "/" + opponentAttackCount + " (" + Math.round(opponentSuccessRate) + "%)";
 	}
 
 	// returns true if player success rate > opponent success rate.
-	// could be "wrong" in some cases, if someone is eating a lot and genuinely not attacking much,
+	// could be "wrong" in some cases, if someone is eating a lot and not actually attacking much,
 	// they could have a higher success rate than the person clearly winning. Although it is hard to
 	// judge by comparing attack counts since someone using rune knives/msb against ballista/ags
-	// is fairly common, which would be opposite to the above.
+	// is not uncommon, which could cause a situation opposite of the one described above.
 	public boolean playerWinning()
 	{
 		return playerSuccessRate > opponentSuccessRate;

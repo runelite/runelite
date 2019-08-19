@@ -56,8 +56,8 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	// stand under for a while to eat. Fights will automatically end when either player dies.
 	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
 
-	// Last man standing map regions (thanks to loottracker plugin)
-	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
+	// Last man standing map regions (thanks to discord plugin)
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916);
 
 	@Inject
 	private PvpPerformanceTrackerConfig config;
@@ -94,7 +94,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		playerAttacking = false;
 		opponentAttacking = false;
 		fightHistory = new ArrayList<>();
-		currentFight = FightPerformance.getTestInstance(true);
+		//currentFight = FightPerformance.getTestInstance(true);
 		overlayManager.add(overlay);
 	}
 
@@ -167,9 +167,11 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	}
 
 	// Returns true if the player has an opponent. Will also set the currentOpponent to null if the player
-	// should no longer have a target (hasn't fought in NEW_FIGHT_DELAY, or either player died)
+	// should no longer have a target (hasn't fought in NEW_FIGHT_DELAY, or either player died).
+	// Will also add the currentFight to fightHistory if the fight ended.
 	private boolean hasOpponent()
 	{
+		// if either player died, end the fight.
 		if (currentOpponent != null && currentOpponent.getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.opponentDied();
@@ -177,14 +179,14 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 			currentFight = null;
 			currentOpponent = null;
 		}
-		if (client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
+		if (currentOpponent != null && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.playerDied();
 			fightHistory.add(currentFight);
 			currentFight = null;
 			currentOpponent = null;
 		}
-		// If there was no fight actions in the last 20s (NEW_FIGHT_DELAY), set opponent to
+		// If there was no fight actions in the last (NEW_FIGHT_DELAY) seconds, set opponent to
 		// null, which will get set next time the player targets a Player.
 		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
 		{
