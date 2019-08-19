@@ -43,7 +43,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -112,7 +111,6 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 @Singleton
 @PluginDependency(PvpToolsPlugin.class)
-@Slf4j
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "shiftclick";
@@ -491,8 +489,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		log.info(String.valueOf(event));
-
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
@@ -1686,6 +1682,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			for (Map.Entry<String, String> entry : split.entrySet())
 			{
+				String val = entry.getValue();
+				if (!val.contains(","))
+				{
+					continue;
+				}
+
 				sb.append(entry.getValue()).append(":0\n");
 			}
 
