@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.base.Splitter;
+import java.util.Map;
 
 public class Parse
 {
@@ -32,7 +33,7 @@ public class Parse
 	{
 		try
 		{
-			StringBuilder sb = new StringBuilder();
+			final StringBuilder sb = new StringBuilder();
 
 			for (String str : value.split("\n"))
 			{
@@ -42,15 +43,20 @@ public class Parse
 				}
 			}
 
-			Splitter NEWLINE_SPLITTER = Splitter
+			final Splitter NEWLINE_SPLITTER = Splitter
 				.on("\n")
 				.omitEmptyStrings()
 				.trimResults();
 
-			NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
+			final Map<String, String> tmp = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
+
+			for (String str : tmp.values())
+			{
+				Integer.parseInt(str.trim());
+			}
 			return true;
 		}
-		catch (IllegalArgumentException ex)
+		catch (Exception ex)
 		{
 			return false;
 		}

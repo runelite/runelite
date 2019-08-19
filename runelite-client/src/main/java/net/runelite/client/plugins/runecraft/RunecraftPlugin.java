@@ -319,7 +319,7 @@ public class RunecraftPlugin extends Plugin
 
 	private void updateConfig()
 	{
-		this.lavas = config.Lavas();
+		this.lavas = config.lavas();
 		this.essPouch = config.essPouch();
 		this.hightlightDarkMage = config.hightlightDarkMage();
 		this.degradingNotification = config.degradingNotification();

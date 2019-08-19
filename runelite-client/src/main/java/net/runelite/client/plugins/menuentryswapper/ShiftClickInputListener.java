@@ -38,7 +38,6 @@ class ShiftClickInputListener implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent event)
 	{
-
 	}
 
 	@Override
@@ -46,7 +45,6 @@ class ShiftClickInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setShiftModifier(true);
 			plugin.startShift();
 		}
 		if (event.getKeyCode() == KeyEvent.VK_CONTROL)
@@ -60,7 +58,6 @@ class ShiftClickInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setShiftModifier(false);
 			plugin.stopShift();
 		}
 		if (event.getKeyCode() == KeyEvent.VK_CONTROL)

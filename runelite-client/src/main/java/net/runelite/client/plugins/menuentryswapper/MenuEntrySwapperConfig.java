@@ -352,7 +352,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "customSwaps",
 		name = "Custom Swaps",
-		description = "Add custom swaps here, 1 per line. Syntax: option, target : option, target<br>Note that the first entry should be the left click one!",
+		description = "Add custom swaps here, 1 per line. Syntax: option, target : option, target" +
+			"<br>Note that the first entry should be the left click one!",
 		position = 0,
 		group = "Miscellaneous",
 		parse = true,
@@ -365,15 +366,20 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "shiftClickCustomization",
-		name = "Customizable Shift-click",
-		description = "Allows customization of shift-clicks on items.",
+		keyName = "shiftCustomSwaps",
+		name = "Shift Swaps",
+		description = "Add custom swaps here that will only be activated when you press shift" +
+			"<br>, 1 per line. Syntax: option, target : option, target" +
+			"<br>Note that the first entry should be the left click one!",
 		position = 1,
-		group = "Miscellaneous"
+		group = "Miscellaneous",
+		parse = true,
+		clazz = Parse.class,
+		method = "parse"
 	)
-	default boolean shiftClickCustomization()
+	default String shiftCustomSwaps()
 	{
-		return true;
+		return "";
 	}
 
 	@ConfigItem(

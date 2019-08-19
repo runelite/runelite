@@ -45,7 +45,7 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Lavas",
+		keyName = "lavas",
 		name = "Lavas",
 		description = "Swaps Ring of dueling menu entry depending on location, requires fire tiara or RC cape to be worn.",
 		parent = "utilStub",
@@ -53,9 +53,9 @@ public interface RunecraftConfig extends Config
 			"<br>Expect bugs if you use them together.</html></center>",
 		position = 2
 	)
-	default boolean Lavas()
+	default boolean lavas()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
