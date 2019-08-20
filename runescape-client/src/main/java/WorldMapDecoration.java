@@ -59,7 +59,7 @@ public class WorldMapDecoration {
 			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			var3.itemId = var4;
 			var3.itemQuantity = var5;
-			ItemDefinition var6 = WorldMapArea.getItemDefinition(var4);
+			ItemDefinition var6 = WorldMapArea.ItemDefinition_get(var4);
 			var3.modelAngleX = var6.xan2d;
 			var3.modelAngleY = var6.yan2d;
 			var3.modelAngleZ = var6.zan2d;
@@ -107,26 +107,27 @@ public class WorldMapDecoration {
 		int var3 = 0;
 
 		for (int var4 = 0; var4 < ItemDefinition.ItemDefinition_fileCount; ++var4) {
-			ItemDefinition var5 = WorldMapArea.getItemDefinition(var4);
-			if ((!var1 || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-				if (var3 >= 250) {
-					FloorOverlayDefinition.foundItemIdCount = -1;
-					WorldMapData_1.foundItemIds = null;
-					return;
-				}
-
-				if (var3 >= var2.length) {
-					short[] var6 = new short[var2.length * 2];
-
-					for (int var7 = 0; var7 < var3; ++var7) {
-						var6[var7] = var2[var7];
-					}
-
-					var2 = var6;
-				}
-
-				var2[var3++] = (short)var4;
+			ItemDefinition var5 = WorldMapArea.ItemDefinition_get(var4);
+			if ((var1 && !var5.isTradable) || var5.noteTemplate != -1 || var5.name.toLowerCase().indexOf(var0) == -1) {
+				continue;
 			}
+			if (var3 >= 250) {
+				FloorOverlayDefinition.foundItemIdCount = -1;
+				WorldMapData_1.foundItemIds = null;
+				return;
+			}
+
+			if (var3 >= var2.length) {
+				short[] var6 = new short[var2.length * 2];
+
+				for (int var7 = 0; var7 < var3; ++var7) {
+					var6[var7] = var2[var7];
+				}
+
+				var2 = var6;
+			}
+
+			var2[var3++] = (short)var4;
 		}
 
 		WorldMapData_1.foundItemIds = var2;
@@ -135,7 +136,7 @@ public class WorldMapDecoration {
 		String[] var8 = new String[FloorOverlayDefinition.foundItemIdCount];
 
 		for (int var9 = 0; var9 < FloorOverlayDefinition.foundItemIdCount; ++var9) {
-			var8[var9] = WorldMapArea.getItemDefinition(var2[var9]).name;
+			var8[var9] = WorldMapArea.ItemDefinition_get(var2[var9]).name;
 		}
 
 		MenuAction.startSortingItemsByName(var8, WorldMapData_1.foundItemIds);

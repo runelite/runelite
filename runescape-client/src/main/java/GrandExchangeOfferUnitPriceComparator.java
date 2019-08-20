@@ -96,7 +96,7 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 
 			if (var3 != Client.field911) {
 				if (Client.field911 == 0 && Client.field889 != -1) {
-					class169.method3503(WorldMapRegion.archive6, Client.field889, 0, var3, false);
+					FileSystem.method3503(WorldMapRegion.archive6, Client.field889, 0, var3, false);
 					Client.field699 = false;
 				} else if (var3 == 0) {
 					NetSocket.method3553();
@@ -134,7 +134,7 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 		}
 
 		if (var4 == 5) {
-			Client.field789 = var2;
+			Client.leftClickOpensMenu = var2;
 		}
 
 		if (var4 == 6) {
@@ -168,11 +168,11 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 		}
 
 		if (var4 == 17) {
-			Client.followerIndex = var2 & 65535;
+			Client.followerIndex = var2 & 0xffff;
 		}
 
 		if (var4 == 18) {
-			Client.playerAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.method4141(), var2);
+			Client.playerAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.AttackOption_values(), var2);
 			if (Client.playerAttackOption == null) {
 				Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
 			}
@@ -187,7 +187,7 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 		}
 
 		if (var4 == 22) {
-			Client.npcAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.method4141(), var2);
+			Client.npcAttackOption = (AttackOption)SoundSystem.findEnumerated(AbstractArchive.AttackOption_values(), var2);
 			if (Client.npcAttackOption == null) {
 				Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
 			}

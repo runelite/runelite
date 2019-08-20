@@ -94,7 +94,7 @@ public class LoginScreenAnimation {
 
 		int var1;
 		for (var1 = 0; var1 < 64; ++var1) {
-			this.field1045[var1] = var1 * 262144;
+			this.field1045[var1] = var1 * 0x40000;
 		}
 
 		for (var1 = 0; var1 < 64; ++var1) {
@@ -120,7 +120,7 @@ public class LoginScreenAnimation {
 		}
 
 		for (var1 = 0; var1 < 64; ++var1) {
-			this.field1046[var1 + 128] = var1 * 262144 + 65535;
+			this.field1046[var1 + 128] = var1 * 0x40000 + 0xffff;
 		}
 
 		for (var1 = 0; var1 < 64; ++var1) {
@@ -134,7 +134,7 @@ public class LoginScreenAnimation {
 		}
 
 		for (var1 = 0; var1 < 64; ++var1) {
-			this.field1047[var1 + 64] = var1 * 262144 + 255;
+			this.field1047[var1 + 64] = var1 * 0x40000 + 255;
 		}
 
 		for (var1 = 0; var1 < 64; ++var1) {
@@ -482,7 +482,8 @@ public class LoginScreenAnimation {
 		signature = "(II)I",
 		garbageValue = "-1877742024"
 	)
-	static int method1744(int var0) {
+	@Export("Messages_getHistorySize")
+	static int Messages_getHistorySize(int var0) {
 		ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(var0);
 		return var1 == null ? 0 : var1.size();
 	}
@@ -500,7 +501,7 @@ public class LoginScreenAnimation {
 			var8 = 100;
 		}
 
-		int var9 = (Client.field908 - Client.field906) * var8 / 100 + Client.field906;
+		int var9 = (Client.zoomWidth - Client.zoomHeight) * var8 / 100 + Client.zoomHeight;
 		int var7 = var5 * var9 / 256;
 		var8 = 2048 - var3 & 2047;
 		var9 = 2048 - var4 & 2047;

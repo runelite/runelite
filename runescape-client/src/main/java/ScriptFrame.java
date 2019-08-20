@@ -61,8 +61,7 @@ public class ScriptFrame {
 		for (int var9 = 0; var9 < 8; ++var9) {
 			for (var10 = 0; var10 < 8; ++var10) {
 				if (var9 + var2 > 0 && var9 + var2 < 103 && var3 + var10 > 0 && var3 + var10 < 103) {
-					int[] var10000 = var8[var1].flags[var9 + var2];
-					var10000[var3 + var10] &= -16777217;
+					var8[var1].flags[var9 + var2][var3 + var10] &= 0xfeffffff;
 				}
 			}
 		}
@@ -89,7 +88,7 @@ public class ScriptFrame {
 		garbageValue = "204342367"
 	)
 	static final void method1090() {
-		if (Client.field700 > 0) {
+		if (Client.logoutTimer > 0) {
 			RouteStrategy.method3593();
 		} else {
 			Client.timer.method4993();
@@ -121,7 +120,7 @@ public class ScriptFrame {
 	static final void updateNpcs(boolean var0, PacketBuffer var1) {
 		Client.field775 = 0;
 		Client.field697 = 0;
-		StructDefinition.method4530();
+		StructDefinition.readNpcUpdates();
 
 		int var2;
 		NPC var4;
@@ -132,7 +131,7 @@ public class ScriptFrame {
 		int var9;
 		while (var1.bitsRemaining(Client.packetWriter.serverPacketLength) >= 27) {
 			var2 = var1.readBits(15);
-			if (var2 == 32767) {
+			if (var2 == 0x7fff) {
 				break;
 			}
 
@@ -158,9 +157,9 @@ public class ScriptFrame {
 			}
 
 			var6 = var1.readBits(1);
-			var7 = Client.field780[var1.readBits(3)];
+			var7 = Client.defaultRotations[var1.readBits(3)];
 			if (var3) {
-				var4.orientation = var4.field950 = var7;
+				var4.orientation = var4.rotation = var7;
 			}
 
 			var8 = var1.readBits(1);
@@ -182,9 +181,9 @@ public class ScriptFrame {
 
 			var4.definition = GameShell.getNpcDefinition(var1.readBits(14));
 			var4.size = var4.definition.size * 78073455;
-			var4.field948 = var4.definition.field3492;
+			var4.field948 = var4.definition.rotation;
 			if (var4.field948 == 0) {
-				var4.field950 = 0;
+				var4.rotation = 0;
 			}
 
 			var4.walkSequence = var4.definition.walkSequence;
@@ -206,7 +205,7 @@ public class ScriptFrame {
 			var5 = var1.readUnsignedByte();
 			if ((var5 & 1) != 0) {
 				var4.targetIndex = var1.method5532();
-				if (var4.targetIndex == 65535) {
+				if (var4.targetIndex == 0xffff) {
 					var4.targetIndex = -1;
 				}
 			}
@@ -223,13 +222,13 @@ public class ScriptFrame {
 
 			if ((var5 & 32) != 0) {
 				var6 = var1.readUnsignedShort();
-				if (var6 == 65535) {
+				if (var6 == 0xffff) {
 					var6 = -1;
 				}
 
 				var7 = var1.method5525();
 				if (var6 == var4.sequence && var6 != -1) {
-					var8 = GrandExchangeEvent.getSequenceDefinition(var6).field3529;
+					var8 = GrandExchangeEvent.SequenceDefinition_get(var6).field3529;
 					if (var8 == 1) {
 						var4.sequenceFrame = 0;
 						var4.sequenceFrameCycle = 0;
@@ -240,7 +239,7 @@ public class ScriptFrame {
 					if (var8 == 2) {
 						var4.field985 = 0;
 					}
-				} else if (var6 == -1 || var4.sequence == -1 || GrandExchangeEvent.getSequenceDefinition(var6).field3533 >= GrandExchangeEvent.getSequenceDefinition(var4.sequence).field3533) {
+				} else if (var6 == -1 || var4.sequence == -1 || GrandExchangeEvent.SequenceDefinition_get(var6).field3533 >= GrandExchangeEvent.SequenceDefinition_get(var4.sequence).field3533) {
 					var4.sequence = var6;
 					var4.sequenceFrame = 0;
 					var4.sequenceFrameCycle = 0;
@@ -253,7 +252,7 @@ public class ScriptFrame {
 			if ((var5 & 4) != 0) {
 				var4.definition = GameShell.getNpcDefinition(var1.readUnsignedShort());
 				var4.size = var4.definition.size * 78073455;
-				var4.field948 = var4.definition.field3492;
+				var4.field948 = var4.definition.rotation;
 				var4.walkSequence = var4.definition.walkSequence;
 				var4.walkBackSequence = var4.definition.walkBackSequence;
 				var4.walkLeftSequence = var4.definition.walkLeftSequence;
@@ -274,7 +273,7 @@ public class ScriptFrame {
 						var10 = -1;
 						var11 = -1;
 						var8 = var1.readUShortSmart();
-						if (var8 == 32767) {
+						if (var8 == 0x7fff) {
 							var8 = var1.readUShortSmart();
 							var10 = var1.readUShortSmart();
 							var9 = var1.readUShortSmart();
@@ -295,7 +294,7 @@ public class ScriptFrame {
 					for (var8 = 0; var8 < var7; ++var8) {
 						var9 = var1.readUShortSmart();
 						var10 = var1.readUShortSmart();
-						if (var10 != 32767) {
+						if (var10 != 0x7fff) {
 							var11 = var1.readUShortSmart();
 							var12 = var1.readUnsignedByte();
 							int var13 = var10 > 0 ? var1.method5525() : var12;
@@ -311,14 +310,14 @@ public class ScriptFrame {
 				var4.spotAnimation = var1.method5532();
 				var6 = var1.method5542();
 				var4.heightOffset = var6 >> 16;
-				var4.field989 = (var6 & 65535) + Client.cycle;
+				var4.field989 = (var6 & 0xffff) + Client.cycle;
 				var4.spotAnimationFrame = 0;
 				var4.spotAnimationFrameCycle = 0;
 				if (var4.field989 > Client.cycle) {
 					var4.spotAnimationFrame = -1;
 				}
 
-				if (var4.spotAnimation == 65535) {
+				if (var4.spotAnimation == 0xffff) {
 					var4.spotAnimation = -1;
 				}
 			}
@@ -355,10 +354,10 @@ public class ScriptFrame {
 	)
 	@Export("resumePauseWidget")
 	static void resumePauseWidget(int parentID, int childID) {
-		PacketBufferNode var2 = Archive.method4265(ClientPacket.field2273, Client.packetWriter.isaacCipher);
+		PacketBufferNode var2 = Archive.getPacketBufferNode(ClientPacket.field2273, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeIntLE16(parentID);
 		var2.packetBuffer.method5530(childID);
-		Client.packetWriter.method2219(var2);
+		Client.packetWriter.addNode(var2);
 	}
 
 	@ObfuscatedName("js")
@@ -366,9 +365,10 @@ public class ScriptFrame {
 		signature = "(B)V",
 		garbageValue = "-73"
 	)
-	static final void method1089() {
-		PacketBufferNode var0 = Archive.method4265(ClientPacket.field2286, Client.packetWriter.isaacCipher);
+	@Export("Clan_leaveChat")
+	static final void Clan_leaveChat() {
+		PacketBufferNode var0 = Archive.getPacketBufferNode(ClientPacket.field2286, Client.packetWriter.isaacCipher);
 		var0.packetBuffer.writeByte(0);
-		Client.packetWriter.method2219(var0);
+		Client.packetWriter.addNode(var0);
 	}
 }

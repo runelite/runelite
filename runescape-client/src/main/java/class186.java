@@ -11,7 +11,8 @@ public class class186 {
 		signature = "(Ljava/io/File;ZS)Z",
 		garbageValue = "25650"
 	)
-	static boolean method3618(File var0, boolean var1) {
+	@Export("testReadWritePermissions")
+	static boolean testReadWritePermissions(File var0, boolean var1) {
 		try {
 			RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
 			int var3 = var2.read();

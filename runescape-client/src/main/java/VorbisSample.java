@@ -354,17 +354,14 @@ public class VorbisSample extends Node {
 				var43[var17 + var47] = var43[var4 - var47 - 1];
 			}
 
-			float[] var10000;
 			for (var47 = var8; var47 < var9; ++var47) {
 				var27 = (float)Math.sin(((double)(var47 - var8) + 0.5D) / (double)var10 * 0.5D * 3.141592653589793D);
-				var10000 = field1378;
-				var10000[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+				field1378[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
 			}
 
 			for (var47 = var11; var47 < var12; ++var47) {
 				var27 = (float)Math.sin(((double)(var47 - var11) + 0.5D) / (double)var13 * 0.5D * 3.141592653589793D + 1.5707963267948966D);
-				var10000 = field1378;
-				var10000[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+				field1378[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
 			}
 		}
 
@@ -453,14 +450,14 @@ public class VorbisSample extends Node {
 	@ObfuscatedName("q")
 	@Export("float32Unpack")
 	static float float32Unpack(int var0) {
-		int var1 = var0 & 2097151;
+		int var1 = var0 & 0x1fffff;
 		int var2 = var0 & Integer.MIN_VALUE;
-		int var3 = (var0 & 2145386496) >> 21;
+		int var3 = (var0 & 0x7fe00000) >> 21;
 		if (var2 != 0) {
 			var1 = -var1;
 		}
 
-		return (float)((double)var1 * Math.pow(2.0D, (double)(var3 - 788)));
+		return (float)((double)var1 * Math.pow(2.0D, (double)(var3 - 0x314)));
 	}
 
 	@ObfuscatedName("w")

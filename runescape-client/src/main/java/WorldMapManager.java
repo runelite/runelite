@@ -127,10 +127,10 @@ public final class WorldMapManager {
 			this.loaded = false;
 			this.loadStarted = true;
 			System.nanoTime();
-			int var4 = var1.getGroupId(WorldMapCacheName.field308.name);
+			int var4 = var1.getGroupId(WorldMapCacheName.DETAILS.name);
 			int var5 = var1.getFileId(var4, var2);
-			Buffer var6 = new Buffer(var1.takeFileByNames(WorldMapCacheName.field308.name, var2));
-			Buffer var7 = new Buffer(var1.takeFileByNames(WorldMapCacheName.field302.name, var2));
+			Buffer var6 = new Buffer(var1.takeFileByNames(WorldMapCacheName.DETAILS.name, var2));
+			Buffer var7 = new Buffer(var1.takeFileByNames(WorldMapCacheName.COMPOSITEMAP.name, var2));
 			System.nanoTime();
 			System.nanoTime();
 			this.mapAreaData = new WorldMapAreaData();
@@ -177,8 +177,8 @@ public final class WorldMapManager {
 
 			System.nanoTime();
 			System.nanoTime();
-			if (var1.isValidFileName(WorldMapCacheName.field303.name, var2)) {
-				byte[] var20 = var1.takeFileByNames(WorldMapCacheName.field303.name, var2);
+			if (var1.isValidFileName(WorldMapCacheName.COMPOSITETEXTURE.name, var2)) {
+				byte[] var20 = var1.takeFileByNames(WorldMapCacheName.COMPOSITETEXTURE.name, var2);
 				this.compositeTextureSprite = BuddyRankComparator.convertJpgToSprite(var20);
 			}
 
@@ -489,7 +489,8 @@ public final class WorldMapManager {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "-1454512266"
 	)
-	static final void method633(String var0) {
+	@Export("FriendSystem_alreadyFriendMes")
+	static final void FriendSystem_alreadyFriendMes(String var0) {
 		StringBuilder var10000 = (new StringBuilder()).append(var0);
 		Object var10001 = null;
 		String var1 = var10000.append(" is already on your friend list").toString();
@@ -503,87 +504,90 @@ public final class WorldMapManager {
 	)
 	@Export("addPlayerToMenu")
 	static final void addPlayerToMenu(Player var0, int var1, int var2, int var3) {
-		if (Client.localPlayer != var0) {
-			if (Client.menuOptionsCount < 400) {
-				String var4;
-				int var7;
-				if (var0.skillLevel == 0) {
-					String var5 = var0.actions[0] + var0.username + var0.actions[1];
-					var7 = var0.combatLevel;
-					int var8 = Client.localPlayer.combatLevel;
-					int var9 = var8 - var7;
-					String var6;
-					if (var9 < -9) {
-						var6 = ClientPreferences.colorStartTag(0xff0000);
-					} else if (var9 < -6) {
-						var6 = ClientPreferences.colorStartTag(16723968);
-					} else if (var9 < -3) {
-						var6 = ClientPreferences.colorStartTag(16740352);
-					} else if (var9 < 0) {
-						var6 = ClientPreferences.colorStartTag(16756736);
-					} else if (var9 > 9) {
-						var6 = ClientPreferences.colorStartTag(0xff00);
-					} else if (var9 > 6) {
-						var6 = ClientPreferences.colorStartTag(4259584);
-					} else if (var9 > 3) {
-						var6 = ClientPreferences.colorStartTag(8453888);
-					} else if (var9 > 0) {
-						var6 = ClientPreferences.colorStartTag(12648192);
-					} else {
-						var6 = ClientPreferences.colorStartTag(0xffff00);
-					}
+		if (Client.localPlayer == var0) {
+			return;
+		}
+		if (Client.menuOptionsCount >= 400) {
+			return;
+		}
+		String var4;
+		int var7;
+		if (var0.skillLevel != 0) {
+			var4 = var0.actions[0] + var0.username + var0.actions[1] + " " + " (" + "skill-" + var0.skillLevel + ")" + var0.actions[2];
+		} else {
+			String var5 = var0.actions[0] + var0.username + var0.actions[1];
+			var7 = var0.combatLevel;
+			int var8 = Client.localPlayer.combatLevel;
+			int var9 = var8 - var7;
+			String var6;
+			if (var9 < -9) {
+				var6 = ClientPreferences.colorStartTag(0xff0000);
+			} else if (var9 < -6) {
+				var6 = ClientPreferences.colorStartTag(0xff3000);
+			} else if (var9 < -3) {
+				var6 = ClientPreferences.colorStartTag(0xff7000);
+			} else if (var9 < 0) {
+				var6 = ClientPreferences.colorStartTag(0xffb000);
+			} else if (var9 > 9) {
+				var6 = ClientPreferences.colorStartTag(0xff00);
+			} else if (var9 > 6) {
+				var6 = ClientPreferences.colorStartTag(0x40ff00);
+			} else if (var9 > 3) {
+				var6 = ClientPreferences.colorStartTag(0x80ff00);
+			} else if (var9 > 0) {
+				var6 = ClientPreferences.colorStartTag(0xc0ff00);
+			} else {
+				var6 = ClientPreferences.colorStartTag(0xffff00);
+			}
 
-					var4 = var5 + var6 + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
-				} else {
-					var4 = var0.actions[0] + var0.username + var0.actions[1] + " " + " (" + "skill-" + var0.skillLevel + ")" + var0.actions[2];
+			var4 = var5 + var6 + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+		}
+
+		int var10;
+		if (Client.isItemSelected == 1) {
+			class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffffff) + var4, 14, var1, var2, var3);
+		} else if (Client.isSpellSelected) {
+			if ((WorldMapCacheName.selectedSpellFlags & 8) == 8) {
+				class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffffff) + var4, 15, var1, var2, var3);
+			}
+		} else {
+			for (var10 = 7; var10 >= 0; --var10) {
+				if (Client.playerMenuActions[var10] == null) {
+					continue;
 				}
-
-				int var10;
-				if (Client.isItemSelected == 1) {
-					class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffffff) + var4, 14, var1, var2, var3);
-				} else if (Client.isSpellSelected) {
-					if ((WorldMapCacheName.selectedSpellFlags & 8) == 8) {
-						class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffffff) + var4, 15, var1, var2, var3);
+				short var11 = 0;
+				if (Client.playerMenuActions[var10].equalsIgnoreCase("Attack")) {
+					if (Client.playerAttackOption == AttackOption.AttackOption_hidden) {
+						continue;
 					}
-				} else {
-					for (var10 = 7; var10 >= 0; --var10) {
-						if (Client.playerMenuActions[var10] != null) {
-							short var11 = 0;
-							if (Client.playerMenuActions[var10].equalsIgnoreCase("Attack")) {
-								if (Client.playerAttackOption == AttackOption.AttackOption_hidden) {
-									continue;
-								}
 
-								if (AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && var0.combatLevel > Client.localPlayer.combatLevel) {
-									var11 = 2000;
-								}
+					if (AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && var0.combatLevel > Client.localPlayer.combatLevel) {
+						var11 = 2000;
+					}
 
-								if (Client.localPlayer.team != 0 && var0.team != 0) {
-									if (var0.team == Client.localPlayer.team) {
-										var11 = 2000;
-									} else {
-										var11 = 0;
-									}
-								}
-							} else if (Client.playerOptionsPriorities[var10]) {
-								var11 = 2000;
-							}
-
-							boolean var12 = false;
-							var7 = Client.playerMenuOpcodes[var10] + var11;
-							class188.insertMenuItemNoShift(Client.playerMenuActions[var10], ClientPreferences.colorStartTag(0xffffff) + var4, var7, var1, var2, var3);
+					if (Client.localPlayer.team != 0 && var0.team != 0) {
+						if (var0.team == Client.localPlayer.team) {
+							var11 = 2000;
+						} else {
+							var11 = 0;
 						}
 					}
+				} else if (Client.playerOptionsPriorities[var10]) {
+					var11 = 2000;
 				}
 
-				for (var10 = 0; var10 < Client.menuOptionsCount; ++var10) {
-					if (Client.menuOpcodes[var10] == 23) {
-						Client.menuTargetNames[var10] = ClientPreferences.colorStartTag(0xffffff) + var4;
-						break;
-					}
-				}
-
+				boolean var12 = false;
+				var7 = Client.playerMenuOpcodes[var10] + var11;
+				class188.insertMenuItemNoShift(Client.playerMenuActions[var10], ClientPreferences.colorStartTag(0xffffff) + var4, var7, var1, var2, var3);
 			}
 		}
+
+		for (var10 = 0; var10 < Client.menuOptionsCount; ++var10) {
+			if (Client.menuOpcodes[var10] == 23) {
+				Client.menuTargets[var10] = ClientPreferences.colorStartTag(0xffffff) + var4;
+				break;
+			}
+		}
+
 	}
 }

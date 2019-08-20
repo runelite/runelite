@@ -28,7 +28,7 @@ package net.runelite.client.plugins.barbarianassault;
 import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.client.menus.BaseComparableEntry;
 import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 
@@ -62,10 +62,10 @@ public enum Menus
 	TELL_TOFU_HEALER_HORN(Role.HEALER, newBaseComparableEntry("tell-tofu", "healer horn", -1, -1, true, true)),
 	TELL_CRACKERS_HEALER_HORN(Role.HEALER, newBaseComparableEntry("tell-crackers", "healer horn", -1, -1, true, true)),
 	TELL_WORMS_HEALER_HORN(Role.HEALER, newBaseComparableEntry("tell-worms", "healer horn", -1, -1, true, true)),
-	USE_VIAL_GROUND(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuAction.ITEM_USE_ON_GROUND_ITEM.getId(), true, false)),
-	USE_VIAL_ITEM(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(), true, false)),
-	USE_VIAL_NPC(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuAction.ITEM_USE_ON_NPC.getId(), true, false)),
-	USE_VIAL_WIDGET(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuAction.ITEM_USE_ON_WIDGET.getId(), true, false)),
+	USE_VIAL_GROUND(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuOpcode.ITEM_USE_ON_GROUND_ITEM.getId(), true, false)),
+	USE_VIAL_ITEM(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuOpcode.ITEM_USE_ON_WIDGET_ITEM.getId(), true, false)),
+	USE_VIAL_NPC(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuOpcode.ITEM_USE_ON_NPC.getId(), true, false)),
+	USE_VIAL_WIDGET(Role.HEALER, newBaseComparableEntry("use", "healing vial", -1, MenuOpcode.ITEM_USE_ON_WIDGET.getId(), true, false)),
 
 	CONVERT_COLLECTOR_CONVERTER(Role.COLLECTOR, newBaseComparableEntry("convert", "collector converter", -1, -1, true, true)),
 	LOAD_EGG_HOPPER(Role.COLLECTOR, newBaseComparableEntry("load", "egg hopper", -1, -1, true, true)),

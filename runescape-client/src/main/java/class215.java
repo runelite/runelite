@@ -13,7 +13,8 @@ public class class215 {
 	@ObfuscatedName("p")
 	public static final short[][] field2546;
 	@ObfuscatedName("x")
-	static boolean field2545;
+	@Export("NetCache_hasPendingPriorityResponses")
+	static boolean NetCache_hasPendingPriorityResponses;
 	@ObfuscatedName("dy")
 	@ObfuscatedSignature(
 		signature = "Liu;"
@@ -29,35 +30,36 @@ public class class215 {
 	}
 
 	@ObfuscatedName("w")
-	public static String method4023(long var0) {
-		if (var0 > 0L && var0 < 6582952005840035281L) {
-			if (var0 % 37L == 0L) {
-				return null;
-			}
-			int var2 = 0;
-
-			for (long var3 = var0; 0L != var3; var3 /= 37L) {
-				++var2;
-			}
-
-			StringBuilder var5;
-			char var8;
-			for (var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-				long var6 = var0;
-				var0 /= 37L;
-				var8 = class289.base37Table[(int)(var6 - var0 * 37L)];
-				if (var8 == '_') {
-					int var9 = var5.length() - 1;
-					var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-					var8 = 160;
-				}
-			}
-
-			var5.reverse();
-			var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-			return var5.toString();
+	@Export("base37DecodeLong")
+	public static String base37DecodeLong(long var0) {
+		if (var0 <= 0L || var0 >= 0x5b5b57f8a98a5dd1L) {
+			return null;
 		}
-		return null;
+		if (var0 % 37L == 0L) {
+			return null;
+		}
+		int var2 = 0;
+
+		for (long var3 = var0; 0L != var3; var3 /= 37L) {
+			++var2;
+		}
+
+		StringBuilder var5;
+		char var8;
+		for (var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
+			long var6 = var0;
+			var0 /= 37L;
+			var8 = class289.base37Table[(int)(var6 - var0 * 37L)];
+			if (var8 == '_') {
+				int var9 = var5.length() - 1;
+				var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+				var8 = 160;
+			}
+		}
+
+		var5.reverse();
+		var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+		return var5.toString();
 	}
 
 	@ObfuscatedName("l")

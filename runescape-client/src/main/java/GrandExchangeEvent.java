@@ -8,7 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
 	@ObfuscatedName("pp")
-	static boolean field49;
+	@Export("ClanChat_inClanChat")
+	static boolean ClanChat_inClanChat;
 	@ObfuscatedName("c")
 	@ObfuscatedGetter(
 		intValue = 2059259505
@@ -90,8 +91,8 @@ public class GrandExchangeEvent {
 		signature = "(IB)Lis;",
 		garbageValue = "1"
 	)
-	@Export("getSequenceDefinition")
-	public static SequenceDefinition getSequenceDefinition(int var0) {
+	@Export("SequenceDefinition_get")
+	public static SequenceDefinition SequenceDefinition_get(int var0) {
 		SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
@@ -113,8 +114,8 @@ public class GrandExchangeEvent {
 		garbageValue = "-583790135"
 	)
 	static final void method73() {
-		PacketBufferNode var0 = Archive.method4265(ClientPacket.field2223, Client.packetWriter.isaacCipher);
-		Client.packetWriter.method2219(var0);
+		PacketBufferNode var0 = Archive.getPacketBufferNode(ClientPacket.field2223, Client.packetWriter.isaacCipher);
+		Client.packetWriter.addNode(var0);
 
 		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
 			if (var1.type == 0 || var1.type == 3) {

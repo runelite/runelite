@@ -138,7 +138,7 @@ public class ExaminePlugin extends Plugin
 
 		ExamineType type;
 		int id, quantity = -1;
-		switch (event.getMenuAction())
+		switch (event.getMenuOpcode())
 		{
 			case EXAMINE_ITEM:
 			{

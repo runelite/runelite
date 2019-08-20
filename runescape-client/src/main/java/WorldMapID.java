@@ -50,7 +50,8 @@ public class WorldMapID {
 		signature = "(Ljava/lang/String;B)V",
 		garbageValue = "-37"
 	)
-	static final void method541(String var0) {
+	@Export("FriendSystem_cantIgnoreFriendMes")
+	static final void FriendSystem_cantIgnoreFriendMes(String var0) {
 		StringBuilder var10000 = new StringBuilder();
 		Object var10001 = null;
 		var10000 = var10000.append("Please remove ").append(var0);
@@ -82,7 +83,7 @@ public class WorldMapID {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.method27(var3, var4);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.ItemContainer_getCount(var3, var4);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.INV_TOTAL) {
@@ -150,7 +151,7 @@ public class WorldMapID {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize] + 32768;
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.method27(var3, var4);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.ItemContainer_getCount(var3, var4);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.INVOTHER_TOTAL) {
@@ -228,19 +229,21 @@ public class WorldMapID {
 		signature = "(I)V",
 		garbageValue = "-456020317"
 	)
-	static void method542() {
-		if (Client.isSpellSelected) {
-			Widget var0 = Client.getWidgetChild(WorldMapEvent.field359, Client.field848);
-			if (var0 != null && var0.onTargetLeave != null) {
-				ScriptEvent var1 = new ScriptEvent();
-				var1.widget = var0;
-				var1.args = var0.onTargetLeave;
-				LoginPacket.runScriptEvent(var1);
-			}
-
-			Client.isSpellSelected = false;
-			Strings.invalidateWidget(var0);
+	@Export("Widget_runOnTargetLeave")
+	static void Widget_runOnTargetLeave() {
+		if (!Client.isSpellSelected) {
+			return;
 		}
+		Widget var0 = Client.getWidgetChild(WorldMapEvent.field359, Client.field848);
+		if (var0 != null && var0.onTargetLeave != null) {
+			ScriptEvent var1 = new ScriptEvent();
+			var1.widget = var0;
+			var1.args = var0.onTargetLeave;
+			LoginPacket.runScriptEvent(var1);
+		}
+
+		Client.isSpellSelected = false;
+		Strings.invalidateWidget(var0);
 	}
 
 	@ObfuscatedName("ix")
@@ -248,42 +251,44 @@ public class WorldMapID {
 		signature = "([Lhj;IS)V",
 		garbageValue = "28886"
 	)
-	static final void method539(Widget[] var0, int var1) {
+	@Export("runComponentCloseListeners")
+	static final void runComponentCloseListeners(Widget[] var0, int var1) {
 		for (int var2 = 0; var2 < var0.length; ++var2) {
 			Widget var3 = var0[var2];
-			if (var3 != null) {
-				if (var3.type == 0) {
-					if (var3.children != null) {
-						method539(var3.children, var1);
-					}
+			if (var3 == null) {
+				continue;
+			}
+			if (var3.type == 0) {
+				if (var3.children != null) {
+					runComponentCloseListeners(var3.children, var1);
+				}
 
-					InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
-					if (var4 != null) {
-						WorldMapLabelSize.method175(var4.group, var1);
+				InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
+				if (var4 != null) {
+					WorldMapLabelSize.runIntfCloseListeners(var4.group, var1);
+				}
+			}
+
+			ScriptEvent var5;
+			if (var1 == 0 && var3.onDialogAbort != null) {
+				var5 = new ScriptEvent();
+				var5.widget = var3;
+				var5.args = var3.onDialogAbort;
+				LoginPacket.runScriptEvent(var5);
+			}
+
+			if (var1 == 1 && var3.onSubChange != null) {
+				if (var3.childIndex >= 0) {
+					Widget var6 = class80.getWidget(var3.id);
+					if (var6 == null || var6.children == null || var3.childIndex >= var6.children.length || var3 != var6.children[var3.childIndex]) {
+						continue;
 					}
 				}
 
-				ScriptEvent var5;
-				if (var1 == 0 && var3.onDialogAbort != null) {
-					var5 = new ScriptEvent();
-					var5.widget = var3;
-					var5.args = var3.onDialogAbort;
-					LoginPacket.runScriptEvent(var5);
-				}
-
-				if (var1 == 1 && var3.onSubChange != null) {
-					if (var3.childIndex >= 0) {
-						Widget var6 = class80.getWidget(var3.id);
-						if (var6 == null || var6.children == null || var3.childIndex >= var6.children.length || var3 != var6.children[var3.childIndex]) {
-							continue;
-						}
-					}
-
-					var5 = new ScriptEvent();
-					var5.widget = var3;
-					var5.args = var3.onSubChange;
-					LoginPacket.runScriptEvent(var5);
-				}
+				var5 = new ScriptEvent();
+				var5.widget = var3;
+				var5.args = var3.onSubChange;
+				LoginPacket.runScriptEvent(var5);
 			}
 		}
 

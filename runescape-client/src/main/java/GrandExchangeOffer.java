@@ -113,34 +113,35 @@ public class GrandExchangeOffer {
 	)
 	@Export("sortItemsByName")
 	static void sortItemsByName(String[] var0, short[] var1, int var2, int var3) {
-		if (var2 < var3) {
-			int var4 = (var3 + var2) / 2;
-			int var5 = var2;
-			String var6 = var0[var4];
-			var0[var4] = var0[var3];
-			var0[var3] = var6;
-			short var7 = var1[var4];
-			var1[var4] = var1[var3];
-			var1[var3] = var7;
-
-			for (int var8 = var2; var8 < var3; ++var8) {
-				if (var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-					String var9 = var0[var8];
-					var0[var8] = var0[var5];
-					var0[var5] = var9;
-					short var10 = var1[var8];
-					var1[var8] = var1[var5];
-					var1[var5++] = var10;
-				}
-			}
-
-			var0[var3] = var0[var5];
-			var0[var5] = var6;
-			var1[var3] = var1[var5];
-			var1[var5] = var7;
-			sortItemsByName(var0, var1, var2, var5 - 1);
-			sortItemsByName(var0, var1, var5 + 1, var3);
+		if (var2 >= var3) {
+			return;
 		}
+		int var4 = (var3 + var2) / 2;
+		int var5 = var2;
+		String var6 = var0[var4];
+		var0[var4] = var0[var3];
+		var0[var3] = var6;
+		short var7 = var1[var4];
+		var1[var4] = var1[var3];
+		var1[var3] = var7;
+
+		for (int var8 = var2; var8 < var3; ++var8) {
+			if (var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+				String var9 = var0[var8];
+				var0[var8] = var0[var5];
+				var0[var5] = var9;
+				short var10 = var1[var8];
+				var1[var8] = var1[var5];
+				var1[var5++] = var10;
+			}
+		}
+
+		var0[var3] = var0[var5];
+		var0[var5] = var6;
+		var1[var3] = var1[var5];
+		var1[var5] = var7;
+		sortItemsByName(var0, var1, var2, var5 - 1);
+		sortItemsByName(var0, var1, var5 + 1, var3);
 
 	}
 
@@ -151,46 +152,47 @@ public class GrandExchangeOffer {
 	)
 	@Export("doWorldSorting")
 	static void doWorldSorting(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-		if (var0 < var1) {
-			int var6 = (var0 + var1) / 2;
-			int var7 = var0;
-			World var8 = World.worlds[var6];
-			World.worlds[var6] = World.worlds[var1];
-			World.worlds[var1] = var8;
+		if (var0 >= var1) {
+			return;
+		}
+		int var6 = (var0 + var1) / 2;
+		int var7 = var0;
+		World var8 = World.World_worlds[var6];
+		World.World_worlds[var6] = World.World_worlds[var1];
+		World.World_worlds[var1] = var8;
 
-			for (int var9 = var0; var9 < var1; ++var9) {
-				World var11 = World.worlds[var9];
-				int var12 = DynamicObject.compareWorlds(var11, var8, var2, var3);
-				int var10;
-				if (var12 != 0) {
-					if (var3) {
-						var10 = -var12;
-					} else {
-						var10 = var12;
-					}
-				} else if (var4 == -1) {
-					var10 = 0;
+		for (int var9 = var0; var9 < var1; ++var9) {
+			World var11 = World.World_worlds[var9];
+			int var12 = DynamicObject.compareWorlds(var11, var8, var2, var3);
+			int var10;
+			if (var12 != 0) {
+				if (var3) {
+					var10 = -var12;
 				} else {
-					int var13 = DynamicObject.compareWorlds(var11, var8, var4, var5);
-					if (var5) {
-						var10 = -var13;
-					} else {
-						var10 = var13;
-					}
+					var10 = var12;
 				}
-
-				if (var10 <= 0) {
-					World var14 = World.worlds[var9];
-					World.worlds[var9] = World.worlds[var7];
-					World.worlds[var7++] = var14;
+			} else if (var4 == -1) {
+				var10 = 0;
+			} else {
+				int var13 = DynamicObject.compareWorlds(var11, var8, var4, var5);
+				if (var5) {
+					var10 = -var13;
+				} else {
+					var10 = var13;
 				}
 			}
 
-			World.worlds[var1] = World.worlds[var7];
-			World.worlds[var7] = var8;
-			doWorldSorting(var0, var7 - 1, var2, var3, var4, var5);
-			doWorldSorting(var7 + 1, var1, var2, var3, var4, var5);
+			if (var10 <= 0) {
+				World var14 = World.World_worlds[var9];
+				World.World_worlds[var9] = World.World_worlds[var7];
+				World.World_worlds[var7++] = var14;
+			}
 		}
+
+		World.World_worlds[var1] = World.World_worlds[var7];
+		World.World_worlds[var7] = var8;
+		doWorldSorting(var0, var7 - 1, var2, var3, var4, var5);
+		doWorldSorting(var7 + 1, var1, var2, var3, var4, var5);
 
 	}
 
@@ -414,19 +416,19 @@ public class GrandExchangeOffer {
 			return 1;
 		}
 		if (var0 == 6624) {
-			WorldMapID.getWorldMap().method6337(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
+			WorldMapID.getWorldMap().setMaxFlashCount(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			return 1;
 		}
 		if (var0 == 6625) {
-			WorldMapID.getWorldMap().method6338();
+			WorldMapID.getWorldMap().resetMaxFlashCount();
 			return 1;
 		}
 		if (var0 == 6626) {
-			WorldMapID.getWorldMap().method6339(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
+			WorldMapID.getWorldMap().setCyclesPerFlash(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
 			return 1;
 		}
 		if (var0 == 6627) {
-			WorldMapID.getWorldMap().method6340();
+			WorldMapID.getWorldMap().resetCyclesPerFlash();
 			return 1;
 		}
 		boolean var10;

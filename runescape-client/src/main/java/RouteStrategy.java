@@ -46,7 +46,8 @@ public abstract class RouteStrategy {
 		signature = "(IIILfv;I)Z",
 		garbageValue = "-1217489379"
 	)
-	public abstract boolean vmethod3594(int var1, int var2, int var3, CollisionMap var4);
+	@Export("hasArrived")
+	public abstract boolean hasArrived(int size, int x, int y, CollisionMap var4);
 
 	@ObfuscatedName("ec")
 	@ObfuscatedSignature(
@@ -67,7 +68,7 @@ public abstract class RouteStrategy {
 		SequenceDefinition.SequenceDefinition_cachedFrames.clear();
 		SpotAnimationDefinition.SpotAnimationDefinition_cached.clear();
 		SpotAnimationDefinition.SpotAnimationDefinition_cachedModels.clear();
-		MusicPatch.method3888();
+		MusicPatch.VarbitDefinition_clearCached();
 		SecureRandomCallable.method1093();
 		HitSplatDefinition.HitSplatDefinition_cached.clear();
 		HitSplatDefinition.HitSplatDefinition_cachedSprites.clear();
@@ -81,7 +82,7 @@ public abstract class RouteStrategy {
 		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
 		Script.Script_cached.clear();
 		class197.archive0.clearFiles();
-		class167.archive1.clearFiles();
+		JagexCache.archive1.clearFiles();
 		class43.archive3.clearFiles();
 		class13.archive4.clearFiles();
 		WorldMapCacheName.archive5.clearFiles();

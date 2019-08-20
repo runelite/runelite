@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import static net.runelite.api.ScriptID.CHATBOX_INPUT;
@@ -164,7 +164,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			final MenuEntry menuEntry = new MenuEntry();
 			menuEntry.setOption(TRANSLATE);
 			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 			menuEntry.setParam0(event.getActionParam0());
 			menuEntry.setParam1(event.getActionParam1());
 			menuEntry.setIdentifier(event.getIdentifier());

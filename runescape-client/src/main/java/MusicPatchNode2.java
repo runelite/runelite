@@ -61,7 +61,8 @@ public class MusicPatchNode2 {
 		signature = "(IS)I",
 		garbageValue = "17338"
 	)
-	static int method3686(int var0) {
+	@Export("Messages_getNextChatID")
+	static int Messages_getNextChatID(int var0) {
 		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
 		if (var1 == null) {
 			return -1;

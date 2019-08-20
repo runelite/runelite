@@ -160,7 +160,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 	public final void keyTyped(KeyEvent var1) {
 		if (KeyHandler_instance != null) {
 			char var2 = var1.getKeyChar();
-			if (var2 != 0 && var2 != '\uffff' && VarpDefinition.method4366(var2)) {
+			if (var2 != 0 && var2 != 0xffff && VarpDefinition.method4366(var2)) {
 				int var3 = field404 + 1 & 127;
 				if (var3 != field396) {
 					field400[field404] = -1;
@@ -208,19 +208,21 @@ public final class KeyHandler implements KeyListener, FocusListener {
 		signature = "(I)V",
 		garbageValue = "-2003037366"
 	)
-	static final void method801() {
-		if (GrandExchangeEvent.field49) {
-			if (DevicePcmPlayerProvider.clanChat != null) {
-				DevicePcmPlayerProvider.clanChat.sort();
-			}
-
-			for (int var0 = 0; var0 < Players.Players_count; ++var0) {
-				Player var1 = Client.players[Players.Players_indices[var0]];
-				var1.clearIsInClanChat();
-			}
-
-			GrandExchangeEvent.field49 = false;
+	@Export("ClanChat_leave")
+	static final void ClanChat_leave() {
+		if (!GrandExchangeEvent.ClanChat_inClanChat) {
+			return;
 		}
+		if (DevicePcmPlayerProvider.clanChat != null) {
+			DevicePcmPlayerProvider.clanChat.sort();
+		}
+
+		for (int var0 = 0; var0 < Players.Players_count; ++var0) {
+			Player var1 = Client.players[Players.Players_indices[var0]];
+			var1.clearIsInClanChat();
+		}
+
+		GrandExchangeEvent.ClanChat_inClanChat = false;
 
 	}
 }

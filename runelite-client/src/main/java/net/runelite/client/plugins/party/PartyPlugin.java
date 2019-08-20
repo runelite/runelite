@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
@@ -216,7 +216,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+		if (event.getEntry().getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY &&
 			event.getEntry().getTarget().equals("Party") &&
 			event.getEntry().getOption().equals("Leave"))
 		{

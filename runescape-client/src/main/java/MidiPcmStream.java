@@ -405,7 +405,7 @@ public class MidiPcmStream extends PcmStream {
 				var6.field2450 = var2;
 				var6.field2442 = var3 * var3 * var9.field2476[var2] * var9.field2475 + 1024 >> 11;
 				var6.field2443 = var9.field2477[var2] & 255;
-				var6.field2441 = (var2 << 8) - (var9.field2482[var2] & 32767);
+				var6.field2441 = (var2 << 8) - (var9.field2482[var2] & 0x7fff);
 				var6.field2447 = 0;
 				var6.field2448 = 0;
 				var6.field2449 = 0;
@@ -552,7 +552,7 @@ public class MidiPcmStream extends PcmStream {
 			this.method3715(var1);
 			this.method3784(var1);
 			this.field2421[var1] = 0;
-			this.field2424[var1] = 32767;
+			this.field2424[var1] = 0x7fff;
 			this.field2423[var1] = 256;
 			this.field2410[var1] = 0;
 			this.method3754(var1, 8192);
@@ -817,11 +817,8 @@ public class MidiPcmStream extends PcmStream {
 			var3 = var1 & 15;
 			var4 = (var1 >> 8 & 127) + (var1 >> 9 & 16256);
 			this.method3722(var3, var4);
-		} else {
-			var2 = var1 & 255;
-			if (var2 == 255) {
-				this.method3726();
-			}
+		} else if ((var1 & 255) == 255) {
+			this.method3726();
 		}
 	}
 
@@ -932,27 +929,26 @@ public class MidiPcmStream extends PcmStream {
 				this.midiFile.gotoTrack(var1);
 				int var5 = this.midiFile.readMessage(var1);
 				if (var5 == 1) {
-					this.midiFile.setTrackDone();
-					this.midiFile.markTrackPosition(var1);
-					if (this.midiFile.isDone()) {
-						if (!this.field2430 || var2 == 0) {
-							this.method3726();
-							this.midiFile.clear();
-							return;
-						}
-
-						this.midiFile.reset(var3);
-					}
 					break;
 				}
-
 				if ((var5 & 128) != 0) {
 					this.method3728(var5);
 				}
 
 				this.midiFile.readTrackLength(var1);
 				this.midiFile.markTrackPosition(var1);
+
 			}
+			this.midiFile.setTrackDone();
+			this.midiFile.markTrackPosition(var1);
+			if (this.midiFile.isDone()) {
+				if (!this.field2430 || var2 == 0) {
+					this.method3726();
+					this.midiFile.clear();
+					return;
+				}
+			}
+			this.midiFile.reset(var3);
 
 			var1 = this.midiFile.getPrioritizedTrack();
 			var2 = this.midiFile.trackLengths[var1];
@@ -969,17 +965,17 @@ public class MidiPcmStream extends PcmStream {
 		garbageValue = "2116286373"
 	)
 	boolean method3739(MusicPatchNode var1) {
-		if (var1.stream == null) {
-			if (var1.field2436 >= 0) {
-				var1.remove();
-				if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
-					this.field2428[var1.field2440][var1.field2438] = null;
-				}
-			}
-
-			return true;
+		if (var1.stream != null) {
+			return false;
 		}
-		return false;
+		if (var1.field2436 >= 0) {
+			var1.remove();
+			if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
+				this.field2428[var1.field2440][var1.field2438] = null;
+			}
+		}
+
+		return true;
 	}
 
 	@ObfuscatedName("bp")
@@ -989,95 +985,95 @@ public class MidiPcmStream extends PcmStream {
 	)
 	boolean method3740(MusicPatchNode var1, int[] var2, int var3, int var4) {
 		var1.field2455 = CollisionMap.PcmPlayer_sampleRate / 100;
-		if (var1.field2436 < 0 || var1.stream != null && !var1.stream.method2558()) {
-			int var5 = var1.field2446;
-			if (var5 > 0) {
-				var5 -= (int)(16.0D * Math.pow(2.0D, 4.921259842519685E-4D * (double)this.field2419[var1.field2440]) + 0.5D);
-				if (var5 < 0) {
-					var5 = 0;
-				}
-
-				var1.field2446 = var5;
+		if (var1.field2436 >= 0 && (var1.stream == null || var1.stream.method2558())) {
+			var1.method3826();
+			var1.remove();
+			if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
+				this.field2428[var1.field2440][var1.field2438] = null;
 			}
 
-			var1.stream.method2538(this.method3730(var1));
-			MusicPatchNode2 var6 = var1.field2452;
-			boolean var7 = false;
-			++var1.field2458;
-			var1.field2453 += var6.field2394;
-			double var8 = 5.086263020833333E-6D * (double)((var1.field2450 - 60 << 8) + (var1.field2445 * var1.field2446 >> 12));
-			if (var6.field2392 > 0) {
-				if (var6.field2391 > 0) {
-					var1.field2447 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field2391) + 0.5D);
-				} else {
-					var1.field2447 += 128;
-				}
-			}
-
-			if (var6.field2387 != null) {
-				if (var6.field2390 > 0) {
-					var1.field2448 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2390 * var8) + 0.5D);
-				} else {
-					var1.field2448 += 128;
-				}
-
-				while (var1.field2449 * 4 < var6.field2387.length - 2 && var1.field2448 > (var6.field2387[var1.field2449 * 4 + 2] & 255) << 8) {
-					var1.field2449 = var1.field2449 * 4 + 2;
-				}
-
-				if (var1.field2449 * 4 == var6.field2387.length - 2 && var6.field2387[var1.field2449 * 4 + 1] == 0) {
-					var7 = true;
-				}
-			}
-
-			if (var1.field2436 >= 0 && var6.field2388 != null && (this.field2421[var1.field2440] & 1) == 0 && (var1.field2438 < 0 || var1 != this.field2428[var1.field2440][var1.field2438])) {
-				if (var6.field2398 > 0) {
-					var1.field2436 += (int)(128.0D * Math.pow(2.0D, (double)var6.field2398 * var8) + 0.5D);
-				} else {
-					var1.field2436 += 128;
-				}
-
-				while (var1.field2451 * 4 < var6.field2388.length - 2 && var1.field2436 > (var6.field2388[var1.field2451 * 4 + 2] & 255) << 8) {
-					var1.field2451 = var1.field2451 * 4 + 2;
-				}
-
-				if (var1.field2451 * 4 == var6.field2388.length - 2) {
-					var7 = true;
-				}
-			}
-
-			if (var7) {
-				var1.stream.method2540(var1.field2455);
-				if (var2 != null) {
-					var1.stream.fill(var2, var3, var4);
-				} else {
-					var1.stream.skip(var4);
-				}
-
-				if (var1.stream.method2585()) {
-					this.patchStream.mixer.addSubStream(var1.stream);
-				}
-
-				var1.method3826();
-				if (var1.field2436 >= 0) {
-					var1.remove();
-					if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
-						this.field2428[var1.field2440][var1.field2438] = null;
-					}
-				}
-
-				return true;
-			}
-			var1.stream.method2536(var1.field2455, this.method3731(var1), this.method3732(var1));
-			return false;
+			return true;
 		}
-		var1.method3826();
-		var1.remove();
-		if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
-			this.field2428[var1.field2440][var1.field2438] = null;
+		int var5 = var1.field2446;
+		if (var5 > 0) {
+			var5 -= (int) (16.0D * Math.pow(2.0D, 4.921259842519685E-4D * (double) this.field2419[var1.field2440]) + 0.5D);
+			if (var5 < 0) {
+				var5 = 0;
+			}
+
+			var1.field2446 = var5;
 		}
 
-		return true;
+		var1.stream.method2538(this.method3730(var1));
+		MusicPatchNode2 var6 = var1.field2452;
+		boolean var7 = false;
+		++var1.field2458;
+		var1.field2453 += var6.field2394;
+		double var8 = 5.086263020833333E-6D * (double) ((var1.field2450 - 60 << 8) + (var1.field2445 * var1.field2446 >> 12));
+		if (var6.field2392 > 0) {
+			if (var6.field2391 > 0) {
+				var1.field2447 += (int) (128.0D * Math.pow(2.0D, var8 * (double) var6.field2391) + 0.5D);
+			} else {
+				var1.field2447 += 128;
+			}
+		}
+
+		if (var6.field2387 != null) {
+			if (var6.field2390 > 0) {
+				var1.field2448 += (int) (128.0D * Math.pow(2.0D, (double) var6.field2390 * var8) + 0.5D);
+			} else {
+				var1.field2448 += 128;
+			}
+
+			while (var1.field2449 * 4 < var6.field2387.length - 2 && var1.field2448 > (var6.field2387[var1.field2449 * 4 + 2] & 255) << 8) {
+				var1.field2449 = var1.field2449 * 4 + 2;
+			}
+
+			if (var1.field2449 * 4 == var6.field2387.length - 2 && var6.field2387[var1.field2449 * 4 + 1] == 0) {
+				var7 = true;
+			}
+		}
+
+		if (var1.field2436 >= 0 && var6.field2388 != null && (this.field2421[var1.field2440] & 1) == 0 && (var1.field2438 < 0 || var1 != this.field2428[var1.field2440][var1.field2438])) {
+			if (var6.field2398 > 0) {
+				var1.field2436 += (int) (128.0D * Math.pow(2.0D, (double) var6.field2398 * var8) + 0.5D);
+			} else {
+				var1.field2436 += 128;
+			}
+
+			while (var1.field2451 * 4 < var6.field2388.length - 2 && var1.field2436 > (var6.field2388[var1.field2451 * 4 + 2] & 255) << 8) {
+				var1.field2451 = var1.field2451 * 4 + 2;
+			}
+
+			if (var1.field2451 * 4 == var6.field2388.length - 2) {
+				var7 = true;
+			}
+		}
+
+		if (var7) {
+			var1.stream.method2540(var1.field2455);
+			if (var2 != null) {
+				var1.stream.fill(var2, var3, var4);
+			} else {
+				var1.stream.skip(var4);
+			}
+
+			if (var1.stream.method2585()) {
+				this.patchStream.mixer.addSubStream(var1.stream);
+			}
+
+			var1.method3826();
+			if (var1.field2436 >= 0) {
+				var1.remove();
+				if (var1.field2438 > 0 && var1 == this.field2428[var1.field2440][var1.field2438]) {
+					this.field2428[var1.field2440][var1.field2438] = null;
+				}
+			}
+
+			return true;
+		}
+		var1.stream.method2536(var1.field2455, this.method3731(var1), this.method3732(var1));
+		return false;
 	}
 
 	@ObfuscatedName("w")
@@ -1085,7 +1081,8 @@ public class MidiPcmStream extends PcmStream {
 		signature = "(I)Z",
 		garbageValue = "1881799127"
 	)
-	public static boolean method3811() {
+	@Export("hasReflectionCheck")
+	public static boolean hasReflectionCheck() {
 		ReflectionCheck var0 = (ReflectionCheck)class96.reflectionChecks.last();
 		return var0 != null;
 	}

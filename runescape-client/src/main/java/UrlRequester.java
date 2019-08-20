@@ -113,7 +113,7 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				HitSplatDefinition.sendStackTrace((String)null, var17);
+				HitSplatDefinition.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 

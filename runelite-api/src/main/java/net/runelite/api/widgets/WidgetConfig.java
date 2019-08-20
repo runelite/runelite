@@ -91,7 +91,7 @@ public class WidgetConfig
 	/**
 	 * Add a USE option
 	 *
-	 * @see// MenuAction#ITEM_USE
+	 * @see// MenuOpcode#ITEM_USE
 	 */
 	public static final int ITEM_USE_OP = 1 << 31;
 }

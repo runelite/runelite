@@ -54,7 +54,7 @@ public class SoundCache {
 	)
 	@Export("getSoundEffect0")
 	RawSound getSoundEffect0(int var1, int var2, int[] var3) {
-		int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
+		int var4 = var2 ^ (var1 << 4 & 0xffff | var1 >>> 12);
 		var4 |= var1 << 16;
 		long var5 = (long)var4;
 		RawSound var7 = (RawSound)this.rawSounds.get(var5);
@@ -84,7 +84,7 @@ public class SoundCache {
 	)
 	@Export("getMusicSample0")
 	RawSound getMusicSample0(int var1, int var2, int[] var3) {
-		int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
+		int var4 = var2 ^ (var1 << 4 & 0xffff | var1 >>> 12);
 		var4 |= var1 << 16;
 		long var5 = (long)var4 ^ 4294967296L;
 		RawSound var7 = (RawSound)this.rawSounds.get(var5);

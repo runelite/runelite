@@ -35,7 +35,8 @@ public class class14 {
 		signature = "(Lhj;IIII)V",
 		garbageValue = "-2006801653"
 	)
-	static final void method153(Widget var0, int var1, int var2, int var3) {
+	@Export("Widget_setKeyRate")
+	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
 		if (var0.field2641 == null) {
 			throw new RuntimeException();
 		}
@@ -49,11 +50,11 @@ public class class14 {
 		garbageValue = "1053602258"
 	)
 	static final void method159(String var0, int var1) {
-		PacketBufferNode var2 = Archive.method4265(ClientPacket.field2280, Client.packetWriter.isaacCipher);
+		PacketBufferNode var2 = Archive.getPacketBufferNode(ClientPacket.field2280, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeByte(Huffman.stringCp1252NullTerminatedByteSize(var0) + 1);
 		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
 		var2.packetBuffer.writeByte(var1);
-		Client.packetWriter.method2219(var2);
+		Client.packetWriter.addNode(var2);
 	}
 
 	@ObfuscatedName("kk")

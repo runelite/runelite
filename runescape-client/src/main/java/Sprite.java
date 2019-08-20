@@ -799,7 +799,7 @@ public final class Sprite extends Rasterizer2D {
 		}
 		var1 -= this.xOffset << 4;
 		var2 -= this.yOffset << 4;
-		double var7 = (double)(var5 & 65535) * 9.587379924285257E-5D;
+		double var7 = (double)(var5 & 0xffff) * 9.587379924285257E-5D;
 		int var9 = (int)Math.floor(Math.sin(var7) * (double)var6 + 0.5D);
 		int var10 = (int)Math.floor(Math.cos(var7) * (double)var6 + 0.5D);
 		int var11 = var10 * -var1 + -var2 * var9;

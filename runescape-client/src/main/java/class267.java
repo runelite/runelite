@@ -15,6 +15,6 @@ public class class267 {
 	)
 	static final void method4986() {
 		Client.field849 = Client.cycleCntr;
-		GrandExchangeEvent.field49 = true;
+		GrandExchangeEvent.ClanChat_inClanChat = true;
 	}
 }

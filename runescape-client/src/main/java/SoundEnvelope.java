@@ -45,9 +45,9 @@ public class SoundEnvelope {
 		this.durations = new int[2];
 		this.phases = new int[2];
 		this.durations[0] = 0;
-		this.durations[1] = 65535;
+		this.durations[1] = 0xffff;
 		this.phases[0] = 0;
-		this.phases[1] = 65535;
+		this.phases[1] = 0xffff;
 	}
 
 	@ObfuscatedName("q")

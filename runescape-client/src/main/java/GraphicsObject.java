@@ -76,10 +76,10 @@ public final class GraphicsObject extends Entity {
 		this.y = var4;
 		this.height = var5;
 		this.cycleStart = var7 + var6;
-		int var8 = MusicPatch.getSpotAnimationDefinition(this.id).sequence;
+		int var8 = MusicPatch.SpotAnimationDefinition_get(this.id).sequence;
 		if (var8 != -1) {
 			this.isFinished = false;
-			this.sequenceDefinition = GrandExchangeEvent.getSequenceDefinition(var8);
+			this.sequenceDefinition = GrandExchangeEvent.SequenceDefinition_get(var8);
 		} else {
 			this.isFinished = true;
 		}
@@ -93,19 +93,20 @@ public final class GraphicsObject extends Entity {
 	)
 	@Export("advance")
 	final void advance(int var1) {
-		if (!this.isFinished) {
-			this.frameCycle += var1;
-
-			while (this.frameCycle > this.sequenceDefinition.frameLengths[this.frame]) {
-				this.frameCycle -= this.sequenceDefinition.frameLengths[this.frame];
-				++this.frame;
-				if (this.frame >= this.sequenceDefinition.frameIds.length) {
-					this.isFinished = true;
-					break;
-				}
-			}
-
+		if (this.isFinished) {
+			return;
 		}
+		this.frameCycle += var1;
+
+		while (this.frameCycle > this.sequenceDefinition.frameLengths[this.frame]) {
+			this.frameCycle -= this.sequenceDefinition.frameLengths[this.frame];
+			++this.frame;
+			if (this.frame >= this.sequenceDefinition.frameIds.length) {
+				this.isFinished = true;
+				break;
+			}
+		}
+
 	}
 
 	@ObfuscatedName("c")
@@ -115,7 +116,7 @@ public final class GraphicsObject extends Entity {
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		SpotAnimationDefinition var1 = MusicPatch.getSpotAnimationDefinition(this.id);
+		SpotAnimationDefinition var1 = MusicPatch.SpotAnimationDefinition_get(this.id);
 		Model var2;
 		if (!this.isFinished) {
 			var2 = var1.getModel(this.frame);
@@ -277,11 +278,11 @@ public final class GraphicsObject extends Entity {
 		signature = "(I)V",
 		garbageValue = "-1819884546"
 	)
-	@Export("resetMenuEntries")
-	static void resetMenuEntries() {
-		Strings.method4121();
+	@Export("addCancelMenuEntry")
+	static void addCancelMenuEntry() {
+		Strings.resetMenuEntries();
 		Client.menuActions[0] = "Cancel";
-		Client.menuTargetNames[0] = "";
+		Client.menuTargets[0] = "";
 		Client.menuOpcodes[0] = 1006;
 		Client.menuShiftClick[0] = false;
 		Client.menuOptionsCount = 1;

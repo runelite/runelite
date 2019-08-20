@@ -41,7 +41,7 @@ public final class TileItem extends Entity {
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		return WorldMapArea.getItemDefinition(this.id).getModel(this.quantity);
+		return WorldMapArea.ItemDefinition_get(this.id).getModel(this.quantity);
 	}
 
 	@ObfuscatedName("q")
@@ -59,7 +59,8 @@ public final class TileItem extends Entity {
 		signature = "(III)Lbj;",
 		garbageValue = "308740376"
 	)
-	static Message method2049(int var0, int var1) {
+	@Export("Messages_getByChannelAndID")
+	static Message Messages_getByChannelAndID(int var0, int var1) {
 		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
 		return var2.getMessage(var1);
 	}

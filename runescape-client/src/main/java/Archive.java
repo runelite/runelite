@@ -405,7 +405,8 @@ public class Archive extends AbstractArchive {
 		signature = "(Lgx;Llv;I)Lgb;",
 		garbageValue = "1775123545"
 	)
-	public static PacketBufferNode method4265(ClientPacket var0, IsaacCipher var1) {
+	@Export("getPacketBufferNode")
+	public static PacketBufferNode getPacketBufferNode(ClientPacket var0, IsaacCipher var1) {
 		PacketBufferNode var2;
 		if (PacketBufferNode.PacketBufferNode_packetBufferNodeCount == 0) {
 			var2 = new PacketBufferNode();

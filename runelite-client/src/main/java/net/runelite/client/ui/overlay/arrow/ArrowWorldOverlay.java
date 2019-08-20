@@ -113,13 +113,13 @@ public class ArrowWorldOverlay extends Overlay
 					}
 					for (GameObject object : objects)
 					{
-						if (object.getRenderable().getModel() == null)
+						if (object.getEntity().getModel() == null)
 						{
 							renderWorldArrow(graphics, arrowPoint, object.getLocalLocation(), 0);
 						}
 						else
 						{
-							renderWorldArrow(graphics, arrowPoint, object.getLocalLocation(), object.getRenderable().getModel().getModelHeight() + Z_OFFSET);
+							renderWorldArrow(graphics, arrowPoint, object.getLocalLocation(), object.getEntity().getModel().getModelHeight() + Z_OFFSET);
 						}
 					}
 				}

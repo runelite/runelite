@@ -203,19 +203,19 @@ public class HitSplatDefinition extends DualNode {
 			this.field3341 = var1.readUnsignedShort();
 		} else if (var2 == 17 || var2 == 18) {
 			this.transformVarbit = var1.readUnsignedShort();
-			if (this.transformVarbit == 65535) {
+			if (this.transformVarbit == 0xffff) {
 				this.transformVarbit = -1;
 			}
 
 			this.transformVarp = var1.readUnsignedShort();
-			if (this.transformVarp == 65535) {
+			if (this.transformVarp == 0xffff) {
 				this.transformVarp = -1;
 			}
 
 			int var3 = -1;
 			if (var2 == 18) {
 				var3 = var1.readUnsignedShort();
-				if (var3 == 65535) {
+				if (var3 == 0xffff) {
 					var3 = -1;
 				}
 			}
@@ -225,7 +225,7 @@ public class HitSplatDefinition extends DualNode {
 
 			for (int var5 = 0; var5 <= var4; ++var5) {
 				this.transforms[var5] = var1.readUnsignedShort();
-				if (this.transforms[var5] == 65535) {
+				if (this.transforms[var5] == 0xffff) {
 					this.transforms[var5] = -1;
 				}
 			}
@@ -256,7 +256,7 @@ public class HitSplatDefinition extends DualNode {
 			var2 = this.transforms[this.transforms.length - 1];
 		}
 
-		return var2 != -1 ? Projectile.getHitSplatDefinition(var2) : null;
+		return var2 != -1 ? Projectile.HitSplatDefinition_get(var2) : null;
 	}
 
 	@ObfuscatedName("k")
@@ -398,41 +398,41 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
 		garbageValue = "40"
 	)
-	@Export("sendStackTrace")
-	public static void sendStackTrace(String var0, Throwable var1) {
+	@Export("RunException_sendStackTrace")
+	public static void RunException_sendStackTrace(String var0, Throwable var1) {
 		if (var1 != null) {
 			var1.printStackTrace();
-		} else {
-			try {
-				String var2 = "";
-				if (var1 != null) {
-					var2 = FloorDecoration.method2843(var1);
-				}
-
-				if (var0 != null) {
-					if (var1 != null) {
-						var2 = var2 + " | ";
-					}
-
-					var2 = var2 + var0;
-				}
-
-				System.out.println("Error: " + var2);
-				var2 = var2.replace(':', '.');
-				var2 = var2.replace('@', '_');
-				var2 = var2.replace('&', '_');
-				var2 = var2.replace('#', '_');
-				if (RunException.RunException_applet == null) {
-					return;
-				}
-
-				URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.RunException_revision + "&u=" + GrandExchangeOfferUnitPriceComparator.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.RunException_clientType + "&e=" + var2);
-				DataInputStream var4 = new DataInputStream(var3.openStream());
-				var4.read();
-				var4.close();
-			} catch (Exception var5) {
+			return;
+		}
+		try {
+			String var2 = "";
+			if (var1 != null) {
+				var2 = FloorDecoration.shortenStackTrace(var1);
 			}
 
+			if (var0 != null) {
+				if (var1 != null) {
+					var2 = var2 + " | ";
+				}
+
+				var2 = var2 + var0;
+			}
+
+			System.out.println("Error: " + var2);
+			var2 = var2.replace(':', '.');
+			var2 = var2.replace('@', '_');
+			var2 = var2.replace('&', '_');
+			var2 = var2.replace('#', '_');
+			if (RunException.RunException_applet == null) {
+				return;
+			}
+
+			URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.RunException_revision + "&u=" + GrandExchangeOfferUnitPriceComparator.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.RunException_clientType + "&e=" + var2);
+			DataInputStream var4 = new DataInputStream(var3.openStream());
+			var4.read();
+			var4.close();
+		} catch (Exception var5) {
 		}
+
 	}
 }

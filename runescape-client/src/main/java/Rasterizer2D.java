@@ -389,31 +389,31 @@ public class Rasterizer2D extends DualNode {
 
 	@ObfuscatedName("dh")
 	@Export("Rasterizer2D_fillRectangle")
-	public static void Rasterizer2D_fillRectangle(int var0, int var1, int var2, int var3, int var4) {
-		if (var0 < Rasterizer2D_xClipStart) {
-			var2 -= Rasterizer2D_xClipStart - var0;
-			var0 = Rasterizer2D_xClipStart;
+	public static void Rasterizer2D_fillRectangle(int x, int y, int w, int h, int c) {
+		if (x < Rasterizer2D_xClipStart) {
+			w -= Rasterizer2D_xClipStart - x;
+			x = Rasterizer2D_xClipStart;
 		}
 
-		if (var1 < Rasterizer2D_yClipStart) {
-			var3 -= Rasterizer2D_yClipStart - var1;
-			var1 = Rasterizer2D_yClipStart;
+		if (y < Rasterizer2D_yClipStart) {
+			h -= Rasterizer2D_yClipStart - y;
+			y = Rasterizer2D_yClipStart;
 		}
 
-		if (var0 + var2 > Rasterizer2D_xClipEnd) {
-			var2 = Rasterizer2D_xClipEnd - var0;
+		if (x + w > Rasterizer2D_xClipEnd) {
+			w = Rasterizer2D_xClipEnd - x;
 		}
 
-		if (var3 + var1 > Rasterizer2D_yClipEnd) {
-			var3 = Rasterizer2D_yClipEnd - var1;
+		if (h + y > Rasterizer2D_yClipEnd) {
+			h = Rasterizer2D_yClipEnd - y;
 		}
 
-		int var5 = Rasterizer2D_width - var2;
-		int var6 = var0 + Rasterizer2D_width * var1;
+		int var5 = Rasterizer2D_width - w;
+		int var6 = x + Rasterizer2D_width * y;
 
-		for (int var7 = -var3; var7 < 0; ++var7) {
-			for (int var8 = -var2; var8 < 0; ++var8) {
-				Rasterizer2D_pixels[var6++] = var4;
+		for (int var7 = -h; var7 < 0; ++var7) {
+			for (int var8 = -w; var8 < 0; ++var8) {
+				Rasterizer2D_pixels[var6++] = c;
 			}
 
 			var6 += var5;

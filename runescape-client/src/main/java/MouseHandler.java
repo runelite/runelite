@@ -270,80 +270,43 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		int var1 = 0;
 		var0.importIndex();
 
-		byte[] var10000;
 		int var2;
 		int var3;
-		int var4;
+		for (var2 = 0; var2 < Players.Players_count; ++var2) {
+			var3 = Players.Players_indices[var2];
+			if ((Players.field1252[var3] & 1) != 0) {
+				continue;
+			}
+			if (var1 > 0) {
+				--var1;
+				Players.field1252[var3] = (byte)(Players.field1252[var3] | 2);
+			} else if (var0.readBits(1) == 0) {
+				var1 = World.decode(var0);
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
+			} else {
+				WorldMapIcon_0.readPlayerUpdate(var0, var3);
+			}
+		}
+
+		var0.exportIndex();
+		if (var1 != 0) {
+			throw new RuntimeException();
+		}
+		var0.importIndex();
+
 		for (var2 = 0; var2 < Players.Players_count; ++var2) {
 			var3 = Players.Players_indices[var2];
 			if ((Players.field1252[var3] & 1) == 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1252;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = World.method1686(var0);
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						WorldMapIcon_0.method210(var0, var3);
-					}
-				}
+				continue;
 			}
-		}
-
-		var0.exportIndex();
-		if (var1 != 0) {
-			throw new RuntimeException();
-		}
-		var0.importIndex();
-
-		for (var2 = 0; var2 < Players.Players_count; ++var2) {
-			var3 = Players.Players_indices[var2];
-			if ((Players.field1252[var3] & 1) != 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1252;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = World.method1686(var0);
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						WorldMapIcon_0.method210(var0, var3);
-					}
-				}
-			}
-		}
-
-		var0.exportIndex();
-		if (var1 != 0) {
-			throw new RuntimeException();
-		}
-		var0.importIndex();
-
-		for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-			var3 = Players.Players_emptyIndices[var2];
-			if ((Players.field1252[var3] & 1) != 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1252;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = World.method1686(var0);
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else if (class226.updateExternalPlayer(var0, var3)) {
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					}
-				}
+			if (var1 > 0) {
+				--var1;
+				Players.field1252[var3] = (byte)(Players.field1252[var3] | 2);
+			} else if (var0.readBits(1) == 0) {
+				var1 = World.decode(var0);
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
+			} else {
+				WorldMapIcon_0.readPlayerUpdate(var0, var3);
 			}
 		}
 
@@ -356,21 +319,38 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
 			var3 = Players.Players_emptyIndices[var2];
 			if ((Players.field1252[var3] & 1) == 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1252;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = World.method1686(var0);
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else if (class226.updateExternalPlayer(var0, var3)) {
-						var10000 = Players.field1252;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					}
-				}
+				continue;
+			}
+			if (var1 > 0) {
+				--var1;
+				Players.field1252[var3] = (byte)(Players.field1252[var3] | 2);
+			} else if (var0.readBits(1) == 0) {
+				var1 = World.decode(var0);
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
+			} else if (class226.updateExternalPlayer(var0, var3)) {
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
+			}
+		}
+
+		var0.exportIndex();
+		if (var1 != 0) {
+			throw new RuntimeException();
+		}
+		var0.importIndex();
+
+		for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
+			var3 = Players.Players_emptyIndices[var2];
+			if ((Players.field1252[var3] & 1) != 0) {
+				continue;
+			}
+			if (var1 > 0) {
+				--var1;
+				Players.field1252[var3] = (byte)(Players.field1252[var3] | 2);
+			} else if (var0.readBits(1) == 0) {
+				var1 = World.decode(var0);
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
+			} else if (class226.updateExternalPlayer(var0, var3)) {
+				Players.field1252[var3] = (byte) (Players.field1252[var3] | 2);
 			}
 		}
 
@@ -382,8 +362,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		Players.Players_emptyIdxCount = 0;
 
 		for (var2 = 1; var2 < 2048; ++var2) {
-			var10000 = Players.field1252;
-			var10000[var2] = (byte)(var10000[var2] >> 1);
+			Players.field1252[var2] = (byte)(Players.field1252[var2] >> 1);
 			Player var5 = Client.players[var2];
 			if (var5 != null) {
 				Players.Players_indices[++Players.Players_count - 1] = var2;
@@ -410,9 +389,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 		garbageValue = "1793626495"
 	)
 	static final int method1021(int var0, int var1) {
-		int var2 = var0 + var1 * 57;
-		var2 ^= var2 << 13;
-		int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-		return var3 >> 19 & 255;
+		int var2 = var0 + var1 * 0x39;
+		var2 ^= var2 << 0xd;
+		int var3 = (var2 * var2 * 0x3d73 + 0xc0ae5) * var2 + 0x5208dd0d & Integer.MAX_VALUE;
+		return var3 >> 0x13 & 0xff;
 	}
 }

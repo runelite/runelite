@@ -52,7 +52,7 @@ public class WorldMapEvent {
 		int var8;
 		int var9;
 		int var12;
-		if ((var3 & 64) != 0) {
+		if ((var3 & 0x40) != 0) {
 			var5 = var0.method5722();
 			int var7;
 			int var10;
@@ -63,7 +63,7 @@ public class WorldMapEvent {
 					var9 = -1;
 					var10 = -1;
 					var7 = var0.readUShortSmart();
-					if (var7 == 32767) {
+					if (var7 == 0x7fff) {
 						var7 = var0.readUShortSmart();
 						var9 = var0.readUShortSmart();
 						var8 = var0.readUShortSmart();
@@ -84,13 +84,13 @@ public class WorldMapEvent {
 				for (var7 = 0; var7 < var6; ++var7) {
 					var8 = var0.readUShortSmart();
 					var9 = var0.readUShortSmart();
-					if (var9 != 32767) {
+					if (var9 == 0x7fff) {
+						var2.removeHealthBar(var8);
+					} else {
 						var10 = var0.readUShortSmart();
 						var11 = var0.method5722();
 						var12 = var9 > 0 ? var0.readUnsignedByte() : var11;
 						var2.addHealthBar(var8, Client.cycle, var9, var10, var11, var12);
-					} else {
-						var2.removeHealthBar(var8);
 					}
 				}
 			}
@@ -100,14 +100,14 @@ public class WorldMapEvent {
 			var2.spotAnimation = var0.method5534();
 			var5 = var0.method5542();
 			var2.heightOffset = var5 >> 16;
-			var2.field989 = (var5 & 65535) + Client.cycle;
+			var2.field989 = (var5 & 0xffff) + Client.cycle;
 			var2.spotAnimationFrame = 0;
 			var2.spotAnimationFrameCycle = 0;
 			if (var2.field989 > Client.cycle) {
 				var2.spotAnimationFrame = -1;
 			}
 
-			if (var2.spotAnimation == 65535) {
+			if (var2.spotAnimation == 0xffff) {
 				var2.spotAnimation = -1;
 			}
 		}
@@ -175,7 +175,7 @@ public class WorldMapEvent {
 
 		if ((var3 & 2) != 0) {
 			var2.targetIndex = var0.method5518();
-			if (var2.targetIndex == 65535) {
+			if (var2.targetIndex == 0xffff) {
 				var2.targetIndex = -1;
 			}
 		}
@@ -232,7 +232,7 @@ public class WorldMapEvent {
 
 		if ((var3 & 128) != 0) {
 			var5 = var0.readUnsignedShort();
-			if (var5 == 65535) {
+			if (var5 == 0xffff) {
 				var5 = -1;
 			}
 
@@ -262,7 +262,8 @@ public class WorldMapEvent {
 		signature = "(I)V",
 		garbageValue = "-1659690111"
 	)
-	static final void method737() {
+	@Export("FriendSystem_cantIgnoreSelfMes")
+	static final void FriendSystem_cantIgnoreSelfMes() {
 		Object var10000 = null;
 		String var0 = "You can't add yourself to your own ignore list";
 		ScriptEvent.addGameMessage(30, "", var0);

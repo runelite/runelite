@@ -37,8 +37,8 @@ public class ArchiveDiskAction extends Node {
 		signature = "(II)Lim;",
 		garbageValue = "-738252140"
 	)
-	@Export("getKitDefinition")
-	public static KitDefinition getKitDefinition(int var0) {
+	@Export("KitDefinition_get")
+	public static KitDefinition KitDefinition_get(int var0) {
 		KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;

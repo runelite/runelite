@@ -172,12 +172,11 @@ public class Instrument {
 		if (this.volumeMultiplier != null) {
 			this.volumeMultiplier.reset();
 			this.volumeMultiplierAmplitude.reset();
-			var8 = (int)((double)(this.volumeMultiplier.end - this.volumeMultiplier.start) * 32.768D / var3);
-			var9 = (int)((double)this.volumeMultiplier.start * 32.768D / var3);
+			var8 = (int)((this.volumeMultiplier.end - this.volumeMultiplier.start) * 32.768D / var3);
+			var9 = (int)(this.volumeMultiplier.start * 32.768D / var3);
 		}
 
-		int var11;
-		for (var11 = 0; var11 < 5; ++var11) {
+		for (int var11 = 0; var11 < 5; ++var11) {
 			if (this.oscillatorVolume[var11] != 0) {
 				Instrument_phases[var11] = 0;
 				Instrument_delays[var11] = (int)((double)this.oscillatorDelays[var11] * var3);
@@ -187,52 +186,44 @@ public class Instrument {
 			}
 		}
 
-		int var12;
-		int var13;
-		int var14;
-		int var15;
-		int[] var10000;
-		for (var11 = 0; var11 < var1; ++var11) {
-			var12 = this.pitch.doStep(var1);
-			var13 = this.volume.doStep(var1);
+		for (int var11 = 0; var11 < var1; ++var11) {
+			int var12 = this.pitch.doStep(var1);
+			int var13 = this.volume.doStep(var1);
 			if (this.pitchModifier != null) {
-				var14 = this.pitchModifier.doStep(var1);
-				var15 = this.pitchModifierAmplitude.doStep(var1);
+				int var14 = this.pitchModifier.doStep(var1);
+				int var15 = this.pitchModifierAmplitude.doStep(var1);
 				var12 += this.evaluateWave(var7, var15, this.pitchModifier.form) >> 1;
 				var7 = var7 + var6 + (var14 * var5 >> 16);
 			}
 
 			if (this.volumeMultiplier != null) {
-				var14 = this.volumeMultiplier.doStep(var1);
-				var15 = this.volumeMultiplierAmplitude.doStep(var1);
+				int var14 = this.volumeMultiplier.doStep(var1);
+				int var15 = this.volumeMultiplierAmplitude.doStep(var1);
 				var13 = var13 * ((this.evaluateWave(var10, var15, this.volumeMultiplier.form) >> 1) + 32768) >> 15;
 				var10 = var10 + var9 + (var14 * var8 >> 16);
 			}
 
-			for (var14 = 0; var14 < 5; ++var14) {
+			for (int var14 = 0; var14 < 5; ++var14) {
 				if (this.oscillatorVolume[var14] != 0) {
-					var15 = Instrument_delays[var14] + var11;
+					int var15 = Instrument_delays[var14] + var11;
 					if (var15 < var1) {
-						var10000 = Instrument_samples;
-						var10000[var15] += this.evaluateWave(Instrument_phases[var14], var13 * Instrument_volumeSteps[var14] >> 15, this.pitch.form);
-						var10000 = Instrument_phases;
-						var10000[var14] += (var12 * Instrument_pitchSteps[var14] >> 16) + Instrument_pitchBaseSteps[var14];
+						Instrument_samples[var15] += this.evaluateWave(Instrument_phases[var14], var13 * Instrument_volumeSteps[var14] >> 15, this.pitch.form);
+						Instrument_phases[var14] += (var12 * Instrument_pitchSteps[var14] >> 16) + Instrument_pitchBaseSteps[var14];
 					}
 				}
 			}
 		}
 
-		int var16;
 		if (this.release != null) {
 			this.release.reset();
 			this.attack.reset();
-			var11 = 0;
+			int var11 = 0;
 			boolean var19 = false;
 			boolean var20 = true;
-
-			for (var14 = 0; var14 < var1; ++var14) {
-				var15 = this.release.doStep(var1);
-				var16 = this.attack.doStep(var1);
+			for (int var14 = 0; var14 < var1; ++var14) {
+				int var12;
+				int var15 = this.release.doStep(var1);
+				int var16 = this.attack.doStep(var1);
 				if (var20) {
 					var12 = (var15 * (this.release.end - this.release.start) >> 8) + this.release.start;
 				} else {
@@ -252,35 +243,33 @@ public class Instrument {
 		}
 
 		if (this.delayTime > 0 && this.delayDecay > 0) {
-			var11 = (int)((double)this.delayTime * var3);
+			int var11 = (int)((double)this.delayTime * var3);
 
-			for (var12 = var11; var12 < var1; ++var12) {
-				var10000 = Instrument_samples;
-				var10000[var12] += Instrument_samples[var12 - var11] * this.delayDecay / 100;
+			for (int var12 = var11; var12 < var1; ++var12) {
+				Instrument_samples[var12] += Instrument_samples[var12 - var11] * this.delayDecay / 100;
 			}
 		}
 
 		if (this.filter.pairs[0] > 0 || this.filter.pairs[1] > 0) {
 			this.filterEnvelope.reset();
-			var11 = this.filterEnvelope.doStep(var1 + 1);
-			var12 = this.filter.compute(0, (float)var11 / 65536.0F);
-			var13 = this.filter.compute(1, (float)var11 / 65536.0F);
+			int var11 = this.filterEnvelope.doStep(var1 + 1);
+			int var12 = this.filter.compute(0, (float)var11 / 65536.0F);
+			int var13 = this.filter.compute(1, (float)var11 / 65536.0F);
 			if (var1 >= var12 + var13) {
-				var14 = 0;
-				var15 = var13;
+				int var14 = 0;
+				int var15 = var13;
 				if (var13 > var1 - var12) {
 					var15 = var1 - var12;
 				}
 
-				int var17;
 				while (var14 < var15) {
-					var16 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.forwardMultiplier >> 16);
+					int var16 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.forwardMultiplier >> 16);
 
-					for (var17 = 0; var17 < var12; ++var17) {
+					for (int var17 = 0; var17 < var12; ++var17) {
 						var16 += (int)((long)Instrument_samples[var14 + var12 - 1 - var17] * (long)AudioFilter.coefficients[0][var17] >> 16);
 					}
 
-					for (var17 = 0; var17 < var14; ++var17) {
+					for (int var17 = 0; var17 < var14; ++var17) {
 						var16 -= (int)((long)Instrument_samples[var14 - 1 - var17] * (long)AudioFilter.coefficients[1][var17] >> 16);
 					}
 
@@ -296,15 +285,14 @@ public class Instrument {
 						var15 = var1 - var12;
 					}
 
-					int var18;
 					while (var14 < var15) {
-						var17 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.forwardMultiplier >> 16);
+						int var17 = (int)((long)Instrument_samples[var14 + var12] * (long)AudioFilter.forwardMultiplier >> 16);
 
-						for (var18 = 0; var18 < var12; ++var18) {
+						for (int var18 = 0; var18 < var12; ++var18) {
 							var17 += (int)((long)Instrument_samples[var14 + var12 - 1 - var18] * (long)AudioFilter.coefficients[0][var18] >> 16);
 						}
 
-						for (var18 = 0; var18 < var13; ++var18) {
+						for (int var18 = 0; var18 < var13; ++var18) {
 							var17 -= (int)((long)Instrument_samples[var14 - 1 - var18] * (long)AudioFilter.coefficients[1][var18] >> 16);
 						}
 
@@ -313,39 +301,40 @@ public class Instrument {
 						++var14;
 					}
 
-					if (var14 >= var1 - var12) {
-						while (var14 < var1) {
-							var17 = 0;
-
-							for (var18 = var14 + var12 - var1; var18 < var12; ++var18) {
-								var17 += (int)((long)Instrument_samples[var14 + var12 - 1 - var18] * (long)AudioFilter.coefficients[0][var18] >> 16);
-							}
-
-							for (var18 = 0; var18 < var13; ++var18) {
-								var17 -= (int)((long)Instrument_samples[var14 - 1 - var18] * (long)AudioFilter.coefficients[1][var18] >> 16);
-							}
-
-							Instrument_samples[var14] = var17;
-							this.filterEnvelope.doStep(var1 + 1);
-							++var14;
-						}
+					if (var14 < var1 - var12) {
+						var12 = this.filter.compute(0, (float) var11 / 65536.0F);
+						var13 = this.filter.compute(1, (float) var11 / 65536.0F);
+						var15 += 128;
+					} else {
 						break;
 					}
 
-					var12 = this.filter.compute(0, (float)var11 / 65536.0F);
-					var13 = this.filter.compute(1, (float)var11 / 65536.0F);
-					var15 += 128;
+				}
+				while (var14 < var1) {
+					int var17 = 0;
+
+					for (int var18 = var14 + var12 - var1; var18 < var12; ++var18) {
+						var17 += (int) ((long) Instrument_samples[var14 + var12 - 1 - var18] * (long) AudioFilter.coefficients[0][var18] >> 16);
+					}
+
+					for (int var18 = 0; var18 < var13; ++var18) {
+						var17 -= (int) ((long) Instrument_samples[var14 - 1 - var18] * (long) AudioFilter.coefficients[1][var18] >> 16);
+					}
+
+					Instrument_samples[var14] = var17;
+					this.filterEnvelope.doStep(var1 + 1);
+					++var14;
 				}
 			}
 		}
 
-		for (var11 = 0; var11 < var1; ++var11) {
+		for (int var11 = 0; var11 < var1; ++var11) {
 			if (Instrument_samples[var11] < -32768) {
 				Instrument_samples[var11] = -32768;
 			}
 
-			if (Instrument_samples[var11] > 32767) {
-				Instrument_samples[var11] = 32767;
+			if (Instrument_samples[var11] > 0x7fff) {
+				Instrument_samples[var11] = 0x7fff;
 			}
 		}
 
@@ -356,15 +345,15 @@ public class Instrument {
 	@Export("evaluateWave")
 	final int evaluateWave(int var1, int var2, int var3) {
 		if (var3 == 1) {
-			return (var1 & 32767) < 16384 ? var2 : -var2;
+			return (var1 & 0x7fff) < 16384 ? var2 : -var2;
 		}
 		if (var3 == 2) {
-			return Instrument_sine[var1 & 32767] * var2 >> 14;
+			return Instrument_sine[var1 & 0x7fff] * var2 >> 14;
 		}
 		if (var3 == 3) {
-			return (var2 * (var1 & 32767) >> 14) - var2;
+			return (var2 * (var1 & 0x7fff) >> 14) - var2;
 		}
-		return var3 == 4 ? var2 * Instrument_noise[var1 / 2607 & 32767] : 0;
+		return var3 == 4 ? var2 * Instrument_noise[var1 / 2607 & 0x7fff] : 0;
 	}
 
 	@ObfuscatedName("e")

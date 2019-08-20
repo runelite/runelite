@@ -68,7 +68,7 @@ public interface GameObject extends TileObject
 	 */
 	Angle getOrientation();
 
-	Entity getRenderable();
+	Entity getEntity();
 
 	int getRsOrientation();
 

@@ -42,7 +42,7 @@ public final class Canvas extends java.awt.Canvas {
 	)
 	@Export("getNextWorldListWorld")
 	static World getNextWorldListWorld() {
-		return World.worldListWorldCount < World.worldsCount ? World.worlds[++World.worldListWorldCount - 1] : null;
+		return World.World_listCount < World.World_count ? World.World_worlds[++World.World_listCount - 1] : null;
 	}
 
 	@ObfuscatedName("au")
@@ -52,22 +52,21 @@ public final class Canvas extends java.awt.Canvas {
 	)
 	@Export("runWidgetOnLoadListener")
 	static void runWidgetOnLoadListener(int var0) {
-		if (var0 != -1) {
-			if (class162.loadInterface(var0)) {
-				Widget[] var1 = Widget.Widget_interfaceComponents[var0];
+		if (var0 == -1 || !class162.loadInterface(var0)) {
+			return;
+		}
+		Widget[] var1 = Widget.Widget_interfaceComponents[var0];
 
-				for (int var2 = 0; var2 < var1.length; ++var2) {
-					Widget var3 = var1[var2];
-					if (var3.onLoad != null) {
-						ScriptEvent var4 = new ScriptEvent();
-						var4.widget = var3;
-						var4.args = var3.onLoad;
-						class96.runScript(var4, 5000000);
-					}
-				}
-
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			Widget var3 = var1[var2];
+			if (var3.onLoad != null) {
+				ScriptEvent var4 = new ScriptEvent();
+				var4.widget = var3;
+				var4.args = var3.onLoad;
+				class96.runScript(var4, 5000000);
 			}
 		}
+
 	}
 
 	@ObfuscatedName("jb")

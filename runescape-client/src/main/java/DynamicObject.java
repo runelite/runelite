@@ -76,23 +76,24 @@ public class DynamicObject extends Entity {
 		this.plane = var4;
 		this.x = var5;
 		this.y = var6;
-		if (var7 != -1) {
-			this.sequenceDefinition = GrandExchangeEvent.getSequenceDefinition(var7);
-			this.frame = 0;
-			this.cycleStart = Client.cycle - 1;
-			if (this.sequenceDefinition.field3529 == 0 && var9 != null && var9 instanceof DynamicObject) {
-				DynamicObject var10 = (DynamicObject)var9;
-				if (var10.sequenceDefinition == this.sequenceDefinition) {
-					this.frame = var10.frame;
-					this.cycleStart = var10.cycleStart;
-					return;
-				}
+		if (var7 == -1) {
+			return;
+		}
+		this.sequenceDefinition = GrandExchangeEvent.SequenceDefinition_get(var7);
+		this.frame = 0;
+		this.cycleStart = Client.cycle - 1;
+		if (this.sequenceDefinition.field3529 == 0 && var9 != null && var9 instanceof DynamicObject) {
+			DynamicObject var10 = (DynamicObject)var9;
+			if (var10.sequenceDefinition == this.sequenceDefinition) {
+				this.frame = var10.frame;
+				this.cycleStart = var10.cycleStart;
+				return;
 			}
+		}
 
-			if (var8 && this.sequenceDefinition.frameCount != -1) {
-				this.frame = (int)(Math.random() * (double)this.sequenceDefinition.frameIds.length);
-				this.cycleStart -= (int)(Math.random() * (double)this.sequenceDefinition.frameLengths[this.frame]);
-			}
+		if (var8 && this.sequenceDefinition.frameCount != -1) {
+			this.frame = (int)(Math.random() * (double)this.sequenceDefinition.frameIds.length);
+			this.cycleStart -= (int)(Math.random() * (double)this.sequenceDefinition.frameLengths[this.frame]);
 		}
 
 	}
@@ -164,7 +165,8 @@ public class DynamicObject extends Entity {
 		signature = "(Lky;ZS)V",
 		garbageValue = "-31468"
 	)
-	public static void method2193(AbstractSocket var0, boolean var1) {
+	@Export("NetCache_connect")
+	public static void NetCache_connect(AbstractSocket var0, boolean var1) {
 		if (NetCache.NetCache_socket != null) {
 			try {
 				NetCache.NetCache_socket.close();
@@ -199,45 +201,45 @@ public class DynamicObject extends Entity {
 		NetCache.field3175 = 0;
 
 		while (true) {
-			NetFileRequest var9 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
+			NetFileRequest var9 = (NetFileRequest) NetCache.NetCache_pendingPriorityResponses.first();
 			if (var9 == null) {
-				while (true) {
-					var9 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-					if (var9 == null) {
-						if (NetCache.field3181 != 0) {
-							try {
-								var2 = new Buffer(4);
-								var2.writeByte(4);
-								var2.writeByte(NetCache.field3181);
-								var2.writeShort(0);
-								NetCache.NetCache_socket.write(var2.array, 0, 4);
-							} catch (IOException var5) {
-								try {
-									NetCache.NetCache_socket.close();
-								} catch (Exception var4) {
-								}
-
-								++NetCache.NetCache_ioExceptions;
-								NetCache.NetCache_socket = null;
-							}
-						}
-
-						NetCache.field3163 = 0;
-						NetCache.field3169 = DirectByteArrayCopier.currentTimeMs();
-						return;
-					}
-
-					NetCache.NetCache_pendingWritesQueue.addLast(var9);
-					NetCache.NetCache_pendingWrites.put(var9, var9.key);
-					++NetCache.NetCache_pendingWritesCount;
-					--NetCache.NetCache_pendingResponsesCount;
-				}
+				break;
 			}
-
 			NetCache.NetCache_pendingPriorityWrites.put(var9, var9.key);
 			++NetCache.NetCache_pendingPriorityWritesCount;
 			--NetCache.NetCache_pendingPriorityResponsesCount;
 		}
+
+		while (true) {
+			NetFileRequest var9 = (NetFileRequest) NetCache.NetCache_pendingResponses.first();
+			if (var9 == null) {
+				break;
+			}
+			NetCache.NetCache_pendingWritesQueue.addLast(var9);
+			NetCache.NetCache_pendingWrites.put(var9, var9.key);
+			++NetCache.NetCache_pendingWritesCount;
+			--NetCache.NetCache_pendingResponsesCount;
+		}
+
+		if (NetCache.field3181 != 0) {
+			try {
+				var2 = new Buffer(4);
+				var2.writeByte(4);
+				var2.writeByte(NetCache.field3181);
+				var2.writeShort(0);
+				NetCache.NetCache_socket.write(var2.array, 0, 4);
+			} catch (IOException var5) {
+				try {
+					NetCache.NetCache_socket.close();
+				} catch (Exception var4) {
+				}
+
+				++NetCache.NetCache_ioExceptions;
+				NetCache.NetCache_socket = null;
+			}
+		}
+		NetCache.NetCache_loadTime = 0;
+		NetCache.NetCache_timeMs = DirectByteArrayCopier.currentTimeMs();
 	}
 
 	@ObfuscatedName("l")
@@ -299,7 +301,7 @@ public class DynamicObject extends Entity {
 	)
 	@Export("worldListStart")
 	static World worldListStart() {
-		World.worldListWorldCount = 0;
+		World.World_listCount = 0;
 		return Canvas.getNextWorldListWorld();
 	}
 }

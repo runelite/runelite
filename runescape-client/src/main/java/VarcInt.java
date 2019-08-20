@@ -63,7 +63,8 @@ public class VarcInt extends DualNode {
 		signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
 		garbageValue = "-32757"
 	)
-	public static String method4403(CharSequence var0) {
+	@Export("base37Decode")
+	public static String base37Decode(CharSequence var0) {
 		long var3 = 0L;
 		int var5 = var0.length();
 
@@ -87,7 +88,7 @@ public class VarcInt extends DualNode {
 			var3 /= 37L;
 		}
 
-		String var8 = class215.method4023(var3);
+		String var8 = class215.base37DecodeLong(var3);
 		if (var8 == null) {
 			var8 = "";
 		}

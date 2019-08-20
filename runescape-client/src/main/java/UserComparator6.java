@@ -46,17 +46,18 @@ public class UserComparator6 extends AbstractUserComparator {
 		signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
 		garbageValue = "491873255"
 	)
-	public static void method3440(String var0, String var1, int var2, int var3) throws IOException {
-		class40.idxCount = var3;
-		TextureProvider.field1539 = var2;
+	@Export("JagexCache_init")
+	public static void JagexCache_init(String game, String serverBuild, int zero, int idxCount) throws IOException {
+		class40.idxCount = idxCount;
+		TextureProvider.cacheGamebuild = zero;
 
 		try {
-			ScriptEvent.field586 = System.getProperty("os.name");
+			ScriptEvent.operatingSystem = System.getProperty("os.name");
 		} catch (Exception var14) {
-			ScriptEvent.field586 = "Unknown";
+			ScriptEvent.operatingSystem = "Unknown";
 		}
 
-		GrandExchangeOfferOwnWorldComparator.field647 = ScriptEvent.field586.toLowerCase();
+		GrandExchangeOfferOwnWorldComparator.operatingSystemLC = ScriptEvent.operatingSystem.toLowerCase();
 
 		try {
 			PlayerType.userHomeDirectory = System.getProperty("user.home");
@@ -67,7 +68,7 @@ public class UserComparator6 extends AbstractUserComparator {
 		}
 
 		try {
-			if (GrandExchangeOfferOwnWorldComparator.field647.startsWith("win")) {
+			if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("win")) {
 				if (PlayerType.userHomeDirectory == null) {
 					PlayerType.userHomeDirectory = System.getenv("USERPROFILE");
 				}
@@ -85,84 +86,77 @@ public class UserComparator6 extends AbstractUserComparator {
 			PlayerType.userHomeDirectory = "~/";
 		}
 
-		class167.field2043 = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", PlayerType.userHomeDirectory, "/tmp/", ""};
-		LoginPacket.field2309 = new String[]{".jagex_cache_" + TextureProvider.field1539, ".file_store_" + TextureProvider.field1539};
-		int var9 = 0;
+		JagexCache.JagexCache_validCacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", PlayerType.userHomeDirectory, "/tmp/", ""};
+		LoginPacket.validCacheNames = new String[]{".jagex_cache_" + TextureProvider.cacheGamebuild, ".file_store_" + TextureProvider.cacheGamebuild};
 
 		int var7;
 		File var8;
 		label135:
-		while (var9 < 4) {
-			class1.field2 = TextureProvider.method2760(var0, var1, var9);
-			if (!class1.field2.exists()) {
-				class1.field2.mkdirs();
+		for (int var9 = 0; var9 < 4; var9++) {
+			class1.cacheDir = TextureProvider.getCacheDir(game, serverBuild, var9);
+			if (!class1.cacheDir.exists()) {
+				class1.cacheDir.mkdirs();
 			}
 
-			File[] var5 = class1.field2.listFiles();
+			File[] var5 = class1.cacheDir.listFiles();
 			if (var5 == null) {
 				break;
 			}
 
 			File[] var6 = var5;
-			var7 = 0;
 
-			while (true) {
-				if (var7 >= var6.length) {
-					break label135;
-				}
-
+			for (var7 = 0; var7 < var6.length; var7++) {
 				var8 = var6[var7];
-				if (!class186.method3618(var8, false)) {
-					++var9;
-					break;
+				if (!class186.testReadWritePermissions(var8, false)) {
+					continue label135;
 				}
-
-				++var7;
 			}
+			break;
 		}
 
-		File var4 = class1.field2;
-		class169.field2050 = var4;
-		if (!class169.field2050.exists()) {
+
+		File var4 = class1.cacheDir;
+		FileSystem.FileSystem_cacheDir = var4;
+		if (!FileSystem.FileSystem_cacheDir.exists()) {
 			throw new RuntimeException("");
 		}
-		class169.field2055 = true;
+		FileSystem.FileSystem_hasPermissions = true;
 
 		try {
 			File var16 = new File(PlayerType.userHomeDirectory, "random.dat");
 			if (var16.exists()) {
-				class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
+				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
 			} else {
 				label115:
-				for (int var10 = 0; var10 < LoginPacket.field2309.length; ++var10) {
-					for (var7 = 0; var7 < class167.field2043.length; ++var7) {
-						var8 = new File(class167.field2043[var7] + LoginPacket.field2309[var10] + File.separatorChar + "random.dat");
+				for (int var10 = 0; var10 < LoginPacket.validCacheNames.length; ++var10) {
+					for (var7 = 0; var7 < JagexCache.JagexCache_validCacheLocations.length; ++var7) {
+						var8 = new File(JagexCache.JagexCache_validCacheLocations[var7] + LoginPacket.validCacheNames[var10] + File.separatorChar + "random.dat");
 						if (var8.exists()) {
-							class167.randomDat = new BufferedFile(new AccessFile(var8, "rw", 25L), 24, 0);
+							JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var8, "rw", 25L), 24, 0);
 							break label115;
 						}
 					}
 				}
 			}
 
-			if (class167.randomDat == null) {
+			if (JagexCache.JagexCache_randomDat == null) {
 				RandomAccessFile var17 = new RandomAccessFile(var16, "rw");
 				var7 = var17.read();
 				var17.seek(0L);
 				var17.write(var7);
 				var17.seek(0L);
 				var17.close();
-				class167.randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
+				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var16, "rw", 25L), 24, 0);
 			}
 		} catch (IOException var15) {
 		}
 
-		class167.dat2File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-		class167.idx255File = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-		class167.idxFiles = new BufferedFile[class40.idxCount];
+		JagexCache.JagexCache_dat2File = new BufferedFile(new AccessFile(class65.getFile("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
+		JagexCache.JagexCache_idx255File = new BufferedFile(new AccessFile(class65.getFile("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
+		JagexCache.JagexCache_idxFiles = new BufferedFile[class40.idxCount];
 
 		for (int var11 = 0; var11 < class40.idxCount; ++var11) {
-			class167.idxFiles[var11] = new BufferedFile(new AccessFile(class65.method1177("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
+			JagexCache.JagexCache_idxFiles[var11] = new BufferedFile(new AccessFile(class65.getFile("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
 		}
 
 	}

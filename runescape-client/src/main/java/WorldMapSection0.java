@@ -302,7 +302,7 @@ public class WorldMapSection0 implements WorldMapSection {
 			}
 		}
 
-		ItemDefinition var9 = WorldMapArea.getItemDefinition(var0);
+		ItemDefinition var9 = WorldMapArea.ItemDefinition_get(var0);
 		if (var1 > 1 && var9.countobj != null) {
 			int var10 = -1;
 
@@ -313,7 +313,7 @@ public class WorldMapSection0 implements WorldMapSection {
 			}
 
 			if (var10 != -1) {
-				var9 = WorldMapArea.getItemDefinition(var10);
+				var9 = WorldMapArea.ItemDefinition_get(var10);
 			}
 		}
 

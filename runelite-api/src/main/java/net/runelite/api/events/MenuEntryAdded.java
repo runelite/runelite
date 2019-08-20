@@ -52,7 +52,7 @@ public class MenuEntryAdded implements Event
 
 	public int getType()
 	{
-		return menuEntry.getType();
+		return menuEntry.getOpcode();
 	}
 
 	public int getIdentifier()

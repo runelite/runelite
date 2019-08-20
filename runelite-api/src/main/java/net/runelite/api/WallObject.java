@@ -50,8 +50,8 @@ public interface WallObject extends TileObject
 	 */
 	int getConfig();
 
-	Entity getRenderable1();
-	Entity getRenderable2();
+	Entity getEntity1();
+	Entity getEntity2();
 
 	Model getModelA();
 	Model getModelB();

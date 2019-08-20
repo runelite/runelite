@@ -220,7 +220,8 @@ public class FloorOverlayDefinition extends DualNode {
 		signature = "(Lhj;I[B[BI)V",
 		garbageValue = "610677249"
 	)
-	static final void method4756(Widget var0, int var1, byte[] var2, byte[] var3) {
+	@Export("Widget_setKey")
+	static final void Widget_setKey(Widget var0, int var1, byte[] var2, byte[] var3) {
 		if (var0.field2650 == null) {
 			if (var2 == null) {
 				return;

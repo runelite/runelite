@@ -61,6 +61,6 @@ public class ItemContainer extends Node {
 		garbageValue = "-1225456641"
 	)
 	static int method1116(int var0) {
-		return (int)Math.pow(2.0D, (double)((float)var0 / 256.0F + 7.0F));
+		return (int)Math.pow(2.0D, (double)(var0 / 256.0F + 7.0F));
 	}
 }

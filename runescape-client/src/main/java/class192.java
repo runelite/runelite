@@ -77,12 +77,14 @@ public enum class192 implements Enumerated {
 	@ObfuscatedGetter(
 		longValue = -5559382654824697645L
 	)
-	static long field2382;
+	@Export("js5ConnectionMs")
+	static long js5ConnectionMs;
 	@ObfuscatedName("r")
 	@ObfuscatedGetter(
 		intValue = -646625045
 	)
-	final int field2379;
+	@Export("id")
+	final int id;
 	@ObfuscatedName("v")
 	final Set field2380;
 
@@ -95,7 +97,7 @@ public enum class192 implements Enumerated {
 	)
 	class192(String var3, int var4, class191[] var5) {
 		this.field2380 = new HashSet();
-		this.field2379 = var4;
+		this.id = var4;
 		class191[] var6 = var5;
 
 		for (int var7 = 0; var7 < var6.length; ++var7) {
@@ -107,7 +109,7 @@ public enum class192 implements Enumerated {
 
 	class192(String var3, int var4) {
 		this.field2380 = new HashSet();
-		this.field2379 = var4;
+		this.id = var4;
 	}
 
 	@ObfuscatedName("e")
@@ -117,7 +119,7 @@ public enum class192 implements Enumerated {
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.field2379;
+		return this.id;
 	}
 
 	@ObfuscatedName("q")
@@ -161,7 +163,8 @@ public enum class192 implements Enumerated {
 		signature = "(B)V",
 		garbageValue = "46"
 	)
-	public static void method3678() {
+	@Export("initReflectionChecksDeque")
+	public static void initReflectionChecksDeque() {
 		class96.reflectionChecks = new IterableNodeDeque();
 	}
 
@@ -170,7 +173,8 @@ public enum class192 implements Enumerated {
 		signature = "(Ljava/lang/CharSequence;B)Z",
 		garbageValue = "-31"
 	)
-	public static boolean method3677(CharSequence var0) {
+	@Export("isNumber")
+	public static boolean isNumber(CharSequence var0) {
 		boolean var2 = false;
 		boolean var3 = false;
 		int var4 = 0;
@@ -178,22 +182,15 @@ public enum class192 implements Enumerated {
 		int var6 = 0;
 
 		boolean var1;
-		while (true) {
-			if (var6 >= var5) {
-				var1 = var3;
-				break;
-			}
-
-			label82: {
+		for (; ; var6++) {
+			if (var6 < var5) {
 				char var7 = var0.charAt(var6);
 				if (var6 == 0) {
 					if (var7 == '-') {
 						var2 = true;
-						break label82;
-					}
-
-					if (var7 == '+') {
-						break label82;
+						continue;
+					} else if (var7 == '+') {
+						continue;
 					}
 				}
 
@@ -202,12 +199,10 @@ public enum class192 implements Enumerated {
 					var9 = var7 - '0';
 				} else if (var7 >= 'A' && var7 <= 'Z') {
 					var9 = var7 - '7';
+				} else if (var7 < 'a' || var7 > 'z') {
+					var1 = false;
+					break;
 				} else {
-					if (var7 < 'a' || var7 > 'z') {
-						var1 = false;
-						break;
-					}
-
 					var9 = var7 - 'W';
 				}
 
@@ -228,9 +223,11 @@ public enum class192 implements Enumerated {
 
 				var4 = var8;
 				var3 = true;
+			} else {
+				var1 = var3;
+				break;
 			}
 
-			++var6;
 		}
 
 		return var1;
@@ -250,16 +247,16 @@ public enum class192 implements Enumerated {
 		int var4 = 1;
 
 		for (int var5 = 0; var5 < 4; ++var5) {
-			if (World.sortOption1[var5] != var0) {
-				var2[var4] = World.sortOption1[var5];
-				var3[var4] = World.sortOption2[var5];
+			if (World.World_sortOption1[var5] != var0) {
+				var2[var4] = World.World_sortOption1[var5];
+				var3[var4] = World.World_sortOption2[var5];
 				++var4;
 			}
 		}
 
-		World.sortOption1 = var2;
-		World.sortOption2 = var3;
-		Client.sortWorlds(World.worlds, 0, World.worlds.length - 1, World.sortOption1, World.sortOption2);
+		World.World_sortOption1 = var2;
+		World.World_sortOption2 = var3;
+		Client.sortWorlds(World.World_worlds, 0, World.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
 	}
 
 	@ObfuscatedName("i")
@@ -267,7 +264,8 @@ public enum class192 implements Enumerated {
 		signature = "(II)I",
 		garbageValue = "-72629118"
 	)
-	static int method3669(int var0) {
+	@Export("Messages_getLastChatID")
+	static int Messages_getLastChatID(int var0) {
 		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
 		if (var1 == null) {
 			return -1;
@@ -280,7 +278,8 @@ public enum class192 implements Enumerated {
 		signature = "(II)V",
 		garbageValue = "2005954129"
 	)
-	static void method3675(int var0) {
+	@Export("setOculusOrbState")
+	static void setOculusOrbState(int var0) {
 		Client.oculusOrbState = var0;
 	}
 }

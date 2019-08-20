@@ -30,7 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
@@ -75,7 +75,7 @@ class MouseHighlightOverlay extends Overlay
 		MenuEntry menuEntry = menuEntries[last];
 		String target = menuEntry.getTarget();
 		String option = menuEntry.getOption();
-		int type = menuEntry.getType();
+		int type = menuEntry.getOpcode();
 
 		if (shouldNotRenderMenuAction(type))
 		{
@@ -145,12 +145,12 @@ class MouseHighlightOverlay extends Overlay
 
 	private boolean shouldNotRenderMenuAction(int type)
 	{
-		return type == MenuAction.RUNELITE_OVERLAY.getId()
+		return type == MenuOpcode.RUNELITE_OVERLAY.getId()
 				|| (!plugin.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type));
 	}
 
 	private boolean isMenuActionRightClickOnly(int type)
 	{
-		return type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
+		return type == MenuOpcode.EXAMINE_ITEM_BANK_EQ.getId();
 	}
 }

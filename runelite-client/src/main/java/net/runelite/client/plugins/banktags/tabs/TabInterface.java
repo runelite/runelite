@@ -55,7 +55,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemDefinition;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.ScriptEvent;
@@ -579,7 +579,7 @@ public class TabInterface
 		}
 
 		if (chatboxPanelManager.getCurrentInput() != null
-			&& event.getMenuAction() != MenuAction.CANCEL
+			&& event.getMenuOpcode() != MenuOpcode.CANCEL
 			&& !event.getMenuEntry().equals(SCROLL_UP)
 			&& !event.getMenuEntry().equals(SCROLL_DOWN))
 		{
@@ -587,7 +587,7 @@ public class TabInterface
 		}
 
 		if (event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
+			&& event.getMenuOpcode() == MenuOpcode.EXAMINE_ITEM_BANK_EQ
 			&& event.getOption().equalsIgnoreCase("withdraw-x"))
 		{
 			waitSearchTick = true;
@@ -631,7 +631,7 @@ public class TabInterface
 		}
 		else if (activeTab != null
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.RUNELITE
+			&& event.getMenuOpcode() == MenuOpcode.RUNELITE
 			&& event.getOption().startsWith(REMOVE_TAG))
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
@@ -645,7 +645,7 @@ public class TabInterface
 				bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
 			}
 		}
-		else if (event.getMenuAction() == MenuAction.RUNELITE
+		else if (event.getMenuOpcode() == MenuOpcode.RUNELITE
 			&& ((event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getOption().equals(TAG_INVENTORY))
 			|| (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getOption().equals(TAG_GEAR))))
 		{
@@ -1065,7 +1065,7 @@ public class TabInterface
 		entry.setParam1(event.getActionParam1());
 		entry.setTarget(target);
 		entry.setOption(option);
-		entry.setType(MenuAction.RUNELITE.getId());
+		entry.setOpcode(MenuOpcode.RUNELITE.getId());
 		entry.setIdentifier(event.getIdentifier());
 		entries = Arrays.copyOf(entries, entries.length + 1);
 		entries[entries.length - 1] = entry;

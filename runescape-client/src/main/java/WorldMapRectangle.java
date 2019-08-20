@@ -106,7 +106,7 @@ public final class WorldMapRectangle {
 		}
 
 		if (var6 != -1 && var7 != null) {
-			Entity.insertMenuItem(var7, ClientPreferences.colorStartTag(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
+			Entity.insertMenuItem(var7, ClientPreferences.colorStartTag(0xff9040) + var1.name, var6, var1.id, var2, var0.id, var4);
 		}
 
 	}

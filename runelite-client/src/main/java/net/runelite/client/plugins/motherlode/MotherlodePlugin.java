@@ -52,7 +52,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
@@ -374,7 +374,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		if (MINE_SPOTS.contains(menu.getIdentifier()) &&  menu.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION)
+		if (MINE_SPOTS.contains(menu.getIdentifier()) &&  menu.getMenuOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION)
 		{
 			resetIdleChecks();
 			int veinX = menu.getActionParam0();

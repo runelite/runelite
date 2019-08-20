@@ -59,7 +59,7 @@ public class PlayerAppearance {
 
 			for (int var5 = 0; var5 < 7; ++var5) {
 				for (int var6 = 0; var6 < KitDefinition.KitDefinition_fileCount; ++var6) {
-					KitDefinition var7 = ArchiveDiskAction.getKitDefinition(var6);
+					KitDefinition var7 = ArchiveDiskAction.KitDefinition_get(var6);
 					if (var7 != null && !var7.nonSelectable && var7.bodypartID == var5 + (isFemale ? 7 : 0)) {
 						equipment[equipmentIndices[var5]] = var6 + 256;
 						break;
@@ -80,11 +80,12 @@ public class PlayerAppearance {
 		signature = "(IZS)V",
 		garbageValue = "7431"
 	)
-	public void method3992(int var1, boolean var2) {
-		if (var1 == 1 && this.isFemale) {
+	@Export("changeAppearance")
+	public void changeAppearance(int slot, boolean forwards) {
+		if (slot == 1 && this.isFemale) {
 			return;
 		}
-		int var3 = this.equipment[equipmentIndices[var1]];
+		int var3 = this.equipment[equipmentIndices[slot]];
 		if (var3 == 0) {
 			return;
 		}
@@ -92,7 +93,7 @@ public class PlayerAppearance {
 
 		KitDefinition var4;
 		do {
-			if (!var2) {
+			if (!forwards) {
 				--var3;
 				if (var3 < 0) {
 					var3 = KitDefinition.KitDefinition_fileCount - 1;
@@ -104,10 +105,10 @@ public class PlayerAppearance {
 				}
 			}
 
-			var4 = ArchiveDiskAction.getKitDefinition(var3);
-		} while(var4 == null || var4.nonSelectable || var4.bodypartID != (this.isFemale ? 7 : 0) + var1);
+			var4 = ArchiveDiskAction.KitDefinition_get(var3);
+		} while(var4 == null || var4.nonSelectable || var4.bodypartID != (this.isFemale ? 7 : 0) + slot);
 
-		this.equipment[equipmentIndices[var1]] = var3 + 256;
+		this.equipment[equipmentIndices[slot]] = var3 + 256;
 		this.setHash();
 	}
 
@@ -264,11 +265,11 @@ public class PlayerAppearance {
 			int var11;
 			for (int var10 = 0; var10 < 12; ++var10) {
 				var11 = var7[var10];
-				if (var11 >= 256 && var11 < 512 && !ArchiveDiskAction.getKitDefinition(var11 - 256).ready()) {
+				if (var11 >= 256 && var11 < 512 && !ArchiveDiskAction.KitDefinition_get(var11 - 256).ready()) {
 					var9 = true;
 				}
 
-				if (var11 >= 512 && !WorldMapArea.getItemDefinition(var11 - 512).method4646(this.isFemale)) {
+				if (var11 >= 512 && !WorldMapArea.ItemDefinition_get(var11 - 512).hasNoValidModel(this.isFemale)) {
 					var9 = true;
 				}
 			}
@@ -292,14 +293,14 @@ public class PlayerAppearance {
 					var13 = var7[var12];
 					ModelData var14;
 					if (var13 >= 256 && var13 < 512) {
-						var14 = ArchiveDiskAction.getKitDefinition(var13 - 256).getModelData();
+						var14 = ArchiveDiskAction.KitDefinition_get(var13 - 256).getModelData();
 						if (var14 != null) {
 							var16[var11++] = var14;
 						}
 					}
 
 					if (var13 >= 512) {
-						var14 = WorldMapArea.getItemDefinition(var13 - 512).method4694(this.isFemale);
+						var14 = WorldMapArea.ItemDefinition_get(var13 - 512).method4694(this.isFemale);
 						if (var14 != null) {
 							var16[var11++] = var14;
 						}
@@ -354,11 +355,11 @@ public class PlayerAppearance {
 		int var3;
 		for (int var2 = 0; var2 < 12; ++var2) {
 			var3 = this.equipment[var2];
-			if (var3 >= 256 && var3 < 512 && !ArchiveDiskAction.getKitDefinition(var3 - 256).method4445()) {
+			if (var3 >= 256 && var3 < 512 && !ArchiveDiskAction.KitDefinition_get(var3 - 256).method4445()) {
 				var1 = true;
 			}
 
-			if (var3 >= 512 && !WorldMapArea.getItemDefinition(var3 - 512).method4683(this.isFemale)) {
+			if (var3 >= 512 && !WorldMapArea.ItemDefinition_get(var3 - 512).method4683(this.isFemale)) {
 				var1 = true;
 			}
 		}
@@ -374,14 +375,14 @@ public class PlayerAppearance {
 			var5 = this.equipment[var4];
 			ModelData var6;
 			if (var5 >= 256 && var5 < 512) {
-				var6 = ArchiveDiskAction.getKitDefinition(var5 - 256).method4441();
+				var6 = ArchiveDiskAction.KitDefinition_get(var5 - 256).getKitDefinitionModels();
 				if (var6 != null) {
 					var7[var3++] = var6;
 				}
 			}
 
 			if (var5 >= 512) {
-				var6 = WorldMapArea.getItemDefinition(var5 - 512).method4649(this.isFemale);
+				var6 = WorldMapArea.ItemDefinition_get(var5 - 512).method4649(this.isFemale);
 				if (var6 != null) {
 					var7[var3++] = var6;
 				}

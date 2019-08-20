@@ -36,7 +36,7 @@ public abstract class RSBoundaryObjectMixin implements RSBoundaryObject
 	@Inject
 	public Model getModelA()
 	{
-		Entity entity = getRenderable1();
+		Entity entity = getEntity1();
 		if (entity == null)
 		{
 			return null;
@@ -55,7 +55,7 @@ public abstract class RSBoundaryObjectMixin implements RSBoundaryObject
 	@Inject
 	public Model getModelB()
 	{
-		Entity entity = getRenderable2();
+		Entity entity = getEntity2();
 		if (entity == null)
 		{
 			return null;

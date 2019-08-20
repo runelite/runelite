@@ -11,31 +11,32 @@ public class World {
 	@ObfuscatedSignature(
 		signature = "[Lbw;"
 	)
-	@Export("worlds")
-	static World[] worlds;
+	@Export("World_worlds")
+	static World[] World_worlds;
 	@ObfuscatedName("l")
 	@ObfuscatedGetter(
 		intValue = 774267173
 	)
-	@Export("worldsCount")
-	static int worldsCount;
+	@Export("World_count")
+	static int World_count;
 	@ObfuscatedName("b")
 	@ObfuscatedGetter(
 		intValue = -2084454035
 	)
-	@Export("worldListWorldCount")
-	static int worldListWorldCount;
+	@Export("World_listCount")
+	static int World_listCount;
 	@ObfuscatedName("i")
-	@Export("sortOption2")
-	static int[] sortOption2;
+	@Export("World_sortOption2")
+	static int[] World_sortOption2;
 	@ObfuscatedName("c")
-	@Export("sortOption1")
-	static int[] sortOption1;
+	@Export("World_sortOption1")
+	static int[] World_sortOption1;
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "Lex;"
 	)
-	static UrlRequest field1027;
+	@Export("World_request")
+	static UrlRequest World_request;
 	@ObfuscatedName("m")
 	@ObfuscatedGetter(
 		intValue = 790181133
@@ -74,10 +75,10 @@ public class World {
 	int index;
 
 	static {
-		worldsCount = 0;
-		worldListWorldCount = 0;
-		sortOption2 = new int[]{1, 1, 1, 1};
-		sortOption1 = new int[]{0, 1, 2, 3};
+		World_count = 0;
+		World_listCount = 0;
+		World_sortOption2 = new int[]{1, 1, 1, 1};
+		World_sortOption1 = new int[]{0, 1, 2, 3};
 	}
 
 	World() {
@@ -109,7 +110,7 @@ public class World {
 	)
 	@Export("isPvp")
 	boolean isPvp() {
-		return (4 & this.properties) != 0;
+		return (0x4 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("r")
@@ -118,7 +119,7 @@ public class World {
 		garbageValue = "1749102436"
 	)
 	boolean method1698() {
-		return (8 & this.properties) != 0;
+		return (0x8 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("v")
@@ -128,7 +129,7 @@ public class World {
 	)
 	@Export("isDeadman")
 	boolean isDeadman() {
-		return (536870912 & this.properties) != 0;
+		return (0x20000000 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("y")
@@ -138,7 +139,7 @@ public class World {
 	)
 	@Export("isBeta")
 	boolean isBeta() {
-		return (33554432 & this.properties) != 0;
+		return (0x2000000 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("p")
@@ -146,7 +147,8 @@ public class World {
 		signature = "(Lkx;B)I",
 		garbageValue = "80"
 	)
-	static int method1686(PacketBuffer var0) {
+	@Export("decode")
+	static int decode(PacketBuffer var0) {
 		int var1 = var0.readBits(2);
 		int var2;
 		if (var1 == 0) {
@@ -184,7 +186,7 @@ public class World {
 		int var7;
 		int var8;
 		if (var6 > 0) {
-			var1.switches = var1.method2182(var6);
+			var1.switches = var1.newIterableNodeHashTable(var6);
 
 			for (var7 = 0; var7 < var6; ++var7) {
 				var8 = var2.readUnsignedShort();

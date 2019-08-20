@@ -14,7 +14,8 @@ public class TextureProvider implements TextureLoader {
 	@ObfuscatedGetter(
 		intValue = -95819679
 	)
-	static int field1539;
+	@Export("cacheGamebuild")
+	static int cacheGamebuild;
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "[Ldb;"
@@ -92,9 +93,9 @@ public class TextureProvider implements TextureLoader {
 
 		for (int var4 = 0; var4 < var3.length; ++var4) {
 			Texture var5 = var3[var4];
-			if (var5 != null && var5.records != null) {
-				var1 += var5.records.length;
-				int[] var6 = var5.records;
+			if (var5 != null && var5.fileIds != null) {
+				var1 += var5.fileIds.length;
+				int[] var6 = var5.fileIds;
 
 				for (int var7 = 0; var7 < var6.length; ++var7) {
 					int var8 = var6[var7];
@@ -123,29 +124,30 @@ public class TextureProvider implements TextureLoader {
 		signature = "(II)[I",
 		garbageValue = "726289343"
 	)
-	@Export("load")
-	public int[] load(int var1) {
+	@Export("getTexturePixels")
+	public int[] getTexturePixels(int var1) {
 		Texture var2 = this.textures[var1];
-		if (var2 != null) {
-			if (var2.pixels != null) {
-				this.deque.addLast(var2);
-				var2.isLoaded = true;
-				return var2.pixels;
+		if (var2 == null) {
+			return null;
+		}
+		if (var2.pixels != null) {
+			this.deque.addLast(var2);
+			var2.isLoaded = true;
+			return var2.pixels;
+		}
+
+		boolean var3 = var2.load(this.brightness, this.textureSize, this.archive);
+		if (var3) {
+			if (this.remaining == 0) {
+				Texture var4 = (Texture)this.deque.removeFirst();
+				var4.reset();
+			} else {
+				--this.remaining;
 			}
 
-			boolean var3 = var2.method2846(this.brightness, this.textureSize, this.archive);
-			if (var3) {
-				if (this.remaining == 0) {
-					Texture var4 = (Texture)this.deque.removeFirst();
-					var4.reset();
-				} else {
-					--this.remaining;
-				}
-
-				this.deque.addLast(var2);
-				var2.isLoaded = true;
-				return var2.pixels;
-			}
+			this.deque.addLast(var2);
+			var2.isLoaded = true;
+			return var2.pixels;
 		}
 
 		return null;
@@ -219,8 +221,9 @@ public class TextureProvider implements TextureLoader {
 		signature = "(II)[B",
 		garbageValue = "506694111"
 	)
-	public static synchronized byte[] method2729(int var0) {
-		return ByteArrayPool.ByteArrayPool_get(var0, false);
+	@Export("ByteArrayPool_getArray")
+	public static synchronized byte[] ByteArrayPool_getArray(int var0) {
+		return ByteArrayPool.ByteArrayPool_getArrayBool(var0, false);
 	}
 
 	@ObfuscatedName("w")
@@ -228,17 +231,18 @@ public class TextureProvider implements TextureLoader {
 		signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
 		garbageValue = "-1682877008"
 	)
-	static File method2760(String var0, String var1, int var2) {
+	@Export("getCacheDir")
+	static File getCacheDir(String var0, String var1, int var2) {
 		String var3 = var2 == 0 ? "" : "" + var2;
-		class167.field2038 = new File(PlayerType.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
+		JagexCache.JagexCache_locationFile = new File(PlayerType.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
 		String var4 = null;
 		String var5 = null;
 		boolean var6 = false;
 		Buffer var8;
 		File var23;
-		if (class167.field2038.exists()) {
+		if (JagexCache.JagexCache_locationFile.exists()) {
 			try {
-				AccessFile var7 = new AccessFile(class167.field2038, "rw", 10000L);
+				AccessFile var7 = new AccessFile(JagexCache.JagexCache_locationFile, "rw", 10000L);
 
 				int var9;
 				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
@@ -285,7 +289,7 @@ public class TextureProvider implements TextureLoader {
 
 			if (var4 != null) {
 				var23 = new File(var4, "test.dat");
-				if (!class186.method3618(var23, true)) {
+				if (!class186.testReadWritePermissions(var23, true)) {
 					var4 = null;
 				}
 			}
@@ -293,10 +297,10 @@ public class TextureProvider implements TextureLoader {
 
 		if (var4 == null && var2 == 0) {
 			label139:
-			for (int var15 = 0; var15 < LoginPacket.field2309.length; ++var15) {
-				for (int var16 = 0; var16 < class167.field2043.length; ++var16) {
-					File var17 = new File(class167.field2043[var16] + LoginPacket.field2309[var15] + File.separatorChar + var0 + File.separatorChar);
-					if (var17.exists() && class186.method3618(new File(var17, "test.dat"), true)) {
+			for (int var15 = 0; var15 < LoginPacket.validCacheNames.length; ++var15) {
+				for (int var16 = 0; var16 < JagexCache.JagexCache_validCacheLocations.length; ++var16) {
+					File var17 = new File(JagexCache.JagexCache_validCacheLocations[var16] + LoginPacket.validCacheNames[var15] + File.separatorChar + var0 + File.separatorChar);
+					if (var17.exists() && class186.testReadWritePermissions(new File(var17, "test.dat"), true)) {
 						var4 = var17.toString();
 						var6 = true;
 						break label139;
@@ -339,7 +343,7 @@ public class TextureProvider implements TextureLoader {
 			var8 = null;
 
 			try {
-				AccessFile var25 = new AccessFile(class167.field2038, "rw", 10000L);
+				AccessFile var25 = new AccessFile(JagexCache.JagexCache_locationFile, "rw", 10000L);
 				Buffer var26 = new Buffer(500);
 				var26.writeByte(3);
 				var26.writeByte(var8 != null ? 1 : 0);
@@ -363,10 +367,10 @@ public class TextureProvider implements TextureLoader {
 		signature = "(Lhp;Ljava/lang/String;Ljava/lang/String;IZB)V",
 		garbageValue = "-92"
 	)
-	public static void method2761(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
-		int var5 = var0.getGroupId(var1);
-		int var6 = var0.getFileId(var5, var2);
-		class169.method3503(var0, var5, var6, var3, var4);
+	public static void method2761(AbstractArchive var0, String group, String file, int var3, boolean var4) {
+		int var5 = var0.getGroupId(group);
+		int var6 = var0.getFileId(var5, file);
+		FileSystem.method3503(var0, var5, var6, var3, var4);
 	}
 
 	@ObfuscatedName("d")

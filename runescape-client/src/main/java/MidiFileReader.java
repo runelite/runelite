@@ -56,10 +56,8 @@ public class MidiFileReader {
 		this.field2460 = 500000;
 		this.trackStarts = new int[var2];
 
-		Buffer var10000;
-		int var3;
 		int var5;
-		for (var3 = 0; var3 < var2; var10000.offset += var5) {
+		for (int var3 = 0; var3 < var2; this.buffer.offset += var5) {
 			int var4 = this.buffer.readInt();
 			var5 = this.buffer.readInt();
 			if (var4 == 1297379947) {
@@ -67,13 +65,12 @@ public class MidiFileReader {
 				++var3;
 			}
 
-			var10000 = this.buffer;
 		}
 
 		this.field2472 = 0L;
 		this.trackPositions = new int[var2];
 
-		for (var3 = 0; var3 < var2; ++var3) {
+		for (int var3 = 0; var3 < var2; ++var3) {
 			this.trackPositions[var3] = this.trackStarts[var3];
 		}
 
@@ -125,8 +122,7 @@ public class MidiFileReader {
 	@Export("readTrackLength")
 	void readTrackLength(int var1) {
 		int var2 = this.buffer.readVarInt();
-		int[] var10000 = this.trackLengths;
-		var10000[var1] += var2;
+		this.trackLengths[var1] += var2;
 	}
 
 	@ObfuscatedName("c")
@@ -162,8 +158,7 @@ public class MidiFileReader {
 			}
 		}
 
-		Buffer var10000 = this.buffer;
-		var10000.offset += var3;
+		this.buffer.offset += var3;
 		return 0;
 	}
 
@@ -173,10 +168,8 @@ public class MidiFileReader {
 		if (var2 == 255) {
 			int var7 = this.buffer.readUnsignedByte();
 			var4 = this.buffer.readVarInt();
-			Buffer var10000;
 			if (var7 == 47) {
-				var10000 = this.buffer;
-				var10000.offset += var4;
+				this.buffer.offset += var4;
 				return 1;
 			}
 			if (var7 == 81) {
@@ -185,12 +178,10 @@ public class MidiFileReader {
 				int var6 = this.trackLengths[var1];
 				this.field2472 += (long)var6 * (long)(this.field2460 - var5);
 				this.field2460 = var5;
-				var10000 = this.buffer;
-				var10000.offset += var4;
+				this.buffer.offset += var4;
 				return 2;
 			}
-			var10000 = this.buffer;
-			var10000.offset += var4;
+			this.buffer.offset += var4;
 			return 3;
 		}
 		byte var3 = field2468[var2 - 128];

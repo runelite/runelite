@@ -88,20 +88,21 @@ public class VarpDefinition extends DualNode {
 		garbageValue = "-17259877"
 	)
 	public static boolean method4366(char var0) {
-		if ((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
-			if (var0 != 0) {
-				char[] var1 = class288.cp1252AsciiExtension;
-
-				for (int var2 = 0; var2 < var1.length; ++var2) {
-					char var3 = var1[var2];
-					if (var0 == var3) {
-						return true;
-					}
-				}
-			}
-
+		if ((var0 > 0 && var0 < 128) || (var0 >= 160 && var0 <= 255)) {
+			return true;
+		}
+		if (var0 == 0) {
 			return false;
 		}
-		return true;
+		char[] var1 = class288.cp1252AsciiExtension;
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			char var3 = var1[var2];
+			if (var0 == var3) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

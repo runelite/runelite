@@ -19,7 +19,7 @@ public class class189 {
 		Login.loginBoxX = Login.xPadding + 202;
 		ScriptEvent.loginBoxCenter = Login.loginBoxX + 180;
 		if (Login.worldSelectOpen) {
-			class188.method3643(var0, var1);
+			class188.drawWorldSelect(var0, var1);
 		} else {
 			GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
 			NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
@@ -54,14 +54,14 @@ public class class189 {
 				if (Login.loginIndex != 4) {
 					var0.draw("Login: ", Login.loginBoxX + 180 - 110, var23, 0xffffff, 0);
 					var24 = 200;
-					var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.method3612(Login.Login_username) : Login.Login_username;
+					var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.passwordStarChars(Login.Login_username) : Login.Login_username;
 
 					for (var6 = var5; var0.stringWidth(var6) > var24; var6 = var6.substring(0, var6.length() - 1)) {
 					}
 
 					var0.draw(AbstractFont.escapeBrackets(var6), Login.loginBoxX + 180 - 70, var23, 0xffffff, 0);
 					var23 += 15;
-					var0.draw("Password: " + ClientPacket.method3612(Login.Login_password), Login.loginBoxX + 180 - 108, var23, 0xffffff, 0);
+					var0.draw("Password: " + ClientPacket.passwordStarChars(Login.Login_password), Login.loginBoxX + 180 - 108, var23, 0xffffff, 0);
 					var23 += 15;
 				}
 			}
@@ -109,14 +109,14 @@ public class class189 {
 						var23 += 7;
 						var0.draw("Login: ", ScriptEvent.loginBoxCenter - 110, var23, 0xffffff, 0);
 						var24 = 200;
-						var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.method3612(Login.Login_username) : Login.Login_username;
+						var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.passwordStarChars(Login.Login_username) : Login.Login_username;
 
 						for (var6 = var5; var0.stringWidth(var6) > var24; var6 = var6.substring(1)) {
 						}
 
 						var0.draw(AbstractFont.escapeBrackets(var6) + (Login.currentLoginField == 0 & Client.cycle % 40 < 20 ? ClientPreferences.colorStartTag(0xffff00) + "|" : ""), ScriptEvent.loginBoxCenter - 70, var23, 0xffffff, 0);
 						var23 += 15;
-						var0.draw("Password: " + ClientPacket.method3612(Login.Login_password) + (Login.currentLoginField == 1 & Client.cycle % 40 < 20 ? ClientPreferences.colorStartTag(0xffff00) + "|" : ""), ScriptEvent.loginBoxCenter - 108, var23, 0xffffff, 0);
+						var0.draw("Password: " + ClientPacket.passwordStarChars(Login.Login_password) + (Login.currentLoginField == 1 & Client.cycle % 40 < 20 ? ClientPreferences.colorStartTag(0xffff00) + "|" : ""), ScriptEvent.loginBoxCenter - 108, var23, 0xffffff, 0);
 						var23 += 15;
 						var22 = 277;
 						var7 = ScriptEvent.loginBoxCenter + -117;
@@ -180,7 +180,7 @@ public class class189 {
 							var23 += 15;
 							var0.drawCentered(Login.Login_response3, Login.loginBoxX + 180, var23, 0xffffff, 0);
 							var23 += 15;
-							var0.draw("PIN: " + ClientPacket.method3612(WorldMapManager.otp) + (Client.cycle % 40 < 20 ? ClientPreferences.colorStartTag(0xffff00) + "|" : ""), Login.loginBoxX + 180 - 108, var23, 0xffffff, 0);
+							var0.draw("PIN: " + ClientPacket.passwordStarChars(WorldMapManager.otp) + (Client.cycle % 40 < 20 ? ClientPreferences.colorStartTag(0xffff00) + "|" : ""), Login.loginBoxX + 180 - 108, var23, 0xffffff, 0);
 							var23 -= 8;
 							var0.draw("Trust this computer", Login.loginBoxX + 180 - 9, var23, 0xffff00, 0);
 							var23 += 15;
@@ -216,7 +216,7 @@ public class class189 {
 							var23 += 14;
 							var0.draw("Username/email: ", Login.loginBoxX + 180 - 145, var23, 0xffffff, 0);
 							var24 = 174;
-							var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.method3612(Login.Login_username) : Login.Login_username;
+							var5 = WorldMapLabelSize.clientPreferences.hideUsername ? ClientPacket.passwordStarChars(Login.Login_username) : Login.Login_username;
 
 							for (var6 = var5; var0.stringWidth(var6) > var24; var6 = var6.substring(1)) {
 							}
@@ -343,7 +343,7 @@ public class class189 {
 					byte var19 = 35;
 					class30.field264.drawAt(var23, var24);
 					var0.drawCentered("World" + " " + Client.worldId, var27 / 2 + var23, var19 / 2 + var24 - 2, 0xffffff, 0);
-					if (World.field1027 != null) {
+					if (World.World_request != null) {
 						var1.drawCentered("Loading...", var27 / 2 + var23, var19 / 2 + var24 + 12, 0xffffff, 0);
 					} else {
 						var1.drawCentered("Click to switch", var27 / 2 + var23, var19 / 2 + var24 + 12, 0xffffff, 0);

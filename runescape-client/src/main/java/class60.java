@@ -15,20 +15,22 @@ public class class60 {
 	)
 	@Export("clickWidget")
 	static final void clickWidget(Widget var0, int var1, int var2) {
-		if (Client.clickedWidget == null && !Client.isMenuOpen) {
-			if (var0 != null && ArchiveLoader.method1099(var0) != null) {
-				Client.clickedWidget = var0;
-				Client.clickedWidgetParent = ArchiveLoader.method1099(var0);
-				Client.widgetClickX = var1;
-				Client.widgetClickY = var2;
-				class80.widgetDragDuration = 0;
-				Client.isDraggingWidget = false;
-				int var3 = class13.method151();
-				if (var3 != -1) {
-					Decimator.method2510(var3);
-				}
-
-			}
+		if (Client.clickedWidget != null || Client.isMenuOpen) {
+			return;
 		}
+		if (var0 == null || ArchiveLoader.method1099(var0) == null) {
+			return;
+		}
+		Client.clickedWidget = var0;
+		Client.clickedWidgetParent = ArchiveLoader.method1099(var0);
+		Client.widgetClickX = var1;
+		Client.widgetClickY = var2;
+		class80.widgetDragDuration = 0;
+		Client.isDraggingWidget = false;
+		int var3 = class13.getNewestMenuIdx();
+		if (var3 != -1) {
+			Decimator.saveTempMenuAction(var3);
+		}
+
 	}
 }

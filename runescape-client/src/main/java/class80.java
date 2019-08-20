@@ -65,7 +65,7 @@ public class class80 {
 	@Export("getWidget")
 	public static Widget getWidget(int var0) {
 		int var1 = var0 >> 16;
-		int var2 = var0 & 65535;
+		int var2 = var0 & 0xffff;
 		if (Widget.Widget_interfaceComponents[var1] == null || Widget.Widget_interfaceComponents[var1][var2] == null) {
 			boolean var3 = class162.loadInterface(var1);
 			if (!var3) {
@@ -82,15 +82,9 @@ public class class80 {
 		garbageValue = "-817904551"
 	)
 	static final void method1982() {
-		int var0;
-		int var1;
-		int var2;
-		int var3;
-		int var4;
-		int var5;
 		if (Client.oculusOrbState == 0) {
-			var0 = Client.localPlayer.x;
-			var1 = Client.localPlayer.y;
+			int var0 = Client.localPlayer.x;
+			int var1 = Client.localPlayer.y;
 			if (MouseHandler.oculusOrbFocalPointX - var0 < -500 || MouseHandler.oculusOrbFocalPointX - var0 > 500 || WorldMapArea.oculusOrbFocalPointY - var1 < -500 || WorldMapArea.oculusOrbFocalPointY - var1 > 500) {
 				MouseHandler.oculusOrbFocalPointX = var0;
 				WorldMapArea.oculusOrbFocalPointY = var1;
@@ -104,10 +98,10 @@ public class class80 {
 				WorldMapArea.oculusOrbFocalPointY += (var1 - WorldMapArea.oculusOrbFocalPointY) / 16;
 			}
 
-			var2 = MouseHandler.oculusOrbFocalPointX >> 7;
-			var3 = WorldMapArea.oculusOrbFocalPointY >> 7;
-			var4 = ScriptEvent.getTileHeight(MouseHandler.oculusOrbFocalPointX, WorldMapArea.oculusOrbFocalPointY, class42.plane);
-			var5 = 0;
+			int var2 = MouseHandler.oculusOrbFocalPointX >> 7;
+			int var3 = WorldMapArea.oculusOrbFocalPointY >> 7;
+			int var4 = ScriptEvent.getTileHeight(MouseHandler.oculusOrbFocalPointX, WorldMapArea.oculusOrbFocalPointY, class42.plane);
+			int var5 = 0;
 			int var6;
 			if (var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
 				for (var6 = var2 - 4; var6 <= var2 + 4; ++var6) {
@@ -175,7 +169,7 @@ public class class80 {
 				var11 = 1;
 			}
 
-			var2 = 0;
+			int var2 = 0;
 			if (var10 >= 0 || var11 != 0) {
 				var2 = KeyHandler.KeyHandler_pressedKeys[81] ? Client.oculusOrbSlowedSpeed : Client.oculusOrbNormalSpeed;
 				var2 *= 16;
@@ -192,12 +186,15 @@ public class class80 {
 				Client.field928 = Client.field928 * 9 / 10;
 			}
 
-			if (Client.field928 > 0) {
-				var3 = Client.field928 / 16;
+			if (Client.field928 <= 0) {
+				Client.field731 = -1;
+				Client.field871 = -1;
+			} else {
+				int var3 = Client.field928 / 16;
 				if (Client.field731 >= 0) {
-					var0 = Client.field731 - Interpreter.cameraYaw & 2047;
-					var4 = Rasterizer3D.Rasterizer3D_sine[var0];
-					var5 = Rasterizer3D.Rasterizer3D_cosine[var0];
+					int var0 = Client.field731 - Interpreter.cameraYaw & 2047;
+					int var4 = Rasterizer3D.Rasterizer3D_sine[var0];
+					int var5 = Rasterizer3D.Rasterizer3D_cosine[var0];
 					MouseHandler.oculusOrbFocalPointX += var3 * var4 / 65536;
 					WorldMapArea.oculusOrbFocalPointY += var5 * var3 / 65536;
 				}
@@ -208,9 +205,6 @@ public class class80 {
 						Client.field729 = 0;
 					}
 				}
-			} else {
-				Client.field731 = -1;
-				Client.field871 = -1;
 			}
 
 			if (KeyHandler.KeyHandler_pressedKeys[13]) {
@@ -219,10 +213,10 @@ public class class80 {
 		}
 
 		if (MouseHandler.MouseHandler_currentButton == 4 && DevicePcmPlayerProvider.mouseCam) {
-			var0 = MouseHandler.MouseHandler_y - Client.mouseCamClickedY;
+			int var0 = MouseHandler.MouseHandler_y - Client.mouseCamClickedY;
 			Client.camAngleDX = var0 * 2;
 			Client.mouseCamClickedY = var0 != -1 && var0 != 1 ? (MouseHandler.MouseHandler_y + Client.mouseCamClickedY) / 2 : MouseHandler.MouseHandler_y;
-			var1 = Client.mouseCamClickedX - MouseHandler.MouseHandler_x;
+			int var1 = Client.mouseCamClickedX - MouseHandler.MouseHandler_x;
 			Client.camAngleDY = var1 * 2;
 			Client.mouseCamClickedX = var1 != -1 && var1 != 1 ? (Client.mouseCamClickedX + MouseHandler.MouseHandler_x) / 2 : MouseHandler.MouseHandler_x;
 		} else {

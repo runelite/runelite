@@ -57,7 +57,7 @@ public class MenuEntry
 	/**
 	 * The action the entry will trigger.
 	 */
-	private int type;
+	private int opcode;
 	/**
 	 * An additional parameter for the action.
 	 */
@@ -80,7 +80,7 @@ public class MenuEntry
 			src.getOption(),
 			src.getTarget(),
 			src.getIdentifier(),
-			src.getType(),
+			src.getOpcode(),
 			src.getParam0(),
 			src.getParam1(),
 			src.isForceLeftClick()

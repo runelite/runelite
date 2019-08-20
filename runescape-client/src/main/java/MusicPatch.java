@@ -489,27 +489,29 @@ public class MusicPatch extends Node {
 		RawSound var6 = null;
 
 		for (int var7 = 0; var7 < 128; ++var7) {
-			if (var2 == null || var2[var7] != 0) {
-				int var8 = this.field2480[var7];
-				if (var8 != 0) {
-					if (var8 != var5) {
-						var5 = var8--;
-						if ((var8 & 1) == 0) {
-							var6 = var1.getSoundEffect(var8 >> 2, var3);
-						} else {
-							var6 = var1.getMusicSample(var8 >> 2, var3);
-						}
-
-						if (var6 == null) {
-							var4 = false;
-						}
-					}
-
-					if (var6 != null) {
-						this.rawSounds[var7] = var6;
-						this.field2480[var7] = 0;
-					}
+			if (var2 != null && var2[var7] == 0) {
+				continue;
+			}
+			int var8 = this.field2480[var7];
+			if (var8 == 0) {
+				continue;
+			}
+			if (var8 != var5) {
+				var5 = var8--;
+				if ((var8 & 1) == 0) {
+					var6 = var1.getSoundEffect(var8 >> 2, var3);
+				} else {
+					var6 = var1.getMusicSample(var8 >> 2, var3);
 				}
+
+				if (var6 == null) {
+					var4 = false;
+				}
+			}
+
+			if (var6 != null) {
+				this.rawSounds[var7] = var6;
+				this.field2480[var7] = 0;
 			}
 		}
 
@@ -531,8 +533,8 @@ public class MusicPatch extends Node {
 		signature = "(IB)Lib;",
 		garbageValue = "-20"
 	)
-	@Export("getSpotAnimationDefinition")
-	public static SpotAnimationDefinition getSpotAnimationDefinition(int var0) {
+	@Export("SpotAnimationDefinition_get")
+	public static SpotAnimationDefinition SpotAnimationDefinition_get(int var0) {
 		SpotAnimationDefinition var1 = (SpotAnimationDefinition)SpotAnimationDefinition.SpotAnimationDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
@@ -553,7 +555,8 @@ public class MusicPatch extends Node {
 		signature = "(B)V",
 		garbageValue = "1"
 	)
-	public static void method3888() {
+	@Export("VarbitDefinition_clearCached")
+	public static void VarbitDefinition_clearCached() {
 		VarbitDefinition.VarbitDefinition_cached.clear();
 	}
 
@@ -562,11 +565,12 @@ public class MusicPatch extends Node {
 		signature = "(IIIIIIIIII)V",
 		garbageValue = "-1700353173"
 	)
-	static final void method3885(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+	@Export("updatePendingSpawn")
+	static final void updatePendingSpawn(int plane, int x, int y, int type, int id, int var5, int orientation, int delay, int hitpoints) {
 		PendingSpawn var9 = null;
 
 		for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
-			if (var0 == var10.plane && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+			if (plane == var10.plane && var10.x == x && y == var10.y && type == var10.type) {
 				var9 = var10;
 				break;
 			}
@@ -574,18 +578,18 @@ public class MusicPatch extends Node {
 
 		if (var9 == null) {
 			var9 = new PendingSpawn();
-			var9.plane = var0;
-			var9.type = var3;
-			var9.x = var1;
-			var9.y = var2;
+			var9.plane = plane;
+			var9.type = type;
+			var9.x = x;
+			var9.y = y;
 			class294.method5327(var9);
 			Client.pendingSpawns.addFirst(var9);
 		}
 
-		var9.id = var4;
+		var9.id = id;
 		var9.field940 = var5;
-		var9.orientation = var6;
-		var9.delay = var7;
-		var9.hitpoints = var8;
+		var9.orientation = orientation;
+		var9.delay = delay;
+		var9.hitpoints = hitpoints;
 	}
 }

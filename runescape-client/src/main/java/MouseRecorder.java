@@ -73,7 +73,8 @@ public class MouseRecorder implements Runnable {
 		signature = "(I)V",
 		garbageValue = "234130562"
 	)
-	static final void method1138() {
+	@Export("FriendSystem_friendsListFullMes")
+	static final void FriendSystem_friendsListFullMes() {
 		Object var10000 = null;
 		String var0 = "Your friend list is full. Max of 200 for free users, and 400 for members";
 		ScriptEvent.addGameMessage(30, "", var0);
@@ -113,7 +114,7 @@ public class MouseRecorder implements Runnable {
 	@Export("performPlayerAnimation")
 	static void performPlayerAnimation(Player var0, int var1, int var2) {
 		if (var0.sequence == var1 && var1 != -1) {
-			int var3 = GrandExchangeEvent.getSequenceDefinition(var1).field3529;
+			int var3 = GrandExchangeEvent.SequenceDefinition_get(var1).field3529;
 			if (var3 == 1) {
 				var0.sequenceFrame = 0;
 				var0.sequenceFrameCycle = 0;
@@ -124,7 +125,7 @@ public class MouseRecorder implements Runnable {
 			if (var3 == 2) {
 				var0.field985 = 0;
 			}
-		} else if (var1 == -1 || var0.sequence == -1 || GrandExchangeEvent.getSequenceDefinition(var1).field3533 >= GrandExchangeEvent.getSequenceDefinition(var0.sequence).field3533) {
+		} else if (var1 == -1 || var0.sequence == -1 || GrandExchangeEvent.SequenceDefinition_get(var1).field3533 >= GrandExchangeEvent.SequenceDefinition_get(var0.sequence).field3533) {
 			var0.sequence = var1;
 			var0.sequenceFrame = 0;
 			var0.sequenceFrameCycle = 0;

@@ -58,15 +58,12 @@ public class UserComparator8 extends AbstractUserComparator {
 
 			int var7;
 			int var9;
-			int[] var10000;
 			for (var7 = 0; var7 < 32768; ++var7) {
 				NPC var8 = Client.npcs[var7];
 				if (var8 != null) {
 					for (var9 = 0; var9 < 10; ++var9) {
-						var10000 = var8.pathX;
-						var10000[var9] -= var5;
-						var10000 = var8.pathY;
-						var10000[var9] -= var6;
+						var8.pathX[var9] -= var5;
+						var8.pathY[var9] -= var6;
 					}
 
 					var8.x -= var5 * 128;
@@ -78,10 +75,8 @@ public class UserComparator8 extends AbstractUserComparator {
 				Player var21 = Client.players[var7];
 				if (var21 != null) {
 					for (var9 = 0; var9 < 10; ++var9) {
-						var10000 = var21.pathX;
-						var10000[var9] -= var5;
-						var10000 = var21.pathY;
-						var10000[var9] -= var6;
+						var21.pathX[var9] -= var5;
+						var21.pathY[var9] -= var6;
 					}
 
 					var21.x -= var5 * 128;

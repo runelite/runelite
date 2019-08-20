@@ -57,7 +57,8 @@ public final class FloorDecoration {
 		signature = "(S)V",
 		garbageValue = "3762"
 	)
-	public static void method2842() {
+	@Export("KeyHandler_exit")
+	public static void KeyHandler_exit() {
 		if (KeyHandler.KeyHandler_instance != null) {
 			synchronized(KeyHandler.KeyHandler_instance) {
 				KeyHandler.KeyHandler_instance = null;
@@ -71,7 +72,8 @@ public final class FloorDecoration {
 		signature = "(Ljava/lang/Throwable;B)Ljava/lang/String;",
 		garbageValue = "1"
 	)
-	static String method2843(Throwable var0) throws IOException {
+	@Export("shortenStackTrace")
+	static String shortenStackTrace(Throwable var0) throws IOException {
 		String var1;
 		if (var0 instanceof RunException) {
 			RunException var2 = (RunException)var0;
@@ -90,32 +92,30 @@ public final class FloorDecoration {
 		String var6 = var5.readLine();
 
 		while (true) {
-			while (true) {
-				String var7 = var5.readLine();
-				if (var7 == null) {
-					var1 = var1 + "| " + var6;
-					return var1;
-				}
-
-				int var8 = var7.indexOf(40);
-				int var9 = var7.indexOf(41, var8 + 1);
-				if (var8 >= 0 && var9 >= 0) {
-					String var10 = var7.substring(var8 + 1, var9);
-					int var11 = var10.indexOf(".java:");
-					if (var11 >= 0) {
-						var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
-						var1 = var1 + var10 + ' ';
-						continue;
-					}
-
-					var7 = var7.substring(0, var8);
-				}
-
-				var7 = var7.trim();
-				var7 = var7.substring(var7.lastIndexOf(32) + 1);
-				var7 = var7.substring(var7.lastIndexOf(9) + 1);
-				var1 = var1 + var7 + ' ';
+			String var7 = var5.readLine();
+			if (var7 == null) {
+				break;
 			}
+
+			int var8 = var7.indexOf(40);
+			int var9 = var7.indexOf(41, var8 + 1);
+			if (var8 >= 0 && var9 >= 0) {
+				String var10 = var7.substring(var8 + 1, var9);
+				int var11 = var10.indexOf(".java:");
+				if (var11 >= 0) {
+					var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
+					var1 = var1 + var10 + ' ';
+					continue;
+				}
+				var7 = var7.substring(0, var8);
+			}
+			var7 = var7.trim();
+			var7 = var7.substring(var7.lastIndexOf(32) + 1);
+			var7 = var7.substring(var7.lastIndexOf(9) + 1);
+			var1 = var1 + var7 + ' ';
 		}
+
+		var1 = var1 + "| " + var6;
+		return var1;
 	}
 }

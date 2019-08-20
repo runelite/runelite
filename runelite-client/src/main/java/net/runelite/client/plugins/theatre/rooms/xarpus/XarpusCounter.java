@@ -3,7 +3,7 @@ package net.runelite.client.plugins.theatre.rooms.xarpus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;

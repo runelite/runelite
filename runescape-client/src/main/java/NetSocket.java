@@ -225,73 +225,66 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				label84: {
-					int var1;
-					int var2;
-					synchronized(this) {
-						if (this.outOffset == this.outLength) {
-							if (this.isClosed) {
-								break label84;
-							}
-
-							try {
-								this.wait();
-							} catch (InterruptedException var10) {
-							}
+				int var1;
+				int var2;
+				synchronized(this) {
+					if (this.outOffset == this.outLength) {
+						if (this.isClosed) {
+							break;
 						}
-
-						var2 = this.outLength;
-						if (this.outOffset >= this.outLength) {
-							var1 = this.outOffset - this.outLength;
-						} else {
-							var1 = this.bufferLength - this.outLength;
+						try {
+							this.wait();
+						} catch (InterruptedException var10) {
 						}
 					}
 
-					if (var1 <= 0) {
-						continue;
+					var2 = this.outLength;
+					if (this.outOffset >= this.outLength) {
+						var1 = this.outOffset - this.outLength;
+					} else {
+						var1 = this.bufferLength - this.outLength;
 					}
+				}
 
-					try {
-						this.outputStream.write(this.outBuffer, var2, var1);
-					} catch (IOException var9) {
-						this.exceptionWriting = true;
-					}
-
-					this.outLength = (var1 + this.outLength) % this.bufferLength;
-
-					try {
-						if (this.outOffset == this.outLength) {
-							this.outputStream.flush();
-						}
-					} catch (IOException var8) {
-						this.exceptionWriting = true;
-					}
+				if (var1 <= 0) {
 					continue;
 				}
 
 				try {
-					if (this.inputStream != null) {
-						this.inputStream.close();
-					}
-
-					if (this.outputStream != null) {
-						this.outputStream.close();
-					}
-
-					if (this.socket != null) {
-						this.socket.close();
-					}
-				} catch (IOException var7) {
+					this.outputStream.write(this.outBuffer, var2, var1);
+				} catch (IOException var9) {
+					this.exceptionWriting = true;
 				}
 
-				this.outBuffer = null;
-				break;
+				this.outLength = (var1 + this.outLength) % this.bufferLength;
+
+				try {
+					if (this.outOffset == this.outLength) {
+						this.outputStream.flush();
+					}
+				} catch (IOException var8) {
+					this.exceptionWriting = true;
+				}
 			}
 		} catch (Exception var12) {
-			HitSplatDefinition.sendStackTrace((String)null, var12);
+			HitSplatDefinition.RunException_sendStackTrace((String)null, var12);
+		}
+		try {
+			if (this.inputStream != null) {
+				this.inputStream.close();
+			}
+
+			if (this.outputStream != null) {
+				this.outputStream.close();
+			}
+
+			if (this.socket != null) {
+				this.socket.close();
+			}
+		} catch (IOException var7) {
 		}
 
+		this.outBuffer = null;
 	}
 
 	@ObfuscatedName("w")
@@ -299,11 +292,12 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		signature = "(II)Lkl;",
 		garbageValue = "939071894"
 	)
-	public static class310 method3530(int var0) {
-		class310[] var1 = UserComparator9.method3383();
+	@Export("ChatMode_find")
+	public static PrivateChatMode ChatMode_find(int var0) {
+		PrivateChatMode[] var1 = UserComparator9.ChatMode_values();
 
 		for (int var2 = 0; var2 < var1.length; ++var2) {
-			class310 var3 = var1[var2];
+			PrivateChatMode var3 = var1[var2];
 			if (var0 == var3.field3815) {
 				return var3;
 			}

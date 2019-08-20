@@ -23,7 +23,7 @@ public interface RSTextureProvider extends TextureProvider
 	@Override
 	RSTexture[] getTextures();
 
-	@Import("load")
+	@Import("getTexturePixels")
 	@Override
 	int[] load(int textureId);
 }

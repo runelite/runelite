@@ -71,7 +71,8 @@ public class Buddy extends User {
 		signature = "(II)I",
 		garbageValue = "1131109761"
 	)
-	public static int method5170(int var0) {
+	@Export("ViewportMouse_unpackX")
+	public static int ViewportMouse_unpackX(int var0) {
 		long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
 		int var1 = (int)(var2 >>> 0 & 127L);
 		return var1;

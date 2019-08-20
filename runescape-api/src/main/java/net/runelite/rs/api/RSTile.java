@@ -34,11 +34,11 @@ public interface RSTile extends Tile
 
 	@Import("paint")
 	@Override
-	TilePaint getSceneTilePaint();
+	TilePaint getTilePaint();
 
 	@Import("model")
 	@Override
-	TileModel getSceneTileModel();
+	TileModel getTileModel();
 
 	@Import("x")
 	int getX();

@@ -37,7 +37,7 @@ public abstract class RSFloorDecorationMixin implements RSFloorDecoration
 	@Override
 	public Model getModel()
 	{
-		Entity entity = getRenderable();
+		Entity entity = getEntity();
 		if (entity == null)
 		{
 			return null;

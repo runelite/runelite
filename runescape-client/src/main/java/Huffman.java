@@ -26,74 +26,75 @@ public class Huffman {
 
 		for (int var5 = 0; var5 < var2; ++var5) {
 			byte var6 = var1[var5];
-			if (var6 != 0) {
-				int var7 = 1 << 32 - var6;
-				int var8 = var3[var6];
-				this.masks[var5] = var8;
-				int var9;
-				int var10;
-				int var11;
-				int var12;
-				if ((var8 & var7) != 0) {
-					var9 = var3[var6 - 1];
+			if (var6 == 0) {
+				continue;
+			}
+			int var7 = 1 << 32 - var6;
+			int var8 = var3[var6];
+			this.masks[var5] = var8;
+			int var9;
+			int var10;
+			int var11;
+			int var12;
+			if ((var8 & var7) != 0) {
+				var9 = var3[var6 - 1];
+			} else {
+				var9 = var8 | var7;
+
+				for (var10 = var6 - 1; var10 >= 1; --var10) {
+					var11 = var3[var10];
+					if (var11 != var8) {
+						break;
+					}
+
+					var12 = 1 << 32 - var10;
+					if ((var11 & var12) != 0) {
+						var3[var10] = var3[var10 - 1];
+						break;
+					}
+
+					var3[var10] = var11 | var12;
+				}
+			}
+
+			var3[var6] = var9;
+
+			for (var10 = var6 + 1; var10 <= 32; ++var10) {
+				if (var8 == var3[var10]) {
+					var3[var10] = var9;
+				}
+			}
+
+			var10 = 0;
+
+			for (var11 = 0; var11 < var6; ++var11) {
+				var12 = Integer.MIN_VALUE >>> var11;
+				if ((var8 & var12) != 0) {
+					if (this.keys[var10] == 0) {
+						this.keys[var10] = var4;
+					}
+
+					var10 = this.keys[var10];
 				} else {
-					var9 = var8 | var7;
-
-					for (var10 = var6 - 1; var10 >= 1; --var10) {
-						var11 = var3[var10];
-						if (var11 != var8) {
-							break;
-						}
-
-						var12 = 1 << 32 - var10;
-						if ((var11 & var12) != 0) {
-							var3[var10] = var3[var10 - 1];
-							break;
-						}
-
-						var3[var10] = var11 | var12;
-					}
+					++var10;
 				}
 
-				var3[var6] = var9;
+				if (var10 >= this.keys.length) {
+					int[] var13 = new int[this.keys.length * 2];
 
-				for (var10 = var6 + 1; var10 <= 32; ++var10) {
-					if (var8 == var3[var10]) {
-						var3[var10] = var9;
-					}
-				}
-
-				var10 = 0;
-
-				for (var11 = 0; var11 < var6; ++var11) {
-					var12 = Integer.MIN_VALUE >>> var11;
-					if ((var8 & var12) != 0) {
-						if (this.keys[var10] == 0) {
-							this.keys[var10] = var4;
-						}
-
-						var10 = this.keys[var10];
-					} else {
-						++var10;
+					for (int var14 = 0; var14 < this.keys.length; ++var14) {
+						var13[var14] = this.keys[var14];
 					}
 
-					if (var10 >= this.keys.length) {
-						int[] var13 = new int[this.keys.length * 2];
-
-						for (int var14 = 0; var14 < this.keys.length; ++var14) {
-							var13[var14] = this.keys[var14];
-						}
-
-						this.keys = var13;
-					}
-
-					var12 >>>= 1;
+					this.keys = var13;
 				}
 
-				this.keys[var10] = ~var5;
-				if (var10 >= var4) {
-					var4 = var10 + 1;
-				}
+				var12 >>>= 1;
+			}
+
+			this.keys[var10] = ~var5;
+			if (var10 >= var4) {
+				var4 = var10 + 1;
 			}
 		}
 
@@ -312,53 +313,44 @@ public class Huffman {
 		boolean var3 = true;
 		Buffer var4 = new Buffer(var0);
 		int var5 = -1;
+		int var6;
 
-		label71:
-		while (true) {
-			int var6 = var4.method5509();
-			if (var6 == 0) {
-				return var3;
-			}
-
+		while ((var6 = var4.method5509()) != 0) {
 			var5 += var6;
 			int var7 = 0;
 			boolean var8 = false;
-
-			while (true) {
-				int var9;
-				while (!var8) {
-					var9 = var4.readUShortSmart();
-					if (var9 == 0) {
-						continue label71;
-					}
-
-					var7 += var9 - 1;
-					int var10 = var7 & 63;
-					int var11 = var7 >> 6 & 63;
-					int var12 = var4.readUnsignedByte() >> 2;
-					int var13 = var11 + var1;
-					int var14 = var10 + var2;
-					if (var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-						ObjectDefinition var15 = ViewportMouse.getObjectDefinition(var5);
-						if (var12 != 22 || !Client.isLowDetail || var15.int1 != 0 || var15.interactType == 1 || var15.boolean2) {
-							if (!var15.method4608()) {
-								++Client.field707;
-								var3 = false;
-							}
-
-							var8 = true;
-						}
-					}
-				}
-
+			int var9;
+			while (!var8) {
 				var9 = var4.readUShortSmart();
 				if (var9 == 0) {
-					break;
+					continue;
 				}
+				var7 += var9 - 1;
+				int var10 = var7 & 63;
+				int var11 = var7 >> 6 & 63;
+				int var12 = var4.readUnsignedByte() >> 2;
+				int var13 = var11 + var1;
+				int var14 = var10 + var2;
+				if (var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
+					ObjectDefinition var15 = ViewportMouse.getObjectDefinition(var5);
+					if (var12 != 22 || !Client.isLowDetail || var15.int1 != 0 || var15.interactType == 1 || var15.boolean2) {
+						if (!var15.needsModelFiles()) {
+							++Client.field707;
+							var3 = false;
+						}
 
-				var4.readUnsignedByte();
+						var8 = true;
+					}
+				}
 			}
+
+			var9 = var4.readUShortSmart();
+			if (var9 == 0) {
+				continue;
+			}
+			var4.readUnsignedByte();
 		}
+		return var3;
 	}
 
 	@ObfuscatedName("bp")

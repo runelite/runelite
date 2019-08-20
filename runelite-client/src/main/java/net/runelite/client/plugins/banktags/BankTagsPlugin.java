@@ -49,7 +49,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
@@ -343,7 +343,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			editTags.setParam1(event.getActionParam1());
 			editTags.setTarget(event.getTarget());
 			editTags.setOption(text);
-			editTags.setType(MenuAction.RUNELITE.getId());
+			editTags.setOpcode(MenuOpcode.RUNELITE.getId());
 			editTags.setIdentifier(event.getIdentifier());
 			entries = Arrays.copyOf(entries, entries.length + 1);
 			entries[entries.length - 1] = editTags;
@@ -356,7 +356,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.RUNELITE
+			&& event.getMenuOpcode() == MenuOpcode.RUNELITE
 			&& event.getOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
 			event.consume();

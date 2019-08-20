@@ -67,17 +67,13 @@ public class Varps {
 					var7 = Client.experience[var2[var4++]];
 				}
 
-				int var9;
-				Widget var10;
-				int var11;
-				int var12;
 				if (var6 == 4) {
-					var9 = var2[var4++] << 16;
+					int var9 = var2[var4++] << 16;
 					var9 += var2[var4++];
-					var10 = class80.getWidget(var9);
-					var11 = var2[var4++];
-					if (var11 != -1 && (!WorldMapArea.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
-						for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+					Widget var10 = class80.getWidget(var9);
+					int var11 = var2[var4++];
+					if (var11 != -1 && (!WorldMapArea.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+						for (int var12 = 0; var12 < var10.itemIds.length; ++var12) {
 							if (var11 + 1 == var10.itemIds[var12]) {
 								var7 += var10.itemQuantities[var12];
 							}
@@ -94,7 +90,7 @@ public class Varps {
 				}
 
 				if (var6 == 7) {
-					var7 = Varps_main[var2[var4++]] * 100 / 46875;
+					var7 = Varps_main[var2[var4++]] * 0x64 / 46875;
 				}
 
 				if (var6 == 8) {
@@ -102,7 +98,7 @@ public class Varps {
 				}
 
 				if (var6 == 9) {
-					for (var9 = 0; var9 < 25; ++var9) {
+					for (int var9 = 0; var9 < 25; ++var9) {
 						if (Skills.Skills_enabled[var9]) {
 							var7 += Client.levels[var9];
 						}
@@ -110,12 +106,12 @@ public class Varps {
 				}
 
 				if (var6 == 10) {
-					var9 = var2[var4++] << 16;
+					int var9 = var2[var4++] << 16;
 					var9 += var2[var4++];
-					var10 = class80.getWidget(var9);
-					var11 = var2[var4++];
-					if (var11 != -1 && (!WorldMapArea.getItemDefinition(var11).isMembersOnly || Client.isMembersWorld)) {
-						for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+					Widget var10 = class80.getWidget(var9);
+					int var11 = var2[var4++];
+					if (var11 != -1 && (!WorldMapArea.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+						for (int var12 = 0; var12 < var10.itemIds.length; ++var12) {
 							if (var11 + 1 == var10.itemIds[var12]) {
 								var7 = 999999999;
 								break;
@@ -133,13 +129,13 @@ public class Varps {
 				}
 
 				if (var6 == 13) {
-					var9 = Varps_main[var2[var4++]];
+					int var9 = Varps_main[var2[var4++]];
 					int var13 = var2[var4++];
 					var7 = (var9 & 1 << var13) != 0 ? 1 : 0;
 				}
 
 				if (var6 == 14) {
-					var9 = var2[var4++];
+					int var9 = var2[var4++];
 					var7 = GrandExchangeOfferOwnWorldComparator.getVarbit(var9);
 				}
 
@@ -167,27 +163,27 @@ public class Varps {
 					var7 = var2[var4++];
 				}
 
-				if (var8 == 0) {
-					if (var5 == 0) {
-						var3 += var7;
-					}
-
-					if (var5 == 1) {
-						var3 -= var7;
-					}
-
-					if (var5 == 2 && var7 != 0) {
-						var3 /= var7;
-					}
-
-					if (var5 == 3) {
-						var3 *= var7;
-					}
-
-					var5 = 0;
-				} else {
+				if (var8 != 0) {
 					var5 = var8;
+					continue;
 				}
+				if (var5 == 0) {
+					var3 += var7;
+				}
+
+				if (var5 == 1) {
+					var3 -= var7;
+				}
+
+				if (var5 == 2 && var7 != 0) {
+					var3 /= var7;
+				}
+
+				if (var5 == 3) {
+					var3 *= var7;
+				}
+
+				var5 = 0;
 			}
 		} catch (Exception var14) {
 			return -1;

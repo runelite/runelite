@@ -310,7 +310,7 @@ class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						Entity entity = gameObject.getRenderable();
+						Entity entity = gameObject.getEntity();
 						if (entity instanceof DynamicObject)
 						{
 							OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId() + " Anim: " + ((DynamicObject) entity).getAnimationID(), TURQOISE);

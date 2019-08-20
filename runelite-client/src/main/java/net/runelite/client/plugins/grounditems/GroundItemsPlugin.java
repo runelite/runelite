@@ -56,8 +56,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.TileItemPile;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
@@ -124,14 +124,14 @@ public class GroundItemsPlugin extends Plugin
 	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
 	private static final int NORMAL_DURATION_TICKS = (int) floor(60 / 0.6);
 	// Ground item menu options
-	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
-	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
-	private static final int THIRD_OPTION = MenuAction.GROUND_ITEM_THIRD_OPTION.getId(); // this is Take
-	private static final int FOURTH_OPTION = MenuAction.GROUND_ITEM_FOURTH_OPTION.getId();
-	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
-	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
-	private static final int WALK = MenuAction.WALK.getId();
-	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
+	private static final int FIRST_OPTION = MenuOpcode.GROUND_ITEM_FIRST_OPTION.getId();
+	private static final int SECOND_OPTION = MenuOpcode.GROUND_ITEM_SECOND_OPTION.getId();
+	private static final int THIRD_OPTION = MenuOpcode.GROUND_ITEM_THIRD_OPTION.getId(); // this is Take
+	private static final int FOURTH_OPTION = MenuOpcode.GROUND_ITEM_FOURTH_OPTION.getId();
+	private static final int FIFTH_OPTION = MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
+	private static final int EXAMINE_ITEM = MenuOpcode.EXAMINE_ITEM_GROUND.getId();
+	private static final int WALK = MenuOpcode.WALK.getId();
+	private static final int CAST_ON_ITEM = MenuOpcode.SPELL_CAST_ON_GROUND_ITEM.getId();
 	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
@@ -450,7 +450,7 @@ public class GroundItemsPlugin extends Plugin
 
 			if (this.collapseEntries)
 			{
-				int menuType = menuEntry.getType();
+				int menuType = menuEntry.getOpcode();
 				if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
 					|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
 				{
@@ -472,12 +472,12 @@ public class GroundItemsPlugin extends Plugin
 
 		newEntries.sort((a, b) ->
 		{
-			final int aMenuType = a.getEntry().getType();
+			final int aMenuType = a.getEntry().getOpcode();
 			if (aMenuType == FIRST_OPTION || aMenuType == SECOND_OPTION || aMenuType == THIRD_OPTION
 				|| aMenuType == FOURTH_OPTION || aMenuType == FIFTH_OPTION || aMenuType == EXAMINE_ITEM
 				|| aMenuType == WALK)
 			{ // only check for item related menu types, so we don't sort other stuff
-				final int bMenuType = b.getEntry().getType();
+				final int bMenuType = b.getEntry().getOpcode();
 				if (bMenuType == FIRST_OPTION || bMenuType == SECOND_OPTION || bMenuType == THIRD_OPTION
 					|| bMenuType == FOURTH_OPTION || bMenuType == FIFTH_OPTION || bMenuType == EXAMINE_ITEM
 					|| bMenuType == WALK)
@@ -942,7 +942,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_DROP)
+		if (menuOptionClicked.getMenuOpcode() == MenuOpcode.ITEM_DROP)
 		{
 			int itemId = menuOptionClicked.getIdentifier();
 			// Keep a queue of recently dropped items to better detect

@@ -168,14 +168,14 @@ public enum WorldMapSectionType implements Enumerated {
 		}
 		if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			Client.field906 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			if (Client.field906 <= 0) {
-				Client.field906 = 256;
+			Client.zoomHeight = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
+			if (Client.zoomHeight <= 0) {
+				Client.zoomHeight = 256;
 			}
 
-			Client.field908 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			if (Client.field908 <= 0) {
-				Client.field908 = 320;
+			Client.zoomWidth = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
+			if (Client.zoomWidth <= 0) {
+				Client.zoomWidth = 320;
 			}
 
 			return 1;
@@ -189,7 +189,7 @@ public enum WorldMapSectionType implements Enumerated {
 
 			Client.field790 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			if (Client.field790 <= 0) {
-				Client.field790 = 32767;
+				Client.field790 = 0x7fff;
 			} else if (Client.field790 < Client.field820) {
 				Client.field790 = Client.field820;
 			}
@@ -201,7 +201,7 @@ public enum WorldMapSectionType implements Enumerated {
 
 			Client.field659 = (short)Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
 			if (Client.field659 <= 0) {
-				Client.field659 = 32767;
+				Client.field659 = 0x7fff;
 			} else if (Client.field659 < Client.field732) {
 				Client.field659 = Client.field732;
 			}
@@ -221,8 +221,8 @@ public enum WorldMapSectionType implements Enumerated {
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field906;
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.field908;
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.zoomHeight;
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.zoomWidth;
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {

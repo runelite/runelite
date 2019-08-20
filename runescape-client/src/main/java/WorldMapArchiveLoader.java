@@ -60,7 +60,7 @@ public class WorldMapArchiveLoader {
 	@Export("load")
 	int load() {
 		if (this.percentLoaded < 33) {
-			if (!this.archive.tryLoadFileByNames(WorldMapCacheName.field302.name, this.cacheName)) {
+			if (!this.archive.tryLoadFileByNames(WorldMapCacheName.COMPOSITEMAP.name, this.cacheName)) {
 				return this.percentLoaded;
 			}
 
@@ -68,7 +68,7 @@ public class WorldMapArchiveLoader {
 		}
 
 		if (this.percentLoaded == 33) {
-			if (this.archive.isValidFileName(WorldMapCacheName.field303.name, this.cacheName) && !this.archive.tryLoadFileByNames(WorldMapCacheName.field303.name, this.cacheName)) {
+			if (this.archive.isValidFileName(WorldMapCacheName.COMPOSITETEXTURE.name, this.cacheName) && !this.archive.tryLoadFileByNames(WorldMapCacheName.COMPOSITETEXTURE.name, this.cacheName)) {
 				return this.percentLoaded;
 			}
 
@@ -76,7 +76,7 @@ public class WorldMapArchiveLoader {
 		}
 
 		if (this.percentLoaded == 66) {
-			if (!this.archive.tryLoadFileByNames(this.cacheName, WorldMapCacheName.field305.name)) {
+			if (!this.archive.tryLoadFileByNames(this.cacheName, WorldMapCacheName.LABELS.name)) {
 				return this.percentLoaded;
 			}
 

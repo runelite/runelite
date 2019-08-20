@@ -65,7 +65,8 @@ public class Script extends DualNode {
 		signature = "(IB)[Lla;",
 		garbageValue = "45"
 	)
-	IterableNodeHashTable[] method2182(int var1) {
+	@Export("newIterableNodeHashTable")
+	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 

@@ -37,7 +37,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Nameable;
 import net.runelite.api.events.MenuEntryAdded;
@@ -187,7 +187,7 @@ public class FriendNotesPlugin extends Plugin
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
-			addNote.setType(MenuAction.RUNELITE.getId());
+			addNote.setOpcode(MenuOpcode.RUNELITE.getId());
 			addNote.setTarget(event.getTarget()); //Preserve color codes here
 			addNote.setParam0(event.getActionParam0());
 			addNote.setParam1(event.getActionParam1());

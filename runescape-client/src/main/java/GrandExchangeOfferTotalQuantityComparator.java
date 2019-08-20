@@ -30,22 +30,23 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		signature = "(II)V",
 		garbageValue = "1523306949"
 	)
-	static void method93(int var0) {
-		if (var0 == -1 && !Client.field699) {
+	@Export("playSong")
+	static void playSong(int groupId) {
+		if (groupId == -1 && !Client.field699) {
 			NetSocket.method3553();
-		} else if (var0 != -1 && var0 != Client.field889 && Client.field911 != 0 && !Client.field699) {
+		} else if (groupId != -1 && groupId != Client.field889 && Client.field911 != 0 && !Client.field699) {
 			Archive var1 = WorldMapRegion.archive6;
 			int var2 = Client.field911;
 			class197.field2402 = 1;
 			GrandExchangeOfferNameComparator.musicTrackArchive = var1;
-			class197.musicTrackGroupId = var0;
+			class197.musicTrackGroupId = groupId;
 			class197.musicTrackFileId = 0;
 			ScriptFrame.field529 = var2;
 			BuddyRankComparator.musicTrackBoolean = false;
 			class197.field2404 = 2;
 		}
 
-		Client.field889 = var0;
+		Client.field889 = groupId;
 	}
 
 	@ObfuscatedName("if")
@@ -54,25 +55,26 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		garbageValue = "16777215"
 	)
 	static String method92(String var0, Widget var1) {
-		if (var0.indexOf("%") != -1) {
-			for (int var2 = 1; var2 <= 5; ++var2) {
-				while (true) {
-					int var3 = var0.indexOf("%" + var2);
-					if (var3 == -1) {
-						break;
-					}
-
-					String var4 = var0.substring(0, var3);
-					int var6 = Varps.method3969(var1, var2 - 1);
-					String var5;
-					if (var6 < 999999999) {
-						var5 = Integer.toString(var6);
-					} else {
-						var5 = "*";
-					}
-
-					var0 = var4 + var5 + var0.substring(var3 + 2);
+		if (var0.indexOf("%") == -1) {
+			return var0;
+		}
+		for (int var2 = 1; var2 <= 5; ++var2) {
+			while (true) {
+				int var3 = var0.indexOf("%" + var2);
+				if (var3 == -1) {
+					break;
 				}
+
+				String var4 = var0.substring(0, var3);
+				int var6 = Varps.method3969(var1, var2 - 1);
+				String var5;
+				if (var6 < 999999999) {
+					var5 = Integer.toString(var6);
+				} else {
+					var5 = "*";
+				}
+
+				var0 = var4 + var5 + var0.substring(var3 + 2);
 			}
 		}
 

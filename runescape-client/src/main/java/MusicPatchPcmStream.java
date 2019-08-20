@@ -61,7 +61,7 @@ public class MusicPatchPcmStream extends PcmStream {
 				var4 -= var7;
 				var1.field2444 += var6 * var7 - 1048576;
 				int var8 = CollisionMap.PcmPlayer_sampleRate / 100;
-				int var9 = 262144 / var6;
+				int var9 = 0x40000 / var6;
 				if (var9 < var8) {
 					var8 = var9;
 				}

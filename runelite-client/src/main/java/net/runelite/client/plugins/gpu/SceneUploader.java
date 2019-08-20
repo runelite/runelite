@@ -100,13 +100,13 @@ class SceneUploader
 			reset(bridge);
 		}
 
-		TilePaint tilePaint = tile.getSceneTilePaint();
+		TilePaint tilePaint = tile.getTilePaint();
 		if (tilePaint != null)
 		{
 			tilePaint.setBufferOffset(-1);
 		}
 
-		TileModel sceneTileModel = tile.getSceneTileModel();
+		TileModel sceneTileModel = tile.getTileModel();
 		if (sceneTileModel != null)
 		{
 			sceneTileModel.setBufferOffset(-1);
@@ -115,26 +115,26 @@ class SceneUploader
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
 		{
-			if (wallObject.getRenderable1() instanceof Model)
+			if (wallObject.getEntity1() instanceof Model)
 			{
-				((Model) wallObject.getRenderable1()).setBufferOffset(-1);
+				((Model) wallObject.getEntity1()).setBufferOffset(-1);
 			}
-			if (wallObject.getRenderable2() instanceof Model)
+			if (wallObject.getEntity2() instanceof Model)
 			{
-				((Model) wallObject.getRenderable2()).setBufferOffset(-1);
+				((Model) wallObject.getEntity2()).setBufferOffset(-1);
 			}
 		}
 
 		GroundObject groundObject = tile.getGroundObject();
-		if (groundObject != null && groundObject.getRenderable() instanceof Model)
+		if (groundObject != null && groundObject.getEntity() instanceof Model)
 		{
-			((Model) groundObject.getRenderable()).setBufferOffset(-1);
+			((Model) groundObject.getEntity()).setBufferOffset(-1);
 		}
 
 		DecorativeObject decorativeObject = tile.getDecorativeObject();
-		if (decorativeObject != null && decorativeObject.getRenderable() instanceof Model)
+		if (decorativeObject != null && decorativeObject.getEntity1() instanceof Model)
 		{
-			((Model) decorativeObject.getRenderable()).setBufferOffset(-1);
+			((Model) decorativeObject.getEntity1()).setBufferOffset(-1);
 		}
 
 		GameObject[] gameObjects = tile.getGameObjects();
@@ -144,9 +144,9 @@ class SceneUploader
 			{
 				continue;
 			}
-			if (gameObject.getRenderable() instanceof Model)
+			if (gameObject.getEntity() instanceof Model)
 			{
-				((Model) gameObject.getRenderable()).setBufferOffset(-1);
+				((Model) gameObject.getEntity()).setBufferOffset(-1);
 			}
 		}
 	}
@@ -159,7 +159,7 @@ class SceneUploader
 			upload(bridge, vertexBuffer, uvBuffer);
 		}
 
-		TilePaint tilePaint = tile.getSceneTilePaint();
+		TilePaint tilePaint = tile.getTilePaint();
 		if (tilePaint != null)
 		{
 			tilePaint.setBufferOffset(offset);
@@ -181,7 +181,7 @@ class SceneUploader
 			}
 		}
 
-		TileModel sceneTileModel = tile.getSceneTileModel();
+		TileModel sceneTileModel = tile.getTileModel();
 		if (sceneTileModel != null)
 		{
 			sceneTileModel.setBufferOffset(offset);
@@ -206,13 +206,13 @@ class SceneUploader
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
 		{
-			Entity entity1 = wallObject.getRenderable1();
+			Entity entity1 = wallObject.getEntity1();
 			if (entity1 instanceof Model)
 			{
 				uploadModel((Model) entity1, vertexBuffer, uvBuffer);
 			}
 
-			Entity entity2 = wallObject.getRenderable2();
+			Entity entity2 = wallObject.getEntity2();
 			if (entity2 instanceof Model)
 			{
 				uploadModel((Model) entity2, vertexBuffer, uvBuffer);
@@ -222,7 +222,7 @@ class SceneUploader
 		GroundObject groundObject = tile.getGroundObject();
 		if (groundObject != null)
 		{
-			Entity entity = groundObject.getRenderable();
+			Entity entity = groundObject.getEntity();
 			if (entity instanceof Model)
 			{
 				uploadModel((Model) entity, vertexBuffer, uvBuffer);
@@ -232,13 +232,13 @@ class SceneUploader
 		DecorativeObject decorativeObject = tile.getDecorativeObject();
 		if (decorativeObject != null)
 		{
-			Entity entity = decorativeObject.getRenderable();
+			Entity entity = decorativeObject.getEntity1();
 			if (entity instanceof Model)
 			{
 				uploadModel((Model) entity, vertexBuffer, uvBuffer);
 			}
 
-			Entity entity2 = decorativeObject.getRenderable2();
+			Entity entity2 = decorativeObject.getEntity2();
 			if (entity2 instanceof Model)
 			{
 				uploadModel((Model) entity2, vertexBuffer, uvBuffer);
@@ -253,10 +253,10 @@ class SceneUploader
 				continue;
 			}
 
-			Entity entity = gameObject.getRenderable();
+			Entity entity = gameObject.getEntity();
 			if (entity instanceof Model)
 			{
-				uploadModel((Model) gameObject.getRenderable(), vertexBuffer, uvBuffer);
+				uploadModel((Model) gameObject.getEntity(), vertexBuffer, uvBuffer);
 			}
 		}
 	}

@@ -805,14 +805,14 @@ public class Widget extends Node {
 		this.rawHeight = var1.readUnsignedShort();
 		this.transparencyTop = var1.readUnsignedByte();
 		this.parentId = var1.readUnsignedShort();
-		if (this.parentId == 65535) {
+		if (this.parentId == 0xffff) {
 			this.parentId = -1;
 		} else {
-			this.parentId += this.id & -65536;
+			this.parentId += this.id & 0xffff0000;
 		}
 
 		this.mouseOverRedirect = var1.readUnsignedShort();
-		if (this.mouseOverRedirect == 65535) {
+		if (this.mouseOverRedirect == 0xffff) {
 			this.mouseOverRedirect = -1;
 		}
 
@@ -841,7 +841,7 @@ public class Widget extends Node {
 
 				for (var6 = 0; var6 < var5; ++var6) {
 					this.cs1Instructions[var4][var6] = var1.readUnsignedShort();
-					if (this.cs1Instructions[var4][var6] == 65535) {
+					if (this.cs1Instructions[var4][var6] == 0xffff) {
 						this.cs1Instructions[var4][var6] = -1;
 					}
 				}
@@ -919,7 +919,7 @@ public class Widget extends Node {
 			this.textYAlignment = var1.readUnsignedByte();
 			this.textLineHeight = var1.readUnsignedByte();
 			this.fontId = var1.readUnsignedShort();
-			if (this.fontId == 65535) {
+			if (this.fontId == 0xffff) {
 				this.fontId = -1;
 			}
 
@@ -949,23 +949,23 @@ public class Widget extends Node {
 		if (this.type == 6) {
 			this.modelType = 1;
 			this.modelId = var1.readUnsignedShort();
-			if (this.modelId == 65535) {
+			if (this.modelId == 0xffff) {
 				this.modelId = -1;
 			}
 
 			this.modelType2 = 1;
 			this.modelId2 = var1.readUnsignedShort();
-			if (this.modelId2 == 65535) {
+			if (this.modelId2 == 0xffff) {
 				this.modelId2 = -1;
 			}
 
 			this.sequenceId = var1.readUnsignedShort();
-			if (this.sequenceId == 65535) {
+			if (this.sequenceId == 0xffff) {
 				this.sequenceId = -1;
 			}
 
 			this.sequenceId2 = var1.readUnsignedShort();
-			if (this.sequenceId2 == 65535) {
+			if (this.sequenceId2 == 0xffff) {
 				this.sequenceId2 = -1;
 			}
 
@@ -979,7 +979,7 @@ public class Widget extends Node {
 			this.itemQuantities = new int[this.rawHeight * this.rawWidth];
 			this.textXAlignment = var1.readUnsignedByte();
 			this.fontId = var1.readUnsignedShort();
-			if (this.fontId == 65535) {
+			if (this.fontId == 0xffff) {
 				this.fontId = -1;
 			}
 
@@ -1070,10 +1070,10 @@ public class Widget extends Node {
 		this.xAlignment = var1.readByte();
 		this.yAlignment = var1.readByte();
 		this.parentId = var1.readUnsignedShort();
-		if (this.parentId == 65535) {
+		if (this.parentId == 0xffff) {
 			this.parentId = -1;
 		} else {
-			this.parentId += this.id & -65536;
+			this.parentId += this.id & 0xffff0000;
 		}
 
 		this.isHidden = var1.readUnsignedByte() == 1;
@@ -1097,7 +1097,7 @@ public class Widget extends Node {
 		if (this.type == 6) {
 			this.modelType = 1;
 			this.modelId = var1.readUnsignedShort();
-			if (this.modelId == 65535) {
+			if (this.modelId == 0xffff) {
 				this.modelId = -1;
 			}
 
@@ -1108,7 +1108,7 @@ public class Widget extends Node {
 			this.modelAngleZ = var1.readUnsignedShort();
 			this.modelZoom = var1.readUnsignedShort();
 			this.sequenceId = var1.readUnsignedShort();
-			if (this.sequenceId == 65535) {
+			if (this.sequenceId == 0xffff) {
 				this.sequenceId = -1;
 			}
 
@@ -1125,7 +1125,7 @@ public class Widget extends Node {
 
 		if (this.type == 4) {
 			this.fontId = var1.readUnsignedShort();
-			if (this.fontId == 65535) {
+			if (this.fontId == 0xffff) {
 				this.fontId = -1;
 			}
 
@@ -1337,25 +1337,25 @@ public class Widget extends Node {
 	@Export("getInventorySprite")
 	public Sprite getInventorySprite(int var1) {
 		field2562 = false;
-		if (var1 >= 0 && var1 < this.inventorySprites.length) {
-			int var2 = this.inventorySprites[var1];
-			if (var2 == -1) {
-				return null;
-			}
-			Sprite var3 = (Sprite)Widget_cachedSprites.get((long)var2);
-			if (var3 != null) {
-				return var3;
-			}
-			var3 = class65.SpriteBuffer_getSprite(class216.Widget_spritesArchive, var2, 0);
-			if (var3 != null) {
-				Widget_cachedSprites.put(var3, (long)var2);
-			} else {
-				field2562 = true;
-			}
-
+		if (var1 < 0 || var1 >= this.inventorySprites.length) {
+			return null;
+		}
+		int var2 = this.inventorySprites[var1];
+		if (var2 == -1) {
+			return null;
+		}
+		Sprite var3 = (Sprite)Widget_cachedSprites.get((long)var2);
+		if (var3 != null) {
 			return var3;
 		}
-		return null;
+		var3 = class65.SpriteBuffer_getSprite(class216.Widget_spritesArchive, var2, 0);
+		if (var3 != null) {
+			Widget_cachedSprites.put(var3, (long)var2);
+		} else {
+			field2562 = true;
+		}
+
+		return var3;
 	}
 
 	@ObfuscatedName("v")
@@ -1386,7 +1386,7 @@ public class Widget extends Node {
 		if (var7 == null) {
 			ModelData var8;
 			if (var5 == 1) {
-				var8 = ModelData.method2769(ViewportMouse.Widget_modelsArchive, var6, 0);
+				var8 = ModelData.ModelData_get(ViewportMouse.Widget_modelsArchive, var6, 0);
 				if (var8 == null) {
 					field2562 = true;
 					return null;
@@ -1420,8 +1420,8 @@ public class Widget extends Node {
 			}
 
 			if (var5 == 4) {
-				ItemDefinition var9 = WorldMapArea.getItemDefinition(var6);
-				var8 = var9.method4643(10);
+				ItemDefinition var9 = WorldMapArea.ItemDefinition_get(var6);
+				var8 = var9.getModelData(10);
 				if (var8 == null) {
 					field2562 = true;
 					return null;
@@ -1538,18 +1538,22 @@ public class Widget extends Node {
 		for (int var4 = var1; var4 < var2 + var1; var4 += 3) {
 			int var5 = var0[var4] & 255;
 			var3.append(class290.field3673[var5 >>> 2]);
-			if (var4 < var2 - 1) {
-				int var6 = var0[var4 + 1] & 255;
-				var3.append(class290.field3673[(var5 & 3) << 4 | var6 >>> 4]);
-				if (var4 < var2 - 2) {
-					int var7 = var0[var4 + 2] & 255;
-					var3.append(class290.field3673[(var6 & 15) << 2 | var7 >>> 6]).append(class290.field3673[var7 & 63]);
-				} else {
-					var3.append(class290.field3673[(var6 & 15) << 2]).append("=");
-				}
-			} else {
+
+			if (var4 >= var2 - 1) {
 				var3.append(class290.field3673[(var5 & 3) << 4]).append("==");
+				continue;
 			}
+
+			int var6 = var0[var4 + 1] & 255;
+			var3.append(class290.field3673[(var5 & 3) << 4 | var6 >>> 4]);
+
+			if (var4 >= var2 - 2) {
+				var3.append(class290.field3673[(var6 & 15) << 2]).append("=");
+				continue;
+			}
+
+			int var7 = var0[var4 + 2] & 255;
+			var3.append(class290.field3673[(var6 & 15) << 2 | var7 >>> 6]).append(class290.field3673[var7 & 63]);
 		}
 
 		return var3.toString();
@@ -1574,461 +1578,466 @@ public class Widget extends Node {
 		signature = "(Lbd;IIBI)V",
 		garbageValue = "310839135"
 	)
-	static final void method4056(Player var0, int var1, int var2, byte var3) {
+	static final void method4056(Player var0, int x, int y, byte var3) {
 		int var4 = var0.pathX[0];
 		int var5 = var0.pathY[0];
 		int var6 = var0.transformedSize();
-		if (var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
-			if (var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-				int var8 = var0.transformedSize();
-				RouteStrategy var9 = WorldMapAreaData.method667(var1, var2);
-				CollisionMap var10 = Client.collisionMaps[var0.plane];
-				int[] var11 = Client.field929;
-				int[] var12 = Client.field930;
+		if (var4 < var6 || var4 >= 104 - var6 || var5 < var6 || var5 >= 104 - var6) {
+			return;
+		}
+		if (x < var6 || x >= 104 - var6 || y < var6 || y >= 104 - var6) {
+			return;
+		}
+		int var8 = var0.transformedSize();
+		RouteStrategy var9 = WorldMapAreaData.method667(x, y);
+		CollisionMap var10 = Client.collisionMaps[var0.plane];
+		int[] var11 = Client.field929;
+		int[] var12 = Client.field930;
 
-				int var13;
-				int var14;
-				for (var13 = 0; var13 < 128; ++var13) {
-					for (var14 = 0; var14 < 128; ++var14) {
-						class173.directions[var13][var14] = 0;
-						class173.distances[var13][var14] = 99999999;
+		int var13;
+		int var14;
+		for (var13 = 0; var13 < 128; ++var13) {
+			for (var14 = 0; var14 < 128; ++var14) {
+				class173.directions[var13][var14] = 0;
+				class173.distances[var13][var14] = 99999999;
+			}
+		}
+
+		int var15;
+		int var16;
+		byte var17;
+		byte var18;
+		int var19;
+		int var20;
+		byte var21;
+		int var22;
+		int[][] var23;
+		int var24;
+		int var25;
+		int var26;
+		int var27;
+		boolean var33;
+		boolean var34;
+		int var35;
+		int var36;
+		int var38;
+		if (var8 == 1) {
+			var15 = var4;
+			var16 = var5;
+			var17 = 64;
+			var18 = 64;
+			var19 = var4 - var17;
+			var20 = var5 - var18;
+			class173.directions[var17][var18] = 99;
+			class173.distances[var17][var18] = 0;
+			var21 = 0;
+			var22 = 0;
+			class173.bufferX[var21] = var4;
+			var38 = var21 + 1;
+			class173.bufferY[var21] = var5;
+			var23 = var10.flags;
+
+			while (true) {
+				if (var38 != var22) {
+					var15 = class173.bufferX[var22];
+					var16 = class173.bufferY[var22];
+					var22 = var22 + 1 & 4095;
+					var35 = var15 - var19;
+					var36 = var16 - var20;
+					var24 = var15 - var10.xInset;
+					var25 = var16 - var10.yInset;
+					if (var9.hasArrived(1, var15, var16, var10)) {
+						class173.field2088 = var15;
+						class218.field2707 = var16;
+						var34 = true;
+						break;
+					}
+
+					var26 = class173.distances[var35][var36] + 1;
+					if (var35 > 0 && class173.directions[var35 - 1][var36] == 0 && (var23[var24 - 1][var25] & 19136776) == 0) {
+						class173.bufferX[var38] = var15 - 1;
+						class173.bufferY[var38] = var16;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 - 1][var36] = 2;
+						class173.distances[var35 - 1][var36] = var26;
+					}
+
+					if (var35 < 127 && class173.directions[var35 + 1][var36] == 0 && (var23[var24 + 1][var25] & 19136896) == 0) {
+						class173.bufferX[var38] = var15 + 1;
+						class173.bufferY[var38] = var16;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 + 1][var36] = 8;
+						class173.distances[var35 + 1][var36] = var26;
+					}
+
+					if (var36 > 0 && class173.directions[var35][var36 - 1] == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
+						class173.bufferX[var38] = var15;
+						class173.bufferY[var38] = var16 - 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35][var36 - 1] = 1;
+						class173.distances[var35][var36 - 1] = var26;
+					}
+
+					if (var36 < 127 && class173.directions[var35][var36 + 1] == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
+						class173.bufferX[var38] = var15;
+						class173.bufferY[var38] = var16 + 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35][var36 + 1] = 4;
+						class173.distances[var35][var36 + 1] = var26;
+					}
+
+					if (var35 > 0 && var36 > 0 && class173.directions[var35 - 1][var36 - 1] == 0 && (var23[var24 - 1][var25 - 1] & 19136782) == 0 && (var23[var24 - 1][var25] & 19136776) == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
+						class173.bufferX[var38] = var15 - 1;
+						class173.bufferY[var38] = var16 - 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 - 1][var36 - 1] = 3;
+						class173.distances[var35 - 1][var36 - 1] = var26;
+					}
+
+					if (var35 < 127 && var36 > 0 && class173.directions[var35 + 1][var36 - 1] == 0 && (var23[var24 + 1][var25 - 1] & 19136899) == 0 && (var23[var24 + 1][var25] & 19136896) == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
+						class173.bufferX[var38] = var15 + 1;
+						class173.bufferY[var38] = var16 - 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 + 1][var36 - 1] = 9;
+						class173.distances[var35 + 1][var36 - 1] = var26;
+					}
+
+					if (var35 > 0 && var36 < 127 && class173.directions[var35 - 1][var36 + 1] == 0 && (var23[var24 - 1][var25 + 1] & 19136824) == 0 && (var23[var24 - 1][var25] & 19136776) == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
+						class173.bufferX[var38] = var15 - 1;
+						class173.bufferY[var38] = var16 + 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 - 1][var36 + 1] = 6;
+						class173.distances[var35 - 1][var36 + 1] = var26;
+					}
+
+					if (var35 < 127 && var36 < 127 && class173.directions[var35 + 1][var36 + 1] == 0 && (var23[var24 + 1][var25 + 1] & 19136992) == 0 && (var23[var24 + 1][var25] & 19136896) == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
+						class173.bufferX[var38] = var15 + 1;
+						class173.bufferY[var38] = var16 + 1;
+						var38 = var38 + 1 & 4095;
+						class173.directions[var35 + 1][var36 + 1] = 12;
+						class173.distances[var35 + 1][var36 + 1] = var26;
 					}
 				}
+				else {
+					class173.field2088 = var15;
+					class218.field2707 = var16;
+					var34 = false;
+					break;
+				}
 
-				int var15;
-				int var16;
-				byte var17;
-				byte var18;
-				int var19;
-				int var20;
-				byte var21;
-				int var22;
-				int[][] var23;
-				int var24;
-				int var25;
-				int var26;
-				int var27;
-				boolean var33;
-				boolean var34;
-				int var35;
-				int var36;
-				int var38;
-				if (var8 == 1) {
-					var15 = var4;
-					var16 = var5;
-					var17 = 64;
-					var18 = 64;
-					var19 = var4 - var17;
-					var20 = var5 - var18;
-					class173.directions[var17][var18] = 99;
-					class173.distances[var17][var18] = 0;
-					var21 = 0;
-					var22 = 0;
-					class173.bufferX[var21] = var4;
-					var38 = var21 + 1;
-					class173.bufferY[var21] = var5;
-					var23 = var10.flags;
+			}
 
-					while (true) {
-						if (var38 == var22) {
-							class173.field2088 = var15;
-							class218.field2707 = var16;
-							var34 = false;
-							break;
-						}
+			var33 = var34;
+		} else if (var8 == 2) {
+			var33 = Frames.method3267(var4, var5, var9, var10);
+		} else {
+			var15 = var4;
+			var16 = var5;
+			var17 = 64;
+			var18 = 64;
+			var19 = var4 - var17;
+			var20 = var5 - var18;
+			class173.directions[var17][var18] = 99;
+			class173.distances[var17][var18] = 0;
+			var21 = 0;
+			var22 = 0;
+			class173.bufferX[var21] = var4;
+			var38 = var21 + 1;
+			class173.bufferY[var21] = var5;
+			var23 = var10.flags;
 
-						var15 = class173.bufferX[var22];
-						var16 = class173.bufferY[var22];
-						var22 = var22 + 1 & 4095;
-						var35 = var15 - var19;
-						var36 = var16 - var20;
-						var24 = var15 - var10.xInset;
-						var25 = var16 - var10.yInset;
-						if (var9.vmethod3594(1, var15, var16, var10)) {
-							class173.field2088 = var15;
-							class218.field2707 = var16;
-							var34 = true;
-							break;
-						}
-
-						var26 = class173.distances[var35][var36] + 1;
-						if (var35 > 0 && class173.directions[var35 - 1][var36] == 0 && (var23[var24 - 1][var25] & 19136776) == 0) {
-							class173.bufferX[var38] = var15 - 1;
-							class173.bufferY[var38] = var16;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 - 1][var36] = 2;
-							class173.distances[var35 - 1][var36] = var26;
-						}
-
-						if (var35 < 127 && class173.directions[var35 + 1][var36] == 0 && (var23[var24 + 1][var25] & 19136896) == 0) {
-							class173.bufferX[var38] = var15 + 1;
-							class173.bufferY[var38] = var16;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 + 1][var36] = 8;
-							class173.distances[var35 + 1][var36] = var26;
-						}
-
-						if (var36 > 0 && class173.directions[var35][var36 - 1] == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
-							class173.bufferX[var38] = var15;
-							class173.bufferY[var38] = var16 - 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35][var36 - 1] = 1;
-							class173.distances[var35][var36 - 1] = var26;
-						}
-
-						if (var36 < 127 && class173.directions[var35][var36 + 1] == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
-							class173.bufferX[var38] = var15;
-							class173.bufferY[var38] = var16 + 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35][var36 + 1] = 4;
-							class173.distances[var35][var36 + 1] = var26;
-						}
-
-						if (var35 > 0 && var36 > 0 && class173.directions[var35 - 1][var36 - 1] == 0 && (var23[var24 - 1][var25 - 1] & 19136782) == 0 && (var23[var24 - 1][var25] & 19136776) == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
-							class173.bufferX[var38] = var15 - 1;
-							class173.bufferY[var38] = var16 - 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 - 1][var36 - 1] = 3;
-							class173.distances[var35 - 1][var36 - 1] = var26;
-						}
-
-						if (var35 < 127 && var36 > 0 && class173.directions[var35 + 1][var36 - 1] == 0 && (var23[var24 + 1][var25 - 1] & 19136899) == 0 && (var23[var24 + 1][var25] & 19136896) == 0 && (var23[var24][var25 - 1] & 19136770) == 0) {
-							class173.bufferX[var38] = var15 + 1;
-							class173.bufferY[var38] = var16 - 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 + 1][var36 - 1] = 9;
-							class173.distances[var35 + 1][var36 - 1] = var26;
-						}
-
-						if (var35 > 0 && var36 < 127 && class173.directions[var35 - 1][var36 + 1] == 0 && (var23[var24 - 1][var25 + 1] & 19136824) == 0 && (var23[var24 - 1][var25] & 19136776) == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
-							class173.bufferX[var38] = var15 - 1;
-							class173.bufferY[var38] = var16 + 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 - 1][var36 + 1] = 6;
-							class173.distances[var35 - 1][var36 + 1] = var26;
-						}
-
-						if (var35 < 127 && var36 < 127 && class173.directions[var35 + 1][var36 + 1] == 0 && (var23[var24 + 1][var25 + 1] & 19136992) == 0 && (var23[var24 + 1][var25] & 19136896) == 0 && (var23[var24][var25 + 1] & 19136800) == 0) {
-							class173.bufferX[var38] = var15 + 1;
-							class173.bufferY[var38] = var16 + 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 + 1][var36 + 1] = 12;
-							class173.distances[var35 + 1][var36 + 1] = var26;
-						}
-					}
-
-					var33 = var34;
-				} else if (var8 == 2) {
-					var33 = Frames.method3267(var4, var5, var9, var10);
-				} else {
-					var15 = var4;
-					var16 = var5;
-					var17 = 64;
-					var18 = 64;
-					var19 = var4 - var17;
-					var20 = var5 - var18;
-					class173.directions[var17][var18] = 99;
-					class173.distances[var17][var18] = 0;
-					var21 = 0;
-					var22 = 0;
-					class173.bufferX[var21] = var4;
-					var38 = var21 + 1;
-					class173.bufferY[var21] = var5;
-					var23 = var10.flags;
-
-					label640:
-					while (true) {
-						label638:
-						while (true) {
+			label640:
+			while (true) {
+				label638:
+				while (true) {
+					do {
+						do {
 							do {
+								label615:
 								do {
-									do {
-										label615:
-										do {
-											if (var22 == var38) {
-												class173.field2088 = var15;
-												class218.field2707 = var16;
-												var34 = false;
-												break label640;
-											}
+									if (var22 == var38) {
+										class173.field2088 = var15;
+										class218.field2707 = var16;
+										var34 = false;
+										break label640;
+									}
 
-											var15 = class173.bufferX[var22];
-											var16 = class173.bufferY[var22];
-											var22 = var22 + 1 & 4095;
-											var35 = var15 - var19;
-											var36 = var16 - var20;
-											var24 = var15 - var10.xInset;
-											var25 = var16 - var10.yInset;
-											if (var9.vmethod3594(var8, var15, var16, var10)) {
-												class173.field2088 = var15;
-												class218.field2707 = var16;
-												var34 = true;
-												break label640;
-											}
+									var15 = class173.bufferX[var22];
+									var16 = class173.bufferY[var22];
+									var22 = var22 + 1 & 4095;
+									var35 = var15 - var19;
+									var36 = var16 - var20;
+									var24 = var15 - var10.xInset;
+									var25 = var16 - var10.yInset;
+									if (var9.hasArrived(var8, var15, var16, var10)) {
+										class173.field2088 = var15;
+										class218.field2707 = var16;
+										var34 = true;
+										break label640;
+									}
 
-											var26 = class173.distances[var35][var36] + 1;
-											if (var35 > 0 && class173.directions[var35 - 1][var36] == 0 && (var23[var24 - 1][var25] & 19136782) == 0 && (var23[var24 - 1][var8 + var25 - 1] & 19136824) == 0) {
-												var27 = 1;
+									var26 = class173.distances[var35][var36] + 1;
+									if (var35 > 0 && class173.directions[var35 - 1][var36] == 0 && (var23[var24 - 1][var25] & 19136782) == 0 && (var23[var24 - 1][var8 + var25 - 1] & 19136824) == 0) {
+										var27 = 1;
 
-												while (true) {
-													if (var27 >= var8 - 1) {
-														class173.bufferX[var38] = var15 - 1;
-														class173.bufferY[var38] = var16;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35 - 1][var36] = 2;
-														class173.distances[var35 - 1][var36] = var26;
-														break;
-													}
-
-													if ((var23[var24 - 1][var27 + var25] & 19136830) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var35 < 128 - var8 && class173.directions[var35 + 1][var36] == 0 && (var23[var24 + var8][var25] & 19136899) == 0 && (var23[var24 + var8][var25 + var8 - 1] & 19136992) == 0) {
-												var27 = 1;
-
-												while (true) {
-													if (var27 >= var8 - 1) {
-														class173.bufferX[var38] = var15 + 1;
-														class173.bufferY[var38] = var16;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35 + 1][var36] = 8;
-														class173.distances[var35 + 1][var36] = var26;
-														break;
-													}
-
-													if ((var23[var8 + var24][var27 + var25] & 19136995) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var36 > 0 && class173.directions[var35][var36 - 1] == 0 && (var23[var24][var25 - 1] & 19136782) == 0 && (var23[var24 + var8 - 1][var25 - 1] & 19136899) == 0) {
-												var27 = 1;
-
-												while (true) {
-													if (var27 >= var8 - 1) {
-														class173.bufferX[var38] = var15;
-														class173.bufferY[var38] = var16 - 1;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35][var36 - 1] = 1;
-														class173.distances[var35][var36 - 1] = var26;
-														break;
-													}
-
-													if ((var23[var27 + var24][var25 - 1] & 19136911) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var36 < 128 - var8 && class173.directions[var35][var36 + 1] == 0 && (var23[var24][var8 + var25] & 19136824) == 0 && (var23[var8 + var24 - 1][var8 + var25] & 19136992) == 0) {
-												var27 = 1;
-
-												while (true) {
-													if (var27 >= var8 - 1) {
-														class173.bufferX[var38] = var15;
-														class173.bufferY[var38] = var16 + 1;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35][var36 + 1] = 4;
-														class173.distances[var35][var36 + 1] = var26;
-														break;
-													}
-
-													if ((var23[var27 + var24][var8 + var25] & 19137016) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var35 > 0 && var36 > 0 && class173.directions[var35 - 1][var36 - 1] == 0 && (var23[var24 - 1][var25 - 1] & 19136782) == 0) {
-												var27 = 1;
-
-												while (true) {
-													if (var27 >= var8) {
-														class173.bufferX[var38] = var15 - 1;
-														class173.bufferY[var38] = var16 - 1;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35 - 1][var36 - 1] = 3;
-														class173.distances[var35 - 1][var36 - 1] = var26;
-														break;
-													}
-
-													if ((var23[var24 - 1][var27 + (var25 - 1)] & 19136830) != 0 || (var23[var27 + (var24 - 1)][var25 - 1] & 19136911) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var35 < 128 - var8 && var36 > 0 && class173.directions[var35 + 1][var36 - 1] == 0 && (var23[var24 + var8][var25 - 1] & 19136899) == 0) {
-												var27 = 1;
-
-												while (true) {
-													if (var27 >= var8) {
-														class173.bufferX[var38] = var15 + 1;
-														class173.bufferY[var38] = var16 - 1;
-														var38 = var38 + 1 & 4095;
-														class173.directions[var35 + 1][var36 - 1] = 9;
-														class173.distances[var35 + 1][var36 - 1] = var26;
-														break;
-													}
-
-													if ((var23[var8 + var24][var27 + (var25 - 1)] & 19136995) != 0 || (var23[var24 + var27][var25 - 1] & 19136911) != 0) {
-														break;
-													}
-
-													++var27;
-												}
-											}
-
-											if (var35 > 0 && var36 < 128 - var8 && class173.directions[var35 - 1][var36 + 1] == 0 && (var23[var24 - 1][var8 + var25] & 19136824) == 0) {
-												for (var27 = 1; var27 < var8; ++var27) {
-													if ((var23[var24 - 1][var25 + var27] & 19136830) != 0 || (var23[var27 + (var24 - 1)][var25 + var8] & 19137016) != 0) {
-														continue label615;
-													}
-												}
-
+										while (true) {
+											if (var27 >= var8 - 1) {
 												class173.bufferX[var38] = var15 - 1;
+												class173.bufferY[var38] = var16;
+												var38 = var38 + 1 & 4095;
+												class173.directions[var35 - 1][var36] = 2;
+												class173.distances[var35 - 1][var36] = var26;
+												break;
+											}
+
+											if ((var23[var24 - 1][var27 + var25] & 19136830) != 0) {
+												break;
+											}
+
+											++var27;
+										}
+									}
+
+									if (var35 < 128 - var8 && class173.directions[var35 + 1][var36] == 0 && (var23[var24 + var8][var25] & 19136899) == 0 && (var23[var24 + var8][var25 + var8 - 1] & 19136992) == 0) {
+										var27 = 1;
+
+										while (true) {
+											if (var27 >= var8 - 1) {
+												class173.bufferX[var38] = var15 + 1;
+												class173.bufferY[var38] = var16;
+												var38 = var38 + 1 & 4095;
+												class173.directions[var35 + 1][var36] = 8;
+												class173.distances[var35 + 1][var36] = var26;
+												break;
+											}
+
+											if ((var23[var8 + var24][var27 + var25] & 19136995) != 0) {
+												break;
+											}
+
+											++var27;
+										}
+									}
+
+									if (var36 > 0 && class173.directions[var35][var36 - 1] == 0 && (var23[var24][var25 - 1] & 19136782) == 0 && (var23[var24 + var8 - 1][var25 - 1] & 19136899) == 0) {
+										var27 = 1;
+
+										while (true) {
+											if (var27 >= var8 - 1) {
+												class173.bufferX[var38] = var15;
+												class173.bufferY[var38] = var16 - 1;
+												var38 = var38 + 1 & 4095;
+												class173.directions[var35][var36 - 1] = 1;
+												class173.distances[var35][var36 - 1] = var26;
+												break;
+											}
+
+											if ((var23[var27 + var24][var25 - 1] & 19136911) != 0) {
+												break;
+											}
+
+											++var27;
+										}
+									}
+
+									if (var36 < 128 - var8 && class173.directions[var35][var36 + 1] == 0 && (var23[var24][var8 + var25] & 19136824) == 0 && (var23[var8 + var24 - 1][var8 + var25] & 19136992) == 0) {
+										var27 = 1;
+
+										while (true) {
+											if (var27 >= var8 - 1) {
+												class173.bufferX[var38] = var15;
 												class173.bufferY[var38] = var16 + 1;
 												var38 = var38 + 1 & 4095;
-												class173.directions[var35 - 1][var36 + 1] = 6;
-												class173.distances[var35 - 1][var36 + 1] = var26;
+												class173.directions[var35][var36 + 1] = 4;
+												class173.distances[var35][var36 + 1] = var26;
+												break;
 											}
-										} while(var35 >= 128 - var8);
-									} while(var36 >= 128 - var8);
-								} while(class173.directions[var35 + 1][var36 + 1] != 0);
-							} while((var23[var24 + var8][var25 + var8] & 19136992) != 0);
 
-							for (var27 = 1; var27 < var8; ++var27) {
-								if ((var23[var24 + var27][var8 + var25] & 19137016) != 0 || (var23[var8 + var24][var27 + var25] & 19136995) != 0) {
-									continue label638;
-								}
-							}
+											if ((var23[var27 + var24][var8 + var25] & 19137016) != 0) {
+												break;
+											}
 
-							class173.bufferX[var38] = var15 + 1;
-							class173.bufferY[var38] = var16 + 1;
-							var38 = var38 + 1 & 4095;
-							class173.directions[var35 + 1][var36 + 1] = 12;
-							class173.distances[var35 + 1][var36 + 1] = var26;
-						}
-					}
-
-					var33 = var34;
-				}
-
-				int var7;
-				label696: {
-					var14 = var4 - 64;
-					var15 = var5 - 64;
-					var16 = class173.field2088;
-					var35 = class218.field2707;
-					if (!var33) {
-						var36 = Integer.MAX_VALUE;
-						var19 = Integer.MAX_VALUE;
-						byte var37 = 10;
-						var38 = var9.approxDestinationX;
-						var22 = var9.approxDestinationY;
-						int var32 = var9.approxDestinationSizeX;
-						var24 = var9.approxDestinationSizeY;
-
-						for (var25 = var38 - var37; var25 <= var37 + var38; ++var25) {
-							for (var26 = var22 - var37; var26 <= var37 + var22; ++var26) {
-								var27 = var25 - var14;
-								int var28 = var26 - var15;
-								if (var27 >= 0 && var28 >= 0 && var27 < 128 && var28 < 128 && class173.distances[var27][var28] < 100) {
-									int var29 = 0;
-									if (var25 < var38) {
-										var29 = var38 - var25;
-									} else if (var25 > var38 + var32 - 1) {
-										var29 = var25 - (var32 + var38 - 1);
+											++var27;
+										}
 									}
 
-									int var30 = 0;
-									if (var26 < var22) {
-										var30 = var22 - var26;
-									} else if (var26 > var24 + var22 - 1) {
-										var30 = var26 - (var24 + var22 - 1);
+									if (var35 > 0 && var36 > 0 && class173.directions[var35 - 1][var36 - 1] == 0 && (var23[var24 - 1][var25 - 1] & 19136782) == 0) {
+										var27 = 1;
+
+										while (true) {
+											if (var27 >= var8) {
+												class173.bufferX[var38] = var15 - 1;
+												class173.bufferY[var38] = var16 - 1;
+												var38 = var38 + 1 & 4095;
+												class173.directions[var35 - 1][var36 - 1] = 3;
+												class173.distances[var35 - 1][var36 - 1] = var26;
+												break;
+											}
+
+											if ((var23[var24 - 1][var27 + (var25 - 1)] & 19136830) != 0 || (var23[var27 + (var24 - 1)][var25 - 1] & 19136911) != 0) {
+												break;
+											}
+
+											++var27;
+										}
 									}
 
-									int var31 = var29 * var29 + var30 * var30;
-									if (var31 < var36 || var31 == var36 && class173.distances[var27][var28] < var19) {
-										var36 = var31;
-										var19 = class173.distances[var27][var28];
-										var16 = var25;
-										var35 = var26;
+									if (var35 < 128 - var8 && var36 > 0 && class173.directions[var35 + 1][var36 - 1] == 0 && (var23[var24 + var8][var25 - 1] & 19136899) == 0) {
+										var27 = 1;
+
+										while (true) {
+											if (var27 >= var8) {
+												class173.bufferX[var38] = var15 + 1;
+												class173.bufferY[var38] = var16 - 1;
+												var38 = var38 + 1 & 4095;
+												class173.directions[var35 + 1][var36 - 1] = 9;
+												class173.distances[var35 + 1][var36 - 1] = var26;
+												break;
+											}
+
+											if ((var23[var8 + var24][var27 + (var25 - 1)] & 19136995) != 0 || (var23[var24 + var27][var25 - 1] & 19136911) != 0) {
+												break;
+											}
+
+											++var27;
+										}
 									}
-								}
-							}
-						}
 
-						if (var36 == Integer.MAX_VALUE) {
-							var7 = -1;
-							break label696;
+									if (var35 > 0 && var36 < 128 - var8 && class173.directions[var35 - 1][var36 + 1] == 0 && (var23[var24 - 1][var8 + var25] & 19136824) == 0) {
+										for (var27 = 1; var27 < var8; ++var27) {
+											if ((var23[var24 - 1][var25 + var27] & 19136830) != 0 || (var23[var27 + (var24 - 1)][var25 + var8] & 19137016) != 0) {
+												continue label615;
+											}
+										}
+
+										class173.bufferX[var38] = var15 - 1;
+										class173.bufferY[var38] = var16 + 1;
+										var38 = var38 + 1 & 4095;
+										class173.directions[var35 - 1][var36 + 1] = 6;
+										class173.distances[var35 - 1][var36 + 1] = var26;
+									}
+								} while(var35 >= 128 - var8);
+							} while(var36 >= 128 - var8);
+						} while(class173.directions[var35 + 1][var36 + 1] != 0);
+					} while((var23[var24 + var8][var25 + var8] & 19136992) != 0);
+
+					for (var27 = 1; var27 < var8; ++var27) {
+						if ((var23[var24 + var27][var8 + var25] & 19137016) != 0 || (var23[var8 + var24][var27 + var25] & 19136995) != 0) {
+							continue label638;
 						}
 					}
 
-					if (var4 == var16 && var5 == var35) {
-						var7 = 0;
-					} else {
-						var18 = 0;
-						class173.bufferX[var18] = var16;
-						var36 = var18 + 1;
-						class173.bufferY[var18] = var35;
-
-						for (var19 = var20 = class173.directions[var16 - var14][var35 - var15]; var16 != var4 || var5 != var35; var19 = class173.directions[var16 - var14][var35 - var15]) {
-							if (var19 != var20) {
-								var20 = var19;
-								class173.bufferX[var36] = var16;
-								class173.bufferY[var36++] = var35;
-							}
-
-							if ((var19 & 2) != 0) {
-								++var16;
-							} else if ((var19 & 8) != 0) {
-								--var16;
-							}
-
-							if ((var19 & 1) != 0) {
-								++var35;
-							} else if ((var19 & 4) != 0) {
-								--var35;
-							}
-						}
-
-						var38 = 0;
-
-						while (var36-- > 0) {
-							var11[var38] = class173.bufferX[var36];
-							var12[var38++] = class173.bufferY[var36];
-							if (var38 >= var11.length) {
-								break;
-							}
-						}
-
-						var7 = var38;
-					}
-				}
-
-				var13 = var7;
-				if (var7 >= 1) {
-					for (var14 = 0; var14 < var13 - 1; ++var14) {
-						var0.method1191(Client.field929[var14], Client.field930[var14], var3);
-					}
-
+					class173.bufferX[var38] = var15 + 1;
+					class173.bufferY[var38] = var16 + 1;
+					var38 = var38 + 1 & 4095;
+					class173.directions[var35 + 1][var36 + 1] = 12;
+					class173.distances[var35 + 1][var36 + 1] = var26;
 				}
 			}
+
+			var33 = var34;
+		}
+
+		int var7;
+		label696: {
+			var14 = var4 - 64;
+			var15 = var5 - 64;
+			var16 = class173.field2088;
+			var35 = class218.field2707;
+			if (!var33) {
+				var36 = Integer.MAX_VALUE;
+				var19 = Integer.MAX_VALUE;
+				byte var37 = 10;
+				var38 = var9.approxDestinationX;
+				var22 = var9.approxDestinationY;
+				int var32 = var9.approxDestinationSizeX;
+				var24 = var9.approxDestinationSizeY;
+
+				for (var25 = var38 - var37; var25 <= var37 + var38; ++var25) {
+					for (var26 = var22 - var37; var26 <= var37 + var22; ++var26) {
+						var27 = var25 - var14;
+						int var28 = var26 - var15;
+						if (var27 < 0 || var28 < 0 || var27 >= 128 || var28 >= 128 || class173.distances[var27][var28] >= 100) {
+							continue;
+						}
+						int var29 = 0;
+						if (var25 < var38) {
+							var29 = var38 - var25;
+						} else if (var25 > var38 + var32 - 1) {
+							var29 = var25 - (var32 + var38 - 1);
+						}
+
+						int var30 = 0;
+						if (var26 < var22) {
+							var30 = var22 - var26;
+						} else if (var26 > var24 + var22 - 1) {
+							var30 = var26 - (var24 + var22 - 1);
+						}
+
+						int var31 = var29 * var29 + var30 * var30;
+						if (var31 < var36 || var31 == var36 && class173.distances[var27][var28] < var19) {
+							var36 = var31;
+							var19 = class173.distances[var27][var28];
+							var16 = var25;
+							var35 = var26;
+						}
+					}
+				}
+
+				if (var36 == Integer.MAX_VALUE) {
+					var7 = -1;
+					break label696;
+				}
+			}
+
+			if (var4 == var16 && var5 == var35) {
+				var7 = 0;
+			} else {
+				var18 = 0;
+				class173.bufferX[var18] = var16;
+				var36 = var18 + 1;
+				class173.bufferY[var18] = var35;
+
+				for (var19 = var20 = class173.directions[var16 - var14][var35 - var15]; var16 != var4 || var5 != var35; var19 = class173.directions[var16 - var14][var35 - var15]) {
+					if (var19 != var20) {
+						var20 = var19;
+						class173.bufferX[var36] = var16;
+						class173.bufferY[var36++] = var35;
+					}
+
+					if ((var19 & 2) != 0) {
+						++var16;
+					} else if ((var19 & 8) != 0) {
+						--var16;
+					}
+
+					if ((var19 & 1) != 0) {
+						++var35;
+					} else if ((var19 & 4) != 0) {
+						--var35;
+					}
+				}
+
+				var38 = 0;
+
+				while (var36-- > 0) {
+					var11[var38] = class173.bufferX[var36];
+					var12[var38++] = class173.bufferY[var36];
+					if (var38 >= var11.length) {
+						break;
+					}
+				}
+
+				var7 = var38;
+			}
+		}
+
+		var13 = var7;
+		if (var7 >= 1) {
+			for (var14 = 0; var14 < var13 - 1; ++var14) {
+				var0.method1191(Client.field929[var14], Client.field930[var14], var3);
+			}
+
 		}
 	}
 
@@ -2038,22 +2047,23 @@ public class Widget extends Node {
 		garbageValue = "-174761515"
 	)
 	static void method4090() {
-		if (Client.field736 && Client.localPlayer != null) {
-			int var0 = Client.localPlayer.pathX[0];
-			int var1 = Client.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
-				return;
-			}
-
-			MouseHandler.oculusOrbFocalPointX = Client.localPlayer.x;
-			int var2 = ScriptEvent.getTileHeight(Client.localPlayer.x, Client.localPlayer.y, class42.plane) - Client.camFollowHeight;
-			if (var2 < Client.field729) {
-				Client.field729 = var2;
-			}
-
-			WorldMapArea.oculusOrbFocalPointY = Client.localPlayer.y;
-			Client.field736 = false;
+		if (!Client.field736 || Client.localPlayer == null) {
+			return;
 		}
+		int var0 = Client.localPlayer.pathX[0];
+		int var1 = Client.localPlayer.pathY[0];
+		if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
+			return;
+		}
+
+		MouseHandler.oculusOrbFocalPointX = Client.localPlayer.x;
+		int var2 = ScriptEvent.getTileHeight(Client.localPlayer.x, Client.localPlayer.y, class42.plane) - Client.camFollowHeight;
+		if (var2 < Client.field729) {
+			Client.field729 = var2;
+		}
+
+		WorldMapArea.oculusOrbFocalPointY = Client.localPlayer.y;
+		Client.field736 = false;
 
 	}
 }

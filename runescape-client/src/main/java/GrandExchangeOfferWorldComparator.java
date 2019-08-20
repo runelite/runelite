@@ -140,46 +140,46 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
 		NodeDeque var2 = Client.groundItems[class42.plane][var0][var1];
 		if (var2 == null) {
 			scene.removeGroundItemPile(class42.plane, var0, var1);
-		} else {
-			long var3 = -99999999L;
-			TileItem var5 = null;
+			return;
+		}
+		long var3 = -99999999L;
+		TileItem var5 = null;
 
-			TileItem var6;
-			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-				ItemDefinition var7 = WorldMapArea.getItemDefinition(var6.id);
-				long var8 = (long)var7.price;
-				if (var7.isStackable == 1) {
-					var8 *= (long)(var6.quantity + 1);
-				}
-
-				if (var8 > var3) {
-					var3 = var8;
-					var5 = var6;
-				}
+		TileItem var6;
+		for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+			ItemDefinition var7 = WorldMapArea.ItemDefinition_get(var6.id);
+			long var8 = (long)var7.price;
+			if (var7.isStackable == 1) {
+				var8 *= (long)(var6.quantity + 1);
 			}
 
-			if (var5 == null) {
-				scene.removeGroundItemPile(class42.plane, var0, var1);
-			} else {
-				var2.addLast(var5);
-				TileItem var12 = null;
-				TileItem var11 = null;
+			if (var8 > var3) {
+				var3 = var8;
+				var5 = var6;
+			}
+		}
 
-				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-					if (var5.id != var6.id) {
-						if (var12 == null) {
-							var12 = var6;
-						}
+		if (var5 == null) {
+			scene.removeGroundItemPile(class42.plane, var0, var1);
+		} else {
+			var2.addLast(var5);
+			TileItem var12 = null;
+			TileItem var11 = null;
 
-						if (var6.id != var12.id && var11 == null) {
-							var11 = var6;
-						}
+			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+				if (var5.id != var6.id) {
+					if (var12 == null) {
+						var12 = var6;
+					}
+
+					if (var6.id != var12.id && var11 == null) {
+						var11 = var6;
 					}
 				}
-
-				long var9 = Tile.calculateTag(var0, var1, 3, false, 0);
-				scene.newGroundItemPile(class42.plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class42.plane), var5, var9, var12, var11);
 			}
+
+			long var9 = Tile.calculateTag(var0, var1, 3, false, 0);
+			scene.newGroundItemPile(class42.plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class42.plane), var5, var9, var12, var11);
 		}
 	}
 }

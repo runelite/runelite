@@ -38,6 +38,6 @@ public class DefaultsGroup {
 		garbageValue = "39"
 	)
 	public static String method5898(Buffer var0) {
-		return WorldMapIcon_0.method194(var0, 32767);
+		return WorldMapIcon_0.method194(var0, 0x7fff);
 	}
 }

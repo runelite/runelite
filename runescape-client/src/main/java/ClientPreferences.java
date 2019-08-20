@@ -233,17 +233,17 @@ public class ClientPreferences {
 		if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
 			HealthBarUpdate.Interpreter_intStackSize -= 3;
 			Client.publicChatMode = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			class226.privateChatMode = NetSocket.method3530(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
+			class226.privateChatMode = NetSocket.ChatMode_find(Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1]);
 			if (class226.privateChatMode == null) {
-				class226.privateChatMode = class310.field3816;
+				class226.privateChatMode = PrivateChatMode.field3816;
 			}
 
 			Client.tradeChatMode = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			PacketBufferNode var18 = Archive.method4265(ClientPacket.field2294, Client.packetWriter.isaacCipher);
+			PacketBufferNode var18 = Archive.getPacketBufferNode(ClientPacket.field2294, Client.packetWriter.isaacCipher);
 			var18.packetBuffer.writeByte(Client.publicChatMode);
 			var18.packetBuffer.writeByte(class226.privateChatMode.field3815);
 			var18.packetBuffer.writeByte(Client.tradeChatMode);
-			Client.packetWriter.method2219(var18);
+			Client.packetWriter.addNode(var18);
 			return 1;
 		}
 		String var3;
@@ -253,12 +253,12 @@ public class ClientPreferences {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			int var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			PacketBufferNode var6 = Archive.method4265(ClientPacket.field2205, Client.packetWriter.isaacCipher);
+			PacketBufferNode var6 = Archive.getPacketBufferNode(ClientPacket.field2205, Client.packetWriter.isaacCipher);
 			var6.packetBuffer.writeByte(Huffman.stringCp1252NullTerminatedByteSize(var3) + 2);
 			var6.packetBuffer.writeStringCp1252NullTerminated(var3);
 			var6.packetBuffer.writeByte(var4 - 1);
 			var6.packetBuffer.writeByte(var5);
-			Client.packetWriter.method2219(var6);
+			Client.packetWriter.addNode(var6);
 			return 1;
 		}
 		int var10;
@@ -266,7 +266,7 @@ public class ClientPreferences {
 			HealthBarUpdate.Interpreter_intStackSize -= 2;
 			var10 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
 			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Message var15 = TileItem.method2049(var10, var4);
+			Message var15 = TileItem.Messages_getByChannelAndID(var10, var4);
 			if (var15 != null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var15.count;
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var15.cycle;
@@ -287,7 +287,7 @@ public class ClientPreferences {
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETHISTORY_BYUID) {
 			var10 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Message var16 = WorldMapIcon_1.method297(var10);
+			Message var16 = WorldMapIcon_1.Messages_getMessage(var10);
 			if (var16 != null) {
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var16.type;
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var16.cycle;
@@ -432,7 +432,7 @@ public class ClientPreferences {
 				}
 			}
 
-			PacketBufferNode var8 = Archive.method4265(ClientPacket.field2258, Client.packetWriter.isaacCipher);
+			PacketBufferNode var8 = Archive.getPacketBufferNode(ClientPacket.field2258, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeByte(0);
 			int var9 = var8.packetBuffer.offset;
 			var8.packetBuffer.writeByte(var4);
@@ -440,20 +440,20 @@ public class ClientPreferences {
 			var8.packetBuffer.writeByte(var7);
 			Skeleton.method3063(var8.packetBuffer, var3);
 			var8.packetBuffer.writeLengthByte(var8.packetBuffer.offset - var9);
-			Client.packetWriter.method2219(var8);
+			Client.packetWriter.addNode(var8);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_SENDPRIVATE) {
 			Skills.Interpreter_stringStackSize -= 2;
 			var3 = Interpreter.Interpreter_stringStack[Skills.Interpreter_stringStackSize];
 			String var12 = Interpreter.Interpreter_stringStack[Skills.Interpreter_stringStackSize + 1];
-			PacketBufferNode var11 = Archive.method4265(ClientPacket.field2228, Client.packetWriter.isaacCipher);
+			PacketBufferNode var11 = Archive.getPacketBufferNode(ClientPacket.field2228, Client.packetWriter.isaacCipher);
 			var11.packetBuffer.writeShort(0);
 			int var13 = var11.packetBuffer.offset;
 			var11.packetBuffer.writeStringCp1252NullTerminated(var3);
 			Skeleton.method3063(var11.packetBuffer, var12);
 			var11.packetBuffer.writeLengthShort(var11.packetBuffer.offset - var13);
-			Client.packetWriter.method2219(var11);
+			Client.packetWriter.addNode(var11);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_PLAYERNAME) {
@@ -472,17 +472,17 @@ public class ClientPreferences {
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETHISTORYLENGTH) {
 			var10 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = LoginScreenAnimation.method1744(var10);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = LoginScreenAnimation.Messages_getHistorySize(var10);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETNEXTUID) {
 			var10 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = MusicPatchNode2.method3686(var10);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = MusicPatchNode2.Messages_getNextChatID(var10);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.CHAT_GETPREVUID) {
 			var10 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class192.method3669(var10);
+			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class192.Messages_getLastChatID(var10);
 			return 1;
 		}
 		if (var0 == ScriptOpcodes.DOCHEAT) {

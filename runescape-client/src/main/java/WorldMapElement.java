@@ -309,19 +309,19 @@ public class WorldMapElement extends DualNode {
 	)
 	static final void method4368(boolean var0) {
 		class186.playPcmPlayers();
-		++Client.packetWriter.field1319;
-		if (Client.packetWriter.field1319 < 50 && !var0) {
+		++Client.packetWriter.pendingWrites;
+		if (Client.packetWriter.pendingWrites < 50 && !var0) {
 			return;
 		}
-		Client.packetWriter.field1319 = 0;
+		Client.packetWriter.pendingWrites = 0;
 		if (Client.field701 || Client.packetWriter.getSocket() == null) {
 			return;
 		}
-		PacketBufferNode var1 = Archive.method4265(ClientPacket.field2225, Client.packetWriter.isaacCipher);
-		Client.packetWriter.method2219(var1);
+		PacketBufferNode var1 = Archive.getPacketBufferNode(ClientPacket.field2225, Client.packetWriter.isaacCipher);
+		Client.packetWriter.addNode(var1);
 
 		try {
-			Client.packetWriter.method2234();
+			Client.packetWriter.flush();
 		} catch (IOException var3) {
 			Client.field701 = true;
 		}

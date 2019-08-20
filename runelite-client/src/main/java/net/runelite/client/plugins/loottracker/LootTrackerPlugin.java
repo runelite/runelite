@@ -626,7 +626,7 @@ public class LootTrackerPlugin extends Plugin
 				chestLooted = true;
 				break;
 			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
-				// event type should be set via ChatMessage for clue scrolls.
+				// event opcode should be set via ChatMessage for clue scrolls.
 				// Clue Scrolls use same InventoryID as Barrows
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;

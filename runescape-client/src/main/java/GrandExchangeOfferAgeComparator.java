@@ -10,7 +10,8 @@ import net.runelite.rs.ScriptOpcodes;
 @Implements("GrandExchangeOfferAgeComparator")
 final class GrandExchangeOfferAgeComparator implements Comparator {
 	@ObfuscatedName("ad")
-	static FontMetrics field80;
+	@Export("loginScreenFontMetrics")
+	static FontMetrics loginScreenFontMetrics;
 	@ObfuscatedName("gn")
 	@ObfuscatedSignature(
 		signature = "[Llx;"
@@ -80,13 +81,14 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 	@Export("clearItemContainer")
 	static void clearItemContainer(int var0) {
 		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
-				var1.ids[var2] = -1;
-				var1.quantities[var2] = 0;
-			}
-
+		if (var1 == null) {
+			return;
 		}
+		for (int var2 = 0; var2 < var1.ids.length; ++var2) {
+			var1.ids[var2] = -1;
+			var1.quantities[var2] = 0;
+		}
+
 	}
 
 	@ObfuscatedName("b")
@@ -145,8 +147,9 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		signature = "(B)V",
 		garbageValue = "20"
 	)
-	static void method145() {
-		NetCache.method4312(class42.menuWidth / 2 + class247.menuX, class30.menuY);
+	@Export("calculateMenuBounds")
+	static void calculateMenuBounds() {
+		NetCache.calculateMenuBounds(class42.menuWidth / 2 + class247.menuX, class30.menuY);
 	}
 
 	@ObfuscatedName("jt")
@@ -154,19 +157,21 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		signature = "(II)V",
 		garbageValue = "-2136228205"
 	)
-	static final void method146(int var0) {
-		if (class162.loadInterface(var0)) {
-			Widget[] var1 = Widget.Widget_interfaceComponents[var0];
-
-			for (int var2 = 0; var2 < var1.length; ++var2) {
-				Widget var3 = var1[var2];
-				if (var3 != null) {
-					var3.modelFrame = 0;
-					var3.modelFrameCycle = 0;
-				}
-			}
-
+	@Export("Widget_resetModelFrames")
+	static final void Widget_resetModelFrames(int var0) {
+		if (!class162.loadInterface(var0)) {
+			return;
 		}
+		Widget[] var1 = Widget.Widget_interfaceComponents[var0];
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			Widget var3 = var1[var2];
+			if (var3 != null) {
+				var3.modelFrame = 0;
+				var3.modelFrameCycle = 0;
+			}
+		}
+
 	}
 
 	@ObfuscatedName("jd")
@@ -177,7 +182,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 	static final boolean method149(Widget var0) {
 		int var1 = var0.contentType;
 		if (var1 == 205) {
-			Client.field700 = 250;
+			Client.logoutTimer = 250;
 			return true;
 		}
 		int var2;
@@ -185,7 +190,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		if (var1 >= 300 && var1 <= 313) {
 			var2 = (var1 - 300) / 2;
 			var3 = var1 & 1;
-			Client.playerAppearance.method3992(var2, var3 == 1);
+			Client.playerAppearance.changeAppearance(var2, var3 == 1);
 		}
 
 		if (var1 >= 314 && var1 <= 323) {
@@ -203,9 +208,9 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		}
 
 		if (var1 == 326) {
-			PacketBufferNode var4 = Archive.method4265(ClientPacket.field2215, Client.packetWriter.isaacCipher);
+			PacketBufferNode var4 = Archive.getPacketBufferNode(ClientPacket.field2215, Client.packetWriter.isaacCipher);
 			Client.playerAppearance.write(var4.packetBuffer);
-			Client.packetWriter.method2219(var4);
+			Client.packetWriter.addNode(var4);
 			return true;
 		}
 		return false;

@@ -51,7 +51,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Player;
@@ -549,7 +549,7 @@ public class RaidsPlugin extends Plugin
 	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		OverlayMenuEntry entry = event.getEntry();
-		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+		if (entry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY &&
 			entry.getTarget().equals("Raids party overlay"))
 		{
 			switch (entry.getOption())

@@ -123,7 +123,7 @@ public class ZalcanoUtil
 				{
 					if (client.getLocalPlayer().getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= 2400)
 					{
-						Entity entity = gameObject.getRenderable();
+						Entity entity = gameObject.getEntity();
 						if (entity instanceof DynamicObject)
 						{
 							if (((DynamicObject) entity).getAnimationID() == AnimationID.ZALCANO_ROCK_GLOWING)
@@ -149,7 +149,7 @@ public class ZalcanoUtil
 				{
 					if (client.getLocalPlayer().getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= 2400)
 					{
-						Entity entity = gameObject.getRenderable();
+						Entity entity = gameObject.getEntity();
 						if (entity instanceof DynamicObject)
 						{
 							list.add(gameObject);

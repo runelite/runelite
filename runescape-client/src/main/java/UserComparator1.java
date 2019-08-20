@@ -95,9 +95,9 @@ public class UserComparator1 implements Comparator {
 			}
 		}
 
-		PacketBufferNode var1 = Archive.method4265(ClientPacket.field2263, Client.packetWriter.isaacCipher);
+		PacketBufferNode var1 = Archive.getPacketBufferNode(ClientPacket.field2263, Client.packetWriter.isaacCipher);
 		var1.packetBuffer.writeByte(var0.length() + 1);
 		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-		Client.packetWriter.method2219(var1);
+		Client.packetWriter.addNode(var1);
 	}
 }

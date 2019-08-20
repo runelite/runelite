@@ -30,7 +30,8 @@ public class Strings {
 		signature = "(I)V",
 		garbageValue = "-495158745"
 	)
-	static void method4121() {
+	@Export("resetMenuEntries")
+	static void resetMenuEntries() {
 		Client.menuOptionsCount = 0;
 		Client.isMenuOpen = false;
 	}

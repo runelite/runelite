@@ -115,12 +115,12 @@ public abstract class MenuMixin implements RSClient
 	public void sortMenuEntries()
 	{
 		int count = getMenuOptionCount() - 1;
-		int[] menuOpcodes = getMenuTypes();
+		int[] menuOpcodes = getMenuOpcodes();
 		String[] menuTargetNames = getMenuTargets();
 		String[] menuActions = getMenuOptions();
 		int[] menuArguments0 = getMenuIdentifiers();
-		int[] menuArguments1 = getMenuActionParams0();
-		int[] menuArguments2 = getMenuActionParams1();
+		int[] menuArguments1 = getMenuArguments1();
+		int[] menuArguments2 = getMenuArguments2();
 		boolean[] menuShiftClick = getMenuForceLeftClick();
 
 		int tmp;

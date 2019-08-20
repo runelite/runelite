@@ -205,13 +205,13 @@ public final class Player extends Actor {
 			} else {
 				var7 = var1.readUnsignedByte();
 				var4[var5] = var7 + (var6 << 8);
-				if (var5 == 0 && var4[0] == 65535) {
+				if (var5 == 0 && var4[0] == 0xffff) {
 					var3 = var1.readUnsignedShort();
 					break;
 				}
 
 				if (var4[var5] >= 512) {
-					int var8 = WorldMapArea.getItemDefinition(var4[var5] - 512).team;
+					int var8 = WorldMapArea.ItemDefinition_get(var4[var5] - 512).team;
 					if (var8 != 0) {
 						this.team = var8;
 					}
@@ -231,38 +231,38 @@ public final class Player extends Actor {
 		}
 
 		super.readySequence = var1.readUnsignedShort();
-		if (super.readySequence == 65535) {
+		if (super.readySequence == 0xffff) {
 			super.readySequence = -1;
 		}
 
 		super.turnLeftSequence = var1.readUnsignedShort();
-		if (super.turnLeftSequence == 65535) {
+		if (super.turnLeftSequence == 0xffff) {
 			super.turnLeftSequence = -1;
 		}
 
 		super.turnRightSequence = super.turnLeftSequence;
 		super.walkSequence = var1.readUnsignedShort();
-		if (super.walkSequence == 65535) {
+		if (super.walkSequence == 0xffff) {
 			super.walkSequence = -1;
 		}
 
 		super.walkBackSequence = var1.readUnsignedShort();
-		if (super.walkBackSequence == 65535) {
+		if (super.walkBackSequence == 0xffff) {
 			super.walkBackSequence = -1;
 		}
 
 		super.walkLeftSequence = var1.readUnsignedShort();
-		if (super.walkLeftSequence == 65535) {
+		if (super.walkLeftSequence == 0xffff) {
 			super.walkLeftSequence = -1;
 		}
 
 		super.walkRightSequence = var1.readUnsignedShort();
-		if (super.walkRightSequence == 65535) {
+		if (super.walkRightSequence == 0xffff) {
 			super.walkRightSequence = -1;
 		}
 
 		super.runSequence = var1.readUnsignedShort();
-		if (super.runSequence == 65535) {
+		if (super.runSequence == 0xffff) {
 			super.runSequence = -1;
 		}
 
@@ -375,8 +375,8 @@ public final class Player extends Actor {
 		if (this.appearance == null) {
 			return null;
 		}
-		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.getSequenceDefinition(super.sequence) : null;
-		SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.movementSequence != super.readySequence || var1 == null) ? GrandExchangeEvent.getSequenceDefinition(super.movementSequence) : null;
+		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.SequenceDefinition_get(super.sequence) : null;
+		SequenceDefinition var2 = super.movementSequence != -1 && !this.isUnanimated && (super.movementSequence != super.readySequence || var1 == null) ? GrandExchangeEvent.SequenceDefinition_get(super.movementSequence) : null;
 		Model var3 = this.appearance.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
 		if (var3 == null) {
 			return null;
@@ -386,7 +386,7 @@ public final class Player extends Actor {
 		Model var4;
 		Model[] var5;
 		if (!this.isUnanimated && super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
-			var4 = MusicPatch.getSpotAnimationDefinition(super.spotAnimation).getModel(super.spotAnimationFrame);
+			var4 = MusicPatch.SpotAnimationDefinition_get(super.spotAnimation).getModel(super.spotAnimationFrame);
 			if (var4 != null) {
 				var4.offsetBy(0, -super.heightOffset, 0);
 				var5 = new Model[]{var3, var4};
@@ -439,26 +439,24 @@ public final class Player extends Actor {
 		signature = "(IIBS)V",
 		garbageValue = "-30153"
 	)
-	final void method1189(int var1, int var2, byte var3) {
-		if (super.sequence != -1 && GrandExchangeEvent.getSequenceDefinition(super.sequence).field3532 == 1) {
+	final void method1189(int x, int y, byte var3) {
+		if (super.sequence != -1 && GrandExchangeEvent.SequenceDefinition_get(super.sequence).field3532 == 1) {
 			super.sequence = -1;
 		}
 
 		super.field976 = -1;
-		if (var1 >= 0 && var1 < 104 && var2 >= 0 && var2 < 104) {
-			if (super.pathX[0] >= 0 && super.pathX[0] < 104 && super.pathY[0] >= 0 && super.pathY[0] < 104) {
-				if (var3 == 2) {
-					Widget.method4056(this, var1, var2, (byte)2);
-				}
-
-				this.method1191(var1, var2, var3);
-			} else {
-				this.resetPath(var1, var2);
-			}
-		} else {
-			this.resetPath(var1, var2);
+		if (x < 0 || x >= 104 || y < 0 || y >= 104) {
+			this.resetPath(x, y);
+			return;
 		}
-
+		if (super.pathX[0] < 0 || super.pathX[0] >= 104 || super.pathY[0] < 0 || super.pathY[0] >= 104) {
+			this.resetPath(x, y);
+			return;
+		}
+		if (var3 == 2) {
+			Widget.method4056(this, x, y, (byte) 2);
+		}
+		this.method1191(x, y, var3);
 	}
 
 	@ObfuscatedName("x")

@@ -147,9 +147,9 @@ public final class Projectile extends Entity {
 		this.targetIndex = var10;
 		this.endHeight = var11;
 		this.isMoving = false;
-		int var12 = MusicPatch.getSpotAnimationDefinition(this.id).sequence;
+		int var12 = MusicPatch.SpotAnimationDefinition_get(this.id).sequence;
 		if (var12 != -1) {
-			this.sequenceDefinition = GrandExchangeEvent.getSequenceDefinition(var12);
+			this.sequenceDefinition = GrandExchangeEvent.SequenceDefinition_get(var12);
 		} else {
 			this.sequenceDefinition = null;
 		}
@@ -227,7 +227,7 @@ public final class Projectile extends Entity {
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		SpotAnimationDefinition var1 = MusicPatch.getSpotAnimationDefinition(this.id);
+		SpotAnimationDefinition var1 = MusicPatch.SpotAnimationDefinition_get(this.id);
 		Model var2 = var1.getModel(this.frame);
 		if (var2 == null) {
 			return null;
@@ -241,8 +241,8 @@ public final class Projectile extends Entity {
 		signature = "(IB)Lio;",
 		garbageValue = "0"
 	)
-	@Export("getHitSplatDefinition")
-	public static HitSplatDefinition getHitSplatDefinition(int var0) {
+	@Export("HitSplatDefinition_get")
+	public static HitSplatDefinition HitSplatDefinition_get(int var0) {
 		HitSplatDefinition var1 = (HitSplatDefinition)HitSplatDefinition.HitSplatDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;

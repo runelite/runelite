@@ -61,7 +61,7 @@ public class Buffer extends Node {
 	}
 
 	public Buffer(int var1) {
-		this.array = TextureProvider.method2729(var1);
+		this.array = TextureProvider.ByteArrayPool_getArray(var1);
 		this.offset = 0;
 	}
 
@@ -75,9 +75,10 @@ public class Buffer extends Node {
 		signature = "(I)V",
 		garbageValue = "581390013"
 	)
-	public void method5477() {
+	@Export("releaseArray")
+	public void releaseArray() {
 		if (this.array != null) {
-			SoundSystem.method2478(this.array);
+			SoundSystem.ByteArrayPool_release(this.array);
 		}
 
 		this.array = null;
@@ -256,7 +257,7 @@ public class Buffer extends Node {
 	)
 	@Export("writeLengthShort")
 	public void writeLengthShort(int var1) {
-		if (var1 >= 0 && var1 <= 65535) {
+		if (var1 >= 0 && var1 <= 0xffff) {
 			this.array[this.offset - var1 - 2] = (byte)(var1 >> 8);
 			this.array[this.offset - var1 - 1] = (byte)var1;
 		} else {
@@ -360,7 +361,7 @@ public class Buffer extends Node {
 	public int readShort() {
 		this.offset += 2;
 		int var1 = (this.array[this.offset - 1] & 255) + ((this.array[this.offset - 2] & 255) << 8);
-		if (var1 > 32767) {
+		if (var1 > 0x7fff) {
 			var1 -= 65536;
 		}
 
@@ -525,8 +526,8 @@ public class Buffer extends Node {
 		int var1 = 0;
 
 		int var2;
-		for (var2 = this.readUShortSmart(); var2 == 32767; var2 = this.readUShortSmart()) {
-			var1 += 32767;
+		for (var2 = this.readUShortSmart(); var2 == 0x7fff; var2 = this.readUShortSmart()) {
+			var1 += 0x7fff;
 		}
 
 		var1 += var2;
@@ -552,7 +553,7 @@ public class Buffer extends Node {
 			return this.readInt() & Integer.MAX_VALUE;
 		}
 		int var1 = this.readUnsignedShort();
-		return var1 == 32767 ? -1 : var1;
+		return var1 == 0x7fff ? -1 : var1;
 	}
 
 	@ObfuscatedName("cl")
@@ -883,7 +884,7 @@ public class Buffer extends Node {
 	public int method5535() {
 		this.offset += 2;
 		int var1 = ((this.array[this.offset - 1] & 255) << 8) + (this.array[this.offset - 2] & 255);
-		if (var1 > 32767) {
+		if (var1 > 0x7fff) {
 			var1 -= 65536;
 		}
 
@@ -898,7 +899,7 @@ public class Buffer extends Node {
 	public int method5500() {
 		this.offset += 2;
 		int var1 = ((this.array[this.offset - 1] & 255) << 8) + (this.array[this.offset - 2] - 128 & 255);
-		if (var1 > 32767) {
+		if (var1 > 0x7fff) {
 			var1 -= 65536;
 		}
 

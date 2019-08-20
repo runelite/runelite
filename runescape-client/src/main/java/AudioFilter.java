@@ -49,7 +49,7 @@ public class AudioFilter {
 	float method2683(int var1, int var2, float var3) {
 		float var4 = (float)this.field1494[var1][0][var2] + var3 * (float)(this.field1494[var1][1][var2] - this.field1494[var1][0][var2]);
 		var4 *= 1.2207031E-4F;
-		return method2670(var4);
+		return normalize(var4);
 	}
 
 	@ObfuscatedName("p")
@@ -70,7 +70,6 @@ public class AudioFilter {
 		field1488[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method2683(var1, 0, var2));
 		field1488[var1][1] = var3 * var3;
 
-		float[] var10000;
 		int var4;
 		for (var4 = 1; var4 < this.pairs[var1]; ++var4) {
 			var3 = this.method2668(var1, var4, var2);
@@ -80,20 +79,16 @@ public class AudioFilter {
 			field1488[var1][var4 * 2] = field1488[var1][var4 * 2 - 1] * var5 + field1488[var1][var4 * 2 - 2] * var6;
 
 			for (int var7 = var4 * 2 - 1; var7 >= 2; --var7) {
-				var10000 = field1488[var1];
-				var10000[var7] += field1488[var1][var7 - 1] * var5 + field1488[var1][var7 - 2] * var6;
+				field1488[var1][var7] += field1488[var1][var7 - 1] * var5 + field1488[var1][var7 - 2] * var6;
 			}
 
-			var10000 = field1488[var1];
-			var10000[1] += field1488[var1][0] * var5 + var6;
-			var10000 = field1488[var1];
-			var10000[0] += var5;
+			field1488[var1][1] += field1488[var1][0] * var5 + var6;
+			field1488[var1][0] += var5;
 		}
 
 		if (var1 == 0) {
 			for (var4 = 0; var4 < this.pairs[0] * 2; ++var4) {
-				var10000 = field1488[0];
-				var10000[var4] *= field1491;
+				field1488[0][var4] *= field1491;
 			}
 		}
 
@@ -112,45 +107,45 @@ public class AudioFilter {
 		int var3 = var1.readUnsignedByte();
 		this.pairs[0] = var3 >> 4;
 		this.pairs[1] = var3 & 15;
-		if (var3 != 0) {
-			this.field1487[0] = var1.readUnsignedShort();
-			this.field1487[1] = var1.readUnsignedShort();
-			int var4 = var1.readUnsignedByte();
-
-			int var5;
-			int var6;
-			for (var5 = 0; var5 < 2; ++var5) {
-				for (var6 = 0; var6 < this.pairs[var5]; ++var6) {
-					this.field1494[var5][0][var6] = var1.readUnsignedShort();
-					this.field1486[var5][0][var6] = var1.readUnsignedShort();
-				}
-			}
-
-			for (var5 = 0; var5 < 2; ++var5) {
-				for (var6 = 0; var6 < this.pairs[var5]; ++var6) {
-					if ((var4 & 1 << var5 * 4 << var6) != 0) {
-						this.field1494[var5][1][var6] = var1.readUnsignedShort();
-						this.field1486[var5][1][var6] = var1.readUnsignedShort();
-					} else {
-						this.field1494[var5][1][var6] = this.field1494[var5][0][var6];
-						this.field1486[var5][1][var6] = this.field1486[var5][0][var6];
-					}
-				}
-			}
-
-			if (var4 != 0 || this.field1487[1] != this.field1487[0]) {
-				var2.decodeSegments(var1);
-			}
-		} else {
-			int[] var7 = this.field1487;
+		if (var3 == 0) {
+			this.field1487[0] = 0;
 			this.field1487[1] = 0;
-			var7[0] = 0;
+			return;
+		}
+		this.field1487[0] = var1.readUnsignedShort();
+		this.field1487[1] = var1.readUnsignedShort();
+		int var4 = var1.readUnsignedByte();
+
+		int var5;
+		int var6;
+		for (var5 = 0; var5 < 2; ++var5) {
+			for (var6 = 0; var6 < this.pairs[var5]; ++var6) {
+				this.field1494[var5][0][var6] = var1.readUnsignedShort();
+				this.field1486[var5][0][var6] = var1.readUnsignedShort();
+			}
+		}
+
+		for (var5 = 0; var5 < 2; ++var5) {
+			for (var6 = 0; var6 < this.pairs[var5]; ++var6) {
+				if ((var4 & 1 << var5 * 4 << var6) != 0) {
+					this.field1494[var5][1][var6] = var1.readUnsignedShort();
+					this.field1486[var5][1][var6] = var1.readUnsignedShort();
+				} else {
+					this.field1494[var5][1][var6] = this.field1494[var5][0][var6];
+					this.field1486[var5][1][var6] = this.field1486[var5][0][var6];
+				}
+			}
+		}
+
+		if (var4 != 0 || this.field1487[1] != this.field1487[0]) {
+			var2.decodeSegments(var1);
 		}
 
 	}
 
 	@ObfuscatedName("w")
-	static float method2670(float var0) {
+	@Export("normalize")
+	static float normalize(float var0) {
 		float var1 = 32.703197F * (float)Math.pow(2.0D, (double)var0);
 		return var1 * 3.1415927F / 11025.0F;
 	}

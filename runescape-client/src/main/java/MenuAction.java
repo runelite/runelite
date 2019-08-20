@@ -49,7 +49,8 @@ public class MenuAction {
 		signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Lgu;B)I",
 		garbageValue = "-1"
 	)
-	public static int method1993(CharSequence var0, CharSequence var1, Language var2) {
+	@Export("compareStrings")
+	public static int compareStrings(CharSequence var0, CharSequence var1, Language var2) {
 		int var3 = var0.length();
 		int var4 = var1.length();
 		int var5 = 0;
@@ -114,13 +115,13 @@ public class MenuAction {
 			}
 
 			var8 = var12;
-			var9 = PacketBufferNode.method3623(var9, var2);
-			var10 = PacketBufferNode.method3623(var10, var2);
+			var9 = PacketBufferNode.standardizeChar(var9, var2);
+			var10 = PacketBufferNode.standardizeChar(var10, var2);
 			if (var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
 				var9 = Character.toLowerCase(var9);
 				var10 = Character.toLowerCase(var10);
 				if (var10 != var9) {
-					return WorldMapArea.method387(var9, var2) - WorldMapArea.method387(var10, var2);
+					return WorldMapArea.lowercaseChar(var9, var2) - WorldMapArea.lowercaseChar(var10, var2);
 				}
 			}
 		}
@@ -144,7 +145,7 @@ public class MenuAction {
 				var18 = Character.toLowerCase(var18);
 				var20 = Character.toLowerCase(var20);
 				if (var18 != var20) {
-					return WorldMapArea.method387(var18, var2) - WorldMapArea.method387(var20, var2);
+					return WorldMapArea.lowercaseChar(var18, var2) - WorldMapArea.lowercaseChar(var20, var2);
 				}
 			}
 		}
@@ -157,7 +158,7 @@ public class MenuAction {
 			var20 = var0.charAt(var19);
 			char var13 = var1.charAt(var19);
 			if (var13 != var20) {
-				return WorldMapArea.method387(var20, var2) - WorldMapArea.method387(var13, var2);
+				return WorldMapArea.lowercaseChar(var20, var2) - WorldMapArea.lowercaseChar(var13, var2);
 			}
 		}
 

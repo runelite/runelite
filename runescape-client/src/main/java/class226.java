@@ -9,7 +9,7 @@ public class class226 {
 		signature = "Lkl;"
 	)
 	@Export("privateChatMode")
-	static class310 privateChatMode;
+	static PrivateChatMode privateChatMode;
 	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "Lhq;"

@@ -115,12 +115,8 @@ public class HealthBarDefinition extends DualNode {
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
-		while (true) {
-			int var2 = var1.readUnsignedByte();
-			if (var2 == 0) {
-				return;
-			}
-
+		int var2;
+		while ((var2 = var1.readUnsignedByte()) != 0) {
 			this.decodeNext(var1, var2);
 		}
 	}

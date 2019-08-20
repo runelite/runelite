@@ -57,7 +57,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -129,7 +129,7 @@ public class SlayermusiqPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
-		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getOption().equals(MENUOP_SLAYERMUSIQ))
+		if (ev.getMenuOpcode() == MenuOpcode.RUNELITE && ev.getOption().equals(MENUOP_SLAYERMUSIQ))
 		{
 			ev.consume();
 			String quest = Text.removeTags(ev.getTarget());
@@ -147,7 +147,7 @@ public class SlayermusiqPlugin extends Plugin
 		menuEntry.setOption(MENUOP_SLAYERMUSIQ);
 		menuEntry.setParam0(widgetIndex);
 		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
+		menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 
 		return menuEntry;
 	}

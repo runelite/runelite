@@ -40,7 +40,8 @@ public class WorldMapLabel {
 	}
 
 	@ObfuscatedName("p")
-	static int method420(long var0) {
+	@Export("Entity_unpackType")
+	static int Entity_unpackType(long var0) {
 		return (int)(var0 >>> 14 & 3L);
 	}
 
@@ -52,62 +53,58 @@ public class WorldMapLabel {
 	@Export("loadTerrain")
 	static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
 		int var7;
-		if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-			Tiles.Tiles_renderFlags[var1][var2][var3] = 0;
-
+		if (var2 < 0 || var2 >= 104 || var3 < 0 || var3 >= 104) {
 			while (true) {
 				var7 = var0.readUnsignedByte();
 				if (var7 == 0) {
-					if (var1 == 0) {
-						Tiles.Tiles_heights[0][var2][var3] = -class1.method14(var4 + 932731 + var2, var3 + 556238 + var5) * 8;
-					} else {
-						Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - 240;
-					}
 					break;
 				}
-
 				if (var7 == 1) {
-					int var8 = var0.readUnsignedByte();
-					if (var8 == 1) {
-						var8 = 0;
-					}
-
-					if (var1 == 0) {
-						Tiles.Tiles_heights[0][var2][var3] = -var8 * 8;
-					} else {
-						Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - var8 * 8;
-					}
+					var0.readUnsignedByte();
 					break;
 				}
-
-				if (var7 <= 49) {
-					Tiles.field505[var1][var2][var3] = var0.readByte();
-					Tiles.field506[var1][var2][var3] = (byte)((var7 - 2) / 4);
-					class268.field3561[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-				} else if (var7 <= 81) {
-					Tiles.Tiles_renderFlags[var1][var2][var3] = (byte)(var7 - 49);
-				} else {
-					Tiles.field504[var1][var2][var3] = (byte)(var7 - 81);
+				if (var7 < 49) {
+					var0.readUnsignedByte();
 				}
 			}
-		} else {
-			while (true) {
-				var7 = var0.readUnsignedByte();
-				if (var7 == 0) {
-					break;
+			return;
+		}
+		Tiles.Tiles_renderFlags[var1][var2][var3] = 0;
+
+		while ((var7 = var0.readUnsignedByte()) != 0) {
+			if (var7 == 1) {
+				int var8 = var0.readUnsignedByte();
+				if (var8 == 1) {
+					var8 = 0;
 				}
 
-				if (var7 == 1) {
-					var0.readUnsignedByte();
-					break;
+				if (var1 == 0) {
+					Tiles.Tiles_heights[0][var2][var3] = -var8 * 8;
 				}
-
-				if (var7 <= 49) {
-					var0.readUnsignedByte();
+				else {
+					Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - var8 * 8;
 				}
+				break;
+			}
+			else if (var7 <= 49) {
+				Tiles.field505[var1][var2][var3] = var0.readByte();
+				Tiles.field506[var1][var2][var3] = (byte) ((var7 - 2) / 4);
+				class268.field3561[var1][var2][var3] = (byte) (var7 - 2 + var6 & 3);
+			}
+			else if (var7 <= 81) {
+				Tiles.Tiles_renderFlags[var1][var2][var3] = (byte) (var7 - 49);
+			}
+			else {
+				Tiles.field504[var1][var2][var3] = (byte) (var7 - 81);
 			}
 		}
-
+		if (var1 == 0) {
+			Tiles.Tiles_heights[0][var2][var3] = -class1.method14(var4 + 0xe3b7b + var2, var3 + 0x87cce + var5) * 8;
+		}
+		else {
+			Tiles.Tiles_heights[var1][var2][var3] = Tiles.Tiles_heights[var1 - 1][var2][var3] - 240;
+		}
+		return;
 	}
 
 	@ObfuscatedName("hc")
@@ -120,7 +117,7 @@ public class WorldMapLabel {
 		if (var0 < 0) {
 			return "";
 		}
-		return Client.menuTargetNames[var0].length() > 0 ? Client.menuActions[var0] + " " + Client.menuTargetNames[var0] : Client.menuActions[var0];
+		return Client.menuTargets[var0].length() > 0 ? Client.menuActions[var0] + " " + Client.menuTargets[var0] : Client.menuActions[var0];
 	}
 
 	@ObfuscatedName("kz")
@@ -130,11 +127,11 @@ public class WorldMapLabel {
 	)
 	@Export("changePlane")
 	public static void changePlane(int var0, int var1, int var2, boolean var3) {
-		PacketBufferNode var4 = Archive.method4265(ClientPacket.field2296, Client.packetWriter.isaacCipher);
+		PacketBufferNode var4 = Archive.getPacketBufferNode(ClientPacket.field2296, Client.packetWriter.isaacCipher);
 		var4.packetBuffer.writeIntME(var3 ? Client.field855 : 0);
 		var4.packetBuffer.writeShortLE(var1);
 		var4.packetBuffer.method5521(var2);
 		var4.packetBuffer.writeShort(var0);
-		Client.packetWriter.method2219(var4);
+		Client.packetWriter.addNode(var4);
 	}
 }

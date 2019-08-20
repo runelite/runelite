@@ -66,7 +66,7 @@ public final class NPC extends Actor {
 			--var4;
 		}
 
-		if (super.sequence != -1 && GrandExchangeEvent.getSequenceDefinition(super.sequence).field3532 == 1) {
+		if (super.sequence != -1 && GrandExchangeEvent.SequenceDefinition_get(super.sequence).field3532 == 1) {
 			super.sequence = -1;
 		}
 
@@ -91,7 +91,7 @@ public final class NPC extends Actor {
 		garbageValue = "128"
 	)
 	final void method1963(int var1, int var2, boolean var3) {
-		if (super.sequence != -1 && GrandExchangeEvent.getSequenceDefinition(super.sequence).field3532 == 1) {
+		if (super.sequence != -1 && GrandExchangeEvent.SequenceDefinition_get(super.sequence).field3532 == 1) {
 			super.sequence = -1;
 		}
 
@@ -135,8 +135,8 @@ public final class NPC extends Actor {
 		if (this.definition == null) {
 			return null;
 		}
-		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.getSequenceDefinition(super.sequence) : null;
-		SequenceDefinition var2 = super.movementSequence != -1 && (super.readySequence != super.movementSequence || var1 == null) ? GrandExchangeEvent.getSequenceDefinition(super.movementSequence) : null;
+		SequenceDefinition var1 = super.sequence != -1 && super.sequenceDelay == 0 ? GrandExchangeEvent.SequenceDefinition_get(super.sequence) : null;
+		SequenceDefinition var2 = super.movementSequence != -1 && (super.readySequence != super.movementSequence || var1 == null) ? GrandExchangeEvent.SequenceDefinition_get(super.movementSequence) : null;
 		Model var3 = this.definition.getModel(var1, super.sequenceFrame, var2, super.movementFrame);
 		if (var3 == null) {
 			return null;
@@ -144,7 +144,7 @@ public final class NPC extends Actor {
 		var3.calculateBoundsCylinder();
 		super.defaultHeight = var3.height;
 		if (super.spotAnimation != -1 && super.spotAnimationFrame != -1) {
-			Model var4 = MusicPatch.getSpotAnimationDefinition(super.spotAnimation).getModel(super.spotAnimationFrame);
+			Model var4 = MusicPatch.SpotAnimationDefinition_get(super.spotAnimation).getModel(super.spotAnimationFrame);
 			if (var4 != null) {
 				var4.offsetBy(0, -super.heightOffset, 0);
 				Model[] var5 = new Model[]{var3, var4};
@@ -200,7 +200,7 @@ public final class NPC extends Actor {
 			return MenuAction.method1992(var0, var1, var2);
 		}
 		if (var0 < 1800) {
-			return class169.method3501(var0, var1, var2);
+			return FileSystem.method3501(var0, var1, var2);
 		}
 		if (var0 < 1900) {
 			return StudioGame.method4137(var0, var1, var2);

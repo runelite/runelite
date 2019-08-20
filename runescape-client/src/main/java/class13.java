@@ -28,7 +28,8 @@ public class class13 {
 		signature = "(I)I",
 		garbageValue = "246973533"
 	)
-	static final int method151() {
+	@Export("getNewestMenuIdx")
+	static final int getNewestMenuIdx() {
 		return Client.menuOptionsCount - 1;
 	}
 

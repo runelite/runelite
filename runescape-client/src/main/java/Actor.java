@@ -23,9 +23,11 @@ public abstract class Actor extends Entity {
 	@ObfuscatedGetter(
 		intValue = 1236559867
 	)
-	int field950;
+	@Export("rotation")
+	int rotation;
 	@ObfuscatedName("ar")
-	boolean field967;
+	@Export("isWalking")
+	boolean isWalking;
 	@ObfuscatedName("ax")
 	@Export("size")
 	int size;
@@ -313,7 +315,7 @@ public abstract class Actor extends Entity {
 	int field1008;
 
 	Actor() {
-		this.field967 = false;
+		this.isWalking = false;
 		this.size = 78073455;
 		this.readySequence = -1;
 		this.turnLeftSequence = -1;
@@ -404,7 +406,7 @@ public abstract class Actor extends Entity {
 		int var10 = -1;
 		int var11 = 0;
 		if (var1 >= 0) {
-			HitSplatDefinition var12 = Projectile.getHitSplatDefinition(var1);
+			HitSplatDefinition var12 = Projectile.HitSplatDefinition_get(var1);
 			var10 = var12.field3348;
 			var11 = var12.field3344;
 		}
@@ -469,7 +471,7 @@ public abstract class Actor extends Entity {
 	)
 	@Export("addHealthBar")
 	final void addHealthBar(int var1, int var2, int var3, int var4, int var5, int var6) {
-		HealthBarDefinition var7 = class51.method854(var1);
+		HealthBarDefinition var7 = class51.HealthBarDefinition_get(var1);
 		HealthBar var8 = null;
 		HealthBar var9 = null;
 		int var10 = var7.int2;
@@ -516,7 +518,7 @@ public abstract class Actor extends Entity {
 	)
 	@Export("removeHealthBar")
 	final void removeHealthBar(int var1) {
-		HealthBarDefinition var2 = class51.method854(var1);
+		HealthBarDefinition var2 = class51.HealthBarDefinition_get(var1);
 
 		for (HealthBar var3 = (HealthBar)this.healthBars.last(); var3 != null; var3 = (HealthBar)this.healthBars.previous()) {
 			if (var2 == var3.definition) {

@@ -63,7 +63,7 @@ public final class WorldMapSprite {
 		if (!Client.showMouseOverText) {
 			return;
 		}
-		int var2 = class13.method151();
+		int var2 = class13.getNewestMenuIdx();
 		String var3;
 		if (Client.isItemSelected == 1 && Client.menuOptionsCount < 2) {
 			var3 = "Use" + " " + Client.selectedItemName + " " + "->";
@@ -121,19 +121,21 @@ public final class WorldMapSprite {
 		signature = "(Lkf;II)V",
 		garbageValue = "291436994"
 	)
-	static void method407(Buffer var0, int var1) {
+	@Export("writeNewRandomDat")
+	static void writeNewRandomDat(Buffer var0, int var1) {
 		byte[] var2 = var0.array;
-		if (Client.field693 == null) {
-			Client.field693 = new byte[24];
+		if (Client.randomDatData == null) {
+			Client.randomDatData = new byte[24];
 		}
 
-		class301.method5752(var2, var1, Client.field693, 0, 24);
-		if (class167.randomDat != null) {
-			try {
-				class167.randomDat.seek(0L);
-				class167.randomDat.write(var0.array, var1, 24);
-			} catch (Exception var4) {
-			}
+		class301.writeRandomDat(var2, var1, Client.randomDatData, 0, 24);
+		if (JagexCache.JagexCache_randomDat == null) {
+			return;
+		}
+		try {
+			JagexCache.JagexCache_randomDat.seek(0L);
+			JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
+		} catch (Exception var4) {
 		}
 
 	}

@@ -81,9 +81,8 @@ public class Frames extends DualNode {
 		byte var10 = 0;
 		int var11 = 0;
 		class173.bufferX[var10] = var0;
-		byte var10001 = var10;
 		int var18 = var10 + 1;
-		class173.bufferY[var10001] = var1;
+		class173.bufferY[var10] = var1;
 		int[][] var12 = var3.flags;
 
 		while (var11 != var18) {
@@ -94,7 +93,7 @@ public class Frames extends DualNode {
 			int var17 = var5 - var9;
 			int var13 = var4 - var3.xInset;
 			int var14 = var5 - var3.yInset;
-			if (var2.vmethod3594(2, var4, var5, var3)) {
+			if (var2.hasArrived(2, var4, var5, var3)) {
 				class173.field2088 = var4;
 				class218.field2707 = var5;
 				return true;

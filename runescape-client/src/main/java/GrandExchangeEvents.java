@@ -116,22 +116,19 @@ public class GrandExchangeEvents {
 		garbageValue = "-1548454076"
 	)
 	static final void method72(Scene var0, CollisionMap[] var1) {
-		int var2;
-		int var3;
-		int var4;
-		int var5;
-		for (var2 = 0; var2 < 4; ++var2) {
-			for (var3 = 0; var3 < 104; ++var3) {
-				for (var4 = 0; var4 < 104; ++var4) {
-					if ((Tiles.Tiles_renderFlags[var2][var3][var4] & 1) == 1) {
-						var5 = var2;
-						if ((Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
-							var5 = var2 - 1;
-						}
+		for (int var2 = 0; var2 < 4; ++var2) {
+			for (int var3 = 0; var3 < 104; ++var3) {
+				for (int var4 = 0; var4 < 104; ++var4) {
+					if ((Tiles.Tiles_renderFlags[var2][var3][var4] & 1) != 1) {
+						continue;
+					}
+					int var5 = var2;
+					if ((Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
+						var5 = var2 - 1;
+					}
 
-						if (var5 >= 0) {
-							var1[var5].method3561(var3, var4);
-						}
+					if (var5 >= 0) {
+						var1[var5].setBlockedByFloor(var3, var4);
 					}
 				}
 			}
@@ -163,10 +160,9 @@ public class GrandExchangeEvents {
 		int var14;
 		int var15;
 		int var16;
-		int[] var10000;
 		int var17;
 		int var18;
-		for (var2 = 0; var2 < 4; ++var2) {
+		for (int var2 = 0; var2 < 4; ++var2) {
 			byte[][] var44 = class32.field282[var2];
 			var9 = (int)Math.sqrt(5100.0D);
 			var10 = var9 * 768 >> 8;
@@ -198,20 +194,15 @@ public class GrandExchangeEvents {
 			for (var11 = -5; var11 < 109; ++var11) {
 				for (var12 = 0; var12 < 104; ++var12) {
 					var13 = var11 + 5;
-					int var10002;
 					if (var13 >= 0 && var13 < 104) {
 						var14 = Tiles.field504[var2][var13][var12] & 255;
 						if (var14 > 0) {
 							FloorUnderlayDefinition var45 = ItemContainer.FloorUnderlayDefinition_get(var14 - 1);
-							var10000 = ServerBuild.Tiles_hue;
-							var10000[var12] += var45.hue;
-							var10000 = Tiles.Tiles_saturation;
-							var10000[var12] += var45.saturation;
-							var10000 = Tiles.Tiles_lightness;
-							var10000[var12] += var45.lightness;
-							var10000 = DynamicObject.Tiles_hueMultiplier;
-							var10000[var12] += var45.hueMultiplier;
-							var10002 = Fonts.field3689[var12]++;
+							ServerBuild.Tiles_hue[var12] += var45.hue;
+							Tiles.Tiles_saturation[var12] += var45.saturation;
+							Tiles.Tiles_lightness[var12] += var45.lightness;
+							DynamicObject.Tiles_hueMultiplier[var12] += var45.hueMultiplier;
+							Fonts.field3689[var12]++;
 						}
 					}
 
@@ -236,15 +227,11 @@ public class GrandExchangeEvents {
 								var47 = var46;
 							}
 
-							var10000 = ServerBuild.Tiles_hue;
-							var10000[var12] -= var47.hue;
-							var10000 = Tiles.Tiles_saturation;
-							var10000[var12] -= var47.saturation;
-							var10000 = Tiles.Tiles_lightness;
-							var10000[var12] -= var47.lightness;
-							var10000 = DynamicObject.Tiles_hueMultiplier;
-							var10000[var12] -= var47.hueMultiplier;
-							var10002 = Fonts.field3689[var12]--;
+							ServerBuild.Tiles_hue[var12] -= var47.hue;
+							Tiles.Tiles_saturation[var12] -= var47.saturation;
+							Tiles.Tiles_lightness[var12] -= var47.lightness;
+							DynamicObject.Tiles_hueMultiplier[var12] -= var47.hueMultiplier;
+							Fonts.field3689[var12]--;
 						}
 					}
 				}
@@ -343,8 +330,7 @@ public class GrandExchangeEvents {
 									}
 
 									if (var53 && var23 == var22 && var22 == var24 && var25 == var22) {
-										var10000 = FaceNormal.field1887[var2][var11];
-										var10000[var17] |= 2340;
+										FaceNormal.field1887[var2][var11][var17] |= 2340;
 									}
 								}
 
@@ -440,19 +426,15 @@ public class GrandExchangeEvents {
 
 		var0.method3097(-50, -10, -50);
 
-		for (var2 = 0; var2 < 104; ++var2) {
-			for (var3 = 0; var3 < 104; ++var3) {
+		for (int var2 = 0; var2 < 104; ++var2) {
+			for (int var3 = 0; var3 < 104; ++var3) {
 				if ((Tiles.Tiles_renderFlags[1][var2][var3] & 2) == 2) {
 					var0.setLinkBelow(var2, var3);
 				}
 			}
 		}
 
-		var2 = 1;
-		var3 = 2;
-		var4 = 4;
-
-		for (var5 = 0; var5 < 4; ++var5) {
+		for (int var2 = 1, var3 = 2, var4 = 4, var5 = 0; var5 < 4; ++var5) {
 			if (var5 > 0) {
 				var2 <<= 3;
 				var3 <<= 3;
@@ -462,7 +444,6 @@ public class GrandExchangeEvents {
 			for (int var6 = 0; var6 <= var5; ++var6) {
 				for (int var7 = 0; var7 <= 104; ++var7) {
 					for (int var8 = 0; var8 <= 104; ++var8) {
-						short var52;
 						if ((FaceNormal.field1887[var6][var8][var7] & var2) != 0) {
 							var9 = var7;
 							var10 = var7;
@@ -499,15 +480,13 @@ public class GrandExchangeEvents {
 
 							var13 = (var12 + 1 - var11) * (var10 - var9 + 1);
 							if (var13 >= 8) {
-								var52 = 240;
-								var15 = Tiles.Tiles_heights[var12][var8][var9] - var52;
+								var15 = Tiles.Tiles_heights[var12][var8][var9] - 240;
 								var16 = Tiles.Tiles_heights[var11][var8][var9];
 								Scene.Scene_addOccluder(var5, 1, var8 * 128, var8 * 128, var9 * 128, var10 * 128 + 128, var15, var16);
 
 								for (var17 = var11; var17 <= var12; ++var17) {
 									for (var18 = var9; var18 <= var10; ++var18) {
-										var10000 = FaceNormal.field1887[var17][var8];
-										var10000[var18] &= ~var2;
+										FaceNormal.field1887[var17][var8][var18] &= ~var2;
 									}
 								}
 							}
@@ -549,15 +528,13 @@ public class GrandExchangeEvents {
 
 							var13 = (var10 - var9 + 1) * (var12 + 1 - var11);
 							if (var13 >= 8) {
-								var52 = 240;
-								var15 = Tiles.Tiles_heights[var12][var9][var7] - var52;
+								var15 = Tiles.Tiles_heights[var12][var9][var7] - 240;
 								var16 = Tiles.Tiles_heights[var11][var9][var7];
 								Scene.Scene_addOccluder(var5, 2, var9 * 128, var10 * 128 + 128, var7 * 128, var7 * 128, var15, var16);
 
 								for (var17 = var11; var17 <= var12; ++var17) {
 									for (var18 = var9; var18 <= var10; ++var18) {
-										var10000 = FaceNormal.field1887[var17][var18];
-										var10000[var7] &= ~var3;
+										FaceNormal.field1887[var17][var18][var7] &= ~var3;
 									}
 								}
 							}
@@ -603,8 +580,7 @@ public class GrandExchangeEvents {
 
 								for (var14 = var9; var14 <= var10; ++var14) {
 									for (var15 = var11; var15 <= var12; ++var15) {
-										var10000 = FaceNormal.field1887[var6][var14];
-										var10000[var15] &= ~var4;
+										FaceNormal.field1887[var6][var14][var15] &= ~var4;
 									}
 								}
 							}
@@ -621,31 +597,31 @@ public class GrandExchangeEvents {
 		signature = "(Lhj;IIIIIII)V",
 		garbageValue = "-2024126373"
 	)
-	static final void method71(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+	static final void method71(Widget var0, int x, int y, int height, int scrollHeight, int mouseX, int mouseY) {
 		if (Client.field719) {
-			Client.field882 = 32;
+			Client.alternativeScrollbarWidth = 32;
 		} else {
-			Client.field882 = 0;
+			Client.alternativeScrollbarWidth = 0;
 		}
 
 		Client.field719 = false;
 		int var7;
 		if (MouseHandler.MouseHandler_currentButton == 1 || !DevicePcmPlayerProvider.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
-			if (var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+			if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
 				var0.scrollY -= 4;
 				Strings.invalidateWidget(var0);
-			} else if (var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+			} else if (mouseX >= x && mouseX < x + 16 && mouseY >= height + y - 16 && mouseY < height + y) {
 				var0.scrollY += 4;
 				Strings.invalidateWidget(var0);
-			} else if (var5 >= var1 - Client.field882 && var5 < Client.field882 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-				var7 = var3 * (var3 - 32) / var4;
+			} else if (mouseX >= x - Client.alternativeScrollbarWidth && mouseX < Client.alternativeScrollbarWidth + x + 16 && mouseY >= y + 16 && mouseY < height + y - 16) {
+				var7 = height * (height - 32) / scrollHeight;
 				if (var7 < 8) {
 					var7 = 8;
 				}
 
-				int var8 = var6 - var2 - 16 - var7 / 2;
-				int var9 = var3 - 32 - var7;
-				var0.scrollY = var8 * (var4 - var3) / var9;
+				int var8 = mouseY - y - 16 - var7 / 2;
+				int var9 = height - 32 - var7;
+				var0.scrollY = var8 * (scrollHeight - height) / var9;
 				Strings.invalidateWidget(var0);
 				Client.field719 = true;
 			}
@@ -653,7 +629,7 @@ public class GrandExchangeEvents {
 
 		if (Client.mouseWheelRotation != 0) {
 			var7 = var0.width;
-			if (var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+			if (mouseX >= x - var7 && mouseY >= y && mouseX < x + 16 && mouseY <= height + y) {
 				var0.scrollY += Client.mouseWheelRotation * 45;
 				Strings.invalidateWidget(var0);
 			}

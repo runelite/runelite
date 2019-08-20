@@ -32,11 +32,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 	@Export("get")
 	public PlatformInfo get() {
 		byte var1;
-		if (GrandExchangeOfferOwnWorldComparator.field647.startsWith("win")) {
+		if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("win")) {
 			var1 = 1;
-		} else if (GrandExchangeOfferOwnWorldComparator.field647.startsWith("mac")) {
+		} else if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("mac")) {
 			var1 = 2;
-		} else if (GrandExchangeOfferOwnWorldComparator.field647.startsWith("linux")) {
+		} else if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("linux")) {
 			var1 = 3;
 		} else {
 			var1 = 4;

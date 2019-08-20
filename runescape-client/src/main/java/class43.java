@@ -32,8 +32,8 @@ public final class class43 {
 	static int cameraY;
 
 	@ObfuscatedName("l")
-	@Export("getObjectIdFromTag")
-	public static int getObjectIdFromTag(long var0) {
+	@Export("Entity_unpackID")
+	public static int Entity_unpackID(long var0) {
 		return (int)(var0 >>> 17 & 0xffffffffL);
 	}
 }

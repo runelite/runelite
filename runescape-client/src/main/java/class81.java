@@ -50,25 +50,25 @@ public class class81 {
 			if (var7 != null && var7 != Client.localPlayer && var7.username != null && var7.username.equals(var5)) {
 				PacketBufferNode var8;
 				if (var0 == 1) {
-					var8 = Archive.method4265(ClientPacket.field2250, Client.packetWriter.isaacCipher);
+					var8 = Archive.getPacketBufferNode(ClientPacket.field2250, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort(var3[var6]);
 					var8.packetBuffer.method5521(0);
-					Client.packetWriter.method2219(var8);
+					Client.packetWriter.addNode(var8);
 				} else if (var0 == 4) {
-					var8 = Archive.method4265(ClientPacket.field2230, Client.packetWriter.isaacCipher);
+					var8 = Archive.getPacketBufferNode(ClientPacket.field2230, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.method5475(var3[var6]);
 					var8.packetBuffer.method5521(0);
-					Client.packetWriter.method2219(var8);
+					Client.packetWriter.addNode(var8);
 				} else if (var0 == 6) {
-					var8 = Archive.method4265(ClientPacket.field2257, Client.packetWriter.isaacCipher);
+					var8 = Archive.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.method5530(var3[var6]);
 					var8.packetBuffer.method5502(0);
-					Client.packetWriter.method2219(var8);
+					Client.packetWriter.addNode(var8);
 				} else if (var0 == 7) {
-					var8 = Archive.method4265(ClientPacket.field2278, Client.packetWriter.isaacCipher);
+					var8 = Archive.getPacketBufferNode(ClientPacket.field2278, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.method5502(0);
 					var8.packetBuffer.writeShortLE(var3[var6]);
-					Client.packetWriter.method2219(var8);
+					Client.packetWriter.addNode(var8);
 				}
 
 				var4 = true;

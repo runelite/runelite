@@ -275,7 +275,8 @@ public class class83 {
 		signature = "(I)I",
 		garbageValue = "1224050195"
 	)
-	static final int method1995() {
+	@Export("getHighestVisiblePlane")
+	static final int getHighestVisiblePlane() {
 		if (WorldMapLabelSize.clientPreferences.roofsHidden) {
 			return class42.plane;
 		}

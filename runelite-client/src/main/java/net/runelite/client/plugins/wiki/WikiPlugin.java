@@ -33,7 +33,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
@@ -221,7 +221,7 @@ public class WikiPlugin extends Plugin
 			String name;
 			WorldPoint location;
 
-			switch (ev.getMenuAction())
+			switch (ev.getMenuOpcode())
 			{
 				case CANCEL:
 					return;
@@ -258,7 +258,7 @@ public class WikiPlugin extends Plugin
 					break;
 				}
 				default:
-					log.info("Unknown menu option: {} {} {}", ev, ev.getMenuAction(), ev.getMenuAction() == MenuAction.CANCEL);
+					log.info("Unknown menu option: {} {} {}", ev, ev.getMenuOpcode(), ev.getMenuOpcode() == MenuOpcode.CANCEL);
 					return;
 			}
 
@@ -283,7 +283,7 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (ev.getMenuAction() == MenuAction.RUNELITE)
+		if (ev.getMenuOpcode() == MenuOpcode.RUNELITE)
 		{
 			boolean quickguide = false;
 			switch (ev.getOption())
@@ -349,14 +349,14 @@ public class WikiPlugin extends Plugin
 			menuEntry.setOption(MENUOP_GUIDE);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 
 			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setOption(MENUOP_QUICKGUIDE);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 
 			client.setMenuEntries(menuEntries);
 		}
@@ -372,7 +372,7 @@ public class WikiPlugin extends Plugin
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setIdentifier(event.getIdentifier());
-			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 
 			client.setMenuEntries(menuEntries);
 		}

@@ -13,17 +13,20 @@ public class FaceNormal {
 	@ObfuscatedGetter(
 		intValue = 2130535467
 	)
-	int field1889;
+	@Export("x")
+	int x;
 	@ObfuscatedName("w")
 	@ObfuscatedGetter(
 		intValue = 522108407
 	)
-	int field1890;
+	@Export("y")
+	int y;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
 		intValue = -1566565487
 	)
-	int field1888;
+	@Export("z")
+	int z;
 
 	FaceNormal() {
 	}
@@ -83,8 +86,8 @@ public class FaceNormal {
 		class267.hasFocus = true;
 		Client.hadFocus = true;
 		Client.field879 = -1L;
-		class192.method3678();
-		Client.packetWriter.method2218();
+		class192.initReflectionChecksDeque();
+		Client.packetWriter.clearBuffer();
 		Client.packetWriter.packetBuffer.offset = 0;
 		Client.packetWriter.serverPacket = null;
 		Client.packetWriter.field1309 = null;
@@ -93,9 +96,9 @@ public class FaceNormal {
 		Client.packetWriter.serverPacketLength = 0;
 		Client.packetWriter.field1318 = 0;
 		Client.rebootTimer = 0;
-		Client.field700 = 0;
+		Client.logoutTimer = 0;
 		Client.hintArrowType = 0;
-		Strings.method4121();
+		Strings.resetMenuEntries();
 		MouseHandler.MouseHandler_idleCycles = 0;
 		Messages.Messages_channels.clear();
 		Messages.Messages_hashTable.clear();
@@ -164,12 +167,13 @@ public class FaceNormal {
 					boolean var5 = true;
 
 					for (var2 = 0; var2 < Widget.Widget_interfaceComponents[var0].length; ++var2) {
-						if (Widget.Widget_interfaceComponents[var0][var2] != null) {
-							if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
-								Widget.Widget_interfaceComponents[var0][var2] = null;
-							} else {
-								var5 = false;
-							}
+						if (Widget.Widget_interfaceComponents[var0][var2] == null) {
+							continue;
+						}
+						if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
+							Widget.Widget_interfaceComponents[var0][var2] = null;
+						} else {
+							var5 = false;
 						}
 					}
 
@@ -189,7 +193,7 @@ public class FaceNormal {
 		Client.rootInterface = -1;
 		Client.interfaceParents = new NodeHashTable(8);
 		Client.meslayerContinueWidget = null;
-		Strings.method4121();
+		Strings.resetMenuEntries();
 		Client.playerAppearance.update((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
 
 		for (var0 = 0; var0 < 8; ++var0) {

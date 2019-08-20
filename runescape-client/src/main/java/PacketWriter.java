@@ -67,7 +67,8 @@ public class PacketWriter {
 	@ObfuscatedGetter(
 		intValue = 1793928125
 	)
-	int field1319;
+	@Export("pendingWrites")
+	int pendingWrites;
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "Lgc;"
@@ -93,7 +94,7 @@ public class PacketWriter {
 		this.serverPacketLength = 0;
 		this.field1322 = true;
 		this.field1318 = 0;
-		this.field1319 = 0;
+		this.pendingWrites = 0;
 	}
 
 	@ObfuscatedName("q")
@@ -101,7 +102,8 @@ public class PacketWriter {
 		signature = "(I)V",
 		garbageValue = "19166064"
 	)
-	final void method2218() {
+	@Export("clearBuffer")
+	final void clearBuffer() {
 		this.packetBufferNodes.clear();
 		this.bufferSize = 0;
 	}
@@ -111,27 +113,24 @@ public class PacketWriter {
 		signature = "(I)V",
 		garbageValue = "294803591"
 	)
-	final void method2234() throws IOException {
+	@Export("flush")
+	final void flush() throws IOException {
 		if (this.socket == null || this.bufferSize <= 0) {
 			return;
 		}
 		this.buffer.offset = 0;
 
-		while (true) {
-			PacketBufferNode var1 = (PacketBufferNode)this.packetBufferNodes.last();
-			if (var1 == null || var1.index > this.buffer.array.length - this.buffer.offset) {
-				this.socket.write(this.buffer.array, 0, this.buffer.offset);
-				this.field1319 = 0;
-				break;
-			}
-
+		PacketBufferNode var1;
+		while ((var1 = (PacketBufferNode)this.packetBufferNodes.last()) != null && var1.index <= this.buffer.array.length - this.buffer.offset) {
 			this.buffer.writeBytes(var1.packetBuffer.array, 0, var1.index);
 			this.bufferSize -= var1.index;
 			var1.remove();
-			var1.packetBuffer.method5477();
-			var1.method3620();
+			var1.packetBuffer.releaseArray();
+			var1.release();
 		}
 
+		this.socket.write(this.buffer.array, 0, this.buffer.offset);
+		this.pendingWrites = 0;
 	}
 
 	@ObfuscatedName("e")
@@ -139,7 +138,8 @@ public class PacketWriter {
 		signature = "(Lgb;I)V",
 		garbageValue = "2067459847"
 	)
-	public final void method2219(PacketBufferNode var1) {
+	@Export("addNode")
+	public final void addNode(PacketBufferNode var1) {
 		this.packetBufferNodes.addFirst(var1);
 		var1.index = var1.packetBuffer.offset;
 		var1.packetBuffer.offset = 0;
@@ -195,37 +195,39 @@ public class PacketWriter {
 		signature = "(B)V",
 		garbageValue = "-107"
 	)
-	static final void method2245() {
+	@Export("drawProjectiles")
+	static final void drawProjectiles() {
 		for (Projectile var0 = (Projectile)Client.projectiles.last(); var0 != null; var0 = (Projectile)Client.projectiles.previous()) {
-			if (var0.plane == class42.plane && Client.cycle <= var0.cycleEnd) {
-				if (Client.cycle >= var0.cycleStart) {
-					if (var0.targetIndex > 0) {
-						NPC var1 = Client.npcs[var0.targetIndex - 1];
-						if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
-							var0.setDestination(var1.x, var1.y, ScriptEvent.getTileHeight(var1.x, var1.y, var0.plane) - var0.endHeight, Client.cycle);
-						}
-					}
-
-					if (var0.targetIndex < 0) {
-						int var2 = -var0.targetIndex - 1;
-						Player var3;
-						if (var2 == Client.localPlayerIndex) {
-							var3 = Client.localPlayer;
-						} else {
-							var3 = Client.players[var2];
-						}
-
-						if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-							var0.setDestination(var3.x, var3.y, ScriptEvent.getTileHeight(var3.x, var3.y, var0.plane) - var0.endHeight, Client.cycle);
-						}
-					}
-
-					var0.advance(Client.field718);
-					GrandExchangeOfferWorldComparator.scene.drawEntity(class42.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
-				}
-			} else {
+			if (var0.plane != class42.plane || Client.cycle > var0.cycleEnd) {
 				var0.remove();
+				continue;
 			}
+			if (Client.cycle < var0.cycleStart) {
+				continue;
+			}
+			if (var0.targetIndex > 0) {
+				NPC var1 = Client.npcs[var0.targetIndex - 1];
+				if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+					var0.setDestination(var1.x, var1.y, ScriptEvent.getTileHeight(var1.x, var1.y, var0.plane) - var0.endHeight, Client.cycle);
+				}
+			}
+
+			if (var0.targetIndex < 0) {
+				int var2 = -var0.targetIndex - 1;
+				Player var3;
+				if (var2 == Client.localPlayerIndex) {
+					var3 = Client.localPlayer;
+				} else {
+					var3 = Client.players[var2];
+				}
+
+				if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+					var0.setDestination(var3.x, var3.y, ScriptEvent.getTileHeight(var3.x, var3.y, var0.plane) - var0.endHeight, Client.cycle);
+				}
+			}
+
+			var0.advance(Client.field718);
+			GrandExchangeOfferWorldComparator.scene.drawEntity(class42.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
 		}
 
 	}

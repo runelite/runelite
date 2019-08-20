@@ -165,7 +165,7 @@ public class WorldMapData_1 extends AbstractWorldMapData {
 	)
 	static int method696(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.LOGOUT) {
-			Client.field700 = 250;
+			Client.logoutTimer = 250;
 			return 1;
 		}
 		return 2;

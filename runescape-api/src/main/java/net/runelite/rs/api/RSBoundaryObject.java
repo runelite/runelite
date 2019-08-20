@@ -27,11 +27,11 @@ public interface RSBoundaryObject extends WallObject
 
 	@Import("entity1")
 	@Override
-	RSEntity getRenderable1();
+	RSEntity getEntity1();
 
 	@Import("entity2")
 	@Override
-	RSEntity getRenderable2();
+	RSEntity getEntity2();
 
 	@Import("flags")
 	@Override

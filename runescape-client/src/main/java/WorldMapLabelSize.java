@@ -114,8 +114,8 @@ public class WorldMapLabelSize {
 	)
 	@Export("sortWorldList")
 	static void sortWorldList(int var0, boolean var1, int var2, boolean var3) {
-		if (World.worlds != null) {
-			GrandExchangeOffer.doWorldSorting(0, World.worlds.length - 1, var0, var1, var2, var3);
+		if (World.World_worlds != null) {
+			GrandExchangeOffer.doWorldSorting(0, World.World_worlds.length - 1, var0, var1, var2, var3);
 		}
 
 	}
@@ -125,9 +125,10 @@ public class WorldMapLabelSize {
 		signature = "(III)V",
 		garbageValue = "131988648"
 	)
-	static void method188(int var0, int var1) {
+	@Export("playSoundJingle")
+	static void playSoundJingle(int var0, int var1) {
 		if (Client.field911 != 0 && var0 != -1) {
-			class169.method3503(class32.archive11, var0, 0, Client.field911, false);
+			FileSystem.method3503(class32.archive11, var0, 0, Client.field911, false);
 			Client.field699 = true;
 		}
 
@@ -138,9 +139,10 @@ public class WorldMapLabelSize {
 		signature = "(III)V",
 		garbageValue = "-1199742641"
 	)
-	static final void method175(int var0, int var1) {
+	@Export("runIntfCloseListeners")
+	static final void runIntfCloseListeners(int var0, int var1) {
 		if (class162.loadInterface(var0)) {
-			WorldMapID.method539(Widget.Widget_interfaceComponents[var0], var1);
+			WorldMapID.runComponentCloseListeners(Widget.Widget_interfaceComponents[var0], var1);
 		}
 	}
 }

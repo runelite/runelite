@@ -43,24 +43,25 @@ public class NetFileRequest extends DualNode {
 		signature = "(IIIIIB)V",
 		garbageValue = "-20"
 	)
-	static final void method4139(int var0, int var1, int var2, int var3, int var4) {
-		GrandExchangeOfferAgeComparator.scrollBarSprites[0].drawAt(var0, var1);
-		GrandExchangeOfferAgeComparator.scrollBarSprites[1].drawAt(var0, var3 + var1 - 16);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.field715);
-		int var5 = var3 * (var3 - 32) / var4;
+	@Export("drawScrollBar")
+	static final void drawScrollBar(int x, int y, int scrollY, int height, int scrollHeight) {
+		GrandExchangeOfferAgeComparator.scrollBarSprites[0].drawAt(x, y);
+		GrandExchangeOfferAgeComparator.scrollBarSprites[1].drawAt(x, height + y - 16);
+		Rasterizer2D.Rasterizer2D_fillRectangle(x, y + 16, 16, height - 32, Client.field715);
+		int var5 = height * (height - 32) / scrollHeight;
 		if (var5 < 8) {
 			var5 = 8;
 		}
 
-		int var6 = (var3 - 32 - var5) * var2 / (var4 - var3);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var6 + var1 + 16, 16, var5, Client.field716);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0, var6 + var1 + 16, var5, Client.field772);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 1, var6 + var1 + 16, var5, Client.field772);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 16, 16, Client.field772);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 17, 16, Client.field772);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 15, var6 + var1 + 16, var5, Client.field720);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field720);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var5 + var1 + 15, 16, Client.field720);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0 + 1, var5 + var6 + var1 + 14, 15, Client.field720);
+		int var6 = (height - 32 - var5) * scrollY / (scrollHeight - height);
+		Rasterizer2D.Rasterizer2D_fillRectangle(x, var6 + y + 16, 16, var5, Client.field716);
+		Rasterizer2D.Rasterizer2D_drawVerticalLine(x, var6 + y + 16, var5, Client.field772);
+		Rasterizer2D.Rasterizer2D_drawVerticalLine(x + 1, var6 + y + 16, var5, Client.field772);
+		Rasterizer2D.Rasterizer2D_drawHorizontalLine(x, var6 + y + 16, 16, Client.field772);
+		Rasterizer2D.Rasterizer2D_drawHorizontalLine(x, var6 + y + 17, 16, Client.field772);
+		Rasterizer2D.Rasterizer2D_drawVerticalLine(x + 15, var6 + y + 16, var5, Client.field720);
+		Rasterizer2D.Rasterizer2D_drawVerticalLine(x + 14, var6 + y + 17, var5 - 1, Client.field720);
+		Rasterizer2D.Rasterizer2D_drawHorizontalLine(x, var6 + var5 + y + 15, 16, Client.field720);
+		Rasterizer2D.Rasterizer2D_drawHorizontalLine(x + 1, var5 + var6 + y + 14, 15, Client.field720);
 	}
 }

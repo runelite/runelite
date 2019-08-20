@@ -398,13 +398,13 @@ public abstract class RSTileMixin implements RSTile
 		boolean currentInvalid = false, prevInvalid = false;
 		if (current != null)
 		{
-			RSEntity renderable = current.getRenderable();
+			RSEntity renderable = current.getEntity();
 			currentInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
 		}
 
 		if (previous != null)
 		{
-			RSEntity renderable = previous.getRenderable();
+			RSEntity renderable = previous.getEntity();
 			prevInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
 		}
 

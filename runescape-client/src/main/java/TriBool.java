@@ -47,11 +47,11 @@ public class TriBool {
 		byte var2 = 4;
 		int var3 = var2 + 6;
 		int var4 = var2 + 6;
-		int var5 = class169.fontPlain12.lineWidth(var0, 250);
-		int var6 = class169.fontPlain12.lineCount(var0, 250) * 13;
+		int var5 = FileSystem.fontPlain12.lineWidth(var0, 250);
+		int var6 = FileSystem.fontPlain12.lineCount(var0, 250) * 13;
 		Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 0);
 		Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var6 + var2 + var2, 0xffffff);
-		class169.fontPlain12.drawLines(var0, var3, var4, var5, var6, 0xffffff, -1, 1, 1, 0);
+		FileSystem.fontPlain12.drawLines(var0, var3, var4, var5, var6, 0xffffff, -1, 1, 1, 0);
 		ChatChannel.method2215(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
 		if (var1) {
 			MusicPatchPcmStream.rasterProvider.drawFull(0, 0);

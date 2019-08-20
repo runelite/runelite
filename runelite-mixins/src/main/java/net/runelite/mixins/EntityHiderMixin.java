@@ -95,12 +95,12 @@ public abstract class EntityHiderMixin implements RSScene
 	private static boolean hideDeadNPCs;
 
 	@Copy("newGameObject")
-	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13);
+	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity entity, int var10, boolean var11, long var12, int var13);
 
 	@Replace("newGameObject")
-	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity renderable, int var10, boolean var11, long var12, int var13)
+	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSEntity entity, int var10, boolean var11, long var12, int var13)
 	{
-		final boolean shouldDraw = shouldDraw(renderable, false);
+		final boolean shouldDraw = shouldDraw(entity, false);
 
 		if (!shouldDraw)
 		{
@@ -113,7 +113,7 @@ public abstract class EntityHiderMixin implements RSScene
 			client.getOccupiedTilesTick()[tileX][tileY] = -1;
 		}
 
-		return shouldDraw && addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, renderable, var10, var11, var12, var13);
+		return shouldDraw && addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, entity, var10, var11, var12, var13);
 	}
 
 	@Copy("drawActor2d")
@@ -132,22 +132,22 @@ public abstract class EntityHiderMixin implements RSScene
 	}
 
 	@Inject
-	private static boolean shouldDraw(Object renderable, boolean drawingUI)
+	private static boolean shouldDraw(Object entity, boolean drawingUI)
 	{
 		if (!isHidingEntities)
 		{
 			return true;
 		}
 
-		if (renderable instanceof RSPlayer)
+		if (entity instanceof RSPlayer)
 		{
 			boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;
 			boolean other = drawingUI ? hidePlayers2D : hidePlayers;
-			boolean isLocalPlayer = renderable == client.getLocalPlayer();
+			boolean isLocalPlayer = entity == client.getLocalPlayer();
 
 			if (isLocalPlayer ? local : other)
 			{
-				RSPlayer player = (RSPlayer) renderable;
+				RSPlayer player = (RSPlayer) entity;
 
 				if (!hideAttackers)
 				{
@@ -166,9 +166,9 @@ public abstract class EntityHiderMixin implements RSScene
 				return (!hideFriends && player.isFriend()) || (!isLocalPlayer && !hideClanMates && player.isClanMember());
 			}
 		}
-		else if (renderable instanceof RSNPC)
+		else if (entity instanceof RSNPC)
 		{
-			RSNPC npc = (RSNPC) renderable;
+			RSNPC npc = (RSNPC) entity;
 
 			if (!hideAttackers)
 			{
@@ -207,7 +207,7 @@ public abstract class EntityHiderMixin implements RSScene
 
 			return drawingUI ? !hideNPCs2D : !hideNPCs;
 		}
-		else if (renderable instanceof RSProjectile)
+		else if (entity instanceof RSProjectile)
 		{
 			return !hideProjectiles;
 		}

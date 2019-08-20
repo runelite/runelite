@@ -56,7 +56,7 @@ import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
@@ -426,7 +426,7 @@ public class WorldHopperPlugin extends Plugin
 			final MenuEntry hopTo = new MenuEntry();
 			hopTo.setOption(HOP_TO);
 			hopTo.setTarget(event.getTarget());
-			hopTo.setType(MenuAction.RUNELITE.getId());
+			hopTo.setOpcode(MenuOpcode.RUNELITE.getId());
 			hopTo.setParam0(event.getActionParam0());
 			hopTo.setParam1(event.getActionParam1());
 

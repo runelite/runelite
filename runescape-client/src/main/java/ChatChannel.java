@@ -88,7 +88,8 @@ public class ChatChannel {
 		signature = "(Lkf;IB)V",
 		garbageValue = "67"
 	)
-	public static void method2213(Buffer var0, int var1) {
+	@Export("readReflectionCheck")
+	public static void readReflectionCheck(Buffer var0, int var1) {
 		ReflectionCheck var2 = new ReflectionCheck();
 		var2.size = var0.readUnsignedByte();
 		var2.id = var0.readInt();
@@ -105,67 +106,7 @@ public class ChatChannel {
 				String var5;
 				String var6;
 				int var7;
-				if (var4 != 0 && var4 != 1 && var4 != 2) {
-					if (var4 == 3 || var4 == 4) {
-						var5 = var0.readStringCp1252NullTerminated();
-						var6 = var0.readStringCp1252NullTerminated();
-						var7 = var0.readUnsignedByte();
-						String[] var8 = new String[var7];
-
-						for (int var9 = 0; var9 < var7; ++var9) {
-							var8[var9] = var0.readStringCp1252NullTerminated();
-						}
-
-						String var20 = var0.readStringCp1252NullTerminated();
-						byte[][] var10 = new byte[var7][];
-						int var12;
-						if (var4 == 3) {
-							for (int var11 = 0; var11 < var7; ++var11) {
-								var12 = var0.readInt();
-								var10[var11] = new byte[var12];
-								var0.readBytes(var10[var11], 0, var12);
-							}
-						}
-
-						var2.operations[var3] = var4;
-						Class[] var21 = new Class[var7];
-
-						for (var12 = 0; var12 < var7; ++var12) {
-							var21[var12] = User.loadClassFromDescriptor(var8[var12]);
-						}
-
-						Class var22 = User.loadClassFromDescriptor(var20);
-						if (User.loadClassFromDescriptor(var5).getClassLoader() == null) {
-							throw new SecurityException();
-						}
-
-						Method[] var13 = User.loadClassFromDescriptor(var5).getDeclaredMethods();
-						Method[] var14 = var13;
-
-						for (int var15 = 0; var15 < var14.length; ++var15) {
-							Method var16 = var14[var15];
-							if (Reflection.getMethodName(var16).equals(var6)) {
-								Class[] var17 = Reflection.getParameterTypes(var16);
-								if (var17.length == var21.length) {
-									boolean var18 = true;
-
-									for (int var19 = 0; var19 < var21.length; ++var19) {
-										if (var17[var19] != var21[var19]) {
-											var18 = false;
-											break;
-										}
-									}
-
-									if (var18 && var22 == var16.getReturnType()) {
-										var2.methods[var3] = var16;
-									}
-								}
-							}
-						}
-
-						var2.arguments[var3] = var10;
-					}
-				} else {
+				if (var4 == 0 || var4 == 1 || var4 == 2) {
 					var5 = var0.readStringCp1252NullTerminated();
 					var6 = var0.readStringCp1252NullTerminated();
 					var7 = 0;
@@ -180,6 +121,66 @@ public class ChatChannel {
 					}
 
 					var2.fields[var3] = Reflection.findField(User.loadClassFromDescriptor(var5), var6);
+				} else if (var4 == 3 || var4 == 4) {
+					var5 = var0.readStringCp1252NullTerminated();
+					var6 = var0.readStringCp1252NullTerminated();
+					var7 = var0.readUnsignedByte();
+					String[] var8 = new String[var7];
+
+					for (int var9 = 0; var9 < var7; ++var9) {
+						var8[var9] = var0.readStringCp1252NullTerminated();
+					}
+
+					String var20 = var0.readStringCp1252NullTerminated();
+					byte[][] var10 = new byte[var7][];
+					int var12;
+					if (var4 == 3) {
+						for (int var11 = 0; var11 < var7; ++var11) {
+							var12 = var0.readInt();
+							var10[var11] = new byte[var12];
+							var0.readBytes(var10[var11], 0, var12);
+						}
+					}
+
+					var2.operations[var3] = var4;
+					Class[] var21 = new Class[var7];
+
+					for (var12 = 0; var12 < var7; ++var12) {
+						var21[var12] = User.loadClassFromDescriptor(var8[var12]);
+					}
+
+					Class var22 = User.loadClassFromDescriptor(var20);
+					if (User.loadClassFromDescriptor(var5).getClassLoader() == null) {
+						throw new SecurityException();
+					}
+
+					Method[] var13 = User.loadClassFromDescriptor(var5).getDeclaredMethods();
+					Method[] var14 = var13;
+
+					for (int var15 = 0; var15 < var14.length; ++var15) {
+						Method var16 = var14[var15];
+						if (!Reflection.getMethodName(var16).equals(var6)) {
+							continue;
+						}
+						Class[] var17 = Reflection.getParameterTypes(var16);
+						if (var17.length != var21.length) {
+							continue;
+						}
+						boolean var18 = true;
+
+						for (int var19 = 0; var19 < var21.length; ++var19) {
+							if (var17[var19] != var21[var19]) {
+								var18 = false;
+								break;
+							}
+						}
+
+						if (var18 && var22 == var16.getReturnType()) {
+							var2.methods[var3] = var16;
+						}
+					}
+
+					var2.arguments[var3] = var10;
 				}
 			} catch (ClassNotFoundException var24) {
 				var2.creationErrors[var3] = -1;
@@ -202,7 +203,8 @@ public class ChatChannel {
 		signature = "(B)V",
 		garbageValue = "-4"
 	)
-	static void method2214() {
+	@Export("openWorldSelect")
+	static void openWorldSelect() {
 		if (UserComparator3.loadWorlds()) {
 			Login.worldSelectOpen = true;
 			Login.worldSelectPage = 0;

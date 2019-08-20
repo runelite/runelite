@@ -980,33 +980,33 @@ public class WorldMapRegion {
 	)
 	@Export("createMapLabel")
 	WorldMapLabel createMapLabel(WorldMapElement var1) {
-		if (var1.name != null && this.fonts != null && this.fonts.get(WorldMapLabelSize.WorldMapLabelSize_small) != null) {
-			WorldMapLabelSize var2 = WorldMapLabelSize.method177(var1.textSize);
-			if (var2 == null) {
-				return null;
-			}
-			Font var3 = (Font)this.fonts.get(var2);
-			if (var3 == null) {
-				return null;
-			}
-			int var4 = var3.lineCount(var1.name, 1000000);
-			String[] var5 = new String[var4];
-			var3.breakLines(var1.name, (int[])null, var5);
-			int var6 = var5.length * var3.ascent / 2;
-			int var7 = 0;
-			String[] var8 = var5;
-
-			for (int var9 = 0; var9 < var8.length; ++var9) {
-				String var10 = var8[var9];
-				int var11 = var3.stringWidth(var10);
-				if (var11 > var7) {
-					var7 = var11;
-				}
-			}
-
-			return new WorldMapLabel(var1.name, var7, var6, var2);
+		if (var1.name == null || this.fonts == null || this.fonts.get(WorldMapLabelSize.WorldMapLabelSize_small) == null) {
+			return null;
 		}
-		return null;
+		WorldMapLabelSize var2 = WorldMapLabelSize.method177(var1.textSize);
+		if (var2 == null) {
+			return null;
+		}
+		Font var3 = (Font)this.fonts.get(var2);
+		if (var3 == null) {
+			return null;
+		}
+		int var4 = var3.lineCount(var1.name, 1000000);
+		String[] var5 = new String[var4];
+		var3.breakLines(var1.name, (int[])null, var5);
+		int var6 = var5.length * var3.ascent / 2;
+		int var7 = 0;
+		String[] var8 = var5;
+
+		for (int var9 = 0; var9 < var8.length; ++var9) {
+			String var10 = var8[var9];
+			int var11 = var3.stringWidth(var10);
+			if (var11 > var7) {
+				var7 = var11;
+			}
+		}
+
+		return new WorldMapLabel(var1.name, var7, var6, var2);
 	}
 
 	@ObfuscatedName("ac")
@@ -1087,7 +1087,8 @@ public class WorldMapRegion {
 		signature = "(ILhp;Ljava/lang/String;Ljava/lang/String;IZI)V",
 		garbageValue = "-2137956496"
 	)
-	public static void method533(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
+	@Export("playMusicTrackByName")
+	public static void playMusicTrackByName(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
 		int var6 = var1.getGroupId(var2);
 		int var7 = var1.getFileId(var6, var3);
 		class197.field2402 = 1;
@@ -1108,23 +1109,25 @@ public class WorldMapRegion {
 	static final void addNpcsToScene(boolean var0) {
 		for (int var1 = 0; var1 < Client.npcCount; ++var1) {
 			NPC var2 = Client.npcs[Client.npcIndices[var1]];
-			if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.transformIsVisible()) {
-				int var3 = var2.x >> 7;
-				int var4 = var2.y >> 7;
-				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-					if (var2.size * 784322703 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
-							continue;
-						}
-
-						Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
-					}
-
-					long var5 = Tile.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
-					var2.playerCycle = Client.cycle;
-					GrandExchangeOfferWorldComparator.scene.drawEntity(class42.plane, var2.x, var2.y, ScriptEvent.getTileHeight(var2.size * -1342954560 - 64 + var2.x, var2.size * -1342954560 - 64 + var2.y, class42.plane), var2.size * -1342954560 - 64 + 60, var2, var2.field950, var5, var2.field967);
-				}
+			if (var2 == null || !var2.isVisible() || var2.definition.isVisible != var0 || !var2.definition.transformIsVisible()) {
+				continue;
 			}
+			int var3 = var2.x >> 7;
+			int var4 = var2.y >> 7;
+			if (var3 < 0 || var3 >= 104 || var4 < 0 || var4 >= 104) {
+				continue;
+			}
+			if (var2.size * 784322703 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+				if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
+					continue;
+				}
+
+				Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
+			}
+
+			long var5 = Tile.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
+			var2.playerCycle = Client.cycle;
+			GrandExchangeOfferWorldComparator.scene.drawEntity(class42.plane, var2.x, var2.y, ScriptEvent.getTileHeight(var2.size * -1342954560 - 64 + var2.x, var2.size * -1342954560 - 64 + var2.y, class42.plane), var2.size * -1342954560 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
 		}
 
 	}

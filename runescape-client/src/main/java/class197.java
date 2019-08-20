@@ -141,9 +141,9 @@ public class class197 {
 			var7 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
 			var4 = null;
 
-			for (var5 = 0; var5 < World.worldsCount; ++var5) {
-				if (var7 == World.worlds[var5].id) {
-					var4 = World.worlds[var5];
+			for (var5 = 0; var5 < World.World_count; ++var5) {
+				if (var7 == World.World_worlds[var5].id) {
+					var4 = World.World_worlds[var5];
 					break;
 				}
 			}
@@ -177,8 +177,8 @@ public class class197 {
 		}
 		if (var0 == ScriptOpcodes.GETWORLDINFO) {
 			var7 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			if (var7 >= 0 && var7 < World.worldsCount) {
-				var4 = World.worlds[var7];
+			if (var7 >= 0 && var7 < World.World_count) {
+				var4 = World.World_worlds[var7];
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var4.id;
 				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var4.properties;
 				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var4.activity;
@@ -234,9 +234,9 @@ public class class197 {
 			var8 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
 			var9 = WorldMapIcon_0.getParamDefinition(var8);
 			if (var9.isString()) {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = WorldMapArea.getItemDefinition(var7).getStringParam(var8, var9.defaultStr);
+				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = WorldMapArea.ItemDefinition_get(var7).getStringParam(var8, var9.defaultStr);
 			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.getItemDefinition(var7).getIntParam(var8, var9.defaultInt);
+				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = WorldMapArea.ItemDefinition_get(var7).getIntParam(var8, var9.defaultInt);
 			}
 
 			return 1;
@@ -328,7 +328,7 @@ public class class197 {
 		}
 
 		for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
-			if ((var4.key >> 48 & 65535L) == (long)var2) {
+			if ((var4.key >> 48 & 0xffffL) == (long)var2) {
 				var4.remove();
 			}
 		}
@@ -343,9 +343,9 @@ public class class197 {
 				if (var5 < Client.menuOptionsCount - 1) {
 					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
 						Client.menuActions[var6] = Client.menuActions[var6 + 1];
-						Client.menuTargetNames[var6] = Client.menuTargetNames[var6 + 1];
+						Client.menuTargets[var6] = Client.menuTargets[var6 + 1];
 						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
-						Client.menuArguments0[var6] = Client.menuArguments0[var6 + 1];
+						Client.menuIdentifiers[var6] = Client.menuIdentifiers[var6 + 1];
 						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
 						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
 						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
@@ -357,9 +357,9 @@ public class class197 {
 			}
 		}
 
-		GrandExchangeOfferAgeComparator.method145();
+		GrandExchangeOfferAgeComparator.calculateMenuBounds();
 		if (Client.rootInterface != -1) {
-			WorldMapLabelSize.method175(Client.rootInterface, 1);
+			WorldMapLabelSize.runIntfCloseListeners(Client.rootInterface, 1);
 		}
 
 	}

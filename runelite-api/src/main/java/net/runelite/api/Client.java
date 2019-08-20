@@ -1685,7 +1685,7 @@ public interface Client extends GameShell
 	 *
 	 * @param param0 This is SceneX for gameObject, index for items, and 0 for npc.
 	 * @param param1 This is SceneY for gameObject, static for items, and 0 for npc.
-	 * @param type Menu entry Action type.
+	 * @param type Menu entry Action opcode.
 	 * @param id Targets ID
 	 * @param menuEntry Do these actually matter?
 	 * @param targetString Do these actually matter?

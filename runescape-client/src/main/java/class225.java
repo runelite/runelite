@@ -52,7 +52,7 @@ public class class225 {
 				}
 
 				if (var5 != -1) {
-					SequenceDefinition var6 = GrandExchangeEvent.getSequenceDefinition(var5);
+					SequenceDefinition var6 = GrandExchangeEvent.SequenceDefinition_get(var5);
 
 					for (var3.modelFrameCycle += Client.field718; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; Strings.invalidateWidget(var3)) {
 						var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];

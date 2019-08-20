@@ -246,7 +246,7 @@ public class SequenceDefinition extends DualNode {
 	public Model transformActorModel(Model var1, int var2) {
 		var2 = this.frameIds[var2];
 		Frames var3 = class30.getFrames(var2 >> 16);
-		var2 &= 65535;
+		var2 &= 0xffff;
 		if (var3 == null) {
 			return var1.toSharedSequenceModel(true);
 		}
@@ -264,7 +264,7 @@ public class SequenceDefinition extends DualNode {
 	Model transformObjectModel(Model var1, int var2, int var3) {
 		var2 = this.frameIds[var2];
 		Frames var4 = class30.getFrames(var2 >> 16);
-		var2 &= 65535;
+		var2 &= 0xffff;
 		if (var4 == null) {
 			return var1.toSharedSequenceModel(true);
 		}
@@ -299,7 +299,7 @@ public class SequenceDefinition extends DualNode {
 	Model transformSpotAnimationModel(Model var1, int var2) {
 		var2 = this.frameIds[var2];
 		Frames var3 = class30.getFrames(var2 >> 16);
-		var2 &= 65535;
+		var2 &= 0xffff;
 		if (var3 == null) {
 			return var1.toSharedSpotAnimationModel(true);
 		}
@@ -317,13 +317,13 @@ public class SequenceDefinition extends DualNode {
 	public Model applyTransformations(Model var1, int var2, SequenceDefinition var3, int var4) {
 		var2 = this.frameIds[var2];
 		Frames var5 = class30.getFrames(var2 >> 16);
-		var2 &= 65535;
+		var2 &= 0xffff;
 		if (var5 == null) {
 			return var3.transformActorModel(var1, var4);
 		}
 		var4 = var3.frameIds[var4];
 		Frames var6 = class30.getFrames(var4 >> 16);
-		var4 &= 65535;
+		var4 &= 0xffff;
 		Model var7;
 		if (var6 == null) {
 			var7 = var1.toSharedSequenceModel(!var5.hasAlphaTransform(var2));
@@ -344,7 +344,7 @@ public class SequenceDefinition extends DualNode {
 	public Model transformWidgetModel(Model var1, int var2) {
 		int var3 = this.frameIds[var2];
 		Frames var4 = class30.getFrames(var3 >> 16);
-		var3 &= 65535;
+		var3 &= 0xffff;
 		if (var4 == null) {
 			return var1.toSharedSequenceModel(true);
 		}
@@ -353,11 +353,11 @@ public class SequenceDefinition extends DualNode {
 		if (this.chatFrameIds != null && var2 < this.chatFrameIds.length) {
 			var6 = this.chatFrameIds[var2];
 			var5 = class30.getFrames(var6 >> 16);
-			var6 &= 65535;
+			var6 &= 0xffff;
 		}
 
 		Model var7;
-		if (var5 != null && var6 != 65535) {
+		if (var5 != null && var6 != 0xffff) {
 			var7 = var1.toSharedSequenceModel(!var4.hasAlphaTransform(var3) & !var5.hasAlphaTransform(var6));
 			var7.animate(var4, var3);
 			var7.animate(var5, var6);

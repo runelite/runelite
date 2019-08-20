@@ -41,7 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -208,7 +208,7 @@ public class KourendLibraryPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
-		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getTarget().contains("Bookshelf"))
+		if (MenuOpcode.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuOpcode() && menuOpt.getTarget().contains("Bookshelf"))
 		{
 			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam0(), menuOpt.getActionParam1(), client.getPlane());
 			overlay.setHidden(false);

@@ -43,7 +43,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@ObfuscatedGetter(
 		intValue = 308300489
 	)
-	static int field466;
+	@Export("GameShell_redundantStartThreadCount")
+	static int GameShell_redundantStartThreadCount;
 	@ObfuscatedName("k")
 	@ObfuscatedGetter(
 		longValue = -2144214957557478601L
@@ -173,7 +174,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@ObfuscatedGetter(
 		longValue = -2360419381324286669L
 	)
-	volatile long field468;
+	@Export("lastDrawnTime")
+	volatile long lastDrawnTime;
 	@ObfuscatedName("aq")
 	@ObfuscatedSignature(
 		signature = "Lau;"
@@ -189,7 +191,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	static {
 		gameShell = null;
-		field466 = 0;
+		GameShell_redundantStartThreadCount = 0;
 		stopTimeMs = 0L;
 		isKilled = false;
 		cycleDurationMillis = 20;
@@ -210,7 +212,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		this.field464 = true;
 		this.resizeCanvasNextFrame = false;
 		this.isCanvasInvalid = false;
-		this.field468 = 0L;
+		this.lastDrawnTime = 0L;
 		EventQueue var1 = null;
 
 		try {
@@ -349,34 +351,35 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@Export("resizeCanvas")
 	final void resizeCanvas() {
 		Container var1 = this.container();
-		if (var1 != null) {
-			Bounds var2 = this.getFrameContentBounds();
-			this.contentWidth = Math.max(var2.highX, this.field476);
-			this.contentHeight = Math.max(var2.highY, this.field459);
-			if (this.contentWidth <= 0) {
-				this.contentWidth = 1;
-			}
-
-			if (this.contentHeight <= 0) {
-				this.contentHeight = 1;
-			}
-
-			GrandExchangeEvent.canvasWidth = Math.min(this.contentWidth, this.maxCanvasWidth);
-			ParamDefinition.canvasHeight = Math.min(this.contentHeight, this.maxCanvasHeight);
-			this.canvasX = (this.contentWidth - GrandExchangeEvent.canvasWidth) / 2;
-			this.canvasY = 0;
-			this.canvas.setSize(GrandExchangeEvent.canvasWidth, ParamDefinition.canvasHeight);
-			MusicPatchPcmStream.rasterProvider = new RasterProvider(GrandExchangeEvent.canvasWidth, ParamDefinition.canvasHeight, this.canvas);
-			if (var1 == this.frame) {
-				Insets var3 = this.frame.getInsets();
-				this.canvas.setLocation(var3.left + this.canvasX, this.canvasY + var3.top);
-			} else {
-				this.canvas.setLocation(this.canvasX, this.canvasY);
-			}
-
-			this.field464 = true;
-			this.resizeGame();
+		if (var1 == null) {
+			return;
 		}
+		Bounds var2 = this.getFrameContentBounds();
+		this.contentWidth = Math.max(var2.highX, this.field476);
+		this.contentHeight = Math.max(var2.highY, this.field459);
+		if (this.contentWidth <= 0) {
+			this.contentWidth = 1;
+		}
+
+		if (this.contentHeight <= 0) {
+			this.contentHeight = 1;
+		}
+
+		GrandExchangeEvent.canvasWidth = Math.min(this.contentWidth, this.maxCanvasWidth);
+		ParamDefinition.canvasHeight = Math.min(this.contentHeight, this.maxCanvasHeight);
+		this.canvasX = (this.contentWidth - GrandExchangeEvent.canvasWidth) / 2;
+		this.canvasY = 0;
+		this.canvas.setSize(GrandExchangeEvent.canvasWidth, ParamDefinition.canvasHeight);
+		MusicPatchPcmStream.rasterProvider = new RasterProvider(GrandExchangeEvent.canvasWidth, ParamDefinition.canvasHeight, this.canvas);
+		if (var1 == this.frame) {
+			Insets var3 = this.frame.getInsets();
+			this.canvas.setLocation(var3.left + this.canvasX, this.canvasY + var3.top);
+		} else {
+			this.canvas.setLocation(this.canvasX, this.canvasY);
+		}
+
+		this.field464 = true;
+		this.resizeGame();
 	}
 
 	@ObfuscatedName("x")
@@ -398,36 +401,37 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		int var2 = this.canvasY;
 		int var3 = this.contentWidth - GrandExchangeEvent.canvasWidth - var1;
 		int var4 = this.contentHeight - ParamDefinition.canvasHeight - var2;
-		if (var1 > 0 || var3 > 0 || var2 > 0 || var4 > 0) {
-			try {
-				Container var5 = this.container();
-				int var6 = 0;
-				int var7 = 0;
-				if (var5 == this.frame) {
-					Insets var8 = this.frame.getInsets();
-					var6 = var8.left;
-					var7 = var8.top;
-				}
-
-				Graphics var10 = var5.getGraphics();
-				var10.setColor(Color.black);
-				if (var1 > 0) {
-					var10.fillRect(var6, var7, var1, this.contentHeight);
-				}
-
-				if (var2 > 0) {
-					var10.fillRect(var6, var7, this.contentWidth, var2);
-				}
-
-				if (var3 > 0) {
-					var10.fillRect(var6 + this.contentWidth - var3, var7, var3, this.contentHeight);
-				}
-
-				if (var4 > 0) {
-					var10.fillRect(var6, var7 + this.contentHeight - var4, this.contentWidth, var4);
-				}
-			} catch (Exception var9) {
+		if (var1 <= 0 && var3 <= 0 && var2 <= 0 && var4 <= 0) {
+			return;
+		}
+		try {
+			Container var5 = this.container();
+			int var6 = 0;
+			int var7 = 0;
+			if (var5 == this.frame) {
+				Insets var8 = this.frame.getInsets();
+				var6 = var8.left;
+				var7 = var8.top;
 			}
+
+			Graphics var10 = var5.getGraphics();
+			var10.setColor(Color.black);
+			if (var1 > 0) {
+				var10.fillRect(var6, var7, var1, this.contentHeight);
+			}
+
+			if (var2 > 0) {
+				var10.fillRect(var6, var7, this.contentWidth, var2);
+			}
+
+			if (var3 > 0) {
+				var10.fillRect(var6 + this.contentWidth - var3, var7, var3, this.contentHeight);
+			}
+
+			if (var4 > 0) {
+				var10.fillRect(var6, var7 + this.contentHeight - var4, this.contentWidth, var4);
+			}
+		} catch (Exception var9) {
 		}
 
 	}
@@ -471,8 +475,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	protected final void startThread(int var1, int var2, int var3) {
 		try {
 			if (gameShell != null) {
-				++field466;
-				if (field466 >= 3) {
+				++GameShell_redundantStartThreadCount;
+				if (GameShell_redundantStartThreadCount >= 3) {
 					this.error("alreadyloaded");
 					return;
 				}
@@ -492,7 +496,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 			taskHandler.newThreadTask(this, 1);
 		} catch (Exception var5) {
-			HitSplatDefinition.sendStackTrace((String)null, var5);
+			HitSplatDefinition.RunException_sendStackTrace((String)null, var5);
 			this.error("crash");
 		}
 
@@ -545,7 +549,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 
 		this.isCanvasInvalid = false;
-		this.field468 = DirectByteArrayCopier.currentTimeMs();
+		this.lastDrawnTime = DirectByteArrayCopier.currentTimeMs();
 	}
 
 	@ObfuscatedName("a")
@@ -668,35 +672,36 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	@Export("kill")
 	final synchronized void kill() {
-		if (!isKilled) {
-			isKilled = true;
-
-			try {
-				this.canvas.removeFocusListener(this);
-			} catch (Exception var5) {
-			}
-
-			try {
-				this.kill0();
-			} catch (Exception var4) {
-			}
-
-			if (this.frame != null) {
-				try {
-					System.exit(0);
-				} catch (Throwable var3) {
-				}
-			}
-
-			if (taskHandler != null) {
-				try {
-					taskHandler.close();
-				} catch (Exception var2) {
-				}
-			}
-
-			this.vmethod1273();
+		if (isKilled) {
+			return;
 		}
+		isKilled = true;
+
+		try {
+			this.canvas.removeFocusListener(this);
+		} catch (Exception var5) {
+		}
+
+		try {
+			this.kill0();
+		} catch (Exception var4) {
+		}
+
+		if (this.frame != null) {
+			try {
+				System.exit(0);
+			} catch (Throwable var3) {
+			}
+		}
+
+		if (taskHandler != null) {
+			try {
+				taskHandler.close();
+			} catch (Exception var2) {
+			}
+		}
+
+		this.vmethod1273();
 	}
 
 	@ObfuscatedName("aw")
@@ -740,9 +745,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	protected final void drawInitial(int var1, String var2, boolean var3) {
 		try {
 			Graphics var4 = this.canvas.getGraphics();
-			if (class313.field3844 == null) {
-				class313.field3844 = new java.awt.Font("Helvetica", 1, 13);
-				GrandExchangeOfferAgeComparator.field80 = this.canvas.getFontMetrics(class313.field3844);
+			if (class313.fontHelvetica13 == null) {
+				class313.fontHelvetica13 = new java.awt.Font("Helvetica", 1, 13);
+				GrandExchangeOfferAgeComparator.loginScreenFontMetrics = this.canvas.getFontMetrics(class313.fontHelvetica13);
 			}
 
 			if (var3) {
@@ -764,9 +769,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				var6.setColor(Color.black);
 				var6.drawRect(1, 1, 301, 31);
 				var6.fillRect(var1 * 3 + 2, 2, 300 - var1 * 3, 30);
-				var6.setFont(class313.field3844);
+				var6.setFont(class313.fontHelvetica13);
 				var6.setColor(Color.white);
-				var6.drawString(var2, (304 - GrandExchangeOfferAgeComparator.field80.stringWidth(var2)) / 2, 22);
+				var6.drawString(var2, (304 - GrandExchangeOfferAgeComparator.loginScreenFontMetrics.stringWidth(var2)) / 2, 22);
 				var4.drawImage(NetFileRequest.field3125, GrandExchangeEvent.canvasWidth / 2 - 152, ParamDefinition.canvasHeight / 2 - 18, (ImageObserver)null);
 			} catch (Exception var9) {
 				int var7 = GrandExchangeEvent.canvasWidth / 2 - 152;
@@ -777,9 +782,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				var4.setColor(Color.black);
 				var4.drawRect(var7 + 1, var8 + 1, 301, 31);
 				var4.fillRect(var7 + var1 * 3 + 2, var8 + 2, 300 - var1 * 3, 30);
-				var4.setFont(class313.field3844);
+				var4.setFont(class313.fontHelvetica13);
 				var4.setColor(Color.white);
-				var4.drawString(var2, var7 + (304 - GrandExchangeOfferAgeComparator.field80.stringWidth(var2)) / 2, var8 + 22);
+				var4.drawString(var2, var7 + (304 - GrandExchangeOfferAgeComparator.loginScreenFontMetrics.stringWidth(var2)) / 2, var8 + 22);
 			}
 		} catch (Exception var10) {
 			this.canvas.repaint();
@@ -794,8 +799,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	protected final void method885() {
 		NetFileRequest.field3125 = null;
-		class313.field3844 = null;
-		GrandExchangeOfferAgeComparator.field80 = null;
+		class313.fontHelvetica13 = null;
+		GrandExchangeOfferAgeComparator.loginScreenFontMetrics = null;
 	}
 
 	@ObfuscatedName("ae")
@@ -805,16 +810,17 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	@Export("error")
 	protected void error(String var1) {
-		if (!this.hasErrored) {
-			this.hasErrored = true;
-			System.out.println("error_game_" + var1);
-
-			try {
-				this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
-			} catch (Exception var3) {
-			}
-
+		if (this.hasErrored) {
+			return;
 		}
+		this.hasErrored = true;
+		System.out.println("error_game_" + var1);
+
+		try {
+			this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
+		} catch (Exception var3) {
+		}
+
 	}
 
 	@ObfuscatedName("ao")
@@ -866,7 +872,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	public final synchronized void paint(Graphics var1) {
 		if (this == gameShell && !isKilled) {
 			this.field464 = true;
-			if (DirectByteArrayCopier.currentTimeMs() - this.field468 > 1000L) {
+			if (DirectByteArrayCopier.currentTimeMs() - this.lastDrawnTime > 1000L) {
 				Rectangle var2 = var1.getClipBounds();
 				if (var2 == null || var2.width >= GrandExchangeEvent.canvasWidth && var2.height >= ParamDefinition.canvasHeight) {
 					this.isCanvasInvalid = true;
@@ -901,7 +907,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 						}
 
 						String var4 = var2.substring(6, var3);
-						if (class192.method3677(var4) && class3.parseInt(var4) < 10) {
+						if (class192.isNumber(var4) && class3.parseInt(var4) < 10) {
 							this.error("wrongjava");
 							return;
 						}
@@ -927,7 +933,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				this.post(this.canvas);
 			}
 		} catch (Exception var6) {
-			HitSplatDefinition.sendStackTrace((String)null, var6);
+			HitSplatDefinition.RunException_sendStackTrace((String)null, var6);
 			this.error("crash");
 		}
 

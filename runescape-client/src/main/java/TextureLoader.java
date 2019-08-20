@@ -11,8 +11,8 @@ public interface TextureLoader {
 		signature = "(II)[I",
 		garbageValue = "726289343"
 	)
-	@Export("load")
-	int[] load(int var1);
+	@Export("getTexturePixels")
+	int[] getTexturePixels(int var1);
 
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(

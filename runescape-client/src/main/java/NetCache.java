@@ -18,12 +18,14 @@ public class NetCache {
 	@ObfuscatedGetter(
 		intValue = 351053657
 	)
-	static int field3163;
+	@Export("NetCache_loadTime")
+	static int NetCache_loadTime;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
 		longValue = 906577835555410159L
 	)
-	static long field3169;
+	@Export("NetCache_timeMs")
+	static long NetCache_timeMs;
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "Llc;"
@@ -114,7 +116,7 @@ public class NetCache {
 	public static int NetCache_ioExceptions;
 
 	static {
-		field3163 = 0;
+		NetCache_loadTime = 0;
 		NetCache_pendingPriorityWrites = new NodeHashTable(4096);
 		NetCache_pendingPriorityWritesCount = 0;
 		NetCache_pendingPriorityResponses = new NodeHashTable(32);
@@ -138,12 +140,12 @@ public class NetCache {
 		signature = "(III)V",
 		garbageValue = "-1775821653"
 	)
-	static void method4312(int var0, int var1) {
+	@Export("calculateMenuBounds")
+	static void calculateMenuBounds(int x, int y) {
 		int var2 = WorldMapIcon_1.fontBold12.stringWidth("Choose Option");
 
-		int var3;
 		int var4;
-		for (var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
+		for (int var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
 			var4 = WorldMapIcon_1.fontBold12.stringWidth(WorldMapLabel.getMenuText(var3));
 			if (var4 > var2) {
 				var2 = var4;
@@ -151,8 +153,8 @@ public class NetCache {
 		}
 
 		var2 += 8;
-		var3 = Client.menuOptionsCount * 15 + 22;
-		var4 = var0 - var2 / 2;
+		int var3 = Client.menuOptionsCount * 15 + 22;
+		var4 = x - var2 / 2;
 		if (var2 + var4 > GrandExchangeEvent.canvasWidth) {
 			var4 = GrandExchangeEvent.canvasWidth - var2;
 		}
@@ -161,8 +163,8 @@ public class NetCache {
 			var4 = 0;
 		}
 
-		int var5 = var1;
-		if (var3 + var1 > ParamDefinition.canvasHeight) {
+		int var5 = y;
+		if (var3 + y > ParamDefinition.canvasHeight) {
 			var5 = ParamDefinition.canvasHeight - var3;
 		}
 

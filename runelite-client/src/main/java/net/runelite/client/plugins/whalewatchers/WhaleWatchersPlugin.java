@@ -22,7 +22,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
@@ -202,7 +202,7 @@ public class WhaleWatchersPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (this.showDamageCounter && event.getMenuAction().equals(MenuAction.SPELL_CAST_ON_PLAYER))
+		if (this.showDamageCounter && event.getMenuOpcode().equals(MenuOpcode.SPELL_CAST_ON_PLAYER))
 		{
 			inCombat = true;
 		}

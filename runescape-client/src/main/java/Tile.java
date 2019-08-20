@@ -177,9 +177,9 @@ public final class Tile extends Node {
 		garbageValue = "-1948443569"
 	)
 	@Export("calculateTag")
-	public static long calculateTag(int var0, int var1, int var2, boolean var3, int var4) {
-		long var5 = (long)((var0 & 127) << 0 | (var1 & 127) << 7 | (var2 & 3) << 14) | ((long)var4 & 4294967295L) << 17;
-		if (var3) {
+	public static long calculateTag(int x, int y, int type, boolean notInteractable, int id) {
+		long var5 = (long)((x & 127) << 0 | (y & 127) << 7 | (type & 3) << 14) | ((long)id & 4294967295L) << 17;
+		if (notInteractable) {
 			var5 |= 65536L;
 		}
 
@@ -191,14 +191,14 @@ public final class Tile extends Node {
 		signature = "(IZII)V",
 		garbageValue = "-1363278802"
 	)
-	public static final void method2853(int var0, boolean var1, int var2) {
-		if (var0 >= 8000 && var0 <= 48000) {
-			CollisionMap.PcmPlayer_sampleRate = var0;
-			class169.isStereo = var1;
-			PcmPlayer.pcmPlayerCount = var2;
-		} else {
+	@Export("PcmPlayer_configure")
+	public static final void PcmPlayer_configure(int var0, boolean var1, int var2) {
+		if (var0 < 8000 || var0 > 48000) {
 			throw new IllegalArgumentException();
 		}
+		CollisionMap.PcmPlayer_sampleRate = var0;
+		FileSystem.PcmPlayer_stereo = var1;
+		PcmPlayer.PcmPlayer_count = var2;
 	}
 
 	@ObfuscatedName("jc")
@@ -209,10 +209,10 @@ public final class Tile extends Node {
 	@Export("clanKickUser")
 	static final void clanKickUser(String var0) {
 		if (DevicePcmPlayerProvider.clanChat != null) {
-			PacketBufferNode var1 = Archive.method4265(ClientPacket.field2216, Client.packetWriter.isaacCipher);
+			PacketBufferNode var1 = Archive.getPacketBufferNode(ClientPacket.field2216, Client.packetWriter.isaacCipher);
 			var1.packetBuffer.writeByte(Huffman.stringCp1252NullTerminatedByteSize(var0));
 			var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-			Client.packetWriter.method2219(var1);
+			Client.packetWriter.addNode(var1);
 		}
 	}
 }

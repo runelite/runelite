@@ -46,7 +46,8 @@ public final class PendingSpawn extends Node {
 	@ObfuscatedGetter(
 		intValue = 160620695
 	)
-	int field935;
+	@Export("objectId")
+	int objectId;
 	@ObfuscatedName("l")
 	@ObfuscatedGetter(
 		intValue = 1900923625
@@ -115,7 +116,7 @@ public final class PendingSpawn extends Node {
 		var3.group = var1;
 		var3.type = var2;
 		Client.interfaceParents.put(var3, (long)var0);
-		GrandExchangeOfferAgeComparator.method146(var1);
+		GrandExchangeOfferAgeComparator.Widget_resetModelFrames(var1);
 		Widget var4 = class80.getWidget(var0);
 		Strings.invalidateWidget(var4);
 		if (Client.meslayerContinueWidget != null) {
@@ -128,9 +129,9 @@ public final class PendingSpawn extends Node {
 				if (var5 < Client.menuOptionsCount - 1) {
 					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
 						Client.menuActions[var6] = Client.menuActions[var6 + 1];
-						Client.menuTargetNames[var6] = Client.menuTargetNames[var6 + 1];
+						Client.menuTargets[var6] = Client.menuTargets[var6 + 1];
 						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
-						Client.menuArguments0[var6] = Client.menuArguments0[var6 + 1];
+						Client.menuIdentifiers[var6] = Client.menuIdentifiers[var6 + 1];
 						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
 						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
 						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
@@ -142,11 +143,11 @@ public final class PendingSpawn extends Node {
 			}
 		}
 
-		GrandExchangeOfferAgeComparator.method145();
+		GrandExchangeOfferAgeComparator.calculateMenuBounds();
 		WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var0 >> 16], var4, false);
 		Canvas.runWidgetOnLoadListener(var1);
 		if (Client.rootInterface != -1) {
-			WorldMapLabelSize.method175(Client.rootInterface, 1);
+			WorldMapLabelSize.runIntfCloseListeners(Client.rootInterface, 1);
 		}
 
 		return var3;

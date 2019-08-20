@@ -40,7 +40,8 @@ public class LoginPacket implements ClientPacketMarker
 	@Export("LoginPacket_indexedValues")
 	static final LoginPacket[] LoginPacket_indexedValues;
 	@ObfuscatedName("a")
-	static String[] field2309;
+	@Export("validCacheNames")
+	static String[] validCacheNames;
 	@ObfuscatedName("l")
 	@ObfuscatedGetter(
 		intValue = 1829786709

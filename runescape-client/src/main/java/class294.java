@@ -66,12 +66,12 @@ public class class294 {
 
 		if (0L != var1) {
 			int var6 = GrandExchangeOfferWorldComparator.scene.getObjectFlags(var0.plane, var0.x, var0.y, var1);
-			var3 = class43.getObjectIdFromTag(var1);
+			var3 = class43.Entity_unpackID(var1);
 			var4 = var6 & 31;
 			var5 = var6 >> 6 & 3;
 		}
 
-		var0.field935 = var3;
+		var0.objectId = var3;
 		var0.field933 = var4;
 		var0.field936 = var5;
 	}

@@ -247,75 +247,74 @@ public class BufferedSource implements Runnable {
 			if (var3 == 4) {
 				Login.loginIndex = 4;
 			}
-
-		} else {
-			Login.loginIndex = var3;
-			Rasterizer2D.Rasterizer2D_clear();
-			byte[] var4 = var0.takeFileByNames("title.jpg", "");
-			GrandExchangeOfferWorldComparator.leftTitleSprite = BuddyRankComparator.convertJpgToSprite(var4);
-			NPC.rightTitleSprite = GrandExchangeOfferWorldComparator.leftTitleSprite.mirrorHorizontally();
-			if ((Client.worldProperties & 536870912) != 0) {
-				TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
-			} else {
-				TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
-			}
-
-			Login.titleboxSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
-			VarpDefinition.titlebuttonSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
-			int var6 = var1.getGroupId("runes");
-			int var7 = var1.getFileId(var6, "");
-			IndexedSprite[] var5 = class289.SpriteBuffer_getIndexedSpriteArray(var1, var6, var7);
-			Login.runesSprite = var5;
-			var7 = var1.getGroupId("title_mute");
-			int var8 = var1.getFileId(var7, "");
-			IndexedSprite[] var9 = class289.SpriteBuffer_getIndexedSpriteArray(var1, var7, var8);
-			Login.title_muteSprite = var9;
-			Login.options_buttons_0Sprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
-			Message.field606 = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
-			Decimator.options_buttons_2Sprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
-			Login.field1185 = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
-			class237.field3191 = Login.options_buttons_0Sprite.subWidth;
-			WorldMapDecoration.field212 = Login.options_buttons_0Sprite.subHeight;
-			Ignored.loginScreenRunesAnimation = new LoginScreenAnimation(Login.runesSprite);
-			if (var2) {
-				Login.Login_username = "";
-				Login.Login_password = "";
-			}
-
-			GrandExchangeOffer.field65 = 0;
-			WorldMapManager.otp = "";
-			Login.field1201 = true;
-			Login.worldSelectOpen = false;
-			if (!WorldMapLabelSize.clientPreferences.titleMusicDisabled) {
-				WorldMapRegion.method533(2, WorldMapRegion.archive6, "scape main", "", 255, false);
-			} else {
-				class40.method729(2);
-			}
-
-			if (NetCache.NetCache_socket != null) {
-				try {
-					Buffer var10 = new Buffer(4);
-					var10.writeByte(3);
-					var10.writeMedium(0);
-					NetCache.NetCache_socket.write(var10.array, 0, 4);
-				} catch (IOException var13) {
-					try {
-						NetCache.NetCache_socket.close();
-					} catch (Exception var12) {
-					}
-
-					++NetCache.NetCache_ioExceptions;
-					NetCache.NetCache_socket = null;
-				}
-			}
-
-			Login.field1179 = true;
-			Login.xPadding = (GrandExchangeEvent.canvasWidth - 765) / 2;
-			Login.loginBoxX = Login.xPadding + 202;
-			ScriptEvent.loginBoxCenter = Login.loginBoxX + 180;
-			GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
-			NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-			TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
+			return;
 		}
+		Login.loginIndex = var3;
+		Rasterizer2D.Rasterizer2D_clear();
+		byte[] var4 = var0.takeFileByNames("title.jpg", "");
+		GrandExchangeOfferWorldComparator.leftTitleSprite = BuddyRankComparator.convertJpgToSprite(var4);
+		NPC.rightTitleSprite = GrandExchangeOfferWorldComparator.leftTitleSprite.mirrorHorizontally();
+		if ((Client.worldProperties & 536870912) != 0) {
+			TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+		} else {
+			TileItem.logoSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
+		}
+
+		Login.titleboxSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
+		VarpDefinition.titlebuttonSprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
+		int var6 = var1.getGroupId("runes");
+		int var7 = var1.getFileId(var6, "");
+		IndexedSprite[] var5 = class289.SpriteBuffer_getIndexedSpriteArray(var1, var6, var7);
+		Login.runesSprite = var5;
+		var7 = var1.getGroupId("title_mute");
+		int var8 = var1.getFileId(var7, "");
+		IndexedSprite[] var9 = class289.SpriteBuffer_getIndexedSpriteArray(var1, var7, var8);
+		Login.title_muteSprite = var9;
+		Login.options_buttons_0Sprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+		Message.field606 = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+		Decimator.options_buttons_2Sprite = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+		Login.field1185 = class215.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+		class237.field3191 = Login.options_buttons_0Sprite.subWidth;
+		WorldMapDecoration.field212 = Login.options_buttons_0Sprite.subHeight;
+		Ignored.loginScreenRunesAnimation = new LoginScreenAnimation(Login.runesSprite);
+		if (var2) {
+			Login.Login_username = "";
+			Login.Login_password = "";
+		}
+
+		GrandExchangeOffer.field65 = 0;
+		WorldMapManager.otp = "";
+		Login.field1201 = true;
+		Login.worldSelectOpen = false;
+		if (!WorldMapLabelSize.clientPreferences.titleMusicDisabled) {
+			WorldMapRegion.playMusicTrackByName(2, WorldMapRegion.archive6, "scape main", "", 255, false);
+		} else {
+			class40.method729(2);
+		}
+
+		if (NetCache.NetCache_socket != null) {
+			try {
+				Buffer var10 = new Buffer(4);
+				var10.writeByte(3);
+				var10.writeMedium(0);
+				NetCache.NetCache_socket.write(var10.array, 0, 4);
+			} catch (IOException var13) {
+				try {
+					NetCache.NetCache_socket.close();
+				} catch (Exception var12) {
+				}
+
+				++NetCache.NetCache_ioExceptions;
+				NetCache.NetCache_socket = null;
+			}
+		}
+
+		Login.field1179 = true;
+		Login.xPadding = (GrandExchangeEvent.canvasWidth - 765) / 2;
+		Login.loginBoxX = Login.xPadding + 202;
+		ScriptEvent.loginBoxCenter = Login.loginBoxX + 180;
+		GrandExchangeOfferWorldComparator.leftTitleSprite.drawAt(Login.xPadding, 0);
+		NPC.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+		TileItem.logoSprite.drawAt(Login.xPadding + 382 - TileItem.logoSprite.subWidth / 2, 18);
 	}
 }

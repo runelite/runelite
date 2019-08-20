@@ -1,21 +1,26 @@
 import java.io.File;
 import java.util.Hashtable;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("fy")
-public class class169 {
+@Implements("FileSystem")
+public class FileSystem {
 	@ObfuscatedName("q")
-	static boolean field2055;
+	@Export("FileSystem_hasPermissions")
+	static boolean FileSystem_hasPermissions;
 	@ObfuscatedName("w")
-	static File field2050;
+	@Export("FileSystem_cacheDir")
+	static File FileSystem_cacheDir;
 	@ObfuscatedName("e")
-	static Hashtable field2052;
+	@Export("FileSystem_cacheFiles")
+	static Hashtable FileSystem_cacheFiles;
 	@ObfuscatedName("l")
-	@Export("isStereo")
-	protected static boolean isStereo;
+	@Export("PcmPlayer_stereo")
+	protected static boolean PcmPlayer_stereo;
 	@ObfuscatedName("fj")
 	@ObfuscatedSignature(
 		signature = "Lku;"
@@ -30,8 +35,8 @@ public class class169 {
 	static Font fontPlain12;
 
 	static {
-		field2055 = false;
-		field2052 = new Hashtable(16);
+		FileSystem_hasPermissions = false;
+		FileSystem_cacheFiles = new Hashtable(16);
 	}
 
 	@ObfuscatedName("e")
@@ -39,13 +44,13 @@ public class class169 {
 		signature = "(Lhp;IIIZI)V",
 		garbageValue = "1090882543"
 	)
-	public static void method3503(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
+	public static void method3503(AbstractArchive var0, int group, int file, int bitRateMaybe, boolean _false) {
 		class197.field2402 = 1;
 		GrandExchangeOfferNameComparator.musicTrackArchive = var0;
-		class197.musicTrackGroupId = var1;
-		class197.musicTrackFileId = var2;
-		ScriptFrame.field529 = var3;
-		BuddyRankComparator.musicTrackBoolean = var4;
+		class197.musicTrackGroupId = group;
+		class197.musicTrackFileId = file;
+		ScriptFrame.field529 = bitRateMaybe;
+		BuddyRankComparator.musicTrackBoolean = _false;
 		class197.field2404 = 10000;
 	}
 

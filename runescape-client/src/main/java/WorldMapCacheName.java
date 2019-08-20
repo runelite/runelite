@@ -11,27 +11,32 @@ public class WorldMapCacheName {
 	@ObfuscatedSignature(
 		signature = "Lae;"
 	)
-	public static final WorldMapCacheName field308;
+	@Export("DETAILS")
+	public static final WorldMapCacheName DETAILS;
 	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "Lae;"
 	)
-	public static final WorldMapCacheName field302;
+	@Export("COMPOSITEMAP")
+	public static final WorldMapCacheName COMPOSITEMAP;
 	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "Lae;"
 	)
-	public static final WorldMapCacheName field303;
+	@Export("COMPOSITETEXTURE")
+	public static final WorldMapCacheName COMPOSITETEXTURE;
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "Lae;"
 	)
-	static final WorldMapCacheName field304;
+	@Export("AREA")
+	static final WorldMapCacheName AREA;
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "Lae;"
 	)
-	public static final WorldMapCacheName field305;
+	@Export("LABELS")
+	public static final WorldMapCacheName LABELS;
 	@ObfuscatedName("c")
 	public static short[] field309;
 	@ObfuscatedName("de")
@@ -51,11 +56,11 @@ public class WorldMapCacheName {
 	public final String name;
 
 	static {
-		field308 = new WorldMapCacheName("details");
-		field302 = new WorldMapCacheName("compositemap");
-		field303 = new WorldMapCacheName("compositetexture");
-		field304 = new WorldMapCacheName("area");
-		field305 = new WorldMapCacheName("labels");
+		DETAILS = new WorldMapCacheName("details");
+		COMPOSITEMAP = new WorldMapCacheName("compositemap");
+		COMPOSITETEXTURE = new WorldMapCacheName("compositetexture");
+		AREA = new WorldMapCacheName("area");
+		LABELS = new WorldMapCacheName("labels");
 	}
 
 	WorldMapCacheName(String var1) {
@@ -67,7 +72,8 @@ public class WorldMapCacheName {
 		signature = "(Lhj;IB)V",
 		garbageValue = "67"
 	)
-	static final void method600(Widget var0, int var1) {
+	@Export("Widget_setKeyIgnoreHeld")
+	static final void Widget_setKeyIgnoreHeld(Widget var0, int var1) {
 		if (var0.field2650 == null) {
 			throw new RuntimeException();
 		}

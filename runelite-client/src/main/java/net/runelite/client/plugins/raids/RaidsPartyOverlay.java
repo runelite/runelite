@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.client.ui.overlay.Overlay;
@@ -63,9 +63,9 @@ public class RaidsPartyOverlay extends Overlay
 		super(plugin);
 		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuOpcode.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuOpcode.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuOpcode.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
 	}
 
 	@Override

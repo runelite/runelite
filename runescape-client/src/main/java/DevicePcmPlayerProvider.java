@@ -46,7 +46,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 		garbageValue = "-5"
 	)
 	static void method805() {
-		Client.packetWriter.method2219(Archive.method4265(ClientPacket.field2240, Client.packetWriter.isaacCipher));
+		Client.packetWriter.addNode(Archive.getPacketBufferNode(ClientPacket.field2240, Client.packetWriter.isaacCipher));
 		Client.oculusOrbState = 0;
 	}
 }

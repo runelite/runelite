@@ -84,7 +84,7 @@ final class class4 implements class0 {
 		}
 
 		WorldMapRegion.addNpcsToScene(false);
-		PacketWriter.method2245();
+		PacketWriter.drawProjectiles();
 		WorldMapRectangle.method275();
 		UrlRequest.setViewportShape(var0, var1, var2, var3, true);
 		var0 = Client.viewportOffsetX;
@@ -116,115 +116,105 @@ final class class4 implements class0 {
 		int var12;
 		int var13;
 		int var14;
-		if (!Client.isCameraLocked) {
+		if (Client.isCameraLocked) {
+			var4 = class83.getHighestVisiblePlane();
+		} else {
 			if (WorldMapLabelSize.clientPreferences.roofsHidden) {
 				var28 = class42.plane;
 			} else {
 				label567: {
 					var6 = 3;
 					if (GrandExchangeOfferNameComparator.cameraPitch < 310) {
-						label559: {
-							if (Client.oculusOrbState == 1) {
-								var7 = MouseHandler.oculusOrbFocalPointX >> 7;
-								var8 = WorldMapArea.oculusOrbFocalPointY >> 7;
-							} else {
-								var7 = Client.localPlayer.x >> 7;
-								var8 = Client.localPlayer.y >> 7;
-							}
+						if (Client.oculusOrbState == 1) {
+							var7 = MouseHandler.oculusOrbFocalPointX >> 7;
+							var8 = WorldMapArea.oculusOrbFocalPointY >> 7;
+						} else {
+							var7 = Client.localPlayer.x >> 7;
+							var8 = Client.localPlayer.y >> 7;
+						}
 
-							var9 = PacketBuffer.cameraX >> 7;
-							var10 = class1.cameraZ >> 7;
-							if (var9 >= 0 && var10 >= 0 && var9 < 104 && var10 < 104) {
-								if (var7 >= 0 && var8 >= 0 && var7 < 104 && var8 < 104) {
-									if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-										var6 = class42.plane;
-									}
-
-									if (var7 > var9) {
-										var11 = var7 - var9;
-									} else {
-										var11 = var9 - var7;
-									}
-
-									if (var8 > var10) {
-										var12 = var8 - var10;
-									} else {
-										var12 = var10 - var8;
-									}
-
-									if (var11 > var12) {
-										var13 = var12 * 65536 / var11;
-										var14 = 32768;
-
-										while (true) {
-											if (var7 == var9) {
-												break label559;
-											}
-
-											if (var9 < var7) {
-												++var9;
-											} else if (var9 > var7) {
-												--var9;
-											}
-
-											if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-												var6 = class42.plane;
-											}
-
-											var14 += var13;
-											if (var14 >= 65536) {
-												var14 -= 65536;
-												if (var10 < var8) {
-													++var10;
-												} else if (var10 > var8) {
-													--var10;
-												}
-
-												if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-													var6 = class42.plane;
-												}
-											}
-										}
-									}
-									if (var12 > 0) {
-										var13 = var11 * 65536 / var12;
-										var14 = 32768;
-
-										while (var10 != var8) {
-											if (var10 < var8) {
-												++var10;
-											} else if (var10 > var8) {
-												--var10;
-											}
-
-											if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-												var6 = class42.plane;
-											}
-
-											var14 += var13;
-											if (var14 >= 65536) {
-												var14 -= 65536;
-												if (var9 < var7) {
-													++var9;
-												} else if (var9 > var7) {
-													--var9;
-												}
-
-												if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
-													var6 = class42.plane;
-												}
-											}
-										}
-									}
-									break label559;
-								}
-
-								var28 = class42.plane;
-								break label567;
-							}
-
+						var9 = PacketBuffer.cameraX >> 7;
+						var10 = class1.cameraZ >> 7;
+						if (var9 < 0 || var10 < 0 || var9 >= 104 || var10 >= 104 || var7 < 0 || var8 < 0 || var7 >= 104 || var8 >= 104) {
 							var28 = class42.plane;
 							break label567;
+						}
+						if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+							var6 = class42.plane;
+						}
+
+						if (var7 > var9) {
+							var11 = var7 - var9;
+						} else {
+							var11 = var9 - var7;
+						}
+
+						if (var8 > var10) {
+							var12 = var8 - var10;
+						} else {
+							var12 = var10 - var8;
+						}
+
+						if (var11 > var12) {
+							var13 = var12 * 65536 / var11;
+							var14 = 32768;
+
+							while (var7 != var9) {
+								if (var9 < var7) {
+									++var9;
+								} else if (var9 > var7) {
+									--var9;
+								}
+
+								if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+									var6 = class42.plane;
+								}
+
+								var14 += var13;
+								if (var14 < 65536) {
+									continue;
+								}
+								var14 -= 65536;
+								if (var10 < var8) {
+									++var10;
+								} else if (var10 > var8) {
+									--var10;
+								}
+
+								if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+									var6 = class42.plane;
+								}
+							}
+						} else if (var12 > 0) {
+							var13 = var11 * 65536 / var12;
+							var14 = 32768;
+
+							while (var10 != var8) {
+								if (var10 < var8) {
+									++var10;
+								} else if (var10 > var8) {
+									--var10;
+								}
+
+								if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+									var6 = class42.plane;
+								}
+
+								var14 += var13;
+								if (var14 < 65536) {
+									continue;
+								}
+								var14 -= 65536;
+								if (var9 < var7) {
+									++var9;
+								} else if (var9 > var7) {
+									--var9;
+								}
+
+								if ((Tiles.Tiles_renderFlags[class42.plane][var9][var10] & 4) != 0) {
+									var6 = class42.plane;
+								}
+							}
 						}
 					}
 
@@ -241,8 +231,6 @@ final class class4 implements class0 {
 			}
 
 			var4 = var28;
-		} else {
-			var4 = class83.method1995();
 		}
 
 		var28 = PacketBuffer.cameraX;
@@ -252,33 +240,34 @@ final class class4 implements class0 {
 		var9 = Interpreter.cameraYaw;
 
 		for (var10 = 0; var10 < 5; ++var10) {
-			if (Client.field886[var10]) {
-				var11 = (int)(Math.random() * (double)(Client.field901[var10] * 2 + 1) - (double)Client.field901[var10] + Math.sin((double)Client.field903[var10] / 100.0D * (double)Client.field904[var10]) * (double)Client.field902[var10]);
-				if (var10 == 0) {
-					PacketBuffer.cameraX += var11;
+			if (!Client.field886[var10]) {
+				continue;
+			}
+			var11 = (int)(Math.random() * (double)(Client.field901[var10] * 2 + 1) - (double)Client.field901[var10] + Math.sin((double)Client.field903[var10] / 100.0D * (double)Client.field904[var10]) * (double)Client.field902[var10]);
+			if (var10 == 0) {
+				PacketBuffer.cameraX += var11;
+			}
+
+			if (var10 == 1) {
+				class43.cameraY += var11;
+			}
+
+			if (var10 == 2) {
+				class1.cameraZ += var11;
+			}
+
+			if (var10 == 3) {
+				Interpreter.cameraYaw = var11 + Interpreter.cameraYaw & 2047;
+			}
+
+			if (var10 == 4) {
+				GrandExchangeOfferNameComparator.cameraPitch += var11;
+				if (GrandExchangeOfferNameComparator.cameraPitch < 128) {
+					GrandExchangeOfferNameComparator.cameraPitch = 128;
 				}
 
-				if (var10 == 1) {
-					class43.cameraY += var11;
-				}
-
-				if (var10 == 2) {
-					class1.cameraZ += var11;
-				}
-
-				if (var10 == 3) {
-					Interpreter.cameraYaw = var11 + Interpreter.cameraYaw & 2047;
-				}
-
-				if (var10 == 4) {
-					GrandExchangeOfferNameComparator.cameraPitch += var11;
-					if (GrandExchangeOfferNameComparator.cameraPitch < 128) {
-						GrandExchangeOfferNameComparator.cameraPitch = 128;
-					}
-
-					if (GrandExchangeOfferNameComparator.cameraPitch > 383) {
-						GrandExchangeOfferNameComparator.cameraPitch = 383;
-					}
+				if (GrandExchangeOfferNameComparator.cameraPitch > 383) {
+					GrandExchangeOfferNameComparator.cameraPitch = 383;
 				}
 			}
 		}
@@ -299,7 +288,7 @@ final class class4 implements class0 {
 			ViewportMouse.ViewportMouse_entityCount = 0;
 			ViewportMouse.ViewportMouse_false0 = false;
 		} else {
-			Language.method3665();
+			Language.ViewportMouse_clear();
 		}
 
 		class186.playPcmPlayers();
@@ -369,96 +358,96 @@ final class class4 implements class0 {
 			Client.viewportTempX = Client.overheadTextXs[var18];
 			Client.viewportTempY = Client.overheadTextYs[var18] = var20;
 			String var30 = Client.overheadText[var18];
-			if (Client.chatEffects == 0) {
-				int var25 = 0xffff00;
-				if (Client.overheadTextColors[var18] < 6) {
-					var25 = Client.field870[Client.overheadTextColors[var18]];
-				}
-
-				if (Client.overheadTextColors[var18] == 6) {
-					var25 = Client.viewportDrawCount % 20 < 10 ? 0xff0000 : 0xffff00;
-				}
-
-				if (Client.overheadTextColors[var18] == 7) {
-					var25 = Client.viewportDrawCount % 20 < 10 ? 255 : '\uffff';
-				}
-
-				if (Client.overheadTextColors[var18] == 8) {
-					var25 = Client.viewportDrawCount % 20 < 10 ? '뀀' : 8454016;
-				}
-
-				int var26;
-				if (Client.overheadTextColors[var18] == 9) {
-					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
-					if (var26 < 50) {
-						var25 = var26 * 1280 + 0xff0000;
-					} else if (var26 < 100) {
-						var25 = 0xffff00 - (var26 - 50) * 327680;
-					} else if (var26 < 150) {
-						var25 = (var26 - 100) * 5 + 0xff00;
-					}
-				}
-
-				if (Client.overheadTextColors[var18] == 10) {
-					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
-					if (var26 < 50) {
-						var25 = var26 * 5 + 0xff0000;
-					} else if (var26 < 100) {
-						var25 = 0xff00ff - (var26 - 50) * 327680;
-					} else if (var26 < 150) {
-						var25 = (var26 - 100) * 327680 + 255 - (var26 - 100) * 5;
-					}
-				}
-
-				if (Client.overheadTextColors[var18] == 11) {
-					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
-					if (var26 < 50) {
-						var25 = 0xffffff - var26 * 327685;
-					} else if (var26 < 100) {
-						var25 = (var26 - 50) * 327685 + 0xff00;
-					} else if (var26 < 150) {
-						var25 = 0xffffff - (var26 - 100) * 327680;
-					}
-				}
-
-				if (Client.overheadTextEffects[var18] == 0) {
-					WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0);
-				}
-
-				if (Client.overheadTextEffects[var18] == 1) {
-					WorldMapIcon_1.fontBold12.drawCenteredWave(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount);
-				}
-
-				if (Client.overheadTextEffects[var18] == 2) {
-					WorldMapIcon_1.fontBold12.drawCenteredWave2(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount);
-				}
-
-				if (Client.overheadTextEffects[var18] == 3) {
-					WorldMapIcon_1.fontBold12.drawCenteredShake(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount, 150 - Client.overheadTextCyclesRemaining[var18]);
-				}
-
-				if (Client.overheadTextEffects[var18] == 4) {
-					var26 = (150 - Client.overheadTextCyclesRemaining[var18]) * (WorldMapIcon_1.fontBold12.stringWidth(var30) + 100) / 150;
-					Rasterizer2D.Rasterizer2D_expandClip(var0 + Client.viewportTempX - 50, var1, var0 + Client.viewportTempX + 50, var3 + var1);
-					WorldMapIcon_1.fontBold12.draw(var30, var0 + Client.viewportTempX + 50 - var26, Client.viewportTempY + var1, var25, 0);
-					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
-				}
-
-				if (Client.overheadTextEffects[var18] == 5) {
-					var26 = 150 - Client.overheadTextCyclesRemaining[var18];
-					int var27 = 0;
-					if (var26 < 25) {
-						var27 = var26 - 25;
-					} else if (var26 > 125) {
-						var27 = var26 - 125;
-					}
-
-					Rasterizer2D.Rasterizer2D_expandClip(var0, Client.viewportTempY + var1 - WorldMapIcon_1.fontBold12.ascent - 1, var0 + var2, Client.viewportTempY + var1 + 5);
-					WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, var27 + Client.viewportTempY + var1, var25, 0);
-					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
-				}
-			} else {
+			if (Client.chatEffects != 0) {
 				WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, 0xffff00, 0);
+				continue;
+			}
+			int var25 = 0xffff00;
+			if (Client.overheadTextColors[var18] < 6) {
+				var25 = Client.field870[Client.overheadTextColors[var18]];
+			}
+
+			if (Client.overheadTextColors[var18] == 6) {
+				var25 = Client.viewportDrawCount % 20 < 10 ? 0xff0000 : 0xffff00;
+			}
+
+			if (Client.overheadTextColors[var18] == 7) {
+				var25 = Client.viewportDrawCount % 20 < 10 ? 0xff : 0xffff;
+			}
+
+			if (Client.overheadTextColors[var18] == 8) {
+				var25 = Client.viewportDrawCount % 20 < 10 ? 0xb000 : 0x80ff80;
+			}
+
+			int var26;
+			if (Client.overheadTextColors[var18] == 9) {
+				var26 = 150 - Client.overheadTextCyclesRemaining[var18];
+				if (var26 < 50) {
+					var25 = var26 * 0x500 + 0xff0000;
+				} else if (var26 < 0x64) {
+					var25 = 0xffff00 - (var26 - 0x32) * 0x50000;
+				} else if (var26 < 0x96) {
+					var25 = (var26 - 0x64) * 0x5 + 0xff00;
+				}
+			}
+
+			if (Client.overheadTextColors[var18] == 10) {
+				var26 = 150 - Client.overheadTextCyclesRemaining[var18];
+				if (var26 < 50) {
+					var25 = var26 * 5 + 0xff0000;
+				} else if (var26 < 100) {
+					var25 = 0xff00ff - (var26 - 50) * 327680;
+				} else if (var26 < 150) {
+					var25 = (var26 - 100) * 327680 + 255 - (var26 - 100) * 5;
+				}
+			}
+
+			if (Client.overheadTextColors[var18] == 11) {
+				var26 = 150 - Client.overheadTextCyclesRemaining[var18];
+				if (var26 < 50) {
+					var25 = 0xffffff - var26 * 0x50005;
+				} else if (var26 < 100) {
+					var25 = (var26 - 50) * 0x50005 + 0xff00;
+				} else if (var26 < 150) {
+					var25 = 0xffffff - (var26 - 100) * 0x50000;
+				}
+			}
+
+			if (Client.overheadTextEffects[var18] == 0) {
+				WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0);
+			}
+
+			if (Client.overheadTextEffects[var18] == 1) {
+				WorldMapIcon_1.fontBold12.drawCenteredWave(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount);
+			}
+
+			if (Client.overheadTextEffects[var18] == 2) {
+				WorldMapIcon_1.fontBold12.drawCenteredWave2(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount);
+			}
+
+			if (Client.overheadTextEffects[var18] == 3) {
+				WorldMapIcon_1.fontBold12.drawCenteredShake(var30, var0 + Client.viewportTempX, Client.viewportTempY + var1, var25, 0, Client.viewportDrawCount, 150 - Client.overheadTextCyclesRemaining[var18]);
+			}
+
+			if (Client.overheadTextEffects[var18] == 4) {
+				var26 = (150 - Client.overheadTextCyclesRemaining[var18]) * (WorldMapIcon_1.fontBold12.stringWidth(var30) + 100) / 150;
+				Rasterizer2D.Rasterizer2D_expandClip(var0 + Client.viewportTempX - 50, var1, var0 + Client.viewportTempX + 50, var3 + var1);
+				WorldMapIcon_1.fontBold12.draw(var30, var0 + Client.viewportTempX + 50 - var26, Client.viewportTempY + var1, var25, 0);
+				Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
+			}
+
+			if (Client.overheadTextEffects[var18] == 5) {
+				var26 = 150 - Client.overheadTextCyclesRemaining[var18];
+				int var27 = 0;
+				if (var26 < 25) {
+					var27 = var26 - 25;
+				} else if (var26 > 125) {
+					var27 = var26 - 125;
+				}
+
+				Rasterizer2D.Rasterizer2D_expandClip(var0, Client.viewportTempY + var1 - WorldMapIcon_1.fontBold12.ascent - 1, var0 + var2, Client.viewportTempY + var1 + 5);
+				WorldMapIcon_1.fontBold12.drawCentered(var30, var0 + Client.viewportTempX, var27 + Client.viewportTempY + var1, var25, 0);
+				Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
 			}
 		}
 

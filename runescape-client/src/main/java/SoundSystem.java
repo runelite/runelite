@@ -29,7 +29,7 @@ public class SoundSystem implements Runnable {
 				}
 			}
 		} catch (Exception var4) {
-			HitSplatDefinition.sendStackTrace((String)null, var4);
+			HitSplatDefinition.RunException_sendStackTrace((String)null, var4);
 		}
 
 	}
@@ -58,7 +58,8 @@ public class SoundSystem implements Runnable {
 		signature = "([BB)V",
 		garbageValue = "103"
 	)
-	public static synchronized void method2478(byte[] var0) {
+	@Export("ByteArrayPool_release")
+	public static synchronized void ByteArrayPool_release(byte[] var0) {
 		if (var0.length == 100 && ByteArrayPool.ByteArrayPool_smallCount < 1000) {
 			ByteArrayPool.ByteArrayPool_small[++ByteArrayPool.ByteArrayPool_smallCount - 1] = var0;
 		} else if (var0.length == 5000 && ByteArrayPool.ByteArrayPool_mediumCount < 250) {
@@ -69,7 +70,7 @@ public class SoundSystem implements Runnable {
 			for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) {
 				if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && class43.ByteArrayPool_altSizeArrayCounts[var1] < class189.ByteArrayPool_arrays[var1].length) {
 					class189.ByteArrayPool_arrays[var1][class43.ByteArrayPool_altSizeArrayCounts[var1]++] = var0;
-					return;
+					break;
 				}
 			}
 		}
@@ -80,7 +81,8 @@ public class SoundSystem implements Runnable {
 		signature = "(I)I",
 		garbageValue = "-925078025"
 	)
-	protected static int method2479() {
+	@Export("getGcDuration")
+	protected static int getGcDuration() {
 		int var0 = 0;
 		if (class43.garbageCollector == null || !class43.garbageCollector.isValid()) {
 			try {

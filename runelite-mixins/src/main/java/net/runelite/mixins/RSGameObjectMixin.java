@@ -62,7 +62,7 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	@Override
 	public RSModel getModel()
 	{
-		RSEntity renderable = getRenderable();
+		RSEntity renderable = getEntity();
 		if (renderable == null)
 		{
 			return null;

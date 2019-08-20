@@ -99,7 +99,8 @@ public class Interpreter {
 		signature = "(II)Z",
 		garbageValue = "1044045879"
 	)
-	static final boolean method1936(int var0) {
+	@Export("isRightClickOnlyMenu")
+	static final boolean isRightClickOnlyMenu(int var0) {
 		if (var0 < 0) {
 			return false;
 		}

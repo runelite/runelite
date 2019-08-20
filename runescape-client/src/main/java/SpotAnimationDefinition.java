@@ -82,12 +82,14 @@ public class SpotAnimationDefinition extends DualNode {
 	@ObfuscatedGetter(
 		intValue = -1281395591
 	)
-	int field3251;
+	@Export("ambient")
+	int ambient;
 	@ObfuscatedName("y")
 	@ObfuscatedGetter(
 		intValue = -499739553
 	)
-	int field3253;
+	@Export("contrast")
+	int contrast;
 
 	static {
 		SpotAnimationDefinition_cached = new EvictingDualNodeHashTable(64);
@@ -99,8 +101,8 @@ public class SpotAnimationDefinition extends DualNode {
 		this.widthScale = 128;
 		this.heightScale = 128;
 		this.orientation = 0;
-		this.field3251 = 0;
-		this.field3253 = 0;
+		this.ambient = 0;
+		this.contrast = 0;
 	}
 
 	@ObfuscatedName("w")
@@ -138,33 +140,28 @@ public class SpotAnimationDefinition extends DualNode {
 		} else if (var2 == 6) {
 			this.orientation = var1.readUnsignedShort();
 		} else if (var2 == 7) {
-			this.field3251 = var1.readUnsignedByte();
+			this.ambient = var1.readUnsignedByte();
 		} else if (var2 == 8) {
-			this.field3253 = var1.readUnsignedByte();
-		} else {
-			int var3;
-			int var4;
-			if (var2 == 40) {
-				var3 = var1.readUnsignedByte();
-				this.recolorFrom = new short[var3];
-				this.recolorTo = new short[var3];
+			this.contrast = var1.readUnsignedByte();
+		} else if (var2 == 40) {
+			int var3 = var1.readUnsignedByte();
+			this.recolorFrom = new short[var3];
+			this.recolorTo = new short[var3];
 
-				for (var4 = 0; var4 < var3; ++var4) {
-					this.recolorFrom[var4] = (short)var1.readUnsignedShort();
-					this.recolorTo[var4] = (short)var1.readUnsignedShort();
-				}
-			} else if (var2 == 41) {
-				var3 = var1.readUnsignedByte();
-				this.retextureFrom = new short[var3];
-				this.retextureTo = new short[var3];
+			for (int var4 = 0; var4 < var3; ++var4) {
+				this.recolorFrom[var4] = (short) var1.readUnsignedShort();
+				this.recolorTo[var4] = (short) var1.readUnsignedShort();
+			}
+		} else if (var2 == 41) {
+			int var3 = var1.readUnsignedByte();
+			this.retextureFrom = new short[var3];
+			this.retextureTo = new short[var3];
 
-				for (var4 = 0; var4 < var3; ++var4) {
-					this.retextureFrom[var4] = (short)var1.readUnsignedShort();
-					this.retextureTo[var4] = (short)var1.readUnsignedShort();
-				}
+			for (int var4 = 0; var4 < var3; ++var4) {
+				this.retextureFrom[var4] = (short) var1.readUnsignedShort();
+				this.retextureTo[var4] = (short) var1.readUnsignedShort();
 			}
 		}
-
 	}
 
 	@ObfuscatedName("p")
@@ -176,7 +173,7 @@ public class SpotAnimationDefinition extends DualNode {
 	public final Model getModel(int var1) {
 		Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
 		if (var2 == null) {
-			ModelData var3 = ModelData.method2769(class43.SpotAnimationDefinition_modelArchive, this.archive, 0);
+			ModelData var3 = ModelData.ModelData_get(class43.SpotAnimationDefinition_modelArchive, this.archive, 0);
 			if (var3 == null) {
 				return null;
 			}
@@ -194,13 +191,13 @@ public class SpotAnimationDefinition extends DualNode {
 				}
 			}
 
-			var2 = var3.toModel(this.field3251 + 64, this.field3253 + 850, -30, -50, -30);
+			var2 = var3.toModel(this.ambient + 64, this.contrast + 850, -30, -50, -30);
 			SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
 		}
 
 		Model var5;
 		if (this.sequence != -1 && var1 != -1) {
-			var5 = GrandExchangeEvent.getSequenceDefinition(this.sequence).transformSpotAnimationModel(var2, var1);
+			var5 = GrandExchangeEvent.SequenceDefinition_get(this.sequence).transformSpotAnimationModel(var2, var1);
 		} else {
 			var5 = var2.toSharedSpotAnimationModel(true);
 		}
@@ -209,21 +206,22 @@ public class SpotAnimationDefinition extends DualNode {
 			var5.scale(this.widthScale, this.heightScale, this.widthScale);
 		}
 
-		if (this.orientation != 0) {
-			if (this.orientation == 90) {
-				var5.rotateY90Ccw();
-			}
+		if (this.orientation == 0) {
+			return var5;
+		}
+		if (this.orientation == 90) {
+			var5.rotateY90Ccw();
+		}
 
-			if (this.orientation == 180) {
-				var5.rotateY90Ccw();
-				var5.rotateY90Ccw();
-			}
+		if (this.orientation == 180) {
+			var5.rotateY90Ccw();
+			var5.rotateY90Ccw();
+		}
 
-			if (this.orientation == 270) {
-				var5.rotateY90Ccw();
-				var5.rotateY90Ccw();
-				var5.rotateY90Ccw();
-			}
+		if (this.orientation == 270) {
+			var5.rotateY90Ccw();
+			var5.rotateY90Ccw();
+			var5.rotateY90Ccw();
 		}
 
 		return var5;

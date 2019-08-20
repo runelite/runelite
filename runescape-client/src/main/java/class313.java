@@ -52,7 +52,8 @@ public enum class313 implements Enumerated {
 	field3841(1, 8);
 
 	@ObfuscatedName("aw")
-	static java.awt.Font field3844;
+	@Export("fontHelvetica13")
+	static java.awt.Font fontHelvetica13;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
 		intValue = -1731817037
@@ -62,11 +63,12 @@ public enum class313 implements Enumerated {
 	@ObfuscatedGetter(
 		intValue = 1422970915
 	)
-	final int field3836;
+	@Export("id")
+	final int id;
 
 	class313(int var3, int var4) {
 		this.field3842 = var3;
-		this.field3836 = var4;
+		this.id = var4;
 	}
 
 	@ObfuscatedName("e")
@@ -76,6 +78,6 @@ public enum class313 implements Enumerated {
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.field3836;
+		return this.id;
 	}
 }

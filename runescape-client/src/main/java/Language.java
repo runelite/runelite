@@ -162,7 +162,8 @@ public class Language implements Enumerated {
 		signature = "(I)V",
 		garbageValue = "-1942171448"
 	)
-	public static final void method3665() {
+	@Export("ViewportMouse_clear")
+	public static final void ViewportMouse_clear() {
 		ViewportMouse.ViewportMouse_isInViewport = false;
 		ViewportMouse.ViewportMouse_entityCount = 0;
 	}
@@ -173,18 +174,18 @@ public class Language implements Enumerated {
 		garbageValue = "1477910272"
 	)
 	static boolean method3667() {
-		if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
-			while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
-				ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
-				if (!var0.isLoaded()) {
-					return false;
-				}
-
-				++Client.archiveLoaderArchive;
-			}
-
+		if (Client.archiveLoaders == null || Client.archiveLoaderArchive >= Client.archiveLoaders.size()) {
 			return true;
 		}
+		while (Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+			ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoaderArchive);
+			if (!var0.isLoaded()) {
+				return false;
+			}
+
+			++Client.archiveLoaderArchive;
+		}
+
 		return true;
 	}
 

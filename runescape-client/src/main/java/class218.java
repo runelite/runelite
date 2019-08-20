@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -29,7 +30,8 @@ public class class218 {
 		signature = "(I)Z",
 		garbageValue = "-205887653"
 	)
-	public static final boolean method4109() {
+	@Export("isKeyDown")
+	public static final boolean isKeyDown() {
 		synchronized(KeyHandler.KeyHandler_instance) {
 			if (KeyHandler.field385 == KeyHandler.field396) {
 				return false;

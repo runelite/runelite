@@ -170,7 +170,7 @@ public class UrlRequest {
 					var14 = 100;
 				}
 
-				int var15 = (Client.field908 - Client.field906) * var14 / 100 + Client.field906;
+				int var15 = (Client.zoomWidth - Client.zoomHeight) * var14 / 100 + Client.zoomHeight;
 				int var13 = var15 * var11 / 256;
 				var16[var9] = var12 * var13 >> 16;
 			}

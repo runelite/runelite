@@ -658,12 +658,12 @@ public class RawPcmStream extends PcmStream {
 
 				this.field1479 += var2;
 				if (this.field1469 == 256 && (this.field1471 & 255) == 0) {
-					if (class169.isStereo) {
+					if (FileSystem.PcmPlayer_stereo) {
 						var2 = method2559(0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, this.field1481, this.field1468, 0, var6, var3, this);
 					} else {
 						var2 = method2586(((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, this.field1480, 0, var6, var3, this);
 					}
-				} else if (class169.isStereo) {
+				} else if (FileSystem.PcmPlayer_stereo) {
 					var2 = method2627(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, this.field1481, this.field1468, 0, var6, var3, this, this.field1469, var5);
 				} else {
 					var2 = method2633(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, this.field1480, 0, var6, var3, this, this.field1469, var5);
@@ -682,14 +682,14 @@ public class RawPcmStream extends PcmStream {
 			}
 
 			if (this.field1469 == 256 && (this.field1471 & 255) == 0) {
-				if (class169.isStereo) {
+				if (FileSystem.PcmPlayer_stereo) {
 					return method2551(0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, 0, var4, var3, this);
 				}
 
 				return method2550(((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, 0, var4, var3, this);
 			}
 
-			if (class169.isStereo) {
+			if (FileSystem.PcmPlayer_stereo) {
 				return method2555(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, 0, var4, var3, this, this.field1469, var5);
 			}
 
@@ -708,12 +708,12 @@ public class RawPcmStream extends PcmStream {
 
 				this.field1479 += var2;
 				if (this.field1469 == -256 && (this.field1471 & 255) == 0) {
-					if (class169.isStereo) {
+					if (FileSystem.PcmPlayer_stereo) {
 						var2 = method2561(0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, this.field1481, this.field1468, 0, var6, var3, this);
 					} else {
 						var2 = method2560(((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, this.field1480, 0, var6, var3, this);
 					}
-				} else if (class169.isStereo) {
+				} else if (FileSystem.PcmPlayer_stereo) {
 					var2 = method2605(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, this.field1481, this.field1468, 0, var6, var3, this, this.field1469, var5);
 				} else {
 					var2 = method2569(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, this.field1480, 0, var6, var3, this, this.field1469, var5);
@@ -732,14 +732,14 @@ public class RawPcmStream extends PcmStream {
 			}
 
 			if (this.field1469 == -256 && (this.field1471 & 255) == 0) {
-				if (class169.isStereo) {
+				if (FileSystem.PcmPlayer_stereo) {
 					return method2553(0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, 0, var4, var3, this);
 				}
 
 				return method2594(((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1472, 0, var4, var3, this);
 			}
 
-			if (class169.isStereo) {
+			if (FileSystem.PcmPlayer_stereo) {
 				return method2557(0, 0, ((RawSound)super.sound).samples, var1, this.field1471, var2, this.field1482, this.field1474, 0, var4, var3, this, this.field1469, var5);
 			}
 

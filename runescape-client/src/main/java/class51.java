@@ -21,7 +21,8 @@ public class class51 {
 		signature = "(II)Lip;",
 		garbageValue = "1884870915"
 	)
-	public static HealthBarDefinition method854(int var0) {
+	@Export("HealthBarDefinition_get")
+	public static HealthBarDefinition HealthBarDefinition_get(int var0) {
 		HealthBarDefinition var1 = (HealthBarDefinition)HealthBarDefinition.HealthBarDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;

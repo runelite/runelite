@@ -406,7 +406,7 @@ public class Decimator {
 					continue;
 				}
 
-				var95 = Projectile.getHitSplatDefinition(var0.hitSplatTypes[var77]);
+				var95 = Projectile.HitSplatDefinition_get(var0.hitSplatTypes[var77]);
 				var98 = var95.field3344;
 				if (var95 != null && var95.transforms != null) {
 					var95 = var95.transform();
@@ -422,7 +422,7 @@ public class Decimator {
 			var15 = var0.hitSplatTypes2[var77];
 			HitSplatDefinition var81 = null;
 			if (var15 >= 0) {
-				var81 = Projectile.getHitSplatDefinition(var15);
+				var81 = Projectile.HitSplatDefinition_get(var15);
 				if (var81 != null && var81.transforms != null) {
 					var81 = var81.transform();
 				}
@@ -808,12 +808,13 @@ public class Decimator {
 		signature = "(II)V",
 		garbageValue = "-1767057302"
 	)
-	static void method2510(int var0) {
+	@Export("saveTempMenuAction")
+	static void saveTempMenuAction(int var0) {
 		Client.tempMenuAction = new MenuAction();
 		Client.tempMenuAction.argument1 = Client.menuArguments1[var0];
 		Client.tempMenuAction.argument2 = Client.menuArguments2[var0];
 		Client.tempMenuAction.opcode = Client.menuOpcodes[var0];
-		Client.tempMenuAction.argument0 = Client.menuArguments0[var0];
+		Client.tempMenuAction.argument0 = Client.menuIdentifiers[var0];
 		Client.tempMenuAction.action = Client.menuActions[var0];
 	}
 }

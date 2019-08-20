@@ -49,8 +49,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import net.runelite.api.MenuOpcode;
+import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -89,8 +89,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
 
-	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
+	private static final Set<MenuOpcode> NPC_MENU_ACTIONS = ImmutableSet.of(MenuOpcode.NPC_FIRST_OPTION, MenuOpcode.NPC_SECOND_OPTION,
+		MenuOpcode.NPC_THIRD_OPTION, MenuOpcode.NPC_FOURTH_OPTION, MenuOpcode.NPC_FIFTH_OPTION);
 
 	@Inject
 	private Client client;
@@ -304,14 +304,14 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		if (this.highlightMenuNames &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
+			NPC_MENU_ACTIONS.contains(MenuOpcode.of(type)) &&
 			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
 		{
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
 			menuEntry.setTarget(target);
 			client.setMenuEntries(menuEntries);
 		}
-		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
+		else if (hotKeyPressed && type == MenuOpcode.EXAMINE_NPC.getId())
 		{
 			// Add tag option
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
@@ -321,14 +321,14 @@ public class NpcIndicatorsPlugin extends Plugin
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
 			tagEntry.setIdentifier(event.getIdentifier());
-			tagEntry.setType(MenuAction.RUNELITE.getId());
+			tagEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 			client.setMenuEntries(menuEntries);
 		}
 	}
 
 	private void onMenuOptionClicked(MenuOptionClicked click)
 	{
-		if (click.getMenuAction() != MenuAction.RUNELITE ||
+		if (click.getMenuOpcode() != MenuOpcode.RUNELITE ||
 			!(click.getOption().equals(TAG) || click.getOption().equals(UNTAG)))
 		{
 			return;

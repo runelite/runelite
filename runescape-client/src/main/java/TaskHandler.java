@@ -26,8 +26,8 @@ public class TaskHandler implements Runnable {
 	@ObfuscatedSignature(
 		signature = "Lfa;"
 	)
-	@Export("task0")
-	Task task0;
+	@Export("task")
+	Task task;
 	@ObfuscatedName("k")
 	@Export("thread")
 	Thread thread;
@@ -37,7 +37,7 @@ public class TaskHandler implements Runnable {
 
 	public TaskHandler() {
 		this.current = null;
-		this.task0 = null;
+		this.task = null;
 		this.isClosed = false;
 		javaVendor = "Unknown";
 		javaVersion = "1.6";
@@ -86,11 +86,11 @@ public class TaskHandler implements Runnable {
 		var5.intArgument = var2;
 		var5.objectArgument = var4;
 		synchronized(this) {
-			if (this.task0 != null) {
-				this.task0.next = var5;
-				this.task0 = var5;
+			if (this.task != null) {
+				this.task.next = var5;
+				this.task = var5;
 			} else {
-				this.task0 = this.current = var5;
+				this.task = this.current = var5;
 			}
 
 			this.notify();
@@ -131,7 +131,7 @@ public class TaskHandler implements Runnable {
 						var1 = this.current;
 						this.current = this.current.next;
 						if (this.current == null) {
-							this.task0 = null;
+							this.task = null;
 						}
 						break;
 					}

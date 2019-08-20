@@ -46,18 +46,18 @@ public class UserComparator3 extends AbstractUserComparator {
 	@Export("loadWorlds")
 	static boolean loadWorlds() {
 		try {
-			if (World.field1027 == null) {
-				World.field1027 = SequenceDefinition.urlRequester.request(new URL(WorldMapArea.field213));
-			} else if (World.field1027.isDone()) {
-				byte[] var0 = World.field1027.getResponse();
+			if (World.World_request == null) {
+				World.World_request = SequenceDefinition.urlRequester.request(new URL(WorldMapArea.field213));
+			} else if (World.World_request.isDone()) {
+				byte[] var0 = World.World_request.getResponse();
 				Buffer var1 = new Buffer(var0);
 				var1.readInt();
-				World.worldsCount = var1.readUnsignedShort();
-				World.worlds = new World[World.worldsCount];
+				World.World_count = var1.readUnsignedShort();
+				World.World_worlds = new World[World.World_count];
 
 				World var3;
-				for (int var2 = 0; var2 < World.worldsCount; var3.index = var2++) {
-					var3 = World.worlds[var2] = new World();
+				for (int var2 = 0; var2 < World.World_count; var3.index = var2++) {
+					var3 = World.World_worlds[var2] = new World();
 					var3.id = var1.readUnsignedShort();
 					var3.properties = var1.readInt();
 					var3.host = var1.readStringCp1252NullTerminated();
@@ -66,13 +66,13 @@ public class UserComparator3 extends AbstractUserComparator {
 					var3.population = var1.readShort();
 				}
 
-				Client.sortWorlds(World.worlds, 0, World.worlds.length - 1, World.sortOption1, World.sortOption2);
-				World.field1027 = null;
+				Client.sortWorlds(World.World_worlds, 0, World.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
+				World.World_request = null;
 				return true;
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
-			World.field1027 = null;
+			World.World_request = null;
 		}
 
 		return false;

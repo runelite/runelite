@@ -8,7 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("GrandExchangeOfferOwnWorldComparator")
 public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 	@ObfuscatedName("h")
-	public static String field647;
+	@Export("operatingSystemLC")
+	public static String operatingSystemLC;
 	@ObfuscatedName("dm")
 	@ObfuscatedSignature(
 		signature = "Liu;"
@@ -142,19 +143,20 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 		Object var22;
 		if (objectType == 22) {
-			if (!Client.isLowDetail || var8.int1 != 0 || var8.interactType == 1 || var8.boolean2) {
-				if (var8.animationId == -1 && var8.transforms == null) {
-					var22 = var8.getEntity(22, rotation, var15, var17, var16, var18);
-				} else {
-					var22 = new DynamicObject(objectID, 22, rotation, plane, x, y, var8.animationId, true, (Entity)null);
-				}
-
-				var6.newFloorDecoration(plane, x, y, var16, (Entity)var22, var19, var21);
-				if (var8.interactType == 1 && var7 != null) {
-					var7.method3562(x, y);
-				}
-
+			if (Client.isLowDetail && var8.int1 == 0 && var8.interactType != 1 && !var8.boolean2) {
+				return;
 			}
+			if (var8.animationId == -1 && var8.transforms == null) {
+				var22 = var8.getEntity(22, rotation, var15, var17, var16, var18);
+			} else {
+				var22 = new DynamicObject(objectID, 22, rotation, plane, x, y, var8.animationId, true, (Entity)null);
+			}
+
+			var6.newFloorDecoration(plane, x, y, var16, (Entity)var22, var19, var21);
+			if (var8.interactType == 1 && var7 != null) {
+				var7.setBlockedByFloorDec(x, y);
+			}
+
 		} else if (objectType == 10 || objectType == 11) {
 			if (var8.animationId == -1 && var8.transforms == null) {
 				var22 = var8.getEntity(10, rotation, var15, var17, var16, var18);
@@ -181,7 +183,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			}
 
 			if (var8.interactType != 0 && var7 != null) {
-				var7.method3560(x, y, var9, var10, var8.boolean1);
+				var7.addGameObject(x, y, var9, var10, var8.boolean1);
 			}
 
 		} else if (objectType >= 12) {
@@ -193,12 +195,11 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 			var6.method3076(plane, x, y, var16, 1, 1, (Entity) var22, 0, var19, var21);
 			if (objectType >= 12 && objectType <= 17 && objectType != 13 && plane > 0) {
-				int[] var10000 = FaceNormal.field1887[plane][x];
-				var10000[y] |= 2340;
+				FaceNormal.field1887[plane][x][y] |= 2340;
 			}
 
 			if (var8.interactType != 0 && var7 != null) {
-				var7.method3560(x, y, var9, var10, var8.boolean1);
+				var7.addGameObject(x, y, var9, var10, var8.boolean1);
 			}
 
 		} else if (objectType == 0) {
@@ -216,8 +217,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 				}
 
 				if (var8.modelClipped) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 585;
+					FaceNormal.field1887[plane][x][y] |= 585;
 				}
 			} else if (rotation == 1) {
 				if (var8.clipped) {
@@ -226,8 +226,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 				}
 
 				if (var8.modelClipped) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[1 + y] |= 1170;
+					FaceNormal.field1887[plane][x][1 + y] |= 1170;
 				}
 			} else if (rotation == 2) {
 				if (var8.clipped) {
@@ -236,8 +235,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 				}
 
 				if (var8.modelClipped) {
-					int[] var10000 = FaceNormal.field1887[plane][x + 1];
-					var10000[y] |= 585;
+					FaceNormal.field1887[plane][x + 1][y] |= 585;
 				}
 			} else if (rotation == 3) {
 				if (var8.clipped) {
@@ -246,8 +244,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 				}
 
 				if (var8.modelClipped) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 1170;
+					FaceNormal.field1887[plane][x][y] |= 1170;
 				}
 			}
 
@@ -298,25 +295,17 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			var6.newBoundaryObject(plane, x, y, var16, (Entity) var29, (Entity) var30, Tiles.field512[rotation], Tiles.field512[var28], var19, var21);
 			if (var8.modelClipped) {
 				if (rotation == 0) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 585;
-					var10000 = FaceNormal.field1887[plane][x];
-					var10000[y + 1] |= 1170;
+					FaceNormal.field1887[plane][x][y] |= 585;
+					FaceNormal.field1887[plane][x][y + 1] |= 1170;
 				} else if (rotation == 1) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[y + 1] |= 1170;
-					var10000 = FaceNormal.field1887[plane][x + 1];
-					var10000[y] |= 585;
+					FaceNormal.field1887[plane][x][y + 1] |= 1170;
+					FaceNormal.field1887[plane][x + 1][y] |= 585;
 				} else if (rotation == 2) {
-					int[] var10000 = FaceNormal.field1887[plane][x + 1];
-					var10000[y] |= 585;
-					var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 1170;
+					FaceNormal.field1887[plane][x + 1][y] |= 585;
+					FaceNormal.field1887[plane][x][y] |= 1170;
 				} else if (rotation == 3) {
-					int[] var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 1170;
-					var10000 = FaceNormal.field1887[plane][x];
-					var10000[y] |= 585;
+					FaceNormal.field1887[plane][x][y] |= 1170;
+					FaceNormal.field1887[plane][x][y] |= 585;
 				}
 			}
 
@@ -361,7 +350,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 			var6.method3076(plane, x, y, var16, 1, 1, (Entity) var22, 0, var19, var21);
 			if (var8.interactType != 0 && var7 != null) {
-				var7.method3560(x, y, var9, var10, var8.boolean1);
+				var7.addGameObject(x, y, var9, var10, var8.boolean1);
 			}
 
 			if (var8.int2 != 16) {
@@ -381,7 +370,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			long var31 = var6.getBoundaryObjectTag(plane, x, y);
 			Object var33;
 			if (var31 != 0L) {
-				var28 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var31)).int2;
+				var28 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var31)).int2;
 			}
 
 			if (var8.animationId == -1 && var8.transforms == null) {
@@ -396,7 +385,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			long var31 = var6.getBoundaryObjectTag(plane, x, y);
 			Object var33;
 			if (0L != var31) {
-				var28 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var31)).int2 / 2;
+				var28 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var31)).int2 / 2;
 			}
 
 			if (var8.animationId == -1 && var8.transforms == null) {
@@ -419,7 +408,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			int var28 = 8;
 			long var31 = var6.getBoundaryObjectTag(plane, x, y);
 			if (var31 != 0L) {
-				var28 = ViewportMouse.getObjectDefinition(class43.getObjectIdFromTag(var31)).int2 / 2;
+				var28 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var31)).int2 / 2;
 			}
 
 			int var27 = rotation + 2 & 3;

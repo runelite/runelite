@@ -36,7 +36,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -71,8 +71,8 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class DevToolsPlugin extends Plugin
 {
-	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-		MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+	private static final List<MenuOpcode> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuOpcode.EXAMINE_ITEM,
+		MenuOpcode.EXAMINE_ITEM_GROUND, MenuOpcode.EXAMINE_NPC, MenuOpcode.EXAMINE_OBJECT);
 
 	@Inject
 	private Client client;
@@ -379,7 +379,7 @@ public class DevToolsPlugin extends Plugin
 			return;
 		}
 
-		MenuAction action = MenuAction.of(event.getType());
+		MenuOpcode action = MenuOpcode.of(event.getType());
 
 		if (EXAMINE_MENU_ACTIONS.contains(action))
 		{
@@ -389,7 +389,7 @@ public class DevToolsPlugin extends Plugin
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";
 
-			if (action == MenuAction.EXAMINE_NPC)
+			if (action == MenuOpcode.EXAMINE_NPC)
 			{
 				NPC npc = client.getCachedNPCs()[identifier];
 				info += npc.getId();
@@ -398,7 +398,7 @@ public class DevToolsPlugin extends Plugin
 			{
 				info += identifier;
 
-				if (action == MenuAction.EXAMINE_OBJECT)
+				if (action == MenuOpcode.EXAMINE_OBJECT)
 				{
 					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
 					info += " X: " + point.getX() + " Y: " + point.getY();

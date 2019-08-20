@@ -83,8 +83,9 @@ public class ClanChat extends UserList {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "-1948396413"
 	)
-	final void method5231(String var1) {
-		this.name = VarcInt.method4403(var1);
+	@Export("readName")
+	final void readName(String var1) {
+		this.name = VarcInt.base37Decode(var1);
 	}
 
 	@ObfuscatedName("c")
@@ -92,8 +93,9 @@ public class ClanChat extends UserList {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "537403926"
 	)
-	final void method5232(String var1) {
-		this.owner = VarcInt.method4403(var1);
+	@Export("setOwner")
+	final void setOwner(String var1) {
+		this.owner = VarcInt.base37Decode(var1);
 	}
 
 	@ObfuscatedName("u")
@@ -103,24 +105,25 @@ public class ClanChat extends UserList {
 	)
 	@Export("readUpdate")
 	public final void readUpdate(Buffer var1) {
-		this.method5232(var1.readStringCp1252NullTerminated());
+		this.setOwner(var1.readStringCp1252NullTerminated());
 		long var2 = var1.readLong();
-		this.method5231(Tile.method2855(var2));
+		this.readName(Tile.method2855(var2));
 		this.minKick = var1.readByte();
 		int var4 = var1.readUnsignedByte();
-		if (var4 != 255) {
-			this.clear();
-
-			for (int var5 = 0; var5 < var4; ++var5) {
-				ClanMate var6 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
-				int var7 = var1.readUnsignedShort();
-				var6.set(var7, ++this.field3659 - 1);
-				var6.rank = var1.readByte();
-				var1.readStringCp1252NullTerminated();
-				this.isLocalPlayer(var6);
-			}
-
+		if (var4 == 255) {
+			return;
 		}
+		this.clear();
+
+		for (int var5 = 0; var5 < var4; ++var5) {
+			ClanMate var6 = (ClanMate)this.addLastNoPreviousUsername(new Username(var1.readStringCp1252NullTerminated(), this.loginType));
+			int var7 = var1.readUnsignedShort();
+			var6.set(var7, ++this.field3659 - 1);
+			var6.rank = var1.readByte();
+			var1.readStringCp1252NullTerminated();
+			this.isLocalPlayer(var6);
+		}
+
 	}
 
 	@ObfuscatedName("ct")
@@ -183,8 +186,8 @@ public class ClanChat extends UserList {
 		signature = "(I)V",
 		garbageValue = "17638925"
 	)
-	@Export("clearIgnoreds")
-	public final void clearIgnoreds() {
+	@Export("invalidateIgnoreds")
+	public final void invalidateIgnoreds() {
 		for (int var1 = 0; var1 < this.getSize(); ++var1) {
 			((ClanMate)this.get(var1)).clearIsIgnored();
 		}

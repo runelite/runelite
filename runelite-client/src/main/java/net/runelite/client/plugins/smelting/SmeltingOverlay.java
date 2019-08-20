@@ -34,7 +34,7 @@ import javax.inject.Singleton;
 import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
 import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;

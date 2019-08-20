@@ -45,7 +45,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -508,14 +508,14 @@ public class XpTrackerPlugin extends Plugin
 		menuEntry.setOption(hasOverlay(skill) ? MENUOP_REMOVE_CANVAS_TRACKER : MENUOP_ADD_CANVAS_TRACKER);
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
+		menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 
 		client.setMenuEntries(menuEntries);
 	}
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId()
+		if (event.getMenuOpcode().getId() != MenuOpcode.RUNELITE.getId()
 			|| TO_GROUP(event.getActionParam1()) != WidgetID.SKILLS_GROUP_ID)
 		{
 			return;

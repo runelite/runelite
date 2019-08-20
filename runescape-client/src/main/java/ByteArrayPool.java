@@ -52,8 +52,8 @@ public class ByteArrayPool {
 		signature = "(IZB)[B",
 		garbageValue = "58"
 	)
-	@Export("ByteArrayPool_get")
-	static synchronized byte[] ByteArrayPool_get(int var0, boolean var1) {
+	@Export("ByteArrayPool_getArrayBool")
+	static synchronized byte[] ByteArrayPool_getArrayBool(int var0, boolean var1) {
 		byte[] var2;
 		if (var0 != 100) {
 			if (var0 < 100) {

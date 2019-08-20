@@ -707,13 +707,12 @@ public class class40 {
 			class188.insertMenuItemNoShift(var0.buttonText, "", 30, 0, -1, var0.id);
 		}
 
-		int var4;
-		int var13;
-		if (var0.type == 2) {
-			var13 = 0;
 
-			for (var4 = 0; var4 < var0.height; ++var4) {
-				for (int var5 = 0; var5 < var0.width; ++var5) {
+		if (var0.type == 2) {
+			int var13 = 0;
+
+			for (int var4 = 0; var4 < var0.height; ++var4) {
+				for (int var5 = 0; var5 < var0.width; ++var5, ++var13) {
 					int var6 = (var0.paddingX + 32) * var5;
 					int var7 = (var0.paddingY + 32) * var4;
 					if (var13 < 20) {
@@ -721,124 +720,127 @@ public class class40 {
 						var7 += var0.inventoryYOffsets[var13];
 					}
 
-					if (var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
-						Client.dragItemSlotDestination = var13;
-						class294.field3697 = var0;
-						if (var0.itemIds[var13] > 0) {
-							ItemDefinition var8 = WorldMapArea.getItemDefinition(var0.itemIds[var13] - 1);
-							if (Client.isItemSelected == 1 && Script.method2185(class268.getWidgetClickMask(var0))) {
-								if (var0.id != MouseRecorder.selectedItemWidget || var13 != WorldMapIcon_1.selectedItemSlot) {
-									class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(16748608) + var8.name, 31, var8.id, var13, var0.id);
-								}
-							} else if (Client.isSpellSelected && Script.method2185(class268.getWidgetClickMask(var0))) {
-								if ((WorldMapCacheName.selectedSpellFlags & 16) == 16) {
-									class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(16748608) + var8.name, 32, var8.id, var13, var0.id);
-								}
-							} else {
-								String[] var9 = var8.inventoryActions;
-								int var10 = -1;
-								if (Client.shiftClickDrop) {
-									boolean var11 = Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
-									if (var11) {
-										var10 = var8.getShiftClickIndex();
-									}
-								}
+					if (var1 < var6 || var2 < var7 || var1 >= var6 + 32 || var2 >= var7 + 32) {
+						continue;
+					}
+					Client.dragItemSlotDestination = var13;
+					class294.field3697 = var0;
+					if (var0.itemIds[var13] <= 0) {
+						continue;
+					}
+					ItemDefinition var8 = WorldMapArea.ItemDefinition_get(var0.itemIds[var13] - 1);
+					if (Client.isItemSelected == 1 && Script.method2185(class268.getWidgetClickMask(var0))) {
+						if (var0.id != MouseRecorder.selectedItemWidget || var13 != WorldMapIcon_1.selectedItemSlot) {
+							class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(0xff9040) + var8.name, 31, var8.id, var13, var0.id);
+						}
+						continue;
+					}
+					if (Client.isSpellSelected && Script.method2185(class268.getWidgetClickMask(var0))) {
+						if ((WorldMapCacheName.selectedSpellFlags & 16) == 16) {
+							class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(0xff9040) + var8.name, 32, var8.id, var13, var0.id);
+						}
+						continue;
+					}
+					String[] var9 = var8.inventoryActions;
+					int var10 = -1;
+					if (Client.shiftClickDrop) {
+						boolean var11 = Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
+						if (var11) {
+							var10 = var8.getShiftClickIndex();
+						}
+					}
 
-								int var16;
-								if (Script.method2185(class268.getWidgetClickMask(var0))) {
-									for (var16 = 4; var16 >= 3; --var16) {
-										if (var16 != var10) {
-											WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
-										}
-									}
-								}
-
-								if (class195.method3685(class268.getWidgetClickMask(var0))) {
-									class188.insertMenuItemNoShift("Use", ClientPreferences.colorStartTag(16748608) + var8.name, 38, var8.id, var13, var0.id);
-								}
-
-								if (Script.method2185(class268.getWidgetClickMask(var0))) {
-									for (var16 = 2; var16 >= 0; --var16) {
-										if (var10 != var16) {
-											WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
-										}
-									}
-
-									if (var10 >= 0) {
-										WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var10, true);
-									}
-								}
-
-								var9 = var0.itemActions;
-								if (var9 != null) {
-									for (var16 = 4; var16 >= 0; --var16) {
-										if (var9[var16] != null) {
-											byte var12 = 0;
-											if (var16 == 0) {
-												var12 = 39;
-											}
-
-											if (var16 == 1) {
-												var12 = 40;
-											}
-
-											if (var16 == 2) {
-												var12 = 41;
-											}
-
-											if (var16 == 3) {
-												var12 = 42;
-											}
-
-											if (var16 == 4) {
-												var12 = 43;
-											}
-
-											class188.insertMenuItemNoShift(var9[var16], ClientPreferences.colorStartTag(16748608) + var8.name, var12, var8.id, var13, var0.id);
-										}
-									}
-								}
-
-								class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(16748608) + var8.name, 1005, var8.id, var13, var0.id);
+					int var16;
+					if (Script.method2185(class268.getWidgetClickMask(var0))) {
+						for (var16 = 4; var16 >= 3; --var16) {
+							if (var16 != var10) {
+								WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
 							}
 						}
 					}
 
-					++var13;
+					if (class195.method3685(class268.getWidgetClickMask(var0))) {
+						class188.insertMenuItemNoShift("Use", ClientPreferences.colorStartTag(0xff9040) + var8.name, 38, var8.id, var13, var0.id);
+					}
+
+					if (Script.method2185(class268.getWidgetClickMask(var0))) {
+						for (var16 = 2; var16 >= 0; --var16) {
+							if (var10 != var16) {
+								WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var16, false);
+							}
+						}
+
+						if (var10 >= 0) {
+							WorldMapRectangle.addWidgetItemMenuItem(var0, var8, var13, var10, true);
+						}
+					}
+
+					var9 = var0.itemActions;
+					if (var9 != null) {
+						for (var16 = 4; var16 >= 0; --var16) {
+							if (var9[var16] == null) {
+								continue;
+							}
+							byte var12 = 0;
+							if (var16 == 0) {
+								var12 = 39;
+							}
+
+							if (var16 == 1) {
+								var12 = 40;
+							}
+
+							if (var16 == 2) {
+								var12 = 41;
+							}
+
+							if (var16 == 3) {
+								var12 = 42;
+							}
+
+							if (var16 == 4) {
+								var12 = 43;
+							}
+
+							class188.insertMenuItemNoShift(var9[var16], ClientPreferences.colorStartTag(0xff9040) + var8.name, var12, var8.id, var13, var0.id);
+						}
+					}
+
+					class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(0xff9040) + var8.name, 1005, var8.id, var13, var0.id);
 				}
 			}
 		}
 
-		if (var0.isIf3) {
-			if (Client.isSpellSelected) {
-				if (class96.method2266(class268.getWidgetClickMask(var0)) && (WorldMapCacheName.selectedSpellFlags & 32) == 32) {
-					class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
-				}
-			} else {
-				for (var13 = 9; var13 >= 5; --var13) {
-					String var14 = UserComparator10.method3407(var0, var13);
-					if (var14 != null) {
-						class188.insertMenuItemNoShift(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
-					}
-				}
-
-				var3 = FontName.method5318(var0);
-				if (var3 != null) {
-					class188.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
-				}
-
-				for (var4 = 4; var4 >= 0; --var4) {
-					String var15 = UserComparator10.method3407(var0, var4);
-					if (var15 != null) {
-						Entity.insertMenuItem(var15, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.field2691);
-					}
-				}
-
-				if (InterfaceParent.method1119(class268.getWidgetClickMask(var0))) {
-					class188.insertMenuItemNoShift("Continue", "", 30, 0, var0.childIndex, var0.id);
-				}
+		if (!var0.isIf3) {
+			return;
+		}
+		if (Client.isSpellSelected) {
+			if (class96.method2266(class268.getWidgetClickMask(var0)) && (WorldMapCacheName.selectedSpellFlags & 32) == 32) {
+				class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
+			}
+			return;
+		}
+		for (int var13 = 9; var13 >= 5; --var13) {
+			String var14 = UserComparator10.method3407(var0, var13);
+			if (var14 != null) {
+				class188.insertMenuItemNoShift(var14, var0.dataText, 1007, var13 + 1, var0.childIndex, var0.id);
 			}
 		}
 
+		var3 = FontName.method5318(var0);
+		if (var3 != null) {
+			class188.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
+		}
+
+		for (int var4 = 4; var4 >= 0; --var4) {
+			String var15 = UserComparator10.method3407(var0, var4);
+			if (var15 != null) {
+				Entity.insertMenuItem(var15, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.field2691);
+			}
+		}
+
+		if (InterfaceParent.method1119(class268.getWidgetClickMask(var0))) {
+			class188.insertMenuItemNoShift("Continue", "", 30, 0, var0.childIndex, var0.id);
+		}
 	}
 }

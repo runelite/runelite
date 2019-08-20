@@ -148,12 +148,14 @@ public class NPCDefinition extends DualNode {
 	@ObfuscatedGetter(
 		intValue = -1025761835
 	)
-	int field3489;
+	@Export("ambient")
+	int ambient;
 	@ObfuscatedName("av")
 	@ObfuscatedGetter(
 		intValue = -704573687
 	)
-	int field3477;
+	@Export("contrast")
+	int contrast;
 	@ObfuscatedName("as")
 	@ObfuscatedGetter(
 		intValue = -958294189
@@ -164,7 +166,8 @@ public class NPCDefinition extends DualNode {
 	@ObfuscatedGetter(
 		intValue = 648485331
 	)
-	public int field3492;
+	@Export("rotation")
+	public int rotation;
 	@ObfuscatedName("ad")
 	@Export("transforms")
 	public int[] transforms;
@@ -217,10 +220,10 @@ public class NPCDefinition extends DualNode {
 		this.widthScale = 128;
 		this.heightScale = 128;
 		this.isVisible = false;
-		this.field3489 = 0;
-		this.field3477 = 0;
+		this.ambient = 0;
+		this.contrast = 0;
 		this.headIconPrayer = -1;
-		this.field3492 = 32;
+		this.rotation = 32;
 		this.transformVarbit = -1;
 		this.transformVarp = -1;
 		this.isInteractable = true;
@@ -328,13 +331,13 @@ public class NPCDefinition extends DualNode {
 		} else if (var2 == 99) {
 			this.isVisible = true;
 		} else if (var2 == 100) {
-			this.field3489 = var1.readByte();
+			this.ambient = var1.readByte();
 		} else if (var2 == 101) {
-			this.field3477 = var1.readByte() * 5;
+			this.contrast = var1.readByte() * 5;
 		} else if (var2 == 102) {
 			this.headIconPrayer = var1.readUnsignedShort();
 		} else if (var2 == 103) {
-			this.field3492 = var1.readUnsignedShort();
+			this.rotation = var1.readUnsignedShort();
 		} else if (var2 != 106 && var2 != 118) {
 			if (var2 == 107) {
 				this.isInteractable = false;
@@ -347,19 +350,19 @@ public class NPCDefinition extends DualNode {
 			}
 		} else {
 			this.transformVarbit = var1.readUnsignedShort();
-			if (this.transformVarbit == 65535) {
+			if (this.transformVarbit == 0xffff) {
 				this.transformVarbit = -1;
 			}
 
 			this.transformVarp = var1.readUnsignedShort();
-			if (this.transformVarp == 65535) {
+			if (this.transformVarp == 0xffff) {
 				this.transformVarp = -1;
 			}
 
 			var3 = -1;
 			if (var2 == 118) {
 				var3 = var1.readUnsignedShort();
-				if (var3 == 65535) {
+				if (var3 == 0xffff) {
 					var3 = -1;
 				}
 			}
@@ -369,7 +372,7 @@ public class NPCDefinition extends DualNode {
 
 			for (int var5 = 0; var5 <= var4; ++var5) {
 				this.transforms[var5] = var1.readUnsignedShort();
-				if (this.transforms[var5] == 65535) {
+				if (this.transforms[var5] == 0xffff) {
 					this.transforms[var5] = -1;
 				}
 			}
@@ -408,7 +411,7 @@ public class NPCDefinition extends DualNode {
 
 			int var9;
 			for (var9 = 0; var9 < this.models.length; ++var9) {
-				var8[var9] = ModelData.method2769(NpcDefinition_modelArchive, this.models[var9], 0);
+				var8[var9] = ModelData.ModelData_get(NpcDefinition_modelArchive, this.models[var9], 0);
 			}
 
 			ModelData var11;
@@ -430,7 +433,7 @@ public class NPCDefinition extends DualNode {
 				}
 			}
 
-			var5 = var11.toModel(this.field3489 + 64, this.field3477 + 850, -30, -50, -30);
+			var5 = var11.toModel(this.ambient + 64, this.contrast + 850, -30, -50, -30);
 			NpcDefinition_cachedModels.put(var5, (long)this.id);
 		}
 
@@ -480,7 +483,7 @@ public class NPCDefinition extends DualNode {
 		ModelData[] var6 = new ModelData[this.field3463.length];
 
 		for (int var3 = 0; var3 < this.field3463.length; ++var3) {
-			var6[var3] = ModelData.method2769(NpcDefinition_modelArchive, this.field3463[var3], 0);
+			var6[var3] = ModelData.ModelData_get(NpcDefinition_modelArchive, this.field3463[var3], 0);
 		}
 
 		ModelData var7;
@@ -561,19 +564,14 @@ public class NPCDefinition extends DualNode {
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
 		IterableNodeHashTable var4 = this.params;
-		int var3;
 		if (var4 == null) {
-			var3 = var2;
-		} else {
-			IntegerNode var5 = (IntegerNode)var4.get((long)var1);
-			if (var5 == null) {
-				var3 = var2;
-			} else {
-				var3 = var5.integer;
-			}
+			return var2;
 		}
-
-		return var3;
+		IntegerNode var5 = (IntegerNode)var4.get((long)var1);
+		if (var5 == null) {
+			return var2;
+		}
+		return var5.integer;
 	}
 
 	@ObfuscatedName("x")

@@ -63,30 +63,25 @@ public final class ArchiveDisk {
 	public byte[] read(int var1) {
 		synchronized(this.datFile) {
 			try {
-				Object var10000;
 				if (this.idxFile.length() < (long)(var1 * 6 + 6)) {
-					var10000 = null;
-					return (byte[])var10000;
+					return null;
 				}
 				this.idxFile.seek((long)(var1 * 6));
 				this.idxFile.read(ArchiveDisk_buffer, 0, 6);
 				int var3 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
 				int var4 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
 				if (var3 < 0 || var3 > this.maxEntrySize) {
-					var10000 = null;
-					return (byte[])var10000;
+					return null;
 				}
 				if (var4 <= 0 || (long)var4 > this.datFile.length() / 520L) {
-					var10000 = null;
-					return (byte[])var10000;
+					return null;
 				}
 				byte[] var5 = new byte[var3];
 				int var6 = 0;
 
 				for (int var7 = 0; var6 < var3; ++var7) {
 					if (var4 == 0) {
-						var10000 = null;
-						return (byte[])var10000;
+						return null;
 					}
 
 					this.datFile.seek(520L * (long)var4);
@@ -96,7 +91,7 @@ public final class ArchiveDisk {
 					int var11;
 					int var12;
 					byte var13;
-					if (var1 > 65535) {
+					if (var1 > 0xffff) {
 						if (var8 > 510) {
 							var8 = 510;
 						}
@@ -121,13 +116,11 @@ public final class ArchiveDisk {
 					}
 
 					if (var9 != var1 || var7 != var10 || var12 != this.archive) {
-						var10000 = null;
-						return (byte[])var10000;
+						return null;
 					}
 
 					if (var11 < 0 || (long)var11 > this.datFile.length() / 520L) {
-						var10000 = null;
-						return (byte[])var10000;
+						return null;
 					}
 
 					int var14 = var8 + var13;
@@ -155,15 +148,15 @@ public final class ArchiveDisk {
 	@Export("write")
 	public boolean write(int var1, byte[] var2, int var3) {
 		synchronized(this.datFile) {
-			if (var3 >= 0 && var3 <= this.maxEntrySize) {
-				boolean var5 = this.write0(var1, var2, var3, true);
-				if (!var5) {
-					var5 = this.write0(var1, var2, var3, false);
-				}
-
-				return var5;
+			if (var3 < 0 || var3 > this.maxEntrySize) {
+				throw new IllegalArgumentException("" + this.archive + ',' + var1 + ',' + var3);
 			}
-			throw new IllegalArgumentException("" + this.archive + ',' + var1 + ',' + var3);
+			boolean var5 = this.write0(var1, var2, var3, true);
+			if (!var5) {
+				var5 = this.write0(var1, var2, var3, false);
+			}
+
+			return var5;
 		}
 	}
 
@@ -177,19 +170,16 @@ public final class ArchiveDisk {
 		synchronized(this.datFile) {
 			try {
 				int var6;
-				boolean var10000;
 				if (var4) {
 					if (this.idxFile.length() < (long)(var1 * 6 + 6)) {
-						var10000 = false;
-						return var10000;
+						return false;
 					}
 
 					this.idxFile.seek((long)(var1 * 6));
 					this.idxFile.read(ArchiveDisk_buffer, 0, 6);
 					var6 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
 					if (var6 <= 0 || (long)var6 > this.datFile.length() / 520L) {
-						var10000 = false;
-						return var10000;
+						return false;
 					}
 				} else {
 					var6 = (int)((this.datFile.length() + 519L) / 520L);
@@ -209,8 +199,7 @@ public final class ArchiveDisk {
 				int var7 = 0;
 				int var8 = 0;
 
-				while (true) {
-					if (var7 < var3) {
+				while (var7 < var3) {
 						label171: {
 							int var9 = 0;
 							int var10;
@@ -218,11 +207,11 @@ public final class ArchiveDisk {
 								this.datFile.seek((long)var6 * 520L);
 								int var11;
 								int var12;
-								if (var1 > 65535) {
+								if (var1 > 0xffff) {
 									try {
 										this.datFile.read(ArchiveDisk_buffer, 0, 10);
 									} catch (EOFException var17) {
-										break label171;
+										continue;
 									}
 
 									var10 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
@@ -243,13 +232,11 @@ public final class ArchiveDisk {
 								}
 
 								if (var10 != var1 || var8 != var11 || var12 != this.archive) {
-									var10000 = false;
-									return var10000;
+									return false;
 								}
 
 								if (var9 < 0 || (long)var9 > this.datFile.length() / 520L) {
-									var10000 = false;
-									return var10000;
+									return false;
 								}
 							}
 
@@ -265,7 +252,7 @@ public final class ArchiveDisk {
 								}
 							}
 
-							if (var1 > 65535) {
+							if (var1 > 0xffff) {
 								if (var3 - var7 <= 510) {
 									var9 = 0;
 								}
@@ -319,9 +306,7 @@ public final class ArchiveDisk {
 						}
 					}
 
-					var10000 = true;
-					return var10000;
-				}
+					return true;
 			} catch (IOException var18) {
 				return false;
 			}
@@ -337,13 +322,13 @@ public final class ArchiveDisk {
 		signature = "(Ljava/lang/Object;ZI)[B",
 		garbageValue = "991854443"
 	)
-	@Export("byteArrayFromObject")
-	public static byte[] byteArrayFromObject(Object var0, boolean var1) {
+	@Export("serialize")
+	public static byte[] serialize(Object var0, boolean var1) {
 		if (var0 == null) {
 			return null;
 		}
 		if (var0 instanceof byte[]) {
-			byte[] var6 = (byte[])((byte[])var0);
+			byte[] var6 = ((byte[]) var0);
 			if (var1) {
 				int var4 = var6.length;
 				byte[] var5 = new byte[var4];
@@ -352,10 +337,10 @@ public final class ArchiveDisk {
 			}
 			return var6;
 		}
-		if (var0 instanceof AbstractByteArrayCopier) {
-			AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
-			return var2.get();
+		if (!(var0 instanceof AbstractByteArrayCopier)) {
+			throw new IllegalArgumentException();
 		}
-		throw new IllegalArgumentException();
+		AbstractByteArrayCopier var2 = (AbstractByteArrayCopier) var0;
+		return var2.get();
 	}
 }
