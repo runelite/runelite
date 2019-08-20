@@ -86,7 +86,7 @@ class FishingSpotOverlay extends Overlay
 		WorldPoint previousLocation = null;
 		for (NPC npc : plugin.getFishingSpots())
 		{
-			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+			FishingSpot spot = FishingSpot.findSpot(npc.getId());
 
 			if (spot == null)
 			{
