@@ -68,9 +68,8 @@ public class RuneLiteAPI
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final String MAVEN_METADATA =
 		"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
-	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final Properties properties = new Properties();
-	private static String userAgent;
+	private static String rlUserAgent;
 	private static String rlpUserAgent;
 
 	static
@@ -80,15 +79,15 @@ public class RuneLiteAPI
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
-			parseMavenVersion();
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
-			String commit = randomAlphaNumeric(7);
+			version = properties.getProperty("runelite.version");
 			String rlpCommit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
-			version = properties.getProperty("runelite.version");
 
-			userAgent = "RuneLite/" + upstreamVersion + "-" + commit + (dirty ? "+" : "");
 			rlpUserAgent = "RuneLitePlus/" + version + "-" + rlpCommit + (dirty ? "+" : "");
+			rlUserAgent = "RuneLitePlus/" + version;
+			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+
+			parseMavenVersion();
 		}
 		catch (NumberFormatException e)
 		{
@@ -111,7 +110,7 @@ public class RuneLiteAPI
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
-						.header("User-Agent", userAgent)
+						.header("User-Agent", rlUserAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
@@ -135,18 +134,6 @@ public class RuneLiteAPI
 				}
 			})
 			.build();
-	}
-
-	public static HttpUrl getSessionBase()
-	{
-		final String prop = System.getProperty("runelite.session.url");
-
-		if (prop != null && !prop.isEmpty())
-		{
-			return HttpUrl.parse(prop);
-		}
-
-		return HttpUrl.parse(BASE + "/session");
 	}
 
 	public static HttpUrl getRuneLitePlusSessionBase()
@@ -219,7 +206,7 @@ public class RuneLiteAPI
 			byte[] chunk = new byte[4096];
 			int bytesRead;
 			URLConnection conn = toDownload.openConnection();
-			conn.setRequestProperty("User-Agent", toDownload.getHost().contains("runelite") ? randomAlphaNumeric(8) : "runelite-extended");
+			conn.setRequestProperty("User-Agent", rlpUserAgent);
 			stream = conn.getInputStream();
 
 			while ((bytesRead = stream.read(chunk)) > 0)
@@ -260,16 +247,5 @@ public class RuneLiteAPI
 		{
 			logger.error(null, ex);
 		}
-	}
-
-	private static String randomAlphaNumeric(int count)
-	{
-		StringBuilder builder = new StringBuilder();
-		while (count-- != 0)
-		{
-			int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
-			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
-		}
-		return builder.toString();
 	}
 }
