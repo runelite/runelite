@@ -188,7 +188,7 @@ public class RunEnergyPlugin extends Plugin
 		// Return the text
 		if (inSeconds)
 		{
-			return Math.floor(secondsLeft) + "s";
+			return (int) Math.floor(secondsLeft) + "s";
 		}
 		else
 		{
