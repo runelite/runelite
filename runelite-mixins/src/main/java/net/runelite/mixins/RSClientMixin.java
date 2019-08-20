@@ -472,6 +472,13 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public void setGameState(GameState gameState)
+	{
+		client.setGameState(gameState.getState());
+	}
+
+	@Inject
+	@Override
 	public Point getMouseCanvasPosition()
 	{
 		return new Point(getMouseX(), getMouseY());
