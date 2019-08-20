@@ -40,6 +40,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -81,6 +82,8 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
+		FishingSpot previousSpot = null;
+		WorldPoint previousLocation = null;
 		for (NPC npc : plugin.getFishingSpots())
 		{
 			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
@@ -91,6 +94,12 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			if (config.onlyCurrentSpot() && plugin.getCurrentSpot() != null && plugin.getCurrentSpot() != spot)
+			{
+				continue;
+			}
+
+			// This relies on the sort order to keep identical npcs on the same tile adjacent to each other
+			if (previousSpot == spot && previousLocation.equals(npc.getWorldLocation()))
 			{
 				continue;
 			}
@@ -175,6 +184,9 @@ class FishingSpotOverlay extends Overlay
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
 				}
 			}
+
+			previousSpot = spot;
+			previousLocation = npc.getWorldLocation();
 		}
 
 		return null;
