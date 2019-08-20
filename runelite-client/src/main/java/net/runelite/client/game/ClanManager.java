@@ -52,7 +52,7 @@ import net.runelite.client.util.Text;
 @Singleton
 public class ClanManager
 {
-	private static final int[] CLANCHAT_IMAGES =
+	private static final int[] CLAN_CHAT_IMAGES =
 		{
 			SpriteID.CLAN_CHAT_RANK_SMILEY_FRIEND,
 			SpriteID.CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT,
@@ -64,12 +64,12 @@ public class ClanManager
 			SpriteID.CLAN_CHAT_RANK_KEY_CHANNEL_OWNER,
 			SpriteID.CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR,
 		};
-	private static final Dimension CLANCHAT_IMAGE_DIMENSION = new Dimension(11, 11);
-	private static final Color CLANCHAT_IMAGE_OUTLINE_COLOR = new Color(33, 33, 33);
+	private static final Dimension CLAN_CHAT_IMAGE_DIMENSION = new Dimension(11, 11);
+	private static final Color CLAN_CHAT_IMAGE_OUTLINE_COLOR = new Color(33, 33, 33);
 
 	private final Client client;
 	private final SpriteManager spriteManager;
-	private final BufferedImage[] clanChatImages = new BufferedImage[CLANCHAT_IMAGES.length];
+	private final BufferedImage[] clanChatImages = new BufferedImage[CLAN_CHAT_IMAGES.length];
 
 	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
 		.maximumSize(100)
@@ -150,17 +150,17 @@ public class ClanManager
 				new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
 				client);
 
-			modIcons = Arrays.copyOf(modIcons, offset + CLANCHAT_IMAGES.length);
+			modIcons = Arrays.copyOf(modIcons, offset + CLAN_CHAT_IMAGES.length);
 			Arrays.fill(modIcons, offset, modIcons.length, blank);
 
 			client.setModIcons(modIcons);
 		}
 
-		for (int i = 0; i < CLANCHAT_IMAGES.length; i++)
+		for (int i = 0; i < CLAN_CHAT_IMAGES.length; i++)
 		{
 			final int fi = i;
 
-			spriteManager.getSpriteAsync(CLANCHAT_IMAGES[i], 0, sprite ->
+			spriteManager.getSpriteAsync(CLAN_CHAT_IMAGES[i], 0, sprite ->
 			{
 				IndexedSprite[] modIcons = client.getModIcons();
 				clanChatImages[fi] = clanChatImageFromSprite(sprite);
@@ -177,7 +177,7 @@ public class ClanManager
 
 	private static BufferedImage clanChatImageFromSprite(final BufferedImage clanSprite)
 	{
-		final BufferedImage clanChatCanvas = ImageUtil.resizeCanvas(clanSprite, CLANCHAT_IMAGE_DIMENSION.width, CLANCHAT_IMAGE_DIMENSION.height);
-		return ImageUtil.outlineImage(clanChatCanvas, CLANCHAT_IMAGE_OUTLINE_COLOR);
+		final BufferedImage clanChatCanvas = ImageUtil.resizeCanvas(clanSprite, CLAN_CHAT_IMAGE_DIMENSION.width, CLAN_CHAT_IMAGE_DIMENSION.height);
+		return ImageUtil.outlineImage(clanChatCanvas, CLAN_CHAT_IMAGE_OUTLINE_COLOR);
 	}
 }

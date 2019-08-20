@@ -188,14 +188,14 @@ public class RunEnergyPlugin extends Plugin
 		// Return the text
 		if (inSeconds)
 		{
-			return Integer.toString((int) Math.floor(secondsLeft)) + "s";
+			return Math.floor(secondsLeft) + "s";
 		}
 		else
 		{
 			final int minutes = (int) Math.floor(secondsLeft / 60.0);
 			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 
-			return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+			return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
 		}
 	}
 

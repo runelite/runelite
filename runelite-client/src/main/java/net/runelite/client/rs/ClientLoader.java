@@ -294,7 +294,7 @@ public class ClientLoader implements Supplier<Applet>
 				@Override
 				protected Class<?> findClass(String name) throws ClassNotFoundException
 				{
-					String path = name.replace('.', '/').concat(".class");
+					String path = name.replace('.', '/') + ".class";
 					byte[] data = zipFile.get(path);
 					if (data == null)
 					{

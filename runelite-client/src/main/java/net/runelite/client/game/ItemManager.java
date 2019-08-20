@@ -394,7 +394,7 @@ public class ItemManager
 	/**
 	 * Loads item sprite from game, makes transparent, and generates image
 	 *
-	 * @param itemId
+	 * @param itemId item id
 	 * @return
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
@@ -426,7 +426,7 @@ public class ItemManager
 	 * The image will be filled in later. If this is used for a UI label/button, it should be added
 	 * using AsyncBufferedImage::addTo to ensure it is painted properly
 	 *
-	 * @param itemId
+	 * @param itemId item id
 	 * @return
 	 */
 	public AsyncBufferedImage getImage(int itemId)
@@ -441,8 +441,9 @@ public class ItemManager
 	 * The image will be filled in later. If this is used for a UI label/button, it should be added
 	 * using AsyncBufferedImage::addTo to ensure it is painted properly
 	 *
-	 * @param itemId
+	 * @param itemId item id
 	 * @param quantity
+	 * @param stackable
 	 * @return
 	 */
 	public AsyncBufferedImage getImage(int itemId, int quantity, boolean stackable)
