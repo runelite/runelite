@@ -95,7 +95,19 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+			Color color;
+			if (npc.getGraphic() == GraphicID.FLYING_FISH)
+			{
+				color = Color.RED;
+			}
+			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+			{
+				color = Color.GREEN;
+			}
+			else
+			{
+				color = Color.CYAN;
+			}
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
@@ -127,12 +139,6 @@ class FishingSpotOverlay extends Overlay
 			{
 				Polygon poly = npc.getCanvasTilePoly();
 
-				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
-				{
-					color = Color.GREEN;
-				}
-
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
@@ -163,12 +169,6 @@ class FishingSpotOverlay extends Overlay
 			{
 				String text = spot.getName();
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
-
-				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
-				{
-					color = Color.GREEN;
-				}
 
 				if (textLocation != null)
 				{
