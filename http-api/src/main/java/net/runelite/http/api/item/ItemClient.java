@@ -208,8 +208,7 @@ public class ItemClient
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
 			.addPathSegment("item")
-			// TODO: Change this to stats.min.json later after release is undeployed
-			.addPathSegment("stats.ids.min.json");
+			.addPathSegment("stats.min.json");
 
 		HttpUrl url = urlBuilder.build();
 
