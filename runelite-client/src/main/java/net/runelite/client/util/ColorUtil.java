@@ -75,10 +75,10 @@ public class ColorUtil
 	}
 
 	/**
-	 * Converts a given color to it's hexidecimal equivalent.
+	 * Converts a given color to it's hexadecimal equivalent.
 	 *
-	 * @param color Color to get hexidecimal string from.
-	 * @return      Hexidecimal string representing the given color, in the form "#abcdef".
+	 * @param color Color to get hexadecimal string from.
+	 * @return      Hexadecimal string representing the given color, in the form "#abcdef".
 	 */
 	public static String toHexColor(final Color color)
 	{
