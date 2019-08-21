@@ -255,7 +255,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 			keyName = "infoBoxSplitBoosts",
 			name = "Separate boosts infoboxes",
-			description = "Puts the stat boosts infoboxes in their own movable group",
+			description = "Puts the stat boost infoboxes in their own movable group",
 			position = 41
 	)
 	default boolean infoBoxSplitCombat()

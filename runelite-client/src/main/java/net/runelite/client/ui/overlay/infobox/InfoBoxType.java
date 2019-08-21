@@ -6,8 +6,9 @@ import net.runelite.client.plugins.boosts.StatChangeIndicator;
 
 public enum InfoBoxType
 {
-	ALL		(infoBox -> true),
-	BOOSTS	(infoBox -> infoBox instanceof BoostIndicator || infoBox instanceof StatChangeIndicator);
+	ALL			(infoBox -> true),
+	BOOSTS		(infoBox -> infoBox instanceof BoostIndicator || infoBox instanceof StatChangeIndicator),
+	NO_BOOSTS	(BOOSTS.predicate.negate());
 
 	public final Predicate<InfoBox> predicate;
 

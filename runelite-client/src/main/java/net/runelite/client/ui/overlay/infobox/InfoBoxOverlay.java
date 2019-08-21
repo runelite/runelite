@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
-import java.util.function.Predicate;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
@@ -54,14 +53,14 @@ public class InfoBoxOverlay extends Overlay
 	private final RuneLiteConfig config;
 
 	@Setter
-	private Predicate<InfoBox> infoBoxType;
+	private InfoBoxType infoBoxType;
 
 	InfoBoxOverlay(
 			InfoBoxManager infoBoxManager,
 			TooltipManager tooltipManager,
 			Client client,
 			RuneLiteConfig config,
-			Predicate<InfoBox> infoBoxType)
+			InfoBoxType infoBoxType)
 	{
 		this.infoBoxManager = infoBoxManager;
 		this.tooltipManager = tooltipManager;
@@ -79,7 +78,7 @@ public class InfoBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<InfoBox> infoBoxes = infoBoxManager.getInfoBoxes(infoBoxType);
+		final List<InfoBox> infoBoxes = infoBoxManager.getInfoBoxes(infoBoxType.predicate);
 
 		if (infoBoxes.isEmpty())
 		{
@@ -140,5 +139,11 @@ public class InfoBoxOverlay extends Overlay
 		}
 
 		return dimension;
+	}
+
+	@Override
+	public String getName()
+	{
+		return super.getName() + "_" + infoBoxType.toString();
 	}
 }

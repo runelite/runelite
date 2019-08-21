@@ -29,9 +29,12 @@ import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -54,7 +57,7 @@ public class InfoBoxManager
 	private final RuneLiteConfig runeLiteConfig;
 	private final OverlayManager overlayManager;
 
-	private List<InfoBoxOverlay> infoBoxOverlays = new ArrayList<>();
+	private Map<InfoBoxType, InfoBoxOverlay> infoBoxOverlays = new HashMap<>();
 
 	@Inject
 	private InfoBoxManager(
@@ -66,11 +69,9 @@ public class InfoBoxManager
 		this.runeLiteConfig = runeLiteConfig;
 		this.overlayManager = overlayManager;
 
-		InfoBoxOverlay allBoxes = new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, InfoBoxType.ALL.predicate);
-		InfoBoxOverlay boostsBoxes = new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, InfoBoxType.BOOSTS.predicate);
-
-		this.infoBoxOverlays.add(allBoxes);
-		this.infoBoxOverlays.add(boostsBoxes);
+		Arrays.stream(InfoBoxType.values()).forEach(
+				infoBoxType -> infoBoxOverlays.put(infoBoxType, new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, infoBoxType))
+		);
 	}
 
 	@Subscribe
@@ -88,16 +89,16 @@ public class InfoBoxManager
 	}
 
 	public void updateOverlays() {
-		overlayManager.add(infoBoxOverlays.get(0));
-
 		if (runeLiteConfig.infoBoxSplitCombat()) {
-			infoBoxOverlays.get(0).setInfoBoxType(InfoBoxType.BOOSTS.predicate.negate());
-			overlayManager.add(infoBoxOverlays.get(1));
+			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.ALL));
+			overlayManager.add(infoBoxOverlays.get(InfoBoxType.BOOSTS));
+			overlayManager.add(infoBoxOverlays.get(InfoBoxType.NO_BOOSTS));
 		}
 		else
 		{
-			infoBoxOverlays.get(0).setInfoBoxType(InfoBoxType.ALL.predicate);
-			overlayManager.remove(infoBoxOverlays.get(1));
+			overlayManager.add(infoBoxOverlays.get(InfoBoxType.ALL));
+			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.BOOSTS));
+			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.NO_BOOSTS));
 		}
 	}
 
