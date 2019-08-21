@@ -88,8 +88,10 @@ public class InfoBoxManager
 		}
 	}
 
-	public void updateOverlays() {
-		if (runeLiteConfig.infoBoxSplitCombat()) {
+	public void updateOverlays()
+	{
+		if (runeLiteConfig.infoBoxSplitCombat())
+		{
 			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.ALL));
 			overlayManager.add(infoBoxOverlays.get(InfoBoxType.BOOSTS));
 			overlayManager.add(infoBoxOverlays.get(InfoBoxType.NO_BOOSTS));
@@ -138,7 +140,8 @@ public class InfoBoxManager
 		}
 	}
 
-	public List<InfoBox> getInfoBoxes() {
+	public List<InfoBox> getInfoBoxes()
+	{
 		return Collections.unmodifiableList(infoBoxes);
 	}
 
