@@ -28,11 +28,14 @@ package net.runelite.client.game.chatbox;
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.widgets.ItemQuantityMode;
@@ -65,6 +68,14 @@ public class ChatboxItemSearch extends ChatboxTextInput
 
 	@Getter
 	private Consumer<Integer> onItemSelected;
+
+	@Value
+	private static class ItemIcon
+	{
+		private final int modelId;
+		private final short[] colorsToReplace;
+		private final short[] texturesToReplace;
+	}
 
 	@Inject
 	private ChatboxItemSearch(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
@@ -287,15 +298,26 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			return;
 		}
 
+		Set<ItemIcon> itemIcons = new HashSet<>();
 		for (int i = 0; i < client.getItemCount() && results.size() < MAX_RESULTS; i++)
 		{
 			ItemComposition itemComposition = itemManager.getItemComposition(itemManager.canonicalize(i));
 			String name = itemComposition.getName().toLowerCase();
+
 			// The client assigns "null" to item names of items it doesn't know about
-			if (!name.equals("null") && name.contains(search))
+			// and the item might already be in the results from canonicalize
+			if (!name.equals("null") && name.contains(search) && !results.containsKey(itemComposition.getId()))
 			{
-				// This may already be in the map due to canonicalize mapping the item to something we've already seen
-				results.putIfAbsent(itemComposition.getId(), itemComposition);
+				// Check if the results already contain the same item image
+				ItemIcon itemIcon = new ItemIcon(itemComposition.getInventoryModel(),
+					itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
+				if (itemIcons.contains(itemIcon))
+				{
+					continue;
+				}
+
+				itemIcons.add(itemIcon);
+				results.put(itemComposition.getId(), itemComposition);
 			}
 		}
 	}
