@@ -32,8 +32,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.function.Predicate;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
@@ -45,26 +45,30 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-@Singleton
 public class InfoBoxOverlay extends Overlay
 {
 	private final PanelComponent panelComponent = new PanelComponent();
-	private final InfoBoxManager infoboxManager;
+	private final InfoBoxManager infoBoxManager;
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final RuneLiteConfig config;
 
-	@Inject
-	private InfoBoxOverlay(
-		InfoBoxManager infoboxManager,
-		TooltipManager tooltipManager,
-		Client client,
-		RuneLiteConfig config)
+	@Setter
+	private Predicate<InfoBox> infoBoxType;
+
+	InfoBoxOverlay(
+			InfoBoxManager infoBoxManager,
+			TooltipManager tooltipManager,
+			Client client,
+			RuneLiteConfig config,
+			Predicate<InfoBox> infoBoxType)
 	{
+		this.infoBoxManager = infoBoxManager;
 		this.tooltipManager = tooltipManager;
-		this.infoboxManager = infoboxManager;
 		this.client = client;
 		this.config = config;
+		this.infoBoxType = infoBoxType;
+
 		setPosition(OverlayPosition.TOP_LEFT);
 
 		panelComponent.setBackgroundColor(null);
@@ -75,7 +79,7 @@ public class InfoBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
+		final List<InfoBox> infoBoxes = infoBoxManager.getInfoBoxes(infoBoxType);
 
 		if (infoBoxes.isEmpty())
 		{

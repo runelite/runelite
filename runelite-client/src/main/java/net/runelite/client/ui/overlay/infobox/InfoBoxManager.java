@@ -33,14 +33,18 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @Singleton
 @Slf4j
@@ -48,11 +52,25 @@ public class InfoBoxManager
 {
 	private final List<InfoBox> infoBoxes = new ArrayList<>();
 	private final RuneLiteConfig runeLiteConfig;
+	private final OverlayManager overlayManager;
+
+	private List<InfoBoxOverlay> infoBoxOverlays = new ArrayList<>();
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	private InfoBoxManager(
+			final RuneLiteConfig runeLiteConfig,
+			final OverlayManager overlayManager,
+			final TooltipManager tooltipManager,
+			final Client client)
 	{
 		this.runeLiteConfig = runeLiteConfig;
+		this.overlayManager = overlayManager;
+
+		InfoBoxOverlay allBoxes = new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, InfoBoxType.ALL.predicate);
+		InfoBoxOverlay boostsBoxes = new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, InfoBoxType.BOOSTS.predicate);
+
+		this.infoBoxOverlays.add(allBoxes);
+		this.infoBoxOverlays.add(boostsBoxes);
 	}
 
 	@Subscribe
@@ -61,6 +79,25 @@ public class InfoBoxManager
 		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
 		{
 			infoBoxes.forEach(this::updateInfoBoxImage);
+		}
+
+		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSplitBoosts"))
+		{
+			updateOverlays();
+		}
+	}
+
+	public void updateOverlays() {
+		overlayManager.add(infoBoxOverlays.get(0));
+
+		if (runeLiteConfig.infoBoxSplitCombat()) {
+			infoBoxOverlays.get(0).setInfoBoxType(InfoBoxType.BOOSTS.predicate.negate());
+			overlayManager.add(infoBoxOverlays.get(1));
+		}
+		else
+		{
+			infoBoxOverlays.get(0).setInfoBoxType(InfoBoxType.ALL.predicate);
+			overlayManager.remove(infoBoxOverlays.get(1));
 		}
 	}
 
@@ -100,9 +137,13 @@ public class InfoBoxManager
 		}
 	}
 
-	public List<InfoBox> getInfoBoxes()
-	{
+	public List<InfoBox> getInfoBoxes() {
 		return Collections.unmodifiableList(infoBoxes);
+	}
+
+	public List<InfoBox> getInfoBoxes(Predicate<InfoBox> boxType)
+	{
+		return Collections.unmodifiableList(infoBoxes.stream().filter(boxType).collect(Collectors.toList()));
 	}
 
 	public void cull()

@@ -121,15 +121,19 @@ public class PanelComponent implements LayoutableRenderableEntity
 			switch (orientation)
 			{
 				case VERTICAL:
+				{
 					height += childDimension.height + gap.y;
 					y = baseY + height;
 					width = Math.max(width, childDimension.width);
 					break;
+				}
 				case HORIZONTAL:
+				{
 					width += childDimension.width + gap.x;
 					x = baseX + width;
 					height = Math.max(height, childDimension.height);
 					break;
+				}
 			}
 
 			// Calculate total size
