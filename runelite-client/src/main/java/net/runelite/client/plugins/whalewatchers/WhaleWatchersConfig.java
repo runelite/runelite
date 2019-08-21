@@ -51,4 +51,15 @@ public interface WhaleWatchersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName  = "pneckBreak",
+		name = "Phoenix Necklace Break Sound",
+		description = "play a sound notification when your phoenix necklace breaks"
+	)
+	default boolean pneckBreak()
+	{
+		return false;
+	}
 }

@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
@@ -29,6 +30,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import static net.runelite.api.WorldType.isPvpWorld;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -39,6 +41,8 @@ import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.game.Sound;
+import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -48,20 +52,19 @@ import org.apache.commons.lang3.ObjectUtils;
 @PluginDescriptor(
 	name = "Whale Watchers",
 	description = "A Plugin to save help whales in the wild",
-	tags = {"whale watchers", "whale", "protect item", "warning", "pklite"},
+	tags = {"whale watchers", "whale", "protect item", "warning", "pklite", "pneck"},
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 @Singleton
 public class WhaleWatchersPlugin extends Plugin
 {
-
-	private static final String CONFIG_GROUP_NAME = "WhaleWatchers";
-
 	boolean protectItemOverlay = false;
 	int damageDone = 0;
 	int damageTaken = 0;
 	boolean inCombat = false;
+	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
 	@Inject
 	private Client client;
 	@Inject
@@ -77,19 +80,21 @@ public class WhaleWatchersPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 	@Inject
+	private SoundManager soundManager;
+	@Inject
 	private EventBus eventBus;
 	private int tickCountdown = 0;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displaySmiteOverlay;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displayGloryOverlay;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean protectItemWarning;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showDamageCounter;
 	private boolean smiteableWarning;
 	private boolean gloryWarning;
+	private boolean pneckBreak;
 
 	@Provides
 	WhaleWatchersConfig getConfig(ConfigManager configManager)
@@ -137,11 +142,12 @@ public class WhaleWatchersPlugin extends Plugin
 		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals(CONFIG_GROUP_NAME))
+		if (!event.getGroup().equals("WhaleWatchers"))
 		{
 			return;
 		}
@@ -159,6 +165,14 @@ public class WhaleWatchersPlugin extends Plugin
 		if (!this.smiteableWarning)
 		{
 			displaySmiteOverlay = false;
+		}
+	}
+
+	private void onChatMessage(ChatMessage event)
+	{
+		if (this.pneckBreak && event.getType() == ChatMessageType.GAMEMESSAGE && event.getMessage().equals(BROKEN_PNECK_MESSAGE))
+		{
+			soundManager.playSound(Sound.BREAK);
 		}
 	}
 
@@ -306,6 +320,6 @@ public class WhaleWatchersPlugin extends Plugin
 		this.showDamageCounter = config.showDamageCounter();
 		this.smiteableWarning = config.smiteableWarning();
 		this.gloryWarning = config.gloryWarning();
+		this.pneckBreak = config.pneckBreak();
 	}
-
 }
