@@ -570,6 +570,12 @@ public class ChatMessageManager
 			return;
 		}
 
+		//guard case for google MoreObjects#firstNonNull
+		if (message.getValue() == null && message.getRuneLiteFormattedMessage() == null)
+		{
+			return;
+		}
+
 		// this updates chat cycle
 		client.addChatMessage(
 			message.getType(),
