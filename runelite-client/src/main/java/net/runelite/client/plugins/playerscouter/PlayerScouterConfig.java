@@ -26,6 +26,7 @@ package net.runelite.client.plugins.playerscouter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("playerscouter")
 public interface PlayerScouterConfig extends Config
@@ -108,11 +109,41 @@ public interface PlayerScouterConfig extends Config
 		return 1000;
 	}
 
+	@Range(
+		min = 3,
+		max = 125
+	)
+	@ConfigItem(
+		keyName = "minimumCombat",
+		name = "Minimum Combat Level",
+		description = "The Minimum Combat Level you wish to scout.",
+		position = 7
+	)
+	default int minimumCombat()
+	{
+		return 3;
+	}
+
+	@Range(
+		min = 4,
+		max = 126
+	)
+	@ConfigItem(
+		keyName = "maximumCombat",
+		name = "Maximum Combat Level",
+		description = "The Maximum Combat Level you wish to scout.",
+		position = 8
+	)
+	default int maximumCombat()
+	{
+		return 126;
+	}
+
 	@ConfigItem(
 		keyName = "timeout",
 		name = "Timeout",
 		description = "Minimum amount of ticks before the player can be scouted again. (1 tick = 600ms)",
-		position = 7
+		position = 9
 	)
 	default int timeout()
 	{

@@ -111,6 +111,8 @@ public class PlayerScouter extends Plugin
 	private int minimumRisk;
 	private int minimumValue;
 	private int timeout;
+	private int minimumCombat;
+	private int maximumCombat;
 	private boolean onlyWildy;
 	private boolean outputItems;
 	private boolean scoutFriends;
@@ -176,6 +178,7 @@ public class PlayerScouter extends Plugin
 
 	private void onGameTick(GameTick event)
 	{
+
 		resetBlacklist();
 
 		if (!checkWildy() || playerContainer.isEmpty())
@@ -186,7 +189,13 @@ public class PlayerScouter extends Plugin
 		playerContainer.forEach(player ->
 		{
 			update(player);
-			if (player.getRisk() > this.minimumRisk)
+			if (player.getPlayer().getCombatLevel() < this.minimumCombat
+				|| player.getPlayer().getCombatLevel() > this.maximumCombat)
+			{
+				return;
+			}
+			if ((player.getPlayer().getCombatLevel() >= this.minimumCombat
+				&& player.getPlayer().getCombatLevel() <= this.maximumCombat) && player.getRisk() > this.minimumRisk)
 			{
 				scoutPlayer(player);
 			}
@@ -259,6 +268,8 @@ public class PlayerScouter extends Plugin
 		this.outputItems = config.outputItems();
 		this.scoutClan = config.scoutClan();
 		this.scoutFriends = config.scoutFriends();
+		this.minimumCombat = config.minimumCombat();
+		this.maximumCombat = config.maximumCombat();
 	}
 
 	private void update(PlayerContainer player)
