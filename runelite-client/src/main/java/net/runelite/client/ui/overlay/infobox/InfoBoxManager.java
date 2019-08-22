@@ -29,14 +29,10 @@ import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +42,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
@@ -56,8 +53,8 @@ public class InfoBoxManager
 	private final List<InfoBox> infoBoxes = new ArrayList<>();
 	private final RuneLiteConfig runeLiteConfig;
 	private final OverlayManager overlayManager;
-
-	private Map<InfoBoxType, InfoBoxOverlay> infoBoxOverlays = new HashMap<>();
+	private final TooltipManager tooltipManager;
+	private final Client client;
 
 	@Inject
 	private InfoBoxManager(
@@ -68,10 +65,8 @@ public class InfoBoxManager
 	{
 		this.runeLiteConfig = runeLiteConfig;
 		this.overlayManager = overlayManager;
-
-		Arrays.stream(InfoBoxType.values()).forEach(
-				infoBoxType -> infoBoxOverlays.put(infoBoxType, new InfoBoxOverlay(this, tooltipManager, client, runeLiteConfig, infoBoxType))
-		);
+		this.tooltipManager = tooltipManager;
+		this.client = client;
 	}
 
 	@Subscribe
@@ -81,27 +76,6 @@ public class InfoBoxManager
 		{
 			infoBoxes.forEach(this::updateInfoBoxImage);
 		}
-
-		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSplitBoosts"))
-		{
-			updateOverlays();
-		}
-	}
-
-	public void updateOverlays()
-	{
-		if (runeLiteConfig.infoBoxSplitCombat())
-		{
-			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.ALL));
-			overlayManager.add(infoBoxOverlays.get(InfoBoxType.BOOSTS));
-			overlayManager.add(infoBoxOverlays.get(InfoBoxType.NO_BOOSTS));
-		}
-		else
-		{
-			overlayManager.add(infoBoxOverlays.get(InfoBoxType.ALL));
-			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.BOOSTS));
-			overlayManager.remove(infoBoxOverlays.get(InfoBoxType.NO_BOOSTS));
-		}
 	}
 
 	public void addInfoBox(InfoBox infoBox)
@@ -109,8 +83,14 @@ public class InfoBoxManager
 		Preconditions.checkNotNull(infoBox);
 		log.debug("Adding InfoBox {}", infoBox);
 
+		// TODO clean this up
+		infoBox.setClient(client);
+		infoBox.setConfig(runeLiteConfig);
+		infoBox.setTooltipManager(tooltipManager);
+
 		updateInfoBoxImage(infoBox);
 		infoBoxes.add(infoBox);
+		overlayManager.add(infoBox);
 		refreshInfoBoxes();
 
 		BufferedImage image = infoBox.getImage();
@@ -127,15 +107,17 @@ public class InfoBoxManager
 		if (infoBoxes.remove(infoBox))
 		{
 			log.debug("Removed InfoBox {}", infoBox);
+			overlayManager.remove(infoBox);
 			refreshInfoBoxes();
 		}
 	}
 
-	public void removeIf(Predicate<InfoBox> filter)
+	public void removeIf(Predicate<Overlay> filter)
 	{
 		if (infoBoxes.removeIf(filter))
 		{
 			log.debug("Removed InfoBoxes for filter {}", filter);
+			overlayManager.removeIf(filter);
 			refreshInfoBoxes();
 		}
 	}
@@ -143,11 +125,6 @@ public class InfoBoxManager
 	public List<InfoBox> getInfoBoxes()
 	{
 		return Collections.unmodifiableList(infoBoxes);
-	}
-
-	public List<InfoBox> getInfoBoxes(Predicate<InfoBox> boxType)
-	{
-		return Collections.unmodifiableList(infoBoxes.stream().filter(boxType).collect(Collectors.toList()));
 	}
 
 	public void cull()
@@ -212,7 +189,7 @@ public class InfoBoxManager
 	{
 		infoBoxes.sort((b1, b2) -> ComparisonChain
 			.start()
-			.compare(b1.getPriority(), b2.getPriority())
+			.compare(b1.getInfoBoxPriority(), b2.getInfoBoxPriority())
 			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())
 			.result());
 	}

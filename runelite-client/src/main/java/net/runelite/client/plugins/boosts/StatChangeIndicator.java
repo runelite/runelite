@@ -41,7 +41,7 @@ public class StatChangeIndicator extends InfoBox
 		this.up = up;
 		this.plugin = plugin;
 		this.config = config;
-		setPriority(InfoBoxPriority.MED);
+		setInfoBoxPriority(InfoBoxPriority.MED);
 		setTooltip(up ? "Next debuff change" : "Next buff change");
 	}
 

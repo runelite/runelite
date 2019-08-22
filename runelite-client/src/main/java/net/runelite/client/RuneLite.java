@@ -321,7 +321,6 @@ public class RuneLite
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
-			infoBoxManager.updateOverlays();
 			overlayManager.add(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
 		}

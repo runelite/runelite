@@ -24,18 +24,27 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.InfoBoxComponent;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-public abstract class InfoBox
+public abstract class InfoBox extends Overlay
 {
-	@Getter(AccessLevel.PACKAGE)
-	private final Plugin plugin;
-
 	@Getter
 	@Setter
 	private BufferedImage image;
@@ -44,19 +53,33 @@ public abstract class InfoBox
 	@Setter(AccessLevel.PACKAGE)
 	private BufferedImage scaledImage;
 
+	// TODO take this option into account again, currently it's ignored
 	@Getter(AccessLevel.PACKAGE)
 	@Setter
-	private InfoBoxPriority priority;
+	private InfoBoxPriority infoBoxPriority;
 
 	@Getter
 	@Setter
 	private String tooltip;
 
+	@Setter
+	private TooltipManager tooltipManager;
+
+	@Setter
+	private Client client;
+
+	@Setter
+	private RuneLiteConfig config;
+
+
 	public InfoBox(BufferedImage image, Plugin plugin)
 	{
-		this.plugin = plugin;
+		super(plugin);
+
 		setImage(image);
-		setPriority(InfoBoxPriority.NONE);
+		setInfoBoxPriority(InfoBoxPriority.NONE);
+
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	public abstract String getText();
@@ -71,5 +94,55 @@ public abstract class InfoBox
 	public boolean cull()
 	{
 		return false;
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!render())
+		{
+			return null;
+		}
+
+		final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+		infoBoxComponent.setText(getText());
+		if (getTextColor() != null)
+		{
+			infoBoxComponent.setColor(getTextColor());
+		}
+		infoBoxComponent.setImage(getScaledImage());
+		infoBoxComponent.setTooltip(getTooltip());
+
+		// Create infobox preferred size
+		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
+
+		// Render
+		infoBoxComponent.setPreferredLocation(new Point());
+		infoBoxComponent.setPreferredSize(preferredSize);
+		final Dimension dimension = infoBoxComponent.render(graphics);
+
+
+		// Handle tooltips
+		final Point mouse = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
+
+		if (!Strings.isNullOrEmpty(infoBoxComponent.getTooltip()))
+		{
+			// Create intersection rectangle
+			final Rectangle intersectionRectangle = new Rectangle(infoBoxComponent.getBounds());
+			intersectionRectangle.translate(getBounds().x, getBounds().y);
+
+			if (intersectionRectangle.contains(mouse))
+			{
+				tooltipManager.add(new Tooltip(infoBoxComponent.getTooltip()));
+			}
+		}
+
+		return dimension;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "InfoBox_" + super.getName();
 	}
 }

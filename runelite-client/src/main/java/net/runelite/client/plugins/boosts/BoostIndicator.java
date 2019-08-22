@@ -49,7 +49,7 @@ public class BoostIndicator extends InfoBox
 		this.client = client;
 		this.skill = skill;
 		setTooltip(skill.getName() + " boost");
-		setPriority(InfoBoxPriority.HIGH);
+		setInfoBoxPriority(InfoBoxPriority.HIGH);
 	}
 
 	@Override
@@ -93,5 +93,11 @@ public class BoostIndicator extends InfoBox
 		}
 
 		return false;
+	}
+
+	@Override
+	public String getName()
+	{
+		return super.getName() + "_" + skill.getName();
 	}
 }

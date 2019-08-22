@@ -39,7 +39,7 @@ public class IndicatorIndicator extends InfoBox
 	{
 		super(null, plugin);
 		this.indicator = indicator;
-		setPriority(InfoBoxPriority.MED);
+		setInfoBoxPriority(InfoBoxPriority.MED);
 	}
 
 	@Override
@@ -52,5 +52,11 @@ public class IndicatorIndicator extends InfoBox
 	public Color getTextColor()
 	{
 		return indicator.getTextColor();
+	}
+
+	@Override
+	public String getName()
+	{
+		return super.getName() + "_" + indicator.name();
 	}
 }

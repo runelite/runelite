@@ -328,7 +328,7 @@ public class BarrowsPlugin extends Plugin
 
 			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
 
-			loopTimer.setPriority(InfoBoxPriority.MED);
+			loopTimer.setInfoBoxPriority(InfoBoxPriority.MED);
 			loopTimer.setTooltip("Prayer Drain");
 
 			infoBoxManager.addInfoBox(loopTimer);

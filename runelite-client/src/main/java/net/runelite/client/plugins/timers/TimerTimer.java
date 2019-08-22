@@ -39,7 +39,7 @@ class TimerTimer extends Timer
 	{
 		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, null, plugin);
 		this.timer = timer;
-		setPriority(InfoBoxPriority.MED);
+		setInfoBoxPriority(InfoBoxPriority.MED);
 	}
 
 	@Override
@@ -59,5 +59,11 @@ class TimerTimer extends Timer
 	public GameTimer getTimer()
 	{
 		return timer;
+	}
+
+	@Override
+	public String getName()
+	{
+		return super.getName() + "_" + timer.name();
 	}
 }

@@ -253,21 +253,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "infoBoxSplitBoosts",
-			name = "Separate boosts infoboxes",
-			description = "Puts the stat boost infoboxes in their own movable group",
-			position = 41
-	)
-	default boolean infoBoxSplitCombat()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 42
+		position = 41
 	)
 	default int infoBoxWrap()
 	{
@@ -278,7 +267,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size (px)",
 		description = "Configures the size of each infobox in pixels",
-		position = 43
+		position = 42
 	)
 	default int infoBoxSize()
 	{
