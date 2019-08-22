@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -56,11 +59,12 @@ import net.runelite.client.util.Text;
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
+	private static final int TITLE_PADDING = 5;
 
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
-	private final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
+	private final JPanel logTitle = new JPanel();
 	private final JLabel titleLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
@@ -88,27 +92,33 @@ class LootTrackerBox extends JPanel
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 
+		logTitle.setLayout(new BoxLayout(logTitle, BoxLayout.X_AXIS));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		titleLabel.setText(Text.removeTags(id));
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
-
-		logTitle.add(titleLabel, BorderLayout.WEST);
+		// Set a size to make BoxLayout truncate the name
+		titleLabel.setMinimumSize(new Dimension(1, titleLabel.getPreferredSize().height));
+		logTitle.add(titleLabel);
 
 		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		logTitle.add(subTitleLabel, BorderLayout.CENTER);
 
 		if (!Strings.isNullOrEmpty(subtitle))
 		{
 			subTitleLabel.setText(subtitle);
 		}
 
+		logTitle.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
+		logTitle.add(subTitleLabel);
+		logTitle.add(Box.createHorizontalGlue());
+		logTitle.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
+
 		priceLabel.setFont(FontManager.getRunescapeSmallFont());
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		logTitle.add(priceLabel, BorderLayout.EAST);
+		logTitle.add(priceLabel);
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
