@@ -67,7 +67,7 @@ public interface SpellbookConfig extends Config
 	@ConfigItem(
 		keyName = "size",
 		name = "Spell size",
-		description = "Size (in px) of spells. Normal mobile size is 40px, use common sense for this setting please",
+		description = "Size (in px) of spells. Normal mobile size is 40px, use common sense for this setting",
 		position = 4
 	)
 	default int size()
@@ -78,7 +78,7 @@ public interface SpellbookConfig extends Config
 	@ConfigItem(
 		keyName = "filter",
 		name = "Unfiltered spells",
-		description = "Spells you don't want to filter, seperated with a comma. <br> \"'s can be used in front and behind spells (eg: '\"c' matches all spells starting with a c"
+		description = "Spells you don't want to filter, seperated by a comma. <br> \"'s can be used in front and behind spells (eg: '\"c' matches all spells starting with a c"
 	)                                                                         //  ^ JAJAJJAJAJAJAJA BRAZIL
 	default String filter()
 	{
@@ -103,4 +103,51 @@ public interface SpellbookConfig extends Config
 		hidden = true
 	)
 	void canDrag(boolean canDrag);
+
+	// Next 4 methods have to be here, or the reset configuration
+	// button won't reset em like it should.
+
+	@ConfigItem(
+		keyName = "standard",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String standard()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ancient",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String ancient()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "lunar",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String lunar()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "arceuus",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String arceuus()
+	{
+		return "";
+	}
 }

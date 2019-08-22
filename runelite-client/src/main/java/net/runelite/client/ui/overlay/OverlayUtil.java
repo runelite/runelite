@@ -49,6 +49,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.Widget;
 
 
@@ -349,7 +350,7 @@ public class OverlayUtil
 	{
 		Widget widget = client.getWidget(prayer.getWidgetInfo());
 
-		if (widget == null || client.getVar(VarClientInt.PLAYER_INTERFACE_CONTAINER_OPENED) != 5)
+		if (widget == null || client.getVar(VarClientInt.INTERFACE_TAB) != InterfaceTab.PRAYER.getId())
 		{
 			return null;
 		}

@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2018 Abex
- *
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,15 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.api.vars;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-/**
- * An event where a client var string has changed.
- */
-@Value
-public class VarClientStrChanged implements Event
+@AllArgsConstructor
+@Getter
+public enum InterfaceTab
 {
-	private int index;
+	COMBAT(0),
+	STATS(1),
+	QUEST(2),
+	INVENTORY(3),
+	EQUIPMENT(4),
+	PRAYER(5),
+	SPELLBOOK(6),
+	CLAN(7),
+	ACCOUNT_MANAGMENT(8),
+	FRIENDS(9),
+	LOGOUT(10),
+	OPTIONS(11),
+	EMOTES(12),
+	MUSIC(13);
+
+	private final int id;
 }

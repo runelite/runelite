@@ -27,12 +27,10 @@ package net.runelite.client.plugins.spellbook;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
-import net.runelite.client.game.SpriteManager;
+import net.runelite.api.Sprite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,21 +41,19 @@ public class SpellbookDragOverlay extends Overlay
 {
 	private final SpellbookPlugin plugin;
 	private final Client client;
-	private final SpriteManager spriteManager;
 
 	@Inject
-	private SpellbookDragOverlay(final SpellbookPlugin plugin, final Client client, final SpriteManager spriteManager)
+	private SpellbookDragOverlay(final SpellbookPlugin plugin, final Client client)
 	{
 		this.plugin = plugin;
 		this.client = client;
-		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.TOOLTIP);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
 	@Override
-	public Dimension render(Graphics2D g)
+	public Dimension render(final Graphics2D g)
 	{
 		if (!plugin.isDragging())
 		{
@@ -66,16 +62,14 @@ public class SpellbookDragOverlay extends Overlay
 
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final net.runelite.api.Point draggingLocation = plugin.getDraggingLocation();
+		final Sprite sprite = plugin.getDraggingWidget().getSprite();
+		final Point drawPos = new Point(mouseCanvasPosition.getX() - draggingLocation.getX(), mouseCanvasPosition.getY() - draggingLocation.getY());
 
-		final int size = plugin.getDraggingWidget().getWidth();
-		final int sprite = plugin.getDraggingWidget().getSpriteId();
-		final BufferedImage image = spriteManager.getSprite(sprite, 0);
+		if (sprite != null)
+		{
+			sprite.drawAt(drawPos.x, drawPos.y);
+		}
 
-		final Point mousePosition = new Point(mouseCanvasPosition.getX() - draggingLocation.getX(), mouseCanvasPosition.getY() - draggingLocation.getY());
-		final Rectangle bounds = new Rectangle(mousePosition.x, mousePosition.y, size, size);
-
-		g.drawImage(image, mousePosition.x, mousePosition.y, size, size, null);
-
-		return bounds.getSize();
+		return null;
 	}
 }

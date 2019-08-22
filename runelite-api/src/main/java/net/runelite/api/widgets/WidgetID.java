@@ -817,6 +817,7 @@ public class WidgetID
 
 	static class SpellBook
 	{
+		static final int FILTERED_SPELLS_PARENT = 1;
 		static final int FILTERED_SPELLS_BOUNDS = 3;
 
 		// NORMAL SPELLS
@@ -968,6 +969,12 @@ public class WidgetID
 
 		// ARCEUUS SPELLS
 		static final int ARCEUUS_HOME_TELEPORT = 143;
+		static final int BATTLEFRONT_TELEPORT = 178;
+
+		static final int FILTER_SECTION_PARENT = 181;
+		static final int FILTER_BUTTONS_PARENT = 184;
+		static final int FILTER_BUTTON_PARENT = 185;
+		static final int FILTER_BUTTON = 187;
 	}
 
 	static class Pvp

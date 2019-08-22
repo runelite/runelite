@@ -47,6 +47,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -192,7 +193,7 @@ public class QuestListPlugin extends Plugin
 
 	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
+		if (varClientIntChanged.getIndex() == VarClientInt.INTERFACE_TAB.getIndex() && isChatboxOpen() && isNotOnQuestTab())
 		{
 			chatboxPanelManager.close();
 		}
@@ -218,7 +219,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean isNotOnQuestTab()
 	{
-		return client.getVar(Varbits.QUEST_TAB) != 0 || client.getVar(VarClientInt.INVENTORY_TAB) != 2;
+		return client.getVar(Varbits.QUEST_TAB) != 0 || client.getVar(VarClientInt.INTERFACE_TAB) != InterfaceTab.QUEST.getId();
 	}
 
 	private boolean isChatboxOpen()

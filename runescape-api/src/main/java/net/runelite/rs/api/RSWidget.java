@@ -485,4 +485,11 @@ public interface RSWidget extends Widget
 	@Import("onInvTransmit")
 	@Override
 	Object[] getOnInvTransmit();
+
+	@Import("containsMouse")
+	@Override
+	boolean containsMouse();
+
+	@Import("getSprite")
+	RSSprite getSprite(boolean b);
 }

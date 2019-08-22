@@ -863,12 +863,12 @@ public class Widget extends Node {
 			this.itemQuantities = new int[this.rawHeight * this.rawWidth];
 			var4 = var1.readUnsignedByte();
 			if (var4 == 1) {
-				this.clickMask |= 268435456;
+				this.clickMask |= 0x10000000;
 			}
 
 			var5 = var1.readUnsignedByte();
 			if (var5 == 1) {
-				this.clickMask |= 1073741824;
+				this.clickMask |= 0x40000000;
 			}
 
 			var6 = var1.readUnsignedByte();
@@ -878,7 +878,7 @@ public class Widget extends Node {
 
 			int var7 = var1.readUnsignedByte();
 			if (var7 == 1) {
-				this.clickMask |= 536870912;
+				this.clickMask |= 0x20000000;
 			}
 
 			this.paddingX = var1.readUnsignedByte();
@@ -1036,7 +1036,7 @@ public class Widget extends Node {
 		}
 
 		if (this.buttonType == 1 || this.buttonType == 4 || this.buttonType == 5) {
-			this.clickMask |= 4194304;
+			this.clickMask |= 0x400000;
 		}
 
 		if (this.buttonType == 6) {

@@ -59,7 +59,7 @@ public final class WidgetMenuOption
 	public WidgetMenuOption(String menuOption, String menuTarget, WidgetInfo widget)
 	{
 		this.menuOption = menuOption;
-		setMenuTarget(menuTarget);
+		this.menuTarget = menuTarget;
 		this.widget = widget;
 	}
 

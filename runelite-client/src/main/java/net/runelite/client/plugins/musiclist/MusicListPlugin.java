@@ -41,6 +41,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -182,7 +183,7 @@ public class MusicListPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVar(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVar(VarClientInt.INTERFACE_TAB) == InterfaceTab.MUSIC.getId();
 	}
 
 	private boolean isChatboxOpen()

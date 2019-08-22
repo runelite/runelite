@@ -166,7 +166,7 @@ final class class2 implements class0 {
 				if (var9.noClickThrough) {
 					if (MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15) {
 						for (ScriptEvent var26 = (ScriptEvent)Client.scriptEvents.last(); var26 != null; var26 = (ScriptEvent)Client.scriptEvents.previous()) {
-							if (var26.boolean1) {
+							if (var26.isMouseInputEvent) {
 								var26.remove();
 								var26.widget.containsMouse = false;
 							}
@@ -183,7 +183,7 @@ final class class2 implements class0 {
 					}
 				} else if (var9.noScrollThrough && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15) {
 					for (ScriptEvent var26 = (ScriptEvent)Client.scriptEvents.last(); var26 != null; var26 = (ScriptEvent)Client.scriptEvents.previous()) {
-						if (var26.boolean1 && var26.widget.onScroll == var26.args) {
+						if (var26.isMouseInputEvent && var26.widget.onScroll == var26.args) {
 							var26.remove();
 						}
 					}
@@ -324,7 +324,7 @@ final class class2 implements class0 {
 				if (var9.hasListener) {
 					if (var33 && Client.mouseWheelRotation != 0 && var9.onScroll != null) {
 						ScriptEvent var29 = new ScriptEvent();
-						var29.boolean1 = true;
+						var29.isMouseInputEvent = true;
 						var29.widget = var9;
 						var29.mouseY = Client.mouseWheelRotation;
 						var29.args = var9.onScroll;
@@ -341,7 +341,7 @@ final class class2 implements class0 {
 						var9.isClicked = true;
 						if (var9.onClick != null) {
 							ScriptEvent var29 = new ScriptEvent();
-							var29.boolean1 = true;
+							var29.isMouseInputEvent = true;
 							var29.widget = var9;
 							var29.mouseX = MouseHandler.MouseHandler_lastPressedX - var10;
 							var29.mouseY = MouseHandler.MouseHandler_lastPressedY - var11;
@@ -352,7 +352,7 @@ final class class2 implements class0 {
 
 					if (var9.isClicked && var34 && var9.onClickRepeat != null) {
 						ScriptEvent var29 = new ScriptEvent();
-						var29.boolean1 = true;
+						var29.isMouseInputEvent = true;
 						var29.widget = var9;
 						var29.mouseX = MouseHandler.MouseHandler_x - var10;
 						var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -364,7 +364,7 @@ final class class2 implements class0 {
 						var9.isClicked = false;
 						if (var9.onRelease != null) {
 							ScriptEvent var29 = new ScriptEvent();
-							var29.boolean1 = true;
+							var29.isMouseInputEvent = true;
 							var29.widget = var9;
 							var29.mouseX = MouseHandler.MouseHandler_x - var10;
 							var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -375,7 +375,7 @@ final class class2 implements class0 {
 
 					if (var34 && var9.onHold != null) {
 						ScriptEvent var29 = new ScriptEvent();
-						var29.boolean1 = true;
+						var29.isMouseInputEvent = true;
 						var29.widget = var9;
 						var29.mouseX = MouseHandler.MouseHandler_x - var10;
 						var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -387,7 +387,7 @@ final class class2 implements class0 {
 						var9.containsMouse = true;
 						if (var9.onMouseOver != null) {
 							ScriptEvent var29 = new ScriptEvent();
-							var29.boolean1 = true;
+							var29.isMouseInputEvent = true;
 							var29.widget = var9;
 							var29.mouseX = MouseHandler.MouseHandler_x - var10;
 							var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -398,7 +398,7 @@ final class class2 implements class0 {
 
 					if (var9.containsMouse && var33 && var9.onMouseRepeat != null) {
 						ScriptEvent var29 = new ScriptEvent();
-						var29.boolean1 = true;
+						var29.isMouseInputEvent = true;
 						var29.widget = var9;
 						var29.mouseX = MouseHandler.MouseHandler_x - var10;
 						var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -410,7 +410,7 @@ final class class2 implements class0 {
 						var9.containsMouse = false;
 						if (var9.onMouseLeave != null) {
 							ScriptEvent var29 = new ScriptEvent();
-							var29.boolean1 = true;
+							var29.isMouseInputEvent = true;
 							var29.widget = var9;
 							var29.mouseX = MouseHandler.MouseHandler_x - var10;
 							var29.mouseY = MouseHandler.MouseHandler_y - var11;
@@ -596,7 +596,7 @@ final class class2 implements class0 {
 			}
 			if (var27.type == 0 && MouseHandler.MouseHandler_x >= var12 && MouseHandler.MouseHandler_y >= var13 && MouseHandler.MouseHandler_x < var14 && MouseHandler.MouseHandler_y < var15 && !Client.isMenuOpen) {
 				for (ScriptEvent var28 = (ScriptEvent)Client.scriptEvents.last(); var28 != null; var28 = (ScriptEvent)Client.scriptEvents.previous()) {
-					if (var28.boolean1) {
+					if (var28.isMouseInputEvent) {
 						var28.remove();
 						var28.widget.containsMouse = false;
 					}

@@ -41,6 +41,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.lootingbagviewer.LootingBagViewerOverlay.PLACEHOLDER_WIDTH;
 import net.runelite.client.ui.overlay.Overlay;
@@ -98,7 +99,7 @@ class InventoryViewerOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (plugin.isHideWhenInvOpen()
-			&& client.getVar(VarClientInt.PLAYER_INTERFACE_CONTAINER_OPENED) == 3)
+			&& client.getVar(VarClientInt.INTERFACE_TAB) == InterfaceTab.INVENTORY.getId())
 		{
 			return null;
 		}

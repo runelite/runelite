@@ -51,24 +51,10 @@ public enum VarClientInt
 	MEMBERSHIP_STATUS(103),
 
 	/**
-	 *  0 = Combat
-	 *  1 = Stats
-	 *  2 = Quest
-	 *  3 = Inventory
-	 *  4 = Equipment
-	 *  5 = Prayer
-	 *  6 = Spellbook
-	 *  7 = Clan
-	 *  8 = Account Managment
-	 *  9 = Friends
-	 *  10 = Logout
-	 *  11 = Options
-	 *  12 = Emotes
-	 *  13 = Music
+	 * The currently open interface tab
+	 * @see net.runelite.api.vars.InterfaceTab
 	 */
-	PLAYER_INTERFACE_CONTAINER_OPENED(171),
-
-	INVENTORY_TAB(171),
+	INTERFACE_TAB(171),
 
 	WORLD_MAP_SEARCH_FOCUSED(190);
 

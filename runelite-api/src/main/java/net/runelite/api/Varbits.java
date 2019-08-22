@@ -498,13 +498,7 @@ public enum Varbits
 	 * 2 = lunars
 	 * 3 = arrceus
 	 **/
-	SPELLBOOK_ID(4070),
-
-	/**
-	 * 0 = no
-	 * 1 = yes
-	 **/
-	SPELLBOOK_HIDDEN(6718),
+	SPELLBOOK(4070),
 
 	/**
 	 * Amount of items in each bank tab
@@ -646,11 +640,6 @@ public enum Varbits
 	QUEST_THE_MAGE_ARENA_II(6067),
 	//TODO
 	QUEST_IN_SEARCH_OF_KNOWLEDGE(6067),
-
-	/**
-	 * Active spellbook (see enumID)
-	 */
-	SPELLBOOK(4070),
 
 	/**
 	 * Spellbook filtering (1 = unfiltered, 0 = filtered)
