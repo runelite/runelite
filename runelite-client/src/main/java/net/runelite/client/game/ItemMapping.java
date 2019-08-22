@@ -283,4 +283,9 @@ public enum ItemMapping
 
 		return mapping.iterator().next();
 	}
+
+	public static boolean isMapped(int itemId)
+	{
+		return MAPPINGS.containsValue(itemId);
+	}
 }

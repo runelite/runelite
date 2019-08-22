@@ -62,6 +62,7 @@ import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemMapping;
 import net.runelite.client.game.PvPValueBrokenItem;
 import net.runelite.client.game.WorldLocation;
 import net.runelite.client.plugins.Plugin;
@@ -373,9 +374,10 @@ public class PlayerScouter extends Plugin
 			{
 				prices.put(id, itemManager.getBrokenValue(id));
 				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getBrokenValue(id));
+				continue;
 			}
 
-			if (!itemDefinition.isTradeable() && !PvPValueBrokenItem.breaksOnDeath(id))
+			if (!itemDefinition.isTradeable() && !ItemMapping.isMapped(id))
 			{
 				prices.put(id, itemDefinition.getPrice());
 			}
@@ -392,12 +394,14 @@ public class PlayerScouter extends Plugin
 		player.setGear(prices.entrySet()
 			.stream()
 			.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new)));
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new))
+		);
 
 		player.setRiskedGear(prices.entrySet()
 			.stream()
 			.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new)));
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new))
+		);
 
 		if (player.getPlayer().getSkullIcon() == null)
 		{

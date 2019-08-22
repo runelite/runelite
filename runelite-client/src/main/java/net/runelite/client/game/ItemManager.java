@@ -375,7 +375,7 @@ public class ItemManager
 	{
 		ItemDefinition itemDefinition = getItemDefinition(itemId);
 
-		if (itemDefinition == null || itemDefinition.getName() == null || (!allowNote && itemDefinition.getNote() != -1))
+		if (itemDefinition.getName() == null || !allowNote && itemDefinition.getNote() != -1)
 		{
 			return null;
 		}
