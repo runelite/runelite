@@ -119,12 +119,8 @@ public class ChatMessageManager
 
 		switch (chatMessageType)
 		{
-			case MODPRIVATECHAT:
-			case PRIVATECHAT:
-			case PRIVATECHATOUT:
-				usernameColor = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
-				break;
-
+			// username recoloring for MODPRIVATECHAT, PRIVATECHAT and PRIVATECHATOUT
+			// ChatMessageTypes is handled in the script callback event
 			case TRADEREQ:
 			case AUTOTYPER:
 			case PUBLICCHAT:
