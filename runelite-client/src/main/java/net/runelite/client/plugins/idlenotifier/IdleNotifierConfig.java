@@ -242,4 +242,17 @@ public interface IdleNotifierConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+			keyName = "resourceDoor",
+			name = "Resource Door Notifier",
+			position = 20,
+			description = "Notifies if the wilderness resource area door is opened",
+			group = "PvP"
+	)
+
+	default boolean notifyResourceDoor()
+	{
+		return false;
+	}
+
 }

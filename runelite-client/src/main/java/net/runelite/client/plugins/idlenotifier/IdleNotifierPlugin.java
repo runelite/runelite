@@ -58,6 +58,7 @@ import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
+import net.runelite.api.WallObject;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -66,6 +67,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -75,6 +77,7 @@ import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.PvPUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
@@ -94,6 +97,8 @@ public class IdleNotifierPlugin extends Plugin
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	private static final String FISHING_SPOT = "Fishing spot";
+
+	private static final int RESOURCE_AREA_REGION = 12605;
 
 	private static final Set<Integer> nominalAnimations = new ImmutableSet.Builder<Integer>()
 		.addAll(
@@ -258,6 +263,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean interactingNotified;
 	private SkullIcon lastTickSkull = null;
 	private boolean isFirstTick = true;
+	private boolean resourceDoorReady = false;
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean animationIdle;
@@ -284,6 +290,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean getSpecSound;
 	private boolean getOverSpecEnergy;
 	private boolean notifyPkers;
+	private boolean notifyResourceDoor;
 	private boolean outOfItemsIdle;
 
 	@Provides
@@ -341,6 +348,19 @@ public class IdleNotifierPlugin extends Plugin
 			int combat = p.getCombatLevel();
 			notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
 				" appeared!", TrayIcon.MessageType.WARNING);
+		}
+	}
+
+	private void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		WallObject wall = event.getWallObject();
+
+		if (regionCheck())
+		{
+			if (this.notifyResourceDoor && wall.getId() == 83 && resourceDoorReady)
+			{
+				notifier.notify("Door warning! The resource area door has been opened!");
+			}
 		}
 	}
 
@@ -498,6 +518,7 @@ public class IdleNotifierPlugin extends Plugin
 					ready = false;
 					resetTimers();
 				}
+				resourceDoorReady = true;
 
 				break;
 		}
@@ -911,6 +932,11 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
+	private boolean regionCheck()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), RESOURCE_AREA_REGION);
+	}
+
 	private void notifyWith(Player local, String message) 
 	{
 		notifier.notify("[" + local.getName() + "] " + message);
@@ -934,6 +960,7 @@ public class IdleNotifierPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
+		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
 		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
@@ -972,6 +999,7 @@ public class IdleNotifierPlugin extends Plugin
 		this.getSpecSound = config.getSpecSound();
 		this.getOverSpecEnergy = config.getOverSpecEnergy();
 		this.notifyPkers = config.notifyPkers();
+		this.notifyResourceDoor = config.notifyResourceDoor();
 		this.outOfItemsIdle = config.outOfItemsIdle();
 	}
 }
