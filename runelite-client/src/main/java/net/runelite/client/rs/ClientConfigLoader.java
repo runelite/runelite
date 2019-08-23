@@ -48,11 +48,15 @@ class ClientConfigLoader
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
+		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			String str;
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unsuccessful response: " + response.message());
+			}
 
+			String str;
+			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');

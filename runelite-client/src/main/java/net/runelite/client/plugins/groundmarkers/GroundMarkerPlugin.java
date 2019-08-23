@@ -299,7 +299,15 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
+			final Tile selectedSceneTile = client.getSelectedSceneTile();
+
+			if (selectedSceneTile == null)
+			{
+				return;
+			}
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
+
 			int lastIndex = menuEntries.length;
 			menuEntries = Arrays.copyOf(menuEntries, lastIndex + 4);
 

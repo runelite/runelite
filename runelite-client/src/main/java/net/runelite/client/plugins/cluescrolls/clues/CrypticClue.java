@@ -322,7 +322,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!", new WorldPoint(3183, 3941, 0), "Dig between the three gold ores in the Wilderness Resource Area."),
 		new CrypticClue("Observing someone in a swamp, under the telescope lies treasure.", new WorldPoint(2221, 3091, 0), "Dig next to the telescope on Broken Handz's island in the poison wastes. (Accessible only through fairy ring DLR)"),
 		new CrypticClue("A general who sets a 'shining' example.", "General Hining", new WorldPoint(2186, 3148, 0), "Talk to General Hining in Tyras Camp."),
-		new CrypticClue("Has no one told you it is rude to ask a lady her age?", "Lady Tangwen Trahaearn", new WorldPoint(3280, 6042, 0), "Talk to Lady Tangwen Trahaearn, SSE Prifddinas by the teleporter."),
+		new CrypticClue("Has no one told you it is rude to ask a lady her age?", "Mawrth", new WorldPoint(2333, 3165, 0), "Talk to Mawrth in Lletya."),
 		new CrypticClue("Elvish onions.", new WorldPoint(3303, 6092, 0), "Dig in the onion patch east of the Prifddinas allotments.")
 	);
 

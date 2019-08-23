@@ -272,7 +272,7 @@ public class FishingPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) target;
-		FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+		FishingSpot spot = FishingSpot.findSpot(npc.getId());
 
 		if (spot == null)
 		{
@@ -311,7 +311,7 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.getSPOTS().get(npc.getId()) == FishingSpot.MINNOW && this.showMinnowOverlay)
+			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.MINNOW && this.showMinnowOverlay)
 			{
 				final int id = npc.getIndex();
 				final MinnowSpot minnowSpot = minnowSpots.get(id);
@@ -336,7 +336,7 @@ public class FishingPlugin extends Plugin
 	{
 		final NPC npc = event.getNpc();
 
-		if (!FishingSpot.getSPOTS().containsKey(npc.getId()))
+		if (FishingSpot.findSpot(npc.getId()) == null)
 		{
 			return;
 		}
@@ -448,8 +448,22 @@ public class FishingPlugin extends Plugin
 
 	private void inverseSortSpotDistanceFromPlayer()
 	{
+		if (fishingSpots.isEmpty())
+		{
+			return;
+		}
+
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
-		fishingSpots.sort(Comparator.comparing(npc -> -1 * npc.getLocalLocation().distanceTo(cameraPoint)));
+		fishingSpots.sort(
+			Comparator.comparing(
+				// Negate to have the furthest first
+				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
+				// Order by position
+				.thenComparing(NPC::getLocalLocation, Comparator.comparing(LocalPoint::getX)
+					.thenComparing(LocalPoint::getY))
+				// And then by id
+				.thenComparing(NPC::getId)
+		);
 	}
 
 	private void updateConfig()

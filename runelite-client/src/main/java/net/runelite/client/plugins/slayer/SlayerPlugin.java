@@ -54,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -133,7 +134,7 @@ public class SlayerPlugin extends Plugin
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
-	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.DESERT_LIZARDS, Task.GARGOYLES,
+	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.LIZARDS, Task.GARGOYLES,
 		Task.GROTESQUE_GUARDIANS, Task.GROTESQUE_GUARDIANS, Task.MUTATED_ZYGOMITES, Task.ROCKSLUGS);
 
 	// Chat Command
@@ -242,7 +243,7 @@ public class SlayerPlugin extends Plugin
 	private Task weaknessTask = null;
 
 	private TaskCounter counter;
-	private int cachedXp;
+	private int cachedXp = -1;
 	private int cachedPoints;
 	private Instant infoTimer;
 	private List<String> targetNames = new ArrayList<>();
@@ -328,6 +329,11 @@ public class SlayerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			cachedXp = client.getSkillExperience(SLAYER);
+		}
+
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 
 		chatCommandManager.registerCommandAsync(POINTS_COMMAND_STRING, this::pointsLookup); //here
@@ -348,6 +354,8 @@ public class SlayerPlugin extends Plugin
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(POINTS_COMMAND_STRING);
 		clientToolbar.removeNavigation(navButton);
+
+		cachedXp = -1;
 	}
 
 	private void addSubscriptions()
@@ -376,6 +384,7 @@ public class SlayerPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGGING_IN:
+				cachedXp = -1;
 				cachedPoints = 0;
 				clearTrackedNPCs();
 				break;
@@ -736,45 +745,47 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		if (cachedXp != 0)
+		if (cachedXp == -1)
 		{
-			final Task task = Task.getTask(taskName);
+			// this is the initial xp sent on login
+			cachedXp = slayerExp;
+			return;
+		}
 
-			if (task == null)
+		final Task task = Task.getTask(taskName);
+
+		// null tasks are technically valid, it only means they arent explicitly defined in the Task enum
+		// allow them through so that if there is a task capture failure the counter will still work
+		final int taskKillExp = task != null ? task.getExpectedKillExp() : 0;
+
+		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
+		// to the expected exp gain for the task.
+		if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+		{
+			killedOne();
+		}
+		else
+		{
+			// this is not the initial xp sent on login so these are new xp gains
+			int gains = slayerExp - cachedXp;
+
+			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
+			List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
+			for (NPC npc : highlightedTargets)
 			{
-				return;
+				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
+				potentialNPCs.add(currentPresence);
 			}
 
-			final int taskKillExp = task.getExpectedKillExp();
-
-			// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
-			// to the expected exp gain for the task.
-			if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+			int killCount = estimateKillCount(potentialNPCs, gains);
+			for (int i = 0; i < killCount; i++)
 			{
 				killedOne();
-			}
-			else
-			{
-				// this is not the initial xp sent on login so these are new xp gains
-				int gains = slayerExp - cachedXp;
-
-				// potential npcs to give xp drop are current highlighted npcs and the lingering presences
-				List<NPCPresence> potentialNPCs = new ArrayList<>(lingeringPresences);
-				for (NPC npc : highlightedTargets)
-				{
-					NPCPresence currentPresence = NPCPresence.buildPresence(npc);
-					potentialNPCs.add(currentPresence);
-				}
-
-				int killCount = estimateKillCount(potentialNPCs, gains);
-				for (int i = 0; i < killCount; i++)
-				{
-					killedOne();
-					int delta = slayerExp - cachedXp;
-					currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
-				}
+				int delta = slayerExp - cachedXp;
+				currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
 			}
 		}
+
 		cachedXp = slayerExp;
 	}
 
