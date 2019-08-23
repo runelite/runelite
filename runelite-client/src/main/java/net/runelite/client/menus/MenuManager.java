@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -47,9 +48,9 @@ import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.MenuEntryAdded;
@@ -807,42 +808,49 @@ public class MenuManager
 	private void indexPriorityEntries(MenuEntry[] entries, int menuOptionCount)
 	{
 		// create a array of priority entries so we can sort those
-		SortMapping[] prios = new SortMapping[entries.length - menuOptionCount];
-
-		int prioAmt = 0;
-		for (int i = 0; i < menuOptionCount; i++)
+		try
 		{
-			final MenuEntry entry = entries[i];
-			for (AbstractComparableEntry prio : priorityEntries)
+			final SortMapping[] prios = new SortMapping[entries.length - menuOptionCount];
+
+			int prioAmt = 0;
+			for (int i = 0; i < menuOptionCount; i++)
 			{
-				if (!prio.matches(entry))
+				final MenuEntry entry = entries[i];
+				for (AbstractComparableEntry prio : priorityEntries)
 				{
-					continue;
+					if (!prio.matches(entry))
+					{
+						continue;
+					}
+
+					final SortMapping map = new SortMapping(prio.getPriority(), entry);
+					prios[prioAmt++] = map;
+					entries[i] = null;
+					break;
 				}
-
-				final SortMapping map = new SortMapping(prio.getPriority(), entry);
-				prios[prioAmt++] = map;
-				entries[i] = null;
-				break;
 			}
-		}
 
-		if (prioAmt == 0)
+			if (prioAmt == 0)
+			{
+				return;
+			}
+
+			// Sort em!
+			Arrays.sort(prios, 0, prioAmt);
+			int i;
+
+			// Just place them after the standard entries. clientmixin ignores null entries
+			for (i = 0; i < prioAmt; i++)
+			{
+				entries[menuOptionCount + i] = prios[i].entry;
+			}
+
+			firstEntry = entries[menuOptionCount + i - 1];
+		}
+		catch (ConcurrentModificationException ignored)
 		{
-			return;
+			//true band aid :)
 		}
-
-		// Sort em!
-		Arrays.sort(prios, 0, prioAmt);
-		int i;
-
-		// Just place them after the standard entries. clientmixin ignores null entries
-		for (i = 0; i < prioAmt; i++)
-		{
-			entries[menuOptionCount + i] = prios[i].entry;
-		}
-
-		firstEntry = entries[menuOptionCount + i - 1];
 	}
 
 	private void indexSwapEntries(MenuEntry[] entries, int menuOptionCount)
