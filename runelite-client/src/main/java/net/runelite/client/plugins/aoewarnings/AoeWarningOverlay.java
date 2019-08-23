@@ -40,6 +40,8 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.ProjectileID;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -96,6 +98,14 @@ public class AoeWarningOverlay extends Overlay
 			if (now.isAfter(proj.getStartTime().plus(Duration.ofMillis(proj.getLifetime()))))
 			{
 				return;
+			}
+
+			if (proj.getProjectile().getId() == ProjectileID.ICE_DEMON_ICE_BARRAGE_AOE || proj.getProjectile().getId() == ProjectileID.TEKTON_METEOR_AOE)
+			{
+				if (client.getVar(Varbits.IN_RAID) == 0)
+				{
+					return;
+				}
 			}
 
 			final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, proj.getTargetPoint(), proj.getAoeProjectileInfo().getAoeSize());
