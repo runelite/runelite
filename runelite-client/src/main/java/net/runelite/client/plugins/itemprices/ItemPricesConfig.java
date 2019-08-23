@@ -96,4 +96,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showHighAlchOnGuidePrices",
+			name = "Show High Alch value on 'Guide Prices' screen",
+			description = "Show the High Alchemy value of all items checked on 'Guide Prices' screen",
+			position = 6
+	)
+	default boolean showHighAlchOnGuidePrices()
+	{
+		return true;
+	}
 }
