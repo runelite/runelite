@@ -18,6 +18,7 @@ dependencies {
     implementation group: 'com.google.code.gson', name: 'gson', version: gson
     implementation group: 'com.google.guava', name: 'guava', version: guava
     implementation group: 'com.google.inject', name: 'guice', version: guice, classifier: 'no_aop'
+    implementation group: 'com.h2database', name: 'h2', version: h2
     implementation group: 'com.jakewharton.rxrelay2', name: 'rxrelay', version: rxrelay
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: okhttp3
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxjava
@@ -34,6 +35,9 @@ dependencies {
     implementation group: 'org.jetbrains', name: 'annotations', version: annotations
     implementation group: 'org.jogamp.gluegen', name: 'gluegen-rt', version: jogamp
     implementation group: 'org.jogamp.jogl', name: 'jogl-all', version: jogamp
+    implementation group: 'org.jooq', name: 'jooq', version: jooq
+    implementation group: 'org.jooq', name: 'jooq-codegen', version: jooq
+    implementation group: 'org.jooq', name: 'jooq-meta', version: jooq
     implementation group: 'org.ow2.asm', name: 'asm-tree', version: asm
     implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j
     implementation group: 'org.xeustechnologies', name: 'jcl-core', version: jclCore
