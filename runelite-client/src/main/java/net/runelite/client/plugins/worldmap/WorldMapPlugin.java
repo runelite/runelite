@@ -38,15 +38,22 @@ import net.runelite.api.QuestState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
+
+import javax.inject.Provider;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -120,6 +127,12 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private WorldMapConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private WorldMapOverlay worldMapOverlay;
 
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
@@ -199,6 +212,19 @@ public class WorldMapPlugin extends Plugin
 			// Quest icons are per-account due to showing quest status,
 			// so we recreate them each time the map is loaded
 			updateQuestStartPointIcons();
+
+			//change overlay layers based on map type
+			if (client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT) != null
+					&& !client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT).isHidden())
+			{
+				worldMapOverlay.setLayer(OverlayLayer.ABOVE_MAP);
+				overlayManager.resetOverlay(worldMapOverlay);
+			}
+			else
+			{
+				worldMapOverlay.setLayer(OverlayLayer.ABOVE_WIDGETS);
+				overlayManager.resetOverlay(worldMapOverlay);
+			}
 		}
 	}
 
