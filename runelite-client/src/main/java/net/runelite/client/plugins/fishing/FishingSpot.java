@@ -170,7 +170,6 @@ enum FishingSpot
 	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", ItemID.COMMON_TENCH,
 		FISHING_SPOT_8523);
 
-	@Getter
 	private static final Map<Integer, FishingSpot> SPOTS;
 
 	private final String name;
@@ -197,5 +196,10 @@ enum FishingSpot
 		this.name = spot;
 		this.fishSpriteId = fishSpriteId;
 		this.ids = ids;
+	}
+
+	static FishingSpot findSpot(int id)
+	{
+		return SPOTS.get(id);
 	}
 }

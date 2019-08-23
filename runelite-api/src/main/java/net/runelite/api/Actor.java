@@ -49,6 +49,7 @@ public interface Actor extends Entity
 	 *
 	 * @return the name
 	 */
+	@Nullable
 	String getName();
 
 	/**

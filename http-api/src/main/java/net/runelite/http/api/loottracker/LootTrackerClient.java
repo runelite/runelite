@@ -53,13 +53,13 @@ public class LootTrackerClient
 
 	private final UUID uuid;
 
-	public void submit(LootRecord lootRecord)
+	public void submit(Collection<LootRecord> lootRecords)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("loottracker")
 			.build();
 
-		RequestBody body = RequestBody.Companion.create(GSON.toJson(lootRecord), JSON);
+		RequestBody body = RequestBody.Companion.create(GSON.toJson(lootRecords), JSON);
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.post(body)

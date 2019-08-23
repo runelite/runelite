@@ -41,6 +41,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -106,6 +107,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.plugins.loottracker.localstorage.LTRecord;
 import net.runelite.client.plugins.loottracker.localstorage.LootRecordWriter;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -218,6 +220,7 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
+	private final List<LootRecord> queuedLoots = new ArrayList<>();
 
 	private Map<String, Integer> killCountMap = new HashMap<>();
 	private boolean gotPet = false;
@@ -291,6 +294,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private void onSessionClose(SessionClose sessionClose)
 	{
+		submitLoot();
 		lootTrackerClient = null;
 	}
 
@@ -331,7 +335,6 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-
 		addSubscriptions();
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
@@ -421,6 +424,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void shutDown()
 	{
 		eventBus.unregister(this);
+		submitLoot();
 
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
@@ -528,9 +532,12 @@ public class LootTrackerPlugin extends Plugin
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.NPC,
 			toGameItems(items), Instant.now());
 
-		if (config.saveLoot() && lootTrackerClient != null)
+		if (config.saveLoot())
 		{
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 		if (this.localPersistence)
 		{
@@ -578,9 +585,12 @@ public class LootTrackerPlugin extends Plugin
 		SwingUtilities.invokeLater(() -> panel.add(name, localUsername, combat, entries));
 		LootRecord lootRecord = new LootRecord(name, localUsername, LootRecordType.PLAYER,
 			toGameItems(items), Instant.now());
-		if (lootTrackerClient != null && this.saveLoot)
+		if (this.saveLoot)
 		{
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 		if (config.localPersistence())
 		{
@@ -691,9 +701,12 @@ public class LootTrackerPlugin extends Plugin
 
 		final int killCount = killCountMap.getOrDefault(eventType.toUpperCase(), -1);
 
-		if (lootTrackerClient != null && this.saveLoot)
+		if (this.saveLoot)
 		{
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 		if (config.localPersistence())
 		{
@@ -871,9 +884,12 @@ public class LootTrackerPlugin extends Plugin
 						client.getLocalPlayer().getCombatLevel(), entries));
 					LootRecord lootRecord = new LootRecord(name, client.getLocalPlayer().getName(), LootRecordType.DEATH,
 						toGameItems(itemsLost), Instant.now());
-					if (lootTrackerClient != null && this.saveLoot)
+					if (this.saveLoot)
 					{
-						lootTrackerClient.submit(lootRecord);
+						synchronized (queuedLoots)
+						{
+							queuedLoots.add(lootRecord);
+						}
 					}
 					if (this.localPersistence)
 					{
@@ -989,6 +1005,40 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Schedule(
+		period = 5,
+		unit = ChronoUnit.MINUTES,
+		asynchronous = true
+	)
+	public void submitLootTask()
+	{
+		submitLoot();
+	}
+
+	private void submitLoot()
+	{
+		List<LootRecord> copy;
+		synchronized (queuedLoots)
+		{
+			if (queuedLoots.isEmpty())
+			{
+				return;
+			}
+
+			copy = new ArrayList<>(queuedLoots);
+			queuedLoots.clear();
+		}
+
+		if (lootTrackerClient == null || !config.saveLoot())
+		{
+			return;
+		}
+
+		log.debug("Submitting {} loot records", copy.size());
+
+		lootTrackerClient.submit(copy);
+	}
+
 	private void takeInventorySnapshot()
 	{
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
@@ -1045,9 +1095,12 @@ public class LootTrackerPlugin extends Plugin
 
 			LootRecord lootRecord = new LootRecord(chestType, client.getLocalPlayer().getName(),
 				LootRecordType.EVENT, toGameItems(items), Instant.now());
-			if (lootTrackerClient != null && config.saveLoot())
+			if (config.saveLoot())
 			{
-				lootTrackerClient.submit(lootRecord);
+				synchronized (queuedLoots)
+				{
+					queuedLoots.add(lootRecord);
+				}
 			}
 
 			if (config.localPersistence())

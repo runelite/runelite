@@ -276,6 +276,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 			{
 				safeRender(client, overlay, layer, graphics, new Point());
+
+				// Restore graphics2d properties
+				graphics.setTransform(transform);
+				graphics.setStroke(stroke);
+				graphics.setComposite(composite);
+				graphics.setPaint(paint);
+				graphics.setRenderingHints(renderingHints);
+				graphics.setBackground(background);
 			}
 			else
 			{
@@ -312,6 +320,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 				safeRender(client, overlay, layer, graphics, location);
 
+				// Restore graphics2d properties prior to drawing bounds
+				graphics.setTransform(transform);
+				graphics.setStroke(stroke);
+				graphics.setComposite(composite);
+				graphics.setPaint(paint);
+				graphics.setRenderingHints(renderingHints);
+				graphics.setBackground(background);
+
 				final Rectangle bounds = overlay.getBounds();
 
 				if (!bounds.isEmpty())
@@ -330,14 +346,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					}
 				}
 			}
-
-			// Restore graphics2d properties
-			graphics.setTransform(transform);
-			graphics.setStroke(stroke);
-			graphics.setComposite(composite);
-			graphics.setPaint(paint);
-			graphics.setRenderingHints(renderingHints);
-			graphics.setBackground(background);
 		}
 	}
 
