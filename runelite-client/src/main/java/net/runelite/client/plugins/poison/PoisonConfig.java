@@ -85,4 +85,15 @@ public interface PoisonConfig extends Config
 	{
 		return 8;
 	}
+
+	@ConfigItem(
+		keyName = "ticks",
+		name = "Gametick timers",
+		description = "Use gameticks instead of seconds for timers",
+		position = 4
+	)
+	default boolean ticks()
+	{
+		return false;
+	}
 }

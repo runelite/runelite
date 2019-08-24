@@ -41,6 +41,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.GAME_TICK_LENGTH;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
@@ -73,11 +74,11 @@ import net.runelite.client.util.ImageUtil;
 @Singleton
 public class PoisonPlugin extends Plugin
 {
-	private static final int POISON_TICK_MILLIS = 18000;
+	static final int POISON_TICK_TICKS = 30;
 	static final int VENOM_THRESHOLD = 1000000;
 	private static final int VENOM_UTILITY = 999997;
 	private static final int VENOM_MAXIMUM_DAMAGE = 20;
-	static final int POISON_TICK_TICKS = 30;
+	private static final int POISON_TICK_MILLIS = POISON_TICK_TICKS * GAME_TICK_LENGTH;
 
 	private static final BufferedImage HEART_DISEASE;
 	private static final BufferedImage HEART_POISON;
@@ -525,5 +526,6 @@ public class PoisonPlugin extends Plugin
 		this.showForPlayers = config.showForPlayers();
 		this.showForNpcs = config.showForNpcs();
 		this.fontSize = config.fontSize();
+		actorOverlay.setDisplayTicks(config.ticks());
 	}
 }

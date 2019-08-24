@@ -28,6 +28,7 @@ public class PoisonActorOverlay extends Overlay
 {
 	private final PoisonPlugin plugin;
 	private final Client client;
+	private boolean displayTicks;
 	private int fontSize;
 	private Font font;
 
@@ -100,9 +101,14 @@ public class PoisonActorOverlay extends Overlay
 			cycle += POISON_TICK_TICKS;
 		}
 
-		int timeLeftMillis = (cycle - tickCount) * Constants.GAME_TICK_LENGTH;
+		int timeLeft = (cycle - tickCount);
 
-		return String.valueOf(timeLeftMillis / 1000);
+		if (!displayTicks)
+		{
+			timeLeft = timeLeft * Constants.GAME_TICK_LENGTH / 1000;
+		}
+
+		return String.valueOf(timeLeft);
 	}
 
 	private void renderOverlayFor(Graphics2D g, Actor actor, int damage, String timeLeft, boolean venomed)
@@ -141,5 +147,10 @@ public class PoisonActorOverlay extends Overlay
 		{
 			fontSize = size;
 		}
+	}
+
+	void setDisplayTicks(boolean displayTicks)
+	{
+		this.displayTicks = displayTicks;
 	}
 }
