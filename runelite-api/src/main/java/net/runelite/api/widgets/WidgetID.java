@@ -1129,7 +1129,7 @@ public class WidgetID
 		static final int BUTTON_7 = 28;
 		static final int BUTTON_8 = 30;
 		static final int BUTTON_9 = 32;
-		static final int BUTTON_0 = 34;
+		static final int BUTTON_10 = 34;
 	}
 
 	static class SeedVault

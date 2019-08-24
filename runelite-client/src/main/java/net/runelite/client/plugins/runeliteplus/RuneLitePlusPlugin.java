@@ -198,7 +198,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 		// Script 685 will call 653, which in turn will set expectInput to true
 		expectInput = false;
-		client.runScript(BANK_PIN_OP, num, enterIdx, entered, BANK_PIN_EXIT_BUTTON.getId(), BANK_PIN_FORGOT_BUTTON.getId(), BANK_PIN_1.getId(), BANK_PIN_2.getId(), BANK_PIN_3.getId(), BANK_PIN_4.getId(), BANK_PIN_5.getId(), BANK_PIN_6.getId(), BANK_PIN_7.getId(), BANK_PIN_8.getId(), BANK_PIN_9.getId(), BANK_PIN_0.getId(), BANK_PIN_FIRST_ENTERED.getId(), BANK_PIN_SECOND_ENTERED.getId(), BANK_PIN_THIRD_ENTERED.getId(), BANK_PIN_FOURTH_ENTERED.getId(), BANK_PIN_INSTRUCTION_TEXT.getId());
+		client.runScript(BANK_PIN_OP, num, enterIdx, entered, BANK_PIN_EXIT_BUTTON.getId(), BANK_PIN_FORGOT_BUTTON.getId(), BANK_PIN_1.getId(), BANK_PIN_2.getId(), BANK_PIN_3.getId(), BANK_PIN_4.getId(), BANK_PIN_5.getId(), BANK_PIN_6.getId(), BANK_PIN_7.getId(), BANK_PIN_8.getId(), BANK_PIN_9.getId(), BANK_PIN_10.getId(), BANK_PIN_FIRST_ENTERED.getId(), BANK_PIN_SECOND_ENTERED.getId(), BANK_PIN_THIRD_ENTERED.getId(), BANK_PIN_FOURTH_ENTERED.getId(), BANK_PIN_INSTRUCTION_TEXT.getId());
 
 		if (oldEnterIdx == 0)
 		{

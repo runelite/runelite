@@ -37,6 +37,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.FontID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
@@ -77,10 +78,24 @@ public class BankPlugin extends Plugin
 		Varbits.BANK_TAB_NINE_COUNT
 	);
 
+	private static final List<WidgetInfo> BANK_PINS = ImmutableList.of(
+			WidgetInfo.BANK_PIN_1,
+			WidgetInfo.BANK_PIN_2,
+			WidgetInfo.BANK_PIN_3,
+			WidgetInfo.BANK_PIN_4,
+			WidgetInfo.BANK_PIN_5,
+			WidgetInfo.BANK_PIN_6,
+			WidgetInfo.BANK_PIN_7,
+			WidgetInfo.BANK_PIN_8,
+			WidgetInfo.BANK_PIN_9,
+			WidgetInfo.BANK_PIN_10
+	);
+
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
+	private static final int PIN_FONT_OFFSET = 5;
 
 	@Inject
 	private Client client;
@@ -104,6 +119,7 @@ public class BankPlugin extends Plugin
 	private ContainerCalculation seedVaultCalculation;
 
 	private boolean forceRightClickFlag;
+	private boolean largePinNumbers;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -178,6 +194,11 @@ public class BankPlugin extends Plugin
 
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
+		if (event.getEventName().equals("bankPinButtons") && this.largePinNumbers)
+		{
+			updateBankPinSizes();
+		}
+
 		if (!event.getEventName().equals("setBankTitle"))
 		{
 			return;
@@ -338,10 +359,45 @@ public class BankPlugin extends Plugin
 		updateConfig();
 	}
 
+	private void updateBankPinSizes()
+	{
+		for (final WidgetInfo widgetInfo : BANK_PINS)
+		{
+			final Widget pin = client.getWidget(widgetInfo);
+			if (pin == null)
+			{
+				continue;
+			}
+
+			final Widget[] children = pin.getDynamicChildren();
+			if (children.length < 2)
+			{
+				continue;
+			}
+
+			final Widget button = children[0];
+			final Widget number = children[1];
+
+			// Change to a bigger font size
+			number.setFontId(FontID.QUILL_CAPS_LARGE);
+			number.setYTextAlignment(0);
+
+			// Change size to match container widths
+			number.setOriginalWidth(button.getWidth());
+			// The large font id text isn't centered, we need to offset it slightly
+			number.setOriginalHeight(button.getHeight() + PIN_FONT_OFFSET);
+			number.setOriginalY(-PIN_FONT_OFFSET);
+			number.setOriginalX(0);
+
+			number.revalidate();
+		}
+	}
+
 	private void updateConfig()
 	{
 		this.showGE = config.showGE();
 		this.showHA = config.showHA();
+		this.largePinNumbers = config.largePinNumbers();
 		this.showExact = config.showExact();
 		this.rightClickBankInventory = config.rightClickBankInventory();
 		this.rightClickBankEquip = config.rightClickBankEquip();

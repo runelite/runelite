@@ -488,5 +488,7 @@ LABEL188:
    iload                  18
    sconst                 "iIIIIIIIIIIIIIIIII"
    iload                  3
-   if_setonop            
-   return                
+   if_setonop
+   sconst                 "bankPinButtons" ; push event name
+   runelite_callback      ; invoke callback
+   return
