@@ -1006,9 +1006,9 @@ public class LootTrackerPlugin extends Plugin
 	{
 		lootRecords.clear();
 		DSLContext dslContext = databaseManager.getDsl();
-		dslContext.truncate(LOOTTRACKEREVENTS).execute();
-		dslContext.truncate(LOOTTRACKERLOOT).execute();
-		dslContext.truncate(LOOTTRACKERLINK).execute();
+		dslContext.delete(LOOTTRACKEREVENTS).execute();
+		dslContext.delete(LOOTTRACKERLOOT).execute();
+		dslContext.delete(LOOTTRACKERLINK).execute();
 	}
 
 	/**
