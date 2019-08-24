@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Point;
@@ -44,6 +45,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
@@ -66,6 +68,7 @@ public class RegionLockerPlugin extends Plugin
 	static final String PLUGIN_NAME = "ChunkLite";
 	static final String CONFIG_KEY = "regionlocker";
 	private static final String CHUNK_COMMAND = "!chunks";
+	private static final String PET_COMMAND = "God";
 
 	@Inject
 	private Client client;
@@ -119,6 +122,7 @@ public class RegionLockerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
+		chatCommandManager.registerCommandAsync(PET_COMMAND, this::petCommand);
 		regionLocker = new RegionLocker(client, config, configManager);
 		overlayManager.add(regionLockerOverlay);
 		overlayManager.add(regionBorderOverlay);
@@ -131,6 +135,7 @@ public class RegionLockerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		chatCommandManager.unregisterCommand(CHUNK_COMMAND);
+		chatCommandManager.unregisterCommand(PET_COMMAND);
 		overlayManager.remove(regionLockerOverlay);
 		overlayManager.remove(regionBorderOverlay);
 		keyManager.unregisterKeyListener(inputListener);
@@ -238,5 +243,26 @@ public class RegionLockerPlugin extends Plugin
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
+	}
+
+	private void petCommand(ChatMessage chatMessage, String message)
+	{
+		if (!config.chunkCommand() || !message.equals("God Ash give this lad some rng")) return;
+
+		sendChatMessage("You have a funny feeling like you're being followed.");
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(chatMessage)
+				.build();
+
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.CONSOLE)
+						.runeLiteFormattedMessage(message)
+						.build());
 	}
 }
