@@ -124,7 +124,7 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			if (args.length != 1)
 			{
-				throw new RuntimeException("Invalid number of arguents to configuration method");
+				throw new RuntimeException("Invalid number of arguments to configuration method");
 			}
 
 			Object newValue = args[0];
