@@ -27,11 +27,15 @@ package net.runelite.client.plugins.shiftwalker;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -51,8 +55,76 @@ import net.runelite.client.plugins.PluginType;
 public class ShiftWalkerPlugin extends Plugin
 {
 
-	private static final String WALK_HERE = "Walk here";
-	private static final String TAKE = "Take";
+	private static final AbstractComparableEntry WALK = new AbstractComparableEntry()
+	{
+		private final int hash = "WALK".hashCode() * 79 + getPriority();
+
+		@Override
+		public int hashCode()
+		{
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object entry)
+		{
+			return entry.getClass() == this.getClass() && entry.hashCode() == this.hashCode();
+		}
+
+		@Override
+		public int getPriority()
+		{
+			return 99;
+		}
+
+		@Override
+		public boolean matches(MenuEntry entry)
+		{
+			return
+				entry.getOpcode() == MenuOpcode.WALK.getId() ||
+				entry.getOpcode() == MenuOpcode.WALK.getId() + MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
+		}
+	};
+
+	private static final AbstractComparableEntry TAKE = new AbstractComparableEntry()
+	{
+		private final int hash = "TAKE".hashCode() * 79 + getPriority();
+
+		@Override
+		public int hashCode()
+		{
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object entry)
+		{
+			return entry.getClass() == this.getClass() && entry.hashCode() == this.hashCode();
+		}
+
+		@Override
+		public int getPriority()
+		{
+			return 100;
+		}
+
+		@Override
+		public boolean matches(MenuEntry entry)
+		{
+			int opcode = entry.getOpcode();
+			if (opcode > MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET)
+			{
+				opcode -= MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
+			}
+
+			return
+				opcode >= MenuOpcode.GROUND_ITEM_FIRST_OPTION.getId() &&
+				opcode <= MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
+		}
+	};
+
+	private static final String EVENTBUS_THING = "shiftwalker_shift";
+
 	@Inject
 	private ShiftWalkerConfig config;
 
@@ -112,21 +184,33 @@ public class ShiftWalkerPlugin extends Plugin
 
 	void startPrioritizing()
 	{
+		eventBus.subscribe(ClientTick.class, EVENTBUS_THING, this::addEntries);
+	}
+
+	private void addEntries(ClientTick event)
+	{
 		if (this.shiftLoot)
 		{
-			menuManager.addPriorityEntry(TAKE).setPriority(100);
+			menuManager.addPriorityEntry(TAKE);
 		}
-		
 		if (this.shiftWalk)
 		{
-			menuManager.addPriorityEntry(WALK_HERE).setPriority(90);
-		}	
+			menuManager.addPriorityEntry(WALK);
+		}
+
+		eventBus.unregister(EVENTBUS_THING);
 	}
 
 	void stopPrioritizing()
 	{
+		eventBus.subscribe(ClientTick.class, EVENTBUS_THING, this::remEntries);
+	}
+
+	private void remEntries(ClientTick c)
+	{
 		menuManager.removePriorityEntry(TAKE);
-		menuManager.removePriorityEntry(WALK_HERE);
+		menuManager.removePriorityEntry(WALK);
+		eventBus.unregister(EVENTBUS_THING);
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -136,7 +220,13 @@ public class ShiftWalkerPlugin extends Plugin
 			return;
 		}
 
-		this.shiftWalk = config.shiftWalk();
-		this.shiftLoot = config.shiftLoot();
+		if ("shiftWalk".equals(event.getKey()))
+		{
+			this.shiftWalk = "true".equals(event.getNewValue());
+		}
+		else
+		{
+			this.shiftLoot = "true".equals(event.getNewValue());
+		}
 	}
 }

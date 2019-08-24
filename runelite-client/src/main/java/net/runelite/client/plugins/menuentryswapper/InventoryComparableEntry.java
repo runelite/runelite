@@ -6,13 +6,14 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 public class InventoryComparableEntry extends AbstractComparableEntry
 {
 	public InventoryComparableEntry(String option, String itemName, boolean strictTarget)
 	{
-		this.setOption(Text.standardize(option));
+		this.setOption(option);
 		this.setTarget(Text.standardize(itemName));
 		this.setStrictTarget(strictTarget);
 	}
@@ -31,6 +32,6 @@ public class InventoryComparableEntry extends AbstractComparableEntry
 			return false;
 		}
 
-		return Text.standardize(entry.getOption()).contains(this.getOption()) && Text.standardize(entry.getTarget()).contains(this.getTarget());
+		return StringUtils.containsIgnoreCase(entry.getOption(), this.getOption()) && Text.standardize(entry.getTarget()).contains(this.getTarget());
 	}
 }

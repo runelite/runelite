@@ -58,6 +58,7 @@ import net.runelite.api.Varbits;
 import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -115,6 +116,8 @@ import org.apache.commons.lang3.ArrayUtils;
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "shiftclick";
+	private static final String SHIFT = "menuentryswapper shift";
+	private static final String CONTROL = "menuentryswapper control";
 	private static final int PURO_PURO_REGION_ID = 10307;
 	private static final Set<MenuOpcode> NPC_MENU_TYPES = ImmutableSet.of(
 		MenuOpcode.NPC_FIRST_OPTION, MenuOpcode.NPC_SECOND_OPTION, MenuOpcode.NPC_THIRD_OPTION,
@@ -1435,6 +1438,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	void startShift()
 	{
+		eventBus.subscribe(ClientTick.class, SHIFT, this::addShift);
+	}
+
+	private void addShift(ClientTick event)
+	{
 		loadCustomSwaps(this.configCustomShiftSwaps, customShiftSwaps);
 
 		if (!this.swapClimbUpDown)
@@ -1443,12 +1451,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		menuManager.addPriorityEntry("climb-up").setPriority(100);
+		eventBus.unregister(SHIFT);
 	}
 
 	void stopShift()
 	{
+		eventBus.subscribe(ClientTick.class, SHIFT, this::remShift);
+	}
+
+	private void remShift(ClientTick event)
+	{
 		menuManager.removePriorityEntry("climb-up");
 		loadCustomSwaps("", customShiftSwaps);
+		eventBus.unregister(SHIFT);
 	}
 
 	void startControl()
@@ -1458,12 +1473,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		eventBus.subscribe(ClientTick.class, CONTROL, this::addControl);
+	}
+
+	private void addControl(ClientTick event)
+	{
 		menuManager.addPriorityEntry("climb-down").setPriority(100);
+		eventBus.unregister(CONTROL);
 	}
 
 	void stopControl()
 	{
+		eventBus.subscribe(ClientTick.class, CONTROL, this::remControl);
+	}
+
+	private void remControl(ClientTick event)
+	{
 		menuManager.removePriorityEntry("climb-down");
+		eventBus.unregister(CONTROL);
 	}
 
 	private void setCastOptions(boolean force)

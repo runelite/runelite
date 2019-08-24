@@ -2,17 +2,18 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import lombok.EqualsAndHashCode;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.menus.AbstractComparableEntry;
-import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 public class BankComparableEntry extends AbstractComparableEntry
 {
 	public BankComparableEntry(String option, String itemName, boolean strictTarget)
 	{
-		this.setOption(Text.standardize(option));
+		this.setOption(option);
 		this.setTarget(Text.standardize(itemName));
 		this.setStrictTarget(strictTarget);
 	}
@@ -26,11 +27,11 @@ public class BankComparableEntry extends AbstractComparableEntry
 			return false;
 		}
 
-		if (isStrictTarget() && Text.standardize(entry.getTarget()).equals(this.getTarget()))
+		if (isStrictTarget() && !Text.standardize(entry.getTarget()).equals(this.getTarget()))
 		{
 			return false;
 		}
 
-		return Text.standardize(entry.getOption()).contains(this.getOption()) && Text.standardize(entry.getTarget()).contains(this.getTarget());
+		return StringUtils.containsIgnoreCase(entry.getOption(), this.getOption()) && Text.standardize(entry.getTarget()).contains(this.getTarget());
 	}
 }

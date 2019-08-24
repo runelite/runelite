@@ -7,6 +7,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -28,7 +29,7 @@ abstract class ItemComparableEntry extends AbstractComparableEntry
 			assert client.isClientThread() : "You can only create these on the clientthread";
 
 			this.target = Text.standardize(itemName);
-			this.option = Text.standardize(option);
+			this.option = option;
 
 			short[] tmp = this.itemIds = new short[16];
 
@@ -38,7 +39,7 @@ abstract class ItemComparableEntry extends AbstractComparableEntry
 			for (short i = 0; i < itemCount; i++)
 			{
 				ItemDefinition def = client.getItemDefinition(i);
-				if (def.getNote() != -1 || !def.getName().toLowerCase().contains(target))
+				if (def.getNote() != -1 || !StringUtils.containsIgnoreCase(def.getName(), target))
 				{
 					continue;
 				}
@@ -46,7 +47,7 @@ abstract class ItemComparableEntry extends AbstractComparableEntry
 				boolean notValid = true;
 				for (String opt : def.getInventoryActions())
 				{
-					if (opt != null && Text.standardize(opt).contains(option))
+					if (opt != null && StringUtils.containsIgnoreCase(opt, option))
 					{
 						notValid = false;
 						break;
@@ -75,7 +76,7 @@ abstract class ItemComparableEntry extends AbstractComparableEntry
 
 		public boolean matches(MenuEntry entry)
 		{
-			if (!this.option.contains(Text.standardize(entry.getOption())))
+			if (!StringUtils.containsIgnoreCase(entry.getOption(), this.option))
 			{
 				return false;
 			}

@@ -13,7 +13,7 @@ public class EquipmentComparableEntry extends AbstractComparableEntry
 {
 	public EquipmentComparableEntry(String option, String itemName)
 	{
-		this.setOption(Text.standardize(option));
+		this.setOption(option);
 		this.setTarget(Text.standardize(itemName));
 	}
 

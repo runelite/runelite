@@ -29,6 +29,7 @@ import joptsimple.internal.Strings;
 import lombok.EqualsAndHashCode;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 public class BaseComparableEntry extends AbstractComparableEntry
@@ -51,9 +52,9 @@ public class BaseComparableEntry extends AbstractComparableEntry
 
 	public boolean matches(@Nonnull MenuEntry entry)
 	{
-		String opt = entry.getStandardizedOption();
+		String opt = entry.getOption();
 
-		if (strictOption && !opt.equals(option) || !strictOption && !opt.contains(option))
+		if (strictOption && !StringUtils.equalsIgnoreCase(opt, option) || !strictOption && !StringUtils.containsIgnoreCase(opt, option))
 		{
 			return false;
 		}

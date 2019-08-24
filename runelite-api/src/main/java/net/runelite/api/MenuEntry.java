@@ -24,19 +24,18 @@
  */
 package net.runelite.api;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.runelite.api.util.Text;
 
 /**
  * A menu entry in a right-click menu.
  */
 @Data
-@AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class MenuEntry
 {
 	/**
@@ -49,6 +48,7 @@ public class MenuEntry
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
+	@Setter(AccessLevel.NONE)
 	private String target;
 	/**
 	 * An identifier value for the target of the action.
@@ -56,6 +56,7 @@ public class MenuEntry
 	private int identifier;
 	/**
 	 * The action the entry will trigger.
+	 * {@link net.runelite.api.MenuOpcode}
 	 */
 	private int opcode;
 	/**
@@ -74,6 +75,17 @@ public class MenuEntry
 	 */
 	private boolean forceLeftClick;
 
+	public MenuEntry(String option, String target, int identifier, int opcode, int param0, int param1, boolean forceLeftClick)
+	{
+		this.option = option;
+		this.target = target;
+		this.identifier = identifier;
+		this.opcode = opcode;
+		this.param0 = param0;
+		this.param1 = param1;
+		this.forceLeftClick = forceLeftClick;
+	}
+
 	public static MenuEntry copy(MenuEntry src)
 	{
 		return new MenuEntry(
@@ -87,17 +99,22 @@ public class MenuEntry
 		);
 	}
 
-	private static final Matcher TAG_REGEXP = Pattern.compile("<[^>]*>").matcher("");
-
-	@Getter(lazy = true)
-	private final String standardizedOption = standardize(option);
-	@Getter(lazy = true)
-	private final String standardizedTarget = standardize(LEVEL_MATCHER.reset(target).replaceAll(""));
-
-	public String standardize(String string)
+	public void setTarget(String target)
 	{
-		return TAG_REGEXP.reset(string).replaceAll("").replace('\u00A0', ' ').trim().toLowerCase();
+		this.target = target;
+		this.standardizedTarget = null;
 	}
 
-	private static final Matcher LEVEL_MATCHER = Pattern.compile("\\(level-[0-9]*\\)").matcher("");
+	@Getter(AccessLevel.NONE)
+	private String standardizedTarget;
+
+	public String getStandardizedTarget()
+	{
+		if (standardizedTarget == null)
+		{
+			standardizedTarget = Text.standardize(target, true);
+		}
+
+		return standardizedTarget;
+	}
 }
