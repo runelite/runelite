@@ -177,7 +177,7 @@ class LootPanel extends JPanel
 		String currentText;
 		String loggedText;
 
-		log.info(name);
+		log.debug(name);
 
 		switch (name)
 		{
