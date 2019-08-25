@@ -131,6 +131,11 @@ public class TargetClickboxOverlay extends Overlay
 			case HULL:
 				Polygon objectClickbox = actor.getConvexHull();
 
+				if (objectClickbox == null)
+				{
+					return;
+				}
+
 				OverlayUtil.renderPolygon(graphics, objectClickbox, color);
 				break;
 			case THIN_OUTLINE:
