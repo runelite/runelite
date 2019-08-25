@@ -13,9 +13,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-env:
-  - TERM=dumb
-
-install: ./gradlew assemble --console=plain
-script: ./gradlew build --console=plain
+script: ./gradlew build
 

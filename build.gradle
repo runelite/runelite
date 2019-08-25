@@ -83,7 +83,6 @@ ext {
 allprojects {
     apply plugin: 'maven'
     apply plugin: 'checkstyle'
-    apply from: "${project.rootDir}/scripts/colored-output.gradle"
 
     group = 'net.runelite'
     version = '1.5.32-SNAPSHOT'
