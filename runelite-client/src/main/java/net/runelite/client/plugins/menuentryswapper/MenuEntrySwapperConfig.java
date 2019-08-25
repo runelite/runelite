@@ -30,6 +30,7 @@ package net.runelite.client.plugins.menuentryswapper;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -350,11 +351,23 @@ public interface MenuEntrySwapperConfig extends Config
 	//------------------------------------------------------------//
 
 	@ConfigItem(
+		keyName = "hotkeyMod",
+		name = "Hotkey for Swaps",
+		description = "Set this hotkey to do custom swaps on hotkeys.",
+		position = 0,
+		group = "Miscellaneous"
+	)
+	default Keybind hotkeyMod()
+	{
+		return Keybind.SHIFT;
+	}
+
+	@ConfigItem(
 		keyName = "customSwaps",
 		name = "Custom Swaps",
 		description = "Add custom swaps here, 1 per line. Syntax: option,target:priority" +
 			"<br>Note that the higher your set the priority, the more it will overtake over swaps.",
-		position = 0,
+		position = 1,
 		group = "Miscellaneous",
 		parse = true,
 		clazz = CustomSwapParse.class,
@@ -367,11 +380,11 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "shiftCustomSwaps",
-		name = "Shift Swaps",
-		description = "Add custom swaps here that will only be activated when you press shift." +
+		name = "Hotkey Swaps",
+		description = "Add custom swaps here that will only be activated when you press your hotkey." +
 			"<br>1 per line. Syntax: option,target:priority" +
 			"<br>Note that the higher your set the priority, the more it will overtake over swaps.",
-		position = 1,
+		position = 2,
 		group = "Miscellaneous",
 		parse = true,
 		clazz = CustomSwapParse.class,

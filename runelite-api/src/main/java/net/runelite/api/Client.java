@@ -1024,6 +1024,11 @@ public interface Client extends GameShell
 	int getKeyboardIdleTicks();
 
 	/**
+	 * Returns an array of booleans relating to keys pressed.
+	 */
+	boolean[] getPressedKeys();
+
+	/**
 	 * Changes how game behaves based on memory mode. Low memory mode skips
 	 * drawing of all floors and renders ground textures in low quality.
 	 *

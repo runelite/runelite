@@ -25,8 +25,10 @@
 package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.base.Splitter;
-import java.util.Map;
+import java.util.List;
+import javax.inject.Singleton;
 
+@Singleton
 public class PrioParse
 {
 	public static boolean parse(String value)
@@ -48,7 +50,17 @@ public class PrioParse
 				.omitEmptyStrings()
 				.trimResults();
 
-			final Map<String, String> tmp = NEWLINE_SPLITTER.withKeyValueSeparator(',').split(sb);
+			final List<String> tmp = NEWLINE_SPLITTER.splitToList(sb);
+
+			for (String s : tmp)
+			{
+				final String[] strings = s.split(",");
+
+				if (strings.length <= 1)
+				{
+					return false;
+				}
+			}
 
 			return tmp.size() > 0;
 		}
