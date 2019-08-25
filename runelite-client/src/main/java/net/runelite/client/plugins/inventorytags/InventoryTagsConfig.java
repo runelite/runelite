@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.inventorytags;
 
 import java.awt.Color;
+import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -34,11 +35,51 @@ public interface InventoryTagsConfig extends Config
 {
 	String GROUP = "inventorytags";
 
+	@RequiredArgsConstructor
+	enum amount
+	{
+		ONE("1"),
+		TWO("2"),
+		THREE("3"),
+		FOUR("4"),
+		FIVE("5"),
+		SIX("6"),
+		SEVEN("7"),
+		EIGHT("8");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+
+		public int toInt()
+		{
+			return Integer.parseInt(name);
+		}
+	}
+
 	@ConfigItem(
 		position = 0,
+		keyName = "amount",
+		name = "Amount of groups",
+		description = "The amount of inventory groups"
+	)
+	default amount getAmount()
+	{
+		return amount.FOUR;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "groupColor1",
 		name = "Group 1 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "1 || 2 || 3 || 4 || 5 || 6 || 7 || 8"
 	)
 	default Color getGroup1Color()
 	{
@@ -46,10 +87,13 @@ public interface InventoryTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "groupColor2",
 		name = "Group 2 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "2 || 3 || 4 || 5 || 6 || 7 || 8"
 	)
 	default Color getGroup2Color()
 	{
@@ -57,10 +101,13 @@ public interface InventoryTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "groupColor3",
 		name = "Group 3 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "3 || 4 || 5 || 6 || 7 || 8"
 	)
 	default Color getGroup3Color()
 	{
@@ -68,13 +115,72 @@ public interface InventoryTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "groupColor4",
 		name = "Group 4 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "4 || 5 || 6 || 7 || 8"
 	)
 	default Color getGroup4Color()
 	{
 		return new Color(255, 0, 255);
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "groupColor5",
+		name = "Group 5 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "5 || 6 || 7 || 8"
+	)
+	default Color getGroup5Color()
+	{
+		return new Color(0, 255, 246);
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "groupColor6",
+		name = "Group 6 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "6 || 7 || 8"
+	)
+	default Color getGroup6Color()
+	{
+		return new Color(248, 255, 244);
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "groupColor7",
+		name = "Group 7 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "7 || 8"
+	)
+	default Color getGroup7Color()
+	{
+		return new Color(0, 0, 0);
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "groupColor8",
+		name = "Group 8 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "8"
+	)
+	default Color getGroup8Color()
+	{
+		return new Color(104, 105, 255);
 	}
 }

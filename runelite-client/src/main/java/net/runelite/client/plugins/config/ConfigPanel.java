@@ -662,11 +662,23 @@ public class ConfigPanel extends PluginPanel
 									@SuppressWarnings("unchecked") Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
 									if (!cid.getItem().unhideValue().equals(""))
 									{
-										show = selectedItem.toString().equals(cid.getItem().unhideValue());
+										List<String> unhideValue = Splitter
+											.onPattern("\\|\\|")
+											.trimResults()
+											.omitEmptyStrings()
+											.splitToList(cid.getItem().unhideValue());
+
+										show = unhideValue.contains(selectedItem.toString());
 									}
 									else if (!cid.getItem().hideValue().equals(""))
 									{
-										show = !selectedItem.toString().equals(cid.getItem().hideValue());
+										List<String> hideValue = Splitter
+											.onPattern("\\|\\|")
+											.trimResults()
+											.omitEmptyStrings()
+											.splitToList(cid.getItem().hideValue());
+
+										show = !hideValue.contains(selectedItem.toString());
 									}
 								}
 								catch (IllegalArgumentException ex)
