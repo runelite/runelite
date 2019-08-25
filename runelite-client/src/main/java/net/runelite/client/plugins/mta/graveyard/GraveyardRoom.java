@@ -35,9 +35,10 @@ import static net.runelite.api.ItemID.ANIMALS_BONES_6905;
 import static net.runelite.api.ItemID.ANIMALS_BONES_6906;
 import static net.runelite.api.ItemID.ANIMALS_BONES_6907;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -46,27 +47,38 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class GraveyardRoom extends MTARoom
 {
-	private static final int MTA_GRAVEYARD_REGION = 13462;
-
 	static final int MIN_SCORE = 16;
-
+	private static final int MTA_GRAVEYARD_REGION = 13462;
 	private final Client client;
 	private final MTAPlugin plugin;
 	private final ItemManager itemManager;
 	private final InfoBoxManager infoBoxManager;
-	private int score;
+	private final EventBus eventBus;
 
 	private GraveyardCounter counter;
 
+	private boolean graveyard;
+
 	@Inject
-	private GraveyardRoom(MTAConfig config, Client client, MTAPlugin plugin,
-		ItemManager itemManager, InfoBoxManager infoBoxManager)
+	private GraveyardRoom(final MTAConfig config, final Client client, final MTAPlugin plugin, final ItemManager itemManager, final InfoBoxManager infoBoxManager, final EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.infoBoxManager = infoBoxManager;
+		this.eventBus = eventBus;
+
+		this.graveyard = config.graveyard();
+
+		addSubscriptions();
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 	}
 
 	@Override
@@ -77,21 +89,16 @@ public class GraveyardRoom extends MTARoom
 			&& player.getWorldLocation().getPlane() == 1;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
-		if (!inside() || !config.graveyard())
+		if ((!inside() || !this.graveyard) && this.counter != null)
 		{
-			if (this.counter != null)
-			{
-				infoBoxManager.removeIf(e -> e instanceof GraveyardCounter);
-				this.counter = null;
-			}
+			infoBoxManager.removeIf(e -> e instanceof GraveyardCounter);
+			this.counter = null;
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{
@@ -102,7 +109,7 @@ public class GraveyardRoom extends MTARoom
 
 		if (container == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			this.score = score(container.getItems());
+			int score = score(container.getItems());
 
 			if (counter == null)
 			{
@@ -112,6 +119,16 @@ public class GraveyardRoom extends MTARoom
 			}
 			counter.setCount(score);
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mta") || !event.getKey().equals("graveyard"))
+		{
+			return;
+		}
+
+		this.graveyard = config.graveyard();
 	}
 
 	private int score(Item[] items)

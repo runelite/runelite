@@ -28,7 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
-import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -36,7 +35,7 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Represents a RuneScape actor/entity.
  */
-public interface Actor extends Renderable
+public interface Actor extends Entity
 {
 	/**
 	 * Gets the combat level of the actor.
@@ -101,10 +100,8 @@ public interface Actor extends Renderable
 	 */
 	LocalPoint getLocalLocation();
 
-	@VisibleForDevtools
 	void setIdlePoseAnimation(int animation);
 
-	@VisibleForDevtools
 	void setPoseAnimation(int animation);
 
 	/**
@@ -129,7 +126,6 @@ public interface Actor extends Renderable
 	 * @param animation the animation ID
 	 * @see AnimationID
 	 */
-	@VisibleForDevtools
 	void setAnimation(int animation);
 
 	/**
@@ -137,7 +133,6 @@ public interface Actor extends Renderable
 	 *
 	 * @param actionFrame the animation frame
 	 */
-	@VisibleForDevtools
 	void setActionFrame(int actionFrame);
 
 	/**
@@ -146,13 +141,11 @@ public interface Actor extends Renderable
 	 * @return the graphic of the actor
 	 * @see GraphicID
 	 */
-	int getGraphic();
+	int getSpotAnimation();
 
-	@VisibleForDevtools
-	void setGraphic(int graphic);
+	void setSpotAnimation(int graphic);
 
-	@VisibleForDevtools
-	void setSpotAnimFrame(int spotAnimFrame);
+	void setSpotAnimationFrame(int spotAnimFrame);
 
 	/**
 	 * Gets the canvas area of the current tile the actor is standing on.
@@ -192,7 +185,7 @@ public interface Actor extends Renderable
 	 * @param zOffset the z-axis offset
 	 * @return the sprite drawing location
 	 */
-	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
+	Point getCanvasSpriteLocation(Sprite sprite, int zOffset);
 
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator
@@ -240,4 +233,10 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	/**
+	 * Used by the "Tick Counter Plugin
+	 */
+	int getActionFrame();
+	int getActionFrameCycle();
 }

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.blastmine;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 
@@ -54,7 +55,7 @@ public enum BlastMineRockType
 		rockTypes = builder.build();
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int[] objectIds;
 
 	BlastMineRockType(int... objectIds)

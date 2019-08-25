@@ -34,6 +34,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class PanelComponent implements LayoutableRenderableEntity
 {
@@ -74,6 +75,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		children.removeIf(child -> child instanceof TableComponent && ((TableComponent) child).isEmpty());
+
 		if (children.isEmpty())
 		{
 			return null;
@@ -111,9 +114,10 @@ public class PanelComponent implements LayoutableRenderableEntity
 		int totalWidth = 0;
 
 		// Render all children
-		for (int i = 0; i < children.size(); i ++)
+		for (int i = 0; i < children.size(); i++)
 		{
 			final LayoutableRenderableEntity child = children.get(i);
+
 			child.setPreferredLocation(new Point(x, y));
 			child.setPreferredSize(childPreferredSize);
 			final Dimension childDimension = child.render(graphics);

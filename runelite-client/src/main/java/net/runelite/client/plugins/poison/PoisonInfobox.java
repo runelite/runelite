@@ -25,17 +25,19 @@
 package net.runelite.client.plugins.poison;
 
 import java.awt.Color;
-import java.time.temporal.ChronoUnit;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
 class PoisonInfobox extends Timer
 {
 	private final PoisonPlugin plugin;
 
-	PoisonInfobox(BufferedImage image, PoisonPlugin plugin)
+	PoisonInfobox(final int duration, final BufferedImage image, final PoisonPlugin plugin)
 	{
-		super(PoisonPlugin.POISON_TICK_MILLIS, ChronoUnit.MILLIS, image, plugin);
+		super(duration, ChronoUnit.MILLIS, image, plugin);
 		this.plugin = plugin;
 	}
 
@@ -49,6 +51,30 @@ class PoisonInfobox extends Timer
 	public Color getTextColor()
 	{
 		return Color.RED.brighter();
+	}
+
+	@Override
+	public String getText()
+	{
+		Duration timeLeft = Duration.between(Instant.now(), getEndTime());
+
+		if (!timeLeft.isNegative())
+		{
+			return super.getText();
+		}
+		return " ";
+	}
+
+	@Override
+	public boolean render()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean cull()
+	{
+		return false;
 	}
 }
 

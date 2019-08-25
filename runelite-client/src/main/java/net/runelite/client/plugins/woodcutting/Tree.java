@@ -26,18 +26,19 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.REDWOOD;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Tree
 {
 	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
 
 	private final int[] treeIds;
 
-	Tree(int... treeIds)
+	Tree(final int... treeIds)
 	{
 		this.treeIds = treeIds;
 	}

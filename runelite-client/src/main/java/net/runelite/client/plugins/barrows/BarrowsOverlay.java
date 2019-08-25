@@ -30,11 +30,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
@@ -44,22 +45,21 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Singleton
 class BarrowsOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
 	private final BarrowsPlugin plugin;
-	private final BarrowsConfig config;
 
 	@Inject
-	private BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
+	private BarrowsOverlay(final Client client, final BarrowsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
@@ -71,14 +71,14 @@ class BarrowsOverlay extends Overlay
 		Widget puzzleAnswer = plugin.getPuzzleAnswer();
 
 		// tunnels are only on z=0
-		if (!plugin.getWalls().isEmpty() && client.getPlane() == 0 && config.showMinimap())
+		if (!plugin.getWalls().isEmpty() && client.getPlane() == 0 && plugin.isShowMinimap())
 		{
 			// NPC dots
 			graphics.setColor(npcColor);
 			final List<NPC> npcs = client.getNpcs();
 			for (NPC npc : npcs)
 			{
-				final NPCComposition composition = npc.getComposition();
+				final NPCDefinition composition = npc.getDefinition();
 
 				if (composition != null && !composition.isMinimapVisible())
 				{
@@ -117,12 +117,12 @@ class BarrowsOverlay extends Overlay
 			graphics.setColor(playerColor);
 			graphics.fillRect(local.getMinimapLocation().getX(), local.getMinimapLocation().getY(), 3, 3);
 		}
-		else if (config.showBrotherLoc())
+		else if (plugin.isShowBrotherLoc())
 		{
 			renderBarrowsBrothers(graphics);
 		}
 
-		if (puzzleAnswer != null && config.showPuzzleAnswer() && !puzzleAnswer.isHidden())
+		if (puzzleAnswer != null && plugin.isShowPuzzleAnswer() && !puzzleAnswer.isHidden())
 		{
 			Rectangle answerRect = puzzleAnswer.getBounds();
 			graphics.setColor(Color.GREEN);
@@ -163,8 +163,8 @@ class BarrowsOverlay extends Overlay
 			return;
 		}
 
-		ObjectComposition objectComp = client.getObjectDefinition(wall.getId());
-		ObjectComposition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
+		ObjectDefinition objectComp = client.getObjectDefinition(wall.getId());
+		ObjectDefinition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
 
 		if (impostor != null && impostor.getActions()[0] != null)
 		{
@@ -180,6 +180,7 @@ class BarrowsOverlay extends Overlay
 
 	/**
 	 * Get minimap dot color from client
+	 *
 	 * @param typeIndex index of minimap dot type (1 npcs, 2 players)
 	 * @return color
 	 */
@@ -198,7 +199,7 @@ class BarrowsOverlay extends Overlay
 			return;
 		}
 
-		ObjectComposition objectComp = client.getObjectDefinition(ladder.getId());
+		ObjectDefinition objectComp = client.getObjectDefinition(ladder.getId());
 
 		if (objectComp.getImpostorIds() != null && objectComp.getImpostor() != null)
 		{
@@ -229,11 +230,11 @@ class BarrowsOverlay extends Overlay
 
 				if (client.getVar(brother.getKilledVarbit()) > 0)
 				{
-					graphics.setColor(config.deadBrotherLocColor());
+					graphics.setColor(plugin.getDeadBrotherLocColor());
 				}
 				else
 				{
-					graphics.setColor(config.brotherLocColor());
+					graphics.setColor(plugin.getBrotherLocColor());
 				}
 
 				graphics.drawString(brotherLetter, minimapText.getX(), minimapText.getY());

@@ -31,7 +31,7 @@ import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 public abstract class Pathfinder
 {
-	private Heuristic heuristic;
+	private final Heuristic heuristic;
 
 	Pathfinder(Heuristic heuristic)
 	{

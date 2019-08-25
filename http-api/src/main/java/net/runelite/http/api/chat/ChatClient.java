@@ -27,6 +27,8 @@ package net.runelite.http.api.chat;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.io.InputStreamReader;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -36,6 +38,12 @@ import okhttp3.Response;
 
 public class ChatClient
 {
+
+	private static final RequestBody body = RequestBody.Companion.create(new byte[0], null);
+	private static final Predicate<String> LAYOUT_VALIDATOR = Pattern
+		.compile("\\[[A-Z]+]:(\\s*\\w+\\s*(\\([A-Za-z]+\\))?,?)+")
+		.asPredicate();
+
 	public boolean submitKc(String username, String boss, int kc) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
@@ -46,8 +54,9 @@ public class ChatClient
 			.addQueryParameter("kc", Integer.toString(kc))
 			.build();
 
+
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
@@ -90,7 +99,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
@@ -135,7 +144,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
@@ -184,7 +193,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
@@ -227,7 +236,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
@@ -259,6 +268,31 @@ public class ChatClient
 		}
 	}
 
+	public boolean submitLayout(String username, String layout) throws IOException
+	{
+		if (!testLayout(layout))
+		{
+			throw new IOException("Layout " + layout + " is not valid!");
+		}
+
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("layout")
+			.addQueryParameter("name", username)
+			.addQueryParameter("layout", layout)
+			.build();
+
+		Request request = new Request.Builder()
+			.post(body)
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
 	public boolean submitDuels(String username, int wins, int losses, int winningStreak, int losingStreak) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
@@ -272,13 +306,78 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(body)
 			.url(url)
 			.build();
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
+		}
+	}
+
+	public String getLayout(String username) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("layout")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up layout!");
+			}
+
+			final String layout = response.body().string();
+
+			if (!testLayout(layout))
+			{
+				throw new IOException("Layout " + layout + " is not valid!");
+			}
+
+			return layout;
+		}
+	}
+
+	public boolean testLayout(String layout)
+	{
+		return LAYOUT_VALIDATOR.test(layout);
+	}
+
+	public House[] getHosts(int world, String location) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("hosts")
+			.addQueryParameter("world", Integer.toString(world))
+			.addQueryParameter("location", location)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up hosts!");
+			}
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), House[].class);
+
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 
@@ -307,6 +406,63 @@ public class ChatClient
 		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
+		}
+	}
+
+	public boolean submitHost(int world, String location, House house) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("hosts")
+			.addQueryParameter("world", Integer.toString(world))
+			.addQueryParameter("location", location)
+			.addQueryParameter("owner", house.getOwner())
+			.addQueryParameter("guildedAltar", Boolean.toString(house.isGuildedAltarPresent()))
+			.addQueryParameter("occultAltar", Boolean.toString(house.isOccultAltarPresent()))
+			.addQueryParameter("spiritTree", Boolean.toString(house.isSpiritTreePresent()))
+			.addQueryParameter("fairyRing", Boolean.toString(house.isFairyRingPresent()))
+			.addQueryParameter("wildernessObelisk", Boolean.toString(house.isWildernessObeliskPresent()))
+			.addQueryParameter("repairStand", Boolean.toString(house.isRepairStandPresent()))
+			.addQueryParameter("combatDummy", Boolean.toString(house.isCombatDummyPresent()))
+			.build();
+
+		Request request = new Request.Builder()
+			.post(body)
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public boolean removeHost(int world, String location, House house) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("hosts")
+			.addQueryParameter("world", Integer.toString(world))
+			.addQueryParameter("location", location)
+			.addQueryParameter("owner", house.getOwner())
+			.addQueryParameter("guildedAltar", Boolean.toString(house.isGuildedAltarPresent()))
+			.addQueryParameter("occultAltar", Boolean.toString(house.isOccultAltarPresent()))
+			.addQueryParameter("spiritTree", Boolean.toString(house.isSpiritTreePresent()))
+			.addQueryParameter("fairyRing", Boolean.toString(house.isFairyRingPresent()))
+			.addQueryParameter("wildernessObelisk", Boolean.toString(house.isWildernessObeliskPresent()))
+			.addQueryParameter("repairStand", Boolean.toString(house.isRepairStandPresent()))
+			.addQueryParameter("combatDummy", Boolean.toString(house.isCombatDummyPresent()))
+			.addQueryParameter("remove", Boolean.toString(true))
+			.build();
+
+		Request request = new Request.Builder()
+			.post(body)
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
 		}
 	}
 }

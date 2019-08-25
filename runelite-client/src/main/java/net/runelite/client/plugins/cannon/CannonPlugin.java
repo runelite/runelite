@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.temporal.ChronoUnit;
@@ -32,13 +33,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -51,17 +52,18 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
 	name = "Cannon",
@@ -72,51 +74,52 @@ public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
-
+	private static final ImmutableSet<Integer> CANNON_PARTS = ImmutableSet.of(
+		ItemID.CANNON_BASE, ItemID.CANNON_STAND, ItemID.CANNON_BARRELS, ItemID.CANNON_FURNACE
+	);
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int cballsLeft;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean cannonPlaced;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint cannonPosition;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private GameObject cannon;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> spotPoints = new ArrayList<>();
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private CannonOverlay cannonOverlay;
-
 	@Inject
 	private CannonSpotOverlay cannonSpotOverlay;
-
 	@Inject
 	private CannonConfig config;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
+	@Inject
+	private EventBus eventbus;
+	private boolean lock;
+	private boolean showEmptyCannonNotification;
+	private boolean showInfobox;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showDoubleHitSpot;
+	@Getter(AccessLevel.PACKAGE)
+	private Color highlightDoubleHitColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showCannonSpots;
+	private int ammoAmount;
+	private boolean notifyAmmoLeft;
 
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
@@ -127,80 +130,58 @@ public class CannonPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
+		lock = false;
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventbus.unregister(this);
+
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
 		cannonPosition = null;
+		lock = false;
 		cballsLeft = 0;
 		removeCounter();
 		skipProjectileCheckThisTick = false;
 		spotPoints.clear();
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void addSubscriptions()
+	{
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventbus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
+		eventbus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventbus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		boolean hasBase = false;
-		boolean hasStand = false;
-		boolean hasBarrels = false;
-		boolean hasFurnace = false;
-		boolean hasAll = false;
-
-		if (!cannonPlaced)
-		{
-			for (Item item : event.getItemContainer().getItems())
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				switch (item.getId())
-				{
-					case ItemID.CANNON_BASE:
-						hasBase = true;
-						break;
-					case ItemID.CANNON_STAND:
-						hasStand = true;
-						break;
-					case ItemID.CANNON_BARRELS:
-						hasBarrels = true;
-						break;
-					case ItemID.CANNON_FURNACE:
-						hasFurnace = true;
-						break;
-				}
-
-				if (hasBase && hasStand && hasBarrels && hasFurnace)
-				{
-					hasAll = true;
-					break;
-				}
-			}
-		}
-
-		cannonSpotOverlay.setHidden(!hasAll);
+		cannonSpotOverlay.setHidden(!ItemUtil.containsAllItemIds(event.getItemContainer().getItems(), CANNON_PARTS));
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cannon"))
 		{
-			if (!config.showInfobox())
+			updateConfig();
+
+			if (!this.showInfobox)
 			{
 				removeCounter();
 			}
@@ -212,12 +193,11 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
-
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+			period = 1,
+			unit = ChronoUnit.SECONDS
 	)
 	public void checkSpots()
 	{
@@ -238,50 +218,36 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
+		final GameObject gameObject = event.getGameObject();
 
-		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		final Player localPlayer = client.getLocalPlayer();
+		if (gameObject.getId() == CANNON_BASE && !cannonPlaced &&
+			localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2 &&
+			localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
-			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
-			{
-				cannonPosition = gameObject.getWorldLocation();
-				cannon = gameObject;
-			}
+			cannonPosition = gameObject.getWorldLocation();
+			cannon = gameObject;
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		Projectile projectile = event.getProjectile();
+		final Projectile projectile = event.getProjectile();
 
 		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
 		{
-			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
+			final WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
-			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
+			if (projectileLoc.equals(cannonPosition) && !skipProjectileCheckThisTick)
 			{
-				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
-				// the message event runs before the projectile event. However they run
-				// in the opposite order on the server. So if both fires in the same tick,
-				// we don't want to update the cannonball counter if it was set to a specific
-				// amount.
-				if (!skipProjectileCheckThisTick)
-				{
-					cballsLeft--;
-				}
+				cballsLeft--;
 			}
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
@@ -349,7 +315,7 @@ public class CannonPlugin extends Plugin
 			// extra check is a good idea.
 			cballsLeft = 0;
 
-			if (config.showEmptyCannonNotification())
+			if (this.showEmptyCannonNotification)
 			{
 				notifier.notify("Your cannon is out of ammo!");
 			}
@@ -364,8 +330,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		skipProjectileCheckThisTick = false;
 	}
@@ -374,11 +339,17 @@ public class CannonPlugin extends Plugin
 	{
 		if (cballsLeft > 15)
 		{
+			lock = false;
 			return Color.green;
 		}
 		else if (cballsLeft > 5)
 		{
 			return Color.orange;
+		}
+		else if (cballsLeft <= this.ammoAmount && this.notifyAmmoLeft && !lock)
+		{
+			notifier.notify("Your cannon has " + this.ammoAmount + " balls left!");
+			lock = true;
 		}
 
 		return Color.red;
@@ -386,7 +357,7 @@ public class CannonPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null)
+		if (!this.showInfobox || counter != null)
 		{
 			return;
 		}
@@ -406,5 +377,16 @@ public class CannonPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void updateConfig()
+	{
+		this.showEmptyCannonNotification = config.showEmptyCannonNotification();
+		this.showInfobox = config.showInfobox();
+		this.showDoubleHitSpot = config.showDoubleHitSpot();
+		this.highlightDoubleHitColor = config.highlightDoubleHitColor();
+		this.showCannonSpots = config.showCannonSpots();
+		this.ammoAmount = config.ammoAmount();
+		this.notifyAmmoLeft = config.notifyAmmoLeft();
 	}
 }

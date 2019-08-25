@@ -24,17 +24,20 @@
  */
 package net.runelite.client;
 
+import com.google.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import javax.annotation.Nullable;
 
+@Singleton
 public class RuneLiteProperties
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
+	private static final String RUNELITE_TITLE = "runelite.plus.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
+	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
+	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
 	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
+	private static final String DISCORD_APP_ID = "runelite.plus.discord.appid";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
 	private static final String GITHUB_LINK = "runelite.github.link";
 	private static final String WIKI_LINK = "runelite.wiki.link";
@@ -48,7 +51,7 @@ public class RuneLiteProperties
 
 	static
 	{
-		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("runelite.properties"))
+		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("/runelite.plus.properties"))
 		{
 			properties.load(in);
 		}
@@ -60,12 +63,28 @@ public class RuneLiteProperties
 
 	public static String getTitle()
 	{
-		return properties.getProperty(RUNELITE_TITLE);
+		final StringBuilder sb = new StringBuilder(properties.getProperty(RUNELITE_TITLE));
+		String proxy;
+		if ((proxy = System.getProperty("socksProxyHost")) != null)
+		{
+			sb.append(String.format(" (%s)", proxy));
+		}
+		return sb.toString();
 	}
 
 	public static String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
+	}
+
+	public static String getPlusVersion()
+	{
+		return properties.getProperty(RUNELITE_PLUS_VERSION);
+	}
+
+	public static String getPlusDate()
+	{
+		return properties.getProperty(RUNELITE_PLUS_DATE);
 	}
 
 	public static String getRunescapeVersion()
@@ -96,12 +115,6 @@ public class RuneLiteProperties
 	public static String getPatreonLink()
 	{
 		return properties.getProperty(PATREON_LINK);
-	}
-
-	@Nullable
-	public static String getLauncherVersion()
-	{
-		return System.getProperty(LAUNCHER_VERSION_PROPERTY);
 	}
 
 	public static String getTroubleshootingLink()

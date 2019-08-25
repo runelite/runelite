@@ -26,10 +26,13 @@ package net.runelite.client.plugins.fps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
@@ -46,11 +49,12 @@ import net.runelite.client.ui.overlay.OverlayManager;
  * game and system load, it usually finds the sweet spot in about two seconds.
  */
 @PluginDescriptor(
-	name = "FPS Control",
-	description = "Show current FPS and/or set an FPS limit",
+	name = "Performance",
+	description = "Show current FPS or set an FPS limit",
 	tags = {"frames", "framerate", "limit", "overlay"},
 	enabledByDefault = false
 )
+@Singleton
 public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
@@ -67,23 +71,36 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private DrawManager drawManager;
 
+	@Inject
+	private FpsConfig fpsConfig;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private FpsLimitMode limitMode;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean drawFps;
+
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FpsConfig.class);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			drawListener.reloadConfig();
+
+			limitMode = fpsConfig.limitMode();
+			drawFps = fpsConfig.drawFps();
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		drawListener.onFocusChanged(event);
 		overlay.onFocusChanged(event);
@@ -92,6 +109,10 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
+		limitMode = fpsConfig.limitMode();
+		drawFps = fpsConfig.drawFps();
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
@@ -100,7 +121,15 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
 	}
 }

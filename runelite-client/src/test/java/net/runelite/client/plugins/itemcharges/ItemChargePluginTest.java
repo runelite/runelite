@@ -43,13 +43,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemChargePluginTest
@@ -130,7 +130,6 @@ public class ItemChargePluginTest
 		verify(config).ringOfForging(eq(140));
 		reset(config);
 
-		when(config.ringOfForging()).thenReturn(90);
 		// Create equipment inventory with ring of forging
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(eq(InventoryID.EQUIPMENT))).thenReturn(equipmentItemContainer);
@@ -141,7 +140,7 @@ public class ItemChargePluginTest
 		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(89));
+		verify(config).ringOfForging(eq(139));
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);

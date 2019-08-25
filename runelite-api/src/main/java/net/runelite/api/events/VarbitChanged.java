@@ -32,7 +32,7 @@ import lombok.Data;
  * An event when a varbit or varplayer has changed.
  */
 @Data
-public class VarbitChanged
+public class VarbitChanged implements Event
 {
 	/**
 	 * Index in the varp array that was changed.

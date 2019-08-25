@@ -43,12 +43,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -57,20 +63,19 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.ui.SplashScreen;
+import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
 
 @Singleton
@@ -91,7 +96,10 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
-			.getAnnotation(ConfigGroup.class).value();
+		.getAnnotation(ConfigGroup.class).value();
+
+	@Inject
+	PluginWatcher pluginWatcher;
 
 	@Setter
 	boolean isOutdated;
@@ -112,16 +120,25 @@ public class PluginManager
 		this.configManager = configManager;
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
+
+		if (eventBus != null)
+		{
+			eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+			eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		}
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	public void watch()
+	{
+		pluginWatcher.start();
+	}
+
+	private void onSessionOpen(SessionOpen event)
 	{
 		refreshPlugins();
 	}
 
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	private void onSessionClose(SessionClose event)
 	{
 		refreshPlugins();
 	}
@@ -162,7 +179,7 @@ public class PluginManager
 		return null;
 	}
 
-	public List<Config> getPluginConfigProxies()
+	private List<Config> getPluginConfigProxies()
 	{
 		List<Injector> injectors = new ArrayList<>();
 		injectors.add(RuneLite.getInjector());
@@ -202,6 +219,7 @@ public class PluginManager
 	{
 		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
 		int loaded = 0;
+
 		for (Plugin plugin : scannedPlugins)
 		{
 			try
@@ -215,18 +233,19 @@ public class PluginManager
 			}
 
 			loaded++;
-			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, scannedPlugins.size(), false);
+
+			RuneLiteSplashScreen.stage(.80, 1, "Starting plugins", loaded, scannedPlugins.size());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
-		SplashScreen.stage(.59, null, "Loading Plugins");
+		RuneLiteSplashScreen.stage(.59, "Loading plugins");
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
 			.build();
 
-		List<Plugin> scannedPlugins = new ArrayList<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
 		ImmutableSet<ClassInfo> classes = packageName == null ? classPath.getAllClasses()
@@ -241,7 +260,7 @@ public class PluginManager
 				if (clazz.getSuperclass() == Plugin.class)
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+						clazz);
 				}
 				continue;
 			}
@@ -249,7 +268,7 @@ public class PluginManager
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+					clazz);
 				continue;
 			}
 
@@ -263,7 +282,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
+			@SuppressWarnings("unchecked") Class<Plugin> pluginClass = (Class<Plugin>) clazz;
 			graph.addNode(pluginClass);
 		}
 
@@ -283,26 +302,52 @@ public class PluginManager
 			throw new RuntimeException("Plugin dependency graph contains a cycle!");
 		}
 
-		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
+		List<List<Class<? extends Plugin>>> sortedPlugins = topologicalGroupSort(graph);
 		sortedPlugins = Lists.reverse(sortedPlugins);
+		AtomicInteger loaded = new AtomicInteger();
 
-		int loaded = 0;
-		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
+		final long start = System.currentTimeMillis();
+
+		// some plugins get stuck on IO, so add some extra threads
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
+		List<Plugin> scannedPlugins = new CopyOnWriteArrayList<>();
+		sortedPlugins.forEach(group ->
 		{
-			Plugin plugin;
-			try
-			{
-				plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
-				scannedPlugins.add(plugin);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error instantiating plugin!", ex);
-			}
+			List<Future<?>> curGroup = new ArrayList<>();
+			group.forEach(pluginClazz ->
+				curGroup.add(exec.submit(() ->
+				{
+					Plugin plugin;
+					try
+					{
+						plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
+						scannedPlugins.add(plugin);
+					}
+					catch (PluginInstantiationException e)
+					{
+						log.warn("Error instantiating plugin!", e);
+						return;
+					}
 
-			loaded++;
-			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, sortedPlugins.size(), false);
-		}
+					loaded.getAndIncrement();
+
+					RuneLiteSplashScreen.stage(.60, .70, "Loading plugins", loaded.get(), scannedPlugins.size());
+				})));
+			curGroup.forEach(future ->
+			{
+				try
+				{
+					future.get();
+				}
+				catch (InterruptedException | ExecutionException e)
+				{
+					e.printStackTrace();
+				}
+			});
+		});
+
+		log.info("Plugin instantiation took {}ms", System.currentTimeMillis() - start);
 
 		return scannedPlugins;
 	}
@@ -341,9 +386,9 @@ public class PluginManager
 				}
 			}
 
-			eventBus.register(plugin);
+			// eventBus.register(plugin);
 			schedule(plugin);
-			eventBus.post(new PluginChanged(plugin, true));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
 		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
 		{
@@ -365,7 +410,6 @@ public class PluginManager
 		try
 		{
 			unschedule(plugin);
-			eventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->
@@ -381,7 +425,7 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
-			eventBus.post(new PluginChanged(plugin, false));
+			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
 
 		}
 		catch (InterruptedException | InvocationTargetException ex)
@@ -405,13 +449,14 @@ public class PluginManager
 
 		if (value != null)
 		{
-			return Boolean.valueOf(value);
+			return Boolean.parseBoolean(value);
 		}
 
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
 	}
 
+	@SuppressWarnings("unchecked")
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
 	{
 		PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(PluginDependency.class);
@@ -515,39 +560,54 @@ public class PluginManager
 	}
 
 	/**
-	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 * Topologically sort a graph into separate groups.
+	 * Each group represents the dependency level of the plugins.
+	 * Plugins in group (index) 0 has no dependents.
+	 * Plugins in group 1 has dependents in group 0.
+	 * Plugins in group 2 has dependents in group 1, etc.
+	 * This allows for loading dependent groups serially, starting from the last group,
+	 * while loading plugins within each group in parallel.
 	 * @param graph
 	 * @param <T>
 	 * @return
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	private <T> List<List<T>> topologicalGroupSort(Graph<T> graph)
 	{
-		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
-		List<T> l = new ArrayList<>();
-		Set<T> s = graphCopy.nodes().stream()
-			.filter(node -> graphCopy.inDegree(node) == 0)
+		final Set<T> root = graph.nodes().stream()
+			.filter(node -> graph.inDegree(node) == 0)
 			.collect(Collectors.toSet());
-		while (!s.isEmpty())
-		{
-			Iterator<T> it = s.iterator();
-			T n = it.next();
-			it.remove();
+		final Map<T, Integer> dependencyCount = new HashMap<>();
 
-			l.add(n);
+		root.forEach(n -> dependencyCount.put(n, 0));
+		root.forEach(n -> graph.successors(n)
+			.forEach(m -> incrementChildren(graph, dependencyCount, m, dependencyCount.get(n) + 1)));
 
-			for (T m : graphCopy.successors(n))
+		// create list<list> dependency grouping
+		final List<List<T>> dependencyGroups = new ArrayList<>();
+		final int[] curGroup = {-1};
+
+		dependencyCount.entrySet().stream()
+			.sorted(Map.Entry.comparingByValue())
+			.forEach(entry ->
 			{
-				graphCopy.removeEdge(n, m);
-				if (graphCopy.inDegree(m) == 0)
+				if (entry.getValue() != curGroup[0])
 				{
-					s.add(m);
+					curGroup[0] = entry.getValue();
+					dependencyGroups.add(new ArrayList<>());
 				}
-			}
-		}
-		if (!graphCopy.edges().isEmpty())
+				dependencyGroups.get(dependencyGroups.size() - 1).add(entry.getKey());
+			});
+
+		return dependencyGroups;
+	}
+
+	private <T> void incrementChildren(Graph<T> graph, Map<T, Integer> dependencyCount, T n, int val)
+	{
+		if (!dependencyCount.containsKey(n) || dependencyCount.get(n) < val)
 		{
-			throw new RuntimeException("Graph has at least one cycle");
+			dependencyCount.put(n, val);
+			graph.successors(n).forEach(m ->
+				incrementChildren(graph, dependencyCount, m, val + 1));
 		}
-		return l;
 	}
 }

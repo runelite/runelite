@@ -56,6 +56,27 @@ public interface TileIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
+		keyName = "highlightCurrentColor",
+		name = "Color of current tile highlighting",
+		description = "Configures the highlight color of current tile position"
+	)
+	default Color highlightCurrentColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightCurrentTile",
+		name = "Highlight current tile",
+		description = "Highlights tile player is on"
+	)
+	default boolean highlightCurrentTile()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
 		keyName = "highlightHoveredColor",
 		name = "Color of current hovered highlighting",
 		description = "Configures the highlight color of hovered tile"

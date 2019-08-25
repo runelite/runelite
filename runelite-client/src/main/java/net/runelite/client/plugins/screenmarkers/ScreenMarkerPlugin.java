@@ -39,11 +39,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,6 +60,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Enable drawing of screen markers on top of the client",
 	tags = {"boxes", "overlay", "panel"}
 )
+@Singleton
 public class ScreenMarkerPlugin extends Plugin
 {
 	private static final String PLUGIN_NAME = "Screen Markers";
@@ -90,6 +92,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ColorPickerManager colorPickerManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
 	private NavigationButton navigationButton;
@@ -104,6 +109,8 @@ public class ScreenMarkerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
 		screenMarkers.forEach(overlayManager::add);
@@ -128,6 +135,8 @@ public class ScreenMarkerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
@@ -141,8 +150,7 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = null;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))
 		{
@@ -164,7 +172,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	public void startCreation(Point location)
+	void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
@@ -206,7 +214,7 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	/* The marker area has been drawn, inform the user and unlock the confirm button */
-	public void completeSelection()
+	void completeSelection()
 	{
 		pluginPanel.getCreationPanel().unlockConfirm();
 	}

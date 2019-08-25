@@ -1,0 +1,36 @@
+.id                 510
+.int_stack_count    3
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   0
+   iload                  1
+   iconst                 816
+   iload                  0
+   add
+   iconst                 1
+   sub
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL10
+   jump                   LABEL19
+LABEL10:
+   iconst                 51
+   iload                  2
+   iconst                 5
+   add
+   iconst                 0
+   iconst                 0
+   cc_setposition
+   iconst                 0
+   sconst                 "hideLine"  ;
+   runelite_callback                  ;
+   cc_sethide
+LABEL19:
+   iload                  2
+   iconst                 12
+   sconst                 "lineSpace" ;
+   runelite_callback                  ;
+   add
+   return                
+   iconst                 0
+   return                

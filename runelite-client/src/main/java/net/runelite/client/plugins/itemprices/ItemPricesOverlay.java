@@ -28,14 +28,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
+@Singleton
 class ItemPricesOverlay extends Overlay
 {
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
@@ -55,7 +57,7 @@ class ItemPricesOverlay extends Overlay
 	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
 
 	private final Client client;
-	private final ItemPricesConfig config;
+	private final ItemPricesPlugin plugin;
 	private final TooltipManager tooltipManager;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
@@ -63,11 +65,11 @@ class ItemPricesOverlay extends Overlay
 	ItemManager itemManager;
 
 	@Inject
-	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager)
+	ItemPricesOverlay(final Client client, final ItemPricesPlugin plugin, final TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 		this.tooltipManager = tooltipManager;
 	}
 
@@ -88,7 +90,7 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		final MenuEntry menuEntry = menuEntries[last];
-		final MenuAction action = MenuAction.of(menuEntry.getType());
+		final MenuOpcode action = MenuOpcode.of(menuEntry.getOpcode());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
@@ -96,7 +98,7 @@ class ItemPricesOverlay extends Overlay
 		switch (action)
 		{
 			case ITEM_USE_ON_WIDGET:
-				if (!config.showWhileAlching() || !menuEntry.getOption().equals("Cast") || !menuEntry.getTarget().contains("High Level Alchemy"))
+				if (!plugin.isShowWhileAlching() || !menuEntry.getOption().equals("Cast") || !menuEntry.getTarget().contains("High Level Alchemy"))
 				{
 					break;
 				}
@@ -111,12 +113,12 @@ class ItemPricesOverlay extends Overlay
 				switch (groupId)
 				{
 					case WidgetID.EXPLORERS_RING_ALCH_GROUP_ID:
-						if (!config.showWhileAlching())
+						if (!plugin.isShowWhileAlching())
 						{
 							return null;
 						}
 					case WidgetID.INVENTORY_GROUP_ID:
-						if (config.hideInventory())
+						if (plugin.isHideInventory())
 						{
 							return null;
 						}
@@ -139,7 +141,7 @@ class ItemPricesOverlay extends Overlay
 	private String makeValueTooltip(MenuEntry menuEntry)
 	{
 		// Disabling both disables all value tooltips
-		if (!config.showGEPrice() && !config.showHAValue())
+		if (!plugin.isShowGEPrice() && !plugin.isShowHAValue())
 		{
 			return null;
 		}
@@ -190,11 +192,11 @@ class ItemPricesOverlay extends Overlay
 			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
-		ItemComposition itemDef = itemManager.getItemComposition(id);
+		ItemDefinition itemDef = itemManager.getItemDefinition(id);
 		if (itemDef.getNote() != -1)
 		{
 			id = itemDef.getLinkedNoteId();
-			itemDef = itemManager.getItemComposition(id);
+			itemDef = itemManager.getItemDefinition(id);
 		}
 
 		// Only check prices for things with store prices
@@ -208,15 +210,15 @@ class ItemPricesOverlay extends Overlay
 		int haProfit = 0;
 		final int itemHaPrice = Math.round(itemDef.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
-		if (config.showGEPrice())
+		if (plugin.isShowGEPrice())
 		{
 			gePrice = itemManager.getItemPrice(id);
 		}
-		if (config.showHAValue())
+		if (plugin.isShowHAValue())
 		{
-			haPrice = itemHaPrice;
+			haPrice = itemManager.getAlchValue(id);
 		}
-		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
+		if (gePrice > 0 && itemHaPrice > 0 && plugin.isShowAlchProfit())
 		{
 			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
@@ -236,7 +238,7 @@ class ItemPricesOverlay extends Overlay
 			itemStringBuilder.append("EX: ")
 				.append(StackFormatter.quantityToStackSize(gePrice * qty))
 				.append(" gp");
-			if (config.showEA() && qty > 1)
+			if (plugin.isShowEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
 					.append(StackFormatter.quantityToStackSize(gePrice))
@@ -253,7 +255,7 @@ class ItemPricesOverlay extends Overlay
 			itemStringBuilder.append("HA: ")
 				.append(StackFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
-			if (config.showEA() && qty > 1)
+			if (plugin.isShowEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
 					.append(StackFormatter.quantityToStackSize(haValue))
@@ -269,7 +271,7 @@ class ItemPricesOverlay extends Overlay
 			itemStringBuilder.append("HA Profit: ")
 				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
 				.append(" gp");
-			if (config.showEA() && qty > 1)
+			if (plugin.isShowEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
 					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))

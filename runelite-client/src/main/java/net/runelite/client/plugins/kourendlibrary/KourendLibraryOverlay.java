@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -50,23 +51,22 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 class KourendLibraryOverlay extends Overlay
 {
 	private final static int MAXIMUM_DISTANCE = 24;
 	private final Library library;
 	private final Client client;
-	private final KourendLibraryConfig config;
 	private final KourendLibraryPlugin plugin;
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
 
 	@Inject
-	private KourendLibraryOverlay(Library library, Client client, KourendLibraryConfig config, KourendLibraryPlugin plugin)
+	private KourendLibraryOverlay(final Library library, final Client client, final KourendLibraryPlugin plugin)
 	{
 		this.library = library;
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
@@ -138,7 +138,7 @@ class KourendLibraryOverlay extends Overlay
 				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
 
 				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book))
+				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && shouldShowOverlayIfDuplicateBook(book))
 				{
 					Polygon poly = getCanvasTilePoly(client, localBookcase);
 					if (poly != null)
@@ -151,7 +151,7 @@ class KourendLibraryOverlay extends Overlay
 				// If the book is singled out, render the text and the book's icon
 				if (bookIsKnown)
 				{
-					if (book != null && !shouldHideOverlayIfDuplicateBook(book))
+					if (book != null && shouldShowOverlayIfDuplicateBook(book))
 					{
 						FontMetrics fm = g.getFontMetrics();
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
@@ -228,7 +228,10 @@ class KourendLibraryOverlay extends Overlay
 					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{
-						g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
+						if (b != null)
+						{
+							g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
+						}
 					}
 				});
 		}
@@ -236,11 +239,11 @@ class KourendLibraryOverlay extends Overlay
 		return null;
 	}
 
-	private boolean shouldHideOverlayIfDuplicateBook(@Nullable Book book)
+	private boolean shouldShowOverlayIfDuplicateBook(@Nullable Book book)
 	{
-		return config.hideDuplicateBook()
-			&& book != null
-			&& !book.isDarkManuscript()
-			&& plugin.doesPlayerContainBook(book);
+		return !plugin.isHideDuplicateBook()
+			|| book == null
+			|| book.isDarkManuscript()
+			|| !plugin.doesPlayerContainBook(book);
 	}
 }

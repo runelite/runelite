@@ -30,12 +30,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
+@Singleton
 class SlayerOverlay extends WidgetItemOverlay
 {
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.of(
@@ -46,7 +47,9 @@ class SlayerOverlay extends WidgetItemOverlay
 		ItemID.SLAYER_RING_5,
 		ItemID.SLAYER_RING_6,
 		ItemID.SLAYER_RING_7,
-		ItemID.SLAYER_RING_8
+		ItemID.SLAYER_RING_8,
+		ItemID.BRACELET_OF_SLAUGHTER,
+		ItemID.EXPEDITIOUS_BRACELET
 	);
 
 	private final static Set<Integer> ALL_SLAYER_ITEMS = ImmutableSet.of(
@@ -79,14 +82,12 @@ class SlayerOverlay extends WidgetItemOverlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
+	private SlayerOverlay(final SlayerPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.config = config;
 		showOnInventory();
 		showOnEquipment();
 	}
@@ -99,37 +100,26 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		if (!config.showItemOverlay())
+		if (!plugin.isShowItemOverlay())
 		{
 			return;
 		}
 
-		int amount = plugin.getAmount();
+		if (plugin.getCurrentTask() == null)
+		{
+			return;
+		}
+
+		int amount = plugin.getCurrentTask().getAmount();
 		if (amount <= 0)
 		{
 			return;
 		}
 
-		int slaughterCount = plugin.getSlaughterChargeCount();
-		int expeditiousCount = plugin.getExpeditiousChargeCount();
-
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 
-		switch (itemId)
-		{
-			case ItemID.EXPEDITIOUS_BRACELET:
-				textComponent.setText(String.valueOf(expeditiousCount));
-				break;
-			case ItemID.BRACELET_OF_SLAUGHTER:
-				textComponent.setText(String.valueOf(slaughterCount));
-				break;
-			default:
-				textComponent.setText(String.valueOf(amount));
-				break;
-		}
+		textComponent.setText(String.valueOf(amount));
 
 		// Draw the counter in the bottom left for equipment, and top left for jewelry
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y - 1 + (SLAYER_JEWELRY.contains(itemId)

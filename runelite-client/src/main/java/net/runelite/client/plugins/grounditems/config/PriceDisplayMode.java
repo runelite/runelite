@@ -31,16 +31,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PriceDisplayMode
 {
-	HA("High Alchemy"),
-	GE("Grand Exchange"),
-	BOTH("Both"),
-	OFF("Off");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	HA,
+	GE,
+	BOTH,
+	OFF
 }

@@ -27,7 +27,7 @@ package net.runelite.http.api.xtea;
 public class XteaKey
 {
 	private int region;
-	private int keys[];
+	private int[] keys;
 
 	public int getRegion()
 	{

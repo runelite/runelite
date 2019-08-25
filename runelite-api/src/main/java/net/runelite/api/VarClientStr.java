@@ -34,6 +34,7 @@ import lombok.Getter;
 @Getter
 public enum VarClientStr
 {
+	DUEL_OPPONENT_NAME(357),
 	CHATBOX_TYPED_TEXT(335),
 	INPUT_TEXT(359),
 	PRIVATE_MESSAGE_TARGET(360),

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.entityhider;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -34,9 +35,10 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Entity Hider",
@@ -44,6 +46,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false
 )
+@Singleton
 public class EntityHiderPlugin extends Plugin
 {
 	@Inject
@@ -51,6 +54,9 @@ public class EntityHiderPlugin extends Plugin
 
 	@Inject
 	private EntityHiderConfig config;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Provides
 	EntityHiderConfig provideConfig(ConfigManager configManager)
@@ -62,15 +68,23 @@ public class EntityHiderPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	private void addSubscriptions()
 	{
-		updateConfig();
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("entityhider"))
+		{
+			updateConfig();
+		}
+	}
+
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -94,15 +108,21 @@ public class EntityHiderPlugin extends Plugin
 
 		client.setNPCsHidden(config.hideNPCs());
 		client.setNPCsHidden2D(config.hideNPCs2D());
+		client.setNPCsNames(Text.fromCSV(config.hideNPCsNames()));
+		client.setNPCsHiddenOnDeath(Text.fromCSV(config.hideNPCsOnDeath()));
 
 		client.setAttackersHidden(config.hideAttackers());
 
 		client.setProjectilesHidden(config.hideProjectiles());
+
+		client.setDeadNPCsHidden(config.hideDeadNPCs());
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setIsHidingEntities(false);
 
 		client.setPlayersHidden(false);
@@ -120,6 +140,8 @@ public class EntityHiderPlugin extends Plugin
 		client.setAttackersHidden(false);
 
 		client.setProjectilesHidden(false);
+
+		client.setDeadNPCsHidden(false);
 	}
 
 	private boolean isPlayerRegionAllowed()

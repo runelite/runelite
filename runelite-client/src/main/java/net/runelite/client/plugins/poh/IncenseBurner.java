@@ -25,13 +25,14 @@
 package net.runelite.client.plugins.poh;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 @AllArgsConstructor
 class IncenseBurner

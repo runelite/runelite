@@ -24,11 +24,11 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
 import net.runelite.api.ClanMember;
+import lombok.Value;
 
 @Value
-public class ClanMemberJoined
+public class ClanMemberJoined implements Event
 {
 	/**
 	 * The ClanMember that joined

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.hunter;
 
 import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameObject;
@@ -44,23 +45,23 @@ class HunterTrap
 	/**
 	 * The time in milliseconds when the trap was placed.
 	 */
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Instant placedOn;
 
 	/**
 	 * The state of the trap.
 	 */
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private State state;
 
 	/**
 	 * The ID of the game object this is representing
 	 */
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int objectId;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint worldLocation;
 
 	/**
@@ -91,7 +92,7 @@ class HunterTrap
 	 *
 	 * @param gameObject The gameobject thats corresponds with this trap.
 	 */
-	HunterTrap(GameObject gameObject)
+	HunterTrap(final GameObject gameObject)
 	{
 		this.state = State.OPEN;
 		this.placedOn = Instant.now();
@@ -105,7 +106,7 @@ class HunterTrap
 	 * @return Value between 0 and 1. 0 means the trap was laid moments ago.
 	 * 1 is a trap that's about to collapse.
 	 */
-	public double getTrapTimeRelative()
+	double getTrapTimeRelative()
 	{
 		Duration duration = Duration.between(placedOn, Instant.now());
 		return duration.compareTo(TRAP_TIME) < 0 ? (double) duration.toMillis() / TRAP_TIME.toMillis() : 1;
@@ -114,7 +115,7 @@ class HunterTrap
 	/**
 	 * Resets the time value when the trap was placed.
 	 */
-	public void resetTimer()
+	void resetTimer()
 	{
 		placedOn = Instant.now();
 	}

@@ -27,13 +27,13 @@ package net.runelite.client.game.chatbox;
 /**
  * A modal input that lives in the chatbox panel.
  */
-public abstract class ChatboxInput
+abstract class ChatboxInput
 {
-	protected void open()
+	void open()
 	{
 	}
 
-	protected void close()
+	void close()
 	{
 	}
 }

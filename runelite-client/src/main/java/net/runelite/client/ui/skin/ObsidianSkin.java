@@ -46,7 +46,7 @@ import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
-public class ObsidianSkin extends SubstanceSkin
+class ObsidianSkin extends SubstanceSkin
 {
 	/**
 	 * Display name for <code>this</code> skin.

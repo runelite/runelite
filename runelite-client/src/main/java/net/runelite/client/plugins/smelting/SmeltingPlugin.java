@@ -28,13 +28,15 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -46,6 +48,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show Smelting stats",
 	tags = {"overlay", "skilling"}
 )
+@Singleton
 @PluginDependency(XpTrackerPlugin.class)
 public class SmeltingPlugin extends Plugin
 {
@@ -58,8 +61,13 @@ public class SmeltingPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private SmeltingSession session;
+
+	private int statTimeout;
 
 	@Provides
 	SmeltingConfig getConfig(ConfigManager configManager)
@@ -70,6 +78,9 @@ public class SmeltingPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
+		this.statTimeout = config.statTimeout();
 		session = null;
 		overlayManager.add(overlay);
 	}
@@ -77,12 +88,20 @@ public class SmeltingPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		session = null;
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{
@@ -107,12 +126,11 @@ public class SmeltingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (session != null)
 		{
-			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			final Duration statTimeout = Duration.ofMinutes(this.statTimeout);
 			final Duration sinceCaught = Duration.between(session.getLastItemSmelted(), Instant.now());
 
 			if (sinceCaught.compareTo(statTimeout) >= 0)
@@ -120,6 +138,16 @@ public class SmeltingPlugin extends Plugin
 				session = null;
 			}
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("smelting"))
+		{
+			return;
+		}
+
+		this.statTimeout = config.statTimeout();
 	}
 }
 

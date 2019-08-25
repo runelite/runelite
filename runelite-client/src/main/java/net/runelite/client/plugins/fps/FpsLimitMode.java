@@ -30,3 +30,4 @@ public enum FpsLimitMode
 	UNFOCUSED,
 	ALWAYS
 }
+

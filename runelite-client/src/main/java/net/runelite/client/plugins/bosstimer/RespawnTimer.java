@@ -33,7 +33,7 @@ class RespawnTimer extends Timer
 {
 	private final Boss boss;
 
-	public RespawnTimer(Boss boss, BufferedImage bossImage, Plugin plugin)
+	RespawnTimer(Boss boss, BufferedImage bossImage, Plugin plugin)
 	{
 		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
 		this.boss = boss;

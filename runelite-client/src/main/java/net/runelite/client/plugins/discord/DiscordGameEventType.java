@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -36,7 +37,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum DiscordGameEventType
 {
 
@@ -306,7 +307,6 @@ enum DiscordGameEventType
 		this.details = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
-		this.priority = priority;
 		this.shouldTimeout = true;
 	}
 
@@ -364,29 +364,52 @@ enum DiscordGameEventType
 	{
 		switch (skill)
 		{
-			case ATTACK: return TRAINING_ATTACK;
-			case DEFENCE: return TRAINING_DEFENCE;
-			case STRENGTH: return TRAINING_STRENGTH;
-			case RANGED: return TRAINING_RANGED;
-			case PRAYER: return TRAINING_PRAYER;
-			case MAGIC: return TRAINING_MAGIC;
-			case COOKING: return TRAINING_COOKING;
-			case WOODCUTTING: return TRAINING_WOODCUTTING;
-			case FLETCHING: return TRAINING_FLETCHING;
-			case FISHING: return TRAINING_FISHING;
-			case FIREMAKING: return TRAINING_FIREMAKING;
-			case CRAFTING: return TRAINING_CRAFTING;
-			case SMITHING: return TRAINING_SMITHING;
-			case MINING: return TRAINING_MINING;
-			case HERBLORE: return TRAINING_HERBLORE;
-			case AGILITY: return TRAINING_AGILITY;
-			case THIEVING: return TRAINING_THIEVING;
-			case SLAYER: return TRAINING_SLAYER;
-			case FARMING: return TRAINING_FARMING;
-			case RUNECRAFT: return TRAINING_RUNECRAFT;
-			case HUNTER: return TRAINING_HUNTER;
-			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
-			default: return null;
+			case ATTACK:
+				return TRAINING_ATTACK;
+			case DEFENCE:
+				return TRAINING_DEFENCE;
+			case STRENGTH:
+				return TRAINING_STRENGTH;
+			case RANGED:
+				return TRAINING_RANGED;
+			case PRAYER:
+				return TRAINING_PRAYER;
+			case MAGIC:
+				return TRAINING_MAGIC;
+			case COOKING:
+				return TRAINING_COOKING;
+			case WOODCUTTING:
+				return TRAINING_WOODCUTTING;
+			case FLETCHING:
+				return TRAINING_FLETCHING;
+			case FISHING:
+				return TRAINING_FISHING;
+			case FIREMAKING:
+				return TRAINING_FIREMAKING;
+			case CRAFTING:
+				return TRAINING_CRAFTING;
+			case SMITHING:
+				return TRAINING_SMITHING;
+			case MINING:
+				return TRAINING_MINING;
+			case HERBLORE:
+				return TRAINING_HERBLORE;
+			case AGILITY:
+				return TRAINING_AGILITY;
+			case THIEVING:
+				return TRAINING_THIEVING;
+			case SLAYER:
+				return TRAINING_SLAYER;
+			case FARMING:
+				return TRAINING_FARMING;
+			case RUNECRAFT:
+				return TRAINING_RUNECRAFT;
+			case HUNTER:
+				return TRAINING_HUNTER;
+			case CONSTRUCTION:
+				return TRAINING_CONSTRUCTION;
+			default:
+				return null;
 		}
 	}
 

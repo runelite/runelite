@@ -25,33 +25,24 @@
 package net.runelite.client.ui.overlay.components;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TextComponentTest
 {
-	@Mock
 	private Graphics2D graphics;
-	
+	private BufferedImage dest;
+
 	@Before
 	public void before()
 	{
-		when(graphics.getFontMetrics()).thenReturn(mock(FontMetrics.class));
+		dest = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+		graphics = (Graphics2D) dest.getGraphics();
 	}
-	
+
 	@Test
 	public void testRender()
 	{
@@ -59,29 +50,29 @@ public class TextComponentTest
 		textComponent.setText("test");
 		textComponent.setColor(Color.RED);
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.RED);
 	}
-	
+
 	@Test
 	public void testRender2()
 	{
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test");
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 	}
-	
+
 	@Test
 	public void testRender3()
 	{
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test<col=00ff00> test");
 		textComponent.render(graphics);
-		verify(graphics, atLeastOnce()).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).drawString(eq(" test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
-		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
 	}
+
+	@After
+	public void after()
+	{
+		graphics.dispose();
+		dest.flush();
+	}
+
 }

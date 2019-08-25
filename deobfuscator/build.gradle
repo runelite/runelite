@@ -1,0 +1,50 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id "com.github.hauner.jarTest" version "1.0.1"
+}
+
+description = 'Deobfuscator'
+
+configurations {
+    deobjars
+}
+
+dependencies {
+    deobjars group: 'net.runelite.rs', name: 'vanilla', version: rsversion
+    deobjars project(':rs-client')
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: gson
+    implementation group: 'com.google.guava', name: 'guava', version: guava
+    implementation group: 'net.runelite', name: 'fernflower', version: fernflower
+    implementation group: 'org.ow2.asm', name: 'asm', version: asm
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: asm
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j
+    implementation project(':runelite-api')
+    implementation project(':runescape-api')
+
+    runtime group: 'org.slf4j', name: 'slf4j-simple', version: slf4j
+
+    testImplementation configurations.deobjars.dependencies
+    testImplementation group: 'junit', name: 'junit', version: junit
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: mockito
+}
+
+processResources {
+    from file("src/main/resources/deob.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "rs.version": rsversion.toString(),
+                "vanilla.jar": configurations.deobjars.find {it.name.startsWith("vanilla")}.toString().replace('\\', "/"),
+                "rs.client": configurations.deobjars.find {it.name.startsWith("rs-client")}.toString().replace('\\', "/")
+        ])
+    }
+}
+processTestResources {
+    from file("src/test/resources/deob-test.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "rs.client": configurations.deobjars.find {it.name.startsWith("rs-client")}.toString().replace('\\', "/"),
+                "rs.version": rsversion.toString(),
+                "vanilla.jar": configurations.deobjars.find {it.name.startsWith("vanilla")}.toString().replace('\\', "/")
+        ])
+    }
+}

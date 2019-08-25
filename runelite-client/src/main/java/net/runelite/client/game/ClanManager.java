@@ -45,7 +45,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -98,10 +98,17 @@ public class ClanManager
 	private int offset;
 
 	@Inject
-	private ClanManager(Client client, SpriteManager spriteManager)
+	private ClanManager(
+		final Client client,
+		final SpriteManager spriteManager,
+		final EventBus eventbus
+	)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(ClanChanged.class, this, this::onClanChanged);
 	}
 
 	public ClanMemberRank getRank(String playerName)
@@ -125,8 +132,7 @@ public class ClanManager
 		return offset + clanMemberRank.ordinal() - 1;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && offset == 0)
 		{
@@ -134,8 +140,7 @@ public class ClanManager
 		}
 	}
 
-	@Subscribe
-	public void onClanChanged(ClanChanged clanChanged)
+	private void onClanChanged(ClanChanged clanChanged)
 	{
 		clanRanksCache.invalidateAll();
 	}

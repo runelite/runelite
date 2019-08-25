@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -40,6 +41,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -47,7 +49,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -57,6 +59,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Music List",
 	description = "Adds search and filter for the music list"
 )
+@Singleton
 public class MusicListPlugin extends Plugin
 {
 	@Inject
@@ -67,6 +70,9 @@ public class MusicListPlugin extends Plugin
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	private ChatboxTextInput searchInput;
 
@@ -80,12 +86,16 @@ public class MusicListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		clientThread.invoke(this::addMusicButtons);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		Widget header = client.getWidget(WidgetInfo.MUSIC_WINDOW);
 		if (header != null)
 		{
@@ -95,8 +105,14 @@ public class MusicListPlugin extends Plugin
 		tracks = null;
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -106,8 +122,7 @@ public class MusicListPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.MUSIC_GROUP_ID)
 		{
@@ -158,8 +173,7 @@ public class MusicListPlugin extends Plugin
 		musicFilterButton.revalidate();
 	}
 
-	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (isChatboxOpen() && !isOnMusicTab())
 		{
@@ -169,7 +183,7 @@ public class MusicListPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVar(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVar(VarClientInt.INTERFACE_TAB) == InterfaceTab.MUSIC.getId();
 	}
 
 	private boolean isChatboxOpen()

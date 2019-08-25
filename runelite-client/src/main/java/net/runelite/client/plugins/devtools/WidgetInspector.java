@@ -53,7 +53,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
@@ -63,7 +62,6 @@ class WidgetInspector extends JFrame
 	private final ClientThread clientThread;
 	private final DevToolsConfig config;
 	private final DevToolsOverlay overlay;
-	private final DevToolsPlugin plugin;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -86,9 +84,8 @@ class WidgetInspector extends JFrame
 		this.infoTableModel = infoTableModel;
 		this.config = config;
 		this.overlay = overlay;
-		this.plugin = plugin;
 
-		eventBus.register(this);
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 
 		setTitle("RuneLite Widget Inspector");
 		setIconImage(ClientUI.ICON);
@@ -99,6 +96,7 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
+				eventBus.unregister(this);
 				close();
 				plugin.getWidgetInspector().setActive(false);
 			}
@@ -167,9 +165,9 @@ class WidgetInspector extends JFrame
 		add(split, BorderLayout.CENTER);
 
 		pack();
+
 	}
 
-	@Subscribe
 	private void onConfigChanged(ConfigChanged ev)
 	{
 		boolean onTop = config.inspectorAlwaysOnTop();

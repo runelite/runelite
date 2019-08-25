@@ -24,15 +24,15 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Tile;
+import lombok.Data;
 
 /**
  * An event where the {@link GroundObject} on a {@link Tile} has been changed.
  */
 @Data
-public class GroundObjectChanged
+public class GroundObjectChanged implements Event
 {
 	/**
 	 * The affected tile.

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "players"},
 	enabledByDefault = false
 )
+@Singleton
 public class TeamCapesPlugin extends Plugin
 {
 	@Inject
@@ -111,11 +113,11 @@ public class TeamCapesPlugin extends Plugin
 
 		// Sort teams by value in descending order and then by key in ascending order, limited to 5 entries
 		teams = teams.entrySet().stream()
-					.sorted(
-						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
-								.thenComparingInt(Map.Entry::getKey)
-					)
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			.sorted(
+				Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
+					.thenComparingInt(Map.Entry::getKey)
+			)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 
 	public Map<Integer, Integer> getTeams()

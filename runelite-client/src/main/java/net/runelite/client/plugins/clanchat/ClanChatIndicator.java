@@ -26,13 +26,15 @@ package net.runelite.client.plugins.clanchat;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
+@Singleton
 class ClanChatIndicator extends Counter
 {
 	private final ClanChatPlugin plugin;
 
-	ClanChatIndicator(BufferedImage image, ClanChatPlugin plugin)
+	ClanChatIndicator(final BufferedImage image, final ClanChatPlugin plugin)
 	{
 		super(image, plugin, plugin.getClanAmount());
 		this.plugin = plugin;

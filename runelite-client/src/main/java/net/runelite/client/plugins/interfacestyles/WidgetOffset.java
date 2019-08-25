@@ -26,10 +26,11 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum WidgetOffset
 {
 	RESIZABLE_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_COMBAT_TAB, -4, 1, null, null),

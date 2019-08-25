@@ -62,6 +62,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique
+	 *
 	 * @return overlay name
 	 */
 	public String getName()

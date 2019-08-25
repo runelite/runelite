@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -33,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -42,7 +42,9 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class DemonicGorillaOverlay extends Overlay
 {
 	private static final Color COLOR_ICON_BACKGROUND = new Color(0, 0, 0, 128);
@@ -51,14 +53,14 @@ public class DemonicGorillaOverlay extends Overlay
 	private static final int OVERLAY_ICON_DISTANCE = 50;
 	private static final int OVERLAY_ICON_MARGIN = 8;
 
-	private Client client;
-	private DemonicGorillaPlugin plugin;
+	private final Client client;
+	private final DemonicGorillaPlugin plugin;
 
 	@Inject
 	private SkillIconManager iconManager;
 
 	@Inject
-	public DemonicGorillaOverlay(Client client, DemonicGorillaPlugin plugin)
+	public DemonicGorillaOverlay(final Client client, final DemonicGorillaPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -70,9 +72,12 @@ public class DemonicGorillaOverlay extends Overlay
 	{
 		switch (attackStyle)
 		{
-			case MELEE: return iconManager.getSkillImage(Skill.ATTACK);
-			case RANGED: return iconManager.getSkillImage(Skill.RANGED);
-			case MAGIC: return iconManager.getSkillImage(Skill.MAGIC);
+			case MELEE:
+				return iconManager.getSkillImage(Skill.ATTACK);
+			case RANGED:
+				return iconManager.getSkillImage(Skill.RANGED);
+			case MAGIC:
+				return iconManager.getSkillImage(Skill.MAGIC);
 		}
 		return null;
 	}
@@ -103,38 +108,21 @@ public class DemonicGorillaOverlay extends Overlay
 					{
 						BufferedImage icon = getIcon(attackStyle);
 						icons.add(icon);
-						totalWidth += icon.getWidth();
+						if (icon != null)
+						{
+							totalWidth += icon.getWidth();
+						}
 					}
 
 					int bgPadding = 4;
 					int currentPosX = 0;
 					for (BufferedImage icon : icons)
 					{
-						graphics.setStroke(new BasicStroke(2));
-						graphics.setColor(COLOR_ICON_BACKGROUND);
-						graphics.fillOval(
-							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-							icon.getWidth() + bgPadding * 2,
-							icon.getHeight() + bgPadding * 2);
-
-						graphics.setColor(COLOR_ICON_BORDER);
-						graphics.drawOval(
-							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
-							icon.getWidth() + bgPadding * 2,
-							icon.getHeight() + bgPadding * 2);
-
-						graphics.drawImage(
-							icon,
-							point.getX() - totalWidth / 2 + currentPosX,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE,
-							null);
-
-						graphics.setColor(COLOR_ICON_BORDER_FILL);
+						OverlayUtil.setProgressIcon(graphics, point, icon, totalWidth, bgPadding, currentPosX,
+							COLOR_ICON_BACKGROUND, OVERLAY_ICON_DISTANCE, COLOR_ICON_BORDER, COLOR_ICON_BORDER_FILL);
 						Arc2D.Double arc = new Arc2D.Double(
 							point.getX() - totalWidth / 2 + currentPosX - bgPadding,
-							point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+							point.getY() - (float) (icon.getHeight() / 2) - OVERLAY_ICON_DISTANCE - bgPadding,
 							icon.getWidth() + bgPadding * 2,
 							icon.getHeight() + bgPadding * 2,
 							90.0,

@@ -1,0 +1,234 @@
+.id                 187
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      5
+.string_var_count   1
+   iconst                 0
+   istore                 1
+   map_members           
+   iconst                 1
+   if_icmpeq              LABEL9
+   get_varbit             5314
+   iconst                 1
+   if_icmpeq              LABEL9
+   jump                   LABEL17
+LABEL9:
+   iconst                 111
+   iconst                 105
+   iconst                 906
+   iconst                 94
+   iconst                 3
+   inv_getobj            
+   enum                  
+   istore                 1
+LABEL17:
+   iload                  1
+   iconst                 0
+   if_icmple              LABEL21
+   jump                   LABEL25
+LABEL21:
+   iconst                 1                   ; What we compare the boolean with
+   iconst                 0                   ; Boolean
+   sconst                 "drawSpecbarAnyway"
+   runelite_callback
+   if_icmpeq              LABEL25
+   iconst                 1
+   iconst                 38862883
+   if_sethide
+   return
+LABEL25:
+   iconst                 0
+   istore                 2
+   iconst                 38862883
+   if_gethide            
+   iconst                 1
+   if_icmpeq              LABEL32
+   jump                   LABEL34
+LABEL32:
+   iconst                 1
+   istore                 2
+LABEL34:
+   iconst                 0
+   iconst                 38862883
+   if_sethide            
+   get_varp               301
+   iconst                 0
+   if_icmpgt              LABEL41
+   jump                   LABEL45
+LABEL41:
+   iconst                 16776960
+   iconst                 38862888
+   if_setcolour          
+   jump                   LABEL48
+LABEL45:
+   iconst                 16
+   iconst                 38862888
+   if_setcolour          
+LABEL48:
+   get_varp               300
+   istore                 3
+   iload                  3
+   iconst                 0
+   if_icmplt              LABEL54
+   jump                   LABEL56
+LABEL54:
+   iconst                 0
+   istore                 3
+LABEL56:
+   sconst                 "Special Attack: "
+   iload                  3
+   iconst                 10
+   div                   
+   tostring              
+   sconst                 "%"
+   join_string            3
+   iconst                 38862888
+   if_settext            
+   iload                  0
+   iload                  3
+   iload                  2
+   invoke                 189
+   iconst                 38862884
+   iconst                 0
+   invoke                 835
+   pop_int                                          ; Specbar is fully built here
+   iload                  1
+   iconst                 0
+   if_icmple              RETURN                    ; Return if the weapon isn't supposed to have a spec
+   jump                   CONTINUE                  ; Idk why I'm doing it like this but it's the jagex way
+RETURN:
+   return
+CONTINUE:
+   iload                  3
+   iload                  1
+   if_icmpge              LABEL73
+   jump                   LABEL77
+LABEL73:
+   iconst                 3767611
+   iconst                 38862887
+   if_setcolour          
+   jump                   LABEL80
+LABEL77:
+   iconst                 12907
+   iconst                 38862887
+   if_setcolour          
+LABEL80:
+   iconst                 94
+   iconst                 3
+   inv_getobj            
+   istore                 4
+   iconst                 111
+   iconst                 115
+   iconst                 1739
+   iload                  4
+   enum                  
+   sconst                 " ("
+   iconst                 111
+   iconst                 105
+   iconst                 906
+   iload                  4
+   enum                  
+   iconst                 10
+   div                   
+   tostring              
+   sconst                 "%)"
+   join_string            4
+   sstore                 0
+   iload                  4
+   switch                
+      22737: LABEL108
+      22740: LABEL108
+      22743: LABEL108
+      22731: LABEL108
+      22734: LABEL108
+   jump                   LABEL116
+LABEL108:
+   iconst                 111
+   iconst                 115
+   iconst                 1739
+   iload                  4
+   enum                  
+   sconst                 " 5-100% "
+   join_string            2
+   sstore                 0
+LABEL116:
+   get_varbit             5712
+   iconst                 0
+   if_icmpeq              LABEL120
+   jump                   LABEL185
+LABEL120:
+   iload                  4
+   iconst                 11235
+   if_icmpeq              LABEL136
+   iload                  4
+   iconst                 20408
+   if_icmpeq              LABEL136
+   iload                  4
+   iconst                 12765
+   if_icmpeq              LABEL136
+   iload                  4
+   iconst                 12768
+   if_icmpeq              LABEL136
+   iload                  4
+   iconst                 12767
+   if_icmpeq              LABEL136
+   jump                   LABEL169
+LABEL136:
+   iconst                 94
+   iconst                 13
+   inv_getobj            
+   iconst                 11212
+   if_icmpeq              LABEL157
+   iconst                 94
+   iconst                 13
+   inv_getobj            
+   iconst                 11227
+   if_icmpeq              LABEL157
+   iconst                 94
+   iconst                 13
+   inv_getobj            
+   iconst                 11228
+   if_icmpeq              LABEL157
+   iconst                 94
+   iconst                 13
+   inv_getobj            
+   iconst                 11229
+   if_icmpeq              LABEL157
+   jump                   LABEL169
+LABEL157:
+   sconst                 "Descent of Dragons: Deal a double attack with dragon arrows that inflicts up to 50% more damage (minimum damage of 8 per hit). ("
+   iconst                 111
+   iconst                 105
+   iconst                 906
+   iload                  4
+   enum                  
+   iconst                 10
+   div                   
+   tostring              
+   sconst                 "%)"
+   join_string            3
+   sstore                 0
+LABEL169:
+   iconst                 526
+   iconst                 -2147483645
+   iconst                 -1
+   iconst                 38862890
+   sload                  0
+   iconst                 25
+   iconst                 160
+   sconst                 "IiIsii"
+   iconst                 38862883
+   if_setonmouserepeat   
+   iconst                 40
+   iconst                 38862890
+   sconst                 "I"
+   iconst                 38862883
+   if_setonmouseleave    
+   jump                   LABEL189
+LABEL185:
+   iconst                 -1
+   sconst                 ""
+   iconst                 38862883
+   if_setonmouserepeat   
+LABEL189:
+   return                

@@ -29,8 +29,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
@@ -41,19 +42,16 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class GroundMarkerOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 32;
-
 	private final Client client;
-	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
 
 	@Inject
-	private GroundMarkerOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
+	private GroundMarkerOverlay(final Client client, final GroundMarkerPlugin plugin)
 	{
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
@@ -63,33 +61,19 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Collection<ColorTileMarker> points = plugin.getPoints();
-		for (final ColorTileMarker point : points)
+		List<GroundMarkerWorldPoint> points = plugin.getPoints();
+		for (GroundMarkerWorldPoint groundMarkerWorldPoint : points)
 		{
-			WorldPoint worldPoint = point.getWorldPoint();
-			if (worldPoint.getPlane() != client.getPlane())
-			{
-				continue;
-			}
-
-			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
-			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
-				tileColor = config.markerColor();
-			}
-
-			drawTile(graphics, worldPoint, tileColor);
+			drawTile(graphics, groundMarkerWorldPoint);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawTile(Graphics2D graphics, GroundMarkerWorldPoint groundMarkerWorldPoint)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		WorldPoint point = groundMarkerWorldPoint.getWorldPoint();
+		if (point.getPlane() != client.getPlane())
 		{
 			return;
 		}
@@ -106,6 +90,30 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
+		Color color = plugin.getMarkerColor();
+		switch (groundMarkerWorldPoint.getGroundMarkerPoint().getGroup())
+		{
+			case 2:
+				color = plugin.getMarkerColor2();
+				break;
+			case 3:
+				color = plugin.getMarkerColor3();
+				break;
+			case 4:
+				color = plugin.getMarkerColor4();
+				break;
+			case 5:
+				color = plugin.getMarkerColor5();
+				break;
+			case 6:
+				color = plugin.getMarkerColor6();
+				break;
+			case 7:
+				color = plugin.getMarkerColor7();
+				break;
+			case 8:
+				color = plugin.getMarkerColor8();
+		}
 		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

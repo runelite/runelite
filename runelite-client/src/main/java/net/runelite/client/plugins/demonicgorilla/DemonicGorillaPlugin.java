@@ -24,14 +24,18 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -52,9 +56,9 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -64,8 +68,11 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Count demonic gorilla attacks and display their next possible attack styles",
 	tags = {"combat", "overlay", "pve", "pvm"}
 )
+@Singleton
 public class DemonicGorillaPlugin extends Plugin
 {
+	private static final Set<Integer> DEMONIC_PROJECTILES = ImmutableSet.of(ProjectileID.DEMONIC_GORILLA_RANGED, ProjectileID.DEMONIC_GORILLA_MAGIC, ProjectileID.DEMONIC_GORILLA_BOULDER);
+
 	@Inject
 	private Client client;
 
@@ -78,7 +85,10 @@ public class DemonicGorillaPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, DemonicGorilla> gorillas;
 
 	private List<WorldPoint> recentBoulders;
@@ -90,6 +100,7 @@ public class DemonicGorillaPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
 		overlayManager.add(overlay);
 		gorillas = new HashMap<>();
 		recentBoulders = new ArrayList<>();
@@ -101,11 +112,24 @@ public class DemonicGorillaPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 		gorillas = null;
 		recentBoulders = null;
 		pendingAttacks = null;
 		memorizedPlayers = null;
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
+		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
+		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
+		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void clear()
@@ -145,7 +169,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	public static boolean isNpcGorilla(int npcId)
+	private static boolean isNpcGorilla(int npcId)
 	{
 		return npcId == NpcID.DEMONIC_GORILLA ||
 			npcId == NpcID.DEMONIC_GORILLA_7145 ||
@@ -155,8 +179,7 @@ public class DemonicGorillaPlugin extends Plugin
 			npcId == NpcID.DEMONIC_GORILLA_7149;
 	}
 
-	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
-		final DemonicGorilla.AttackStyle... protectedStyles)
+	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla, final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
 			gorilla.getNextPosibleAttackStyles().isEmpty())
@@ -194,7 +217,7 @@ public class DemonicGorillaPlugin extends Plugin
 	{
 		gorilla.setInitiatedCombat(true);
 
-		Player target = (Player)gorilla.getNpc().getInteracting();
+		Player target = (Player) gorilla.getNpc().getInteracting();
 
 		DemonicGorilla.AttackStyle protectedStyle = null;
 		if (target != null)
@@ -203,7 +226,8 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 		boolean correctPrayer =
 			target == null || // If player is out of memory, assume prayer was correct
-				attackStyle == protectedStyle;
+				(attackStyle != null &&
+					attackStyle.equals(protectedStyle));
 
 		if (attackStyle == DemonicGorilla.AttackStyle.BOULDER)
 		{
@@ -285,7 +309,7 @@ public class DemonicGorillaPlugin extends Plugin
 		int tickCounter = client.getTickCount();
 		for (DemonicGorilla gorilla : gorillas.values())
 		{
-			Player interacting = (Player)gorilla.getNpc().getInteracting();
+			Player interacting = (Player) gorilla.getNpc().getInteracting();
 			MemorizedPlayer mp = memorizedPlayers.get(interacting);
 
 			if (gorilla.getLastTickInteracting() != null && interacting == null)
@@ -321,8 +345,11 @@ public class DemonicGorillaPlugin extends Plugin
 						.stream()
 						.filter(x -> x != DemonicGorilla.AttackStyle.MELEE)
 						.collect(Collectors.toList()));
-					checkGorillaAttackStyleSwitch(gorilla, DemonicGorilla.AttackStyle.MELEE,
-						getProtectedStyle(interacting));
+					if (interacting != null)
+					{
+						checkGorillaAttackStyleSwitch(gorilla, DemonicGorilla.AttackStyle.MELEE,
+							getProtectedStyle(interacting));
+					}
 				}
 			}
 			else if (animationId != gorilla.getLastTickAnimation())
@@ -373,8 +400,7 @@ public class DemonicGorillaPlugin extends Plugin
 							else if (mp != null)
 							{
 								WorldArea lastPlayerArea = mp.getLastWorldArea();
-								if (lastPlayerArea != null &&
-									interacting != null && recentBoulders.stream()
+								if (lastPlayerArea != null && recentBoulders.stream()
 									.anyMatch(x -> x.distanceTo(lastPlayerArea) == 0))
 								{
 									// A boulder started falling on the gorillas target,
@@ -425,23 +451,21 @@ public class DemonicGorillaPlugin extends Plugin
 							// Gorillas can't normally walk through other gorillas
 							// or other players
 							final WorldArea area1 = new WorldArea(x, 1, 1);
-							return area1 != null &&
-								gorillas.values().stream().noneMatch(y ->
+							return gorillas.values().stream().noneMatch(y ->
+							{
+								if (y == gorilla)
 								{
-									if (y == gorilla)
-									{
-										return false;
-									}
-									final WorldArea area2 =
-										y.getNpc().getIndex() < gorilla.getNpc().getIndex() ?
-											y.getNpc().getWorldArea() : y.getLastWorldArea();
-									return area2 != null && area1.intersectsWith(area2);
-								}) &&
-								memorizedPlayers.values().stream().noneMatch(y ->
-								{
-									final WorldArea area2 = y.getLastWorldArea();
-									return area2 != null && area1.intersectsWith(area2);
-								});
+									return false;
+								}
+								final WorldArea area2 =
+									y.getNpc().getIndex() < gorilla.getNpc().getIndex() ?
+										y.getNpc().getWorldArea() : y.getLastWorldArea();
+								return area2 != null && area1.intersectsWith(area2);
+							}) && memorizedPlayers.values().stream().noneMatch(y ->
+							{
+								final WorldArea area2 = y.getLastWorldArea();
+								return area2 != null && area1.intersectsWith(area2);
+							});
 
 							// There is a special case where if a player walked through
 							// a gorilla, or a player walked through another player,
@@ -453,9 +477,7 @@ public class DemonicGorillaPlugin extends Plugin
 					{
 						int distance = gorilla.getNpc().getWorldArea().distanceTo(mp.getLastWorldArea());
 						WorldPoint predictedMovement = predictedNewArea.toWorldPoint();
-						if (distance <= DemonicGorilla.MAX_ATTACK_RANGE &&
-							mp != null &&
-							mp.getLastWorldArea().hasLineOfSightTo(client, gorilla.getLastWorldArea()))
+						if (distance <= DemonicGorilla.MAX_ATTACK_RANGE && mp.getLastWorldArea().hasLineOfSightTo(client, gorilla.getLastWorldArea()))
 						{
 							if (predictedMovement.distanceTo(gorilla.getLastWorldArea().toWorldPoint()) != 0)
 							{
@@ -526,37 +548,27 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		Projectile projectile = event.getProjectile();
-		int projectileId = projectile.getId();
-		if (projectileId != ProjectileID.DEMONIC_GORILLA_RANGED &&
-			projectileId != ProjectileID.DEMONIC_GORILLA_MAGIC &&
-			projectileId != ProjectileID.DEMONIC_GORILLA_BOULDER)
+		final Projectile projectile = event.getProjectile();
+		final int projectileId = projectile.getId();
+
+		if (!DEMONIC_PROJECTILES.contains(projectileId))
 		{
 			return;
 		}
 
-		// The event fires once before the projectile starts moving,
-		// and we only want to check each projectile once
-		if (client.getGameCycle() >= projectile.getStartMovementCycle())
-		{
-			return;
-		}
+		final WorldPoint loc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 		if (projectileId == ProjectileID.DEMONIC_GORILLA_BOULDER)
 		{
-			recentBoulders.add(WorldPoint.fromLocal(client, event.getPosition()));
+			recentBoulders.add(loc);
 		}
-		else if (projectileId == ProjectileID.DEMONIC_GORILLA_MAGIC ||
-			projectileId == ProjectileID.DEMONIC_GORILLA_RANGED)
+		else
 		{
-			WorldPoint projectileSourcePosition = WorldPoint.fromLocal(
-				client, projectile.getX1(), projectile.getY1(), client.getPlane());
 			for (DemonicGorilla gorilla : gorillas.values())
 			{
-				if (gorilla.getNpc().getWorldLocation().distanceTo(projectileSourcePosition) == 0)
+				if (gorilla.getNpc().getWorldLocation().distanceTo(loc) == 0)
 				{
 					gorilla.setRecentProjectileId(projectile.getId());
 				}
@@ -615,8 +627,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -625,7 +636,7 @@ public class DemonicGorillaPlugin extends Plugin
 
 		if (event.getActor() instanceof Player)
 		{
-			Player player = (Player)event.getActor();
+			Player player = (Player) event.getActor();
 			MemorizedPlayer mp = memorizedPlayers.get(player);
 			if (mp != null)
 			{
@@ -644,8 +655,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gs = event.getGameState();
 		if (gs == GameState.LOGGING_IN ||
@@ -656,8 +666,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerSpawned(PlayerSpawned event)
+	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -668,8 +677,7 @@ public class DemonicGorillaPlugin extends Plugin
 		memorizedPlayers.put(player, new MemorizedPlayer(player));
 	}
 
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned event)
+	private void onPlayerDespawned(PlayerDespawned event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -679,8 +687,7 @@ public class DemonicGorillaPlugin extends Plugin
 		memorizedPlayers.remove(event.getPlayer());
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
 		if (isNpcGorilla(npc.getId()))
@@ -696,8 +703,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (gorillas.remove(event.getNpc()) != null && gorillas.isEmpty())
 		{
@@ -705,8 +711,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		checkGorillaAttacks();
 		checkPendingAttacks();

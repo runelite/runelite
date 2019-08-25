@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
@@ -56,7 +57,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
@@ -69,6 +70,7 @@ import net.runelite.client.util.StackFormatter;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class ItemsKeptOnDeathPlugin extends Plugin
 {
 	private static final int DEEP_WILDY = 20;
@@ -110,6 +112,9 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	private WidgetButton deepWildyButton;
 	private WidgetButton lowWildyButton;
 
@@ -120,8 +125,19 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	int wildyLevel;
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (event.getEventName().equals("itemsKeptOnDeath"))
 		{
@@ -337,7 +353,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			// 3) is outside of the wilderness, or item has a broken form
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
-				&& !isTradeable(itemManager.getItemComposition(id)) && wildyLevel <= DEEP_WILDY
+				&& !isTradeable(itemManager.getItemDefinition(id)) && wildyLevel <= DEEP_WILDY
 				&& (wildyLevel <= 0 || BrokenOnDeathItem.getRepairPrice(i.getId()) != null))
 			{
 				keptItems.add(new ItemStack(id, qty));
@@ -404,7 +420,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	boolean isClueBoxable(final int itemID)
 	{
-		final String name = itemManager.getItemComposition(itemID).getName();
+		final String name = itemManager.getItemDefinition(itemID).getName();
 		return name.contains("Clue scroll (") || name.contains("Reward casket (");
 	}
 
@@ -462,7 +478,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			// If for some reason it still has no price default to the items store price
 			if (exchangePrice == 0)
 			{
-				final ItemComposition c1 = itemManager.getItemComposition(canonicalizedItemId);
+				final ItemDefinition c1 = itemManager.getItemDefinition(canonicalizedItemId);
 				exchangePrice = c1.getPrice();
 			}
 		}
@@ -565,7 +581,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			if (price == 0)
 			{
 				// Default to alch price
-				price = (int) (itemManager.getItemComposition(cid).getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
+				price = (int) (itemManager.getItemDefinition(cid).getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 			}
 			total += (long) price * w.getItemQuantity();
 		}
@@ -584,9 +600,9 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	 * @param c The item
 	 * @return
 	 */
-	private static boolean isTradeable(final ItemComposition c)
+	private static boolean isTradeable(final ItemDefinition c)
 	{
-		// ItemComposition:: isTradeable checks if they are traded on the grand exchange, some items are trade-able but not via GE
+		// ItemDefinition:: isTradeable checks if they are traded on the grand exchange, some items are trade-able but not via GE
 		if (c.getNote() != -1
 			|| c.getLinkedNoteId() != -1
 			|| c.isTradeable())
@@ -710,7 +726,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	{
 		final int id = item.getId();
 		final int qty = item.getQty();
-		final ItemComposition c = itemManager.getItemComposition(id);
+		final ItemDefinition c = itemManager.getItemDefinition(id);
 
 		final Widget itemWidget = parent.createChild(-1, WidgetType.GRAPHIC);
 		itemWidget.setOriginalWidth(Constants.ITEM_SPRITE_WIDTH);

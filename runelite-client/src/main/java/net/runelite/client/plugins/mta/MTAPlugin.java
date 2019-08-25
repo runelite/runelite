@@ -26,9 +26,9 @@ package net.runelite.client.plugins.mta;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -44,11 +44,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show helpful information for the Mage Training Arena minigame",
 	tags = {"mta", "magic", "minigame", "overlay"}
 )
+@Singleton
 public class MTAPlugin extends Plugin
 {
-	@Inject
-	private Client client;
-
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -84,11 +82,6 @@ public class MTAPlugin extends Plugin
 		overlayManager.add(inventoryOverlay);
 
 		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
-
-		for (MTARoom room : rooms)
-		{
-			eventBus.register(room);
-		}
 	}
 
 	@Override
@@ -104,5 +97,4 @@ public class MTAPlugin extends Plugin
 
 		telekineticRoom.resetRoom();
 	}
-
 }

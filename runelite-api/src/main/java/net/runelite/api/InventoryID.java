@@ -54,6 +54,10 @@ public enum InventoryID
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
 	/**
+	 * Looting Bag inventory
+	 */
+	LOOTING_BAG(516),
+	/**
 	 * Kingdom Of Miscellania reward inventory.
 	 */
 	KINGDOM_OF_MISCELLANIA(390),
@@ -86,5 +90,17 @@ public enum InventoryID
 	public int getId()
 	{
 		return id;
+	}
+
+	public static InventoryID getValue(int value)
+	{
+		for (InventoryID e: InventoryID.values())
+		{
+			if (e.id == value)
+			{
+				return e;
+			}
+		}
+		return null;
 	}
 }

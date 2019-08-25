@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.timers;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -32,10 +33,10 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
 public class IndicatorIndicator extends InfoBox
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final GameIndicator indicator;
 
-	IndicatorIndicator(GameIndicator indicator, Plugin plugin)
+	IndicatorIndicator(final GameIndicator indicator, final Plugin plugin)
 	{
 		super(null, plugin);
 		this.indicator = indicator;

@@ -29,15 +29,17 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.input.MouseWheelListener;
 
+@Singleton
 public class TranslateMouseWheelListener implements MouseWheelListener
 {
 	private final Client client;
 
 	@Inject
-	public TranslateMouseWheelListener(Client client)
+	public TranslateMouseWheelListener(final Client client)
 	{
 		this.client = client;
 	}
@@ -57,6 +59,6 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
 
 		return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+			e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
 	}
 }

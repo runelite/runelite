@@ -28,6 +28,7 @@ package net.runelite.client.plugins.runepouch;
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import static net.runelite.api.ItemID.AIR_RUNE;
@@ -76,13 +77,13 @@ public enum Runes
 	SMOKE(20, SMOKE_RUNE),
 	WRATH(21, WRATH_RUNE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int itemId;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private BufferedImage image;
 
 	private static final Map<Integer, Runes> runes;
@@ -97,7 +98,7 @@ public enum Runes
 		runes = builder.build();
 	}
 
-	Runes(int id, int itemId)
+	Runes(final int id, final int itemId)
 	{
 		this.id = id;
 		this.itemId = itemId;

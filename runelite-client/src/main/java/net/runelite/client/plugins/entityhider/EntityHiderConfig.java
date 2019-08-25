@@ -133,6 +133,39 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 10,
+		keyName = "hideNPCsNames",
+		name = "Hide NPCs Names",
+		description = "Configures which NPCs to hide"
+	)
+	default String hideNPCsNames()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "hideDeadNPCs",
+		name = "Hide Dead NPCs",
+		description = "Configures whether or not NPCs that just died are hidden"
+	)
+	default boolean hideDeadNPCs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "hideNPCsOnDeath",
+		name = "Hide NPCs On Death",
+		description = "Configures which NPCs to hide when they die"
+	)
+	default String hideNPCsOnDeath()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "hideProjectiles",
 		name = "Hide Projectiles",
 		description = "Configures whether or not projectiles are hidden"

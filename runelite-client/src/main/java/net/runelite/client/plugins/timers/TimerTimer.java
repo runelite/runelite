@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +25,6 @@
  */
 package net.runelite.client.plugins.timers;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
@@ -35,25 +34,18 @@ class TimerTimer extends Timer
 {
 	private final GameTimer timer;
 
-	TimerTimer(GameTimer timer, Plugin plugin)
+	TimerTimer(final GameTimer timer, final Plugin plugin)
 	{
 		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, null, plugin);
 		this.timer = timer;
 		setPriority(InfoBoxPriority.MED);
 	}
 
-	@Override
-	public boolean render()
+	TimerTimer(final GameTimer timer, final int amount, final Plugin plugin)
 	{
-		final boolean rendered = super.render();
-
-		if (rendered)
-		{
-			final Duration fromStart = Duration.between(getStartTime(), Instant.now());
-			return !fromStart.minus(timer.getInitialDelay()).isNegative();
-		}
-
-		return false;
+		super(timer.getDuration().toMillis() * amount, ChronoUnit.MILLIS, null, plugin);
+		this.timer = timer;
+		setPriority(InfoBoxPriority.MED);
 	}
 
 	public GameTimer getTimer()

@@ -26,6 +26,7 @@ package net.runelite.client.plugins.blastmine;
 
 import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameObject;
 
@@ -34,10 +35,10 @@ class BlastMineRock
 	private static final Duration PLANT_TIME = Duration.ofSeconds(30);
 	private static final Duration FUSE_TIME = Duration.ofMillis(4200);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final GameObject gameObject;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final BlastMineRockType type;
 
 	private final Instant creationTime = Instant.now();

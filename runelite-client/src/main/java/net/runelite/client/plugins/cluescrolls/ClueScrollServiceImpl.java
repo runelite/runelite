@@ -35,7 +35,7 @@ class ClueScrollServiceImpl implements ClueScrollService
 	private final ClueScrollPlugin plugin;
 
 	@Inject
-	private ClueScrollServiceImpl(ClueScrollPlugin plugin)
+	private ClueScrollServiceImpl(final ClueScrollPlugin plugin)
 	{
 		this.plugin = plugin;
 	}

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2019, ganom <https://github.com/ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,34 +26,64 @@
 package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
+import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyListener;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
+import net.runelite.client.plugins.customcursor.CustomCursorConfig;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
-	name = "Shift Anti Drag",
+	name = "Anti Drag",
 	description = "Prevent dragging an item for a specified delay",
-	tags = {"antidrag", "delay", "inventory", "items"}
+	tags = {"antidrag", "delay", "inventory", "items"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
-public class AntiDragPlugin extends Plugin implements KeyListener
+@Singleton
+public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
+
+	private boolean toggleDrag;
 
 	@Inject
 	private Client client;
 
 	@Inject
+	private ClientUI clientUI;
+
+	@Inject
 	private AntiDragConfig config;
 
 	@Inject
+	private AntiDragOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
@@ -60,49 +91,148 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		return configManager.getConfig(AntiDragConfig.class);
 	}
 
+	private boolean alwaysOn;
+	private boolean keybind;
+	private Keybind key;
+	private int dragDelay;
+	private boolean reqfocus;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean configOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private Color color;
+	private boolean changeCursor;
+	private CustomCursor selectedCursor;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		keyManager.registerKeyListener(this);
+		addSubscriptions();
+		updateConfig();
+
+		if (this.keybind)
+		{
+			keyManager.registerKeyListener(hotkeyListener);
+		}
+		client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setInventoryDragDelay(DEFAULT_DELAY);
-		keyManager.unregisterKeyListener(this);
+		keyManager.unregisterKeyListener(hotkeyListener);
+		toggleDrag = false;
+		overlayManager.remove(overlay);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
+	private void addSubscriptions()
 	{
-
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e)
+	private void onConfigChanged(ConfigChanged event)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (event.getGroup().equals("antiDrag"))
 		{
-			client.setInventoryDragDelay(config.dragDelay());
+			updateConfig();
+
+			if (event.getKey().equals("keybind"))
+			{
+				if (this.keybind)
+				{
+					keyManager.registerKeyListener(hotkeyListener);
+				}
+				else
+				{
+					keyManager.unregisterKeyListener(hotkeyListener);
+				}
+			}
+			if (event.getKey().equals("alwaysOn"))
+			{
+				client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
+			}
+			if (event.getKey().equals("dragDelay") && this.alwaysOn)
+			{
+				client.setInventoryDragDelay(this.dragDelay);
+			}
 		}
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
+	private void onGameStateChanged(GameStateChanged event)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				if (keybind)
+				{
+					keyManager.registerKeyListener(hotkeyListener);
+				}
+				break;
+			case LOGIN_SCREEN:
+				keyManager.unregisterKeyListener(hotkeyListener);
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.alwaysOn = config.alwaysOn();
+		this.keybind = config.keybind();
+		this.key = config.key();
+		this.dragDelay = config.dragDelay();
+		this.reqfocus = config.reqfocus();
+		this.configOverlay = config.overlay();
+		this.color = config.color();
+		this.changeCursor = config.changeCursor();
+		this.selectedCursor = config.selectedCursor();
+	}
+
+	private void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!this.alwaysOn && !focusChanged.isFocused() && this.reqfocus)
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
+			overlayManager.remove(overlay);
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.key)
 	{
-		if (!focusChanged.isFocused())
+		@Override
+		public void hotkeyPressed()
 		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+			if (alwaysOn)
+			{
+				return;
+			}
+
+			toggleDrag = !toggleDrag;
+			if (toggleDrag)
+			{
+				if (configOverlay)
+				{
+					overlayManager.add(overlay);
+				}
+				if (changeCursor)
+				{
+					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+				}
+
+				client.setInventoryDragDelay(dragDelay);
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+				if (changeCursor)
+				{
+					net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
+					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+				}
+			}
 		}
-	}
+	};
 }

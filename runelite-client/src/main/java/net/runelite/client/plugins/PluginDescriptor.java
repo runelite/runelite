@@ -58,4 +58,6 @@ public @interface PluginDescriptor
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
+
+	PluginType type() default PluginType.GENERAL_USE;
 }

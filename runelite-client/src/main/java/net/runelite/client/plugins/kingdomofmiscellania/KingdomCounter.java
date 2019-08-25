@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2019, Parker <https://github.com/Judaxx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,14 +26,16 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import java.awt.image.BufferedImage;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 
-public class KingdomCounter extends Counter
+@Singleton
+class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
 
-	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	KingdomCounter(final BufferedImage image, final KingdomPlugin plugin)
 	{
 		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
@@ -47,7 +50,12 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
+		return new StringBuilder("Favor: ")
+			.append(plugin.getFavor())
+			.append("/127")
+			.append("</br>")
+			.append("Coffer: ")
+			.append(StackFormatter.quantityToRSStackSize(plugin.getCoffer()))
+			.toString();
 	}
 }

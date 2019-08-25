@@ -32,15 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ValueCalculationMode
 {
-	HA("High Alchemy"), // calc highlight by HA value
-	GE("Grand Exchange"), // calc by GE
-	HIGHEST("Highest"); // use whatever is highest.
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	HA, // calc highlight by HA value
+	GE, // calc by GE
+	HIGHEST
 }

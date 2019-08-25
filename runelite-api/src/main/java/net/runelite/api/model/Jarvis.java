@@ -24,9 +24,9 @@
  */
 package net.runelite.api.model;
 
+import net.runelite.api.Point;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Point;
 
 /**
  * Provides utility methods for computing the convex hull of a list of
@@ -125,8 +125,7 @@ public class Jarvis
 
 	private static long crossProduct(Point p, Point q, Point r)
 	{
-		long val = (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
+		return (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
 			- (long)(q.getX() - p.getX()) * (r.getY() - q.getY());
-		return val;
 	}
 }

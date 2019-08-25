@@ -32,9 +32,9 @@ class GpuFloatBuffer
 {
 	private FloatBuffer buffer = allocateDirect(65536);
 
-	void put(float texture, float u, float v, float pad)
+	void put(float texture, float u, float v)
 	{
-		buffer.put(texture).put(u).put(v).put(pad);
+		buffer.put(texture).put(u).put(v).put((float) 0.0);
 	}
 
 	void flip()

@@ -24,11 +24,11 @@
  */
 package net.runelite.api.events;
 
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.MessageNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.MessageNode;
 
 /**
  * An event where a new chat message is received.
@@ -41,7 +41,7 @@ import net.runelite.api.MessageNode;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMessage
+public class ChatMessage implements Event
 {
 	/**
 	 * The underlying MessageNode for the message.

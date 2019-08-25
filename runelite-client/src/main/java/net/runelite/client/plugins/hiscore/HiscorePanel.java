@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -95,6 +96,7 @@ import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
 import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
+@Singleton
 public class HiscorePanel extends PluginPanel
 {
 	/* The maximum allowed username length in runescape accounts */
@@ -127,14 +129,10 @@ public class HiscorePanel extends PluginPanel
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
 
-	private final JPanel statsPanel = new JPanel();
-
 	/* Container of all the selectable endpoints (ironman, deadman, etc) */
 	private final MaterialTabGroup tabGroup;
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
-
-	private HiscoreResult result;
 
 	/* The currently selected endpoint */
 	private HiscoreEndpoint selectedEndPoint;
@@ -245,6 +243,7 @@ public class HiscorePanel extends PluginPanel
 
 		// Panel that holds skill icons
 		GridLayout stats = new GridLayout(8, 3);
+		JPanel statsPanel = new JPanel();
 		statsPanel.setLayout(stats);
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -369,6 +368,7 @@ public class HiscorePanel extends PluginPanel
 			selectedEndPoint = HiscoreEndpoint.NORMAL;
 		}
 
+		HiscoreResult result;
 		try
 		{
 			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");
@@ -605,7 +605,11 @@ public class HiscorePanel extends PluginPanel
 		 */
 		if (SKILLS.contains(skill))
 		{
-			long experience = result.getSkill(skill).getExperience();
+			long experience = 0;
+			if (skill != null)
+			{
+				experience = result.getSkill(skill).getExperience();
+			}
 			if (experience >= 0)
 			{
 				int currentXp = (int) experience;

@@ -41,6 +41,7 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -66,6 +67,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 @Slf4j
+@Singleton
 class FeedPanel extends PluginPanel
 {
 	private static final ImageIcon RUNELITE_ICON;

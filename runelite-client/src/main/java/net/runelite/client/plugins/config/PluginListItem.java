@@ -25,44 +25,34 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
-class PluginListItem extends JPanel
+@Singleton
+public class PluginListItem extends JPanel
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
-	private static final String RUNELITE_WIKI_FORMAT = "https://github.com/runelite/runelite/wiki/%s";
+	public JLabel nameLabel;
 
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
@@ -83,12 +73,12 @@ class PluginListItem extends JPanel
 
 	@Nullable
 	@Getter(AccessLevel.PACKAGE)
-	private final ConfigDescriptor configDescriptor;
+	public final ConfigDescriptor configDescriptor;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String name;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String description;
 
 	private final List<String> keywords = new ArrayList<>();
@@ -133,24 +123,24 @@ class PluginListItem extends JPanel
 	 * Note that {@code config} and {@code configDescriptor} can be {@code null}
 	 * if there is no configuration associated with the plugin.
 	 */
-	PluginListItem(ConfigPanel configPanel, Plugin plugin, PluginDescriptor descriptor,
-		@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
+	PluginListItem(ConfigPanel configPanel, ConfigManager configManager, Plugin plugin, PluginDescriptor descriptor,
+				@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
-		this(configPanel, plugin, config, configDescriptor,
+		this(configPanel, configManager, plugin, config, configDescriptor,
 			descriptor.name(), descriptor.description(), descriptor.tags());
 	}
 
 	/**
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
-	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
-		String name, String description, String... tags)
+	PluginListItem(ConfigPanel configPanel, ConfigManager configManager, Config config, ConfigDescriptor configDescriptor,
+				String name, String description, String... tags)
 	{
-		this(configPanel, null, config, configDescriptor, name, description, tags);
+		this(configPanel, configManager, null, config, configDescriptor, name, description, tags);
 	}
 
-	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
-		@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+	private PluginListItem(ConfigPanel configPanel, ConfigManager configManager, @Nullable Plugin plugin, @Nullable Config config,
+						@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
@@ -162,19 +152,17 @@ class PluginListItem extends JPanel
 		Collections.addAll(keywords, description.toLowerCase().split(" "));
 		Collections.addAll(keywords, tags);
 
-		final List<JMenuItem> popupMenuItems = new ArrayList<>();
-
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
-		JLabel nameLabel = new JLabel(name);
-		nameLabel.setForeground(Color.WHITE);
+		nameLabel = new JLabel(name);
 
 		if (!description.isEmpty())
 		{
 			nameLabel.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
 		}
 
+		add(nameLabel, BorderLayout.CENTER);
 
 		pinButton.setPreferredSize(new Dimension(21, 0));
 		add(pinButton, BorderLayout.LINE_START);
@@ -186,6 +174,7 @@ class PluginListItem extends JPanel
 			configPanel.openConfigList();
 		});
 
+
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		add(buttonPanel, BorderLayout.LINE_END);
@@ -195,28 +184,26 @@ class PluginListItem extends JPanel
 		buttonPanel.add(configButton);
 
 		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		if (configDescriptor != null && config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 		{
 			configButton.addActionListener(e ->
 			{
 				configButton.setIcon(CONFIG_ICON);
-				openGroupConfigPanel();
+				configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
 			});
 
 			configButton.setVisible(true);
 			configButton.setToolTipText("Edit plugin configuration");
-
-			final JMenuItem configMenuItem = new JMenuItem("Configure");
-			configMenuItem.addActionListener(e -> openGroupConfigPanel());
-			popupMenuItems.add(configMenuItem);
 		}
-
-		popupMenuItems.add(wikiLinkMenuItem(name));
-		addLabelPopupMenu(nameLabel, popupMenuItems);
-		add(nameLabel, BorderLayout.CENTER);
 
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 		attachToggleButtonListener(toggleButton);
+
+		if (name.equals("RuneLitePlus"))
+		{
+			toggleButton.setVisible(false);
+		}
+
 		buttonPanel.add(toggleButton);
 	}
 
@@ -275,6 +262,7 @@ class PluginListItem extends JPanel
 
 	/**
 	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
 	 * @return true if all search terms matches at least one keyword, or false if otherwise.
 	 */
 	boolean matchesSearchTerms(String[] searchTerms)
@@ -288,86 +276,5 @@ class PluginListItem extends JPanel
 			}
 		}
 		return true;
-	}
-
-	private void openGroupConfigPanel()
-	{
-		configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
-	}
-
-	/**
-	 * Adds a mouseover effect to change the text of the passed label to {@link ColorScheme#BRAND_ORANGE} color, and
-	 * adds the passed menu item to a popup menu shown when the label is clicked.
-	 *
-	 * @param label    The label to attach the mouseover and click effects to
-	 * @param menuItem The menu item to be shown when the label is clicked
-	 */
-	static void addLabelPopupMenu(final JLabel label, final JMenuItem menuItem)
-	{
-		addLabelPopupMenu(label, Collections.singletonList(menuItem));
-	}
-
-	/**
-	 * Adds a mouseover effect to change the text of the passed label to {@link ColorScheme#BRAND_ORANGE} color, and
-	 * adds the passed menu items to a popup menu shown when the label is clicked.
-	 *
-	 * @param label     The label to attach the mouseover and click effects to
-	 * @param menuItems The menu items to be shown when the label is clicked
-	 */
-	static void addLabelPopupMenu(final JLabel label, final Collection<JMenuItem> menuItems)
-	{
-		final JPopupMenu menu = new JPopupMenu();
-		final Color labelForeground = label.getForeground();
-		menu.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		for (final JMenuItem menuItem : menuItems)
-		{
-			// Some machines register mouseEntered through a popup menu, and do not register mouseExited when a popup
-			// menu item is clicked, so reset the label's color when we click one of these options.
-			menuItem.addActionListener(e -> label.setForeground(labelForeground));
-			menu.add(menuItem);
-		}
-
-		label.addMouseListener(new MouseAdapter()
-		{
-			private Color lastForeground;
-
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent)
-			{
-				Component source = (Component) mouseEvent.getSource();
-				Point location = MouseInfo.getPointerInfo().getLocation();
-				SwingUtilities.convertPointFromScreen(location, source);
-				menu.show(source, location.x, location.y);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				lastForeground = label.getForeground();
-				label.setForeground(ColorScheme.BRAND_ORANGE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				label.setForeground(lastForeground);
-			}
-		});
-	}
-
-	/**
-	 * Creates a menu item for linking to a wiki page which, when clicked, opens a link to the plugin's wiki page for
-	 * the passed plugin name.
-	 *
-	 * @param pluginName The name of the plugin which should be linked to
-	 * @return A {@link JMenuItem} which opens the plugin's wiki page URL in the browser when clicked
-	 */
-	static JMenuItem wikiLinkMenuItem(final String pluginName)
-	{
-		final JMenuItem menuItem = new JMenuItem("Wiki");
-		final String sanitizedName = pluginName.replace(' ', '-');
-		menuItem.addActionListener(e -> LinkBrowser.browse(String.format(RUNELITE_WIKI_FORMAT, sanitizedName)));
-		return menuItem;
 	}
 }

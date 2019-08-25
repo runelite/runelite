@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 {
 	@Getter(AccessLevel.PACKAGE)
-	@Setter
+	@Setter(AccessLevel.PUBLIC)
 	private Point preferredLocation;
 	@Getter(AccessLevel.PACKAGE)
-	@Setter
+	@Setter(AccessLevel.PUBLIC)
 	private Dimension preferredSize;
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)

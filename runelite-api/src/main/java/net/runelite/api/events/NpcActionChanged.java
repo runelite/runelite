@@ -25,18 +25,18 @@
 package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 
 /**
- * An event where an action of an {@link NPCComposition} has changed.
+ * An event where an action of an {@link NPCDefinition} has changed.
  */
 @Data
-public class NpcActionChanged
+public class NpcActionChanged implements Event
 {
 	/**
 	 * The NPC composition that has been changed.
 	 */
-	private NPCComposition npcComposition;
+	private NPCDefinition npcDefinition;
 	/**
 	 * The raw index of the modified action.
 	 */

@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,9 +32,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumDefinition;
 import net.runelite.api.EnumID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
@@ -44,14 +45,18 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Music Track Indicator",
-	description = "Show chat notifications when unlocking music tracks"
+	description = "Show chat notifications when unlocking music tracks",
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+@Singleton
 public class MusicIndicatorPlugin extends Plugin
 {
 	private static final List<VarPlayer> MUSIC_TRACK_VARPS = ImmutableList.of(
@@ -74,6 +79,9 @@ public class MusicIndicatorPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	// Mapping of relevant varps to their values, used to compare against new values
 	private final Map<VarPlayer, Integer> musicTrackVarpValues = new HashMap<>();
 
@@ -82,17 +90,25 @@ public class MusicIndicatorPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		addSubscriptions();
 		loggingIn = true;
 	}
 
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
 		musicTrackVarpValues.clear();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -104,8 +120,7 @@ public class MusicIndicatorPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!loggingIn)
 		{
@@ -121,8 +136,7 @@ public class MusicIndicatorPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int idx = event.getIndex();
 
@@ -149,7 +163,7 @@ public class MusicIndicatorPlugin extends Plugin
 			return;
 		}
 
-		final EnumComposition names = client.getEnum(EnumID.MUSIC_TRACK_NAMES);
+		final EnumDefinition names = client.getEnum(EnumID.MUSIC_TRACK_NAMES);
 		final int varpId = MUSIC_TRACK_VARPS.indexOf(varPlayer) + 1;
 
 		for (int bit = 0; bit < Integer.SIZE; ++bit)
@@ -176,7 +190,7 @@ public class MusicIndicatorPlugin extends Plugin
 	{
 		// values are packed into a coordgrid
 		int packed = (variableId << 14) | bit;
-		EnumComposition ids = client.getEnum(EnumID.MUSIC_TRACK_IDS);
+		EnumDefinition ids = client.getEnum(EnumID.MUSIC_TRACK_IDS);
 		for (int key : ids.getKeys())
 		{
 			int value = ids.getIntValue(key);

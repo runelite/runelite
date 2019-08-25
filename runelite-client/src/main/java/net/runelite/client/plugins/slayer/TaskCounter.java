@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import java.awt.image.BufferedImage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-import java.awt.image.BufferedImage;
-
 class TaskCounter extends Counter
 {
-	TaskCounter(BufferedImage img, Plugin plugin, int amount)
+	TaskCounter(final BufferedImage img, final Plugin plugin, final int amount)
 	{
 		super(img, plugin, amount);
 	}

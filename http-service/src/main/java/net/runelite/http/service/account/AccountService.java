@@ -145,18 +145,19 @@ public class AccountService
 		state.setUuid(uuid);
 		state.setApiVersion(RuneLiteAPI.getVersion());
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
+		OAuth20Service service = new ServiceBuilder(oauthClientId)
 			.apiSecret(oauthClientSecret)
-			.scope(SCOPE)
+			.defaultScope(SCOPE)
 			.callback(oauthCallback)
-			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
 		final Map<String, String> additionalParams = new HashMap<>();
 		additionalParams.put("prompt", "select_account");
 
-		String authorizationUrl = service.getAuthorizationUrl(additionalParams);
+		final String authorizationUrl = service.createAuthorizationUrlBuilder()
+			.state(gson.toJson(state))
+			.additionalParams(additionalParams)
+			.build();
 
 		OAuthResponse lr = new OAuthResponse();
 		lr.setOauthUrl(authorizationUrl);
@@ -184,12 +185,10 @@ public class AccountService
 
 		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
+		OAuth20Service service = new ServiceBuilder(oauthClientId)
 			.apiSecret(oauthClientSecret)
-			.scope(SCOPE)
+			.defaultScope(SCOPE)
 			.callback(oauthCallback)
-			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
 		OAuth2AccessToken accessToken = service.getAccessToken(code);

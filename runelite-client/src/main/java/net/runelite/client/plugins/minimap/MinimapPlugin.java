@@ -28,16 +28,17 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -46,6 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	description = "Customize the color of minimap dots",
 	tags = {"items", "npcs", "players"}
 )
+@Singleton
 public class MinimapPlugin extends Plugin
 {
 	private static final int NUM_MAPDOTS = 6;
@@ -56,7 +58,18 @@ public class MinimapPlugin extends Plugin
 	@Inject
 	private MinimapConfig config;
 
-	private SpritePixels[] originalDotSprites;
+	@Inject
+	private EventBus eventBus;
+
+	private Sprite[] originalDotSprites;
+
+	private Color itemColor;
+	private Color npcColor;
+	private Color playerColor;
+	private Color friendColor;
+	private Color teamColor;
+	private Color clanColor;
+	private boolean hideMinimap;
 
 	@Provides
 	private MinimapConfig provideConfig(ConfigManager configManager)
@@ -67,7 +80,10 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		updateConfig();
+		addSubscriptions();
+
+		updateMinimapWidgetVisibility(this.hideMinimap);
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -75,12 +91,20 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
@@ -89,27 +113,27 @@ public class MinimapPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("minimap"))
 		{
 			return;
 		}
 
+		updateConfig();
+
 		if (event.getKey().equals("hideMinimap"))
 		{
-			updateMinimapWidgetVisibility(config.hideMinimap());
+			updateMinimapWidgetVisibility(this.hideMinimap);
 			return;
 		}
 
 		replaceMapDots();
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		updateMinimapWidgetVisibility(this.hideMinimap);
 	}
 
 	private void updateMinimapWidgetVisibility(boolean enable)
@@ -138,7 +162,7 @@ public class MinimapPlugin extends Plugin
 
 	private void replaceMapDots()
 	{
-		SpritePixels[] mapDots = client.getMapDots();
+		Sprite[] mapDots = client.getMapDots();
 
 		if (mapDots == null)
 		{
@@ -155,18 +179,19 @@ public class MinimapPlugin extends Plugin
 	private Color[] getColors()
 	{
 		Color[] colors = new Color[NUM_MAPDOTS];
-		colors[0] = config.itemColor();
-		colors[1] = config.npcColor();
-		colors[2] = config.playerColor();
-		colors[3] = config.friendColor();
-		colors[4] = config.teamColor();
-		colors[5] = config.clanColor();
+		colors[0] = this.itemColor;
+		colors[1] = this.npcColor;
+		colors[2] = this.playerColor;
+		colors[3] = this.friendColor;
+		colors[4] = this.teamColor;
+		colors[5] = this.clanColor;
+
 		return colors;
 	}
 
 	private void storeOriginalDots()
 	{
-		SpritePixels[] originalDots = client.getMapDots();
+		Sprite[] originalDots = client.getMapDots();
 
 		if (originalDots == null)
 		{
@@ -178,7 +203,7 @@ public class MinimapPlugin extends Plugin
 
 	private void restoreOriginalDots()
 	{
-		SpritePixels[] mapDots = client.getMapDots();
+		Sprite[] mapDots = client.getMapDots();
 
 		if (originalDotSprites == null || mapDots == null)
 		{
@@ -186,5 +211,16 @@ public class MinimapPlugin extends Plugin
 		}
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
+	}
+
+	private void updateConfig()
+	{
+		this.itemColor = config.itemColor();
+		this.npcColor = config.npcColor();
+		this.playerColor = config.playerColor();
+		this.friendColor = config.friendColor();
+		this.teamColor = config.teamColor();
+		this.clanColor = config.clanColor();
+		this.hideMinimap = config.hideMinimap();
 	}
 }

@@ -27,9 +27,12 @@ package net.runelite.client.rs;
 
 import java.applet.AppletContext;
 import java.applet.AppletStub;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import lombok.RequiredArgsConstructor;
+import net.runelite.client.RuneLite;
+import net.runelite.client.util.StringFileUtils;
 
 @RequiredArgsConstructor
 class RSAppletStub implements AppletStub
@@ -53,6 +56,16 @@ class RSAppletStub implements AppletStub
 	{
 		try
 		{
+			if (RuneLite.allowPrivateServer)
+			{
+				File f = new File(RuneLite.RUNELITE_DIR + "/codebase");
+				if (!f.exists())
+				{
+					StringFileUtils.writeStringToFile(f.getAbsolutePath(), "http://127.0.0.1");
+				}
+				return new URL(StringFileUtils.readStringFromFile(f.getAbsolutePath()));
+			}
+
 			return new URL(config.getCodeBase());
 		}
 		catch (MalformedURLException ex)

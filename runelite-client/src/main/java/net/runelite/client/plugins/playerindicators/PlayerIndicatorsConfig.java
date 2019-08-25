@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
+import net.runelite.api.ClanMemberRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -62,7 +63,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightFriends()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -106,7 +107,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightTeamMembers()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -163,14 +164,43 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
-
+	
 	@ConfigItem(
 		position = 12,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
-		description = "Configures whether or not minimap names for players with rendered names should be drawn"
+		description = "Configures whether or not minimap names for players with rendered names should be drawn",
+		group = "Minimap"
 	)
 	default boolean drawMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "drawFriendMinimapNames",
+		name = "Draw Friendnames on minimap",
+		description = "Configures whether or not minimap names for Friends with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawFriendMinimapNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "drawClanMinimapNames",
+		name = "Draw clan Friend names on minimap",
+		description = "Configures whether or not minimap names for Clan Members with rendered names should be drawn",
+		group = "Minimap",
+		hidden = true,
+		unhide = "drawMinimapNames"
+	)
+	default boolean drawClanMinimapNames()
 	{
 		return false;
 	}
@@ -183,7 +213,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean colorPlayerMenu()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -194,6 +224,234 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean showClanRanks()
 	{
-		return true;
+		return false;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "highlightTargets",
+		name = "Highlight attackable players in wilderness on the minimap",
+		description = "Highlights players on the minimap that the current player can attack based on combat/wilderness levels",
+		group = "Target Indicator"
+	)
+	default boolean highlightTargets()
+	{
+		return false;
+	}
+
+//	@ConfigItem(
+//		position = 16,
+//		keyName = "highlightOverheadTargets",
+//		name = "Highlights attackable players over their head",
+//		description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
+//		group = "Target Indicator"
+//	)
+//	default boolean highlightOverheadTargets()
+//	{
+//		return false;
+//	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "targetColor",
+		name = "Target color",
+		description = "Color of attackable targets",
+		group = "Target Indicator"
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "showCombat",
+		name = "Show Combat Levels",
+		description = "Show the combat level of attackable players next to their name.",
+		group = "Target Indicator"
+	)
+	default boolean showCombatLevel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "showAgility",
+		name = "Show Agility Levels",
+		description = "Show the agility level of attackable players next to their name while in the wilderness.",
+		group = "Target Indicator"
+	)
+	default boolean showAgilityLevel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "agilityFormat",
+		name = "Format",
+		description = "Whether to show the agility level as text, or as icons (1 skull >= 1st threshold, 2 skulls >= 2nd threshold).",
+		group = "Target Indicator"
+	)
+	default PlayerIndicatorsPlugin.AgilityFormats agilityFormat()
+	{
+		return PlayerIndicatorsPlugin.AgilityFormats.TEXT;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "agilityFirstThreshold",
+		name = "First Threshold",
+		description = "When showing agility as icons, show one icon for agility >= this level.",
+		group = "Target Indicator"
+	)
+	default int agilityFirstThreshold()
+	{
+		return 70;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "agilitySecondThreshold",
+		name = "Second Threshold",
+		description = "When showing agility as icons, show two icons for agility >= this level.",
+		group = "Target Indicator"
+	)
+	default int agilitySecondThreshold()
+	{
+		return 84;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "playerSkull",
+		name = "Show Skull Information",
+		description = "Indicate of the player is skulled.",
+		group = "Target Indicator"
+	)
+	default boolean playerSkull()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "minimapSkullLocation",
+		name = "Skull Icon Location",
+		description = "The location of the skull icon for skulled players",
+		group = "Target Indicator"
+	)
+	default PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation()
+	{
+		return PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "skulledTargetsOnly",
+		name = "Tag Skulls Only",
+		description = "Only indicate skulled targets (which are also attackable)",
+		group = "Target Indicator"
+	)
+	default boolean skulledTargetsOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "targetRisk",
+		name = "Indicate Target Risk",
+		description = "Indicates the risk (in K GP) of the target",
+		group = "Target Indicator"
+	)
+	default boolean targetRisk()
+	{
+		return false;
+	}
+	
+/*	@ConfigItem(
+			position = 23,
+			keyName = "rightClickOverhead",
+			name = "Add Overheads to Right Click Menu",
+			description = "Feature shows a player's overhead prayer in the right click menu. Useful for DDs, or extremely crowded areas."
+	)
+	default boolean rightClickOverhead()
+	{
+		return false;
+	}*/
+
+	@ConfigItem(
+		position = 27,
+		keyName = "useClanchatRanks",
+		name = "Use Ranks as Callers",
+		description = "Uses clanchat ranks as the list of callers",
+		group = "Callers"
+	)
+	default boolean useClanchatRanks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 28,
+		keyName = "callerRank",
+		name = "Minimum rank for Clan Caller",
+		description = "Chooses the minimum rank to use as clanchat callers.",
+		group = "Callers"
+	)
+	default ClanMemberRank callerRank()
+	{
+		return ClanMemberRank.CAPTAIN;
+	}
+
+	@ConfigItem(
+		position = 29,
+		keyName = "callers",
+		name = "List of callers to highlight",
+		description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
+			" in the order you want them highlighted.",
+		group = "Callers"
+	)
+	default String callers()
+	{
+		return " ";
+	}
+
+	@ConfigItem(
+		position = 30,
+		keyName = "highlightCallers",
+		name = "Highlight Callers",
+		description = "Highlights Callers Onscreen",
+		group = "Callers"
+	)
+	default boolean highlightCallers()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 31,
+		keyName = "callerColor",
+		name = "Caller Color",
+		description = "Color of Indicated Callers",
+		group = "Callers"
+	)
+	default Color callerColor()
+	{
+		return Color.WHITE;
+	}
+
+	@ConfigItem(
+		position = 32,
+		keyName = "unchargedGlory",
+		name = "Uncharged Glory Indication",
+		description = "Indicates if players have an uncharged glory"
+	)
+	default boolean unchargedGlory()
+	{
+		return false;
+	}
+
 }

@@ -35,11 +35,12 @@ import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
 
@@ -49,17 +50,33 @@ public class EnchantmentRoom extends MTARoom
 	private static final int MTA_ENCHANT_REGION = 13462;
 
 	private final Client client;
+	private final EventBus eventBus;
 	private final List<WorldPoint> dragonstones = new ArrayList<>();
 
+	private boolean enchantment;
+
 	@Inject
-	private EnchantmentRoom(MTAConfig config, Client client)
+	private EnchantmentRoom(final MTAConfig config, final Client client, final EventBus eventBus)
 	{
 		super(config);
 		this.client = client;
+		this.eventBus = eventBus;
+
+		this.enchantment = config.enchantment();
+
+		addSubscriptions();
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
+		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -67,10 +84,9 @@ public class EnchantmentRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
-		if (!inside() || !config.enchantment())
+		if (!inside() || !this.enchantment)
 		{
 			return;
 		}
@@ -103,8 +119,7 @@ public class EnchantmentRoom extends MTARoom
 		return nearest;
 	}
 
-	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
@@ -117,8 +132,7 @@ public class EnchantmentRoom extends MTARoom
 		}
 	}
 
-	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();
@@ -129,6 +143,16 @@ public class EnchantmentRoom extends MTARoom
 			log.debug("Removed dragonstone at {}", location);
 			dragonstones.remove(location);
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("mta") || !event.getKey().equals("enchantment"))
+		{
+			return;
+		}
+
+		this.enchantment = config.enchantment();
 	}
 
 	@Override

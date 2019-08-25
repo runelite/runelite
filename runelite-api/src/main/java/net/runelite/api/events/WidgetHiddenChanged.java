@@ -24,14 +24,14 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.widgets.Widget;
+import lombok.Data;
 
 /**
  * An event where the hidden state of a {@link Widget} has been modified.
  */
 @Data
-public class WidgetHiddenChanged
+public class WidgetHiddenChanged implements Event
 {
 	/**
 	 * The affected widget.

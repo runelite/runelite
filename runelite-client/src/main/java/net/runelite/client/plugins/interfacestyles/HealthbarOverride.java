@@ -26,6 +26,7 @@ package net.runelite.client.plugins.interfacestyles;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import static net.runelite.api.SpriteID.*;
@@ -52,14 +53,6 @@ enum HealthbarOverride implements SpriteOverride
 	FRONT_140PX(HEALTHBAR_DEFAULT_FRONT_140PX, "front_90px.png"),
 	FRONT_160PX(HEALTHBAR_DEFAULT_FRONT_160PX, "front_90px.png");
 
-	@Getter
-	private final int spriteId;
-
-	private final String fileName;
-
-	@Getter
-	private int padding = 1;
-
 	private static final Map<Integer, HealthbarOverride> MAP;
 
 	static
@@ -73,6 +66,12 @@ enum HealthbarOverride implements SpriteOverride
 
 		MAP = builder.build();
 	}
+
+	@Getter(AccessLevel.PUBLIC)
+	private final int spriteId;
+	private final String fileName;
+	@Getter(AccessLevel.PACKAGE)
+	private int padding = 1;
 
 	static HealthbarOverride get(int spriteID)
 	{

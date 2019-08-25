@@ -24,25 +24,25 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Player;
 
-public class PendingGorillaAttack
+class PendingGorillaAttack
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private DemonicGorilla attacker;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private DemonicGorilla.AttackStyle attackStyle;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Player target;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int finishesOnTick;
 
-	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
-								Player target, int finishesOnTick)
+	PendingGorillaAttack(final DemonicGorilla attacker, final DemonicGorilla.AttackStyle attackStyle, final Player target, final int finishesOnTick)
 	{
 		this.attacker = attacker;
 		this.attackStyle = attackStyle;

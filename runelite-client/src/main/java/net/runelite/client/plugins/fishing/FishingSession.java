@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.fishing;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 class FishingSession
 {
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Instant lastFishCaught;
 }

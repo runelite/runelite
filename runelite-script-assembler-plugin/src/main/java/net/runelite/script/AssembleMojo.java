@@ -52,7 +52,26 @@ public class AssembleMojo extends AbstractMojo
 	@Parameter(required = true)
 	private File outputDirectory;
 
+	private AssembleMojo(File scriptDirectory, File outputDirectory)
+	{
+		this.scriptDirectory = scriptDirectory;
+		this.outputDirectory = outputDirectory;
+	}
+
 	private final Log log = getLog();
+
+	public static void main(String[] args) throws Exception
+	{
+		if (args.length < 2)
+		{
+			throw new IllegalArgumentException("Usage: inputfile outputfile");
+		}
+
+		File scriptDirectory = new File(args[0]);
+		File outputDirectory = new File(args[1]);
+
+		new AssembleMojo(scriptDirectory, outputDirectory).execute();
+	}
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException

@@ -46,7 +46,7 @@ import static net.runelite.client.ws.PartyService.PARTY_MAX;
 class DiscordState
 {
 	@Data
-	private class EventWithTime
+	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
 		private final Instant start;
@@ -56,15 +56,15 @@ class DiscordState
 	private final UUID partyId = UUID.randomUUID();
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
-	private final DiscordConfig config;
-	private PartyService party;
+	private final DiscordPlugin plugin;
+	private final PartyService party;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
+	private DiscordState(final DiscordService discordService, final DiscordPlugin plugin, final PartyService party)
 	{
 		this.discordService = discordService;
-		this.config = config;
+		this.plugin = plugin;
 		this.party = party;
 	}
 
@@ -95,7 +95,7 @@ class DiscordState
 			.startTimestamp(lastPresence.getStartTimestamp())
 			.smallImageKey(lastPresence.getSmallImageKey())
 			.partyMax(lastPresence.getPartyMax())
-			.partySize(party.getMembers().size());
+			.partySize(Math.max(plugin.isAlwaysShowParty() ? 1 : 0, party.getMembers().size()));
 
 		if (party.isOwner())
 		{
@@ -124,7 +124,7 @@ class DiscordState
 		{
 			// If we aren't showing the elapsed time within Discord then
 			// We null out the event start property
-			event = new EventWithTime(eventType, config.hideElapsedTime() ? null : Instant.now());
+			event = new EventWithTime(eventType, plugin.isHideElapsedTime() ? null : Instant.now());
 
 			events.add(event);
 		}
@@ -203,7 +203,7 @@ class DiscordState
 	 */
 	void checkForTimeout()
 	{
-		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
+		final Duration actionTimeout = Duration.ofMinutes(plugin.getActionTimeout());
 		final Instant now = Instant.now();
 		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
 	}

@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -43,7 +44,7 @@ public class RaidsTimer extends InfoBox
 	private LocalTime thirdFloorTime;
 	private LocalTime olmTime;
 
-	@Setter
+	@Setter(AccessLevel.PACKAGE)
 	private boolean stopped;
 
 	public RaidsTimer(Plugin plugin, Instant startTime)
@@ -54,7 +55,7 @@ public class RaidsTimer extends InfoBox
 		stopped = false;
 	}
 
-	public void timeFloor()
+	void timeFloor()
 	{
 		Duration elapsed = Duration.between(floorTime, Instant.now());
 
@@ -74,43 +75,10 @@ public class RaidsTimer extends InfoBox
 		floorTime = Instant.now();
 	}
 
-	public void timeOlm()
+	void timeOlm()
 	{
 		Duration elapsed = Duration.between(floorTime, Instant.now());
 		olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-	}
-
-	@Override
-	public String getText()
-	{
-		if (startTime == null)
-		{
-			return "";
-		}
-
-		if (!stopped)
-		{
-			Duration elapsed = Duration.between(startTime, Instant.now());
-			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-		}
-
-		if (time.getHour() > 0)
-		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-		}
-
-		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		if (stopped)
-		{
-			return Color.GREEN;
-		}
-
-		return Color.WHITE;
 	}
 
 	@Override
@@ -145,5 +113,38 @@ public class RaidsTimer extends InfoBox
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public String getText()
+	{
+		if (startTime == null)
+		{
+			return "";
+		}
+
+		if (!stopped)
+		{
+			Duration elapsed = Duration.between(startTime, Instant.now());
+			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+
+		if (time.getHour() > 0)
+		{
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+
+		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		if (stopped)
+		{
+			return Color.GREEN;
+		}
+
+		return Color.WHITE;
 	}
 }

@@ -27,14 +27,16 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.statusbars.config.BarMode;
 
 @ConfigGroup("statusbars")
 public interface StatusBarsConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "enableCounter",
-		name = "Show hitpoints & prayer counter",
-		description = "Shows current amount of hitpoints & prayer on the status bars"
+		name = "Show counters",
+		description = "Shows currentValue value of the status on the bar"
 	)
 	default boolean enableCounter()
 	{
@@ -42,8 +44,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "enableSkillIcon",
-		name = "Show hitpoints & prayer icons",
+		name = "Show icons",
 		description = "Adds skill icons at the top of the bars."
 	)
 	default boolean enableSkillIcon()
@@ -52,12 +55,57 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "enableRestorationBars",
-		name = "Show amount of hitpoints and prayer restored",
-		description = "Visually shows how much a food or prayer will heal/restore you on the bars."
+		name = "Show restores",
+		description = "Visually shows how much will be restored to your status bar."
 	)
 	default boolean enableRestorationBars()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = 4,
+			keyName = "leftBarMode",
+			name = "Left Status Bar",
+			description = "Configures the left status bar"
+	)
+	default BarMode leftBarMode()
+	{
+		return BarMode.HITPOINTS;
+	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "rightBarMode",
+			name = "Right Status Bar",
+			description = "Configures the right status bar"
+	)
+	default BarMode rightBarMode()
+	{
+		return BarMode.PRAYER;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "toggleRestorationBars",
+		name = "Toggle to hide when not in combat",
+		description = "Visually hides the Status Bars when player is out of combat."
+	)
+	default boolean toggleRestorationBars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "hideStatusBarDelay",
+		name = "Delay (seconds)",
+		description = "Number of seconds after combat to hide the status bars."
+	)
+	default int hideStatusBarDelay()
+	{
+		return 3;
 	}
 }

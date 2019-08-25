@@ -24,15 +24,15 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import lombok.Data;
 
 /**
  * An event where a {@link WallObject} is added to a {@link Tile}.
  */
 @Data
-public class WallObjectSpawned
+public class WallObjectSpawned implements Event
 {
 	/**
 	 * The affected tile.

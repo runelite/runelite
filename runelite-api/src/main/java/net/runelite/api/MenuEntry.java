@@ -24,12 +24,18 @@
  */
 package net.runelite.api;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.runelite.api.util.Text;
 
 /**
  * A menu entry in a right-click menu.
  */
 @Data
+@NoArgsConstructor
 public class MenuEntry
 {
 	/**
@@ -42,6 +48,7 @@ public class MenuEntry
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
+	@Setter(AccessLevel.NONE)
 	private String target;
 	/**
 	 * An identifier value for the target of the action.
@@ -49,8 +56,9 @@ public class MenuEntry
 	private int identifier;
 	/**
 	 * The action the entry will trigger.
+	 * {@link net.runelite.api.MenuOpcode}
 	 */
-	private int type;
+	private int opcode;
 	/**
 	 * An additional parameter for the action.
 	 */
@@ -66,4 +74,47 @@ public class MenuEntry
 	 * This is used  for shift click
 	 */
 	private boolean forceLeftClick;
+
+	public MenuEntry(String option, String target, int identifier, int opcode, int param0, int param1, boolean forceLeftClick)
+	{
+		this.option = option;
+		this.target = target;
+		this.identifier = identifier;
+		this.opcode = opcode;
+		this.param0 = param0;
+		this.param1 = param1;
+		this.forceLeftClick = forceLeftClick;
+	}
+
+	public static MenuEntry copy(MenuEntry src)
+	{
+		return new MenuEntry(
+			src.getOption(),
+			src.getTarget(),
+			src.getIdentifier(),
+			src.getOpcode(),
+			src.getParam0(),
+			src.getParam1(),
+			src.isForceLeftClick()
+		);
+	}
+
+	public void setTarget(String target)
+	{
+		this.target = target;
+		this.standardizedTarget = null;
+	}
+
+	@Getter(AccessLevel.NONE)
+	private String standardizedTarget;
+
+	public String getStandardizedTarget()
+	{
+		if (standardizedTarget == null)
+		{
+			standardizedTarget = Text.standardize(target, true);
+		}
+
+		return standardizedTarget;
+	}
 }

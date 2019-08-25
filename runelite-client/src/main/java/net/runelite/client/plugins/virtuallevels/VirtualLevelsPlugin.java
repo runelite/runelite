@@ -27,6 +27,7 @@ package net.runelite.client.plugins.virtuallevels;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -34,7 +35,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -45,6 +46,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"skill", "total", "max"},
 	enabledByDefault = false
 )
+@Singleton
 public class VirtualLevelsPlugin extends Plugin
 {
 	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
@@ -58,20 +60,33 @@ public class VirtualLevelsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	VirtualLevelsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(VirtualLevelsConfig.class);
 	}
 
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+	}
+
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientThread.invoke(this::simulateSkillChange);
 	}
 
-	@Subscribe
-	public void onPluginChanged(PluginChanged pluginChanged)
+	private void onPluginChanged(PluginChanged pluginChanged)
 	{
 		// this is guaranteed to be called after the plugin has been registered by the eventbus. startUp is not.
 		if (pluginChanged.getPlugin() == this)
@@ -80,8 +95,7 @@ public class VirtualLevelsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("virtuallevels"))
 		{
@@ -91,8 +105,7 @@ public class VirtualLevelsPlugin extends Plugin
 		clientThread.invoke(this::simulateSkillChange);
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		final String eventName = e.getEventName();
 

@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 
+@Singleton
 public class RunepouchOverlay extends WidgetItemOverlay
 {
 	private static final Varbits[] AMOUNT_VARBITS =
@@ -57,18 +59,18 @@ public class RunepouchOverlay extends WidgetItemOverlay
 	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
 	private final Client client;
-	private final RunepouchConfig config;
+	private final RunepouchPlugin plugin;
 	private final TooltipManager tooltipManager;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
-	RunepouchOverlay(Client client, RunepouchConfig config, TooltipManager tooltipManager)
+	RunepouchOverlay(final Client client, final RunepouchPlugin plugin, final TooltipManager tooltipManager)
 	{
 		this.tooltipManager = tooltipManager;
 		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
 		showOnInventory();
 		showOnBank();
 	}
@@ -112,20 +114,26 @@ public class RunepouchOverlay extends WidgetItemOverlay
 				.append(ColorUtil.wrapWithColorTag(rune.getName(), Color.YELLOW))
 				.append("</br>");
 
-			if (config.runePouchOverlayMode() == MOUSE_HOVER)
+			if (plugin.getRunePouchOverlayMode() == MOUSE_HOVER)
 			{
 				continue;
 			}
 
+			// the reason this is not split up in maxascent and maxdescent to equal the height of the text like it should
+			// be is because numbers (afaik) dont use font descent so a 1 pixel seperator should be good and give
+			// consistent results across fonts
+			int yOffset = (1 + (graphics.getFontMetrics().getMaxAscent()) * i);
+
 			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
+
+			graphics.drawString("" + formatNumber(amount), location.getX() + (plugin.isShowIcons() ? 12 : 5),
 				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
-			graphics.setColor(config.fontColor());
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 11 : 4),
+			graphics.setColor(plugin.getFontColor());
+			graphics.drawString("" + formatNumber(amount), location.getX() + (plugin.isShowIcons() ? 11 : 4),
 				location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
-			if (!config.showIcons())
+			if (!plugin.isShowIcons())
 			{
 				continue;
 			}
@@ -143,7 +151,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 
 		if (!tooltip.isEmpty()
 			&& itemWidget.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())
-			&& (config.runePouchOverlayMode() == MOUSE_HOVER || config.runePouchOverlayMode() == BOTH))
+			&& (plugin.getRunePouchOverlayMode() == MOUSE_HOVER || plugin.getRunePouchOverlayMode() == BOTH))
 		{
 			tooltipManager.add(new Tooltip(tooltip));
 		}

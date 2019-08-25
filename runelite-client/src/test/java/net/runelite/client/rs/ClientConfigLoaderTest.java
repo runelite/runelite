@@ -37,7 +37,7 @@ public class ClientConfigLoaderTest
 	@Test
 	public void test() throws IOException
 	{
-		final RSConfig config = ClientConfigLoader.fetch(null);
+		final RSConfig config = ClientConfigLoader.fetch();
 
 		for (String key : config.getClassLoaderProperties().keySet())
 		{

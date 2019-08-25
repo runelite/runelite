@@ -50,6 +50,11 @@ public enum Varbits
 	CHAT_SCROLLBAR_ON_LEFT(6374),
 
 	/**
+	 * Grand Exchange
+	 */
+	GRAND_EXCHANGE_PRICE_PER_ITEM(4398),
+
+	/**
 	 * Runepouch
 	 */
 	RUNE_POUCH_RUNE1(29),
@@ -233,12 +238,12 @@ public enum Varbits
 
 	/**
 	 * Blast Furnace Bar Dispenser
-	 *
+	 * <p>
 	 * These are the expected values:
-	 *	0 = No bars being processed
-	 *	1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
-	 *	2 = Bars are cooling down
-	 *	3 = Bars can be collected
+	 * 0 = No bars being processed
+	 * 1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
+	 * 2 = Bars are cooling down
+	 * 3 = Bars can be collected
 	 */
 	BAR_DISPENSER(936),
 
@@ -250,11 +255,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
-	 *
+	 * <p>
 	 * EXPERIENCE_TRACKER_POSITION expected values:
-	 *   0 = Right
-	 *   1 = Middle
-	 *   2 = Left
+	 * 0 = Right
+	 * 1 = Middle
+	 * 2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -271,7 +276,7 @@ public enum Varbits
 	TITHE_FARM_SACK_AMOUNT(4900),
 	TITHE_FARM_SACK_ICON(5370),
 	TITHE_FARM_POINTS(4893),
-	
+
 	/**
 	 * Blast Mine
 	 */
@@ -293,12 +298,23 @@ public enum Varbits
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
 	THEATRE_OF_BLOOD(6440),
+	BLOAT_DOOR(6447),
+
+	/**
+	 * Theatre of Blood orb varbits each number stands for the player's health on a scale of 1-27 (I think), 0 hides the orb
+	 */
+	THEATRE_OF_BLOOD_ORB_1(6442),
+	THEATRE_OF_BLOOD_ORB_2(6443),
+	THEATRE_OF_BLOOD_ORB_3(6444),
+	THEATRE_OF_BLOOD_ORB_4(6445),
+	THEATRE_OF_BLOOD_ORB_5(6446),
 
 	/**
 	 * Nightmare Zone
 	 */
 	NMZ_ABSORPTION(3956),
 	NMZ_POINTS(3949),
+	NMZ_OVERLOAD(3955),
 
 	/**
 	 * Blast Furnace
@@ -328,7 +344,7 @@ public enum Varbits
 	 * Pyramid plunder
 	 */
 	PYRAMID_PLUNDER_TIMER(2375),
-	PYRAMID_PLUNDER_ROOM(2377),
+	PYRAMID_PLUNDER_ROOM(2374),
 
 	/**
 	 * Barrows
@@ -356,6 +372,11 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
+	 * In the Wilderness
+	 */
+	IN_THE_WILDERNESS(5963),
+
+	/**
 	 * Kingdom Management
 	 */
 	KINGDOM_FAVOR(72),
@@ -374,12 +395,12 @@ public enum Varbits
 	DAILY_ESSENCE_COLLECTED(4547),
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
-	DAILY_FLAX_STATE(4559),
 	DAILY_ARROWS_STATE(4563),
+	DAILY_FLAX_STATE(4559),
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
- 	*/
+	 */
 	DAILY_BONEMEAL_STATE(4543),
 
 	DAILY_DYNAMITE_COLLECTED(7939),
@@ -436,10 +457,15 @@ public enum Varbits
 	ACCOUNT_TYPE(1777),
 
 	/**
+	 * Varbit used for Slayer reward points
+	 */
+	SLAYER_REWARD_POINTS(4068),
+
+	/**
 	 * The varbit that stores the oxygen percentage for player
 	 */
 	OXYGEN_LEVEL(5811),
-	
+
 	/**
 	 * Corp beast damage
 	 */
@@ -467,6 +493,14 @@ public enum Varbits
 	VENGEANCE_COOLDOWN(2451),
 
 	/**
+	 * 0 = standard
+	 * 1 = ancients
+	 * 2 = lunars
+	 * 3 = arrceus
+	 **/
+	SPELLBOOK(4070),
+
+	/**
 	 * Amount of items in each bank tab
 	 */
 	BANK_TAB_ONE_COUNT(4171),
@@ -486,6 +520,13 @@ public enum Varbits
 	 */
 	GE_OFFER_CREATION_TYPE(4397),
 
+
+	/**
+	 * Spells being auto-casted
+	 */
+	AUTO_CAST_SPELL(276),
+
+
 	/**
 	 * The active tab within the quest interface
 	 */
@@ -499,7 +540,153 @@ public enum Varbits
 	EXPLORER_RING_ALCHS(4554),
 	EXPLORER_RING_RUNENERGY(4553),
 
-	WINTERTODT_TIMER(7980);
+	/**
+	 * Temple Trekking
+	 */
+	TREK_POINTS(1955),
+	TREK_STARTED(1956),
+	TREK_EVENT(1958),
+	TREK_STATUS(6719),
+	BLOAT_ENTERED_ROOM(6447),
+
+	/**
+	 * f2p Quest varbits, these don't hold the completion value.
+	 */
+	QUEST_DEMON_SLAYER(2561),
+	QUEST_GOBLIN_DIPLOMACY(2378),
+	QUEST_MISTHALIN_MYSTERY(3468),
+	QUEST_THE_CORSAIR_CURSE(6071),
+	QUEST_X_MARKS_THE_SPOT(8063),
+
+	/**
+	 * member Quest varbits, these don't hold the completion value.
+	 */
+	QUEST_ANIMAL_MAGNETISM(3185),
+	QUEST_BETWEEN_A_ROCK(299),
+	QUEST_CONTACT(3274),
+	QUEST_ZOGRE_FLESH_EATERS(487),
+	QUEST_DARKNESS_OF_HALLOWVALE(2573),
+	QUEST_DEATH_TO_THE_DORGESHUUN(2258),
+	QUEST_DESERT_TREASURE(358),
+	QUEST_DEVIOUS_MINDS(1465),
+	QUEST_EAGLES_PEAK(2780),
+	QUEST_ELEMENTAL_WORKSHOP_II(2639),
+	QUEST_ENAKHRAS_LAMENT(1560),
+	QUEST_ENLIGHTENED_JOURNEY(2866),
+	QUEST_THE_EYES_OF_GLOUPHRIE(2497),
+	QUEST_FAIRYTALE_I_GROWING_PAINS(1803),
+	QUEST_FAIRYTALE_II_CURE_A_QUEEN(2326),
+	QUEST_THE_FEUD(334), // 14 = able to pickpocket
+	QUEST_FORGETTABLE_TALE(822),
+	QUEST_GARDEN_OF_TRANQUILLITY(961),
+	QUEST_GHOSTS_AHOY(217),
+	QUEST_THE_GIANT_DWARF(571),
+	QUEST_THE_GOLEM(346),
+	QUEST_HORROR_FROM_THE_DEEP(34),
+	QUEST_ICTHLARINS_LITTLE_HELPER(418),
+	QUEST_IN_AID_OF_THE_MYREQUE(1990),
+	QUEST_THE_LOST_TRIBE(532),
+	QUEST_LUNAR_DIPLOMACY(2448),
+	QUEST_MAKING_HISTORY(1383),
+	QUEST_MOUNTAIN_DAUGHTER(260),
+	QUEST_MOURNINGS_END_PART_II(1103),
+	QUEST_MY_ARMS_BIG_ADVENTURE(2790),
+	QUEST_RATCATCHERS(1404),
+	QUEST_RECIPE_FOR_DISASTER(1850),
+	QUEST_RECRUITMENT_DRIVE(657),
+	QUEST_ROYAL_TROUBLE(2140),
+	QUEST_THE_SLUG_MENACE(2610),
+	QUEST_SHADOW_OF_THE_STORM(1372),
+	QUEST_A_SOULS_BANE(2011),
+	QUEST_SPIRITS_OF_THE_ELID(1444),
+	QUEST_SWAN_SONG(2098),
+	QUEST_A_TAIL_OF_TWO_CATS(1028),
+	QUEST_TEARS_OF_GUTHIX(451),
+	QUEST_WANTED(1051),
+	QUEST_COLD_WAR(3293),
+	QUEST_THE_FREMENNIK_ISLES(3311),
+	QUEST_TOWER_OF_LIFE(3337),
+	QUEST_WHAT_LIES_BELOW(3523),
+	QUEST_OLAFS_QUEST(3534),
+	QUEST_ANOTHER_SLICE_OF_HAM(3550),
+	QUEST_DREAM_MENTOR(3618),
+	QUEST_GRIM_TALES(2783),
+	QUEST_KINGS_RANSOM(3888),
+	QUEST_MONKEY_MADNESS_II(5027),
+	QUEST_CLIENT_OF_KOUREND(5619),
+	QUEST_BONE_VOYAGE(5795),
+	QUEST_THE_QUEEN_OF_THIEVES(6037),
+	QUEST_THE_DEPTHS_OF_DESPAIR(6027),
+	QUEST_DRAGON_SLAYER_II(6104),
+	QUEST_TALE_OF_THE_RIGHTEOUS(6358),
+	QUEST_A_TASTE_OF_HOPE(6396),
+	QUEST_MAKING_FRIENDS_WITH_MY_ARM(6528),
+	QUEST_THE_ASCENT_OF_ARCEUUS(7856),
+	QUEST_THE_FORSAKEN_TOWER(7796),
+	//TODO
+	QUEST_SONG_OF_THE_ELVES(7796),
+
+	/**
+	 * mini-quest varbits, these don't hold the completion value.
+	 */
+	QUEST_ARCHITECTURAL_ALLIANCE(4982),
+	QUEST_BEAR_YOUR_SOUL(5078),
+	QUEST_CURSE_OF_THE_EMPTY_LORD(821),
+	QUEST_ENCHANTED_KEY(1391),
+	QUEST_THE_GENERALS_SHADOW(3330),
+	QUEST_SKIPPY_AND_THE_MOGRES(1344),
+	QUEST_LAIR_OF_TARN_RAZORLOR(3290),
+	QUEST_FAMILY_PEST(5347),
+	QUEST_THE_MAGE_ARENA_II(6067),
+	//TODO
+	QUEST_IN_SEARCH_OF_KNOWLEDGE(6067),
+
+	/**
+	 * Spellbook filtering (1 = unfiltered, 0 = filtered)
+	 */
+	FILTER_SPELLBOOK(6718),
+
+	/**
+	 * POH Building mode (1 = yes, 0 = no)
+	 */
+	BUILDING_MODE(2176),
+
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * 1 if in game, 0 if not
+	 */
+	LMS_IN_GAME(5314),
+
+	/**
+	 * Amount of pvp kills in current game
+	 */
+	LMS_KILLS(5315),
+
+	/**
+	 * The x coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_X(5316),
+
+	/**
+	 * Starts at 100, counts down every 10 ticks (6 seconds)
+	 */
+	LMS_POISON_PROGRESS(5317),
+
+	/**
+	 * The y coordinate of the final safespace (world coord)
+	 */
+	LMS_SAFE_Y(5320),
+
+	/**
+	 * 1 is true, 0 is false.
+	 */
+	GAUNTLET_FINAL_ROOM_ENTERED(9177),
+
+	/**
+	 * 1 is true, 0 is false.
+	 */
+	GAUNTLET_ENTERED(9178);
 
 	/**
 	 * The raw varbit ID.

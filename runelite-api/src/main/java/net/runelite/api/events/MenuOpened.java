@@ -24,14 +24,14 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.MenuEntry;
+import lombok.Data;
 
 /**
  * An event where a menu has been opened.
  */
 @Data
-public class MenuOpened
+public class MenuOpened implements Event
 {
 	/**
 	 * The menu entries in the newly opened menu.

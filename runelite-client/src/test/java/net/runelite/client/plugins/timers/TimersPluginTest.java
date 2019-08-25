@@ -45,7 +45,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimersPluginTest
@@ -86,7 +86,7 @@ public class TimersPluginTest
 	@Test
 	public void testHalfTeleblock()
 	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
+		timersPlugin.setShowTeleblock(true);
 		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", HALF_TELEBLOCK_MESSAGE, "", 0);
 		timersPlugin.onChatMessage(chatMessage);
@@ -100,7 +100,7 @@ public class TimersPluginTest
 	@Test
 	public void testFullTeleblock()
 	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
+		timersPlugin.setShowTeleblock(true);
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", FULL_TELEBLOCK_MESSAGE, "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 
@@ -113,8 +113,7 @@ public class TimersPluginTest
 	@Test
 	public void testDmmHalfTb()
 	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.DEADMAN));
+		timersPlugin.setShowTeleblock(true);
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", DMM_HALF_TELEBLOCK_MESSAGE, "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 
@@ -127,7 +126,7 @@ public class TimersPluginTest
 	@Test
 	public void testDmmFullTb()
 	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
+		timersPlugin.setShowTeleblock(true);
 		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.DEADMAN));
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", HALF_TELEBLOCK_MESSAGE, "", 0);
 		timersPlugin.onChatMessage(chatMessage);

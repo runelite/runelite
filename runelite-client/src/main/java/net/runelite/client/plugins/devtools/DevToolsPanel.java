@@ -76,6 +76,7 @@ class DevToolsPanel extends PluginPanel
 		container.add(plugin.getLocation());
 		container.add(plugin.getWorldMapLocation());
 		container.add(plugin.getTileLocation());
+		container.add(plugin.getCursorPos());
 		container.add(plugin.getCameraPosition());
 
 		container.add(plugin.getChunkBorders());
@@ -116,6 +117,19 @@ class DevToolsPanel extends PluginPanel
 			else
 			{
 				varInspector.open();
+			}
+		});
+
+		container.add(plugin.getLogMenuActions());
+		plugin.getLogMenuActions().addActionListener((ev) ->
+		{
+			if (plugin.getLogMenuActions().isActive())
+			{
+				client.setPrintMenuActions(false);
+			}
+			else
+			{
+				client.setPrintMenuActions(true);
 			}
 		});
 

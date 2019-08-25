@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -36,7 +37,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -45,7 +46,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -60,6 +61,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
+@Singleton
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -90,21 +92,36 @@ public class SpecialCounterPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	protected void startUp()
 	{
+		addSubscriptions();
+
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		removeCounters();
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
+		eventBus.subscribe(SpecialCounterUpdate.class, this, this::onSpecialCounterUpdate);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -120,8 +137,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
@@ -140,7 +156,6 @@ public class SpecialCounterPlugin extends Plugin
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
 	}
 
-	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -157,20 +172,17 @@ public class SpecialCounterPlugin extends Plugin
 			int deltaExperience = hpXp - specialHitpointsExperience;
 			specialHitpointsExperience = -1;
 
-			if (deltaExperience > 0)
+			if (deltaExperience > 0 && specialWeapon != null)
 			{
-				if (specialWeapon != null)
+				int hit = getHit(specialWeapon, deltaExperience);
+
+				updateCounter(specialWeapon, null, hit);
+
+				if (!party.getMembers().isEmpty())
 				{
-					int hit = getHit(specialWeapon, deltaExperience);
-
-					updateCounter(specialWeapon, null, hit);
-
-					if (!party.getMembers().isEmpty())
-					{
-						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
-						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
-						wsClient.send(specialCounterUpdate);
-					}
+					final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
+					specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+					wsClient.send(specialCounterUpdate);
 				}
 			}
 		}
@@ -184,7 +196,7 @@ public class SpecialCounterPlugin extends Plugin
 		if (interacting instanceof NPC)
 		{
 			NPC npc = (NPC) interacting;
-			NPCComposition composition = npc.getComposition();
+			NPCDefinition composition = npc.getDefinition();
 			int interactingId = npc.getId();
 
 			if (!ArrayUtils.contains(composition.getActions(), "Attack"))
@@ -220,8 +232,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC actor = npcDespawned.getNpc();
 
@@ -231,8 +242,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	private void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
 		{

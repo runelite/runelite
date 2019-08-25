@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,38 +51,38 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class LayoutSolver
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final List<Layout> layouts = new ArrayList<>();
 	private static final Pattern regex = Pattern.compile("^([A-Z]*)\\.([A-Z]*) - #([A-Z]*)#([A-Z]*)$");
 	private static final String[] codes =
-	{
-		"FSCCP.PCSCF - #WNWSWN#ESEENW",
-		"FSCCS.PCPSF - #WSEEEN#WSWNWS",
-		"FSCPC.CSCPF - #WNWWSE#EENWWW",
-		"SCCFC.PSCSF - #EEENWW#WSEEEN",
-		"SCCFP.CCSPF - #NESEEN#WSWNWS",
-		"SCFCP.CCSPF - #ESEENW#ESWWNW",
-		"SCFCP.CSCFS - #ENEESW#ENWWSW",
-		"SCFCPC.CSPCSF - #ESWWNWS#NESENES",
-		"SCFPC.CSPCF - #WSWWNE#WSEENE",
-		"SCFPC.PCCSF - #WSEENE#WWWSEE",
-		"SCFPC.SCPCF - #NESENE#WSWWNE",
-		"SCPFC.CCPSF - #NWWWSE#WNEESE",
-		"SCPFC.CSPCF - #NEEESW#WWNEEE",
-		"SCPFC.CSPSF - #WWSEEE#NWSWWN",
-		"SCSPF.CCSPF - #ESWWNW#ESENES",
-		"SFCCP.CSCPF - #WNEESE#NWSWWN",
-		"SFCCS.PCPSF - #ENWWSW#ENESEN",
-		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
-		"SPCFC.SCCPF - #ESENES#WWWNEE",
-		"SPSFP.CCCSF - #NWSWWN#ESEENW",
-		"SCFCP.CSCPF - #ENESEN#WWWSEE",
-		"SCPFC.PCSCF - #WNEEES#NWSWNW",
-		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE",
-		"FSPCC.PSCCF - #WWWSEE#ENWWSW",
-		"FSCCP.PCSCF - #ENWWWS#NEESEN",
-		"SCPFC.CCSSF - #NEESEN#WSWWNE",
-	};
+		{
+			"FSCCP.PCSCF - #WNWSWN#ESEENW",
+			"FSCCS.PCPSF - #WSEEEN#WSWNWS",
+			"FSCPC.CSCPF - #WNWWSE#EENWWW",
+			"SCCFC.PSCSF - #EEENWW#WSEEEN",
+			"SCCFP.CCSPF - #NESEEN#WSWNWS",
+			"SCFCP.CCSPF - #ESEENW#ESWWNW",
+			"SCFCP.CSCFS - #ENEESW#ENWWSW",
+			"SCFCPC.CSPCSF - #ESWWNWS#NESENES",
+			"SCFPC.CSPCF - #WSWWNE#WSEENE",
+			"SCFPC.PCCSF - #WSEENE#WWWSEE",
+			"SCFPC.SCPCF - #NESENE#WSWWNE",
+			"SCPFC.CCPSF - #NWWWSE#WNEESE",
+			"SCPFC.CSPCF - #NEEESW#WWNEEE",
+			"SCPFC.CSPSF - #WWSEEE#NWSWWN",
+			"SCSPF.CCSPF - #ESWWNW#ESENES",
+			"SFCCP.CSCPF - #WNEESE#NWSWWN",
+			"SFCCS.PCPSF - #ENWWSW#ENESEN",
+			"SPCFC.CSPCF - #WWNEEE#WSWNWS",
+			"SPCFC.SCCPF - #ESENES#WWWNEE",
+			"SPSFP.CCCSF - #NWSWWN#ESEENW",
+			"SCFCP.CSCPF - #ENESEN#WWWSEE",
+			"SCPFC.PCSCF - #WNEEES#NWSWNW",
+			"SFCCPC.PCSCPF - #WSEENES#WWWNEEE",
+			"FSPCC.PSCCF - #WWWSEE#ENWWSW",
+			"FSCCP.PCSCF - #ENWWWS#NEESEN",
+			"SCPFC.CCSSF - #NEESEN#WSWWNE",
+		};
 
 	public LayoutSolver()
 	{
@@ -211,8 +212,12 @@ public class LayoutSolver
 
 				room = new Room(position, '¤');
 				room.setPrevious(lastRoom);
-				lastRoom.setNext(room);
+				if (lastRoom != null)
+				{
+					lastRoom.setNext(room);
+				}
 				layout.add(room);
+				layout.setCode(code);
 				position += 8;
 			}
 

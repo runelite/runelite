@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -53,7 +54,10 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT)
+		.put(WidgetInfo.MULTICOMBAT_RESIZEABLE, OverlayPosition.CANVAS_TOP_RIGHT)
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.THEATRE_OF_BLOOD_HEALTH_ORBS, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
@@ -64,6 +68,7 @@ public class WidgetOverlay extends Overlay
 	}
 
 	private final Client client;
+	@Getter
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
 
@@ -97,8 +102,8 @@ public class WidgetOverlay extends Overlay
 		int y = bounds.y;
 		x = Math.max(parent.x, x);
 		y = Math.max(parent.y, y);
-		x = Math.min((int)parent.getMaxX() - bounds.width, x);
-		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		x = Math.min((int) parent.getMaxX() - bounds.width, x);
+		y = Math.min((int) parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		return bounds;
 	}
@@ -119,8 +124,8 @@ public class WidgetOverlay extends Overlay
 		int y = bounds.y;
 		x = Math.max(parent.x, x);
 		y = Math.max(parent.y, y);
-		x = Math.min((int)parent.getMaxX() - bounds.width, x);
-		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		x = Math.min((int) parent.getMaxX() - bounds.width, x);
+		y = Math.min((int) parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		widget.setOriginalX(0);
 		widget.setOriginalY(0);

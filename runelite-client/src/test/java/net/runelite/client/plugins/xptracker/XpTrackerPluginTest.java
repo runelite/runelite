@@ -48,7 +48,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class XpTrackerPluginTest
@@ -85,7 +85,6 @@ public class XpTrackerPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
 
 		xpTrackerPlugin.setXpPanel(mock(XpPanel.class));
@@ -101,7 +100,7 @@ public class XpTrackerPluginTest
 		xpTrackerPlugin.onGameStateChanged(gameStateChanged);
 		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(42);
 		// Initialize tracker
-		xpTrackerPlugin.onGameTick(new GameTick());
+		xpTrackerPlugin.onGameTick(GameTick.INSTANCE);
 
 		// Gain attack xp
 		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(100);
@@ -114,7 +113,7 @@ public class XpTrackerPluginTest
 		// Flag initialization of tracker
 		xpTrackerPlugin.onGameStateChanged(gameStateChanged);
 		// Initialize tracker
-		xpTrackerPlugin.onGameTick(new GameTick());
+		xpTrackerPlugin.onGameTick(GameTick.INSTANCE);
 
 		// Start at 42 xp, gain of 58 xp, offline gain of 41900 xp - offset start XP: 42 + 41900
 		XpStateSingle skillState = xpTrackerPlugin.getSkillState(Skill.ATTACK);

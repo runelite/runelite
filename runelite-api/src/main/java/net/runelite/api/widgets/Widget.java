@@ -26,8 +26,10 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import net.runelite.api.Sprite;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
@@ -252,7 +254,7 @@ public interface Widget
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * SpriteID
 	 */
 	int getSpriteId();
 
@@ -260,7 +262,7 @@ public interface Widget
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * SpriteID
 	 */
 	void setSpriteId(int spriteId);
 
@@ -306,7 +308,7 @@ public interface Widget
 	/**
 	 * Gets the width of the widget.
 	 * <p>
-	 * If this widget is storing any {@link WidgetItem}s, this value is
+	 * If this widget is storing any {@link // WidgetItem}s, this value is
 	 * used to store the number of item slot columns.
 	 *
 	 * @return the width
@@ -622,7 +624,8 @@ public interface Widget
 	 */
 	Object[] getOnLoadListener();
 
-	Object[] getOnInvTransmitListener();
+	Object[] getOnInvTransmit();
+
 
 	/**
 	 * Returns the archive id of the font used
@@ -823,4 +826,34 @@ public interface Widget
 	 * Can widgets under this widgets be scrolled in this widgets bounding box
 	 */
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	/**
+	 * Changes the parent ID for the widget
+	 */
+	void setParentId(int id);
+
+	/**
+	 * Changes the ID of the widget
+	 */
+	void setId(int id);
+
+	/**
+	 * Sets the index of this element
+	 */
+	void setIndex(int index);
+
+	/**
+	 * Seems like this needs to set to true when creating new widgets
+	 */
+	void setIsIf3(boolean isIf3);
+
+	/**
+	 * Returns yes if your mouse pointer is over this widget or any of it's children.
+	 */
+	boolean containsMouse();
+
+	/**
+	 * Gets the image which is (or should be) drawn on this widget
+	 */
+	Sprite getSprite();
 }

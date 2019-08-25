@@ -26,11 +26,12 @@ package net.runelite.client.plugins.specialcounter;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SpecialCounterUpdate extends PartyMemberMessage
+class SpecialCounterUpdate extends PartyMemberMessage implements Event
 {
 	private final int npcId;
 	private final SpecialWeapon weapon;

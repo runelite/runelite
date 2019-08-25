@@ -27,13 +27,14 @@ package net.runelite.client.plugins.crystalmathlabs;
 import java.io.IOException;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.RuneLiteAPI;
@@ -51,6 +52,7 @@ import okhttp3.Response;
 	enabledByDefault = false
 )
 @Slf4j
+@Singleton
 public class CrystalMathLabs extends Plugin
 {
 	/**
@@ -61,18 +63,29 @@ public class CrystalMathLabs extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private EventBus eventBus;
+
 	private String lastUsername;
 	private boolean fetchXp;
 	private long lastXp;
 
 	@Override
-	protected void startUp()
+	protected void startUp() throws Exception
 	{
 		fetchXp = true;
+
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -102,8 +115,7 @@ public class CrystalMathLabs extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (fetchXp)
 		{

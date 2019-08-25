@@ -24,11 +24,11 @@
  */
 package net.runelite.api.coords;
 
-import lombok.Value;
 import static net.runelite.api.coords.Direction.EAST;
 import static net.runelite.api.coords.Direction.NORTH;
 import static net.runelite.api.coords.Direction.SOUTH;
 import static net.runelite.api.coords.Direction.WEST;
+import lombok.Value;
 
 /**
  * Represents an in-game orientation that uses fixed point arithmetic.

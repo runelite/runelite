@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("cannon")
 public interface CannonConfig extends Config
@@ -80,6 +81,29 @@ public interface CannonConfig extends Config
 		description = "Configures whether to show common cannon spots or not"
 	)
 	default boolean showCannonSpots()
+	{
+		return true;
+	}
+
+	@Range(
+		max = 29
+	)
+	@ConfigItem(
+		keyName = "ammoAmount",
+		name = "Ammo left",
+		description = "Configure to set the amount of ammo left to receive ammo left notification"
+	)
+	default int ammoAmount()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "notifyAmmoLeft",
+		name = "Ammo left notification",
+		description = "Sends a notification when cannon ammo is under the specified amount"
+	)
+	default boolean notifyAmmoLeft()
 	{
 		return true;
 	}

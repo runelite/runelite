@@ -38,7 +38,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -50,13 +50,14 @@ public class InfoBoxManager
 	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final EventBus eventbus)
 	{
 		this.runeLiteConfig = runeLiteConfig;
+
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
 		{
@@ -108,7 +109,7 @@ public class InfoBoxManager
 	public void cull()
 	{
 		boolean culled = false;
-		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
+		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext(); )
 		{
 			InfoBox box = it.next();
 

@@ -28,7 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.client.plugins.itemstats.*;
+import net.runelite.client.plugins.itemstats.Effect;
+import net.runelite.client.plugins.itemstats.Positivity;
+import net.runelite.client.plugins.itemstats.RangeStatChange;
+import net.runelite.client.plugins.itemstats.StatChange;
+import net.runelite.client.plugins.itemstats.StatsChanges;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.stats.Stats;
 
@@ -99,7 +103,7 @@ public class SpicyStew implements Effect
 		}
 
 		StatsChanges changesReturn = new StatsChanges(4);
-		changesReturn.setStatChanges(changes.toArray(new StatChange[changes.size()]));
+		changesReturn.setStatChanges(changes.toArray(new StatChange[0]));
 
 		return changesReturn;
 	}
@@ -119,9 +123,9 @@ public class SpicyStew implements Effect
 	/**
 	 * Calculate the fields of a stat change tooltip row.
 	 *
-	 * @param stat Stat that the spice boost affects.
+	 * @param stat       Stat that the spice boost affects.
 	 * @param spiceBoost Potential spice boost before capping.
-	 * @param client Client API, needed to check current stat values.
+	 * @param client     Client API, needed to check current stat values.
 	 * @return StatChange object with all required values.
 	 */
 	private static StatChange statChangeOf(Stat stat, int spiceBoost, Client client)

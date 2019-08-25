@@ -42,7 +42,7 @@ public enum Maze
 	private final int walls;
 	private final LocalPoint start;
 
-	Maze(int walls, LocalPoint start)
+	Maze(final int walls, final LocalPoint start)
 	{
 		this.walls = walls;
 		this.start = start;

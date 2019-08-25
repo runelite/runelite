@@ -35,6 +35,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -43,7 +46,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -54,6 +57,7 @@ import org.apache.commons.lang3.StringUtils;
 	description = "Censor user configurable words or patterns from chat",
 	enabledByDefault = false
 )
+@Singleton
 public class ChatFilterPlugin extends Plugin
 {
 	private static final Splitter NEWLINE_SPLITTER = Splitter
@@ -72,6 +76,20 @@ public class ChatFilterPlugin extends Plugin
 	@Inject
 	private ChatFilterConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
+	@Setter(AccessLevel.PACKAGE)
+	private ChatFilterType filterType;
+	@Setter(AccessLevel.PACKAGE)
+	private String filteredWords;
+	@Setter(AccessLevel.PACKAGE)
+	private String filteredRegex;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean filterFriends;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean filterClan;
+
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
 	{
@@ -81,6 +99,9 @@ public class ChatFilterPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		updateFilteredPatterns();
 		client.refreshChat();
 	}
@@ -88,12 +109,20 @@ public class ChatFilterPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		filteredPatterns.clear();
 		client.refreshChat();
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
+	}
+
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"chatFilterCheck".equals(event.getEventName()))
 		{
@@ -116,6 +145,7 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
+			case GAMEMESSAGE:
 				break;
 			case LOGINLOGOUTNOTIFICATION:
 				if (config.filterLogin())
@@ -129,8 +159,10 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
-		String name = messageNode.getName();
-		if (!shouldFilterPlayerMessage(name))
+
+		if (client.getLocalPlayer().getName().equals(messageNode.getName()) ||
+			!this.filterFriends && messageNode.isFromFriend() ||
+			!this.filterClan && messageNode.isFromClanMate())
 		{
 			return;
 		}
@@ -153,10 +185,9 @@ public class ChatFilterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onOverheadTextChanged(OverheadTextChanged event)
+	private void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player) || !shouldFilterPlayerMessage(event.getActor().getName()))
+		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !shouldFilterPlayerMessage(event.getActor().getName()))
 		{
 			return;
 		}
@@ -175,8 +206,8 @@ public class ChatFilterPlugin extends Plugin
 	{
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
-			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterClan() || !client.isClanMember(playerName));
+			(this.filterFriends || !client.isFriended(playerName, false)) &&
+			(this.filterClan || !client.isClanMember(playerName));
 	}
 
 	String censorMessage(final String message)
@@ -192,7 +223,7 @@ public class ChatFilterPlugin extends Plugin
 
 			while (m.find())
 			{
-				switch (config.filterType())
+				switch (this.filterType)
 				{
 					case CENSOR_WORDS:
 						m.appendReplacement(sb, StringUtils.repeat("*", m.group(0).length()));
@@ -216,11 +247,11 @@ public class ChatFilterPlugin extends Plugin
 	{
 		filteredPatterns.clear();
 
-		Text.fromCSV(config.filteredWords()).stream()
+		Text.fromCSV(this.filteredWords).stream()
 			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
 			.forEach(filteredPatterns::add);
 
-		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
+		NEWLINE_SPLITTER.splitToList(this.filteredRegex).stream()
 			.map(s ->
 			{
 				try
@@ -236,17 +267,26 @@ public class ChatFilterPlugin extends Plugin
 			.forEach(filteredPatterns::add);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"chatfilter".equals(event.getGroup()))
 		{
 			return;
 		}
 
+		updateConfig();
 		updateFilteredPatterns();
 
 		//Refresh chat after config change to reflect current rules
 		client.refreshChat();
+	}
+
+	private void updateConfig()
+	{
+		this.filterType = config.filterType();
+		this.filteredWords = config.filteredWords();
+		this.filteredRegex = config.filteredRegex();
+		this.filterFriends = config.filterFriends();
+		this.filterClan = config.filterClan();
 	}
 }

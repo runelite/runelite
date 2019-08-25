@@ -25,8 +25,14 @@
 package net.runelite.client.plugins.tileindicators;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -37,6 +43,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"highlight", "overlay"},
 	enabledByDefault = false
 )
+@Singleton
 public class TileIndicatorsPlugin extends Plugin
 {
 	@Inject
@@ -44,6 +51,25 @@ public class TileIndicatorsPlugin extends Plugin
 
 	@Inject
 	private TileIndicatorsOverlay overlay;
+
+	@Inject
+	private TileIndicatorsConfig config;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color highlightDestinationColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightDestinationTile;
+	@Getter(AccessLevel.PACKAGE)
+	private Color highlightCurrentColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightCurrentTile;
+	@Getter(AccessLevel.PACKAGE)
+	private Color highlightHoveredColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightHoveredTile;
 
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -54,12 +80,37 @@ public class TileIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!"tileindicators".equals(event.getGroup()))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.highlightDestinationColor = config.highlightDestinationColor();
+		this.highlightDestinationTile = config.highlightDestinationTile();
+		this.highlightCurrentColor = config.highlightCurrentColor();
+		this.highlightCurrentTile = config.highlightCurrentTile();
+		this.highlightHoveredColor = config.highlightHoveredColor();
+		this.highlightHoveredTile = config.highlightHoveredTile();
 	}
 }

@@ -25,7 +25,9 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import net.runelite.api.Constants;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.ContainableFrame;
 
 @ConfigGroup("runelite")
@@ -176,8 +178,8 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "flashNotification",
-		name = "Flash notification",
+		keyName = "notificationFlash",
+		name = "Enable flash notification",
 		description = "Flashes the game frame as a notification",
 		position = 24
 	)
@@ -195,6 +197,17 @@ public interface RuneLiteConfig extends Config
 	default boolean sendNotificationsWhenFocused()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "clientFont",
+		name = "Font",
+		description = "Configure what font is used for the client and runelite added overlays",
+		position = 29
+	)
+	default Font clientFont()
+	{
+		return FontManager.getRunescapeFont();
 	}
 
 	@ConfigItem(
@@ -273,4 +286,17 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@Range(max = 100, min = 0)
+	@ConfigItem(
+		keyName = "volume",
+		name = "Runelite Volume",
+		description = "Sets the volume of custom Runelite sounds (not the client sounds)",
+		position = 43
+	)
+	default int volume()
+	{
+		return 100;
+	}
+
 }

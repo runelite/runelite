@@ -25,14 +25,19 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
+import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
@@ -51,10 +56,9 @@ import net.runelite.client.util.ImageUtil;
 	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
+@Singleton
 public class ConfigPlugin extends Plugin
 {
-	@Inject
-	private ClientUI clientUI;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -72,10 +76,16 @@ public class ConfigPlugin extends Plugin
 	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
+	private RuneLitePlusConfig runeLitePlusConfig;
+
+	@Inject
 	private ChatColorConfig chatColorConfig;
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
@@ -83,7 +93,9 @@ public class ConfigPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, chatColorConfig, colorPickerManager);
+		addSubscriptions();
+
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, runeLitePlusConfig, chatColorConfig, colorPickerManager);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
 
@@ -98,22 +110,44 @@ public class ConfigPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		clientToolbar.removeNavigation(navButton);
+		RuneLite.getInjector().getInstance(ClientThread.class).invokeLater(() ->
+		{
+			try
+			{
+				ConfigPanel.pluginList.clear();
+				pluginManager.setPluginEnabled(this, true);
+				pluginManager.startPlugin(this);
+				Method expand = ClientUI.class.getDeclaredMethod("expand", NavigationButton.class);
+				expand.setAccessible(true);
+				expand.invoke(RuneLite.getInjector().getInstance(ClientUI.class), navButton);
+			}
+			catch (Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		});
 	}
 
-	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+	}
+
+	private void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(configPanel::refreshPluginList);
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
-		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY_CONFIG)
+		if (overlayMenuEntry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY_CONFIG)
 		{
 			Overlay overlay = overlayMenuClicked.getOverlay();
 			Plugin plugin = overlay.getPlugin();

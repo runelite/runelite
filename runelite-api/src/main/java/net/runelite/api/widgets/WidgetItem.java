@@ -24,11 +24,11 @@
  */
 package net.runelite.api.widgets;
 
+import net.runelite.api.Point;
 import java.awt.Rectangle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import net.runelite.api.Point;
 
 /**
  * An item that is being represented in a {@link Widget}.

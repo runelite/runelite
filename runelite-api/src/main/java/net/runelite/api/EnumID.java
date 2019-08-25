@@ -33,4 +33,17 @@ public final class EnumID
 {
 	public static final int MUSIC_TRACK_NAMES = 812;
 	public static final int MUSIC_TRACK_IDS = 819;
+
+	/**
+	 * Translates spellbook varbit into enum ID
+	 */
+	public static final int SPELLBOOKS = 1981;
+
+	/**
+	 * key: index in spellbook, value: NullItemID corresponding to spell
+	 */
+	public static final int STANDARD_SPELLBOOK = 1982;
+	public static final int ANCIENT_SPELLBOOK = 1983;
+	public static final int LUNAR_SPELLBOOK = 1984;
+	public static final int ARCEUUS_SPELLBOOK = 1985;
 }

@@ -67,9 +67,10 @@ public class ExamineClient
 
 		logger.debug("Built URI: {}", url);
 
+		RequestBody body = RequestBody.Companion.create(text, TEXT);
 		Request request = new Request.Builder()
 			.url(url)
-			.post(RequestBody.create(TEXT, text))
+			.post(body)
 			.build();
 
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()

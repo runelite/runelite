@@ -24,9 +24,9 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
 import net.runelite.api.Actor;
 import net.runelite.api.Hitsplat;
+import lombok.Data;
 
 /**
  * An event called when a {@link Hitsplat} is processed on an {@link Actor}.
@@ -36,7 +36,7 @@ import net.runelite.api.Hitsplat;
  * visible hitsplats.
  */
 @Data
-public class HitsplatApplied
+public class HitsplatApplied implements Event
 {
 	/**
 	 * The actor the hitsplat was applied to.

@@ -27,25 +27,32 @@ package net.runelite.client.plugins.playerindicators;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
+import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 public class PlayerIndicatorsMinimapOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
+	private final PlayerIndicatorsPlugin plugin;
+	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
+		"skull.png");
 
 	@Inject
-	private PlayerIndicatorsMinimapOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsMinimapOverlay(final PlayerIndicatorsPlugin plugin, final PlayerIndicatorsService playerIndicatorsService)
 	{
-		this.config = config;
+		this.plugin = plugin;
 		this.playerIndicatorsService = playerIndicatorsService;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -55,21 +62,67 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		playerIndicatorsService.forEachPlayer((player, color) -> 
+		{
+			if (plugin.isDrawFriendMinimapNames() && !player.isFriend())
+			{
+				return;
+			}
+			if (plugin.isDrawClanMinimapNames() && !player.isClanMember())
+			{
+				return;
+			}
+			renderPlayerOverlay(graphics, player, color);
+		});
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final String name = actor.getName().replace('\u00A0', ' ');
-
-		if (config.drawMinimapNames())
+		if (plugin.isDrawMinimapNames())
 		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+			String name = actor.getName().replace('\u00A0', ' ');
+			String tag = "";
+			String prefix = "tag_";
+			if (FriendTaggingPlugin.taggedFriends.containsKey(prefix + name.trim().toLowerCase()))
+			{
+				tag = " [" + FriendTaggingPlugin.taggedFriends.get(prefix + name.trim().toLowerCase()) + "] ";
+			}
+
+			name += tag;
+
+			net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
 			if (minimapLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+				if (plugin.isShowCombatLevel())
+				{
+					name += "-(" + actor.getCombatLevel() + ")";
+				}
+				if (plugin.isDrawMinimapNames())
+				{
+
+					if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
+					{
+						int width = graphics.getFontMetrics().stringWidth(name);
+						int height = graphics.getFontMetrics().getHeight();
+						if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
+						{
+							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
+									+ width, minimapLocation.getY() - height),
+								ImageUtil.resizeImage(skullIcon, height, height));
+						}
+						else
+						{
+							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
+									minimapLocation.getY() - height),
+								ImageUtil.resizeImage(skullIcon, height, height));
+							minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
+								minimapLocation.getY());
+						}
+					}
+					OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+				}
 			}
 		}
 	}

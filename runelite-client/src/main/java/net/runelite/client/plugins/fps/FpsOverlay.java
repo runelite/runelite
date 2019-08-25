@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.events.FocusChanged;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  * This locks "FPS:" into one position (the far top right corner of the canvas),
  * along with a locked position for the FPS value.
  */
+@Singleton
 public class FpsOverlay extends Overlay
 {
 	private static final int Y_OFFSET = 1;
@@ -54,17 +56,17 @@ public class FpsOverlay extends Overlay
 	private static final String FPS_STRING = " FPS";
 
 	// Local dependencies
-	private final FpsConfig config;
 	private final Client client;
+	private final FpsPlugin plugin;
 
 	// Often changing values
 	private boolean isFocused = true;
 
 	@Inject
-	private FpsOverlay(FpsConfig config, Client client)
+	private FpsOverlay(final FpsPlugin plugin, final Client client)
 	{
-		this.config = config;
 		this.client = client;
+		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -77,8 +79,8 @@ public class FpsOverlay extends Overlay
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return FpsLimitMode.ALWAYS == plugin.getLimitMode()
+			|| (FpsLimitMode.UNFOCUSED == plugin.getLimitMode() && !isFocused);
 	}
 
 	private Color getFpsValueColor()
@@ -89,7 +91,7 @@ public class FpsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawFps())
+		if (!plugin.isDrawFps())
 		{
 			return null;
 		}
@@ -102,7 +104,7 @@ public class FpsOverlay extends Overlay
 		{
 			xOffset += logoutButton.getWidth();
 		}
-		
+
 		final String text = client.getFPS() + FPS_STRING;
 		final int textWidth = graphics.getFontMetrics().stringWidth(text);
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();

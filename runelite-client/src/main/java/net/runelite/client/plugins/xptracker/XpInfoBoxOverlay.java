@@ -33,10 +33,12 @@ import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Experience;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -45,8 +47,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
 import net.runelite.client.util.StackFormatter;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 class XpInfoBoxOverlay extends Overlay
 {
@@ -59,7 +59,6 @@ class XpInfoBoxOverlay extends Overlay
 	private final PanelComponent panel = new PanelComponent();
 	private final PanelComponent iconXpSplitPanel = new PanelComponent();
 	private final XpTrackerPlugin plugin;
-	private final XpTrackerConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
@@ -67,13 +66,11 @@ class XpInfoBoxOverlay extends Overlay
 
 	XpInfoBoxOverlay(
 		XpTrackerPlugin plugin,
-		XpTrackerConfig config,
 		Skill skill,
 		BufferedImage icon)
 	{
 		super(plugin);
 		this.plugin = plugin;
-		this.config = config;
 		this.skill = skill;
 		this.icon = icon;
 		panel.setBorder(new Rectangle(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
@@ -99,7 +96,7 @@ class XpInfoBoxOverlay extends Overlay
 		final String leftStr;
 		final int rightNum;
 
-		switch (config.onScreenDisplayMode())
+		switch (plugin.getOnScreenDisplayMode())
 		{
 			case ACTIONS_DONE:
 				leftStr = snapshot.getActionType().getLabel() + " Done";
@@ -128,7 +125,7 @@ class XpInfoBoxOverlay extends Overlay
 		final String bottemLeftStr;
 		final int bottomRightNum;
 
-		switch (config.onScreenDisplayModeBottom())
+		switch (plugin.getOnScreenDisplayModeBottom())
 		{
 			case ACTIONS_HOUR:
 				bottemLeftStr = snapshot.getActionType().getLabel() + "/Hour";
@@ -154,11 +151,11 @@ class XpInfoBoxOverlay extends Overlay
 
 		final ImageComponent imageComponent = new ImageComponent(icon);
 		final SplitComponent iconXpSplit = SplitComponent.builder()
-				.first(imageComponent)
-				.second(xpSplit)
-				.orientation(ComponentOrientation.HORIZONTAL)
-				.gap(new Point(XP_AND_ICON_GAP, 0))
-				.build();
+			.first(imageComponent)
+			.second(xpSplit)
+			.orientation(ComponentOrientation.HORIZONTAL)
+			.gap(new Point(XP_AND_ICON_GAP, 0))
+			.build();
 
 		iconXpSplitPanel.getChildren().add(iconXpSplit);
 

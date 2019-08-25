@@ -129,4 +129,15 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "clipboardShortcuts",
+		name = "Clipboard shortcuts",
+		description = "Enable clipboard shortcuts (ctrl+c and ctrl+v)"
+	)
+	default boolean clipboardShortcuts()
+	{
+		return true;
+	}
 }

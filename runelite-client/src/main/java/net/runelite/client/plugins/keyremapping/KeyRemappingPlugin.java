@@ -28,6 +28,7 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,12 +38,14 @@ import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,6 +58,7 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"enter", "chat", "wasd", "camera"},
 	enabledByDefault = false
 )
+@Singleton
 public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
@@ -68,18 +72,67 @@ public class KeyRemappingPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
+	private KeyRemappingConfig config;
+
+	@Inject
 	private KeyManager keyManager;
 
 	@Inject
 	private KeyRemappingListener inputListener;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean typing;
 
+	private boolean hideDisplayName;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean cameraRemap;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind up;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind down;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind left;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind right;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean fkeyRemap;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f1;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f2;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f3;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f4;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f5;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f6;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f7;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f8;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f9;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f10;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f11;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind f12;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind esc;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
 
@@ -97,6 +150,8 @@ public class KeyRemappingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
@@ -106,6 +161,12 @@ public class KeyRemappingPlugin extends Plugin
 		});
 
 		keyManager.unregisterKeyListener(inputListener);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 	}
 
 	@Provides
@@ -148,19 +209,35 @@ public class KeyRemappingPlugin extends Plugin
 		return w == null || w.isSelfHidden();
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("keyremapping"))
+		{
+			return;
+		}
+
+		updateConfig();
+
+		clientThread.invoke(() ->
+			{
+				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				if (chatboxInput != null && chatboxInput.getText().endsWith(PRESS_ENTER_TO_CHAT))
+				{
+					chatboxInput.setText(getWaitingText());
+				}
+			}
+		);
+	}
+
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
 			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null)
+				if (chatboxInput != null && chatboxFocused() && !typing)
 				{
-					if (chatboxFocused() && !typing)
-					{
-						chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
-					}
+					chatboxInput.setText(getWaitingText());
 				}
 				break;
 			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
@@ -179,21 +256,18 @@ public class KeyRemappingPlugin extends Plugin
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 		if (chatboxInput != null)
 		{
-			chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
+			chatboxInput.setText(getWaitingText());
 		}
 	}
 
 	void unlockChat()
 	{
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-		if (chatboxInput != null)
+		if (chatboxInput != null && client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
-				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-				chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
-			}
+			final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+			final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
+			chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 		}
 	}
 
@@ -215,5 +289,41 @@ public class KeyRemappingPlugin extends Plugin
 				return client.getLocalPlayer().getName();
 		}
 		return icon + client.getLocalPlayer().getName();
+	}
+
+	private String getWaitingText()
+	{
+		if (this.hideDisplayName)
+		{
+			return PRESS_ENTER_TO_CHAT;
+		}
+		else
+		{
+			return getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT;
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.hideDisplayName = config.hideDisplayName();
+		this.cameraRemap = config.cameraRemap();
+		this.up = config.up();
+		this.down = config.down();
+		this.left = config.left();
+		this.right = config.right();
+		this.fkeyRemap = config.fkeyRemap();
+		this.f1 = config.f1();
+		this.f2 = config.f2();
+		this.f3 = config.f3();
+		this.f4 = config.f4();
+		this.f5 = config.f5();
+		this.f6 = config.f6();
+		this.f7 = config.f7();
+		this.f8 = config.f8();
+		this.f9 = config.f9();
+		this.f10 = config.f10();
+		this.f11 = config.f11();
+		this.f12 = config.f12();
+		this.esc = config.esc();
 	}
 }

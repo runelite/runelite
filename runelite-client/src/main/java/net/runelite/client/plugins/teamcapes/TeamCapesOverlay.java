@@ -28,8 +28,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+@Singleton
 public class TeamCapesOverlay extends Overlay
 {
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -48,7 +50,7 @@ public class TeamCapesOverlay extends Overlay
 	private final ItemManager manager;
 
 	@Inject
-	private TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config, ItemManager manager)
+	private TeamCapesOverlay(final TeamCapesPlugin plugin, final TeamCapesConfig config, final ItemManager manager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

@@ -24,9 +24,20 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum HitpointsDisplayStyle
 {
-	HITPOINTS,
-	PERCENTAGE,
-	BOTH;
+	HITPOINTS("Hitpoints"),
+	PERCENTAGE("Percentage"),
+	BOTH("Both");
+
+	private final String name;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

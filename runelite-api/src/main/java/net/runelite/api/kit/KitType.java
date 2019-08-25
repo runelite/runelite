@@ -24,18 +24,17 @@
  */
 package net.runelite.api.kit;
 
-import net.runelite.api.PlayerComposition;
-
 /**
  * Represents an equipment slot in a players composition.
  * <p>
- * These values are intended for use with {@link PlayerComposition} equipment
+ * These values are intended for use with {PlayerAppearance} equipment
  * slots. For obtaining information about equipment in the local players
- * equipment {@link net.runelite.api.ItemContainer}, use
- * {@link net.runelite.api.EquipmentInventorySlot}.
+ * equipment {net.runelite.api.ItemContainer}, use
+ * {net.runelite.api.EquipmentInventorySlot}.
  */
 public enum KitType
 {
+	HELMET(0),
 	CAPE(1),
 	AMULET(2),
 	WEAPON(3),
@@ -45,7 +44,9 @@ public enum KitType
 	HEAD(8),
 	HANDS(9),
 	BOOTS(10),
-	JAW(11);
+	JAW(11),
+	RING(12),
+	AMMUNITION(13);
 
 	/**
 	 * Raw equipment index.
@@ -58,7 +59,7 @@ public enum KitType
 	}
 
 	/**
-	 * Gets the raw equipment index for use in {@link PlayerComposition#getEquipmentIds()}.
+	 * Gets the raw equipment index for use in {PlayerAppearance#getEquipmentIds()}.
 	 *
 	 * @return raw equipment index
 	 */

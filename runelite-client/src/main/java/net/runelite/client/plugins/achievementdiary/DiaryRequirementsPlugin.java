@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.FontTypeFace;
@@ -43,7 +44,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -66,6 +67,7 @@ import net.runelite.client.util.Text;
 	description = "Display level requirements in Achievement Diary interface",
 	tags = {"achievements", "tasks"}
 )
+@Singleton
 public class DiaryRequirementsPlugin extends Plugin
 {
 	private static final String AND_JOINER = ", ";
@@ -77,8 +79,22 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Subscribe
-	public void onWidgetLoaded(final WidgetLoaded event)
+	@Inject
+	private EventBus eventBus;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		eventBus.unregister(this);
+	}
+
+	private void onWidgetLoaded(final WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.DIARY_QUEST_GROUP_ID)
 		{
@@ -122,10 +138,6 @@ public class DiaryRequirementsPlugin extends Plugin
 		}
 
 		Map<String, String> skillRequirements = buildRequirements(requirements.getRequirements());
-		if (skillRequirements == null)
-		{
-			return;
-		}
 
 		int offset = 0;
 		String taskBuffer = "";

@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -45,23 +47,24 @@ import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -74,6 +77,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "objects", "mark", "marker"},
 	enabledByDefault = false
 )
+@Singleton
 public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
@@ -99,7 +103,22 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private ObjectIndicatorsOverlay overlay;
 
 	@Inject
+	private ObjectIndicatorsConfig config;
+
+	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private EventBus eventbus;
+
+	@Getter(AccessLevel.PACKAGE)
+	private RenderStyle objectMarkerRenderStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private OutlineRenderStyle objectMarkerOutlineRenderStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private Color objectMarkerColor;
+	@Getter(AccessLevel.PACKAGE)
+	private int objectMarkerAlpha;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -110,6 +129,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(this);
 	}
@@ -117,11 +139,26 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
+		eventbus.unregister(this);
+
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(this);
 		points.clear();
 		objects.clear();
 		hotKeyPressed = false;
+	}
+
+	private void addSubscriptions()
+	{
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
+		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventbus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
+		eventbus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventbus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventbus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+		eventbus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 	}
 
 	@Override
@@ -148,8 +185,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(final FocusChanged event)
+	private void onFocusChanged(final FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -157,34 +193,29 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject eventObject = event.getGameObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		final DecorativeObject eventObject = event.getDecorativeObject();
 		checkObjectPoints(eventObject);
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		objects.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		objects.remove(event.getDecorativeObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
 		if (gameState == GameState.LOADING)
@@ -209,10 +240,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_OBJECT.getId())
+		if (!hotKeyPressed || event.getType() != MenuOpcode.EXAMINE_OBJECT.getId())
 		{
 			return;
 		}
@@ -222,38 +252,38 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+
 		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
 		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
+		menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 		client.setMenuEntries(menuEntries);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
+		if (event.getMenuOpcode() != MenuOpcode.RUNELITE
+			|| !(event.getOption().equals(MARK) || event.getOption().equals(UNMARK)))
 		{
 			return;
 		}
 
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
+		final int x = event.getActionParam0();
+		final int y = event.getActionParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
-		TileObject object = findTileObject(tile, event.getId());
+		TileObject object = findTileObject(tile, event.getIdentifier());
 		if (object == null)
 		{
 			return;
 		}
 
-		ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+		ObjectDefinition objectDefinition = client.getObjectDefinition(object.getId());
 		String name = objectDefinition.getName();
 		if (Strings.isNullOrEmpty(name))
 		{
@@ -276,13 +306,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY()
+				&& objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
 			{
-				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
-				{
-					objects.add(object);
-					break;
-				}
+				objects.add(object);
+				break;
 			}
 		}
 	}
@@ -315,7 +343,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			}
 
 			// Check impostors
-			final ObjectComposition comp = client.getObjectDefinition(object.getId());
+			final ObjectDefinition comp = client.getObjectDefinition(object.getId());
 
 			if (comp.getImpostorIds() != null)
 			{
@@ -389,5 +417,23 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("objectindicators"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.objectMarkerRenderStyle = config.objectMarkerRenderStyle();
+		this.objectMarkerOutlineRenderStyle = config.objectMarkerOutlineRenderStyle();
+		this.objectMarkerColor = config.objectMarkerColor();
+		this.objectMarkerAlpha = config.objectMarkerAlpha();
 	}
 }

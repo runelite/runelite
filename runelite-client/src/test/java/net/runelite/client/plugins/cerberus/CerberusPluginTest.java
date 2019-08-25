@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CerberusPluginTest
@@ -71,7 +71,7 @@ public class CerberusPluginTest
 			mockNpc(new LocalPoint(2, 5)),
 			mockNpc(new LocalPoint(1, 5))
 		));
-		cerberusPlugin.onGameTick(new GameTick());
+		cerberusPlugin.onGameTick(GameTick.INSTANCE);
 
 		// Expected sort is by lowest y first, then by lowest x
 		assertEquals(ghosts.get(0).getLocalLocation(), new LocalPoint(0, 0));

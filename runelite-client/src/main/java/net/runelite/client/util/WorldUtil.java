@@ -35,6 +35,7 @@ public class WorldUtil
 	/**
 	 * Converts http-api world types to runelite-api world types
 	 * TODO: Find a better way to handle these to not have duplicate interfaces
+	 *
 	 * @param apiTypes http-api world types
 	 * @return runelite-api world types
 	 */

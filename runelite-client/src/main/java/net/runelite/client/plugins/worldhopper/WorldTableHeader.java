@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nonnull;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 
+@Singleton
 class WorldTableHeader extends JPanel
 {
 	private static final ImageIcon ARROW_UP;

@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
 
@@ -38,7 +39,7 @@ import org.apache.commons.text.WordUtils;
  */
 public class Text
 {
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Matcher TAG_REGEXP = Pattern.compile("<[^>]*>").matcher("");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -78,13 +79,13 @@ public class Text
 	 */
 	public static String removeTags(String str)
 	{
-		return TAG_REGEXP.matcher(str).replaceAll("");
+		return TAG_REGEXP.reset(str).replaceAll("");
 	}
 
 	/**
 	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
-	 * @param str The string to standardize
 	 *
+	 * @param str The string to standardize
 	 * @return The given `str` that is standardized
 	 */
 	public static String standardize(String str)
@@ -168,9 +169,9 @@ public class Text
 	 * converts enum name format from THIS_FORMAT to This Format.
 	 *
 	 * @param o an enum
-	 * @return  the enum's name in title case,
-	 *          or if it overrides toString,
-	 *          the value returned by toString
+	 * @return the enum's name in title case,
+	 * or if it overrides toString,
+	 * the value returned by toString
 	 */
 	public static String titleCase(Enum o)
 	{

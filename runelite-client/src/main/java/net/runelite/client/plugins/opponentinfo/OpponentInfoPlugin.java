@@ -30,17 +30,19 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -51,6 +53,7 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 	description = "Show name and hitpoints information about the NPC you are fighting",
 	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )
+@Singleton
 public class OpponentInfoPlugin extends Plugin
 {
 	private static final Duration WAIT = Duration.ofSeconds(5);
@@ -70,6 +73,9 @@ public class OpponentInfoPlugin extends Plugin
 	@Inject
 	private PlayerComparisonOverlay playerComparisonOverlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private HiscoreEndpoint hiscoreEndpoint = HiscoreEndpoint.NORMAL;
 
@@ -77,6 +83,13 @@ public class OpponentInfoPlugin extends Plugin
 	private Actor lastOpponent;
 
 	private Instant lastTime;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean lookupOnInteraction;
+	@Getter(AccessLevel.PACKAGE)
+	private HitpointsDisplayStyle hitpointsDisplayStyle;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showOpponentsOpponent;
 
 	@Provides
 	OpponentInfoConfig provideConfig(ConfigManager configManager)
@@ -87,6 +100,9 @@ public class OpponentInfoPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(opponentInfoOverlay);
 		overlayManager.add(playerComparisonOverlay);
 	}
@@ -94,14 +110,23 @@ public class OpponentInfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		lastOpponent = null;
 		lastTime = null;
 		overlayManager.remove(opponentInfoOverlay);
 		overlayManager.remove(playerComparisonOverlay);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+	}
+
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -127,8 +152,7 @@ public class OpponentInfoPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer())
 		{
@@ -146,17 +170,32 @@ public class OpponentInfoPlugin extends Plugin
 		lastOpponent = opponent;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (lastOpponent != null
 			&& lastTime != null
-			&& client.getLocalPlayer().getInteracting() == null)
+			&& client.getLocalPlayer().getInteracting() == null
+			&& Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 		{
-			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
-			{
-				lastOpponent = null;
-			}
+			lastOpponent = null;
 		}
+
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("opponentinfo"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.lookupOnInteraction = config.lookupOnInteraction();
+		this.hitpointsDisplayStyle = config.hitpointsDisplayStyle();
+		this.showOpponentsOpponent = config.showOpponentsOpponent();
 	}
 }

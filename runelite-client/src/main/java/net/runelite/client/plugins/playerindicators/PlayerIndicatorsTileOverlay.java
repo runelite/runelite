@@ -29,22 +29,24 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Singleton
 public class PlayerIndicatorsTileOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
+	private final PlayerIndicatorsPlugin playerIndicatorsPlugin;
 
 	@Inject
-	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsTileOverlay(final PlayerIndicatorsService playerIndicatorsService, final PlayerIndicatorsPlugin plugin)
 	{
-		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
+		this.playerIndicatorsPlugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
@@ -53,21 +55,23 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawTiles())
+		if (!playerIndicatorsPlugin.isDrawTiles() /*&& !config.drawPlayerHull()*/)
 		{
 			return null;
 		}
-
-		playerIndicatorsService.forEachPlayer((player, color) ->
+		else
 		{
-			final Polygon poly = player.getCanvasTilePoly();
-
-			if (poly != null)
+			playerIndicatorsService.forEachPlayer((player, color) ->
 			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
-		});
+				final Polygon poly = player.getCanvasTilePoly();
 
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, color);
+				}
+			});
+		}
 		return null;
 	}
+
 }

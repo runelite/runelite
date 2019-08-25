@@ -144,21 +144,31 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "playerDeath",
-		name = "Screenshot Deaths",
-		description = "Configures whether or not screenshots are automatically taken when you die.",
+		keyName = "friendDeath",
+		name = "Friend Deaths",
+		description = "Configures whether or not screenshots are automatically taken when a clanmate or a friend near you dies.",
 		position = 10
 	)
-	default boolean screenshotPlayerDeath()
+	default boolean screenshotFriendDeath()
 	{
 		return false;
 	}
 
 	@ConfigItem(
+			keyName = "playerDeath",
+			name = "Screenshot Deaths",
+			description = "Configures whether or not screenshots are automatically taken when you die.",
+			position = 11
+	)
+	default boolean screenshotPlayerDeath()
+	{
+		return false;
+	}
+	@ConfigItem(
 		keyName = "duels",
 		name = "Screenshot Duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
-		position = 11
+		position = 12
 	)
 	default boolean screenshotDuels()
 	{
@@ -169,7 +179,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
-		position = 12
+		position = 13
 	)
 	default boolean screenshotValuableDrop()
 	{
@@ -180,7 +190,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 13
+		position = 14
 	)
 	default boolean screenshotUntradeableDrop()
 	{
@@ -191,7 +201,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 14
+		position = 15
 	)
 	default Keybind hotkey()
 	{

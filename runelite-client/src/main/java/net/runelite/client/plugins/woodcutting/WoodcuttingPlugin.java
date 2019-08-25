@@ -30,6 +30,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -38,6 +40,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -45,7 +48,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,6 +60,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show woodcutting statistics and/or bird nest notifications",
 	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"}
 )
+@Singleton
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
 {
@@ -78,14 +82,24 @@ public class WoodcuttingPlugin extends Plugin
 	@Inject
 	private WoodcuttingConfig config;
 
-	@Getter
+	@Inject
+	private EventBus eventBus;
+
+	@Getter(AccessLevel.PACKAGE)
 	private WoodcuttingSession session;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Axe axe;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> treeObjects = new HashSet<>();
+
+	private int statTimeout;
+	private boolean showNestNotification;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showWoodcuttingStats;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRedwoodTrees;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -96,6 +110,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
 	}
@@ -103,6 +120,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);
 		treeObjects.clear();
@@ -110,15 +129,26 @@ public class WoodcuttingPlugin extends Plugin
 		axe = null;
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
+		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
+		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
+		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+	}
+
+	private void onGameTick(GameTick gameTick)
 	{
 		if (session == null || session.getLastLogCut() == null)
 		{
 			return;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration statTimeout = Duration.ofMinutes(this.statTimeout);
 		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
@@ -128,8 +158,7 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -143,15 +172,14 @@ public class WoodcuttingPlugin extends Plugin
 				session.setLastLogCut();
 			}
 
-			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
+			if (event.getMessage().contains("A bird's nest falls out of the tree") && this.showNestNotification)
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectSpawned(final GameObjectSpawned event)
+	private void onGameObjectSpawned(final GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 		Tree tree = Tree.findTree(gameObject.getId());
@@ -162,20 +190,17 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(final GameObjectDespawned event)
+	private void onGameObjectDespawned(final GameObjectDespawned event)
 	{
 		treeObjects.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameObjectChanged(final GameObjectChanged event)
+	private void onGameObjectChanged(final GameObjectChanged event)
 	{
 		treeObjects.remove(event.getGameObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
 		{
@@ -183,8 +208,7 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		Player local = client.getLocalPlayer();
 
@@ -199,5 +223,23 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			this.axe = axe;
 		}
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("woodcutting"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.statTimeout = config.statTimeout();
+		this.showNestNotification = config.showNestNotification();
+		this.showWoodcuttingStats = config.showWoodcuttingStats();
+		this.showRedwoodTrees = config.showRedwoodTrees();
 	}
 }

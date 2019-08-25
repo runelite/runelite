@@ -39,6 +39,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.RuneLiteConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +50,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MotherlodePluginTest
@@ -86,6 +89,18 @@ public class MotherlodePluginTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private ChatColorConfig chatColorConfig;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeliteConfig;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
 
 	@Before
 	public void before()
@@ -140,7 +155,6 @@ public class MotherlodePluginTest
 			item(ItemID.COAL, 1),
 			item(ItemID.COAL, 1),
 			item(ItemID.ADAMANTITE_ORE, 1),
-
 		};
 		when(inventory.getItems())
 			.thenReturn(items);

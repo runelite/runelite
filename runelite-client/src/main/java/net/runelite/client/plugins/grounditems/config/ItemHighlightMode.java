@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public enum ItemHighlightMode
 {
 	OVERLAY("Overlay"),
-	MENU("Right-click menu"),
+	MENU("Right-click"),
 	BOTH("Both");
 
 	private final String name;

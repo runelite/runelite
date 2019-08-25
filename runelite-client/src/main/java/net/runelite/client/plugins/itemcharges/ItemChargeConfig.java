@@ -184,32 +184,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBasketCharges",
-		name = "Show Basket Charges",
-		description = "Configures if fruit basket item charge is shown",
-		position = 13
-	)
-	default boolean showBasketCharges()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSackCharges",
-		name = "Show Sack Charges",
-		description = "Configures if sack item charge is shown",
-		position = 14
-	)
-	default boolean showSackCharges()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showAbyssalBraceletCharges",
 		name = "Show Abyssal Bracelet Charges",
 		description = "Configures if abyssal bracelet item charge is shown",
-		position = 15
+		position = 13
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -220,7 +198,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 16
+		position = 14
 	)
 	default boolean recoilNotification()
 	{
@@ -231,7 +209,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showBindingNecklaceCharges",
 		name = "Show Binding Necklace Charges",
 		description = "Configures if binding necklace item charge is shown",
-		position = 17
+		position = 15
 	)
 	default boolean showBindingNecklaceCharges()
 	{
@@ -260,7 +238,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "bindingNotification",
 		name = "Binding Necklace Notification",
 		description = "Configures if the binding necklace breaking notification is shown",
-		position = 18
+		position = 16
 	)
 	default boolean bindingNotification()
 	{
@@ -271,7 +249,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showExplorerRingCharges",
 		name = "Show Explorer's Ring Alch Charges",
 		description = "Configures if explorer's ring alchemy charges are shown",
-		position = 19
+		position = 17
 	)
 	default boolean showExplorerRingCharges()
 	{
@@ -297,10 +275,157 @@ public interface ItemChargeConfig extends Config
 	void explorerRing(int explorerRing);
 
 	@ConfigItem(
+		keyName = "showSlayerBracelets",
+		name = "Show Slayer Bracelets Charges",
+		description = "Configures if slayer bracelets' item charges are shown",
+		position = 18
+	)
+	default boolean showSlayerBracelets()
+	{
+		return true;
+	}
+
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int expeditious()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = ""
+	)
+	void expeditious(int expeditious);
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int slaughter()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = ""
+	)
+	void slaughter(int slaughter);
+
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int xericTalisman()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = ""
+	)
+	void xericTalisman(int xericTalisman);
+
+	@ConfigItem(
+		keyName = "showSoulBearerCharges",
+		name = "Show Soul Bearer Charges",
+		description = "Configures if Soul Bearer item charge is shown",
+		position = 19
+	)
+	default boolean showSoulBearerCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int soulBearer()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = ""
+	)
+	void soulBearer(int soulBearer);
+
+	@ConfigItem(
+		keyName = "showChronicleCharges",
+		name = "Show Chronicle Charges",
+		description = "Configures if Chronicle item charge is shown",
+		position = 20
+	)
+	default boolean showChronicleCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showXericTalismanCharges",
+		name = "Show Xeric's Talisman Charges",
+		description = "Configures if Xeric's Talisman item charge is shown",
+		position = 21
+	)
+	default boolean showXericTalismanCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showrecoil",
+		name = "Show If Recoil is activated",
+		description = "Configures if Recoil is activated",
+		position = 22
+	)
+	default boolean showrecoil()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int chronicle()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = ""
+	)
+	void chronicle(int chronicle);
+
+	@ConfigItem(
 		keyName = "showRingOfForgingCount",
 		name = "Show Ring of Forging Charges",
 		description = "Configures if the Ring of Forging charge count is shown",
-		position = 20
+		position = 23
 	)
 	default boolean showRingOfForgingCount()
 	{
@@ -329,9 +454,20 @@ public interface ItemChargeConfig extends Config
 		keyName = "ringOfForgingNotification",
 		name = "Ring of Forging Notification",
 		description = "Configures if the Ring of Forging breaking notification is enabled",
-		position = 21
+		position = 24
 	)
 	default boolean ringOfForgingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSackCharges",
+		name = "Show Sack Quantity",
+		description = "Configures if the number of vegetables in sacks is shown",
+		position = 25
+	)
+	default boolean showSackCharges()
 	{
 		return true;
 	}
@@ -340,7 +476,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 22
+		position = 26
 	)
 	default boolean showInfoboxes()
 	{

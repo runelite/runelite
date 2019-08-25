@@ -36,14 +36,16 @@ import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -53,6 +55,7 @@ import net.runelite.client.task.Schedule;
 	description = "Replace the text on the Report button with the current time",
 	tags = {"time", "utc"}
 )
+@Singleton
 public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
@@ -73,6 +76,11 @@ public class ReportButtonPlugin extends Plugin
 	@Inject
 	private ReportButtonConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
+	private TimeStyle timeStyle;
+
 	@Provides
 	ReportButtonConfig provideConfig(ConfigManager configManager)
 	{
@@ -82,12 +90,17 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		addSubscriptions();
+
+		this.timeStyle = config.time();
 		clientThread.invoke(this::updateReportButtonTime);
 	}
 
 	@Override
 	public void shutDown()
 	{
+		eventBus.unregister(this);
+
 		clientThread.invoke(() ->
 		{
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
@@ -98,8 +111,13 @@ public class ReportButtonPlugin extends Plugin
 		});
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 
@@ -142,7 +160,7 @@ public class ReportButtonPlugin extends Plugin
 			return;
 		}
 
-		switch (config.time())
+		switch (this.timeStyle)
 		{
 			case UTC:
 				reportButton.setText(getUTCTime());
@@ -197,5 +215,13 @@ public class ReportButtonPlugin extends Plugin
 	private static String getDate()
 	{
 		return DATE_FORMAT.format(new Date());
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("reportButton"))
+		{
+			this.timeStyle = config.time();
+		}
 	}
 }

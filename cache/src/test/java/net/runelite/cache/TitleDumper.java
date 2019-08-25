@@ -47,8 +47,8 @@ public class TitleDumper
 	@Test
 	public void extract() throws IOException
 	{
-		File base = StoreLocation.LOCATION,
-			outFile = folder.newFolder();
+		File base = StoreLocation.LOCATION;
+		File outFile = folder.newFile();
 
 		try (Store store = new Store(base))
 		{

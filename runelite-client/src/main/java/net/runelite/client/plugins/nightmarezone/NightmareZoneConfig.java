@@ -36,11 +36,22 @@ public interface NightmareZoneConfig extends Config
 		keyName = "moveoverlay",
 		name = "Override NMZ overlay",
 		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
-		position = 1
+		position = 0
 	)
 	default boolean moveOverlay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showtotalpoints",
+		name = "total points NMZ overlay",
+		description = "shows total points to overlay",
+		position = 1
+	)
+	default boolean showtotalpoints()
+	{
+		return false;
 	}
 
 	@ConfigItem(

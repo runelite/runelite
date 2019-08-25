@@ -34,7 +34,6 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.Client;
 
 class Skybox
 {
@@ -43,8 +42,6 @@ class Skybox
 	{
 		/**
 		 * Gets the instance template chunk data for the specified point
-		 *
-		 * @see Client#getInstanceTemplateChunks
 		 */
 		int getTemplateChunk(int cx, int cy, int plane);
 	}

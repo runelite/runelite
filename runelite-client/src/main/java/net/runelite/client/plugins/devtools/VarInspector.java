@@ -56,7 +56,6 @@ import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -86,7 +85,6 @@ class VarInspector extends JFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 
 	private final Client client;
-	private final DevToolsPlugin plugin;
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
@@ -104,7 +102,6 @@ class VarInspector extends JFrame
 	{
 		this.eventBus = eventBus;
 		this.client = client;
-		this.plugin = plugin;
 
 		setTitle("RuneLite Var Inspector");
 		setIconImage(ClientUI.ICON);
@@ -117,6 +114,7 @@ class VarInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
+				eventBus.unregister(this);
 				close();
 				plugin.getVarInspector().setActive(false);
 			}
@@ -172,6 +170,7 @@ class VarInspector extends JFrame
 		add(trackerOpts, BorderLayout.SOUTH);
 
 		pack();
+
 	}
 
 	private void addVarLog(VarType type, String name, int old, int neew)
@@ -212,8 +211,7 @@ class VarInspector extends JFrame
 		});
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged ev)
+	private void onVarbitChanged(VarbitChanged ev)
 	{
 		int[] varps = client.getVarps();
 
@@ -276,8 +274,7 @@ class VarInspector extends JFrame
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 	}
 
-	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged e)
+	private void onVarClientIntChanged(VarClientIntChanged e)
 	{
 		int idx = e.getIndex();
 		int neew = (Integer) client.getVarcMap().getOrDefault(idx, 0);
@@ -299,8 +296,7 @@ class VarInspector extends JFrame
 		}
 	}
 
-	@Subscribe
-	public void onVarClientStrChanged(VarClientStrChanged e)
+	private void onVarClientStrChanged(VarClientStrChanged e)
 	{
 		int idx = e.getIndex();
 		String neew = (String) client.getVarcMap().getOrDefault(idx, "");
@@ -350,7 +346,11 @@ class VarInspector extends JFrame
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 		varcs = new HashMap<>(client.getVarcMap());
 
-		eventBus.register(this);
+		// eventBus.register(this);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
+		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
+
 		setVisible(true);
 		toFront();
 		repaint();

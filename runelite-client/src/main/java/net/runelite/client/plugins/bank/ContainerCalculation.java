@@ -83,7 +83,7 @@ class ContainerCalculation
 					alch += qty * 1000L;
 					break;
 				default:
-					final long storePrice = itemManager.getItemComposition(id).getPrice();
+					final long storePrice = itemManager.getItemDefinition(id).getPrice();
 					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 					alch += alchPrice * qty;
 					ge += itemManager.getItemPrice(id) * qty;

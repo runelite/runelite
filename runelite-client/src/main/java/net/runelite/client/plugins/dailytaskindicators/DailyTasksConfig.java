@@ -112,22 +112,22 @@ public interface DailyTasksConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "showDynamite",
-		name = "Show Claimable Dynamite",
-		description = "Show a message when you can collect Dynamite from Thirus."
-	)
-	default boolean showDynamite()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 9,
 		keyName = "showArrows",
 		name = "Show Claimable Ogre Arrows",
 		description = "Show a message when you can collect ogre arrows from Rantz."
 	)
 	default boolean showArrows()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "showDynamite",
+		name = "Show Claimable Dynamite",
+		description = "Show a message when you can collect Dynamite from Thirus."
+	)
+	default boolean showDynamite()
 	{
 		return false;
 	}

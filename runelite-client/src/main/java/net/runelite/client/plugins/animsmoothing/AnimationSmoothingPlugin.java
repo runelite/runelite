@@ -26,10 +26,11 @@ package net.runelite.client.plugins.animsmoothing;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -39,6 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"npcs", "objects", "players"},
 	enabledByDefault = false
 )
+@Singleton
 public class AnimationSmoothingPlugin extends Plugin
 {
 	static final String CONFIG_GROUP = "animationSmoothing";
@@ -49,6 +51,9 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Inject
 	private AnimationSmoothingConfig config;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	AnimationSmoothingConfig getConfig(ConfigManager configManager)
 	{
@@ -58,19 +63,23 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+
 		update();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		client.setInterpolatePlayerAnimations(false);
 		client.setInterpolateNpcAnimations(false);
 		client.setInterpolateObjectAnimations(false);
+		client.setInterpolateWidgetAnimations(false);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
 		{
@@ -83,5 +92,6 @@ public class AnimationSmoothingPlugin extends Plugin
 		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
 		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
 		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+		client.setInterpolateWidgetAnimations(config.smoothWidgetAnimations());
 	}
 }

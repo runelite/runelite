@@ -48,6 +48,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
@@ -59,22 +60,24 @@ import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
+import net.runelite.api.Entity;
 import net.runelite.api.Scene;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
+import net.runelite.api.TileModel;
+import net.runelite.api.TilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import static net.runelite.client.plugins.gpu.GLUtil.*;
+import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -87,11 +90,12 @@ import net.runelite.client.util.OSType;
 	tags = {"fog", "draw distance"}
 )
 @Slf4j
+@Singleton
 public class GpuPlugin extends Plugin implements DrawCallbacks
 {
 	// This is the maximum number of triangles the compute shaders support
 	private static final int MAX_TRIANGLE = 4096;
-	private static final int SMALL_TRIANGLE_COUNT = 512;
+	static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	static final int MAX_DISTANCE = 90;
 	static final int MAX_FOG_DEPTH = 100;
@@ -116,6 +120,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Inject
+	private EventBus eventbus;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
@@ -204,6 +211,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
+	private AnisotropicFilteringMode lastAnisotropicFilteringMode;
 
 	private int centerX;
 	private int centerY;
@@ -214,6 +222,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniFogDepth;
+	private int uniFogCornerRadius;
+	private int uniFogDensity;
 	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
@@ -225,9 +235,39 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockMain;
 	private int uniSmoothBanding;
 
-	@Override
-	protected void startUp()
+	private int drawDistance;
+	private boolean smoothBanding;
+	private AntiAliasingMode antiAliasingMode;
+	private AnisotropicFilteringMode anisotropicFilteringMode;
+	private int fogDepth;
+	private int fogCircularity;
+	private int fogDensity;
+
+	private void onConfigChanged(ConfigChanged event)
 	{
+		if (event.getGroup().equals("gpu"))
+		{
+			updateConfig();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.drawDistance = config.drawDistance();
+		this.smoothBanding = config.smoothBanding();
+		this.antiAliasingMode = config.antiAliasingMode();
+		this.anisotropicFilteringMode = config.anisotropicFilteringMode();
+		this.fogDepth = config.fogDepth();
+		this.fogCircularity = config.fogCircularity();
+		this.fogDensity = config.fogDensity();
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateConfig();
+		addSubscriptions();
+
 		clientThread.invoke(() ->
 		{
 			try
@@ -245,11 +285,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				canvas = client.getCanvas();
 				canvas.setIgnoreRepaint(true);
 
-				if (log.isDebugEnabled())
-				{
-					System.setProperty("jogl.debug", "true");
-				}
-
 				GLProfile.initSingleton();
 
 				GLProfile glProfile = GLProfile.get(GLProfile.GL4);
@@ -266,11 +301,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				glDrawable.setRealized(true);
 
 				glContext = glDrawable.createContext(null);
-				if (log.isDebugEnabled())
-				{
-					// Debug config on context needs to be set before .makeCurrent call
-					glContext.enableGLDebugMessage(true);
-				}
 
 				int res = glContext.makeCurrent();
 				if (res == GLContext.CONTEXT_NOT_CURRENT)
@@ -286,15 +316,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				this.gl = glContext.getGL().getGL4();
 				gl.setSwapInterval(0);
-
-				if (log.isDebugEnabled())
-				{
-					gl.glEnable(gl.GL_DEBUG_OUTPUT);
-
-					// Suppress warning messages which flood the log on NVIDIA systems.
-					gl.getContext().glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
-						gl.GL_DEBUG_SEVERITY_NOTIFICATION, 0, null, 0, false);
-				}
 
 				initVao();
 				initProgram();
@@ -347,6 +368,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	protected void shutDown()
 	{
+		eventbus.unregister(this);
+
 		clientThread.invoke(() ->
 		{
 			client.setGpu(false);
@@ -416,6 +439,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		});
 	}
 
+	private void addSubscriptions()
+	{
+		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
 	@Provides
 	GpuPluginConfig provideConfig(ConfigManager configManager)
 	{
@@ -435,8 +464,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			glVersionHeader =
 				"#version 420\n" +
-				"#extension GL_ARB_compute_shader : require\n" +
-				"#extension GL_ARB_shader_storage_buffer_object : require\n";
+					"#extension GL_ARB_compute_shader : require\n" +
+					"#extension GL_ARB_shader_storage_buffer_object : require\n";
 		}
 		else
 		{
@@ -509,6 +538,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniFogCornerRadius = gl.glGetUniformLocation(glProgram, "fogCornerRadius");
+		uniFogDensity = gl.glGetUniformLocation(glProgram, "fogDensity");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
@@ -534,8 +565,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glDeleteProgram(glProgram);
 		glProgram = -1;
 
-		///
-
 		gl.glDeleteShader(glComputeShader);
 		glComputeShader = -1;
 
@@ -553,8 +582,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUnorderedComputeProgram);
 		glUnorderedComputeProgram = -1;
-
-		///
 
 		gl.glDeleteShader(glUiVertexShader);
 		glUiVertexShader = -1;
@@ -725,12 +752,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		pitch = client.getCameraPitch();
 
 		final Scene scene = client.getScene();
-		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, this.drawDistance));
 		scene.setDrawDistance(drawDistance);
 	}
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTilePaint paint, int tileZ, int tileX, int tileY,
+							TilePaint paint, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
 		if (paint.getBufferLen() > 0)
@@ -756,7 +783,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTileModel model, int tileZ, int tileX, int tileY,
+							TileModel model, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
 		if (model.getBufferLen() > 0)
@@ -789,8 +816,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// We inject code in the game engine mixin to prevent the client from doing canvas replacement,
 			// so this should not ever be hit
 			log.warn("Canvas invalidated!");
-			shutDown();
-			startUp();
+			try
+			{
+				shutDown();
+				startUp();
+			}
+			catch (Exception e)
+			{
+			}
 			return;
 		}
 
@@ -815,7 +848,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		// Setup anti-aliasing
-		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
+		final AntiAliasingMode antiAliasingMode = this.antiAliasingMode;
 		final boolean aaEnabled = antiAliasingMode != AntiAliasingMode.DISABLED;
 
 		if (aaEnabled)
@@ -830,11 +863,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Re-create fbo
 			if (lastStretchedCanvasWidth != stretchedCanvasWidth
 				|| lastStretchedCanvasHeight != stretchedCanvasHeight
-				|| lastAntiAliasingMode != antiAliasingMode)
+				|| (lastAntiAliasingMode != null
+				&& !lastAntiAliasingMode.equals(antiAliasingMode)))
 			{
 				shutdownSceneFbo();
 
-				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
+				final int maxSamples = glGetInteger(gl);
 				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
 
 				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
@@ -997,40 +1031,77 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
 
+			// Setup anisotropic filtering
+			final AnisotropicFilteringMode anisotropicFilteringMode = this.anisotropicFilteringMode;
+			final boolean afEnabled = anisotropicFilteringMode != AnisotropicFilteringMode.DISABLED;
+
+			if (lastAnisotropicFilteringMode != null && !lastAnisotropicFilteringMode.equals(anisotropicFilteringMode))
+			{
+				if (afEnabled)
+				{
+					switch (anisotropicFilteringMode)
+					{
+						case BILINEAR:
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
+							break;
+						case TRILINEAR:
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+							break;
+						default:
+							final float maxSamples = glGetFloat(gl);
+							final float samples = Math.min(anisotropicFilteringMode.getSamples(), maxSamples);
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+							gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, samples);
+							break;
+					}
+
+					gl.glGenerateMipmap(gl.GL_TEXTURE_2D_ARRAY);
+				}
+				else
+				{
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+				}
+			}
+
+			lastAnisotropicFilteringMode = anisotropicFilteringMode;
+
 			if (client.isStretchedEnabled())
 			{
 				Dimension dim = client.getStretchedDimensions();
 				renderCanvasHeight = dim.height;
 
 				double scaleFactorY = dim.getHeight() / canvasHeight;
-				double scaleFactorX = dim.getWidth()  / canvasWidth;
+				double scaleFactorX = dim.getWidth() / canvasWidth;
 
 				// Pad the viewport a little because having ints for our viewport dimensions can introduce off-by-one errors.
 				final int padding = 1;
 
 				// Ceil the sizes because even if the size is 599.1 we want to treat it as size 600 (i.e. render to the x=599 pixel).
 				renderViewportHeight = (int) Math.ceil(scaleFactorY * (renderViewportHeight)) + padding * 2;
-				renderViewportWidth  = (int) Math.ceil(scaleFactorX * (renderViewportWidth )) + padding * 2;
+				renderViewportWidth = (int) Math.ceil(scaleFactorX * (renderViewportWidth)) + padding * 2;
 
 				// Floor the offsets because even if the offset is 4.9, we want to render to the x=4 pixel anyway.
-				renderHeightOff      = (int) Math.floor(scaleFactorY * (renderHeightOff)) - padding;
-				renderWidthOff       = (int) Math.floor(scaleFactorX * (renderWidthOff )) - padding;
+				renderHeightOff = (int) Math.floor(scaleFactorY * (renderHeightOff)) - padding;
+				renderWidthOff = (int) Math.floor(scaleFactorX * (renderWidthOff)) - padding;
 			}
 
 			glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
 
 			gl.glUseProgram(glProgram);
 
-			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
-			final int fogDepth = config.fogDepth();
+			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, this.drawDistance));
+			final int fogDepth = this.fogDepth;
+			float effectiveDrawDistance = Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance);
 			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
 			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
-			gl.glUniform1i(uniFogDepth, fogDepth);
+			gl.glUniform1f(uniFogDepth, this.fogDepth * 0.01f * effectiveDrawDistance);
+			gl.glUniform1f(uniFogCornerRadius, this.fogCircularity * 0.01f * effectiveDrawDistance);
+			gl.glUniform1f(uniFogDensity, this.fogDensity * 0.1f);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
-			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
+			gl.glUniform1f(uniSmoothBanding, this.smoothBanding ? 0f : 1f);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
@@ -1192,13 +1263,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private Image screenshot()
 	{
-		int width  = client.getCanvasWidth();
+		int width = client.getCanvasWidth();
 		int height = client.getCanvasHeight();
 
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();
-			width  = dim.width;
+			width = dim.width;
 			height = dim.height;
 		}
 
@@ -1233,8 +1304,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		textureManager.animate(texture, diff);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -1287,7 +1357,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	/**
 	 * Check is a model is visible and should be drawn.
 	 */
-	private boolean isVisible(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int _x, int _y, int _z, long hash)
+	private boolean isNotVisible(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int _x, int _y, int _z, long hash)
 	{
 		final int XYZMag = model.getXYZMag();
 		final int zoom = client.get3dZoom();
@@ -1318,18 +1388,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						int var21 = (pitchCos * modelHeight >> 16) + var19;
 						int var22 = (var18 - var21) * zoom;
-						return var22 / var14 < Rasterizer3D_clipMidY2;
+						return var22 / var14 >= Rasterizer3D_clipMidY2;
 					}
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**
-	 * Draw a renderable in the scene
+	 * Draw a entity in the scene
 	 *
-	 * @param renderable
+	 * @param entity
 	 * @param orientation
 	 * @param pitchSin
 	 * @param pitchCos
@@ -1341,17 +1411,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 * @param hash
 	 */
 	@Override
-	public void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+	public void draw(Entity entity, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
 		// Model may be in the scene buffer
-		if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
+		if (entity instanceof Model && ((Model) entity).getSceneId() == sceneUploader.sceneId)
 		{
-			Model model = (Model) renderable;
+			Model model = (Model) entity;
 
 			model.calculateBoundsCylinder();
 			model.calculateExtreme(orientation);
 
-			if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
+			if (isNotVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
 			{
 				return;
 			}
@@ -1360,6 +1430,35 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
 			int uvOffset = model.getUvBufferOffset();
+			boolean hasUv = model.getFaceTextures() != null;
+
+			// Speed hack: the scene uploader splits up large models with no priorities
+			// based on face height, and then we sort each smaller set of faces
+			if (tc > SMALL_TRIANGLE_COUNT && model.getFaceRenderPriorities() == null)
+			{
+				int left = tc;
+				int off = 0;
+				while (left > 0)
+				{
+					tc = Math.min(SMALL_TRIANGLE_COUNT, left);
+
+					GpuIntBuffer b = bufferForTriangles(tc);
+					b.ensureCapacity(8);
+					IntBuffer buffer = b.getBuffer();
+					buffer.put(model.getBufferOffset() + off);
+					buffer.put(hasUv ? uvOffset + off : -1);
+					buffer.put(tc);
+					buffer.put(targetBufferOffset);
+					buffer.put(FLAG_SCENE_BUFFER | (model.getRadius() << 12) | orientation);
+					buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
+
+					targetBufferOffset += tc * 3;
+
+					off += tc * 3;
+					left -= tc;
+				}
+				return;
+			}
 
 			GpuIntBuffer b = bufferForTriangles(tc);
 
@@ -1377,16 +1476,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			// Temporary model (animated or otherwise not a static Model on the scene)
-			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
+			Model model = entity instanceof Model ? (Model) entity : entity.getModel();
 			if (model != null)
 			{
-				// Apply height to renderable from the model
+				// Apply height to entity from the model
 				model.setModelHeight(model.getModelHeight());
 
 				model.calculateBoundsCylinder();
 				model.calculateExtreme(orientation);
 
-				if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
+				if (isNotVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
 				{
 					return;
 				}
@@ -1434,7 +1533,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private GpuIntBuffer bufferForTriangles(int triangles)
 	{
-		if (triangles < SMALL_TRIANGLE_COUNT)
+		if (triangles <= SMALL_TRIANGLE_COUNT)
 		{
 			++smallModels;
 			return modelBufferSmall;

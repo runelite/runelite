@@ -115,10 +115,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "removePVPWorld",
+		name = "remove Hop-to menu option (PVP)",
+		description = "removes Hop-to menu option for pvp worlds",
+		position = 7
+	)
+	default boolean removePVPWorld()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 7
+		position = 8
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
@@ -129,7 +140,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 7
+		position = 9
 	)
 	default boolean displayPing()
 	{

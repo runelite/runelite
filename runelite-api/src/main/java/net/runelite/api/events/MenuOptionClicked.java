@@ -24,8 +24,11 @@
  */
 package net.runelite.api.events;
 
+import lombok.AccessLevel;
 import lombok.Data;
-import net.runelite.api.MenuAction;
+import lombok.Setter;
+import net.runelite.api.MenuOpcode;
+import net.runelite.api.MenuEntry;
 
 /**
  * An event where a menu option has been clicked.
@@ -39,38 +42,96 @@ import net.runelite.api.MenuAction;
  * it seems that this event still triggers with the "Cancel" action.
  */
 @Data
-public class MenuOptionClicked
+public class MenuOptionClicked implements Event
 {
+	public MenuOptionClicked(MenuEntry entry)
+	{
+		menuEntry = entry;
+		authentic = true;
+	}
+
+	public MenuOptionClicked(MenuEntry entry, boolean authentic, int mouseButton)
+	{
+		menuEntry = entry;
+		this.authentic = authentic;
+		this.mouseButton = mouseButton;
+	}
+
 	/**
-	 * The action parameter used in the click.
+	 * The actual MenuEntry object representing what was clicked
 	 */
-	private int actionParam;
+	private MenuEntry menuEntry;
+
 	/**
 	 * The option text added to the menu.
 	 */
-	private String menuOption;
+	public String getOption()
+	{
+		return menuEntry.getOption();
+	}
+
 	/**
 	 * The target of the action.
 	 */
-	private String menuTarget;
+	public String getTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
 	/**
-	 * The action performed.
+	 * MenuOpcode but int-ish
 	 */
-	private MenuAction menuAction;
+	public int getOpcode()
+	{
+		return menuEntry.getOpcode();
+	}
+
 	/**
 	 * The ID of the object, actor, or item that the interaction targets.
 	 */
-	private int id;
+	public int getIdentifier()
+	{
+		return menuEntry.getIdentifier();
+	}
+
 	/**
-	 * The ID of the widget where the menu was clicked.
-	 *
-	 * @see net.runelite.api.widgets.WidgetID
+	 * The action parameter used in the click.
 	 */
-	private int widgetId;
+	public int getActionParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
+	/**
+	 * shit docs
+	 */
+	public int getActionParam1()
+	{
+		return menuEntry.getParam1();
+	}
+
+	public boolean isForceLeftClick()
+	{
+		return menuEntry.isForceLeftClick();
+	}
+
+	/**
+	 * The action performed.
+	 */
+	public MenuOpcode getMenuOpcode()
+	{
+		return MenuOpcode.of(getOpcode());
+	}
+
 	/**
 	 * Whether or not the event has been consumed by a subscriber.
 	 */
 	private boolean consumed;
+
+	/**
+	 * The mouse button will be 1 if a non draggable widget was clicked,
+	 */
+	private int mouseButton;
 
 	/**
 	 * Marks the event as having been consumed.
@@ -83,4 +144,10 @@ public class MenuOptionClicked
 	{
 		this.consumed = true;
 	}
+
+	/**
+	 * Whether or not the event is authentic.
+	 */
+	@Setter(AccessLevel.PRIVATE)
+	private boolean authentic;
 }

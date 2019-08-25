@@ -31,6 +31,9 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -48,7 +51,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
@@ -61,6 +64,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show your current attack style as an overlay",
 	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
 )
+@Singleton
 public class AttackStylesPlugin extends Plugin
 {
 	private int attackStyleVarbit = -1;
@@ -86,15 +90,32 @@ public class AttackStylesPlugin extends Plugin
 	@Inject
 	private AttackStylesOverlay overlay;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(AttackStylesConfig.class);
 	}
 
+	// config values
+	@Getter(AccessLevel.PACKAGE)
+	private boolean alwaysShowStyle;
+	private boolean warnForDefence;
+	private boolean warnForAttack;
+	private boolean warnForStrength;
+	private boolean warnForRanged;
+	private boolean warnForMagic;
+	private boolean hideAutoRetaliate;
+	private boolean removeWarnedStyles;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		updateConfig();
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -106,6 +127,7 @@ public class AttackStylesPlugin extends Plugin
 	private void start()
 	{
 		resetWarnings();
+
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
@@ -120,10 +142,21 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
+
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
+	}
+
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
 	@Nullable
@@ -132,13 +165,12 @@ public class AttackStylesPlugin extends Plugin
 		return attackStyle;
 	}
 
-	public boolean isWarnedSkillSelected()
+	boolean isWarnedSkillSelected()
 	{
 		return warnedSkillSelected;
 	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
 		{
@@ -148,8 +180,7 @@ public class AttackStylesPlugin extends Plugin
 		processWidgets();
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() != COMBAT_GROUP_ID)
 		{
@@ -173,11 +204,10 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
-		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
+		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), this.hideAutoRetaliate);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -185,8 +215,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	void onVarbitChanged(VarbitChanged event)
 	{
 		int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		int currentEquippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
@@ -211,11 +240,12 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{
+			updateConfig();
+
 			boolean enabled = event.getNewValue().equals("true");
 			switch (event.getKey())
 			{
@@ -242,13 +272,25 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	private void updateConfig()
+	{
+		this.alwaysShowStyle = config.alwaysShowStyle();
+		this.warnForDefence = config.warnForDefence();
+		this.warnForAttack = config.warnForAttack();
+		this.warnForStrength = config.warnForStrength();
+		this.warnForRanged = config.warnForRanged();
+		this.warnForMagic = config.warnForMagic();
+		this.hideAutoRetaliate = config.hideAutoRetaliate();
+		this.removeWarnedStyles = config.removeWarnedStyles();
+	}
+
 	private void resetWarnings()
 	{
-		updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
-		updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
-		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
-		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+		updateWarnedSkills(this.warnForAttack, Skill.ATTACK);
+		updateWarnedSkills(this.warnForStrength, Skill.STRENGTH);
+		updateWarnedSkills(this.warnForDefence, Skill.DEFENCE);
+		updateWarnedSkills(this.warnForRanged, Skill.RANGED);
+		updateWarnedSkills(this.warnForMagic, Skill.MAGIC);
 	}
 
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
@@ -290,16 +332,16 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (warnedSkills.contains(skill))
 				{
-					if (weaponSwitch)
-					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
-					}
+//					if (weaponSwitch)
+//					{
+//						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
+//					}
 					warnedSkillSelected = true;
 					break;
 				}
 			}
 		}
-		hideWarnedStyles(config.removeWarnedStyles());
+		hideWarnedStyles(this.removeWarnedStyles);
 	}
 
 	private void hideWarnedStyles(boolean enabled)

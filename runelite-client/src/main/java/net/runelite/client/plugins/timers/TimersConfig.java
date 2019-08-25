@@ -44,7 +44,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		keyName = "showAntipoison",
 		name = "Antipoison/Venom timers",
-		description = "Configures whether timers for Antipoision, Antidoe, Antivenom are is displayed"
+		description = "Configures whether timers for poison and venom protection are displayed"
 	)
 	default boolean showAntiPoison()
 	{
@@ -187,6 +187,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether god wars altar timer is displayed"
 	)
 	default boolean showGodWarsAltar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSkull",
+		name = "Skull timer",
+		description = "Configures whether skull timer is displayed"
+	)
+	default boolean showSkull()
 	{
 		return true;
 	}

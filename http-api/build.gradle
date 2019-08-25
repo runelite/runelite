@@ -1,0 +1,31 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+description = 'Web API'
+
+dependencies {
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: gson
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: okhttp3
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxjava
+    implementation group: 'org.apache.commons', name: 'commons-csv', version: apacheCommonsCsv
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j
+    implementation project(':runelite-api')
+
+    testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: okhttp3
+    testImplementation group: 'junit', name: 'junit', version: junit
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4j
+}
+
+processResources {
+    from file("src/main/resources/runelite.properties"), {
+        filter(ReplaceTokens, tokens: [
+                "projectver": project.version,
+                "rsver": rsversion.toString(),
+                "gitcommit": gitCommitShort,
+                "gitdirty": gitDirty.toString()
+        ])
+    }
+}

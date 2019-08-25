@@ -26,11 +26,12 @@ package net.runelite.client.plugins.instancemap;
 
 import com.google.inject.Binder;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -43,6 +44,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Instance Map",
 	description = "Add an instanced map, accessible by right-clicking the map button"
 )
+@Singleton
 public class InstanceMapPlugin extends Plugin
 {
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP_OPTION);
@@ -65,6 +67,9 @@ public class InstanceMapPlugin extends Plugin
 	@Inject
 	private MouseManager mouseManager;
 
+	@Inject
+	private EventBus eventBus;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -84,6 +89,8 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		addSubscriptions();
+
 		overlayManager.add(overlay);
 		addCustomOptions();
 		keyManager.registerKeyListener(inputListener);
@@ -94,6 +101,8 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(this);
+
 		overlay.setShowMap(false);
 		overlayManager.remove(overlay);
 		removeCustomOptions();
@@ -102,8 +111,13 @@ public class InstanceMapPlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
+	}
+
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		overlay.onGameStateChange(event);
 	}
@@ -113,8 +127,7 @@ public class InstanceMapPlugin extends Plugin
 		return event.getMenuOption().equals(widgetMenuOption.getMenuOption()) && event.getMenuTarget().equals(widgetMenuOption.getMenuTarget());
 	}
 
-	@Subscribe
-	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
+	private void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() != WORLD_MAP_OPTION)
 		{
@@ -134,24 +147,24 @@ public class InstanceMapPlugin extends Plugin
 		}
 	}
 
-	public void showMap()
+	private void showMap()
 	{
 		overlay.setShowMap(true);
 		openMapOption.setMenuOption("Hide");
 	}
 
-	public void closeMap()
+	void closeMap()
 	{
 		overlay.setShowMap(false);
 		openMapOption.setMenuOption("Show");
 	}
 
-	public void ascendMap()
+	void ascendMap()
 	{
 		overlay.onAscend();
 	}
 
-	public void descendMap()
+	void descendMap()
 	{
 		overlay.onDescend();
 	}

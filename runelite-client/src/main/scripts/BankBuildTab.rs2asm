@@ -1,0 +1,238 @@
+.id                 509
+.int_stack_count    12
+.string_stack_count 0
+.int_var_count      18
+.string_var_count   0
+   iconst                 0
+   istore                 12
+   iload                  11
+   iconst                 0
+   if_icmpeq              LABEL6
+   jump                   LABEL19
+LABEL6:
+   iload                  2
+   iconst                 0
+   if_icmpgt              LABEL10
+   jump                   LABEL19
+LABEL10:
+   invoke                 514
+   iconst                 1
+   if_icmpeq              LABEL14
+   jump                   LABEL19
+LABEL14:
+   iload                  8
+   iconst                 15
+   sconst                 "tabTextSpace" ;
+   runelite_callback                     ;
+   add
+   istore                 12
+   jump                   LABEL21
+LABEL19:
+   iload                  8
+   istore                 12
+LABEL21:
+   iconst                 -1
+   istore                 13
+   iconst                 0
+   istore                 14
+   iconst                 0
+   istore                 15
+   iconst                 0
+   sconst                 "rowIndexInit" ;
+   runelite_callback                     ;
+   istore                 16
+   iconst                 0
+   istore                 17
+LABEL31:
+   iload                  0
+   iload                  1
+   if_icmplt              LABEL35
+   jump                   LABEL107
+LABEL35:
+   iload                  3
+   iload                  0
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL41
+   jump                   LABEL102
+LABEL41:
+   iconst                 95
+   iload                  0
+   inv_getobj
+   istore                 13
+   iload                  13
+   invoke                 279
+   iconst                 1
+   if_icmpeq              LABEL50
+   jump                   LABEL102
+LABEL50:
+   iconst                 0
+   cc_sethide
+   iload                  13
+   iconst                 95
+   iload                  0
+   inv_getnum
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   invoke                 278
+   iload                  15
+   iconst                 1
+   add
+   istore                 15
+   iload                  12
+   iload                  17
+   iconst                 36
+   multiply
+   add
+   istore                 14
+   iconst                 51
+   iload                  16
+   iconst                 36
+   iload                  9
+   add
+   multiply
+   add
+   iload                  14
+   iconst                 0
+   iconst                 0
+   cc_setposition
+   iload                  14
+   iconst                 32
+   add
+   istore                 14
+   iload                  16
+   iload                  10
+   if_icmplt              LABEL91
+   jump                   LABEL96
+LABEL91:
+   iload                  16
+   iconst                 1
+   add
+   sconst                 "rowIndex" ;
+   runelite_callback                 ;
+   istore                 16
+   jump                   LABEL102
+LABEL96:
+   iconst                 0
+   iload                  17
+   iconst                 1
+   add
+   istore                 17
+   sconst                 "rowIndex" ;
+   runelite_callback                 ;
+   istore                 16
+LABEL102:
+   iload                  0
+   iconst                 1
+   add
+   istore                 0
+   jump                   LABEL31
+LABEL107:
+   iload                  14
+   iconst                 0
+   if_icmple              LABEL111
+   jump                   LABEL114
+LABEL111:
+   iload                  8
+   iload                  15
+   return                
+LABEL114:
+   iload                  11
+   iconst                 0
+   if_icmpeq              LABEL118
+   jump                   LABEL189
+LABEL118:
+   iload                  16
+   iconst                 0
+   if_icmpgt              LABEL122
+   jump                   LABEL166
+LABEL122:
+   iload                  3
+   iconst                 816
+   iconst                 9
+   iconst                 2
+   multiply
+   add
+   iload                  2
+   add
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL134
+   jump                   LABEL166
+LABEL134:
+   iconst                 0
+   sconst                 "hideTabText" ;
+   runelite_callback                    ;
+   cc_sethide
+   iconst                 51
+   iload                  16
+   iconst                 36
+   iload                  9
+   add
+   multiply
+   add
+   iload                  14
+   iconst                 32
+   sub
+   iconst                 0
+   iconst                 0
+   cc_setposition
+   iconst                 8
+   iload                  16
+   sub
+   istore                 16
+   iload                  16
+   iconst                 36
+   multiply
+   iload                  16
+   iconst                 1
+   sub
+   iload                  9
+   multiply
+   add
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize
+LABEL166:
+   iload                  12
+   iload                  8
+   if_icmpgt              LABEL170
+   jump                   LABEL189
+LABEL170:
+   iload                  3
+   iconst                 816
+   iconst                 9
+   add
+   iload                  2
+   add
+   iconst                 1
+   sub
+   cc_find
+   iconst                 1
+   if_icmpeq              LABEL182
+   jump                   LABEL189
+LABEL182:
+   iconst                 51
+   iload                  8
+   iconst                 0
+   iconst                 0
+   cc_setposition
+   iconst                 0
+   sconst                 "hideTabText" ;
+   runelite_callback                    ;
+   cc_sethide
+LABEL189:
+   iload                  14
+   iload                  2            ;
+   sconst                 "newBankRow" ;
+   runelite_callback                   ;
+   pop_int                             ;
+   iload                  15
+   return                
+   iconst                 0
+   iconst                 0
+   return                

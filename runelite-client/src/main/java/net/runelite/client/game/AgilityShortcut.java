@@ -26,7 +26,18 @@
 package net.runelite.client.game;
 
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.*;
+import static net.runelite.api.NullObjectID.NULL_25337;
+import static net.runelite.api.NullObjectID.NULL_26371;
+import static net.runelite.api.NullObjectID.NULL_26375;
+import static net.runelite.api.NullObjectID.NULL_26884;
+import static net.runelite.api.NullObjectID.NULL_26886;
+import static net.runelite.api.NullObjectID.NULL_29868;
+import static net.runelite.api.NullObjectID.NULL_29869;
+import static net.runelite.api.NullObjectID.NULL_29870;
+import static net.runelite.api.NullObjectID.NULL_31823;
+import static net.runelite.api.NullObjectID.NULL_31849;
+import static net.runelite.api.NullObjectID.NULL_33327;
+import static net.runelite.api.NullObjectID.NULL_33328;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -74,8 +85,8 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_LOG_BALANCE_RETURN(1, "Log Balance", null, LOG_BALANCE_20884),
 	AGILITY_PYRAMID_ROCKS_WEST(1, "Rocks", null, CLIMBING_ROCKS_11948),
 	CAIRN_ISLE_CLIMBING_ROCKS(1, "Rocks", null, CLIMBING_ROCKS),
-	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG ),
-	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222 ),
+	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
+	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222),
 	RIVER_LUM_GRAPPLE_WEST(8, "Grapple Broken Raft", new WorldPoint(3245, 3179, 0), BROKEN_RAFT),
 	RIVER_LUM_GRAPPLE_EAST(8, "Grapple Broken Raft", new WorldPoint(3258, 3179, 0), BROKEN_RAFT),
 	CORSAIR_COVE_ROCKS(10, "Rocks", new WorldPoint(2545, 2871, 0), ROCKS_31757),
@@ -86,7 +97,7 @@ public enum AgilityShortcut
 	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
 	CORSAIR_COVE_DUNGEON_PILLAR(15, "Pillar Jump", new WorldPoint(1980, 8996, 0), PILLAR_31809),
 	EDGEVILLE_DUNGEON_MONKEYBARS(15, "Monkey Bars", null, MONKEYBARS_23566),
-	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748), // No fixed world map location, but rocks near death plateau have a requirement of 15
+	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748),    // No fixed world map location, but rocks near death plateau have a requirement of 15
 	YANILLE_UNDERWALL_TUNNEL(16, "Underwall Tunnel", new WorldPoint(2574, 3109, 0), HOLE_16520, CASTLE_WALL),
 	YANILLE_WATCHTOWER_TRELLIS(18, "Trellis", null, TRELLIS_20056),
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
@@ -143,7 +154,7 @@ public enum AgilityShortcut
 	ISAFDAR_FOREST_OBSTACLES(56, "Trap", null, DENSE_FOREST_3938, DENSE_FOREST_3939, DENSE_FOREST_3998, DENSE_FOREST_3999, DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE, TRIPWIRE_3921),
 	RELEKKA_EAST_FENCE(57, "Fence", new WorldPoint(2688, 3697, 0), BROKEN_FENCE),
 	YANILLE_DUNGEON_MONKEY_BARS(57, "Monkey Bars", null, MONKEYBARS_23567),
-	PHASMATYS_ECTOPOOL_SHORTCUT(58, "Weathered Wall", null , WEATHERED_WALL, WEATHERED_WALL_16526),
+	PHASMATYS_ECTOPOOL_SHORTCUT(58, "Weathered Wall", null, WEATHERED_WALL, WEATHERED_WALL_16526),
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE(59, "Rocks", new WorldPoint(2345, 3300, 0), ROCKS_16514, ROCKS_16515),
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE_PRIFDDINAS(59, "Rocks", new WorldPoint(3369, 6052, 0), ROCKS_16514, ROCKS_16515),
 	WILDERNESS_GWD_CLIMB_EAST(60, "Rocks", new WorldPoint(2943, 3770, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
@@ -173,16 +184,16 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ROCKS, ROCKS_14106),
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
-	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3713, 3827, 0), HOLE_31481, HOLE_31482),
-	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3715, 3817, 0), HOLE_31481, HOLE_31482),
+	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole", new WorldPoint(3713, 3827, 0), HOLE_31481, HOLE_31482),
+	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole", new WorldPoint(3715, 3817, 0), HOLE_31481, HOLE_31482),
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW),
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371),
 	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375),
-	SLAYER_TOWER_ADVANCED_CHAIN_FIRST(71, "Spiked Chain (Floor 2)", new WorldPoint(3447, 3578, 0), SPIKEY_CHAIN ),
+	SLAYER_TOWER_ADVANCED_CHAIN_FIRST(71, "Spiked Chain (Floor 2)", new WorldPoint(3447, 3578, 0), SPIKEY_CHAIN),
 	SLAYER_TOWER_ADVANCED_CHAIN_SECOND(71, "Spiked Chain (Floor 3)", new WorldPoint(3446, 3576, 0), SPIKEY_CHAIN_16538),
 	STRONGHOLD_SLAYER_CAVE_TUNNEL(72, "Tunnel", new WorldPoint(2431, 9806, 0), TUNNEL_30174, TUNNEL_30175),
 	TROLL_STRONGHOLD_WALL_CLIMB(73, "Rocks", new WorldPoint(2841, 3694, 0), ROCKS_16464),
-	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ROCKS_27984, ROCKS_27985 ),
+	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ROCKS_27984, ROCKS_27985),
 	LAVA_DRAGON_ISLE_JUMP(74, "Stepping Stone", new WorldPoint(3200, 3807, 0), STEPPING_STONE_14918),
 	REVENANT_CAVES_DEMONS_JUMP(75, "Jump", new WorldPoint(3199, 10135, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),

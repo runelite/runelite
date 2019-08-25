@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,46 @@ import net.runelite.api.Tile;
 
 public class RaidRoom
 {
-	public static final int ROOM_MAX_SIZE = 32;
+	static final int ROOM_MAX_SIZE = 32;
+	@Getter(AccessLevel.PACKAGE)
+	private final Tile base;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Type type;
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
+	private Boss boss;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Puzzle puzzle;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private RaidRoom previousRoom;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private RaidRoom nextRoom;
+
+	RaidRoom(final Tile base, final Type type)
+	{
+		this.base = base;
+		this.type = type;
+	}
+
+	@Override
+	public String toString()
+	{
+		switch (type)
+		{
+			case COMBAT:
+				return " " + type.getName() + " - " + boss.getName();
+
+			case PUZZLE:
+				return " " + type.getName() + " - " + puzzle.getName();
+
+			default:
+				return " " + type.getName();
+		}
+	}
 
 	@AllArgsConstructor
 	public enum Type
@@ -117,51 +157,6 @@ public class RaidRoom
 			}
 
 			return null;
-		}
-	}
-
-	@Getter
-	private final Tile base;
-
-	@Getter
-	@Setter
-	private Type type;
-
-	@Getter
-	@Setter
-	private Boss boss;
-
-	@Getter
-	@Setter
-	private Puzzle puzzle;
-
-	@Getter
-	@Setter
-	private RaidRoom previousRoom;
-
-	@Getter
-	@Setter
-	private RaidRoom nextRoom;
-
-	public RaidRoom(Tile base, Type type)
-	{
-		this.base = base;
-		this.type = type;
-	}
-
-	@Override
-	public String toString()
-	{
-		switch (type)
-		{
-			case COMBAT:
-				return "RaidRoom (type: " + type.getName() + ", " + boss.getName() + ")";
-
-			case PUZZLE:
-				return "RaidRoom (type: " + type.getName() + ", " + puzzle.getName() + ")";
-
-			default:
-				return "RaidRoom (type: " + type.getName() + ")";
 		}
 	}
 }

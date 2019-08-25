@@ -31,11 +31,16 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.FontID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -47,7 +52,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
@@ -58,6 +63,7 @@ import net.runelite.client.util.StackFormatter;
 	description = "Modifications to the banking interface",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
 )
+@Singleton
 public class BankPlugin extends Plugin
 {
 	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
@@ -72,10 +78,24 @@ public class BankPlugin extends Plugin
 		Varbits.BANK_TAB_NINE_COUNT
 	);
 
+	private static final List<WidgetInfo> BANK_PINS = ImmutableList.of(
+			WidgetInfo.BANK_PIN_1,
+			WidgetInfo.BANK_PIN_2,
+			WidgetInfo.BANK_PIN_3,
+			WidgetInfo.BANK_PIN_4,
+			WidgetInfo.BANK_PIN_5,
+			WidgetInfo.BANK_PIN_6,
+			WidgetInfo.BANK_PIN_7,
+			WidgetInfo.BANK_PIN_8,
+			WidgetInfo.BANK_PIN_9,
+			WidgetInfo.BANK_PIN_10
+	);
+
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
+	private static final int PIN_FONT_OFFSET = 5;
 
 	@Inject
 	private Client client;
@@ -90,12 +110,16 @@ public class BankPlugin extends Plugin
 	private BankSearch bankSearch;
 
 	@Inject
+	private EventBus eventBus;
+
+	@Inject
 	private ContainerCalculation bankCalculation;
 
 	@Inject
 	private ContainerCalculation seedVaultCalculation;
 
 	private boolean forceRightClickFlag;
+	private boolean largePinNumbers;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -103,15 +127,41 @@ public class BankPlugin extends Plugin
 		return configManager.getConfig(BankConfig.class);
 	}
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGE;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showHA;
+	private boolean showExact;
+	private boolean rightClickBankInventory;
+	private boolean rightClickBankEquip;
+	private boolean rightClickBankLoot;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateConfig();
+		addSubscriptions();
+	}
+
 	@Override
 	protected void shutDown()
 	{
+		eventBus.unregister(this);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 	}
 
-	@Subscribe
-	public void onMenuShouldLeftClick(MenuShouldLeftClick event)
+	private void addSubscriptions()
+	{
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
+		eventBus.subscribe(MenuShouldLeftClick.class, this, this::onMenuShouldLeftClick);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
+		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+	}
+
+	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
 	{
 		if (!forceRightClickFlag)
 		{
@@ -122,9 +172,9 @@ public class BankPlugin extends Plugin
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		for (MenuEntry entry : menuEntries)
 		{
-			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+			if ((entry.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
+				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
+				|| (entry.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -132,20 +182,23 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+		if ((event.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
+			|| (event.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
+			|| (event.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
 		{
 			forceRightClickFlag = true;
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
+		if (event.getEventName().equals("bankPinButtons") && this.largePinNumbers)
+		{
+			updateBankPinSizes();
+		}
+
 		if (!event.getEventName().equals("setBankTitle"))
 		{
 			return;
@@ -165,8 +218,7 @@ public class BankPlugin extends Plugin
 		stringStack[stringStackSize - 1] += strCurrentTab;
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
 		{
@@ -176,8 +228,7 @@ public class BankPlugin extends Plugin
 		updateSeedVaultTotal();
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getContainerId() != InventoryID.SEED_VAULT.getId() || !config.seedVaultValue())
 		{
@@ -197,12 +248,12 @@ public class BankPlugin extends Plugin
 		{
 			strCurrentTab += " (";
 
-			if (config.showHA())
+			if (this.showHA)
 			{
 				strCurrentTab += "EX: ";
 			}
 
-			if (config.showExact())
+			if (this.showExact)
 			{
 				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
 			}
@@ -212,16 +263,16 @@ public class BankPlugin extends Plugin
 			}
 		}
 
-		if (config.showHA() && haPrice != 0)
+		if (this.showHA && haPrice != 0)
 		{
 			strCurrentTab += " (";
 
-			if (config.showGE())
+			if (this.showGE)
 			{
 				strCurrentTab += "HA: ";
 			}
 
-			if (config.showExact())
+			if (this.showExact)
 			{
 				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
 			}
@@ -296,5 +347,60 @@ public class BankPlugin extends Plugin
 		}
 
 		return itemContainer.getItems();
+	}
+
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("bank"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
+
+	private void updateBankPinSizes()
+	{
+		for (final WidgetInfo widgetInfo : BANK_PINS)
+		{
+			final Widget pin = client.getWidget(widgetInfo);
+			if (pin == null)
+			{
+				continue;
+			}
+
+			final Widget[] children = pin.getDynamicChildren();
+			if (children.length < 2)
+			{
+				continue;
+			}
+
+			final Widget button = children[0];
+			final Widget number = children[1];
+
+			// Change to a bigger font size
+			number.setFontId(FontID.QUILL_CAPS_LARGE);
+			number.setYTextAlignment(0);
+
+			// Change size to match container widths
+			number.setOriginalWidth(button.getWidth());
+			// The large font id text isn't centered, we need to offset it slightly
+			number.setOriginalHeight(button.getHeight() + PIN_FONT_OFFSET);
+			number.setOriginalY(-PIN_FONT_OFFSET);
+			number.setOriginalX(0);
+
+			number.revalidate();
+		}
+	}
+
+	private void updateConfig()
+	{
+		this.showGE = config.showGE();
+		this.showHA = config.showHA();
+		this.largePinNumbers = config.largePinNumbers();
+		this.showExact = config.showExact();
+		this.rightClickBankInventory = config.rightClickBankInventory();
+		this.rightClickBankEquip = config.rightClickBankEquip();
+		this.rightClickBankLoot = config.rightClickBankLoot();
 	}
 }

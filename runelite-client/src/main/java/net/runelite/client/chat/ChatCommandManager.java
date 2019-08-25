@@ -35,7 +35,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
@@ -53,8 +52,10 @@ public class ChatCommandManager implements ChatboxInputListener
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
-		eventBus.register(this);
+		// eventBus.register(this);
 		commandManager.register(this);
+
+		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
 
 	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)
@@ -82,8 +83,7 @@ public class ChatCommandManager implements ChatboxInputListener
 		commands.remove(command.toLowerCase());
 	}
 
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
