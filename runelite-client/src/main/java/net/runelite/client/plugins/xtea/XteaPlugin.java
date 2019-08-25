@@ -58,13 +58,15 @@ public class XteaPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+		//todo re-enable when we have our server back up.
+		/*eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);*/
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
+		//todo re-enable when we have our server back up.
+		/*eventBus.unregister(this);*/
 	}
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
