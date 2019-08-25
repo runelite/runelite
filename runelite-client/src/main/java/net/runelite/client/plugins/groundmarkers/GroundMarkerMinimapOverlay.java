@@ -89,6 +89,18 @@ class GroundMarkerMinimapOverlay extends Overlay
 					break;
 				case 4:
 					color = plugin.getMarkerColor4();
+					break;
+				case 5:
+					color = plugin.getMarkerColor5();
+					break;
+				case 6:
+					color = plugin.getMarkerColor6();
+					break;
+				case 7:
+					color = plugin.getMarkerColor7();
+					break;
+				case 8:
+					color = plugin.getMarkerColor8();
 			}
 
 			int opacity = (int) floor(plugin.getMinimapOverlayOpacity() * 2.55);
