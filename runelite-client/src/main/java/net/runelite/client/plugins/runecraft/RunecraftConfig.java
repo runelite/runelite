@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showPouch",
+		name = "Show Pouch count",
+		description = "Configures whether the pouch ess count is displayed",
+		position = 1
+	)
+	default boolean showPouch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showRifts",
 		name = "Show Rifts in Abyss",
 		description = "Configures whether the rifts in the abyss will be displayed",
@@ -218,4 +229,22 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "pouchState",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int pouchState()
+	{
+		return 65535;
+	}
+
+	@ConfigItem(
+		keyName = "pouchState",
+		name = "",
+		description = ""
+	)
+	void pouchState(int value);
 }
