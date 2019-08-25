@@ -167,6 +167,8 @@ public class WorldHopperPlugin extends Plugin
 	private boolean ping;
 	private boolean showWorldHopMessage;
 	private SubscriptionFilterMode subscriptionFilter;
+	private boolean menuOption;
+	private boolean removePVPWorld;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displayPing;
 
@@ -230,7 +232,7 @@ public class WorldHopperPlugin extends Plugin
 
 		overlayManager.add(worldHopperOverlay);
 
-		panel.setFilterMode(config.subscriptionFilter());
+		panel.setFilterMode(this.subscriptionFilter);
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -380,7 +382,7 @@ public class WorldHopperPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.menuOption())
+		if (!this.menuOption)
 		{
 			return;
 		}
@@ -416,12 +418,13 @@ public class WorldHopperPlugin extends Plugin
 
 			World currentWorld = worldResult.findWorld(client.getWorld());
 			World targetWorld = worldResult.findWorld(player.getWorld());
-			if (targetWorld == null || currentWorld == null
-				|| (!currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
+			if ((targetWorld == null || currentWorld == null)
+				|| (this.removePVPWorld && !currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
 			{
 				// Disable Hop-to a PVP world from a regular world
 				return;
 			}
+
 
 			final MenuEntry hopTo = new MenuEntry();
 			hopTo.setOption(HOP_TO);
@@ -837,6 +840,8 @@ public class WorldHopperPlugin extends Plugin
 		this.showWorldHopMessage = config.showWorldHopMessage();
 		this.subscriptionFilter = config.subscriptionFilter();
 		this.displayPing = config.displayPing();
+		this.menuOption = config.menuOption();
+		this.removePVPWorld = config.removePVPWorld();
 	}
 
 	/**
@@ -844,7 +849,7 @@ public class WorldHopperPlugin extends Plugin
 	 */
 	private void pingNextWorld()
 	{
-		if (worldResult == null || !config.showSidebar() || !config.ping())
+		if (worldResult == null || !this.showSidebar || !this.ping)
 		{
 			return;
 		}
@@ -864,7 +869,7 @@ public class WorldHopperPlugin extends Plugin
 		World world = worlds.get(currentWorld++);
 
 		// If we are displaying the ping overlay, there is a separate scheduled task for the current world
-		boolean displayPing = config.displayPing() && client.getGameState() == GameState.LOGGED_IN;
+		boolean displayPing = this.displayPing && client.getGameState() == GameState.LOGGED_IN;
 		if (displayPing && client.getWorld() == world.getId())
 		{
 			return;
@@ -881,7 +886,7 @@ public class WorldHopperPlugin extends Plugin
 	private void pingCurrentWorld()
 	{
 		// There is no reason to ping the current world if not logged in, as the overlay doesn't draw
-		if (worldResult == null || !config.displayPing() || client.getGameState() != GameState.LOGGED_IN)
+		if (worldResult == null || !this.displayPing || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
