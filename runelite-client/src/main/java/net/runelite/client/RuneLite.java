@@ -70,6 +70,7 @@ import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.bootstrap.Bootstrapper;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -165,6 +166,8 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
+		parser.accepts("bootstrap", "Builds a bootstrap with locally built jars");
+		parser.accepts("bootstrap-staging", "Builds a testing bootstrap with locally built jars");
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
 			.withRequiredArg().ofType(String.class);
@@ -186,6 +189,16 @@ public class RuneLite
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
 
+		if (options.has("bootstrap"))
+		{
+			Bootstrapper.main(false);
+			System.exit(0);
+		}
+		if (options.has("bootstrap-staging"))
+		{
+			Bootstrapper.main(true);
+			System.exit(0);
+		}
 		if (options.has("proxy"))
 		{
 			String[] proxy = options.valueOf(proxyInfo).split(":");
