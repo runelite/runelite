@@ -27,12 +27,16 @@ package net.runelite.client.plugins.shiftwalker;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.AbstractComparableEntry;
@@ -40,6 +44,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.HotkeyListener;
 
 /**
  * Shift Walker Plugin. Credit to MenuEntrySwapperPlugin for code some code structure used here.
@@ -82,7 +87,7 @@ public class ShiftWalkerPlugin extends Plugin
 		{
 			return
 				entry.getOpcode() == MenuOpcode.WALK.getId() ||
-				entry.getOpcode() == MenuOpcode.WALK.getId() + MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
+					entry.getOpcode() == MenuOpcode.WALK.getId() + MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
 		}
 	};
 
@@ -119,27 +124,24 @@ public class ShiftWalkerPlugin extends Plugin
 
 			return
 				opcode >= MenuOpcode.GROUND_ITEM_FIRST_OPTION.getId() &&
-				opcode <= MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
+					opcode <= MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
 		}
 	};
 
-	private static final String EVENTBUS_THING = "shiftwalker_shift";
-
+	private static final String EVENTBUS_THING = "shiftwalker shift";
+	private static final String SHIFT_CHECK = "shiftwalker hotkey check";
+	@Inject
+	private Client client;
 	@Inject
 	private ShiftWalkerConfig config;
-
-	@Inject
-	private ShiftWalkerInputListener inputListener;
-
 	@Inject
 	private MenuManager menuManager;
-
 	@Inject
 	private KeyManager keyManager;
-
 	@Inject
 	private EventBus eventBus;
-
+	@Setter(AccessLevel.PRIVATE)
+	private boolean hotkeyActive;
 	private boolean shiftWalk;
 	private boolean shiftLoot;
 
@@ -149,6 +151,23 @@ public class ShiftWalkerPlugin extends Plugin
 		return configManager.getConfig(ShiftWalkerConfig.class);
 	}
 
+	private final HotkeyListener shift = new HotkeyListener(() -> Keybind.SHIFT)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			startPrioritizing();
+			setHotkeyActive(true);
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			stopPrioritizing();
+			setHotkeyActive(false);
+		}
+	};
+
 	@Override
 	public void startUp()
 	{
@@ -156,16 +175,14 @@ public class ShiftWalkerPlugin extends Plugin
 		this.shiftLoot = config.shiftLoot();
 
 		addSubscriptions();
-
-		keyManager.registerKeyListener(inputListener);
+		keyManager.registerKeyListener(shift);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		eventBus.unregister(this);
-
-		keyManager.unregisterKeyListener(inputListener);
+		keyManager.unregisterKeyListener(shift);
 	}
 
 	private void addSubscriptions()
@@ -182,9 +199,31 @@ public class ShiftWalkerPlugin extends Plugin
 		}
 	}
 
-	void startPrioritizing()
+	private void hotkeyCheck(ClientTick event)
+	{
+		if (hotkeyActive)
+		{
+			int i = 0;
+			for (boolean bol : client.getPressedKeys())
+			{
+				if (bol)
+				{
+					i++;
+				}
+			}
+			if (i == 0)
+			{
+				stopPrioritizing();
+				setHotkeyActive(false);
+				eventBus.unregister(SHIFT_CHECK);
+			}
+		}
+	}
+
+	private void startPrioritizing()
 	{
 		eventBus.subscribe(ClientTick.class, EVENTBUS_THING, this::addEntries);
+		eventBus.subscribe(ClientTick.class, SHIFT_CHECK, this::hotkeyCheck);
 	}
 
 	private void addEntries(ClientTick event)
@@ -201,12 +240,12 @@ public class ShiftWalkerPlugin extends Plugin
 		eventBus.unregister(EVENTBUS_THING);
 	}
 
-	void stopPrioritizing()
+	private void stopPrioritizing()
 	{
-		eventBus.subscribe(ClientTick.class, EVENTBUS_THING, this::remEntries);
+		eventBus.subscribe(ClientTick.class, EVENTBUS_THING, this::removeEntries);
 	}
 
-	private void remEntries(ClientTick c)
+	private void removeEntries(ClientTick event)
 	{
 		menuManager.removePriorityEntry(TAKE);
 		menuManager.removePriorityEntry(WALK);
