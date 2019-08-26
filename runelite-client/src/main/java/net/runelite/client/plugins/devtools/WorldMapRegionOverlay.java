@@ -56,7 +56,8 @@ class WorldMapRegionOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ABOVE_MAP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setAboveMap(true);
 		this.client = client;
 		this.plugin = plugin;
 	}

@@ -102,7 +102,8 @@ class DevToolsOverlay extends Overlay
 	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_MAP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setAboveMap(true);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
