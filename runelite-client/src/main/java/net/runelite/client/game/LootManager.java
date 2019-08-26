@@ -168,14 +168,14 @@ public class LootManager
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
-		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
-		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+		log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
