@@ -252,6 +252,21 @@ public class IconTextField extends JPanel
 		textField.removeKeyListener(keyListener);
 	}
 
+	@Override
+	public void addMouseListener(MouseListener mouseListener)
+	{
+		clearButton.addMouseListener(mouseListener);
+	}
+
+	public void addMouseListener(Consumer<MouseEvent> mouseEventConsumer)
+	{
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e) { mouseEventConsumer.accept(e); }
+		});
+	}
+
 	public void setEditable(boolean editable)
 	{
 		textField.setEditable(editable);

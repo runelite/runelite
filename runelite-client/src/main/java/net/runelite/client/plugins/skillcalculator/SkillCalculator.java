@@ -89,6 +89,7 @@ class SkillCalculator extends JPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addKeyListener(e -> onSearch());
+		searchBar.addMouseListener(e -> onClear());
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
@@ -409,4 +410,12 @@ class SkillCalculator extends JPanel
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
 
+	private void onClear()
+	{
+		uiActionSlots.forEach(slot ->
+		{
+			super.add(slot);
+			revalidate();
+		});
+	}
 }
