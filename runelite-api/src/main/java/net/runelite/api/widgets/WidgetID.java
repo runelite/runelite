@@ -52,7 +52,7 @@ public class WidgetID
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
-	public static final int DIARY_GROUP_ID = 259;
+	public static final int ACHIEVEMENT_DIARY_GROUP_ID = 259;
 	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
@@ -842,5 +842,15 @@ public class WidgetID
 		static final int MUSIC_SLIDER = 44;
 		static final int SOUND_EFFECT_SLIDER = 50;
 		static final int AREA_SOUND_SLIDER = 56;
+	}
+
+	static class AchievementDiary
+	{
+		static final int CONTAINER = 2;
+	}
+
+	static class Skills
+	{
+		static final int CONTAINER = 0;
 	}
 }
