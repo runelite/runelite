@@ -218,7 +218,7 @@ public class ScreenshotPlugin extends Plugin
 	private boolean screenshotLevels;
 	private boolean screenshotKingdom;
 	private boolean screenshotPet;
-	private boolean uploadScreenshot;
+	private UploadStyle uploadScreenshot;
 	private boolean screenshotKills;
 	private boolean screenshotBossKills;
 	private boolean screenshotFriendDeath;
@@ -753,10 +753,22 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			ImageIO.write(screenshot, "PNG", screenshotFile);
+			UploadStyle uploadStyle = this.uploadScreenshot;
 
-			if (this.uploadScreenshot)
+			if (uploadStyle == UploadStyle.IMGUR)
 			{
 				uploadScreenshot(screenshotFile);
+			}
+			else if (uploadStyle == UploadStyle.CLIPBOARD)
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+				clipboard.setContents(transferableBufferedImage, null);
+
+				if (this.notifyWhenTaken)
+				{
+					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+				}
 			}
 			else if (this.notifyWhenTaken)
 			{

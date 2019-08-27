@@ -185,14 +185,13 @@ public class RunecraftPlugin extends Plugin
 		}
 
 		updateConfig();
+		abyssOverlay.updateConfig();
 
 		if (event.getKey().equals("essPouch") || event.getKey().equals("Lavas"))
 		{
 			removeSwaps();
 			handleSwaps();
 		}
-
-		abyssOverlay.updateConfig();
 	}
 
 	private void onChatMessage(ChatMessage event)
