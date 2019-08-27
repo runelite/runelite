@@ -61,7 +61,7 @@ import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Singleton
 public class RaidsOverlay extends Overlay

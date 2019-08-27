@@ -37,7 +37,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.RuneLitePlusConfig;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;

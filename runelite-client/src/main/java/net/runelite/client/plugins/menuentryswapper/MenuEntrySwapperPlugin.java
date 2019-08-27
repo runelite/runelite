@@ -106,7 +106,7 @@ import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.util.HotkeyListener;
 import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(

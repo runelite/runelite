@@ -84,7 +84,7 @@ import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @PluginDescriptor(
 	name = "Bank Tags",

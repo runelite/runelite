@@ -48,7 +48,7 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Getter
 @RequiredArgsConstructor

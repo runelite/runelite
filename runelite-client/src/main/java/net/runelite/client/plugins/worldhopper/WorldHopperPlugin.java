@@ -83,7 +83,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.client.util.ping.Ping;
 import net.runelite.http.api.worlds.World;

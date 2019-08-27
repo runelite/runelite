@@ -26,7 +26,6 @@ package net.runelite.api;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.runelite.api.util.Text;
@@ -84,6 +83,7 @@ public class MenuEntry
 		this.param0 = param0;
 		this.param1 = param1;
 		this.forceLeftClick = forceLeftClick;
+		this.standardizedTarget = Text.standardize(target, true);
 	}
 
 	public static MenuEntry copy(MenuEntry src)
@@ -102,19 +102,8 @@ public class MenuEntry
 	public void setTarget(String target)
 	{
 		this.target = target;
-		this.standardizedTarget = null;
+		this.standardizedTarget = Text.standardize(target, true);
 	}
 
-	@Getter(AccessLevel.NONE)
 	private String standardizedTarget;
-
-	public String getStandardizedTarget()
-	{
-		if (standardizedTarget == null)
-		{
-			standardizedTarget = Text.standardize(target, true);
-		}
-
-		return standardizedTarget;
-	}
 }

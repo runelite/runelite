@@ -54,7 +54,7 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import static net.runelite.client.util.StackFormatter.formatNumber;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Singleton
 public class PlayerIndicatorsOverlay extends Overlay

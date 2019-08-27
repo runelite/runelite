@@ -32,7 +32,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @AllArgsConstructor
 @Getter

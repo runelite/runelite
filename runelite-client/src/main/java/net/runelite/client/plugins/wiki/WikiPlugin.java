@@ -57,7 +57,7 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import okhttp3.HttpUrl;
 
 @Slf4j

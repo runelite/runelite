@@ -80,7 +80,7 @@ import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACK
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @PluginDescriptor(
 	name = "Clan Chat",

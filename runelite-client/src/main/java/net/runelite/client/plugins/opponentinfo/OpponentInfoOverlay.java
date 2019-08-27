@@ -50,7 +50,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
 @Singleton

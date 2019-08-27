@@ -100,7 +100,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(

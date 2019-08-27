@@ -45,7 +45,7 @@ import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Singleton
 public class TagManager

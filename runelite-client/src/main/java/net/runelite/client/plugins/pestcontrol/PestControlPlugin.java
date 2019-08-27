@@ -66,7 +66,7 @@ import net.runelite.client.plugins.pestcontrol.config.HighlightPortalOption;
 import net.runelite.client.plugins.pestcontrol.config.NpcHighlightStyle;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Slf4j
 @PluginDescriptor(

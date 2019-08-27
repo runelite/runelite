@@ -59,7 +59,7 @@ import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequir
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WesternDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequirement;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Slf4j
 @PluginDescriptor(

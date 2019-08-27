@@ -63,7 +63,7 @@ import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Singleton
 @Slf4j

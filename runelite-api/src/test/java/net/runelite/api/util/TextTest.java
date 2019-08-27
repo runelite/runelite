@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.api.util;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -40,6 +40,13 @@ public class TextTest
 		assertEquals("Use Item -> Man", Text.removeTags("Use Item -> Man"));
 		assertEquals("a < b", Text.removeTags("a < b"));
 		assertEquals("Remove no tags", Text.removeTags("Remove no tags"));
+		assertEquals("Zezima", Text.removeTags("<col=ffffff><img=2>Zezima<col=00ffff>  (level-126)", true));
+		assertEquals("", Text.removeTags("<col=ffffff><img=2><col=00ffff>  (level-126)", true));
 	}
 
+	@Test
+	public void toJagexName()
+	{
+		assertEquals("Whoever This Is Lmao", Text.toJagexName("-__- - \u00A0\u00A0 Whoever\uABCD\uABCD\u00A0T\uABBBhis  Is-Lmao"));
+	}
 }

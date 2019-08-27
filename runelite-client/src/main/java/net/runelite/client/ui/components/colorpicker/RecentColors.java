@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.ui.components.colorpicker.RuneliteColorPicker.CONFIG_GROUP;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 final class RecentColors
 {

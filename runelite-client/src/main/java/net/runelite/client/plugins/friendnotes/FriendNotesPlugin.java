@@ -52,7 +52,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Slf4j
 @PluginDescriptor(

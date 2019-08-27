@@ -58,7 +58,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Slf4j
 public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener

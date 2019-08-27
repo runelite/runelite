@@ -61,7 +61,7 @@ import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolver;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @PluginDescriptor(
 	name = "Puzzle Solver",

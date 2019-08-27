@@ -53,7 +53,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 class LootTrackerBox extends JPanel
 {

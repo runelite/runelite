@@ -40,7 +40,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PartyChanged;
-import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
+import static net.runelite.api.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
 import net.runelite.http.api.ws.messages.party.PartyChatMessage;

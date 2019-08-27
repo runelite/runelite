@@ -33,12 +33,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -60,13 +62,21 @@ import org.apache.commons.lang3.RandomUtils;
 @Slf4j
 public class BlackjackPlugin extends Plugin
 {
+	private static final int POLLNIVNEACH_REGION = 13358;
+
 	private static final String SUCCESS_BLACKJACK = "You smack the bandit over the head and render them unconscious.";
 	private static final String FAILED_BLACKJACK = "Your blow only glances off the bandit's head.";
-	private static final int POLLNIVNEACH_REGION = 13358;
+
 	private static final String PICKPOCKET = "Pickpocket";
 	private static final String KNOCK_OUT = "Knock-out";
 	private static final String BANDIT = "Bandit";
 	private static final String MENAPHITE = "Menaphite Thug";
+
+	private static final AbstractComparableEntry PICKPOCKET_BANDIT = new BJComparableEntry(BANDIT, true);
+	private static final AbstractComparableEntry KNOCKOUT_BANDIT = new BJComparableEntry(BANDIT, false);
+	private static final AbstractComparableEntry PICKPOCKET_MENAPHITE = new BJComparableEntry(MENAPHITE, true);
+	private static final AbstractComparableEntry KNOCKOUT_MENAPHITE = new BJComparableEntry(MENAPHITE, false);
+
 	@Inject
 	private Client client;
 	@Inject
@@ -90,18 +100,18 @@ public class BlackjackPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		menuManager.addPriorityEntry(KNOCK_OUT, BANDIT).setPriority(100);
-		menuManager.addPriorityEntry(KNOCK_OUT, MENAPHITE).setPriority(100);
+		menuManager.addPriorityEntry(KNOCKOUT_BANDIT);
+		menuManager.addPriorityEntry(KNOCKOUT_MENAPHITE);
 		this.pickpocketOnAggro = config.pickpocketOnAggro();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		menuManager.removePriorityEntry(PICKPOCKET, BANDIT);
-		menuManager.removePriorityEntry(PICKPOCKET, MENAPHITE);
-		menuManager.removePriorityEntry(KNOCK_OUT, BANDIT);
-		menuManager.removePriorityEntry(KNOCK_OUT, MENAPHITE);
+		menuManager.removePriorityEntry(PICKPOCKET_BANDIT);
+		menuManager.removePriorityEntry(PICKPOCKET_MENAPHITE);
+		menuManager.removePriorityEntry(KNOCKOUT_BANDIT);
+		menuManager.removePriorityEntry(KNOCKOUT_MENAPHITE);
 		eventBus.unregister(this);
 		eventBus.unregister("poll");
 	}
@@ -131,10 +141,10 @@ public class BlackjackPlugin extends Plugin
 	{
 		if (client.getTickCount() >= nextKnockOutTick)
 		{
-			menuManager.removePriorityEntry(PICKPOCKET, BANDIT);
-			menuManager.removePriorityEntry(PICKPOCKET, MENAPHITE);
-			menuManager.addPriorityEntry(KNOCK_OUT, BANDIT).setPriority(100);
-			menuManager.addPriorityEntry(KNOCK_OUT, MENAPHITE).setPriority(100);
+			menuManager.removePriorityEntry(PICKPOCKET_BANDIT);
+			menuManager.removePriorityEntry(PICKPOCKET_MENAPHITE);
+			menuManager.addPriorityEntry(KNOCKOUT_BANDIT);
+			menuManager.addPriorityEntry(KNOCKOUT_MENAPHITE);
 		}
 	}
 
@@ -142,14 +152,37 @@ public class BlackjackPlugin extends Plugin
 	{
 		final String msg = event.getMessage();
 
-		if (event.getType() == ChatMessageType.SPAM && msg.equals(SUCCESS_BLACKJACK) ^ (msg.equals(FAILED_BLACKJACK) && this.pickpocketOnAggro))
+		if (event.getType() == ChatMessageType.SPAM && (msg.equals(SUCCESS_BLACKJACK) || (msg.equals(FAILED_BLACKJACK) && this.pickpocketOnAggro)))
 		{
-			menuManager.removePriorityEntry(KNOCK_OUT, BANDIT);
-			menuManager.removePriorityEntry(KNOCK_OUT, MENAPHITE);
-			menuManager.addPriorityEntry(PICKPOCKET, BANDIT).setPriority(100);
-			menuManager.addPriorityEntry(PICKPOCKET, MENAPHITE).setPriority(100);
+			menuManager.removePriorityEntry(KNOCKOUT_BANDIT);
+			menuManager.removePriorityEntry(KNOCKOUT_MENAPHITE);
+			menuManager.addPriorityEntry(PICKPOCKET_BANDIT);
+			menuManager.addPriorityEntry(PICKPOCKET_MENAPHITE);
 			final int ticks = this.random ? RandomUtils.nextInt(3, 4) : 4;
 			nextKnockOutTick = client.getTickCount() + ticks;
+		}
+	}
+
+	private static class BJComparableEntry extends AbstractComparableEntry
+	{
+		private BJComparableEntry(final String npc, final boolean pickpocket)
+		{
+			if (!BANDIT.equals(npc) && !MENAPHITE.equals(npc))
+			{
+				throw new IllegalArgumentException("Only bandits or menaphites are valid");
+			}
+
+			this.setTarget(npc.toLowerCase());
+			this.setOption(pickpocket ? PICKPOCKET : KNOCK_OUT);
+			this.setPriority(100);
+		}
+
+		@Override
+		public boolean matches(MenuEntry entry)
+		{
+			return
+				entry.getStandardizedTarget().equals(this.getTarget()) &&
+				entry.getOption().equalsIgnoreCase(this.getOption());
 		}
 	}
 }

@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import joptsimple.internal.Strings;
 import lombok.EqualsAndHashCode;
 import net.runelite.api.MenuEntry;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)

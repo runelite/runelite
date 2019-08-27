@@ -23,7 +23,7 @@ import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
-import net.runelite.client.util.Text;
+import net.runelite.api.util.Text;
 
 @Slf4j
 public class MaidenHandler extends RoomHandler
