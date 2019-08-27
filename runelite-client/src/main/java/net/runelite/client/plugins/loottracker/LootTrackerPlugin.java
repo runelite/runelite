@@ -164,7 +164,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean chestLooted;
 
 	private List<String> ignoredItems = new ArrayList<>();
-	private List<String> ignoredNPCs = new ArrayList<>();
+	private List<String> ignoredEvents = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
 
@@ -235,9 +235,9 @@ public class LootTrackerPlugin extends Plugin
 		{
 			switch(event.getKey())
 			{
-				case "ignoredNPCs":
-					ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
-					SwingUtilities.invokeLater(panel::updateIgnoredNPCs);
+				case "ignoredEvents":
+					ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
+					SwingUtilities.invokeLater(panel::updateIgnoredEvents);
 					break;
 				case "ignoredItems":
 					ignoredItems = Text.fromCSV(config.getIgnoredItems());
@@ -251,7 +251,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
-		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
+		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -641,20 +641,20 @@ public class LootTrackerPlugin extends Plugin
 		panel.updateIgnoredItems();
 	}
 
-	void toggleNPC(String name, boolean ignore)
+	void toggleEvent(String name, boolean ignore)
 	{
-		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
+		final Set<String> ignoredEventSet = new HashSet<>(ignoredEvents);
 
 		if (ignore)
 		{
-			ignoredNPCSet.add(name);
+			ignoredEventSet.add(name);
 		}
 		 else
 		{
-			ignoredNPCSet.remove(name);
+			ignoredEventSet.remove(name);
 		}
-		 config.setIgnoreNPCs(Text.toCSV(ignoredNPCSet));
-		 panel.updateIgnoredNPCs();
+		 config.setIgnoreEvents(Text.toCSV(ignoredEventSet));
+		 panel.updateIgnoredEvents();
 	}
 
 	boolean isItemIgnored(String name)
@@ -664,7 +664,7 @@ public class LootTrackerPlugin extends Plugin
 
 	boolean isEventIgnored(String name)
 	{
-		return ignoredNPCs.contains(name);
+		return ignoredEvents.contains(name);
 	}
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)

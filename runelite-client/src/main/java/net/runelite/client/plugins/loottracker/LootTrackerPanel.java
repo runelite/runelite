@@ -468,7 +468,7 @@ class LootTrackerPanel extends PluginPanel
 	 * After an item changed it's ignored state, iterate all the records and make
 	 * sure all items of the same name also get updated
 	 */
-	void updateIgnoredNPCs()
+	void updateIgnoredEvents()
 	{
 		for (LootTrackerRecord r : records)
 		{
@@ -584,13 +584,13 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 
 		// Add Toggle NPC menu item
-		final JMenuItem toggleNPC = new JMenuItem("Toggle NPC");
-		toggleNPC.addActionListener(e -> {
+		final JMenuItem toggleEvent = new JMenuItem("Toggle NPC");
+		toggleEvent.addActionListener(e -> {
 			record.setIgnored(!record.isIgnored());
-			plugin.toggleNPC(record.getTitle(), record.isIgnored());
+			plugin.toggleEvent(record.getTitle(), record.isIgnored());
 		});
 
-		popupMenu.add(toggleNPC);
+		popupMenu.add(toggleEvent);
 
 		// Create details menu
 		final JMenuItem details = new JMenuItem("View details");
