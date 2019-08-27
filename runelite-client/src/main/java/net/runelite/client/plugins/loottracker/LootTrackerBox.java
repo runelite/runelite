@@ -72,18 +72,21 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private boolean isEventHidden;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
-		final BiConsumer<String, Boolean> onItemToggle)
+		final BiConsumer<String, Boolean> onItemToggle,
+		final boolean isEventHidden)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
+		this.isEventHidden = isEventHidden;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -178,6 +181,11 @@ class LootTrackerBox extends JPanel
 		if (kills > 1)
 		{
 			subTitleLabel.setText("x " + kills);
+		}
+
+		if(!hideIgnoredItems && isEventHidden)
+		{
+			applyDimmer(false, logTitle);
 		}
 
 		validate();

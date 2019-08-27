@@ -24,14 +24,22 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Value
+@AllArgsConstructor
 class LootTrackerRecord
 {
+	@Getter
 	private final String title;
+	@Getter
 	private final String subTitle;
+	@Getter
 	private final LootTrackerItem[] items;
+	@Setter
+	@Getter
+	private boolean ignored;
 
 	/**
 	 * Checks if this record matches specified id

@@ -375,17 +375,17 @@ class LootTrackerPanel extends PluginPanel
 	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
 	 * how to display this new data.
 	 */
-	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
+	void add(final String eventName, final int actorLevel, LootTrackerItem[] items, boolean ignored)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, ignored);
 		records.add(record);
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
 		{
 			box.rebuild();
-			updateOverall();
 		}
+		updateOverall();
 	}
 
 	/**
@@ -448,16 +448,33 @@ class LootTrackerPanel extends PluginPanel
 	 * After an item changed it's ignored state, iterate all the records and make
 	 * sure all items of the same name also get updated
 	 */
-	void updateIgnoredRecords()
+	void updateIgnoredItems()
 	{
 		for (LootTrackerRecord r : records)
 		{
 			for (LootTrackerItem item : r.getItems())
 			{
-				if (plugin.isIgnored(item.getName()) != item.isIgnored())
+				if (plugin.isItemIgnored(item.getName()) != item.isIgnored())
 				{
-					item.setIgnored(plugin.isIgnored(item.getName()));
+					item.setIgnored(plugin.isItemIgnored(item.getName()));
 				}
+			}
+		}
+
+		rebuild();
+	}
+
+	/**
+	 * After an item changed it's ignored state, iterate all the records and make
+	 * sure all items of the same name also get updated
+	 */
+	void updateIgnoredNPCs()
+	{
+		for (LootTrackerRecord r : records)
+		{
+			boolean isRecordIgnored = plugin.isEventIgnored(r.getTitle());
+			if(isRecordIgnored != r.isIgnored()) {
+				r.setIgnored(isRecordIgnored);
 			}
 		}
 
@@ -494,7 +511,7 @@ class LootTrackerPanel extends PluginPanel
 	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
-		if (!record.matches(currentView))
+		if (!record.matches(currentView) || (hideIgnoredItems && plugin.isEventIgnored(record.getTitle())))
 		{
 			return null;
 		}
@@ -518,7 +535,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem, record.isIgnored());
 		box.combine(record);
 
 		// Create popup menu
@@ -564,8 +581,16 @@ class LootTrackerPanel extends PluginPanel
 				client.delete(box.getId());
 			}
 		});
-
 		popupMenu.add(reset);
+
+		// Add Toggle NPC menu item
+		final JMenuItem toggleNPC = new JMenuItem("Toggle NPC");
+		toggleNPC.addActionListener(e -> {
+			record.setIgnored(!record.isIgnored());
+			plugin.toggleNPC(record.getTitle(), record.isIgnored());
+		});
+
+		popupMenu.add(toggleNPC);
 
 		// Create details menu
 		final JMenuItem details = new JMenuItem("View details");
@@ -598,7 +623,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerRecord record : records)
 		{
-			if (!record.matches(currentView))
+			if (!record.matches(currentView) || (hideIgnoredItems && record.isIgnored()))
 			{
 				continue;
 			}

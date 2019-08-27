@@ -164,6 +164,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean chestLooted;
 
 	private List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredNPCs = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
 
@@ -232,8 +233,17 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
-			ignoredItems = Text.fromCSV(config.getIgnoredItems());
-			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
+			switch(event.getKey())
+			{
+				case "ignoredNPCs":
+					ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
+					SwingUtilities.invokeLater(panel::updateIgnoredNPCs);
+					break;
+				case "ignoredItems":
+					ignoredItems = Text.fromCSV(config.getIgnoredItems());
+					SwingUtilities.invokeLater(panel::updateIgnoredItems);
+					break;
+			}
 		}
 	}
 
@@ -241,6 +251,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -327,7 +338,8 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+		final boolean ignored = isEventIgnored(name);
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries, ignored));
 
 		if (config.saveLoot())
 		{
@@ -353,7 +365,8 @@ public class LootTrackerPlugin extends Plugin
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+		final boolean ignored = isEventIgnored(name);
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries, ignored));
 
 		if (config.saveLoot())
 		{
@@ -429,7 +442,8 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
+		final boolean ignored = isEventIgnored(eventType);
+		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries, ignored));
 
 		if (config.saveLoot())
 		{
@@ -595,7 +609,7 @@ public class LootTrackerPlugin extends Plugin
 				.collect(Collectors.toList());
 
 			final LootTrackerItem[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries));
+			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries, isEventIgnored(chestType)));
 
 			if (config.saveLoot())
 			{
@@ -624,12 +638,33 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		config.setIgnoredItems(Text.toCSV(ignoredItemSet));
-		panel.updateIgnoredRecords();
+		panel.updateIgnoredItems();
 	}
 
-	boolean isIgnored(String name)
+	void toggleNPC(String name, boolean ignore)
+	{
+		final Set<String> ignoredNPCSet = new HashSet<>(ignoredNPCs);
+
+		if (ignore)
+		{
+			ignoredNPCSet.add(name);
+		}
+		 else
+		{
+			ignoredNPCSet.remove(name);
+		}
+		 config.setIgnoreNPCs(Text.toCSV(ignoredNPCSet));
+		 panel.updateIgnoredNPCs();
+	}
+
+	boolean isItemIgnored(String name)
 	{
 		return ignoredItems.contains(name);
+	}
+
+	boolean isEventIgnored(String name)
+	{
+		return ignoredNPCs.contains(name);
 	}
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
@@ -671,7 +706,7 @@ public class LootTrackerPlugin extends Plugin
 					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
 				).toArray(LootTrackerItem[]::new);
 
-				return new LootTrackerRecord(record.getEventId(), "", drops);
+				return new LootTrackerRecord(record.getEventId(), "", drops, false);
 			})
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
