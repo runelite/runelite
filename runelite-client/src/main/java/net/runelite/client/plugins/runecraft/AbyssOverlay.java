@@ -78,7 +78,7 @@ class AbyssOverlay extends Overlay
 	AbyssOverlay(final Client client, final RunecraftPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 	}

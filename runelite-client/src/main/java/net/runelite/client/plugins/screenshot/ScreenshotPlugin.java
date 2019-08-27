@@ -32,7 +32,10 @@ import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -98,7 +101,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.Clipboard;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.api.util.Text;
@@ -218,7 +220,7 @@ public class ScreenshotPlugin extends Plugin
 	private boolean screenshotLevels;
 	private boolean screenshotKingdom;
 	private boolean screenshotPet;
-	private boolean uploadScreenshot;
+	private UploadStyle uploadScreenshot;
 	private boolean screenshotKills;
 	private boolean screenshotBossKills;
 	private boolean screenshotFriendDeath;
@@ -753,10 +755,22 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			ImageIO.write(screenshot, "PNG", screenshotFile);
+			UploadStyle uploadStyle = this.uploadScreenshot;
 
-			if (this.uploadScreenshot)
+			if (uploadStyle == UploadStyle.IMGUR)
 			{
 				uploadScreenshot(screenshotFile);
+			}
+			else if (uploadStyle == UploadStyle.CLIPBOARD)
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+				clipboard.setContents(transferableBufferedImage, null);
+
+				if (this.notifyWhenTaken)
+				{
+					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+				}
 			}
 			else if (this.notifyWhenTaken)
 			{
@@ -776,54 +790,55 @@ public class ScreenshotPlugin extends Plugin
 	 * @param screenshotFile Image file to upload.
 	 * @throws IOException Thrown if the file cannot be read.
 	 */
+	/**
+	 * Uploads a screenshot to the Imgur image-hosting service,
+	 * and copies the image link to the clipboard.
+	 *
+	 * @param screenshotFile Image file to upload.
+	 * @throws IOException Thrown if the file cannot be read.
+	 */
 	private void uploadScreenshot(File screenshotFile) throws IOException
 	{
 		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
 
-		Request request = null;
-		if (IMGUR_IMAGE_UPLOAD_URL != null)
-		{
-			RequestBody body = RequestBody.Companion.create(json, JSON);
-			request = new Request.Builder()
-				.url(IMGUR_IMAGE_UPLOAD_URL)
-				.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-				.post(body)
-				.build();
-		}
+		Request request = new Request.Builder()
+			.url(IMGUR_IMAGE_UPLOAD_URL)
+			.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+			.post(RequestBody.create(JSON, json))
+			.build();
 
-		if (request != null)
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+			@Override
+			public void onFailure(Call call, IOException ex)
 			{
-				@Override
-				public void onFailure(Call call, IOException ex)
-				{
-					log.warn("error uploading screenshot", ex);
-				}
+				log.warn("error uploading screenshot", ex);
+			}
 
-				@Override
-				public void onResponse(Call call, Response response) throws IOException
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				try (InputStream in = response.body().byteStream())
 				{
-					try (InputStream in = response.body().byteStream())
+					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
+						.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+
+					if (imageUploadResponse.isSuccess())
 					{
-						ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-							.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+						String link = imageUploadResponse.getData().getLink();
 
-						if (imageUploadResponse.isSuccess())
+						StringSelection selection = new StringSelection(link);
+						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+						clipboard.setContents(selection, selection);
+
+						if (notifyWhenTaken)
 						{
-							String link = imageUploadResponse.getData().getLink();
-
-							Clipboard.store(link);
-
-							if (notifyWhenTaken)
-							{
-								notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
-							}
+							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
 						}
 					}
 				}
-			});
-		}
+			}
+		});
 	}
 
 	@VisibleForTesting

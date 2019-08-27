@@ -225,7 +225,7 @@ enum Task
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD,
 		asList("Tz-"), Collections.emptyList(), false),
 	VAMPIRES("Vampires", ItemID.STAKE,
-		asList("Vampyre"), Collections.emptyList()),
+		asList("Vampyre", "Vyrewatch", "Vampire"), Collections.emptyList()),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
 	VETION("Vet'ion", ItemID.VETION_JR),
 	VORKATH("Vorkath", ItemID.VORKI),
