@@ -10,6 +10,7 @@ import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import org.h2.jdbcx.JdbcDataSource;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
 @Singleton
@@ -60,7 +61,10 @@ public class DatabaseManager
 
 	public DSLContext getDsl()
 	{
-		return DSL.using(connection, SQLDialect.H2);
+		Settings settings = new Settings();
+		settings.setExecuteLogging(false);
+
+		return  DSL.using(connection, SQLDialect.H2, settings);
 	}
 
 	public boolean checkTableExists(String table)
