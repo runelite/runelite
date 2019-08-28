@@ -282,7 +282,10 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup)
 		{
 			Widget[] children = widget.getDynamicChildren();
 			if (actionParam < children.length)
@@ -300,36 +303,9 @@ public class ExaminePlugin extends Plugin
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
 		{
 			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
