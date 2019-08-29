@@ -57,7 +57,7 @@ public class ClueScrollOverlay extends Overlay
 	{
 		super(plugin);
 		this.plugin = plugin;
-		setPriority(OverlayPriority.MED);
+		setPriority(OverlayPriority.LOW);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay"));
 	}
 

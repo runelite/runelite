@@ -56,8 +56,7 @@ public class WorldMapLocationOverlay extends Overlay
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setAboveMap(true);
+		setLayer(OverlayLayer.ABOVE_MAP);
 	}
 
 	@Override

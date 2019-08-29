@@ -438,6 +438,7 @@ public class Hooks implements Callbacks
 
 		try
 		{
+			renderer.render(graphics2d, OverlayLayer.ABOVE_MAP);
 			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
 		}
 		catch (Exception ex)
