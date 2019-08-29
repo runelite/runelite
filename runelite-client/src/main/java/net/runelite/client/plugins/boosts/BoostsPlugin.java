@@ -110,7 +110,7 @@ public class BoostsPlugin extends Plugin
 	private long lastTickMillis;
 	private final List<String> boostedSkillsChanged = new ArrayList<>();
 
-	private boolean enableSkill;
+	private BoostsConfig.DisplayBoosts displayBoosts;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean useRelativeBoost;
 	@Getter(AccessLevel.PACKAGE)
@@ -332,8 +332,7 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		switch (config.displayBoosts())
-		if (this.enableSkill)
+		switch (this.displayBoosts)
 		{
 			case NONE:
 				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
@@ -458,7 +457,7 @@ public class BoostsPlugin extends Plugin
 
 	private void updateConfig()
 	{
-		this.enableSkill = config.enableSkill();
+		this.displayBoosts = config.displayBoosts();
 		this.useRelativeBoost = config.useRelativeBoost();
 		this.displayInfoboxes = config.displayInfoboxes();
 		this.displayIcons = config.displayIcons();
