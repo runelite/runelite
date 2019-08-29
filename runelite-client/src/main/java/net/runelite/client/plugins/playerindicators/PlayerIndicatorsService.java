@@ -79,9 +79,11 @@ public class PlayerIndicatorsService
 		{
 			return;
 		}
+
 		piles.clear();
 
 		final List<Player> players = client.getPlayers();
+
 		if (plugin.isHighlightOwnPlayer())
 		{
 			players.stream().filter(self).forEach(p -> consumer.accept(p, PlayerRelation.SELF));

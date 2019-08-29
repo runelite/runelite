@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -64,82 +65,57 @@ import net.runelite.client.util.PvPUtil;
 	tags = {"highlight", "minimap", "overlay", "players", "pklite"}
 )
 @Singleton
+@Getter(AccessLevel.PACKAGE)
 public class PlayerIndicatorsPlugin extends Plugin
 {
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsConfig config;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private Client client;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private ClanManager clanManager;
-
 	@Inject
+	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightOwnPlayer;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightFriends;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightClan;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightTeam;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightOther;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showClanRanks;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightTargets;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showAgilityLevel;
-	@Getter(AccessLevel.PACKAGE)
-	private int agilityFirstThreshold;
-	@Getter(AccessLevel.PACKAGE)
-	private int agilitySecondThreshold;
-	@Getter(AccessLevel.PACKAGE)
-	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showCombatLevel;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean playerSkull;
-	@Getter(AccessLevel.PACKAGE)
-	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean targetRisk;
-	private boolean useClanchatRanks;
 	private ClanMemberRank callerRank;
-	@Getter(AccessLevel.PACKAGE)
+	private final List<String> callers = new ArrayList<>();
+	private final Map<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
+	private final Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
+	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
+	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
 	private String configCallers;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean highlightCallers;
-	@Getter
 	private boolean highlightCallerTargets;
-	@Getter(AccessLevel.PACKAGE)
+	private boolean highlightCallers;
+	private boolean highlightClan;
+	private boolean highlightFriends;
+	private boolean highlightOther;
+	private boolean highlightOwnPlayer;
+	private boolean highlightTargets;
+	private boolean highlightTeam;
+	private boolean playerSkull;
+	private boolean showAgilityLevel;
+	private boolean showClanRanks;
+	private boolean showCombatLevel;
+	private boolean targetRisk;
 	private boolean unchargedGlory;
-	@Getter
-	private ConcurrentHashMap<String, Actor> callerPiles = new ConcurrentHashMap<>();
-	@Getter
-	private ConcurrentHashMap<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
-
-	@Getter
-	private ConcurrentHashMap<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
-
-	@Getter
-	private ConcurrentHashMap<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
-	@Getter
-	private List<String> callers = new ArrayList<>();
+	private boolean useClanchatRanks;
+	private int agilityFirstThreshold;
+	private int agilitySecondThreshold;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -150,12 +126,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-
 		updateConfig();
 		addSubscriptions();
 
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
+
 		getCallerList();
 	}
 
@@ -179,15 +155,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	private void onInteractingChanged(InteractingChanged event)
 	{
-		if (!this.highlightCallerTargets || event.getSource() == null)
-		{
-			return;
-		}
-		if (callers.isEmpty())
-		{
-			return;
-		}
-		if (!isCaller(event.getSource()))
+		if (!this.highlightCallerTargets || event.getSource() == null || callers.isEmpty() || !isCaller(event.getSource()))
 		{
 			return;
 		}
@@ -199,17 +167,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 			if (event.getTarget() == null)
 			{
 				callerPiles.remove(caller.getName());
+				return;
 			}
-			else
-			{
-				callerPiles.replace(caller.getName(), event.getTarget());
-			}
-		}
-		else
-		{
-			callerPiles.put(caller.getName(), event.getTarget());
+
+			callerPiles.replace(caller.getName(), event.getTarget());
+			return;
 		}
 
+		callerPiles.put(caller.getName(), event.getTarget());
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -255,7 +220,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			|| type == RUNELITE.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
-			Player[] players = client.getCachedPlayers();
+			final Player[] players = client.getCachedPlayers();
 			Player player = null;
 
 			if (identifier >= 0 && identifier < players.length)
@@ -336,15 +301,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 			if (image != -1 || color != null)
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+				final MenuEntry[] menuEntries = client.getMenuEntries();
+				final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
 
 				if (color != null)
 				{
 					// strip out existing <col...
 					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
+					final int idx = target.indexOf('>');
 					if (idx != -1)
 					{
 						target = target.substring(idx + 1);
@@ -352,11 +317,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
-				
-/*				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
-				{
-					lastEntry.setTarget(lastEntry.getTarget() + "<img=" + image + ">");
-				}*/
+
 				if (image2 != -1 && this.playerSkull)
 				{
 					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
@@ -373,7 +334,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			return;
 		}
+
 		callers.clear();
+
 		if (this.useClanchatRanks && client.getClanMembers() != null)
 		{
 			for (ClanMember clanMember : client.getClanMembers())
@@ -384,30 +347,32 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
+
 		if (this.configCallers.contains(","))
 		{
 			callers.addAll(Arrays.asList(this.configCallers.split(",")));
+			return;
 		}
-		else
+
+		if (!this.configCallers.equals(""))
 		{
-			if (!this.configCallers.equals(""))
-			{
-				callers.add(this.configCallers);
-			}
+			callers.add(this.configCallers);
 		}
 	}
 
 	/**
 	 * Checks if a player is a caller
+	 *
 	 * @param player The player to check
 	 * @return true if they are, false otherwise
 	 */
-	public boolean isCaller(Actor player)
+	boolean isCaller(Actor player)
 	{
 		if (player == null || player.getName() == null)
 		{
 			return false;
 		}
+
 		if (callers.size() > 0)
 		{
 			for (String name : callers)
@@ -425,20 +390,18 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	/**
 	 * Checks if a player is currently a target of any of the current callers
+	 *
 	 * @param actor The player to check
 	 * @return true if they are a target, false otherwise
 	 */
-	public boolean isPile(Actor actor)
+	private boolean isPile(Actor actor)
 	{
 		if (!(actor instanceof Player))
 		{
 			return false;
 		}
-		if (callerPiles.containsValue(actor))
-		{
-			return true;
-		}
-		return false;
+
+		return callerPiles.containsValue(actor);
 	}
 
 
@@ -530,6 +493,4 @@ public class PlayerIndicatorsPlugin extends Plugin
 		TEXT,
 		ICONS
 	}
-
-
 }

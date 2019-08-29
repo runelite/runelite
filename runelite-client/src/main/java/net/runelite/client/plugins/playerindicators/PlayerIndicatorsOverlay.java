@@ -95,11 +95,13 @@ public class PlayerIndicatorsOverlay extends Overlay
 			String name = actor.getName();
 			final boolean skulls = plugin.isPlayerSkull();
 			final int zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
-			Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
+			final Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
+
 			if (plugin.isShowCombatLevel())
 			{
 				name = name + " (" + actor.getCombatLevel() + ")";
 			}
+
 			if (plugin.isUnchargedGlory())
 			{
 				if (actor.getPlayerAppearance().getEquipmentId(KitType.AMULET) == ItemID.AMULET_OF_GLORY)
@@ -107,6 +109,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 					name += " (glory)";
 				}
 			}
+
 			if (plugin.isPlayerSkull() && actor.getSkullIcon() != null)
 			{
 				int x = graphics.getFontMetrics().stringWidth(name);
