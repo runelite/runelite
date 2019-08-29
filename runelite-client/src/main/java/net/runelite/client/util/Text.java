@@ -39,6 +39,7 @@ import org.apache.commons.text.WordUtils;
 public class Text
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern TAG_REGEXP_SANS_LT_GT = Pattern.compile("<(?!lt>|gt>)[^>]*>");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -79,6 +80,17 @@ public class Text
 	public static String removeTags(String str)
 	{
 		return TAG_REGEXP.matcher(str).replaceAll("");
+	}
+
+	/**
+	 * Removes all tags except for {@literal <lt>} and {@literal <gt>} from the given string.
+	 *
+	 * @param str The string to remove tags from.
+	 * @return The given string with all tags except for {@literal <lt>} and {@literal <gt>} removed from it.
+	 */
+	public static String removeMostTags(String str)
+	{
+		return TAG_REGEXP_SANS_LT_GT.matcher(str).replaceAll("");
 	}
 
 	/**
