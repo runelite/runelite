@@ -24,13 +24,11 @@
  */
 package net.runelite.client.plugins.pvpperformancetracker;
 
-import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.*;
-import net.runelite.client.ui.overlay.components.ComponentOrientation;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -82,13 +80,13 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(plugin.getCurrentFight().getPlayerName().substring(0, 5))//.left("You:")
 			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
-			.right(currentFight.getPlayerDisplayString())
+			.right(currentFight.getPlayerStatsString())
 			.build());
 		// Second line: Opponent's stats (foe: success rate counters + % value)
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(plugin.getCurrentFight().getOpponentName().substring(0, 5))//.left("Foe:")
 			.leftColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
-			.right(currentFight.getOpponentDisplayString())
+			.right(currentFight.getOpponentStatsString())
 			.build());
 
 		return panelComponent.render(graphics);

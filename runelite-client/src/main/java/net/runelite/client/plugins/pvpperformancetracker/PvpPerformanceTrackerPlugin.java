@@ -26,6 +26,8 @@ package net.runelite.client.plugins.pvpperformancetracker;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
@@ -34,7 +36,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
@@ -59,10 +64,19 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	// Last man standing map regions (thanks to discord plugin)
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916);
 
+	@Getter(AccessLevel.PACKAGE)
+	private NavigationButton button;
+
+	@Getter(AccessLevel.PACKAGE)
+	private PvpPerformanceTrackerPanel panel;
+
 	@Inject
 	private PvpPerformanceTrackerConfig config;
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -78,8 +92,8 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 
 	@Getter
 	private FightPerformance currentFight;
-	@Getter
-	private List<FightPerformance> fightHistory;
+	//@Getter
+	//private List<FightPerformance> fightHistory;
 
 	@Provides
 	PvpPerformanceTrackerConfig provideConfig(ConfigManager configManager)
@@ -90,10 +104,22 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		panel = injector.getInstance(PvpPerformanceTrackerPanel.class);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons_small/attack.png");
+		button = NavigationButton.builder()
+			.tooltip(config.restrictToLms() ? "LMS" : "PvP" + " Fight History")
+			.icon(icon)
+			.priority(3)
+			.panel(panel)
+			.build();
+
+		clientToolbar.addNavigation(button);
+
+
 		lastFightTime = Instant.MIN;
 		playerAttacking = false;
 		opponentAttacking = false;
-		fightHistory = new ArrayList<>();
+		//fightHistory = new ArrayList<>();
 		//currentFight = FightPerformance.getTestInstance(true);
 		overlayManager.add(overlay);
 	}
@@ -139,7 +165,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 
 		if (currentFight != null)
 		{
-			fightHistory.add(currentFight);
+			panel.addFight(currentFight);
 		}
 		currentOpponent = (Player) opponent;
 		currentFight = new FightPerformance(client.getLocalPlayer().getName(), currentOpponent.getName());
@@ -175,14 +201,14 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		if (currentOpponent != null && currentOpponent.getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.opponentDied();
-			fightHistory.add(currentFight);
+			panel.addFight(currentFight);
 			currentFight = null;
 			currentOpponent = null;
 		}
 		if (currentOpponent != null && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.playerDied();
-			fightHistory.add(currentFight);
+			panel.addFight(currentFight);
 			currentFight = null;
 			currentOpponent = null;
 		}
@@ -190,7 +216,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		// null, which will get set next time the player targets a Player.
 		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
 		{
-			fightHistory.add(currentFight);
+			panel.addFight(currentFight);
 			currentFight = null;
 			currentOpponent = null;
 		}

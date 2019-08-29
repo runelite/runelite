@@ -135,14 +135,14 @@ public class FightPerformance
 	// Return a simple string to display the current player's success rate.
 	// ex. "42/59 (71%)". The name is not included as it will be in a separate view.
 	// Would round to 1 decimal space, but the overlay size is restrictive.
-	public String getPlayerDisplayString()
+	public String getPlayerStatsString()
 	{
 		// The success rate is the percentage of successful attacks.
 		return playerSuccessCount + "/" + playerAttackCount + " (" + Math.round(playerSuccessRate) + "%)";
 	}
 
 	// Return a simple string to display the current opponent's success rate.
-	public String getOpponentDisplayString()
+	public String getOpponentStatsString()
 	{
 		// The success rate is the percentage of successful attacks.
 		return opponentSuccessCount + "/" + opponentAttackCount + " (" + Math.round(opponentSuccessRate) + "%)";
