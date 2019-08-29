@@ -2,20 +2,19 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("ju")
 @Implements("User")
 public class User implements Comparable {
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Ljv;"
+		signature = "Ljx;"
 	)
 	@Export("username")
 	Username username;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Ljv;"
+		signature = "Ljx;"
 	)
 	@Export("previousUsername")
 	Username previousUsername;
@@ -23,54 +22,55 @@ public class User implements Comparable {
 	User() {
 	}
 
-	@ObfuscatedName("aw")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)Ljv;",
-		garbageValue = "-156755920"
+		signature = "(B)Ljx;",
+		garbageValue = "32"
 	)
 	@Export("getUsername")
 	public Username getUsername() {
 		return this.username;
 	}
 
-	@ObfuscatedName("ad")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/lang/String;",
-		garbageValue = "92130807"
+		garbageValue = "-1978694168"
 	)
 	@Export("getName")
 	public String getName() {
 		return this.username == null ? "" : this.username.getName();
 	}
 
-	@ObfuscatedName("ag")
+	@ObfuscatedName("av")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1677107583"
+		signature = "(B)Ljava/lang/String;",
+		garbageValue = "1"
 	)
 	@Export("getPreviousName")
 	public String getPreviousName() {
 		return this.previousUsername == null ? "" : this.previousUsername.getName();
 	}
 
-	@ObfuscatedName("ar")
+	@ObfuscatedName("am")
 	@ObfuscatedSignature(
-		signature = "(Ljv;Ljv;B)V",
-		garbageValue = "46"
+		signature = "(Ljx;Ljx;I)V",
+		garbageValue = "-906454666"
 	)
 	@Export("set")
 	void set(Username var1, Username var2) {
 		if (var1 == null) {
 			throw new NullPointerException();
+		} else {
+			this.username = var1;
+			this.previousUsername = var2;
 		}
-		this.username = var1;
-		this.previousUsername = var2;
 	}
 
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ai")
 	@ObfuscatedSignature(
-		signature = "(Ljd;I)I",
-		garbageValue = "-1938562722"
+		signature = "(Lju;B)I",
+		garbageValue = "1"
 	)
 	@Export("compareTo_user")
 	public int compareTo_user(User var1) {
@@ -81,37 +81,26 @@ public class User implements Comparable {
 		return this.compareTo_user((User)var1);
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-		garbageValue = "-811282980"
+		signature = "(IIII)I",
+		garbageValue = "-117811845"
 	)
-	@Export("loadClassFromDescriptor")
-	static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-		if (var0.equals("B")) {
-			return Byte.TYPE;
-		}
-		if (var0.equals("I")) {
-			return Integer.TYPE;
-		}
-		if (var0.equals("S")) {
-			return Short.TYPE;
-		}
-		if (var0.equals("J")) {
-			return Long.TYPE;
-		}
-		if (var0.equals("Z")) {
-			return Boolean.TYPE;
-		}
-		if (var0.equals("F")) {
-			return Float.TYPE;
-		}
-		if (var0.equals("D")) {
-			return Double.TYPE;
-		}
-		if (var0.equals("C")) {
-			return Character.TYPE;
-		}
-		return var0.equals("void") ? Void.TYPE : Reflection.findClass(var0);
+	static final int method4969(int var0, int var1, int var2) {
+		int var3 = var0 / var2;
+		int var4 = var0 & var2 - 1;
+		int var5 = var1 / var2;
+		int var6 = var1 & var2 - 1;
+		int var7 = class13.method162(var3, var5);
+		int var8 = class13.method162(var3 + 1, var5);
+		int var9 = class13.method162(var3, var5 + 1);
+		int var10 = class13.method162(var3 + 1, var5 + 1);
+		int var12 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
+		int var11 = ((65536 - var12) * var7 >> 16) + (var8 * var12 >> 16);
+		int var14 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
+		int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
+		int var16 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var6 * 1024 / var2] >> 1;
+		int var15 = ((65536 - var16) * var11 >> 16) + (var13 * var16 >> 16);
+		return var15;
 	}
 }

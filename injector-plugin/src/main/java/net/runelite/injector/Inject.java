@@ -48,7 +48,7 @@ import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import static net.runelite.injector.InjectUtil.getFieldType;
 import net.runelite.injector.raw.ClearColorBuffer;
 import net.runelite.injector.raw.DrawAfterWidgets;
-import net.runelite.injector.raw.DrawMenu;
+// import net.runelite.injector.raw.DrawMenu;
 import net.runelite.injector.raw.HidePlayerAttacks;
 import net.runelite.injector.raw.Occluder;
 import net.runelite.injector.raw.RasterizerHook;
@@ -316,7 +316,7 @@ public class Inject
 		new ScriptVM(this).inject();
 		new ClearColorBuffer(this).inject();
 		new RenderDraw(this).inject();
-		new DrawMenu(this).inject();
+		// new DrawMenu(this).inject();
 		new Occluder(this).inject();
 		new HidePlayerAttacks(this).inject();
 	}

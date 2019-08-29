@@ -3,28 +3,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lb")
+@ObfuscatedName("lj")
 @Implements("Rasterizer2D")
 public class Rasterizer2D extends DualNode {
-	@ObfuscatedName("av")
+	@ObfuscatedName("am")
 	@Export("Rasterizer2D_pixels")
 	public static int[] Rasterizer2D_pixels;
-	@ObfuscatedName("as")
+	@ObfuscatedName("ai")
 	@Export("Rasterizer2D_width")
 	public static int Rasterizer2D_width;
-	@ObfuscatedName("aw")
+	@ObfuscatedName("af")
 	@Export("Rasterizer2D_height")
 	public static int Rasterizer2D_height;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("az")
 	@Export("Rasterizer2D_yClipStart")
 	public static int Rasterizer2D_yClipStart;
-	@ObfuscatedName("ag")
+	@ObfuscatedName("aj")
 	@Export("Rasterizer2D_yClipEnd")
 	public static int Rasterizer2D_yClipEnd;
-	@ObfuscatedName("ar")
+	@ObfuscatedName("an")
 	@Export("Rasterizer2D_xClipStart")
 	public static int Rasterizer2D_xClipStart;
-	@ObfuscatedName("ax")
+	@ObfuscatedName("at")
 	@Export("Rasterizer2D_xClipEnd")
 	public static int Rasterizer2D_xClipEnd;
 
@@ -38,7 +38,7 @@ public class Rasterizer2D extends DualNode {
 	protected Rasterizer2D() {
 	}
 
-	@ObfuscatedName("cd")
+	@ObfuscatedName("cq")
 	@Export("Rasterizer2D_replace")
 	public static void Rasterizer2D_replace(int[] var0, int var1, int var2) {
 		Rasterizer2D_pixels = var0;
@@ -47,7 +47,7 @@ public class Rasterizer2D extends DualNode {
 		Rasterizer2D_setClip(0, 0, var1, var2);
 	}
 
-	@ObfuscatedName("dr")
+	@ObfuscatedName("ct")
 	@Export("Rasterizer2D_resetClip")
 	public static void Rasterizer2D_resetClip() {
 		Rasterizer2D_xClipStart = 0;
@@ -56,7 +56,7 @@ public class Rasterizer2D extends DualNode {
 		Rasterizer2D_yClipEnd = Rasterizer2D_height;
 	}
 
-	@ObfuscatedName("dn")
+	@ObfuscatedName("cx")
 	@Export("Rasterizer2D_setClip")
 	public static void Rasterizer2D_setClip(int var0, int var1, int var2, int var3) {
 		if (var0 < 0) {
@@ -81,7 +81,7 @@ public class Rasterizer2D extends DualNode {
 		Rasterizer2D_yClipEnd = var3;
 	}
 
-	@ObfuscatedName("dw")
+	@ObfuscatedName("ca")
 	@Export("Rasterizer2D_expandClip")
 	public static void Rasterizer2D_expandClip(int var0, int var1, int var2, int var3) {
 		if (Rasterizer2D_xClipStart < var0) {
@@ -102,7 +102,7 @@ public class Rasterizer2D extends DualNode {
 
 	}
 
-	@ObfuscatedName("dg")
+	@ObfuscatedName("cs")
 	@Export("Rasterizer2D_getClipArray")
 	public static void Rasterizer2D_getClipArray(int[] var0) {
 		var0[0] = Rasterizer2D_xClipStart;
@@ -111,7 +111,7 @@ public class Rasterizer2D extends DualNode {
 		var0[3] = Rasterizer2D_yClipEnd;
 	}
 
-	@ObfuscatedName("df")
+	@ObfuscatedName("co")
 	@Export("Rasterizer2D_setClipArray")
 	public static void Rasterizer2D_setClipArray(int[] var0) {
 		Rasterizer2D_xClipStart = var0[0];
@@ -120,7 +120,7 @@ public class Rasterizer2D extends DualNode {
 		Rasterizer2D_yClipEnd = var0[3];
 	}
 
-	@ObfuscatedName("dt")
+	@ObfuscatedName("dr")
 	@Export("Rasterizer2D_clear")
 	public static void Rasterizer2D_clear() {
 		int var0 = 0;
@@ -141,7 +141,7 @@ public class Rasterizer2D extends DualNode {
 
 	}
 
-	@ObfuscatedName("dj")
+	@ObfuscatedName("dd")
 	@Export("drawCircle")
 	static void drawCircle(int var0, int var1, int var2, int var3) {
 		if (var2 == 0) {
@@ -236,7 +236,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dl")
+	@ObfuscatedName("dv")
 	@Export("Rasterizer2D_drawCircleAlpha")
 	public static void Rasterizer2D_drawCircleAlpha(int var0, int var1, int var2, int var3, int var4) {
 		if (var4 != 0) {
@@ -349,7 +349,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dz")
+	@ObfuscatedName("da")
 	@Export("Rasterizer2D_fillRectangleAlpha")
 	public static void Rasterizer2D_fillRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
 		if (var0 < Rasterizer2D_xClipStart) {
@@ -370,7 +370,7 @@ public class Rasterizer2D extends DualNode {
 			var3 = Rasterizer2D_yClipEnd - var1;
 		}
 
-		var4 = (var5 * (var4 & 0xff00ff) >> 8 & 0xff00ff) + (var5 * (var4 & 0xff00) >> 8 & 0xff00);
+		var4 = (var5 * (var4 & 16711935) >> 8 & 16711935) + (var5 * (var4 & 65280) >> 8 & 65280);
 		int var6 = 256 - var5;
 		int var7 = Rasterizer2D_width - var2;
 		int var8 = var0 + Rasterizer2D_width * var1;
@@ -378,7 +378,7 @@ public class Rasterizer2D extends DualNode {
 		for (int var9 = 0; var9 < var3; ++var9) {
 			for (int var10 = -var2; var10 < 0; ++var10) {
 				int var11 = Rasterizer2D_pixels[var8];
-				var11 = ((var11 & 0xff00ff) * var6 >> 8 & 0xff00ff) + (var6 * (var11 & 0xff00) >> 8 & 0xff00);
+				var11 = ((var11 & 16711935) * var6 >> 8 & 16711935) + (var6 * (var11 & 65280) >> 8 & 65280);
 				Rasterizer2D_pixels[var8++] = var11 + var4;
 			}
 
@@ -389,31 +389,31 @@ public class Rasterizer2D extends DualNode {
 
 	@ObfuscatedName("dh")
 	@Export("Rasterizer2D_fillRectangle")
-	public static void Rasterizer2D_fillRectangle(int x, int y, int w, int h, int c) {
-		if (x < Rasterizer2D_xClipStart) {
-			w -= Rasterizer2D_xClipStart - x;
-			x = Rasterizer2D_xClipStart;
+	public static void Rasterizer2D_fillRectangle(int var0, int var1, int var2, int var3, int var4) {
+		if (var0 < Rasterizer2D_xClipStart) {
+			var2 -= Rasterizer2D_xClipStart - var0;
+			var0 = Rasterizer2D_xClipStart;
 		}
 
-		if (y < Rasterizer2D_yClipStart) {
-			h -= Rasterizer2D_yClipStart - y;
-			y = Rasterizer2D_yClipStart;
+		if (var1 < Rasterizer2D_yClipStart) {
+			var3 -= Rasterizer2D_yClipStart - var1;
+			var1 = Rasterizer2D_yClipStart;
 		}
 
-		if (x + w > Rasterizer2D_xClipEnd) {
-			w = Rasterizer2D_xClipEnd - x;
+		if (var0 + var2 > Rasterizer2D_xClipEnd) {
+			var2 = Rasterizer2D_xClipEnd - var0;
 		}
 
-		if (h + y > Rasterizer2D_yClipEnd) {
-			h = Rasterizer2D_yClipEnd - y;
+		if (var3 + var1 > Rasterizer2D_yClipEnd) {
+			var3 = Rasterizer2D_yClipEnd - var1;
 		}
 
-		int var5 = Rasterizer2D_width - w;
-		int var6 = x + Rasterizer2D_width * y;
+		int var5 = Rasterizer2D_width - var2;
+		int var6 = var0 + Rasterizer2D_width * var1;
 
-		for (int var7 = -h; var7 < 0; ++var7) {
-			for (int var8 = -w; var8 < 0; ++var8) {
-				Rasterizer2D_pixels[var6++] = c;
+		for (int var7 = -var3; var7 < 0; ++var7) {
+			for (int var8 = -var2; var8 < 0; ++var8) {
+				Rasterizer2D_pixels[var6++] = var4;
 			}
 
 			var6 += var5;
@@ -421,7 +421,7 @@ public class Rasterizer2D extends DualNode {
 
 	}
 
-	@ObfuscatedName("dy")
+	@ObfuscatedName("dm")
 	@Export("Rasterizer2D_fillRectangleGradient")
 	public static void Rasterizer2D_fillRectangleGradient(int var0, int var1, int var2, int var3, int var4, int var5) {
 		if (var2 > 0 && var3 > 0) {
@@ -452,7 +452,7 @@ public class Rasterizer2D extends DualNode {
 			for (int var10 = -var3; var10 < 0; ++var10) {
 				int var11 = 65536 - var6 >> 8;
 				int var12 = var6 >> 8;
-				int var13 = (var12 * (var5 & 0xff00ff) + var11 * (var4 & 0xff00ff) & 0xff00ff00) + (var12 * (var5 & 0xff00) + var11 * (var4 & 0xff00) & 0xff0000) >>> 8;
+				int var13 = (var12 * (var5 & 16711935) + var11 * (var4 & 16711935) & -16711936) + (var12 * (var5 & 65280) + var11 * (var4 & 65280) & 16711680) >>> 8;
 
 				for (int var14 = -var2; var14 < 0; ++var14) {
 					Rasterizer2D_pixels[var9++] = var13;
@@ -465,7 +465,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dx")
+	@ObfuscatedName("dj")
 	@Export("Rasterizer2D_fillRectangleGradientAlpha")
 	public static void Rasterizer2D_fillRectangleGradientAlpha(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
 		if (var2 > 0 && var3 > 0) {
@@ -496,21 +496,21 @@ public class Rasterizer2D extends DualNode {
 			for (int var12 = -var3; var12 < 0; ++var12) {
 				int var13 = 65536 - var8 >> 8;
 				int var14 = var8 >> 8;
-				int var15 = (var13 * var6 + var14 * var7 & 0xff00) >>> 8;
+				int var15 = (var13 * var6 + var14 * var7 & 65280) >>> 8;
 				if (var15 == 0) {
 					var11 += Rasterizer2D_width;
 					var8 += var9;
 				} else {
-					int var16 = (var14 * (var5 & 0xff00ff) + var13 * (var4 & 0xff00ff) & 0xff00ff00) + (var14 * (var5 & 0xff00) + var13 * (var4 & 0xff00) & 0xff0000) >>> 8;
+					int var16 = (var14 * (var5 & 16711935) + var13 * (var4 & 16711935) & -16711936) + (var14 * (var5 & 65280) + var13 * (var4 & 65280) & 16711680) >>> 8;
 					int var17 = 255 - var15;
-					int var18 = ((var16 & 0xff00ff) * var15 >> 8 & 0xff00ff) + (var15 * (var16 & 0xff00) >> 8 & 0xff00);
+					int var18 = ((var16 & 16711935) * var15 >> 8 & 16711935) + (var15 * (var16 & 65280) >> 8 & 65280);
 
 					for (int var19 = -var2; var19 < 0; ++var19) {
 						int var20 = Rasterizer2D_pixels[var11];
 						if (var20 == 0) {
 							Rasterizer2D_pixels[var11++] = var18;
 						} else {
-							var20 = ((var20 & 0xff00ff) * var17 >> 8 & 0xff00ff) + (var17 * (var20 & 0xff00) >> 8 & 0xff00);
+							var20 = ((var20 & 16711935) * var17 >> 8 & 16711935) + (var17 * (var20 & 65280) >> 8 & 65280);
 							Rasterizer2D_pixels[var11++] = var18 + var20;
 						}
 					}
@@ -523,90 +523,88 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dp")
+	@ObfuscatedName("dc")
 	@ObfuscatedSignature(
 		signature = "(IIIIII[BIZ)V",
 		garbageValue = "1"
 	)
 	@Export("Rasterizer2D_drawGradientPixels")
-	public static void Rasterizer2D_drawGradientPixels(int x, int y, int w, int h, int bgCol, int fgCol, byte[] pixels, int pxPerTile) {
-		if (x + w < 0 || h + y < 0) {
-			return;
-		}
-		if (x >= Rasterizer2D_width || y >= Rasterizer2D_height) {
-			return;
-		}
-		int var8 = 0;
-		int var9 = 0;
-		if (x < 0) {
-			var8 -= x;
-			w += x;
-		}
+	public static void Rasterizer2D_drawGradientPixels(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
+		if (var0 + var2 >= 0 && var3 + var1 >= 0) {
+			if (var0 < Rasterizer2D_width && var1 < Rasterizer2D_height) {
+				int var8 = 0;
+				int var9 = 0;
+				if (var0 < 0) {
+					var8 -= var0;
+					var2 += var0;
+				}
 
-		if (y < 0) {
-			var9 -= y;
-			h += y;
-		}
+				if (var1 < 0) {
+					var9 -= var1;
+					var3 += var1;
+				}
 
-		if (x + w > Rasterizer2D_width) {
-			w = Rasterizer2D_width - x;
-		}
+				if (var0 + var2 > Rasterizer2D_width) {
+					var2 = Rasterizer2D_width - var0;
+				}
 
-		if (h + y > Rasterizer2D_height) {
-			h = Rasterizer2D_height - y;
-		}
+				if (var3 + var1 > Rasterizer2D_height) {
+					var3 = Rasterizer2D_height - var1;
+				}
 
-		int var10 = pixels.length / pxPerTile;
-		int var11 = Rasterizer2D_width - w;
-		int var12 = bgCol >>> 24;
-		int var13 = fgCol >>> 24;
-		int var14;
-		int var15;
-		int var16;
-		int var17;
-		int var18;
-		if (var12 == 255 && var13 == 255) {
-			var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
+				int var10 = var6.length / var7;
+				int var11 = Rasterizer2D_width - var2;
+				int var12 = var4 >>> 24;
+				int var13 = var5 >>> 24;
+				int var14;
+				int var15;
+				int var16;
+				int var17;
+				int var18;
+				if (var12 == 255 && var13 == 255) {
+					var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
 
-			for (var15 = var9 + y; var15 < h + var9 + y; ++var15) {
-				for (var16 = x + var8; var16 < x + var8 + w; ++var16) {
-					var17 = (var15 - y) % var10;
-					var18 = (var16 - x) % pxPerTile;
-					if (pixels[var18 + var17 * pxPerTile] != 0) {
-						Rasterizer2D_pixels[var14++] = fgCol;
-					} else {
-						Rasterizer2D_pixels[var14++] = bgCol;
+					for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
+						for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
+							var17 = (var15 - var1) % var10;
+							var18 = (var16 - var0) % var7;
+							if (var6[var18 + var17 * var7] != 0) {
+								Rasterizer2D_pixels[var14++] = var5;
+							} else {
+								Rasterizer2D_pixels[var14++] = var4;
+							}
+						}
+
+						var14 += var11;
+					}
+				} else {
+					var14 = var0 + var8 + (var9 + var1) * Rasterizer2D_width;
+
+					for (var15 = var9 + var1; var15 < var3 + var9 + var1; ++var15) {
+						for (var16 = var0 + var8; var16 < var0 + var8 + var2; ++var16) {
+							var17 = (var15 - var1) % var10;
+							var18 = (var16 - var0) % var7;
+							int var19 = var4;
+							if (var6[var18 + var17 * var7] != 0) {
+								var19 = var5;
+							}
+
+							int var20 = var19 >>> 24;
+							int var21 = 255 - var20;
+							int var22 = Rasterizer2D_pixels[var14];
+							int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + (var20 * (var19 & 65280) + var21 * (var22 & 65280) & 16711680) >> 8;
+							Rasterizer2D_pixels[var14++] = var23;
+						}
+
+						var14 += var11;
 					}
 				}
 
-				var14 += var11;
-			}
-		} else {
-			var14 = x + var8 + (var9 + y) * Rasterizer2D_width;
-
-			for (var15 = var9 + y; var15 < h + var9 + y; ++var15) {
-				for (var16 = x + var8; var16 < x + var8 + w; ++var16) {
-					var17 = (var15 - y) % var10;
-					var18 = (var16 - x) % pxPerTile;
-					int var19 = bgCol;
-					if (pixels[var18 + var17 * pxPerTile] != 0) {
-						var19 = fgCol;
-					}
-
-					int var20 = var19 >>> 24;
-					int var21 = 255 - var20;
-					int var22 = Rasterizer2D_pixels[var14];
-					int var23 = ((var19 & 0xff00ff) * var20 + (var22 & 0xff00ff) * var21 & 0xff00ff00) + (var20 * (var19 & 0xff00) + var21 * (var22 & 0xff00) & 0xff0000) >> 8;
-					Rasterizer2D_pixels[var14++] = var23;
-				}
-
-				var14 += var11;
 			}
 		}
-
 	}
 
-	@ObfuscatedName("de")
+	@ObfuscatedName("db")
 	@Export("Rasterizer2D_drawRectangle")
 	public static void Rasterizer2D_drawRectangle(int var0, int var1, int var2, int var3, int var4) {
 		Rasterizer2D_drawHorizontalLine(var0, var1, var2, var4);
@@ -615,7 +613,7 @@ public class Rasterizer2D extends DualNode {
 		Rasterizer2D_drawVerticalLine(var0 + var2 - 1, var1, var3, var4);
 	}
 
-	@ObfuscatedName("du")
+	@ObfuscatedName("dx")
 	@Export("Rasterizer2D_drawRectangleAlpha")
 	public static void Rasterizer2D_drawRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
 		Rasterizer2D_drawHorizontalLineAlpha(var0, var1, var2, var4, var5);
@@ -627,7 +625,7 @@ public class Rasterizer2D extends DualNode {
 
 	}
 
-	@ObfuscatedName("do")
+	@ObfuscatedName("dp")
 	@Export("Rasterizer2D_drawHorizontalLine")
 	public static void Rasterizer2D_drawHorizontalLine(int var0, int var1, int var2, int var3) {
 		if (var1 >= Rasterizer2D_yClipStart && var1 < Rasterizer2D_yClipEnd) {
@@ -649,7 +647,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dc")
+	@ObfuscatedName("dz")
 	@Export("Rasterizer2D_drawHorizontalLineAlpha")
 	static void Rasterizer2D_drawHorizontalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
 		if (var1 >= Rasterizer2D_yClipStart && var1 < Rasterizer2D_yClipEnd) {
@@ -679,7 +677,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("ds")
+	@ObfuscatedName("dw")
 	@Export("Rasterizer2D_drawVerticalLine")
 	public static void Rasterizer2D_drawVerticalLine(int var0, int var1, int var2, int var3) {
 		if (var0 >= Rasterizer2D_xClipStart && var0 < Rasterizer2D_xClipEnd) {
@@ -701,7 +699,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dk")
+	@ObfuscatedName("dn")
 	@Export("Rasterizer2D_drawVerticalLineAlpha")
 	static void Rasterizer2D_drawVerticalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
 		if (var0 >= Rasterizer2D_xClipStart && var0 < Rasterizer2D_xClipEnd) {
@@ -732,7 +730,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("dq")
+	@ObfuscatedName("ds")
 	@Export("Rasterizer2D_drawLine")
 	public static void Rasterizer2D_drawLine(int var0, int var1, int var2, int var3, int var4) {
 		var2 -= var0;
@@ -814,7 +812,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("db")
+	@ObfuscatedName("dt")
 	@Export("Rasterizer2D_setPixel")
 	static void Rasterizer2D_setPixel(int var0, int var1, int var2) {
 		if (var0 >= Rasterizer2D_xClipStart && var1 >= Rasterizer2D_yClipStart && var0 < Rasterizer2D_xClipEnd && var1 < Rasterizer2D_yClipEnd) {
@@ -822,7 +820,7 @@ public class Rasterizer2D extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("da")
+	@ObfuscatedName("du")
 	@Export("Rasterizer2D_fillMaskedRectangle")
 	public static void Rasterizer2D_fillMaskedRectangle(int var0, int var1, int var2, int[] var3, int[] var4) {
 		int var5 = var0 + Rasterizer2D_width * var1;

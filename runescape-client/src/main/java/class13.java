@@ -1,71 +1,70 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("y")
 public class class13 {
-	@ObfuscatedName("dp")
-	@ObfuscatedSignature(
-		signature = "Liu;"
+	@ObfuscatedName("ph")
+	@Export("ClanChat_inClanChat")
+	static boolean ClanChat_inClanChat;
+	@ObfuscatedName("u")
+	@Export("ArchiveDiskActionHandler_thread")
+	static Thread ArchiveDiskActionHandler_thread;
+	@ObfuscatedName("fl")
+	@ObfuscatedGetter(
+		intValue = 251089855
 	)
-	@Export("archive4")
-	static Archive archive4;
-	@ObfuscatedName("gp")
-	@Export("regionLandArchives")
-	static byte[][] regionLandArchives;
+	static int field86;
 
-	@ObfuscatedName("bi")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)I",
-		garbageValue = "-1481103738"
+		signature = "(II)V",
+		garbageValue = "-2019445380"
 	)
-	public static int method152(String var0) {
-		return var0.length() + 2;
-	}
-
-	@ObfuscatedName("ht")
-	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "246973533"
-	)
-	@Export("getNewestMenuIdx")
-	static final int getNewestMenuIdx() {
-		return Client.menuOptionsCount - 1;
-	}
-
-	@ObfuscatedName("ic")
-	@ObfuscatedSignature(
-		signature = "([Lhj;IIIZI)V",
-		garbageValue = "1879036172"
-	)
-	@Export("resizeInterface")
-	static void resizeInterface(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-		for (int var5 = 0; var5 < var0.length; ++var5) {
-			Widget var6 = var0[var5];
-			if (var6 != null && var6.parentId == var1) {
-				class219.alignWidgetSize(var6, var2, var3, var4);
-				PcmPlayer.alignWidgetPosition(var6, var2, var3);
-				if (var6.scrollX > var6.scrollWidth - var6.width) {
-					var6.scrollX = var6.scrollWidth - var6.width;
-				}
-
-				if (var6.scrollX < 0) {
-					var6.scrollX = 0;
-				}
-
-				if (var6.scrollY > var6.scrollHeight - var6.height) {
-					var6.scrollY = var6.scrollHeight - var6.height;
-				}
-
-				if (var6.scrollY < 0) {
-					var6.scrollY = 0;
-				}
-
-				if (var6.type == 0) {
-					WorldMapSprite.revalidateWidgetScroll(var0, var6, var4);
-				}
+	@Export("clearItemContainer")
+	static void clearItemContainer(int var0) {
+		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var1 != null) {
+			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
+				var1.ids[var2] = -1;
+				var1.quantities[var2] = 0;
 			}
-		}
 
+		}
+	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1076455788"
+	)
+	@Export("ParamDefinition_clearCached")
+	public static void ParamDefinition_clearCached() {
+		ParamDefinition.ParamDefinition_cached.clear();
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "1012366175"
+	)
+	static final int method162(int var0, int var1) {
+		int var2 = WorldMapAreaData.method650(var0 - 1, var1 - 1) + WorldMapAreaData.method650(1 + var0, var1 - 1) + WorldMapAreaData.method650(var0 - 1, var1 + 1) + WorldMapAreaData.method650(var0 + 1, var1 + 1);
+		int var3 = WorldMapAreaData.method650(var0 - 1, var1) + WorldMapAreaData.method650(var0 + 1, var1) + WorldMapAreaData.method650(var0, var1 - 1) + WorldMapAreaData.method650(var0, 1 + var1);
+		int var4 = WorldMapAreaData.method650(var0, var1);
+		return var2 / 16 + var3 / 8 + var4 / 4;
+	}
+
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1410119824"
+	)
+	static void method163() {
+		Login.worldSelectOpen = false;
+		Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+		Login.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+		class51.logoSprite.drawAt(Login.xPadding + 382 - class51.logoSprite.subWidth / 2, 18);
 	}
 }

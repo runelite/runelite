@@ -66,7 +66,6 @@ public class ScriptOpcodes {
 	public static final int CC_SETSCROLLSIZE = 1120;
 	public static final int CC_RESUME_PAUSEBUTTON = 1121;
 	public static final int CC_SETFILLCOLOUR = 1123;
-	public static final int CC_SETTRANSBOT = 1124;
 	public static final int CC_SETFILLMODE = 1125;
 	public static final int CC_SETLINEDIRECTION = 1126;
 	public static final int CC_SETMODELTRANSPARENT = 1127;
@@ -173,7 +172,6 @@ public class ScriptOpcodes {
 	public static final int IF_SETTRANSBOT = 2124;
 	public static final int IF_SETFILLMODE = 2125;
 	public static final int IF_SETLINEDIRECTION = 2126;
-	public static final int IF_SETMODELTRANSPARENT = 2127;
 	public static final int IF_SETOBJECT = 2200;
 	public static final int IF_SETNPCHEAD = 2201;
 	public static final int IF_SETPLAYERHEAD_SELF = 2202;

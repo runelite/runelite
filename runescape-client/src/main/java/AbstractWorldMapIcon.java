@@ -4,183 +4,184 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("as")
 @Implements("AbstractWorldMapIcon")
 public abstract class AbstractWorldMapIcon {
-	@ObfuscatedName("b")
+	@ObfuscatedName("bi")
 	@ObfuscatedSignature(
-		signature = "Lhv;"
+		signature = "Llq;"
+	)
+	@Export("worldSelectLeftSprite")
+	static IndexedSprite worldSelectLeftSprite;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "Lhd;"
 	)
 	@Export("coord2")
 	public final Coord coord2;
-	@ObfuscatedName("i")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lhv;"
+		signature = "Lhd;"
 	)
 	@Export("coord1")
 	public final Coord coord1;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1277861537
+		intValue = 318036895
 	)
 	@Export("screenX")
 	int screenX;
-	@ObfuscatedName("f")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -946812135
+		intValue = 1985838427
 	)
 	@Export("screenY")
 	int screenY;
 
 	@ObfuscatedSignature(
-		signature = "(Lhv;Lhv;)V"
+		signature = "(Lhd;Lhd;)V"
 	)
 	AbstractWorldMapIcon(Coord var1, Coord var2) {
 		this.coord1 = var1;
 		this.coord2 = var2;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-229566020"
+		signature = "(B)I",
+		garbageValue = "78"
 	)
 	@Export("getElement")
 	public abstract int getElement();
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)Las;",
-		garbageValue = "1426074195"
+		signature = "(B)Lai;",
+		garbageValue = "1"
 	)
 	@Export("getLabel")
 	abstract WorldMapLabel getLabel();
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "14"
+		signature = "(I)I",
+		garbageValue = "1930584854"
 	)
 	@Export("getSubWidth")
 	abstract int getSubWidth();
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "1"
+		garbageValue = "-56"
 	)
 	@Export("getSubHeight")
 	abstract int getSubHeight();
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(IIB)Z",
-		garbageValue = "-101"
+		signature = "(III)Z",
+		garbageValue = "505598061"
 	)
 	@Export("fitsScreen")
 	boolean fitsScreen(int var1, int var2) {
 		if (this.elementFitsScreen(var1, var2)) {
 			return true;
+		} else {
+			return this.labelFitsScreen(var1, var2);
 		}
-		return this.labelFitsScreen(var1, var2);
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-1274004046"
+		signature = "(S)Z",
+		garbageValue = "256"
 	)
 	@Export("hasValidElement")
 	boolean hasValidElement() {
 		return this.getElement() >= 0;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(III)Z",
-		garbageValue = "406020312"
+		signature = "(IIS)Z",
+		garbageValue = "-26498"
 	)
 	@Export("elementFitsScreen")
 	boolean elementFitsScreen(int var1, int var2) {
 		if (!this.hasValidElement()) {
 			return false;
-		}
-		WorldMapElement var3 = class222.WorldMapElement_get(this.getElement());
-		int var4 = this.getSubWidth();
-		int var5 = this.getSubHeight();
-		switch(var3.horizontalAlignment.value) {
-		case 0:
-			if (var1 <= this.screenX - var4 || var1 > this.screenX) {
+		} else {
+			WorldMapElement var3 = WorldMapData_0.WorldMapElement_get(this.getElement());
+			int var4 = this.getSubWidth();
+			int var5 = this.getSubHeight();
+			switch(var3.horizontalAlignment.value) {
+			case 0:
+				if (var1 >= this.screenX && var1 < var4 + this.screenX) {
+					break;
+				}
+
 				return false;
+			case 1:
+				if (var1 >= this.screenX - var4 / 2 && var1 <= var4 / 2 + this.screenX) {
+					break;
+				}
+
+				return false;
+			case 2:
+				if (var1 <= this.screenX - var4 || var1 > this.screenX) {
+					return false;
+				}
 			}
-			break;
-		case 1:
-			if (var1 >= this.screenX && var1 < var4 + this.screenX) {
+
+			switch(var3.verticalAlignment.value) {
+			case 0:
+				if (var2 >= this.screenY - var5 / 2 && var2 <= var5 / 2 + this.screenY) {
+					break;
+				}
+
+				return false;
+			case 1:
+				if (var2 <= this.screenY - var5 || var2 > this.screenY) {
+					return false;
+				}
 				break;
+			case 2:
+				if (var2 < this.screenY || var2 >= var5 + this.screenY) {
+					return false;
+				}
 			}
 
-			return false;
-		case 2:
-			if (var1 < this.screenX - var4 / 2 || var1 > var4 / 2 + this.screenX) {
-				return false;
-			}
+			return true;
 		}
-
-		switch(var3.verticalAlignment.value) {
-		case 0:
-			if (var2 < this.screenY - var5 / 2 || var2 > var5 / 2 + this.screenY) {
-				return false;
-			}
-			break;
-		case 1:
-			if (var2 <= this.screenY - var5 || var2 > this.screenY) {
-				return false;
-			}
-			break;
-		case 2:
-			if (var2 < this.screenY || var2 >= var5 + this.screenY) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(III)Z",
-		garbageValue = "-1252480817"
+		signature = "(IIB)Z",
+		garbageValue = "66"
 	)
 	@Export("labelFitsScreen")
 	boolean labelFitsScreen(int var1, int var2) {
 		WorldMapLabel var3 = this.getLabel();
 		if (var3 == null) {
 			return false;
-		}
-		if (var1 >= this.screenX - var3.width / 2 && var1 <= var3.width / 2 + this.screenX) {
+		} else if (var1 >= this.screenX - var3.width / 2 && var1 <= var3.width / 2 + this.screenX) {
 			return var2 >= this.screenY && var2 <= this.screenY + var3.height;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1908697951"
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "261353448"
 	)
-	@Export("NpcDefinition_clearCached")
-	public static void NpcDefinition_clearCached() {
-		NPCDefinition.NpcDefinition_cached.clear();
-		NPCDefinition.NpcDefinition_cachedModels.clear();
-	}
-
-	@ObfuscatedName("fb")
-	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-108"
-	)
-	@Export("getWindowedMode")
-	static int getWindowedMode() {
-		return Client.isResizable ? 2 : 1;
+	static final void method591(String var0) {
+		StringBuilder var10000 = (new StringBuilder()).append(var0);
+		Object var10001 = null;
+		String var1 = var10000.append(" is already on your ignore list").toString();
+		DirectByteArrayCopier.addGameMessage(30, "", var1);
 	}
 }

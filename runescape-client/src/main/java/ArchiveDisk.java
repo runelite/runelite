@@ -1,38 +1,40 @@
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("km")
+@ObfuscatedName("kv")
 @Implements("ArchiveDisk")
 public final class ArchiveDisk {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("ArchiveDisk_buffer")
 	static byte[] ArchiveDisk_buffer;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lmn;"
+		signature = "Lmw;"
 	)
 	@Export("datFile")
 	BufferedFile datFile;
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "Lmn;"
-	)
-	@Export("idxFile")
-	BufferedFile idxFile;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -2081269841
+		intValue = -1905715445
 	)
 	@Export("archive")
 	int archive;
 	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lmw;"
+	)
+	@Export("idxFile")
+	BufferedFile idxFile;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -609307423
+		intValue = 1039930471
 	)
 	@Export("maxEntrySize")
 	int maxEntrySize;
@@ -42,7 +44,7 @@ public final class ArchiveDisk {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(ILmn;Lmn;I)V"
+		signature = "(ILmw;Lmw;I)V"
 	)
 	public ArchiveDisk(int var1, BufferedFile var2, BufferedFile var3, int var4) {
 		this.datFile = null;
@@ -54,132 +56,144 @@ public final class ArchiveDisk {
 		this.maxEntrySize = var4;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(II)[B",
-		garbageValue = "-8739933"
+		signature = "(IB)[B",
+		garbageValue = "93"
 	)
 	@Export("read")
 	public byte[] read(int var1) {
 		synchronized(this.datFile) {
 			try {
+				Object var10000;
 				if (this.idxFile.length() < (long)(var1 * 6 + 6)) {
-					return null;
-				}
-				this.idxFile.seek((long)(var1 * 6));
-				this.idxFile.read(ArchiveDisk_buffer, 0, 6);
-				int var3 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
-				int var4 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
-				if (var3 < 0 || var3 > this.maxEntrySize) {
-					return null;
-				}
-				if (var4 <= 0 || (long)var4 > this.datFile.length() / 520L) {
-					return null;
-				}
-				byte[] var5 = new byte[var3];
-				int var6 = 0;
-
-				for (int var7 = 0; var6 < var3; ++var7) {
-					if (var4 == 0) {
-						return null;
-					}
-
-					this.datFile.seek(520L * (long)var4);
-					int var8 = var3 - var6;
-					int var9;
-					int var10;
-					int var11;
-					int var12;
-					byte var13;
-					if (var1 > 0xffff) {
-						if (var8 > 510) {
-							var8 = 510;
-						}
-
-						var13 = 10;
-						this.datFile.read(ArchiveDisk_buffer, 0, var8 + var13);
-						var9 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
-						var10 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[4] & 255) << 8);
-						var11 = (ArchiveDisk_buffer[8] & 255) + ((ArchiveDisk_buffer[7] & 255) << 8) + ((ArchiveDisk_buffer[6] & 255) << 16);
-						var12 = ArchiveDisk_buffer[9] & 255;
+					var10000 = null;
+					return (byte[])var10000;
+				} else {
+					this.idxFile.seek((long)(var1 * 6));
+					this.idxFile.read(ArchiveDisk_buffer, 0, 6);
+					int var3 = ((ArchiveDisk_buffer[0] & 255) << 16) + (ArchiveDisk_buffer[2] & 255) + ((ArchiveDisk_buffer[1] & 255) << 8);
+					int var4 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
+					if (var3 < 0 || var3 > this.maxEntrySize) {
+						var10000 = null;
+						return (byte[])var10000;
+					} else if (var4 <= 0 || (long)var4 > this.datFile.length() / 520L) {
+						var10000 = null;
+						return (byte[])var10000;
 					} else {
-						if (var8 > 512) {
-							var8 = 512;
+						byte[] var5 = new byte[var3];
+						int var6 = 0;
+
+						for (int var7 = 0; var6 < var3; ++var7) {
+							if (var4 == 0) {
+								var10000 = null;
+								return (byte[])var10000;
+							}
+
+							this.datFile.seek(520L * (long)var4);
+							int var8 = var3 - var6;
+							int var9;
+							int var10;
+							int var11;
+							int var12;
+							byte var13;
+							if (var1 > 65535) {
+								if (var8 > 510) {
+									var8 = 510;
+								}
+
+								var13 = 10;
+								this.datFile.read(ArchiveDisk_buffer, 0, var8 + var13);
+								var9 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+								var10 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[4] & 255) << 8);
+								var11 = (ArchiveDisk_buffer[8] & 255) + ((ArchiveDisk_buffer[7] & 255) << 8) + ((ArchiveDisk_buffer[6] & 255) << 16);
+								var12 = ArchiveDisk_buffer[9] & 255;
+							} else {
+								if (var8 > 512) {
+									var8 = 512;
+								}
+
+								var13 = 8;
+								this.datFile.read(ArchiveDisk_buffer, 0, var8 + var13);
+								var9 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
+								var10 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
+								var11 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
+								var12 = ArchiveDisk_buffer[7] & 255;
+							}
+
+							if (var9 != var1 || var7 != var10 || var12 != this.archive) {
+								var10000 = null;
+								return (byte[])var10000;
+							}
+
+							if (var11 < 0 || (long)var11 > this.datFile.length() / 520L) {
+								var10000 = null;
+								return (byte[])var10000;
+							}
+
+							int var14 = var13 + var8;
+
+							for (int var15 = var13; var15 < var14; ++var15) {
+								var5[var6++] = ArchiveDisk_buffer[var15];
+							}
+
+							var4 = var11;
 						}
 
-						var13 = 8;
-						this.datFile.read(ArchiveDisk_buffer, 0, var13 + var8);
-						var9 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
-						var10 = (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
-						var11 = ((ArchiveDisk_buffer[5] & 255) << 8) + ((ArchiveDisk_buffer[4] & 255) << 16) + (ArchiveDisk_buffer[6] & 255);
-						var12 = ArchiveDisk_buffer[7] & 255;
+						byte[] var20 = var5;
+						return var20;
 					}
-
-					if (var9 != var1 || var7 != var10 || var12 != this.archive) {
-						return null;
-					}
-
-					if (var11 < 0 || (long)var11 > this.datFile.length() / 520L) {
-						return null;
-					}
-
-					int var14 = var8 + var13;
-
-					for (int var15 = var13; var15 < var14; ++var15) {
-						var5[var6++] = ArchiveDisk_buffer[var15];
-					}
-
-					var4 = var11;
 				}
-
-				byte[] var20 = var5;
-				return var20;
 			} catch (IOException var18) {
 				return null;
 			}
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
 		signature = "(I[BII)Z",
-		garbageValue = "-1155409189"
+		garbageValue = "1937661421"
 	)
 	@Export("write")
 	public boolean write(int var1, byte[] var2, int var3) {
 		synchronized(this.datFile) {
-			if (var3 < 0 || var3 > this.maxEntrySize) {
+			if (var3 >= 0 && var3 <= this.maxEntrySize) {
+				boolean var5 = this.write0(var1, var2, var3, true);
+				if (!var5) {
+					var5 = this.write0(var1, var2, var3, false);
+				}
+
+				return var5;
+			} else {
 				throw new IllegalArgumentException("" + this.archive + ',' + var1 + ',' + var3);
 			}
-			boolean var5 = this.write0(var1, var2, var3, true);
-			if (!var5) {
-				var5 = this.write0(var1, var2, var3, false);
-			}
-
-			return var5;
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I[BIZB)Z",
-		garbageValue = "64"
+		garbageValue = "16"
 	)
 	@Export("write0")
 	boolean write0(int var1, byte[] var2, int var3, boolean var4) {
 		synchronized(this.datFile) {
 			try {
 				int var6;
+				boolean var10000;
 				if (var4) {
 					if (this.idxFile.length() < (long)(var1 * 6 + 6)) {
-						return false;
+						var10000 = false;
+						return var10000;
 					}
 
 					this.idxFile.seek((long)(var1 * 6));
 					this.idxFile.read(ArchiveDisk_buffer, 0, 6);
 					var6 = (ArchiveDisk_buffer[5] & 255) + ((ArchiveDisk_buffer[3] & 255) << 16) + ((ArchiveDisk_buffer[4] & 255) << 8);
 					if (var6 <= 0 || (long)var6 > this.datFile.length() / 520L) {
-						return false;
+						var10000 = false;
+						return var10000;
 					}
 				} else {
 					var6 = (int)((this.datFile.length() + 519L) / 520L);
@@ -199,19 +213,20 @@ public final class ArchiveDisk {
 				int var7 = 0;
 				int var8 = 0;
 
-				while (var7 < var3) {
+				while (true) {
+					if (var7 < var3) {
 						label171: {
 							int var9 = 0;
 							int var10;
 							if (var4) {
-								this.datFile.seek((long)var6 * 520L);
+								this.datFile.seek(520L * (long)var6);
 								int var11;
 								int var12;
-								if (var1 > 0xffff) {
+								if (var1 > 65535) {
 									try {
 										this.datFile.read(ArchiveDisk_buffer, 0, 10);
 									} catch (EOFException var17) {
-										continue;
+										break label171;
 									}
 
 									var10 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
@@ -231,12 +246,14 @@ public final class ArchiveDisk {
 									var12 = ArchiveDisk_buffer[7] & 255;
 								}
 
-								if (var10 != var1 || var8 != var11 || var12 != this.archive) {
-									return false;
+								if (var10 != var1 || var11 != var8 || var12 != this.archive) {
+									var10000 = false;
+									return var10000;
 								}
 
 								if (var9 < 0 || (long)var9 > this.datFile.length() / 520L) {
-									return false;
+									var10000 = false;
+									return var10000;
 								}
 							}
 
@@ -252,7 +269,7 @@ public final class ArchiveDisk {
 								}
 							}
 
-							if (var1 > 0xffff) {
+							if (var1 > 65535) {
 								if (var3 - var7 <= 510) {
 									var9 = 0;
 								}
@@ -267,7 +284,7 @@ public final class ArchiveDisk {
 								ArchiveDisk_buffer[7] = (byte)(var9 >> 8);
 								ArchiveDisk_buffer[8] = (byte)var9;
 								ArchiveDisk_buffer[9] = (byte)this.archive;
-								this.datFile.seek((long)var6 * 520L);
+								this.datFile.seek(520L * (long)var6);
 								this.datFile.write(ArchiveDisk_buffer, 0, 10);
 								var10 = var3 - var7;
 								if (var10 > 510) {
@@ -306,41 +323,71 @@ public final class ArchiveDisk {
 						}
 					}
 
-					return true;
+					var10000 = true;
+					return var10000;
+				}
 			} catch (IOException var18) {
 				return false;
 			}
 		}
 	}
 
+	public String abd() {
+		return "" + this.archive;
+	}
+
+	public String abb() {
+		return "" + this.archive * 1098163870;
+	}
+
 	public String toString() {
 		return "" + this.archive;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;ZI)[B",
-		garbageValue = "991854443"
+		signature = "(Lfu;III)Ldd;",
+		garbageValue = "670296930"
 	)
-	@Export("serialize")
-	public static byte[] serialize(Object var0, boolean var1) {
-		if (var0 == null) {
-			return null;
-		}
-		if (var0 instanceof byte[]) {
-			byte[] var6 = ((byte[]) var0);
-			if (var1) {
-				int var4 = var6.length;
-				byte[] var5 = new byte[var4];
-				System.arraycopy(var6, 0, var5, 0, var4);
-				return var5;
+	public static final PcmPlayer method5757(TaskHandler var0, int var1, int var2) {
+		if (PcmPlayer.PcmPlayer_sampleRate == 0) {
+			throw new IllegalStateException();
+		} else if (var1 >= 0 && var1 < 2) {
+			if (var2 < 256) {
+				var2 = 256;
 			}
-			return var6;
-		}
-		if (!(var0 instanceof AbstractByteArrayCopier)) {
+
+			try {
+				PcmPlayer var3 = SecureRandomCallable.pcmPlayerProvider.player();
+				var3.samples = new int[(PcmPlayer.PcmPlayer_stereo ? 2 : 1) * 256];
+				var3.field1399 = var2;
+				var3.init();
+				var3.capacity = (var2 & -1024) + 1024;
+				if (var3.capacity > 16384) {
+					var3.capacity = 16384;
+				}
+
+				var3.open(var3.capacity);
+				if (FloorDecoration.PcmPlayer_count > 0 && PacketBufferNode.soundSystem == null) {
+					PacketBufferNode.soundSystem = new SoundSystem();
+					GrandExchangeOfferWorldComparator.soundSystemExecutor = Executors.newScheduledThreadPool(1);
+					GrandExchangeOfferWorldComparator.soundSystemExecutor.scheduleAtFixedRate(PacketBufferNode.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
+				}
+
+				if (PacketBufferNode.soundSystem != null) {
+					if (PacketBufferNode.soundSystem.players[var1] != null) {
+						throw new IllegalArgumentException();
+					}
+
+					PacketBufferNode.soundSystem.players[var1] = var3;
+				}
+
+				return var3;
+			} catch (Throwable var4) {
+				return new PcmPlayer();
+			}
+		} else {
 			throw new IllegalArgumentException();
 		}
-		AbstractByteArrayCopier var2 = (AbstractByteArrayCopier) var0;
-		return var2.get();
 	}
 }

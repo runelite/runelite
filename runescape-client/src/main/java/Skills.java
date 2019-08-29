@@ -1,30 +1,18 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hx")
 @Implements("Skills")
 public class Skills {
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("Skills_enabled")
 	public static final boolean[] Skills_enabled;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("Skills_experienceTable")
 	public static int[] Skills_experienceTable;
-	@ObfuscatedName("f")
-	@ObfuscatedGetter(
-		intValue = 1622531909
-	)
-	@Export("Interpreter_stringStackSize")
-	static int Interpreter_stringStackSize;
-	@ObfuscatedName("gz")
-	@ObfuscatedSignature(
-		signature = "[Lly;"
-	)
-	@Export("mapDotSprites")
-	static Sprite[] mapDotSprites;
 
 	static {
 		Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
@@ -40,15 +28,42 @@ public class Skills {
 
 	}
 
-	@ObfuscatedName("iz")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIII)V",
-		garbageValue = "-1917255225"
+		signature = "(ILcr;ZB)I",
+		garbageValue = "1"
 	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (class162.loadInterface(var0)) {
-			class2.updateInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+	static int method4031(int var0, Script var1, boolean var2) {
+		int var3;
+		if (var0 == ScriptOpcodes.CAM_FORCEANGLE) {
+			Interpreter.Interpreter_intStackSize -= 2;
+			var3 = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
+			int var4 = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1];
+			if (!Client.isCameraLocked) {
+				Client.camAngleX = var3;
+				Client.camAngleY = var4;
+			}
+
+			return 1;
+		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.camAngleX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.camAngleY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
+			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
+			if (var3 < 0) {
+				var3 = 0;
+			}
+
+			Client.camFollowHeight = var3;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.camFollowHeight;
+			return 1;
+		} else {
+			return 2;
 		}
 	}
 }

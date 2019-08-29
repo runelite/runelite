@@ -4,18 +4,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("jm")
 @Implements("IterableDualNodeQueue")
 public class IterableDualNodeQueue implements Iterable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lfb;"
+		signature = "Lfe;"
 	)
 	@Export("sentinel")
 	public DualNode sentinel;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lfb;"
+		signature = "Lfe;"
 	)
 	@Export("head")
 	DualNode head;
@@ -26,7 +26,7 @@ public class IterableDualNodeQueue implements Iterable {
 		this.sentinel.nextDual = this.sentinel;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("clear")
 	public void clear() {
 		while (this.sentinel.previousDual != this.sentinel) {
@@ -35,9 +35,9 @@ public class IterableDualNodeQueue implements Iterable {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Lfb;)V"
+		signature = "(Lfe;)V"
 	)
 	@Export("add")
 	public void add(DualNode var1) {
@@ -51,32 +51,33 @@ public class IterableDualNodeQueue implements Iterable {
 		var1.previousDual.nextDual = var1;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "()Lfb;"
+		signature = "()Lfe;"
 	)
 	@Export("removeLast")
 	public DualNode removeLast() {
 		DualNode var1 = this.sentinel.previousDual;
 		if (var1 == this.sentinel) {
 			return null;
+		} else {
+			var1.removeDual();
+			return var1;
 		}
-		var1.removeDual();
-		return var1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "()Lfb;"
+		signature = "()Lfe;"
 	)
 	@Export("last")
 	public DualNode last() {
 		return this.previousOrLast((DualNode)null);
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lfb;)Lfb;"
+		signature = "(Lfe;)Lfe;"
 	)
 	@Export("previousOrLast")
 	DualNode previousOrLast(DualNode var1) {
@@ -90,14 +91,15 @@ public class IterableDualNodeQueue implements Iterable {
 		if (var2 == this.sentinel) {
 			this.head = null;
 			return null;
+		} else {
+			this.head = var2.previousDual;
+			return var2;
 		}
-		this.head = var2.previousDual;
-		return var2;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "()Lfb;"
+		signature = "()Lfe;"
 	)
 	@Export("previous")
 	public DualNode previous() {
@@ -105,18 +107,19 @@ public class IterableDualNodeQueue implements Iterable {
 		if (var1 == this.sentinel) {
 			this.head = null;
 			return null;
+		} else {
+			this.head = var1.previousDual;
+			return var1;
 		}
-		this.head = var1.previousDual;
-		return var1;
 	}
 
 	public Iterator iterator() {
 		return new IterableDualNodeQueueIterator(this);
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lfb;Lfb;)V"
+		signature = "(Lfe;Lfe;)V"
 	)
 	@Export("DualNodeDeque_addBefore")
 	public static void DualNodeDeque_addBefore(DualNode var0, DualNode var1) {

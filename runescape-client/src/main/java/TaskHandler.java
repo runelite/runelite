@@ -1,4 +1,6 @@
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -7,31 +9,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fu")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("javaVersion")
 	public static String javaVersion;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lfa;"
+		signature = "Lft;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lfa;"
+		signature = "Lft;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@Export("isClosed")
 	boolean isClosed;
 
@@ -55,10 +57,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "876535177"
+		garbageValue = "1887947364"
 	)
 	@Export("close")
 	public final void close() {
@@ -74,10 +76,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;B)Lfa;",
-		garbageValue = "115"
+		signature = "(IIILjava/lang/Object;I)Lft;",
+		garbageValue = "1177256583"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -98,20 +100,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Lfa;",
-		garbageValue = "313449224"
+		signature = "(Ljava/lang/String;IB)Lft;",
+		garbageValue = "-49"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;II)Lfa;",
-		garbageValue = "193419386"
+		signature = "(Ljava/lang/Runnable;IB)Lft;",
+		garbageValue = "1"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -164,5 +166,66 @@ public class TaskHandler implements Runnable {
 				var1.status = 2;
 			}
 		}
+	}
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;I)Z",
+		garbageValue = "-641292083"
+	)
+	@Export("isNumber")
+	public static boolean isNumber(CharSequence var0) {
+		return class219.method4022(var0, 10, true);
+	}
+
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lmm;",
+		garbageValue = "929231118"
+	)
+	@Export("getPreferencesFile")
+	public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
+		File var3 = new File(JagexCache.cacheDir, "preferences" + var0 + ".dat");
+		if (var3.exists()) {
+			try {
+				AccessFile var10 = new AccessFile(var3, "rw", 10000L);
+				return var10;
+			} catch (IOException var9) {
+			}
+		}
+
+		String var4 = "";
+		if (InterfaceParent.cacheGamebuild == 33) {
+			var4 = "_rc";
+		} else if (InterfaceParent.cacheGamebuild == 34) {
+			var4 = "_wip";
+		}
+
+		File var5 = new File(FontName.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+		AccessFile var6;
+		if (!var2 && var5.exists()) {
+			try {
+				var6 = new AccessFile(var5, "rw", 10000L);
+				return var6;
+			} catch (IOException var8) {
+			}
+		}
+
+		try {
+			var6 = new AccessFile(var3, "rw", 10000L);
+			return var6;
+		} catch (IOException var7) {
+			throw new RuntimeException();
+		}
+	}
+
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(IIB)I",
+		garbageValue = "-6"
+	)
+	public static int method3411(int var0, int var1) {
+		int var2 = var0 >>> 31;
+		return (var0 + var2) / var1 - var2;
 	}
 }

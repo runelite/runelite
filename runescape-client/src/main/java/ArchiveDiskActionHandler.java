@@ -1,42 +1,37 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ir")
+@ObfuscatedName("iw")
 @Implements("ArchiveDiskActionHandler")
 public class ArchiveDiskActionHandler implements Runnable {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Ljh;"
+		signature = "Ljc;"
 	)
 	@Export("ArchiveDiskActionHandler_requestQueue")
-	public static NodeDeque ArchiveDiskActionHandler_requestQueue;
-	@ObfuscatedName("w")
+	static NodeDeque ArchiveDiskActionHandler_requestQueue;
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Ljh;"
+		signature = "Ljc;"
 	)
 	@Export("ArchiveDiskActionHandler_responseQueue")
-	public static NodeDeque ArchiveDiskActionHandler_responseQueue;
-	@ObfuscatedName("e")
+	static NodeDeque ArchiveDiskActionHandler_responseQueue;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1331634311
+		intValue = 587142169
 	)
-	static int field3144;
-	@ObfuscatedName("p")
+	static int field3124;
+	@ObfuscatedName("k")
 	@Export("ArchiveDiskActionHandler_lock")
 	static Object ArchiveDiskActionHandler_lock;
-	@ObfuscatedName("k")
-	@Export("ArchiveDiskActionHandler_thread")
-	static Thread ArchiveDiskActionHandler_thread;
 
 	static {
 		ArchiveDiskActionHandler_requestQueue = new NodeDeque();
 		ArchiveDiskActionHandler_responseQueue = new NodeDeque();
-		field3144 = 0;
+		field3124 = 0;
 		ArchiveDiskActionHandler_lock = new Object();
 	}
 
@@ -65,76 +60,45 @@ public class ArchiveDiskActionHandler implements Runnable {
 					}
 
 					synchronized(ArchiveDiskActionHandler_lock) {
-						if (field3144 <= 1) {
-							field3144 = 0;
+						if (field3124 <= 1) {
+							field3124 = 0;
 							ArchiveDiskActionHandler_lock.notifyAll();
 							return;
 						}
 
-						field3144 = 600;
+						field3124 = 600;
 					}
 				} else {
-					EnumDefinition.sleepMillis(100L);
+					UserList.sleepMillis(100L);
 					synchronized(ArchiveDiskActionHandler_lock) {
-						if (field3144 <= 1) {
-							field3144 = 0;
+						if (field3124 <= 1) {
+							field3124 = 0;
 							ArchiveDiskActionHandler_lock.notifyAll();
 							return;
 						}
 
-						--field3144;
+						--field3124;
 					}
 				}
 			}
 		} catch (Exception var13) {
-			HitSplatDefinition.RunException_sendStackTrace((String)null, var13);
+			class3.RunException_sendStackTrace((String)null, var13);
 		}
 	}
 
-	@ObfuscatedName("al")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Lfs;III)Ldn;",
-		garbageValue = "2015059645"
+		signature = "(CB)Z",
+		garbageValue = "-108"
 	)
-	public static final PcmPlayer method4256(TaskHandler var0, int var1, int var2) {
-		if (CollisionMap.PcmPlayer_sampleRate == 0) {
-			throw new IllegalStateException();
+	@Export("isCharPrintable")
+	public static boolean isCharPrintable(char var0) {
+		if (var0 >= ' ' && var0 <= '~') {
+			return true;
+		} else if (var0 >= 160 && var0 <= 255) {
+			return true;
+		} else {
+			return var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376;
 		}
-		if (var1 >= 0 && var1 < 2) {
-			if (var2 < 256) {
-				var2 = 256;
-			}
-
-			try {
-				PcmPlayer var3 = class32.pcmPlayerProvider.player();
-				var3.samples = new int[256 * (FileSystem.PcmPlayer_stereo ? 2 : 1)];
-				var3.field1414 = var2;
-				var3.init();
-				var3.capacity = (var2 & -1024) + 1024;
-				if (var3.capacity > 16384) {
-					var3.capacity = 16384;
-				}
-
-				var3.open(var3.capacity);
-				if (PcmPlayer.PcmPlayer_count > 0 && SecureRandomFuture.soundSystem == null) {
-					SecureRandomFuture.soundSystem = new SoundSystem();
-					class14.soundSystemExecutor = Executors.newScheduledThreadPool(1);
-					class14.soundSystemExecutor.scheduleAtFixedRate(SecureRandomFuture.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
-				}
-
-				if (SecureRandomFuture.soundSystem != null) {
-					if (SecureRandomFuture.soundSystem.players[var1] != null) {
-						throw new IllegalArgumentException();
-					}
-
-					SecureRandomFuture.soundSystem.players[var1] = var3;
-				}
-
-				return var3;
-			} catch (Throwable var4) {
-				return new PcmPlayer();
-			}
-		}
-		throw new IllegalArgumentException();
 	}
 }

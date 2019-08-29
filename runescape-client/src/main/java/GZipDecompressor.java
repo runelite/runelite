@@ -1,18 +1,25 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ld")
+@ObfuscatedName("lc")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-	@ObfuscatedName("p")
-	@Export("Interpreter_stringLocals")
-	static String[] Interpreter_stringLocals;
-	@ObfuscatedName("q")
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -145342191
+	)
+	public static int field4007;
+	@ObfuscatedName("s")
 	@Export("inflater")
 	Inflater inflater;
+
+	public GZipDecompressor() {
+		this(-1, 1000000, 1000000);
+	}
 
 	@ObfuscatedSignature(
 		signature = "(III)V",
@@ -21,14 +28,10 @@ public class GZipDecompressor {
 	GZipDecompressor(int var1, int var2, int var3) {
 	}
 
-	public GZipDecompressor() {
-		this(-1, 1000000, 1000000);
-	}
-
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Lkf;[BI)V",
-		garbageValue = "1327705943"
+		signature = "(Lky;[BI)V",
+		garbageValue = "-1662982609"
 	)
 	@Export("decompress")
 	public void decompress(Buffer var1, byte[] var2) {
@@ -49,5 +52,28 @@ public class GZipDecompressor {
 		} else {
 			throw new RuntimeException("");
 		}
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(ZI)V",
+		garbageValue = "-2077179875"
+	)
+	static void method6390(boolean var0) {
+		Login.Login_response1 = "";
+		Login.Login_response2 = "Enter your username/email & password.";
+		Login.Login_response3 = "";
+		Login.loginIndex = 2;
+		if (var0) {
+			Login.Login_password = "";
+		}
+
+		ItemContainer.method1120();
+		if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
+			Login.currentLoginField = 1;
+		} else {
+			Login.currentLoginField = 0;
+		}
+
 	}
 }

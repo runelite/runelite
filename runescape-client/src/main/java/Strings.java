@@ -1,51 +1,25 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("ht")
 @Implements("Strings")
 public class Strings {
-	@ObfuscatedName("bg")
-	public static String field2811;
-	@ObfuscatedName("cs")
-	public static String field2961;
-	@ObfuscatedName("jm")
-	public static String field2942;
-	@ObfuscatedName("jj")
-	public static String field3027;
+	@ObfuscatedName("bn")
+	public static String field2992;
+	@ObfuscatedName("cg")
+	public static String field2831;
+	@ObfuscatedName("ji")
+	public static String field3007;
+	@ObfuscatedName("jd")
+	public static String field3008;
 	@ObfuscatedName("jr")
-	public static String field2768;
+	public static String field3009;
 
 	static {
-		field2811 = "Please visit the support page for assistance.";
-		field2961 = "Please visit the support page for assistance.";
-		field2942 = "";
-		field3027 = "Page has opened in a new window.";
-		field2768 = "(Please check your popup blocker.)";
-	}
-
-	@ObfuscatedName("hg")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-495158745"
-	)
-	@Export("resetMenuEntries")
-	static void resetMenuEntries() {
-		Client.menuOptionsCount = 0;
-		Client.isMenuOpen = false;
-	}
-
-	@ObfuscatedName("jl")
-	@ObfuscatedSignature(
-		signature = "(Lhj;I)V",
-		garbageValue = "-2041903885"
-	)
-	@Export("invalidateWidget")
-	static void invalidateWidget(Widget var0) {
-		if (var0.cycle == Client.field741) {
-			Client.field843[var0.rootIndex] = true;
-		}
-
+		field2992 = "Please visit the support page for assistance.";
+		field2831 = "Please visit the support page for assistance.";
+		field3007 = "";
+		field3008 = "Page has opened in a new window.";
+		field3009 = "(Please check your popup blocker.)";
 	}
 }

@@ -4,72 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bl")
 @Implements("World")
 public class World {
-	@ObfuscatedName("k")
+	@ObfuscatedName("sd")
 	@ObfuscatedSignature(
-		signature = "[Lbw;"
+		signature = "Llx;"
 	)
-	@Export("World_worlds")
-	static World[] World_worlds;
-	@ObfuscatedName("l")
+	@Export("platformInfo")
+	static PlatformInfo platformInfo;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 774267173
+		intValue = -1559226187
 	)
 	@Export("World_count")
 	static int World_count;
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -2084454035
+		intValue = 315503089
 	)
 	@Export("World_listCount")
 	static int World_listCount;
-	@ObfuscatedName("i")
+	@ObfuscatedName("q")
 	@Export("World_sortOption2")
 	static int[] World_sortOption2;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@Export("World_sortOption1")
 	static int[] World_sortOption1;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "Lex;"
-	)
-	@Export("World_request")
-	static UrlRequest World_request;
-	@ObfuscatedName("m")
+	@ObfuscatedName("ka")
 	@ObfuscatedGetter(
-		intValue = 790181133
+		intValue = 1149397885
+	)
+	@Export("menuWidth")
+	static int menuWidth;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 1230812985
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("u")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 630491985
+		intValue = -1926875123
 	)
 	@Export("properties")
 	int properties;
-	@ObfuscatedName("x")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -432731733
+		intValue = -999023629
 	)
 	@Export("population")
 	int population;
-	@ObfuscatedName("r")
+	@ObfuscatedName("y")
 	@Export("host")
 	String host;
-	@ObfuscatedName("v")
+	@ObfuscatedName("p")
 	@Export("activity")
 	String activity;
-	@ObfuscatedName("y")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 657222747
+		intValue = -307094013
 	)
 	@Export("location")
 	int location;
 	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1014616139
+		intValue = 392698997
 	)
 	@Export("index")
 	int index;
@@ -84,155 +84,77 @@ public class World {
 	World() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "0"
+		signature = "(I)Z",
+		garbageValue = "1463155043"
 	)
 	@Export("isMembersOnly")
 	boolean isMembersOnly() {
 		return (1 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "2029214211"
+		garbageValue = "1651148983"
 	)
-	boolean method1682() {
+	boolean method1687() {
 		return (2 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-1353649797"
+		garbageValue = "-2074539917"
 	)
 	@Export("isPvp")
 	boolean isPvp() {
-		return (0x4 & this.properties) != 0;
+		return (4 & this.properties) != 0;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(S)Z",
+		garbageValue = "128"
+	)
+	boolean method1689() {
+		return (8 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1749102436"
-	)
-	boolean method1698() {
-		return (0x8 & this.properties) != 0;
-	}
-
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-2068007512"
+		garbageValue = "-1238207705"
 	)
 	@Export("isDeadman")
 	boolean isDeadman() {
-		return (0x20000000 & this.properties) != 0;
+		return (536870912 & this.properties) != 0;
 	}
 
 	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1648546006"
+		garbageValue = "877895545"
 	)
 	@Export("isBeta")
 	boolean isBeta() {
-		return (0x2000000 & this.properties) != 0;
+		return (33554432 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lkx;B)I",
-		garbageValue = "80"
+		signature = "(Lhz;IIB)Z",
+		garbageValue = "-20"
 	)
-	@Export("decode")
-	static int decode(PacketBuffer var0) {
-		int var1 = var0.readBits(2);
-		int var2;
-		if (var1 == 0) {
-			var2 = 0;
-		} else if (var1 == 1) {
-			var2 = var0.readBits(5);
-		} else if (var1 == 2) {
-			var2 = var0.readBits(8);
+	@Export("SpriteBuffer_bufferFile")
+	public static boolean SpriteBuffer_bufferFile(AbstractArchive var0, int var1, int var2) {
+		byte[] var3 = var0.takeFile(var1, var2);
+		if (var3 == null) {
+			return false;
 		} else {
-			var2 = var0.readBits(11);
+			Player.SpriteBuffer_decode(var3);
+			return true;
 		}
-
-		return var2;
-	}
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "([BI)Lcx;",
-		garbageValue = "-75241458"
-	)
-	@Export("newScript")
-	static Script newScript(byte[] var0) {
-		Script var1 = new Script();
-		Buffer var2 = new Buffer(var0);
-		var2.offset = var2.array.length - 2;
-		int var3 = var2.readUnsignedShort();
-		int var4 = var2.array.length - 2 - var3 - 12;
-		var2.offset = var4;
-		int var5 = var2.readInt();
-		var1.localIntCount = var2.readUnsignedShort();
-		var1.localStringCount = var2.readUnsignedShort();
-		var1.intArgumentCount = var2.readUnsignedShort();
-		var1.stringArgumentCount = var2.readUnsignedShort();
-		int var6 = var2.readUnsignedByte();
-		int var7;
-		int var8;
-		if (var6 > 0) {
-			var1.switches = var1.newIterableNodeHashTable(var6);
-
-			for (var7 = 0; var7 < var6; ++var7) {
-				var8 = var2.readUnsignedShort();
-				int var9;
-				int var11;
-				if (var8 > 0) {
-					var11 = var8 - 1;
-					var11 |= var11 >>> 1;
-					var11 |= var11 >>> 2;
-					var11 |= var11 >>> 4;
-					var11 |= var11 >>> 8;
-					var11 |= var11 >>> 16;
-					int var10 = var11 + 1;
-					var9 = var10;
-				} else {
-					var9 = 1;
-				}
-
-				IterableNodeHashTable var13 = new IterableNodeHashTable(var9);
-				var1.switches[var7] = var13;
-
-				while (var8-- > 0) {
-					var11 = var2.readInt();
-					int var12 = var2.readInt();
-					var13.put(new IntegerNode(var12), (long)var11);
-				}
-			}
-		}
-
-		var2.offset = 0;
-		var2.readStringCp1252NullTerminatedOrNull();
-		var1.opcodes = new int[var5];
-		var1.intOperands = new int[var5];
-		var1.stringOperands = new String[var5];
-
-		for (var7 = 0; var2.offset < var4; var1.opcodes[var7++] = var8) {
-			var8 = var2.readUnsignedShort();
-			if (var8 == 3) {
-				var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
-			} else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
-				var1.intOperands[var7] = var2.readInt();
-			} else {
-				var1.intOperands[var7] = var2.readUnsignedByte();
-			}
-		}
-
-		return var1;
 	}
 }

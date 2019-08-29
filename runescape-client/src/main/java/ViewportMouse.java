@@ -4,65 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("di")
+@ObfuscatedName("df")
 @Implements("ViewportMouse")
 public class ViewportMouse {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("ViewportMouse_isInViewport")
 	public static boolean ViewportMouse_isInViewport;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 284050525
+		intValue = 1673614765
 	)
 	@Export("ViewportMouse_x")
-	public static int ViewportMouse_x;
-	@ObfuscatedName("e")
+	static int ViewportMouse_x;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -245246371
+		intValue = 97939103
 	)
 	@Export("ViewportMouse_y")
-	public static int ViewportMouse_y;
-	@ObfuscatedName("p")
+	static int ViewportMouse_y;
+	@ObfuscatedName("k")
 	@Export("ViewportMouse_false0")
-	public static boolean ViewportMouse_false0;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = -933115495
-	)
-	static int field1745;
-	@ObfuscatedName("b")
-	@ObfuscatedGetter(
-		intValue = -401508143
-	)
-	static int field1746;
-	@ObfuscatedName("i")
-	@Export("Widget_loadedInterfaces")
-	public static boolean[] Widget_loadedInterfaces;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "Lhp;"
-	)
-	@Export("Widget_modelsArchive")
-	static AbstractArchive Widget_modelsArchive;
+	static boolean ViewportMouse_false0;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -900084985
+		intValue = 214371075
 	)
-	static int field1741;
+	static int field1723;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = -228881629
+	)
+	static int field1724;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = 1565231911
+	)
+	static int field1725;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -942869669
+	)
+	static int field1726;
 	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1866489791
+		intValue = 155548297
+	)
+	static int field1727;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = 1633088205
 	)
 	@Export("ViewportMouse_entityCount")
 	public static int ViewportMouse_entityCount;
-	@ObfuscatedName("v")
+	@ObfuscatedName("p")
 	@Export("ViewportMouse_entityTags")
 	public static long[] ViewportMouse_entityTags;
-	@ObfuscatedName("fq")
-	@ObfuscatedGetter(
-		intValue = -572146471
-	)
-	static int field1747;
 
 	static {
 		ViewportMouse_isInViewport = false;
@@ -73,116 +69,74 @@ public class ViewportMouse {
 		ViewportMouse_entityTags = new long[1000];
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(IS)Liy;",
-		garbageValue = "4095"
+		signature = "([BI)Ljava/lang/String;",
+		garbageValue = "1521597342"
 	)
-	@Export("getObjectDefinition")
-	public static ObjectDefinition getObjectDefinition(int var0) {
-		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		}
-		byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
-		var1 = new ObjectDefinition();
-		var1.id = var0;
-		if (var2 != null) {
-			var1.decode(new Buffer(var2));
-		}
-
-		var1.postDecode();
-		if (var1.isSolid) {
-			var1.interactType = 0;
-			var1.boolean1 = false;
-		}
-
-		ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
-		return var1;
+	public static String method2902(byte[] var0) {
+		return WorldMapSection0.method211(var0, 0, var0.length);
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(IB)Lcx;",
-		garbageValue = "1"
+		signature = "(II)Lii;",
+		garbageValue = "-1840851483"
 	)
-	@Export("getScript")
-	static Script getScript(int var0) {
-		Script var1 = (Script)Script.Script_cached.get((long)var0);
+	@Export("getNpcDefinition")
+	public static NPCDefinition getNpcDefinition(int var0) {
+		NPCDefinition var1 = (NPCDefinition)NPCDefinition.NpcDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
-		}
-		byte[] var2 = UserComparator4.archive12.takeFile(var0, 0);
-		if (var2 == null) {
-			return null;
-		}
-		var1 = World.newScript(var2);
-		Script.Script_cached.put(var1, (long)var0);
-		return var1;
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(Liu;IIIBZI)V",
-		garbageValue = "-913325342"
-	)
-	@Export("requestNetFile")
-	static void requestNetFile(Archive var0, int var1, int var2, int var3, byte var4, boolean var5) {
-		long var6 = (long)((var1 << 16) + var2);
-		NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
-		if (var8 != null) {
-			return;
-		}
-		var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var6);
-		if (var8 != null) {
-			return;
-		}
-		var8 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var6);
-		if (var8 != null) {
-			if (var5) {
-				var8.removeDual();
-				NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
-				--NetCache.NetCache_pendingWritesCount;
-				++NetCache.NetCache_pendingPriorityWritesCount;
-			}
-
 		} else {
-			if (!var5) {
-				var8 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var6);
-				if (var8 != null) {
-					return;
-				}
+			byte[] var2 = NPCDefinition.NpcDefinition_archive.takeFile(9, var0);
+			var1 = new NPCDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			var8 = new NetFileRequest();
-			var8.archive = var0;
-			var8.crc = var3;
-			var8.padding = var4;
-			if (var5) {
-				NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
-				++NetCache.NetCache_pendingPriorityWritesCount;
-			} else {
-				NetCache.NetCache_pendingWritesQueue.addFirst(var8);
-				NetCache.NetCache_pendingWrites.put(var8, var6);
-				++NetCache.NetCache_pendingWritesCount;
-			}
-
+			var1.postDecode();
+			NPCDefinition.NpcDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "-1418597327"
+		signature = "([BIII)Ljava/lang/String;",
+		garbageValue = "810099755"
 	)
-	public static int method2971(CharSequence var0) {
-		int var1 = var0.length();
-		int var2 = 0;
+	@Export("decodeStringCp1252")
+	public static String decodeStringCp1252(byte[] var0, int var1, int var2) {
+		char[] var3 = new char[var2];
+		int var4 = 0;
 
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var2 = (var2 << 5) - var2 + var0.charAt(var3);
+		for (int var5 = 0; var5 < var2; ++var5) {
+			int var6 = var0[var5 + var1] & 255;
+			if (var6 != 0) {
+				if (var6 >= 128 && var6 < 160) {
+					char var7 = class287.cp1252AsciiExtension[var6 - 128];
+					if (var7 == 0) {
+						var7 = '?';
+					}
+
+					var6 = var7;
+				}
+
+				var3[var4++] = (char)var6;
+			}
 		}
 
-		return var2;
+		return new String(var3, 0, var4);
+	}
+
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(Lct;B)V",
+		garbageValue = "16"
+	)
+	public static final void method2891(PcmPlayerProvider var0) {
+		SecureRandomCallable.pcmPlayerProvider = var0;
 	}
 }

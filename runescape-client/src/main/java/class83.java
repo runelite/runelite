@@ -1,286 +1,106 @@
+import java.io.IOException;
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cf")
 public class class83 {
-	@ObfuscatedName("qj")
-	@ObfuscatedGetter(
-		intValue = -297282221
+	@ObfuscatedName("s")
+	static final BigInteger field1138;
+	@ObfuscatedName("j")
+	static final BigInteger field1137;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Llq;"
 	)
-	static int field1166;
-	@ObfuscatedName("q")
-	static final BigInteger field1165;
-	@ObfuscatedName("w")
-	static final BigInteger field1162;
+	static IndexedSprite field1136;
 
 	static {
-		field1165 = new BigInteger("10001", 16);
-		field1162 = new BigInteger("83ff79a3e258b99ead1a70e1049883e78e513c4cdec538d8da9483879a9f81689c0c7d146d7b82b52d05cf26132b1cda5930eeef894e4ccf3d41eebc3aabe54598c4ca48eb5a31d736bfeea17875a35558b9e3fcd4aebe2a9cc970312a477771b36e173dc2ece6001ab895c553e2770de40073ea278026f36961c94428d8d7db", 16);
+		field1138 = new BigInteger("10001", 16);
+		field1137 = new BigInteger("83ff79a3e258b99ead1a70e1049883e78e513c4cdec538d8da9483879a9f81689c0c7d146d7b82b52d05cf26132b1cda5930eeef894e4ccf3d41eebc3aabe54598c4ca48eb5a31d736bfeea17875a35558b9e3fcd4aebe2a9cc970312a477771b36e173dc2ece6001ab895c553e2770de40073ea278026f36961c94428d8d7db", 16);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IIILiy;II)V",
-		garbageValue = "1789870821"
+		signature = "(Lkg;ZI)V",
+		garbageValue = "-1903041730"
 	)
-	@Export("newObjectSound")
-	static void newObjectSound(int plane, int x, int y, ObjectDefinition object, int rotation) {
-		ObjectSound var5 = new ObjectSound();
-		var5.plane = plane;
-		var5.x = x * 128;
-		var5.y = y * 16384;
-		int var6 = object.sizeX;
-		int var7 = object.sizeY;
-		if (rotation == 1 || rotation == 3) {
-			var6 = object.sizeY;
-			var7 = object.sizeX;
+	@Export("NetCache_connect")
+	public static void NetCache_connect(AbstractSocket var0, boolean var1) {
+		if (NetCache.NetCache_socket != null) {
+			try {
+				NetCache.NetCache_socket.close();
+			} catch (Exception var6) {
+			}
+
+			NetCache.NetCache_socket = null;
 		}
 
-		var5.field1077 = (var6 + x) * 16384;
-		var5.field1082 = (var7 + y) * 16384;
-		var5.soundEffectId = object.ambientSoundId;
-		var5.field1091 = object.int4 * 128;
-		var5.field1086 = object.int5;
-		var5.field1081 = object.int6;
-		var5.soundEffectIds = object.soundEffectIds;
-		if (object.transforms != null) {
-			var5.obj = object;
-			var5.set();
-		}
+		NetCache.NetCache_socket = var0;
+		NPC.method1977(var1);
+		NetCache.NetCache_responseHeaderBuffer.offset = 0;
+		NetCache.NetCache_currentResponse = null;
+		NetCache.NetCache_responseArchiveBuffer = null;
+		NetCache.field3156 = 0;
 
-		ObjectSound.objectSounds.addFirst(var5);
-		if (var5.soundEffectIds != null) {
-			var5.field1089 = var5.field1086 + (int)(Math.random() * (double)(var5.field1081 - var5.field1086));
-		}
+		while (true) {
+			NetFileRequest var2 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
+			if (var2 == null) {
+				while (true) {
+					var2 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
+					if (var2 == null) {
+						if (NetCache.field3159 != 0) {
+							try {
+								Buffer var7 = new Buffer(4);
+								var7.writeByte(4);
+								var7.writeByte(NetCache.field3159);
+								var7.writeShort(0);
+								NetCache.NetCache_socket.write(var7.array, 0, 4);
+							} catch (IOException var5) {
+								try {
+									NetCache.NetCache_socket.close();
+								} catch (Exception var4) {
+								}
 
+								++NetCache.NetCache_ioExceptions;
+								NetCache.NetCache_socket = null;
+							}
+						}
+
+						NetCache.NetCache_loadTime = 0;
+						NetCache.field3145 = SequenceDefinition.method4686();
+						return;
+					}
+
+					NetCache.NetCache_pendingWritesQueue.addLast(var2);
+					NetCache.NetCache_pendingWrites.put(var2, var2.key);
+					++NetCache.NetCache_pendingWritesCount;
+					--NetCache.NetCache_pendingResponsesCount;
+				}
+			}
+
+			NetCache.NetCache_pendingPriorityWrites.put(var2, var2.key);
+			++NetCache.NetCache_pendingPriorityWritesCount;
+			--NetCache.NetCache_pendingPriorityResponsesCount;
+		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("fd")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-9434950"
+		signature = "(II)V",
+		garbageValue = "1982108989"
 	)
-	static int method1994(int var0, Script var1, boolean var2) {
-		int var4 = -1;
-		Widget var3;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			var3 = class80.getWidget(var4);
-		} else {
-			var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
+	static final void method1997(int var0) {
+		class65.method1182();
+		switch(var0) {
+		case 1:
+			PendingSpawn.method1661();
+			break;
+		case 2:
+			Login.loginIndex = 24;
+			GrandExchangeOfferOwnWorldComparator.setLoginResponseString("The game servers are currently being updated.", "Please wait a few minutes and try again.", "");
 		}
 
-		if (var0 == ScriptOpcodes.CC_SETSCROLLPOS) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3.scrollX = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			if (var3.scrollX > var3.scrollWidth - var3.width) {
-				var3.scrollX = var3.scrollWidth - var3.width;
-			}
-
-			if (var3.scrollX < 0) {
-				var3.scrollX = 0;
-			}
-
-			var3.scrollY = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			if (var3.scrollY > var3.scrollHeight - var3.height) {
-				var3.scrollY = var3.scrollHeight - var3.height;
-			}
-
-			if (var3.scrollY < 0) {
-				var3.scrollY = 0;
-			}
-
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETCOLOUR) {
-			var3.color = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETFILL) {
-			var3.fill = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTRANS) {
-			var3.transparencyTop = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETLINEWID) {
-			var3.lineWid = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETGRAPHIC) {
-			var3.spriteId2 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SET2DANGLE) {
-			var3.spriteAngle = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTILING) {
-			var3.spriteTiling = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETMODEL) {
-			var3.modelType = 1;
-			var3.modelId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETMODELANGLE) {
-			HealthBarUpdate.Interpreter_intStackSize -= 6;
-			var3.modelOffsetX = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var3.modelOffsetY = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var3.modelAngleX = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			var3.modelAngleY = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
-			var3.modelAngleZ = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 4];
-			var3.modelZoom = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 5];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		int var8;
-		if (var0 == ScriptOpcodes.CC_SETMODELANIM) {
-			var8 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			if (var8 != var3.sequenceId) {
-				var3.sequenceId = var8;
-				var3.modelFrame = 0;
-				var3.modelFrameCycle = 0;
-				Strings.invalidateWidget(var3);
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETMODELORTHOG) {
-			var3.modelOrthog = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTEXT) {
-			String var7 = Interpreter.Interpreter_stringStack[--Skills.Interpreter_stringStackSize];
-			if (!var7.equals(var3.text)) {
-				var3.text = var7;
-				Strings.invalidateWidget(var3);
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTEXTFONT) {
-			var3.fontId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTEXTALIGN) {
-			HealthBarUpdate.Interpreter_intStackSize -= 3;
-			var3.textXAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var3.textYAlignment = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var3.textLineHeight = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETTEXTSHADOW) {
-			var3.textShadowed = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETOUTLINE) {
-			var3.outline = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETGRAPHICSHADOW) {
-			var3.spriteShadow = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETVFLIP) {
-			var3.spriteFlipV = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETHFLIP) {
-			var3.spriteFlipH = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETSCROLLSIZE) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3.scrollWidth = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var3.scrollHeight = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Strings.invalidateWidget(var3);
-			if (var4 != -1 && var3.type == 0) {
-				WorldMapSprite.revalidateWidgetScroll(Widget.Widget_interfaceComponents[var4 >> 16], var3, false);
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_RESUME_PAUSEBUTTON) {
-			ScriptFrame.resumePauseWidget(var3.id, var3.childIndex);
-			Client.meslayerContinueWidget = var3;
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == 1122) {
-			var3.spriteId = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETFILLCOLOUR) {
-			var3.color2 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == 1124) {
-			var3.transparencyBot = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Strings.invalidateWidget(var3);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETFILLMODE) {
-			var8 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			FillMode var6 = (FillMode)SoundSystem.findEnumerated(PcmPlayer.FillMode_values(), var8);
-			if (var6 != null) {
-				var3.fillMode = var6;
-				Strings.invalidateWidget(var3);
-			}
-
-			return 1;
-		}
-		boolean var5;
-		if (var0 == ScriptOpcodes.CC_SETLINEDIRECTION) {
-			var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			var3.field2598 = var5;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_SETMODELTRANSPARENT) {
-			var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize] == 1;
-			var3.modelTransparency = var5;
-			return 1;
-		}
-		return 2;
-	}
-
-	@ObfuscatedName("gp")
-	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1224050195"
-	)
-	@Export("getHighestVisiblePlane")
-	static final int getHighestVisiblePlane() {
-		if (WorldMapLabelSize.clientPreferences.roofsHidden) {
-			return class42.plane;
-		}
-		int var0 = ScriptEvent.getTileHeight(PacketBuffer.cameraX, class1.cameraZ, class42.plane);
-		return var0 - class43.cameraY < 800 && (Tiles.Tiles_renderFlags[class42.plane][PacketBuffer.cameraX >> 7][class1.cameraZ >> 7] & 4) != 0 ? class42.plane : 3;
 	}
 }

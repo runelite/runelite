@@ -4,43 +4,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cw")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lct;"
+		signature = "Lcw;"
 	)
 	@Export("AttackOption_dependsOnCombatLevels")
 	AttackOption_dependsOnCombatLevels(0),
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lct;"
+		signature = "Lcw;"
 	)
 	@Export("AttackOption_alwaysRightClick")
 	AttackOption_alwaysRightClick(1),
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lct;"
+		signature = "Lcw;"
 	)
 	@Export("AttackOption_leftClickWhereAvailable")
 	AttackOption_leftClickWhereAvailable(2),
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lct;"
+		signature = "Lcw;"
 	)
 	@Export("AttackOption_hidden")
 	AttackOption_hidden(3);
 
-	@ObfuscatedName("qz")
-	@ObfuscatedSignature(
-		signature = "Ldz;"
-	)
-	@Export("decimator")
-	static Decimator decimator;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 52026669
+		intValue = -2103853983
 	)
 	@Export("id")
 	final int id;
@@ -49,10 +43,10 @@ public enum AttackOption implements Enumerated {
 		this.id = var3;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "320353268"
+		signature = "(B)I",
+		garbageValue = "-32"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {

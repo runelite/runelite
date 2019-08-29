@@ -1,97 +1,77 @@
-import java.util.Date;
-import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("v")
+@ObfuscatedName("p")
 public class class14 {
-	@ObfuscatedName("i")
-	@Export("soundSystemExecutor")
-	static ScheduledExecutorService soundSystemExecutor;
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-		garbageValue = "2056666863"
-	)
-	@Export("addChatMessage")
-	static void addChatMessage(int var0, String var1, String var2, String var3) {
-		ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
-		if (var4 == null) {
-			var4 = new ChatChannel();
-			Messages.Messages_channels.put(var0, var4);
-		}
-
-		Message var5 = var4.addMessage(var0, var1, var2, var3);
-		Messages.Messages_hashTable.put(var5, (long)var5.count);
-		Messages.Messages_queue.add(var5);
-		Client.chatCycle = Client.cycleCntr;
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(Lhj;IIII)V",
-		garbageValue = "-2006801653"
-	)
-	@Export("Widget_setKeyRate")
-	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
-		if (var0.field2641 == null) {
-			throw new RuntimeException();
-		}
-		var0.field2641[var1] = var2;
-		var0.field2588[var1] = var3;
-	}
-
 	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)V",
-		garbageValue = "1053602258"
+		signature = "(CI)B",
+		garbageValue = "-1488757001"
 	)
-	static final void method159(String var0, int var1) {
-		PacketBufferNode var2 = Archive.getPacketBufferNode(ClientPacket.field2280, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeByte(Huffman.stringCp1252NullTerminatedByteSize(var0) + 1);
-		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
-		var2.packetBuffer.writeByte(var1);
-		Client.packetWriter.addNode(var2);
-	}
-
-	@ObfuscatedName("kk")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;B)V",
-		garbageValue = "-27"
-	)
-	static void method155(String var0) {
-		class294.field3695 = var0;
-
-		try {
-			String var1 = WorldMapSprite.client.getParameter(ClientParameter.field3587.id);
-			String var2 = WorldMapSprite.client.getParameter(ClientParameter.field3594.id);
-			String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-			String var5;
-			if (var0.length() == 0) {
-				var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-			} else {
-				String var4 = var3 + "; Expires=";
-				long var6 = DirectByteArrayCopier.currentTimeMs() + 94608000000L;
-				Calendar.Calendar_calendar.setTime(new Date(var6));
-				int var8 = Calendar.Calendar_calendar.get(7);
-				int var9 = Calendar.Calendar_calendar.get(5);
-				int var10 = Calendar.Calendar_calendar.get(2);
-				int var11 = Calendar.Calendar_calendar.get(1);
-				int var12 = Calendar.Calendar_calendar.get(11);
-				int var13 = Calendar.Calendar_calendar.get(12);
-				int var14 = Calendar.Calendar_calendar.get(13);
-				var5 = Calendar.DAYS_OF_THE_WEEK[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + Calendar.MONTH_NAMES_ENGLISH_GERMAN[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
-				var3 = var4 + var5 + "; Max-Age=" + 94608000L;
-			}
-
-			Client var16 = WorldMapSprite.client;
-			var5 = "document.cookie=\"" + var3 + "\"";
-			JSObject.getWindow(var16).eval(var5);
-		} catch (Throwable var15) {
+	@Export("charToByteCp1252")
+	public static byte charToByteCp1252(char var0) {
+		byte var1;
+		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+			var1 = (byte)var0;
+		} else if (var0 == 8364) {
+			var1 = -128;
+		} else if (var0 == 8218) {
+			var1 = -126;
+		} else if (var0 == 402) {
+			var1 = -125;
+		} else if (var0 == 8222) {
+			var1 = -124;
+		} else if (var0 == 8230) {
+			var1 = -123;
+		} else if (var0 == 8224) {
+			var1 = -122;
+		} else if (var0 == 8225) {
+			var1 = -121;
+		} else if (var0 == 710) {
+			var1 = -120;
+		} else if (var0 == 8240) {
+			var1 = -119;
+		} else if (var0 == 352) {
+			var1 = -118;
+		} else if (var0 == 8249) {
+			var1 = -117;
+		} else if (var0 == 338) {
+			var1 = -116;
+		} else if (var0 == 381) {
+			var1 = -114;
+		} else if (var0 == 8216) {
+			var1 = -111;
+		} else if (var0 == 8217) {
+			var1 = -110;
+		} else if (var0 == 8220) {
+			var1 = -109;
+		} else if (var0 == 8221) {
+			var1 = -108;
+		} else if (var0 == 8226) {
+			var1 = -107;
+		} else if (var0 == 8211) {
+			var1 = -106;
+		} else if (var0 == 8212) {
+			var1 = -105;
+		} else if (var0 == 732) {
+			var1 = -104;
+		} else if (var0 == 8482) {
+			var1 = -103;
+		} else if (var0 == 353) {
+			var1 = -102;
+		} else if (var0 == 8250) {
+			var1 = -101;
+		} else if (var0 == 339) {
+			var1 = -100;
+		} else if (var0 == 382) {
+			var1 = -98;
+		} else if (var0 == 376) {
+			var1 = -97;
+		} else {
+			var1 = 63;
 		}
 
+		return var1;
 	}
 }

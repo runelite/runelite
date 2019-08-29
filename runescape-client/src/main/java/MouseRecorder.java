@@ -7,31 +7,37 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bs")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-	@ObfuscatedName("ix")
-	@ObfuscatedGetter(
-		intValue = -2050629733
+	@ObfuscatedName("qs")
+	@ObfuscatedSignature(
+		signature = "Ldd;"
 	)
-	@Export("selectedItemWidget")
-	static int selectedItemWidget;
-	@ObfuscatedName("q")
+	@Export("pcmPlayer0")
+	static PcmPlayer pcmPlayer0;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -694423597
+	)
+	@Export("ItemDefinition_fileCount")
+	public static int ItemDefinition_fileCount;
+	@ObfuscatedName("s")
 	@Export("isRunning")
 	boolean isRunning;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("lock")
 	Object lock;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -944219323
+		intValue = -958051971
 	)
 	@Export("index")
 	int index;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@Export("xs")
 	int[] xs;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("ys")
 	int[] ys;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@Export("millis")
 	long[] millis;
 
@@ -45,7 +51,7 @@ public class MouseRecorder implements Runnable {
 	}
 
 	public void run() {
-		for (; this.isRunning; EnumDefinition.sleepMillis(50L)) {
+		for (; this.isRunning; UserList.sleepMillis(50L)) {
 			synchronized(this.lock) {
 				if (this.index < 500) {
 					this.xs[this.index] = MouseHandler.MouseHandler_x;
@@ -58,81 +64,39 @@ public class MouseRecorder implements Runnable {
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "5"
+		signature = "(B)[Lgj;",
+		garbageValue = "58"
 	)
-	@Export("WorldMapElement_clearCached")
-	public static void WorldMapElement_clearCached() {
-		WorldMapElement.WorldMapElement_cachedSprites.clear();
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "234130562"
-	)
-	@Export("FriendSystem_friendsListFullMes")
-	static final void FriendSystem_friendsListFullMes() {
-		Object var10000 = null;
-		String var0 = "Your friend list is full. Max of 200 for free users, and 400 for members";
-		ScriptEvent.addGameMessage(30, "", var0);
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1823729833"
-	)
-	static void method1137(int var0) {
-		Login.loginIndex = 12;
-		Login.field1182 = var0;
+	@Export("ServerPacket_values")
+	public static ServerPacket[] ServerPacket_values() {
+		return new ServerPacket[]{ServerPacket.field2102, ServerPacket.field2098, ServerPacket.field2099, ServerPacket.field2183, ServerPacket.field2101, ServerPacket.field2170, ServerPacket.field2100, ServerPacket.field2158, ServerPacket.field2105, ServerPacket.field2106, ServerPacket.field2107, ServerPacket.field2108, ServerPacket.field2161, ServerPacket.field2184, ServerPacket.field2178, ServerPacket.field2112, ServerPacket.field2137, ServerPacket.field2114, ServerPacket.field2104, ServerPacket.field2116, ServerPacket.field2115, ServerPacket.field2134, ServerPacket.field2119, ServerPacket.field2120, ServerPacket.field2121, ServerPacket.field2122, ServerPacket.field2123, ServerPacket.field2124, ServerPacket.field2159, ServerPacket.field2126, ServerPacket.field2136, ServerPacket.field2128, ServerPacket.field2163, ServerPacket.field2117, ServerPacket.field2131, ServerPacket.field2130, ServerPacket.field2133, ServerPacket.field2129, ServerPacket.field2135, ServerPacket.field2148, ServerPacket.field2175, ServerPacket.field2138, ServerPacket.field2139, ServerPacket.field2140, ServerPacket.field2141, ServerPacket.field2142, ServerPacket.field2143, ServerPacket.field2144, ServerPacket.field2145, ServerPacket.field2146, ServerPacket.field2147, ServerPacket.field2125, ServerPacket.field2149, ServerPacket.field2150, ServerPacket.field2151, ServerPacket.field2152, ServerPacket.field2162, ServerPacket.field2097, ServerPacket.field2155, ServerPacket.field2156, ServerPacket.field2118, ServerPacket.field2132, ServerPacket.field2110, ServerPacket.field2160, ServerPacket.field2103, ServerPacket.field2127, ServerPacket.field2154, ServerPacket.field2164, ServerPacket.field2165, ServerPacket.field2179, ServerPacket.field2167, ServerPacket.field2168, ServerPacket.field2169, ServerPacket.field2166, ServerPacket.field2171, ServerPacket.field2172, ServerPacket.field2173, ServerPacket.field2174, ServerPacket.field2153, ServerPacket.field2176, ServerPacket.field2177, ServerPacket.field2113, ServerPacket.field2157, ServerPacket.field2180, ServerPacket.field2181, ServerPacket.field2182};
 	}
 
 	@ObfuscatedName("fu")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1953240154"
+		signature = "(IIB)V",
+		garbageValue = "-5"
 	)
-	static final void method1141() {
-		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
-			int var1 = Client.npcIndices[var0];
-			NPC var2 = Client.npcs[var1];
-			if (var2 != null) {
-				StructDefinition.calculateActorPosition(var2, var2.definition.size);
-			}
+	@Export("playSoundJingle")
+	static void playSoundJingle(int var0, int var1) {
+		if (Client.field856 != 0 && var0 != -1) {
+			PacketBufferNode.method3574(WorldMapRectangle.archive11, var0, 0, Client.field856, false);
+			Client.field858 = true;
 		}
 
 	}
 
-	@ObfuscatedName("fl")
+	@ObfuscatedName("jq")
 	@ObfuscatedSignature(
-		signature = "(Lbd;IIB)V",
-		garbageValue = "-124"
+		signature = "(IIIIIIIB)V",
+		garbageValue = "-63"
 	)
-	@Export("performPlayerAnimation")
-	static void performPlayerAnimation(Player var0, int var1, int var2) {
-		if (var0.sequence == var1 && var1 != -1) {
-			int var3 = GrandExchangeEvent.SequenceDefinition_get(var1).field3529;
-			if (var3 == 1) {
-				var0.sequenceFrame = 0;
-				var0.sequenceFrameCycle = 0;
-				var0.sequenceDelay = var2;
-				var0.field985 = 0;
-			}
-
-			if (var3 == 2) {
-				var0.field985 = 0;
-			}
-		} else if (var1 == -1 || var0.sequence == -1 || GrandExchangeEvent.SequenceDefinition_get(var1).field3533 >= GrandExchangeEvent.SequenceDefinition_get(var0.sequence).field3533) {
-			var0.sequence = var1;
-			var0.sequenceFrame = 0;
-			var0.sequenceFrameCycle = 0;
-			var0.sequenceDelay = var2;
-			var0.field985 = 0;
-			var0.field1008 = var0.pathLength;
+	@Export("updateRootInterface")
+	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+		if (Projectile.loadInterface(var0)) {
+			Occluder.updateInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
 		}
-
 	}
 }

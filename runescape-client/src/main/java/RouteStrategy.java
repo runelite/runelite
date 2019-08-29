@@ -4,36 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fq")
 @Implements("RouteStrategy")
 public abstract class RouteStrategy {
-	@ObfuscatedName("pi")
+	@ObfuscatedName("da")
 	@ObfuscatedSignature(
-		signature = "Lly;"
+		signature = "Lft;"
 	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
-	@ObfuscatedName("q")
+	@Export("js5SocketTask")
+	static Task js5SocketTask;
+	@ObfuscatedName("fa")
 	@ObfuscatedGetter(
-		intValue = 1876567169
+		intValue = 207475119
+	)
+	@Export("baseY")
+	static int baseY;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = 663574439
 	)
 	@Export("approxDestinationX")
 	public int approxDestinationX;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 1051805723
+		intValue = -148289361
 	)
 	@Export("approxDestinationY")
 	public int approxDestinationY;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1586804307
+		intValue = 2029951319
 	)
 	@Export("approxDestinationSizeX")
 	public int approxDestinationSizeX;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 775131021
+		intValue = 2116488485
 	)
 	@Export("approxDestinationSizeY")
 	public int approxDestinationSizeY;
@@ -41,82 +47,77 @@ public abstract class RouteStrategy {
 	protected RouteStrategy() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(IIILfv;I)Z",
-		garbageValue = "-1217489379"
+		signature = "(IIILfm;I)Z",
+		garbageValue = "1325675955"
 	)
 	@Export("hasArrived")
-	public abstract boolean hasArrived(int size, int x, int y, CollisionMap var4);
+	public abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
 
-	@ObfuscatedName("ec")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1403573360"
+		signature = "(CB)Z",
+		garbageValue = "-117"
 	)
-	static final void method3593() {
-		Client.packetWriter.close();
-		class197.FloorOverlayDefinition_clearCached();
-		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
-		KitDefinition.KitDefinition_cached.clear();
-		TileItemPile.ObjectDefinition_clearCached();
-		AbstractWorldMapIcon.NpcDefinition_clearCached();
-		ItemDefinition.ItemDefinition_cached.clear();
-		ItemDefinition.ItemDefinition_cachedModels.clear();
-		ItemDefinition.ItemDefinition_cachedSprites.clear();
-		SequenceDefinition.SequenceDefinition_cached.clear();
-		SequenceDefinition.SequenceDefinition_cachedFrames.clear();
-		SpotAnimationDefinition.SpotAnimationDefinition_cached.clear();
-		SpotAnimationDefinition.SpotAnimationDefinition_cachedModels.clear();
-		MusicPatch.VarbitDefinition_clearCached();
-		SecureRandomCallable.method1093();
-		HitSplatDefinition.HitSplatDefinition_cached.clear();
-		HitSplatDefinition.HitSplatDefinition_cachedSprites.clear();
-		HitSplatDefinition.HitSplatDefinition_cachedFonts.clear();
-		WorldMapIcon_1.HealthBarDefinition_clearCached();
-		StructDefinition.StructDefinition_cached.clear();
-		Coord.ParamDefinition_clearCached();
-		MouseRecorder.WorldMapElement_clearCached();
-		PlayerAppearance.PlayerAppearance_cachedModels.clear();
-		Calendar.Widget_clearCached();
-		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
-		Script.Script_cached.clear();
-		class197.archive0.clearFiles();
-		JagexCache.archive1.clearFiles();
-		class43.archive3.clearFiles();
-		class13.archive4.clearFiles();
-		WorldMapCacheName.archive5.clearFiles();
-		WorldMapRegion.archive6.clearFiles();
-		NPCDefinition.archive7.clearFiles();
-		Client.archive8.clearFiles();
-		class4.archive9.clearFiles();
-		WorldMapLabelSize.archive10.clearFiles();
-		class32.archive11.clearFiles();
-		UserComparator4.archive12.clearFiles();
-		GrandExchangeOfferWorldComparator.scene.clear();
+	@Export("isAlphaNumeric")
+	public static boolean isAlphaNumeric(char var0) {
+		return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
+	}
 
-		for (int var0 = 0; var0 < 4; ++var0) {
-			Client.collisionMaps[var0].clear();
-		}
-
-		System.gc();
-		class40.method729(2);
-		Client.field889 = -1;
-		Client.field699 = false;
-
-		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-			if (var1.stream1 != null) {
-				SecureRandomCallable.pcmStreamMixer.removeSubStream(var1.stream1);
-				var1.stream1 = null;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-1827304570"
+	)
+	static final int method3533(int var0, int var1) {
+		if (var0 == -2) {
+			return 12345678;
+		} else if (var0 == -1) {
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
 			}
 
-			if (var1.stream2 != null) {
-				SecureRandomCallable.pcmStreamMixer.removeSubStream(var1.stream2);
-				var1.stream2 = null;
+			return var1;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
 			}
+
+			return (var0 & 65408) + var1;
+		}
+	}
+
+	@ObfuscatedName("ku")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+		garbageValue = "1938958003"
+	)
+	static String method3534(String var0, boolean var1) {
+		String var2 = var1 ? "https://" : "http://";
+		if (Client.gameBuild == 1) {
+			var0 = var0 + "-wtrc";
+		} else if (Client.gameBuild == 2) {
+			var0 = var0 + "-wtqa";
+		} else if (Client.gameBuild == 3) {
+			var0 = var0 + "-wtwip";
+		} else if (Client.gameBuild == 5) {
+			var0 = var0 + "-wti";
+		} else if (Client.gameBuild == 4) {
+			var0 = "local";
 		}
 
-		ObjectSound.objectSounds.clear();
-		class96.updateGameState(10);
+		String var3 = "";
+		if (Clock.field2037 != null) {
+			var3 = "/p=" + Clock.field2037;
+		}
+
+		String var4 = "runescape.com";
+		return var2 + var0 + "." + var4 + "/l=" + class60.clientLanguage + "/a=" + SoundSystem.field1414 + var3 + "/";
 	}
 }

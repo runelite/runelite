@@ -2,28 +2,28 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("dc")
 @Implements("VorbisResidue")
 public class VorbisResidue {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("residueType")
 	int residueType;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("begin")
 	int begin;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("end")
 	int end;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@Export("partitionSize")
 	int partitionSize;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("classifications")
 	int classifications;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@Export("classbook")
 	int classbook;
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@Export("cascade")
 	int[] cascade;
 
@@ -56,8 +56,8 @@ public class VorbisResidue {
 
 	}
 
-	@ObfuscatedName("q")
-	void method2499(float[] var1, int var2, boolean var3) {
+	@ObfuscatedName("s")
+	void method2444(float[] var1, int var2, boolean var3) {
 		int var4;
 		for (var4 = 0; var4 < var2; ++var4) {
 			var1[var4] = 0.0F;
@@ -76,7 +76,7 @@ public class VorbisResidue {
 					int var10;
 					int var11;
 					if (var8 == 0) {
-						var10 = VorbisSample.VorbisSample_codebooks[this.classbook].method2325();
+						var10 = VorbisSample.VorbisSample_codebooks[this.classbook].method2254();
 
 						for (var11 = var4 - 1; var11 >= 0; --var11) {
 							if (var9 + var11 < var6) {
@@ -98,7 +98,7 @@ public class VorbisResidue {
 								var15 = this.partitionSize / var14.dimensions;
 
 								for (int var16 = 0; var16 < var15; ++var16) {
-									float[] var17 = var14.method2318();
+									float[] var17 = var14.method2255();
 
 									for (int var18 = 0; var18 < var14.dimensions; ++var18) {
 										var1[var13 + var16 + var18 * var15] += var17[var18];
@@ -108,7 +108,7 @@ public class VorbisResidue {
 								var15 = 0;
 
 								while (var15 < this.partitionSize) {
-									float[] var19 = var14.method2318();
+									float[] var19 = var14.method2255();
 
 									for (int var20 = 0; var20 < var14.dimensions; ++var20) {
 										var1[var13 + var15] += var19[var20];

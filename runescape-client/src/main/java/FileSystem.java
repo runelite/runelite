@@ -4,80 +4,78 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("fy")
+@ObfuscatedName("fj")
 @Implements("FileSystem")
 public class FileSystem {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("FileSystem_hasPermissions")
-	static boolean FileSystem_hasPermissions;
-	@ObfuscatedName("w")
+	public static boolean FileSystem_hasPermissions;
+	@ObfuscatedName("j")
 	@Export("FileSystem_cacheDir")
-	static File FileSystem_cacheDir;
-	@ObfuscatedName("e")
+	public static File FileSystem_cacheDir;
+	@ObfuscatedName("i")
 	@Export("FileSystem_cacheFiles")
 	static Hashtable FileSystem_cacheFiles;
-	@ObfuscatedName("l")
-	@Export("PcmPlayer_stereo")
-	protected static boolean PcmPlayer_stereo;
-	@ObfuscatedName("fj")
-	@ObfuscatedSignature(
-		signature = "Lku;"
-	)
-	@Export("WorldMapElement_fonts")
-	static Fonts WorldMapElement_fonts;
-	@ObfuscatedName("fu")
-	@ObfuscatedSignature(
-		signature = "Lke;"
-	)
-	@Export("fontPlain12")
-	static Font fontPlain12;
 
 	static {
 		FileSystem_hasPermissions = false;
 		FileSystem_cacheFiles = new Hashtable(16);
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIIZI)V",
-		garbageValue = "1090882543"
+		signature = "(II)Lip;",
+		garbageValue = "-760710815"
 	)
-	public static void method3503(AbstractArchive var0, int group, int file, int bitRateMaybe, boolean _false) {
-		class197.field2402 = 1;
-		GrandExchangeOfferNameComparator.musicTrackArchive = var0;
-		class197.musicTrackGroupId = group;
-		class197.musicTrackFileId = file;
-		ScriptFrame.field529 = bitRateMaybe;
-		BuddyRankComparator.musicTrackBoolean = _false;
-		class197.field2404 = 10000;
-	}
-
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-786180451"
-	)
-	static int method3501(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
-		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+	public static VarcInt method3447(int var0) {
+		VarcInt var1 = (VarcInt)VarcInt.VarcInt_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = VarcInt.VarcInt_archive.takeFile(19, var0);
+			var1 = new VarcInt();
+			if (var2 != null) {
+				var1.method4314(new Buffer(var2));
 			}
 
-			return 1;
+			VarcInt.VarcInt_cached.put(var1, (long)var0);
+			return var1;
 		}
-		if (var0 == ScriptOpcodes.CC_GETID) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.childIndex;
-			return 1;
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(IIB)Lbi;",
+		garbageValue = "17"
+	)
+	@Export("Messages_getByChannelAndID")
+	static Message Messages_getByChannelAndID(int var0, int var1) {
+		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
+		return var2.getMessage(var1);
+	}
+
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(Lhz;Lhz;III)Lkb;",
+		garbageValue = "1068587353"
+	)
+	@Export("SpriteBuffer_getFont")
+	public static Font SpriteBuffer_getFont(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
+		if (!World.SpriteBuffer_bufferFile(var0, var2, var3)) {
+			return null;
+		} else {
+			byte[] var5 = var1.takeFile(var2, var3);
+			Font var4;
+			if (var5 == null) {
+				var4 = null;
+			} else {
+				Font var6 = new Font(var5, class325.SpriteBuffer_xOffsets, class325.SpriteBuffer_yOffsets, class325.SpriteBuffer_spriteWidths, class225.SpriteBuffer_spriteHeights, class325.SpriteBuffer_spritePalette, WorldMapSection1.SpriteBuffer_pixels);
+				UserComparator7.SpriteBuffer_clear();
+				var4 = var6;
+			}
+
+			return var4;
 		}
-		return 2;
 	}
 }

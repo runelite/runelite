@@ -4,52 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hn")
 @Implements("ArchiveDiskAction")
 public class ArchiveDiskAction extends Node {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -907427363
+		intValue = 1794438743
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("data")
-	public byte[] data;
-	@ObfuscatedName("e")
+	byte[] data;
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lkm;"
+		signature = "Lkv;"
 	)
 	@Export("archiveDisk")
-	public ArchiveDisk archiveDisk;
-	@ObfuscatedName("p")
+	ArchiveDisk archiveDisk;
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Liu;"
+		signature = "Lid;"
 	)
 	@Export("archive")
-	public Archive archive;
+	Archive archive;
 
 	ArchiveDiskAction() {
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(II)Lim;",
-		garbageValue = "-738252140"
-	)
-	@Export("KitDefinition_get")
-	public static KitDefinition KitDefinition_get(int var0) {
-		KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		}
-		byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
-		var1 = new KitDefinition();
-		if (var2 != null) {
-			var1.decode(new Buffer(var2));
-		}
-
-		KitDefinition.KitDefinition_cached.put(var1, (long)var0);
-		return var1;
 	}
 }

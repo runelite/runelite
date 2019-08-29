@@ -2,63 +2,65 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gr")
 public class class191 {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lgr;"
 	)
-	static final class191 field2365;
-	@ObfuscatedName("w")
+	static final class191 field2347;
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lgr;"
 	)
-	static final class191 field2362;
-	@ObfuscatedName("e")
+	static final class191 field2345;
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lgr;"
 	)
-	static final class191 field2364;
-	@ObfuscatedName("dg")
-	@ObfuscatedSignature(
-		signature = "Lfa;"
-	)
-	@Export("js5SocketTask")
-	static Task js5SocketTask;
+	static final class191 field2346;
 
 	static {
-		field2365 = new class191();
-		field2362 = new class191();
-		field2364 = new class191();
+		field2347 = new class191();
+		field2345 = new class191();
+		field2346 = new class191();
 	}
 
 	class191() {
 	}
 
-	@ObfuscatedName("iu")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIII)V",
-		garbageValue = "-474414027"
+		signature = "(I)[Lhh;",
+		garbageValue = "-1783232348"
 	)
-	@Export("drawWidgets")
-	static final void drawWidgets(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-		if (class162.loadInterface(var0)) {
-			WorldMapIcon_1.field188 = null;
-			FontName.drawInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-			if (WorldMapIcon_1.field188 != null) {
-				FontName.drawInterface(WorldMapIcon_1.field188, 0xabcdabcd, var1, var2, var3, var4, WorldMapDecorationType.field2742, ClientPacket.field2305, var7);
-				WorldMapIcon_1.field188 = null;
-			}
+	@Export("PlayerType_values")
+	public static PlayerType[] PlayerType_values() {
+		return new PlayerType[]{PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_hardcoreIronman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_normal, PlayerType.PlayerType_ironman, PlayerType.PlayerType_playerModerator};
+	}
 
-		} else {
-			if (var7 != -1) {
-				Client.field843[var7] = true;
-			} else {
-				for (int var8 = 0; var8 < 100; ++var8) {
-					Client.field843[var8] = true;
+	@ObfuscatedName("kq")
+	@ObfuscatedSignature(
+		signature = "(IIIILls;Lhg;B)V",
+		garbageValue = "34"
+	)
+	@Export("drawSpriteOnMinimap")
+	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
+		if (var4 != null) {
+			int var6 = Client.camAngleY & 2047;
+			int var7 = var3 * var3 + var2 * var2;
+			if (var7 <= 6400) {
+				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
+				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
+				int var10 = var9 * var2 + var3 * var8 >> 16;
+				int var11 = var3 * var9 - var8 * var2 >> 16;
+				if (var7 > 2500) {
+					var4.method6020(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
+				} else {
+					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
 				}
-			}
 
+			}
 		}
 	}
 }

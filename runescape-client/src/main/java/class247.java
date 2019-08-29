@@ -1,15 +1,23 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("il")
+@ObfuscatedName("it")
 public class class247 {
-	@ObfuscatedName("i")
-	public static short[][] field3291;
-	@ObfuscatedName("km")
-	@ObfuscatedGetter(
-		intValue = -940566551
+	@ObfuscatedName("qw")
+	@ObfuscatedSignature(
+		signature = "Ldb;"
 	)
-	@Export("menuX")
-	static int menuX;
+	@Export("decimator")
+	static Decimator decimator;
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1267026427"
+	)
+	@Export("WorldMapRegion_clearCachedSprites")
+	static void WorldMapRegion_clearCachedSprites() {
+		WorldMapRegion.WorldMapRegion_cachedSprites.clear();
+	}
 }

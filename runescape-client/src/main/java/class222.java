@@ -1,16 +1,22 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("hm")
 public class class222 {
-	@ObfuscatedName("q")
+	@ObfuscatedName("jg")
 	@ObfuscatedSignature(
-		signature = "(II)Liw;",
-		garbageValue = "-673469339"
+		signature = "Lhp;"
 	)
-	@Export("WorldMapElement_get")
-	public static WorldMapElement WorldMapElement_get(int var0) {
-		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
+	static Widget field2730;
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(ZZI)I",
+		garbageValue = "49519186"
+	)
+	public static int method4035(boolean var0, boolean var1) {
+		byte var2 = 0;
+		int var3 = var2 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
+		return var3;
 	}
 }

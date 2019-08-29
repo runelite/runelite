@@ -1,19 +1,25 @@
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("er")
 @Implements("UrlRequest")
 public class UrlRequest {
-	@ObfuscatedName("q")
+	@ObfuscatedName("rb")
+	@ObfuscatedGetter(
+		intValue = 1189036032
+	)
+	static int field1932;
+	@ObfuscatedName("s")
 	@Export("url")
 	final URL url;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("isDone0")
 	volatile boolean isDone0;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("response0")
 	volatile byte[] response0;
 
@@ -21,166 +27,143 @@ public class UrlRequest {
 		this.url = var1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "1792198908"
+		signature = "(B)Z",
+		garbageValue = "76"
 	)
 	@Export("isDone")
 	public boolean isDone() {
 		return this.isDone0;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)[B",
-		garbageValue = "-338757002"
+		signature = "(B)[B",
+		garbageValue = "0"
 	)
 	@Export("getResponse")
 	public byte[] getResponse() {
 		return this.response0;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;Lhp;Lhp;I)V",
-		garbageValue = "-354587299"
+		signature = "(Ljava/lang/CharSequence;Llu;I)Ljava/lang/String;",
+		garbageValue = "238475307"
 	)
-	@Export("Widget_setArchives")
-	public static void Widget_setArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
-		Widget.Widget_archive = var0;
-		ViewportMouse.Widget_modelsArchive = var1;
-		class216.Widget_spritesArchive = var2;
-		DirectByteArrayCopier.Widget_fontsArchive = var3;
-		Widget.Widget_interfaceComponents = new Widget[Widget.Widget_archive.getGroupCount()][];
-		ViewportMouse.Widget_loadedInterfaces = new boolean[Widget.Widget_archive.getGroupCount()];
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-1541949649"
-	)
-	@Export("iLog")
-	public static int iLog(int var0) {
-		int var1 = 0;
-		if (var0 < 0 || var0 >= 65536) {
-			var0 >>>= 16;
-			var1 += 16;
-		}
-
-		if (var0 >= 256) {
-			var0 >>>= 8;
-			var1 += 8;
-		}
-
-		if (var0 >= 16) {
-			var0 >>>= 4;
-			var1 += 4;
-		}
-
-		if (var0 >= 4) {
-			var0 >>>= 2;
-			var1 += 2;
-		}
-
-		if (var0 >= 1) {
-			var0 >>>= 1;
-			++var1;
-		}
-
-		return var0 + var1;
-	}
-
-	@ObfuscatedName("gc")
-	@ObfuscatedSignature(
-		signature = "(IIIIZB)V",
-		garbageValue = "-69"
-	)
-	@Export("setViewportShape")
-	static final void setViewportShape(int var0, int var1, int var2, int var3, boolean var4) {
-		if (var2 < 1) {
-			var2 = 1;
-		}
-
-		if (var3 < 1) {
-			var3 = 1;
-		}
-
-		int var5 = var3 - 334;
-		int var6;
-		if (var5 < 0) {
-			var6 = Client.field782;
-		} else if (var5 >= 100) {
-			var6 = Client.field651;
+	public static String method3264(CharSequence var0, LoginType var1) {
+		if (var0 == null) {
+			return null;
 		} else {
-			var6 = (Client.field651 - Client.field782) * var5 / 100 + Client.field782;
-		}
+			int var2 = 0;
 
-		int var7 = var3 * var6 * 512 / (var2 * 334);
-		int var8;
-		int var9;
-		short var17;
-		if (var7 < Client.field732) {
-			var17 = Client.field732;
-			var6 = var17 * var2 * 334 / (var3 * 512);
-			if (var6 > Client.field790) {
-				var6 = Client.field790;
-				var8 = var3 * var6 * 512 / (var17 * 334);
-				var9 = (var2 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, 0xff000000);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, 0xff000000);
-				}
-
-				var0 += var9;
-				var2 -= var9 * 2;
-			}
-		} else if (var7 > Client.field659) {
-			var17 = Client.field659;
-			var6 = var17 * var2 * 334 / (var3 * 512);
-			if (var6 < Client.field820) {
-				var6 = Client.field820;
-				var8 = var17 * var2 * 334 / (var6 * 512);
-				var9 = (var3 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, 0xff000000);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, 0xff000000);
-				}
-
-				var1 += var9;
-				var3 -= var9 * 2;
-			}
-		}
-
-		Client.viewportZoom = var3 * var6 / 334;
-		if (var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
-			int[] var16 = new int[9];
-
-			for (var9 = 0; var9 < var16.length; ++var9) {
-				int var10 = var9 * 32 + 15 + 128;
-				int var11 = class40.method700(var10);
-				int var12 = Rasterizer3D.Rasterizer3D_sine[var10];
-				int var14 = var3 - 334;
-				if (var14 < 0) {
-					var14 = 0;
-				} else if (var14 > 100) {
-					var14 = 100;
-				}
-
-				int var15 = (Client.zoomWidth - Client.zoomHeight) * var14 / 100 + Client.zoomHeight;
-				int var13 = var15 * var11 / 256;
-				var16[var9] = var12 * var13 >> 16;
+			int var3;
+			for (var3 = var0.length(); var2 < var3 && FaceNormal.method3222(var0.charAt(var2)); ++var2) {
 			}
 
-			Scene.Scene_buildVisiblityMap(var16, 500, 800, var2 * 334 / var3, 334);
+			while (var3 > var2 && FaceNormal.method3222(var0.charAt(var3 - 1))) {
+				--var3;
+			}
+
+			int var4 = var3 - var2;
+			if (var4 >= 1) {
+				byte var6;
+				if (var1 == null) {
+					var6 = 12;
+				} else {
+					switch(var1.field4033) {
+					case 1:
+						var6 = 20;
+						break;
+					default:
+						var6 = 12;
+					}
+				}
+
+				if (var4 <= var6) {
+					StringBuilder var12 = new StringBuilder(var4);
+
+					for (int var14 = var2; var14 < var3; ++var14) {
+						char var7 = var0.charAt(var14);
+						boolean var8;
+						if (Character.isISOControl(var7)) {
+							var8 = false;
+						} else if (RouteStrategy.isAlphaNumeric(var7)) {
+							var8 = true;
+						} else {
+							char[] var13 = class338.field4038;
+							int var10 = 0;
+
+							label83:
+							while (true) {
+								char var11;
+								if (var10 >= var13.length) {
+									var13 = class338.field4035;
+
+									for (var10 = 0; var10 < var13.length; ++var10) {
+										var11 = var13[var10];
+										if (var7 == var11) {
+											var8 = true;
+											break label83;
+										}
+									}
+
+									var8 = false;
+									break;
+								}
+
+								var11 = var13[var10];
+								if (var11 == var7) {
+									var8 = true;
+									break;
+								}
+
+								++var10;
+							}
+						}
+
+						if (var8) {
+							char var9 = StructDefinition.method4449(var7);
+							if (var9 != 0) {
+								var12.append(var9);
+							}
+						}
+					}
+
+					if (var12.length() == 0) {
+						return null;
+					}
+
+					return var12.toString();
+				}
+			}
+
+			return null;
+		}
+	}
+
+	@ObfuscatedName("kg")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "1388025296"
+	)
+	static void method3258(String var0) {
+		Clock.field2037 = var0;
+
+		try {
+			String var1 = WorldMapID.client.getParameter(Integer.toString(18));
+			String var2 = WorldMapID.client.getParameter(Integer.toString(13));
+			String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
+			if (var0.length() == 0) {
+				var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
+			} else {
+				var3 = var3 + "; Expires=" + MusicPatchPcmStream.method3831(SequenceDefinition.method4686() + 94608000000L) + "; Max-Age=" + 94608000L;
+			}
+
+			class47.method796(WorldMapID.client, "document.cookie=\"" + var3 + "\"");
+		} catch (Throwable var4) {
 		}
 
-		Client.viewportOffsetX = var0;
-		Client.viewportOffsetY = var1;
-		Client.viewportWidth = var2;
-		Client.viewportHeight = var3;
 	}
 }

@@ -3,12 +3,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fz")
 @Implements("UserComparator5")
 public class UserComparator5 extends AbstractUserComparator {
-	@ObfuscatedName("ax")
-	static String field1986;
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -16,10 +14,10 @@ public class UserComparator5 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljz;Ljz;I)I",
-		garbageValue = "-604876330"
+		signature = "(Ljt;Ljt;I)I",
+		garbageValue = "1721818690"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -38,23 +36,25 @@ public class UserComparator5 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)[Lhn;",
-		garbageValue = "-1282154756"
+		signature = "(IIIIIII)I",
+		garbageValue = "-130960812"
 	)
-	@Export("PlayerType_values")
-	public static PlayerType[] PlayerType_values() {
-		return new PlayerType[]{PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_ironman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_normal, PlayerType.PlayerType_hardcoreIronman};
-	}
+	public static int method3366(int var0, int var1, int var2, int var3, int var4, int var5) {
+		if ((var5 & 1) == 1) {
+			int var6 = var3;
+			var3 = var4;
+			var4 = var6;
+		}
 
-	@ObfuscatedName("iy")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "1669969690"
-	)
-	@Export("setTapToDrop")
-	static void setTapToDrop(boolean var0) {
-		Client.tapToDrop = var0;
+		var2 &= 3;
+		if (var2 == 0) {
+			return var0;
+		} else if (var2 == 1) {
+			return var1;
+		} else {
+			return var2 == 2 ? 7 - var0 - (var3 - 1) : 7 - var1 - (var4 - 1);
+		}
 	}
 }

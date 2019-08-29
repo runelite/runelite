@@ -4,39 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
+@ObfuscatedName("h")
 @Implements("WorldMapRectangle")
 public final class WorldMapRectangle {
-	@ObfuscatedName("sd")
+	@ObfuscatedName("bp")
 	@ObfuscatedSignature(
-		signature = "Llo;"
+		signature = "Lhv;"
 	)
-	@Export("platformInfo")
-	static PlatformInfo platformInfo;
-	@ObfuscatedName("gs")
-	@Export("regionLandArchiveIds")
-	static int[] regionLandArchiveIds;
-	@ObfuscatedName("q")
+	static StudioGame field166;
+	@ObfuscatedName("dy")
+	@ObfuscatedSignature(
+		signature = "Lid;"
+	)
+	@Export("archive11")
+	static Archive archive11;
+	@ObfuscatedName("eq")
 	@ObfuscatedGetter(
-		intValue = 1996817297
+		intValue = 161269475
+	)
+	@Export("port1")
+	static int port1;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = -35093497
 	)
 	@Export("width")
 	int width;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 625891879
+		intValue = -975025893
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1380746691
+		intValue = -1556626299
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -1337066781
+		intValue = 1692274853
 	)
 	@Export("y")
 	int y;
@@ -53,61 +61,42 @@ public final class WorldMapRectangle {
 		this.this$0 = var1;
 	}
 
-	@ObfuscatedName("gb")
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;IB)V",
+		garbageValue = "87"
+	)
+	static final void method281(String var0, int var1) {
+		PacketBufferNode var2 = MenuAction.getPacketBufferNode(ClientPacket.field2269, Client.packetWriter.isaacCipher);
+		var2.packetBuffer.writeByte(Buddy.stringCp1252NullTerminatedByteSize(var0) + 1);
+		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
+		var2.packetBuffer.writeByte(var1);
+		Client.packetWriter.addNode(var2);
+	}
+
+	@ObfuscatedName("fx")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "205706610"
+		garbageValue = "-1711181474"
 	)
-	static final void method275() {
-		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
-			if (var0.plane == class42.plane && !var0.isFinished) {
-				if (Client.cycle >= var0.cycleStart) {
-					var0.advance(Client.field718);
-					if (var0.isFinished) {
-						var0.remove();
-					} else {
-						GrandExchangeOfferWorldComparator.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
-					}
-				}
-			} else {
-				var0.remove();
+	static final void method280() {
+		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
+			int var1 = Client.npcIndices[var0];
+			NPC var2 = Client.npcs[var1];
+			if (var2 != null) {
+				class1.calculateActorPosition(var2, var2.definition.size);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("iv")
+	@ObfuscatedName("kd")
 	@ObfuscatedSignature(
-		signature = "(Lhj;Liq;IIZI)V",
-		garbageValue = "106659698"
+		signature = "(Lhp;B)Z",
+		garbageValue = "1"
 	)
-	@Export("addWidgetItemMenuItem")
-	static final void addWidgetItemMenuItem(Widget var0, ItemDefinition var1, int var2, int var3, boolean var4) {
-		String[] var5 = var1.inventoryActions;
-		byte var6 = -1;
-		String var7 = null;
-		if (var5 != null && var5[var3] != null) {
-			if (var3 == 0) {
-				var6 = 33;
-			} else if (var3 == 1) {
-				var6 = 34;
-			} else if (var3 == 2) {
-				var6 = 35;
-			} else if (var3 == 3) {
-				var6 = 36;
-			} else {
-				var6 = 37;
-			}
-
-			var7 = var5[var3];
-		} else if (var3 == 4) {
-			var6 = 37;
-			var7 = "Drop";
-		}
-
-		if (var6 != -1 && var7 != null) {
-			Entity.insertMenuItem(var7, ClientPreferences.colorStartTag(0xff9040) + var1.name, var6, var1.id, var2, var0.id, var4);
-		}
-
+	@Export("isComponentHidden")
+	static boolean isComponentHidden(Widget var0) {
+		return var0.isHidden;
 	}
 }

@@ -4,81 +4,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("iv")
 @Implements("FloorOverlayDefinition")
 public class FloorOverlayDefinition extends DualNode {
-	@ObfuscatedName("sh")
-	@ObfuscatedGetter(
-		intValue = -739683293
-	)
-	@Export("foundItemIdCount")
-	static int foundItemIdCount;
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("FloorOverlayDefinition_archive")
 	public static AbstractArchive FloorOverlayDefinition_archive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("FloorOverlayDefinition_cached")
 	public static EvictingDualNodeHashTable FloorOverlayDefinition_cached;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1387781245
+		intValue = 1186285675
 	)
 	@Export("primaryRgb")
 	public int primaryRgb;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -138481691
+		intValue = 1987325665
 	)
 	@Export("texture")
 	public int texture;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("hideUnderlay")
 	public boolean hideUnderlay;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1829885045
+		intValue = -375374105
 	)
 	@Export("secondaryRgb")
 	public int secondaryRgb;
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1785369295
+		intValue = 1926193945
 	)
 	@Export("hue")
 	public int hue;
-	@ObfuscatedName("i")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 844527765
+		intValue = -1588177313
 	)
 	@Export("saturation")
 	public int saturation;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -649539923
+		intValue = -1646509357
 	)
 	@Export("lightness")
 	public int lightness;
-	@ObfuscatedName("f")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1982106487
+		intValue = -1281479925
 	)
 	@Export("secondaryHue")
 	public int secondaryHue;
-	@ObfuscatedName("m")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -241902903
+		intValue = 1612990267
 	)
 	@Export("secondarySaturation")
 	public int secondarySaturation;
-	@ObfuscatedName("u")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -2090498171
+		intValue = -520563245
 	)
 	@Export("secondaryLightness")
 	public int secondaryLightness;
@@ -94,10 +88,10 @@ public class FloorOverlayDefinition extends DualNode {
 		this.secondaryRgb = -1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-866326245"
+		signature = "(B)V",
+		garbageValue = "-32"
 	)
 	@Export("postDecode")
 	public void postDecode() {
@@ -111,10 +105,10 @@ public class FloorOverlayDefinition extends DualNode {
 		this.setHsl(this.primaryRgb);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Lkf;IB)V",
-		garbageValue = "-93"
+		signature = "(Lky;II)V",
+		garbageValue = "-1938903864"
 	)
 	@Export("decode")
 	public void decode(Buffer var1, int var2) {
@@ -128,10 +122,10 @@ public class FloorOverlayDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkf;IIB)V",
-		garbageValue = "0"
+		signature = "(Lky;III)V",
+		garbageValue = "-1583990473"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2, int var3) {
@@ -148,10 +142,10 @@ public class FloorOverlayDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-1232631755"
+		garbageValue = "923759114"
 	)
 	@Export("setHsl")
 	void setHsl(int var1) {
@@ -179,28 +173,28 @@ public class FloorOverlayDefinition extends DualNode {
 		double var12 = 0.0D;
 		double var14 = 0.0D;
 		double var16 = (var10 + var8) / 2.0D;
-		if (var8 != var10) {
+		if (var10 != var8) {
 			if (var16 < 0.5D) {
-				var14 = (var10 - var8) / (var8 + var10);
+				var14 = (var10 - var8) / (var10 + var8);
 			}
 
 			if (var16 >= 0.5D) {
 				var14 = (var10 - var8) / (2.0D - var10 - var8);
 			}
 
-			if (var2 == var10) {
+			if (var10 == var2) {
 				var12 = (var4 - var6) / (var10 - var8);
-			} else if (var10 == var4) {
+			} else if (var4 == var10) {
 				var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-			} else if (var10 == var6) {
-				var12 = 4.0D + (var2 - var4) / (var10 - var8);
+			} else if (var6 == var10) {
+				var12 = (var2 - var4) / (var10 - var8) + 4.0D;
 			}
 		}
 
 		var12 /= 6.0D;
 		this.hue = (int)(256.0D * var12);
-		this.saturation = (int)(256.0D * var14);
-		this.lightness = (int)(256.0D * var16);
+		this.saturation = (int)(var14 * 256.0D);
+		this.lightness = (int)(var16 * 256.0D);
 		if (this.saturation < 0) {
 			this.saturation = 0;
 		} else if (this.saturation > 255) {
@@ -213,59 +207,5 @@ public class FloorOverlayDefinition extends DualNode {
 			this.lightness = 255;
 		}
 
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(Lhj;I[B[BI)V",
-		garbageValue = "610677249"
-	)
-	@Export("Widget_setKey")
-	static final void Widget_setKey(Widget var0, int var1, byte[] var2, byte[] var3) {
-		if (var0.field2650 == null) {
-			if (var2 == null) {
-				return;
-			}
-
-			var0.field2650 = new byte[11][];
-			var0.field2625 = new byte[11][];
-			var0.field2641 = new int[11];
-			var0.field2588 = new int[11];
-		}
-
-		var0.field2650[var1] = var2;
-		if (var2 != null) {
-			var0.field2704 = true;
-		} else {
-			var0.field2704 = false;
-
-			for (int var4 = 0; var4 < var0.field2650.length; ++var4) {
-				if (var0.field2650[var4] != null) {
-					var0.field2704 = true;
-					break;
-				}
-			}
-		}
-
-		var0.field2625[var1] = var3;
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(IIIB)I",
-		garbageValue = "127"
-	)
-	static final int method4757(int var0, int var1, int var2) {
-		int var3 = var0 / var2;
-		int var4 = var0 & var2 - 1;
-		int var5 = var1 / var2;
-		int var6 = var1 & var2 - 1;
-		int var7 = TileItemPile.method2765(var3, var5);
-		int var8 = TileItemPile.method2765(var3 + 1, var5);
-		int var9 = TileItemPile.method2765(var3, var5 + 1);
-		int var10 = TileItemPile.method2765(var3 + 1, var5 + 1);
-		int var11 = class4.method49(var7, var8, var4, var2);
-		int var12 = class4.method49(var9, var10, var4, var2);
-		return class4.method49(var11, var12, var6, var2);
 	}
 }

@@ -5,38 +5,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lf")
+@ObfuscatedName("lk")
 @Implements("DesktopPlatformInfoProvider")
 public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 1888864715
-	)
-	int field3930;
 	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -1057820263
+		intValue = -1435561195
 	)
-	int field3928;
-	@ObfuscatedName("l")
+	int field3903;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1079401835
+		intValue = -1717280991
 	)
-	int field3926;
+	int field3901;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 1506800737
+	)
+	int field3904;
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(I)Llo;",
-		garbageValue = "1619784372"
+		signature = "(I)Llx;",
+		garbageValue = "-1719381077"
 	)
 	@Export("get")
 	public PlatformInfo get() {
 		byte var1;
-		if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("win")) {
+		if (ByteArrayPool.field3708.startsWith("win")) {
 			var1 = 1;
-		} else if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("mac")) {
+		} else if (ByteArrayPool.field3708.startsWith("mac")) {
 			var1 = 2;
-		} else if (GrandExchangeOfferOwnWorldComparator.operatingSystemLC.startsWith("linux")) {
+		} else if (ByteArrayPool.field3708.startsWith("linux")) {
 			var1 = 3;
 		} else {
 			var1 = 4;
@@ -134,11 +134,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 			var8 = 4;
 		}
 
-		this.method6258(var5);
+		this.method6147(var5);
 		Runtime.getRuntime();
 		int var10 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
 		int var11;
-		if (this.field3930 > 3) {
+		if (this.field3903 > 3) {
 			var11 = Runtime.getRuntime().availableProcessors();
 		} else {
 			var11 = 0;
@@ -152,55 +152,127 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 		String var17 = "";
 		String var18 = "";
 		int[] var23 = new int[3];
-		return new PlatformInfo(var1, var24, var7, var8, this.field3930, this.field3928, this.field3926, false, var10, var11, var12, 0, var13, var14, var15, var16, 0, 0, 0, 0, var17, var18, var23, 0, "");
+		return new PlatformInfo(var1, var24, var7, var8, this.field3903, this.field3901, this.field3904, false, var10, var11, var12, 0, var13, var14, var15, var16, 0, 0, 0, 0, var17, var18, var23, 0, "");
 	}
 
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "-1874796410"
-	)
-	void method6258(String var1) {
-		if (var1.startsWith("1.")) {
-			this.method6260(var1);
-		} else {
-			this.method6261(var1);
-		}
-
-	}
-
-	@ObfuscatedName("e")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;B)V",
-		garbageValue = "93"
+		garbageValue = "28"
 	)
-	void method6260(String var1) {
+	void method6147(String var1) {
+		if (var1.startsWith("1.")) {
+			this.method6148(var1);
+		} else {
+			this.method6145(var1);
+		}
+
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "1225882646"
+	)
+	void method6148(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {
-			this.field3930 = Integer.parseInt(var2[1]);
+			this.field3903 = Integer.parseInt(var2[1]);
 			var2 = var2[2].split("_");
-			this.field3928 = Integer.parseInt(var2[0]);
-			this.field3926 = Integer.parseInt(var2[1]);
+			this.field3901 = Integer.parseInt(var2[0]);
+			this.field3904 = Integer.parseInt(var2[1]);
 		} catch (Exception var4) {
 		}
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "-265029998"
+		signature = "(Ljava/lang/String;S)V",
+		garbageValue = "-31875"
 	)
-	void method6261(String var1) {
+	void method6145(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {
-			this.field3930 = Integer.parseInt(var2[0]);
-			this.field3928 = Integer.parseInt(var2[1]);
-			this.field3926 = Integer.parseInt(var2[2]);
+			this.field3903 = Integer.parseInt(var2[0]);
+			this.field3901 = Integer.parseInt(var2[1]);
+			this.field3904 = Integer.parseInt(var2[2]);
 		} catch (Exception var4) {
 		}
 
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "([BS)Lcr;",
+		garbageValue = "10322"
+	)
+	@Export("newScript")
+	static Script newScript(byte[] var0) {
+		Script var1 = new Script();
+		Buffer var2 = new Buffer(var0);
+		var2.offset = var2.array.length - 2;
+		int var3 = var2.readUnsignedShort();
+		int var4 = var2.array.length - 2 - var3 - 12;
+		var2.offset = var4;
+		int var5 = var2.readInt();
+		var1.localIntCount = var2.readUnsignedShort();
+		var1.localStringCount = var2.readUnsignedShort();
+		var1.intArgumentCount = var2.readUnsignedShort();
+		var1.stringArgumentCount = var2.readUnsignedShort();
+		int var6 = var2.readUnsignedByte();
+		int var7;
+		int var8;
+		if (var6 > 0) {
+			var1.switches = var1.newIterableNodeHashTable(var6);
+
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2.readUnsignedShort();
+				int var9;
+				int var11;
+				if (var8 > 0) {
+					var11 = var8 - 1;
+					var11 |= var11 >>> 1;
+					var11 |= var11 >>> 2;
+					var11 |= var11 >>> 4;
+					var11 |= var11 >>> 8;
+					var11 |= var11 >>> 16;
+					int var10 = var11 + 1;
+					var9 = var10;
+				} else {
+					var9 = 1;
+				}
+
+				IterableNodeHashTable var13 = new IterableNodeHashTable(var9);
+				var1.switches[var7] = var13;
+
+				while (var8-- > 0) {
+					var11 = var2.readInt();
+					int var12 = var2.readInt();
+					var13.put(new IntegerNode(var12), (long)var11);
+				}
+			}
+		}
+
+		var2.offset = 0;
+		var2.readStringCp1252NullTerminatedOrNull();
+		var1.opcodes = new int[var5];
+		var1.intOperands = new int[var5];
+		var1.stringOperands = new String[var5];
+
+		for (var7 = 0; var2.offset < var4; var1.opcodes[var7++] = var8) {
+			var8 = var2.readUnsignedShort();
+			if (var8 == 3) {
+				var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
+			} else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+				var1.intOperands[var7] = var2.readInt();
+			} else {
+				var1.intOperands[var7] = var2.readUnsignedByte();
+			}
+		}
+
+		return var1;
 	}
 }

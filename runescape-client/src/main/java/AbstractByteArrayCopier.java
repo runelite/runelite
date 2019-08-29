@@ -3,75 +3,223 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("gl")
 @Implements("AbstractByteArrayCopier")
 public abstract class AbstractByteArrayCopier {
 	AbstractByteArrayCopier() {
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)[B",
-		garbageValue = "1071129091"
+		garbageValue = "-1040345200"
 	)
 	@Export("get")
 	abstract byte[] get();
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "([BI)V",
-		garbageValue = "594076777"
+		garbageValue = "38240743"
 	)
 	@Export("set")
-	public abstract void set(byte[] var1);
+	abstract void set(byte[] var1);
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("gq")
 	@ObfuscatedSignature(
-		signature = "([BIILer;[Lfv;I)V",
-		garbageValue = "95070993"
+		signature = "(B)V",
+		garbageValue = "53"
 	)
-	static final void method3933(byte[] var0, int var1, int var2, Scene var3, CollisionMap[] var4) {
-		Buffer var5 = new Buffer(var0);
-		int var6 = -1;
+	static void method3878() {
+		if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
+			class80.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
+		}
 
-		while (true) {
-			int var7 = var5.method5509();
-			if (var7 == 0) {
-				return;
-			}
+	}
 
-			var6 += var7;
-			int var8 = 0;
+	@ObfuscatedName("jf")
+	@ObfuscatedSignature(
+		signature = "(Lhp;II)I",
+		garbageValue = "-706781687"
+	)
+	static final int method3868(Widget var0, int var1) {
+		if (var0.cs1Instructions != null && var1 < var0.cs1Instructions.length) {
+			try {
+				int[] var2 = var0.cs1Instructions[var1];
+				int var3 = 0;
+				int var4 = 0;
+				byte var5 = 0;
 
-			while (true) {
-				int var9 = var5.readUShortSmart();
-				if (var9 == 0) {
-					break;
-				}
-
-				var8 += var9 - 1;
-				int var10 = var8 & 63;
-				int var11 = var8 >> 6 & 63;
-				int var12 = var8 >> 12;
-				int var13 = var5.readUnsignedByte();
-				int var14 = var13 >> 2;
-				int var15 = var13 & 3;
-				int var16 = var11 + var1;
-				int var17 = var10 + var2;
-				if (var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
-					int var18 = var12;
-					if ((Tiles.Tiles_renderFlags[1][var16][var17] & 2) == 2) {
-						var18 = var12 - 1;
+				while (true) {
+					int var6 = var2[var4++];
+					int var7 = 0;
+					byte var8 = 0;
+					if (var6 == 0) {
+						return var3;
 					}
 
-					CollisionMap var19 = null;
-					if (var18 >= 0) {
-						var19 = var4[var18];
+					if (var6 == 1) {
+						var7 = Client.currentLevels[var2[var4++]];
 					}
 
-					GrandExchangeOfferOwnWorldComparator.method1236(var12, var16, var17, var6, var15, var14, var3, var19);
+					if (var6 == 2) {
+						var7 = Client.levels[var2[var4++]];
+					}
+
+					if (var6 == 3) {
+						var7 = Client.experience[var2[var4++]];
+					}
+
+					int var9;
+					Widget var10;
+					int var11;
+					int var12;
+					if (var6 == 4) {
+						var9 = var2[var4++] << 16;
+						var9 += var2[var4++];
+						var10 = WorldMapElement.getWidget(var9);
+						var11 = var2[var4++];
+						if (var11 != -1 && (!WorldMapData_0.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+							for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+								if (var11 + 1 == var10.itemIds[var12]) {
+									var7 += var10.itemQuantities[var12];
+								}
+							}
+						}
+					}
+
+					if (var6 == 5) {
+						var7 = Varps.Varps_main[var2[var4++]];
+					}
+
+					if (var6 == 6) {
+						var7 = Skills.Skills_experienceTable[Client.levels[var2[var4++]] - 1];
+					}
+
+					if (var6 == 7) {
+						var7 = Varps.Varps_main[var2[var4++]] * 100 / 46875;
+					}
+
+					if (var6 == 8) {
+						var7 = WorldMapIcon_1.localPlayer.combatLevel;
+					}
+
+					if (var6 == 9) {
+						for (var9 = 0; var9 < 25; ++var9) {
+							if (Skills.Skills_enabled[var9]) {
+								var7 += Client.levels[var9];
+							}
+						}
+					}
+
+					if (var6 == 10) {
+						var9 = var2[var4++] << 16;
+						var9 += var2[var4++];
+						var10 = WorldMapElement.getWidget(var9);
+						var11 = var2[var4++];
+						if (var11 != -1 && (!WorldMapData_0.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+							for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+								if (var11 + 1 == var10.itemIds[var12]) {
+									var7 = 999999999;
+									break;
+								}
+							}
+						}
+					}
+
+					if (var6 == 11) {
+						var7 = Client.runEnergy;
+					}
+
+					if (var6 == 12) {
+						var7 = Client.weight;
+					}
+
+					if (var6 == 13) {
+						var9 = Varps.Varps_main[var2[var4++]];
+						int var13 = var2[var4++];
+						var7 = (var9 & 1 << var13) != 0 ? 1 : 0;
+					}
+
+					if (var6 == 14) {
+						var9 = var2[var4++];
+						var7 = class208.getVarbit(var9);
+					}
+
+					if (var6 == 15) {
+						var8 = 1;
+					}
+
+					if (var6 == 16) {
+						var8 = 2;
+					}
+
+					if (var6 == 17) {
+						var8 = 3;
+					}
+
+					if (var6 == 18) {
+						var7 = PacketWriter.baseX * 64 + (WorldMapIcon_1.localPlayer.x >> 7);
+					}
+
+					if (var6 == 19) {
+						var7 = RouteStrategy.baseY * 64 + (WorldMapIcon_1.localPlayer.y >> 7);
+					}
+
+					if (var6 == 20) {
+						var7 = var2[var4++];
+					}
+
+					if (var8 == 0) {
+						if (var5 == 0) {
+							var3 += var7;
+						}
+
+						if (var5 == 1) {
+							var3 -= var7;
+						}
+
+						if (var5 == 2 && var7 != 0) {
+							var3 /= var7;
+						}
+
+						if (var5 == 3) {
+							var3 *= var7;
+						}
+
+						var5 = 0;
+					} else {
+						var5 = var8;
+					}
+				}
+			} catch (Exception var14) {
+				return -1;
+			}
+		} else {
+			return -2;
+		}
+	}
+
+	@ObfuscatedName("ky")
+	@ObfuscatedSignature(
+		signature = "(Lhp;I)Lhp;",
+		garbageValue = "-1890509802"
+	)
+	static Widget method3871(Widget var0) {
+		int var2 = ParamDefinition.getWidgetClickMask(var0);
+		int var1 = var2 >> 17 & 7;
+		int var3 = var1;
+		if (var1 == 0) {
+			return null;
+		} else {
+			for (int var4 = 0; var4 < var3; ++var4) {
+				var0 = WorldMapElement.getWidget(var0.parentId);
+				if (var0 == null) {
+					return null;
 				}
 			}
+
+			return var0;
 		}
 	}
 }
