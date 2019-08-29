@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -59,6 +60,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -114,6 +116,22 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
 	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
+	private static final WorldArea PRIFDDINAS_OVERWORLD_AREA = new WorldArea(2183, 3271, 114, 114, 0);
+	// There's an area behind a bench in the North Eastern corner of Prifddinas that is outside the Area square, but can be accessed by the player
+	private static final WorldArea PRIFDDINAS_BENCH_AREA = new WorldArea(3298, 6137, 4, 2, 0);
+	private static final Point PRIFDDINAS_DELTA = new Point(1024, 2752);
+	private static final List<Integer> PRIFDDINAS_ACTUAL_REGIONS = ImmutableList.of(12894, 12895, 13150, 13151);
+	private static final List<Integer> PRIFDDINAS_OVERWORLD_REGIONS = ImmutableList.of(8755, 8756, 9011, 9012);
+	private static final List<Integer> PRIFDDINAS_CORNERS_X = ImmutableList.of(2183, 2201, 2278, 2296);
+	private static final List<Integer> PRIFDDINAS_CORNERS_Y = ImmutableList.of(3271, 3289, 3366, 3384);
+	// Each corner diagonal can be defined as a square that encompasses it.
+	// Each of these values contains a pair of coords, which corespond to the outside and inside corners of that square
+	private static final List<int[]> PRIFDDINAS_CORNERS = ImmutableList.of(
+		new int[]{0, 0, 1, 1}, // South West
+		new int[]{0, 3, 1, 2}, // North West
+		new int[]{3, 0, 2, 1}, // South East
+		new int[]{3, 3, 2, 2} // North East
+	);
 
 	@Getter
 	private ClueScroll clue;
@@ -811,5 +829,47 @@ public class ClueScrollPlugin extends Plugin
 			list.getId(),
 			newScroll
 		);
+	}
+
+	/**
+	 * Prifddinas exists outside of the main map, but is essentially on the overworld as far as clues can tell
+	 * This function will check if the given point is inside Prifddinas, and convert transfer the point between
+	 * the maps if needed (Overworld -> Real, Real -> Overworld)
+	 * @param worldPoint - the WorldPoint to check
+	 * @return worldPoint if outside of Prif, or the converted WorldPoint if inside
+	 */
+	static WorldPoint convertLocation(WorldPoint worldPoint)
+	{
+		if (!(PRIFDDINAS_ACTUAL_REGIONS.contains(worldPoint.getRegionID())
+			|| PRIFDDINAS_OVERWORLD_REGIONS.contains(worldPoint.getRegionID())))
+		{
+			return worldPoint;
+		}
+		// Real Prifddinas point translated to overworld Prif
+		final WorldPoint translatedPoint = new WorldPoint(worldPoint.getX() - PRIFDDINAS_DELTA.getX(), worldPoint.getY() - PRIFDDINAS_DELTA.getY(), worldPoint.getPlane());
+		if (PRIFDDINAS_OVERWORLD_AREA.distanceTo2D(worldPoint) == 0)
+		{
+			// Since Priffdinas is contained (mostly) inside an octagon, we need to check the corners since it's
+			// possible to access them in the overworld.
+			// This doesn't need to be done for coords inside real prif, since it's impossible to reach those areas
+			int[] cornerPoints = PRIFDDINAS_CORNERS.get(PRIFDDINAS_OVERWORLD_REGIONS.indexOf(worldPoint.getRegionID()));
+			WorldPoint outside = new WorldPoint(PRIFDDINAS_CORNERS_X.get(cornerPoints[0]), PRIFDDINAS_CORNERS_Y.get(cornerPoints[1]), 0);
+			WorldPoint inside = new WorldPoint(PRIFDDINAS_CORNERS_X.get(cornerPoints[2]), PRIFDDINAS_CORNERS_Y.get(cornerPoints[3]), 0);
+			if (worldPoint.distanceTo2D(outside) < worldPoint.distanceTo2D(inside))
+			{
+				return worldPoint;
+			}
+
+			// Overworld point translated to real Prif
+			return new WorldPoint(worldPoint.getX() + PRIFDDINAS_DELTA.getX(), worldPoint.getY() + PRIFDDINAS_DELTA.getY(), worldPoint.getPlane());
+		}
+		else if (PRIFDDINAS_OVERWORLD_AREA.distanceTo2D(translatedPoint) == 0 || PRIFDDINAS_BENCH_AREA.distanceTo(worldPoint) == 0)
+		{
+			return translatedPoint;
+		}
+		else
+		{
+			return worldPoint;
+		}
 	}
 }
