@@ -126,7 +126,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
 
 		// ELITE
-		add("Fletch a Magic Longbow in the Elven lands.",
+		add("Fletch a Magic Longbow in Tirannwn.",
 			new SkillRequirement(Skill.FLETCHING, 85),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
 		add("Kill the Thermonuclear Smoke devil (Does not require task).",
