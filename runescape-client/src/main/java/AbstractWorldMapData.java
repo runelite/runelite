@@ -5,113 +5,108 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("l")
 @Implements("AbstractWorldMapData")
 public abstract class AbstractWorldMapData {
-	@ObfuscatedName("el")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1739932713
-	)
-	static int field155;
-	@ObfuscatedName("q")
-	@ObfuscatedGetter(
-		intValue = -680308736
+		intValue = -136523776
 	)
 	@Export("regionXLow")
 	int regionXLow;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1014181888
+		intValue = 1537560576
 	)
 	@Export("regionYLow")
 	int regionYLow;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 421939525
+		intValue = -756440995
 	)
 	@Export("regionX")
 	int regionX;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1418471835
+		intValue = 2087702297
 	)
 	@Export("regionY")
 	int regionY;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1513175747
+		intValue = -489051341
 	)
 	@Export("minPlane")
 	int minPlane;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -402229247
+		intValue = -1972038717
 	)
 	@Export("planes")
 	int planes;
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -376642433
+		intValue = 156978213
 	)
 	@Export("groupId")
 	int groupId;
-	@ObfuscatedName("i")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1618366577
+		intValue = 1797648451
 	)
 	@Export("fileId")
 	int fileId;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@Export("floorUnderlayIds")
 	short[][][] floorUnderlayIds;
-	@ObfuscatedName("f")
+	@ObfuscatedName("d")
 	@Export("floorOverlayIds")
 	short[][][] floorOverlayIds;
-	@ObfuscatedName("m")
-	byte[][][] field165;
-	@ObfuscatedName("u")
-	byte[][][] field166;
-	@ObfuscatedName("x")
+	@ObfuscatedName("f")
+	byte[][][] field145;
+	@ObfuscatedName("c")
+	byte[][][] field156;
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "[[[[Lz;"
+		signature = "[[[[Lo;"
 	)
 	@Export("decorations")
 	WorldMapDecoration[][][][] decorations;
-	@ObfuscatedName("r")
-	boolean field168;
-	@ObfuscatedName("v")
-	boolean field169;
+	@ObfuscatedName("y")
+	boolean field158;
+	@ObfuscatedName("p")
+	boolean field159;
 
 	AbstractWorldMapData() {
 		this.groupId = -1;
 		this.fileId = -1;
 		new LinkedList();
-		this.field168 = false;
-		this.field169 = false;
+		this.field158 = false;
+		this.field159 = false;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-1951934103"
+		signature = "(Lky;B)V",
+		garbageValue = "120"
 	)
 	@Export("readGeography")
 	abstract void readGeography(Buffer var1);
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-613524686"
+		signature = "(B)Z",
+		garbageValue = "-103"
 	)
 	@Export("isFullyLoaded")
 	boolean isFullyLoaded() {
-		return this.field168 && this.field169;
+		return this.field158 && this.field159;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lhp;I)V",
-		garbageValue = "1963301304"
+		signature = "(Lhz;I)V",
+		garbageValue = "-1580621275"
 	)
 	@Export("loadGeography")
 	void loadGeography(AbstractArchive var1) {
@@ -119,53 +114,53 @@ public abstract class AbstractWorldMapData {
 			byte[] var2 = var1.takeFile(this.groupId, this.fileId);
 			if (var2 != null) {
 				this.readGeography(new Buffer(var2));
-				this.field168 = true;
-				this.field169 = true;
+				this.field158 = true;
+				this.field159 = true;
 			}
 
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1146093408"
+		garbageValue = "2145144649"
 	)
 	@Export("reset")
 	void reset() {
 		this.floorUnderlayIds = null;
 		this.floorOverlayIds = null;
-		this.field165 = null;
-		this.field166 = null;
+		this.field145 = null;
+		this.field156 = null;
 		this.decorations = null;
-		this.field168 = false;
-		this.field169 = false;
+		this.field158 = false;
+		this.field159 = false;
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IILkf;I)V",
-		garbageValue = "-1521348339"
+		signature = "(IILky;I)V",
+		garbageValue = "1320309065"
 	)
 	@Export("readTile")
 	void readTile(int var1, int var2, Buffer var3) {
 		int var4 = var3.readUnsignedByte();
 		if (var4 != 0) {
 			if ((var4 & 1) != 0) {
-				this.method258(var1, var2, var3, var4);
+				this.method247(var1, var2, var3, var4);
 			} else {
-				this.method253(var1, var2, var3, var4);
+				this.method259(var1, var2, var3, var4);
 			}
 
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(IILkf;IB)V",
-		garbageValue = "0"
+		signature = "(IILky;IB)V",
+		garbageValue = "85"
 	)
-	void method258(int var1, int var2, Buffer var3, int var4) {
+	void method247(int var1, int var2, Buffer var3, int var4) {
 		boolean var5 = (var4 & 2) != 0;
 		if (var5) {
 			this.floorOverlayIds[0][var1][var2] = (short)var3.readUnsignedByte();
@@ -174,12 +169,12 @@ public abstract class AbstractWorldMapData {
 		this.floorUnderlayIds[0][var1][var2] = (short)var3.readUnsignedByte();
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(IILkf;IB)V",
-		garbageValue = "44"
+		signature = "(IILky;IS)V",
+		garbageValue = "320"
 	)
-	void method253(int var1, int var2, Buffer var3, int var4) {
+	void method259(int var1, int var2, Buffer var3, int var4) {
 		int var5 = ((var4 & 24) >> 3) + 1;
 		boolean var6 = (var4 & 2) != 0;
 		boolean var7 = (var4 & 4) != 0;
@@ -195,8 +190,8 @@ public abstract class AbstractWorldMapData {
 				if (var10 != 0) {
 					this.floorOverlayIds[var9][var1][var2] = (short)var10;
 					var11 = var3.readUnsignedByte();
-					this.field165[var9][var1][var2] = (byte)(var11 >> 2);
-					this.field166[var9][var1][var2] = (byte)(var11 & 3);
+					this.field145[var9][var1][var2] = (byte)(var11 >> 2);
+					this.field156[var9][var1][var2] = (byte)(var11 & 3);
 				}
 			}
 		}
@@ -208,7 +203,7 @@ public abstract class AbstractWorldMapData {
 					WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
 					for (var11 = 0; var11 < var9; ++var11) {
-						int var12 = var3.method5511();
+						int var12 = var3.method5602();
 						int var13 = var3.readUnsignedByte();
 						var14[var11] = new WorldMapDecoration(var12, var13 >> 2, var13 & 3);
 					}
@@ -218,178 +213,111 @@ public abstract class AbstractWorldMapData {
 
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-121424149"
+		signature = "(B)I",
+		garbageValue = "-88"
 	)
 	@Export("getRegionX")
 	int getRegionX() {
 		return this.regionX;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1967751745"
+		signature = "(B)I",
+		garbageValue = "-79"
 	)
 	@Export("getRegionY")
 	int getRegionY() {
 		return this.regionY;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-108"
+		signature = "(IS)Ljava/lang/String;",
+		garbageValue = "30202"
 	)
-	static int method274(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
-			return -1;
-		}
-		return var1 >= 0 && var1 < var2.ids.length ? var2.ids[var1] : -1;
+	static String method278(int var0) {
+		return "<img=" + var0 + ">";
 	}
 
-	@ObfuscatedName("gj")
+	@ObfuscatedName("gb")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "-2108015148"
+		signature = "(II)V",
+		garbageValue = "1514757872"
 	)
-	static final void method273(int var0, int var1, int var2, int var3) {
-		ObjectSound.method1826();
+	static final void method264(int var0) {
+		int[] var1 = ParamDefinition.sceneMinimapSprite.pixels;
+		int var2 = var1.length;
+
+		int var3;
+		for (var3 = 0; var3 < var2; ++var3) {
+			var1[var3] = 0;
+		}
+
+		int var4;
+		int var5;
+		for (var3 = 1; var3 < 103; ++var3) {
+			var4 = (103 - var3) * 2048 + 24628;
+
+			for (var5 = 1; var5 < 103; ++var5) {
+				if ((Tiles.Tiles_renderFlags[var0][var5][var3] & 24) == 0) {
+					Player.scene.drawTileMinimap(var1, var4, 512, var0, var5, var3);
+				}
+
+				if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var5][var3] & 8) != 0) {
+					Player.scene.drawTileMinimap(var1, var4, 512, var0 + 1, var5, var3);
+				}
+
+				var4 += 4;
+			}
+		}
+
+		var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+		var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+		ParamDefinition.sceneMinimapSprite.setRaster();
+
+		int var6;
+		for (var5 = 1; var5 < 103; ++var5) {
+			for (var6 = 1; var6 < 103; ++var6) {
+				if ((Tiles.Tiles_renderFlags[var0][var6][var5] & 24) == 0) {
+					UserComparator10.drawObject(var0, var6, var5, var3, var4);
+				}
+
+				if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var6][var5] & 8) != 0) {
+					UserComparator10.drawObject(var0 + 1, var6, var5, var3, var4);
+				}
+			}
+		}
+
+		Client.mapIconCount = 0;
+
+		for (var5 = 0; var5 < 104; ++var5) {
+			for (var6 = 0; var6 < 104; ++var6) {
+				long var7 = Player.scene.getFloorDecorationTag(ItemContainer.plane, var5, var6);
+				if (var7 != 0L) {
+					int var9 = BoundaryObject.Entity_unpackID(var7);
+					int var10 = class215.getObjectDefinition(var9).mapIconId;
+					if (var10 >= 0) {
+						Client.mapIcons[Client.mapIconCount] = WorldMapData_0.WorldMapElement_get(var10).getSpriteBool(false);
+						Client.mapIconXs[Client.mapIconCount] = var5;
+						Client.mapIconYs[Client.mapIconCount] = var6;
+						++Client.mapIconCount;
+					}
+				}
+			}
+		}
+
+		SpotAnimationDefinition.rasterProvider.apply();
 	}
 
-	@ObfuscatedName("hp")
+	@ObfuscatedName("kp")
 	@ObfuscatedSignature(
-		signature = "(Lij;IIII)V",
-		garbageValue = "566580282"
+		signature = "(IB)V",
+		garbageValue = "-61"
 	)
-	@Export("addNpcToMenu")
-	static final void addNpcToMenu(NPCDefinition var0, int var1, int var2, int var3) {
-		if (Client.menuOptionsCount >= 400) {
-			return;
-		}
-		if (var0.transforms != null) {
-			var0 = var0.transform();
-		}
-
-		if (var0 == null || !var0.isInteractable || (var0.isFollower && Client.followerIndex != var1)) {
-			return;
-		}
-		String var4 = var0.name;
-		if (var0.combatLevel != 0) {
-			int var7 = var0.combatLevel;
-			int var8 = Client.localPlayer.combatLevel;
-			int var9 = var8 - var7;
-			String var6;
-			if (var9 < -9) {
-				var6 = ClientPreferences.colorStartTag(0xff0000);
-			} else if (var9 < -6) {
-				var6 = ClientPreferences.colorStartTag(0xff3000);
-			} else if (var9 < -3) {
-				var6 = ClientPreferences.colorStartTag(0xff7000);
-			} else if (var9 < 0) {
-				var6 = ClientPreferences.colorStartTag(0xffb000);
-			} else if (var9 > 9) {
-				var6 = ClientPreferences.colorStartTag(0xff00);
-			} else if (var9 > 6) {
-				var6 = ClientPreferences.colorStartTag(0x40ff00);
-			} else if (var9 > 3) {
-				var6 = ClientPreferences.colorStartTag(0x80ff00);
-			} else if (var9 > 0) {
-				var6 = ClientPreferences.colorStartTag(0xc0ff00);
-			} else {
-				var6 = ClientPreferences.colorStartTag(0xffff00);
-			}
-
-			var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
-		}
-
-		if (var0.isFollower && Client.followerOpsLowPriority) {
-			class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(0xffff00) + var4, 1003, var1, var2, var3);
-		}
-
-		if (Client.isItemSelected == 1) {
-			class188.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffff00) + var4, 7, var1, var2, var3);
-			return;
-		} else if (Client.isSpellSelected) {
-			if ((WorldMapCacheName.selectedSpellFlags & 2) == 2) {
-				class188.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + ClientPreferences.colorStartTag(0xffff00) + var4, 8, var1, var2, var3);
-			}
-			return;
-		}
-		String[] var11 = var0.actions;
-		if (var11 != null) {
-			for (int var7 = 4; var7 >= 0; --var7) {
-				if (var11[var7] == null || var11[var7].equalsIgnoreCase("Attack")) {
-					continue;
-				}
-				int var8 = 0;
-				int var10 = var0.isFollower && Client.followerOpsLowPriority ? 2000 : 0;
-				if (var7 == 0) {
-					var8 = var10 + 9;
-				}
-
-				if (var7 == 1) {
-					var8 = var10 + 10;
-				}
-
-				if (var7 == 2) {
-					var8 = var10 + 11;
-				}
-
-				if (var7 == 3) {
-					var8 = var10 + 12;
-				}
-
-				if (var7 == 4) {
-					var8 = var10 + 13;
-				}
-
-				class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(0xffff00) + var4, var8, var1, var2, var3);
-			}
-
-			for (int var7 = 4; var7 >= 0; --var7) {
-				if (var11[var7] == null || !var11[var7].equalsIgnoreCase("Attack")) {
-					continue;
-				}
-				short var12 = 0;
-				if (AttackOption.AttackOption_hidden == Client.npcAttackOption) {
-					continue;
-				}
-				if (Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.npcAttackOption && var0.combatLevel > Client.localPlayer.combatLevel) {
-					var12 = 2000;
-				}
-
-				int var8 = 0;
-				if (var7 == 0) {
-					var8 = var12 + 9;
-				}
-
-				if (var7 == 1) {
-					var8 = var12 + 10;
-				}
-
-				if (var7 == 2) {
-					var8 = var12 + 11;
-				}
-
-				if (var7 == 3) {
-					var8 = var12 + 12;
-				}
-
-				if (var7 == 4) {
-					var8 = var12 + 13;
-				}
-
-				class188.insertMenuItemNoShift(var11[var7], ClientPreferences.colorStartTag(0xffff00) + var4, var8, var1, var2, var3);
-			}
-		}
-
-		if (!var0.isFollower || !Client.followerOpsLowPriority) {
-			class188.insertMenuItemNoShift("Examine", ClientPreferences.colorStartTag(0xffff00) + var4, 1003, var1, var2, var3);
-		}
-
+	static void method272(int var0) {
+		Client.oculusOrbState = var0;
 	}
 }

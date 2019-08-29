@@ -4,201 +4,204 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bg")
+@ObfuscatedName("bn")
 @Implements("Tiles")
 public final class Tiles {
-	@ObfuscatedName("rr")
-	@ObfuscatedGetter(
-		intValue = 1255791215
-	)
-	static int field501;
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@Export("Tiles_heights")
 	static int[][][] Tiles_heights;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("Tiles_renderFlags")
 	static byte[][][] Tiles_renderFlags;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1687687411
+		intValue = 210861461
 	)
 	@Export("Tiles_minPlane")
 	static int Tiles_minPlane;
-	@ObfuscatedName("p")
-	static byte[][][] field504;
 	@ObfuscatedName("k")
-	static byte[][][] field505;
-	@ObfuscatedName("l")
-	static byte[][][] field506;
-	@ObfuscatedName("c")
-	static int[][] field515;
-	@ObfuscatedName("m")
-	@Export("Tiles_saturation")
-	static int[] Tiles_saturation;
-	@ObfuscatedName("u")
-	@Export("Tiles_lightness")
-	static int[] Tiles_lightness;
-	@ObfuscatedName("j")
-	static final int[] field512;
+	static byte[][][] field485;
 	@ObfuscatedName("t")
-	static final int[] field513;
-	@ObfuscatedName("h")
-	static final int[] field514;
-	@ObfuscatedName("o")
-	static final int[] field520;
-	@ObfuscatedName("n")
-	static final int[] field509;
+	static byte[][][] field475;
 	@ObfuscatedName("d")
-	static final int[] field517;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = 2138239411
-	)
-	static int field519;
+	@Export("Tiles_hue")
+	static int[] Tiles_hue;
+	@ObfuscatedName("p")
+	static int[][][] field483;
 	@ObfuscatedName("z")
+	static final int[] field479;
+	@ObfuscatedName("a")
+	static final int[] field480;
+	@ObfuscatedName("w")
+	static final int[] field481;
+	@ObfuscatedName("l")
+	static final int[] field482;
+	@ObfuscatedName("h")
+	static final int[] field478;
+	@ObfuscatedName("v")
+	static final int[] field484;
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -217342215
+		intValue = 1482528019
 	)
-	static int field510;
+	static int field477;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = 1522928569
+	)
+	static int field486;
 
 	static {
 		Tiles_heights = new int[4][105][105];
 		Tiles_renderFlags = new byte[4][104][104];
 		Tiles_minPlane = 99;
-		field512 = new int[]{1, 2, 4, 8};
-		field513 = new int[]{16, 32, 64, 128};
-		field514 = new int[]{1, 0, -1, 0};
-		field520 = new int[]{0, -1, 0, 1};
-		field509 = new int[]{1, -1, -1, 1};
-		field517 = new int[]{-1, -1, 1, 1};
-		field519 = (int)(Math.random() * 17.0D) - 8;
-		field510 = (int)(Math.random() * 33.0D) - 16;
+		field479 = new int[]{1, 2, 4, 8};
+		field480 = new int[]{16, 32, 64, 128};
+		field481 = new int[]{1, 0, -1, 0};
+		field482 = new int[]{0, -1, 0, 1};
+		field478 = new int[]{1, -1, -1, 1};
+		field484 = new int[]{-1, -1, 1, 1};
+		field477 = (int)(Math.random() * 17.0D) - 8;
+		field486 = (int)(Math.random() * 33.0D) - 16;
 	}
 
-	@ObfuscatedName("gk")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(ZLkx;I)V",
-		garbageValue = "-1936823520"
+		signature = "(III)I",
+		garbageValue = "-739357854"
 	)
-	@Export("loadRegions")
-	static final void loadRegions(boolean var0, PacketBuffer var1) {
-		Client.isInInstance = var0;
-		int var2;
-		int var3;
-		int var5;
-		int var6;
-		int var7;
-		int var8;
-		if (!Client.isInInstance) {
-			var2 = var1.method5534();
-			var3 = var1.method5518();
-			int var4 = var1.readUnsignedShort();
-			WorldMapRegion.xteaKeys = new int[var4][4];
-
-			for (var5 = 0; var5 < var4; ++var5) {
-				for (var6 = 0; var6 < 4; ++var6) {
-					WorldMapRegion.xteaKeys[var5][var6] = var1.readInt();
-				}
-			}
-
-			DirectByteArrayCopier.regions = new int[var4];
-			SecureRandomFuture.regionMapArchiveIds = new int[var4];
-			WorldMapRectangle.regionLandArchiveIds = new int[var4];
-			class13.regionLandArchives = new byte[var4][];
-			class80.regionMapArchives = new byte[var4][];
-			boolean var16 = false;
-			if ((var3 / 8 == 48 || var3 / 8 == 49) && var2 / 8 == 48) {
-				var16 = true;
-			}
-
-			if (var3 / 8 == 48 && var2 / 8 == 148) {
-				var16 = true;
-			}
-
-			var4 = 0;
-
-			for (var6 = (var3 - 6) / 8; var6 <= (var3 + 6) / 8; ++var6) {
-				for (var7 = (var2 - 6) / 8; var7 <= (var2 + 6) / 8; ++var7) {
-					var8 = var7 + (var6 << 8);
-					if (!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
-						DirectByteArrayCopier.regions[var4] = var8;
-						SecureRandomFuture.regionMapArchiveIds[var4] = WorldMapCacheName.archive5.getGroupId("m" + var6 + "_" + var7);
-						WorldMapRectangle.regionLandArchiveIds[var4] = WorldMapCacheName.archive5.getGroupId("l" + var6 + "_" + var7);
-						++var4;
-					}
-				}
-			}
-
-			UserComparator8.method3399(var3, var2, true);
+	static int method1060(int var0, int var1) {
+		FloorOverlayDefinition var3 = (FloorOverlayDefinition)FloorOverlayDefinition.FloorOverlayDefinition_cached.get((long)var0);
+		FloorOverlayDefinition var2;
+		if (var3 != null) {
+			var2 = var3;
 		} else {
-			var2 = var1.method5518();
-			var3 = var1.method5534();
-			boolean var15 = var1.readUnsignedByte() == 1;
-			var5 = var1.readUnsignedShort();
-			var1.importIndex();
-
-			int var9;
-			for (var6 = 0; var6 < 4; ++var6) {
-				for (var7 = 0; var7 < 13; ++var7) {
-					for (var8 = 0; var8 < 13; ++var8) {
-						var9 = var1.readBits(1);
-						if (var9 == 1) {
-							Client.instanceChunkTemplates[var6][var7][var8] = var1.readBits(26);
-						} else {
-							Client.instanceChunkTemplates[var6][var7][var8] = -1;
-						}
-					}
-				}
+			byte[] var4 = FloorOverlayDefinition.FloorOverlayDefinition_archive.takeFile(4, var0);
+			var3 = new FloorOverlayDefinition();
+			if (var4 != null) {
+				var3.decode(new Buffer(var4), var0);
 			}
 
-			var1.exportIndex();
-			WorldMapRegion.xteaKeys = new int[var5][4];
-
-			for (var6 = 0; var6 < var5; ++var6) {
-				for (var7 = 0; var7 < 4; ++var7) {
-					WorldMapRegion.xteaKeys[var6][var7] = var1.readInt();
-				}
-			}
-
-			DirectByteArrayCopier.regions = new int[var5];
-			SecureRandomFuture.regionMapArchiveIds = new int[var5];
-			WorldMapRectangle.regionLandArchiveIds = new int[var5];
-			class13.regionLandArchives = new byte[var5][];
-			class80.regionMapArchives = new byte[var5][];
-			var5 = 0;
-
-			for (var6 = 0; var6 < 4; ++var6) {
-				for (var7 = 0; var7 < 13; ++var7) {
-					for (var8 = 0; var8 < 13; ++var8) {
-						var9 = Client.instanceChunkTemplates[var6][var7][var8];
-						if (var9 != -1) {
-							int var10 = var9 >> 14 & 1023;
-							int var11 = var9 >> 3 & 2047;
-							int var12 = (var10 / 8 << 8) + var11 / 8;
-
-							int var13;
-							for (var13 = 0; var13 < var5; ++var13) {
-								if (DirectByteArrayCopier.regions[var13] == var12) {
-									var12 = -1;
-									break;
-								}
-							}
-
-							if (var12 != -1) {
-								DirectByteArrayCopier.regions[var5] = var12;
-								var13 = var12 >> 8 & 255;
-								int var14 = var12 & 255;
-								SecureRandomFuture.regionMapArchiveIds[var5] = WorldMapCacheName.archive5.getGroupId("m" + var13 + "_" + var14);
-								WorldMapRectangle.regionLandArchiveIds[var5] = WorldMapCacheName.archive5.getGroupId("l" + var13 + "_" + var14);
-								++var5;
-							}
-						}
-					}
-				}
-			}
-
-			UserComparator8.method3399(var3, var2, !var15);
+			var3.postDecode();
+			FloorOverlayDefinition.FloorOverlayDefinition_cached.put(var3, (long)var0);
+			var2 = var3;
 		}
 
+		if (var2 == null) {
+			return var1;
+		} else if (var2.secondaryRgb >= 0) {
+			return var2.secondaryRgb | -16777216;
+		} else {
+			int var5;
+			byte var6;
+			int var8;
+			int var9;
+			if (var2.texture >= 0) {
+				var5 = Rasterizer3D.Rasterizer3D_textureLoader.getAverageTextureRGB(var2.texture);
+				var6 = 96;
+				if (var5 == -2) {
+					var8 = 12345678;
+				} else if (var5 == -1) {
+					if (var6 < 0) {
+						var6 = 0;
+					} else if (var6 > 127) {
+						var6 = 127;
+					}
+
+					var9 = 127 - var6;
+					var8 = var9;
+				} else {
+					var9 = var6 * (var5 & 127) / 128;
+					if (var9 < 2) {
+						var9 = 2;
+					} else if (var9 > 126) {
+						var9 = 126;
+					}
+
+					var8 = var9 + (var5 & 65408);
+				}
+
+				return Rasterizer3D.Rasterizer3D_colorPalette[var8] | -16777216;
+			} else if (var2.primaryRgb == 16711935) {
+				return var1;
+			} else {
+				var8 = WorldMapIcon_0.WorldMap_hslToRgb(var2.hue, var2.saturation, var2.lightness);
+				var6 = 96;
+				if (var8 == -2) {
+					var5 = 12345678;
+				} else if (var8 == -1) {
+					if (var6 < 0) {
+						var6 = 0;
+					} else if (var6 > 127) {
+						var6 = 127;
+					}
+
+					var9 = 127 - var6;
+					var5 = var9;
+				} else {
+					var9 = var6 * (var8 & 127) / 128;
+					if (var9 < 2) {
+						var9 = 2;
+					} else if (var9 > 126) {
+						var9 = 126;
+					}
+
+					var5 = var9 + (var8 & 65408);
+				}
+
+				return Rasterizer3D.Rasterizer3D_colorPalette[var5] | -16777216;
+			}
+		}
+	}
+
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "(Lhz;B)V",
+		garbageValue = "-34"
+	)
+	@Export("VarpDefinition_setArchives")
+	public static void VarpDefinition_setArchives(AbstractArchive var0) {
+		VarpDefinition.VarpDefinition_archive = var0;
+		VarpDefinition.VarpDefinition_fileCount = VarpDefinition.VarpDefinition_archive.getGroupFileCount(16);
+	}
+
+	@ObfuscatedName("fe")
+	@ObfuscatedSignature(
+		signature = "(Lbu;I)V",
+		garbageValue = "-1027985377"
+	)
+	static final void method1075(Actor var0) {
+		int var1 = var0.field941 - Client.cycle;
+		int var2 = var0.field960 * 128 + var0.size * -178253824;
+		int var3 = var0.field954 * 128 + var0.size * -178253824;
+		var0.x += (var2 - var0.x) / var1;
+		var0.y += (var3 - var0.y) / var1;
+		var0.field976 = 0;
+		var0.orientation = var0.field966;
+	}
+
+	@ObfuscatedName("ke")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "-63"
+	)
+	@Export("Clan_leaveChat")
+	static final void Clan_leaveChat() {
+		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2263, Client.packetWriter.isaacCipher);
+		var0.packetBuffer.writeByte(0);
+		Client.packetWriter.addNode(var0);
+	}
+
+	@ObfuscatedName("ki")
+	@ObfuscatedSignature(
+		signature = "([BII)V",
+		garbageValue = "912146837"
+	)
+	static void method1088(byte[] var0, int var1) {
+		if (Client.randomDatData == null) {
+			Client.randomDatData = new byte[24];
+		}
+
+		class300.writeRandomDat(var0, var1, Client.randomDatData, 0, 24);
 	}
 }

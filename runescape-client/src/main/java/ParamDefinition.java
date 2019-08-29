@@ -1,43 +1,38 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ie")
+@ObfuscatedName("is")
 @Implements("ParamDefinition")
 public class ParamDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("pk")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lls;"
 	)
-	@Export("ParamDefinition_archive")
-	static AbstractArchive ParamDefinition_archive;
-	@ObfuscatedName("w")
+	@Export("sceneMinimapSprite")
+	static Sprite sceneMinimapSprite;
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("ParamDefinition_cached")
 	static EvictingDualNodeHashTable ParamDefinition_cached;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = 1398808155
-	)
-	@Export("canvasHeight")
-	public static int canvasHeight;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("type")
 	char type;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -956924169
+		intValue = -1184264069
 	)
 	@Export("defaultInt")
 	public int defaultInt;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@Export("defaultStr")
 	public String defaultStr;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@Export("autoDisable")
 	boolean autoDisable;
 
@@ -49,19 +44,19 @@ public class ParamDefinition extends DualNode {
 		this.autoDisable = true;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-67"
+		signature = "(I)V",
+		garbageValue = "-549748029"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkf;B)V",
-		garbageValue = "-1"
+		signature = "(Lky;I)V",
+		garbageValue = "207270503"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -77,8 +72,8 @@ public class ParamDefinition extends DualNode {
 
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "506424646"
+		signature = "(Lky;II)V",
+		garbageValue = "1082151718"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -90,7 +85,7 @@ public class ParamDefinition extends DualNode {
 			}
 
 			if (var5 >= 128 && var5 < 160) {
-				char var6 = class288.cp1252AsciiExtension[var5 - 128];
+				char var6 = class287.cp1252AsciiExtension[var5 - 128];
 				if (var6 == 0) {
 					var6 = '?';
 				}
@@ -110,35 +105,57 @@ public class ParamDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "715128499"
+		signature = "(B)Z",
+		garbageValue = "38"
 	)
 	@Export("isString")
 	public boolean isString() {
 		return this.type == 's';
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(II)Lin;",
-		garbageValue = "1544024361"
+		signature = "(Ljava/awt/Component;S)V",
+		garbageValue = "-10016"
 	)
-	@Export("StructDefinition_getStructDefinition")
-	public static StructDefinition StructDefinition_getStructDefinition(int var0) {
-		StructDefinition var1 = (StructDefinition)StructDefinition.StructDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		}
-		byte[] var2 = StructDefinition.StructDefinition_archive.takeFile(34, var0);
-		var1 = new StructDefinition();
-		if (var2 != null) {
-			var1.decode(new Buffer(var2));
+	static void method4420(Component var0) {
+		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
+		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
+		KeyHandler.field378 = -1;
+	}
+
+	@ObfuscatedName("ja")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1970542013"
+	)
+	static final void method4424() {
+		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2205, Client.packetWriter.isaacCipher);
+		Client.packetWriter.addNode(var0);
+
+		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
+			if (var1.type == 0 || var1.type == 3) {
+				VarpDefinition.closeInterface(var1, true);
+			}
 		}
 
-		var1.postDecode();
-		StructDefinition.StructDefinition_cached.put(var1, (long)var0);
-		return var1;
+		if (Client.meslayerContinueWidget != null) {
+			FriendSystem.invalidateWidget(Client.meslayerContinueWidget);
+			Client.meslayerContinueWidget = null;
+		}
+
+	}
+
+	@ObfuscatedName("kx")
+	@ObfuscatedSignature(
+		signature = "(Lhp;B)I",
+		garbageValue = "-97"
+	)
+	@Export("getWidgetClickMask")
+	static int getWidgetClickMask(Widget var0) {
+		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
+		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

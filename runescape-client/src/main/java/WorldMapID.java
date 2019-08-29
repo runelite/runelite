@@ -3,292 +3,94 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("aj")
 @Implements("WorldMapID")
 public class WorldMapID {
-	@ObfuscatedName("rx")
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "Laj;"
+	)
+	static final WorldMapID field260;
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "Laj;"
+	)
+	static final WorldMapID field257;
+	@ObfuscatedName("aw")
+	@Export("client")
+	@ObfuscatedSignature(
+		signature = "Lclient;"
+	)
+	static Client client;
+	@ObfuscatedName("di")
+	@ObfuscatedSignature(
+		signature = "Lid;"
+	)
+	@Export("archive13")
+	static Archive archive13;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1345253721
-	)
-	static int field268;
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "Lag;"
-	)
-	static final WorldMapID field272;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Lag;"
-	)
-	static final WorldMapID field269;
-	@ObfuscatedName("bc")
-	@ObfuscatedSignature(
-		signature = "[Lly;"
-	)
-	@Export("worldSelectBackSprites")
-	static Sprite[] worldSelectBackSprites;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = -976208545
+		intValue = -2063866403
 	)
 	@Export("value")
 	final int value;
 
 	static {
-		field272 = new WorldMapID(0);
-		field269 = new WorldMapID(1);
+		field260 = new WorldMapID(0);
+		field257 = new WorldMapID(1);
 	}
 
 	WorldMapID(int var1) {
 		this.value = var1;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;B)V",
-		garbageValue = "-37"
+		signature = "(Lhz;IIB)[Lls;",
+		garbageValue = "32"
 	)
-	@Export("FriendSystem_cantIgnoreFriendMes")
-	static final void FriendSystem_cantIgnoreFriendMes(String var0) {
-		StringBuilder var10000 = new StringBuilder();
-		Object var10001 = null;
-		var10000 = var10000.append("Please remove ").append(var0);
-		var10001 = null;
-		String var1 = var10000.append(" from your friend list first").toString();
-		ScriptEvent.addGameMessage(30, "", var1);
+	@Export("SpriteBuffer_getSpriteArray")
+	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
+		return !World.SpriteBuffer_bufferFile(var0, var1, var2) ? null : GameShell.method897();
 	}
 
-	@ObfuscatedName("as")
+	@ObfuscatedName("ic")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "-216787124"
+		signature = "(S)V",
+		garbageValue = "-6260"
 	)
-	static int method540(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.CLIENTCLOCK) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.cycle;
-			return 1;
-		}
-		int var3;
-		int var4;
-		if (var0 == ScriptOpcodes.INV_GETOBJ) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = AbstractWorldMapData.method274(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INV_GETNUM) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.ItemContainer_getCount(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INV_TOTAL) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = BufferedFile.method6528(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INV_SIZE) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = NetSocket.getInvDefinition(var3).size;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.STAT) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.currentLevels[var3];
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.STAT_BASE) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.levels[var3];
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.STAT_XP) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.experience[var3];
-			return 1;
-		}
-		int var5;
-		if (var0 == ScriptOpcodes.COORD) {
-			var3 = class42.plane;
-			var4 = MusicPatchNode2.baseX * 64 + (Client.localPlayer.x >> 7);
-			var5 = class1.baseY * 64 + (Client.localPlayer.y >> 7);
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.COORDX) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 >> 14 & 16383;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.COORDZ) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 >> 28;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.COORDY) {
-			var3 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3 & 16383;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.MAP_MEMBERS) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.isMembersWorld ? 1 : 0;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INVOTHER_GETOBJ) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize] + 32768;
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = AbstractWorldMapData.method274(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INVOTHER_GETNUM) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize] + 32768;
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = class2.ItemContainer_getCount(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.INVOTHER_TOTAL) {
-			HealthBarUpdate.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize] + 32768;
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = BufferedFile.method6528(var3, var4);
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.STAFFMODLEVEL) {
-			if (Client.staffModLevel >= 2) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.staffModLevel;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-			}
+	static final void method537() {
+		boolean var0 = false;
 
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.REBOOTTIMER) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.rebootTimer;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.MAP_WORLD) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.worldId;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.RUNENERGY_VISIBLE) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.runEnergy;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.RUNWEIGHT_VISIBLE) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.weight;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.PLAYERMOD) {
-			if (Client.playerMod) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-			}
+		while (!var0) {
+			var0 = true;
 
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.WORLDFLAGS) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.worldProperties;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.MOVECOORD) {
-			HealthBarUpdate.Interpreter_intStackSize -= 4;
-			var3 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 1];
-			var5 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 2];
-			int var6 = Interpreter.Interpreter_intStack[HealthBarUpdate.Interpreter_intStackSize + 3];
-			var3 += var4 << 14;
-			var3 += var5 << 28;
-			var3 += var6;
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3;
-			return 1;
-		}
-		return 2;
-	}
-
-	@ObfuscatedName("ek")
-	@ObfuscatedSignature(
-		signature = "(I)Llw;",
-		garbageValue = "-1838562089"
-	)
-	@Export("getWorldMap")
-	static WorldMap getWorldMap() {
-		return BoundaryObject.worldMap;
-	}
-
-	@ObfuscatedName("hx")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-456020317"
-	)
-	@Export("Widget_runOnTargetLeave")
-	static void Widget_runOnTargetLeave() {
-		if (!Client.isSpellSelected) {
-			return;
-		}
-		Widget var0 = Client.getWidgetChild(WorldMapEvent.field359, Client.field848);
-		if (var0 != null && var0.onTargetLeave != null) {
-			ScriptEvent var1 = new ScriptEvent();
-			var1.widget = var0;
-			var1.args = var0.onTargetLeave;
-			LoginPacket.runScriptEvent(var1);
-		}
-
-		Client.isSpellSelected = false;
-		Strings.invalidateWidget(var0);
-	}
-
-	@ObfuscatedName("ix")
-	@ObfuscatedSignature(
-		signature = "([Lhj;IS)V",
-		garbageValue = "28886"
-	)
-	@Export("runComponentCloseListeners")
-	static final void runComponentCloseListeners(Widget[] var0, int var1) {
-		for (int var2 = 0; var2 < var0.length; ++var2) {
-			Widget var3 = var0[var2];
-			if (var3 == null) {
-				continue;
-			}
-			if (var3.type == 0) {
-				if (var3.children != null) {
-					runComponentCloseListeners(var3.children, var1);
+			for (int var1 = 0; var1 < Client.menuOptionsCount - 1; ++var1) {
+				if (Client.menuOpcodes[var1] < 1000 && Client.menuOpcodes[var1 + 1] > 1000) {
+					String var2 = Client.menuTargets[var1];
+					Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+					Client.menuTargets[var1 + 1] = var2;
+					String var3 = Client.menuActions[var1];
+					Client.menuActions[var1] = Client.menuActions[var1 + 1];
+					Client.menuActions[var1 + 1] = var3;
+					int var4 = Client.menuOpcodes[var1];
+					Client.menuOpcodes[var1] = Client.menuOpcodes[var1 + 1];
+					Client.menuOpcodes[var1 + 1] = var4;
+					var4 = Client.menuArguments1[var1];
+					Client.menuArguments1[var1] = Client.menuArguments1[var1 + 1];
+					Client.menuArguments1[var1 + 1] = var4;
+					var4 = Client.menuArguments2[var1];
+					Client.menuArguments2[var1] = Client.menuArguments2[var1 + 1];
+					Client.menuArguments2[var1 + 1] = var4;
+					var4 = Client.menuIdentifiers[var1];
+					Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+					Client.menuIdentifiers[var1 + 1] = var4;
+					boolean var5 = Client.menuShiftClick[var1];
+					Client.menuShiftClick[var1] = Client.menuShiftClick[var1 + 1];
+					Client.menuShiftClick[var1 + 1] = var5;
+					var0 = false;
 				}
-
-				InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
-				if (var4 != null) {
-					WorldMapLabelSize.runIntfCloseListeners(var4.group, var1);
-				}
-			}
-
-			ScriptEvent var5;
-			if (var1 == 0 && var3.onDialogAbort != null) {
-				var5 = new ScriptEvent();
-				var5.widget = var3;
-				var5.args = var3.onDialogAbort;
-				LoginPacket.runScriptEvent(var5);
-			}
-
-			if (var1 == 1 && var3.onSubChange != null) {
-				if (var3.childIndex >= 0) {
-					Widget var6 = class80.getWidget(var3.id);
-					if (var6 == null || var6.children == null || var3.childIndex >= var6.children.length || var3 != var6.children[var3.childIndex]) {
-						continue;
-					}
-				}
-
-				var5 = new ScriptEvent();
-				var5.widget = var3;
-				var5.args = var3.onSubChange;
-				LoginPacket.runScriptEvent(var5);
 			}
 		}
 

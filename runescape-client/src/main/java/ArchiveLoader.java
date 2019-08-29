@@ -3,38 +3,37 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("bh")
 @Implements("ArchiveLoader")
 public class ArchiveLoader {
-	@ObfuscatedName("rz")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "Lbf;"
+		signature = "Lkb;"
 	)
-	@Export("friendSystem")
-	public static FriendSystem friendSystem;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Liu;"
-	)
-	@Export("archive")
-	final Archive archive;
-	@ObfuscatedName("e")
+	@Export("ItemDefinition_fontPlain11")
+	static Font ItemDefinition_fontPlain11;
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -637612403
+		intValue = -1407926591
 	)
 	@Export("groupCount")
 	final int groupCount;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Lid;"
+	)
+	@Export("archive")
+	final Archive archive;
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1413706037
+		intValue = 2082038361
 	)
 	@Export("loadedCount")
 	int loadedCount;
 
 	@ObfuscatedSignature(
-		signature = "(Liu;Ljava/lang/String;)V"
+		signature = "(Lid;Ljava/lang/String;)V"
 	)
 	ArchiveLoader(Archive var1, String var2) {
 		this.loadedCount = 0;
@@ -42,17 +41,17 @@ public class ArchiveLoader {
 		this.groupCount = var1.getGroupCount();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-30"
+		signature = "(I)Z",
+		garbageValue = "273857318"
 	)
 	@Export("isLoaded")
 	boolean isLoaded() {
 		this.loadedCount = 0;
 
 		for (int var1 = 0; var1 < this.groupCount; ++var1) {
-			if (!this.archive.method4268(var1) || this.archive.method4267(var1)) {
+			if (!this.archive.method4199(var1) || this.archive.method4185(var1)) {
 				++this.loadedCount;
 			}
 		}
@@ -60,205 +59,53 @@ public class ArchiveLoader {
 		return this.loadedCount >= this.groupCount;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;Lhp;Lga;B)Z",
-		garbageValue = "14"
+		signature = "(II)Lcr;",
+		garbageValue = "-332369983"
 	)
-	@Export("setAudioArchives")
-	public static boolean setAudioArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, MidiPcmStream var3) {
-		class197.musicPatchesArchive = var0;
-		class197.musicSamplesArchive = var1;
-		class197.soundEffectsArchive = var2;
-		Interpreter.midiPcmStream = var3;
-		return true;
+	@Export("getScript")
+	static Script getScript(int var0) {
+		Script var1 = (Script)Script.Script_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = GameShell.archive12.takeFile(var0, 0);
+			if (var2 == null) {
+				return null;
+			} else {
+				var1 = DesktopPlatformInfoProvider.newScript(var2);
+				Script.Script_cached.put(var1, (long)var0);
+				return var1;
+			}
+		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILcx;ZB)I",
-		garbageValue = "65"
+		signature = "(B)V",
+		garbageValue = "114"
 	)
-	static int method1100(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-		} else {
-			var3 = var2 ? Interpreter.field1111 : Calendar.field2507;
-		}
-
-		if (var0 == ScriptOpcodes.CC_CALLONRESIZE) {
-			if (Interpreter.field1106 >= 10) {
-				throw new RuntimeException();
-			}
-			if (var3.onResize == null) {
-				return 0;
-			}
-			ScriptEvent var4 = new ScriptEvent();
-			var4.widget = var3;
-			var4.args = var3.onResize;
-			var4.field583 = Interpreter.field1106 + 1;
-			Client.scriptEvents.addFirst(var4);
-			return 1;
-		}
-		return 2;
+	@Export("NpcDefinition_clearCached")
+	public static void NpcDefinition_clearCached() {
+		NPCDefinition.NpcDefinition_cached.clear();
+		NPCDefinition.NpcDefinition_cachedModels.clear();
 	}
 
-	@ObfuscatedName("jk")
+	@ObfuscatedName("gh")
 	@ObfuscatedSignature(
-		signature = "(Lhj;I)Lhj;",
-		garbageValue = "1227786783"
+		signature = "(III)I",
+		garbageValue = "1464962568"
 	)
-	static Widget method1099(Widget var0) {
-		Widget var2 = var0;
-		int var3 = class32.method545(class268.getWidgetClickMask(var0));
-		Widget var1;
-		if (var3 == 0) {
-			var1 = null;
-		} else {
-			for (int var4 = 0; var4 < var3; var4++) {
-				var2 = class80.getWidget(var2.parentId);
-				if (var2 == null) {
-					break;
-				}
-			}
-
-			var1 = var2;
+	static int method1100(int var0, int var1) {
+		int var2 = var1 - 334;
+		if (var2 < 0) {
+			var2 = 0;
+		} else if (var2 > 100) {
+			var2 = 100;
 		}
 
-		Widget var5 = var1;
-		if (var1 == null) {
-			var5 = var0.parent;
-		}
-
-		return var5;
-	}
-
-	@ObfuscatedName("ja")
-	@ObfuscatedSignature(
-		signature = "(Lhj;IIIB)V",
-		garbageValue = "94"
-	)
-	@Export("drawMinimap")
-	static final void drawMinimap(Widget var0, int var1, int var2, int var3) {
-		class186.playPcmPlayers();
-		SpriteMask var4 = var0.getSpriteMask(false);
-		if (var4 == null) {
-			return;
-		}
-		Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);
-		if (Client.minimapState == 2 || Client.minimapState == 5) {
-			Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
-		} else {
-			int var5 = Client.camAngleY & 2047;
-			int var6 = Client.localPlayer.x / 32 + 48;
-			int var7 = 464 - Client.localPlayer.y / 32;
-			RouteStrategy.sceneMinimapSprite.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
-
-			int var8;
-			int var9;
-			int var10;
-			for (var8 = 0; var8 < Client.mapIconCount; ++var8) {
-				var9 = Client.mapIconXs[var8] * 4 + 2 - Client.localPlayer.x / 32;
-				var10 = Client.mapIconYs[var8] * 4 + 2 - Client.localPlayer.y / 32;
-				Interpreter.drawSpriteOnMinimap(var1, var2, var9, var10, Client.mapIcons[var8], var4);
-			}
-
-			int var11;
-			int var12;
-			for (var8 = 0; var8 < 104; ++var8) {
-				for (var9 = 0; var9 < 104; ++var9) {
-					NodeDeque var15 = Client.groundItems[class42.plane][var8][var9];
-					if (var15 == null) {
-						continue;
-					}
-					var11 = var8 * 4 + 2 - Client.localPlayer.x / 32;
-					var12 = var9 * 4 + 2 - Client.localPlayer.y / 32;
-					Interpreter.drawSpriteOnMinimap(var1, var2, var11, var12, Skills.mapDotSprites[0], var4);
-				}
-			}
-
-			for (var8 = 0; var8 < Client.npcCount; ++var8) {
-				NPC var16 = Client.npcs[Client.npcIndices[var8]];
-				if (var16 == null || !var16.isVisible()) {
-					continue;
-				}
-				NPCDefinition var18 = var16.definition;
-				if (var18 != null && var18.transforms != null) {
-					var18 = var18.transform();
-				}
-
-				if (var18 != null && var18.drawMapDot && var18.isInteractable) {
-					var11 = var16.x / 32 - Client.localPlayer.x / 32;
-					var12 = var16.y / 32 - Client.localPlayer.y / 32;
-					Interpreter.drawSpriteOnMinimap(var1, var2, var11, var12, Skills.mapDotSprites[1], var4);
-				}
-			}
-
-			var8 = Players.Players_count;
-			int[] var19 = Players.Players_indices;
-
-			for (var10 = 0; var10 < var8; ++var10) {
-				Player var17 = Client.players[var19[var10]];
-				if (var17 == null || !var17.isVisible() || var17.isHidden || var17 == Client.localPlayer) {
-					continue;
-				}
-				var12 = var17.x / 32 - Client.localPlayer.x / 32;
-				int var13 = var17.y / 32 - Client.localPlayer.y / 32;
-				boolean var14 = false;
-				if (Client.localPlayer.team != 0 && var17.team != 0 && var17.team == Client.localPlayer.team) {
-					var14 = true;
-				}
-
-				if (var17.isFriend()) {
-					Interpreter.drawSpriteOnMinimap(var1, var2, var12, var13, Skills.mapDotSprites[3], var4);
-				} else if (var14) {
-					Interpreter.drawSpriteOnMinimap(var1, var2, var12, var13, Skills.mapDotSprites[4], var4);
-				} else if (var17.isClanMember()) {
-					Interpreter.drawSpriteOnMinimap(var1, var2, var12, var13, Skills.mapDotSprites[5], var4);
-				} else {
-					Interpreter.drawSpriteOnMinimap(var1, var2, var12, var13, Skills.mapDotSprites[2], var4);
-				}
-			}
-
-			if (Client.hintArrowType != 0 && Client.cycle % 20 < 10) {
-				if (Client.hintArrowType == 1 && Client.hintArrowNpcIndex >= 0 && Client.hintArrowNpcIndex < Client.npcs.length) {
-					NPC var20 = Client.npcs[Client.hintArrowNpcIndex];
-					if (var20 != null) {
-						var11 = var20.x / 32 - Client.localPlayer.x / 32;
-						var12 = var20.y / 32 - Client.localPlayer.y / 32;
-						Canvas.worldToMinimap(var1, var2, var11, var12, WorldMapData_1.mapMarkerSprites[1], var4);
-					}
-				}
-
-				if (Client.hintArrowType == 2) {
-					var10 = Client.hintArrowX * 4 - MusicPatchNode2.baseX * 256 + 2 - Client.localPlayer.x / 32;
-					var11 = Client.hintArrowY * 4 - class1.baseY * 256 + 2 - Client.localPlayer.y / 32;
-					Canvas.worldToMinimap(var1, var2, var10, var11, WorldMapData_1.mapMarkerSprites[1], var4);
-				}
-
-				if (Client.hintArrowType == 10 && Client.hintArrowPlayerIndex >= 0 && Client.hintArrowPlayerIndex < Client.players.length) {
-					Player var21 = Client.players[Client.hintArrowPlayerIndex];
-					if (var21 != null) {
-						var11 = var21.x / 32 - Client.localPlayer.x / 32;
-						var12 = var21.y / 32 - Client.localPlayer.y / 32;
-						Canvas.worldToMinimap(var1, var2, var11, var12, WorldMapData_1.mapMarkerSprites[1], var4);
-					}
-				}
-			}
-
-			if (Client.destinationX != 0) {
-				var10 = Client.destinationX * 4 + 2 - Client.localPlayer.x / 32;
-				var11 = Client.destinationY * 4 + 2 - Client.localPlayer.y / 32;
-				Interpreter.drawSpriteOnMinimap(var1, var2, var10, var11, WorldMapData_1.mapMarkerSprites[0], var4);
-			}
-
-			if (!Client.localPlayer.isHidden) {
-				Rasterizer2D.Rasterizer2D_fillRectangle(var4.width / 2 + var1 - 1, var4.height / 2 + var2 - 1, 3, 3, 0xffffff);
-			}
-		}
-
-		Client.field861[var3] = true;
+		int var3 = (Client.zoomWidth - Client.zoomHeight) * var2 / 100 + Client.zoomHeight;
+		return var0 * var3 / 256;
 	}
 }

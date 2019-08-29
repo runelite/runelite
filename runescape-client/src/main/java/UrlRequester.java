@@ -3,25 +3,26 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("eg")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
 	@ObfuscatedName("q")
+	@Export("ItemDefinition_inMembersWorld")
+	public static boolean ItemDefinition_inMembersWorld;
+	@ObfuscatedName("s")
 	@Export("thread")
 	final Thread thread;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@Export("isClosed")
 	volatile boolean isClosed;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("requests")
 	Queue requests;
 
@@ -32,10 +33,10 @@ public class UrlRequester implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/URL;B)Lex;",
-		garbageValue = "78"
+		signature = "(Ljava/net/URL;I)Ler;",
+		garbageValue = "-2144304938"
 	)
 	@Export("request")
 	public UrlRequest request(URL var1) {
@@ -47,10 +48,10 @@ public class UrlRequester implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "78"
+		signature = "(I)V",
+		garbageValue = "-1101438490"
 	)
 	@Export("close")
 	public void close() {
@@ -113,7 +114,7 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				HitSplatDefinition.RunException_sendStackTrace((String)null, var17);
+				class3.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 
@@ -121,58 +122,33 @@ public class UrlRequester implements Runnable {
 
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1670821408"
+		signature = "(IB)V",
+		garbageValue = "-75"
 	)
-	@Export("getChatMessagesAsString")
-	static String getChatMessagesAsString() {
-		String var0 = "";
+	public static void method3250(int var0) {
+		if (var0 != -1) {
+			if (WorldMapDecoration.Widget_loadedInterfaces[var0]) {
+				Widget.Widget_archive.clearFilesGroup(var0);
+				if (Widget.Widget_interfaceComponents[var0] != null) {
+					boolean var1 = true;
 
-		Message var2;
-		for (Iterator var1 = Messages.Messages_hashTable.iterator(); var1.hasNext(); var0 = var0 + var2.sender + ':' + var2.text + '\n') {
-			var2 = (Message)var1.next();
-		}
+					for (int var2 = 0; var2 < Widget.Widget_interfaceComponents[var0].length; ++var2) {
+						if (Widget.Widget_interfaceComponents[var0][var2] != null) {
+							if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
+								Widget.Widget_interfaceComponents[var0][var2] = null;
+							} else {
+								var1 = false;
+							}
+						}
+					}
 
-		return var0;
-	}
+					if (var1) {
+						Widget.Widget_interfaceComponents[var0] = null;
+					}
 
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "337474973"
-	)
-	static int method3306(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
-			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
-			var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
+					WorldMapDecoration.Widget_loadedInterfaces[var0] = false;
+				}
 			}
-
-			return 1;
 		}
-		if (var0 == ScriptOpcodes.IF_HASSUB) {
-			int var5 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var5);
-			if (var4 != null) {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 1;
-			} else {
-				Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.IF_GETTOP) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = Client.rootInterface;
-			return 1;
-		}
-		return 2;
 	}
 }

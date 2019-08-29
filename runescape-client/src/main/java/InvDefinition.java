@@ -4,29 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("iz")
 @Implements("InvDefinition")
 public class InvDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("InvDefinition_archive")
 	static AbstractArchive InvDefinition_archive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("InvDefinition_cached")
 	static EvictingDualNodeHashTable InvDefinition_cached;
-	@ObfuscatedName("bs")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1665309649
-	)
-	static int field3199;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 2126077973
+		intValue = -1030135997
 	)
 	@Export("size")
 	public int size;
@@ -39,10 +34,10 @@ public class InvDefinition extends DualNode {
 		this.size = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-1922259569"
+		signature = "(Lky;I)V",
+		garbageValue = "1381455080"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -56,15 +51,43 @@ public class InvDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "-745252030"
+		signature = "(Lky;II)V",
+		garbageValue = "1993704887"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.size = var1.readUnsignedShort();
+		}
+
+	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1920949744"
+	)
+	@Export("HealthBarDefinition_clearCached")
+	public static void HealthBarDefinition_clearCached() {
+		HealthBarDefinition.HealthBarDefinition_cached.clear();
+		HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
+	}
+
+	@ObfuscatedName("gx")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "797834957"
+	)
+	static void method4273() {
+		int var0 = Players.Players_count;
+		int[] var1 = Players.Players_indices;
+
+		for (int var2 = 0; var2 < var0; ++var2) {
+			if (var1[var2] != Client.combatTargetPlayerIndex && var1[var2] != Client.localPlayerIndex) {
+				class80.addPlayerToScene(Client.players[var1[var2]], true);
+			}
 		}
 
 	}

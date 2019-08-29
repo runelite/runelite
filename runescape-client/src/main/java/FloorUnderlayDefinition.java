@@ -3,50 +3,49 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ie")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("FloorUnderlayDefinition_archive")
-	public static AbstractArchive FloorUnderlayDefinition_archive;
-	@ObfuscatedName("w")
+	static AbstractArchive FloorUnderlayDefinition_archive;
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("FloorUnderlayDefinition_cached")
 	public static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -361069037
+		intValue = 1690185973
 	)
 	@Export("rgb")
 	int rgb;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1680352847
+		intValue = -1561731435
 	)
 	@Export("hue")
 	public int hue;
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1411467289
+		intValue = 56370407
 	)
 	@Export("saturation")
 	public int saturation;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 223485885
+		intValue = -1143874615
 	)
 	@Export("lightness")
 	public int lightness;
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -907654805
+		intValue = -780904451
 	)
 	@Export("hueMultiplier")
 	public int hueMultiplier;
@@ -55,27 +54,27 @@ public class FloorUnderlayDefinition extends DualNode {
 		FloorUnderlayDefinition_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	public FloorUnderlayDefinition() {
+	FloorUnderlayDefinition() {
 		this.rgb = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-165448710"
+		signature = "(B)V",
+		garbageValue = "38"
 	)
 	@Export("postDecode")
-	public void postDecode() {
+	void postDecode() {
 		this.setHsl(this.rgb);
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "1618503924"
+		signature = "(Lky;IB)V",
+		garbageValue = "118"
 	)
 	@Export("decode")
-	public void decode(Buffer var1, int var2) {
+	void decode(Buffer var1, int var2) {
 		while (true) {
 			int var3 = var1.readUnsignedByte();
 			if (var3 == 0) {
@@ -86,10 +85,10 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lkf;IIB)V",
-		garbageValue = "115"
+		signature = "(Lky;III)V",
+		garbageValue = "2131813988"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2, int var3) {
@@ -99,10 +98,10 @@ public class FloorUnderlayDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-1792138465"
+		garbageValue = "-28210148"
 	)
 	@Export("setHsl")
 	void setHsl(int var1) {
@@ -129,28 +128,28 @@ public class FloorUnderlayDefinition extends DualNode {
 
 		double var12 = 0.0D;
 		double var14 = 0.0D;
-		double var16 = (var8 + var10) / 2.0D;
+		double var16 = (var10 + var8) / 2.0D;
 		if (var10 != var8) {
 			if (var16 < 0.5D) {
-				var14 = (var10 - var8) / (var10 + var8);
+				var14 = (var10 - var8) / (var8 + var10);
 			}
 
 			if (var16 >= 0.5D) {
 				var14 = (var10 - var8) / (2.0D - var10 - var8);
 			}
 
-			if (var2 == var10) {
+			if (var10 == var2) {
 				var12 = (var4 - var6) / (var10 - var8);
 			} else if (var10 == var4) {
-				var12 = (var6 - var2) / (var10 - var8) + 2.0D;
+				var12 = 2.0D + (var6 - var2) / (var10 - var8);
 			} else if (var10 == var6) {
-				var12 = (var2 - var4) / (var10 - var8) + 4.0D;
+				var12 = 4.0D + (var2 - var4) / (var10 - var8);
 			}
 		}
 
 		var12 /= 6.0D;
 		this.saturation = (int)(256.0D * var14);
-		this.lightness = (int)(var16 * 256.0D);
+		this.lightness = (int)(256.0D * var16);
 		if (this.saturation < 0) {
 			this.saturation = 0;
 		} else if (this.saturation > 255) {
@@ -164,9 +163,9 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 
 		if (var16 > 0.5D) {
-			this.hueMultiplier = (int)((1.0D - var16) * var14 * 512.0D);
+			this.hueMultiplier = (int)(512.0D * var14 * (1.0D - var16));
 		} else {
-			this.hueMultiplier = (int)(var14 * var16 * 512.0D);
+			this.hueMultiplier = (int)(var16 * var14 * 512.0D);
 		}
 
 		if (this.hueMultiplier < 1) {
@@ -174,39 +173,5 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 
 		this.hue = (int)(var12 * (double)this.hueMultiplier);
-	}
-
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(ILcx;ZI)I",
-		garbageValue = "1586535295"
-	)
-	static int method4433(int var0, Script var1, boolean var2) {
-		Widget var3 = class80.getWidget(Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize]);
-		if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
-			Interpreter.Interpreter_intStack[++HealthBarUpdate.Interpreter_intStackSize - 1] = HealthBar.method1957(class268.getWidgetClickMask(var3));
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.IF_GETOP) {
-			int var4 = Interpreter.Interpreter_intStack[--HealthBarUpdate.Interpreter_intStackSize];
-			--var4;
-			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.actions[var4];
-			} else {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-			}
-
-			return 1;
-		}
-		if (var0 == ScriptOpcodes.IF_GETOPBASE) {
-			if (var3.dataText == null) {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = "";
-			} else {
-				Interpreter.Interpreter_stringStack[++Skills.Interpreter_stringStackSize - 1] = var3.dataText;
-			}
-
-			return 1;
-		}
-		return 2;
 	}
 }

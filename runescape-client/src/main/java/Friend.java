@@ -3,55 +3,49 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
+@ObfuscatedName("ja")
 @Implements("Friend")
 public class Friend extends Buddy {
-	@ObfuscatedName("q")
-	boolean field3650;
-	@ObfuscatedName("w")
-	boolean field3651;
+	@ObfuscatedName("s")
+	boolean field3607;
+	@ObfuscatedName("j")
+	boolean field3606;
 
 	Friend() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljs;I)I",
-		garbageValue = "-1814764429"
+		signature = "(Lja;B)I",
+		garbageValue = "113"
 	)
 	@Export("compareToFriend")
 	int compareToFriend(Friend var1) {
 		if (super.world == Client.worldId && Client.worldId != var1.world) {
 			return -1;
-		}
-		if (Client.worldId == var1.world && super.world != Client.worldId) {
+		} else if (Client.worldId == var1.world && super.world != Client.worldId) {
 			return 1;
-		}
-		if (super.world != 0 && var1.world == 0) {
+		} else if (super.world != 0 && var1.world == 0) {
 			return -1;
-		}
-		if (var1.world != 0 && super.world == 0) {
+		} else if (var1.world != 0 && super.world == 0) {
 			return 1;
-		}
-		if (this.field3650 && !var1.field3650) {
+		} else if (this.field3607 && !var1.field3607) {
 			return -1;
-		}
-		if (!this.field3650 && var1.field3650) {
+		} else if (!this.field3607 && var1.field3607) {
 			return 1;
-		}
-		if (this.field3651 && !var1.field3651) {
+		} else if (this.field3606 && !var1.field3606) {
 			return -1;
-		}
-		if (!this.field3651 && var1.field3651) {
+		} else if (!this.field3606 && var1.field3606) {
 			return 1;
+		} else {
+			return super.world != 0 ? super.int2 - var1.int2 : var1.int2 - super.int2;
 		}
-		return super.world != 0 ? super.int2 - var1.int2 : var1.int2 - super.int2;
 	}
 
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ai")
 	@ObfuscatedSignature(
-		signature = "(Ljd;I)I",
-		garbageValue = "-1938562722"
+		signature = "(Lju;B)I",
+		garbageValue = "1"
 	)
 	@Export("compareTo_user")
 	public int compareTo_user(User var1) {
@@ -62,100 +56,45 @@ public class Friend extends Buddy {
 		return this.compareToFriend((Friend)var1);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIB)Z",
-		garbageValue = "-3"
+		signature = "(IZB)Ljava/lang/String;",
+		garbageValue = "104"
 	)
-	@Export("SpriteBuffer_bufferFile")
-	public static boolean SpriteBuffer_bufferFile(AbstractArchive var0, int var1, int var2) {
-		byte[] var3 = var0.takeFile(var1, var2);
-		if (var3 == null) {
-			return false;
-		}
-		class185.SpriteBuffer_decode(var3);
-		return true;
-	}
+	@Export("intToString")
+	public static String intToString(int var0, boolean var1) {
+		if (var1 && var0 >= 0) {
+			int var3 = var0;
+			String var2;
+			if (var1 && var0 >= 0) {
+				int var4 = 2;
 
-	@ObfuscatedName("fv")
-	@ObfuscatedSignature(
-		signature = "(Lbq;I)V",
-		garbageValue = "230469601"
-	)
-	static final void method5226(Actor var0) {
-		if (var0.field948 == 0) {
-			return;
-		}
-		if (var0.targetIndex != -1) {
-			Object var1 = null;
-			if (var0.targetIndex < 32768) {
-				var1 = Client.npcs[var0.targetIndex];
-			} else if (var0.targetIndex >= 32768) {
-				var1 = Client.players[var0.targetIndex - 32768];
-			}
-
-			if (var1 != null) {
-				int var2 = var0.x - ((Actor)var1).x;
-				int var3 = var0.y - ((Actor)var1).y;
-				if (var2 != 0 || var3 != 0) {
-					var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+				for (int var5 = var0 / 10; var5 != 0; ++var4) {
+					var5 /= 10;
 				}
-			} else if (var0.false0) {
-				var0.targetIndex = -1;
-				var0.false0 = false;
-			}
-		}
 
-		if (var0.field976 != -1 && (var0.pathLength == 0 || var0.field1007 > 0)) {
-			var0.orientation = var0.field976;
-			var0.field976 = -1;
-		}
+				char[] var6 = new char[var4];
+				var6[0] = '+';
 
-		int var4 = var0.orientation - var0.rotation & 2047;
-		if (var4 == 0 && var0.false0) {
-			var0.targetIndex = -1;
-			var0.false0 = false;
-		}
-
-		if (var4 == 0) {
-			var0.field1009 = 0;
-			return;
-		}
-		++var0.field1009;
-		boolean var6;
-		if (var4 > 1024) {
-			var0.rotation -= var0.field948;
-			var6 = true;
-			if (var4 < var0.field948 || var4 > 2048 - var0.field948) {
-				var0.rotation = var0.orientation;
-				var6 = false;
-			}
-
-			if (var0.movementSequence == var0.readySequence && (var0.field1009 > 25 || var6)) {
-				if (var0.turnLeftSequence != -1) {
-					var0.movementSequence = var0.turnLeftSequence;
-				} else {
-					var0.movementSequence = var0.walkSequence;
+				for (int var7 = var4 - 1; var7 > 0; --var7) {
+					int var8 = var3;
+					var3 /= 10;
+					int var9 = var8 - var3 * 10;
+					if (var9 >= 10) {
+						var6[var7] = (char)(var9 + 87);
+					} else {
+						var6[var7] = (char)(var9 + 48);
+					}
 				}
+
+				var2 = new String(var6);
+			} else {
+				var2 = Integer.toString(var0, 10);
 			}
+
+			return var2;
 		} else {
-			var0.rotation += var0.field948;
-			var6 = true;
-			if (var4 < var0.field948 || var4 > 2048 - var0.field948) {
-				var0.rotation = var0.orientation;
-				var6 = false;
-			}
-
-			if (var0.readySequence == var0.movementSequence && (var0.field1009 > 25 || var6)) {
-				if (var0.turnRightSequence != -1) {
-					var0.movementSequence = var0.turnRightSequence;
-				} else {
-					var0.movementSequence = var0.walkSequence;
-				}
-			}
+			return Integer.toString(var0);
 		}
-
-		var0.rotation &= 2047;
-
 	}
 }

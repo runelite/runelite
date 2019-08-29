@@ -4,628 +4,635 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gv")
 @Implements("ClientPacket")
-public class ClientPacket implements ClientPacketMarker {
-	@ObfuscatedName("ng")
-	@ObfuscatedGetter(
-		intValue = -1373117165
-	)
-	static int field2305;
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2289;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2204;
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2232;
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2259;
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2217;
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2208;
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2269;
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2281;
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2211;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2212;
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2213;
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2236;
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2215;
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2216;
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2251;
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2294;
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2219;
-	@ObfuscatedName("a")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2220;
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2221;
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2222;
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2223;
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2255;
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2225;
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2207;
+public class ClientPacket implements class181 {
 	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2227;
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2228;
-	@ObfuscatedName("al")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2229;
-	@ObfuscatedName("av")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2230;
-	@ObfuscatedName("as")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2231;
-	@ObfuscatedName("aw")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2203;
-	@ObfuscatedName("ad")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2233;
-	@ObfuscatedName("ag")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2214;
-	@ObfuscatedName("ar")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2235;
-	@ObfuscatedName("ax")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2254;
-	@ObfuscatedName("az")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2237;
-	@ObfuscatedName("ae")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2238;
-	@ObfuscatedName("ao")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2244;
-	@ObfuscatedName("aj")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2240;
-	@ObfuscatedName("at")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2205;
-	@ObfuscatedName("ac")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2242;
-	@ObfuscatedName("ap")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2243;
-	@ObfuscatedName("aq")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2234;
-	@ObfuscatedName("aa")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2245;
-	@ObfuscatedName("an")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	static final ClientPacket field2246;
-	@ObfuscatedName("au")
+	public static final ClientPacket field2186;
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2247;
-	@ObfuscatedName("ai")
+	public static final ClientPacket field2187;
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2248;
-	@ObfuscatedName("ak")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2249;
-	@ObfuscatedName("ah")
+	public static final ClientPacket field2195;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2250;
-	@ObfuscatedName("am")
+	public static final ClientPacket field2190;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2191;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2188;
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2194;
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2189;
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2212;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2203;
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2197;
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2198;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2199;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2200;
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2232;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2202;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2251;
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2204;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2205;
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2206;
-	@ObfuscatedName("ay")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2300;
+	public static final ClientPacket field2207;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2208;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2209;
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2210;
+	@ObfuscatedName("av")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2211;
+	@ObfuscatedName("am")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2279;
+	@ObfuscatedName("ai")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2266;
 	@ObfuscatedName("af")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2253;
-	@ObfuscatedName("ab")
+	public static final ClientPacket field2214;
+	@ObfuscatedName("az")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2215;
+	@ObfuscatedName("aj")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2216;
+	@ObfuscatedName("an")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2268;
+	@ObfuscatedName("at")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2218;
-	@ObfuscatedName("bp")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2262;
-	@ObfuscatedName("bz")
+	public static final ClientPacket field2219;
+	@ObfuscatedName("ak")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2293;
-	@ObfuscatedName("bi")
+	public static final ClientPacket field2220;
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2239;
+	@ObfuscatedName("ac")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2222;
+	@ObfuscatedName("ar")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2223;
+	@ObfuscatedName("au")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2224;
-	@ObfuscatedName("bg")
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2277;
-	@ObfuscatedName("bh")
+	public static final ClientPacket field2221;
+	@ObfuscatedName("ag")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2301;
-	@ObfuscatedName("bm")
+	public static final ClientPacket field2226;
+	@ObfuscatedName("aa")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2260;
+	public static final ClientPacket field2227;
+	@ObfuscatedName("ap")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	static final ClientPacket field2228;
+	@ObfuscatedName("aq")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2270;
+	@ObfuscatedName("ay")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2230;
+	@ObfuscatedName("ad")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2231;
+	@ObfuscatedName("al")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2272;
+	@ObfuscatedName("ah")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2233;
+	@ObfuscatedName("ab")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2234;
+	@ObfuscatedName("aw")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2273;
+	@ObfuscatedName("ae")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2236;
+	@ObfuscatedName("bk")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2237;
+	@ObfuscatedName("bw")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2217;
+	@ObfuscatedName("bo")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2225;
 	@ObfuscatedName("bn")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2240;
+	@ObfuscatedName("bp")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2241;
+	@ObfuscatedName("bz")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2213;
+	@ObfuscatedName("bh")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2243;
+	@ObfuscatedName("bv")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2196;
+	@ObfuscatedName("bj")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2238;
+	@ObfuscatedName("bq")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2255;
+	@ObfuscatedName("by")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2247;
+	@ObfuscatedName("bs")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2229;
+	@ObfuscatedName("bi")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2193;
+	@ObfuscatedName("bf")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2250;
+	@ObfuscatedName("bd")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2244;
+	@ObfuscatedName("br")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2252;
+	@ObfuscatedName("bm")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2253;
+	@ObfuscatedName("bu")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2254;
+	@ObfuscatedName("bb")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2192;
+	@ObfuscatedName("bl")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2256;
+	@ObfuscatedName("bt")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2257;
+	@ObfuscatedName("bx")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2258;
+	@ObfuscatedName("ba")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2259;
+	@ObfuscatedName("bg")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2260;
+	@ObfuscatedName("be")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
 	)
 	public static final ClientPacket field2261;
 	@ObfuscatedName("bc")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2303;
-	@ObfuscatedName("bx")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2263;
-	@ObfuscatedName("bo")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2296;
-	@ObfuscatedName("bb")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2209;
-	@ObfuscatedName("bs")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2266;
-	@ObfuscatedName("bj")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2267;
-	@ObfuscatedName("bl")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2268;
-	@ObfuscatedName("bd")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2264;
-	@ObfuscatedName("by")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2270;
-	@ObfuscatedName("bt")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2271;
-	@ObfuscatedName("bq")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2272;
-	@ObfuscatedName("bu")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2273;
-	@ObfuscatedName("bw")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2274;
-	@ObfuscatedName("br")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2265;
-	@ObfuscatedName("bk")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2276;
-	@ObfuscatedName("bf")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2256;
-	@ObfuscatedName("bv")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2278;
-	@ObfuscatedName("be")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2279;
-	@ObfuscatedName("ba")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2280;
-	@ObfuscatedName("cr")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2286;
-	@ObfuscatedName("cf")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2282;
-	@ObfuscatedName("cj")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2283;
-	@ObfuscatedName("cl")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2284;
-	@ObfuscatedName("cn")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2285;
-	@ObfuscatedName("cy")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2241;
-	@ObfuscatedName("ct")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2287;
-	@ObfuscatedName("cq")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2288;
-	@ObfuscatedName("cp")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2304;
-	@ObfuscatedName("ch")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2290;
-	@ObfuscatedName("co")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2291;
-	@ObfuscatedName("cw")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2292;
-	@ObfuscatedName("ca")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2210;
-	@ObfuscatedName("cb")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2252;
-	@ObfuscatedName("cx")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2295;
-	@ObfuscatedName("cu")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2257;
-	@ObfuscatedName("cs")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2226;
-	@ObfuscatedName("cg")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2298;
-	@ObfuscatedName("cv")
-	@ObfuscatedSignature(
-		signature = "Lgx;"
-	)
-	public static final ClientPacket field2299;
+	public static final ClientPacket field2269;
 	@ObfuscatedName("ce")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2258;
-	@ObfuscatedName("cz")
+	public static final ClientPacket field2263;
+	@ObfuscatedName("ci")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	public static final ClientPacket field2239;
+	public static final ClientPacket field2264;
+	@ObfuscatedName("ck")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2265;
+	@ObfuscatedName("cc")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2242;
+	@ObfuscatedName("cd")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2246;
+	@ObfuscatedName("cf")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2262;
+	@ObfuscatedName("cw")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2288;
+	@ObfuscatedName("cj")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2276;
+	@ObfuscatedName("cp")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2271;
+	@ObfuscatedName("cu")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2235;
 	@ObfuscatedName("cm")
 	@ObfuscatedSignature(
-		signature = "Lgx;"
+		signature = "Lgv;"
 	)
-	static final ClientPacket field2302;
-	@ObfuscatedName("ck")
+	public static final ClientPacket field2201;
+	@ObfuscatedName("cb")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2274;
+	@ObfuscatedName("ch")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2275;
+	@ObfuscatedName("cn")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2285;
+	@ObfuscatedName("cr")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2277;
+	@ObfuscatedName("cl")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2249;
+	@ObfuscatedName("cg")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2287;
+	@ObfuscatedName("cy")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2280;
+	@ObfuscatedName("cz")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2281;
+	@ObfuscatedName("cv")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2282;
+	@ObfuscatedName("cq")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	public static final ClientPacket field2283;
+	@ObfuscatedName("ct")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	static final ClientPacket field2284;
+	@ObfuscatedName("cx")
+	@ObfuscatedSignature(
+		signature = "Lgv;"
+	)
+	static final ClientPacket field2278;
+	@ObfuscatedName("fs")
+	@ObfuscatedSignature(
+		signature = "Lkb;"
+	)
+	@Export("fontPlain12")
+	static Font fontPlain12;
+	@ObfuscatedName("ca")
 	@ObfuscatedGetter(
-		intValue = 690809523
+		intValue = 116143945
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("cc")
+	@ObfuscatedName("cs")
 	@ObfuscatedGetter(
-		intValue = -571017815
+		intValue = -836888501
 	)
 	@Export("length")
 	final int length;
 
 	static {
-		field2289 = new ClientPacket(0, 8);
-		field2204 = new ClientPacket(1, 3);
-		field2232 = new ClientPacket(2, 14);
-		field2259 = new ClientPacket(3, 7);
-		field2217 = new ClientPacket(4, -1);
-		field2208 = new ClientPacket(5, 7);
-		field2269 = new ClientPacket(6, 7);
-		field2281 = new ClientPacket(7, 8);
-		field2211 = new ClientPacket(8, -1);
-		field2212 = new ClientPacket(9, 4);
-		field2213 = new ClientPacket(10, 7);
-		field2236 = new ClientPacket(11, 10);
-		field2215 = new ClientPacket(12, 13);
-		field2216 = new ClientPacket(13, -1);
-		field2251 = new ClientPacket(14, 8);
-		field2294 = new ClientPacket(15, 3);
-		field2219 = new ClientPacket(16, -2);
-		field2220 = new ClientPacket(17, 4);
-		field2221 = new ClientPacket(18, 15);
-		field2222 = new ClientPacket(19, 8);
-		field2223 = new ClientPacket(20, 0);
-		field2255 = new ClientPacket(21, 8);
-		field2225 = new ClientPacket(22, 0);
-		field2207 = new ClientPacket(23, 11);
-		field2227 = new ClientPacket(24, 2);
-		field2228 = new ClientPacket(25, -2);
-		field2229 = new ClientPacket(26, 8);
-		field2230 = new ClientPacket(27, 3);
-		field2231 = new ClientPacket(28, -1);
-		field2203 = new ClientPacket(29, 7);
-		field2233 = new ClientPacket(30, 2);
-		field2214 = new ClientPacket(31, 3);
-		field2235 = new ClientPacket(32, 8);
-		field2254 = new ClientPacket(33, 3);
-		field2237 = new ClientPacket(34, -1);
-		field2238 = new ClientPacket(35, 5);
-		field2244 = new ClientPacket(36, 2);
-		field2240 = new ClientPacket(37, 0);
-		field2205 = new ClientPacket(38, -1);
-		field2242 = new ClientPacket(39, 4);
-		field2243 = new ClientPacket(40, 8);
-		field2234 = new ClientPacket(41, 6);
-		field2245 = new ClientPacket(42, 2);
-		field2246 = new ClientPacket(43, -1);
-		field2247 = new ClientPacket(44, 15);
-		field2248 = new ClientPacket(45, 4);
-		field2249 = new ClientPacket(46, 8);
-		field2250 = new ClientPacket(47, 3);
-		field2206 = new ClientPacket(48, 8);
-		field2300 = new ClientPacket(49, 0);
-		field2253 = new ClientPacket(50, 3);
-		field2218 = new ClientPacket(51, 7);
-		field2262 = new ClientPacket(52, -1);
-		field2293 = new ClientPacket(53, 13);
-		field2224 = new ClientPacket(54, -1);
-		field2277 = new ClientPacket(55, 9);
-		field2301 = new ClientPacket(56, 3);
-		field2260 = new ClientPacket(57, 16);
-		field2261 = new ClientPacket(58, 8);
-		field2303 = new ClientPacket(59, 3);
-		field2263 = new ClientPacket(60, -1);
-		field2296 = new ClientPacket(61, 9);
-		field2209 = new ClientPacket(62, 3);
-		field2266 = new ClientPacket(63, 16);
-		field2267 = new ClientPacket(64, 8);
-		field2268 = new ClientPacket(65, 8);
-		field2264 = new ClientPacket(66, 8);
-		field2270 = new ClientPacket(67, -2);
-		field2271 = new ClientPacket(68, 8);
-		field2272 = new ClientPacket(69, 4);
-		field2273 = new ClientPacket(70, 6);
-		field2274 = new ClientPacket(71, 3);
-		field2265 = new ClientPacket(72, 8);
-		field2276 = new ClientPacket(73, 1);
-		field2256 = new ClientPacket(74, 7);
-		field2278 = new ClientPacket(75, 3);
-		field2279 = new ClientPacket(76, 0);
-		field2280 = new ClientPacket(77, -1);
-		field2286 = new ClientPacket(78, -1);
-		field2282 = new ClientPacket(79, 7);
-		field2283 = new ClientPacket(80, 9);
-		field2284 = new ClientPacket(81, 11);
-		field2285 = new ClientPacket(82, 16);
-		field2241 = new ClientPacket(83, 3);
-		field2287 = new ClientPacket(84, 8);
-		field2288 = new ClientPacket(85, 8);
-		field2304 = new ClientPacket(86, 9);
-		field2290 = new ClientPacket(87, 8);
-		field2291 = new ClientPacket(88, -1);
-		field2292 = new ClientPacket(89, 7);
-		field2210 = new ClientPacket(90, -1);
-		field2252 = new ClientPacket(91, -1);
-		field2295 = new ClientPacket(92, 13);
-		field2257 = new ClientPacket(93, 3);
-		field2226 = new ClientPacket(94, 7);
-		field2298 = new ClientPacket(95, -1);
-		field2299 = new ClientPacket(96, -1);
-		field2258 = new ClientPacket(97, -1);
-		field2239 = new ClientPacket(98, 8);
-		field2302 = new ClientPacket(99, 7);
+		field2245 = new ClientPacket(0, 8);
+		field2186 = new ClientPacket(1, 3);
+		field2187 = new ClientPacket(2, 14);
+		field2248 = new ClientPacket(3, 7);
+		field2195 = new ClientPacket(4, -1);
+		field2190 = new ClientPacket(5, 7);
+		field2191 = new ClientPacket(6, 7);
+		field2188 = new ClientPacket(7, 8);
+		field2194 = new ClientPacket(8, -1);
+		field2189 = new ClientPacket(9, 4);
+		field2212 = new ClientPacket(10, 7);
+		field2203 = new ClientPacket(11, 10);
+		field2197 = new ClientPacket(12, 13);
+		field2198 = new ClientPacket(13, -1);
+		field2199 = new ClientPacket(14, 8);
+		field2200 = new ClientPacket(15, 3);
+		field2232 = new ClientPacket(16, -2);
+		field2202 = new ClientPacket(17, 4);
+		field2251 = new ClientPacket(18, 15);
+		field2204 = new ClientPacket(19, 8);
+		field2205 = new ClientPacket(20, 0);
+		field2206 = new ClientPacket(21, 8);
+		field2207 = new ClientPacket(22, 0);
+		field2208 = new ClientPacket(23, 11);
+		field2209 = new ClientPacket(24, 2);
+		field2210 = new ClientPacket(25, -2);
+		field2211 = new ClientPacket(26, 8);
+		field2279 = new ClientPacket(27, 3);
+		field2266 = new ClientPacket(28, -1);
+		field2214 = new ClientPacket(29, 7);
+		field2215 = new ClientPacket(30, 2);
+		field2216 = new ClientPacket(31, 3);
+		field2268 = new ClientPacket(32, 8);
+		field2218 = new ClientPacket(33, 3);
+		field2219 = new ClientPacket(34, -1);
+		field2220 = new ClientPacket(35, 5);
+		field2239 = new ClientPacket(36, 2);
+		field2222 = new ClientPacket(37, 0);
+		field2223 = new ClientPacket(38, -1);
+		field2224 = new ClientPacket(39, 4);
+		field2221 = new ClientPacket(40, 8);
+		field2226 = new ClientPacket(41, 6);
+		field2227 = new ClientPacket(42, 2);
+		field2228 = new ClientPacket(43, -1);
+		field2270 = new ClientPacket(44, 15);
+		field2230 = new ClientPacket(45, 4);
+		field2231 = new ClientPacket(46, 8);
+		field2272 = new ClientPacket(47, 3);
+		field2233 = new ClientPacket(48, 8);
+		field2234 = new ClientPacket(49, 0);
+		field2273 = new ClientPacket(50, 3);
+		field2236 = new ClientPacket(51, 7);
+		field2237 = new ClientPacket(52, -1);
+		field2217 = new ClientPacket(53, 13);
+		field2225 = new ClientPacket(54, -1);
+		field2240 = new ClientPacket(55, 9);
+		field2241 = new ClientPacket(56, 3);
+		field2213 = new ClientPacket(57, 16);
+		field2243 = new ClientPacket(58, 8);
+		field2196 = new ClientPacket(59, 3);
+		field2238 = new ClientPacket(60, -1);
+		field2255 = new ClientPacket(61, 9);
+		field2247 = new ClientPacket(62, 3);
+		field2229 = new ClientPacket(63, 16);
+		field2193 = new ClientPacket(64, 8);
+		field2250 = new ClientPacket(65, 8);
+		field2244 = new ClientPacket(66, 8);
+		field2252 = new ClientPacket(67, -2);
+		field2253 = new ClientPacket(68, 8);
+		field2254 = new ClientPacket(69, 4);
+		field2192 = new ClientPacket(70, 6);
+		field2256 = new ClientPacket(71, 3);
+		field2257 = new ClientPacket(72, 8);
+		field2258 = new ClientPacket(73, 1);
+		field2259 = new ClientPacket(74, 7);
+		field2260 = new ClientPacket(75, 3);
+		field2261 = new ClientPacket(76, 0);
+		field2269 = new ClientPacket(77, -1);
+		field2263 = new ClientPacket(78, -1);
+		field2264 = new ClientPacket(79, 7);
+		field2265 = new ClientPacket(80, 9);
+		field2242 = new ClientPacket(81, 11);
+		field2246 = new ClientPacket(82, 16);
+		field2262 = new ClientPacket(83, 3);
+		field2288 = new ClientPacket(84, 8);
+		field2276 = new ClientPacket(85, 8);
+		field2271 = new ClientPacket(86, 9);
+		field2235 = new ClientPacket(87, 8);
+		field2201 = new ClientPacket(88, -1);
+		field2274 = new ClientPacket(89, 7);
+		field2275 = new ClientPacket(90, -1);
+		field2285 = new ClientPacket(91, -1);
+		field2277 = new ClientPacket(92, 13);
+		field2249 = new ClientPacket(93, 3);
+		field2287 = new ClientPacket(94, 7);
+		field2280 = new ClientPacket(95, -1);
+		field2281 = new ClientPacket(96, -1);
+		field2282 = new ClientPacket(97, -1);
+		field2283 = new ClientPacket(98, 8);
+		field2284 = new ClientPacket(99, 7);
+		field2278 = new ClientPacket(100, 2);
 	}
 
 	ClientPacket(int var1, int var2) {
@@ -633,243 +640,208 @@ public class ClientPacket implements ClientPacketMarker {
 		this.length = var2;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-		garbageValue = "-231155257"
+		signature = "(IIIB)J",
+		garbageValue = "-10"
 	)
-	@Export("passwordStarChars")
-	public static String passwordStarChars(CharSequence var0) {
-		int var2 = var0.length();
-		char[] var3 = new char[var2];
-
-		for (int var4 = 0; var4 < var2; ++var4) {
-			var3[var4] = '*';
-		}
-
-		String var1 = new String(var3);
-		return var1;
+	@Export("getWorldMapSpriteHash")
+	static long getWorldMapSpriteHash(int var0, int var1, int var2) {
+		return (long)(var2 << 16 | var0 << 8 | var1);
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("hv")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIILer;Lfv;I)V",
-		garbageValue = "1078750200"
+		signature = "(II)Z",
+		garbageValue = "1826064013"
 	)
-	@Export("addPendingGameObject")
-	static final void addPendingGameObject(int plane, int var1, int x, int y, int id, int rotation, int objectType, Scene scene, CollisionMap collision) {
-		ObjectDefinition var9 = ViewportMouse.getObjectDefinition(id);
-		int var10;
-		int var11;
-		if (rotation != 1 && rotation != 3) {
-			var10 = var9.sizeX;
-			var11 = var9.sizeY;
+	@Export("isRightClickOnlyMenu")
+	static final boolean isRightClickOnlyMenu(int var0) {
+		if (var0 < 0) {
+			return false;
 		} else {
-			var10 = var9.sizeY;
-			var11 = var9.sizeX;
+			int var1 = Client.menuOpcodes[var0];
+			if (var1 >= 2000) {
+				var1 -= 2000;
+			}
+
+			return var1 == 1007;
+		}
+	}
+
+	@ObfuscatedName("jn")
+	@ObfuscatedSignature(
+		signature = "(Lhp;III)V",
+		garbageValue = "-1618436422"
+	)
+	static final void method3558(Widget var0, int var1, int var2) {
+		if (var0.buttonType == 1) {
+			WorldMapData_0.insertMenuItemNoShift(var0.buttonText, "", 24, 0, 0, var0.id);
 		}
 
-		int var12;
-		int var13;
-		if (var10 + x <= 104) {
-			var12 = (var10 >> 1) + x;
-			var13 = x + (var10 + 1 >> 1);
-		} else {
-			var12 = x;
-			var13 = x + 1;
+		String var3;
+		if (var0.buttonType == 2 && !Client.isSpellSelected) {
+			var3 = class173.method3529(var0);
+			if (var3 != null) {
+				WorldMapData_0.insertMenuItemNoShift(var3, class16.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
+			}
 		}
 
-		int var14;
+		if (var0.buttonType == 3) {
+			WorldMapData_0.insertMenuItemNoShift("Close", "", 26, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 4) {
+			WorldMapData_0.insertMenuItemNoShift(var0.buttonText, "", 28, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 5) {
+			WorldMapData_0.insertMenuItemNoShift(var0.buttonText, "", 29, 0, 0, var0.id);
+		}
+
+		if (var0.buttonType == 6 && Client.meslayerContinueWidget == null) {
+			WorldMapData_0.insertMenuItemNoShift(var0.buttonText, "", 30, 0, -1, var0.id);
+		}
+
+		int var4;
+		int var5;
 		int var15;
-		if (y + var11 <= 104) {
-			var14 = y + (var11 >> 1);
-			var15 = y + (var11 + 1 >> 1);
-		} else {
-			var14 = y;
-			var15 = y + 1;
+		if (var0.type == 2) {
+			var15 = 0;
+
+			for (var4 = 0; var4 < var0.height; ++var4) {
+				for (var5 = 0; var5 < var0.width; ++var5) {
+					int var6 = (var0.paddingX + 32) * var5;
+					int var7 = (var0.paddingY + 32) * var4;
+					if (var15 < 20) {
+						var6 += var0.inventoryXOffsets[var15];
+						var7 += var0.inventoryYOffsets[var15];
+					}
+
+					if (var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
+						Client.dragItemSlotDestination = var15;
+						class222.field2730 = var0;
+						if (var0.itemIds[var15] > 0) {
+							ItemDefinition var8 = WorldMapData_0.ItemDefinition_get(var0.itemIds[var15] - 1);
+							if (Client.isItemSelected == 1 && Huffman.method3901(ParamDefinition.getWidgetClickMask(var0))) {
+								if (var0.id != FontName.selectedItemWidget || var15 != class185.selectedItemSlot) {
+									WorldMapData_0.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + class16.colorStartTag(16748608) + var8.name, 31, var8.id, var15, var0.id);
+								}
+							} else if (Client.isSpellSelected && Huffman.method3901(ParamDefinition.getWidgetClickMask(var0))) {
+								if ((WorldMapSectionType.selectedSpellFlags & 16) == 16) {
+									WorldMapData_0.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + class16.colorStartTag(16748608) + var8.name, 32, var8.id, var15, var0.id);
+								}
+							} else {
+								String[] var9 = var8.inventoryActions;
+								int var10 = -1;
+								boolean var11;
+								if (Client.shiftClickDrop) {
+									var11 = Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
+									if (var11) {
+										var10 = var8.getShiftClickIndex();
+									}
+								}
+
+								if (Huffman.method3901(ParamDefinition.getWidgetClickMask(var0))) {
+									for (int var19 = 4; var19 >= 3; --var19) {
+										if (var10 != var19) {
+											DynamicObject.addWidgetItemMenuItem(var0, var8, var15, var19, false);
+										}
+									}
+								}
+
+								int var12 = ParamDefinition.getWidgetClickMask(var0);
+								var11 = (var12 >> 31 & 1) != 0;
+								if (var11) {
+									WorldMapData_0.insertMenuItemNoShift("Use", class16.colorStartTag(16748608) + var8.name, 38, var8.id, var15, var0.id);
+								}
+
+								Object var10000 = null;
+								int var13;
+								if (Huffman.method3901(ParamDefinition.getWidgetClickMask(var0))) {
+									for (var13 = 2; var13 >= 0; --var13) {
+										if (var13 != var10) {
+											DynamicObject.addWidgetItemMenuItem(var0, var8, var15, var13, false);
+										}
+									}
+
+									if (var10 >= 0) {
+										DynamicObject.addWidgetItemMenuItem(var0, var8, var15, var10, true);
+									}
+								}
+
+								var9 = var0.itemActions;
+								if (var9 != null) {
+									for (var13 = 4; var13 >= 0; --var13) {
+										if (var9[var13] != null) {
+											byte var14 = 0;
+											if (var13 == 0) {
+												var14 = 39;
+											}
+
+											if (var13 == 1) {
+												var14 = 40;
+											}
+
+											if (var13 == 2) {
+												var14 = 41;
+											}
+
+											if (var13 == 3) {
+												var14 = 42;
+											}
+
+											if (var13 == 4) {
+												var14 = 43;
+											}
+
+											WorldMapData_0.insertMenuItemNoShift(var9[var13], class16.colorStartTag(16748608) + var8.name, var14, var8.id, var15, var0.id);
+										}
+									}
+								}
+
+								WorldMapData_0.insertMenuItemNoShift("Examine", class16.colorStartTag(16748608) + var8.name, 1005, var8.id, var15, var0.id);
+							}
+						}
+					}
+
+					++var15;
+				}
+			}
 		}
 
-		int[][] var16 = Tiles.Tiles_heights[var1];
-		int var17 = var16[var12][var14] + var16[var13][var14] + var16[var12][var15] + var16[var13][var15] >> 2;
-		int var18 = (x << 7) + (var10 << 6);
-		int var19 = (y << 7) + (var11 << 6);
-		long var20 = Tile.calculateTag(x, y, 2, var9.int1 == 0, id);
-		int var22 = (rotation << 6) + objectType;
-		if (var9.int3 == 1) {
-			var22 += 256;
+		if (var0.isIf3) {
+			if (Client.isSpellSelected) {
+				if (PcmPlayer.method2396(ParamDefinition.getWidgetClickMask(var0)) && (WorldMapSectionType.selectedSpellFlags & 32) == 32) {
+					WorldMapData_0.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + var0.dataText, 58, 0, var0.childIndex, var0.id);
+				}
+			} else {
+				for (var15 = 9; var15 >= 5; --var15) {
+					String var16 = GrandExchangeOfferUnitPriceComparator.method125(var0, var15);
+					if (var16 != null) {
+						WorldMapData_0.insertMenuItemNoShift(var16, var0.dataText, 1007, var15 + 1, var0.childIndex, var0.id);
+					}
+				}
+
+				var3 = class173.method3529(var0);
+				if (var3 != null) {
+					WorldMapData_0.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
+				}
+
+				for (var4 = 4; var4 >= 0; --var4) {
+					String var17 = GrandExchangeOfferUnitPriceComparator.method125(var0, var4);
+					if (var17 != null) {
+						NetCache.insertMenuItem(var17, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.field2688);
+					}
+				}
+
+				var5 = ParamDefinition.getWidgetClickMask(var0);
+				boolean var18 = (var5 & 1) != 0;
+				if (var18) {
+					WorldMapData_0.insertMenuItemNoShift("Continue", "", 30, 0, var0.childIndex, var0.id);
+				}
+			}
 		}
 
-		Object var23;
-		if (objectType == 22) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(22, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 22, rotation, var1, x, y, var9.animationId, true, (Entity)null);
-			}
-
-			scene.newFloorDecoration(plane, x, y, var17, (Entity)var23, var20, var22);
-			if (var9.interactType == 1) {
-				collision.setBlockedByFloorDec(x, y);
-			}
-
-		} else if (objectType == 10 || objectType == 11) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(10, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 10, rotation, var1, x, y, var9.animationId, true, (Entity)null);
-			}
-
-			if (var23 != null) {
-				scene.method3076(plane, x, y, var17, var10, var11, (Entity)var23, objectType == 11 ? 256 : 0, var20, var22);
-			}
-
-			if (var9.interactType != 0) {
-				collision.addGameObject(x, y, var10, var11, var9.boolean1);
-			}
-
-		} else if (objectType >= 12) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(objectType, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, objectType, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.method3076(plane, x, y, var17, 1, 1, (Entity) var23, 0, var20, var22);
-			if (var9.interactType != 0) {
-				collision.addGameObject(x, y, var10, var11, var9.boolean1);
-			}
-
-		} else if (objectType == 0) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(0, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 0, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newBoundaryObject(plane, x, y, var17, (Entity) var23, (Entity) null, Tiles.field512[rotation], 0, var20, var22);
-			if (var9.interactType != 0) {
-				collision.method3559(x, y, objectType, rotation, var9.boolean1);
-			}
-
-		} else if (objectType == 1) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(1, rotation, var16, var18, var17, var19);
-			} else  {
-				var23 = new DynamicObject(id, 1, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newBoundaryObject(plane, x, y, var17, (Entity) var23, (Entity) null, Tiles.field513[rotation], 0, var20, var22);
-			if (var9.interactType != 0) {
-				collision.method3559(x, y, objectType, rotation, var9.boolean1);
-			}
-
-		} else if (objectType == 2) {
-			int var29 = rotation + 1 & 3;
-			Object var24;
-			Object var25;
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var24 = var9.getModel(2, rotation + 4, var16, var18, var17, var19);
-				var25 = var9.getModel(2, var29, var16, var18, var17, var19);
-			} else {
-				var24 = new DynamicObject(id, 2, rotation + 4, var1, x, y, var9.animationId, true, (Entity) null);
-				var25 = new DynamicObject(id, 2, var29, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newBoundaryObject(plane, x, y, var17, (Entity) var24, (Entity) var25, Tiles.field512[rotation], Tiles.field512[var29], var20, var22);
-			if (var9.interactType != 0) {
-				collision.method3559(x, y, objectType, rotation, var9.boolean1);
-			}
-
-		} else if (objectType == 3) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(3, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 3, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newBoundaryObject(plane, x, y, var17, (Entity) var23, (Entity) null, Tiles.field513[rotation], 0, var20, var22);
-			if (var9.interactType != 0) {
-				collision.method3559(x, y, objectType, rotation, var9.boolean1);
-			}
-
-		} else if (objectType == 9) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(objectType, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, objectType, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.method3076(plane, x, y, var17, 1, 1, (Entity) var23, 0, var20, var22);
-			if (var9.interactType != 0) {
-				collision.addGameObject(x, y, var10, var11, var9.boolean1);
-			}
-
-		} else if (objectType == 4) {
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(4, rotation, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 4, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newWallDecoration(plane, x, y, var17, (Entity) var23, (Entity) null, Tiles.field512[rotation], 0, 0, 0, var20, var22);
-		} else if (objectType == 5) {
-			int var29 = 16;
-			long var30 = scene.getBoundaryObjectTag(plane, x, y);
-			if (var30 != 0L) {
-				var29 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var30)).int2;
-			}
-			Object var26;
-
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var26 = var9.getModel(4, rotation, var16, var18, var17, var19);
-			} else {
-				var26 = new DynamicObject(id, 4, rotation, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newWallDecoration(plane, x, y, var17, (Entity) var26, (Entity) null, Tiles.field512[rotation], 0, var29 * Tiles.field514[rotation], var29 * Tiles.field520[rotation], var20, var22);
-		} else if (objectType == 6) {
-			int var29 = 8;
-			long var30 = scene.getBoundaryObjectTag(plane, x, y);
-			if (var30 != 0L) {
-				var29 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var30)).int2 / 2;
-			}
-			Object var26;
-
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var26 = var9.getModel(4, rotation + 4, var16, var18, var17, var19);
-			} else {
-				var26 = new DynamicObject(id, 4, rotation + 4, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newWallDecoration(plane, x, y, var17, (Entity) var26, (Entity) null, 256, rotation, var29 * Tiles.field509[rotation], var29 * Tiles.field517[rotation], var20, var22);
-		} else if (objectType == 7) {
-			int var32 = rotation + 2 & 3;
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var23 = var9.getModel(4, var32 + 4, var16, var18, var17, var19);
-			} else {
-				var23 = new DynamicObject(id, 4, var32 + 4, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newWallDecoration(plane, x, y, var17, (Entity) var23, (Entity) null, 256, var32, 0, 0, var20, var22);
-		} else if (objectType == 8) {
-			int var29 = 8;
-			long var30 = scene.getBoundaryObjectTag(plane, x, y);
-			if (var30 != 0L) {
-				var29 = ViewportMouse.getObjectDefinition(class43.Entity_unpackID(var30)).int2 / 2;
-			}
-
-			Object var26;
-			int var28 = rotation + 2 & 3;
-			Object var27;
-			if (var9.animationId == -1 && var9.transforms == null) {
-				var26 = var9.getModel(4, rotation + 4, var16, var18, var17, var19);
-				var27 = var9.getModel(4, var28 + 4, var16, var18, var17, var19);
-			} else {
-				var26 = new DynamicObject(id, 4, rotation + 4, var1, x, y, var9.animationId, true, (Entity) null);
-				var27 = new DynamicObject(id, 4, var28 + 4, var1, x, y, var9.animationId, true, (Entity) null);
-			}
-
-			scene.newWallDecoration(plane, x, y, var17, (Entity) var26, (Entity) var27, 256, rotation, var29 * Tiles.field509[rotation], var29 * Tiles.field517[rotation], var20, var22);
-		}
 	}
 }

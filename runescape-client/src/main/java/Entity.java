@@ -3,24 +3,14 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("en")
 @Implements("Entity")
 public abstract class Entity extends DualNode {
-	@ObfuscatedName("ev")
-	@ObfuscatedSignature(
-		signature = "Liu;"
-	)
-	@Export("archive20")
-	static Archive archive20;
-	@ObfuscatedName("fz")
+	@ObfuscatedName("cn")
 	@ObfuscatedGetter(
-		longValue = -4807383784337722267L
-	)
-	static long field1872;
-	@ObfuscatedName("cb")
-	@ObfuscatedGetter(
-		intValue = -1527077961
+		intValue = 747190067
 	)
 	@Export("height")
 	public int height;
@@ -29,17 +19,17 @@ public abstract class Entity extends DualNode {
 		this.height = 1000;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)Ldm;",
-		garbageValue = "759381421"
+		signature = "(I)Ldo;",
+		garbageValue = "-419920513"
 	)
 	@Export("getModel")
 	protected Model getModel() {
 		return null;
 	}
 
-	@ObfuscatedName("ct")
+	@ObfuscatedName("cm")
 	@Export("draw")
 	void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
 		Model var11 = this.getModel();
@@ -50,27 +40,62 @@ public abstract class Entity extends DualNode {
 
 	}
 
-	@ObfuscatedName("hn")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
-		garbageValue = "-224975698"
+		signature = "([BZB)Ljava/lang/Object;",
+		garbageValue = "42"
 	)
-	@Export("insertMenuItem")
-	static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-		if (Client.isMenuOpen) {
-			return;
+	public static Object method3209(byte[] var0, boolean var1) {
+		if (var0 == null) {
+			return null;
+		} else if (var0.length > 136) {
+			DirectByteArrayCopier var2 = new DirectByteArrayCopier();
+			var2.set(var0);
+			return var2;
+		} else {
+			return var0;
 		}
-		if (Client.menuOptionsCount >= 500) {
-			return;
-		}
-		Client.menuActions[Client.menuOptionsCount] = var0;
-		Client.menuTargets[Client.menuOptionsCount] = var1;
-		Client.menuOpcodes[Client.menuOptionsCount] = var2;
-		Client.menuIdentifiers[Client.menuOptionsCount] = var3;
-		Client.menuArguments1[Client.menuOptionsCount] = var4;
-		Client.menuArguments2[Client.menuOptionsCount] = var5;
-		Client.menuShiftClick[Client.menuOptionsCount] = var6;
-		++Client.menuOptionsCount;
+	}
 
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "(DDII)[D",
+		garbageValue = "-361048020"
+	)
+	public static double[] method3211(double var0, double var2, int var4) {
+		int var5 = var4 * 2 + 1;
+		double[] var6 = new double[var5];
+		int var7 = -var4;
+
+		for (int var8 = 0; var7 <= var4; ++var8) {
+			var6[var8] = class195.method3623((double)var7, var0, var2);
+			++var7;
+		}
+
+		return var6;
+	}
+
+	@ObfuscatedName("ak")
+	@ObfuscatedSignature(
+		signature = "(ILcr;ZI)I",
+		garbageValue = "-1173626349"
+	)
+	static int method3210(int var0, Script var1, boolean var2) {
+		if (var0 == ScriptOpcodes.LOGOUT) {
+			Client.logoutTimer = 250;
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+
+	@ObfuscatedName("gd")
+	@ObfuscatedSignature(
+		signature = "(Lbu;II)V",
+		garbageValue = "558636836"
+	)
+	@Export("getActorScreenLocation")
+	static final void getActorScreenLocation(Actor var0, int var1) {
+		WorldMapAreaData.worldToScreen(var0.x, var0.y, var1);
 	}
 }

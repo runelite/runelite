@@ -2,24 +2,33 @@ import java.security.SecureRandom;
 import java.util.concurrent.Callable;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bz")
 @Implements("SecureRandomCallable")
 public class SecureRandomCallable implements Callable {
-	@ObfuscatedName("qp")
+	@ObfuscatedName("su")
+	@Export("foundItemIds")
+	static short[] foundItemIds;
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "Lcz;"
+		signature = "Lct;"
 	)
-	@Export("pcmStreamMixer")
-	static PcmStreamMixer pcmStreamMixer;
-	@ObfuscatedName("bx")
-	@ObfuscatedSignature(
-		signature = "[Llx;"
+	@Export("pcmPlayerProvider")
+	static PcmPlayerProvider pcmPlayerProvider;
+	@ObfuscatedName("ae")
+	@ObfuscatedGetter(
+		intValue = 1643871529
 	)
-	@Export("worldSelectFlagSprites")
-	static IndexedSprite[] worldSelectFlagSprites;
+	static int field500;
+	@ObfuscatedName("ej")
+	@ObfuscatedGetter(
+		intValue = 1838360693
+	)
+	@Export("port3")
+	static int port3;
 
 	SecureRandomCallable() {
 	}
@@ -28,14 +37,5 @@ public class SecureRandomCallable implements Callable {
 		SecureRandom var2 = new SecureRandom();
 		var2.nextInt();
 		return var2;
-	}
-
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1843458331"
-	)
-	public static void method1093() {
-		VarpDefinition.VarpDefinition_cached.clear();
 	}
 }

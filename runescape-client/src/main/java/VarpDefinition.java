@@ -4,42 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("in")
 @Implements("VarpDefinition")
 public class VarpDefinition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("VarpDefinition_archive")
 	static AbstractArchive VarpDefinition_archive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -2051999343
+		intValue = -1812370505
 	)
 	@Export("VarpDefinition_fileCount")
 	public static int VarpDefinition_fileCount;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("VarpDefinition_cached")
 	static EvictingDualNodeHashTable VarpDefinition_cached;
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "Llx;"
-	)
-	@Export("titlebuttonSprite")
-	static IndexedSprite titlebuttonSprite;
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "Lkf;"
-	)
-	@Export("NetCache_responseArchiveBuffer")
-	static Buffer NetCache_responseArchiveBuffer;
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1809591211
+		intValue = -559924911
 	)
 	@Export("type")
 	public int type;
@@ -52,10 +40,10 @@ public class VarpDefinition extends DualNode {
 		this.type = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-927981442"
+		signature = "(Lky;B)V",
+		garbageValue = "-60"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -69,10 +57,10 @@ public class VarpDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "-1780799047"
+		signature = "(Lky;IB)V",
+		garbageValue = "-93"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -82,27 +70,54 @@ public class VarpDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("jv")
 	@ObfuscatedSignature(
-		signature = "(CI)Z",
-		garbageValue = "-17259877"
+		signature = "(Lbq;ZI)V",
+		garbageValue = "50109421"
 	)
-	public static boolean method4366(char var0) {
-		if ((var0 > 0 && var0 < 128) || (var0 >= 160 && var0 <= 255)) {
-			return true;
+	@Export("closeInterface")
+	static final void closeInterface(InterfaceParent var0, boolean var1) {
+		int var2 = var0.group;
+		int var3 = (int)var0.key;
+		var0.remove();
+		if (var1) {
+			UrlRequester.method3250(var2);
 		}
-		if (var0 == 0) {
-			return false;
-		}
-		char[] var1 = class288.cp1252AsciiExtension;
 
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			char var3 = var1[var2];
-			if (var0 == var3) {
-				return true;
+		for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
+			if ((long)var2 == (var4.key >> 48 & 65535L)) {
+				var4.remove();
 			}
 		}
 
-		return false;
+		Widget var7 = WorldMapElement.getWidget(var3);
+		if (var7 != null) {
+			FriendSystem.invalidateWidget(var7);
+		}
+
+		for (int var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
+			if (PendingSpawn.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
+				if (var5 < Client.menuOptionsCount - 1) {
+					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
+						Client.menuActions[var6] = Client.menuActions[var6 + 1];
+						Client.menuTargets[var6] = Client.menuTargets[var6 + 1];
+						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
+						Client.menuIdentifiers[var6] = Client.menuIdentifiers[var6 + 1];
+						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
+						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
+						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
+					}
+				}
+
+				--var5;
+				--Client.menuOptionsCount;
+			}
+		}
+
+		GrandExchangeOfferNameComparator.calculateMenuBounds();
+		if (Client.rootInterface != -1) {
+			UserComparator6.runIntfCloseListeners(Client.rootInterface, 1);
+		}
+
 	}
 }

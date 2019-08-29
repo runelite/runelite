@@ -3,22 +3,22 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("ip")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhz;"
 	)
 	@Export("VarcInt_archive")
 	public static AbstractArchive VarcInt_archive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Lep;"
 	)
 	@Export("VarcInt_cached")
-	public static EvictingDualNodeHashTable VarcInt_cached;
-	@ObfuscatedName("e")
+	static EvictingDualNodeHashTable VarcInt_cached;
+	@ObfuscatedName("i")
 	@Export("persist")
 	public boolean persist;
 
@@ -26,73 +26,58 @@ public class VarcInt extends DualNode {
 		VarcInt_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	public VarcInt() {
+	VarcInt() {
 		this.persist = false;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Lkf;B)V",
-		garbageValue = "22"
+		signature = "(Lky;I)V",
+		garbageValue = "-1564347413"
 	)
-	public void method4401(Buffer var1) {
+	void method4314(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4396(var1, var2);
+			this.method4315(var1, var2);
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkf;II)V",
-		garbageValue = "958337922"
+		signature = "(Lky;II)V",
+		garbageValue = "-1760139411"
 	)
-	void method4396(Buffer var1, int var2) {
+	void method4315(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
 		}
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
-		garbageValue = "-32757"
+		signature = "(II)Lis;",
+		garbageValue = "-1763982471"
 	)
-	@Export("base37Decode")
-	public static String base37Decode(CharSequence var0) {
-		long var3 = 0L;
-		int var5 = var0.length();
-
-		for (int var6 = 0; var6 < var5; ++var6) {
-			var3 *= 37L;
-			char var7 = var0.charAt(var6);
-			if (var7 >= 'A' && var7 <= 'Z') {
-				var3 += (long)(var7 + 1 - 65);
-			} else if (var7 >= 'a' && var7 <= 'z') {
-				var3 += (long)(var7 + 1 - 97);
-			} else if (var7 >= '0' && var7 <= '9') {
-				var3 += (long)(var7 + 27 - 48);
+	@Export("getParamDefinition")
+	public static ParamDefinition getParamDefinition(int var0) {
+		ParamDefinition var1 = (ParamDefinition)ParamDefinition.ParamDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = class339.ParamDefinition_archive.takeFile(11, var0);
+			var1 = new ParamDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			if (var3 >= 177917621779460413L) {
-				break;
-			}
+			var1.postDecode();
+			ParamDefinition.ParamDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-
-		while (var3 % 37L == 0L && 0L != var3) {
-			var3 /= 37L;
-		}
-
-		String var8 = class215.base37DecodeLong(var3);
-		if (var8 == null) {
-			var8 = "";
-		}
-
-		return var8;
 	}
 }

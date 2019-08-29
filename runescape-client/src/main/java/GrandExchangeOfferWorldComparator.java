@@ -1,185 +1,125 @@
 import java.util.Comparator;
+import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("l")
+@ObfuscatedName("n")
 @Implements("GrandExchangeOfferWorldComparator")
 final class GrandExchangeOfferWorldComparator implements Comparator {
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "Lly;"
+	@ObfuscatedName("rr")
+	@ObfuscatedGetter(
+		intValue = 133251749
 	)
-	@Export("leftTitleSprite")
-	static Sprite leftTitleSprite;
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "Ler;"
-	)
-	@Export("scene")
-	static Scene scene;
-
+	static int field34;
 	@ObfuscatedName("q")
+	@Export("soundSystemExecutor")
+	static ScheduledExecutorService soundSystemExecutor;
+	@ObfuscatedName("do")
 	@ObfuscatedSignature(
-		signature = "(Li;Li;I)I",
-		garbageValue = "1850890964"
+		signature = "Lid;"
+	)
+	@Export("archive15")
+	static Archive archive15;
+
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "(Lq;Lq;I)I",
+		garbageValue = "1902979302"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
 		return var1.world < var2.world ? -1 : (var2.world == var1.world ? 0 : 1);
 	}
 
-	public int compare(Object var1, Object var2) {
-		return this.compare_bridged((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-	}
-
 	public boolean equals(Object var1) {
 		return super.equals(var1);
 	}
 
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "(Lhp;B)V",
-		garbageValue = "0"
-	)
-	@Export("VarcInt_setArchives")
-	public static void VarcInt_setArchives(AbstractArchive var0) {
-		VarcInt.VarcInt_archive = var0;
+	public int compare(Object var1, Object var2) {
+		return this.compare_bridged((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-		garbageValue = "-2102370448"
+		signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
+		garbageValue = "1594628992"
 	)
-	public static String method63(CharSequence var0) {
-		int var1 = var0.length();
-		StringBuilder var2 = new StringBuilder(var1);
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			char var4 = var0.charAt(var3);
-			if ((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-				if (var4 == ' ') {
-					var2.append('+');
-				} else {
-					byte var5 = ItemDefinition.charToByteCp1252(var4);
-					var2.append('%');
-					int var6 = var5 >> 4 & 15;
-					if (var6 >= 10) {
-						var2.append((char)(var6 + 55));
-					} else {
-						var2.append((char)(var6 + 48));
-					}
-
-					var6 = var5 & 15;
-					if (var6 >= 10) {
-						var2.append((char)(var6 + 55));
-					} else {
-						var2.append((char)(var6 + 48));
-					}
-				}
-			} else {
-				var2.append(var4);
-			}
-		}
-
-		return var2.toString();
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(Lla;ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "-9"
-	)
-	static String method54(IterableNodeHashTable var0, int var1, String var2) {
-		if (var0 == null) {
-			return var2;
-		}
-		ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-		return var3 == null ? var2 : (String)var3.obj;
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(II)Lik;",
-		garbageValue = "-1961052460"
-	)
-	public static VarpDefinition method61(int var0) {
-		VarpDefinition var1 = (VarpDefinition)VarpDefinition.VarpDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		}
-		byte[] var2 = VarpDefinition.VarpDefinition_archive.takeFile(16, var0);
-		var1 = new VarpDefinition();
-		if (var2 != null) {
-			var1.decode(new Buffer(var2));
-		}
-
-		VarpDefinition.VarpDefinition_cached.put(var1, (long)var0);
-		return var1;
-	}
-
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZZI)V",
-		garbageValue = "-1344972354"
-	)
-	@Export("openURL")
-	public static void openURL(String var0, boolean var1, boolean var2) {
-		SpriteBuffer.method6243(var0, var1, "openjs", var2);
-	}
-
-	@ObfuscatedName("gn")
-	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "-51"
-	)
-	@Export("updateItemPile")
-	static final void updateItemPile(int var0, int var1) {
-		NodeDeque var2 = Client.groundItems[class42.plane][var0][var1];
-		if (var2 == null) {
-			scene.removeGroundItemPile(class42.plane, var0, var1);
-			return;
-		}
-		long var3 = -99999999L;
-		TileItem var5 = null;
-
-		TileItem var6;
-		for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-			ItemDefinition var7 = WorldMapArea.ItemDefinition_get(var6.id);
-			long var8 = (long)var7.price;
-			if (var7.isStackable == 1) {
-				var8 *= (long)(var6.quantity + 1);
-			}
-
-			if (var8 > var3) {
-				var3 = var8;
-				var5 = var6;
-			}
-		}
-
-		if (var5 == null) {
-			scene.removeGroundItemPile(class42.plane, var0, var1);
+	public static String method74(CharSequence[] var0, int var1, int var2) {
+		if (var2 == 0) {
+			return "";
+		} else if (var2 == 1) {
+			CharSequence var3 = var0[var1];
+			return var3 == null ? "null" : var3.toString();
 		} else {
-			var2.addLast(var5);
-			TileItem var12 = null;
-			TileItem var11 = null;
+			int var8 = var2 + var1;
+			int var4 = 0;
 
-			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-				if (var5.id != var6.id) {
-					if (var12 == null) {
-						var12 = var6;
-					}
-
-					if (var6.id != var12.id && var11 == null) {
-						var11 = var6;
-					}
+			for (int var5 = var1; var5 < var8; ++var5) {
+				CharSequence var6 = var0[var5];
+				if (var6 == null) {
+					var4 += 4;
+				} else {
+					var4 += var6.length();
 				}
 			}
 
-			long var9 = Tile.calculateTag(var0, var1, 3, false, 0);
-			scene.newGroundItemPile(class42.plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class42.plane), var5, var9, var12, var11);
+			StringBuilder var9 = new StringBuilder(var4);
+
+			for (int var10 = var1; var10 < var8; ++var10) {
+				CharSequence var7 = var0[var10];
+				if (var7 == null) {
+					var9.append("null");
+				} else {
+					var9.append(var7);
+				}
+			}
+
+			return var9.toString();
 		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(ILcr;ZI)I",
+		garbageValue = "-1665010136"
+	)
+	static int method79(int var0, Script var1, boolean var2) {
+		Widget var3;
+		if (var0 >= 2000) {
+			var0 -= 1000;
+			var3 = WorldMapElement.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
+		} else {
+			var3 = var2 ? class286.field3623 : class297.field3693;
+		}
+
+		if (var0 == ScriptOpcodes.CC_CALLONRESIZE) {
+			if (Interpreter.field1064 >= 10) {
+				throw new RuntimeException();
+			} else if (var3.onResize == null) {
+				return 0;
+			} else {
+				ScriptEvent var4 = new ScriptEvent();
+				var4.widget = var3;
+				var4.args = var3.onResize;
+				var4.field555 = Interpreter.field1064 + 1;
+				Client.scriptEvents.addFirst(var4);
+				return 1;
+			}
+		} else {
+			return 2;
+		}
+	}
+
+	@ObfuscatedName("bo")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)I",
+		garbageValue = "516723982"
+	)
+	public static int method80(String var0) {
+		return var0.length() + 2;
 	}
 }

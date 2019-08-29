@@ -1,45 +1,42 @@
-import java.applet.Applet;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hk")
 public class class218 {
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 1717114817
-	)
-	public static int field2707;
-
-	@ObfuscatedName("q")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
-		garbageValue = "-1987450780"
+		signature = "(CB)Z",
+		garbageValue = "0"
 	)
-	public static void method4110(Applet var0, String var1) {
-		class51.applet = var0;
-		if (var1 != null) {
-			class51.field434 = var1;
-		}
+	public static boolean method4019(char var0) {
+		if ((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
+			if (var0 != 0) {
+				char[] var1 = class287.cp1252AsciiExtension;
 
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-205887653"
-	)
-	@Export("isKeyDown")
-	public static final boolean isKeyDown() {
-		synchronized(KeyHandler.KeyHandler_instance) {
-			if (KeyHandler.field385 == KeyHandler.field396) {
-				return false;
+				for (int var2 = 0; var2 < var1.length; ++var2) {
+					char var3 = var1[var2];
+					if (var0 == var3) {
+						return true;
+					}
+				}
 			}
-			ReflectionCheck.field1338 = KeyHandler.field400[KeyHandler.field396];
-			Calendar.field2508 = KeyHandler.field399[KeyHandler.field396];
-			KeyHandler.field396 = KeyHandler.field396 + 1 & 127;
+
+			return false;
+		} else {
 			return true;
 		}
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(II)I",
+		garbageValue = "-617749686"
+	)
+	@Export("ViewportMouse_unpackX")
+	public static int ViewportMouse_unpackX(int var0) {
+		long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
+		int var1 = (int)(var2 >>> 0 & 127L);
+		return var1;
 	}
 }
