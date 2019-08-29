@@ -27,19 +27,6 @@ package net.runelite.client.plugins.runecraft;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Area;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.CHAOS_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.COSMIC_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.DEATH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.EARTH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.FIRE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.LAW_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
 import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -63,7 +50,6 @@ class AbyssOverlay extends Overlay
 {
 	private static final Dimension IMAGE_SIZE = new Dimension(15, 14);
 
-	private final Set<AbyssRifts> rifts = new HashSet<>();
 	private final Map<AbyssRifts, BufferedImage> abyssIcons = new HashMap<>();
 
 	private final Client client;
@@ -127,7 +113,7 @@ class AbyssOverlay extends Overlay
 	private void renderRifts(Graphics2D graphics, DecorativeObject object)
 	{
 		AbyssRifts rift = AbyssRifts.getRift(object.getId());
-		if (rift == null || !rifts.contains(rift))
+		if (rift == null || !plugin.getRifts().contains(rift))
 		{
 			return;
 		}
@@ -180,62 +166,5 @@ class AbyssOverlay extends Overlay
 
 		abyssIcons.put(rift, resizedImage);
 		return resizedImage;
-	}
-
-	public void updateConfig()
-	{
-		rifts.clear();
-		if (config.showAir())
-		{
-			rifts.add(AIR_RIFT);
-		}
-		if (config.showBlood())
-		{
-			rifts.add(BLOOD_RIFT);
-		}
-		if (config.showBody())
-		{
-			rifts.add(BODY_RIFT);
-		}
-		if (config.showChaos())
-		{
-			rifts.add(CHAOS_RIFT);
-		}
-		if (config.showCosmic())
-		{
-			rifts.add(COSMIC_RIFT);
-		}
-		if (config.showDeath())
-		{
-			rifts.add(DEATH_RIFT);
-		}
-		if (config.showEarth())
-		{
-			rifts.add(EARTH_RIFT);
-		}
-		if (config.showFire())
-		{
-			rifts.add(FIRE_RIFT);
-		}
-		if (config.showLaw())
-		{
-			rifts.add(LAW_RIFT);
-		}
-		if (config.showMind())
-		{
-			rifts.add(MIND_RIFT);
-		}
-		if (config.showNature())
-		{
-			rifts.add(NATURE_RIFT);
-		}
-		if (config.showSoul())
-		{
-			rifts.add(SOUL_RIFT);
-		}
-		if (config.showWater())
-		{
-			rifts.add(WATER_RIFT);
-		}
 	}
 }
