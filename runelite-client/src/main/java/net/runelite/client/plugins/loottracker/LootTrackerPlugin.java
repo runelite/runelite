@@ -244,7 +244,9 @@ public class LootTrackerPlugin extends Plugin
 					SwingUtilities.invokeLater(panel::updateIgnoredItems);
 					break;
 			}
+
 		}
+
 	}
 
 	@Override

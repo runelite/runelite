@@ -473,9 +473,11 @@ class LootTrackerPanel extends PluginPanel
 		for (LootTrackerRecord r : records)
 		{
 			boolean isRecordIgnored = plugin.isEventIgnored(r.getTitle());
-			if(isRecordIgnored != r.isIgnored()) {
+			if(isRecordIgnored != r.isIgnored())
+			{
 				r.setIgnored(isRecordIgnored);
 			}
+
 		}
 
 		rebuild();
@@ -585,7 +587,8 @@ class LootTrackerPanel extends PluginPanel
 
 		// Add Toggle NPC menu item
 		final JMenuItem toggleEvent = new JMenuItem("Toggle NPC");
-		toggleEvent.addActionListener(e -> {
+		toggleEvent.addActionListener(e ->
+		{
 			record.setIgnored(!record.isIgnored());
 			plugin.toggleEvent(record.getTitle(), record.isIgnored());
 		});
