@@ -95,6 +95,9 @@ public class RunecraftPlugin extends Plugin
 	private AbyssOverlay abyssOverlay;
 
 	@Inject
+	private AbyssMinimapOverlay abyssMinimapOverlay;
+
+	@Inject
 	private RunecraftConfig config;
 
 	@Inject
@@ -110,6 +113,7 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(abyssOverlay);
+		overlayManager.add(abyssMinimapOverlay);
 		updateRifts();
 	}
 
@@ -117,6 +121,7 @@ public class RunecraftPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
