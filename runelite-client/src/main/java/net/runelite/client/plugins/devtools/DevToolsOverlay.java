@@ -26,8 +26,8 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -46,9 +46,7 @@ import net.runelite.api.DynamicObject;
 import net.runelite.api.Entity;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.TileItem;
 import net.runelite.api.GroundObject;
-import net.runelite.api.TileItemPile;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Node;
@@ -58,6 +56,8 @@ import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
+import net.runelite.api.TileItemPile;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
@@ -243,6 +243,7 @@ class DevToolsOverlay extends Overlay
 				if (plugin.getGameObjects().isActive())
 				{
 					renderGameObjects(graphics, tile, player);
+
 				}
 
 				if (plugin.getWalls().isActive())
@@ -328,6 +329,8 @@ class DevToolsOverlay extends Overlay
 					{
 						graphics.drawPolygon(p);
 					}
+					// This is incredibly taxing to run, only uncomment if you know what you're doing.
+					/*renderGameObjectWireframe(graphics, gameObject, Color.CYAN);*/
 				}
 			}
 		}
@@ -546,6 +549,23 @@ class DevToolsOverlay extends Overlay
 		graphics.drawString(text, textX + 1, textY + 1);
 		graphics.setColor(color);
 		graphics.drawString(text, textX, textY);
+	}
+
+	private void renderGameObjectWireframe(Graphics2D graphics, GameObject gameObject, Color color)
+	{
+		Polygon[] polys = gameObject.getPolygons();
+
+		if (polys == null)
+		{
+			return;
+		}
+
+		graphics.setColor(color);
+
+		for (Polygon p : polys)
+		{
+			graphics.drawPolygon(p);
+		}
 	}
 
 	private void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)

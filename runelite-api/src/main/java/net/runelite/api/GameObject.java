@@ -24,8 +24,8 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.Angle;
 import java.awt.Polygon;
+import net.runelite.api.coords.Angle;
 
 /**
  * Represents a game object.
@@ -60,6 +60,13 @@ public interface GameObject extends TileObject
 	 * @see //net.runelite.api.model.Jarvis
 	 */
 	Polygon getConvexHull();
+
+	/**
+	 * Gets the polygons that make up the game object model.
+	 *
+	 * @return the model polygons
+	 */
+	Polygon[] getPolygons();
 
 	/**
 	 * Gets the orientation of the object.
