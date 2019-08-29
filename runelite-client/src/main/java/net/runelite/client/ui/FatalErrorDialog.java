@@ -161,6 +161,7 @@ public class FatalErrorDialog extends JDialog
 		addButton("Exit", () -> System.exit(-1));
 
 		pack();
+		setLocationRelativeTo(null);
 		SplashScreen.stop();
 		setVisible(true);
 	}

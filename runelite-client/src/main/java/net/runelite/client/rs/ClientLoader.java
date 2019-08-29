@@ -26,6 +26,7 @@
  */
 package net.runelite.client.rs;
 
+import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
@@ -110,6 +111,12 @@ public class ClientLoader implements Supplier<Applet>
 				try
 				{
 					config = ClientConfigLoader.fetch(host);
+
+					if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
+					{
+						throw new IOException("Invalid or missing jav_config");
+					}
+
 					break;
 				}
 				catch (IOException e)
