@@ -233,7 +233,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
-			switch(event.getKey())
+			switch (event.getKey())
 			{
 				case "ignoredEvents":
 					ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
@@ -651,12 +651,12 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ignoredEventSet.add(name);
 		}
-		 else
+		else
 		{
 			ignoredEventSet.remove(name);
 		}
-		 config.setIgnoreEvents(Text.toCSV(ignoredEventSet));
-		 panel.updateIgnoredEvents();
+		config.setIgnoreEvents(Text.toCSV(ignoredEventSet));
+		panel.updateIgnoredEvents();
 	}
 
 	boolean isItemIgnored(String name)

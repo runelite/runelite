@@ -183,7 +183,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText("x " + kills);
 		}
 
-		if(!hideIgnoredItems && isEventHidden)
+		if (!hideIgnoredItems && isEventHidden)
 		{
 			applyDimmer(false, logTitle);
 		}

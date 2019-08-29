@@ -473,11 +473,10 @@ class LootTrackerPanel extends PluginPanel
 		for (LootTrackerRecord r : records)
 		{
 			boolean isRecordIgnored = plugin.isEventIgnored(r.getTitle());
-			if(isRecordIgnored != r.isIgnored())
+			if (isRecordIgnored != r.isIgnored())
 			{
 				r.setIgnored(isRecordIgnored);
 			}
-
 		}
 
 		rebuild();
