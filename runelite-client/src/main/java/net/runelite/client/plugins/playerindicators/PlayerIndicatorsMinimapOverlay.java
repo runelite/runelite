@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Player;
@@ -59,27 +61,16 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 		setPriority(OverlayPriority.HIGH);
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	private void renderMinimapOverlays(Graphics2D graphics, Player actor, PlayerRelation relation)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> 
+		if (!plugin.getLocationHashMap().containsKey(relation))
 		{
-			if (plugin.isDrawFriendMinimapNames() && !player.isFriend())
-			{
-				return;
-			}
-			if (plugin.isDrawClanMinimapNames() && !player.isClanMember())
-			{
-				return;
-			}
-			renderPlayerOverlay(graphics, player, color);
-		});
-		return null;
-	}
+			return;
+		}
+		final List indicationLocations = Arrays.asList(plugin.getLocationHashMap().get(relation));
+		final Color color = plugin.getRelationColorHashMap().get(relation);
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
-	{
-		if (plugin.isDrawMinimapNames())
+		if (indicationLocations.contains(PlayerIndicationLocation.MINIMAP))
 		{
 			String name = actor.getName().replace('\u00A0', ' ');
 			String tag = "";
@@ -99,31 +90,36 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 				{
 					name += "-(" + actor.getCombatLevel() + ")";
 				}
-				if (plugin.isDrawMinimapNames())
+				if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
 				{
-
-					if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
+					int width = graphics.getFontMetrics().stringWidth(name);
+					int height = graphics.getFontMetrics().getHeight();
+					if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
 					{
-						int width = graphics.getFontMetrics().stringWidth(name);
-						int height = graphics.getFontMetrics().getHeight();
-						if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
-						{
-							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
-									+ width, minimapLocation.getY() - height),
-								ImageUtil.resizeImage(skullIcon, height, height));
-						}
-						else
-						{
-							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
-									minimapLocation.getY() - height),
-								ImageUtil.resizeImage(skullIcon, height, height));
-							minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
-								minimapLocation.getY());
-						}
+						OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
+								+ width, minimapLocation.getY() - height),
+							ImageUtil.resizeImage(skullIcon, height, height));
 					}
-					OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+					else
+					{
+						OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
+								minimapLocation.getY() - height),
+							ImageUtil.resizeImage(skullIcon, height, height));
+						minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
+							minimapLocation.getY());
+					}
 				}
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}
+
 		}
+
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		playerIndicatorsService.forEachPlayer((player, playerRelation) -> renderMinimapOverlays(graphics, player, playerRelation));
+		return null;
 	}
 }

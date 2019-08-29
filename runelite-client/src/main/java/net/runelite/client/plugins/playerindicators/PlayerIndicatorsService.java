@@ -24,10 +24,14 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.client.util.PvPUtil;
@@ -38,72 +42,93 @@ public class PlayerIndicatorsService
 	private final Client client;
 	private final PlayerIndicatorsPlugin plugin;
 
+	public Predicate<Player> self;
+	public Predicate<Player> friend;
+	public Predicate<Player> clan;
+	public Predicate<Player> team;
+	public Predicate<Player> target;
+	public Predicate<Player> other;
+	public Predicate<Player> caller;
+	public Predicate<Player> callerTarget;
+
+
+	private List<Actor> piles = new ArrayList<>();
+
+
 	@Inject
 	private PlayerIndicatorsService(final Client client, final PlayerIndicatorsPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
+
+		self = (player) -> Objects.equals(client.getLocalPlayer(), player);
+		friend = (player) -> (!player.equals(client.getLocalPlayer()) && client.isFriended(player.getName(), false));
+		clan = Player::isClanMember;
+		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 &&
+			client.getLocalPlayer().getTeam() == player.getTeam());
+		target = (player) -> PvPUtil.isAttackable(client, player);
+		other = Objects::nonNull;
+		caller = plugin::isCaller;
+		callerTarget = piles::contains;
 	}
 
-	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
+
+	public void forEachPlayer(final BiConsumer<Player, PlayerRelation> consumer)
 	{
-		if (!plugin.isHighlightOwnPlayer() && !plugin.isDrawClanMemberNames()
-			&& !plugin.isHighlightFriends() && !plugin.isHighlightNonClanMembers() && !plugin.isHighlightTargets() && !plugin.isHighlightCallers() && !plugin.isHighlightTeamMembers())
+		if (!highlight())
 		{
 			return;
 		}
+		piles.clear();
 
-		final Player localPlayer = client.getLocalPlayer();
-
-		for (Player player : client.getPlayers())
+		final List<Player> players = client.getPlayers();
+		if (plugin.isHighlightOwnPlayer())
 		{
-			if (player == null || player.getName() == null)
-			{
-				continue;
-			}
-
-			boolean isClanMember = player.isClanMember();
-
-			if (player.equals(localPlayer))
-			{
-				if (plugin.isHighlightOwnPlayer())
-				{
-					consumer.accept(player, plugin.getGetOwnPlayerColor());
-				}
-			}
-			else if (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
-			{
-				consumer.accept(player, plugin.getGetFriendColor());
-			}
-			else if (plugin.isDrawClanMemberNames() && isClanMember)
-			{
-				consumer.accept(player, plugin.getGetClanMemberColor());
-			}
-			else if (plugin.isHighlightTeamMembers() && localPlayer.getTeam() > 0 &&
-				localPlayer.getTeam() == player.getTeam())
-			{
-				consumer.accept(player, plugin.getGetTeamMemberColor());
-			}
-			else if (plugin.isHighlightNonClanMembers() && !isClanMember)
-			{
-				consumer.accept(player, plugin.getGetNonClanMemberColor());
-			}
-			else if (plugin.isHighlightTargets() && PvPUtil.isAttackable(client, player) &&
-				!client.isFriended(player.getName(), false) && !player.isClanMember())
-			{
-				if (plugin.isSkulledTargetsOnly() && player.getSkullIcon() != null)
-				{
-					consumer.accept(player, plugin.getGetTargetColor());
-				}
-				else if (!plugin.isSkulledTargetsOnly())
-				{
-					consumer.accept(player, plugin.getGetTargetColor());
-				}
-			}
-			if (plugin.isHighlightCallers() && plugin.getConfigCallers() != null && plugin.isCaller(player))
-			{
-				consumer.accept(player, plugin.getCallerColor());
-			}
+			players.stream().filter(self).forEach(p -> consumer.accept(p, PlayerRelation.SELF));
 		}
+		if (plugin.isHighlightFriends())
+		{
+			players.stream().filter(friend.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.FRIEND));
+		}
+		if (plugin.isHighlightClan())
+		{
+			players.stream().filter(clan.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.CLAN));
+		}
+		if (plugin.isHighlightTeam())
+		{
+			players.stream().filter(team.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.TEAM));
+		}
+		if (plugin.isHighlightTargets())
+		{
+			players.stream().filter(target.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.TARGET));
+		}
+		if (plugin.isHighlightOther())
+		{
+			players.stream().filter(other.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.OTHER));
+		}
+		if (plugin.isHighlightCallers())
+		{
+			players.stream().filter(caller).forEach(p ->
+			{
+				consumer.accept(p, PlayerRelation.CALLER);
+				if (p.getInteracting() != null)
+				{
+					piles.add(p.getInteracting());
+				}
+			});
+		}
+		if (plugin.isHighlightCallerTargets())
+		{
+			players.stream().filter(callerTarget).forEach(p ->
+				consumer.accept(p, PlayerRelation.CALLER_TARGET));
+		}
+	}
+
+
+	private boolean highlight()
+	{
+		return plugin.isHighlightOwnPlayer() || plugin.isHighlightClan()
+			|| plugin.isHighlightFriends() || plugin.isHighlightOther() || plugin.isHighlightTargets()
+			|| plugin.isHighlightCallers() || plugin.isHighlightTeam() || plugin.isHighlightCallerTargets();
 	}
 }

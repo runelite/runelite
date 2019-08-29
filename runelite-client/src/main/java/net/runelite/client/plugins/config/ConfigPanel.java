@@ -26,6 +26,7 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -45,6 +46,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
@@ -58,6 +60,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -66,6 +69,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -743,6 +747,7 @@ public class ConfigPanel extends PluginPanel
 				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 				item.add(configEntryName, cid.getType() != String.class ? BorderLayout.CENTER : BorderLayout.NORTH);
 
+
 				if (cid.getType() == Stub.class)
 				{
 					Border border = item.getBorder();
@@ -1064,6 +1069,53 @@ public class ConfigPanel extends PluginPanel
 
 					item.add(button, BorderLayout.EAST);
 				}
+
+				else if (cid.getType() == EnumSet.class)
+				{
+
+					int displayRows = cid.getItem().displayRows();
+
+					Class enumType = cid.getItem().enumClass();
+
+					EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
+						cid.getItem().keyName(), EnumSet.class);
+					if (enumSet == null || enumSet.contains(null))
+					{
+						enumSet = EnumSet.noneOf(enumType);
+					}
+					JList jList = new JList(enumType.getEnumConstants());
+					jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+					if (!enumSet.isEmpty() && enumSet.size() > 1)
+					{
+						int[] selected = new int[enumSet.size()];
+						for (int i = 0; i < enumSet.size(); i++)
+						{
+							if (enumSet.contains(EnumSet.allOf(enumType).toArray()[i]))
+							{
+								selected[i] = Lists.newArrayList(EnumSet.allOf(enumType)).indexOf(enumSet.toArray()[i]);
+							}
+						}
+						jList.setSelectedIndices(selected);
+					}
+					if (enumSet.size() == 1)
+					{
+						enumSet.forEach(anObject -> jList.setSelectedValue(anObject, true));
+					}
+					jList.setVisibleRowCount(displayRows);
+					jList.setPrototypeCellValue("XXXXXXXXXX");
+					jList.setCellRenderer(new ComboBoxListRenderer());
+					jList.setLayoutOrientation(JList.VERTICAL);
+					jList.setSelectionBackground(Color.decode("708090"));
+					jList.addListSelectionListener(e ->
+						changeConfiguration(listItem, config, jList, cd, cid));
+					JScrollPane jScrollPane = new JScrollPane();
+					jScrollPane.setViewportView(jList);
+					jScrollPane.setViewportBorder(BorderFactory.createLoweredSoftBevelBorder());
+
+					item.add(jScrollPane, BorderLayout.SOUTH);
+
+				}
 				mainPanel.add(item);
 			}
 
@@ -1225,6 +1277,57 @@ public class ConfigPanel extends PluginPanel
 				}
 			}
 		}
+		else if (component instanceof JList)
+		{
+			JList jList = (JList) component;
+
+			Class<?extends Enum> enumType = cid.getItem().enumClass();
+			EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(), EnumSet.class) != null ? configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(), EnumSet.class) : EnumSet.noneOf(enumType);
+			if (enumSet == null || enumSet.contains(null))
+			{
+				enumSet = EnumSet.noneOf(enumType);
+			}
+			enumSet.clear();
+
+			EnumSet finalEnumSet = enumSet;
+			jList.getSelectedValuesList().forEach(value ->
+				finalEnumSet.add(Enum.valueOf(cid.getItem().enumClass(), value.toString())));
+
+
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), finalEnumSet);
+
+			for (ConfigItemDescriptor cid2 : cd.getItems())
+			{
+				if (cid2.getItem().hidden() || !cid2.getItem().hide().isEmpty())
+				{
+					List<String> itemHide = Splitter
+						.onPattern("\\|\\|")
+						.trimResults()
+						.omitEmptyStrings()
+						.splitToList(String.format("%s || %s", cid2.getItem().unhide(), cid2.getItem().hide()));
+
+					if (itemHide.contains(cid.getItem().keyName()))
+					{
+						reloadPluginlist(listItem, config, cd);
+					}
+
+					String changedVal = String.valueOf(( jList.getSelectedValues()));
+
+					if (cid2.getItem().enabledBy().contains(cid.getItem().keyName()) && cid2.getItem().enabledByValue().equals(changedVal))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "true");
+						reloadPluginlist(listItem, config, cd);
+					}
+					else if (cid2.getItem().disabledBy().contains(cid.getItem().keyName()) && cid2.getItem().disabledByValue().equals(changedVal))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "false");
+						reloadPluginlist(listItem, config, cd);
+					}
+				}
+			}
+		}
 		else if (component instanceof HotkeyButton)
 		{
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
@@ -1325,6 +1428,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
+
 
 	private static class FixedWidthPanel extends JPanel
 	{

@@ -48,6 +48,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,7 @@ import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ColorUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Singleton
 @Slf4j
@@ -535,6 +537,40 @@ public class ConfigManager
 		{
 			return Duration.ofMillis(Long.parseLong(str));
 		}
+		if (type == int[].class)
+		{
+			if (str.contains(","))
+			{
+				return Arrays.stream(str.split(",")).mapToInt(Integer::valueOf).toArray();
+			}
+			return new int[] {Integer.parseInt(str)};
+		}
+		if (type == EnumSet.class)
+		{
+			try
+			{
+				String substring = str.substring(str.indexOf("{") + 1, str.length() - 1);
+				String[] splitStr = substring.split(", ");
+				final Class<? extends Enum> enumClass;
+				if (!str.contains("{"))
+				{
+					return null;
+				}
+				enumClass = (Class<? extends Enum>) Class.forName(str.substring(0, str.indexOf("{")));
+				EnumSet enumSet = EnumSet.noneOf(enumClass);
+				for (String s : splitStr)
+				{
+					enumSet.add(Enum.valueOf(enumClass, s.replace("[", "").replace("]", "")));
+				}
+				return enumSet;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+
+		}
 		if (type == Map.class)
 		{
 			Map<String, String> output = new HashMap<>();
@@ -596,6 +632,18 @@ public class ConfigManager
 		if (object instanceof Duration)
 		{
 			return Long.toString(((Duration) object).toMillis());
+		}
+		if (object instanceof int[])
+		{
+			if (((int[]) object).length == 0)
+			{
+				return String.valueOf(object);
+			}
+			return StringUtils.join(object, ",");
+		}
+		if (object instanceof EnumSet)
+		{
+			return ((EnumSet) object).toArray()[0].getClass().getCanonicalName() + "{" + object.toString() + "}";
 		}
 		return object.toString();
 	}
