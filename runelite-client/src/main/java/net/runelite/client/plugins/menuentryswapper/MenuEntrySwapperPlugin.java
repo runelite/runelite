@@ -568,7 +568,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pick-lots", option, target, true);
 		}
-		else if (config.swampGrandExchangeAbort() && shiftModifier && option.equals("view offer"))
+		else if (config.swapGrandExchangeAbort() && shiftModifier && option.equals("view offer"))
 		{
 			swap("abort offer", option, target, true);
 		}

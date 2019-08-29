@@ -167,7 +167,10 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Grand Exchange Abort",
 		description = "Allows player to abort Grand Exchange offer by shift clicking."
 	)
-	default boolean swampGrandExchangeAbort() { return false; }
+	default boolean swapGrandExchangeAbort()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "swapHardWoodGrove",
