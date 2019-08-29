@@ -85,7 +85,7 @@ allprojects {
     apply plugin: 'checkstyle'
 
     group = 'net.runelite'
-    version = '1.5.32-SNAPSHOT'
+    version = '1.5.33-SNAPSHOT'
 
     ext {
         rsversion = 182
