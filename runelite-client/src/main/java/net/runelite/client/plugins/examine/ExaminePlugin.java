@@ -57,6 +57,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.examine.ExamineClient;
 
 /**
@@ -104,7 +105,7 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals("Examine"))
+		if (!Text.removeTags(event.getMenuOption()).equals("Examine"))
 		{
 			return;
 		}
@@ -282,7 +283,11 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
+			|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup)
 		{
 			Widget[] children = widget.getDynamicChildren();
 			if (actionParam < children.length)
@@ -300,36 +305,9 @@ public class ExaminePlugin extends Plugin
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
 		{
 			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
