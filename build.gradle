@@ -90,7 +90,7 @@ allprojects {
     ext {
         rsversion = 182
         cacheversion = 165
-        plusVersion = '2.1.4.0'
+        plusVersion = '2.1.5.0'
 
         gitCommit = localGitCommit
         gitCommitShort = localGitCommitShort
