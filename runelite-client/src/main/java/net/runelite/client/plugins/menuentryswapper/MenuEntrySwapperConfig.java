@@ -163,6 +163,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swampGrandExchangeAbort",
+		name = "Grand Exchange Abort",
+		description = "Allows player to abort Grand Exchange offer by shift clicking."
+	)
+	default boolean swampGrandExchangeAbort() { return false; }
+
+	@ConfigItem(
 		keyName = "swapHardWoodGrove",
 		name = "Hardwood Grove",
 		description = "Swap Quick-Pay(100) and Send-Parcel at Hardwood Grove"
