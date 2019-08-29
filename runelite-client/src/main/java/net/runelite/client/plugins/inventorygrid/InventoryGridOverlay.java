@@ -54,6 +54,10 @@ class InventoryGridOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
+	private static final int initialMousePointAreaRadius = 5;
+	private static Rectangle initialMousePointArea = null;
+	private static boolean passedInitialMousePointArea = false;
+
 	@Inject
 	private InventoryGridOverlay(InventoryGridConfig config, Client client, ItemManager itemManager)
 	{
@@ -71,9 +75,10 @@ class InventoryGridOverlay extends Overlay
 		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH)
+		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget)
 		{
+			initialMousePointArea = null;
+			passedInitialMousePointArea = false;
 			return null;
 		}
 
@@ -83,10 +88,23 @@ class InventoryGridOverlay extends Overlay
 		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
 		final int itemId = draggedItem.getId();
 
+		if (initialMousePointArea == null)
+		{
+			initialMousePointArea = new Rectangle((int) mousePoint.getX() - initialMousePointAreaRadius, (int) mousePoint.getY() - initialMousePointAreaRadius, initialMousePointAreaRadius * 2, initialMousePointAreaRadius * 2);
+			return null;
+		}
+
+		if(initialMousePointArea.contains(mousePoint) && !passedInitialMousePointArea)
+		{
+			return null;
+		}
+
 		if (itemId == -1)
 		{
 			return null;
 		}
+
+		passedInitialMousePointArea = true;
 
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{

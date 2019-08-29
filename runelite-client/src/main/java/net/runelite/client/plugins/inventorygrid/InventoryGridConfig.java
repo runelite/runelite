@@ -61,15 +61,4 @@ public interface InventoryGridConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Time in ms to wait after item press before showing grid"
-	)
-	@Range(min = 100)
-	default int dragDelay()
-	{
-		return 100;
-	}
 }
