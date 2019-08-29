@@ -67,6 +67,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 		{
 			return;
 		}
+
 		final List indicationLocations = Arrays.asList(plugin.getLocationHashMap().get(relation));
 		final Color color = plugin.getRelationColorHashMap().get(relation);
 
@@ -92,8 +93,8 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 				}
 				if (actor.getSkullIcon() != null && plugin.isPlayerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
 				{
-					int width = graphics.getFontMetrics().stringWidth(name);
-					int height = graphics.getFontMetrics().getHeight();
+					final int width = graphics.getFontMetrics().stringWidth(name);
+					final int height = graphics.getFontMetrics().getHeight();
 					if (plugin.getSkullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
 					{
 						OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
@@ -105,8 +106,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 						OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
 								minimapLocation.getY() - height),
 							ImageUtil.resizeImage(skullIcon, height, height));
-						minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
-							minimapLocation.getY());
+						minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(), minimapLocation.getY());
 					}
 				}
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
