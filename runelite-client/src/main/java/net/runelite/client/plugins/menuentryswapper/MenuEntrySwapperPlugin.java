@@ -373,7 +373,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (config.swapPickpocket() && shouldSwapPickpocket(target))
 			{
 				swap("pickpocket", option, target, true);
 			}
@@ -552,6 +552,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapQuick() && option.equals("climb-down"))
 		{
 			swap("quick-start", option, target, true);
+			swap("pay", option, target, true);
 		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
@@ -593,6 +594,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+	}
+
+	private static boolean shouldSwapPickpocket(String target)
+	{
+		return !target.startsWith("villager") && !target.startsWith("bandit") && !target.startsWith("menaphite thug");
 	}
 
 	@Subscribe

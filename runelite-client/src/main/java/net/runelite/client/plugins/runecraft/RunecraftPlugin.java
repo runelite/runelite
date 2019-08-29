@@ -121,7 +121,10 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		abyssOverlay.updateConfig();
+		if (event.getGroup().equals("runecraft"))
+		{
+			abyssOverlay.updateConfig();
+		}
 	}
 
 	@Subscribe

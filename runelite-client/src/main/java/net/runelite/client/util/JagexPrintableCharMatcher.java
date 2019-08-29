@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-import java.util.function.Predicate;
+import com.google.common.base.CharMatcher;
 
-/**
- * A query to search the game for objects that match.
- *
- * @param <EntityType> the returned object type
- * @param <QueryType> the query type
- */
-public abstract class Query<EntityType, QueryType>
+class JagexPrintableCharMatcher extends CharMatcher
 {
-	protected Predicate<EntityType> predicate = x -> true;
-
-	protected Query()
+	@Override
+	public boolean matches(char c)
 	{
-	}
-
-	/**
-	 * Executes the query and filters through possible objects, returning only
-	 * those who evaluate true using {@link #predicate}.
-	 *
-	 * @param client the game client
-	 * @return the matching objects
-	 */
-	public abstract EntityType[] result(Client client);
-
-	/**
-	 * Constructs and returns a predicate that will evaluate {@link #predicate}
-	 * and the passed value.
-	 *
-	 * @param other the passed predicate
-	 * @return the combined predicate
-	 */
-	protected Predicate<EntityType> and(Predicate<EntityType> other)
-	{
-		if (predicate == null)
-		{
-			return other;
-		}
-		return predicate.and(other);
+		// Characters which are printable
+		return (c >= 32 && c <= 126)
+			|| c == 128
+			|| (c >= 160 && c <= 255);
 	}
 }

@@ -34,9 +34,11 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +82,7 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -112,6 +115,11 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HESPORI_EVENT = "Hespori";
 	private static final int HESPORI_REGION = 5021;
 
+	// Gauntlet loot handling
+	private static final String GAUNTLET_LOOTED_MESSAGE = "You open the chest.";
+	private static final String GAUNTLET_EVENT = "The Gauntlet";
+	private static final int GAUNTLET_LOBBY_REGION = 12127;
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
@@ -119,7 +127,8 @@ public class LootTrackerPlugin extends Plugin
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest",
 		12093, "Larran's big chest",
-		13113, "Larran's small chest"
+		13113, "Larran's small chest",
+		13151, "Elven Crystal Chest"
 	);
 
 	// Last man standing map regions
@@ -160,6 +169,7 @@ public class LootTrackerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
+	private final List<LootRecord> queuedLoots = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -213,6 +223,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
+		submitLoot();
 		lootTrackerClient = null;
 	}
 
@@ -293,6 +304,7 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		submitLoot();
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		chestLooted = false;
@@ -317,10 +329,13 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (config.saveLoot())
 		{
 			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 	}
 
@@ -340,10 +355,13 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (config.saveLoot())
 		{
 			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 	}
 
@@ -385,6 +403,10 @@ public class LootTrackerPlugin extends Plugin
 				// Clue Scrolls use same InventoryID as Barrows
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
+			case (WidgetID.KINGDOM_GROUP_ID):
+				eventType = "Kingdom of Miscellania";
+				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
+				break;
 			default:
 				return;
 		}
@@ -409,10 +431,13 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
 
-		if (lootTrackerClient != null && config.saveLoot())
+		if (config.saveLoot())
 		{
 			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-			lootTrackerClient.submit(lootRecord);
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
 		}
 	}
 
@@ -448,10 +473,19 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (HESPORI_REGION == client.getLocalPlayer().getWorldLocation().getRegionID() && message.equals(HESPORI_LOOTED_MESSAGE))
+		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
 		{
 			eventType = HESPORI_EVENT;
 			takeInventorySnapshot();
+			return;
+		}
+
+		if (GAUNTLET_LOBBY_REGION == regionID && message.equals(GAUNTLET_LOOTED_MESSAGE))
+		{
+			eventType = GAUNTLET_EVENT;
+			takeInventorySnapshot();
+			return;
 		}
 
 		// Check if message is for a clue scroll reward
@@ -486,7 +520,10 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOAR_EVENT.equals(eventType) || HESPORI_EVENT.equals(eventType)))
+		if (CHEST_EVENT_TYPES.containsValue(eventType)
+			|| HERBIBOAR_EVENT.equals(eventType)
+			|| HESPORI_EVENT.equals(eventType)
+			|| GAUNTLET_EVENT.equals(eventType))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
@@ -496,6 +533,40 @@ public class LootTrackerPlugin extends Plugin
 			processChestLoot(eventType, event.getItemContainer());
 			eventType = null;
 		}
+	}
+
+	@Schedule(
+		period = 5,
+		unit = ChronoUnit.MINUTES,
+		asynchronous = true
+	)
+	public void submitLootTask()
+	{
+		submitLoot();
+	}
+
+	private void submitLoot()
+	{
+		List<LootRecord> copy;
+		synchronized (queuedLoots)
+		{
+			if (queuedLoots.isEmpty())
+			{
+				return;
+			}
+
+			copy = new ArrayList<>(queuedLoots);
+			queuedLoots.clear();
+		}
+
+		if (lootTrackerClient == null || !config.saveLoot())
+		{
+			return;
+		}
+
+		log.debug("Submitting {} loot records", copy.size());
+
+		lootTrackerClient.submit(copy);
 	}
 
 	private void takeInventorySnapshot()
@@ -526,10 +597,13 @@ public class LootTrackerPlugin extends Plugin
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries));
 
-			if (lootTrackerClient != null && config.saveLoot())
+			if (config.saveLoot())
 			{
 				LootRecord lootRecord = new LootRecord(chestType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-				lootTrackerClient.submit(lootRecord);
+				synchronized (queuedLoots)
+				{
+					queuedLoots.add(lootRecord);
+				}
 			}
 
 			inventorySnapshot = null;
@@ -589,17 +663,17 @@ public class LootTrackerPlugin extends Plugin
 
 	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
 	{
-		Collection<LootTrackerRecord> trackerRecords = new ArrayList<>();
-		for (LootRecord record : records)
-		{
-			LootTrackerItem[] drops = record.getDrops().stream().map(itemStack ->
-				buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
-			).toArray(LootTrackerItem[]::new);
+		return records.stream()
+			.sorted(Comparator.comparing(LootRecord::getTime))
+			.map(record ->
+			{
+				LootTrackerItem[] drops = record.getDrops().stream().map(itemStack ->
+					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
+				).toArray(LootTrackerItem[]::new);
 
-			trackerRecords.add(new LootTrackerRecord(record.getEventId(), "", drops, -1));
-		}
-
-		return trackerRecords;
+				return new LootTrackerRecord(record.getEventId(), "", drops);
+			})
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	/**

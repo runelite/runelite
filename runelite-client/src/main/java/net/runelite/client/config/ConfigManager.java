@@ -167,6 +167,7 @@ public class ConfigManager
 			return;
 		}
 
+		handler.invalidate();
 		properties.clear();
 
 		for (ConfigEntry entry : configuration.getConfig())
@@ -275,6 +276,7 @@ public class ConfigManager
 
 	private synchronized void loadFromFile()
 	{
+		handler.invalidate();
 		properties.clear();
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
@@ -391,6 +393,7 @@ public class ConfigManager
 		}
 
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{
@@ -421,6 +424,7 @@ public class ConfigManager
 		}
 
 		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{
@@ -503,7 +507,9 @@ public class ConfigManager
 
 			if (!override)
 			{
-				String current = getConfiguration(group.value(), item.keyName());
+				// This checks if it is set and is also unmarshallable to the correct type; so
+				// we will overwrite invalid config values with the default
+				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
 				if (current != null)
 				{
 					continue; // something else is already set

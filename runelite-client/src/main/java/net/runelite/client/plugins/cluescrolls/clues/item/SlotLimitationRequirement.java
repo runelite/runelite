@@ -22,51 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 
-public class SingleItemRequirement implements ItemRequirement
+public class SlotLimitationRequirement implements ItemRequirement
 {
-	private int itemId;
+	private String description;
+	private EquipmentInventorySlot[] slots;
 
-	public SingleItemRequirement(int itemId)
+	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
 	{
-		this.itemId = itemId;
+		this.description = description;
+		this.slots = slots;
 	}
 
 	@Override
 	public boolean fulfilledBy(int itemId)
 	{
-		return this.itemId == itemId;
+		return false;
 	}
 
 	@Override
 	public boolean fulfilledBy(Item[] items)
 	{
-		for (Item item : items)
+		for (EquipmentInventorySlot slot : slots)
 		{
-			if (item.getId() == itemId)
+			if (slot.getSlotIdx() >= items.length)
 			{
-				return true;
+				continue; //We can't check the slot, because there is nothing in it, the array hasn't been resized
+			}
+
+			if (items[slot.getSlotIdx()].getId() != -1)
+			{
+				return false;
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
 	public String getCollectiveName(Client client)
 	{
-		ItemComposition definition = client.getItemDefinition(itemId);
-
-		if (definition == null)
-		{
-			return "N/A";
-		}
-
-		return definition.getName();
+		return description;
 	}
 }

@@ -132,6 +132,13 @@ public interface Client extends GameEngine
 	GameState getGameState();
 
 	/**
+	 * Sets the current game state
+	 *
+	 * @param gameState
+	 */
+	void setGameState(GameState gameState);
+
+	/**
 	 * Gets the current logged in username.
 	 *
 	 * @return the logged in username
@@ -338,6 +345,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the logged in player
 	 */
+	@Nullable
 	Player getLocalPlayer();
 
 	/**
@@ -418,6 +426,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the selected tile
 	 */
+	@Nullable
 	Tile getSelectedSceneTile();
 
 	/**
@@ -432,6 +441,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the dragged widget, null if not dragging any widget
 	 */
+	@Nullable
 	Widget getDraggedWidget();
 
 	/**
@@ -442,6 +452,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
 	 */
+	@Nullable
 	Widget getDraggedOnWidget();
 
 	/**
@@ -690,8 +701,7 @@ public interface Client extends GameEngine
 	 * @param varbit the variable
 	 * @param value the new value
 	 */
-	@VisibleForDevtools
-	void setSetting(Varbits varbit, int value);
+	void setVarbit(Varbits varbit, int value);
 
 	/**
 	 * Gets the value of a given variable.
@@ -1253,11 +1263,10 @@ public interface Client extends GameEngine
 	 *
 	 * This method must be ran on the client thread and is not reentrant
 	 *
-	 * @param id the script ID
-	 * @param args additional arguments to execute the script with
+	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	void runScript(int id, Object... args);
+	void runScript(Object... args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.

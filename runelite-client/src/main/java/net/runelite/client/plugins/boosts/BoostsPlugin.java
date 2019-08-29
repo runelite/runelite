@@ -263,16 +263,25 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		if (config.enableSkill())
+		switch (config.displayBoosts())
 		{
-			shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+			case NONE:
+				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case COMBAT:
+				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case NON_COMBAT:
+				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case BOTH:
+				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
 		}
-		else
-		{
-			shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-		}
-
-		shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
 	}
 
 	private void updateBoostedStats()

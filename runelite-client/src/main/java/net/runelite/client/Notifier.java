@@ -73,8 +73,9 @@ public class Notifier
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
+	private static final String appName = RuneLiteProperties.getTitle();
+
 	private final Client client;
-	private final String appName;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
@@ -89,12 +90,10 @@ public class Notifier
 		final ClientUI clientUI,
 		final Client client,
 		final RuneLiteConfig runeliteConfig,
-		final RuneLiteProperties runeLiteProperties,
 		final ScheduledExecutorService executorService,
 		final ChatMessageManager chatMessageManager)
 	{
 		this.client = client;
-		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;

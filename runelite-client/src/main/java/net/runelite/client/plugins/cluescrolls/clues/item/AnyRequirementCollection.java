@@ -22,16 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
-public interface ItemRequirement
+public class AnyRequirementCollection implements ItemRequirement
 {
-	boolean fulfilledBy(int itemId);
+	private String name;
+	private ItemRequirement[] requirements;
 
-	boolean fulfilledBy(Item[] items);
+	public AnyRequirementCollection(String name, ItemRequirement... requirements)
+	{
+		this.name = name;
+		this.requirements = requirements;
+	}
 
-	String getCollectiveName(Client client);
+	@Override
+	public boolean fulfilledBy(int itemId)
+	{
+		for (ItemRequirement requirement : requirements)
+		{
+			if (requirement.fulfilledBy(itemId))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean fulfilledBy(Item[] items)
+	{
+		for (ItemRequirement requirement : requirements)
+		{
+			if (requirement.fulfilledBy(items))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public String getCollectiveName(Client client)
+	{
+		return name;
+	}
 }

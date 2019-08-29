@@ -22,26 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
-public class AllRequirementsCollection implements ItemRequirement
+public class RangeItemRequirement implements ItemRequirement
 {
-	private ItemRequirement[] requirements;
+	private String name;
+	private int startItemId;
+	private int endItemId;
 
-	public AllRequirementsCollection(ItemRequirement... requirements)
+	public RangeItemRequirement(String name, int startItemId, int endItemId)
 	{
-		this.requirements = requirements;
+		this.name = name;
+		this.startItemId = startItemId;
+		this.endItemId = endItemId;
 	}
 
 	@Override
 	public boolean fulfilledBy(int itemId)
 	{
-		for (ItemRequirement requirement : requirements)
+		return itemId >= startItemId && itemId <= endItemId;
+	}
+
+	@Override
+	public boolean fulfilledBy(Item[] items)
+	{
+		for (Item item : items)
 		{
-			if (requirement.fulfilledBy(itemId))
+			if (item.getId() >= startItemId && item.getId() <= endItemId)
 			{
 				return true;
 			}
@@ -51,22 +61,8 @@ public class AllRequirementsCollection implements ItemRequirement
 	}
 
 	@Override
-	public boolean fulfilledBy(Item[] items)
-	{
-		for (ItemRequirement requirement : requirements)
-		{
-			if (!requirement.fulfilledBy(items))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
 	public String getCollectiveName(Client client)
 	{
-		return "N/A";
+		return name;
 	}
 }

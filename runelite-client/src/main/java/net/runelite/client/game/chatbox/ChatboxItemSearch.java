@@ -290,9 +290,9 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		for (int i = 0; i < client.getItemCount() && results.size() < MAX_RESULTS; i++)
 		{
 			ItemComposition itemComposition = itemManager.getItemComposition(itemManager.canonicalize(i));
-			String name = itemComposition.getName();
+			String name = itemComposition.getName().toLowerCase();
 			// The client assigns "null" to item names of items it doesn't know about
-			if (!name.equals("null") && name.toLowerCase().contains(search))
+			if (!name.equals("null") && name.contains(search))
 			{
 				// This may already be in the map due to canonicalize mapping the item to something we've already seen
 				results.putIfAbsent(itemComposition.getId(), itemComposition);

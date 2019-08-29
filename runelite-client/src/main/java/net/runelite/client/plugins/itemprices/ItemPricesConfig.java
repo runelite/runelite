@@ -86,4 +86,14 @@ public interface ItemPricesConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "showWhileAlching",
+		name = "Show prices while alching",
+		description = "Show the price overlay while using High Alchemy",
+		position = 6
+	)
+	default boolean showWhileAlching()
+	{
+		return true;
+	}
 }

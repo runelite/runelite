@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -101,10 +102,21 @@ class NightmareZoneOverlay extends Overlay
 
 		renderAbsorptionCounter();
 
+		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+		final int totalPoints = currentPoints + client.getVar(VarPlayer.NMZ_REWARD_POINTS);
+
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")
-			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
+			.right(StackFormatter.formatNumber(currentPoints))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Points/Hour: ")
+			.right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Total: ")
+			.right(StackFormatter.formatNumber(totalPoints))
 			.build());
 
 		return panelComponent.render(graphics);

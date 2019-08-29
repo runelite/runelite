@@ -22,18 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatfilter;
+package net.runelite.http.service.config;
 
-import com.google.common.base.CharMatcher;
+import com.google.common.collect.ImmutableMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-class JagexPrintableCharMatcher extends CharMatcher
+public class ConfigServiceTest
 {
-	@Override
-	public boolean matches(char c)
+	@Test
+	public void testParseJsonString()
 	{
-		// Characters which are printable
-		return (c >= 32 && c <= 126)
-			|| c == 128
-			|| (c >= 160 && c <= 255);
+		assertEquals(1, ConfigService.parseJsonString("1"));
+		assertEquals(3.14, ConfigService.parseJsonString("3.14"));
+		assertEquals(1L << 32, ConfigService.parseJsonString("4294967296"));
+		assertEquals("test", ConfigService.parseJsonString("test"));
+		assertEquals("test", ConfigService.parseJsonString("\"test\""));
+		assertEquals(ImmutableMap.of("key", "value"), ConfigService.parseJsonString("{\"key\": \"value\"}"));
+	}
+
+	@Test
+	public void testValidateJson()
+	{
+		assertTrue(ConfigService.validateJson("1"));
+		assertTrue(ConfigService.validateJson("3.14"));
+		assertTrue(ConfigService.validateJson("test"));
+		assertTrue(ConfigService.validateJson("\"test\""));
+		assertTrue(ConfigService.validateJson("key:value"));
+		assertTrue(ConfigService.validateJson("{\"key\": \"value\"}"));
 	}
 }
