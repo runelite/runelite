@@ -34,7 +34,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -94,7 +93,7 @@ class InventoryGridOverlay extends Overlay
 			return null;
 		}
 
-		if(initialMousePointArea.contains(mousePoint) && !passedInitialMousePointArea)
+		if (initialMousePointArea.contains(mousePoint) && !passedInitialMousePointArea)
 		{
 			return null;
 		}
