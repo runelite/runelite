@@ -91,11 +91,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private EventBus eventBus;
 
 	private ClanMemberRank callerRank;
-	private List<String> callers = new ArrayList<>();
-	private Map<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
-	private Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
-	private Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
-	private Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
+	private final List<String> callers = new ArrayList<>();
+	private final Map<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
+	private final Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
 	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
 	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
 	private String configCallers;
