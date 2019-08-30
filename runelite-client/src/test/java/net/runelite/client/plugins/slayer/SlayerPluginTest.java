@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -36,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ExperienceChanged;
@@ -171,6 +173,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -183,6 +186,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -196,6 +200,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR_2);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -209,6 +214,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR_3);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -222,6 +228,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_FIRST);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -234,6 +241,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_NEW_NPC_CONTACT);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -246,6 +254,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -259,6 +268,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW_THE);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -271,6 +281,7 @@ public class SlayerPluginTest
 	public void testPartnerTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_NEW_FROM_PARTNER, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("Dust Devils", slayerPlugin.getTaskName());
@@ -281,6 +292,7 @@ public class SlayerPluginTest
 	public void testCheckSlayerGem()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_CHECKSLAYERGEM, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
@@ -290,6 +302,7 @@ public class SlayerPluginTest
 	public void testCheckSlayerGemWildernessTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_CHECKSLAYERGEM_WILDERNESS, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
@@ -300,6 +313,7 @@ public class SlayerPluginTest
 	public void testCheckSlayerGemKonarTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_CHECKSLAYERGEM_KONAR, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("Blue dragons", slayerPlugin.getTaskName());
@@ -312,6 +326,7 @@ public class SlayerPluginTest
 	{
 		Widget npcDialog = mock(Widget.class);
 		when(npcDialog.getText()).thenReturn(TASK_EXISTING);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -328,6 +343,7 @@ public class SlayerPluginTest
 
 		when(rewardBar.getDynamicChildren()).thenReturn(rewardBarChildren);
 		when(rewardBarText.getText()).thenReturn(REWARD_POINTS);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR)).thenReturn(rewardBar);
 		slayerPlugin.onGameTick(new GameTick());
 
@@ -338,6 +354,7 @@ public class SlayerPluginTest
 	public void testOneTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_ONE, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getStreak());
@@ -349,6 +366,7 @@ public class SlayerPluginTest
 	public void testNoPoints()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_COMPLETE_NO_POINTS, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(3, slayerPlugin.getStreak());
@@ -360,6 +378,7 @@ public class SlayerPluginTest
 	public void testPoints()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_POINTS, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(9, slayerPlugin.getStreak());
@@ -372,6 +391,7 @@ public class SlayerPluginTest
 	public void testLargeStreak()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_LARGE_STREAK, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(2465, slayerPlugin.getStreak());
@@ -387,6 +407,7 @@ public class SlayerPluginTest
 		slayerPlugin.setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_COMPLETE, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());
@@ -400,6 +421,7 @@ public class SlayerPluginTest
 		slayerPlugin.setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED, null, 0);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());
@@ -411,6 +433,7 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Superior", SUPERIOR_MESSAGE, null, 0);
 
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		when(slayerConfig.showSuperiorNotification()).thenReturn(true);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 		verify(notifier).notify(SUPERIOR_MESSAGE);
@@ -431,6 +454,7 @@ public class SlayerPluginTest
 		experienceChanged.setSkill(Skill.SLAYER);
 
 		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onExperienceChanged(experienceChanged);
 
 		slayerPlugin.setTaskName("Dagannoth");
@@ -448,6 +472,7 @@ public class SlayerPluginTest
 		final Player player = mock(Player.class);
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		final ExperienceChanged experienceChanged = new ExperienceChanged();
 		experienceChanged.setSkill(Skill.SLAYER);
@@ -472,6 +497,7 @@ public class SlayerPluginTest
 		final Player player = mock(Player.class);
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		final ExperienceChanged experienceChanged = new ExperienceChanged();
 		experienceChanged.setSkill(Skill.SLAYER);
@@ -501,6 +527,7 @@ public class SlayerPluginTest
 		final Player player = mock(Player.class);
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		final ExperienceChanged experienceChanged = new ExperienceChanged();
 		experienceChanged.setSkill(Skill.SLAYER);
@@ -528,6 +555,8 @@ public class SlayerPluginTest
 	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER, null, 0);
+
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		slayerPlugin.setAmount(42);
 		slayerPlugin.setSlaughterChargeCount(10);
@@ -580,6 +609,7 @@ public class SlayerPluginTest
 		slayerPlugin.setAmount(42);
 		slayerPlugin.setExpeditiousChargeCount(10);
 
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(41, slayerPlugin.getAmount());
@@ -626,6 +656,7 @@ public class SlayerPluginTest
 		final Player player = mock(Player.class);
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		slayerPlugin.setTaskName("Suqahs");
 		slayerPlugin.setAmount(231);
@@ -646,6 +677,8 @@ public class SlayerPluginTest
 		task.setLocation("Abyss");
 		task.setAmount(42);
 		task.setInitialAmount(42);
+
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
@@ -669,6 +702,8 @@ public class SlayerPluginTest
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
+
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
@@ -688,6 +723,7 @@ public class SlayerPluginTest
 		final Player player = mock(Player.class);
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.MEMBERS));
 
 		final ExperienceChanged experienceChanged = new ExperienceChanged();
 		experienceChanged.setSkill(Skill.SLAYER);

@@ -52,6 +52,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -273,6 +274,14 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag)
 				{
+					if (!isOnMembersWorld())
+					{
+						removeCounter();
+						highlightedTargets.clear();
+						cachedXp = -1;
+						return;
+					}
+
 					points = config.points();
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
@@ -299,6 +308,11 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
+		if (!isOnMembersWorld())
+		{
+			return;
+		}
+
 		NPC npc = npcSpawned.getNpc();
 		if (isTarget(npc))
 		{
@@ -309,6 +323,11 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
+		if (!isOnMembersWorld())
+		{
+			return;
+		}
+
 		NPC npc = npcDespawned.getNpc();
 		highlightedTargets.remove(npc);
 	}
@@ -316,6 +335,11 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		if (!isOnMembersWorld())
+		{
+			return;
+		}
+
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (npcDialog != null)
 		{
@@ -405,7 +429,8 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		if ((event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+			|| !isOnMembersWorld())
 		{
 			return;
 		}
@@ -521,7 +546,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (event.getSkill() != SLAYER)
+		if (event.getSkill() != SLAYER || !isOnMembersWorld())
 		{
 			return;
 		}
@@ -559,7 +584,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") || !isOnMembersWorld())
 		{
 			return;
 		}
@@ -812,7 +837,7 @@ public class SlayerPlugin extends Plugin
 
 	private boolean taskSubmit(ChatInput chatInput, String value)
 	{
-		if (Strings.isNullOrEmpty(taskName))
+		if (Strings.isNullOrEmpty(taskName) || !isOnMembersWorld())
 		{
 			return false;
 		}
@@ -842,5 +867,10 @@ public class SlayerPlugin extends Plugin
 	private String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+
+	private boolean isOnMembersWorld()
+	{
+		return client.getWorldType().contains(WorldType.MEMBERS);
 	}
 }
