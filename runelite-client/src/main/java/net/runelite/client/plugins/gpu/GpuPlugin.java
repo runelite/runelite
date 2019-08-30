@@ -176,8 +176,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private final IntBuffer uniformBuffer = GpuIntBuffer.allocateDirect(5 + 3 + 2048 * 4);
 	private final float[] textureOffsets = new float[128];
 
-	private final int[] loadedLockedRegions = new int[9];
-	private final int[] regionCoords = new int[36];
+	private final int[] loadedLockedRegions = new int[12];
 
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
@@ -242,6 +241,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniSmoothBanding;
 
 	private int uniUseGray;
+	private int uniUseHardBorder;
+	private int uniGrayAmount;
+	private int uniGrayColor;
 	private int uniBaseX;
 	private int uniBaseY;
 	private int uniLockedRegions;
@@ -533,6 +535,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniUseGray = gl.glGetUniformLocation(glProgram, "useGray");
+		uniUseHardBorder = gl.glGetUniformLocation(glProgram, "useHardBorder");
+		uniGrayAmount = gl.glGetUniformLocation(glProgram, "configGrayAmount");
+		uniGrayColor = gl.glGetUniformLocation(glProgram, "configGrayColor");
 		uniBaseX = gl.glGetUniformLocation(glProgram, "baseX");
 		uniBaseY = gl.glGetUniformLocation(glProgram, "baseY");
 		uniLockedRegions = gl.glGetUniformLocation(glProgram, "lockedRegions");
@@ -772,19 +777,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			}
 		}
 
-		for (int i = 0; i < loadedLockedRegions.length; i++)
-		{
-			int region = loadedLockedRegions[i];
-			int j = i * 4;
-			regionCoords[j] = (region >> 8) << 13;
-			regionCoords[j + 1] = (region & 255) << 13;
-			regionCoords[j + 2] = regionCoords[j] + 8192;
-			regionCoords[j + 3] = regionCoords[j + 1] + 8192;
-		}
-
 		gl.glUniform1i(uniBaseX, bx);
 		gl.glUniform1i(uniBaseY, by);
-		gl.glUniform4iv(uniLockedRegions, 36, regionCoords, 0);
+		gl.glUniform1iv(uniLockedRegions, 12, loadedLockedRegions, 0);
 	}
 
 	@Override
@@ -1099,14 +1094,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniFogDepth, fogDepth);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
+			gl.glUniform1i(uniUseHardBorder, RegionLocker.hardBorder ? 1 : 0);
+			gl.glUniform1f(uniGrayAmount, RegionLocker.grayAmount / 255f);
+			gl.glUniform4f(uniGrayColor, RegionLocker.grayColor.getRed() / 255f, RegionLocker.grayColor.getGreen() / 255f, RegionLocker.grayColor.getBlue() / 255f, RegionLocker.grayColor.getAlpha() / 255f);
 			if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked()))
 			{
 				gl.glUniform1i(uniUseGray, 0);
 			}
 			else
 			{
-				createLockedRegions();
 				gl.glUniform1i(uniUseGray, 1);
+				createLockedRegions();
 			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that

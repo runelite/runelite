@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.regionlocker;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,9 @@ public class RegionLocker
 	private static Map<String, RegionTypes> regions = new HashMap<>();
 
 	public static boolean renderLockedRegions;
+	public static Color grayColor;
+	public static int grayAmount;
+	public static boolean hardBorder;
 	private static boolean unlockReamls;
 	private static boolean unlockUnderground;
 
@@ -69,6 +73,9 @@ public class RegionLocker
 		renderLockedRegions = config.renderLockedRegions();
 		unlockReamls = config.unlockRealms();
 		unlockUnderground = config.unlockUnderground();
+		grayColor = config.shaderGrayColor();
+		grayAmount = config.shaderGrayAmount().getAlpha();
+		hardBorder = config.hardBorder();
 
 		regions.clear();
 

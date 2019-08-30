@@ -26,7 +26,7 @@
 #version 330
 
 #define TILE_SIZE 128
-#define LOCKED_REGIONS_SIZE 36
+#define LOCKED_REGIONS_SIZE 12
 
 #define FOG_SCENE_EDGE_MIN TILE_SIZE
 #define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
@@ -54,7 +54,7 @@ uniform int drawDistance;
 uniform int useGray;
 uniform int baseX;
 uniform int baseY;
-uniform ivec4 lockedRegions[LOCKED_REGIONS_SIZE];
+uniform int lockedRegions[LOCKED_REGIONS_SIZE];
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -67,6 +67,30 @@ out float vGrayAmount;
 
 float fogFactorLinear(const float dist, const float start, const float end) {
   return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
+}
+
+int toRegionId(int x, int y) {
+  return (x >> 13 << 8) + (y >> 13);
+}
+
+float isLocked(int x, int y) {
+  x = x + baseX;
+  y = y + baseY;
+  int region = toRegionId(x, y);
+  int region2 = toRegionId((x-1), (y-1));
+  int region3 = toRegionId((x-1), (y+1));
+  int region4 = toRegionId((x+1), (y-1));
+  int region5 = toRegionId((x+1), (y+1));
+  float result = 1.0;
+  int i;
+  for (i = 0; i < LOCKED_REGIONS_SIZE; ++i) {
+      result = result * (lockedRegions[i] - region);
+      result = result * (lockedRegions[i] - region2);
+      result = result * (lockedRegions[i] - region3);
+      result = result * (lockedRegions[i] - region4);
+      result = result * (lockedRegions[i] - region5);
+  }
+  return clamp(abs(result), 0.0, 1.0);
 }
 
 void main()
@@ -93,19 +117,5 @@ void main()
 
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 
-    if (useGray == 0) {
-        vGrayAmount = 0;
-        return;
-    }
-
-    float gray = 1;
-    for (int i = 0; i < LOCKED_REGIONS_SIZE; i++) {
-      ivec4 region = lockedRegions[i];
-      if (region.x == 0) { continue; }
-      if ((vertex.x + baseX) >= region.x && (vertex.x + baseX) <= region.z && (vertex.z + baseY) >= region.y && (vertex.z + baseY) <= region.w) {
-        gray = 0;
-        break;
-      }
-    }
-    vGrayAmount = gray;
+  vGrayAmount = useGray * isLocked(int(vertex.x), int(vertex.z));
 }

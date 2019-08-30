@@ -29,6 +29,8 @@ uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
+uniform vec4 configGrayColor;
+uniform float configGrayAmount;
 
 in vec4 Color;
 centroid in float fHsl;
@@ -73,10 +75,10 @@ void main() {
   }
 
   vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
-    float gray = dot(mixedColor.rgb, vec3(0.299, 0.587, 0.114));
-    vec3 grayColor = vec3(gray);
-    grayColor = mix(mixedColor.rgb, grayColor.rgb, 0.8);
-    grayColor = blendSoftLight(grayColor, vec3(0,.12,.30), 0.8);
-    vec3 finalColor = mix(mixedColor.rgb, grayColor.rgb, grayAmount);
-    FragColor = vec4(finalColor, smoothColor.a);
+  float gray = dot(mixedColor.rgb, vec3(0.299, 0.587, 0.114));
+  vec3 grayColor = vec3(gray);
+  grayColor = mix(mixedColor.rgb, grayColor.rgb, configGrayAmount);
+  grayColor = blendSoftLight(grayColor, configGrayColor.rgb, configGrayColor.a);
+  vec3 finalColor = mix(mixedColor.rgb, grayColor.rgb, grayAmount);
+  FragColor = vec4(finalColor, smoothColor.a);
 }
