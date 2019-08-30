@@ -105,7 +105,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		panel = injector.getInstance(PvpPerformanceTrackerPanel.class);
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons_small/attack.png");
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull_white.png");
 		button = NavigationButton.builder()
 			.tooltip(config.restrictToLms() ? "LMS" : "PvP" + " Fight History")
 			.icon(icon)
@@ -133,7 +133,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	// Keep track of a player's new target using this event.
 	// It's worth noting that if you aren't in a fight, all player interactions including
 	// trading & following will trigger a new fight and a new opponent. Due to this, set the
-	// lastFightTime in the past to only be 3 seconds after the time NEW_FIGHT_DELAY would trigger
+	// lastFightTime in the past to only be 4 seconds after the time NEW_FIGHT_DELAY would trigger
 	// and unset the opponent, in case the player follows a different player before actually starting
 	// a fight or getting attacked. In other words, remain skeptical of the validity of this event.
 	@Subscribe
@@ -165,11 +165,11 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 
 		if (currentFight != null)
 		{
-			panel.addFight(currentFight);
+			//panel.addFight(currentFight);
 		}
 		currentOpponent = (Player) opponent;
 		currentFight = new FightPerformance(client.getLocalPlayer().getName(), currentOpponent.getName());
-		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 3);
+		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 4);
 	}
 
 	@Subscribe
@@ -201,14 +201,18 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		if (currentOpponent != null && currentOpponent.getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.opponentDied();
-			panel.addFight(currentFight);
+			//panel.addFight(currentFight);
+			playerAttacking = false;
+			opponentAttacking = false;
 			currentFight = null;
 			currentOpponent = null;
 		}
 		if (currentOpponent != null && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.playerDied();
-			panel.addFight(currentFight);
+			//panel.addFight(currentFight);
+			playerAttacking = false;
+			opponentAttacking = false;
 			currentFight = null;
 			currentOpponent = null;
 		}
@@ -216,7 +220,12 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		// null, which will get set next time the player targets a Player.
 		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
 		{
-			panel.addFight(currentFight);
+			if (currentFight != null)
+			{
+				//panel.addFight(currentFight);
+			}
+			playerAttacking = false;
+			opponentAttacking = false;
 			currentFight = null;
 			currentOpponent = null;
 		}

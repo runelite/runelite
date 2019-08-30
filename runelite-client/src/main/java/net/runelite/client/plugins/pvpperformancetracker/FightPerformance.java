@@ -163,4 +163,11 @@ public class FightPerformance
 	{
 		return opponentSuccessRate > playerSuccessRate;
 	}
+
+	public void addAttacks(int success, int total)
+	{
+		playerSuccessCount += success;
+		playerAttackCount += total;
+		playerSuccessRate = (double) playerSuccessCount / (double) playerAttackCount * 100.0;
+	}
 }

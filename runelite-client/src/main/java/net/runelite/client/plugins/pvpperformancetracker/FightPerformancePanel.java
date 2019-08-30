@@ -6,8 +6,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -22,7 +24,7 @@ class FightPerformancePanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	FightPerformancePanel(FightPerformance fightPerformance)
+	FightPerformancePanel(FightPerformance fightPerformance, Dimension parentSize)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -66,15 +68,19 @@ class FightPerformancePanel extends JPanel
 //
 //		addMouseListener(itemPanelMouseListener);
 
+		setSize(parentSize);
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
 		// Icon
 		JLabel itemIcon = new JLabel();
 		itemIcon.setPreferredSize(ICON_SIZE);
-		final AsyncBufferedImage icon = (AsyncBufferedImage)ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons_small/attack.png");
+		//final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons_small/attack.png");
+		final ImageIcon icon = new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(),
+			(fightPerformance.isPlayerDied() || fightPerformance.isOpponentDied() ? "skull_red.png" : "skull_white.png")));
 		if (icon != null)
 		{
-			icon.addTo(itemIcon);
+			itemIcon.setIcon(icon);
+			//icon.addTo(itemIcon);
 		}
 		add(itemIcon, BorderLayout.LINE_START);
 

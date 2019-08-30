@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.callback.ClientThread;
@@ -48,6 +49,7 @@ class PvpPerformanceTrackerPanel extends PluginPanel
 	// The main fight history container, this will hold all the individual FightPerformancePanels.
 	private final JPanel fightPerformanceContainer = new JPanel();
 
+	private final FightPerformance playerTotals = new FightPerformance("Player", "");
 	private final List<FightPerformance> fightHistory = new ArrayList<>();
 
 	@Inject
@@ -58,11 +60,14 @@ class PvpPerformanceTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+		fightPerformanceContainer.setSize(getSize());
 		fightPerformanceContainer.setBorder(new EmptyBorder(5, 0, 0, 0));
+
+		fightPerformanceContainer.add(new FightPerformancePanel(playerTotals, fightPerformanceContainer.getSize()));
 
 		for (FightPerformance fight : fightHistory)
 		{
-			fightPerformanceContainer.add(new FightPerformancePanel(fight));
+			fightPerformanceContainer.add(new FightPerformancePanel(fight, fightPerformanceContainer.getSize()));
 		}
 
 		add(fightPerformanceContainer);
@@ -70,7 +75,16 @@ class PvpPerformanceTrackerPanel extends PluginPanel
 
 	public void addFight(FightPerformance fight)
 	{
-		fightHistory.add(fight);
-		fightPerformanceContainer.add(new FightPerformancePanel(fight));
+		// ? need test
+		SwingUtilities.invokeLater(() ->
+		{
+			fightHistory.add(fight);
+
+			playerTotals.addAttacks(fight.getPlayerSuccessCount(), fight.getPlayerAttackCount());
+			fightPerformanceContainer.remove(0);
+			fightPerformanceContainer.add(new FightPerformancePanel(playerTotals, fightPerformanceContainer.getSize()), 0);
+
+			fightPerformanceContainer.add(new FightPerformancePanel(fight, fightPerformanceContainer.getSize()));
+		});
 	}
 }
