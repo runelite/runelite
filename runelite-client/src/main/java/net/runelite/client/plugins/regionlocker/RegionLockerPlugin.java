@@ -68,7 +68,6 @@ public class RegionLockerPlugin extends Plugin
 	static final String PLUGIN_NAME = "ChunkLite";
 	static final String CONFIG_KEY = "regionlocker";
 	private static final String CHUNK_COMMAND = "!chunks";
-	private static final String PET_COMMAND = "God";
 
 	@Inject
 	private Client client;
@@ -122,7 +121,6 @@ public class RegionLockerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
-		chatCommandManager.registerCommandAsync(PET_COMMAND, this::petCommand);
 		regionLocker = new RegionLocker(client, config, configManager);
 		overlayManager.add(regionLockerOverlay);
 		overlayManager.add(regionBorderOverlay);
@@ -135,7 +133,6 @@ public class RegionLockerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		chatCommandManager.unregisterCommand(CHUNK_COMMAND);
-		chatCommandManager.unregisterCommand(PET_COMMAND);
 		overlayManager.remove(regionLockerOverlay);
 		overlayManager.remove(regionBorderOverlay);
 		keyManager.unregisterKeyListener(inputListener);
@@ -243,26 +240,5 @@ public class RegionLockerPlugin extends Plugin
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
-	}
-
-	private void petCommand(ChatMessage chatMessage, String message)
-	{
-		if (!config.chunkCommand() || !message.equals("God Ash give this lad some rng")) return;
-
-		sendChatMessage("You have a funny feeling like you're being followed.");
-	}
-
-	private void sendChatMessage(String chatMessage)
-	{
-		final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append(chatMessage)
-				.build();
-
-		chatMessageManager.queue(
-				QueuedMessage.builder()
-						.type(ChatMessageType.CONSOLE)
-						.runeLiteFormattedMessage(message)
-						.build());
 	}
 }
