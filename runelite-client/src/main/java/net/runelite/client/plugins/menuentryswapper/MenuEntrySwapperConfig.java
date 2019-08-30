@@ -301,4 +301,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapGuzzle",
+			name = "Guzzle",
+			description = "Swap Eat with Guzzle for Dwarven rock cake"
+	)
+	default boolean swapGuzzle()
+	{
+		return true;
+	}
 }
