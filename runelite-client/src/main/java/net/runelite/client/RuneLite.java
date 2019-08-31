@@ -322,12 +322,13 @@ public class RuneLite
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
 
+		// Initialize UI
+		RuneLiteSplashScreen.stage(.75, "Initialize UI");
+		clientUI.init(this);
+
 		// Start client session
 		RuneLiteSplashScreen.stage(.80, "Starting core interface");
 		clientSessionManager.start();
-
-		// Initialize UI
-		clientUI.init(this);
 
 		if (!isOutdated)
 		{
