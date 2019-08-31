@@ -42,17 +42,15 @@ public class PlayerIndicatorsService
 	private final Client client;
 	private final PlayerIndicatorsPlugin plugin;
 
-	public Predicate<Player> self;
-	public Predicate<Player> friend;
-	public Predicate<Player> clan;
-	public Predicate<Player> team;
-	public Predicate<Player> target;
-	public Predicate<Player> other;
-	public Predicate<Player> caller;
-	public Predicate<Player> callerTarget;
-
-
-	private List<Actor> piles = new ArrayList<>();
+	private final Predicate<Player> self;
+	private final Predicate<Player> friend;
+	private final Predicate<Player> clan;
+	private final Predicate<Player> team;
+	private final Predicate<Player> target;
+	private final Predicate<Player> other;
+	private final Predicate<Player> caller;
+	private final Predicate<Player> callerTarget;
+	private final List<Actor> piles = new ArrayList<>();
 
 
 	@Inject
@@ -67,9 +65,21 @@ public class PlayerIndicatorsService
 		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 &&
 			client.getLocalPlayer().getTeam() == player.getTeam());
 		target = (player) -> PvPUtil.isAttackable(client, player);
-		other = Objects::nonNull;
 		caller = plugin::isCaller;
 		callerTarget = piles::contains;
+		other = (player ->
+		{
+			if (player == null
+				|| (plugin.isHighlightClan() && player.isClanMember())
+				|| (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
+				|| (plugin.isHighlightCallers() && plugin.isCaller(player))
+				|| (plugin.isHighlightTeam() && Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0
+				&& client.getLocalPlayer().getTeam() == player.getTeam()))
+			{
+				return false;
+			}
+			return !plugin.isHighlightTargets() || PvPUtil.isAttackable(client, player);
+		});
 	}
 
 
@@ -125,7 +135,6 @@ public class PlayerIndicatorsService
 				consumer.accept(p, PlayerRelation.CALLER_TARGET));
 		}
 	}
-
 
 	private boolean highlight()
 	{
