@@ -39,7 +39,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -489,10 +491,7 @@ public class HiscorePanel extends PluginPanel
 	 */
 	private String detailsHtml(HiscoreResult result, HiscoreSkill skill)
 	{
-		String openingTags = "<html><body style = 'padding: 5px;color:#989898'>";
-		String closingTags = "</html><body>";
-
-		String content = "";
+		final Tooltip.TooltipBuilder tooltipBuilder = Tooltip.builder();
 
 		if (skill == null)
 		{
@@ -511,9 +510,9 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
-			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
-			content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+			tooltipBuilder.skill("Combat")
+				.xp((int) combatExperience)
+				.other("Exact Combat Level", StackFormatter.formatNumber(combatLevel));
 		}
 		else
 		{
@@ -535,99 +534,80 @@ public class HiscorePanel extends PluginPanel
 					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
 					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
 					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
-					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
-					content += "<p><span style = 'color:white'>Beginner:</span> " + beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank + "</p>";
-					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
-					content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
-					content += "<p><span style = 'color:white'>Hard:</span> " + hard + " <span style = 'color:white'>Rank:</span> " + hardRank + "</p>";
-					content += "<p><span style = 'color:white'>Elite:</span> " + elite + " <span style = 'color:white'>Rank:</span> " + eliteRank + "</p>";
-					content += "<p><span style = 'color:white'>Master:</span> " + master + " <span style = 'color:white'>Rank:</span> " + masterRank + "</p>";
+
+					// TODO: Figure out a better way to show the clue scroll tooltips
+					final Map<String, String> scrolls = new LinkedHashMap<>();
+					scrolls.put("All", all + " <span style = 'color:white'>Rank:</span> " + allRank);
+					scrolls.put("Beginner", beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank);
+					scrolls.put("Easy", easy + " <span style = 'color:white'>Rank:</span> " + easyRank);
+					scrolls.put("Medium", medium + " <span style = 'color:white'>Rank:</span> " + mediumRank);
+					scrolls.put("Hard", hard + " <span style = 'color:white'>Rank:</span> " + hardRank);
+					scrolls.put("Elite", elite + " <span style = 'color:white'>Rank:</span> " + eliteRank);
+					scrolls.put("Master", master + " <span style = 'color:white'>Rank:</span> " + masterRank);
+
+					tooltipBuilder.title("Clue Scrolls")
+						.others(scrolls);
 					break;
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					tooltipBuilder.title("Bounty Hunter (Rogue)")
+						.rank(result.getBountyHunterRogue().getRank());
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					tooltipBuilder.title("Bounty Hunter (Hunter)")
+						.rank(result.getBountyHunterHunter().getRank());
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					tooltipBuilder.title("Last Man Standing")
+						.rank(result.getLastManStanding().getRank());
 					break;
 				}
 				case OVERALL:
 				{
-					Skill requestedSkill = result.getSkill(skill);
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
+					final Skill requestedSkill = result.getSkill(skill);
+					tooltipBuilder.skill("Overall")
+						.xp(requestedSkill.getExperience())
+						.rank(requestedSkill.getRank());
 					break;
 				}
 				default:
 				{
-					Skill requestedSkill = result.getSkill(skill);
-					final long experience = requestedSkill.getExperience();
+					final Skill requestedSkill = result.getSkill(skill);
+					final int experience = (int) requestedSkill.getExperience();
+					final int remainingXp;
 
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (experience == -1L) ? "Unranked" : StackFormatter.formatNumber(experience);
-					String remainingXp;
-					if (experience == -1L)
+					if (experience == -1)
 					{
-						remainingXp = "Unranked";
+						// if the xp is unknown, there is no reason to show anything but name & rank
+						tooltipBuilder.skill(skill.getName())
+							.rank(requestedSkill.getRank());
 					}
 					else
 					{
-						int currentLevel = Experience.getLevelForXp((int) experience);
-						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - experience) : "0";
+						final int currentLevel = Experience.getLevelForXp(experience);
+						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? Experience.getXpForLevel(currentLevel + 1) - experience : 0;
+
+						tooltipBuilder.skill(skill.getName())
+							.xp(experience)
+							.remainingXp(remainingXp)
+							.rank(requestedSkill.getRank());
 					}
-
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
-					content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
-
 					break;
 				}
 			}
 		}
 
-		/**
-		 * Adds a html progress bar to the hover information
-		 */
 		if (SKILLS.contains(skill))
 		{
-			long experience = result.getSkill(skill).getExperience();
-			if (experience >= 0)
-			{
-				int currentXp = (int) experience;
-				int currentLevel = Experience.getLevelForXp(currentXp);
-				int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
-				int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
-
-				double xpGained = currentXp - xpForCurrentLevel;
-				double xpGoal = xpForNextLevel != -1 ? xpForNextLevel - xpForCurrentLevel : 100;
-				int progress = (int) ((xpGained / xpGoal) * 100f);
-
-				// had to wrap the bar with an empty div, if i added the margin directly to the bar, it would mess up
-				content += "<div style = 'margin-top:3px'>"
-					+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
-					+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
-					+ "</div>"
-					+ "</div>"
-					+ "</div>";
-			}
+			tooltipBuilder.progressbar(true);
 		}
 
-		return openingTags + content + closingTags;
+		return tooltipBuilder.build().toHtml();
 	}
 
 	private static String sanitize(String lookup)
