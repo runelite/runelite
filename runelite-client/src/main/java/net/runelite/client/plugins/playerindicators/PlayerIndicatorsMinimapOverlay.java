@@ -63,7 +63,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 	private void renderMinimapOverlays(Graphics2D graphics, Player actor, PlayerRelation relation)
 	{
-		if (!plugin.getLocationHashMap().containsKey(relation))
+		if (!plugin.getLocationHashMap().containsKey(relation) || actor.getName() == null)
 		{
 			return;
 		}
