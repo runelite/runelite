@@ -55,6 +55,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.PvPUtil;
@@ -62,7 +63,8 @@ import net.runelite.client.util.PvPUtil;
 @PluginDescriptor(
 	name = "Player Indicators",
 	description = "Highlight players on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "overlay", "players", "pklite"}
+	tags = {"highlight", "minimap", "overlay", "players", "pklite"},
+	type = PluginType.UTILITY
 )
 @Singleton
 @Getter(AccessLevel.PACKAGE)
