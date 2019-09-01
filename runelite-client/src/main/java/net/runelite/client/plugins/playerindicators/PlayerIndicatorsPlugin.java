@@ -231,6 +231,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 				catch (IOException ex)
 				{
+					result = null;
 					try
 					{
 						Thread.sleep(250);
@@ -239,7 +240,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 					{
 						e.printStackTrace();
 					}
-					return;
 				}
 			}
 			while (result == null);
