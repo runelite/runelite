@@ -84,9 +84,9 @@ public class TMorph extends Plugin
 	private TMorphConfig config;
 	@Inject
 	private EventBus eventBus;
-	private String set1;
-	private String set2;
-	private String set3;
+	private Map<String, String> set1;
+	private Map<String, String> set2;
+	private Map<String, String> set3;
 	private int animation;
 	private int globalAnimSwap;
 	private int globalGraphicSwap;
@@ -155,7 +155,7 @@ public class TMorph extends Plugin
 	{
 		final Actor actor = event.getActor();
 
-		if (actor.getAnimation() != -1)
+		if (actor.getAnimation() == -1)
 		{
 			return;
 		}
@@ -190,10 +190,6 @@ public class TMorph extends Plugin
 			return;
 		}
 
-		final Map<String, String> set1 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(this.set1);
-		final Map<String, String> set2 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(this.set2);
-		final Map<String, String> set3 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(this.set3);
-
 		updateGear(set1, player);
 		updateGear(set2, player);
 		updateGear(set3, player);
@@ -201,6 +197,11 @@ public class TMorph extends Plugin
 
 	private void updateGear(Map<String, String> map, Player player)
 	{
+		if (map == null || map.isEmpty())
+		{
+			return;
+		}
+
 		for (Map.Entry<String, String> entry : map.entrySet())
 		{
 			if (!kit.containsKey(entry.getValue()))
@@ -236,9 +237,9 @@ public class TMorph extends Plugin
 
 	private void updateConfig()
 	{
-		this.set1 = config.set1();
-		this.set2 = config.set2();
-		this.set3 = config.set3();
+		this.set1 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set1());
+		this.set2 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set2());
+		this.set3 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set3());
 		this.animation = config.animationSwap();
 		this.globalAnimSwap = config.globalAnimSwap();
 		this.globalGraphicSwap = config.globalGraphicSwap();

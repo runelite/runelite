@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.tmorph;
 
-import com.google.common.base.Splitter;
 import java.util.Arrays;
 import java.util.Map;
 import javax.inject.Singleton;
@@ -21,13 +20,7 @@ public class Parse
 					sb.append(str).append("\n");
 				}
 			}
-
-			final Splitter NEWLINE_SPLITTER = Splitter
-				.on("\n")
-				.omitEmptyStrings()
-				.trimResults();
-
-			final Map<String, String> tmp = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
+			final Map<String, String> tmp = TMorph.getNEWLINE_SPLITTER().withKeyValueSeparator(':').split(sb);
 
 			for (Map.Entry<String, String> entry : tmp.entrySet())
 			{
@@ -36,7 +29,7 @@ public class Parse
 					return false;
 				}
 
-				int[] ints = Arrays.stream(entry.getKey().split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray();
+				final int[] ints = Arrays.stream(entry.getKey().split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray();
 
 				if (ints.length <= 1)
 				{
