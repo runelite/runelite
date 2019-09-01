@@ -34,11 +34,11 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.api.util.Text;
 
 @PluginDescriptor(
 	name = "Entity Hider",
@@ -99,6 +99,7 @@ public class EntityHiderPlugin extends Plugin
 
 		client.setPlayersHidden(config.hidePlayers());
 		client.setPlayersHidden2D(config.hidePlayers2D());
+		client.setHideSpecificPlayers(Text.fromCSV(config.hideSpecificPlayers()));
 
 		client.setFriendsHidden(config.hideFriends());
 		client.setClanMatesHidden(config.hideClanMates());

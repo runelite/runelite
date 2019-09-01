@@ -75,6 +75,9 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	public static List<String> hideNPCsOnDeath;
 
 	@Inject
+	public static List<String> hideSpecificPlayers;
+
+	@Inject
 	@Override
 	public void setIsHidingEntities(boolean state)
 	{
@@ -149,6 +152,13 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	public void setNPCsHiddenOnDeath(List<String> NPCs)
 	{
 		hideNPCsOnDeath = NPCs;
+	}
+
+	@Inject
+	@Override
+	public void setHideSpecificPlayers(List<String> players)
+	{
+		hideSpecificPlayers = players;
 	}
 
 	@Inject

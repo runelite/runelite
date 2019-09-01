@@ -1493,6 +1493,13 @@ public interface Client extends GameShell
 	void setAttackersHidden(boolean state);
 
 	/**
+	 * Hides players input here.
+	 *
+	 * @param names the names of the players
+	 */
+	void setHideSpecificPlayers(List<String> names);
+
+	/**
 	 * Sets whether projectiles are hidden.
 	 *
 	 * @param state new projectile hidden state

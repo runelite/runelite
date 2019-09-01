@@ -166,6 +166,17 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 13,
+		keyName = "hideSpecificPlayers",
+		name = "Hide Specific Players",
+		description = "Hides players you never wish to see."
+	)
+	default String hideSpecificPlayers()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "hideProjectiles",
 		name = "Hide Projectiles",
 		description = "Configures whether or not projectiles are hidden"

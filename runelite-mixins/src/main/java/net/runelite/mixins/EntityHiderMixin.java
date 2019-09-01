@@ -32,6 +32,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.util.Text;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSEntity;
@@ -81,6 +82,9 @@ public abstract class EntityHiderMixin implements RSScene
 
 	@Shadow("hideNPCsOnDeath")
 	private static List<String> hideNPCsOnDeath;
+
+	@Shadow("hideSpecificPlayers")
+	private static List<String> hideSpecificPlayers;
 
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
@@ -144,11 +148,21 @@ public abstract class EntityHiderMixin implements RSScene
 			boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;
 			boolean other = drawingUI ? hidePlayers2D : hidePlayers;
 			boolean isLocalPlayer = entity == client.getLocalPlayer();
+			RSPlayer player = (RSPlayer) entity;
+
+			for (String name : hideSpecificPlayers)
+			{
+				if (name != null && !name.equals(""))
+				{
+					if (Text.standardize(player.getName()).equals(name))
+					{
+						return false;
+					}
+				}
+			}
 
 			if (isLocalPlayer ? local : other)
 			{
-				RSPlayer player = (RSPlayer) entity;
-
 				if (!hideAttackers)
 				{
 					if (player.getInteracting() == client.getLocalPlayer())
