@@ -42,6 +42,7 @@ public interface Player extends Actor
 	 *
 	 * @return the composition
 	 */
+	@Nullable
 	PlayerAppearance getPlayerAppearance();
 
 	/**
@@ -78,6 +79,7 @@ public interface Player extends Actor
 	 *
 	 * @return the overhead icon
 	 */
+	@Nullable
 	HeadIcon getOverheadIcon();
 
 	/**
