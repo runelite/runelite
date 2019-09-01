@@ -60,10 +60,10 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetPressed;
-import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
+import net.runelite.api.util.Text;
 
 @Singleton
 @Slf4j
@@ -81,12 +81,12 @@ public class MenuManager
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 	//Used to manage custom non-player menu options
-	private final Map<AbstractComparableEntry, AbstractComparableEntry> swaps = new HashMap<>();
-	private final Map<MenuEntry, AbstractComparableEntry> currentPriorityEntries = new LinkedHashMap<>();
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
-	private final Set<AbstractComparableEntry> hiddenEntries = new HashSet<>();
-	private final Set<AbstractComparableEntry> priorityEntries = new HashSet<>();
 	private final Set<String> npcMenuOptions = new HashSet<>();
+	private final HashSet<AbstractComparableEntry> priorityEntries = new HashSet<>();
+	private LinkedHashMap<MenuEntry, AbstractComparableEntry> currentPriorityEntries = new LinkedHashMap<>();
+	private final HashSet<AbstractComparableEntry> hiddenEntries = new HashSet<>();
+	private final HashMap<AbstractComparableEntry, AbstractComparableEntry> swaps = new HashMap<>();
 
 	private MenuEntry leftClickEntry = null;
 	private MenuEntry firstEntry = null;
@@ -429,7 +429,10 @@ public class MenuManager
 	{
 		if (!client.isMenuOpen() && event.isAuthentic())
 		{
-			leftClickEntry = rebuildLeftClickMenu();
+			if (event.getMouseButton() != 0)
+			{
+				leftClickEntry = rebuildLeftClickMenu();
+			}
 
 			if (leftClickEntry != null)
 			{
