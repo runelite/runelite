@@ -52,7 +52,6 @@ public class PlayerIndicatorsService
 	private final Predicate<Player> callerTarget;
 	private final List<Actor> piles = new ArrayList<>();
 
-
 	@Inject
 	private PlayerIndicatorsService(final Client client, final PlayerIndicatorsPlugin plugin)
 	{
@@ -73,6 +72,7 @@ public class PlayerIndicatorsService
 				|| (plugin.isHighlightClan() && player.isClanMember())
 				|| (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
 				|| (plugin.isHighlightCallers() && plugin.isCaller(player))
+				|| (plugin.isHighlightCallerTargets() && piles.contains(player))
 				|| (plugin.isHighlightTeam() && Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0
 				&& client.getLocalPlayer().getTeam() == player.getTeam()))
 			{
@@ -81,7 +81,6 @@ public class PlayerIndicatorsService
 			return !plugin.isHighlightTargets() || PvPUtil.isAttackable(client, player);
 		});
 	}
-
 
 	public void forEachPlayer(final BiConsumer<Player, PlayerRelation> consumer)
 	{

@@ -26,12 +26,16 @@ package net.runelite.client.plugins.playerindicators;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -49,6 +53,7 @@ import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -59,6 +64,8 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.PvPUtil;
+import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreResult;
 
 @PluginDescriptor(
 	name = "Player Indicators",
@@ -70,6 +77,8 @@ import net.runelite.client.util.PvPUtil;
 @Getter(AccessLevel.PACKAGE)
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	private static final HiscoreClient HISCORE_CLIENT = new HiscoreClient();
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
@@ -98,6 +107,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private final Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
 	private final Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
 	private final Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
+	private final ExecutorService executorService = Executors.newFixedThreadPool(100);
 	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
 	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
 	private String configCallers;
@@ -130,10 +142,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-
+		resultCache.clear();
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
-
 		getCallerList();
 	}
 
@@ -141,9 +152,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		eventBus.unregister(this);
-
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
+		resultCache.clear();
 	}
 
 	private void addSubscriptions()
@@ -153,6 +164,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		eventBus.subscribe(ClanMemberLeft.class, this, this::onClanMemberLeft);
 		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
+		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
 	}
 
 	private void onInteractingChanged(InteractingChanged event)
@@ -197,6 +209,43 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private void onClanMemberLeft(ClanMemberLeft event)
 	{
 		getCallerList();
+	}
+
+	private void onPlayerSpawned(PlayerSpawned event)
+	{
+		final Player player = event.getPlayer();
+
+		if (!this.showAgilityLevel || resultCache.containsKey(player.getName()))
+		{
+			return;
+		}
+
+		executorService.submit(() ->
+		{
+			HiscoreResult result;
+			do
+			{
+				try
+				{
+					result = HISCORE_CLIENT.lookup(player.getName());
+				}
+				catch (IOException ex)
+				{
+					try
+					{
+						Thread.sleep(250);
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+					return;
+				}
+			}
+			while (result == null);
+
+			resultCache.put(player.getName(), result);
+		});
 	}
 
 	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)

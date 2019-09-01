@@ -141,7 +141,12 @@ public class OverlayUtil
 
 	public static void renderActorTextOverlay(Graphics2D graphics, Actor actor, String text, Color color)
 	{
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + 40);
+		renderActorTextOverlay(graphics, actor, text, color, 40);
+	}
+
+	public static void renderActorTextOverlay(Graphics2D graphics, Actor actor, String text, Color color, int offset)
+	{
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + offset);
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
