@@ -145,11 +145,18 @@ public class MessagePanel extends JPanel
 	{
 		if (!content.startsWith("<html"))
 		{
-			content = "<html><div style='text-align:center;'>" + content + "</div></html>";
+			content = "<html><div style='width: 100%; text-align:center;'>" + content + "</div></html>";
 		}
 
 		messageArea.setText(content);
 		messageArea.revalidate();
 		messageArea.repaint();
+	}
+
+	public void setMessageTitle(String text)
+	{
+		titleLabel.setText(text);
+		titleLabel.revalidate();
+		titleLabel.repaint();
 	}
 }

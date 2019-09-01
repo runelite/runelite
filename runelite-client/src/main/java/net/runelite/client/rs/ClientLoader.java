@@ -26,40 +26,38 @@
  */
 package net.runelite.client.rs;
 
-import java.io.InputStream;
-import java.net.URLClassLoader;
+import com.google.common.io.ByteStreams;
 import java.applet.Applet;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-
-import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.RuneLiteSplashScreen;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	private final ClientConfigLoader clientConfigLoader;
 	private final ClientUpdateCheckMode updateCheckMode;
 
 	@Inject
 	private ClientLoader(
-		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-		final ClientConfigLoader clientConfigLoader)
+		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode)
 	{
 		this.updateCheckMode = updateCheckMode;
-		this.clientConfigLoader = clientConfigLoader;
 	}
 
 	public Applet load()
 	{
 		try
 		{
-			final RSConfig config = clientConfigLoader.fetch();
+			RuneLiteSplashScreen.stage(.2, "Fetching applet viewer config");
+			final RSConfig config = ClientConfigLoader.fetch();
 
 			switch (updateCheckMode)
 			{
@@ -82,8 +80,8 @@ public class ClientLoader
 		}
 		catch (ClassNotFoundException e)
 		{
-			log.error("Unable to load client - class not found. This means you"
-				+ " are not running RuneLite with Gradle as the injected client"
+			RuneLiteSplashScreen.setError("Unable to load client", "Class not found. This means you"
+				+ " are not running RuneLitePlus with Gradle as the injected client"
 				+ " is not in your classpath.");
 
 			log.error("Error loading RS!", e);
@@ -94,6 +92,8 @@ public class ClientLoader
 	private static Applet loadRLPlus(final RSConfig config)
 	throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
+		RuneLiteSplashScreen.stage(.465, "Starting Old School RuneScape");
+
 		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
 		{
 			@Override
@@ -113,6 +113,7 @@ public class ClientLoader
 				catch (IOException e)
 				{
 					e.printStackTrace();
+					RuneLiteSplashScreen.setError("Failed to load!", "Failed to load class: " + name + " " + path);
 					throw new RuntimeException("Failed to load class: " + name + " " + path);
 				}
 				return defineClass(name, data, 0, data.length);
@@ -125,6 +126,8 @@ public class ClientLoader
 	private static Applet loadVanilla(final RSConfig config)
 	throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
+		RuneLiteSplashScreen.stage(.465, "Starting Old School RuneScape");
+
 		final String codebase = config.getCodeBase();
 		final String initialJar = config.getInitialJar();
 		final String initialClass = config.getInitialClass();

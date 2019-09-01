@@ -78,7 +78,6 @@ public class RuneLiteModule extends AbstractModule
 		bind(ItemManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
-		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
 
 		bind(Callbacks.class).to(Hooks.class);

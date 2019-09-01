@@ -69,6 +69,27 @@ public class RuneLiteSplashScreen extends JFrame
 		this.setVisible(true);
 	}
 
+	public static void setError(String title, String content)
+	{
+		if (INSTANCE != null)
+		{
+			INSTANCE.setErrorInstance(title, content);
+		}
+	}
+
+	private void setErrorInstance(String title, String content)
+	{
+		messagePanel.setMessageContent(content);
+		messagePanel.setMessageTitle("Error!");
+
+		messagePanel.getBarLabel().setText(title);
+		messagePanel.getBar().setBackground(ColorScheme.PROGRESS_ERROR_COLOR.darker());
+		messagePanel.getBar().setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+	}
+
 	private void setBarText(final String text)
 	{
 		final JProgressBar bar = messagePanel.getBar();
