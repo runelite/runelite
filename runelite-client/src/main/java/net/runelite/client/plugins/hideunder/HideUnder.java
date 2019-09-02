@@ -21,7 +21,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hidehunder;
+package net.runelite.client.plugins.hideunder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,9 +29,12 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerDespawned;
@@ -77,6 +80,15 @@ public class HideUnder extends Plugin
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
 		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
+		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
+	}
+
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			client.setIsHidingEntities(true);
+		}
 	}
 
 	private void onInteractingChanged(InteractingChanged event)
@@ -153,13 +165,13 @@ public class HideUnder extends Plugin
 
 	private void onGameTick(GameTick event)
 	{
-		if (playerContainer.isEmpty())
+		if (playerContainer.isEmpty() || client.getLocalPlayer() == null)
 		{
 			return;
 		}
 
-		assert client.getLocalPlayer() != null;
 		final WorldPoint lp = client.getLocalPlayer().getWorldLocation();
+		final WorldPoint localPlayerWp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 
 		client.setLocalPlayerHidden(false);
 
@@ -174,12 +186,24 @@ public class HideUnder extends Plugin
 				player.setTarget(false);
 			}
 
-			if (player.isTarget())
+			if (!player.isTarget())
 			{
-				if (player.getPlayer().getWorldLocation().distanceTo(lp) == 0)
+				continue;
+			}
+
+			if (client.getVar(Varbits.LMS_IN_GAME) == 1)
+			{
+				final WorldPoint playerWp = WorldPoint.fromLocalInstance(client, player.getPlayer().getLocalLocation());
+				if (localPlayerWp.distanceTo(playerWp) == 0)
 				{
 					client.setLocalPlayerHidden(true);
 				}
+				continue;
+			}
+
+			if (player.getPlayer().getWorldLocation().distanceTo(lp) == 0)
+			{
+				client.setLocalPlayerHidden(true);
 			}
 		}
 	}
