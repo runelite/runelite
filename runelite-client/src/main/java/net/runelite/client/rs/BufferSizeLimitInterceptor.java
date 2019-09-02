@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.rs;
 
 import java.io.IOException;
-import net.runelite.http.api.RuneLiteAPI;
-import org.junit.Test;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.Connection;
+import okhttp3.Interceptor;
+import okhttp3.Response;
 
-/**
- *
- * @author Adam
- */
-public class ClientConfigLoaderTest
+@Slf4j
+class BufferSizeLimitInterceptor implements Interceptor
 {
-	@Test
-	public void test() throws IOException
-	{
-		final RSConfig config = ClientConfigLoader.fetch(RuneLiteAPI.CLIENT, null);
+	private final Set<Connection> connections = new HashSet<>();
 
-		for (String key : config.getClassLoaderProperties().keySet())
+	@Getter
+	private int recvBufferSize = 64 * 1024;
+
+	@Override
+	public Response intercept(Chain chain) throws IOException
+	{
+		Connection con = chain.connection();
+		connections.add(con);
+		setConBufferSize(con, recvBufferSize);
+		return chain.proceed(chain.request());
+	}
+
+	public synchronized void setRecvBufferSize(int size)
+	{
+		if (this.recvBufferSize == size)
 		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
+			return;
 		}
 
-		System.out.println("Applet properties:");
-
-		for (String key : config.getAppletProperties().keySet())
+		this.recvBufferSize = size;
+		for (Connection con : connections)
 		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
+			setConBufferSize(con, size);
 		}
 	}
 
+	private static void setConBufferSize(Connection con, int size)
+	{
+		try
+		{
+			con.socket().setReceiveBufferSize(size);
+		}
+		catch (IOException e)
+		{
+			log.info("Setting recvbuf", e);
+		}
+	}
 }
