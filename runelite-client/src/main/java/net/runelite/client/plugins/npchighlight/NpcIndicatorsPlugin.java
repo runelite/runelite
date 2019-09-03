@@ -31,7 +31,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,7 +50,6 @@ import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -72,6 +70,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.api.util.Text;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
@@ -89,8 +88,13 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
 
-	private static final Set<MenuOpcode> NPC_MENU_ACTIONS = ImmutableSet.of(MenuOpcode.NPC_FIRST_OPTION, MenuOpcode.NPC_SECOND_OPTION,
-		MenuOpcode.NPC_THIRD_OPTION, MenuOpcode.NPC_FOURTH_OPTION, MenuOpcode.NPC_FIFTH_OPTION);
+	private static final Set<MenuOpcode> NPC_MENU_ACTIONS = ImmutableSet.of(
+		MenuOpcode.NPC_FIRST_OPTION,
+		MenuOpcode.NPC_SECOND_OPTION,
+		MenuOpcode.NPC_THIRD_OPTION,
+		MenuOpcode.NPC_FOURTH_OPTION,
+		MenuOpcode.NPC_FIFTH_OPTION
+	);
 
 	@Inject
 	private Client client;
@@ -294,8 +298,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		String target = event.getTarget();
 		int type = event.getType();
 
 		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
@@ -307,22 +309,22 @@ public class NpcIndicatorsPlugin extends Plugin
 			NPC_MENU_ACTIONS.contains(MenuOpcode.of(type)) &&
 			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
 		{
-			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			menuEntry.setTarget(target);
-			client.setMenuEntries(menuEntries);
+			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getMenuEntry().getTarget()), this.getHighlightColor);
+			event.getMenuEntry().setTarget(target);
+			event.setWasModified(true);
 		}
 		else if (hotKeyPressed && type == MenuOpcode.EXAMINE_NPC.getId())
 		{
 			// Add tag option
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG);
-			tagEntry.setTarget(event.getTarget());
-			tagEntry.setParam0(event.getActionParam0());
-			tagEntry.setParam1(event.getActionParam1());
-			tagEntry.setIdentifier(event.getIdentifier());
-			tagEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-			client.setMenuEntries(menuEntries);
+			client.insertMenuItem(
+				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG,
+				event.getTarget(),
+				MenuOpcode.RUNELITE.getId(),
+				event.getIdentifier(),
+				event.getActionParam0(),
+				event.getActionParam1(),
+				false
+			);
 		}
 	}
 

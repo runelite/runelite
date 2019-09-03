@@ -717,21 +717,40 @@ public abstract class RSClientMixin implements RSClient
 
 		oldMenuEntryCount = newCount;
 
+		final String[] options = client.getMenuOptions();
+		final String[] targets = client.getMenuTargets();
+		final int[] identifiers = client.getMenuIdentifiers();
+		final int[] opcodes = client.getMenuOpcodes();
+		final int[] arguments1 = client.getMenuArguments1();
+		final int[] arguments2 = client.getMenuArguments2();
+		final boolean[] forceLeftClick = client.getMenuForceLeftClick();
+
 		if (newCount == oldCount + 1)
 		{
 			MenuEntryAdded event = new MenuEntryAdded(
 				new MenuEntry(
-					client.getMenuOptions()[oldCount],
-					client.getMenuTargets()[oldCount],
-					client.getMenuIdentifiers()[oldCount],
-					client.getMenuOpcodes()[oldCount],
-					client.getMenuArguments1()[oldCount],
-					client.getMenuArguments2()[oldCount],
-					client.getMenuForceLeftClick()[oldCount]
+					options[oldCount],
+					targets[oldCount],
+					identifiers[oldCount],
+					opcodes[oldCount],
+					arguments1[oldCount],
+					arguments2[oldCount],
+					forceLeftClick[oldCount]
 				)
 			);
 
 			client.getCallbacks().post(MenuEntryAdded.class, event);
+
+			if (event.isWasModified() && client.getMenuOptionCount() == newCount)
+			{
+				options[oldCount] = event.getOption();
+				targets[oldCount] = event.getTarget();
+				identifiers[oldCount] = event.getIdentifier();
+				opcodes[oldCount] = event.getType();
+				arguments1[oldCount] = event.getActionParam0();
+				arguments2[oldCount] = event.getActionParam1();
+				forceLeftClick[oldCount] = event.isForceLeftClick();
+			}
 		}
 	}
 

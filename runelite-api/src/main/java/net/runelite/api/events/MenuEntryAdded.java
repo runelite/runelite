@@ -24,21 +24,30 @@
  */
 package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.MenuEntry;
 
 /**
  * An event when a new entry is added to a right-click menu.
  */
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MenuEntryAdded implements Event
 {
 	/**
 	 * The MenuEntry object that was actually added
 	 */
 	private final MenuEntry menuEntry;
+
+	/**
+	 * If this is set to true client mixin will update
+	 * the menu entry with the modified values.
+	 *
+	 * Checks if count is the same, but doesn't check if there's
+	 * been multiple changes
+	 */
+	private boolean wasModified;
 
 	public String getOption()
 	{
