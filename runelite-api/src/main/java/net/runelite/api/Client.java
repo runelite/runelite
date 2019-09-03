@@ -1763,8 +1763,13 @@ public interface Client extends GameShell
 
 	void setModulus(BigInteger modulus);
 
-	/*
+	/**
 	 * Returns the max item index + 1 from cache
 	 */
 	int getItemCount();
+
+	/**
+	 * Adds a MenuEntry to the current menu.
+	 */
+	void insertMenuItem(String action, String target, int opcode, int identifier, int argument1, int argument2, boolean forceLeftClick);
 }
