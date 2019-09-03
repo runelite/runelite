@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2019, Kyle Sergio <https://github.com/ksergio39>
- * Copyright (c) 2019, Bryce Altomare <https://github.com/Twinkiel0ver>
- * Copyright (c) 2019, Kyle Stead <http://github.com/kyle1elyk>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,23 +24,43 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldmap;
+package net.runelite.client.plugins.screenshot;
 
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
-class TransportationPoint extends WorldMapPoint
+@AllArgsConstructor
+class TransferableBufferedImage implements Transferable
 {
-	TransportationPoint(TransportationPointLocation data, BufferedImage icon)
+	@NonNull
+	private final BufferedImage image;
+
+	@Override
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException
 	{
-		super(data.getLocation(), icon);
-		final WorldPoint target = data.getTarget();
-		if (target != null)
+		if (flavor.equals(DataFlavor.imageFlavor))
 		{
-			setTarget(target);
-			setJumpOnClick(true);
+			return image;
 		}
-		setTooltip(data.getTooltip());
+		else
+		{
+			throw new UnsupportedFlavorException(flavor);
+		}
+	}
+
+	@Override
+	public DataFlavor[] getTransferDataFlavors()
+	{
+		return new DataFlavor[]{DataFlavor.imageFlavor};
+	}
+
+	@Override
+	public boolean isDataFlavorSupported(DataFlavor flavor)
+	{
+		return flavor.equals(DataFlavor.imageFlavor);
 	}
 }

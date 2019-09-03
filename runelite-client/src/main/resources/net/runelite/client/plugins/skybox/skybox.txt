@@ -961,3 +961,7 @@ R 49 92 51 92
 // Iorwerth dungeon
 #030A0A
 R 49 193 51 194
+
+// Braindeath Island
+#8AD2DF
+R 33 79 33 80

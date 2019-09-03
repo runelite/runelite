@@ -159,6 +159,9 @@ public class ItemsKeptOnDeathPluginTest
 		final Item brace = mItem(ItemID.COMBAT_BRACELET1, 1, "Combat bracelet(1)", true, 0);
 		final int braceletOffset = FixedPriceItem.COMBAT_BRACELET1.getOffset();
 		assertEquals(13500 + braceletOffset, plugin.getDeathPrice(brace));
+
+		final Item amulet = mItem(ItemID.SALVE_AMULETEI, 1, "Salve Amulet(ei)", false, 300);
+		assertEquals(210200, plugin.getDeathPrice(amulet));
 	}
 
 	@Test
@@ -627,5 +630,30 @@ public class ItemsKeptOnDeathPluginTest
 
 		final List<ItemStack> lost = deathItems.getLostItems();
 		assertTrue(lost.contains(new ItemStack(ItemID.DRAGON_DEFENDER, 1)));
+	}
+
+	@Test
+	public void avernicDefenderPriceTest()
+	{
+		final Item defender = mItem(ItemID.AVERNIC_DEFENDER, 1, "Avernic defender", false, 0);
+		final int defenderOffset = FixedPriceItem.AVERNIC_DEFENDER.getOffset();
+		final Integer defenderBrokenPrice = BrokenOnDeathItem.getRepairPrice(ItemID.AVERNIC_DEFENDER);
+		final int defenderExpectedPrice = (defenderBrokenPrice == null ? 0 : defenderBrokenPrice) + defenderOffset;
+		assertEquals(defenderExpectedPrice, plugin.getDeathPrice(defender));
+
+		final Item[] inv = new Item[]
+			{
+				defender,
+				mItem(ItemID.BERSERKER_RING_I, 1, "Berserker Ring (i)", false, 3042579)
+			};
+
+		plugin.isSkulled = true;
+		plugin.protectingItem = true;
+		plugin.wildyLevel = 21;
+
+		final DeathItems deathItems = plugin.calculateKeptLostItems(inv, new Item[0]);
+
+		final List<ItemStack> kept = deathItems.getKeptItems();
+		assertTrue(kept.contains(new ItemStack(ItemID.AVERNIC_DEFENDER, 1)));
 	}
 }
