@@ -44,3 +44,6 @@ classes.doLast() {
     File f = file("build/classes/java/main/Placeholder.class")
     f.delete()
 }
+
+// tasks.build.dependsOn(tasks.decompile)
+// this is just here to show how this could be used
