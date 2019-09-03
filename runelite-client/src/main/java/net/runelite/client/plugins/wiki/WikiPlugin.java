@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -34,7 +33,6 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuOpcode;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
@@ -77,8 +75,8 @@ public class WikiPlugin extends Plugin
 
 	static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
 	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
-	static final String UTM_SORUCE_KEY = "utm_source";
-	static final String UTM_SORUCE_VALUE = "runelite";
+	static final String UTM_SOURCE_KEY = "utm_source";
+	static final String UTM_SOURCE_VALUE = "runelite";
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
@@ -268,7 +266,7 @@ public class WikiPlugin extends Plugin
 				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
 				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
 
 			if (location != null)
 			{
@@ -297,7 +295,7 @@ public class WikiPlugin extends Plugin
 					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
 						.addPathSegment("w")
 						.addPathSegment(quest)
-						.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+						.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
 					if (quickguide)
 					{
 						ub.addPathSegment("Quick_guide");
@@ -313,7 +311,7 @@ public class WikiPlugin extends Plugin
 						LinkBrowser.browse(WIKI_BASE.newBuilder()
 							.addPathSegment("w")
 							.addPathSegment(skillRegex.group(1))
-							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
 							.build().toString());
 					}
 					else if (diaryRegex.find())
@@ -321,7 +319,7 @@ public class WikiPlugin extends Plugin
 						LinkBrowser.browse(WIKI_BASE.newBuilder()
 							.addPathSegment("w")
 							.addPathSegment(diaryRegex.group(1) + " Diary")
-							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
 							.build().toString());
 					}
 			}
@@ -338,43 +336,42 @@ public class WikiPlugin extends Plugin
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
-		MenuEntry[] menuEntries = client.getMenuEntries();
 
 		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+			client.insertMenuItem(
+				MENUOP_QUICKGUIDE,
+				event.getTarget(),
+				MenuOpcode.RUNELITE.getId(),
+				0,
+				widgetIndex,
+				widgetID,
+				false
+			);
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_GUIDE);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-
-			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_QUICKGUIDE);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
+			client.insertMenuItem(
+				MENUOP_GUIDE,
+				event.getTarget(),
+				MenuOpcode.RUNELITE.getId(),
+				0,
+				widgetIndex,
+				widgetID,
+				false
+			);
 		}
 
 		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID && event.getOption().startsWith("View"))
 			|| (WidgetInfo.TO_GROUP(widgetID) == WidgetID.DIARY_GROUP_ID && event.getOption().startsWith("Open")))
 		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getOption().replace("View ", "").replace("Open ", ""));
-			menuEntry.setOption(MENUOP_WIKI);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setIdentifier(event.getIdentifier());
-			menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
+			client.insertMenuItem(
+				MENUOP_WIKI,
+				event.getOption().replace("View ", "").replace("Open ", ""),
+				MenuOpcode.RUNELITE.getId(),
+				event.getIdentifier(),
+				widgetIndex,
+				widgetID,
+				false
+			);
 		}
 	}
 }
