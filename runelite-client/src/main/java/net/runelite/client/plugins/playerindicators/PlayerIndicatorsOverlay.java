@@ -161,7 +161,6 @@ public class PlayerIndicatorsOverlay extends Overlay
 			if (plugin.getAgilityFormat() == PlayerIndicatorsPlugin.AgilityFormats.ICONS)
 			{
 
-
 				final int width;
 				if (plugin.isShowCombatLevel())
 				{
