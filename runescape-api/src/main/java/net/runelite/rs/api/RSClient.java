@@ -1050,4 +1050,8 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("ItemDefinition_fileCount")
 	int getItemCount();
+
+	@Import("insertMenuItem")
+	@Override
+	void insertMenuItem(String action, String target, int opcode, int identifier, int argument1, int argument2, boolean forceLeftClick);
 }

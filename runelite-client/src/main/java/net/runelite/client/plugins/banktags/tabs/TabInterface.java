@@ -535,39 +535,31 @@ public class TabInterface
 			return;
 		}
 
-		MenuEntry[] entries = client.getMenuEntries();
-		MenuEntry entry = entries[entries.length - 1];
-
 		if (activeTab != null
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
-			entries = createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
-			client.setMenuEntries(entries);
+			insertMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget());
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
 			&& event.getOption().equals("Deposit inventory"))
 		{
-			entries = createMenuEntry(event, TAG_INVENTORY, event.getTarget(), entries);
+			insertMenuEntry(event, TAG_INVENTORY, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				insertMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
 			&& event.getOption().equals("Deposit worn items"))
 		{
-			entries = createMenuEntry(event, TAG_GEAR, event.getTarget(), entries);
+			insertMenuEntry(event, TAG_GEAR, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				insertMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 	}
 
@@ -580,8 +572,8 @@ public class TabInterface
 
 		if (chatboxPanelManager.getCurrentInput() != null
 			&& event.getMenuOpcode() != MenuOpcode.CANCEL
-			&& !event.getMenuEntry().equals(SCROLL_UP)
-			&& !event.getMenuEntry().equals(SCROLL_DOWN))
+			&& !event.getOption().equals(SCROLL_UP)
+			&& !event.getOption().equals(SCROLL_DOWN))
 		{
 			chatboxPanelManager.close();
 		}
@@ -1058,17 +1050,16 @@ public class TabInterface
 		searchBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 	}
 
-	private static MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
+	private void insertMenuEntry(MenuEntryAdded event, String option, String target)
 	{
-		final MenuEntry entry = new MenuEntry();
-		entry.setParam0(event.getActionParam0());
-		entry.setParam1(event.getActionParam1());
-		entry.setTarget(target);
-		entry.setOption(option);
-		entry.setOpcode(MenuOpcode.RUNELITE.getId());
-		entry.setIdentifier(event.getIdentifier());
-		entries = Arrays.copyOf(entries, entries.length + 1);
-		entries[entries.length - 1] = entry;
-		return entries;
+		client.insertMenuItem(
+			option,
+			target,
+			MenuOpcode.RUNELITE.getId(),
+			event.getIdentifier(),
+			event.getActionParam0(),
+			event.getActionParam1(),
+			false
+		);
 	}
 }
