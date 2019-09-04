@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -40,6 +41,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
@@ -571,5 +573,19 @@ public class SlayerPluginTest
 		slayerPlugin.onExperienceChanged(experienceChanged);
 
 		assertEquals(34, slayerPlugin.getCurrentTask().getAmount());
+	}
+
+	@Test
+	public void infoboxNotAddedOnLogin()
+	{
+		GameStateChanged loggingIn = new GameStateChanged();
+		loggingIn.setGameState(GameState.LOGGING_IN);
+		slayerPlugin.onGameStateChanged(loggingIn);
+
+		GameStateChanged loggedIn = new GameStateChanged();
+		loggedIn.setGameState(GameState.LOGGED_IN);
+		slayerPlugin.onGameStateChanged(loggedIn);
+
+		verify(infoBoxManager, never()).addInfoBox(any());
 	}
 }
