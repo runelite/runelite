@@ -58,24 +58,27 @@ public class class225 {
 		signature = "(III)Ljava/lang/String;",
 		garbageValue = "1269667837"
 	)
-	static final String method4037(int var0, int var1) {
+	@Export("getLevelColorString")
+	static final String getLevelColorString(int var0, int var1) {
 		int var2 = var1 - var0;
 		if (var2 < -9) {
-			return class16.colorStartTag(16711680);
+			return class16.colorStartTag(0xff0000);
 		} else if (var2 < -6) {
-			return class16.colorStartTag(16723968);
+			return class16.colorStartTag(0xff3000);
 		} else if (var2 < -3) {
-			return class16.colorStartTag(16740352);
+			return class16.colorStartTag(0xff7000);
 		} else if (var2 < 0) {
-			return class16.colorStartTag(16756736);
+			return class16.colorStartTag(0xffb000);
 		} else if (var2 > 9) {
-			return class16.colorStartTag(65280);
+			return class16.colorStartTag(0x00ff00);
 		} else if (var2 > 6) {
-			return class16.colorStartTag(4259584);
+			return class16.colorStartTag(0x40ff00);
 		} else if (var2 > 3) {
-			return class16.colorStartTag(8453888);
+			return class16.colorStartTag(0x80ff00);
+		} else if (var2 > 0) {
+			return class16.colorStartTag(0xc0ff00);
 		} else {
-			return var2 > 0 ? class16.colorStartTag(12648192) : class16.colorStartTag(16776960);
+			return class16.colorStartTag(0xffff00);
 		}
 	}
 }

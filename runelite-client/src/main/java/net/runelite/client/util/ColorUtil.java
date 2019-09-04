@@ -267,4 +267,65 @@ public class ColorUtil
 		}
 		return (color & 0x00ffffff) | (alpha << 24);
 	}
+
+	/**
+	 * Returns the color a ' (level-xxx)' would have, based on
+	 * the difference between your and their level.
+	 * This method is the same as in rs-client.
+	 *
+	 * @param theirLvl The level you're comparing against
+	 * @param yourLvl  Your level
+	 */
+	public static String getLevelColorString(final int theirLvl, final int yourLvl)
+	{
+		final int diff = yourLvl - theirLvl;
+
+		if (diff < -9)
+		{
+			return colorStartTag(0xff0000);
+		}
+		else if (diff < -6)
+		{
+			return colorStartTag(0xff3000);
+		}
+		else if (diff < -3)
+		{
+			return colorStartTag(0xff7000);
+		}
+		else if (diff < 0)
+		{
+			return colorStartTag(0xffb000);
+		}
+		else if (diff > 9)
+		{
+			return colorStartTag(0x00ff00);
+		}
+		else if (diff > 6)
+		{
+			return colorStartTag(0x40ff00);
+		}
+		else if (diff > 3)
+		{
+			return colorStartTag(0x80ff00);
+		}
+		else if (diff > 0)
+		{
+			return colorStartTag(0xc0ff00);
+		}
+		else
+		{
+			return colorStartTag(0xffff00);
+		}
+	}
+
+	/**
+	 * Creates a color start tag from a rgb color as a int value
+	 *
+	 * @param rgb the int value of a rgb color
+	 * @return a color tag which can be put in front of stuff
+	 */
+	public static String colorStartTag(final int rgb)
+	{
+		return "<col=" + Integer.toHexString(rgb) + ">";
+	}
 }

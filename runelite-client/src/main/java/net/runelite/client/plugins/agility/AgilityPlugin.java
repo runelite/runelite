@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -507,21 +508,17 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		final int entryId = event.getIdentifier();
-		MenuEntry[] menuEntries = client.getMenuEntries();
-
 		for (Obstacle nearbyObstacle : getObstacles().values())
 		{
 			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
-			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
+			if (shortcut != null && Ints.contains(shortcut.getObstacleIds(), event.getIdentifier()))
 			{
-				MenuEntry entry = menuEntries[menuEntries.length - 1];
-				int level = shortcut.getLevel();
-				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
-				String requirementText = " (level-" + level + ")";
+				final MenuEntry entry = event.getMenuEntry();
+				final int reqLevel = shortcut.getLevel();
+				final String requirementText = ColorUtil.getLevelColorString(reqLevel, getAgilityLevel()) + "  (level-" + reqLevel + ")";
 
-				entry.setTarget(event.getTarget() + ColorUtil.prependColorTag(requirementText, color));
-				client.setMenuEntries(menuEntries);
+				entry.setTarget(event.getTarget() + requirementText);
+				event.setWasModified(true);
 				return;
 			}
 		}

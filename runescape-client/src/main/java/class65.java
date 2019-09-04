@@ -228,7 +228,7 @@ public class class65 extends RouteStrategy {
 					if (!var0.isFollower || Client.followerIndex == var1) {
 						String var4 = var0.name;
 						if (var0.combatLevel != 0) {
-							var4 = var4 + class225.method4037(var0.combatLevel, WorldMapIcon_1.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
+							var4 = var4 + class225.getLevelColorString(var0.combatLevel, WorldMapIcon_1.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
 						}
 
 						if (var0.isFollower && Client.followerOpsLowPriority) {
