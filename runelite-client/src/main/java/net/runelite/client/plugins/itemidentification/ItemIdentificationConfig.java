@@ -103,4 +103,14 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showPies",
+		name = "Pies",
+		description = "Show identification on Pies"
+	)
+	default boolean showPies()
+	{
+		return false;
+	}
 }
