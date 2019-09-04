@@ -26,10 +26,13 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.PluginPanel;
 
 class DevToolsPanel extends PluginPanel
@@ -39,6 +42,9 @@ class DevToolsPanel extends PluginPanel
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
+
+	@Inject
+	private ClientUI clientUi;
 
 	@Inject
 	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
@@ -85,6 +91,15 @@ class DevToolsPanel extends PluginPanel
 		container.add(plugin.getValidMovement());
 		container.add(plugin.getInteracting());
 		container.add(plugin.getExamine());
+
+		container.add(plugin.getSetClientBounds());
+		plugin.getSetClientBounds().addActionListener((ev) ->
+		{
+			ContainableFrame frame = clientUi.getFrame();
+			Rectangle clientBounds = new Rectangle(0, 240, 1726, 931);
+			frame.setBounds(clientBounds);
+			frame.revalidateMinimumSize();
+		});
 
 		container.add(plugin.getDetachedCamera());
 		plugin.getDetachedCamera().addActionListener((ev) ->

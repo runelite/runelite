@@ -1,0 +1,1208 @@
+[
+  {
+    "time": "2019-02-08T13:26:41.818Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 35,
+    "initialAmount": 35
+  },
+  {
+    "time": "2019-02-08T14:41:07.868Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 35,
+    "initialAmount": 35
+  },
+  {
+    "time": "2019-02-08T19:38:28.302Z",
+    "npcName": "Turael",
+    "taskName": "Spiders",
+    "amount": 39,
+    "initialAmount": 39
+  },
+  {
+    "time": "2019-02-08T20:50:04.372Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 44,
+    "initialAmount": 44
+  },
+  {
+    "time": "2019-02-08T21:43:38.068Z",
+    "npcName": "Turael",
+    "taskName": "Birds",
+    "amount": 45,
+    "initialAmount": 45
+  },
+  {
+    "time": "2019-02-10T15:26:49.434Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 10,
+    "initialAmount": 10
+  },
+  {
+    "time": "2019-02-10T17:03:25.379Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 22,
+    "initialAmount": 22
+  },
+  {
+    "time": "2019-02-10T23:40:05.484Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-02-11T11:05:45.252Z",
+    "npcName": "Turael",
+    "taskName": "Cave bugs",
+    "amount": 12,
+    "initialAmount": 12
+  },
+  {
+    "time": "2019-02-12T18:32:51.402Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 10,
+    "initialAmount": 10
+  },
+  {
+    "time": "2019-02-12T23:55:39.195Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 36,
+    "initialAmount": 36
+  },
+  {
+    "time": "2019-02-18T22:37:58.870Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 34,
+    "initialAmount": 34
+  },
+  {
+    "time": "2019-02-18T23:52:23.401Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 11,
+    "initialAmount": 11
+  },
+  {
+    "time": "2019-02-24T17:22:20.364Z",
+    "taskName": "Cave slimes",
+    "amount": 11,
+    "initialAmount": 0
+  },
+  {
+    "time": "2019-02-24T17:52:37.567Z",
+    "npcName": "Turael",
+    "taskName": "Zombies",
+    "amount": 39,
+    "initialAmount": 39
+  },
+  {
+    "time": "2019-02-24T20:24:31.645Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 36,
+    "initialAmount": 36
+  },
+  {
+    "time": "2019-02-24T21:52:06.687Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 21,
+    "initialAmount": 21
+  },
+  {
+    "time": "2019-02-24T23:07:51.347Z",
+    "npcName": "Turael",
+    "taskName": "Bats",
+    "amount": 15,
+    "initialAmount": 15
+  },
+  {
+    "time": "2019-02-25T02:01:39.096Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 50,
+    "initialAmount": 50
+  },
+  {
+    "time": "2019-02-25T15:41:52.763Z",
+    "npcName": "Turael",
+    "taskName": "Bats",
+    "amount": 30,
+    "initialAmount": 30
+  },
+  {
+    "time": "2019-02-25T23:13:26.330Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 34,
+    "initialAmount": 34
+  },
+  {
+    "time": "2019-02-27T21:02:54.023Z",
+    "npcName": "Turael",
+    "taskName": "Birds",
+    "amount": 42,
+    "initialAmount": 42
+  },
+  {
+    "time": "2019-03-01T21:34:22.106Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 34,
+    "initialAmount": 34
+  },
+  {
+    "time": "2019-03-02T23:03:19.382Z",
+    "npcName": "Turael",
+    "taskName": "Birds",
+    "amount": 17,
+    "initialAmount": 17
+  },
+  {
+    "time": "2019-03-03T00:04:44.979Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 35,
+    "initialAmount": 35
+  },
+  {
+    "time": "2019-03-03T00:35:19.510Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 49,
+    "initialAmount": 49
+  },
+  {
+    "time": "2019-03-04T17:54:29.734Z",
+    "npcName": "Turael",
+    "taskName": "Lizards",
+    "amount": 16,
+    "initialAmount": 16
+  },
+  {
+    "time": "2019-03-06T13:01:03.364Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-03-06T13:13:24.959Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-03-06T16:43:16.195Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 45,
+    "initialAmount": 45
+  },
+  {
+    "time": "2019-03-07T18:33:00.589Z",
+    "npcName": "Turael",
+    "taskName": "Spiders",
+    "amount": 42,
+    "initialAmount": 42
+  },
+  {
+    "time": "2019-03-07T20:42:46.642Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave bugs",
+    "amount": 14,
+    "initialAmount": 14
+  },
+  {
+    "time": "2019-03-07T20:56:16.945Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave slimes",
+    "amount": 12,
+    "initialAmount": 12
+  },
+  {
+    "time": "2019-03-07T21:46:44.399Z",
+    "npcName": "Vannaka",
+    "taskName": "Pyrefiends",
+    "amount": 85,
+    "initialAmount": 85
+  },
+  {
+    "time": "2019-03-08T13:32:32.342Z",
+    "npcName": "Turael",
+    "taskName": "Zombies",
+    "amount": 48,
+    "initialAmount": 48
+  },
+  {
+    "time": "2019-03-08T14:18:01.730Z",
+    "npcName": "Turael",
+    "taskName": "Icefiends",
+    "amount": 16,
+    "initialAmount": 16
+  },
+  {
+    "time": "2019-03-10T00:48:45.717Z",
+    "npcName": "Turael",
+    "taskName": "Bats",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-03-10T21:44:19.415Z",
+    "npcName": "Vannaka",
+    "taskName": "Cockatrice",
+    "amount": 69,
+    "initialAmount": 69
+  },
+  {
+    "time": "2019-03-11T22:41:33.198Z",
+    "npcName": "Vannaka",
+    "taskName": "Hill giants",
+    "amount": 62,
+    "initialAmount": 62
+  },
+  {
+    "time": "2019-03-12T00:05:37.048Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave bugs",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-03-12T17:36:29.095Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave crawlers",
+    "amount": 75,
+    "initialAmount": 75
+  },
+  {
+    "time": "2019-03-18T14:30:37.722Z",
+    "npcName": "Vannaka",
+    "taskName": "Ankou",
+    "amount": 35,
+    "initialAmount": 35
+  },
+  {
+    "time": "2019-03-19T23:50:43.624Z",
+    "npcName": "Vannaka",
+    "taskName": "Ice warriors",
+    "amount": 63,
+    "initialAmount": 63
+  },
+  {
+    "time": "2019-03-20T22:47:39.318Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 47,
+    "initialAmount": 47
+  },
+  {
+    "time": "2019-03-21T15:00:26.081Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-03-21T15:44:48.057Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-03-21T21:46:29.875Z",
+    "taskName": "Cows",
+    "amount": 47,
+    "initialAmount": 47
+  },
+  {
+    "time": "2019-03-21T22:22:46.475Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 10,
+    "initialAmount": 10
+  },
+  {
+    "time": "2019-03-21T22:32:09.399Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-03-23T19:26:11.019Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-03-23T19:56:45.894Z",
+    "npcName": "Turael",
+    "taskName": "Wolves",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-03-23T22:19:29.467Z",
+    "npcName": "Vannaka",
+    "taskName": "Wall beasts",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-03-24T13:16:43.237Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-03-24T14:08:03.138Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-03-24T15:24:22.371Z",
+    "npcName": "Turael",
+    "taskName": "Icefiends",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-03-24T15:37:20.537Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-03-24T16:57:29.898Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 25,
+    "initialAmount": 25
+  },
+  {
+    "time": "2019-03-24T17:28:51.617Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-03-24T17:37:26.504Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 28,
+    "initialAmount": 28
+  },
+  {
+    "time": "2019-03-24T18:00:08.175Z",
+    "npcName": "Turael",
+    "taskName": "Bats",
+    "amount": 40,
+    "initialAmount": 40
+  },
+  {
+    "time": "2019-03-24T21:44:40.488Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 42,
+    "initialAmount": 42
+  },
+  {
+    "time": "2019-03-24T22:09:21.149Z",
+    "npcName": "Vannaka",
+    "taskName": "Pyrefiends",
+    "amount": 100,
+    "initialAmount": 100
+  },
+  {
+    "time": "2019-03-24T23:50:16.623Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 34,
+    "initialAmount": 34
+  },
+  {
+    "time": "2019-03-25T11:21:50.113Z",
+    "npcName": "Turael",
+    "taskName": "Kalphite",
+    "amount": 30,
+    "initialAmount": 30
+  },
+  {
+    "time": "2019-03-25T18:31:08.325Z",
+    "npcName": "Turael",
+    "taskName": "Wolves",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-03-25T21:18:10.097Z",
+    "npcName": "Turael",
+    "taskName": "Spiders",
+    "amount": 16,
+    "initialAmount": 16
+  },
+  {
+    "time": "2019-03-25T21:51:39.286Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 13,
+    "initialAmount": 13
+  },
+  {
+    "time": "2019-03-26T15:07:34.818Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 49,
+    "initialAmount": 49
+  },
+  {
+    "time": "2019-03-26T15:42:54.882Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 23,
+    "initialAmount": 23
+  },
+  {
+    "time": "2019-03-26T16:11:29.511Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 11,
+    "initialAmount": 11
+  },
+  {
+    "time": "2019-03-26T16:19:38.024Z",
+    "npcName": "Turael",
+    "taskName": "Lizards",
+    "amount": 40,
+    "initialAmount": 40
+  },
+  {
+    "time": "2019-03-26T17:17:36.534Z",
+    "npcName": "Vannaka",
+    "taskName": "Ogres",
+    "amount": 63,
+    "initialAmount": 63
+  },
+  {
+    "time": "2019-03-26T19:28:46.889Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-03-26T19:43:20.917Z",
+    "npcName": "Turael",
+    "taskName": "Icefiends",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-03-26T21:00:46.399Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 38,
+    "initialAmount": 38
+  },
+  {
+    "time": "2019-03-26T21:23:40.498Z",
+    "npcName": "Turael",
+    "taskName": "Wolves",
+    "amount": 17,
+    "initialAmount": 17
+  },
+  {
+    "time": "2019-03-26T22:33:44.542Z",
+    "npcName": "Vannaka",
+    "taskName": "Ogres",
+    "amount": 81,
+    "initialAmount": 81
+  },
+  {
+    "time": "2019-03-27T12:12:08.547Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 44,
+    "initialAmount": 44
+  },
+  {
+    "time": "2019-03-27T12:45:59.060Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-03-27T13:01:35.239Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 49,
+    "initialAmount": 49
+  },
+  {
+    "time": "2019-03-27T13:22:18.268Z",
+    "npcName": "Turael",
+    "taskName": "Spiders",
+    "amount": 25,
+    "initialAmount": 25
+  },
+  {
+    "time": "2019-03-27T17:29:53.267Z",
+    "npcName": "Vannaka",
+    "taskName": "Ankou",
+    "amount": 33,
+    "initialAmount": 33
+  },
+  {
+    "time": "2019-03-27T23:25:13.718Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-03-27T23:46:45.826Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 25,
+    "initialAmount": 25
+  },
+  {
+    "time": "2019-03-27T23:57:41.973Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 30,
+    "initialAmount": 30
+  },
+  {
+    "time": "2019-03-28T00:18:05.094Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 11,
+    "initialAmount": 11
+  },
+  {
+    "time": "2019-03-28T20:49:01.800Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 13,
+    "initialAmount": 13
+  },
+  {
+    "time": "2019-03-28T21:17:23.803Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-04-01T19:41:39.518Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 23,
+    "initialAmount": 23
+  },
+  {
+    "time": "2019-04-06T15:47:00.540Z",
+    "npcName": "Turael",
+    "taskName": "Cave bugs",
+    "amount": 13,
+    "initialAmount": 13
+  },
+  {
+    "time": "2019-04-06T15:56:41.930Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 45,
+    "initialAmount": 45
+  },
+  {
+    "time": "2019-04-06T16:18:10.956Z",
+    "npcName": "Vannaka",
+    "taskName": "Hill giants",
+    "amount": 71,
+    "initialAmount": 71
+  },
+  {
+    "time": "2019-04-06T18:53:58.256Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-04-06T20:18:51.513Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 22,
+    "initialAmount": 22
+  },
+  {
+    "time": "2019-04-06T21:11:15Z",
+    "npcName": "Turael",
+    "taskName": "Zombies",
+    "amount": 50,
+    "initialAmount": 50
+  },
+  {
+    "time": "2019-04-06T21:51:33.308Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-04-06T22:09:49.610Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 36,
+    "initialAmount": 36
+  },
+  {
+    "time": "2019-04-06T23:01:18.401Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-04-07T11:56:18.999Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 16,
+    "initialAmount": 16
+  },
+  {
+    "time": "2019-04-07T12:01:37.715Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 15,
+    "initialAmount": 15
+  },
+  {
+    "time": "2019-04-07T12:17:20.019Z",
+    "npcName": "Turael",
+    "taskName": "Spiders",
+    "amount": 39,
+    "initialAmount": 39
+  },
+  {
+    "time": "2019-04-07T13:32:07.209Z",
+    "npcName": "Vannaka",
+    "taskName": "Moss giants",
+    "amount": 79,
+    "initialAmount": 79
+  },
+  {
+    "time": "2019-04-07T15:00:20.893Z",
+    "npcName": "Turael",
+    "taskName": "Lizards",
+    "amount": 47,
+    "initialAmount": 47
+  },
+  {
+    "time": "2019-04-08T22:20:16.721Z",
+    "npcName": "Turael",
+    "taskName": "Cows",
+    "amount": 39,
+    "initialAmount": 39
+  },
+  {
+    "time": "2019-04-09T18:30:32.141Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-05-01T12:58:08.136Z",
+    "npcName": "Turael",
+    "taskName": "Cave bugs",
+    "amount": 12,
+    "initialAmount": 12
+  },
+  {
+    "time": "2019-05-01T13:03:32.079Z",
+    "npcName": "Turael",
+    "taskName": "Scorpions",
+    "amount": 35,
+    "initialAmount": 35
+  },
+  {
+    "time": "2019-05-01T13:50:42.809Z",
+    "npcName": "Vannaka",
+    "taskName": "Ice giants",
+    "amount": 55,
+    "initialAmount": 55
+  },
+  {
+    "time": "2019-05-01T15:24:34.982Z",
+    "npcName": "Vannaka",
+    "taskName": "Cockatrice",
+    "amount": 92,
+    "initialAmount": 92
+  },
+  {
+    "time": "2019-05-05T19:48:05.648Z",
+    "npcName": "Vannaka",
+    "taskName": "Hill giants",
+    "amount": 102,
+    "initialAmount": 102
+  },
+  {
+    "time": "2019-05-05T22:42:16.741Z",
+    "npcName": "Vannaka",
+    "taskName": "Pyrefiends",
+    "amount": 108,
+    "initialAmount": 108
+  },
+  {
+    "time": "2019-05-05T22:42:35.941Z",
+    "npcName": "Vannaka",
+    "taskName": "Earth warriors",
+    "amount": 52,
+    "initialAmount": 52
+  },
+  {
+    "time": "2019-05-07T18:45:26.273Z",
+    "npcName": "Vannaka",
+    "taskName": "Crocodiles",
+    "amount": 85,
+    "initialAmount": 85
+  },
+  {
+    "time": "2019-05-09T17:01:38.291Z",
+    "npcName": "Vannaka",
+    "taskName": "Wall beasts",
+    "amount": 12,
+    "initialAmount": 12
+  },
+  {
+    "time": "2019-05-09T18:07:38.226Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave bugs",
+    "amount": 16,
+    "initialAmount": 16
+  },
+  {
+    "time": "2019-05-09T18:17:51.082Z",
+    "npcName": "Vannaka",
+    "taskName": "Trolls",
+    "amount": 119,
+    "initialAmount": 119
+  },
+  {
+    "time": "2019-05-16T16:53:19.635Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-05-16T17:02:35.898Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 41,
+    "initialAmount": 41
+  },
+  {
+    "time": "2019-05-16T17:13:23.613Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 44,
+    "initialAmount": 44
+  },
+  {
+    "time": "2019-05-16T17:28:27.968Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-05-16T17:47:16.182Z",
+    "npcName": "Turael",
+    "taskName": "Cave slimes",
+    "amount": 10,
+    "initialAmount": 10
+  },
+  {
+    "time": "2019-05-16T17:53:27.064Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 24,
+    "initialAmount": 24
+  },
+  {
+    "time": "2019-05-16T18:00:51.771Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave slimes",
+    "amount": 11,
+    "initialAmount": 11
+  },
+  {
+    "time": "2019-05-16T18:09:35.063Z",
+    "npcName": "Turael",
+    "taskName": "Icefiends",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-05-16T18:45:08.688Z",
+    "npcName": "Turael",
+    "taskName": "Cave bugs",
+    "amount": 15,
+    "initialAmount": 15
+  },
+  {
+    "time": "2019-05-16T18:49:47.724Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 25,
+    "initialAmount": 25
+  },
+  {
+    "time": "2019-05-16T21:42:32.763Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 33,
+    "initialAmount": 33
+  },
+  {
+    "time": "2019-05-16T21:48:14.835Z",
+    "npcName": "Turael",
+    "taskName": "Cave bugs",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-05-16T21:53:11.899Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 46,
+    "initialAmount": 46
+  },
+  {
+    "time": "2019-05-16T22:27:29.759Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 18,
+    "initialAmount": 18
+  },
+  {
+    "time": "2019-05-16T22:35:10.008Z",
+    "npcName": "Turael",
+    "taskName": "Bears",
+    "amount": 28,
+    "initialAmount": 28
+  },
+  {
+    "time": "2019-05-16T23:17:49.372Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 44,
+    "initialAmount": 44
+  },
+  {
+    "time": "2019-05-16T23:50:57.511Z",
+    "npcName": "Vannaka",
+    "taskName": "Hobgoblins",
+    "amount": 93,
+    "initialAmount": 93
+  },
+  {
+    "time": "2019-05-17T11:33:55.822Z",
+    "npcName": "Krystilia",
+    "taskName": "Ice warriors",
+    "amount": 116,
+    "initialAmount": 116
+  },
+  {
+    "time": "2019-05-17T21:30:25.722Z",
+    "npcName": "Vannaka",
+    "taskName": "Rockslugs",
+    "amount": 105,
+    "initialAmount": 105
+  },
+  {
+    "time": "2019-05-17T22:08:42.636Z",
+    "npcName": "Turael",
+    "taskName": "Kalphite",
+    "amount": 46,
+    "initialAmount": 46
+  },
+  {
+    "time": "2019-05-18T14:47:17.582Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-05-18T14:57:45.312Z",
+    "npcName": "Turael",
+    "taskName": "Icefiends",
+    "amount": 20,
+    "initialAmount": 20
+  },
+  {
+    "time": "2019-05-18T15:05:04.645Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 48,
+    "initialAmount": 48
+  },
+  {
+    "time": "2019-05-18T15:22:59.309Z",
+    "npcName": "Turael",
+    "taskName": "Lizards",
+    "amount": 37,
+    "initialAmount": 37
+  },
+  {
+    "time": "2019-05-18T16:02:45.759Z",
+    "npcName": "Turael",
+    "taskName": "Bats",
+    "amount": 19,
+    "initialAmount": 19
+  },
+  {
+    "time": "2019-05-18T19:04:09.936Z",
+    "npcName": "Krystilia",
+    "taskName": "Crazy archaeologists",
+    "amount": 3,
+    "initialAmount": 3
+  },
+  {
+    "time": "2019-05-19T12:53:29.857Z",
+    "npcName": "Turael",
+    "taskName": "Dogs",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-05-19T13:22:57.228Z",
+    "npcName": "Turael",
+    "taskName": "Zombies",
+    "amount": 32,
+    "initialAmount": 32
+  },
+  {
+    "time": "2019-05-19T14:29:31.909Z",
+    "npcName": "Vannaka",
+    "taskName": "Hill giants",
+    "amount": 86,
+    "initialAmount": 86
+  },
+  {
+    "time": "2019-05-24T16:17:47.131Z",
+    "taskName": "Hill giants",
+    "amount": 49,
+    "initialAmount": 0
+  },
+  {
+    "time": "2019-05-29T12:09:20.191Z",
+    "taskName": "Dagannoth",
+    "amount": 12,
+    "initialAmount": 85
+  },
+  {
+    "time": "2019-05-30T13:15:21.376Z",
+    "taskName": "Hill giants",
+    "amount": 48,
+    "initialAmount": 0
+  },
+  {
+    "time": "2019-06-05T12:15:01.341Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 12,
+    "initialAmount": 12
+  },
+  {
+    "time": "2019-06-05T12:24:58.444Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 32,
+    "initialAmount": 32
+  },
+  {
+    "time": "2019-06-05T12:30:31.539Z",
+    "npcName": "Turael",
+    "taskName": "Skeletons",
+    "amount": 30,
+    "initialAmount": 30
+  },
+  {
+    "time": "2019-06-05T12:50:07.447Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 21,
+    "initialAmount": 21
+  },
+  {
+    "time": "2019-06-05T13:00:34.257Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 29,
+    "initialAmount": 29
+  },
+  {
+    "time": "2019-06-05T13:02:55.911Z",
+    "npcName": "Turael",
+    "taskName": "Kalphite",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-06-05T16:12:56.518Z",
+    "npcName": "Turael",
+    "taskName": "Ghosts",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-06-05T16:29:45.312Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 25,
+    "initialAmount": 25
+  },
+  {
+    "time": "2019-06-05T16:32:45.339Z",
+    "npcName": "Turael",
+    "taskName": "Dwarves",
+    "amount": 23,
+    "initialAmount": 23
+  },
+  {
+    "time": "2019-08-27T10:11:17.806Z",
+    "npcName": "Vannaka",
+    "taskName": "Cave crawlers",
+    "amount": 83,
+    "initialAmount": 83
+  },
+  {
+    "time": "2019-08-31T15:13:23.256Z",
+    "npcName": "Turael",
+    "taskName": "Dwarves",
+    "amount": 27,
+    "initialAmount": 27
+  },
+  {
+    "time": "2019-08-31T15:34:16.291Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 40,
+    "initialAmount": 40
+  },
+  {
+    "time": "2019-08-31T15:40:10.964Z",
+    "npcName": "Turael",
+    "taskName": "Minotaurs",
+    "amount": 14,
+    "initialAmount": 14
+  },
+  {
+    "time": "2019-08-31T15:44:02.616Z",
+    "npcName": "Turael",
+    "taskName": "Kalphite",
+    "amount": 46,
+    "initialAmount": 46
+  },
+  {
+    "time": "2019-08-31T15:59:45.090Z",
+    "npcName": "Turael",
+    "taskName": "Rats",
+    "amount": 23,
+    "initialAmount": 23
+  },
+  {
+    "time": "2019-08-31T16:03:50.640Z",
+    "npcName": "Turael",
+    "taskName": "Cave crawlers",
+    "amount": 43,
+    "initialAmount": 43
+  },
+  {
+    "time": "2019-08-31T16:15:40.589Z",
+    "npcName": "Turael",
+    "taskName": "Goblins",
+    "amount": 44,
+    "initialAmount": 44
+  },
+  {
+    "time": "2019-08-31T17:16:36.244Z",
+    "npcName": "Turael",
+    "taskName": "Dwarves",
+    "amount": 41,
+    "initialAmount": 41
+  },
+  {
+    "time": "2019-08-31T17:53:51.358Z",
+    "npcName": "Turael",
+    "taskName": "Monkeys",
+    "amount": 47,
+    "initialAmount": 47
+  },
+  {
+    "time": "2019-08-31T18:07:08.295Z",
+    "npcName": "Vannaka",
+    "taskName": "Rockslugs",
+    "amount": 71,
+    "initialAmount": 71
+  },
+  {
+    "time": "2019-08-31T19:24:09.158Z",
+    "npcName": "Krystilia",
+    "taskName": "Chaos elemental",
+    "amount": 3,
+    "initialAmount": 3
+  },
+  {
+    "time": "2019-08-31T22:59:01.352Z",
+    "npcName": "Krystilia",
+    "taskName": "Spiders",
+    "amount": 96,
+    "initialAmount": 96
+  },
+  {
+    "time": "2019-09-01T00:06:31.046Z",
+    "npcName": "Krystilia",
+    "taskName": "Lesser demons",
+    "amount": 93,
+    "initialAmount": 93
+  },
+  {
+    "time": "2019-09-01T19:03:21.164Z",
+    "npcName": "Krystilia",
+    "taskName": "Fire giants",
+    "amount": 127,
+    "initialAmount": 127
+  },
+  {
+    "time": "2019-09-03T20:13:06.454Z",
+    "npcName": "Krystilia",
+    "taskName": "Revenants",
+    "amount": 98,
+    "initialAmount": 98
+  }
+]

@@ -26,10 +26,18 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -82,9 +90,9 @@ import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
-	name = "Slayer",
-	description = "Show additional slayer task related information",
-	tags = {"combat", "notifications", "overlay", "tasks"}
+		name = "Slayer",
+		description = "Show additional slayer task related information",
+		tags = {"combat", "notifications", "overlay", "tasks"}
 )
 @Slf4j
 public class SlayerPlugin extends Plugin
@@ -172,6 +180,10 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String npcName;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -270,8 +282,8 @@ public class SlayerPlugin extends Plugin
 				break;
 			case LOGGED_IN:
 				if (config.amount() != -1
-					&& !config.taskName().isEmpty()
-					&& loginFlag)
+						&& !config.taskName().isEmpty()
+						&& loginFlag)
 				{
 					points = config.points();
 					streak = config.streak();
@@ -317,10 +329,12 @@ public class SlayerPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		Widget npcDialogName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
 		if (npcDialog != null)
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText()); //remove color and linebreaks
 			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); // amount, name, (location)
+			npcName = Text.sanitizeMultilineText(npcDialogName.getText());
 			final Matcher mAssignFirst = NPC_ASSIGN_FIRST_MESSAGE.matcher(npcText); // name, number
 			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(npcText); // name, number, points
 			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(npcText); // name, (location), amount
@@ -648,8 +662,8 @@ public class SlayerPlugin extends Plugin
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
-				.map(String::toLowerCase)
-				.forEach(targetNames::add);
+					.map(String::toLowerCase)
+					.forEach(targetNames::add);
 
 			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
 		}
@@ -666,6 +680,15 @@ public class SlayerPlugin extends Plugin
 				highlightedTargets.add(npc);
 			}
 		}
+	}
+
+	private class TaskLogItem
+	{
+		private String time;
+		private String npcName;
+		private String taskName;
+		private int amount;
+		private int initialAmount;
 	}
 
 	private void setTask(String name, int amt, int initAmt)
@@ -687,6 +710,44 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
 		rebuildTargetList();
+
+		Type REVIEW_TYPE = new TypeToken<List<TaskLogItem>>()
+		{
+		}.getType();
+		List<TaskLogItem> taskLogItems = new ArrayList<>();
+		try (JsonReader reader = new JsonReader(new FileReader("TaskLog.json"));)
+		{
+			Gson gson = new Gson();
+			taskLogItems = gson.fromJson(reader, REVIEW_TYPE);
+		}
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());
+		}
+		TaskLogItem log = new TaskLogItem();
+		log.time = infoTimer.toString();
+		log.npcName = npcName;
+		log.taskName = taskName.substring(0, 1).toUpperCase() + taskName.substring(1).toLowerCase();
+		log.amount = amount;
+		log.initialAmount = initialAmount;
+		TaskLogItem last = taskLogItems.get(taskLogItems.size() - 1);
+		if (last.initialAmount == log.initialAmount && last.taskName.equals(log.taskName) && log.amount <= last.amount)
+		{
+
+		}
+		else
+		{
+			taskLogItems.add(log);
+			try (Writer writer = new FileWriter("TaskLog.json"))
+			{
+				Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				gson.toJson(taskLogItems, writer);
+			}
+			catch (IOException ex)
+			{
+				System.out.println(ex.toString());
+			}
+		}
 	}
 
 	private void addCounter()
@@ -712,15 +773,15 @@ public class SlayerPlugin extends Plugin
 		}
 
 		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
-			+ " %s</br>"
-			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-			+ " %s";
+				+ " %s</br>"
+				+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+				+ " %s";
 
 		if (initialAmount > 0)
 		{
 			taskTooltip += "</br>"
-				+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
-				+ " " + initialAmount;
+					+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
+					+ " " + initialAmount;
 		}
 
 		counter = new TaskCounter(taskImg, this, amount);
@@ -757,7 +818,7 @@ public class SlayerPlugin extends Plugin
 		else
 		{
 			player = Text.removeTags(chatMessage.getName())
-				.replace('\u00A0', ' ');
+					.replace('\u00A0', ' ');
 		}
 
 		net.runelite.http.api.chat.Task task;
@@ -798,11 +859,11 @@ public class SlayerPlugin extends Plugin
 		}
 
 		String response = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Slayer Task: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(sb.toString())
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append("Slayer Task: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(sb.toString())
+				.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);

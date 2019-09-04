@@ -1,28 +1,4 @@
-/*
- * Copyright (c) 2018, Alex Kolpa <https://github.com/AlexKolpa>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.plugins.slayerarea;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,13 +12,12 @@ import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.slayerarea.SlayerAreas;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-class WorldMapRegionOverlay extends Overlay
+class SlayerAreaOverlay extends Overlay
 {
 	private static final Color WHITE_TRANSLUCENT = new Color(255, 255, 255, 127);
 	private static final int LABEL_PADDING = 4;
@@ -50,10 +25,10 @@ class WorldMapRegionOverlay extends Overlay
 	// Bitmask to return first coordinate in region
 	private static final int REGION_TRUNCATE = ~((1 << 6) - 1);
 	private final Client client;
-	private final DevToolsPlugin plugin;
+	private final SlayerAreaPlugin plugin;
 
 	@Inject
-	private WorldMapRegionOverlay(Client client, DevToolsPlugin plugin)
+	private SlayerAreaOverlay(Client client, SlayerAreaPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -65,12 +40,12 @@ class WorldMapRegionOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getWorldMapLocation().isActive())
+		if (!SlayerAreas.configLockedMap)
 		{
 			return null;
 		}
 
-		drawRegionOverlay(graphics);
+		//drawRegionOverlay(graphics);
 		return null;
 	}
 
@@ -124,14 +99,23 @@ class WorldMapRegionOverlay extends Overlay
 				int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
 				int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
 				//graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
-				if ((!SlayerAreas.getAreas().containsKey(regionId) || !SlayerAreas.getAreas().get(regionId).unlocked))
+
+				SlayerArea area = SlayerAreas.getArea(regionId);
+				if (area == null || !area.unlocked)
 				{
-					graphics.setColor(new Color(0, 38, 72, 127));
+					Color color;
+					if (area == null || area.strongest == null || area.strongest.equals(""))
+						color = new Color(72, 38, 0, 161);
+					else
+						color = new Color(0, 38, 72, 161);
+					graphics.setColor(color);
 					graphics.fillRect(xPos, yPos, regionPixelSize, regionPixelSize);
 				}
 				graphics.setColor(WHITE_TRANSLUCENT);
-				graphics.drawString(regionText, xPos + LABEL_PADDING, yPos + (int) textBounds.getHeight() + LABEL_PADDING);
+				if (SlayerAreas.configRegionId)
+					graphics.drawString(regionText, xPos + LABEL_PADDING, yPos + (int) textBounds.getHeight() + LABEL_PADDING);
 			}
 		}
 	}
 }
+

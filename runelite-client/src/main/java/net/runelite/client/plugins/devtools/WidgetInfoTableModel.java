@@ -53,8 +53,8 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		clientThread.invoke(() ->
 		{
 			Map<WidgetField, Object> newValues = w == null ? null : fields.stream().collect(ImmutableMap.toImmutableMap(
-				Function.identity(),
-				i -> i.getValue(w)
+					Function.identity(),
+					i -> i.getValue(w)
 			));
 			SwingUtilities.invokeLater(() ->
 			{
@@ -144,9 +144,9 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("Hidden", Widget::isHidden));
 		out.add(new WidgetField<>("Text", Widget::getText, Widget::setText, String.class));
 		out.add(new WidgetField<>("TextColor",
-			w -> Integer.toString(w.getTextColor(), 16),
-			(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
-			String.class
+				w -> Integer.toString(w.getTextColor(), 16),
+				(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
+				String.class
 		));
 		out.add(new WidgetField<>("Opacity", Widget::getOpacity, Widget::setOpacity, Integer.class));
 		out.add(new WidgetField<>("FontId", Widget::getFontId, Widget::setFontId, Integer.class));

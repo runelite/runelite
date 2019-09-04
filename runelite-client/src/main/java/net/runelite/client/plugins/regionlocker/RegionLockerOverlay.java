@@ -57,8 +57,8 @@ class RegionLockerOverlay extends Overlay
 	private RegionLockerOverlay(Client client, RegionLockerConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGHEST);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPriority(OverlayPriority.HIGH);
+		setLayer(OverlayLayer.ABOVE_MAP);
 		this.client = client;
 		this.config = config;
 	}
@@ -118,10 +118,10 @@ class RegionLockerOverlay extends Overlay
 				Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
 
 				RegionTypes regionType = RegionLocker.getType(regionId);
-				boolean containsRegion = (regionType != null) ^ config.invertMapOverlay();
+				boolean containsRegion =  RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay();
 				boolean unlockable = regionType == RegionTypes.UNLOCKABLE;
-				boolean blacklisted = regionType == RegionTypes.BLACKLISTED;
-				if (containsRegion || unlockable || blacklisted)
+				boolean blacklisted = RegionLocker.isBlacklisted(regionId);
+				if (containsRegion || unlockable || blacklisted && !(RegionLocker.getY(regionId) >= 4160))
 				{
 					Color color;
 					if (blacklisted)

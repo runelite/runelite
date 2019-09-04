@@ -32,6 +32,8 @@ import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.slayerarea.SlayerArea;
+import net.runelite.client.plugins.slayerarea.SlayerAreas;
 import net.runelite.client.util.Text;
 
 public class RegionLocker
@@ -160,9 +162,7 @@ public class RegionLocker
 
 	public static boolean hasRegion(int regionId)
 	{
-		RegionTypes type = getType(regionId);
-		if (type == null) return false;
-		return type == RegionTypes.UNLOCKED;
+		return SlayerAreas.isUnlocked(regionId, true);
 	}
 
 	public static boolean isUnlockable(int regionId)
@@ -174,9 +174,8 @@ public class RegionLocker
 
 	public static boolean isBlacklisted(int regionId)
 	{
-		RegionTypes type = getType(regionId);
-		if (type == null) return false;
-		return type == RegionTypes.BLACKLISTED;
+		SlayerArea area = SlayerAreas.getArea(regionId);
+		return area == null || area.strongest == null || area.strongest.equals("");
 	}
 
 

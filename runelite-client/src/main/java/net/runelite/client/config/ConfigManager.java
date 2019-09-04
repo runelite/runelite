@@ -85,7 +85,6 @@ public class ConfigManager
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
-	private File propertiesFileOriginal;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
@@ -96,7 +95,6 @@ public class ConfigManager
 	{
 		this.executor = scheduledExecutorService;
 		this.propertiesFile = getPropertiesFile(RuneLite.RUNELITE_DIR);
-		this.propertiesFileOriginal = getPropertiesFile(RuneLite.RUNELITE_DIR_ORIGINAL);
 
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
@@ -118,7 +116,6 @@ public class ConfigManager
 		}
 
 		this.propertiesFile = getPropertiesFile(RuneLite.RUNELITE_DIR);
-		this.propertiesFileOriginal = getPropertiesFile(RuneLite.RUNELITE_DIR_ORIGINAL);
 
 		load(); // load profile specific config
 	}
@@ -288,18 +285,7 @@ public class ConfigManager
 		}
 		catch (FileNotFoundException ex)
 		{
-			try (FileInputStream in2 = new FileInputStream(propertiesFileOriginal))
-			{
-				properties.load(new InputStreamReader(in2, Charset.forName("UTF-8")));
-			}
-			catch (FileNotFoundException ex2)
-			{
-				log.debug("Unable to load settings - no such file");
-			}
-			catch (IllegalArgumentException | IOException ex2)
-			{
-				log.warn("Unable to load settings", ex2);
-			}
+			log.debug("Unable to load settings - no such file");
 		}
 		catch (IllegalArgumentException | IOException ex)
 		{
