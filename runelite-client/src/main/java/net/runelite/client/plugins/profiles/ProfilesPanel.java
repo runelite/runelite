@@ -26,6 +26,8 @@ package net.runelite.client.plugins.profiles;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -120,6 +122,9 @@ class ProfilesPanel extends PluginPanel
 		txtDecryptPassword.setEchoChar((char) 0);
 		txtDecryptPassword.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtDecryptPassword.setToolTipText(UNLOCK_PASSWORD);
+
+		txtDecryptPassword.addActionListener(e -> decryptAccounts());
+
 		txtDecryptPassword.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -156,27 +161,7 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				boolean error = false;
-				try
-				{
-					redrawProfiles();
-				}
-				catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
-				{
-					error = true;
-					showErrorMessage("Unable to load data", "Incorrect password!");
-				}
-
-				if (error)
-				{
-					return;
-				}
-
-				remove(loginPanel);
-				add(accountPanel, BorderLayout.CENTER);
-
-				profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
-				add(profilesPanel, BorderLayout.SOUTH);
+				decryptAccounts();
 			}
 
 			@Override
@@ -384,6 +369,31 @@ class ProfilesPanel extends PluginPanel
 		add(loginPanel, BorderLayout.CENTER);
 
 		// addAccounts(config.profilesData());
+	}
+
+	private void decryptAccounts()
+	{
+		boolean error = false;
+		try
+		{
+			redrawProfiles();
+		}
+		catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
+		{
+			error = true;
+			showErrorMessage("Unable to load data", "Incorrect password!");
+		}
+
+		if (error)
+		{
+			return;
+		}
+
+		remove(loginPanel);
+		add(accountPanel, BorderLayout.CENTER);
+
+		profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
+		add(profilesPanel, BorderLayout.SOUTH);
 	}
 
 	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
