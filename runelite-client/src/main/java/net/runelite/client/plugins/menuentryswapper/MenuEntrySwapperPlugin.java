@@ -473,6 +473,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, true);
 			}
+
+			if (config.swapCaptainBarnaby() != CaptainBarnabyMode.OFF)
+			{
+				switch (config.swapCaptainBarnaby())
+				{
+					case ARDOUGNE:
+						swap("ardougne", option, target, true);
+						break;
+					case BRIMHAVEN:
+						swap("brimhaven", option, target, true);
+						break;
+					case RIMMINGTON:
+						swap("rimmington", option, target, true);
+						break;
+				}
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
