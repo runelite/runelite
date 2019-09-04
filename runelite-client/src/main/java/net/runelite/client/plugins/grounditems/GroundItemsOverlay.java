@@ -36,10 +36,10 @@ import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -195,7 +195,37 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
+			Color highlighted = null;
+
+			//Process skill items
+			if (!plugin.hiddenItems.getUnchecked(item.getName()))
+			{
+				highlighted = plugin.getDefaultColor();
+				if (plugin.highlightHerblore)
+				{
+					if (GroundItemsPlugin.herbloreItems.contains(item.getId()))
+					{
+						highlighted = plugin.getHerbloreColor();
+					}
+				}
+				if (plugin.highlightPrayer)
+				{
+					if (GroundItemsPlugin.prayerItems.contains(item.getId()))
+					{
+						highlighted = plugin.getPrayerColor();
+					}
+				}
+			}
+
+			// Value overrides skill
+			if (plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice()) != null)
+			{
+				if (plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice()).getRGB() != highlighted.getRGB())
+				{
+					highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
+				}
+			}
+
 			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
@@ -280,8 +310,8 @@ public class GroundItemsOverlay extends Overlay
 			if (item.getTicks() > 0 && plugin.isShowTimer())
 			{
 				itemStringBuilder
-						.append(" - ")
-						.append(item.getTicks());
+					.append(" - ")
+					.append(item.getTicks());
 			}
 
 			final String itemString = itemStringBuilder.toString();

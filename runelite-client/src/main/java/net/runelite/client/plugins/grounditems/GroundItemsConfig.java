@@ -639,4 +639,65 @@ public interface GroundItemsConfig extends Config
 	{
 		return new Color(0, 0, 0, 150);
 	}
+
+	@ConfigItem(
+		keyName = "xpStub",
+		name = "XP",
+		description = "Highlights various items that give xp",
+		position = 50
+	)
+	default Stub xpStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		keyName = "highlightHerblore",
+		name = "Highlight Herblore xp",
+		description = "Highlight Herblore xp related items.",
+		position = 51,
+		parent = "xpStub"
+	)
+	default boolean highlightHerblore()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "herbloreColor",
+		name = "Herblore Color",
+		description = "Color of Herblore xp items.",
+		position = 52,
+		parent = "xpStub"
+	)
+	@Alpha
+	default Color herbloreColor()
+	{
+		return Color.GREEN.darker();
+	}
+
+	@ConfigItem(
+		keyName = "highlightPrayer",
+		name = "Highlight Prayer xp",
+		description = "Highlight Prayer xp related items.",
+		position = 53,
+		parent = "xpStub"
+	)
+	default boolean highlightPrayer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "prayerColor",
+		name = "Prayer Color",
+		description = "Color of Prayer xp items.",
+		position = 54,
+		parent = "xpStub"
+	)
+	@Alpha
+	default Color prayerColor()
+	{
+		return Color.YELLOW;
+	}
 }
