@@ -43,6 +43,7 @@ ext {
     httpcore = '4.4.11'
     httpmime = '4.5.9'
     javassist = '3.25.0-GA'
+    javax = '1.3.2'
     javaxInject = '1'
     jbsdiff = '1.0'
     jclCore = '2.8'

@@ -11,6 +11,7 @@ description = 'RuneLite Client'
 dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
 
+    compileOnly group: 'javax.annotation', name: 'javax.annotation-api', version: javax
     compileOnly group: 'net.runelite', name: 'orange-extensions', version: orangeExtensions
     compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok
 
