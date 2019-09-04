@@ -192,7 +192,7 @@ public class ChatNotificationsPlugin extends Plugin
 			if (found)
 			{
 				matcher.appendTail(stringBuffer);
-				messageNode.setValue(stringBuffer.toString());
+				messageNode.setValue("<col" + ChatColorType.NORMAL + ">" + stringBuffer.toString());
 
 				if (config.notifyOnHighlight())
 				{

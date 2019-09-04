@@ -90,7 +90,7 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+		verify(messageNode).setValue("<colNORMAL><colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("Your dodgy necklace protects <colHIGHLIGHT>you. It<colNORMAL> has 1 charge left.");
+		verify(messageNode).setValue("<colNORMAL>Your dodgy necklace protects <colHIGHLIGHT>you. It<colNORMAL> has 1 charge left.");
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("test <colHIGHLIGHT><lt>test<gt><colNORMAL> test");
+		verify(messageNode).setValue("<colNORMAL>test <colHIGHLIGHT><lt>test<gt><colNORMAL> test");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("foo <colHIGHLIGHT>test<colNORMAL>. bar");
+		verify(messageNode).setValue("<colNORMAL>foo <colHIGHLIGHT>test<colNORMAL>. bar");
 	}
 
 	@Test
