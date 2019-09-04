@@ -373,6 +373,12 @@ class ProfilesPanel extends PluginPanel
 
 	private void decryptAccounts()
 	{
+		if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
+		{
+			showErrorMessage("Unable to load data", "Please enter a password!");
+			return;
+		}
+
 		boolean error = false;
 		try
 		{
@@ -472,11 +478,6 @@ class ProfilesPanel extends PluginPanel
 		String tmp = profilesConfig.profilesData();
 		if (tmp.startsWith("¬"))
 		{
-			if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
-			{
-				showErrorMessage("Unable to load data", "Please enter a password!");
-				return tmp;
-			}
 			tmp = tmp.substring(1);
 			return decryptText(base64Decode(tmp), getAesKey());
 		}
