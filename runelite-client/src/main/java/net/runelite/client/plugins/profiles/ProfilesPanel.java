@@ -388,6 +388,7 @@ class ProfilesPanel extends PluginPanel
 		{
 			error = true;
 			showErrorMessage("Unable to load data", "Incorrect password!");
+			txtDecryptPassword.setText("");
 		}
 
 		if (error)
