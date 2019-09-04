@@ -69,28 +69,30 @@ float fogFactorLinear(const float dist, const float start, const float end) {
   return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
 }
 
+const ivec2 regionOffsets[5] = ivec2[](
+  ivec2(0,0), ivec2(-1,-1), ivec2(-1,1), ivec2(1,-1), ivec2(1,1)
+);
+
 int toRegionId(int x, int y) {
   return (x >> 13 << 8) + (y >> 13);
+}
+
+float b_convert(float n) {
+  return clamp(abs(n), 0.0, 1.0);
 }
 
 float isLocked(int x, int y) {
   x = x + baseX;
   y = y + baseY;
-  int region = toRegionId(x, y);
-  int region2 = toRegionId((x-1), (y-1));
-  int region3 = toRegionId((x-1), (y+1));
-  int region4 = toRegionId((x+1), (y-1));
-  int region5 = toRegionId((x+1), (y+1));
   float result = 1.0;
-  int i;
-  for (i = 0; i < LOCKED_REGIONS_SIZE; ++i) {
+  for (int i = 0; i < LOCKED_REGIONS_SIZE; ++i) {
+    for (int j = 0; j < regionOffsets.length(); ++j) {
+      ivec2 off = regionOffsets[j];
+      int region = toRegionId(x + off.x, y + off.y);
       result = result * (lockedRegions[i] - region);
-      result = result * (lockedRegions[i] - region2);
-      result = result * (lockedRegions[i] - region3);
-      result = result * (lockedRegions[i] - region4);
-      result = result * (lockedRegions[i] - region5);
+    }
   }
-  return clamp(abs(result), 0.0, 1.0);
+  return b_convert(result);
 }
 
 void main()

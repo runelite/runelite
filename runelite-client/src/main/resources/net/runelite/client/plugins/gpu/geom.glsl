@@ -71,24 +71,19 @@ int toRegionId(int x, int y) {
   return (x >> 13 << 8) + (y >> 13);
 }
 
+float b_convert(float n) {
+  return clamp(abs(n), 0.0, 1.0);
+}
+
 float isLocked(int x, int y) {
   x = x + baseX;
   y = y + baseY;
-  int region = toRegionId(x, y);
-  int region2 = toRegionId((x-1), (y-1));
-  int region3 = toRegionId((x-1), (y+1));
-  int region4 = toRegionId((x+1), (y-1));
-  int region5 = toRegionId((x+1), (y+1));
   float result = 1.0;
-  int i;
-  for (i = 0; i < LOCKED_REGIONS_SIZE; ++i) {
-      result = result * (lockedRegions[i] - region);
-      result = result * (lockedRegions[i] - region2);
-      result = result * (lockedRegions[i] - region3);
-      result = result * (lockedRegions[i] - region4);
-      result = result * (lockedRegions[i] - region5);
+  for (int i = 0; i < LOCKED_REGIONS_SIZE; ++i) {
+    int region = toRegionId(x, y);
+    result = result * (lockedRegions[i] - region);
   }
-  return clamp(abs(result), 0.0, 1.0);
+  return b_convert(result);
 }
 
 void main() {
@@ -102,7 +97,9 @@ void main() {
     return;
   }
 
-  float locked = useGray * clamp(isLocked(vPosition[0].x, vPosition[0].z) + isLocked(vPosition[1].x, vPosition[1].z) + isLocked(vPosition[2].x, vPosition[2].z), 0, 1);
+
+  ivec3 center = (vPosition[0] + vPosition[1] + vPosition[2])/3;
+  float locked = useGray * isLocked(center.x, center.z);
 
   vec4 tmp = vec4(screenA.xyz, 1.0);
   Color = vColor[0];
