@@ -73,11 +73,21 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBirdhouseEmpty",
-		name = "Birdhouse",
-		description = "Swap Interact with Empty for birdhouses on Fossil Island"
+			keyName = "swapBirdhouseEmpty",
+			name = "Birdhouse",
+			description = "Swap Interact with Empty for birdhouses on Fossil Island"
 	)
 	default boolean swapBirdhouseEmpty()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "swapBrimhaven",
+			name = "Brimhaven",
+			description = "Swap Brimhaven with Captain Barnaby on Ardougne docks"
+	)
+	default boolean swapBrimhaven()
 	{
 		return true;
 	}
@@ -248,6 +258,16 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Check with Reset on box trap"
 	)
 	default boolean swapBoxTrap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "swapRimmington",
+			name = "Rimmington",
+			description = "Swap Rimmington with Captain Barnaby on Ardougne docks"
+	)
+	default boolean swapRimmington()
 	{
 		return true;
 	}

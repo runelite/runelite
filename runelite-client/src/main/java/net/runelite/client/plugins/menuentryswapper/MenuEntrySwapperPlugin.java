@@ -460,6 +460,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, true);
 			}
+
+			if (config.swapBrimhaven())
+			{
+				swap("brimhaven", option, target, true);
+			}
+
+			if (config.swapRimmington())
+			{
+				swap("rimmington", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
