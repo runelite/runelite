@@ -378,7 +378,7 @@ public class SlayerPlugin extends Plugin
 		return configManager.getConfig(SlayerConfig.class);
 	}
 
-	private void onGameStateChanged(GameStateChanged event)
+	void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -396,7 +396,7 @@ public class SlayerPlugin extends Plugin
 				if (loginTick && this.amount != -1
 					&& !this.taskName.isEmpty())
 				{
-					setTask(this.taskName, this.amount, this.initialAmount, true, this.taskLocation, this.lastCertainAmount);
+					setTask(this.taskName, this.amount, this.initialAmount, true, this.taskLocation, this.lastCertainAmount, false);
 				}
 		}
 	}
@@ -822,7 +822,7 @@ public class SlayerPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
 		{
 			return;
 		}
@@ -1030,6 +1030,11 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, String location, int lastCertainAmt)
 	{
+		setTask(name, amt, initAmt, isNewAssignment, location, lastCertainAmt, true);
+	}
+
+	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, String location, int lastCertainAmt, boolean addCounter)
+	{
 		currentTask = new TaskData(isNewAssignment ? 0 : currentTask.getElapsedTime(),
 			isNewAssignment ? 0 : currentTask.getElapsedKills(),
 			isNewAssignment ? 0 : currentTask.getElapsedXp(),
@@ -1042,8 +1047,12 @@ public class SlayerPlugin extends Plugin
 
 		save();
 		removeCounter();
-		addCounter();
-		infoTimer = Instant.now();
+
+		if (addCounter)
+		{
+			infoTimer = Instant.now();
+			addCounter();
+		}
 
 		Task task = Task.getTask(name);
 		targetNames.clear();

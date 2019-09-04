@@ -158,7 +158,7 @@ public class PluginManager
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}. {}", plugin.getClass().getSimpleName(), e);
+					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
 			}));
 	}
@@ -228,7 +228,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Unable to start plugin {}. {}", plugin.getClass().getSimpleName(), ex);
+				log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 				plugins.remove(plugin);
 			}
 
