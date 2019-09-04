@@ -115,7 +115,11 @@ class ConfigInvocationHandler implements InvocationHandler
 						log.warn("Unable to unmarshal {}.{} ", groupValue, itemKeyName, e);
 						if (method.isDefault())
 						{
-							return callDefaultMethod(proxy, method, null);
+							Object defaultValue = callDefaultMethod(proxy, method, null);
+
+							manager.setConfiguration(groupValue, itemKeyName, defaultValue);
+
+							return defaultValue;
 						}
 						return null;
 					}
