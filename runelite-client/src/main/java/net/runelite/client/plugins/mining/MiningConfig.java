@@ -106,6 +106,6 @@ public interface MiningConfig extends Config
 	)
 	default int progressPieDiameter()
 	{
-		return 1;
+		return 30;
 	}
 }
