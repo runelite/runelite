@@ -223,7 +223,7 @@ class GauntletTimer extends Overlay
 			.append(elapsedTime);
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(prepmessage.build())
 			.build());
 	}
@@ -246,7 +246,7 @@ class GauntletTimer extends Overlay
 			.append(elapsedTotalTime);
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(challengedurationmessage.build())
 			.build());
 
@@ -261,7 +261,7 @@ class GauntletTimer extends Overlay
 			.append(elapsedBossTime);
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(prepdeathmessage.build())
 			.build());
 	}
