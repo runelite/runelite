@@ -31,9 +31,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PlayerSpellEffect
 {
-	BIND("Bind", 181, 4800, true, 0, TimerType.FREEZE),
-	SNARE("Snare", 180, 9600, true, 1, TimerType.FREEZE),
-	ENTANGLE("Entangle", 179, 14400, true, 2, TimerType.FREEZE),
+	BIND("Bind", 181, 4800, false, 0, TimerType.FREEZE),
+	SNARE("Snare", 180, 9600, false, 1, TimerType.FREEZE),
+	ENTANGLE("Entangle", 179, 14400, false, 2, TimerType.FREEZE),
 	RUSH("Ice Rush", 361, 4800, false, 3, TimerType.FREEZE),
 	BURST("Ice Burst", 363, 9600, false, 4, TimerType.FREEZE),
 	BLITZ("Ice Blitz", 367, 14400, false, 5, TimerType.FREEZE),
