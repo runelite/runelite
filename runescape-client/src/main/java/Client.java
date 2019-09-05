@@ -5411,131 +5411,133 @@ public final class Client extends GameShell implements Usernamed {
 		garbageValue = "1"
 	)
 	final void method1293() {
-		WorldMapID.method537();
-		if (class188.dragInventoryWidget == null) {
-			if (clickedWidget == null) {
-				int var2;
-				int var4;
-				int var5;
-				int var10;
-				int var19;
-				label274: {
-					int var1 = MouseHandler.MouseHandler_lastButton;
-					int var3;
-					int var6;
-					int var8;
-					if (isMenuOpen) {
-						if (var1 != 1 && (FriendSystem.mouseCam || var1 != 4)) {
-							var2 = MouseHandler.MouseHandler_x;
-							var3 = MouseHandler.MouseHandler_y;
-							if (var2 < MilliClock.menuX - 10 || var2 > World.menuWidth + MilliClock.menuX + 10 || var3 < class96.menuY - 10 || var3 > class1.menuHeight + class96.menuY + 10) {
-								isMenuOpen = false;
-								FloorDecoration.method2786(MilliClock.menuX, class96.menuY, World.menuWidth, class1.menuHeight);
-							}
-						}
+		WorldMapID.sortMenuEntries();
+		if (class188.dragInventoryWidget != null) {
+			return;
+		}
+		if (clickedWidget != null) {
+			return;
+		}
+		int var2;
+		int var4;
+		int var5;
+		int var10;
+		int var19;
+		label274: {
+			int var1 = MouseHandler.MouseHandler_lastButton;
+			int var3;
+			int var6;
+			int var8;
+			if (isMenuOpen) {
+				if (var1 != 1 && (FriendSystem.mouseCam || var1 != 4)) {
+					var2 = MouseHandler.MouseHandler_x;
+					var3 = MouseHandler.MouseHandler_y;
+					if (var2 < MilliClock.menuX - 10 || var2 > World.menuWidth + MilliClock.menuX + 10 || var3 < class96.menuY - 10 || var3 > class1.menuHeight + class96.menuY + 10) {
+						isMenuOpen = false;
+						FloorDecoration.method2786(MilliClock.menuX, class96.menuY, World.menuWidth, class1.menuHeight);
+					}
+				}
 
-						if (var1 == 1 || !FriendSystem.mouseCam && var1 == 4) {
-							var2 = MilliClock.menuX;
-							var3 = class96.menuY;
-							var4 = World.menuWidth;
-							var5 = MouseHandler.MouseHandler_lastPressedX;
-							var6 = MouseHandler.MouseHandler_lastPressedY;
-							int var18 = -1;
+				if (var1 == 1 || !FriendSystem.mouseCam && var1 == 4) {
+					var2 = MilliClock.menuX;
+					var3 = class96.menuY;
+					var4 = World.menuWidth;
+					var5 = MouseHandler.MouseHandler_lastPressedX;
+					var6 = MouseHandler.MouseHandler_lastPressedY;
+					int var18 = -1;
 
-							for (var8 = 0; var8 < menuOptionsCount; ++var8) {
-								var19 = var3 + (menuOptionsCount - 1 - var8) * 15 + 31;
-								if (var5 > var2 && var5 < var4 + var2 && var6 > var19 - 13 && var6 < var19 + 3) {
-									var18 = var8;
-								}
-							}
-
-							if (var18 != -1 && var18 >= 0) {
-								var8 = menuArguments1[var18];
-								var19 = menuArguments2[var18];
-								var10 = menuOpcodes[var18];
-								int var17 = menuIdentifiers[var18];
-								String var12 = menuActions[var18];
-								String var13 = menuTargets[var18];
-								SecureRandomFuture.menuAction(var8, var19, var10, var17, var12, var13, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
-							}
-
-							isMenuOpen = false;
-							FloorDecoration.method2786(MilliClock.menuX, class96.menuY, World.menuWidth, class1.menuHeight);
-						}
-					} else {
-						var2 = Player.getNewestMenuIdx();
-						if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && var2 >= 0) {
-							var3 = menuOpcodes[var2];
-							if (var3 == 39 || var3 == 40 || var3 == 41 || var3 == 42 || var3 == 43 || var3 == 33 || var3 == 34 || var3 == 35 || var3 == 36 || var3 == 37 || var3 == 38 || var3 == 1005) {
-								var4 = menuArguments1[var2];
-								var5 = menuArguments2[var2];
-								Widget var14 = WorldMapElement.getWidget(var5);
-								var8 = ParamDefinition.getWidgetClickMask(var14);
-								boolean var7 = (var8 >> 28 & 1) != 0;
-								if (var7) {
-									break label274;
-								}
-
-								var10 = ParamDefinition.getWidgetClickMask(var14);
-								boolean var9 = (var10 >> 29 & 1) != 0;
-								if (var9) {
-									break label274;
-								}
-							}
-						}
-
-						if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && this.shouldLeftClickOpenMenu()) {
-							var1 = 2;
-						}
-
-						if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && menuOptionsCount > 0 && var2 >= 0) {
-							var3 = menuArguments1[var2];
-							var4 = menuArguments2[var2];
-							var5 = menuOpcodes[var2];
-							var6 = menuIdentifiers[var2];
-							String var15 = menuActions[var2];
-							String var16 = menuTargets[var2];
-							SecureRandomFuture.menuAction(var3, var4, var5, var6, var15, var16, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
-						}
-
-						if (var1 == 2 && menuOptionsCount > 0) {
-							this.openMenu(MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
+					for (var8 = 0; var8 < menuOptionsCount; ++var8) {
+						var19 = var3 + (menuOptionsCount - 1 - var8) * 15 + 31;
+						if (var5 > var2 && var5 < var4 + var2 && var6 > var19 - 13 && var6 < var19 + 3) {
+							var18 = var8;
 						}
 					}
 
-					return;
+					if (var18 != -1 && var18 >= 0) {
+						var8 = menuArguments1[var18];
+						var19 = menuArguments2[var18];
+						var10 = menuOpcodes[var18];
+						int var17 = menuIdentifiers[var18];
+						String var12 = menuActions[var18];
+						String var13 = menuTargets[var18];
+						SecureRandomFuture.menuAction(var8, var19, var10, var17, var12, var13, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
+					}
+
+					isMenuOpen = false;
+					FloorDecoration.method2786(MilliClock.menuX, class96.menuY, World.menuWidth, class1.menuHeight);
+				}
+			} else {
+				var2 = Player.getNewestMenuIdx();
+				if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && var2 >= 0) {
+					var3 = menuOpcodes[var2];
+					if (var3 == 39 || var3 == 40 || var3 == 41 || var3 == 42 || var3 == 43 || var3 == 33 || var3 == 34 || var3 == 35 || var3 == 36 || var3 == 37 || var3 == 38 || var3 == 1005) {
+						var4 = menuArguments1[var2];
+						var5 = menuArguments2[var2];
+						Widget var14 = WorldMapElement.getWidget(var5);
+						var8 = ParamDefinition.getWidgetClickMask(var14);
+						boolean var7 = (var8 >> 28 & 1) != 0;
+						if (var7) {
+							break label274;
+						}
+
+						var10 = ParamDefinition.getWidgetClickMask(var14);
+						boolean var9 = (var10 >> 29 & 1) != 0;
+						if (var9) {
+							break label274;
+						}
+					}
 				}
 
-				if (class188.dragInventoryWidget != null && !field867 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
-					var19 = field732;
-					var10 = field744;
-					MenuAction var11 = class1.tempMenuAction;
-					SecureRandomFuture.menuAction(var11.argument1, var11.argument2, var11.opcode, var11.argument0, var11.action, var11.action, var19, var10);
-					class1.tempMenuAction = null;
+				if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && this.shouldLeftClickOpenMenu()) {
+					var1 = 2;
 				}
 
-				field867 = false;
-				itemDragDuration = 0;
-				if (class188.dragInventoryWidget != null) {
-					FriendSystem.invalidateWidget(class188.dragInventoryWidget);
+				if ((var1 == 1 || !FriendSystem.mouseCam && var1 == 4) && menuOptionsCount > 0 && var2 >= 0) {
+					var3 = menuArguments1[var2];
+					var4 = menuArguments2[var2];
+					var5 = menuOpcodes[var2];
+					var6 = menuIdentifiers[var2];
+					String var15 = menuActions[var2];
+					String var16 = menuTargets[var2];
+					SecureRandomFuture.menuAction(var3, var4, var5, var6, var15, var16, MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
 				}
 
-				class188.dragInventoryWidget = WorldMapElement.getWidget(var5);
-				dragItemSlotSource = var4;
-				field732 = MouseHandler.MouseHandler_lastPressedX;
-				field744 = MouseHandler.MouseHandler_lastPressedY;
-				if (var2 >= 0) {
-					class1.tempMenuAction = new MenuAction();
-					class1.tempMenuAction.argument1 = menuArguments1[var2];
-					class1.tempMenuAction.argument2 = menuArguments2[var2];
-					class1.tempMenuAction.opcode = menuOpcodes[var2];
-					class1.tempMenuAction.argument0 = menuIdentifiers[var2];
-					class1.tempMenuAction.action = menuActions[var2];
+				if (var1 == 2 && menuOptionsCount > 0) {
+					this.openMenu(MouseHandler.MouseHandler_lastPressedX, MouseHandler.MouseHandler_lastPressedY);
 				}
-
-				FriendSystem.invalidateWidget(class188.dragInventoryWidget);
 			}
+
+			return;
 		}
+
+		if (class188.dragInventoryWidget != null && !field867 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
+			var19 = field732;
+			var10 = field744;
+			MenuAction var11 = class1.tempMenuAction;
+			SecureRandomFuture.menuAction(var11.argument1, var11.argument2, var11.opcode, var11.argument0, var11.action, var11.action, var19, var10);
+			class1.tempMenuAction = null;
+		}
+
+		field867 = false;
+		itemDragDuration = 0;
+		if (class188.dragInventoryWidget != null) {
+			FriendSystem.invalidateWidget(class188.dragInventoryWidget);
+		}
+
+		class188.dragInventoryWidget = WorldMapElement.getWidget(var5);
+		dragItemSlotSource = var4;
+		field732 = MouseHandler.MouseHandler_lastPressedX;
+		field744 = MouseHandler.MouseHandler_lastPressedY;
+		if (var2 >= 0) {
+			class1.tempMenuAction = new MenuAction();
+			class1.tempMenuAction.argument1 = menuArguments1[var2];
+			class1.tempMenuAction.argument2 = menuArguments2[var2];
+			class1.tempMenuAction.opcode = menuOpcodes[var2];
+			class1.tempMenuAction.argument0 = menuIdentifiers[var2];
+			class1.tempMenuAction.action = menuActions[var2];
+		}
+
+		FriendSystem.invalidateWidget(class188.dragInventoryWidget);
 	}
 
 	@ObfuscatedName("hf")

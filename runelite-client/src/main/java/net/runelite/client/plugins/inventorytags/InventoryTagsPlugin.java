@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Client;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
@@ -91,9 +90,6 @@ public class InventoryTagsPlugin extends Plugin
 
 	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_8, SETNAME_GROUP_7, SETNAME_GROUP_6,
 		SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private ConfigManager configManager;
@@ -254,7 +250,7 @@ public class InventoryTagsPlugin extends Plugin
 
 			// Need to set the event entries to prevent conflicts
 			event.setMenuEntries(menuList);
-			client.setMenuEntries(menuList);
+			event.setModified(true);
 		}
 	}
 

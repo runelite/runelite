@@ -951,8 +951,7 @@ public class GroundItemsPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			final MenuEntry lastEntry = event.getMenuEntry();
 
 			int quantity = 1;
 			Node current = tileItemPile.getBottom();
@@ -986,6 +985,7 @@ public class GroundItemsPlugin extends Plugin
 				{
 					final String optionText = telegrabEntry ? "Cast" : "Take";
 					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
+					event.setWasModified(true);
 				}
 
 				if (mode == BOTH || mode == NAME)
@@ -1005,43 +1005,20 @@ public class GroundItemsPlugin extends Plugin
 					}
 
 					lastEntry.setTarget(target);
+					event.setWasModified(true);
 				}
 			}
 
 			if (this.showMenuItemQuantities && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				event.setWasModified(true);
 			}
 
 			if (this.removeIgnored && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
 			{
-				menuEntries = removeOption(event.getOption(), event.getTarget());
+				client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 			}
-
-			client.setMenuEntries(menuEntries);
-		}
-	}
-
-	private MenuEntry[] removeOption(String option, String target)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		int j = 0;
-		if (entries.length > 1)
-		{
-			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
-			for (MenuEntry entry : entries)
-			{
-				if (!(entry.getOption().equals(option) && entry.getTarget().equals(target)))
-				{
-					newEntries[j++] = entry;
-				}
-			}
-
-			return newEntries;
-		}
-		else
-		{
-			return entries;
 		}
 	}
 

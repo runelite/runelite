@@ -109,47 +109,4 @@ public abstract class MenuMixin implements RSClient
 			}
 		}
 	}
-
-	@Inject
-	@Override
-	public void sortMenuEntries()
-	{
-		int count = getMenuOptionCount() - 1;
-		int[] menuOpcodes = getMenuOpcodes();
-		String[] menuTargetNames = getMenuTargets();
-		String[] menuActions = getMenuOptions();
-		int[] menuArguments0 = getMenuIdentifiers();
-		int[] menuArguments1 = getMenuArguments1();
-		int[] menuArguments2 = getMenuArguments2();
-		boolean[] menuShiftClick = getMenuForceLeftClick();
-
-		int tmp;
-		for (int i = 0; i < count; ++i)
-		{
-			if (menuOpcodes[i] < 1000 && menuOpcodes[i + 1] > 1000)
-			{
-				String var3 = menuTargetNames[i];
-				menuTargetNames[i] = menuTargetNames[i + 1];
-				menuTargetNames[i + 1] = var3;
-				String var4 = menuActions[i];
-				menuActions[i] = menuActions[i + 1];
-				menuActions[i + 1] = var4;
-				tmp = menuOpcodes[i];
-				menuOpcodes[i] = menuOpcodes[i + 1];
-				menuOpcodes[i + 1] = tmp;
-				tmp = menuArguments1[i];
-				menuArguments1[i] = menuArguments1[i + 1];
-				menuArguments1[i + 1] = tmp;
-				tmp = menuArguments2[i];
-				menuArguments2[i] = menuArguments2[i + 1];
-				menuArguments2[i + 1] = tmp;
-				tmp = menuArguments0[i];
-				menuArguments0[i] = menuArguments0[i + 1];
-				menuArguments0[i + 1] = tmp;
-				boolean var6 = menuShiftClick[i];
-				menuShiftClick[i] = menuShiftClick[i + 1];
-				menuShiftClick[i + 1] = var6;
-			}
-		}
-	}
 }

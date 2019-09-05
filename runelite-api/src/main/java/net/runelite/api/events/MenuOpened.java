@@ -34,6 +34,13 @@ import lombok.Data;
 public class MenuOpened implements Event
 {
 	/**
+	 * This should be set to true if anything about the menu
+	 * in menuEntries is changed, so the changes can be
+	 * propagated through to the client.
+	 */
+	private boolean modified;
+
+	/**
 	 * The menu entries in the newly opened menu.
 	 * <p>
 	 * The entries in this menu are reversed, the last entry in the

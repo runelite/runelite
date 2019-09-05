@@ -35,9 +35,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.MenuEntry;
+import static net.runelite.api.MenuOpcode.NPC_SECOND_OPTION;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Varbits;
@@ -66,7 +65,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class CorpPlugin extends Plugin
 {
-	private static final int NPC_SECTION_ACTION = MenuOpcode.NPC_SECOND_OPTION.getId();
 	private static final String ATTACK = "Attack";
 	private static final String DARK_ENERGY_CORE = "Dark energy core";
 
@@ -244,27 +242,23 @@ public class CorpPlugin extends Plugin
 		players.add(source);
 	}
 
-	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (menuEntryAdded.getType() != NPC_SECTION_ACTION
-			|| !this.leftClickCore || !menuEntryAdded.getOption().equals(ATTACK))
+		if (event.getType() != NPC_SECOND_OPTION.getId()
+			|| !this.leftClickCore || !event.getOption().equals(ATTACK))
 		{
 			return;
 		}
 
-		final int npcIndex = menuEntryAdded.getIdentifier();
+		final int npcIndex = event.getIdentifier();
 		final NPC npc = client.getCachedNPCs()[npcIndex];
 		if (npc == null || !npc.getName().equals(DARK_ENERGY_CORE))
 		{
 			return;
 		}
 
-		// since this is the menu entry add event, this is the last menu entry
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-
-		menuEntry.setOpcode(NPC_SECTION_ACTION + MENU_ACTION_DEPRIORITIZE_OFFSET);
-		client.setMenuEntries(menuEntries);
+		event.getMenuEntry().setOpcode(NPC_SECOND_OPTION.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+		event.setWasModified(true);
 	}
 
 	private void onConfigChanged(ConfigChanged configChanged)

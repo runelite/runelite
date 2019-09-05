@@ -1744,12 +1744,6 @@ public interface Client extends GameShell
 	void setUnhiddenCasts(Set<String> casts);
 
 	/**
-	 * Sorts the current menu entries in the same way the client does this.
-	 * The last entry will be the left click one after this.
-	 */
-	void sortMenuEntries();
-
-	/**
 	 * Add player to friendlist
 	 */
 	void addFriend(String name);

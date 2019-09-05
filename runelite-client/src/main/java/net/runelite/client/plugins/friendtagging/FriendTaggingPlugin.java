@@ -10,7 +10,6 @@
 package net.runelite.client.plugins.friendtagging;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ObjectArrays;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
@@ -25,7 +24,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.Ignore;
 import net.runelite.api.MenuOpcode;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Nameable;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -129,16 +127,17 @@ public class FriendTaggingPlugin extends Plugin
 			String friendName = Text.removeTags(event.getTarget());
 
 			// Build "Add Note" or "Edit Note" menu entry
-			final MenuEntry entry = new MenuEntry();
-			entry.setOption(friendName == null || getTag(friendName) == null ? ADD_TAG : DELETE_TAG);
-			entry.setOpcode(MenuOpcode.RUNELITE.getId());
-			entry.setTarget(event.getTarget()); //Preserve color codes here
-			entry.setParam0(event.getActionParam0());
-			entry.setParam1(event.getActionParam1());
-
+			client.insertMenuItem(
+				friendName == null || getTag(friendName) == null ? ADD_TAG : DELETE_TAG,
+				event.getTarget(),
+				MenuOpcode.RUNELITE.getId(),
+				0,
+				event.getActionParam0(),
+				event.getActionParam1(),
+				false
+			);
 			// Add menu entry
-			final MenuEntry[] menuEntries = ObjectArrays.concat(client.getMenuEntries(), entry);
-			client.setMenuEntries(menuEntries);
+			// jk it is already added
 		}
 	}
 

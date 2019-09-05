@@ -60,7 +60,8 @@ public class WorldMapID {
 		signature = "(S)V",
 		garbageValue = "-6260"
 	)
-	static final void method537() {
+	@Export("sortMenuEntries")
+	static final void sortMenuEntries() {
 		boolean var0 = false;
 
 		while (!var0) {

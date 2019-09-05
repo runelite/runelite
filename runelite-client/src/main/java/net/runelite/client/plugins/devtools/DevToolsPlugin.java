@@ -388,8 +388,7 @@ public class DevToolsPlugin extends Plugin
 
 		if (EXAMINE_MENU_ACTIONS.contains(action))
 		{
-			MenuEntry[] entries = client.getMenuEntries();
-			MenuEntry entry = entries[entries.length - 1];
+			final MenuEntry entry = event.getMenuEntry();
 
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";
@@ -411,7 +410,7 @@ public class DevToolsPlugin extends Plugin
 			}
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
-			client.setMenuEntries(entries);
+			event.setWasModified(true);
 		}
 	}
 
