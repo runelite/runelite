@@ -122,7 +122,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "skullNotification",
 		name = "Skull Notification",
-		description = "Receive a notification when you skull."
+		description = "Receive a notification when you skull.",
 		position = 9
 	)
 	default boolean showSkullNotification()
@@ -133,8 +133,8 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "unskullNotification",
 		name = "Unskull Notification",
-		description = "Receive a notification when you unskull."
-		position = 10,
+		description = "Receive a notification when you unskull.",
+		position = 10
 	)
 	default boolean showUnskullNotification()
 	{
@@ -211,7 +211,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "spec",
 		name = "Special Attack Energy Notification Threshold",
 		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification.",
-				position = 17
+		position = 17
 	)
 	default int getSpecEnergyThreshold()
 	{
@@ -234,7 +234,7 @@ public interface IdleNotifierConfig extends Config
 		name = "Over Special Energy Notification",
 		description = "Will repeat notifications for any value over the special energy threshold",
 		position = 19
-
+	)
 	default boolean getOverSpecEnergy()
 	{
 		return false;
@@ -260,10 +260,8 @@ public interface IdleNotifierConfig extends Config
 			position = 21,
 			group = "PvP"
 	)
-
 	default boolean notifyResourceDoor()
 	{
 		return false;
 	}
-
 }
