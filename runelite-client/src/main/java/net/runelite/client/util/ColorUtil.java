@@ -34,7 +34,7 @@ public class ColorUtil
 	public static final int MIN_RGB_VALUE = 0;
 	private static final String OPENING_COLOR_TAG_START = "<col=";
 	private static final String OPENING_COLOR_TAG_END = ">";
-	private static final String CLOSING_COLOR_TAG = "</col>";
+	public static final String CLOSING_COLOR_TAG = "</col>";
 	private final static Pattern ALPHA_HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{7,8}");
 	private final static Pattern HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{1,8}");
 

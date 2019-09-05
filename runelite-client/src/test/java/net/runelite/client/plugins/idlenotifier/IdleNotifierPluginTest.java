@@ -37,7 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.WorldType;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -50,6 +50,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -276,5 +277,20 @@ public class IdleNotifierPluginTest
 		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(GameTick.INSTANCE);
 		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+	}
+
+	@Test
+	public void testMovementIdle()
+	{
+		when(config.movementIdle()).thenReturn(true);
+
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		plugin.onGameTick(new GameTick());
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(1, 0, 0));
+		plugin.onGameTick(new GameTick());
+		// No movement here
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has stopped moving!"));
 	}
 }
