@@ -59,6 +59,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -246,6 +247,9 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
 	private Actor lastInteract;
+	private Instant lastMoving;
+	private WorldPoint lastPosition;
+	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyOxygen = true;
@@ -292,6 +296,8 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPkers;
 	private boolean notifyResourceDoor;
 	private boolean outOfItemsIdle;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean movementIdle;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -591,6 +597,11 @@ public class IdleNotifierPlugin extends Plugin
 			lastAnimation = IDLE;
 		}
 
+		if (this.movementIdle && checkMovementIdle(waitDuration, local))
+		{
+			notifier.notify("[" + local.getName() + "] has stopped moving!");
+		}
+
 		if (this.interactionIdle && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
@@ -874,7 +885,36 @@ public class IdleNotifierPlugin extends Plugin
 			resetOutOfItemsIdleChecks();
 			return true;
 		}
+		return false;
+	}
 
+	private boolean checkMovementIdle(Duration waitDuration, Player local)
+	{
+		if (lastPosition == null)
+		{
+			lastPosition = local.getWorldLocation();
+			return false;
+		}
+
+		WorldPoint position = local.getWorldLocation();
+
+		if (lastPosition.equals(position))
+		{
+			if (notifyPosition
+				&& local.getAnimation() == IDLE
+				&& Instant.now().compareTo(lastMoving.plus(waitDuration)) >= 0)
+			{
+				notifyPosition = false;
+				// Return true only if we weren't just breaking out of an animation
+				return lastAnimation == IDLE;
+			}
+		}
+		else
+		{
+			notifyPosition = true;
+			lastPosition = position;
+			lastMoving = Instant.now();
+		}
 		return false;
 	}
 
@@ -1001,5 +1041,6 @@ public class IdleNotifierPlugin extends Plugin
 		this.notifyPkers = config.notifyPkers();
 		this.notifyResourceDoor = config.notifyResourceDoor();
 		this.outOfItemsIdle = config.outOfItemsIdle();
+		this.movementIdle = config.movementIdle();
 	}
 }

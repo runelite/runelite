@@ -111,7 +111,7 @@ public class ChatMessageManager
 		}
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		ChatMessageType chatMessageType = chatMessage.getType();
@@ -167,7 +167,11 @@ public class ChatMessageManager
 				continue;
 			}
 
-			messageNode.setValue(ColorUtil.wrapWithColorTag(messageNode.getValue(), chatColor.getColor()));
+			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
+			final Color color = chatColor.getColor();
+			messageNode.setValue(ColorUtil.wrapWithColorTag(
+				messageNode.getValue().replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
+				color));
 			break;
 		}
 	}
