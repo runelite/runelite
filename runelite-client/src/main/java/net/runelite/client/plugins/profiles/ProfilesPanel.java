@@ -120,6 +120,9 @@ class ProfilesPanel extends PluginPanel
 		txtDecryptPassword.setEchoChar((char) 0);
 		txtDecryptPassword.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		txtDecryptPassword.setToolTipText(UNLOCK_PASSWORD);
+
+		txtDecryptPassword.addActionListener(e -> decryptAccounts());
+
 		txtDecryptPassword.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -156,27 +159,7 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				boolean error = false;
-				try
-				{
-					redrawProfiles();
-				}
-				catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
-				{
-					error = true;
-					showErrorMessage("Unable to load data", "Incorrect password!");
-				}
-
-				if (error)
-				{
-					return;
-				}
-
-				remove(loginPanel);
-				add(accountPanel, BorderLayout.CENTER);
-
-				profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
-				add(profilesPanel, BorderLayout.SOUTH);
+				decryptAccounts();
 			}
 
 			@Override
@@ -386,6 +369,38 @@ class ProfilesPanel extends PluginPanel
 		// addAccounts(config.profilesData());
 	}
 
+	private void decryptAccounts()
+	{
+		if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
+		{
+			showErrorMessage("Unable to load data", "Please enter a password!");
+			return;
+		}
+
+		boolean error = false;
+		try
+		{
+			redrawProfiles();
+		}
+		catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
+		{
+			error = true;
+			showErrorMessage("Unable to load data", "Incorrect password!");
+			txtDecryptPassword.setText("");
+		}
+
+		if (error)
+		{
+			return;
+		}
+
+		remove(loginPanel);
+		add(accountPanel, BorderLayout.CENTER);
+
+		profilesPanel.setLayout(new DynamicGridLayout(0, 1, 0, 3));
+		add(profilesPanel, BorderLayout.SOUTH);
+	}
+
 	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		profilesPanel.removeAll();
@@ -462,11 +477,6 @@ class ProfilesPanel extends PluginPanel
 		String tmp = profilesConfig.profilesData();
 		if (tmp.startsWith("¬"))
 		{
-			if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
-			{
-				showErrorMessage("Unable to load data", "Please enter a password!");
-				return tmp;
-			}
 			tmp = tmp.substring(1);
 			return decryptText(base64Decode(tmp), getAesKey());
 		}

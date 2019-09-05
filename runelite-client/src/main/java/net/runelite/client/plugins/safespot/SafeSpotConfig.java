@@ -19,17 +19,6 @@ public interface SafeSpotConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "playerSafeSpots",
-		name = "Render for Players",
-		description = "Renders 1 way safe spots vs other players"
-	)
-	default boolean playerSafeSpots()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
 		keyName = "npcSafeSpots",
 		name = "Render for NPCs",
 		description = "Renders 1 way safe spots vs NPCs"
@@ -40,7 +29,7 @@ public interface SafeSpotConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
 		keyName = "tileColor",
 		name = "Tile Color",
 		description = "Color of safe spot tile"

@@ -290,7 +290,7 @@ public class EquipmentInspectorPlugin extends Plugin
 							StringPrice = NumberFormat.getIntegerInstance().format(TotalPrice);
 						}
 						chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+							.type(ChatMessageType.CONSOLE)
 							.runeLiteFormattedMessage(new ChatMessageBuilder()
 								.append(ChatColorType.HIGHLIGHT)
 								.append("Risked Value: ")

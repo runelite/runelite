@@ -21,7 +21,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.NPC;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -38,10 +37,10 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "1 Way Safe Spots",
+	name = "NPC Safe Spots",
 	description = "Renders tile overlays for one way safe spots",
-	tags = {"safe spot", "pvp", "safespots", "pklite"},
-	type = PluginType.UTILITY,
+	tags = {"safe spot", "safespots", "pvm"},
+	type = PluginType.PVM,
 	enabledByDefault = false
 )
 @Singleton
@@ -71,7 +70,6 @@ public class SafeSpotPlugin extends Plugin
 	private SafeSpotOverlay safeSpotOverlay;
 	private int tickCount = 0;
 
-	private boolean playerSafeSpots;
 	private boolean npcSafeSpots;
 	@Getter(AccessLevel.PACKAGE)
 	private Color tileColor;
@@ -113,7 +111,7 @@ public class SafeSpotPlugin extends Plugin
 		{
 			return;
 		}
-		if (event.getTarget() == null && (this.npcSafeSpots || this.playerSafeSpots))
+		if (event.getTarget() == null && this.npcSafeSpots)
 		{
 			tickCount = 10;
 		}
@@ -123,11 +121,6 @@ public class SafeSpotPlugin extends Plugin
 	{
 		if (client.getLocalPlayer().getInteracting() != null)
 		{
-			if (client.getLocalPlayer().getInteracting() instanceof Player && this.playerSafeSpots)
-			{
-				safeSpotsRenderable = true;
-				updateSafeSpots();
-			}
 			if (client.getLocalPlayer().getInteracting() instanceof NPC && this.npcSafeSpots)
 			{
 				if (npcManager.getStats(((NPC) client.getLocalPlayer().getInteracting()).getId()) != null)
@@ -215,7 +208,6 @@ public class SafeSpotPlugin extends Plugin
 
 	private void updateConfig()
 	{
-		this.playerSafeSpots = config.playerSafeSpots();
 		this.npcSafeSpots = config.npcSafeSpots();
 		this.tileColor = config.tileColor();
 	}

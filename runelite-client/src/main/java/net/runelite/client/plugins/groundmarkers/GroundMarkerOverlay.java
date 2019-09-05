@@ -113,6 +113,18 @@ public class GroundMarkerOverlay extends Overlay
 				break;
 			case 8:
 				color = plugin.getMarkerColor8();
+				break;
+			case 9:
+				color = plugin.getMarkerColor9();
+				break;
+			case 10:
+				color = plugin.getMarkerColor10();
+				break;
+			case 11:
+				color = plugin.getMarkerColor11();
+				break;
+			case 12:
+				color = plugin.getMarkerColor12();
 		}
 		OverlayUtil.renderPolygon(graphics, poly, color);
 	}

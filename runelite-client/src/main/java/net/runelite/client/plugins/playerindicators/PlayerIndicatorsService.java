@@ -60,25 +60,26 @@ public class PlayerIndicatorsService
 
 		self = (player) -> Objects.equals(client.getLocalPlayer(), player);
 		friend = (player) -> (!player.equals(client.getLocalPlayer()) && client.isFriended(player.getName(), false));
-		clan = Player::isClanMember;
+		clan = (player) -> (player.isClanMember() && !client.isFriended(player.getName(), false));
 		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 &&
 			client.getLocalPlayer().getTeam() == player.getTeam());
-		target = (player) -> PvPUtil.isAttackable(client, player);
+		target = (player ->
+		{
+			if (nonFriendly(player))
+			{
+				return false;
+			}
+			return plugin.isHighlightTargets() && PvPUtil.isAttackable(client, player);
+		});
 		caller = plugin::isCaller;
 		callerTarget = piles::contains;
 		other = (player ->
 		{
-			if (player == null
-				|| (plugin.isHighlightClan() && player.isClanMember())
-				|| (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
-				|| (plugin.isHighlightCallers() && plugin.isCaller(player))
-				|| (plugin.isHighlightCallerTargets() && piles.contains(player))
-				|| (plugin.isHighlightTeam() && Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0
-				&& client.getLocalPlayer().getTeam() == player.getTeam()))
+			if (nonFriendly(player))
 			{
 				return false;
 			}
-			return !plugin.isHighlightTargets() || PvPUtil.isAttackable(client, player);
+			return true;
 		});
 	}
 
@@ -140,5 +141,16 @@ public class PlayerIndicatorsService
 		return plugin.isHighlightOwnPlayer() || plugin.isHighlightClan()
 			|| plugin.isHighlightFriends() || plugin.isHighlightOther() || plugin.isHighlightTargets()
 			|| plugin.isHighlightCallers() || plugin.isHighlightTeam() || plugin.isHighlightCallerTargets();
+	}
+
+	private boolean nonFriendly(Player player)
+	{
+		return player == null
+			|| (plugin.isHighlightClan() && player.isClanMember())
+			|| (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
+			|| (plugin.isHighlightCallers() && plugin.isCaller(player))
+			|| (plugin.isHighlightCallerTargets() && piles.contains(player))
+			|| (plugin.isHighlightTeam() && Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0
+			&& client.getLocalPlayer().getTeam() == player.getTeam());
 	}
 }
