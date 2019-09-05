@@ -195,12 +195,11 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			Color highlighted = null;
+			Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
 
 			//Process skill items
 			if (!plugin.hiddenItems.getUnchecked(item.getName()))
 			{
-				highlighted = plugin.getDefaultColor();
 				if (plugin.highlightHerblore)
 				{
 					if (GroundItemsPlugin.herbloreItems.contains(item.getId()))
