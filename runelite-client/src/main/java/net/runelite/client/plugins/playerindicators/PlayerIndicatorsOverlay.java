@@ -161,16 +161,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 			if (plugin.getAgilityFormat() == PlayerIndicatorsPlugin.AgilityFormats.ICONS)
 			{
 
-				final int width;
-				if (plugin.isShowCombatLevel())
-				{
-					width = graphics.getFontMetrics().stringWidth(name) + 10;
-				}
-				else
-				{
-					width = graphics.getFontMetrics().stringWidth(name);
+				final int width = plugin.isShowCombatLevel() ? graphics.getFontMetrics().stringWidth(name)
+					+ ACTOR_HORIZONTAL_TEXT_MARGIN : graphics.getFontMetrics().stringWidth(name);
 
-				}
 				final int height = graphics.getFontMetrics().getHeight();
 				if (level >= plugin.getAgilityFirstThreshold())
 				{
