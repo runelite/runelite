@@ -292,7 +292,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			return false;
 		}
 
-		final WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+		final WorldPoint localWorld = ClueScrollPlugin.convertLocation(plugin.getClient().getLocalPlayer().getWorldLocation());
 
 		if (localWorld == null)
 		{

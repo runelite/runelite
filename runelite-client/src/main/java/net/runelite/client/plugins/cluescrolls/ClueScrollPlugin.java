@@ -644,7 +644,7 @@ public class ClueScrollPlugin extends Plugin
 		x2 += degX * 32 + Math.round(minX / 1.875);
 		y2 += degY * 32 + Math.round(minY / 1.875);
 
-		return new WorldPoint(x2, y2, 0);
+		return convertLocation(new WorldPoint(x2, y2, 0));
 	}
 
 	private void addMapPoints(WorldPoint... points)
@@ -838,7 +838,7 @@ public class ClueScrollPlugin extends Plugin
 	 * @param worldPoint - the WorldPoint to check
 	 * @return worldPoint if outside of Prif, or the converted WorldPoint if inside
 	 */
-	static WorldPoint convertLocation(WorldPoint worldPoint)
+	public static WorldPoint convertLocation(WorldPoint worldPoint)
 	{
 		if (!(PRIFDDINAS_ACTUAL_REGIONS.contains(worldPoint.getRegionID())
 			|| PRIFDDINAS_OVERWORLD_REGIONS.contains(worldPoint.getRegionID())))
