@@ -111,7 +111,7 @@ public class ChatMessageManager
 		}
 	}
 
-	private void onChatMessage(ChatMessage chatMessage)
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
 		ChatMessageType chatMessageType = chatMessage.getType();

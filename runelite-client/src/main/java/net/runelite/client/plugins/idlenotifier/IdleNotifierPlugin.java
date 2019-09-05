@@ -296,6 +296,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPkers;
 	private boolean notifyResourceDoor;
 	private boolean outOfItemsIdle;
+	@Setter(AccessLevel.PACKAGE)
 	private boolean movementIdle;
 
 	@Provides
