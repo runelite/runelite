@@ -29,13 +29,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.Point;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,7 +42,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ImageUtil;
-import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 
 @Singleton
@@ -256,21 +253,6 @@ public class FreezeTimersOverlay extends Overlay
 		else
 		{
 			renderActorText(g, actor, text, overlaysDrawn, VENG_IMAGE);
-		}
-		if (actor.getSpotAnimation() == GraphicID.VENGEANCE || actor.getSpotAnimation() == GraphicID.VENGEANCE_OTHER)
-		{
-
-			g.setColor(RED);
-			Polygon poly = actor.getCanvasTilePoly();
-
-			if (poly == null)
-			{
-				return false;
-			}
-
-			OverlayUtil.renderPolygon(g, poly, RED);
-			OverlayUtil.renderTextLocation(g, new Point((int) poly.getBounds2D().getCenterX(),
-					(int) poly.getBounds2D().getCenterY()), actor.getName(), RED);
 		}
 		return true;
 	}
