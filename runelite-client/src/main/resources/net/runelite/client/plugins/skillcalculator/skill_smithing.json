@@ -73,6 +73,18 @@
       "xp": 25
     },
     {
+      "level": 5,
+      "icon": 11367,
+      "name": "Bronze Hasta",
+      "xp": 25
+    },
+    {
+      "level": 5,
+      "icon": 1237,
+      "name": "Bronze Spear",
+      "xp": 25
+    },
+    {
       "level": 6,
       "icon": 19570,
       "name": "Bronze Javelin Heads",
@@ -238,6 +250,18 @@
       "level": 20,
       "icon": 1323,
       "name": "Iron Scimitar",
+      "xp": 50
+    },
+    {
+      "level": 20,
+      "icon": 11369,
+      "name": "Iron Hasta",
+      "xp": 50
+    },
+    {
+      "level": 20,
+      "icon": 1239,
+      "name": "Iron Spear",
       "xp": 50
     },
     {
@@ -407,6 +431,18 @@
       "icon": 41,
       "name": "Steel Arrowtips",
       "xp": 37.5
+    },
+    {
+      "level": 35,
+      "icon": 11371,
+      "name": "Steel Hasta",
+      "xp": 75
+    },
+    {
+      "level": 35,
+      "icon": 1241,
+      "name": "Steel Spear",
+      "xp": 75
     },
     {
       "level": 36,
@@ -589,6 +625,18 @@
       "xp": 100
     },
     {
+      "level": 55,
+      "icon": 11373,
+      "name": "Mithril Hasta",
+      "xp": 100
+    },
+    {
+      "level": 55,
+      "icon": 1243,
+      "name": "Mithril Spear",
+      "xp": 100
+    },
+    {
       "level": 56,
       "icon": 1299,
       "name": "Mithril Longsword",
@@ -757,6 +805,18 @@
       "xp": 125
     },
     {
+      "level": 75,
+      "icon": 11375,
+      "name": "Adamant Hasta",
+      "xp": 125
+    },
+    {
+      "level": 75,
+      "icon": 1245,
+      "name": "Adamant Spear",
+      "xp": 125
+    },
+    {
       "level": 76,
       "icon": 9429,
       "name": "Adamantite Limbs",
@@ -910,6 +970,18 @@
       "level": 90,
       "icon": 1333,
       "name": "Rune Scimitar",
+      "xp": 150
+    },
+    {
+      "level": 90,
+      "icon": 11377,
+      "name": "Rune Hasta",
+      "xp": 150
+    },
+    {
+      "level": 90,
+      "icon": 1247,
+      "name": "Rune Spear",
       "xp": 150
     },
     {
