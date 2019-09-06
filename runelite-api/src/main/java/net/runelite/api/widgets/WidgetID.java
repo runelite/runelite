@@ -147,6 +147,8 @@ public class WidgetID
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int OPTIONS_GROUP_ID = 261;
 	public static final int GWD_KC_GROUP_ID = 406;
+	public static final int LMS_GROUP_ID = 333;
+	public static final int LMS_INGAME_GROUP_ID = 328;
 
 	static class WorldMap
 	{
@@ -851,5 +853,15 @@ public class WidgetID
 	static class Skills
 	{
 		static final int CONTAINER = 0;
+	}
+
+	static class Lms
+	{
+		static final int INFO = 2;
+	}
+
+	static class LmsKDA
+	{
+		static final int INFO = 4;
 	}
 }
