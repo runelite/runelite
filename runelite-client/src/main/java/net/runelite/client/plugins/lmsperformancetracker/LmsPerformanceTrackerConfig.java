@@ -22,14 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pvpperformancetracker;
+package net.runelite.client.plugins.lmsperformancetracker;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("pvpPerformanceTracker")
-public interface PvpPerformanceTrackerConfig extends Config
+@ConfigGroup("lmsPerformanceTracker")
+public interface LmsPerformanceTrackerConfig extends Config
 {
 	@ConfigItem(
 		keyName = "restrictToLms",

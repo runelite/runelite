@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pvpperformancetracker;
+package net.runelite.client.plugins.lmsperformancetracker;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
@@ -47,15 +47,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-import static net.runelite.client.plugins.pvpperformancetracker.AnimationAttackStyle.None;
+import static net.runelite.client.plugins.lmsperformancetracker.AnimationAttackStyle.None;
 
 @PluginDescriptor(
 	name = "LMS Performance Tracker",
-	description = "Tracks your PvP performance by counting how many attacks you & your opponent hit off-pray (ex. used range or melee vs pray mage).",
+	description = "Tracks your LMS performance by counting how many attacks you & your opponent hit off-pray (ex. used range or melee vs pray mage).",
 	tags = {"pvp", "last man standing", "hybrid", "tribrid", "nh", "no honour", "pking"},
 	enabledByDefault = true
 )
-public class PvpPerformanceTrackerPlugin extends Plugin
+public class LmsPerformanceTrackerPlugin extends Plugin
 {
 	// Delay to assume a fight is over. May seem long, but sometimes people barrage &
 	// stand under for a while to eat. Fights will automatically end when either player dies.
@@ -68,10 +68,10 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	private NavigationButton button;
 
 	@Getter(AccessLevel.PACKAGE)
-	private PvpPerformanceTrackerPanel panel;
+	private LmsPerformanceTrackerPanel panel;
 
 	@Inject
-	private PvpPerformanceTrackerConfig config;
+	private LmsPerformanceTrackerConfig config;
 	@Inject
 	private Client client;
 
@@ -82,7 +82,7 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PvpPerformanceTrackerOverlay overlay;
+	private LmsPerformanceTrackerOverlay overlay;
 
 	// the last time someone in the fight attacked, or when the fight was initiated.
 	private Instant lastFightTime;
@@ -96,18 +96,18 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	//private List<FightPerformance> fightHistory;
 
 	@Provides
-	PvpPerformanceTrackerConfig provideConfig(ConfigManager configManager)
+	LmsPerformanceTrackerConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(PvpPerformanceTrackerConfig.class);
+		return configManager.getConfig(LmsPerformanceTrackerConfig.class);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = injector.getInstance(PvpPerformanceTrackerPanel.class);
+		panel = injector.getInstance(LmsPerformanceTrackerPanel.class);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull_white.png");
 		button = NavigationButton.builder()
-			.tooltip(config.restrictToLms() ? "LMS" : "PvP" + " Fight History")
+			.tooltip("LMS Fight History")
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
@@ -133,16 +133,24 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 	// Keep track of a player's new target using this event.
 	// It's worth noting that if you aren't in a fight, all player interactions including
 	// trading & following will trigger a new fight and a new opponent. Due to this, set the
-	// lastFightTime in the past to only be 4 seconds after the time NEW_FIGHT_DELAY would trigger
+	// lastFightTime in the past to only be 3 seconds after the time NEW_FIGHT_DELAY would trigger
 	// and unset the opponent, in case the player follows a different player before actually starting
 	// a fight or getting attacked. In other words, remain skeptical of the validity of this event.
 	@Subscribe
 	public void onInteractingChanged(InteractingChanged event)
 	{
-		// if the event source is null, the client player already has an opponent, or the event
-		// source & target aren't players, skip any processing.
-		if (event.getSource() == null || hasOpponent() || !(event.getSource() instanceof Player) ||
-			!(event.getTarget() instanceof Player))
+		if (config.restrictToLms() && !isAtLMS())
+		{
+			return;
+		}
+
+		stopFightIfOver();
+
+		// if the event source is null, the client player already has a valid opponent,
+		// or the event source & target aren't players, skip any processing.
+		if (event.getSource() == null ||
+			(hasOpponent() && (currentFight == null || currentFight.fightStarted())) ||
+			!(event.getSource() instanceof Player) || !(event.getTarget() instanceof Player))
 		{
 			return;
 		}
@@ -158,18 +166,14 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 		{
 			opponent = event.getSource();
 		}
-		else
+		else // if neither source or target was the player, skip
 		{
 			return;
 		}
 
-		if (currentFight != null)
-		{
-			//panel.addFight(currentFight);
-		}
 		currentOpponent = (Player) opponent;
 		currentFight = new FightPerformance(client.getLocalPlayer().getName(), currentOpponent.getName());
-		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 4);
+		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 3);
 	}
 
 	@Subscribe
@@ -180,55 +184,45 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 			return;
 		}
 
-		// check if local player has a Player target, or did recently.
+		stopFightIfOver();
+
 		if (hasOpponent())
 		{
-			// if there is an opponent, check the player's animation for an attack,
-			// and also check the opponent's animation for an attack. If they attacked,
-			// the function will also add the attack to the current fight stats, taking
-			// into account the opponent's overhead prayer.
+			// if there is an opponent, check both players' animations for attacks.
+			// If they attacked, will also add the attack to the current fight stats,
+			// taking into account the opponent's overhead prayer.
 			checkAnimation(true);
 			checkAnimation(false);
 		}
 	}
 
-	// Returns true if the player has an opponent. Will also set the currentOpponent to null if the player
-	// should no longer have a target (hasn't fought in NEW_FIGHT_DELAY, or either player died).
+	// Will set the currentOpponent to null if the player should no longer have a target:
+	// if either player hasn't fought in NEW_FIGHT_DELAY, or either player died.
 	// Will also add the currentFight to fightHistory if the fight ended.
-	private boolean hasOpponent()
+	private void stopFightIfOver()
 	{
 		// if either player died, end the fight.
-		if (currentOpponent != null && currentOpponent.getAnimation() == AnimationID.DEATH)
+		if (hasOpponent() && currentOpponent.getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.opponentDied();
-			//panel.addFight(currentFight);
-			playerAttacking = false;
-			opponentAttacking = false;
-			currentFight = null;
-			currentOpponent = null;
+			stopCurrentFight();
 		}
-		if (currentOpponent != null && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
+		if (client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.playerDied();
-			//panel.addFight(currentFight);
-			playerAttacking = false;
-			opponentAttacking = false;
-			currentFight = null;
-			currentOpponent = null;
+			stopCurrentFight();
 		}
 		// If there was no fight actions in the last (NEW_FIGHT_DELAY) seconds, set opponent to
 		// null, which will get set next time the player targets a Player.
 		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
 		{
-			if (currentFight != null)
-			{
-				//panel.addFight(currentFight);
-			}
-			playerAttacking = false;
-			opponentAttacking = false;
-			currentFight = null;
-			currentOpponent = null;
+			stopCurrentFight();
 		}
+	}
+
+	// Returns true if the player has an opponent.
+	private boolean hasOpponent()
+	{
 		return currentOpponent != null;
 	}
 
@@ -258,6 +252,19 @@ public class PvpPerformanceTrackerPlugin extends Plugin
 			playerAttacking = forPlayer || playerAttacking;
 			opponentAttacking = !forPlayer || opponentAttacking;
 		}
+	}
+
+	private void stopCurrentFight()
+	{
+		// add fight to fight history if not null
+		if (currentFight != null && currentFight.fightStarted())
+		{
+			panel.addFight(currentFight);
+		}
+		playerAttacking = false;
+		opponentAttacking = false;
+		currentFight = null;
+		currentOpponent = null;
 	}
 
 	/**

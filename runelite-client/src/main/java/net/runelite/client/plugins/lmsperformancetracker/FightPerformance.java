@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pvpperformancetracker;
+package net.runelite.client.plugins.lmsperformancetracker;
 
 import lombok.Getter;
 
@@ -51,9 +51,9 @@ public class FightPerformance
 		if (random)
 		{
 			int attacks = (int) (Math.random() * 35.0 + 20.0);
-			int successful = attacks - (int) (Math.random() * (attacks / 2));
+			int successful = (int) (attacks / 3.0 + ((Math.random() * (attacks / 2))));
 			int oAttacks = (int) (Math.random() * 35.0 + 20.0);
-			int oSuccessful = oAttacks - (int) (Math.random() * (oAttacks / 2));
+			int oSuccessful = (int) (oAttacks / 3.0 + ((Math.random() * (oAttacks / 2))));
 
 			return new FightPerformance(
 				"qwerty" + (int) (Math.random() * 99.0),
@@ -66,7 +66,7 @@ public class FightPerformance
 		}
 		else
 		{
-			return new FightPerformance("Matsyir", "0123456789@#", 55, 32, 57, 43);
+			return new FightPerformance("qwerty123", "0123456789@#", 55, 32, 57, 43);
 		}
 	}
 
@@ -92,11 +92,11 @@ public class FightPerformance
 		this.opponentName = opponentName;
 		this.playerAttackCount = playerAttackCount;
 		this.playerSuccessCount = playerSuccessCount;
-		this.playerSuccessRate = this.playerSuccessCount / this.playerAttackCount;
+		this.playerSuccessRate = (double) this.playerSuccessCount / (double) this.playerAttackCount * 100.0;
 		this.playerDied = false;
 		this.opponentAttackCount = opponentAttackCount;
 		this.opponentSuccessCount = opponentSuccessCount;
-		this.opponentSuccessRate = this.opponentSuccessCount / this.opponentAttackCount;
+		this.opponentSuccessRate = (double) this.opponentSuccessCount / (double) this.opponentAttackCount * 100.0;
 		this.opponentDied = false;
 	}
 
@@ -169,5 +169,10 @@ public class FightPerformance
 		playerSuccessCount += success;
 		playerAttackCount += total;
 		playerSuccessRate = (double) playerSuccessCount / (double) playerAttackCount * 100.0;
+	}
+
+	public boolean fightStarted()
+	{
+		return playerAttackCount > 0;
 	}
 }

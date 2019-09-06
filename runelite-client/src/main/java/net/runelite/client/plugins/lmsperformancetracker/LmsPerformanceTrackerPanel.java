@@ -24,67 +24,75 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.pvpperformancetracker;
+package net.runelite.client.plugins.lmsperformancetracker;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import lombok.Getter;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.materialtabs.MaterialTab;
-import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
-class PvpPerformanceTrackerPanel extends PluginPanel
+class LmsPerformanceTrackerPanel extends PluginPanel
 {
 	// The main fight history container, this will hold all the individual FightPerformancePanels.
-	private final JPanel fightPerformanceContainer = new JPanel();
+	private final JPanel fightHistoryContainer = new JPanel();
+	private final GridBagConstraints fightPanelConstraints = new GridBagConstraints();
 
-	private final FightPerformance playerTotals = new FightPerformance("Player", "");
-	private final List<FightPerformance> fightHistory = new ArrayList<>();
+	private final TotalStatsPanel totalStatsPanel = new TotalStatsPanel(new FightPerformance("Player", ""));
 
 	@Inject
-	private PvpPerformanceTrackerPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	private LmsPerformanceTrackerPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
 		super(false);
 
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(0, 4));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setBorder(new EmptyBorder(8, 8, 8, 8));
+		JPanel mainContent = new JPanel(new BorderLayout());
+		//getComponentPopupMenu().add()
 
-		fightPerformanceContainer.setSize(getSize());
-		fightPerformanceContainer.setBorder(new EmptyBorder(5, 0, 0, 0));
+		fightHistoryContainer.setSize(getSize());
+		fightHistoryContainer.setLayout(new GridBagLayout());
 
-		fightPerformanceContainer.add(new FightPerformancePanel(playerTotals, fightPerformanceContainer.getSize()));
+		// constraints to initialize FightPerformancePanels with
+		fightPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		fightPanelConstraints.weightx = 1;
+		fightPanelConstraints.gridx = 0;
+		fightPanelConstraints.gridy = 0;
+		fightPanelConstraints.insets = new Insets(0, 0, 4, 0);
 
-		for (FightPerformance fight : fightHistory)
-		{
-			fightPerformanceContainer.add(new FightPerformancePanel(fight, fightPerformanceContainer.getSize()));
-		}
+		add(totalStatsPanel, BorderLayout.NORTH, 0);
 
-		add(fightPerformanceContainer);
+		JScrollPane scrollableContainer = new JScrollPane(mainContent);
+		scrollableContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		scrollableContainer.getVerticalScrollBar().setPreferredSize(new Dimension(6, 0));
+
+		mainContent.add(fightHistoryContainer, BorderLayout.NORTH);
+		add(scrollableContainer, BorderLayout.CENTER);
 	}
 
 	public void addFight(FightPerformance fight)
 	{
-		// ? need test
 		SwingUtilities.invokeLater(() ->
 		{
-			fightHistory.add(fight);
+			totalStatsPanel.addFight(fight);
 
-			playerTotals.addAttacks(fight.getPlayerSuccessCount(), fight.getPlayerAttackCount());
-			fightPerformanceContainer.remove(0);
-			fightPerformanceContainer.add(new FightPerformancePanel(playerTotals, fightPerformanceContainer.getSize()), 0);
+			fightHistoryContainer.add(new FightPerformancePanel(fight), fightPanelConstraints);
+			fightPanelConstraints.gridy++;
 
-			fightPerformanceContainer.add(new FightPerformancePanel(fight, fightPerformanceContainer.getSize()));
+			updateUI();
 		});
 	}
 }

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pvpperformancetracker;
+package net.runelite.client.plugins.lmsperformancetracker;
 
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -36,22 +36,22 @@ import java.awt.*;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
-public class PvpPerformanceTrackerOverlay extends Overlay
+public class LmsPerformanceTrackerOverlay extends Overlay
 {
 	private final PanelComponent panelComponent = new PanelComponent();
-	private final PvpPerformanceTrackerPlugin plugin;
-	private final PvpPerformanceTrackerConfig config;
+	private final LmsPerformanceTrackerPlugin plugin;
+	private final LmsPerformanceTrackerConfig config;
 
 	@Inject
-	private PvpPerformanceTrackerOverlay(PvpPerformanceTrackerPlugin plugin, PvpPerformanceTrackerConfig config)
+	private LmsPerformanceTrackerOverlay(LmsPerformanceTrackerPlugin plugin, LmsPerformanceTrackerConfig config)
 	{
 		super(plugin);
 		this.plugin = plugin;
 		this.config = config;
-		setPosition(OverlayPosition.TOP_RIGHT);
+		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.LOW);
 		panelComponent.setWrapping(4);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "PvP Performance overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "LMS Performance overlay"));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class PvpPerformanceTrackerOverlay extends Overlay
 		if (config.showOverlayTitle())
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text((config.restrictToLms() ? "LMS" : "PvP") + " Performance")
+				.text("LMS Performance")
 				.build());
 		}
 

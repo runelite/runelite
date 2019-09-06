@@ -8,3 +8,4 @@ project.properties
 .project
 .settings/
 .classpath
+runelite-client/src/main/java/net/runelite/client/ui/overlay/OverlayUtil.java
