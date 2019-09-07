@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Friend;
 import net.runelite.api.Player;
 import net.runelite.client.util.PvPUtil;
 
@@ -58,29 +59,19 @@ public class PlayerIndicatorsService
 		this.client = client;
 		this.plugin = plugin;
 
-		self = (player) -> Objects.equals(client.getLocalPlayer(), player);
+		self = (player) -> client.getLocalPlayer().equals(player);
 		friend = (player) -> (!player.equals(client.getLocalPlayer()) && client.isFriended(player.getName(), false));
 		clan = (player) -> (player.isClanMember() && !client.isFriended(player.getName(), false));
-		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 &&
+		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 && !player.isClanMember()
+			&& !client.isFriended(player.getName(), false) &&
 			client.getLocalPlayer().getTeam() == player.getTeam());
-		target = (player ->
-		{
-			if (nonFriendly(player))
-			{
-				return false;
-			}
-			return plugin.isHighlightTargets() && PvPUtil.isAttackable(client, player);
-		});
+		target = (player) -> (!team.test(player) && !clan.test(player)
+			&& !friend.test(player) && PvPUtil.isAttackable(client, player) && !self.test(player));
 		caller = plugin::isCaller;
 		callerTarget = piles::contains;
-		other = (player ->
-		{
-			if (nonFriendly(player))
-			{
-				return false;
-			}
-			return true;
-		});
+		other = (player) ->
+			(!PvPUtil.isAttackable(client, player) && !team.test(player) && !clan.test(player) && !friend.test(player));
+
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, PlayerRelation> consumer)
@@ -93,64 +84,61 @@ public class PlayerIndicatorsService
 		piles.clear();
 
 		final List<Player> players = client.getPlayers();
+		for (Player p : players)
+		{
+			if (self.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.SELF))
+			{
+				consumer.accept(p, PlayerRelation.SELF);
+				continue;
+			}
+			if (friend.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.FRIEND))
+			{
+				consumer.accept(p, PlayerRelation.FRIEND);
+				continue;
 
-		if (plugin.isHighlightOwnPlayer())
-		{
-			players.stream().filter(self).forEach(p -> consumer.accept(p, PlayerRelation.SELF));
-		}
-		if (plugin.isHighlightFriends())
-		{
-			players.stream().filter(friend.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.FRIEND));
-		}
-		if (plugin.isHighlightClan())
-		{
-			players.stream().filter(clan.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.CLAN));
-		}
-		if (plugin.isHighlightTeam())
-		{
-			players.stream().filter(team.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.TEAM));
-		}
-		if (plugin.isHighlightTargets())
-		{
-			players.stream().filter(target.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.TARGET));
-		}
-		if (plugin.isHighlightOther())
-		{
-			players.stream().filter(other.and(self.negate())).forEach(p -> consumer.accept(p, PlayerRelation.OTHER));
-		}
-		if (plugin.isHighlightCallers())
-		{
-			players.stream().filter(caller).forEach(p ->
+			}
+			if (clan.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CLAN))
+			{
+				consumer.accept(p, PlayerRelation.CLAN);
+				continue;
+
+			}
+			if (team.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TEAM))
+			{
+				consumer.accept(p, PlayerRelation.TEAM);
+				continue;
+
+			}
+			if (target.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET))
+			{
+				consumer.accept(p, PlayerRelation.TARGET);
+				continue;
+
+			}
+			if (caller.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER))
 			{
 				consumer.accept(p, PlayerRelation.CALLER);
-				if (p.getInteracting() != null)
-				{
-					piles.add(p.getInteracting());
-				}
-			});
+				continue;
+
+			}
+			if (callerTarget.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER_TARGET))
+			{
+				consumer.accept(p, PlayerRelation.CALLER_TARGET);
+				continue;
+
+			}
+			if (other.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.OTHER))
+			{
+				consumer.accept(p, PlayerRelation.OTHER);
+
+			}
 		}
-		if (plugin.isHighlightCallerTargets())
-		{
-			players.stream().filter(callerTarget).forEach(p ->
-				consumer.accept(p, PlayerRelation.CALLER_TARGET));
-		}
-	}
+}
 
 	private boolean highlight()
 	{
 		return plugin.isHighlightOwnPlayer() || plugin.isHighlightClan()
 			|| plugin.isHighlightFriends() || plugin.isHighlightOther() || plugin.isHighlightTargets()
 			|| plugin.isHighlightCallers() || plugin.isHighlightTeam() || plugin.isHighlightCallerTargets();
-	}
-
-	private boolean nonFriendly(Player player)
-	{
-		return player == null
-			|| (plugin.isHighlightClan() && player.isClanMember())
-			|| (plugin.isHighlightFriends() && client.isFriended(player.getName(), false))
-			|| (plugin.isHighlightCallers() && plugin.isCaller(player))
-			|| (plugin.isHighlightCallerTargets() && piles.contains(player))
-			|| (plugin.isHighlightTeam() && Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0
-			&& client.getLocalPlayer().getTeam() == player.getTeam());
 	}
 }

@@ -32,6 +32,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -65,6 +67,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private PlayerIndicatorsService playerIndicatorsService;
 	@Inject
 	private Client client;
+	@Inject
+	private ClanManager clanManager;
 
 	@Inject
 	public PlayerIndicatorsOverlay(PlayerIndicatorsPlugin plugin, PlayerIndicatorsService playerIndicatorsService)
@@ -114,13 +118,23 @@ public class PlayerIndicatorsOverlay extends Overlay
 			}
 
 			final String builtString = nameSb.toString();
-
+			final int x = graphics.getFontMetrics().stringWidth(builtString);
+			final int y = graphics.getFontMetrics().getHeight();
 			if (skulls && actor.getSkullIcon() != null)
 			{
-				final int x = graphics.getFontMetrics().stringWidth(builtString);
-				final int y = graphics.getFontMetrics().getHeight();
+
 				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
 					ImageUtil.resizeImage(skullIcon, y, y), 0, x);
+			}
+			if (plugin.isHighlightClan() && actor.isClanMember() && plugin.isShowClanRanks() && relation == PlayerRelation.CLAN)
+			{
+				if (clanManager.getRank(actor.getName()) == null)
+				{
+					return;
+				}
+				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
+					ImageUtil.resizeImage(Objects.requireNonNull(clanManager.getClanImage(clanManager.getRank(actor.getName()))), y, y)
+					,x + ACTOR_HORIZONTAL_TEXT_MARGIN, 0);
 			}
 			else
 			{
