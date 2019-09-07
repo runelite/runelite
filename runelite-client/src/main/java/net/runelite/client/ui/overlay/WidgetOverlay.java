@@ -57,6 +57,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT)
 		.put(WidgetInfo.MULTICOMBAT_RESIZEABLE, OverlayPosition.CANVAS_TOP_RIGHT)
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.THEATRE_OF_BLOOD_HEALTH_ORBS, OverlayPosition.TOP_LEFT)
 		.build();
 
