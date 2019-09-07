@@ -45,8 +45,8 @@ public interface NightmareZoneConfig extends Config
 
 	@ConfigItem(
 		keyName = "showtotalpoints",
-		name = "total points NMZ overlay",
-		description = "shows total points to overlay",
+		name = "Total points NMZ overlay",
+		description = "Shows total points to overlay",
 		position = 1
 	)
 	default boolean showtotalpoints()
