@@ -3,17 +3,15 @@ package net.runelite.client.plugins.lmsperformancetracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.http.api.loottracker.LootTrackerClient;
 
 // Panel to display fight performance. The first line shows player stats while the second is the opponent.
 // There is a skull icon beside a player's name if they died. The usernames are fixed to the left and the
@@ -27,33 +25,21 @@ class FightPerformancePanel extends JPanel
 		setLayout(new BorderLayout(5, 5));
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		String tooltipText;
-		if (fight.isPlayerDied() && fight.isOpponentDied())
-		{
-			tooltipText = "Both players died";
-		}
-		else if (fight.isPlayerDied())
-		{
-			tooltipText = "You died";
-		}
-		else if (fight.isOpponentDied())
-		{
-			tooltipText = "Your opponent died";
-		}
-		else
-		{
-			tooltipText = "Nobody died";
-		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss 'on' yyyy/MM/dd");
+		String tooltipText = "Ended at " + dateFormat.format(Date.from(fight.getTimeFightEnded()));
 		setToolTipText(tooltipText);
 
 		Color background = getBackground();
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 
-		// load & rescale icon used to show if a player/opponent died in a fight.
-		ImageIcon icon = new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), "skull_white.png"));
+		// load & rescale red skull icon used to show if a player/opponent died in a fight.
+		ImageIcon icon = new ImageIcon(new ImageIcon(
+			ImageUtil.getResourceStreamFromClass(getClass(), "skull_red.png"))
+			.getImage()
+			.getScaledInstance(12, 12, Image.SCALE_DEFAULT));
 		Image image = icon.getImage();
-		Image newimg = image.getScaledInstance(12, 12,  Image.SCALE_DEFAULT);
-		icon = new ImageIcon(newimg);
+		Image scaledImg = image.getScaledInstance(12, 12,  Image.SCALE_DEFAULT);
+		icon = new ImageIcon(scaledImg);
 
 		// player's stats, always first
 		JPanel playerStatsPanel = new JPanel(new BorderLayout());
@@ -94,19 +80,5 @@ class FightPerformancePanel extends JPanel
 		opponentStatsPanel.add(opponentStats, BorderLayout.EAST);
 
 		add(opponentStatsPanel, BorderLayout.CENTER);
-
-		// initialize context menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setComponentPopupMenu(popupMenu);
-		// Create reset all menu
-		final JMenuItem reset = new JMenuItem("Reset All");
-		reset.addActionListener(e ->
-		{
-			getParent().removeAll();
-			updateUI();
-		});
-
-		popupMenu.add(reset);
 	}
 }

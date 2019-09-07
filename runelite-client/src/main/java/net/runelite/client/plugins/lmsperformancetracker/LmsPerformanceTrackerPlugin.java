@@ -27,9 +27,15 @@ package net.runelite.client.plugins.lmsperformancetracker;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.Set;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
@@ -45,7 +51,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
 
 import static net.runelite.client.plugins.lmsperformancetracker.AnimationAttackStyle.None;
 
@@ -61,11 +66,12 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	// stand under for a while to eat. Fights will automatically end when either player dies.
 	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
 
-	// Last man standing map regions (thanks to discord plugin)
-	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916);
+	// Last man standing map regions, including lobby
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13617, 13658, 13659, 13660, 13914, 13915, 13916);
 
 	@Getter(AccessLevel.PACKAGE)
-	private NavigationButton button;
+	private NavigationButton navButton;
+	private boolean navButtonShown = false;
 
 	@Getter(AccessLevel.PACKAGE)
 	private LmsPerformanceTrackerPanel panel;
@@ -92,8 +98,6 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 	@Getter
 	private FightPerformance currentFight;
-	//@Getter
-	//private List<FightPerformance> fightHistory;
 
 	@Provides
 	LmsPerformanceTrackerConfig provideConfig(ConfigManager configManager)
@@ -106,28 +110,54 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	{
 		panel = injector.getInstance(LmsPerformanceTrackerPanel.class);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull_white.png");
-		button = NavigationButton.builder()
+		navButton = NavigationButton.builder()
 			.tooltip("LMS Fight History")
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
 			.build();
 
-		clientToolbar.addNavigation(button);
-
+		if (config.saveFightHistory() && (!config.restrictToLms() || isAtLMS()))
+		{
+			navButtonShown = true;
+			clientToolbar.addNavigation(navButton);
+		}
 
 		lastFightTime = Instant.MIN;
 		playerAttacking = false;
 		opponentAttacking = false;
-		//fightHistory = new ArrayList<>();
-		//currentFight = FightPerformance.getTestInstance(true);
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		clientToolbar.removeNavigation(navButton);
 		overlayManager.remove(overlay);
+	}
+
+	// if a player enables the panel or restricts/unrestricts the location to LMS, hide/show the panel accordingly
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("lmsPerformanceTracker"))
+		{
+			if (event.getKey().equals("saveFightHistory") || event.getKey().equals("restrictToLms"))
+			{
+				boolean isAtLms = isAtLMS();
+				if (!navButtonShown && config.saveFightHistory() &&
+					(!config.restrictToLms() || isAtLms))
+				{
+					SwingUtilities.invokeLater(() -> clientToolbar.addNavigation(navButton));
+					navButtonShown = true;
+				}
+				else if (navButtonShown && (!config.saveFightHistory() || (config.restrictToLms() && !isAtLms)))
+				{
+					SwingUtilities.invokeLater(() -> clientToolbar.removeNavigation(navButton));
+					navButtonShown = false;
+				}
+			}
+		}
 	}
 
 	// Keep track of a player's new target using this event.
@@ -179,9 +209,25 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (config.restrictToLms() && !isAtLMS())
+		if (isAtLMS())
 		{
-			return;
+			if (!navButtonShown && config.saveFightHistory())
+			{
+				clientToolbar.addNavigation(navButton);
+				navButtonShown = true;
+			}
+		}
+		else
+		{
+			if (config.restrictToLms())
+			{
+				if (navButtonShown)
+				{
+					clientToolbar.removeNavigation(navButton);
+					navButtonShown = false;
+				}
+				return;
+			}
 		}
 
 		stopFightIfOver();
@@ -207,7 +253,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 			currentFight.opponentDied();
 			stopCurrentFight();
 		}
-		if (client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
+		if (hasOpponent() && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			currentFight.playerDied();
 			stopCurrentFight();
@@ -234,7 +280,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
 		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
 		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
-		if (animationStyle == None || animationStyle == null)
+		if (animationStyle == None || animationStyle == null) // if the animationStyle is null, set attacking bool to false.
 		{
 			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
 			playerAttacking = !forPlayer && playerAttacking;
@@ -259,6 +305,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		// add fight to fight history if not null
 		if (currentFight != null && currentFight.fightStarted())
 		{
+			currentFight.fightEnded();
 			panel.addFight(currentFight);
 		}
 		playerAttacking = false;

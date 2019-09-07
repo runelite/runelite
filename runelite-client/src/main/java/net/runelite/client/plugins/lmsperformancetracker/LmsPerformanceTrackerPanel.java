@@ -31,11 +31,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -50,7 +50,8 @@ class LmsPerformanceTrackerPanel extends PluginPanel
 	private final JPanel fightHistoryContainer = new JPanel();
 	private final GridBagConstraints fightPanelConstraints = new GridBagConstraints();
 
-	private final TotalStatsPanel totalStatsPanel = new TotalStatsPanel(new FightPerformance("Player", ""));
+	private final TotalStatsPanel totalStatsPanel = new TotalStatsPanel();
+	private final JPopupMenu popupMenu = new JPopupMenu();
 
 	@Inject
 	private LmsPerformanceTrackerPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
@@ -61,7 +62,6 @@ class LmsPerformanceTrackerPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(8, 8, 8, 8));
 		JPanel mainContent = new JPanel(new BorderLayout());
-		//getComponentPopupMenu().add()
 
 		fightHistoryContainer.setSize(getSize());
 		fightHistoryContainer.setLayout(new GridBagLayout());
@@ -75,9 +75,26 @@ class LmsPerformanceTrackerPanel extends PluginPanel
 
 		add(totalStatsPanel, BorderLayout.NORTH, 0);
 
+		// wrap mainContent with scrollpane so it has a scrollbar
 		JScrollPane scrollableContainer = new JScrollPane(mainContent);
 		scrollableContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		scrollableContainer.getVerticalScrollBar().setPreferredSize(new Dimension(6, 0));
+
+		// initialize context menu
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		// Create "Reset All" popup menu item
+		final JMenuItem reset = new JMenuItem("Reset All");
+		reset.addActionListener(e ->
+		{
+			totalStatsPanel.reset();
+			fightHistoryContainer.removeAll();
+			fightPanelConstraints.gridy = 0;
+			SwingUtilities.invokeLater(this::updateUI);
+		});
+		popupMenu.add(reset);
+
+		setComponentPopupMenu(popupMenu);
+		mainContent.setComponentPopupMenu(popupMenu);
 
 		mainContent.add(fightHistoryContainer, BorderLayout.NORTH);
 		add(scrollableContainer, BorderLayout.CENTER);
@@ -89,7 +106,9 @@ class LmsPerformanceTrackerPanel extends PluginPanel
 		{
 			totalStatsPanel.addFight(fight);
 
-			fightHistoryContainer.add(new FightPerformancePanel(fight), fightPanelConstraints);
+			FightPerformancePanel panel = new FightPerformancePanel(fight);
+			panel.setComponentPopupMenu(popupMenu);
+			fightHistoryContainer.add(panel, fightPanelConstraints);
 			fightPanelConstraints.gridy++;
 
 			updateUI();

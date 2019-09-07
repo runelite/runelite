@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.lmsperformancetracker;
 
+import java.time.Instant;
 import lombok.Getter;
 
 // Basic class to hold information about PvP fight performances. A "successful" attack
@@ -44,6 +45,8 @@ public class FightPerformance
 	private int opponentSuccessCount;
 	private double opponentSuccessRate; // success rate in percentage
 	private boolean opponentDied;
+
+	private Instant timeFightEnded; // date/time when the fight ends.
 
 	// get a testing instance, used for debugging purposes.
 	static FightPerformance getTestInstance(boolean random)
@@ -130,6 +133,11 @@ public class FightPerformance
 	public void opponentDied()
 	{
 		opponentDied = true;
+	}
+
+	public void fightEnded()
+	{
+		timeFightEnded = Instant.now();
 	}
 
 	// Return a simple string to display the current player's success rate.
