@@ -22,14 +22,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.util;
+package net.runelite.client.plugins.prayagainstplayer;
 
 import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.kit.KitType;
 
-public enum WeaponType
+enum WeaponType
 {
 
 	WEAPON_MELEE,
@@ -116,12 +116,7 @@ public enum WeaponType
 		"flail",
 		"granite hammer",
 		"rapier",
-		"bulwark",
-		"ham joint",
-		"blade of saeldor",
-		"swift blade",
-		"wolfbane",
-		"keris"
+		"bulwark"
 	};
 
 	private static final String[] rangedWeaponNames = {
@@ -132,18 +127,14 @@ public enum WeaponType
 		"dart",
 		"thrownaxe",
 		"chinchompa",
-		"ballista",
-		"javelin"
+		"ballista"
 	};
 
 	private static final String[] magicWeaponNames = {
 		"staff",
 		"trident",
 		"wand",
-		"dawnbringer",
-		"ivandis",
-		"void knight mace",
-		"sceptre"
+		"dawnbringer"
 	};
 
 }
