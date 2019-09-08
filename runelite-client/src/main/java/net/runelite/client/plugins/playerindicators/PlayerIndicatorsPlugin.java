@@ -63,6 +63,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.PvPUtil;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -307,74 +308,78 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					image = clanManager.getIconNumber(rank);
 				}
-			}
-			else if (this.highlightTeam && player.getTeam() > 0 && (localPlayer != null ? localPlayer.getTeam() : -1) == player.getTeam())
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TEAM)).contains(PlayerIndicationLocation.MENU))
+				else if (this.highlightTeam && player.getTeam() > 0 && (localPlayer != null ? localPlayer.getTeam() : -1) == player.getTeam())
 				{
-					color = relationColorHashMap.get(PlayerRelation.TEAM);
-				}
-			}
-			else if (this.highlightOther && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.OTHER)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.OTHER);
-				}
-			}
-			else if (this.highlightTargets && !player.isClanMember() && !client.isFriended(player.getName(),
-				false) && PvPUtil.isAttackable(client, player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TARGET)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.TARGET);
-				}
-			}
-			else if (this.highlightCallers && isCaller(player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.CALLER);
-				}
-			}
-			else if (this.highlightCallerTargets && isPile(player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
-				}
-			}
-
-			if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
-			{
-				image2 = 35;
-			}
-
-			if (image != -1 || color != null)
-			{
-				final MenuEntry[] menuEntries = client.getMenuEntries();
-				final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-
-				if (color != null)
-				{
-					// strip out existing <col...
-					String target = lastEntry.getTarget();
-					final int idx = target.indexOf('>');
-					if (idx != -1)
+					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TEAM)).contains(PlayerIndicationLocation.MENU))
 					{
-						target = target.substring(idx + 1);
+						color = relationColorHashMap.get(PlayerRelation.TEAM);
+					}
+				}
+				else if (this.highlightOther && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+				{
+					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.OTHER)).contains(PlayerIndicationLocation.MENU))
+					{
+						color = relationColorHashMap.get(PlayerRelation.OTHER);
+					}
+				}
+				else if (this.highlightTargets && !player.isClanMember() && !client.isFriended(player.getName(),
+					false) && PvPUtil.isAttackable(client, player))
+				{
+					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TARGET)).contains(PlayerIndicationLocation.MENU))
+					{
+						color = relationColorHashMap.get(PlayerRelation.TARGET);
+					}
+				}
+				else if (this.highlightCallers && isCaller(player))
+				{
+					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
+					{
+						color = relationColorHashMap.get(PlayerRelation.CALLER);
+					}
+				}
+				else if (this.highlightCallerTargets && isPile(player))
+				{
+					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
+					{
+						color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
+					}
+				}
+
+				if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
+				{
+					image2 = 35;
+				}
+
+				if (image != -1 || color != null)
+				{
+					final MenuEntry[] menuEntries = client.getMenuEntries();
+					final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+
+					if (color != null)
+					{
+						// strip out existing <col...
+						String target = lastEntry.getTarget();
+						final int idx = target.indexOf('>');
+						if (idx != -1)
+						{
+							target = target.substring(idx + 1);
+						}
+
+						lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+					}
+					if (image != -1)
+					{
+						lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
 					}
 
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
-				}
+					if (image2 != -1 && this.playerSkull)
+					{
+						lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
+					}
 
-				if (image2 != -1 && this.playerSkull)
-				{
-					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
+					client.setMenuEntries(menuEntries);
 				}
-
-				client.setMenuEntries(menuEntries);
 			}
 		}
 	}

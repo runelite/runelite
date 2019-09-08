@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.Friend;
 import net.runelite.api.Player;
 import net.runelite.client.util.PvPUtil;
 
@@ -95,42 +94,35 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(p, PlayerRelation.FRIEND);
 				continue;
-
 			}
 			if (clan.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CLAN))
 			{
 				consumer.accept(p, PlayerRelation.CLAN);
 				continue;
-
 			}
 			if (team.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TEAM))
 			{
 				consumer.accept(p, PlayerRelation.TEAM);
 				continue;
-
 			}
 			if (target.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET))
 			{
 				consumer.accept(p, PlayerRelation.TARGET);
 				continue;
-
 			}
 			if (caller.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER))
 			{
 				consumer.accept(p, PlayerRelation.CALLER);
 				continue;
-
 			}
 			if (callerTarget.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER_TARGET))
 			{
 				consumer.accept(p, PlayerRelation.CALLER_TARGET);
 				continue;
-
 			}
 			if (other.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.OTHER))
 			{
 				consumer.accept(p, PlayerRelation.OTHER);
-
 			}
 		}
 }
