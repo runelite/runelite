@@ -35,6 +35,8 @@ import net.runelite.client.config.Stub;
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
 {
+	EnumSet<PlayerIndicationLocation> defaultPlayerIndicatorMode = EnumSet.complementOf(EnumSet.of(PlayerIndicationLocation.HULL));
+
 	@ConfigItem(
 		position = 0,
 		keyName = "drawOwnName",
@@ -69,7 +71,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> selfIndicatorModes()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -107,7 +109,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> friendIndicatorMode()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -145,7 +147,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> clanIndicatorModes()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -195,7 +197,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> teamIndicatorModes()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -233,7 +235,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> targetsIndicatorModes()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -367,7 +369,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> otherIndicatorModes()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 
@@ -484,7 +486,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> callerHighlightOptions()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 	@ConfigItem(
@@ -536,7 +538,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default EnumSet<PlayerIndicationLocation> callerTargetHighlightOptions()
 	{
-		return EnumSet.allOf(PlayerIndicationLocation.class);
+		return defaultPlayerIndicatorMode;
 	}
 
 
