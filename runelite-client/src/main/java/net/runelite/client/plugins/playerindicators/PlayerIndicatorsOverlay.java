@@ -133,8 +133,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 					return;
 				}
 				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
-					ImageUtil.resizeImage(Objects.requireNonNull(clanManager.getClanImage(clanManager.getRank(actor.getName()))), y, y)
-					,0 ,ACTOR_HORIZONTAL_TEXT_MARGIN);
+					ImageUtil.resizeImage(Objects.requireNonNull(clanManager
+						.getClanImage(clanManager.getRank(actor.getName()))), y, y),0, ACTOR_HORIZONTAL_TEXT_MARGIN);
 			}
 			else
 			{
