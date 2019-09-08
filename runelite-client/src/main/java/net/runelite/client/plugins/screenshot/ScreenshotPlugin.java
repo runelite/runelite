@@ -342,7 +342,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (this.screenshotPlayerDeath && client.getLocalPlayer().getName() != null)
 		{
-			takeScreenshot(client.getLocalPlayer().getName() + " ded " + format(new Date()), "Deaths");
+			takeScreenshot(client.getLocalPlayer().getName() + " dead " + format(new Date()), "Deaths");
 		}
 	}
 
@@ -353,7 +353,7 @@ public class ScreenshotPlugin extends Plugin
 			&& (event.getPlayer().isFriend() || event.getPlayer().isClanMember()
 			|| (client.getVar(Varbits.IN_RAID) == 1 || tob == 2 || tob == 3)))
 		{
-			takeScreenshot(event.getPlayer().getName() + " ded " + format(new Date()), "Deaths");
+			takeScreenshot(event.getPlayer().getName() + " dead " + format(new Date()), "Deaths");
 		}
 	}
 
