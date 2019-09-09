@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 
@@ -151,7 +152,7 @@ public class ChatNotificationsPlugin extends Plugin
 			List<String> items = Text.fromCSV(this.highlightWordsString);
 			String joined = items.stream()
 				.map(Text::escapeJagex) // we compare these strings to the raw Jagex ones
-				.map(Pattern::quote)
+				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
 			// so match \b or \s
@@ -232,7 +233,26 @@ public class ChatNotificationsPlugin extends Plugin
 			while (matcher.find())
 			{
 				String value = matcher.group();
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
+
+				// Determine the ending color by:
+				// 1) use the color from value if it has one
+				// 2) use the last color from stringBuffer + <content between last match and current match>
+				// To do #2 we just search for the last col tag after calling appendReplacement
+				String endColor = getLastColor(value);
+
+				// Strip color tags from the highlighted region so that it remains highlighted correctly
+				value = stripColor(value);
+
+				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value);
+
+				if (endColor == null)
+				{
+					endColor = getLastColor(stringBuffer.toString());
+				}
+
+				// Append end color
+				stringBuffer.append(endColor == null ? "<col" + ChatColorType.NORMAL + ">" : endColor);
+
 				update = true;
 				found = true;
 			}
@@ -291,5 +311,62 @@ public class ChatNotificationsPlugin extends Plugin
 		this.notifyOnTrade = config.notifyOnTrade();
 		this.notifyOnDuel = config.notifyOnDuel();
 		this.notifyOnPm = config.notifyOnPm();
+	}
+
+	private String quoteAndIgnoreColor(String str)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for (int i = 0; i < str.length(); ++i)
+		{
+			char c = str.charAt(i);
+			stringBuilder.append(Pattern.quote(String.valueOf(c)));
+			stringBuilder.append("(?:<col=[^>]*?>)?");
+		}
+
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * Get the last color tag from a string, or null if there was none
+	 *
+	 * @param str
+	 * @return
+	 */
+	private static String getLastColor(String str)
+	{
+		int colIdx = str.lastIndexOf("<col=");
+		int colEndIdx = str.lastIndexOf("</col>");
+
+		if (colEndIdx > colIdx)
+		{
+			// ends in a </col> which resets the color to normal
+			return "<col" + ChatColorType.NORMAL + ">";
+		}
+
+		if (colIdx == -1)
+		{
+			return null; // no color
+		}
+
+		int closeIdx = str.indexOf('>', colIdx);
+		if (closeIdx == -1)
+		{
+			return null; // unclosed col tag
+		}
+
+		return str.substring(colIdx, closeIdx + 1); // include the >
+	}
+
+	/**
+	 * Strip color tags from a string.
+	 *
+	 * @param str
+	 * @return
+	 */
+	@VisibleForTesting
+	static String stripColor(String str)
+	{
+		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
 	}
 }

@@ -61,6 +61,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.menuentryswapper.BankComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.EquipmentComparableEntry;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 
@@ -88,6 +89,8 @@ public class RunecraftPlugin extends Plugin
 		ItemID.LARGE_POUCH_5513,
 		ItemID.GIANT_POUCH_5515
 	);
+	private final Set<AbyssRifts> rifts = new HashSet<>();
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
@@ -97,6 +100,9 @@ public class RunecraftPlugin extends Plugin
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private AbyssOverlay abyssOverlay;
+	@Inject
+	@Getter(AccessLevel.NONE)
+	private AbyssMinimapOverlay abyssMinimapOverlay;
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private RunecraftOverlay runecraftOverlay;
@@ -147,8 +153,8 @@ public class RunecraftPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-		abyssOverlay.updateConfig();
 		overlayManager.add(abyssOverlay);
+		overlayManager.add(abyssMinimapOverlay);
 		overlayManager.add(runecraftOverlay);
 		handleSwaps();
 	}
@@ -161,6 +167,7 @@ public class RunecraftPlugin extends Plugin
 		darkMage = null;
 		degradedPouchInInventory = false;
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(abyssMinimapOverlay);
 		overlayManager.remove(runecraftOverlay);
 		removeSwaps();
 	}
@@ -185,7 +192,6 @@ public class RunecraftPlugin extends Plugin
 		}
 
 		updateConfig();
-		abyssOverlay.updateConfig();
 
 		if (event.getKey().equals("essPouch") || event.getKey().equals("Lavas"))
 		{
@@ -350,5 +356,64 @@ public class RunecraftPlugin extends Plugin
 		this.showSoul = config.showSoul();
 		this.showWater = config.showWater();
 		this.showClickBox = config.showClickBox();
+
+		updateRifts();
+	}
+
+	private void updateRifts()
+	{
+		rifts.clear();
+		if (config.showAir())
+		{
+			rifts.add(AIR_RIFT);
+		}
+		if (config.showBlood())
+		{
+			rifts.add(BLOOD_RIFT);
+		}
+		if (config.showBody())
+		{
+			rifts.add(BODY_RIFT);
+		}
+		if (config.showChaos())
+		{
+			rifts.add(CHAOS_RIFT);
+		}
+		if (config.showCosmic())
+		{
+			rifts.add(COSMIC_RIFT);
+		}
+		if (config.showDeath())
+		{
+			rifts.add(DEATH_RIFT);
+		}
+		if (config.showEarth())
+		{
+			rifts.add(EARTH_RIFT);
+		}
+		if (config.showFire())
+		{
+			rifts.add(FIRE_RIFT);
+		}
+		if (config.showLaw())
+		{
+			rifts.add(LAW_RIFT);
+		}
+		if (config.showMind())
+		{
+			rifts.add(MIND_RIFT);
+		}
+		if (config.showNature())
+		{
+			rifts.add(NATURE_RIFT);
+		}
+		if (config.showSoul())
+		{
+			rifts.add(SOUL_RIFT);
+		}
+		if (config.showWater())
+		{
+			rifts.add(WATER_RIFT);
+		}
 	}
 }

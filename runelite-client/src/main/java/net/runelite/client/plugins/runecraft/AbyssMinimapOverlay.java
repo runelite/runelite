@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,100 +25,83 @@
 package net.runelite.client.plugins.runecraft;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.geom.Area;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
-@Singleton
-class AbyssOverlay extends Overlay
+class AbyssMinimapOverlay extends Overlay
 {
+	private static final Dimension IMAGE_SIZE = new Dimension(15, 14);
+
+	private final Map<AbyssRifts, BufferedImage> abyssIcons = new HashMap<>();
 	private final Client client;
 	private final RunecraftPlugin plugin;
+	private final ItemManager itemManager;
 
 	@Inject
-	AbyssOverlay(final Client client, final RunecraftPlugin plugin)
+	AbyssMinimapOverlay(Client client, RunecraftPlugin plugin, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
+		this.itemManager = itemManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isShowRifts())
+		if (!plugin.isShowRifts())
 		{
-			for (DecorativeObject object : plugin.getAbyssObjects())
-			{
-				renderRift(graphics, object);
-			}
+			return null;
 		}
 
-		if (plugin.isHightlightDarkMage())
+		for (DecorativeObject object : plugin.getAbyssObjects())
 		{
-			highlightDarkMage(graphics);
+			AbyssRifts rift = AbyssRifts.getRift(object.getId());
+			if (rift == null || !plugin.getRifts().contains(rift))
+			{
+				continue;
+			}
+
+			BufferedImage image = getImage(rift);
+			Point miniMapImage = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), image);
+
+			if (miniMapImage != null)
+			{
+				graphics.drawImage(image, miniMapImage.getX(), miniMapImage.getY(), null);
+			}
 		}
 
 		return null;
 	}
 
-	private void highlightDarkMage(Graphics2D graphics)
+	private BufferedImage getImage(AbyssRifts rift)
 	{
-		if (!plugin.isDegradedPouchInInventory())
+		BufferedImage image = abyssIcons.get(rift);
+		if (image != null)
 		{
-			return;
+			return image;
 		}
 
-		NPC darkMage = plugin.getDarkMage();
-		if (darkMage == null)
-		{
-			return;
-		}
+		// Since item image is too big, we must resize it first.
+		image = itemManager.getImage(rift.getItemId());
+		BufferedImage resizedImage = new BufferedImage(IMAGE_SIZE.width, IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(image, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
+		g.dispose();
 
-		Polygon tilePoly = darkMage.getCanvasTilePoly();
-		if (tilePoly == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderPolygon(graphics, tilePoly, Color.green);
-	}
-
-	private void renderRift(Graphics2D graphics, DecorativeObject object)
-	{
-		AbyssRifts rift = AbyssRifts.getRift(object.getId());
-		if (rift == null || !plugin.getRifts().contains(rift))
-		{
-			return;
-		}
-
-		Point mousePosition = client.getMouseCanvasPosition();
-		Area objectClickbox = object.getClickbox();
-		if (objectClickbox != null)
-		{
-			if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
-			{
-				graphics.setColor(Color.MAGENTA.darker());
-			}
-			else
-			{
-				graphics.setColor(Color.MAGENTA);
-			}
-			graphics.draw(objectClickbox);
-			graphics.setColor(new Color(255, 0, 255, 20));
-			graphics.fill(objectClickbox);
-		}
+		abyssIcons.put(rift, resizedImage);
+		return resizedImage;
 	}
 }
