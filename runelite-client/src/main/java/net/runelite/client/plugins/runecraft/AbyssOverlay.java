@@ -26,7 +26,7 @@ package net.runelite.client.plugins.runecraft;
 
 import java.awt.Color;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -105,7 +105,7 @@ class AbyssOverlay extends Overlay
 		}
 
 		Point mousePosition = client.getMouseCanvasPosition();
-		Area objectClickbox = object.getClickbox();
+		Shape objectClickbox = object.getClickbox();
 		if (objectClickbox != null)
 		{
 			if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))

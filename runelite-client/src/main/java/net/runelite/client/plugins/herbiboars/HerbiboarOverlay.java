@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import java.util.Set;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -103,7 +103,7 @@ class HerbiboarOverlay extends Overlay
 				{
 					if (config.showClickBoxes())
 					{
-						Area clickbox = object.getClickbox();
+						Shape clickbox = object.getClickbox();
 						if (clickbox != null)
 						{
 							graphics.setColor(config.getObjectColor());
@@ -129,7 +129,7 @@ class HerbiboarOverlay extends Overlay
 			{
 				if (config.showClickBoxes())
 				{
-					Area clickbox = object.getClickbox();
+					Shape clickbox = object.getClickbox();
 					if (clickbox != null)
 					{
 						Color col = config.getObjectColor();
