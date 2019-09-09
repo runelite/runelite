@@ -24,14 +24,12 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.client.util.PvPUtil;
@@ -50,7 +48,6 @@ public class PlayerIndicatorsService
 	private final Predicate<Player> other;
 	private final Predicate<Player> caller;
 	private final Predicate<Player> callerTarget;
-	private final List<Actor> piles = new ArrayList<>();
 
 	@Inject
 	private PlayerIndicatorsService(final Client client, final PlayerIndicatorsPlugin plugin)
@@ -58,18 +55,32 @@ public class PlayerIndicatorsService
 		this.client = client;
 		this.plugin = plugin;
 
-		self = (player) -> client.getLocalPlayer().equals(player);
-		friend = (player) -> (!player.equals(client.getLocalPlayer()) && client.isFriended(player.getName(), false));
-		clan = (player) -> (player.isClanMember() && !client.isFriended(player.getName(), false));
+		self = (player) -> (client.getLocalPlayer().equals(player)
+			&& plugin.getLocationHashMap().containsKey(PlayerRelation.SELF));
+
+		friend = (player) -> (!player.equals(client.getLocalPlayer())
+			&& client.isFriended(player.getName(), false)
+			&& plugin.getLocationHashMap().containsKey(PlayerRelation.FRIEND));
+
+		clan = (player) -> (player.isClanMember() && !client.isFriended(player.getName(), false)
+			&& plugin.getLocationHashMap().containsKey(PlayerRelation.CLAN));
+
 		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 && !player.isClanMember()
-			&& !client.isFriended(player.getName(), false) &&
-			client.getLocalPlayer().getTeam() == player.getTeam());
+			&& !client.isFriended(player.getName(), false)
+			&& client.getLocalPlayer().getTeam() == player.getTeam()
+			&& plugin.getLocationHashMap().containsKey(PlayerRelation.TEAM));
+
 		target = (player) -> (!team.test(player) && !clan.test(player)
-			&& !friend.test(player) && PvPUtil.isAttackable(client, player) && !self.test(player));
-		caller = plugin::isCaller;
-		callerTarget = piles::contains;
+			&& !friend.test(player) && PvPUtil.isAttackable(client, player)
+			&& !self.test(player)  && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET));
+
+		caller = (player) -> (plugin.isCaller(player) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER));
+
+		callerTarget = (player) -> (plugin.isPile(player) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER_TARGET));
+
 		other = (player) ->
-			(!PvPUtil.isAttackable(client, player) && !team.test(player) && !clan.test(player) && !friend.test(player));
+			(!PvPUtil.isAttackable(client, player) && !team.test(player) && !clan.test(player) && !friend.test(player)
+				&& plugin.getLocationHashMap().containsKey(PlayerRelation.OTHER));
 
 	}
 
@@ -80,47 +91,45 @@ public class PlayerIndicatorsService
 			return;
 		}
 
-		piles.clear();
-
 		final List<Player> players = client.getPlayers();
 		for (Player p : players)
 		{
-			if (self.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.SELF))
+			if (self.test(p))
 			{
 				consumer.accept(p, PlayerRelation.SELF);
 				continue;
 			}
-			if (friend.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.FRIEND))
+			if (friend.test(p))
 			{
 				consumer.accept(p, PlayerRelation.FRIEND);
 				continue;
 			}
-			if (clan.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CLAN))
+			if (clan.test(p))
 			{
 				consumer.accept(p, PlayerRelation.CLAN);
 				continue;
 			}
-			if (team.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TEAM))
+			if (team.test(p))
 			{
 				consumer.accept(p, PlayerRelation.TEAM);
 				continue;
 			}
-			if (target.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET))
+			if (target.test(p))
 			{
 				consumer.accept(p, PlayerRelation.TARGET);
 				continue;
 			}
-			if (caller.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER))
+			if (caller.test(p))
 			{
 				consumer.accept(p, PlayerRelation.CALLER);
 				continue;
 			}
-			if (callerTarget.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER_TARGET))
+			if (callerTarget.test(p) )
 			{
 				consumer.accept(p, PlayerRelation.CALLER_TARGET);
 				continue;
 			}
-			if (other.test(p) && plugin.getLocationHashMap().containsKey(PlayerRelation.OTHER))
+			if (other.test(p))
 			{
 				consumer.accept(p, PlayerRelation.OTHER);
 			}

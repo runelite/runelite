@@ -449,7 +449,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	 * @param actor The player to check
 	 * @return true if they are a target, false otherwise
 	 */
-	private boolean isPile(Actor actor)
+	public boolean isPile(Actor actor)
 	{
 		if (!(actor instanceof Player))
 		{
