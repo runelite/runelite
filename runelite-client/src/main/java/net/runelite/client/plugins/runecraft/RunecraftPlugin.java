@@ -71,7 +71,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )
 @Singleton
-@Getter(AccessLevel.PACKAGE)
 public class RunecraftPlugin extends Plugin
 {
 	private static final BankComparableEntry POUCH = new BankComparableEntry("fill", "pouch", false);
@@ -89,57 +88,54 @@ public class RunecraftPlugin extends Plugin
 		ItemID.LARGE_POUCH_5513,
 		ItemID.GIANT_POUCH_5515
 	);
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<AbyssRifts> rifts = new HashSet<>();
 
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private Client client;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private AbyssOverlay abyssOverlay;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private AbyssMinimapOverlay abyssMinimapOverlay;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private RunecraftOverlay runecraftOverlay;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private RunecraftConfig config;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private Notifier notifier;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private MenuManager menuManager;
+
 	@Inject
-	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
 
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
+	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean degradingNotification;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean essPouch;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean hightlightDarkMage;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean lavas;
-	private boolean showAir;
-	private boolean showBlood;
-	private boolean showBody;
-	private boolean showChaos;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showClickBox;
-	private boolean showCosmic;
-	private boolean showDeath;
-	private boolean showEarth;
-	private boolean showFire;
-	private boolean showLaw;
-	private boolean showMind;
-	private boolean showNature;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showRifts;
-	private boolean showSoul;
-	private boolean showWater;
+	@Getter(AccessLevel.PACKAGE)
 	private NPC darkMage;
 
 	@Provides
@@ -342,19 +338,6 @@ public class RunecraftPlugin extends Plugin
 		this.hightlightDarkMage = config.hightlightDarkMage();
 		this.degradingNotification = config.degradingNotification();
 		this.showRifts = config.showRifts();
-		this.showAir = config.showAir();
-		this.showBlood = config.showBlood();
-		this.showBody = config.showBody();
-		this.showChaos = config.showChaos();
-		this.showCosmic = config.showCosmic();
-		this.showDeath = config.showDeath();
-		this.showEarth = config.showEarth();
-		this.showFire = config.showFire();
-		this.showLaw = config.showLaw();
-		this.showMind = config.showMind();
-		this.showNature = config.showNature();
-		this.showSoul = config.showSoul();
-		this.showWater = config.showWater();
 		this.showClickBox = config.showClickBox();
 
 		updateRifts();
