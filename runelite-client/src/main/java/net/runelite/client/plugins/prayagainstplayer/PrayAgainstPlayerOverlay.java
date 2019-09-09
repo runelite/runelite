@@ -43,6 +43,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.api.util.Text;
+import net.runelite.client.util.WeaponType;
 
 @Singleton
 class PrayAgainstPlayerOverlay extends Overlay
