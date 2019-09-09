@@ -71,15 +71,16 @@ public class PlayerIndicatorsService
 			&& plugin.getLocationHashMap().containsKey(PlayerRelation.TEAM));
 
 		target = (player) -> (!team.test(player) && !clan.test(player)
-			&& !friend.test(player) && PvPUtil.isAttackable(client, player)
-			&& !self.test(player)  && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET));
+			&& !client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player)
+			&& !client.getLocalPlayer().equals(player)  && plugin.getLocationHashMap().containsKey(PlayerRelation.TARGET));
 
 		caller = (player) -> (plugin.isCaller(player) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER));
 
 		callerTarget = (player) -> (plugin.isPile(player) && plugin.getLocationHashMap().containsKey(PlayerRelation.CALLER_TARGET));
 
 		other = (player) ->
-			(!PvPUtil.isAttackable(client, player) && !team.test(player) && !clan.test(player) && !friend.test(player)
+			(!PvPUtil.isAttackable(client, player) && !client.getLocalPlayer().equals(player)
+				&& !team.test(player) && !player.isClanMember() && !client.isFriended(player.getName(), false)
 				&& plugin.getLocationHashMap().containsKey(PlayerRelation.OTHER));
 
 	}

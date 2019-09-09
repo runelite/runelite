@@ -124,7 +124,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 			{
 
 				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
-					ImageUtil.resizeImage(skullIcon, y, y), 0, x);
+					ImageUtil.resizeImage(skullIcon, y, y), ACTOR_OVERHEAD_TEXT_MARGIN, ACTOR_HORIZONTAL_TEXT_MARGIN);
+				return;
 			}
 			if (plugin.isHighlightClan() && actor.isClanMember() && plugin.isShowClanRanks() && relation == PlayerRelation.CLAN)
 			{
