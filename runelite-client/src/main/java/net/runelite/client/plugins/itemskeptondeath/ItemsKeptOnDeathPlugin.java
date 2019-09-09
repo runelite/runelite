@@ -333,12 +333,16 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 
 			// Items are kept if:
 			// 1) is not tradeable
-			// 2) is under the deep wilderness line
-			// 3) is outside of the wilderness, or item has a broken form
+			// 2) Outside the wilderness: All are kept excluding `Pets` & `LostIfNotProtected`. (`AlwaysLostItem` are handled above)
+			// 3) In low level wilderness: (<=20) only `LockedItem`s and `BrokenOnDeathItem`s are kept
+			// 4) In deep level wilderness: (>=21) only `LockedItem`s are kept
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
-				&& !isTradeable(itemManager.getItemComposition(id)) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || BrokenOnDeathItem.getRepairPrice(i.getId()) != null))
+				&& !isTradeable(itemManager.getItemComposition(id))
+				&& (wildyLevel <= 0
+					|| LockedItem.getBaseIdFromLockedId(id) != null
+					|| (wildyLevel <= DEEP_WILDY && BrokenOnDeathItem.getRepairPrice(id) != null))
+				)
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}
@@ -417,15 +421,31 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	int getDeathPrice(Item item)
 	{
+		return getDeathPriceById(item.getId());
+	}
+
+	/**
+	 * Get the price of an item by its id
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	private int getDeathPriceById(final int itemId)
+	{
 		// 1) Check if the death price is dynamically calculated, if so return that value
 		// 2) If death price is based off another item default to that price, otherwise apply normal ItemMapping GE price
 		// 3) If still no price, default to store price
 		// 4) Apply fixed price offset if applicable
-
-		int itemId = item.getId();
 		// Unnote/unplaceholder item
 		int canonicalizedItemId = itemManager.canonicalize(itemId);
 		int exchangePrice = 0;
+
+
+		final Integer lockedBase = LockedItem.getBaseIdFromLockedId(canonicalizedItemId);
+		if (lockedBase != null)
+		{
+			return getDeathPriceById(lockedBase);
+		}
 
 		final DynamicPriceItem dynamicPrice = DynamicPriceItem.find(canonicalizedItemId);
 		if (dynamicPrice != null)
