@@ -103,4 +103,5 @@ public interface Model extends Renderable
 	int getExtremeZ();
 
 	int getXYZMag();
+	boolean isClickable();
 }
