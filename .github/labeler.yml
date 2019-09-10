@@ -1,0 +1,17 @@
+cache: cache/**/*
+cache-client: cache-client/**/*
+cache-updater: cache-updater/**/*
+deobfuscator: deobfuscator/**/*
+http-api: http-api/**/*
+http-service: http-service/**/*
+http-service-plus: http-service-plus/**/*
+injected-client: injected-client/**/*
+injector-plugin: injector-plugin/**/*
+protocol: protocol/**/*
+protocol-api: protocol-api/**/*
+api: runelite-api/**/*
+client: runelite-client/**/*
+mixins: runelite-mixins/**/*
+rs-api: runescape-api/**/*
+rs-client: runescape-client/**/*
+wiki-scraper: wiki-scraper/**/*
