@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, ThatGamerBlue <thatgamerblue@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +25,6 @@
  */
 package net.runelite.mixins;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -41,15 +39,12 @@ import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSProjectile;
 import net.runelite.rs.api.RSScene;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Mixin(RSScene.class)
 public abstract class EntityHiderMixin implements RSScene
 {
-	@Inject
-	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
-
-	@Inject
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
-
 	@Shadow("client")
 	private static RSClient client;
 
@@ -77,11 +72,11 @@ public abstract class EntityHiderMixin implements RSScene
 	@Shadow("hideNPCs")
 	private static boolean hideNPCs;
 
-	@Shadow("hideNPCsNames")
-	private static List<String> hideNPCsNames;
+	@Shadow("hiddenNpcsName")
+	private static HashMap<String, Integer> hiddenNpcsName;
 
-	@Shadow("hideNPCsOnDeath")
-	private static List<String> hideNPCsOnDeath;
+	@Shadow("hiddenNpcsDeath")
+	private static HashMap<String, Integer> hiddenNpcsDeath;
 
 	@Shadow("hideSpecificPlayers")
 	private static List<String> hideSpecificPlayers;
@@ -117,7 +112,8 @@ public abstract class EntityHiderMixin implements RSScene
 			client.getOccupiedTilesTick()[tileX][tileY] = -1;
 		}
 
-		return shouldDraw && addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, entity, var10, var11, var12, var13);
+		return shouldDraw &&
+			addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, entity, var10, var11, var12, var13);
 	}
 
 	@Copy("drawActor2d")
@@ -177,7 +173,8 @@ public abstract class EntityHiderMixin implements RSScene
 					return false;
 				}
 
-				return (!hideFriends && player.isFriend()) || (!isLocalPlayer && !hideClanMates && player.isClanMember());
+				return (!hideFriends && player.isFriend()) ||
+					(!isLocalPlayer && !hideClanMates && player.isClanMember());
 			}
 		}
 		else if (entity instanceof RSNPC)
@@ -197,26 +194,16 @@ public abstract class EntityHiderMixin implements RSScene
 				return false;
 			}
 
-			for (String name : hideNPCsNames)
+			if (npc.getName() != null &&
+				hiddenNpcsName.getOrDefault(Text.standardize(npc.getName().toLowerCase()), 0) > 0)
 			{
-				if (name != null && !name.equals(""))
-				{
-					if (npc.getName() != null && matches(name, npc.getName()))
-					{
-						return false;
-					}
-				}
+				return false;
 			}
 
-			for (String name : hideNPCsOnDeath)
+			if (npc.getName() != null && npc.getHealthRatio() == 0 &&
+				hiddenNpcsDeath.getOrDefault(Text.standardize(npc.getName().toLowerCase()), 0) > 0)
 			{
-				if (name != null && !name.equals(""))
-				{
-					if (npc.getName() != null && matches(name, npc.getName()) && npc.getHealthRatio() == 0)
-					{
-						return false;
-					}
-				}
+				return false;
 			}
 
 			return drawingUI ? !hideNPCs2D : !hideNPCs;
@@ -227,35 +214,5 @@ public abstract class EntityHiderMixin implements RSScene
 		}
 
 		return true;
-	}
-
-	@Inject
-	static private boolean matches(String pattern, String text)
-	{
-		String standardized = TAG_REGEXP.matcher(text)
-			.replaceAll("")
-			.replace('\u00A0', ' ')
-			.toLowerCase();
-
-		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern.toLowerCase());
-		final StringBuffer buffer = new StringBuffer();
-
-		buffer.append("(?i)");
-		while (matcher.find())
-		{
-			if (matcher.group(1) != null)
-			{
-				matcher.appendReplacement(buffer, ".*");
-			}
-			else
-			{
-				matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
-			}
-		}
-
-		matcher.appendTail(buffer);
-		final String replaced = buffer.toString();
-
-		return standardized.matches(replaced);
 	}
 }
