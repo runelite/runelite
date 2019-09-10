@@ -132,7 +132,7 @@ class Library
 			b.clearBook();
 			b.getPossibleBooks().clear();
 		}
-		log.info("Library is now reset");
+		log.debug("Library is now reset");
 	}
 
 	synchronized void mark(WorldPoint loc, Book book)
@@ -172,7 +172,7 @@ class Library
 			return;
 		}
 
-		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
+		log.debug("Setting bookcase {} to {}", bookcase.getIndex(), book);
 		for (; ; )
 		{
 			bookcase.setBook(book);
@@ -234,7 +234,7 @@ class Library
 				}
 				return found;
 			}).toArray();
-			log.info("Certainty is now {}", certainty);
+			log.debug("Certainty is now {}", certainty);
 
 			for (Bookcase b : byIndex)
 			{
