@@ -85,7 +85,7 @@ allprojects {
     apply plugin: 'maven'
     if (this.name != 'rs-client') apply plugin: 'checkstyle'
 
-    group = 'net.runelite'
+    group = 'us.runelitepl'
     version = '1.5.33-SNAPSHOT'
 
     ext {
