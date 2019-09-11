@@ -1283,9 +1283,8 @@ public class ConfigPanel extends PluginPanel
 
 			Class<?extends Enum> enumType = cid.getItem().enumClass();
 			EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
-				cid.getItem().keyName(), EnumSet.class) != null ? configManager.getConfiguration(cd.getGroup().value(),
-				cid.getItem().keyName(), EnumSet.class) : EnumSet.noneOf(enumType);
-			if (enumSet == null || enumSet.contains(null))
+				cid.getItem().keyName(), EnumSet.class);
+			if (enumSet == null)
 			{
 				enumSet = EnumSet.noneOf(enumType);
 			}

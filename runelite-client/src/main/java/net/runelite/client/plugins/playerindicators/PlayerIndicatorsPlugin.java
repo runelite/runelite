@@ -78,7 +78,14 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	private static final HiscoreClient HISCORE_CLIENT = new HiscoreClient();
-
+	private final List<String> callers = new ArrayList<>();
+	private final Map<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
+	private final Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
+	private final Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
+	private final ExecutorService executorService = Executors.newFixedThreadPool(100);
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
@@ -100,16 +107,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
-
 	private ClanMemberRank callerRank;
-	private final List<String> callers = new ArrayList<>();
-	private final Map<Player, PlayerRelation> colorizedMenus = new ConcurrentHashMap<>();
-	private final Map<PlayerRelation, Color> relationColorHashMap = new ConcurrentHashMap<>();
-	private final Map<PlayerRelation, Object[]> locationHashMap = new ConcurrentHashMap<>();
-	private final Map<String, Actor> callerPiles = new ConcurrentHashMap<>();
-	@Getter(AccessLevel.PACKAGE)
-	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
-	private final ExecutorService executorService = Executors.newFixedThreadPool(100);
 	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
 	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
 	private String configCallers;
@@ -307,81 +305,82 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					image = clanManager.getIconNumber(rank);
 				}
-				else if (this.highlightTeam && player.getTeam() > 0 && (localPlayer != null ? localPlayer.getTeam() : -1) == player.getTeam())
+			}
+			else if (this.highlightTeam && player.getTeam() > 0 && (localPlayer != null ? localPlayer.getTeam() : -1) == player.getTeam())
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TEAM)).contains(PlayerIndicationLocation.MENU))
 				{
-					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TEAM)).contains(PlayerIndicationLocation.MENU))
-					{
-						color = relationColorHashMap.get(PlayerRelation.TEAM);
-					}
+					color = relationColorHashMap.get(PlayerRelation.TEAM);
 				}
-				else if (this.highlightOther && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+			}
+			else if (this.highlightOther && !player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.OTHER)).contains(PlayerIndicationLocation.MENU))
 				{
-					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.OTHER)).contains(PlayerIndicationLocation.MENU))
-					{
-						color = relationColorHashMap.get(PlayerRelation.OTHER);
-					}
+					color = relationColorHashMap.get(PlayerRelation.OTHER);
 				}
-				else if (this.highlightTargets && !player.isClanMember() && !client.isFriended(player.getName(),
-					false) && PvPUtil.isAttackable(client, player))
+			}
+			else if (this.highlightTargets && !player.isClanMember() && !client.isFriended(player.getName(),
+				false) && PvPUtil.isAttackable(client, player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TARGET)).contains(PlayerIndicationLocation.MENU))
 				{
-					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.TARGET)).contains(PlayerIndicationLocation.MENU))
-					{
-						color = relationColorHashMap.get(PlayerRelation.TARGET);
-					}
+					color = relationColorHashMap.get(PlayerRelation.TARGET);
 				}
-				else if (this.highlightCallers && isCaller(player))
+			}
+			else if (this.highlightCallers && isCaller(player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
 				{
-					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
-					{
-						color = relationColorHashMap.get(PlayerRelation.CALLER);
-					}
+					color = relationColorHashMap.get(PlayerRelation.CALLER);
 				}
-				else if (this.highlightCallerTargets && isPile(player))
+			}
+			else if (this.highlightCallerTargets && isPile(player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
 				{
-					if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
-					{
-						color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
-					}
+					color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
 				}
+			}
 
-				if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
+			if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
+			{
+				image2 = 35;
+			}
+
+			if (image != -1 || color != null)
+			{
+				final MenuEntry[] menuEntries = client.getMenuEntries();
+				final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+
+				if (color != null)
 				{
-					image2 = 35;
-				}
-
-				if (image != -1 || color != null)
-				{
-					final MenuEntry[] menuEntries = client.getMenuEntries();
-					final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-
-					if (color != null)
+					// strip out existing <col...
+					String target = lastEntry.getTarget();
+					final int idx = target.indexOf('>');
+					if (idx != -1)
 					{
-						// strip out existing <col...
-						String target = lastEntry.getTarget();
-						final int idx = target.indexOf('>');
-						if (idx != -1)
-						{
-							target = target.substring(idx + 1);
-						}
-
-						lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
-					}
-					if (image != -1)
-					{
-						lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+						target = target.substring(idx + 1);
 					}
 
-					if (image2 != -1 && this.playerSkull)
-					{
-						lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
-					}
-
-					client.setMenuEntries(menuEntries);
+					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
+				if (image != -1)
+				{
+					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+				}
+
+				if (image2 != -1 && this.playerSkull)
+				{
+					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
+				}
+
+				client.setMenuEntries(menuEntries);
 			}
 		}
 	}
+
 
 	private void getCallerList()
 	{
