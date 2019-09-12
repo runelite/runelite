@@ -89,6 +89,7 @@ import net.runelite.client.plugins.menuentryswapper.util.ConstructionMode;
 import net.runelite.client.plugins.menuentryswapper.util.DigsitePendantMode;
 import net.runelite.client.plugins.menuentryswapper.util.DuelingRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
+import net.runelite.client.plugins.menuentryswapper.util.FairyTreeMode;
 import net.runelite.client.plugins.menuentryswapper.util.GamesNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.GloryMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
@@ -178,6 +179,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private DigsitePendantMode getDigsitePendantMode;
 	private DuelingRingMode getDuelingRingMode;
 	private FairyRingMode swapFairyRingMode;
+	private FairyTreeMode swapFairyTreeMode;
 	private GamesNecklaceMode getGamesNecklaceMode;
 	private GloryMode getGloryMode;
 	private HouseMode swapHomePortalMode;
@@ -1106,6 +1108,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.addPriorityEntry("Last-destination", false);
 				break;
 		}
+		
+		switch (this.swapFairyTreeMode)
+		{
+			case OFF:
+				break;
+			case TREE:
+				menuManager.addPriorityEntry("Tree", "Spiritual Fairy Tree");
+				break;
+			case RING_ZANARIS:
+				menuManager.addPriorityEntry("Ring-Zanaris", "Spiritual Fairy Tree");
+				break;
+			case RING_CONFIGURE:
+				menuManager.addPriorityEntry("Ring-configure", "Spiritual Fairy Tree");
+				break;
+			case RING_LAST_DESTINATION:
+				menuManager.addPriorityEntry("Ring-last-destination", false);
+				break;
+		}
 
 		switch (this.swapOccultMode)
 		{
@@ -1376,6 +1396,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 				break;
 			case LAST_DESTINATION:
 				menuManager.removePriorityEntry("Last-destination", false);
+				break;
+		}
+		
+		switch (this.swapFairyTreeMode)
+		{
+			case OFF:
+			case TREE:
+				menuManager.removePriorityEntry("Tree", "Spiritual Fairy Tree");
+				break;
+			case RING_ZANARIS:
+				menuManager.removePriorityEntry("Ring-Zanaris", "Spiritual Fairy Tree");
+				break;
+			case RING_CONFIGURE:
+				menuManager.removePriorityEntry("Ring-configure", "Spiritual Fairy Tree");
+				break;
+			case RING_LAST_DESTINATION:
+				menuManager.removePriorityEntry("Ring-last-destination", false);
 				break;
 		}
 
@@ -1707,6 +1744,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapContract = config.swapContract();
 		this.swapEnchant = config.swapEnchant();
 		this.swapFairyRingMode = config.swapFairyRingMode();
+		this.swapFairyTreeMode = config.swapFairyTreeMode();
 		this.swapHardWoodGrove = config.swapHardWoodGrove();
 		this.swapHarpoon = config.swapHarpoon();
 		this.swapHomePortalMode = config.swapHomePortalMode();

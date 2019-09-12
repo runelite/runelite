@@ -39,6 +39,7 @@ import net.runelite.client.plugins.menuentryswapper.util.ConstructionMode;
 import net.runelite.client.plugins.menuentryswapper.util.DigsitePendantMode;
 import net.runelite.client.plugins.menuentryswapper.util.DuelingRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
+import net.runelite.client.plugins.menuentryswapper.util.FairyTreeMode;
 import net.runelite.client.plugins.menuentryswapper.util.GamesNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.GloryMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
@@ -1177,12 +1178,38 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return FairyRingMode.LAST_DESTINATION;
 	}
+	
+	@ConfigItem(
+			keyName = "swapFairyTree",
+			name = "Fairy Tree",
+			description = "Swap options on PoH Fairy Tree",
+			position = 2,
+			group = "Teleportation"
+	)
+	default boolean swapFairyTree()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "fairyTree",
+			name = "Mode",
+			description = "",
+			position = 3,
+			group = "Teleportation",
+			hidden = true,
+			unhide = "swapFairyTree"
+	)
+	default FairyTreeMode swapFairyTreeMode()
+	{
+		return FairyTreeMode.RING_LAST_DESTINATION;
+	}
 
 	@ConfigItem(
 		keyName = "swapObelisk",
 		name = "Obelisk",
 		description = "Swap the options on wilderness obelisks between 'Activate', 'Set destination' or 'Teleport to destination'.",
-		position = 2,
+		position = 4,
 		group = "Teleportation"
 	)
 	default boolean swapObelisk()
@@ -1194,7 +1221,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "obelisk",
 		name = "Mode",
 		description = "",
-		position = 3,
+		position = 5,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapObelisk"
@@ -1208,7 +1235,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapTeleportItem",
 		name = "Teleport Items",
 		description = "Swap 'Wear' or 'Wield' with 'Rub' or 'Teleport' on teleport items.<br>Example: Amulet of glory, Explorer's ring, Chronicle.",
-		position = 4,
+		position = 6,
 		group = "Teleportation"
 	)
 	default boolean swapTeleportItem()
@@ -1220,7 +1247,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapWildernessLever",
 		name = "Wilderness Lever",
 		description = "Swap the wilderness lever left click to be Edgeville/Ardougne.",
-		position = 5,
+		position = 7,
 		group = "Teleportation"
 	)
 	default boolean swapWildernessLever()
@@ -1232,7 +1259,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapNexus",
 		name = "Portal Nexus",
 		description = "Makes the teleport menu have priority over the left click destination on the portal nexus.",
-		position = 6,
+		position = 8,
 		group = "Teleportation"
 	)
 	default boolean swapNexus()
@@ -1244,7 +1271,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapGamesNecklace",
 		name = "Games Necklace",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Games Necklace.",
-		position = 7,
+		position = 9,
 		group = "Teleportation"
 	)
 	default boolean getGamesNecklace()
@@ -1256,7 +1283,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "gamesNecklaceMode",
 		name = "Mode",
 		description = "",
-		position = 8,
+		position = 10,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapGamesNecklace"
@@ -1270,7 +1297,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapDuelingRing",
 		name = "Dueling Ring",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Ring of Dueling.",
-		position = 9,
+		position = 11,
 		group = "Teleportation"
 	)
 	default boolean getDuelingRing()
@@ -1282,7 +1309,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "duelingRingMode",
 		name = "Mode",
 		description = "",
-		position = 10,
+		position = 12,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapDuelingRing"
@@ -1296,7 +1323,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapGlory",
 		name = "Glory",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Amulet of Glory / Amulet of Eternal Glory.",
-		position = 11,
+		position = 13,
 		group = "Teleportation"
 	)
 	default boolean getGlory()
@@ -1308,7 +1335,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "gloryMode",
 		name = "Mode",
 		description = "",
-		position = 12,
+		position = 14,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapGlory"
@@ -1322,7 +1349,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapSkill",
 		name = "Skills Necklace",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Skills Necklace.",
-		position = 13,
+		position = 15,
 		group = "Teleportation"
 	)
 	default boolean getSkillsNecklace()
@@ -1334,7 +1361,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "skillsnecklacemode",
 		name = "Mode",
 		description = "",
-		position = 14,
+		position = 16,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapSkill"
@@ -1348,7 +1375,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapPassage",
 		name = "Passage Necklace",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Necklace of Passage.",
-		position = 15,
+		position = 17,
 		group = "Teleportation"
 	)
 	default boolean getNecklaceofPassage()
@@ -1360,7 +1387,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "necklaceofpassagemode",
 		name = "Mode",
 		description = "",
-		position = 16,
+		position = 18,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapPassage"
@@ -1374,7 +1401,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapDigsite",
 		name = "Digsite Pendant",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Digsite Pendant.",
-		position = 17,
+		position = 19,
 		group = "Teleportation"
 	)
 	default boolean getDigsitePendant()
@@ -1386,7 +1413,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "digsitependantmode",
 		name = "Mode",
 		description = "",
-		position = 18,
+		position = 20,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapDigsite"
@@ -1400,7 +1427,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapCombat",
 		name = "Combat Bracelet",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Combat Bracelet.",
-		position = 19,
+		position = 21,
 		group = "Teleportation"
 	)
 	default boolean getCombatBracelet()
@@ -1412,7 +1439,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "combatbraceletmode",
 		name = "Mode",
 		description = "",
-		position = 20,
+		position = 22,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapCombat"
@@ -1426,7 +1453,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapburning",
 		name = "Burning Amulet",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Burning Amulet.",
-		position = 21,
+		position = 23,
 		group = "Teleportation"
 	)
 	default boolean getBurningAmulet()
@@ -1438,7 +1465,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "burningamuletmode",
 		name = "Mode",
 		description = "",
-		position = 22,
+		position = 24,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapburning"
@@ -1452,7 +1479,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapxeric",
 		name = "Xeric's Talisman",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Xeric's Talisman.",
-		position = 23,
+		position = 25,
 		group = "Teleportation"
 	)
 	default boolean getXericsTalisman()
@@ -1464,7 +1491,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "xericstalismanmode",
 		name = "Mode",
 		description = "",
-		position = 24,
+		position = 26,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapxeric"
@@ -1478,7 +1505,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapwealth",
 		name = "Ring of Wealth",
 		description = "Swap the left click 'remove' option with the desired teleport location on a worn Ring of Wealth.",
-		position = 25,
+		position = 27,
 		group = "Teleportation"
 	)
 	default boolean getRingofWealth()
@@ -1490,7 +1517,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "ringofwealthmode",
 		name = "Mode",
 		description = "",
-		position = 26,
+		position = 28,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapwealth"
@@ -1504,7 +1531,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapslayer",
 		name = "Slayer Ring",
 		description = "",
-		position = 27,
+		position = 29,
 		group = "Teleportation"
 	)
 	default boolean getSlayerRing()
@@ -1516,7 +1543,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "slayerringmode",
 		name = "Mode",
 		description = "",
-		position = 28,
+		position = 30,
 		group = "Teleportation",
 		hidden = true,
 		unhide = "swapslayer"
