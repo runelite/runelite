@@ -25,10 +25,10 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableMap;
-import lombok.Getter;
-import javax.annotation.Nullable;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import lombok.Getter;
+import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
