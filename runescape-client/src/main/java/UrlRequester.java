@@ -10,19 +10,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ed")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-	@ObfuscatedName("q")
-	@Export("ItemDefinition_inMembersWorld")
-	public static boolean ItemDefinition_inMembersWorld;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("thread")
 	final Thread thread;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("isClosed")
 	volatile boolean isClosed;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("requests")
 	Queue requests;
 
@@ -33,10 +30,10 @@ public class UrlRequester implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/URL;I)Ler;",
-		garbageValue = "-2144304938"
+		signature = "(Ljava/net/URL;I)Leq;",
+		garbageValue = "1332012444"
 	)
 	@Export("request")
 	public UrlRequest request(URL var1) {
@@ -48,10 +45,10 @@ public class UrlRequester implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1101438490"
+		garbageValue = "1487923235"
 	)
 	@Export("close")
 	public void close() {
@@ -114,41 +111,18 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				class3.RunException_sendStackTrace((String)null, var17);
+				class188.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("ge")
 	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "-75"
+		signature = "(B)Z",
+		garbageValue = "6"
 	)
-	public static void method3250(int var0) {
-		if (var0 != -1) {
-			if (WorldMapDecoration.Widget_loadedInterfaces[var0]) {
-				Widget.Widget_archive.clearFilesGroup(var0);
-				if (Widget.Widget_interfaceComponents[var0] != null) {
-					boolean var1 = true;
-
-					for (int var2 = 0; var2 < Widget.Widget_interfaceComponents[var0].length; ++var2) {
-						if (Widget.Widget_interfaceComponents[var0][var2] != null) {
-							if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
-								Widget.Widget_interfaceComponents[var0][var2] = null;
-							} else {
-								var1 = false;
-							}
-						}
-					}
-
-					if (var1) {
-						Widget.Widget_interfaceComponents[var0] = null;
-					}
-
-					WorldMapDecoration.Widget_loadedInterfaces[var0] = false;
-				}
-			}
-		}
+	static boolean method3273() {
+		return (Client.drawPlayerNames & 8) != 0;
 	}
 }

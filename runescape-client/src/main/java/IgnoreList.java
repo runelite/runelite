@@ -3,60 +3,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("ji")
 @Implements("IgnoreList")
 public class IgnoreList extends UserList {
-	@ObfuscatedName("qz")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lcq;"
-	)
-	@Export("pcmStreamMixer")
-	static PcmStreamMixer pcmStreamMixer;
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "Ler;"
-	)
-	@Export("World_request")
-	static UrlRequest World_request;
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "Llu;"
+		signature = "Lll;"
 	)
 	@Export("loginType")
 	final LoginType loginType;
 
 	@ObfuscatedSignature(
-		signature = "(Llu;)V"
+		signature = "(Lll;)V"
 	)
 	public IgnoreList(LoginType var1) {
 		super(400);
 		this.loginType = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Lju;",
-		garbageValue = "-192021045"
+		signature = "(I)Ljw;",
+		garbageValue = "-734254876"
 	)
 	@Export("newInstance")
 	User newInstance() {
 		return new Ignored();
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II)[Lju;",
-		garbageValue = "518998026"
+		signature = "(II)[Ljw;",
+		garbageValue = "1353779565"
 	)
 	@Export("newTypedArray")
 	User[] newTypedArray(int var1) {
 		return new Ignored[var1];
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lky;II)V",
-		garbageValue = "-1855918635"
+		signature = "(Lkz;IB)V",
+		garbageValue = "112"
 	)
 	@Export("read")
 	public void read(Buffer var1, int var2) {
@@ -71,7 +59,7 @@ public class IgnoreList extends UserList {
 					Ignored var7 = (Ignored)this.getByCurrentUsername(var5);
 					if (var4) {
 						Ignored var8 = (Ignored)this.getByCurrentUsername(var6);
-						if (var8 != null && var8 != var7) {
+						if (var8 != null && var7 != var8) {
 							if (var7 != null) {
 								this.remove(var8);
 							} else {
@@ -98,5 +86,15 @@ public class IgnoreList extends UserList {
 
 			return;
 		}
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;I)I",
+		garbageValue = "-317762275"
+	)
+	@Export("parseInt")
+	public static int parseInt(CharSequence var0) {
+		return class51.parseIntCustomRadix(var0, 10, true);
 	}
 }

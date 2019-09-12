@@ -1,95 +1,98 @@
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cx")
 @Implements("PacketWriter")
 public class PacketWriter {
-	@ObfuscatedName("fe")
-	@ObfuscatedGetter(
-		intValue = 1606787637
-	)
-	@Export("baseX")
-	static int baseX;
-	@ObfuscatedName("s")
+	@ObfuscatedName("sh")
 	@ObfuscatedSignature(
-		signature = "Lkg;"
+		signature = "Lj;"
+	)
+	@Export("grandExchangeEvents")
+	static GrandExchangeEvents grandExchangeEvents;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lks;"
 	)
 	@Export("socket")
 	AbstractSocket socket;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Ljp;"
+		signature = "Ljd;"
 	)
 	@Export("packetBufferNodes")
 	IterableNodeDeque packetBufferNodes;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1205819381
+		intValue = -1063535483
 	)
 	@Export("bufferSize")
 	int bufferSize;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lkz;"
 	)
 	@Export("buffer")
 	Buffer buffer;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lle;"
+		signature = "Lld;"
 	)
 	@Export("isaacCipher")
 	public IsaacCipher isaacCipher;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Lkt;"
 	)
 	@Export("packetBuffer")
 	PacketBuffer packetBuffer;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lga;"
 	)
 	@Export("serverPacket")
 	ServerPacket serverPacket;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1032703307
+		intValue = -1384639011
 	)
 	@Export("serverPacketLength")
 	int serverPacketLength;
-	@ObfuscatedName("x")
-	boolean field1284;
 	@ObfuscatedName("d")
+	boolean field1281;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1284201635
+		intValue = 1450743325
 	)
-	int field1293;
-	@ObfuscatedName("f")
+	int field1283;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 421998979
+		intValue = 135236915
 	)
 	@Export("pendingWrites")
 	int pendingWrites;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lga;"
 	)
-	ServerPacket field1295;
-	@ObfuscatedName("r")
+	ServerPacket field1274;
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lga;"
 	)
-	ServerPacket field1296;
-	@ObfuscatedName("y")
+	ServerPacket field1286;
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lga;"
 	)
-	ServerPacket field1291;
+	ServerPacket field1287;
 
 	PacketWriter() {
 		this.packetBufferNodes = new IterableNodeDeque();
@@ -98,15 +101,15 @@ public class PacketWriter {
 		this.packetBuffer = new PacketBuffer(40000);
 		this.serverPacket = null;
 		this.serverPacketLength = 0;
-		this.field1284 = true;
-		this.field1293 = 0;
+		this.field1281 = true;
+		this.field1283 = 0;
 		this.pendingWrites = 0;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-194505357"
+		garbageValue = "1888658982"
 	)
 	@Export("clearBuffer")
 	final void clearBuffer() {
@@ -114,10 +117,10 @@ public class PacketWriter {
 		this.bufferSize = 0;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "10298"
+		signature = "(B)V",
+		garbageValue = "0"
 	)
 	@Export("flush")
 	final void flush() throws IOException {
@@ -142,10 +145,10 @@ public class PacketWriter {
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lgq;I)V",
-		garbageValue = "520216141"
+		signature = "(Lgj;S)V",
+		garbageValue = "5307"
 	)
 	@Export("addNode")
 	public final void addNode(PacketBufferNode var1) {
@@ -155,20 +158,20 @@ public class PacketWriter {
 		this.bufferSize += var1.index;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lkg;I)V",
-		garbageValue = "-2033102393"
+		signature = "(Lks;B)V",
+		garbageValue = "1"
 	)
 	@Export("setSocket")
 	void setSocket(AbstractSocket var1) {
 		this.socket = var1;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-104"
+		garbageValue = "111"
 	)
 	@Export("close")
 	void close() {
@@ -179,23 +182,93 @@ public class PacketWriter {
 
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-200145232"
+		garbageValue = "1660773387"
 	)
 	@Export("removeSocket")
 	void removeSocket() {
 		this.socket = null;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(S)Lkg;",
-		garbageValue = "140"
+		signature = "(I)Lks;",
+		garbageValue = "-1816909725"
 	)
 	@Export("getSocket")
 	AbstractSocket getSocket() {
 		return this.socket;
+	}
+
+	@ObfuscatedName("at")
+	@ObfuscatedSignature(
+		signature = "(Lfq;IIB)Ldh;",
+		garbageValue = "25"
+	)
+	public static final PcmPlayer method2246(TaskHandler var0, int var1, int var2) {
+		if (GrandExchangeOfferWorldComparator.PcmPlayer_sampleRate == 0) {
+			throw new IllegalStateException();
+		} else if (var1 >= 0 && var1 < 2) {
+			if (var2 < 256) {
+				var2 = 256;
+			}
+
+			try {
+				PcmPlayer var3 = HealthBar.pcmPlayerProvider.player();
+				var3.samples = new int[256 * (PcmPlayer.PcmPlayer_stereo ? 2 : 1)];
+				var3.field1377 = var2;
+				var3.init();
+				var3.capacity = (var2 & -1024) + 1024;
+				if (var3.capacity > 16384) {
+					var3.capacity = 16384;
+				}
+
+				var3.open(var3.capacity);
+				if (GrandExchangeEvents.PcmPlayer_count > 0 && FontName.soundSystem == null) {
+					FontName.soundSystem = new SoundSystem();
+					SoundCache.soundSystemExecutor = Executors.newScheduledThreadPool(1);
+					SoundCache.soundSystemExecutor.scheduleAtFixedRate(FontName.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
+				}
+
+				if (FontName.soundSystem != null) {
+					if (FontName.soundSystem.players[var1] != null) {
+						throw new IllegalArgumentException();
+					}
+
+					FontName.soundSystem.players[var1] = var3;
+				}
+
+				return var3;
+			} catch (Throwable var4) {
+				return new PcmPlayer();
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@ObfuscatedName("ft")
+	@ObfuscatedSignature(
+		signature = "(ZB)V",
+		garbageValue = "62"
+	)
+	static final void method2238(boolean var0) {
+		if (var0) {
+			Client.field659 = Login.field1183 ? class160.field1972 : class160.field1974;
+		} else {
+			LinkedHashMap var1 = Actor.clientPreferences.parameters;
+			String var3 = Login.Login_username;
+			int var4 = var3.length();
+			int var5 = 0;
+
+			for (int var6 = 0; var6 < var4; ++var6) {
+				var5 = (var5 << 5) - var5 + var3.charAt(var6);
+			}
+
+			Client.field659 = var1.containsKey(var5) ? class160.field1975 : class160.field1973;
+		}
+
 	}
 }

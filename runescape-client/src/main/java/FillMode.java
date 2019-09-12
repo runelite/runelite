@@ -4,35 +4,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lb")
+@ObfuscatedName("lq")
 @Implements("FillMode")
 public enum FillMode implements Enumerated {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Llb;"
+		signature = "Llq;"
 	)
 	@Export("SOLID")
 	SOLID(0, 0),
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Llb;"
+		signature = "Llq;"
 	)
-	field3858(1, 1),
-	@ObfuscatedName("i")
+	field3855(1, 1),
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Llb;"
+		signature = "Llq;"
 	)
-	field3860(2, 2);
+	field3852(2, 2);
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -375665689
+		intValue = -494470033
 	)
 	@Export("value")
 	public final int value;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -839626013
+		intValue = -1639084691
 	)
 	@Export("id")
 	final int id;
@@ -42,13 +42,32 @@ public enum FillMode implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-32"
+		signature = "(I)I",
+		garbageValue = "-1410702910"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(Lhz;IIS)Lli;",
+		garbageValue = "-25317"
+	)
+	@Export("SpriteBuffer_getSprite")
+	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
+		byte[] var4 = var0.takeFile(var1, var2);
+		boolean var3;
+		if (var4 == null) {
+			var3 = false;
+		} else {
+			GrandExchangeOfferWorldComparator.SpriteBuffer_decode(var4);
+			var3 = true;
+		}
+
+		return !var3 ? null : ChatChannel.method2218();
 	}
 }

@@ -3,24 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hq")
 @Implements("Huffman")
 public class Huffman {
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("Widget_modelsArchive")
-	static AbstractArchive Widget_modelsArchive;
-	@ObfuscatedName("r")
-	static boolean field2486;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("masks")
 	int[] masks;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("bits")
 	byte[] bits;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("keys")
 	int[] keys;
 
@@ -107,10 +99,10 @@ public class Huffman {
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "([BII[BIB)I",
-		garbageValue = "75"
+		signature = "([BII[BII)I",
+		garbageValue = "-1468979642"
 	)
 	@Export("compress")
 	int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -128,7 +120,7 @@ public class Huffman {
 			int var11 = var7 >> 3;
 			int var12 = var7 & 7;
 			var6 &= -var12 >> 31;
-			int var13 = (var12 + var10 - 1 >> 3) + var11;
+			int var13 = (var10 + var12 - 1 >> 3) + var11;
 			var12 += 24;
 			var4[var11] = (byte)(var6 |= var9 >>> var12);
 			if (var11 < var13) {
@@ -158,10 +150,10 @@ public class Huffman {
 		return (var7 + 7 >> 3) - var5;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "([BI[BIII)I",
-		garbageValue = "-1981194731"
+		garbageValue = "-103624284"
 	)
 	@Export("decompress")
 	int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -302,33 +294,27 @@ public class Huffman {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "762083438"
+		signature = "(S)V",
+		garbageValue = "-31428"
 	)
-	public static boolean method3901(int var0) {
-		return (var0 >> 30 & 1) != 0;
+	static void method3942() {
+		Players.Players_count = 0;
+
+		for (int var0 = 0; var0 < 2048; ++var0) {
+			Players.field1221[var0] = null;
+			Players.field1220[var0] = 1;
+		}
+
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
-		garbageValue = "24"
+		signature = "(I)V",
+		garbageValue = "-434876538"
 	)
-	public static String method3903(CharSequence var0) {
-		return FontName.method5230('*', var0.length());
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "191831617"
-	)
-	static final void method3902(String var0) {
-		PacketBufferNode var1 = MenuAction.getPacketBufferNode(ClientPacket.field2275, Client.packetWriter.isaacCipher);
-		var1.packetBuffer.writeByte(Buddy.stringCp1252NullTerminatedByteSize(var0));
-		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-		Client.packetWriter.addNode(var1);
+	static final void method3943() {
+		WorldMapSection2.method283("You can't add yourself to your own ignore list");
 	}
 }

@@ -3,99 +3,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fr")
 public enum class160 implements Enumerated {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lfn;"
+		signature = "Lfr;"
 	)
-	field1988(2, 0),
-	@ObfuscatedName("j")
+	field1975(1, 0),
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lfn;"
+		signature = "Lfr;"
 	)
-	field1982(1, 1),
-	@ObfuscatedName("i")
+	field1972(2, 1),
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lfn;"
+		signature = "Lfr;"
 	)
-	field1984(3, 2),
-	@ObfuscatedName("k")
+	field1973(3, 2),
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lfn;"
+		signature = "Lfr;"
 	)
-	field1983(0, 3);
+	field1974(0, 3);
 
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = 361058639
+	)
+	@Export("Interpreter_intStackSize")
+	static int Interpreter_intStackSize;
+	@ObfuscatedName("d")
+	static int[][] field1977;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1405442637
+	)
+	public final int field1978;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1967639255
-	)
-	public final int field1986;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = -2042694255
+		intValue = 1965131589
 	)
 	@Export("id")
 	final int id;
 
 	class160(int var3, int var4) {
-		this.field1986 = var3;
+		this.field1978 = var3;
 		this.id = var4;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-32"
+		signature = "(I)I",
+		garbageValue = "-1410702910"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "1"
-	)
-	@Export("iLog")
-	public static int iLog(int var0) {
-		int var1 = 0;
-		if (var0 < 0 || var0 >= 65536) {
-			var0 >>>= 16;
-			var1 += 16;
-		}
-
-		if (var0 >= 256) {
-			var0 >>>= 8;
-			var1 += 8;
-		}
-
-		if (var0 >= 16) {
-			var0 >>>= 4;
-			var1 += 4;
-		}
-
-		if (var0 >= 4) {
-			var0 >>>= 2;
-			var1 += 2;
-		}
-
-		if (var0 >= 1) {
-			var0 >>>= 1;
-			++var1;
-		}
-
-		return var0 + var1;
-	}
-
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IIS)I",
-		garbageValue = "338"
+		signature = "(IB)I",
+		garbageValue = "2"
 	)
-	static int method3383(int var0, int var1) {
-		long var2 = (long)((var0 << 16) + var1);
-		return NetCache.NetCache_currentResponse != null && NetCache.NetCache_currentResponse.key == var2 ? NetCache.NetCache_responseArchiveBuffer.offset * 99 / (NetCache.NetCache_responseArchiveBuffer.array.length - NetCache.NetCache_currentResponse.padding) + 1 : 0;
+	@Export("Messages_getHistorySize")
+	static int Messages_getHistorySize(int var0) {
+		ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(var0);
+		return var1 == null ? 0 : var1.size();
+	}
+
+	@ObfuscatedName("gr")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "-744343031"
+	)
+	static boolean method3419() {
+		return (Client.drawPlayerNames & 1) != 0;
 	}
 }

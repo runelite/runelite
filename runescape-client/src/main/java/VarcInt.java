@@ -1,24 +1,31 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ip")
+@ObfuscatedName("ih")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("VarcInt_archive")
-	public static AbstractArchive VarcInt_archive;
-	@ObfuscatedName("j")
+	static AbstractArchive VarcInt_archive;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("VarcInt_cached")
 	static EvictingDualNodeHashTable VarcInt_cached;
-	@ObfuscatedName("i")
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -59845961
+	)
+	@Export("loginBoxCenter")
+	static int loginBoxCenter;
+	@ObfuscatedName("t")
 	@Export("persist")
 	public boolean persist;
 
@@ -30,54 +37,49 @@ public class VarcInt extends DualNode {
 		this.persist = false;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)V",
-		garbageValue = "-1564347413"
+		signature = "(Lkz;B)V",
+		garbageValue = "9"
 	)
-	void method4314(Buffer var1) {
+	void method4394(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4315(var1, var2);
+			this.method4395(var1, var2);
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lky;II)V",
-		garbageValue = "-1760139411"
+		signature = "(Lkz;IB)V",
+		garbageValue = "-46"
 	)
-	void method4315(Buffer var1, int var2) {
+	void method4395(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
 		}
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(II)Lis;",
-		garbageValue = "-1763982471"
+		signature = "(Lhz;I)V",
+		garbageValue = "-1900079219"
 	)
-	@Export("getParamDefinition")
-	public static ParamDefinition getParamDefinition(int var0) {
-		ParamDefinition var1 = (ParamDefinition)ParamDefinition.ParamDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = class339.ParamDefinition_archive.takeFile(11, var0);
-			var1 = new ParamDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
+	public static void method4407(AbstractArchive var0) {
+		ParamDefinition.ParamDefinition_archive = var0;
+	}
 
-			var1.postDecode();
-			ParamDefinition.ParamDefinition_cached.put(var1, (long)var0);
-			return var1;
-		}
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(B)[Lie;",
+		garbageValue = "-105"
+	)
+	static HorizontalAlignment[] method4396() {
+		return new HorizontalAlignment[]{HorizontalAlignment.field3430, HorizontalAlignment.HorizontalAlignment_centered, HorizontalAlignment.field3428};
 	}
 }

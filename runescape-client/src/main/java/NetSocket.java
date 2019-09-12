@@ -12,63 +12,63 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fp")
 @Implements("NetSocket")
 public final class NetSocket extends AbstractSocket implements Runnable {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("inputStream")
 	InputStream inputStream;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("outputStream")
 	OutputStream outputStream;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("socket")
 	Socket socket;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("isClosed")
 	boolean isClosed;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lfu;"
+		signature = "Lfq;"
 	)
 	@Export("taskHandler")
 	TaskHandler taskHandler;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lft;"
+		signature = "Lfc;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@Export("outBuffer")
 	byte[] outBuffer;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -2034750073
+		intValue = 507236183
 	)
 	@Export("outLength")
 	int outLength;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 944271121
+		intValue = 33510263
 	)
 	@Export("outOffset")
 	int outOffset;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@Export("exceptionWriting")
 	boolean exceptionWriting;
-	@ObfuscatedName("f")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1855971629
+		intValue = -687559731
 	)
 	@Export("bufferLength")
 	final int bufferLength;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 234092539
+		intValue = 1564055385
 	)
 	@Export("maxPacketLength")
 	final int maxPacketLength;
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/Socket;Lfu;I)V"
+		signature = "(Ljava/net/Socket;Lfq;I)V"
 	)
 	public NetSocket(Socket var1, TaskHandler var2, int var3) throws IOException {
 		this.isClosed = false;
@@ -87,10 +87,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		this.outputStream = this.socket.getOutputStream();
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1798752769"
+		signature = "(B)V",
+		garbageValue = "-75"
 	)
 	@Export("close")
 	public void close() {
@@ -102,7 +102,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
 			if (this.task != null) {
 				while (this.task.status == 0) {
-					UserList.sleepMillis(1L);
+					FriendsList.sleepMillis(1L);
 				}
 
 				if (this.task.status == 1) {
@@ -117,30 +117,30 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "547465689"
+		garbageValue = "1827163357"
 	)
 	@Export("readUnsignedByte")
 	public int readUnsignedByte() throws IOException {
 		return this.isClosed ? 0 : this.inputStream.read();
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "83"
+		signature = "(I)I",
+		garbageValue = "-1354053248"
 	)
 	@Export("available")
 	public int available() throws IOException {
 		return this.isClosed ? 0 : this.inputStream.available();
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "156087109"
+		garbageValue = "-377412375"
 	)
 	@Export("isAvailable")
 	public boolean isAvailable(int var1) throws IOException {
@@ -151,10 +151,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "([BIIB)I",
-		garbageValue = "100"
+		signature = "([BIII)I",
+		garbageValue = "2063129771"
 	)
 	@Export("read")
 	public int read(byte[] var1, int var2, int var3) throws IOException {
@@ -176,10 +176,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "-1945962644"
+		signature = "([BIIB)V",
+		garbageValue = "-25"
 	)
 	@Export("write0")
 	void write0(byte[] var1, int var2, int var3) throws IOException {
@@ -196,7 +196,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 					for (int var5 = 0; var5 < var3; ++var5) {
 						this.outBuffer[this.outOffset] = var1[var5 + var2];
 						this.outOffset = (this.outOffset + 1) % this.bufferLength;
-						if ((this.outLength + this.maxPacketLength) % this.bufferLength == this.outOffset) {
+						if ((this.maxPacketLength + this.outLength) % this.bufferLength == this.outOffset) {
 							throw new IOException();
 						}
 					}
@@ -211,10 +211,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "638463675"
+		signature = "([BIIB)V",
+		garbageValue = "9"
 	)
 	@Export("write")
 	public void write(byte[] var1, int var2, int var3) throws IOException {
@@ -225,7 +225,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		this.close();
 	}
 
-	protected void abt() {
+	protected void aaj() {
 		this.close();
 	}
 
@@ -268,7 +268,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 					this.outLength = (var1 + this.outLength) % this.bufferLength;
 
 					try {
-						if (this.outLength == this.outOffset) {
+						if (this.outOffset == this.outLength) {
 							this.outputStream.flush();
 						}
 					} catch (IOException var8) {
@@ -296,77 +296,24 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 				break;
 			}
 		} catch (Exception var12) {
-			class3.RunException_sendStackTrace((String)null, var12);
+			class188.RunException_sendStackTrace((String)null, var12);
 		}
 
 	}
 
-	protected void abi() {
-		this.close();
-	}
-
-	@ObfuscatedName("ii")
+	@ObfuscatedName("gh")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIZB)V",
-		garbageValue = "-62"
+		signature = "(Lby;I)Z",
+		garbageValue = "1278760398"
 	)
-	@Export("alignWidgetSize")
-	static void alignWidgetSize(Widget var0, int var1, int var2, boolean var3) {
-		int var4 = var0.width;
-		int var5 = var0.height;
-		if (var0.widthAlignment == 0) {
-			var0.width = var0.rawWidth;
-		} else if (var0.widthAlignment == 1) {
-			var0.width = var1 - var0.rawWidth;
-		} else if (var0.widthAlignment == 2) {
-			var0.width = var0.rawWidth * var1 >> 14;
+	static boolean method3531(Player var0) {
+		if (Client.drawPlayerNames == 0) {
+			return false;
+		} else if (Varps.localPlayer != var0) {
+			boolean var1 = (Client.drawPlayerNames & 4) != 0;
+			return var1 || class160.method3419() && var0.isFriend() || Projectile.method2087() && var0.isClanMember();
+		} else {
+			return UrlRequester.method3273();
 		}
-
-		if (var0.heightAlignment == 0) {
-			var0.height = var0.rawHeight;
-		} else if (var0.heightAlignment == 1) {
-			var0.height = var2 - var0.rawHeight;
-		} else if (var0.heightAlignment == 2) {
-			var0.height = var2 * var0.rawHeight >> 14;
-		}
-
-		if (var0.widthAlignment == 4) {
-			var0.width = var0.field2538 * var0.height / var0.field2612;
-		}
-
-		if (var0.heightAlignment == 4) {
-			var0.height = var0.width * var0.field2612 / var0.field2538;
-		}
-
-		if (var0.contentType == 1337) {
-			Client.viewportWidget = var0;
-		}
-
-		if (var3 && var0.onResize != null && (var4 != var0.width || var5 != var0.height)) {
-			ScriptEvent var6 = new ScriptEvent();
-			var6.widget = var0;
-			var6.args = var0.onResize;
-			Client.scriptEvents.addFirst(var6);
-		}
-
-	}
-
-	@ObfuscatedName("ln")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "549032388"
-	)
-	static String method3489(String var0) {
-		PlayerType[] var1 = class191.PlayerType_values();
-
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			PlayerType var3 = var1[var2];
-			if (var3.modIcon * 714577229 != -1 && var0.startsWith(AbstractWorldMapData.method278(var3.modIcon * 714577229))) {
-				var0 = var0.substring(6 + Integer.toString(var3.modIcon * 714577229).length());
-				break;
-			}
-		}
-
-		return var0;
 	}
 }

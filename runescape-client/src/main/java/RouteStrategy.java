@@ -4,42 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fw")
 @Implements("RouteStrategy")
 public abstract class RouteStrategy {
-	@ObfuscatedName("da")
+	@ObfuscatedName("sk")
 	@ObfuscatedSignature(
-		signature = "Lft;"
+		signature = "Lkx;"
 	)
-	@Export("js5SocketTask")
-	static Task js5SocketTask;
-	@ObfuscatedName("fa")
-	@ObfuscatedGetter(
-		intValue = 207475119
+	@Export("masterDisk")
+	static ArchiveDisk masterDisk;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Leq;"
 	)
-	@Export("baseY")
-	static int baseY;
-	@ObfuscatedName("s")
+	@Export("World_request")
+	static UrlRequest World_request;
+	@ObfuscatedName("fy")
+	@ObfuscatedSignature(
+		signature = "Led;"
+	)
+	@Export("urlRequester")
+	static UrlRequester urlRequester;
+	@ObfuscatedName("gc")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
+	)
+	@Export("headIconPrayerSprites")
+	static Sprite[] headIconPrayerSprites;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 663574439
+		intValue = -2040361911
 	)
 	@Export("approxDestinationX")
 	public int approxDestinationX;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -148289361
+		intValue = 1007393083
 	)
 	@Export("approxDestinationY")
 	public int approxDestinationY;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 2029951319
+		intValue = -462526133
 	)
 	@Export("approxDestinationSizeX")
 	public int approxDestinationSizeX;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 2116488485
+		intValue = -1078511921
 	)
 	@Export("approxDestinationSizeY")
 	public int approxDestinationSizeY;
@@ -47,77 +59,40 @@ public abstract class RouteStrategy {
 	protected RouteStrategy() {
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIILfm;I)Z",
-		garbageValue = "1325675955"
+		signature = "(IIILfj;I)Z",
+		garbageValue = "2030512647"
 	)
 	@Export("hasArrived")
-	public abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
+	protected abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(CB)Z",
-		garbageValue = "-117"
+		signature = "(S)[Lli;",
+		garbageValue = "-22640"
 	)
-	@Export("isAlphaNumeric")
-	public static boolean isAlphaNumeric(char var0) {
-		return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-	}
+	static Sprite[] method3578() {
+		Sprite[] var0 = new Sprite[class325.SpriteBuffer_spriteCount];
 
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-1827304570"
-	)
-	static final int method3533(int var0, int var1) {
-		if (var0 == -2) {
-			return 12345678;
-		} else if (var0 == -1) {
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
+		for (int var1 = 0; var1 < class325.SpriteBuffer_spriteCount; ++var1) {
+			Sprite var2 = var0[var1] = new Sprite();
+			var2.width = class325.SpriteBuffer_spriteWidth;
+			var2.height = class325.SpriteBuffer_spriteHeight;
+			var2.xOffset = class325.SpriteBuffer_xOffsets[var1];
+			var2.yOffset = SecureRandomCallable.SpriteBuffer_yOffsets[var1];
+			var2.subWidth = class325.SpriteBuffer_spriteWidths[var1];
+			var2.subHeight = SoundSystem.SpriteBuffer_spriteHeights[var1];
+			int var3 = var2.subHeight * var2.subWidth;
+			byte[] var4 = InvDefinition.SpriteBuffer_pixels[var1];
+			var2.pixels = new int[var3];
+
+			for (int var5 = 0; var5 < var3; ++var5) {
+				var2.pixels[var5] = class325.SpriteBuffer_spritePalette[var4[var5] & 255];
 			}
-
-			return var1;
-		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
-		}
-	}
-
-	@ObfuscatedName("ku")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-		garbageValue = "1938958003"
-	)
-	static String method3534(String var0, boolean var1) {
-		String var2 = var1 ? "https://" : "http://";
-		if (Client.gameBuild == 1) {
-			var0 = var0 + "-wtrc";
-		} else if (Client.gameBuild == 2) {
-			var0 = var0 + "-wtqa";
-		} else if (Client.gameBuild == 3) {
-			var0 = var0 + "-wtwip";
-		} else if (Client.gameBuild == 5) {
-			var0 = var0 + "-wti";
-		} else if (Client.gameBuild == 4) {
-			var0 = "local";
 		}
 
-		String var3 = "";
-		if (Clock.field2037 != null) {
-			var3 = "/p=" + Clock.field2037;
-		}
-
-		String var4 = "runescape.com";
-		return var2 + var0 + "." + var4 + "/l=" + class60.clientLanguage + "/a=" + SoundSystem.field1414 + var3 + "/";
+		class192.SpriteBuffer_clear();
+		return var0;
 	}
 }

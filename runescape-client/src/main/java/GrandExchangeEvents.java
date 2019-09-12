@@ -4,26 +4,38 @@ import java.util.Comparator;
 import java.util.List;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("t")
+@ObfuscatedName("j")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("GrandExchangeEvents_ageComparator")
 	public static Comparator GrandExchangeEvents_ageComparator;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("GrandExchangeEvents_priceComparator")
 	public static Comparator GrandExchangeEvents_priceComparator;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("GrandExchangeEvents_nameComparator")
 	public static Comparator GrandExchangeEvents_nameComparator;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("GrandExchangeEvents_quantityComparator")
 	public static Comparator GrandExchangeEvents_quantityComparator;
-	@ObfuscatedName("s")
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = 1066542769
+	)
+	@Export("PcmPlayer_count")
+	static int PcmPlayer_count;
+	@ObfuscatedName("gd")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
+	)
+	@Export("headIconHintSprites")
+	static Sprite[] headIconHintSprites;
+	@ObfuscatedName("c")
 	@Export("events")
 	public final List events;
 
@@ -36,7 +48,7 @@ public class GrandExchangeEvents {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Lky;Z)V",
+		signature = "(Lkz;Z)V",
 		garbageValue = "1"
 	)
 	public GrandExchangeEvents(Buffer var1, boolean var2) {
@@ -58,10 +70,10 @@ public class GrandExchangeEvents {
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(Ljava/util/Comparator;ZB)V",
-		garbageValue = "64"
+		garbageValue = "0"
 	)
 	@Export("sort")
 	public void sort(Comparator var1, boolean var2) {
@@ -73,50 +85,72 @@ public class GrandExchangeEvents {
 
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILcr;ZS)I",
-		garbageValue = "-10184"
+		signature = "(Lhz;Lhz;ZLkf;B)V",
+		garbageValue = "118"
 	)
-	static int method84(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
-			var3 = WorldMapElement.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
-			var3 = WorldMapElement.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_HASSUB) {
-			int var5 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var5);
-			if (var4 != null) {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 1;
-			} else {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETTOP) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.rootInterface;
-			return 1;
-		} else {
-			return 2;
-		}
+	public static void method69(AbstractArchive var0, AbstractArchive var1, boolean var2, Font var3) {
+		class65.ItemDefinition_archive = var0;
+		ItemDefinition.ItemDefinition_modelArchive = var1;
+		ItemDefinition.ItemDefinition_inMembersWorld = var2;
+		ItemDefinition.ItemDefinition_fileCount = class65.ItemDefinition_archive.getGroupFileCount(10);
+		class215.ItemDefinition_fontPlain11 = var3;
 	}
 
-	@ObfuscatedName("gc")
+	@ObfuscatedName("jp")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "0"
+		signature = "(I)V",
+		garbageValue = "2004785230"
 	)
-	static boolean method81() {
-		return (Client.drawPlayerNames & 1) != 0;
+	static final void method66() {
+		Client.field815 = Client.cycleCntr;
+	}
+
+	@ObfuscatedName("ko")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+		garbageValue = "59"
+	)
+	static String method67(String var0, boolean var1) {
+		String var2 = var1 ? "https://" : "http://";
+		if (Client.gameBuild == 1) {
+			var0 = var0 + "-wtrc";
+		} else if (Client.gameBuild == 2) {
+			var0 = var0 + "-wtqa";
+		} else if (Client.gameBuild == 3) {
+			var0 = var0 + "-wtwip";
+		} else if (Client.gameBuild == 5) {
+			var0 = var0 + "-wti";
+		} else if (Client.gameBuild == 4) {
+			var0 = "local";
+		}
+
+		String var3 = "";
+		if (WorldMapArea.field217 != null) {
+			var3 = "/p=" + WorldMapArea.field217;
+		}
+
+		String var4 = "runescape.com";
+		return var2 + var0 + "." + var4 + "/l=" + class43.clientLanguage + "/a=" + MouseRecorder.field565 + var3 + "/";
+	}
+
+	@ObfuscatedName("kq")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "-1862958560"
+	)
+	static String method68(String var0) {
+		PlayerType[] var1 = PlayerAppearance.PlayerType_values();
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			PlayerType var3 = var1[var2];
+			if (var3.modIcon != -1 && var0.startsWith(ArchiveDiskAction.method4133(var3.modIcon))) {
+				var0 = var0.substring(6 + Integer.toString(var3.modIcon).length());
+				break;
+			}
+		}
+
+		return var0;
 	}
 }

@@ -1,43 +1,47 @@
+import java.net.MalformedURLException;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bt")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-	@ObfuscatedName("qs")
-	@ObfuscatedSignature(
-		signature = "Ldd;"
-	)
-	@Export("pcmPlayer0")
-	static PcmPlayer pcmPlayer0;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
+	@Export("musicTrackBoolean")
+	public static boolean musicTrackBoolean;
+	@ObfuscatedName("bt")
 	@ObfuscatedGetter(
-		intValue = -694423597
+		intValue = -2032808157
 	)
-	@Export("ItemDefinition_fileCount")
-	public static int ItemDefinition_fileCount;
-	@ObfuscatedName("s")
+	static int field565;
+	@ObfuscatedName("jx")
+	@ObfuscatedGetter(
+		intValue = -1873727163
+	)
+	@Export("plane")
+	static int plane;
+	@ObfuscatedName("c")
 	@Export("isRunning")
 	boolean isRunning;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("lock")
 	Object lock;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -958051971
+		intValue = 675918873
 	)
 	@Export("index")
 	int index;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("xs")
 	int[] xs;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("ys")
 	int[] ys;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("millis")
 	long[] millis;
 
@@ -51,7 +55,7 @@ public class MouseRecorder implements Runnable {
 	}
 
 	public void run() {
-		for (; this.isRunning; UserList.sleepMillis(50L)) {
+		for (; this.isRunning; FriendsList.sleepMillis(50L)) {
 			synchronized(this.lock) {
 				if (this.index < 500) {
 					this.xs[this.index] = MouseHandler.MouseHandler_x;
@@ -64,39 +68,44 @@ public class MouseRecorder implements Runnable {
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)[Lgj;",
-		garbageValue = "58"
+		signature = "(Ljava/lang/String;I)Z",
+		garbageValue = "-1211827795"
 	)
-	@Export("ServerPacket_values")
-	public static ServerPacket[] ServerPacket_values() {
-		return new ServerPacket[]{ServerPacket.field2102, ServerPacket.field2098, ServerPacket.field2099, ServerPacket.field2183, ServerPacket.field2101, ServerPacket.field2170, ServerPacket.field2100, ServerPacket.field2158, ServerPacket.field2105, ServerPacket.field2106, ServerPacket.field2107, ServerPacket.field2108, ServerPacket.field2161, ServerPacket.field2184, ServerPacket.field2178, ServerPacket.field2112, ServerPacket.field2137, ServerPacket.field2114, ServerPacket.field2104, ServerPacket.field2116, ServerPacket.field2115, ServerPacket.field2134, ServerPacket.field2119, ServerPacket.field2120, ServerPacket.field2121, ServerPacket.field2122, ServerPacket.field2123, ServerPacket.field2124, ServerPacket.field2159, ServerPacket.field2126, ServerPacket.field2136, ServerPacket.field2128, ServerPacket.field2163, ServerPacket.field2117, ServerPacket.field2131, ServerPacket.field2130, ServerPacket.field2133, ServerPacket.field2129, ServerPacket.field2135, ServerPacket.field2148, ServerPacket.field2175, ServerPacket.field2138, ServerPacket.field2139, ServerPacket.field2140, ServerPacket.field2141, ServerPacket.field2142, ServerPacket.field2143, ServerPacket.field2144, ServerPacket.field2145, ServerPacket.field2146, ServerPacket.field2147, ServerPacket.field2125, ServerPacket.field2149, ServerPacket.field2150, ServerPacket.field2151, ServerPacket.field2152, ServerPacket.field2162, ServerPacket.field2097, ServerPacket.field2155, ServerPacket.field2156, ServerPacket.field2118, ServerPacket.field2132, ServerPacket.field2110, ServerPacket.field2160, ServerPacket.field2103, ServerPacket.field2127, ServerPacket.field2154, ServerPacket.field2164, ServerPacket.field2165, ServerPacket.field2179, ServerPacket.field2167, ServerPacket.field2168, ServerPacket.field2169, ServerPacket.field2166, ServerPacket.field2171, ServerPacket.field2172, ServerPacket.field2173, ServerPacket.field2174, ServerPacket.field2153, ServerPacket.field2176, ServerPacket.field2177, ServerPacket.field2113, ServerPacket.field2157, ServerPacket.field2180, ServerPacket.field2181, ServerPacket.field2182};
+	@Export("isValidURL")
+	static boolean isValidURL(String var0) {
+		if (var0 == null) {
+			return false;
+		} else {
+			try {
+				new URL(var0);
+				return true;
+			} catch (MalformedURLException var2) {
+				return false;
+			}
+		}
 	}
 
-	@ObfuscatedName("fu")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "-5"
+		signature = "(I)V",
+		garbageValue = "1986117019"
 	)
-	@Export("playSoundJingle")
-	static void playSoundJingle(int var0, int var1) {
-		if (Client.field856 != 0 && var0 != -1) {
-			PacketBufferNode.method3574(WorldMapRectangle.archive11, var0, 0, Client.field856, false);
-			Client.field858 = true;
-		}
-
+	public static void method1139() {
+		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
 	}
 
-	@ObfuscatedName("jq")
+	@ObfuscatedName("fl")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIB)V",
-		garbageValue = "-63"
+		signature = "(I)V",
+		garbageValue = "-1208312235"
 	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (Projectile.loadInterface(var0)) {
-			Occluder.updateInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
-		}
+	static void method1145() {
+		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2270, Client.packetWriter.isaacCipher);
+		var0.packetBuffer.writeByte(class43.getWindowedMode());
+		var0.packetBuffer.writeShort(GraphicsDefaults.canvasWidth);
+		var0.packetBuffer.writeShort(GameShell.canvasHeight);
+		Client.packetWriter.addNode(var0);
 	}
 }

@@ -1,25 +1,15 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("ex")
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
-	@ObfuscatedName("fo")
-	@ObfuscatedSignature(
-		signature = "Lkr;"
-	)
-	@Export("WorldMapElement_fonts")
-	static Fonts WorldMapElement_fonts;
-	@ObfuscatedName("hk")
-	@ObfuscatedGetter(
-		intValue = -246677649
-	)
-	@Export("cameraZ")
-	static int cameraZ;
-	@ObfuscatedName("s")
+	@ObfuscatedName("z")
+	@Export("Tiles_hue")
+	static int[] Tiles_hue;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -27,10 +17,10 @@ public class UserComparator7 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljt;Ljt;I)I",
-		garbageValue = "-601545219"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "955067035"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -47,41 +37,51 @@ public class UserComparator7 extends AbstractUserComparator {
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "2"
+		signature = "(III)I",
+		garbageValue = "1115745838"
 	)
-	@Export("SpriteBuffer_clear")
-	public static void SpriteBuffer_clear() {
-		class325.SpriteBuffer_xOffsets = null;
-		class325.SpriteBuffer_yOffsets = null;
-		class325.SpriteBuffer_spriteWidths = null;
-		class225.SpriteBuffer_spriteHeights = null;
-		class325.SpriteBuffer_spritePalette = null;
-		WorldMapSection1.SpriteBuffer_pixels = null;
-	}
+	static int method3382(int var0, int var1) {
+		if (var0 == -2) {
+			return 12345678;
+		} else if (var0 == -1) {
+			if (var1 < 0) {
+				var1 = 0;
+			} else if (var1 > 127) {
+				var1 = 127;
+			}
 
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "0"
-	)
-	@Export("openWorldSelect")
-	static void openWorldSelect() {
-		if (class173.loadWorlds()) {
-			Login.worldSelectOpen = true;
-			Login.worldSelectPage = 0;
-			Login.worldSelectPagesCount = 0;
+			var1 = 127 - var1;
+			return var1;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
+
+			return (var0 & 65408) + var1;
 		}
-
 	}
 
-	@ObfuscatedName("fr")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1359476152"
+		signature = "(II)Ljava/lang/String;",
+		garbageValue = "2041476927"
 	)
-	@Export("getWindowedMode")
-	static int getWindowedMode() {
-		return Client.isResizable ? 2 : 1;
+	@Export("colorStartTag")
+	static String colorStartTag(int var0) {
+		return "<col=" + Integer.toHexString(var0) + ">";
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(Lhz;Ljava/lang/String;Ljava/lang/String;IZB)V",
+		garbageValue = "-11"
+	)
+	public static void method3376(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
+		int var5 = var0.getGroupId(var1);
+		int var6 = var0.getFileId(var5, var2);
+		class49.method826(var0, var5, var6, var3, var4);
 	}
 }

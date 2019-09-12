@@ -3,192 +3,170 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("e")
+@ObfuscatedName("q")
 @Implements("WorldMapLabelSize")
 public class WorldMapLabelSize {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Le;"
+		signature = "Lq;"
 	)
 	@Export("WorldMapLabelSize_small")
 	public static final WorldMapLabelSize WorldMapLabelSize_small;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Le;"
+		signature = "Lq;"
 	)
 	@Export("WorldMapLabelSize_medium")
 	public static final WorldMapLabelSize WorldMapLabelSize_medium;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Le;"
+		signature = "Lq;"
 	)
 	@Export("WorldMapLabelSize_large")
 	public static final WorldMapLabelSize WorldMapLabelSize_large;
-	@ObfuscatedName("k")
-	@ObfuscatedGetter(
-		intValue = 658824929
+	@ObfuscatedName("gy")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
 	)
-	final int field108;
+	@Export("mapMarkerSprites")
+	static Sprite[] mapMarkerSprites;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = -776092595
+	)
+	final int field113;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 1063281473
+	)
+	final int field114;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -84893291
+		intValue = 1099337759
 	)
-	final int field105;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = 1954115307
-	)
-	final int field110;
+	final int field116;
 
 	static {
 		WorldMapLabelSize_small = new WorldMapLabelSize(1, 0, 4);
-		WorldMapLabelSize_medium = new WorldMapLabelSize(0, 1, 2);
-		WorldMapLabelSize_large = new WorldMapLabelSize(2, 2, 0);
+		WorldMapLabelSize_medium = new WorldMapLabelSize(2, 1, 2);
+		WorldMapLabelSize_large = new WorldMapLabelSize(0, 2, 0);
 	}
 
 	WorldMapLabelSize(int var1, int var2, int var3) {
-		this.field108 = var1;
-		this.field105 = var2;
-		this.field110 = var3;
+		this.field113 = var1;
+		this.field114 = var2;
+		this.field116 = var3;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(FB)Z",
+		garbageValue = "104"
+	)
+	boolean method167(float var1) {
+		return var1 >= (float)this.field116;
 	}
 
 	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(FI)Z",
-		garbageValue = "-1981348285"
+		signature = "(ILcu;ZI)I",
+		garbageValue = "966574081"
 	)
-	boolean method185(float var1) {
-		return var1 >= (float)this.field110;
-	}
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(I)[Le;",
-		garbageValue = "-1460468047"
-	)
-	static WorldMapLabelSize[] method190() {
-		return new WorldMapLabelSize[]{WorldMapLabelSize_small, WorldMapLabelSize_large, WorldMapLabelSize_medium};
-	}
-
-	@ObfuscatedName("n")
-	static boolean method186(long var0) {
-		return (int)(var0 >>> 16 & 1L) == 1;
-	}
-
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "(Lkx;II)Z",
-		garbageValue = "751514225"
-	)
-	@Export("updateExternalPlayer")
-	static boolean updateExternalPlayer(PacketBuffer var0, int var1) {
-		int var2 = var0.readBits(2);
-		int var3;
-		int var4;
-		int var7;
-		int var8;
-		int var9;
-		int var10;
-		if (var2 == 0) {
-			if (var0.readBits(1) != 0) {
-				updateExternalPlayer(var0, var1);
-			}
-
-			var3 = var0.readBits(13);
-			var4 = var0.readBits(13);
-			boolean var12 = var0.readBits(1) == 1;
-			if (var12) {
-				Players.Players_pendingUpdateIndices[++Players.Players_pendingUpdateCount - 1] = var1;
-			}
-
-			if (Client.players[var1] != null) {
-				throw new RuntimeException();
-			} else {
-				Player var6 = Client.players[var1] = new Player();
-				var6.index = var1;
-				if (Players.field1219[var1] != null) {
-					var6.read(Players.field1219[var1]);
-				}
-
-				var6.orientation = Players.Players_orientations[var1];
-				var6.targetIndex = Players.Players_targetIndices[var1];
-				var7 = Players.Players_regions[var1];
-				var8 = var7 >> 28;
-				var9 = var7 >> 14 & 255;
-				var10 = var7 & 255;
-				var6.pathTraversed[0] = Players.field1230[var1];
-				var6.plane = (byte)var8;
-				var6.resetPath((var9 << 13) + var3 - PacketWriter.baseX * 64, (var10 << 13) + var4 - RouteStrategy.baseY * 64);
-				var6.field614 = false;
-				return true;
-			}
-		} else if (var2 == 1) {
-			var3 = var0.readBits(2);
-			var4 = Players.Players_regions[var1];
-			Players.Players_regions[var1] = (var4 & 268435455) + (((var4 >> 28) + var3 & 3) << 28);
-			return false;
+	static int method166(int var0, Script var1, boolean var2) {
+		Widget var3;
+		if (var0 >= 2000) {
+			var0 -= 1000;
+			var3 = Player.getWidget(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
 		} else {
-			int var5;
-			int var11;
-			if (var2 == 2) {
-				var3 = var0.readBits(5);
-				var4 = var3 >> 3;
-				var5 = var3 & 7;
-				var11 = Players.Players_regions[var1];
-				var7 = (var11 >> 28) + var4 & 3;
-				var8 = var11 >> 14 & 255;
-				var9 = var11 & 255;
-				if (var5 == 0) {
-					--var8;
-					--var9;
-				}
-
-				if (var5 == 1) {
-					--var9;
-				}
-
-				if (var5 == 2) {
-					++var8;
-					--var9;
-				}
-
-				if (var5 == 3) {
-					--var8;
-				}
-
-				if (var5 == 4) {
-					++var8;
-				}
-
-				if (var5 == 5) {
-					--var8;
-					++var9;
-				}
-
-				if (var5 == 6) {
-					++var9;
-				}
-
-				if (var5 == 7) {
-					++var8;
-					++var9;
-				}
-
-				Players.Players_regions[var1] = (var8 << 14) + var9 + (var7 << 28);
-				return false;
-			} else {
-				var3 = var0.readBits(18);
-				var4 = var3 >> 16;
-				var5 = var3 >> 8 & 255;
-				var11 = var3 & 255;
-				var7 = Players.Players_regions[var1];
-				var8 = (var7 >> 28) + var4 & 3;
-				var9 = var5 + (var7 >> 14) & 255;
-				var10 = var7 + var11 & 255;
-				Players.Players_regions[var1] = (var9 << 14) + var10 + (var8 << 28);
-				return false;
-			}
+			var3 = var2 ? UserComparator9.field1941 : MidiPcmStream.field2410;
 		}
+
+		WorldMapID.invalidateWidget(var3);
+		if (var0 != ScriptOpcodes.CC_SETOBJECT && var0 != ScriptOpcodes.CC_SETOBJECT_NONUM && var0 != ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
+			if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
+				var3.modelType = 2;
+				var3.modelId = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
+				var3.modelType = 3;
+				var3.modelId = Varps.localPlayer.appearance.getChatHeadId();
+				return 1;
+			} else {
+				return 2;
+			}
+		} else {
+			class160.Interpreter_intStackSize -= 2;
+			int var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
+			int var5 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
+			var3.itemId = var4;
+			var3.itemQuantity = var5;
+			ItemDefinition var6 = Player.ItemDefinition_get(var4);
+			var3.modelAngleX = var6.xan2d;
+			var3.modelAngleY = var6.yan2d;
+			var3.modelAngleZ = var6.zan2d;
+			var3.modelOffsetX = var6.offsetX2d;
+			var3.modelOffsetY = var6.offsetY2d;
+			var3.modelZoom = var6.zoom2d;
+			if (var0 == ScriptOpcodes.CC_SETOBJECT_NONUM) {
+				var3.itemQuantityMode = 0;
+			} else if (var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM | 1 == var6.isStackable) {
+				var3.itemQuantityMode = 1;
+			} else {
+				var3.itemQuantityMode = 2;
+			}
+
+			if (var3.field2582 > 0) {
+				var3.modelZoom = var3.modelZoom * 32 / var3.field2582;
+			} else if (var3.rawWidth > 0) {
+				var3.modelZoom = var3.modelZoom * 32 / var3.rawWidth;
+			}
+
+			return 1;
+		}
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;B)V",
+		garbageValue = "-55"
+	)
+	static final void method172(String var0) {
+		PacketBufferNode var1 = MenuAction.getPacketBufferNode(ClientPacket.field2190, Client.packetWriter.isaacCipher);
+		var1.packetBuffer.writeByte(Varcs.stringCp1252NullTerminatedByteSize(var0));
+		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
+		Client.packetWriter.addNode(var1);
+	}
+
+	@ObfuscatedName("hp")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "408332868"
+	)
+	static final void method173() {
+		int var0 = FileSystem.menuX;
+		int var1 = class83.menuY;
+		int var2 = class173.menuWidth;
+		int var3 = FaceNormal.menuHeight;
+		int var4 = 6116423;
+		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, var4);
+		Rasterizer2D.Rasterizer2D_fillRectangle(var0 + 1, var1 + 1, var2 - 2, 16, 0);
+		Rasterizer2D.Rasterizer2D_drawRectangle(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
+		HealthBar.fontBold12.draw("Choose Option", var0 + 3, var1 + 14, var4, -1);
+		int var5 = MouseHandler.MouseHandler_x;
+		int var6 = MouseHandler.MouseHandler_y;
+
+		for (int var7 = 0; var7 < Client.menuOptionsCount; ++var7) {
+			int var8 = var1 + (Client.menuOptionsCount - 1 - var7) * 15 + 31;
+			int var9 = 16777215;
+			if (var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
+				var9 = 16776960;
+			}
+
+			HealthBar.fontBold12.draw(class188.method3620(var7), var0 + 3, var8, var9, 0);
+		}
+
+		WorldMapElement.method4392(FileSystem.menuX, class83.menuY, class173.menuWidth, FaceNormal.menuHeight);
 	}
 }

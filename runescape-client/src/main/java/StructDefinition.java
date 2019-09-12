@@ -3,24 +3,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("iv")
 @Implements("StructDefinition")
 public class StructDefinition extends DualNode {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("StructDefinition_archive")
-	public static AbstractArchive StructDefinition_archive;
-	@ObfuscatedName("j")
+	static AbstractArchive StructDefinition_archive;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("StructDefinition_cached")
 	public static EvictingDualNodeHashTable StructDefinition_cached;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lln;"
+		signature = "Llj;"
 	)
 	@Export("params")
 	IterableNodeHashTable params;
@@ -32,19 +32,19 @@ public class StructDefinition extends DualNode {
 	StructDefinition() {
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "658327081"
+		signature = "(B)V",
+		garbageValue = "115"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)V",
-		garbageValue = "1747756287"
+		signature = "(Lkz;I)V",
+		garbageValue = "583710412"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -58,15 +58,15 @@ public class StructDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(Lky;II)V",
-		garbageValue = "120190923"
+		signature = "(Lkz;II)V",
+		garbageValue = "-636119543"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 249) {
-			this.params = DynamicObject.readStringIntParameters(var1, this.params);
+			this.params = FloorOverlayDefinition.readStringIntParameters(var1, this.params);
 		}
 
 	}
@@ -74,134 +74,81 @@ public class StructDefinition extends DualNode {
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(III)I",
-		garbageValue = "1830789518"
+		garbageValue = "-2063775576"
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
+		return class65.method1177(this.params, var1, var2);
+	}
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "(ILjava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "915337596"
+	)
+	@Export("getStringParam")
+	public String getStringParam(int var1, String var2) {
 		IterableNodeHashTable var4 = this.params;
-		int var3;
+		String var3;
 		if (var4 == null) {
 			var3 = var2;
 		} else {
-			IntegerNode var5 = (IntegerNode)var4.get((long)var1);
+			ObjectNode var5 = (ObjectNode)var4.get((long)var1);
 			if (var5 == null) {
 				var3 = var2;
 			} else {
-				var3 = var5.integer;
+				var3 = (String)var5.obj;
 			}
 		}
 
 		return var3;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("jm")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "50"
+		signature = "(Lbw;ZI)V",
+		garbageValue = "1941630609"
 	)
-	@Export("getStringParam")
-	public String getStringParam(int var1, String var2) {
-		return class227.method4041(this.params, var1, var2);
-	}
+	@Export("closeInterface")
+	static final void closeInterface(InterfaceParent var0, boolean var1) {
+		int var2 = var0.group;
+		int var3 = (int)var0.key;
+		var0.remove();
+		if (var1) {
+			TileItemPile.method2728(var2);
+		}
 
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(II)Lio;",
-		garbageValue = "-431406721"
-	)
-	@Export("HitSplatDefinition_get")
-	public static HitSplatDefinition HitSplatDefinition_get(int var0) {
-		HitSplatDefinition var1 = (HitSplatDefinition)HitSplatDefinition.HitSplatDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
-			var1 = new HitSplatDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+		WorldMapSectionType.method224(var2);
+		Widget var4 = Player.getWidget(var3);
+		if (var4 != null) {
+			WorldMapID.invalidateWidget(var4);
+		}
+
+		for (int var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
+			int var7 = Client.menuOpcodes[var5];
+			boolean var6 = var7 == 57 || var7 == 58 || var7 == 1007 || var7 == 25 || var7 == 30;
+			if (var6) {
+				if (var5 < Client.menuOptionsCount - 1) {
+					for (int var8 = var5; var8 < Client.menuOptionsCount - 1; ++var8) {
+						Client.menuActions[var8] = Client.menuActions[var8 + 1];
+						Client.menuTargets[var8] = Client.menuTargets[var8 + 1];
+						Client.menuOpcodes[var8] = Client.menuOpcodes[var8 + 1];
+						Client.menuIdentifiers[var8] = Client.menuIdentifiers[var8 + 1];
+						Client.menuArguments1[var8] = Client.menuArguments1[var8 + 1];
+						Client.menuArguments2[var8] = Client.menuArguments2[var8 + 1];
+						Client.menuShiftClick[var8] = Client.menuShiftClick[var8 + 1];
+					}
+				}
+
+				--var5;
+				--Client.menuOptionsCount;
 			}
-
-			HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
-	}
 
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(CI)C",
-		garbageValue = "-2066919022"
-	)
-	static char method4449(char var0) {
-		switch(var0) {
-		case ' ':
-		case '-':
-		case '_':
-		case ' ':
-			return '_';
-		case '#':
-		case '[':
-		case ']':
-			return var0;
-		case 'À':
-		case 'Á':
-		case 'Â':
-		case 'Ã':
-		case 'Ä':
-		case 'à':
-		case 'á':
-		case 'â':
-		case 'ã':
-		case 'ä':
-			return 'a';
-		case 'Ç':
-		case 'ç':
-			return 'c';
-		case 'È':
-		case 'É':
-		case 'Ê':
-		case 'Ë':
-		case 'è':
-		case 'é':
-		case 'ê':
-		case 'ë':
-			return 'e';
-		case 'Í':
-		case 'Î':
-		case 'Ï':
-		case 'í':
-		case 'î':
-		case 'ï':
-			return 'i';
-		case 'Ñ':
-		case 'ñ':
-			return 'n';
-		case 'Ò':
-		case 'Ó':
-		case 'Ô':
-		case 'Õ':
-		case 'Ö':
-		case 'ò':
-		case 'ó':
-		case 'ô':
-		case 'õ':
-		case 'ö':
-			return 'o';
-		case 'Ù':
-		case 'Ú':
-		case 'Û':
-		case 'Ü':
-		case 'ù':
-		case 'ú':
-		case 'û':
-		case 'ü':
-			return 'u';
-		case 'ß':
-			return 'b';
-		case 'ÿ':
-		case 'Ÿ':
-			return 'y';
-		default:
-			return Character.toLowerCase(var0);
+		WorldMapRegion.calculateMenuBounds();
+		if (Client.rootInterface != -1) {
+			WorldMapRectangle.runIntfCloseListeners(Client.rootInterface, 1);
 		}
+
 	}
 }

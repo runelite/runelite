@@ -166,6 +166,8 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vy = triangle.getB();
 			Vertex vz = triangle.getC();
 
+			System.err.println("vx: " + vx.getX() + " localX: " + localX);
+
 			Point x = Perspective.localToCanvas(client,
 					localX - vx.getX(),
 					localY - vx.getZ(),

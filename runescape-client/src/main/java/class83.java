@@ -1,106 +1,76 @@
-import java.io.IOException;
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cr")
 public class class83 {
-	@ObfuscatedName("s")
-	static final BigInteger field1138;
-	@ObfuscatedName("j")
-	static final BigInteger field1137;
 	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Llq;"
+	static final BigInteger field1142;
+	@ObfuscatedName("x")
+	static final BigInteger field1139;
+	@ObfuscatedName("kc")
+	@ObfuscatedGetter(
+		intValue = 2081723437
 	)
-	static IndexedSprite field1136;
+	@Export("menuY")
+	static int menuY;
+	@ObfuscatedName("lk")
+	@ObfuscatedGetter(
+		intValue = 670190247
+	)
+	static int field1138;
 
 	static {
-		field1138 = new BigInteger("10001", 16);
-		field1137 = new BigInteger("83ff79a3e258b99ead1a70e1049883e78e513c4cdec538d8da9483879a9f81689c0c7d146d7b82b52d05cf26132b1cda5930eeef894e4ccf3d41eebc3aabe54598c4ca48eb5a31d736bfeea17875a35558b9e3fcd4aebe2a9cc970312a477771b36e173dc2ece6001ab895c553e2770de40073ea278026f36961c94428d8d7db", 16);
+		field1142 = new BigInteger("10001", 16);
+		field1139 = new BigInteger("f8a2c48a898ebf7a2a5069193f0c6798757879d298af09a6fa94e569d45b09f67aeef8e6bb8a61650d597c743104fdef7d07b24af92df6be995877e9a7dd6a630d3e62c14e70427b959ff70735f96135d73434e73aabbd6aa8cf0b97dae7e2b6b70e646ff550b0ad8a4d8d18675714e5228b026d85e8f2f24607ba69d7404571", 16);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lkg;ZI)V",
-		garbageValue = "-1903041730"
+		signature = "(II)Liw;",
+		garbageValue = "-2100671163"
 	)
-	@Export("NetCache_connect")
-	public static void NetCache_connect(AbstractSocket var0, boolean var1) {
-		if (NetCache.NetCache_socket != null) {
-			try {
-				NetCache.NetCache_socket.close();
-			} catch (Exception var6) {
+	@Export("SequenceDefinition_get")
+	public static SequenceDefinition SequenceDefinition_get(int var0) {
+		SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
+			var1 = new SequenceDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			NetCache.NetCache_socket = null;
+			var1.postDecode();
+			SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
 
-		NetCache.NetCache_socket = var0;
-		NPC.method1977(var1);
-		NetCache.NetCache_responseHeaderBuffer.offset = 0;
-		NetCache.NetCache_currentResponse = null;
-		NetCache.NetCache_responseArchiveBuffer = null;
-		NetCache.field3156 = 0;
-
-		while (true) {
-			NetFileRequest var2 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
-			if (var2 == null) {
-				while (true) {
-					var2 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-					if (var2 == null) {
-						if (NetCache.field3159 != 0) {
-							try {
-								Buffer var7 = new Buffer(4);
-								var7.writeByte(4);
-								var7.writeByte(NetCache.field3159);
-								var7.writeShort(0);
-								NetCache.NetCache_socket.write(var7.array, 0, 4);
-							} catch (IOException var5) {
-								try {
-									NetCache.NetCache_socket.close();
-								} catch (Exception var4) {
-								}
-
-								++NetCache.NetCache_ioExceptions;
-								NetCache.NetCache_socket = null;
-							}
-						}
-
-						NetCache.NetCache_loadTime = 0;
-						NetCache.field3145 = SequenceDefinition.method4686();
-						return;
-					}
-
-					NetCache.NetCache_pendingWritesQueue.addLast(var2);
-					NetCache.NetCache_pendingWrites.put(var2, var2.key);
-					++NetCache.NetCache_pendingWritesCount;
-					--NetCache.NetCache_pendingResponsesCount;
+	@ObfuscatedName("jh")
+	@ObfuscatedSignature(
+		signature = "(Lhy;III)V",
+		garbageValue = "858308141"
+	)
+	@Export("clickWidget")
+	static final void clickWidget(Widget var0, int var1, int var2) {
+		if (Client.clickedWidget == null && !Client.isMenuOpen) {
+			if (var0 != null && WorldMapLabel.method382(var0) != null) {
+				Client.clickedWidget = var0;
+				Client.clickedWidgetParent = WorldMapLabel.method382(var0);
+				Client.widgetClickX = var1;
+				Client.widgetClickY = var2;
+				ArchiveLoader.widgetDragDuration = 0;
+				Client.isDraggingWidget = false;
+				int var3 = WorldMapCacheName.getNewestMenuIdx();
+				if (var3 != -1) {
+					UserComparator3.method3399(var3);
 				}
+
 			}
-
-			NetCache.NetCache_pendingPriorityWrites.put(var2, var2.key);
-			++NetCache.NetCache_pendingPriorityWritesCount;
-			--NetCache.NetCache_pendingPriorityResponsesCount;
 		}
-	}
-
-	@ObfuscatedName("fd")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1982108989"
-	)
-	static final void method1997(int var0) {
-		class65.method1182();
-		switch(var0) {
-		case 1:
-			PendingSpawn.method1661();
-			break;
-		case 2:
-			Login.loginIndex = 24;
-			GrandExchangeOfferOwnWorldComparator.setLoginResponseString("The game servers are currently being updated.", "Please wait a few minutes and try again.", "");
-		}
-
 	}
 }

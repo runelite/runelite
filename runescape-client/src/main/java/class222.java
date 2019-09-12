@@ -1,22 +1,31 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hm")
+@ObfuscatedName("hk")
 public class class222 {
-	@ObfuscatedName("jg")
-	@ObfuscatedSignature(
-		signature = "Lhp;"
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = 1751013611
 	)
-	static Widget field2730;
+	static int field2726;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = -1104641647
+	)
+	static int field2724;
+	@ObfuscatedName("au")
+	@ObfuscatedGetter(
+		intValue = -653819607
+	)
+	static int field2729;
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(ZZI)I",
-		garbageValue = "49519186"
+		signature = "(II)Z",
+		garbageValue = "-617072385"
 	)
-	public static int method4035(boolean var0, boolean var1) {
-		byte var2 = 0;
-		int var3 = var2 + NetCache.NetCache_pendingPriorityWritesCount + NetCache.NetCache_pendingPriorityResponsesCount;
-		return var3;
+	public static boolean method4101(int var0) {
+		return (var0 >> 20 & 1) != 0;
 	}
 }

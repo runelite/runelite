@@ -4,44 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
+@ObfuscatedName("hj")
 @Implements("Coord")
 public class Coord {
-	@ObfuscatedName("m")
-	@Export("BZip2Decompressor_block")
-	static int[] BZip2Decompressor_block;
-	@ObfuscatedName("dc")
-	@ObfuscatedGetter(
-		longValue = 8705560174832439427L
+	@ObfuscatedName("aw")
+	@Export("client")
+	@ObfuscatedSignature(
+		signature = "Lclient;"
 	)
-	static long field2511;
-	@ObfuscatedName("hp")
+	static Client client;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -312378443
-	)
-	@Export("cameraY")
-	static int cameraY;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = -22513413
+		intValue = -275324431
 	)
 	@Export("plane")
 	public int plane;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -611305657
-	)
-	@Export("x")
-	public int x;
-	@ObfuscatedName("i")
-	@ObfuscatedGetter(
-		intValue = -2088749017
+		intValue = 1946522259
 	)
 	@Export("y")
 	public int y;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = 212884917
+	)
+	@Export("x")
+	public int x;
 
 	@ObfuscatedSignature(
-		signature = "(Lhd;)V"
+		signature = "(Lhj;)V"
 	)
 	public Coord(Coord var1) {
 		this.plane = var1.plane;
@@ -66,20 +58,20 @@ public class Coord {
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "2"
+		garbageValue = "94"
 	)
 	@Export("packed")
 	public int packed() {
 		return this.plane << 28 | this.x << 14 | this.y;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lhd;B)Z",
-		garbageValue = "-61"
+		signature = "(Lhj;I)Z",
+		garbageValue = "49953005"
 	)
 	@Export("equalsCoord")
 	boolean equalsCoord(Coord var1) {
@@ -92,18 +84,14 @@ public class Coord {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-1334181457"
+		garbageValue = "-2113109490"
 	)
 	@Export("toString")
 	String toString(String var1) {
 		return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
-	}
-
-	public String toString() {
-		return this.toString(",");
 	}
 
 	public boolean equals(Object var1) {
@@ -118,11 +106,28 @@ public class Coord {
 		return this.packed();
 	}
 
-	public String abd() {
+	public String aai() {
 		return this.toString(",");
 	}
 
-	public String abb() {
+	public String aar() {
 		return this.toString(",");
+	}
+
+	public String aan() {
+		return this.toString(",");
+	}
+
+	public String toString() {
+		return this.toString(",");
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(B)[Lcl;",
+		garbageValue = "69"
+	)
+	static AttackOption[] method3981() {
+		return new AttackOption[]{AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_hidden, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
 	}
 }

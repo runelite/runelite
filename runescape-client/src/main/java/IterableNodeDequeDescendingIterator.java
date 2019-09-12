@@ -4,38 +4,38 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("jh")
 @Implements("IterableNodeDequeDescendingIterator")
 public class IterableNodeDequeDescendingIterator implements Iterator {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Ljp;"
+		signature = "Ljd;"
 	)
 	@Export("deque")
 	IterableNodeDeque deque;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lfb;"
+		signature = "Lfn;"
 	)
-	Node field3521;
-	@ObfuscatedName("i")
+	Node field3516;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lfb;"
+		signature = "Lfn;"
 	)
 	@Export("last")
 	Node last;
 
 	@ObfuscatedSignature(
-		signature = "(Ljp;)V"
+		signature = "(Ljd;)V"
 	)
 	IterableNodeDequeDescendingIterator(IterableNodeDeque var1) {
 		this.last = null;
 		this.setDeque(var1);
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Ljp;)V"
+		signature = "(Ljd;)V"
 	)
 	@Export("setDeque")
 	void setDeque(IterableNodeDeque var1) {
@@ -43,36 +43,32 @@ public class IterableNodeDequeDescendingIterator implements Iterator {
 		this.start();
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("v")
 	@Export("start")
 	void start() {
-		this.field3521 = this.deque != null ? this.deque.sentinel.previous : null;
+		this.field3516 = this.deque != null ? this.deque.sentinel.previous : null;
 		this.last = null;
 	}
 
 	public boolean hasNext() {
-		return this.deque.sentinel != this.field3521;
-	}
-
-	public void remove() {
-		if (this.last == null) {
-			throw new IllegalStateException();
-		} else {
-			this.last.remove();
-			this.last = null;
-		}
+		return this.deque.sentinel != this.field3516;
 	}
 
 	public Object next() {
-		Node var1 = this.field3521;
+		Node var1 = this.field3516;
 		if (var1 == this.deque.sentinel) {
 			var1 = null;
-			this.field3521 = null;
+			this.field3516 = null;
 		} else {
-			this.field3521 = var1.previous;
+			this.field3516 = var1.previous;
 		}
 
 		this.last = var1;
 		return var1;
+	}
+
+	public void remove() {
+		this.last.remove();
+		this.last = null;
 	}
 }

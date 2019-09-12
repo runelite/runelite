@@ -1,159 +1,143 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("l")
 final class class4 implements class0 {
-	@ObfuscatedName("x")
-	static int[][] field31;
-	@ObfuscatedName("au")
-	@Export("null_string")
-	protected static String null_string;
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lky;I)V",
-		garbageValue = "254789492"
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -142539597
 	)
-	public void vmethod58(Object var1, Buffer var2) {
-		this.method57((String)var1, var2);
+	static int field20;
+	@ObfuscatedName("az")
+	@ObfuscatedGetter(
+		intValue = -587969877
+	)
+	static int field17;
+	@ObfuscatedName("bi")
+	@ObfuscatedSignature(
+		signature = "Lll;"
+	)
+	@Export("loginType")
+	static LoginType loginType;
+	@ObfuscatedName("fv")
+	@ObfuscatedGetter(
+		intValue = 583721997
+	)
+	@Export("baseX")
+	static int baseX;
+	@ObfuscatedName("jr")
+	@ObfuscatedSignature(
+		signature = "Lhy;"
+	)
+	@Export("dragInventoryWidget")
+	static Widget dragInventoryWidget;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Object;Lkz;B)V",
+		garbageValue = "1"
+	)
+	public void vmethod42(Object var1, Buffer var2) {
+		this.method44((String)var1, var2);
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)Ljava/lang/Object;",
-		garbageValue = "1267204541"
+		signature = "(Lkz;S)Ljava/lang/Object;",
+		garbageValue = "31810"
 	)
-	public Object vmethod70(Buffer var1) {
+	public Object vmethod41(Buffer var1) {
 		return var1.readStringCp1252NullTerminated();
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lky;I)V",
-		garbageValue = "779729893"
+		signature = "(Ljava/lang/String;Lkz;I)V",
+		garbageValue = "442520806"
 	)
-	void method57(String var1, Buffer var2) {
+	void method44(String var1, Buffer var2) {
 		var2.writeStringCp1252NullTerminated(var1);
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;IB)Ljava/io/File;",
-		garbageValue = "-122"
+		signature = "(Lhz;II)Lgc;",
+		garbageValue = "531775240"
 	)
-	@Export("getCacheDir")
-	public static File getCacheDir(String var0, String var1, int var2) {
-		String var3 = var2 == 0 ? "" : "" + var2;
-		class290.JagexCache_locationFile = new File(FontName.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
-		String var4 = null;
-		String var5 = null;
-		boolean var6 = false;
-		File var22;
-		if (class290.JagexCache_locationFile.exists()) {
-			try {
-				AccessFile var7 = new AccessFile(class290.JagexCache_locationFile, "rw", 10000L);
+	static MusicPatch method47(AbstractArchive var0, int var1) {
+		byte[] var2 = var0.takeFileFlat(var1);
+		return var2 == null ? null : new MusicPatch(var2);
+	}
 
-				Buffer var8;
-				int var9;
-				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
-					var9 = var7.read(var8.array, var8.offset, var8.array.length - var8.offset);
-					if (var9 == -1) {
-						throw new IOException();
-					}
+	@ObfuscatedName("gd")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "2058959697"
+	)
+	static final void method48(int var0) {
+		int[] var1 = class60.sceneMinimapSprite.pixels;
+		int var2 = var1.length;
+
+		int var3;
+		for (var3 = 0; var3 < var2; ++var3) {
+			var1[var3] = 0;
+		}
+
+		int var4;
+		int var5;
+		for (var3 = 1; var3 < 103; ++var3) {
+			var4 = (103 - var3) * 2048 + 24628;
+
+			for (var5 = 1; var5 < 103; ++var5) {
+				if ((Tiles.Tiles_renderFlags[var0][var5][var3] & 24) == 0) {
+					WorldMapIcon_1.scene.drawTileMinimap(var1, var4, 512, var0, var5, var3);
 				}
 
-				var8.offset = 0;
-				var9 = var8.readUnsignedByte();
-				if (var9 < 1 || var9 > 3) {
-					throw new IOException("" + var9);
+				if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var5][var3] & 8) != 0) {
+					WorldMapIcon_1.scene.drawTileMinimap(var1, var4, 512, var0 + 1, var5, var3);
 				}
 
-				int var10 = 0;
-				if (var9 > 1) {
-					var10 = var8.readUnsignedByte();
-				}
-
-				if (var9 <= 2) {
-					var4 = var8.readStringCp1252NullCircumfixed();
-					if (var10 == 1) {
-						var5 = var8.readStringCp1252NullCircumfixed();
-					}
-				} else {
-					var4 = var8.readCESU8();
-					if (var10 == 1) {
-						var5 = var8.readCESU8();
-					}
-				}
-
-				var7.close();
-			} catch (IOException var20) {
-				var20.printStackTrace();
+				var4 += 4;
 			}
+		}
 
-			if (var4 != null) {
-				var22 = new File(var4);
-				if (!var22.exists()) {
-					var4 = null;
+		var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+		var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+		class60.sceneMinimapSprite.setRaster();
+
+		int var6;
+		for (var5 = 1; var5 < 103; ++var5) {
+			for (var6 = 1; var6 < 103; ++var6) {
+				if ((Tiles.Tiles_renderFlags[var0][var6][var5] & 24) == 0) {
+					EnumDefinition.drawObject(var0, var6, var5, var3, var4);
 				}
-			}
 
-			if (var4 != null) {
-				var22 = new File(var4, "test.dat");
-				if (!GameShell.testReadWritePermissions(var22, true)) {
-					var4 = null;
+				if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var6][var5] & 8) != 0) {
+					EnumDefinition.drawObject(var0 + 1, var6, var5, var3, var4);
 				}
 			}
 		}
 
-		if (var4 == null && var2 == 0) {
-			label123:
-			for (int var15 = 0; var15 < Login.field1181.length; ++var15) {
-				for (int var16 = 0; var16 < GrandExchangeEvent.field47.length; ++var16) {
-					File var17 = new File(GrandExchangeEvent.field47[var16] + Login.field1181[var15] + File.separatorChar + var0 + File.separatorChar);
-					if (var17.exists() && GameShell.testReadWritePermissions(new File(var17, "test.dat"), true)) {
-						var4 = var17.toString();
-						var6 = true;
-						break label123;
+		Client.mapIconCount = 0;
+
+		for (var5 = 0; var5 < 104; ++var5) {
+			for (var6 = 0; var6 < 104; ++var6) {
+				long var7 = WorldMapIcon_1.scene.getFloorDecorationTag(MouseRecorder.plane, var5, var6);
+				if (var7 != 0L) {
+					int var9 = SecureRandomFuture.Entity_unpackID(var7);
+					int var10 = WallDecoration.getObjectDefinition(var9).mapIconId;
+					if (var10 >= 0) {
+						Client.mapIcons[Client.mapIconCount] = WorldMapSection1.WorldMapElement_get(var10).getSpriteBool(false);
+						Client.mapIconXs[Client.mapIconCount] = var5;
+						Client.mapIconYs[Client.mapIconCount] = var6;
+						++Client.mapIconCount;
 					}
 				}
 			}
 		}
 
-		if (var4 == null) {
-			var4 = FontName.userHomeDirectory + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-			var6 = true;
-		}
-
-		if (var5 != null) {
-			File var21 = new File(var5);
-			var22 = new File(var4);
-
-			try {
-				File[] var23 = var21.listFiles();
-				File[] var18 = var23;
-
-				for (int var11 = 0; var11 < var18.length; ++var11) {
-					File var12 = var18[var11];
-					File var13 = new File(var22, var12.getName());
-					boolean var14 = var12.renameTo(var13);
-					if (!var14) {
-						throw new IOException();
-					}
-				}
-			} catch (Exception var19) {
-				var19.printStackTrace();
-			}
-
-			var6 = true;
-		}
-
-		if (var6) {
-			MouseHandler.method1041(new File(var4), (File)null);
-		}
-
-		return new File(var4);
+		DevicePcmPlayerProvider.rasterProvider.apply();
 	}
 }

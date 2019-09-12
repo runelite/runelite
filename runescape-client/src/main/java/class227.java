@@ -2,44 +2,42 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("hn")
 public final class class227 {
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lln;ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "-102"
+		signature = "(I)[Llq;",
+		garbageValue = "1253106160"
 	)
-	static String method4041(IterableNodeHashTable var0, int var1, String var2) {
-		if (var0 == null) {
-			return var2;
-		} else {
-			ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-			return var3 == null ? var2 : (String)var3.obj;
-		}
+	@Export("FillMode_values")
+	public static FillMode[] FillMode_values() {
+		return new FillMode[]{FillMode.SOLID, FillMode.field3852, FillMode.field3855};
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(II)Lbi;",
-		garbageValue = "-93383433"
+		signature = "(II)Z",
+		garbageValue = "1135145838"
 	)
-	@Export("Messages_getMessage")
-	static Message Messages_getMessage(int var0) {
-		return (Message)Messages.Messages_hashTable.get((long)var0);
+	public static boolean method4110(int var0) {
+		return var0 >= WorldMapDecorationType.field2714.id && var0 <= WorldMapDecorationType.field2715.id;
 	}
 
-	@ObfuscatedName("kn")
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "1725811836"
+		signature = "(Ldg;I)V",
+		garbageValue = "574899"
 	)
-	@Export("Clan_joinChat")
-	static final void Clan_joinChat(String var0) {
-		if (!var0.equals("")) {
-			PacketBufferNode var1 = MenuAction.getPacketBufferNode(ClientPacket.field2263, Client.packetWriter.isaacCipher);
-			var1.packetBuffer.writeByte(Buddy.stringCp1252NullTerminatedByteSize(var0));
-			var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-			Client.packetWriter.addNode(var1);
+	@Export("PcmStream_disable")
+	static final void PcmStream_disable(PcmStream var0) {
+		var0.active = false;
+		if (var0.sound != null) {
+			var0.sound.position = 0;
 		}
+
+		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
+			PcmStream_disable(var1);
+		}
+
 	}
 }

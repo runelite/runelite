@@ -117,6 +117,8 @@ public interface Tile
 	 */
 	int getRenderLevel();
 
+	int getY();
+
 	/**
 	 * Computes and returns whether this tile has line of sight to another.
 	 *

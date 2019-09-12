@@ -4,48 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gj")
 @Implements("PacketBufferNode")
 public class PacketBufferNode extends Node {
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "[Lgq;"
+		signature = "[Lgj;"
 	)
 	@Export("PacketBufferNode_packetBufferNodes")
 	static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -999589245
+		intValue = 1509343701
 	)
 	@Export("PacketBufferNode_packetBufferNodeCount")
 	static int PacketBufferNode_packetBufferNodeCount;
-	@ObfuscatedName("d")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lda;"
-	)
-	@Export("soundSystem")
-	static SoundSystem soundSystem;
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "Lgv;"
+		signature = "Lgw;"
 	)
 	@Export("clientPacket")
-	ClientPacket clientPacket;
-	@ObfuscatedName("j")
+	public ClientPacket clientPacket;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 190922569
+		intValue = 1279904825
 	)
 	@Export("clientPacketLength")
-	int clientPacketLength;
-	@ObfuscatedName("i")
+	public int clientPacketLength;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Lkt;"
 	)
 	@Export("packetBuffer")
 	public PacketBuffer packetBuffer;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -2083817253
+		intValue = 1995143083
 	)
 	@Export("index")
 	public int index;
@@ -58,10 +52,10 @@ public class PacketBufferNode extends Node {
 	PacketBufferNode() {
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "0"
+		garbageValue = "1"
 	)
 	@Export("release")
 	public void release() {
@@ -70,18 +64,41 @@ public class PacketBufferNode extends Node {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(Lhz;IIIZI)V",
-		garbageValue = "-1570089808"
+		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "-1275149709"
 	)
-	public static void method3574(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
-		class197.field2378 = 1;
-		WorldMapDecoration.musicTrackArchive = var0;
-		class197.musicTrackGroupId = var1;
-		class197.musicTrackFileId = var2;
-		WorldMapSprite.field222 = var3;
-		Varcs.musicTrackBoolean = var4;
-		class16.field98 = 10000;
+	public static String method3616(String var0) {
+		int var1 = var0.length();
+		char[] var2 = new char[var1];
+		byte var3 = 2;
+
+		for (int var4 = 0; var4 < var1; ++var4) {
+			char var5 = var0.charAt(var4);
+			if (var3 == 0) {
+				var5 = Character.toLowerCase(var5);
+			} else if (var3 == 2 || Character.isUpperCase(var5)) {
+				var5 = WorldMapDecoration.method302(var5);
+			}
+
+			if (Character.isLetter(var5)) {
+				var3 = 0;
+			} else if (var5 != '.' && var5 != '?' && var5 != '!') {
+				if (Character.isSpaceChar(var5)) {
+					if (var3 != 2) {
+						var3 = 1;
+					}
+				} else {
+					var3 = 1;
+				}
+			} else {
+				var3 = 2;
+			}
+
+			var2[var4] = var5;
+		}
+
+		return new String(var2);
 	}
 }

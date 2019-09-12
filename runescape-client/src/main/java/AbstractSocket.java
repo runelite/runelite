@@ -4,67 +4,57 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kg")
+@ObfuscatedName("ks")
 @Implements("AbstractSocket")
 public abstract class AbstractSocket {
 	protected AbstractSocket() {
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1798752769"
+		signature = "(B)V",
+		garbageValue = "-75"
 	)
 	@Export("close")
 	public abstract void close();
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "547465689"
+		garbageValue = "1827163357"
 	)
 	@Export("readUnsignedByte")
 	public abstract int readUnsignedByte() throws IOException;
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "83"
+		signature = "(I)I",
+		garbageValue = "-1354053248"
 	)
 	@Export("available")
 	public abstract int available() throws IOException;
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "156087109"
+		garbageValue = "-377412375"
 	)
 	@Export("isAvailable")
 	public abstract boolean isAvailable(int var1) throws IOException;
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "([BIIB)I",
-		garbageValue = "100"
+		signature = "([BIII)I",
+		garbageValue = "2063129771"
 	)
 	@Export("read")
 	public abstract int read(byte[] var1, int var2, int var3) throws IOException;
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "638463675"
+		signature = "([BIIB)V",
+		garbageValue = "9"
 	)
 	@Export("write")
 	public abstract void write(byte[] var1, int var2, int var3) throws IOException;
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(I)[Lkk;",
-		garbageValue = "2143260840"
-	)
-	@Export("ChatMode_values")
-	static PrivateChatMode[] ChatMode_values() {
-		return new PrivateChatMode[]{PrivateChatMode.field3790, PrivateChatMode.field3788, PrivateChatMode.field3793};
-	}
 }

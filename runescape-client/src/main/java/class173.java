@@ -1,38 +1,50 @@
-import java.net.URL;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fu")
 public class class173 {
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("directions")
-	public static int[][] directions;
-	@ObfuscatedName("k")
+	static int[][] directions;
+	@ObfuscatedName("g")
 	@Export("distances")
-	public static int[][] distances;
+	static int[][] distances;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -2098626243
+	)
+	static int field2063;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1891183659
+		intValue = -300293519
 	)
-	public static int field2073;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = 783444493
-	)
-	public static int field2070;
-	@ObfuscatedName("q")
+	static int field2068;
+	@ObfuscatedName("v")
 	@Export("bufferX")
-	public static int[] bufferX;
-	@ObfuscatedName("x")
+	static int[] bufferX;
+	@ObfuscatedName("d")
 	@Export("bufferY")
-	public static int[] bufferY;
-	@ObfuscatedName("ah")
-	@ObfuscatedGetter(
-		intValue = -1559987227
+	static int[] bufferY;
+	@ObfuscatedName("dl")
+	@ObfuscatedSignature(
+		signature = "Lio;"
 	)
-	static int field2079;
+	@Export("archive2")
+	static Archive archive2;
+	@ObfuscatedName("ed")
+	@ObfuscatedGetter(
+		intValue = -1734851163
+	)
+	static int field2069;
+	@ObfuscatedName("ke")
+	@ObfuscatedGetter(
+		intValue = -1496378761
+	)
+	@Export("menuWidth")
+	static int menuWidth;
 
 	static {
 		directions = new int[128][128];
@@ -41,56 +53,48 @@ public class class173 {
 		bufferY = new int[4096];
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-146894719"
+		signature = "(ZI)V",
+		garbageValue = "-1761278066"
 	)
-	@Export("loadWorlds")
-	static boolean loadWorlds() {
-		try {
-			if (IgnoreList.World_request == null) {
-				IgnoreList.World_request = ScriptEvent.urlRequester.request(new URL(class1.field6));
-			} else if (IgnoreList.World_request.isDone()) {
-				byte[] var0 = IgnoreList.World_request.getResponse();
-				Buffer var1 = new Buffer(var0);
-				var1.readInt();
-				World.World_count = var1.readUnsignedShort();
-				ChatChannel.World_worlds = new World[World.World_count];
-
-				World var3;
-				for (int var2 = 0; var2 < World.World_count; var3.index = var2++) {
-					var3 = ChatChannel.World_worlds[var2] = new World();
-					var3.id = var1.readUnsignedShort();
-					var3.properties = var1.readInt();
-					var3.host = var1.readStringCp1252NullTerminated();
-					var3.activity = var1.readStringCp1252NullTerminated();
-					var3.location = var1.readUnsignedByte();
-					var3.population = var1.readShort();
+	public static void method3575(boolean var0) {
+		if (NetCache.NetCache_socket != null) {
+			try {
+				Buffer var1 = new Buffer(4);
+				var1.writeByte(var0 ? 2 : 3);
+				var1.writeMedium(0);
+				NetCache.NetCache_socket.write(var1.array, 0, 4);
+			} catch (IOException var4) {
+				try {
+					NetCache.NetCache_socket.close();
+				} catch (Exception var3) {
 				}
 
-				Tile.sortWorlds(ChatChannel.World_worlds, 0, ChatChannel.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
-				IgnoreList.World_request = null;
-				return true;
+				++NetCache.NetCache_ioExceptions;
+				NetCache.NetCache_socket = null;
 			}
-		} catch (Exception var4) {
-			var4.printStackTrace();
-			IgnoreList.World_request = null;
-		}
 
-		return false;
+		}
 	}
 
-	@ObfuscatedName("kw")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lhp;I)Ljava/lang/String;",
-		garbageValue = "1595503156"
+		signature = "(II)Lev;",
+		garbageValue = "-691724991"
 	)
-	static String method3529(Widget var0) {
-		if (WorldMapRegion.method530(ParamDefinition.getWidgetClickMask(var0)) == 0) {
-			return null;
+	@Export("getFrames")
+	static Frames getFrames(int var0) {
+		Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
+			var1 = class51.method852(SequenceDefinition.SequenceDefinition_animationsArchive, SequenceDefinition.SequenceDefinition_skeletonsArchive, var0, false);
+			if (var1 != null) {
+				SequenceDefinition.SequenceDefinition_cachedFrames.put(var1, (long)var0);
+			}
+
+			return var1;
 		}
 	}
 }
