@@ -137,6 +137,18 @@ public interface TheatreConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		position = 8,
+		keyName = "nylocasMenuSwap",
+		name = "Hide Nylocas wrong attack options",
+		description = "hides attack options on small nylos of the wrong style",
+		group = "Nylocas"
+	)
+	default boolean nylocasMenuSwap()
+	{
+		return true;
+	}
+
 	/**
 	 * @ConfigItem( position = 8,
 	 * keyName = "showNylocasSpawns",

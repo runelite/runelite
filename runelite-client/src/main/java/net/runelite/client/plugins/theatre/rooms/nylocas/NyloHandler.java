@@ -16,27 +16,38 @@ import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.kit.KitType;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
 
+@Slf4j
 public class NyloHandler extends RoomHandler
 {
-
-	public long startTime = 0L;
-	int startTick = 0;
+	private static final String MESNAME = "tobmes";
 	final List<NPC> waveSpawns = new ArrayList<>();
 	final List<NPC> waveAgros = new ArrayList<>();
+	private final MenuManager menuManager;
+	private final ItemManager itemManager;
+	private final EventBus eventBus;
+	public long startTime = 0L;
+	int startTick = 0;
 	@Getter(AccessLevel.PUBLIC)
 	private Map<NPC, Integer> pillars = new HashMap<>();
 	@Getter(AccessLevel.PUBLIC)
@@ -46,10 +57,14 @@ public class NyloHandler extends RoomHandler
 	private int wave = 0;
 	private NyloOverlay overlay = null;
 	private NyloPredictor predictor = null;
+	private AttackStyle currentAttack = null;
 
-	public NyloHandler(final Client client, final TheatrePlugin plugin)
+	public NyloHandler(final Client client, final TheatrePlugin plugin, final MenuManager menuManager, final ItemManager itemManager, final EventBus eventBus)
 	{
 		super(client, plugin);
+		this.itemManager = itemManager;
+		this.menuManager = menuManager;
+		this.eventBus = eventBus;
 	}
 
 	@Override
@@ -71,6 +86,11 @@ public class NyloHandler extends RoomHandler
 
 		this.startTime = System.currentTimeMillis();
 		this.startTick = this.client.getTickCount();
+		if (plugin.isNylocasMenuSwap())
+		{
+			eventBus.subscribe(MenuOptionClicked.class, MESNAME, this::onMenuOptionClicked);
+		}
+
 	}
 
 	@Override
@@ -96,7 +116,8 @@ public class NyloHandler extends RoomHandler
 
 		if (this.startTime != 0 && plugin.isExtraTimers())
 		{
-			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
+			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' " +
+				"completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
 	}
 
@@ -111,10 +132,28 @@ public class NyloHandler extends RoomHandler
 		this.waveSpawns.clear();
 		this.waveAgros.clear();
 		this.predictor.reset();
+		removeMenuSwaps();
+
+	}
+
+	private void removeMenuSwaps()
+	{
+		menuManager.removeHiddenEntry("Attack", "Nylocas Hagios");
+		menuManager.removeHiddenEntry("Attack", "Nylocas Ischyros");
+		menuManager.removeHiddenEntry("Attack", "Nylocas Toxobolos");
 	}
 
 	public void onConfigChanged()
 	{
+		if (plugin.isNylocasMenuSwap())
+		{
+			eventBus.subscribe(MenuOptionClicked.class, MESNAME, this::onMenuOptionClicked);
+		}
+		else
+		{
+			eventBus.unregister(MESNAME);
+			reset();
+		}
 		if (plugin.getRoom() != TheatreRoom.NYLOCAS)
 		{
 			return;
@@ -368,6 +407,123 @@ public class NyloHandler extends RoomHandler
 		}
 	}
 
+	private AttackStyle checkAttackStyle(int weaponId)
+	{
+		switch (weaponId)
+		{
+			case ItemID.TOXIC_BLOWPIPE:
+			case ItemID.TWISTED_BOW:
+			case ItemID.CRAWS_BOW:
+				return AttackStyle.RANGE2H;
+			case ItemID.ABYSSAL_WHIP:
+			case ItemID.ABYSSAL_TENTACLE:
+			case ItemID.SCYTHE_OF_VITUR:
+			case ItemID.SCYTHE_OF_VITUR_22664:
+			case ItemID.SCYTHE_OF_VITUR_UNCHARGED:
+			case ItemID.HAM_JOINT:
+			case ItemID.SWIFT_BLADE:
+			case ItemID.BANDOS_GODSWORD:
+			case ItemID.BANDOS_GODSWORD_20782:
+			case ItemID.BANDOS_GODSWORD_21060:
+			case ItemID.BANDOS_GODSWORD_OR:
+			case ItemID.DRAGON_WARHAMMER:
+			case ItemID.DRAGON_CLAWS:
+			case ItemID.EVENT_RPG:
+			case ItemID.GHRAZI_RAPIER:
+			case ItemID.GHRAZI_RAPIER_23628:
+			case ItemID.BLADE_OF_SAELDOR:
+			case ItemID.CRYSTAL_HALBERD:
+			case ItemID.DRAGON_SCIMITAR:
+			case ItemID.RUNE_SCIMITAR:
+				return AttackStyle.MELEE;
+			case ItemID.KODAI_WAND:
+			case ItemID.MASTER_WAND:
+			case ItemID.TRIDENT_OF_THE_SEAS:
+			case ItemID.TRIDENT_OF_THE_SWAMP:
+			case ItemID.SANGUINESTI_STAFF:
+			case ItemID.IBANS_STAFF:
+			case ItemID.IBANS_STAFF_1410:
+			case ItemID.IBANS_STAFF_U:
+			case ItemID.TRIDENT_OF_THE_SWAMP_E:
+			case ItemID.TRIDENT_OF_THE_SEAS_E:
+				return AttackStyle.MAGE;
+			case ItemID.RED_CHINCHOMPA:
+			case ItemID.CHINCHOMPA:
+			case ItemID.BLACK_CHINCHOMPA:
+			case ItemID.ARMADYL_CROSSBOW:
+			case ItemID.DRAGON_CROSSBOW:
+			case ItemID.RUNE_CROSSBOW:
+			case ItemID.DORGESHUUN_CROSSBOW:
+				return AttackStyle.RANGE;
+			case ItemID.AVERNIC_DEFENDER:
+			case ItemID.DRAGON_DEFENDER:
+			case ItemID.DRAGON_DEFENDER_T:
+				if (currentAttack == AttackStyle.RANGE2H)
+				{
+					return AttackStyle.MELEE;
+				}
+			default:
+				return currentAttack;
+		}
+	}
+
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!event.getOption().equalsIgnoreCase("equip") &&
+			!event.getOption().equalsIgnoreCase("wield") &&
+			!event.getOption().equalsIgnoreCase("hold"))
+		{
+			if (currentAttack != null)
+			{
+				return;
+			}
+		}
+		if (currentAttack == null)
+		{
+			if (client.getLocalPlayer() != null
+				&& client.getViewportWidget() != null
+				&& client.getLocalPlayer().getPlayerAppearance() != null
+				&& client.getLocalPlayer().getPlayerAppearance().getEquipmentId(KitType.WEAPON) != 0
+			)
+			{
+				currentAttack = checkAttackStyle(client.getLocalPlayer().getPlayerAppearance().getEquipmentId(KitType.WEAPON));
+			}
+		}
+		if (event.getOption().equalsIgnoreCase("equip") ||
+			event.getOption().equalsIgnoreCase("wield") ||
+			event.getOption().equalsIgnoreCase("hold"))
+		{
+			currentAttack = checkAttackStyle(event.getIdentifier());
+		}
+		if (currentAttack != null)
+		{
+			doSwaps();
+		}
+	}
+
+	private void doSwaps()
+	{
+		switch (currentAttack)
+		{
+			case RANGE:
+			case RANGE2H:
+				removeMenuSwaps();
+				menuManager.addHiddenEntry("Attack", "Nylocas Hagios");
+				menuManager.addHiddenEntry("Attack", "Nylocas Ischyros");
+				break;
+			case MELEE:
+				removeMenuSwaps();
+				menuManager.addHiddenEntry("Attack", "Nylocas Hagios");
+				menuManager.addHiddenEntry("Attack", "Nylocas Toxobolos");
+				break;
+			case MAGE:
+				removeMenuSwaps();
+				menuManager.addHiddenEntry("Attack", "Nylocas Ischyros");
+				menuManager.addHiddenEntry("Attack", "Nylocas Toxobolos");
+				break;
+		}
+	}
+
 	private void recalculateLocal()
 	{
 		if (this.pillars != null && this.pillars.size() == 4)
@@ -398,5 +554,13 @@ public class NyloHandler extends RoomHandler
 				this.predictor.westBound = centerX - 12;
 			}
 		}
+	}
+
+	private enum AttackStyle
+	{
+		MELEE,
+		MAGE,
+		RANGE,
+		RANGE2H
 	}
 }
