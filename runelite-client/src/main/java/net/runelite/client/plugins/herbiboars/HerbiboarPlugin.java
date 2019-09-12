@@ -38,6 +38,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
 import static net.runelite.api.ObjectID.ROCK_30519;
@@ -47,6 +49,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
@@ -146,10 +149,20 @@ public class HerbiboarPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private int finishId;
 
+	@Getter
+	@Setter
+	private Set<Integer> previousShownTrailIds;
+
+	@Getter
+	@Setter
+	private Integer previousTrailId = null;
+
+	@Getter
+	@Setter
+	private boolean herbiboarRendered = false;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isStartShown;
-	@Getter(AccessLevel.PACKAGE)
-	private boolean showClickBoxes;
 	@Getter(AccessLevel.PACKAGE)
 	private Color getStartColor;
 	@Getter(AccessLevel.PACKAGE)
@@ -164,6 +177,12 @@ public class HerbiboarPlugin extends Plugin
 	private boolean isTrailShown;
 	@Getter(AccessLevel.PACKAGE)
 	private Color getTrailColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isOnlyCurrentTrailShown;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showOutlines;
+	@Getter(AccessLevel.PACKAGE)
+	private RenderStyle outlineStyle;
 
 	@Provides
 	HerbiboarConfig getConfig(ConfigManager configManager)
@@ -196,6 +215,7 @@ public class HerbiboarPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
 		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
 		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
@@ -242,6 +262,44 @@ public class HerbiboarPlugin extends Plugin
 		{
 			resetTrailData();
 		}
+
+	}
+
+	public Set<Integer> getCurrentTrailIds()
+	{
+		Set<Integer> shownTrailIds;
+		if (currentTrail == null)
+		{
+			if (finishId <= 0)
+			{
+				previousTrailId = null;
+				shownTrailIds = new HashSet<>();
+			}
+			else
+			{
+				shownTrailIds = new HashSet<>();
+				shownTrailIds.add(previousTrailId);
+				shownTrailIds.add(previousTrailId + 1);
+			}
+		}
+		else if (previousTrailId == null)
+		{
+			previousTrailId = currentTrail.getTrailId();
+			shownTrailIds = getShownTrails();
+		}
+		else if (currentTrail.getTrailId() == previousTrailId)
+		{
+			shownTrailIds = previousShownTrailIds;
+		}
+		else
+		{
+			shownTrailIds = new HashSet<>();
+			shownTrailIds.add(previousTrailId);
+			shownTrailIds.add(previousTrailId + 1);
+			previousTrailId = currentTrail.getTrailId();
+		}
+		previousShownTrailIds = shownTrailIds;
+		return shownTrailIds;
 	}
 
 	private void resetTrailData()
@@ -288,6 +346,31 @@ public class HerbiboarPlugin extends Plugin
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onGameObject(event.getTile(), null, event.getGameObject());
+	}
+
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (!(event.getActor() instanceof NPC))
+		{
+			return;
+		}
+
+		NPC npc = (NPC) event.getActor();
+		// Herbiboar spawns
+		if (npc.getId() == NpcID.HERBIBOAR_7786 && npc.getAnimation() == 7687)
+		{
+			herbiboarRendered = true;
+		}
+		// Herbiboar is stunned
+		else if (npc.getId() == NpcID.HERBIBOAR && npc.getAnimation() == 7689)
+		{
+			herbiboarRendered = true;
+		}
+		// Herbiboar is harvested
+		else if (npc.getId() == NpcID.HERBIBOAR_7786 && npc.getAnimation() == 7690)
+		{
+			herbiboarRendered = false;
+		}
 	}
 
 	private void onGameObjectChanged(GameObjectChanged event)
@@ -404,7 +487,6 @@ public class HerbiboarPlugin extends Plugin
 	private void updateConfig()
 	{
 		this.isStartShown = config.isStartShown();
-		this.showClickBoxes = config.showClickBoxes();
 		this.getStartColor = config.getStartColor();
 		this.isTunnelShown = config.isTunnelShown();
 		this.getTunnelColor = config.getTunnelColor();
@@ -412,5 +494,8 @@ public class HerbiboarPlugin extends Plugin
 		this.getObjectColor = config.getObjectColor();
 		this.isTrailShown = config.isTrailShown();
 		this.getTrailColor = config.getTrailColor();
+		this.isOnlyCurrentTrailShown = config.isOnlyCurrentTrailShown();
+		this.showOutlines = config.showOutlines();
+		this.outlineStyle = config.outlineStyle();
 	}
 }

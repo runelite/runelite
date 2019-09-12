@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, Gamer1120 <https://github.com/Gamer1120>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +56,15 @@ public class HerbiboarMinimapOverlay extends Overlay
 		{
 			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
 			int finishId = plugin.getFinishId();
-			Set<Integer> shownTrailIds = plugin.getShownTrails();
+			Set<Integer> shownTrailIds;
+			if (plugin.isOnlyCurrentTrailShown())
+			{
+				shownTrailIds = plugin.getCurrentTrailIds();
+			}
+			else
+			{
+				shownTrailIds = plugin.getShownTrails();
+			}
 
 			for (TileObject tileObject : plugin.getTrails().values())
 			{

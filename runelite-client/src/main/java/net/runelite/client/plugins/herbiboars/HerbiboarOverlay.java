@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, Gamer1120 <https://github.com/Gamer1120>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,10 +30,13 @@ import com.google.inject.Singleton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
 import java.util.Set;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,14 +45,21 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Singleton
 class HerbiboarOverlay extends Overlay
 {
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
+	private Client client;
+
 	private final HerbiboarPlugin plugin;
+	private final ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
-	public HerbiboarOverlay(final HerbiboarPlugin plugin)
+	public HerbiboarOverlay(final HerbiboarPlugin plugin, ModelOutlineRenderer modelOutlineRenderer, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.modelOutlineRenderer = modelOutlineRenderer;
+		this.client = client;
 	}
 
 	@Override
@@ -64,16 +75,24 @@ class HerbiboarOverlay extends Overlay
 		int finishId = plugin.getFinishId();
 
 		// Draw start objects
-		if (plugin.isStartShown() && (currentTrail == null && finishId == 0))
+		if (plugin.isStartShown() && currentTrail == null && finishId == 0 && !plugin.isHerbiboarRendered())
 		{
 			plugin.getStarts().values().forEach((obj) ->
 				OverlayUtil.renderTileOverlay(graphics, obj, "", plugin.getGetStartColor()));
 		}
 
 		// Draw trails
+		Set<Integer> shownTrailIds;
 		if (plugin.isTrailShown())
 		{
-			Set<Integer> shownTrailIds = plugin.getShownTrails();
+			if (plugin.isOnlyCurrentTrailShown())
+			{
+				shownTrailIds = plugin.getCurrentTrailIds();
+			}
+			else
+			{
+				shownTrailIds = plugin.getShownTrails();
+			}
 			plugin.getTrails().values().forEach((x) ->
 			{
 				int id = x.getId();
@@ -97,18 +116,12 @@ class HerbiboarOverlay extends Overlay
 				}
 
 				TileObject object = plugin.getTrailObjects().get(trailLoc);
+
 				if (object != null)
 				{
-					if (plugin.isShowClickBoxes())
+					if (plugin.isShowOutlines())
 					{
-						Area clickbox = object.getClickbox();
-						if (clickbox != null)
-						{
-							graphics.setColor(plugin.getGetObjectColor());
-							graphics.draw(clickbox);
-							graphics.setColor(new Color(255, 0, 255, 20));
-							graphics.fill(clickbox);
-						}
+						renderOutline(object, new Color(255, 0, 255, 20));
 					}
 					else
 					{
@@ -125,17 +138,10 @@ class HerbiboarOverlay extends Overlay
 			TileObject object = plugin.getTunnels().get(finishLoc);
 			if (object != null)
 			{
-				if (plugin.isShowClickBoxes())
+				if (plugin.isShowOutlines())
 				{
-					Area clickbox = object.getClickbox();
-					if (clickbox != null)
-					{
-						Color col = plugin.getGetObjectColor();
-						graphics.setColor(col);
-						graphics.draw(clickbox);
-						graphics.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 20));
-						graphics.fill(clickbox);
-					}
+					Color col = plugin.getGetObjectColor();
+					renderOutline(object, new Color(col.getRed(), col.getGreen(), col.getBlue(), 20));
 				}
 				else
 				{
@@ -144,6 +150,39 @@ class HerbiboarOverlay extends Overlay
 			}
 		}
 
+		// Draw herbiboar
+		if (plugin.isHerbiboarRendered())
+		{
+			for (NPC npc : client.getNpcs())
+			{
+				if (npc.getId() == NpcID.HERBIBOAR || npc.getId() == NpcID.HERBIBOAR_7786)
+				{
+					modelOutlineRenderer.drawOutline(npc, 2, plugin.getGetObjectColor());
+				}
+			}
+		}
 		return null;
+	}
+
+	private void renderOutline(TileObject object, Color color)
+	{
+		switch (plugin.getOutlineStyle())
+		{
+			case THIN_OUTLINE:
+				modelOutlineRenderer.drawOutline(object, 1, color);
+				break;
+
+			case OUTLINE:
+				modelOutlineRenderer.drawOutline(object, 2, color);
+				break;
+
+			case THIN_GLOW:
+				modelOutlineRenderer.drawOutline(object, 4, color, TRANSPARENT);
+				break;
+
+			case GLOW:
+				modelOutlineRenderer.drawOutline(object, 8, color, TRANSPARENT);
+				break;
+		}
 	}
 }
