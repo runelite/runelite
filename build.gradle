@@ -89,13 +89,14 @@ allprojects {
     version = '1.5.33-SNAPSHOT'
 
     ext {
-        rsversion = 182
+        rsversion = 183
         cacheversion = 165
         plusVersion = '2.1.5.0'
 
         gitCommit = localGitCommit
         gitCommitShort = localGitCommitShort
         gitDirty = localGitDirty
+        
 
         rootPath = rootDir.toString().replace('\\', '/')
         injectedClassesPath = rootPath + "/injector-plugin/out/injected-client/"
