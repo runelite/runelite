@@ -323,6 +323,8 @@ public abstract class RSModelMixin implements RSModel
 	@Inject
 	public Polygon getConvexHull(int localX, int localY, int orientation, int tileHeight)
 	{
+		assert client.isClientThread();
+
 		List<Vertex> vertices = getVertices();
 
 		// rotate vertices
