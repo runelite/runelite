@@ -3564,7 +3564,9 @@
   "granite maul": [
     4153,
     12848,
-    20557
+    20557,
+    24225,
+    24227
   ],
   "leafbladed spear": [
     4158,
@@ -8902,17 +8904,38 @@
     21739,
     21752
   ],
+  "imbued saradomin max cape": [
+    21776,
+    24232,
+    24238
+  ],
+  "imbued zamorak max cape": [
+    21780,
+    24233,
+    24246
+  ],
+  "imbued guthix max cape": [
+    21784,
+    24234,
+    24242
+  ],
   "imbued saradomin cape": [
     21791,
-    23607
+    23607,
+    24236,
+    24248
   ],
   "imbued guthix cape": [
     21793,
-    23603
+    23603,
+    24240,
+    24249
   ],
   "imbued zamorak cape": [
     21795,
-    23605
+    23605,
+    24244,
+    24250
   ],
   "bracelet of ethereum": [
     21816,
