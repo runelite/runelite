@@ -88,6 +88,12 @@ public class XpGlobesPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean enableTimeToLevel;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean showXpHour;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showActionsLeft;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showXpLeft;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean enableCustomArcColor;
 	@Getter(AccessLevel.PACKAGE)
 	private Color progressArcColor;
@@ -243,6 +249,9 @@ public class XpGlobesPlugin extends Plugin
 		this.progressArcStrokeWidth = config.progressArcStrokeWidth();
 		this.xpOrbSize = config.xpOrbSize();
 		this.xpOrbDuration = config.xpOrbDuration();
+		this.showXpLeft = config.showXpLeft();
+		this.showActionsLeft = config.showActionsLeft();
+		this.showXpHour = config.showXpHour();
 
 	}
 }
