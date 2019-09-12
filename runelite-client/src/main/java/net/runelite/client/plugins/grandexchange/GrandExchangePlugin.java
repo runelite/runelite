@@ -35,7 +35,6 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -101,12 +100,13 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 public class GrandExchangePlugin extends Plugin
 {
 	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
-	private static final int OFFER_TYPE = 18;
+	private static final int OFFER_TYPE_BUY = 0;
 	private static final int OFFER_CONTAINER_ITEM = 21;
+	private static final int OFFER_QUANTITY_HEADING = 28;
+	private static final String OFFER_QUANTITY_DEFAULT_HEADING = "Quantity:";
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
-	private static final String AFFORD_GE_TEXT = "<br>Can Afford: ";
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
 	private static final Gson GSON = new Gson();
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
@@ -162,13 +162,12 @@ public class GrandExchangePlugin extends Plugin
 	private EventBus eventBus;
 
 	private Widget grandExchangeText;
-	private Widget grandExchangeOfferType;
 	private Widget grandExchangeItem;
+	private Widget grandExchangeOfferQuantityHeading;
 	private Map<Integer, Integer> itemGELimits;
 
 	private GrandExchangeClient grandExchangeClient;
 
-	private int coins = 0;
 	private boolean quickLookup;
 	private boolean enableNotifications;
 	private boolean enableOsbPrices;
@@ -253,7 +252,7 @@ public class GrandExchangePlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
-		grandExchangeOfferType = null;
+		grandExchangeOfferQuantityHeading = null;
 		itemGELimits = null;
 		grandExchangeClient = null;
 	}
@@ -469,12 +468,12 @@ public class GrandExchangePlugin extends Plugin
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
-				grandExchangeOfferType = grandExchangeOffer.getDynamicChildren()[OFFER_TYPE];
+				grandExchangeOfferQuantityHeading = grandExchangeOffer.getDynamicChildren()[OFFER_QUANTITY_HEADING];
 				break;
 			case WidgetID.INVENTORY_GROUP_ID:
-				grandExchangeOfferType = null;
 				grandExchangeText = null;
 				grandExchangeItem = null;
+				grandExchangeOfferQuantityHeading = null;
 				break;
 		}
 	}
@@ -529,7 +528,8 @@ public class GrandExchangePlugin extends Plugin
 
 		final Widget geText = grandExchangeText;
 		final String geTextString = geText.getText();
-		final String offerType = grandExchangeOfferType.getText();
+		final Widget geQuantityHeading = grandExchangeOfferQuantityHeading;
+		final int offerType = client.getVar(Varbits.GE_OFFER_CREATION_TYPE);
 		final int itemId = grandExchangeItem.getItemId();
 
 		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
@@ -538,23 +538,31 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 
-		final int currentItemPrice = client.getVar(Varbits.GRAND_EXCHANGE_PRICE_PER_ITEM);
 
-		if (this.enableAfford && offerType.equals("Buy offer") && itemGELimits != null && !geTextString.contains(AFFORD_GE_TEXT))
+		if (this.enableAfford && offerType == OFFER_TYPE_BUY)
 		{
-			final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			final Item[] items = Objects.requireNonNull(itemContainer).getItems();
-			for (Item item : items)
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			int coins = 0;
+			if (inventory != null)
 			{
-				if (item.getId() == COINS_995)
+				for (final Item item : inventory.getItems())
 				{
-					coins = item.getQuantity();
-					break;
+					if (item.getId() == COINS_995)
+					{
+						coins = item.getQuantity();
+						break;
+					}
 				}
 			}
 
-			final String text = geText.getText() + AFFORD_GE_TEXT + StackFormatter.formatNumber(coins / currentItemPrice) + "   ";
-			geText.setText(text);
+			final int currentItemPrice = client.getVar(Varbits.GRAND_EXCHANGE_PRICE_PER_ITEM);
+			final int canAfford = currentItemPrice != 0 ? coins / currentItemPrice : 0;
+			final String quantityHeadingText = OFFER_QUANTITY_DEFAULT_HEADING + " (" + canAfford + ")";
+			geQuantityHeading.setText(quantityHeadingText);
+		}
+		else
+		{
+			geQuantityHeading.setText(OFFER_QUANTITY_DEFAULT_HEADING);
 		}
 
 
