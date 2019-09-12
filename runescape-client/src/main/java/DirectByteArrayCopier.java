@@ -4,20 +4,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("gx")
 @Implements("DirectByteArrayCopier")
 public class DirectByteArrayCopier extends AbstractByteArrayCopier {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("directBuffer")
 	ByteBuffer directBuffer;
 
 	DirectByteArrayCopier() {
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)[B",
-		garbageValue = "-1040345200"
+		signature = "(B)[B",
+		garbageValue = "49"
 	)
 	@Export("get")
 	byte[] get() {
@@ -27,10 +27,10 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 		return var1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "([BI)V",
-		garbageValue = "38240743"
+		garbageValue = "-1981176877"
 	)
 	@Export("set")
 	void set(byte[] var1) {
@@ -39,23 +39,8 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 		this.directBuffer.put(var1);
 	}
 
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-		garbageValue = "2110102488"
-	)
-	@Export("addGameMessage")
-	static void addGameMessage(int var0, String var1, String var2) {
-		MilliClock.addChatMessage(var0, var1, var2, (String)null);
-	}
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "470994563"
-	)
-	@Export("isWorldMapEvent")
-	public static boolean isWorldMapEvent(int var0) {
-		return var0 == 10 || var0 == 11 || var0 == 12 || var0 == 13 || var0 == 14 || var0 == 15 || var0 == 16 || var0 == 17;
+	@ObfuscatedName("d")
+	static final void method3932(long var0) {
+		ViewportMouse.ViewportMouse_entityTags[++ViewportMouse.ViewportMouse_entityCount - 1] = var0;
 	}
 }

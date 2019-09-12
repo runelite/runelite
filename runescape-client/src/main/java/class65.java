@@ -3,322 +3,189 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bf")
+@ObfuscatedName("bd")
 public class class65 extends RouteStrategy {
-	@ObfuscatedName("n")
+	@ObfuscatedName("rl")
+	@ObfuscatedGetter(
+		intValue = 502905585
+	)
+	static int field581;
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("ItemDefinition_archive")
 	static AbstractArchive ItemDefinition_archive;
-	@ObfuscatedName("ff")
-	@ObfuscatedGetter(
-		longValue = 1031701328747955581L
-	)
-	static long field586;
-	@ObfuscatedName("lw")
-	@ObfuscatedSignature(
-		signature = "Lhp;"
-	)
-	@Export("mousedOverWidgetIf1")
-	static Widget mousedOverWidgetIf1;
+	@ObfuscatedName("ht")
+	static int field580;
 
 	class65() {
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIILfm;I)Z",
-		garbageValue = "1325675955"
+		signature = "(IIILfj;I)Z",
+		garbageValue = "2030512647"
 	)
 	@Export("hasArrived")
-	public boolean hasArrived(int var1, int var2, int var3, CollisionMap var4) {
+	protected boolean hasArrived(int var1, int var2, int var3, CollisionMap var4) {
 		return var2 == super.approxDestinationX && var3 == super.approxDestinationY;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "1096051399"
+		signature = "(Llj;III)I",
+		garbageValue = "1086795116"
 	)
-	@Export("changeWorldSelectSorting")
-	static void changeWorldSelectSorting(int var0, int var1) {
-		int[] var2 = new int[4];
-		int[] var3 = new int[4];
-		var2[0] = var0;
-		var3[0] = var1;
-		int var4 = 1;
-
-		for (int var5 = 0; var5 < 4; ++var5) {
-			if (World.World_sortOption1[var5] != var0) {
-				var2[var4] = World.World_sortOption1[var5];
-				var3[var4] = World.World_sortOption2[var5];
-				++var4;
-			}
+	static int method1177(IterableNodeHashTable var0, int var1, int var2) {
+		if (var0 == null) {
+			return var2;
+		} else {
+			IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+			return var3 == null ? var2 : var3.integer;
 		}
-
-		World.World_sortOption1 = var2;
-		World.World_sortOption2 = var3;
-		Tile.sortWorlds(ChatChannel.World_worlds, 0, ChatChannel.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "29"
+		signature = "(IIIII)I",
+		garbageValue = "1745774438"
 	)
-	static final int method1180() {
-		return ViewportMouse.ViewportMouse_x;
+	static final int method1171(int var0, int var1, int var2, int var3) {
+		int var4 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var2 * 1024 / var3] >> 1;
+		return ((65536 - var4) * var0 >> 16) + (var4 * var1 >> 16);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("je")
 	@ObfuscatedSignature(
-		signature = "(Lbl;I)V",
-		garbageValue = "-138729150"
+		signature = "(Lhy;IIIB)V",
+		garbageValue = "85"
 	)
-	@Export("changeWorld")
-	static void changeWorld(World var0) {
-		if (var0.isMembersOnly() != Client.isMembersWorld) {
-			Client.isMembersWorld = var0.isMembersOnly();
-			boolean var1 = var0.isMembersOnly();
-			if (var1 != UrlRequester.ItemDefinition_inMembersWorld) {
-				TileItemPile.method2700();
-				UrlRequester.ItemDefinition_inMembersWorld = var1;
-			}
-		}
+	@Export("drawMinimap")
+	static final void drawMinimap(Widget var0, int var1, int var2, int var3) {
+		ModelData0.playPcmPlayers();
+		SpriteMask var4 = var0.getSpriteMask(false);
+		if (var4 != null) {
+			Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);
+			if (Client.minimapState != 2 && Client.minimapState != 5) {
+				int var5 = Client.camAngleY & 2047;
+				int var6 = Varps.localPlayer.x * -78439701 / 32 + 48;
+				int var7 = 464 - Varps.localPlayer.y / 32;
+				class60.sceneMinimapSprite.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
 
-		NetFileRequest.worldHost = var0.host;
-		Client.worldId = var0.id;
-		Client.worldProperties = var0.properties;
-		WorldMapRectangle.port1 = Client.gameBuild == 0 ? 43594 : var0.id + 40000;
-		FloorDecoration.port2 = Client.gameBuild == 0 ? 443 : var0.id + 50000;
-		SecureRandomCallable.port3 = WorldMapRectangle.port1;
-	}
-
-	@ObfuscatedName("fz")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-87"
-	)
-	static final void method1182() {
-		Client.packetWriter.close();
-		class1.method18();
-		Player.scene.clear();
-
-		for (int var0 = 0; var0 < 4; ++var0) {
-			Client.collisionMaps[var0].clear();
-		}
-
-		System.gc();
-		DevicePcmPlayerProvider.method793(2);
-		Client.field857 = -1;
-		Client.field858 = false;
-
-		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-			if (var1.stream1 != null) {
-				IgnoreList.pcmStreamMixer.removeSubStream(var1.stream1);
-				var1.stream1 = null;
-			}
-
-			if (var1.stream2 != null) {
-				IgnoreList.pcmStreamMixer.removeSubStream(var1.stream2);
-				var1.stream2 = null;
-			}
-		}
-
-		ObjectSound.objectSounds.clear();
-		FloorDecoration.updateGameState(10);
-	}
-
-	@ObfuscatedName("fa")
-	@ObfuscatedSignature(
-		signature = "(Lbu;I)V",
-		garbageValue = "-554160740"
-	)
-	static final void method1178(Actor var0) {
-		if (var0.field971 != 0) {
-			if (var0.targetIndex != -1) {
-				Object var1 = null;
-				if (var0.targetIndex < 32768) {
-					var1 = Client.npcs[var0.targetIndex];
-				} else if (var0.targetIndex >= 32768) {
-					var1 = Client.players[var0.targetIndex - 32768];
+				int var8;
+				int var9;
+				int var10;
+				for (var8 = 0; var8 < Client.mapIconCount; ++var8) {
+					var9 = Client.mapIconXs[var8] * 4 + 2 - Varps.localPlayer.x * -78439701 / 32;
+					var10 = Client.mapIconYs[var8] * 4 + 2 - Varps.localPlayer.y / 32;
+					ChatChannel.drawSpriteOnMinimap(var1, var2, var9, var10, Client.mapIcons[var8], var4);
 				}
 
-				if (var1 != null) {
-					int var2 = var0.x - ((Actor)var1).x;
-					int var3 = var0.y - ((Actor)var1).y;
-					if (var2 != 0 || var3 != 0) {
-						var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
-					}
-				} else if (var0.false0) {
-					var0.targetIndex = -1;
-					var0.false0 = false;
-				}
-			}
-
-			if (var0.field946 != -1 && (var0.pathLength == 0 || var0.field976 > 0)) {
-				var0.orientation = var0.field946;
-				var0.field946 = -1;
-			}
-
-			int var4 = var0.orientation - var0.rotation & 2047;
-			if (var4 == 0 && var0.false0) {
-				var0.targetIndex = -1;
-				var0.false0 = false;
-			}
-
-			if (var4 != 0) {
-				++var0.field970;
-				boolean var6;
-				if (var4 > 1024) {
-					var0.rotation -= var0.field971;
-					var6 = true;
-					if (var4 < var0.field971 || var4 > 2048 - var0.field971) {
-						var0.rotation = var0.orientation;
-						var6 = false;
-					}
-
-					if (var0.movementSequence == var0.readySequence && (var0.field970 > 25 || var6)) {
-						if (var0.turnLeftSequence != -1) {
-							var0.movementSequence = var0.turnLeftSequence;
-						} else {
-							var0.movementSequence = var0.walkSequence;
-						}
-					}
-				} else {
-					var0.rotation += var0.field971;
-					var6 = true;
-					if (var4 < var0.field971 || var4 > 2048 - var0.field971) {
-						var0.rotation = var0.orientation;
-						var6 = false;
-					}
-
-					if (var0.readySequence == var0.movementSequence && (var0.field970 > 25 || var6)) {
-						if (var0.turnRightSequence != -1) {
-							var0.movementSequence = var0.turnRightSequence;
-						} else {
-							var0.movementSequence = var0.walkSequence;
+				int var11;
+				int var12;
+				for (var8 = 0; var8 < 104; ++var8) {
+					for (var9 = 0; var9 < 104; ++var9) {
+						NodeDeque var15 = Client.groundItems[MouseRecorder.plane][var8][var9];
+						if (var15 != null) {
+							var11 = var8 * 4 + 2 - Varps.localPlayer.x * -78439701 / 32;
+							var12 = var9 * 4 + 2 - Varps.localPlayer.y / 32;
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var11, var12, class42.mapDotSprites[0], var4);
 						}
 					}
 				}
 
-				var0.rotation &= 2047;
+				for (var8 = 0; var8 < Client.npcCount; ++var8) {
+					NPC var16 = Client.npcs[Client.npcIndices[var8]];
+					if (var16 != null && var16.isVisible()) {
+						NPCDefinition var18 = var16.definition;
+						if (var18 != null && var18.transforms != null) {
+							var18 = var18.transform();
+						}
+
+						if (var18 != null && var18.drawMapDot && var18.isInteractable) {
+							var11 = var16.x * -78439701 / 32 - Varps.localPlayer.x * -78439701 / 32;
+							var12 = var16.y / 32 - Varps.localPlayer.y / 32;
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var11, var12, class42.mapDotSprites[1], var4);
+						}
+					}
+				}
+
+				var8 = Players.Players_count;
+				int[] var19 = Players.Players_indices;
+
+				for (var10 = 0; var10 < var8; ++var10) {
+					Player var17 = Client.players[var19[var10]];
+					if (var17 != null && var17.isVisible() && !var17.isHidden && var17 != Varps.localPlayer) {
+						var12 = var17.x * -78439701 / 32 - Varps.localPlayer.x * -78439701 / 32;
+						int var13 = var17.y / 32 - Varps.localPlayer.y / 32;
+						boolean var14 = false;
+						if (Varps.localPlayer.team != 0 && var17.team != 0 && var17.team == Varps.localPlayer.team) {
+							var14 = true;
+						}
+
+						if (var17.isFriend()) {
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var12, var13, class42.mapDotSprites[3], var4);
+						} else if (var14) {
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var12, var13, class42.mapDotSprites[4], var4);
+						} else if (var17.isClanMember()) {
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var12, var13, class42.mapDotSprites[5], var4);
+						} else {
+							ChatChannel.drawSpriteOnMinimap(var1, var2, var12, var13, class42.mapDotSprites[2], var4);
+						}
+					}
+				}
+
+				if (Client.hintArrowType != 0 && Client.cycle % 20 < 10) {
+					if (Client.hintArrowType == 1 && Client.hintArrowNpcIndex >= 0 && Client.hintArrowNpcIndex < Client.npcs.length) {
+						NPC var20 = Client.npcs[Client.hintArrowNpcIndex];
+						if (var20 != null) {
+							var11 = var20.x * -78439701 / 32 - Varps.localPlayer.x * -78439701 / 32;
+							var12 = var20.y / 32 - Varps.localPlayer.y / 32;
+							AttackOption.worldToMinimap(var1, var2, var11, var12, WorldMapLabelSize.mapMarkerSprites[1], var4);
+						}
+					}
+
+					if (Client.hintArrowType == 2) {
+						var10 = Client.hintArrowX * 4 - class4.baseX * 256 + 2 - Varps.localPlayer.x * -78439701 / 32;
+						var11 = Client.hintArrowY * 4 - ScriptEvent.baseY * 2082609860 + 2 - Varps.localPlayer.y / 32;
+						AttackOption.worldToMinimap(var1, var2, var10, var11, WorldMapLabelSize.mapMarkerSprites[1], var4);
+					}
+
+					if (Client.hintArrowType == 10 && Client.hintArrowPlayerIndex >= 0 && Client.hintArrowPlayerIndex < Client.players.length) {
+						Player var21 = Client.players[Client.hintArrowPlayerIndex];
+						if (var21 != null) {
+							var11 = var21.x * -78439701 / 32 - Varps.localPlayer.x * -78439701 / 32;
+							var12 = var21.y / 32 - Varps.localPlayer.y / 32;
+							AttackOption.worldToMinimap(var1, var2, var11, var12, WorldMapLabelSize.mapMarkerSprites[1], var4);
+						}
+					}
+				}
+
+				if (Client.destinationX != 0) {
+					var10 = Client.destinationX * 4 + 2 - Varps.localPlayer.x * -78439701 / 32;
+					var11 = Client.destinationY * 4 + 2 - Varps.localPlayer.y / 32;
+					ChatChannel.drawSpriteOnMinimap(var1, var2, var10, var11, WorldMapLabelSize.mapMarkerSprites[0], var4);
+				}
+
+				if (!Varps.localPlayer.isHidden) {
+					Rasterizer2D.Rasterizer2D_fillRectangle(var4.width / 2 + var1 - 1, var4.height / 2 + var2 - 1, 3, 3, 16777215);
+				}
 			} else {
-				var0.field970 = 0;
+				Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
 			}
 
+			Client.field828[var3] = true;
 		}
 	}
 
-	@ObfuscatedName("il")
+	@ObfuscatedName("kg")
 	@ObfuscatedSignature(
-		signature = "(Lii;IIII)V",
-		garbageValue = "-973844145"
+		signature = "(I)V",
+		garbageValue = "96843493"
 	)
-	@Export("addNpcToMenu")
-	static final void addNpcToMenu(NPCDefinition var0, int var1, int var2, int var3) {
-		if (Client.menuOptionsCount < 400) {
-			if (var0.transforms != null) {
-				var0 = var0.transform();
-			}
-
-			if (var0 != null) {
-				if (var0.isInteractable) {
-					if (!var0.isFollower || Client.followerIndex == var1) {
-						String var4 = var0.name;
-						if (var0.combatLevel != 0) {
-							var4 = var4 + class225.getLevelColorString(var0.combatLevel, WorldMapIcon_1.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
-						}
-
-						if (var0.isFollower && Client.followerOpsLowPriority) {
-							WorldMapData_0.insertMenuItemNoShift("Examine", class16.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
-						}
-
-						if (Client.isItemSelected == 1) {
-							WorldMapData_0.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + class16.colorStartTag(16776960) + var4, 7, var1, var2, var3);
-						} else if (Client.isSpellSelected) {
-							if ((WorldMapSectionType.selectedSpellFlags & 2) == 2) {
-								WorldMapData_0.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + class16.colorStartTag(16776960) + var4, 8, var1, var2, var3);
-							}
-						} else {
-							int var5 = var0.isFollower && Client.followerOpsLowPriority ? 2000 : 0;
-							String[] var6 = var0.actions;
-							int var7;
-							int var8;
-							if (var6 != null) {
-								for (var7 = 4; var7 >= 0; --var7) {
-									if (var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
-										var8 = 0;
-										if (var7 == 0) {
-											var8 = var5 + 9;
-										}
-
-										if (var7 == 1) {
-											var8 = var5 + 10;
-										}
-
-										if (var7 == 2) {
-											var8 = var5 + 11;
-										}
-
-										if (var7 == 3) {
-											var8 = var5 + 12;
-										}
-
-										if (var7 == 4) {
-											var8 = var5 + 13;
-										}
-
-										WorldMapData_0.insertMenuItemNoShift(var6[var7], class16.colorStartTag(16776960) + var4, var8, var1, var2, var3);
-									}
-								}
-							}
-
-							if (var6 != null) {
-								for (var7 = 4; var7 >= 0; --var7) {
-									if (var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
-										short var9 = 0;
-										if (AttackOption.AttackOption_hidden != Client.npcAttackOption) {
-											if (AttackOption.AttackOption_alwaysRightClick == Client.npcAttackOption || Client.npcAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > WorldMapIcon_1.localPlayer.combatLevel) {
-												var9 = 2000;
-											}
-
-											var8 = 0;
-											if (var7 == 0) {
-												var8 = var9 + 9;
-											}
-
-											if (var7 == 1) {
-												var8 = var9 + 10;
-											}
-
-											if (var7 == 2) {
-												var8 = var9 + 11;
-											}
-
-											if (var7 == 3) {
-												var8 = var9 + 12;
-											}
-
-											if (var7 == 4) {
-												var8 = var9 + 13;
-											}
-
-											WorldMapData_0.insertMenuItemNoShift(var6[var7], class16.colorStartTag(16776960) + var4, var8, var1, var2, var3);
-										}
-									}
-								}
-							}
-
-							if (!var0.isFollower || !Client.followerOpsLowPriority) {
-								WorldMapData_0.insertMenuItemNoShift("Examine", class16.colorStartTag(16776960) + var4, 1003, var1, var2, var3);
-							}
-						}
-
-					}
-				}
-			}
-		}
+	static final void method1176() {
+		Client.field816 = Client.cycleCntr;
+		InterfaceParent.ClanChat_inClanChat = true;
 	}
 }

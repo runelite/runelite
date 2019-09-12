@@ -1,19 +1,13 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lc")
+@ObfuscatedName("lu")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-	@ObfuscatedName("k")
-	@ObfuscatedGetter(
-		intValue = -145342191
-	)
-	public static int field4007;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("inflater")
 	Inflater inflater;
 
@@ -28,10 +22,10 @@ public class GZipDecompressor {
 	GZipDecompressor(int var1, int var2, int var3) {
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lky;[BI)V",
-		garbageValue = "-1662982609"
+		signature = "(Lkz;[BB)V",
+		garbageValue = "0"
 	)
 	@Export("decompress")
 	public void decompress(Buffer var1, byte[] var2) {
@@ -54,26 +48,29 @@ public class GZipDecompressor {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("fb")
 	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-2077179875"
+		signature = "(Ljava/lang/String;ZI)V",
+		garbageValue = "-1847999572"
 	)
-	static void method6390(boolean var0) {
-		Login.Login_response1 = "";
-		Login.Login_response2 = "Enter your username/email & password.";
-		Login.Login_response3 = "";
-		Login.loginIndex = 2;
-		if (var0) {
-			Login.Login_password = "";
-		}
+	@Export("drawLoadingMessage")
+	static final void drawLoadingMessage(String var0, boolean var1) {
+		if (Client.showLoadingMessages) {
+			byte var2 = 4;
+			int var3 = var2 + 6;
+			int var4 = var2 + 6;
+			int var5 = class197.fontPlain12.lineWidth(var0, 250);
+			int var6 = class197.fontPlain12.lineCount(var0, 250) * 13;
+			Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+			Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 16777215);
+			class197.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+			HealthBar.method2007(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2);
+			if (var1) {
+				DevicePcmPlayerProvider.rasterProvider.drawFull(0, 0);
+			} else {
+				WorldMapElement.method4392(var3, var4, var5, var6);
+			}
 
-		ItemContainer.method1120();
-		if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
-			Login.currentLoginField = 1;
-		} else {
-			Login.currentLoginField = 0;
 		}
-
 	}
 }

@@ -3,16 +3,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fm")
 @Implements("UserComparator6")
 public class UserComparator6 extends AbstractUserComparator {
-	@ObfuscatedName("ga")
-	@ObfuscatedSignature(
-		signature = "[Lls;"
-	)
-	@Export("headIconPkSprites")
-	static Sprite[] headIconPkSprites;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -20,10 +14,10 @@ public class UserComparator6 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljt;Ljt;B)I",
-		garbageValue = "11"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "1603380777"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -38,15 +32,27 @@ public class UserComparator6 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("ji")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-1763118149"
+		signature = "(I)Lfk;",
+		garbageValue = "542497386"
 	)
-	@Export("runIntfCloseListeners")
-	static final void runIntfCloseListeners(int var0, int var1) {
-		if (Projectile.loadInterface(var0)) {
-			class189.runComponentCloseListeners(Widget.Widget_interfaceComponents[var0], var1);
+	@Export("newClock")
+	public static Clock newClock() {
+		try {
+			return new NanoClock();
+		} catch (Throwable var1) {
+			return new MilliClock();
 		}
+	}
+
+	@ObfuscatedName("kw")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "0"
+	)
+	static void method3417() {
+		Client.packetWriter.addNode(MenuAction.getPacketBufferNode(ClientPacket.field2254, Client.packetWriter.isaacCipher));
+		Client.oculusOrbState = 0;
 	}
 }

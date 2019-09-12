@@ -4,134 +4,135 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("de")
+@ObfuscatedName("dq")
 @Implements("Tile")
 public final class Tile extends Node {
-	@ObfuscatedName("nn")
+	@ObfuscatedName("ha")
 	@ObfuscatedGetter(
-		intValue = -590587583
+		intValue = -1915591411
 	)
-	static int field1648;
-	@ObfuscatedName("s")
+	@Export("cameraYaw")
+	static int cameraYaw;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1576668311
+		intValue = 255690453
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -2142283815
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("i")
-	@ObfuscatedGetter(
-		intValue = 22720331
+		intValue = 1658035031
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("k")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 322819535
+		intValue = 518252243
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = 2024380867
 	)
 	@Export("originalPlane")
 	int originalPlane;
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lef;"
-	)
-	@Export("paint")
-	TilePaint paint;
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "Ldg;"
-	)
-	@Export("model")
-	TileModel model;
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Ley;"
-	)
-	@Export("boundaryObject")
-	BoundaryObject boundaryObject;
-	@ObfuscatedName("q")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "Lec;"
 	)
+	@Export("paint")
+	TilePaint paint;
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "Ldv;"
+	)
+	@Export("model")
+	TileModel model;
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "Lea;"
+	)
+	@Export("boundaryObject")
+	BoundaryObject boundaryObject;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Les;"
+	)
 	@Export("wallDecoration")
 	WallDecoration wallDecoration;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Ldy;"
+		signature = "Ldb;"
 	)
 	@Export("floorDecoration")
 	FloorDecoration floorDecoration;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Ldu;"
+		signature = "Ldc;"
 	)
 	@Export("tileItemPile")
 	TileItemPile tileItemPile;
-	@ObfuscatedName("f")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -76351175
+		intValue = 342071413
 	)
 	@Export("gameObjectsCount")
 	int gameObjectsCount;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "[Lej;"
+		signature = "[Lef;"
 	)
 	@Export("gameObjects")
 	GameObject[] gameObjects;
-	@ObfuscatedName("r")
+	@ObfuscatedName("f")
 	@Export("gameObjectEdgeMasks")
 	int[] gameObjectEdgeMasks;
-	@ObfuscatedName("y")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 832836189
+		intValue = -247968309
 	)
 	@Export("gameObjectsEdgeMask")
 	int gameObjectsEdgeMask;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1717986561
+		intValue = 1983266615
 	)
 	@Export("minPlane")
 	int minPlane;
-	@ObfuscatedName("b")
+	@ObfuscatedName("e")
 	@Export("drawPrimary")
 	boolean drawPrimary;
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@Export("drawSecondary")
 	boolean drawSecondary;
-	@ObfuscatedName("e")
+	@ObfuscatedName("q")
 	@Export("drawGameObjects")
 	boolean drawGameObjects;
-	@ObfuscatedName("z")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1859538339
+		intValue = -1182393573
 	)
 	@Export("drawGameObjectEdges")
 	int drawGameObjectEdges;
-	@ObfuscatedName("a")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -652671997
+		intValue = 1178282289
 	)
-	int field1637;
+	int field1632;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 340120719
+	)
+	int field1622;
 	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -1052800923
+		intValue = 248240175
 	)
-	int field1645;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 837010603
-	)
-	int field1636;
-	@ObfuscatedName("h")
+	int field1613;
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Lde;"
+		signature = "Ldq;"
 	)
 	@Export("linkedBelowTile")
 	Tile linkedBelowTile;
@@ -145,182 +146,346 @@ public final class Tile extends Node {
 		this.y = var3;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "([Lbl;II[I[IB)V",
-		garbageValue = "-18"
+		signature = "(I)[Lho;",
+		garbageValue = "-1998452195"
 	)
-	@Export("sortWorlds")
-	static void sortWorlds(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-		if (var1 < var2) {
-			int var5 = var1 - 1;
-			int var6 = var2 + 1;
-			int var7 = (var2 + var1) / 2;
-			World var8 = var0[var7];
-			var0[var7] = var0[var1];
-			var0[var1] = var8;
-
-			while (var5 < var6) {
-				boolean var9 = true;
-
-				int var10;
-				int var11;
-				int var12;
-				do {
-					--var6;
-
-					for (var10 = 0; var10 < 4; ++var10) {
-						if (var3[var10] == 2) {
-							var11 = var0[var6].index;
-							var12 = var8.index;
-						} else if (var3[var10] == 1) {
-							var11 = var0[var6].population;
-							var12 = var8.population;
-							if (var11 == -1 && var4[var10] == 1) {
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) {
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) {
-							var11 = var0[var6].isMembersOnly() ? 1 : 0;
-							var12 = var8.isMembersOnly() ? 1 : 0;
-						} else {
-							var11 = var0[var6].id;
-							var12 = var8.id;
-						}
-
-						if (var12 != var11) {
-							if ((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-								var9 = false;
-							}
-							break;
-						}
-
-						if (var10 == 3) {
-							var9 = false;
-						}
-					}
-				} while(var9);
-
-				var9 = true;
-
-				do {
-					++var5;
-
-					for (var10 = 0; var10 < 4; ++var10) {
-						if (var3[var10] == 2) {
-							var11 = var0[var5].index;
-							var12 = var8.index;
-						} else if (var3[var10] == 1) {
-							var11 = var0[var5].population;
-							var12 = var8.population;
-							if (var11 == -1 && var4[var10] == 1) {
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) {
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) {
-							var11 = var0[var5].isMembersOnly() ? 1 : 0;
-							var12 = var8.isMembersOnly() ? 1 : 0;
-						} else {
-							var11 = var0[var5].id;
-							var12 = var8.id;
-						}
-
-						if (var11 != var12) {
-							if ((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-								var9 = false;
-							}
-							break;
-						}
-
-						if (var10 == 3) {
-							var9 = false;
-						}
-					}
-				} while(var9);
-
-				if (var5 < var6) {
-					World var13 = var0[var5];
-					var0[var5] = var0[var6];
-					var0[var6] = var13;
-				}
-			}
-
-			sortWorlds(var0, var1, var6, var3, var4);
-			sortWorlds(var0, var6 + 1, var2, var3, var4);
-		}
-
+	public static ServerBuild[] method2830() {
+		return new ServerBuild[]{ServerBuild.RC, ServerBuild.LIVE, ServerBuild.WIP, ServerBuild.BUILDLIVE};
 	}
 
-	@ObfuscatedName("jj")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "([Lhp;II)V",
-		garbageValue = "1415111680"
+		signature = "(I)[Lht;",
+		garbageValue = "2061214511"
 	)
-	@Export("drawModelComponents")
-	static final void drawModelComponents(Widget[] var0, int var1) {
-		for (int var2 = 0; var2 < var0.length; ++var2) {
-			Widget var3 = var0[var2];
-			if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !WorldMapRectangle.isComponentHidden(var3))) {
-				if (var3.type == 0) {
-					if (!var3.isIf3 && WorldMapRectangle.isComponentHidden(var3) && var3 != class65.mousedOverWidgetIf1) {
-						continue;
-					}
+	public static StudioGame[] method2831() {
+		return new StudioGame[]{StudioGame.runescape, StudioGame.oldscape, StudioGame.game4, StudioGame.game3, StudioGame.game5, StudioGame.stellardawn};
+	}
 
-					drawModelComponents(var0, var3.id);
-					if (var3.children != null) {
-						drawModelComponents(var3.children, var3.id);
-					}
+	@ObfuscatedName("aa")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "2091898372"
+	)
+	@Export("runWidgetOnLoadListener")
+	static void runWidgetOnLoadListener(int var0) {
+		if (var0 != -1) {
+			if (TaskHandler.loadInterface(var0)) {
+				Widget[] var1 = class289.Widget_interfaceComponents[var0];
 
-					InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
-					if (var4 != null) {
-						CollisionMap.drawInterfaceModelComponents(var4.group);
+				for (int var2 = 0; var2 < var1.length; ++var2) {
+					Widget var3 = var1[var2];
+					if (var3.onLoad != null) {
+						ScriptEvent var4 = new ScriptEvent();
+						var4.widget = var3;
+						var4.args = var3.onLoad;
+						GameShell.runScript(var4, 5000000);
 					}
 				}
 
-				if (var3.type == 6) {
-					int var5;
-					if (var3.sequenceId != -1 || var3.sequenceId2 != -1) {
-						boolean var7 = UserComparator10.runCs1(var3);
-						if (var7) {
-							var5 = var3.sequenceId2;
-						} else {
-							var5 = var3.sequenceId;
+			}
+		}
+	}
+
+	@ObfuscatedName("fa")
+	@ObfuscatedSignature(
+		signature = "(Lbe;IB)V",
+		garbageValue = "2"
+	)
+	@Export("calculateActorPosition")
+	static final void calculateActorPosition(Actor var0, int var1) {
+		int var3;
+		int var4;
+		int var11;
+		if (var0.field963 > Client.cycle) {
+			WorldMapSection2.method299(var0);
+		} else if (var0.field964 >= Client.cycle) {
+			Login.method2075(var0);
+		} else {
+			var0.movementSequence = var0.readySequence;
+			if (var0.pathLength == 0) {
+				var0.field975 = 0;
+			} else {
+				label396: {
+					if (var0.sequence != -1 && var0.sequenceDelay == 0) {
+						SequenceDefinition var2 = class83.SequenceDefinition_get(var0.sequence);
+						if (var0.field969 > 0 && var2.field3496 == 0) {
+							++var0.field975;
+							break label396;
 						}
 
-						if (var5 != -1) {
-							SequenceDefinition var6 = Widget.SequenceDefinition_get(var5);
+						if (var0.field969 <= 0 && var2.field3501 == 0) {
+							++var0.field975;
+							break label396;
+						}
+					}
 
-							for (var3.modelFrameCycle += Client.field879; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; FriendSystem.invalidateWidget(var3)) {
-								var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
-								++var3.modelFrame;
-								if (var3.modelFrame >= var6.frameIds.length) {
-									var3.modelFrame -= var6.frameCount;
-									if (var3.modelFrame < 0 || var3.modelFrame >= var6.frameIds.length) {
-										var3.modelFrame = 0;
-									}
+					var11 = var0.x * -78439701;
+					var3 = var0.y;
+					var4 = var0.pathX[var0.pathLength - 1] * 128 + var0.size * 64;
+					int var5 = var0.pathY[var0.pathLength - 1] * 128 + var0.size * 64;
+					if (var11 < var4) {
+						if (var3 < var5) {
+							var0.orientation = 1280;
+						} else if (var3 > var5) {
+							var0.orientation = 1792;
+						} else {
+							var0.orientation = 1536;
+						}
+					} else if (var11 > var4) {
+						if (var3 < var5) {
+							var0.orientation = 768;
+						} else if (var3 > var5) {
+							var0.orientation = 256;
+						} else {
+							var0.orientation = 512;
+						}
+					} else if (var3 < var5) {
+						var0.orientation = 1024;
+					} else if (var3 > var5) {
+						var0.orientation = 0;
+					}
+
+					byte var6 = var0.pathTraversed[var0.pathLength - 1];
+					if (var4 - var11 <= 256 && var4 - var11 >= -256 && var5 - var3 <= 256 && var5 - var3 >= -256) {
+						int var7 = var0.orientation - var0.rotation & 2047;
+						if (var7 > 1024) {
+							var7 -= 2048;
+						}
+
+						int var8 = var0.walkBackSequence;
+						if (var7 >= -256 && var7 <= 256) {
+							var8 = var0.walkSequence;
+						} else if (var7 >= 256 && var7 < 768) {
+							var8 = var0.walkRightSequence;
+						} else if (var7 >= -768 && var7 <= -256) {
+							var8 = var0.walkLeftSequence;
+						}
+
+						if (var8 == -1) {
+							var8 = var0.walkSequence;
+						}
+
+						var0.movementSequence = var8;
+						int var9 = 4;
+						boolean var10 = true;
+						if (var0 instanceof NPC) {
+							var10 = ((NPC)var0).definition.isClickable;
+						}
+
+						if (var10) {
+							if (var0.rotation != var0.orientation && var0.targetIndex == -1 && var0.field953 != 0) {
+								var9 = 2;
+							}
+
+							if (var0.pathLength > 2) {
+								var9 = 6;
+							}
+
+							if (var0.pathLength > 3) {
+								var9 = 8;
+							}
+
+							if (var0.field975 > 0 && var0.pathLength > 1) {
+								var9 = 8;
+								--var0.field975;
+							}
+						} else {
+							if (var0.pathLength > 1) {
+								var9 = 6;
+							}
+
+							if (var0.pathLength > 2) {
+								var9 = 8;
+							}
+
+							if (var0.field975 > 0 && var0.pathLength > 1) {
+								var9 = 8;
+								--var0.field975;
+							}
+						}
+
+						if (var6 == 2) {
+							var9 <<= 1;
+						}
+
+						if (var9 >= 8 && var0.movementSequence == var0.walkSequence && var0.runSequence != -1) {
+							var0.movementSequence = var0.runSequence;
+						}
+
+						if (var11 != var4 || var5 != var3) {
+							if (var11 < var4) {
+								var0.x += var9 * 62504387;
+								if (var0.x * -78439701 > var4) {
+									var0.x = var4 * 62504387;
+								}
+							} else if (var11 > var4) {
+								var0.x -= var9 * 62504387;
+								if (var0.x * -78439701 < var4) {
+									var0.x = var4 * 62504387;
+								}
+							}
+
+							if (var3 < var5) {
+								var0.y += var9;
+								if (var0.y > var5) {
+									var0.y = var5;
+								}
+							} else if (var3 > var5) {
+								var0.y -= var9;
+								if (var0.y < var5) {
+									var0.y = var5;
 								}
 							}
 						}
-					}
 
-					if (var3.field2602 != 0 && !var3.isIf3) {
-						int var8 = var3.field2602 >> 16;
-						var5 = var3.field2602 << 16 >> 16;
-						var8 *= Client.field879;
-						var5 *= Client.field879;
-						var3.modelAngleX = var8 + var3.modelAngleX & 2047;
-						var3.modelAngleY = var5 + var3.modelAngleY & 2047;
-						FriendSystem.invalidateWidget(var3);
+						if (var0.x * -78439701 == var4 && var5 == var0.y) {
+							--var0.pathLength;
+							if (var0.field969 > 0) {
+								--var0.field969;
+							}
+						}
+					} else {
+						var0.x = var4 * 62504387;
+						var0.y = var5;
+						--var0.pathLength;
+						if (var0.field969 > 0) {
+							--var0.field969;
+						}
 					}
 				}
 			}
 		}
 
+		if (var0.x * -78439701 < 128 || var0.y < 128 || var0.x * -78439701 >= 13184 || var0.y >= 13184) {
+			var0.sequence = -1;
+			var0.spotAnimation = -1;
+			var0.field963 = 0;
+			var0.field964 = 0;
+			var0.x = var0.pathX[0] * -589373056 + var0.size * -294686528;
+			var0.y = var0.pathY[0] * 128 + var0.size * 64;
+			var0.method1699();
+		}
+
+		if (Varps.localPlayer == var0 && (var0.x * -78439701 < 1536 || var0.y < 1536 || var0.x * -78439701 >= 11776 || var0.y >= 11776)) {
+			var0.sequence = -1;
+			var0.spotAnimation = -1;
+			var0.field963 = 0;
+			var0.field964 = 0;
+			var0.x = var0.size * -294686528 + var0.pathX[0] * -589373056;
+			var0.y = var0.pathY[0] * 128 + var0.size * 64;
+			var0.method1699();
+		}
+
+		if (var0.field953 != 0) {
+			if (var0.targetIndex != -1) {
+				Object var13 = null;
+				if (var0.targetIndex < 32768) {
+					var13 = Client.npcs[var0.targetIndex];
+				} else if (var0.targetIndex >= 32768) {
+					var13 = Client.players[var0.targetIndex - 32768];
+				}
+
+				if (var13 != null) {
+					var3 = var0.x * -78439701 - ((Actor)var13).x * -78439701;
+					var4 = var0.y - ((Actor)var13).y;
+					if (var3 != 0 || var4 != 0) {
+						var0.orientation = (int)(Math.atan2((double)var3, (double)var4) * 325.949D) & 2047;
+					}
+				} else if (var0.false0) {
+					var0.targetIndex = -1;
+					var0.false0 = false;
+				}
+			}
+
+			if (var0.field945 != -1 && (var0.pathLength == 0 || var0.field975 > 0)) {
+				var0.orientation = var0.field945;
+				var0.field945 = -1;
+			}
+
+			var11 = var0.orientation - var0.rotation & 2047;
+			if (var11 == 0 && var0.false0) {
+				var0.targetIndex = -1;
+				var0.false0 = false;
+			}
+
+			if (var11 != 0) {
+				++var0.field976;
+				boolean var14;
+				if (var11 > 1024) {
+					var0.rotation -= var0.field953;
+					var14 = true;
+					if (var11 < var0.field953 || var11 > 2048 - var0.field953) {
+						var0.rotation = var0.orientation;
+						var14 = false;
+					}
+
+					if (var0.movementSequence == var0.readySequence && (var0.field976 > 25 || var14)) {
+						if (var0.turnLeftSequence != -1) {
+							var0.movementSequence = var0.turnLeftSequence;
+						} else {
+							var0.movementSequence = var0.walkSequence;
+						}
+					}
+				} else {
+					var0.rotation += var0.field953;
+					var14 = true;
+					if (var11 < var0.field953 || var11 > 2048 - var0.field953) {
+						var0.rotation = var0.orientation;
+						var14 = false;
+					}
+
+					if (var0.readySequence == var0.movementSequence && (var0.field976 > 25 || var14)) {
+						if (var0.turnRightSequence != -1) {
+							var0.movementSequence = var0.turnRightSequence;
+						} else {
+							var0.movementSequence = var0.walkSequence;
+						}
+					}
+				}
+
+				var0.rotation &= 2047;
+			} else {
+				var0.field976 = 0;
+			}
+		}
+
+		HitSplatDefinition.method4558(var0);
+	}
+
+	@ObfuscatedName("iy")
+	@ObfuscatedSignature(
+		signature = "(Lhy;I)Z",
+		garbageValue = "-2046780414"
+	)
+	@Export("runCs1")
+	static final boolean runCs1(Widget var0) {
+		if (var0.cs1Comparisons == null) {
+			return false;
+		} else {
+			for (int var1 = 0; var1 < var0.cs1Comparisons.length; ++var1) {
+				int var2 = class286.method5218(var0, var1);
+				int var3 = var0.cs1ComparisonValues[var1];
+				if (var0.cs1Comparisons[var1] == 2) {
+					if (var2 >= var3) {
+						return false;
+					}
+				} else if (var0.cs1Comparisons[var1] == 3) {
+					if (var2 <= var3) {
+						return false;
+					}
+				} else if (var0.cs1Comparisons[var1] == 4) {
+					if (var2 == var3) {
+						return false;
+					}
+				} else if (var3 != var2) {
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 }

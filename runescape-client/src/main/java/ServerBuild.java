@@ -4,41 +4,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("ho")
 @Implements("ServerBuild")
 public class ServerBuild {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lho;"
 	)
 	@Export("LIVE")
 	static final ServerBuild LIVE;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lho;"
 	)
 	@Export("BUILDLIVE")
 	static final ServerBuild BUILDLIVE;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lho;"
 	)
 	@Export("RC")
 	static final ServerBuild RC;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lho;"
 	)
 	@Export("WIP")
 	static final ServerBuild WIP;
-	@ObfuscatedName("u")
+	@ObfuscatedName("z")
+	@ObfuscatedGetter(
+		intValue = 1377702413
+	)
+	static int field3079;
+	@ObfuscatedName("l")
 	@Export("name")
 	public final String name;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1354780061
+		intValue = -2004053653
 	)
-	public final int field3080;
+	public final int field3077;
 
 	static {
 		LIVE = new ServerBuild("LIVE", 0);
@@ -49,6 +54,6 @@ public class ServerBuild {
 
 	ServerBuild(String var1, int var2) {
 		this.name = var1;
-		this.field3080 = var2;
+		this.field3077 = var2;
 	}
 }

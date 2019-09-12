@@ -2,12 +2,21 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kf")
+@ObfuscatedName("kj")
 public class class293 {
-	@ObfuscatedName("sx")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lkv;"
+		signature = "Lhz;"
 	)
-	@Export("masterDisk")
-	static ArchiveDisk masterDisk;
+	@Export("Widget_modelsArchive")
+	static AbstractArchive Widget_modelsArchive;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Lhz;B)V",
+		garbageValue = "97"
+	)
+	public static void method5298(AbstractArchive var0) {
+		VarcInt.VarcInt_archive = var0;
+	}
 }

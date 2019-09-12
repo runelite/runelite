@@ -1,23 +1,13 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("jc")
 public class class270 {
-	@ObfuscatedName("j")
+	@ObfuscatedName("gi")
 	@ObfuscatedSignature(
-		signature = "(II)Lkk;",
-		garbageValue = "-1980425423"
+		signature = "[Lli;"
 	)
-	public static PrivateChatMode method4895(int var0) {
-		PrivateChatMode[] var1 = AbstractSocket.ChatMode_values();
-
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			PrivateChatMode var3 = var1[var2];
-			if (var0 == var3.field3791) {
-				return var3;
-			}
-		}
-
-		return null;
-	}
+	@Export("crossSprites")
+	static Sprite[] crossSprites;
 }

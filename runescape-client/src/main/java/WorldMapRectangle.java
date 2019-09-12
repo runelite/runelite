@@ -3,100 +3,125 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("h")
+@ObfuscatedName("m")
 @Implements("WorldMapRectangle")
 public final class WorldMapRectangle {
-	@ObfuscatedName("bp")
+	@ObfuscatedName("bd")
 	@ObfuscatedSignature(
-		signature = "Lhv;"
+		signature = "Llt;"
 	)
-	static StudioGame field166;
-	@ObfuscatedName("dy")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive11")
-	static Archive archive11;
-	@ObfuscatedName("eq")
+	@Export("worldSelectRightSprite")
+	static IndexedSprite worldSelectRightSprite;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 161269475
-	)
-	@Export("port1")
-	static int port1;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = -35093497
+		intValue = -862599519
 	)
 	@Export("width")
 	int width;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -975025893
+		intValue = -1046105525
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1556626299
+		intValue = -686803507
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1692274853
+		intValue = -1467646057
 	)
 	@Export("y")
 	int y;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		signature = "Lao;"
+		signature = "Laj;"
 	)
 	final WorldMapManager this$0;
 
 	@ObfuscatedSignature(
-		signature = "(Lao;)V"
+		signature = "(Laj;)V"
 	)
 	WorldMapRectangle(WorldMapManager var1) {
 		this.this$0 = var1;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;IB)V",
-		garbageValue = "87"
+		signature = "(ILcu;ZI)I",
+		garbageValue = "1965047031"
 	)
-	static final void method281(String var0, int var1) {
-		PacketBufferNode var2 = MenuAction.getPacketBufferNode(ClientPacket.field2269, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeByte(Buddy.stringCp1252NullTerminatedByteSize(var0) + 1);
-		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
-		var2.packetBuffer.writeByte(var1);
-		Client.packetWriter.addNode(var2);
+	static int method255(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? UserComparator9.field1941 : MidiPcmStream.field2410;
+		if (var0 == ScriptOpcodes.CC_GETX) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.x;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETY) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.y;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.width;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.height;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3.parentId;
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 
-	@ObfuscatedName("fx")
+	@ObfuscatedName("jo")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "-228783790"
+	)
+	@Export("runIntfCloseListeners")
+	static final void runIntfCloseListeners(int var0, int var1) {
+		if (TaskHandler.loadInterface(var0)) {
+			class32.runComponentCloseListeners(class289.Widget_interfaceComponents[var0], var1);
+		}
+	}
+
+	@ObfuscatedName("jr")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1711181474"
+		garbageValue = "262144"
 	)
-	static final void method280() {
-		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
-			int var1 = Client.npcIndices[var0];
-			NPC var2 = Client.npcs[var1];
-			if (var2 != null) {
-				class1.calculateActorPosition(var2, var2.definition.size);
+	static void method257() {
+		for (InterfaceParent var0 = (InterfaceParent)Client.interfaceParents.first(); var0 != null; var0 = (InterfaceParent)Client.interfaceParents.next()) {
+			int var1 = var0.group;
+			if (TaskHandler.loadInterface(var1)) {
+				boolean var2 = true;
+				Widget[] var3 = class289.Widget_interfaceComponents[var1];
+
+				int var4;
+				for (var4 = 0; var4 < var3.length; ++var4) {
+					if (var3[var4] != null) {
+						var2 = var3[var4].isIf3;
+						break;
+					}
+				}
+
+				if (!var2) {
+					var4 = (int)var0.key;
+					Widget var5 = Player.getWidget(var4);
+					if (var5 != null) {
+						WorldMapID.invalidateWidget(var5);
+					}
+				}
 			}
 		}
 
-	}
-
-	@ObfuscatedName("kd")
-	@ObfuscatedSignature(
-		signature = "(Lhp;B)Z",
-		garbageValue = "1"
-	)
-	@Export("isComponentHidden")
-	static boolean isComponentHidden(Widget var0) {
-		return var0.isHidden;
 	}
 }

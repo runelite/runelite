@@ -1,38 +1,43 @@
-import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("is")
+@ObfuscatedName("ij")
 @Implements("ParamDefinition")
 public class ParamDefinition extends DualNode {
-	@ObfuscatedName("pk")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lls;"
+		signature = "Lhz;"
 	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
-	@ObfuscatedName("j")
+	@Export("ParamDefinition_archive")
+	static AbstractArchive ParamDefinition_archive;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("ParamDefinition_cached")
-	static EvictingDualNodeHashTable ParamDefinition_cached;
-	@ObfuscatedName("i")
+	public static EvictingDualNodeHashTable ParamDefinition_cached;
+	@ObfuscatedName("cm")
+	@ObfuscatedSignature(
+		signature = "Lbt;"
+	)
+	@Export("mouseRecorder")
+	static MouseRecorder mouseRecorder;
+	@ObfuscatedName("t")
 	@Export("type")
 	char type;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1184264069
+		intValue = -1004083119
 	)
 	@Export("defaultInt")
 	public int defaultInt;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("defaultStr")
 	public String defaultStr;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("autoDisable")
 	boolean autoDisable;
 
@@ -44,19 +49,19 @@ public class ParamDefinition extends DualNode {
 		this.autoDisable = true;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-549748029"
+		signature = "(B)V",
+		garbageValue = "64"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)V",
-		garbageValue = "207270503"
+		signature = "(Lkz;B)V",
+		garbageValue = "119"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -70,10 +75,10 @@ public class ParamDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(Lky;II)V",
-		garbageValue = "1082151718"
+		signature = "(Lkz;IB)V",
+		garbageValue = "-73"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -107,55 +112,11 @@ public class ParamDefinition extends DualNode {
 
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "38"
+		signature = "(I)Z",
+		garbageValue = "-654498367"
 	)
 	@Export("isString")
 	public boolean isString() {
 		return this.type == 's';
-	}
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(Ljava/awt/Component;S)V",
-		garbageValue = "-10016"
-	)
-	static void method4420(Component var0) {
-		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
-		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
-		KeyHandler.field378 = -1;
-	}
-
-	@ObfuscatedName("ja")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1970542013"
-	)
-	static final void method4424() {
-		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2205, Client.packetWriter.isaacCipher);
-		Client.packetWriter.addNode(var0);
-
-		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
-			if (var1.type == 0 || var1.type == 3) {
-				VarpDefinition.closeInterface(var1, true);
-			}
-		}
-
-		if (Client.meslayerContinueWidget != null) {
-			FriendSystem.invalidateWidget(Client.meslayerContinueWidget);
-			Client.meslayerContinueWidget = null;
-		}
-
-	}
-
-	@ObfuscatedName("kx")
-	@ObfuscatedSignature(
-		signature = "(Lhp;B)I",
-		garbageValue = "-97"
-	)
-	@Export("getWidgetClickMask")
-	static int getWidgetClickMask(Widget var0) {
-		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
-		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

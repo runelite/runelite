@@ -9,55 +9,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cj")
 @Implements("Varcs")
 public class Varcs {
-	@ObfuscatedName("f")
-	@Export("musicTrackBoolean")
-	public static boolean musicTrackBoolean;
-	@ObfuscatedName("i")
+	@ObfuscatedName("rm")
+	@ObfuscatedGetter(
+		intValue = -2086820043
+	)
+	static int field1242;
+	@ObfuscatedName("t")
 	@Export("intsPersistence")
 	boolean[] intsPersistence;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("map")
 	Map map;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("strings")
 	String[] strings;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("unwrittenChanges")
 	boolean unwrittenChanges;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		longValue = -3102782666800977811L
+		longValue = -2615226300908847259L
 	)
-	long field1243;
+	long field1239;
 
 	Varcs() {
 		this.unwrittenChanges = false;
-		int var1 = HealthBarUpdate.archive2.getGroupFileCount(19);
+		int var1 = class173.archive2.getGroupFileCount(19);
 		this.map = new HashMap();
 		this.intsPersistence = new boolean[var1];
 
 		int var2;
 		for (var2 = 0; var2 < var1; ++var2) {
-			VarcInt var3 = FileSystem.method3447(var2);
+			VarcInt var3 = class186.method3609(var2);
 			this.intsPersistence[var2] = var3.persist;
 		}
 
 		var2 = 0;
-		if (HealthBarUpdate.archive2.method4199(15)) {
-			var2 = HealthBarUpdate.archive2.getGroupFileCount(15);
+		if (class173.archive2.method4261(15)) {
+			var2 = class173.archive2.getGroupFileCount(15);
 		}
 
 		this.strings = new String[var2];
 		this.read();
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-1411494049"
+		signature = "(IIS)V",
+		garbageValue = "-1109"
 	)
 	@Export("setInt")
 	void setInt(int var1, int var2) {
@@ -68,10 +70,10 @@ public class Varcs {
 
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "-102"
+		signature = "(II)I",
+		garbageValue = "1810097692"
 	)
 	@Export("getInt")
 	int getInt(int var1) {
@@ -79,20 +81,20 @@ public class Varcs {
 		return var2 instanceof Integer ? (Integer)var2 : -1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(ILjava/lang/String;I)V",
-		garbageValue = "-461145893"
+		garbageValue = "-1074130602"
 	)
 	@Export("setString")
 	void setString(int var1, String var2) {
 		this.map.put(var1, var2);
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(IB)Ljava/lang/String;",
-		garbageValue = "-6"
+		garbageValue = "68"
 	)
 	@Export("getString")
 	String getString(int var1) {
@@ -100,30 +102,30 @@ public class Varcs {
 		return var2 instanceof String ? (String)var2 : "";
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "(ILjava/lang/String;I)V",
-		garbageValue = "1336031066"
+		garbageValue = "-1450087250"
 	)
 	@Export("setStringOld")
 	void setStringOld(int var1, String var2) {
 		this.strings[var1] = var2;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IB)Ljava/lang/String;",
-		garbageValue = "-122"
+		signature = "(II)Ljava/lang/String;",
+		garbageValue = "-1157824262"
 	)
 	@Export("getStringOld")
 	String getStringOld(int var1) {
 		return this.strings[var1];
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "30"
+		signature = "(I)V",
+		garbageValue = "844512682"
 	)
 	@Export("clearTransient")
 	void clearTransient() {
@@ -140,20 +142,20 @@ public class Varcs {
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(ZI)Lmm;",
-		garbageValue = "1411517965"
+		signature = "(ZI)Lmr;",
+		garbageValue = "-1276722644"
 	)
 	@Export("getPreferencesFile")
 	AccessFile getPreferencesFile(boolean var1) {
-		return TaskHandler.getPreferencesFile("2", WorldMapRectangle.field166.name, var1);
+		return GrandExchangeOfferUnitPriceComparator.getPreferencesFile("2", class43.field359.name, var1);
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1634973674"
+		signature = "(B)V",
+		garbageValue = "51"
 	)
 	@Export("write")
 	void write() {
@@ -173,105 +175,107 @@ public class Varcs {
 					if (var7 instanceof Integer) {
 						var2 += 4;
 					} else if (var7 instanceof String) {
-						var2 += Buddy.stringCp1252NullTerminatedByteSize((String)var7);
+						var2 += stringCp1252NullTerminatedByteSize((String)var7);
 					}
 
 					++var3;
 				}
 			}
 
-			Buffer var32 = new Buffer(var2);
-			var32.writeByte(2);
-			var32.writeShort(var3);
-			Iterator var33 = this.map.entrySet().iterator();
+			Buffer var33 = new Buffer(var2);
+			var33.writeByte(2);
+			var33.writeShort(var3);
+			Iterator var34 = this.map.entrySet().iterator();
 
-			label185:
+			label187:
 			while (true) {
-				Entry var20;
-				int var21;
+				Entry var21;
+				int var22;
 				do {
-					if (!var33.hasNext()) {
-						var1.write(var32.array, 0, var32.offset);
-						break label185;
+					if (!var34.hasNext()) {
+						var1.write(var33.array, 0, var33.offset);
+						break label187;
 					}
 
-					var20 = (Entry)var33.next();
-					var21 = (Integer)var20.getKey();
-				} while(!this.intsPersistence[var21]);
+					var21 = (Entry)var34.next();
+					var22 = (Integer)var21.getKey();
+				} while(!this.intsPersistence[var22]);
 
-				var32.writeShort(var21);
-				Object var8 = var20.getValue();
+				var33.writeShort(var22);
+				Object var8 = var21.getValue();
 				Class var10 = var8.getClass();
-				class3[] var11 = class3.method44();
-				int var12 = 0;
+				class3[] var11 = new class3[]{class3.field10, class3.field13, class3.field7};
+				class3[] var12 = var11;
+				int var13 = 0;
 
 				class3 var9;
+				class3 var14;
 				while (true) {
-					if (var12 >= var11.length) {
+					if (var13 >= var12.length) {
 						var9 = null;
 						break;
 					}
 
-					class3 var13 = var11[var12];
-					if (var10 == var13.field29) {
-						var9 = var13;
+					var14 = var12[var13];
+					if (var10 == var14.field11) {
+						var9 = var14;
 						break;
 					}
 
-					++var12;
+					++var13;
 				}
 
-				var32.writeByte(var9.field18);
-				Class var34 = var8.getClass();
-				class3[] var15 = class3.method44();
-				int var16 = 0;
+				var33.writeByte(var9.field12);
+				Class var23 = var8.getClass();
+				class3[] var15 = new class3[]{class3.field10, class3.field13, class3.field7};
+				class3[] var16 = var15;
+				int var17 = 0;
 
-				class3 var14;
 				while (true) {
-					if (var16 >= var15.length) {
+					if (var17 >= var16.length) {
 						var14 = null;
 						break;
 					}
 
-					class3 var17 = var15[var16];
-					if (var34 == var17.field29) {
-						var14 = var17;
+					class3 var18 = var16[var17];
+					if (var23 == var18.field11) {
+						var14 = var18;
 						break;
 					}
 
-					++var16;
+					++var17;
 				}
 
 				if (var14 == null) {
 					throw new IllegalArgumentException();
 				}
 
-				class0 var22 = var14.field13;
-				var22.vmethod58(var8, var32);
+				class0 var35 = var14.field8;
+				var35.vmethod42(var8, var33);
 			}
-		} catch (Exception var30) {
+		} catch (Exception var31) {
 		} finally {
 			try {
 				var1.close();
-			} catch (Exception var29) {
+			} catch (Exception var30) {
 			}
 
 		}
 
 		this.unwrittenChanges = false;
-		this.field1243 = SequenceDefinition.method4686();
+		this.field1239 = SoundCache.method2480();
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-85"
+		garbageValue = "97"
 	)
 	@Export("read")
 	void read() {
 		AccessFile var1 = this.getPreferencesFile(false);
 
-		label229: {
+		label215: {
 			try {
 				byte[] var2 = new byte[(int)var1.length()];
 
@@ -283,67 +287,68 @@ public class Varcs {
 					}
 				}
 
-				Buffer var14 = new Buffer(var2);
-				if (var14.array.length - var14.offset >= 1) {
-					int var15 = var14.readUnsignedByte();
-					if (var15 >= 0 && var15 <= 2) {
-						int var7;
-						int var8;
-						int var9;
-						int var16;
-						if (var15 >= 2) {
-							var16 = var14.readUnsignedShort();
-							var7 = 0;
-
-							while (true) {
-								if (var7 >= var16) {
-									break label229;
-								}
-
-								var8 = var14.readUnsignedShort();
-								var9 = var14.readUnsignedByte();
-								class3 var10 = (class3)FriendSystem.findEnumerated(class3.method44(), var9);
-								Object var11 = var10.method43(var14);
-								if (this.intsPersistence[var8]) {
-									this.map.put(var8, var11);
-								}
-
-								++var7;
-							}
-						} else {
-							var16 = var14.readUnsignedShort();
-
-							for (var7 = 0; var7 < var16; ++var7) {
-								var8 = var14.readUnsignedShort();
-								var9 = var14.readInt();
-								if (this.intsPersistence[var8]) {
-									this.map.put(var8, var9);
-								}
-							}
-
-							var7 = var14.readUnsignedShort();
-							var8 = 0;
-
-							while (true) {
-								if (var8 >= var7) {
-									break label229;
-								}
-
-								var14.readUnsignedShort();
-								var14.readStringCp1252NullTerminated();
-								++var8;
-							}
-						}
-					}
-
+				Buffer var15 = new Buffer(var2);
+				if (var15.array.length - var15.offset < 1) {
 					return;
 				}
-			} catch (Exception var25) {
-				break label229;
+
+				int var16 = var15.readUnsignedByte();
+				if (var16 >= 0 && var16 <= 2) {
+					int var7;
+					int var8;
+					int var9;
+					int var17;
+					if (var16 >= 2) {
+						var17 = var15.readUnsignedShort();
+						var7 = 0;
+
+						while (true) {
+							if (var7 >= var17) {
+								break label215;
+							}
+
+							var8 = var15.readUnsignedShort();
+							var9 = var15.readUnsignedByte();
+							class3[] var10 = new class3[]{class3.field10, class3.field13, class3.field7};
+							class3 var11 = (class3)ServerPacket.findEnumerated(var10, var9);
+							Object var12 = var11.method37(var15);
+							if (this.intsPersistence[var8]) {
+								this.map.put(var8, var12);
+							}
+
+							++var7;
+						}
+					} else {
+						var17 = var15.readUnsignedShort();
+
+						for (var7 = 0; var7 < var17; ++var7) {
+							var8 = var15.readUnsignedShort();
+							var9 = var15.readInt();
+							if (this.intsPersistence[var8]) {
+								this.map.put(var8, var9);
+							}
+						}
+
+						var7 = var15.readUnsignedShort();
+						var8 = 0;
+
+						while (true) {
+							if (var8 >= var7) {
+								break label215;
+							}
+
+							var15.readUnsignedShort();
+							var15.readStringCp1252NullTerminated();
+							++var8;
+						}
+					}
+				}
+			} catch (Exception var26) {
+				break label215;
 			} finally {
 				try {
 					var1.close();
-				} catch (Exception var24) {
+				} catch (Exception var25) {
 				}
 
 			}
@@ -354,26 +359,51 @@ public class Varcs {
 		this.unwrittenChanges = false;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "573629327"
+		garbageValue = "-1574159447"
 	)
 	@Export("tryWrite")
 	void tryWrite() {
-		if (this.unwrittenChanges && this.field1243 < SequenceDefinition.method4686() - 60000L) {
+		if (this.unwrittenChanges && this.field1239 < SoundCache.method2480() - 60000L) {
 			this.write();
 		}
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "702857669"
+		signature = "(B)Z",
+		garbageValue = "53"
 	)
 	@Export("hasUnwrittenChanges")
 	boolean hasUnwrittenChanges() {
 		return this.unwrittenChanges;
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-2082115344"
+	)
+	@Export("ItemContainer_getCount")
+	static int ItemContainer_getCount(int var0, int var1) {
+		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var2 == null) {
+			return 0;
+		} else {
+			return var1 >= 0 && var1 < var2.quantities.length ? var2.quantities[var1] : 0;
+		}
+	}
+
+	@ObfuscatedName("ai")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;B)I",
+		garbageValue = "0"
+	)
+	@Export("stringCp1252NullTerminatedByteSize")
+	public static int stringCp1252NullTerminatedByteSize(String var0) {
+		return var0.length() + 1;
 	}
 }

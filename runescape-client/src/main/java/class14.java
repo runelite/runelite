@@ -1,77 +1,101 @@
+import java.util.Iterator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("p")
 public class class14 {
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(CI)B",
-		garbageValue = "-1488757001"
+	@ObfuscatedName("g")
+	@Export("Interpreter_stringLocals")
+	static String[] Interpreter_stringLocals;
+	@ObfuscatedName("hs")
+	@ObfuscatedGetter(
+		intValue = 887087521
 	)
-	@Export("charToByteCp1252")
-	public static byte charToByteCp1252(char var0) {
-		byte var1;
-		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-			var1 = (byte)var0;
-		} else if (var0 == 8364) {
-			var1 = -128;
-		} else if (var0 == 8218) {
-			var1 = -126;
-		} else if (var0 == 402) {
-			var1 = -125;
-		} else if (var0 == 8222) {
-			var1 = -124;
-		} else if (var0 == 8230) {
-			var1 = -123;
-		} else if (var0 == 8224) {
-			var1 = -122;
-		} else if (var0 == 8225) {
-			var1 = -121;
-		} else if (var0 == 710) {
-			var1 = -120;
-		} else if (var0 == 8240) {
-			var1 = -119;
-		} else if (var0 == 352) {
-			var1 = -118;
-		} else if (var0 == 8249) {
-			var1 = -117;
-		} else if (var0 == 338) {
-			var1 = -116;
-		} else if (var0 == 381) {
-			var1 = -114;
-		} else if (var0 == 8216) {
-			var1 = -111;
-		} else if (var0 == 8217) {
-			var1 = -110;
-		} else if (var0 == 8220) {
-			var1 = -109;
-		} else if (var0 == 8221) {
-			var1 = -108;
-		} else if (var0 == 8226) {
-			var1 = -107;
-		} else if (var0 == 8211) {
-			var1 = -106;
-		} else if (var0 == 8212) {
-			var1 = -105;
-		} else if (var0 == 732) {
-			var1 = -104;
-		} else if (var0 == 8482) {
-			var1 = -103;
-		} else if (var0 == 353) {
-			var1 = -102;
-		} else if (var0 == 8250) {
-			var1 = -101;
-		} else if (var0 == 339) {
-			var1 = -100;
-		} else if (var0 == 382) {
-			var1 = -98;
-		} else if (var0 == 376) {
-			var1 = -97;
-		} else {
-			var1 = 63;
+	@Export("cameraZ")
+	static int cameraZ;
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "-284135930"
+	)
+	static String method145() {
+		String var0 = "";
+
+		Message var2;
+		for (Iterator var1 = Messages.Messages_hashTable.iterator(); var1.hasNext(); var0 = var0 + var2.sender + ':' + var2.text + '\n') {
+			var2 = (Message)var1.next();
 		}
 
-		return var1;
+		return var0;
+	}
+
+	@ObfuscatedName("et")
+	@ObfuscatedSignature(
+		signature = "(Lio;Ljava/lang/String;I)V",
+		garbageValue = "1397921952"
+	)
+	static void method142(Archive var0, String var1) {
+		ArchiveLoader var2 = new ArchiveLoader(var0, var1);
+		Client.archiveLoaders.add(var2);
+		Client.field895 += var2.groupCount;
+	}
+
+	@ObfuscatedName("jw")
+	@ObfuscatedSignature(
+		signature = "(Lhy;I)V",
+		garbageValue = "-1667373140"
+	)
+	static final void method143(Widget var0) {
+		int var1 = var0.contentType;
+		if (var1 == 324) {
+			if (Client.field703 == -1) {
+				Client.field703 = var0.spriteId2;
+				Client.field888 = var0.spriteId;
+			}
+
+			if (Client.playerAppearance.isFemale) {
+				var0.spriteId2 = Client.field703;
+			} else {
+				var0.spriteId2 = Client.field888;
+			}
+
+		} else if (var1 == 325) {
+			if (Client.field703 == -1) {
+				Client.field703 = var0.spriteId2;
+				Client.field888 = var0.spriteId;
+			}
+
+			if (Client.playerAppearance.isFemale) {
+				var0.spriteId2 = Client.field888;
+			} else {
+				var0.spriteId2 = Client.field703;
+			}
+
+		} else if (var1 == 327) {
+			var0.modelAngleX = 150;
+			var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+			var0.modelType = 5;
+			var0.modelId = 0;
+		} else if (var1 == 328) {
+			var0.modelAngleX = 150;
+			var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
+			var0.modelType = 5;
+			var0.modelId = 1;
+		}
+	}
+
+	@ObfuscatedName("ks")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "71"
+	)
+	static void method144() {
+		if (Client.oculusOrbState == 1) {
+			Client.field824 = true;
+		}
+
 	}
 }

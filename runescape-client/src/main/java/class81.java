@@ -4,13 +4,22 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cc")
 public class class81 {
-	@ObfuscatedName("s")
+	@ObfuscatedName("qg")
 	@ObfuscatedSignature(
-		signature = "(Lby;I)V",
-		garbageValue = "1766301676"
+		signature = "Lde;"
 	)
-	@Export("runScriptEvent")
-	public static void runScriptEvent(ScriptEvent var0) {
-		WorldMapIcon_1.runScript(var0, 500000);
+	@Export("decimator")
+	static Decimator decimator;
+	@ObfuscatedName("bg")
+	@Export("otp")
+	static String otp;
+
+	@ObfuscatedName("ic")
+	@ObfuscatedSignature(
+		signature = "(II)Ljava/lang/String;",
+		garbageValue = "910653188"
+	)
+	static final String method2032(int var0) {
+		return var0 < 999999999 ? Integer.toString(var0) : "*";
 	}
 }

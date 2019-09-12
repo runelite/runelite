@@ -2,34 +2,21 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ax")
+@ObfuscatedName("ay")
 public class class40 {
-	@ObfuscatedName("b")
+	@ObfuscatedName("re")
 	@ObfuscatedGetter(
-		intValue = -1461963795
+		intValue = 697703808
 	)
-	static int field330;
-	@ObfuscatedName("dl")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive18")
-	static Archive archive18;
-	@ObfuscatedName("hb")
+	static int field334;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -2115409067
-	)
-	@Export("cameraYaw")
-	static int cameraYaw;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = 1389839029
+		intValue = -1312373259
 	)
 	@Export("pixelsPerTile")
 	int pixelsPerTile;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("tileTemplates")
 	byte[][][] tileTemplates;
 
@@ -37,25 +24,25 @@ public class class40 {
 		this.pixelsPerTile = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(IIIIIIIII)V",
-		garbageValue = "-1961040387"
+		garbageValue = "-288061828"
 	)
-	void method698(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+	void method707(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
 		if (var7 != 0 && this.pixelsPerTile != 0 && this.tileTemplates != null) {
-			var8 = this.method686(var8, var7);
-			var7 = this.method699(var7);
+			var8 = this.method708(var8, var7);
+			var7 = this.method720(var7);
 			Rasterizer2D.Rasterizer2D_drawGradientPixels(var1, var2, var5, var6, var3, var4, this.tileTemplates[var7 - 1][var8], this.pixelsPerTile);
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "61"
+		signature = "(III)I",
+		garbageValue = "-1246935327"
 	)
-	int method686(int var1, int var2) {
+	int method708(int var1, int var2) {
 		if (var2 == 9) {
 			var1 = var1 + 1 & 3;
 		}
@@ -71,12 +58,12 @@ public class class40 {
 		return var1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-1503564944"
+		signature = "(IB)I",
+		garbageValue = "-99"
 	)
-	int method699(int var1) {
+	int method720(int var1) {
 		if (var1 != 9 && var1 != 10) {
 			return var1 == 11 ? 8 : var1;
 		} else {
@@ -84,10 +71,10 @@ public class class40 {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1489798244"
+		signature = "(B)V",
+		garbageValue = "43"
 	)
 	@Export("init")
 	void init() {
@@ -104,10 +91,10 @@ public class class40 {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1799961229"
+		garbageValue = "1944668937"
 	)
 	@Export("init0")
 	void init0() {
@@ -171,10 +158,10 @@ public class class40 {
 		this.tileTemplates[0][3] = var1;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "20"
+		signature = "(I)V",
+		garbageValue = "-1965093636"
 	)
 	@Export("init1")
 	void init1() {
@@ -242,10 +229,10 @@ public class class40 {
 		this.tileTemplates[1][3] = var1;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1663362252"
+		signature = "(B)V",
+		garbageValue = "-102"
 	)
 	@Export("init2")
 	void init2() {
@@ -309,10 +296,10 @@ public class class40 {
 		this.tileTemplates[2][3] = var1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "17"
+		signature = "(S)V",
+		garbageValue = "12394"
 	)
 	@Export("init3")
 	void init3() {
@@ -376,10 +363,10 @@ public class class40 {
 		this.tileTemplates[3][3] = var1;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "20"
+		signature = "(I)V",
+		garbageValue = "-1949991875"
 	)
 	@Export("init4")
 	void init4() {
@@ -443,10 +430,10 @@ public class class40 {
 		this.tileTemplates[4][3] = var1;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-781295717"
+		garbageValue = "-2049205254"
 	)
 	@Export("init5")
 	void init5() {
@@ -512,10 +499,10 @@ public class class40 {
 		this.tileTemplates[5][3] = var1;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "-13800"
+		signature = "(B)V",
+		garbageValue = "42"
 	)
 	@Export("init6")
 	void init6() {
@@ -581,10 +568,10 @@ public class class40 {
 		this.tileTemplates[6][3] = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1592731249"
+		garbageValue = "-1882268812"
 	)
 	@Export("init7")
 	void init7() {
@@ -650,43 +637,82 @@ public class class40 {
 		this.tileTemplates[7][3] = var1;
 	}
 
-	@ObfuscatedName("u")
-	public static int method729(long var0) {
-		return (int)(var0 >>> 14 & 3L);
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(IIIB)I",
+		garbageValue = "82"
+	)
+	public static int method735(int var0, int var1, int var2) {
+		var2 &= 3;
+		if (var2 == 0) {
+			return var0;
+		} else if (var2 == 1) {
+			return var1;
+		} else {
+			return var2 == 2 ? 7 - var0 : 7 - var1;
+		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("eu")
 	@ObfuscatedSignature(
-		signature = "(ILcr;ZI)I",
-		garbageValue = "-1563998621"
+		signature = "(I)V",
+		garbageValue = "-1745602668"
 	)
-	static int method728(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? class286.field3623 : class297.field3693;
-		if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = WorldMapRegion.method530(ParamDefinition.getWidgetClickMask(var3));
-			return 1;
-		} else if (var0 != ScriptOpcodes.CC_GETOP) {
-			if (var0 == ScriptOpcodes.CC_GETOPBASE) {
-				if (var3.dataText == null) {
-					Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
-				} else {
-					Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.dataText;
-				}
+	static final void method736() {
+		Client.packetWriter.close();
+		MouseRecorder.method1139();
+		GrandExchangeOfferWorldComparator.method62();
+		KitDefinition.KitDefinition_cached.clear();
+		ObjectDefinition.ObjectDefinition_cached.clear();
+		ObjectDefinition.ObjectDefinition_cachedModelData.clear();
+		ObjectDefinition.ObjectDefinition_cachedEntities.clear();
+		ObjectDefinition.ObjectDefinition_cachedModels.clear();
+		NPCDefinition.NpcDefinition_cached.clear();
+		NPCDefinition.NpcDefinition_cachedModels.clear();
+		ItemDefinition.ItemDefinition_cached.clear();
+		ItemDefinition.ItemDefinition_cachedModels.clear();
+		ItemDefinition.ItemDefinition_cachedSprites.clear();
+		SequenceDefinition.SequenceDefinition_cached.clear();
+		SequenceDefinition.SequenceDefinition_cachedFrames.clear();
+		SpotAnimationDefinition.SpotAnimationDefinition_cached.clear();
+		SpotAnimationDefinition.SpotAnimationDefinition_cachedModels.clear();
+		VarbitDefinition.VarbitDefinition_cached.clear();
+		class195.method3663();
+		class297.method5410();
+		UserComparator3.HealthBarDefinition_clearCached();
+		StructDefinition.StructDefinition_cached.clear();
+		ParamDefinition.ParamDefinition_cached.clear();
+		Canvas.WorldMapElement_clearCached();
+		PlayerAppearance.PlayerAppearance_cachedModels.clear();
+		Widget.Widget_cachedSprites.clear();
+		Widget.Widget_cachedModels.clear();
+		Widget.Widget_cachedFonts.clear();
+		Widget.Widget_cachedSpriteMasks.clear();
+		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear();
+		Script.Script_cached.clear();
+		ScriptEvent.archive0.clearFiles();
+		GrandExchangeOffer.archive1.clearFiles();
+		WorldMapData_0.archive3.clearFiles();
+		class13.archive4.clearFiles();
+		Timer.archive5.clearFiles();
+		WorldMapDecoration.archive6.clearFiles();
+		class49.archive7.clearFiles();
+		WorldMapDecoration.archive8.clearFiles();
+		WorldMapData_0.archive9.clearFiles();
+		FontName.archive10.clearFiles();
+		ArchiveDisk.archive11.clearFiles();
+		Message.archive12.clearFiles();
+		WorldMapIcon_1.scene.clear();
 
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
-			int var4 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			--var4;
-			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-				Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.actions[var4];
-			} else {
-				Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = "";
-			}
-
-			return 1;
+		for (int var0 = 0; var0 < 4; ++var0) {
+			Client.collisionMaps[var0].clear();
 		}
+
+		System.gc();
+		WallDecoration.method3256(2);
+		Client.field857 = -1;
+		Client.field746 = false;
+		Widget.method4074();
+		WorldMapIcon_0.updateGameState(10);
 	}
 }

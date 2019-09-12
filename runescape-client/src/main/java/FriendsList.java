@@ -4,61 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jo")
+@ObfuscatedName("jx")
 @Implements("FriendsList")
 public class FriendsList extends UserList {
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Llu;"
+		signature = "Lll;"
 	)
 	@Export("loginType")
 	final LoginType loginType;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1273879743
+		intValue = -699388303
 	)
-	int field3600;
-	@ObfuscatedName("f")
+	int field3587;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Ljf;"
+		signature = "Ljo;"
 	)
 	@Export("friendLoginUpdates")
 	public LinkDeque friendLoginUpdates;
 
 	@ObfuscatedSignature(
-		signature = "(Llu;)V"
+		signature = "(Lll;)V"
 	)
 	public FriendsList(LoginType var1) {
 		super(400);
-		this.field3600 = 1;
+		this.field3587 = 1;
 		this.friendLoginUpdates = new LinkDeque();
 		this.loginType = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Lju;",
-		garbageValue = "-192021045"
+		signature = "(I)Ljw;",
+		garbageValue = "-734254876"
 	)
 	@Export("newInstance")
 	User newInstance() {
 		return new Friend();
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II)[Lju;",
-		garbageValue = "518998026"
+		signature = "(II)[Ljw;",
+		garbageValue = "1353779565"
 	)
 	@Export("newTypedArray")
 	User[] newTypedArray(int var1) {
 		return new Friend[var1];
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Ljx;ZI)Z",
-		garbageValue = "-1515368457"
+		signature = "(Ljt;ZB)Z",
+		garbageValue = "0"
 	)
 	@Export("isFriended")
 	public boolean isFriended(Username var1, boolean var2) {
@@ -70,10 +70,10 @@ public class FriendsList extends UserList {
 		}
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lky;IB)V",
-		garbageValue = "0"
+		signature = "(Lkz;II)V",
+		garbageValue = "149092737"
 	)
 	@Export("read")
 	public void read(Buffer var1, int var2) {
@@ -137,17 +137,17 @@ public class FriendsList extends UserList {
 					}
 
 					if (var6 != var11.world) {
-						var11.int2 = ++this.field3600 - 1;
+						var11.int2 = ++this.field3587 - 1;
 						if (var11.world == -1 && var6 == 0) {
-							var11.int2 = -(var11.int2 * 1037739243) * 1487463363;
+							var11.int2 = -(var11.int2 * -2054461169) * 725247471;
 						}
 
 						var11.world = var6;
 					}
 
 					var11.rank = var7;
-					var11.field3607 = var9;
-					var11.field3606 = var10;
+					var11.field3599 = var9;
+					var11.field3598 = var10;
 					continue;
 				}
 
@@ -159,47 +159,68 @@ public class FriendsList extends UserList {
 		}
 	}
 
-	@ObfuscatedName("fk")
-	@ObfuscatedSignature(
-		signature = "(Lbd;III)V",
-		garbageValue = "1475900100"
-	)
-	@Export("performPlayerAnimation")
-	static void performPlayerAnimation(Player var0, int var1, int var2) {
-		if (var0.sequence == var1 && var1 != -1) {
-			int var3 = Widget.SequenceDefinition_get(var1).field3492;
-			if (var3 == 1) {
-				var0.sequenceFrame = 0;
-				var0.sequenceFrameCycle = 0;
-				var0.sequenceDelay = var2;
-				var0.field964 = 0;
+	@ObfuscatedName("c")
+	@Export("sleepMillis")
+	public static final void sleepMillis(long var0) {
+		if (var0 > 0L) {
+			if (var0 % 10L == 0L) {
+				long var2 = var0 - 1L;
+
+				try {
+					Thread.sleep(var2);
+				} catch (InterruptedException var8) {
+				}
+
+				try {
+					Thread.sleep(1L);
+				} catch (InterruptedException var7) {
+				}
+			} else {
+				try {
+					Thread.sleep(var0);
+				} catch (InterruptedException var6) {
+				}
 			}
 
-			if (var3 == 2) {
-				var0.field964 = 0;
-			}
-		} else if (var1 == -1 || var0.sequence == -1 || Widget.SequenceDefinition_get(var1).field3508 >= Widget.SequenceDefinition_get(var0.sequence).field3508) {
-			var0.sequence = var1;
-			var0.sequenceFrame = 0;
-			var0.sequenceFrameCycle = 0;
-			var0.sequenceDelay = var2;
-			var0.field964 = 0;
-			var0.field947 = var0.pathLength;
 		}
-
 	}
 
-	@ObfuscatedName("ht")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIIIB)V",
-		garbageValue = "-11"
+		signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+		garbageValue = "6"
 	)
-	static final void method5102(int var0, int var1, int var2, int var3) {
-		for (int var4 = 0; var4 < Client.rootWidgetCount; ++var4) {
-			if (Client.rootWidgetXs[var4] + Client.rootWidgetWidths[var4] > var0 && Client.rootWidgetXs[var4] < var0 + var2 && Client.rootWidgetYs[var4] + Client.rootWidgetHeights[var4] > var1 && Client.rootWidgetYs[var4] < var3 + var1) {
-				Client.field829[var4] = true;
+	public static String method5163(CharSequence var0) {
+		int var1 = var0.length();
+		StringBuilder var2 = new StringBuilder(var1);
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			char var4 = var0.charAt(var3);
+			if ((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+				if (var4 == ' ') {
+					var2.append('+');
+				} else {
+					byte var5 = MenuAction.charToByteCp1252(var4);
+					var2.append('%');
+					int var6 = var5 >> 4 & 15;
+					if (var6 >= 10) {
+						var2.append((char)(var6 + 55));
+					} else {
+						var2.append((char)(var6 + 48));
+					}
+
+					var6 = var5 & 15;
+					if (var6 >= 10) {
+						var2.append((char)(var6 + 55));
+					} else {
+						var2.append((char)(var6 + 48));
+					}
+				}
+			} else {
+				var2.append(var4);
 			}
 		}
 
+		return var2.toString();
 	}
 }

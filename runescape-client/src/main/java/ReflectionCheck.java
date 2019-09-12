@@ -1,92 +1,157 @@
+import java.applet.Applet;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cf")
 @Implements("ReflectionCheck")
 public class ReflectionCheck extends Node {
-	@ObfuscatedName("cm")
-	@ObfuscatedGetter(
-		intValue = -391486769
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		signature = "Lgy;"
 	)
-	public static int field1307;
-	@ObfuscatedName("s")
+	@Export("musicTrack")
+	public static MusicTrack musicTrack;
+	@ObfuscatedName("fx")
 	@ObfuscatedGetter(
-		intValue = 1136310453
+		intValue = 1741628195
+	)
+	static int field1303;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -698721725
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 563211099
+		intValue = -414565063
 	)
 	@Export("size")
 	int size;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("operations")
 	int[] operations;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("creationErrors")
 	int[] creationErrors;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("fields")
 	Field[] fields;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("intReplaceValues")
 	int[] intReplaceValues;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@Export("methods")
 	Method[] methods;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@Export("arguments")
 	byte[][][] arguments;
 
 	ReflectionCheck() {
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(IIIB)I",
-		garbageValue = "4"
+		signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
+		garbageValue = "122"
 	)
-	public static int method2213(int var0, int var1, int var2) {
-		var2 &= 3;
-		if (var2 == 0) {
-			return var0;
-		} else if (var2 == 1) {
-			return var1;
+	static boolean method2261(String var0, int var1, String var2) {
+		if (var1 == 0) {
+			try {
+				if (!class51.field406.startsWith("win")) {
+					throw new Exception();
+				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
+					throw new Exception();
+				} else {
+					String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+					for (int var4 = 0; var4 < var0.length(); ++var4) {
+						if (var13.indexOf(var0.charAt(var4)) == -1) {
+							throw new Exception();
+						}
+					}
+
+					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+					return true;
+				}
+			} catch (Throwable var8) {
+				return false;
+			}
+		} else if (var1 == 1) {
+			try {
+				Applet var7 = class51.applet;
+				Object[] var5 = new Object[]{(new URL(class51.applet.getCodeBase(), var0)).toString()};
+				Object var3 = JSObject.getWindow(var7).call(var2, var5);
+				return var3 != null;
+			} catch (Throwable var9) {
+				return false;
+			}
+		} else if (var1 == 2) {
+			try {
+				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_blank");
+				return true;
+			} catch (Exception var10) {
+				return false;
+			}
+		} else if (var1 == 3) {
+			try {
+				class47.method812(class51.applet, "loggedout");
+			} catch (Throwable var12) {
+			}
+
+			try {
+				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_top");
+				return true;
+			} catch (Exception var11) {
+				return false;
+			}
 		} else {
-			return var2 == 2 ? 7 - var0 : 7 - var1;
+			throw new IllegalArgumentException();
 		}
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(Lbb;I)V",
+		garbageValue = "1777731201"
+	)
+	@Export("changeWorld")
+	static void changeWorld(World var0) {
+		if (var0.isMembersOnly() != Client.isMembersWorld) {
+			Client.isMembersWorld = var0.isMembersOnly();
+			VertexNormal.method2960(var0.isMembersOnly());
+		}
+
+		ArchiveLoader.worldHost = var0.host;
+		Client.worldId = var0.id;
+		Client.worldProperties = var0.properties;
+		WorldMapSection1.port1 = Client.gameBuild == 0 ? 43594 : var0.id + 40000;
+		IsaacCipher.port2 = Client.gameBuild == 0 ? 443 : var0.id + 50000;
+		LoginPacket.port3 = WorldMapSection1.port1;
 	}
 
 	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-125143607"
+		signature = "(Lhy;IB)V",
+		garbageValue = "0"
 	)
-	public static int method2212(int var0, int var1) {
-		return (var0 << 8) + var1;
-	}
+	@Export("Widget_setKeyIgnoreHeld")
+	static final void Widget_setKeyIgnoreHeld(Widget var0, int var1) {
+		if (var0.field2671 == null) {
+			throw new RuntimeException();
+		} else {
+			if (var0.field2656 == null) {
+				var0.field2656 = new int[var0.field2671.length];
+			}
 
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "482373296"
-	)
-	@Export("hashString")
-	public static int hashString(CharSequence var0) {
-		int var1 = var0.length();
-		int var2 = 0;
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var2 = (var2 << 5) - var2 + class14.charToByteCp1252(var0.charAt(var3));
+			var0.field2656[var1] = Integer.MAX_VALUE;
 		}
-
-		return var2;
 	}
 }

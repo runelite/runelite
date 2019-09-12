@@ -1,24 +1,14 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("eu")
 @Implements("UserComparator8")
 public class UserComparator8 extends AbstractUserComparator {
-	@ObfuscatedName("al")
-	@ObfuscatedGetter(
-		intValue = 1658128897
-	)
-	static int field1957;
-	@ObfuscatedName("dz")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive3")
-	static Archive archive3;
-	@ObfuscatedName("s")
+	@ObfuscatedName("j")
+	public static short[] field1944;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -26,10 +16,10 @@ public class UserComparator8 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljt;Ljt;S)I",
-		garbageValue = "-29933"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "1986954422"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -48,12 +38,20 @@ public class UserComparator8 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(CS)C",
-		garbageValue = "8860"
+		signature = "([BZB)Ljava/lang/Object;",
+		garbageValue = "-87"
 	)
-	static char method3342(char var0) {
-		return var0 != 181 && var0 != 402 ? Character.toTitleCase(var0) : var0;
+	public static Object method3365(byte[] var0, boolean var1) {
+		if (var0 == null) {
+			return null;
+		} else if (var0.length > 136) {
+			DirectByteArrayCopier var2 = new DirectByteArrayCopier();
+			var2.set(var0);
+			return var2;
+		} else {
+			return var0;
+		}
 	}
 }

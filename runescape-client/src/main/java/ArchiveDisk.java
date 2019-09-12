@@ -1,40 +1,44 @@
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kv")
+@ObfuscatedName("kx")
 @Implements("ArchiveDisk")
 public final class ArchiveDisk {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("ArchiveDisk_buffer")
 	static byte[] ArchiveDisk_buffer;
-	@ObfuscatedName("j")
+	@ObfuscatedName("db")
+	@ObfuscatedSignature(
+		signature = "Lio;"
+	)
+	@Export("archive11")
+	static Archive archive11;
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lmw;"
 	)
 	@Export("datFile")
 	BufferedFile datFile;
-	@ObfuscatedName("i")
-	@ObfuscatedGetter(
-		intValue = -1905715445
-	)
-	@Export("archive")
-	int archive;
-	@ObfuscatedName("k")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "Lmw;"
 	)
 	@Export("idxFile")
 	BufferedFile idxFile;
-	@ObfuscatedName("u")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1039930471
+		intValue = -1914299203
+	)
+	@Export("archive")
+	int archive;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1407150141
 	)
 	@Export("maxEntrySize")
 	int maxEntrySize;
@@ -56,10 +60,10 @@ public final class ArchiveDisk {
 		this.maxEntrySize = var4;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IB)[B",
-		garbageValue = "93"
+		signature = "(II)[B",
+		garbageValue = "-1665977739"
 	)
 	@Export("read")
 	public byte[] read(int var1) {
@@ -90,7 +94,7 @@ public final class ArchiveDisk {
 								return (byte[])var10000;
 							}
 
-							this.datFile.seek(520L * (long)var4);
+							this.datFile.seek((long)var4 * 520L);
 							int var8 = var3 - var6;
 							int var9;
 							int var10;
@@ -121,7 +125,7 @@ public final class ArchiveDisk {
 								var12 = ArchiveDisk_buffer[7] & 255;
 							}
 
-							if (var9 != var1 || var7 != var10 || var12 != this.archive) {
+							if (var9 != var1 || var10 != var7 || var12 != this.archive) {
 								var10000 = null;
 								return (byte[])var10000;
 							}
@@ -150,10 +154,10 @@ public final class ArchiveDisk {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I[BII)Z",
-		garbageValue = "1937661421"
+		signature = "(I[BIB)Z",
+		garbageValue = "73"
 	)
 	@Export("write")
 	public boolean write(int var1, byte[] var2, int var3) {
@@ -171,10 +175,10 @@ public final class ArchiveDisk {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I[BIZB)Z",
-		garbageValue = "16"
+		signature = "(I[BIZI)Z",
+		garbageValue = "1934021549"
 	)
 	@Export("write0")
 	boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -215,18 +219,18 @@ public final class ArchiveDisk {
 
 				while (true) {
 					if (var7 < var3) {
-						label171: {
+						label170: {
 							int var9 = 0;
 							int var10;
 							if (var4) {
-								this.datFile.seek(520L * (long)var6);
+								this.datFile.seek((long)var6 * 520L);
 								int var11;
 								int var12;
 								if (var1 > 65535) {
 									try {
 										this.datFile.read(ArchiveDisk_buffer, 0, 10);
 									} catch (EOFException var17) {
-										break label171;
+										break label170;
 									}
 
 									var10 = ((ArchiveDisk_buffer[1] & 255) << 16) + ((ArchiveDisk_buffer[0] & 255) << 24) + (ArchiveDisk_buffer[3] & 255) + ((ArchiveDisk_buffer[2] & 255) << 8);
@@ -237,7 +241,7 @@ public final class ArchiveDisk {
 									try {
 										this.datFile.read(ArchiveDisk_buffer, 0, 8);
 									} catch (EOFException var16) {
-										break label171;
+										break label170;
 									}
 
 									var10 = (ArchiveDisk_buffer[1] & 255) + ((ArchiveDisk_buffer[0] & 255) << 8);
@@ -246,7 +250,7 @@ public final class ArchiveDisk {
 									var12 = ArchiveDisk_buffer[7] & 255;
 								}
 
-								if (var10 != var1 || var11 != var8 || var12 != this.archive) {
+								if (var10 != var1 || var8 != var11 || var12 != this.archive) {
 									var10000 = false;
 									return var10000;
 								}
@@ -284,7 +288,7 @@ public final class ArchiveDisk {
 								ArchiveDisk_buffer[7] = (byte)(var9 >> 8);
 								ArchiveDisk_buffer[8] = (byte)var9;
 								ArchiveDisk_buffer[9] = (byte)this.archive;
-								this.datFile.seek(520L * (long)var6);
+								this.datFile.seek((long)var6 * 520L);
 								this.datFile.write(ArchiveDisk_buffer, 0, 10);
 								var10 = var3 - var7;
 								if (var10 > 510) {
@@ -306,7 +310,7 @@ public final class ArchiveDisk {
 								ArchiveDisk_buffer[5] = (byte)(var9 >> 8);
 								ArchiveDisk_buffer[6] = (byte)var9;
 								ArchiveDisk_buffer[7] = (byte)this.archive;
-								this.datFile.seek(520L * (long)var6);
+								this.datFile.seek((long)var6 * 520L);
 								this.datFile.write(ArchiveDisk_buffer, 0, 8);
 								var10 = var3 - var7;
 								if (var10 > 512) {
@@ -332,62 +336,19 @@ public final class ArchiveDisk {
 		}
 	}
 
-	public String abd() {
+	public String aai() {
 		return "" + this.archive;
 	}
 
-	public String abb() {
-		return "" + this.archive * 1098163870;
+	public String aan() {
+		return "" + this.archive;
 	}
 
 	public String toString() {
 		return "" + this.archive;
 	}
 
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "(Lfu;III)Ldd;",
-		garbageValue = "670296930"
-	)
-	public static final PcmPlayer method5757(TaskHandler var0, int var1, int var2) {
-		if (PcmPlayer.PcmPlayer_sampleRate == 0) {
-			throw new IllegalStateException();
-		} else if (var1 >= 0 && var1 < 2) {
-			if (var2 < 256) {
-				var2 = 256;
-			}
-
-			try {
-				PcmPlayer var3 = SecureRandomCallable.pcmPlayerProvider.player();
-				var3.samples = new int[(PcmPlayer.PcmPlayer_stereo ? 2 : 1) * 256];
-				var3.field1399 = var2;
-				var3.init();
-				var3.capacity = (var2 & -1024) + 1024;
-				if (var3.capacity > 16384) {
-					var3.capacity = 16384;
-				}
-
-				var3.open(var3.capacity);
-				if (FloorDecoration.PcmPlayer_count > 0 && PacketBufferNode.soundSystem == null) {
-					PacketBufferNode.soundSystem = new SoundSystem();
-					GrandExchangeOfferWorldComparator.soundSystemExecutor = Executors.newScheduledThreadPool(1);
-					GrandExchangeOfferWorldComparator.soundSystemExecutor.scheduleAtFixedRate(PacketBufferNode.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
-				}
-
-				if (PacketBufferNode.soundSystem != null) {
-					if (PacketBufferNode.soundSystem.players[var1] != null) {
-						throw new IllegalArgumentException();
-					}
-
-					PacketBufferNode.soundSystem.players[var1] = var3;
-				}
-
-				return var3;
-			} catch (Throwable var4) {
-				return new PcmPlayer();
-			}
-		} else {
-			throw new IllegalArgumentException();
-		}
+	public String aar() {
+		return "" + this.archive * 1578141934;
 	}
 }

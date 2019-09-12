@@ -2,152 +2,224 @@ import java.applet.Applet;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("au")
 public class class51 {
-	@ObfuscatedName("s")
+	@ObfuscatedName("qv")
+	@ObfuscatedSignature(
+		signature = "Lcq;"
+	)
+	@Export("pcmStreamMixer")
+	static PcmStreamMixer pcmStreamMixer;
+	@ObfuscatedName("c")
 	@Export("applet")
-	static Applet applet;
-	@ObfuscatedName("j")
-	static String field404;
+	public static Applet applet;
 	@ObfuscatedName("x")
+	public static String field406;
+	@ObfuscatedName("av")
+	@Export("fontHelvetica13")
+	static java.awt.Font fontHelvetica13;
+	@ObfuscatedName("ad")
+	static String field405;
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
-		signature = "Llq;"
+		signature = "Llr;"
 	)
-	@Export("logoSprite")
-	static IndexedSprite logoSprite;
-	@ObfuscatedName("dt")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive7")
-	static Archive archive7;
+	static Bounds field411;
 
 	static {
 		applet = null;
-		field404 = "";
+		field406 = "";
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)Ljava/lang/String;",
-		garbageValue = "700500119"
+		signature = "(Lhz;Lhz;IZB)Lev;",
+		garbageValue = "-39"
 	)
-	public static String method845(Buffer var0) {
-		String var1;
-		try {
-			int var2 = var0.readUShortSmart();
-			if (var2 > 32767) {
-				var2 = 32767;
-			}
+	public static Frames method852(AbstractArchive var0, AbstractArchive var1, int var2, boolean var3) {
+		boolean var4 = true;
+		int[] var5 = var0.getGroupFileIds(var2);
 
-			byte[] var3 = new byte[var2];
-			var0.offset += class210.huffman.decompress(var0.array, var0.offset, var3, 0, var2);
-			String var4 = ViewportMouse.decodeStringCp1252(var3, 0, var2);
-			var1 = var4;
-		} catch (Exception var6) {
-			var1 = "Cabbage";
+		for (int var6 = 0; var6 < var5.length; ++var6) {
+			byte[] var7 = var0.getFile(var2, var5[var6]);
+			if (var7 == null) {
+				var4 = false;
+			} else {
+				int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+				byte[] var9;
+				if (var3) {
+					var9 = var1.getFile(0, var8);
+				} else {
+					var9 = var1.getFile(var8, 0);
+				}
+
+				if (var9 == null) {
+					var4 = false;
+				}
+			}
 		}
 
-		return var1;
+		if (!var4) {
+			return null;
+		} else {
+			try {
+				return new Frames(var0, var1, var2, var3);
+			} catch (Exception var11) {
+				return null;
+			}
+		}
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-159620801"
+	)
+	public static void method860() {
+		class96.reflectionChecks = new IterableNodeDeque();
+	}
+
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;IZI)I",
+		garbageValue = "1374783193"
+	)
+	@Export("parseIntCustomRadix")
+	static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
+		if (var1 >= 2 && var1 <= 36) {
+			boolean var3 = false;
+			boolean var4 = false;
+			int var5 = 0;
+			int var6 = var0.length();
+
+			for (int var7 = 0; var7 < var6; ++var7) {
+				char var8 = var0.charAt(var7);
+				if (var7 == 0) {
+					if (var8 == '-') {
+						var3 = true;
+						continue;
+					}
+
+					if (var8 == '+') {
+						continue;
+					}
+				}
+
+				int var10;
+				if (var8 >= '0' && var8 <= '9') {
+					var10 = var8 - '0';
+				} else if (var8 >= 'A' && var8 <= 'Z') {
+					var10 = var8 - '7';
+				} else {
+					if (var8 < 'a' || var8 > 'z') {
+						throw new NumberFormatException();
+					}
+
+					var10 = var8 - 'W';
+				}
+
+				if (var10 >= var1) {
+					throw new NumberFormatException();
+				}
+
+				if (var3) {
+					var10 = -var10;
+				}
+
+				int var9 = var10 + var5 * var1;
+				if (var9 / var1 != var5) {
+					throw new NumberFormatException();
+				}
+
+				var5 = var9;
+				var4 = true;
+			}
+
+			if (!var4) {
+				throw new NumberFormatException();
+			} else {
+				return var5;
+			}
+		} else {
+			throw new IllegalArgumentException("" + var1);
+		}
 	}
 
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1490418351"
+		signature = "([BIII)Ljava/lang/String;",
+		garbageValue = "-2138724395"
 	)
-	public static void method846() {
-		VarpDefinition.VarpDefinition_cached.clear();
-	}
+	@Export("decodeStringCp1252")
+	public static String decodeStringCp1252(byte[] var0, int var1, int var2) {
+		char[] var3 = new char[var2];
+		int var4 = 0;
 
-	@ObfuscatedName("ag")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "949644202"
-	)
-	@Export("runWidgetOnLoadListener")
-	static void runWidgetOnLoadListener(int var0) {
-		if (var0 != -1) {
-			if (Projectile.loadInterface(var0)) {
-				Widget[] var1 = Widget.Widget_interfaceComponents[var0];
-
-				for (int var2 = 0; var2 < var1.length; ++var2) {
-					Widget var3 = var1[var2];
-					if (var3.onLoad != null) {
-						ScriptEvent var4 = new ScriptEvent();
-						var4.widget = var3;
-						var4.args = var3.onLoad;
-						WorldMapIcon_1.runScript(var4, 5000000);
+		for (int var5 = 0; var5 < var2; ++var5) {
+			int var6 = var0[var5 + var1] & 255;
+			if (var6 != 0) {
+				if (var6 >= 128 && var6 < 160) {
+					char var7 = class287.cp1252AsciiExtension[var6 - 128];
+					if (var7 == 0) {
+						var7 = '?';
 					}
+
+					var6 = var7;
 				}
 
+				var3[var4++] = (char)var6;
 			}
+		}
+
+		return new String(var3, 0, var4);
+	}
+
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "(ILcu;ZB)I",
+		garbageValue = "10"
+	)
+	static int method861(int var0, Script var1, boolean var2) {
+		Widget var3 = Player.getWidget(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
+		if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
+			Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = WorldMapElement.method4390(class60.getWidgetClickMask(var3));
+			return 1;
+		} else if (var0 != ScriptOpcodes.IF_GETOP) {
+			if (var0 == ScriptOpcodes.IF_GETOPBASE) {
+				if (var3.dataText == null) {
+					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = "";
+				} else {
+					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var3.dataText;
+				}
+
+				return 1;
+			} else {
+				return 2;
+			}
+		} else {
+			int var4 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
+			--var4;
+			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+				Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var3.actions[var4];
+			} else {
+				Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = "";
+			}
+
+			return 1;
 		}
 	}
 
-	@ObfuscatedName("ie")
+	@ObfuscatedName("kh")
 	@ObfuscatedSignature(
-		signature = "(Lbd;IIII)V",
-		garbageValue = "-500711697"
+		signature = "(B)V",
+		garbageValue = "0"
 	)
-	@Export("addPlayerToMenu")
-	static final void addPlayerToMenu(Player var0, int var1, int var2, int var3) {
-		if (WorldMapIcon_1.localPlayer != var0) {
-			if (Client.menuOptionsCount < 400) {
-				String var4;
-				if (var0.skillLevel == 0) {
-					var4 = var0.actions[0] + var0.username + var0.actions[1] + class225.getLevelColorString(var0.combatLevel, WorldMapIcon_1.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
-				} else {
-					var4 = var0.actions[0] + var0.username + var0.actions[1] + " " + " (" + "skill-" + var0.skillLevel + ")" + var0.actions[2];
-				}
-
-				int var5;
-				if (Client.isItemSelected == 1) {
-					WorldMapData_0.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + class16.colorStartTag(16777215) + var4, 14, var1, var2, var3);
-				} else if (Client.isSpellSelected) {
-					if ((WorldMapSectionType.selectedSpellFlags & 8) == 8) {
-						WorldMapData_0.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + class16.colorStartTag(16777215) + var4, 15, var1, var2, var3);
-					}
-				} else {
-					for (var5 = 7; var5 >= 0; --var5) {
-						if (Client.playerMenuActions[var5] != null) {
-							short var6 = 0;
-							if (Client.playerMenuActions[var5].equalsIgnoreCase("Attack")) {
-								if (AttackOption.AttackOption_hidden == Client.playerAttackOption) {
-									continue;
-								}
-
-								if (Client.playerAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && var0.combatLevel > WorldMapIcon_1.localPlayer.combatLevel) {
-									var6 = 2000;
-								}
-
-								if (WorldMapIcon_1.localPlayer.team != 0 && var0.team != 0) {
-									if (var0.team == WorldMapIcon_1.localPlayer.team) {
-										var6 = 2000;
-									} else {
-										var6 = 0;
-									}
-								}
-							} else if (Client.playerOptionsPriorities[var5]) {
-								var6 = 2000;
-							}
-
-							boolean var7 = false;
-							int var8 = Client.playerMenuOpcodes[var5] + var6;
-							WorldMapData_0.insertMenuItemNoShift(Client.playerMenuActions[var5], class16.colorStartTag(16777215) + var4, var8, var1, var2, var3);
-						}
-					}
-				}
-
-				for (var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-					if (Client.menuOpcodes[var5] == 23) {
-						Client.menuTargets[var5] = class16.colorStartTag(16777215) + var4;
-						break;
-					}
-				}
-
-			}
-		}
+	@Export("Clan_leaveChat")
+	static final void Clan_leaveChat() {
+		PacketBufferNode var0 = MenuAction.getPacketBufferNode(ClientPacket.field2252, Client.packetWriter.isaacCipher);
+		var0.packetBuffer.writeByte(0);
+		Client.packetWriter.addNode(var0);
 	}
 }

@@ -6,29 +6,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bi")
 @Implements("SecureRandomCallable")
 public class SecureRandomCallable implements Callable {
-	@ObfuscatedName("su")
-	@Export("foundItemIds")
-	static short[] foundItemIds;
-	@ObfuscatedName("r")
+	@ObfuscatedName("rc")
+	@ObfuscatedGetter(
+		intValue = 52067712
+	)
+	static int field499;
+	@ObfuscatedName("l")
+	@Export("SpriteBuffer_yOffsets")
+	public static int[] SpriteBuffer_yOffsets;
+	@ObfuscatedName("gm")
 	@ObfuscatedSignature(
-		signature = "Lct;"
+		signature = "[Llt;"
 	)
-	@Export("pcmPlayerProvider")
-	static PcmPlayerProvider pcmPlayerProvider;
-	@ObfuscatedName("ae")
-	@ObfuscatedGetter(
-		intValue = 1643871529
-	)
-	static int field500;
-	@ObfuscatedName("ej")
-	@ObfuscatedGetter(
-		intValue = 1838360693
-	)
-	@Export("port3")
-	static int port3;
+	@Export("modIconSprites")
+	static IndexedSprite[] modIconSprites;
 
 	SecureRandomCallable() {
 	}
@@ -37,5 +31,43 @@ public class SecureRandomCallable implements Callable {
 		SecureRandom var2 = new SecureRandom();
 		var2.nextInt();
 		return var2;
+	}
+
+	@ObfuscatedName("fz")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "373014156"
+	)
+	@Export("playSoundJingle")
+	static void playSoundJingle(int var0, int var1) {
+		if (Client.field638 != 0 && var0 != -1) {
+			class49.method826(ArchiveDisk.archive11, var0, 0, Client.field638, false);
+			Client.field746 = true;
+		}
+
+	}
+
+	@ObfuscatedName("gl")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "-1333341579"
+	)
+	@Export("getHighestVisiblePlane")
+	static final int getHighestVisiblePlane() {
+		if (Actor.clientPreferences.roofsHidden) {
+			return MouseRecorder.plane;
+		} else {
+			int var0 = WorldMapAreaData.getTileHeight(ScriptFrame.cameraX, class14.cameraZ, MouseRecorder.plane);
+			return var0 - GrandExchangeOfferTotalQuantityComparator.cameraY < 800 && (Tiles.Tiles_renderFlags[MouseRecorder.plane][ScriptFrame.cameraX >> 7][class14.cameraZ >> 7] & 4) != 0 ? MouseRecorder.plane : 3;
+		}
+	}
+
+	@ObfuscatedName("ky")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "18257266"
+	)
+	public static boolean method1092() {
+		return Client.staffModLevel >= 2;
 	}
 }

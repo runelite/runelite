@@ -5,38 +5,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lk")
+@ObfuscatedName("lc")
 @Implements("DesktopPlatformInfoProvider")
 public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1435561195
+		intValue = -1989921303
 	)
-	int field3903;
+	int field3899;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = 1264264203
+	)
+	int field3900;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1717280991
+		intValue = -962266715
 	)
-	int field3901;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = 1506800737
-	)
-	int field3904;
+	int field3896;
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Llx;",
-		garbageValue = "-1719381077"
+		signature = "(I)Lla;",
+		garbageValue = "-2012824793"
 	)
 	@Export("get")
 	public PlatformInfo get() {
 		byte var1;
-		if (ByteArrayPool.field3708.startsWith("win")) {
+		if (UserComparator9.field1940.startsWith("win")) {
 			var1 = 1;
-		} else if (ByteArrayPool.field3708.startsWith("mac")) {
+		} else if (UserComparator9.field1940.startsWith("mac")) {
 			var1 = 2;
-		} else if (ByteArrayPool.field3708.startsWith("linux")) {
+		} else if (UserComparator9.field1940.startsWith("linux")) {
 			var1 = 3;
 		} else {
 			var1 = 4;
@@ -134,11 +134,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 			var8 = 4;
 		}
 
-		this.method6147(var5);
+		this.method6218(var5);
 		Runtime.getRuntime();
 		int var10 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
 		int var11;
-		if (this.field3903 > 3) {
+		if (this.field3899 > 3) {
 			var11 = Runtime.getRuntime().availableProcessors();
 		} else {
 			var11 = 0;
@@ -152,127 +152,147 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 		String var17 = "";
 		String var18 = "";
 		int[] var23 = new int[3];
-		return new PlatformInfo(var1, var24, var7, var8, this.field3903, this.field3901, this.field3904, false, var10, var11, var12, 0, var13, var14, var15, var16, 0, 0, 0, 0, var17, var18, var23, 0, "");
+		return new PlatformInfo(var1, var24, var7, var8, this.field3899, this.field3900, this.field3896, false, var10, var11, var12, 0, var13, var14, var15, var16, 0, 0, 0, 0, var17, var18, var23, 0, "");
 	}
 
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;B)V",
-		garbageValue = "28"
-	)
-	void method6147(String var1) {
-		if (var1.startsWith("1.")) {
-			this.method6148(var1);
-		} else {
-			this.method6145(var1);
-		}
-
-	}
-
-	@ObfuscatedName("i")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "1225882646"
+		garbageValue = "1517223421"
 	)
-	void method6148(String var1) {
+	void method6218(String var1) {
+		if (var1.startsWith("1.")) {
+			this.method6216(var1);
+		} else {
+			this.method6219(var1);
+		}
+
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "943324304"
+	)
+	void method6216(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {
-			this.field3903 = Integer.parseInt(var2[1]);
+			this.field3899 = Integer.parseInt(var2[1]);
 			var2 = var2[2].split("_");
-			this.field3901 = Integer.parseInt(var2[0]);
-			this.field3904 = Integer.parseInt(var2[1]);
+			this.field3900 = Integer.parseInt(var2[0]);
+			this.field3896 = Integer.parseInt(var2[1]);
 		} catch (Exception var4) {
 		}
 
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;S)V",
-		garbageValue = "-31875"
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "-1994454967"
 	)
-	void method6145(String var1) {
+	void method6219(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {
-			this.field3903 = Integer.parseInt(var2[0]);
-			this.field3901 = Integer.parseInt(var2[1]);
-			this.field3904 = Integer.parseInt(var2[2]);
+			this.field3899 = Integer.parseInt(var2[0]);
+			this.field3900 = Integer.parseInt(var2[1]);
+			this.field3896 = Integer.parseInt(var2[2]);
 		} catch (Exception var4) {
 		}
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("fo")
 	@ObfuscatedSignature(
-		signature = "([BS)Lcr;",
-		garbageValue = "10322"
+		signature = "(IIIIZI)V",
+		garbageValue = "-608218598"
 	)
-	@Export("newScript")
-	static Script newScript(byte[] var0) {
-		Script var1 = new Script();
-		Buffer var2 = new Buffer(var0);
-		var2.offset = var2.array.length - 2;
-		int var3 = var2.readUnsignedShort();
-		int var4 = var2.array.length - 2 - var3 - 12;
-		var2.offset = var4;
-		int var5 = var2.readInt();
-		var1.localIntCount = var2.readUnsignedShort();
-		var1.localStringCount = var2.readUnsignedShort();
-		var1.intArgumentCount = var2.readUnsignedShort();
-		var1.stringArgumentCount = var2.readUnsignedShort();
-		int var6 = var2.readUnsignedByte();
-		int var7;
+	@Export("setViewportShape")
+	static final void setViewportShape(int var0, int var1, int var2, int var3, boolean var4) {
+		if (var2 < 1) {
+			var2 = 1;
+		}
+
+		if (var3 < 1) {
+			var3 = 1;
+		}
+
+		int var5 = var3 - 334;
+		int var6;
+		if (var5 < 0) {
+			var6 = Client.field873;
+		} else if (var5 >= 100) {
+			var6 = Client.field752;
+		} else {
+			var6 = (Client.field752 - Client.field873) * var5 / 100 + Client.field873;
+		}
+
+		int var7 = var3 * var6 * 512 / (var2 * 334);
 		int var8;
-		if (var6 > 0) {
-			var1.switches = var1.newIterableNodeHashTable(var6);
-
-			for (var7 = 0; var7 < var6; ++var7) {
-				var8 = var2.readUnsignedShort();
-				int var9;
-				int var11;
-				if (var8 > 0) {
-					var11 = var8 - 1;
-					var11 |= var11 >>> 1;
-					var11 |= var11 >>> 2;
-					var11 |= var11 >>> 4;
-					var11 |= var11 >>> 8;
-					var11 |= var11 >>> 16;
-					int var10 = var11 + 1;
-					var9 = var10;
-				} else {
-					var9 = 1;
+		int var9;
+		short var18;
+		if (var7 < Client.field879) {
+			var18 = Client.field879;
+			var6 = var18 * var2 * 334 / (var3 * 512);
+			if (var6 > Client.field878) {
+				var6 = Client.field878;
+				var8 = var3 * var6 * 512 / (var18 * 334);
+				var9 = (var2 - var8) / 2;
+				if (var4) {
+					Rasterizer2D.Rasterizer2D_resetClip();
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
 				}
 
-				IterableNodeHashTable var13 = new IterableNodeHashTable(var9);
-				var1.switches[var7] = var13;
-
-				while (var8-- > 0) {
-					var11 = var2.readInt();
-					int var12 = var2.readInt();
-					var13.put(new IntegerNode(var12), (long)var11);
+				var0 += var9;
+				var2 -= var9 * 2;
+			}
+		} else if (var7 > Client.field717) {
+			var18 = Client.field717;
+			var6 = var18 * var2 * 334 / (var3 * 512);
+			if (var6 < Client.field877) {
+				var6 = Client.field877;
+				var8 = var18 * var2 * 334 / (var6 * 512);
+				var9 = (var3 - var8) / 2;
+				if (var4) {
+					Rasterizer2D.Rasterizer2D_resetClip();
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
 				}
+
+				var1 += var9;
+				var3 -= var9 * 2;
 			}
 		}
 
-		var2.offset = 0;
-		var2.readStringCp1252NullTerminatedOrNull();
-		var1.opcodes = new int[var5];
-		var1.intOperands = new int[var5];
-		var1.stringOperands = new String[var5];
+		Client.viewportZoom = var3 * var6 / 334;
+		if (var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
+			int[] var17 = new int[9];
 
-		for (var7 = 0; var2.offset < var4; var1.opcodes[var7++] = var8) {
-			var8 = var2.readUnsignedShort();
-			if (var8 == 3) {
-				var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
-			} else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
-				var1.intOperands[var7] = var2.readInt();
-			} else {
-				var1.intOperands[var7] = var2.readUnsignedByte();
+			for (var9 = 0; var9 < var17.length; ++var9) {
+				int var10 = var9 * 32 + 15 + 128;
+				int var11 = var10 * 3 + 600;
+				int var13 = Rasterizer3D.Rasterizer3D_sine[var10];
+				int var15 = var3 - 334;
+				if (var15 < 0) {
+					var15 = 0;
+				} else if (var15 > 100) {
+					var15 = 100;
+				}
+
+				int var16 = (Client.zoomWidth - Client.zoomHeight) * var15 / 100 + Client.zoomHeight;
+				int var14 = var16 * var11 / 256;
+				var17[var9] = var14 * var13 >> 16;
 			}
+
+			Scene.Scene_buildVisiblityMap(var17, 500, 800, var2 * 334 / var3, 334);
 		}
 
-		return var1;
+		Client.viewportOffsetX = var0;
+		Client.viewportOffsetY = var1;
+		Client.viewportWidth = var2;
+		Client.viewportHeight = var3;
 	}
 }

@@ -1,6 +1,4 @@
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -9,31 +7,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
+@ObfuscatedName("fq")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("javaVersion")
 	public static String javaVersion;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lft;"
+		signature = "Lfc;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lft;"
+		signature = "Lfc;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("isClosed")
 	boolean isClosed;
 
@@ -57,10 +55,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1887947364"
+		signature = "(B)V",
+		garbageValue = "-72"
 	)
 	@Export("close")
 	public final void close() {
@@ -76,10 +74,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;I)Lft;",
-		garbageValue = "1177256583"
+		signature = "(IIILjava/lang/Object;I)Lfc;",
+		garbageValue = "-1315009014"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -100,20 +98,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;IB)Lft;",
-		garbageValue = "-49"
+		signature = "(Ljava/lang/String;IS)Lfc;",
+		garbageValue = "-16284"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;IB)Lft;",
-		garbageValue = "1"
+		signature = "(Ljava/lang/Runnable;II)Lfc;",
+		garbageValue = "-1670540626"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -168,64 +166,96 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Z",
-		garbageValue = "-641292083"
+		signature = "(Lll;I)I",
+		garbageValue = "-428557907"
 	)
-	@Export("isNumber")
-	public static boolean isNumber(CharSequence var0) {
-		return class219.method4022(var0, 10, true);
+	public static final int method3464(LoginType var0) {
+		if (var0 == null) {
+			return 12;
+		} else {
+			switch(var0.field4033) {
+			case 7:
+				return 20;
+			default:
+				return 12;
+			}
+		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lmm;",
-		garbageValue = "929231118"
+		signature = "(II)Z",
+		garbageValue = "-1906197616"
 	)
-	@Export("getPreferencesFile")
-	public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
-		File var3 = new File(JagexCache.cacheDir, "preferences" + var0 + ".dat");
-		if (var3.exists()) {
-			try {
-				AccessFile var10 = new AccessFile(var3, "rw", 10000L);
-				return var10;
-			} catch (IOException var9) {
+	@Export("loadInterface")
+	public static boolean loadInterface(int var0) {
+		if (UserComparator3.Widget_loadedInterfaces[var0]) {
+			return true;
+		} else if (!ArchiveDiskActionHandler.Widget_archive.tryLoadGroup(var0)) {
+			return false;
+		} else {
+			int var1 = ArchiveDiskActionHandler.Widget_archive.getGroupFileCount(var0);
+			if (var1 == 0) {
+				UserComparator3.Widget_loadedInterfaces[var0] = true;
+				return true;
+			} else {
+				if (class289.Widget_interfaceComponents[var0] == null) {
+					class289.Widget_interfaceComponents[var0] = new Widget[var1];
+				}
+
+				for (int var2 = 0; var2 < var1; ++var2) {
+					if (class289.Widget_interfaceComponents[var0][var2] == null) {
+						byte[] var3 = ArchiveDiskActionHandler.Widget_archive.takeFile(var0, var2);
+						if (var3 != null) {
+							class289.Widget_interfaceComponents[var0][var2] = new Widget();
+							class289.Widget_interfaceComponents[var0][var2].id = var2 + (var0 << 16);
+							if (var3[0] == -1) {
+								class289.Widget_interfaceComponents[var0][var2].decode(new Buffer(var3));
+							} else {
+								class289.Widget_interfaceComponents[var0][var2].decodeLegacy(new Buffer(var3));
+							}
+						}
+					}
+				}
+
+				UserComparator3.Widget_loadedInterfaces[var0] = true;
+				return true;
 			}
 		}
+	}
 
-		String var4 = "";
-		if (InterfaceParent.cacheGamebuild == 33) {
-			var4 = "_rc";
-		} else if (InterfaceParent.cacheGamebuild == 34) {
-			var4 = "_wip";
-		}
-
-		File var5 = new File(FontName.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-		AccessFile var6;
-		if (!var2 && var5.exists()) {
-			try {
-				var6 = new AccessFile(var5, "rw", 10000L);
-				return var6;
-			} catch (IOException var8) {
-			}
-		}
-
-		try {
-			var6 = new AccessFile(var3, "rw", 10000L);
-			return var6;
-		} catch (IOException var7) {
+	@ObfuscatedName("as")
+	@ObfuscatedSignature(
+		signature = "([BI)[B",
+		garbageValue = "1618033265"
+	)
+	@Export("decompressBytes")
+	static final byte[] decompressBytes(byte[] var0) {
+		Buffer var1 = new Buffer(var0);
+		int var2 = var1.readUnsignedByte();
+		int var3 = var1.readInt();
+		if (var3 < 0 || AbstractArchive.field3120 != 0 && var3 > AbstractArchive.field3120) {
 			throw new RuntimeException();
-		}
-	}
+		} else if (var2 == 0) {
+			byte[] var4 = new byte[var3];
+			var1.readBytes(var4, 0, var3);
+			return var4;
+		} else {
+			int var6 = var1.readInt();
+			if (var6 >= 0 && (AbstractArchive.field3120 == 0 || var6 <= AbstractArchive.field3120)) {
+				byte[] var5 = new byte[var6];
+				if (var2 == 1) {
+					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
+				} else {
+					AbstractArchive.gzipDecompressor.decompress(var1, var5);
+				}
 
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-6"
-	)
-	public static int method3411(int var0, int var1) {
-		int var2 = var0 >>> 31;
-		return (var0 + var2) / var1 - var2;
+				return var5;
+			} else {
+				throw new RuntimeException();
+			}
+		}
 	}
 }

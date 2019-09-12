@@ -1,23 +1,22 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("if")
 public class class247 {
-	@ObfuscatedName("qw")
-	@ObfuscatedSignature(
-		signature = "Ldb;"
-	)
-	@Export("decimator")
-	static Decimator decimator;
-
-	@ObfuscatedName("i")
+	@ObfuscatedName("gm")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1267026427"
+		garbageValue = "-197171985"
 	)
-	@Export("WorldMapRegion_clearCachedSprites")
-	static void WorldMapRegion_clearCachedSprites() {
-		WorldMapRegion.WorldMapRegion_cachedSprites.clear();
+	static final void method4484() {
+		for (PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.last(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.previous()) {
+			if (var0.hitpoints == -1) {
+				var0.delay = 0;
+				class16.method164(var0);
+			} else {
+				var0.remove();
+			}
+		}
+
 	}
 }

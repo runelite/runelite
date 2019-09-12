@@ -1,56 +1,45 @@
+import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("dy")
 @Implements("SoundCache")
 public class SoundCache {
-	@ObfuscatedName("qo")
+	@ObfuscatedName("ni")
 	@ObfuscatedSignature(
-		signature = "Ldd;"
+		signature = "[Lhy;"
 	)
-	@Export("pcmPlayer1")
-	static PcmPlayer pcmPlayer1;
-	@ObfuscatedName("d")
-	public static short[][] field1418;
-	@ObfuscatedName("f")
-	@ObfuscatedGetter(
-		intValue = -1949899187
-	)
-	static int field1424;
-	@ObfuscatedName("bv")
+	static Widget[] field1410;
+	@ObfuscatedName("v")
+	@Export("soundSystemExecutor")
+	static ScheduledExecutorService soundSystemExecutor;
+	@ObfuscatedName("lc")
 	@ObfuscatedSignature(
-		signature = "[Lls;"
+		signature = "Lcv;"
 	)
-	@Export("worldSelectBackSprites")
-	static Sprite[] worldSelectBackSprites;
-	@ObfuscatedName("df")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive19")
-	static Archive archive19;
-	@ObfuscatedName("s")
+	@Export("tempMenuAction")
+	static MenuAction tempMenuAction;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("soundEffectIndex")
 	AbstractArchive soundEffectIndex;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("musicSampleIndex")
 	AbstractArchive musicSampleIndex;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "Llm;"
 	)
 	@Export("musicSamples")
 	NodeHashTable musicSamples;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "Llm;"
 	)
@@ -67,10 +56,10 @@ public class SoundCache {
 		this.musicSampleIndex = var2;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(II[II)Lco;",
-		garbageValue = "2104823387"
+		signature = "(II[II)Lcg;",
+		garbageValue = "-1638620781"
 	)
 	@Export("getSoundEffect0")
 	RawSound getSoundEffect0(int var1, int var2, int[] var3) {
@@ -98,10 +87,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II[II)Lco;",
-		garbageValue = "-1528849608"
+		signature = "(II[II)Lcg;",
+		garbageValue = "-1622135466"
 	)
 	@Export("getMusicSample0")
 	RawSound getMusicSample0(int var1, int var2, int[] var3) {
@@ -135,10 +124,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I[II)Lco;",
-		garbageValue = "-743934209"
+		signature = "(I[II)Lcg;",
+		garbageValue = "-351115688"
 	)
 	@Export("getSoundEffect")
 	public RawSound getSoundEffect(int var1, int[] var2) {
@@ -151,10 +140,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I[IB)Lco;",
-		garbageValue = "-113"
+		signature = "(I[II)Lcg;",
+		garbageValue = "-1184184439"
 	)
 	@Export("getMusicSample")
 	public RawSound getMusicSample(int var1, int[] var2) {
@@ -167,39 +156,46 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("ft")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "954967907"
+		signature = "(B)J",
+		garbageValue = "18"
 	)
-	@Export("playSong")
-	static void playSong(int var0) {
-		if (var0 == -1 && !Client.field858) {
-			class197.midiPcmStream.clear();
-			class197.field2378 = 1;
-			WorldMapDecoration.musicTrackArchive = null;
-		} else if (var0 != -1 && var0 != Client.field857 && Client.field856 != 0 && !Client.field858) {
-			Projectile.method2040(2, GrandExchangeEvent.archive6, var0, 0, Client.field856, false);
+	public static final synchronized long method2480() {
+		long var0 = System.currentTimeMillis();
+		if (var0 < class296.field3680) {
+			class296.field3681 += class296.field3680 - var0;
 		}
 
-		Client.field857 = var0;
+		class296.field3680 = var0;
+		return class296.field3681 + var0;
 	}
 
-	@ObfuscatedName("kt")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIII)V",
-		garbageValue = "-1061413321"
+		signature = "(I)I",
+		garbageValue = "-1565845454"
 	)
-	@Export("drawCompass")
-	static final void drawCompass(Widget var0, int var1, int var2, int var3) {
-		SpriteMask var4 = var0.getSpriteMask(false);
-		if (var4 != null) {
-			if (Client.minimapState < 3) {
-				class32.compass.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
-			} else {
-				Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
-			}
+	static final int method2479() {
+		return ViewportMouse.ViewportMouse_x;
+	}
 
-		}
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "(IIII)I",
+		garbageValue = "118252239"
+	)
+	static final int method2467(int var0, int var1, int var2) {
+		int var3 = var0 / var2;
+		int var4 = var0 & var2 - 1;
+		int var5 = var1 / var2;
+		int var6 = var1 & var2 - 1;
+		int var7 = DevicePcmPlayerProvider.method811(var3, var5);
+		int var8 = DevicePcmPlayerProvider.method811(var3 + 1, var5);
+		int var9 = DevicePcmPlayerProvider.method811(var3, var5 + 1);
+		int var10 = DevicePcmPlayerProvider.method811(var3 + 1, var5 + 1);
+		int var11 = class65.method1171(var7, var8, var4, var2);
+		int var12 = class65.method1171(var9, var10, var4, var2);
+		return class65.method1171(var11, var12, var6, var2);
 	}
 }

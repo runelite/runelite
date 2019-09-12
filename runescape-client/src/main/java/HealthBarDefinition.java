@@ -4,89 +4,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("ix")
 @Implements("HealthBarDefinition")
 public class HealthBarDefinition extends DualNode {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("HealthBarDefinition_archive")
 	public static AbstractArchive HealthBarDefinition_archive;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
-	@Export("HealthBarDefinition_spritesArchive")
-	public static AbstractArchive HealthBarDefinition_spritesArchive;
-	@ObfuscatedName("i")
+	@Export("HitSplatDefinition_spritesArchive")
+	static AbstractArchive HitSplatDefinition_spritesArchive;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("HealthBarDefinition_cached")
-	static EvictingDualNodeHashTable HealthBarDefinition_cached;
-	@ObfuscatedName("k")
+	public static EvictingDualNodeHashTable HealthBarDefinition_cached;
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("HealthBarDefinition_cachedSprites")
 	static EvictingDualNodeHashTable HealthBarDefinition_cachedSprites;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -1504637567
+		intValue = -1806671907
 	)
-	public int field3264;
-	@ObfuscatedName("q")
+	public int field3253;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1807788243
+		intValue = 379529355
 	)
 	@Export("int1")
 	public int int1;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1909708279
+		intValue = -1016386229
 	)
 	@Export("int2")
 	public int int2;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1885853349
+		intValue = -565788357
 	)
 	@Export("int3")
 	public int int3;
-	@ObfuscatedName("f")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -563818397
+		intValue = -1008936631
 	)
 	@Export("int4")
 	public int int4;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -74768593
+		intValue = -1386850377
 	)
 	@Export("int5")
 	public int int5;
-	@ObfuscatedName("r")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1506111747
+		intValue = 1663965695
 	)
 	@Export("frontSpriteID")
 	int frontSpriteID;
-	@ObfuscatedName("y")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1208608669
+		intValue = 1998724721
 	)
 	@Export("backSpriteID")
 	int backSpriteID;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -567354113
+		intValue = -1503683449
 	)
 	@Export("width")
 	public int width;
-	@ObfuscatedName("b")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1929001923
+		intValue = 571878805
 	)
 	@Export("widthPadding")
 	public int widthPadding;
@@ -96,7 +96,7 @@ public class HealthBarDefinition extends DualNode {
 		HealthBarDefinition_cachedSprites = new EvictingDualNodeHashTable(64);
 	}
 
-	HealthBarDefinition() {
+	public HealthBarDefinition() {
 		this.int1 = 255;
 		this.int2 = 255;
 		this.int3 = -1;
@@ -108,13 +108,13 @@ public class HealthBarDefinition extends DualNode {
 		this.widthPadding = 0;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lky;I)V",
-		garbageValue = "-2108312426"
+		signature = "(Lkz;B)V",
+		garbageValue = "0"
 	)
 	@Export("decode")
-	void decode(Buffer var1) {
+	public void decode(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
@@ -125,10 +125,10 @@ public class HealthBarDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lky;II)V",
-		garbageValue = "1232956083"
+		signature = "(Lkz;II)V",
+		garbageValue = "1787792869"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -145,9 +145,9 @@ public class HealthBarDefinition extends DualNode {
 		} else if (var2 == 6) {
 			var1.readUnsignedByte();
 		} else if (var2 == 7) {
-			this.frontSpriteID = var1.method5602();
+			this.frontSpriteID = var1.method5623();
 		} else if (var2 == 8) {
-			this.backSpriteID = var1.method5602();
+			this.backSpriteID = var1.method5623();
 		} else if (var2 == 11) {
 			this.int3 = var1.readUnsignedShort();
 		} else if (var2 == 14) {
@@ -158,10 +158,10 @@ public class HealthBarDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)Lls;",
-		garbageValue = "32246110"
+		signature = "(B)Lli;",
+		garbageValue = "-8"
 	)
 	@Export("getFrontSprite")
 	public Sprite getFrontSprite() {
@@ -172,7 +172,7 @@ public class HealthBarDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = TilePaint.SpriteBuffer_getSprite(HealthBarDefinition_spritesArchive, this.frontSpriteID, 0);
+				var1 = FillMode.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.frontSpriteID, 0);
 				if (var1 != null) {
 					HealthBarDefinition_cachedSprites.put(var1, (long)this.frontSpriteID);
 				}
@@ -182,10 +182,10 @@ public class HealthBarDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(I)Lls;",
-		garbageValue = "2113280722"
+		signature = "(I)Lli;",
+		garbageValue = "1663906218"
 	)
 	@Export("getBackSprite")
 	public Sprite getBackSprite() {
@@ -196,7 +196,7 @@ public class HealthBarDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = TilePaint.SpriteBuffer_getSprite(HealthBarDefinition_spritesArchive, this.backSpriteID, 0);
+				var1 = FillMode.SpriteBuffer_getSprite(HitSplatDefinition_spritesArchive, this.backSpriteID, 0);
 				if (var1 != null) {
 					HealthBarDefinition_cachedSprites.put(var1, (long)this.backSpriteID);
 				}
@@ -204,5 +204,20 @@ public class HealthBarDefinition extends DualNode {
 				return var1;
 			}
 		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(CII)Ljava/lang/String;",
+		garbageValue = "-1190988008"
+	)
+	public static String method4481(char var0, int var1) {
+		char[] var2 = new char[var1];
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var2[var3] = var0;
+		}
+
+		return new String(var2);
 	}
 }

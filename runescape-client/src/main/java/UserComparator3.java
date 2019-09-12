@@ -3,16 +3,15 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("ff")
 @Implements("UserComparator3")
 public class UserComparator3 extends AbstractUserComparator {
-	@ObfuscatedName("gp")
-	@ObfuscatedSignature(
-		signature = "Lls;"
-	)
-	@Export("redHintArrowSprite")
-	static Sprite redHintArrowSprite;
-	@ObfuscatedName("s")
+	@ObfuscatedName("v")
+	@Export("Widget_loadedInterfaces")
+	static boolean[] Widget_loadedInterfaces;
+	@ObfuscatedName("p")
+	static int[][][] field1961;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -20,10 +19,10 @@ public class UserComparator3 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljt;Ljt;I)I",
-		garbageValue = "-1087585771"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "-434078847"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -38,45 +37,28 @@ public class UserComparator3 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1811114805"
+		signature = "(I)V",
+		garbageValue = "1668063844"
 	)
-	public static int method3371() {
-		return ++MouseHandler.MouseHandler_idleCycles - 1;
+	@Export("HealthBarDefinition_clearCached")
+	public static void HealthBarDefinition_clearCached() {
+		HealthBarDefinition.HealthBarDefinition_cached.clear();
+		HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
 	}
 
-	@ObfuscatedName("fj")
+	@ObfuscatedName("jk")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "35"
+		signature = "(II)V",
+		garbageValue = "1258062289"
 	)
-	@Export("processOverheadText")
-	static final void processOverheadText() {
-		int[] var0 = Players.Players_indices;
-
-		int var1;
-		for (var1 = 0; var1 < Players.Players_count; ++var1) {
-			Player var2 = Client.players[var0[var1]];
-			if (var2 != null && var2.overheadTextCyclesRemaining > 0) {
-				--var2.overheadTextCyclesRemaining;
-				if (var2.overheadTextCyclesRemaining == 0) {
-					var2.overheadText = null;
-				}
-			}
-		}
-
-		for (var1 = 0; var1 < Client.npcCount; ++var1) {
-			int var4 = Client.npcIndices[var1];
-			NPC var3 = Client.npcs[var4];
-			if (var3 != null && var3.overheadTextCyclesRemaining > 0) {
-				--var3.overheadTextCyclesRemaining;
-				if (var3.overheadTextCyclesRemaining == 0) {
-					var3.overheadText = null;
-				}
-			}
-		}
-
+	static void method3399(int var0) {
+		SoundCache.tempMenuAction = new MenuAction();
+		SoundCache.tempMenuAction.argument1 = Client.menuArguments1[var0];
+		SoundCache.tempMenuAction.argument2 = Client.menuArguments2[var0];
+		SoundCache.tempMenuAction.opcode = Client.menuOpcodes[var0];
+		SoundCache.tempMenuAction.argument0 = Client.menuIdentifiers[var0];
+		SoundCache.tempMenuAction.action = Client.menuActions[var0];
 	}
 }

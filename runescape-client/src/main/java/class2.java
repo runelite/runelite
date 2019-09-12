@@ -1,121 +1,70 @@
-import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("i")
+@ObfuscatedName("t")
 final class class2 implements class0 {
-	@ObfuscatedName("sl")
+	@ObfuscatedName("bj")
 	@ObfuscatedSignature(
-		signature = "Lt;"
+		signature = "Llt;"
 	)
-	@Export("grandExchangeEvents")
-	static GrandExchangeEvents grandExchangeEvents;
-	@ObfuscatedName("du")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive8")
-	static Archive archive8;
-	@ObfuscatedName("ed")
-	@Export("secureRandom")
-	static SecureRandom secureRandom;
+	@Export("worldSelectLeftSprite")
+	static IndexedSprite worldSelectLeftSprite;
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lky;I)V",
-		garbageValue = "254789492"
+		signature = "(Ljava/lang/Object;Lkz;B)V",
+		garbageValue = "1"
 	)
-	public void vmethod58(Object var1, Buffer var2) {
-		this.method38((Long)var1, var2);
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(Lky;I)Ljava/lang/Object;",
-		garbageValue = "1267204541"
-	)
-	public Object vmethod70(Buffer var1) {
-		return var1.readLong();
+	public void vmethod42(Object var1, Buffer var2) {
+		this.method20((Long)var1, var2);
 	}
 
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Long;Lky;B)V",
-		garbageValue = "6"
+		signature = "(Lkz;S)Ljava/lang/Object;",
+		garbageValue = "31810"
 	)
-	void method38(Long var1, Buffer var2) {
+	public Object vmethod41(Buffer var1) {
+		return var1.readLong();
+	}
+
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Long;Lkz;B)V",
+		garbageValue = "3"
+	)
+	void method20(Long var1, Buffer var2) {
 		var2.writeLong(var1);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("gn")
 	@ObfuscatedSignature(
-		signature = "(I)Lgq;",
-		garbageValue = "-764914873"
+		signature = "(ZI)V",
+		garbageValue = "291099501"
 	)
-	public static PacketBufferNode method29() {
-		PacketBufferNode var0 = Buffer.method5567();
-		var0.clientPacket = null;
-		var0.clientPacketLength = 0;
-		var0.packetBuffer = new PacketBuffer(5000);
-		return var0;
-	}
+	@Export("addNpcsToScene")
+	static final void addNpcsToScene(boolean var0) {
+		for (int var1 = 0; var1 < Client.npcCount; ++var1) {
+			NPC var2 = Client.npcs[Client.npcIndices[var1]];
+			if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.transformIsVisible()) {
+				int var3 = var2.x * -78439701 >> 7;
+				int var4 = var2.y >> 7;
+				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+					if (var2.size == 1 && (var2.x * -78439701 & 127) == 64 && (var2.y & 127) == 64) {
+						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
+							continue;
+						}
 
-	@ObfuscatedName("ff")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1255572967"
-	)
-	static final void method31() {
-		if (Client.logoutTimer > 0) {
-			class65.method1182();
-		} else {
-			Client.timer.method4898();
-			FloorDecoration.updateGameState(40);
-			Bounds.field3845 = Client.packetWriter.getSocket();
-			Client.packetWriter.removeSocket();
-		}
-	}
+						Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
+					}
 
-	@ObfuscatedName("ig")
-	@ObfuscatedSignature(
-		signature = "(IIIIIIIII)V",
-		garbageValue = "742937665"
-	)
-	@Export("drawWidgets")
-	static final void drawWidgets(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-		if (Projectile.loadInterface(var0)) {
-			WorldMapIcon_1.field174 = null;
-			WorldMapSectionType.drawInterface(Widget.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-			if (WorldMapIcon_1.field174 != null) {
-				WorldMapSectionType.drawInterface(WorldMapIcon_1.field174, -1412584499, var1, var2, var3, var4, HealthBarUpdate.field986, Tile.field1648, var7);
-				WorldMapIcon_1.field174 = null;
-			}
-
-		} else {
-			if (var7 != -1) {
-				Client.field703[var7] = true;
-			} else {
-				for (int var8 = 0; var8 < 100; ++var8) {
-					Client.field703[var8] = true;
+					long var5 = WorldMapIcon_1.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
+					var2.playerCycle = Client.cycle;
+					WorldMapIcon_1.scene.drawEntity(MouseRecorder.plane, var2.x * -78439701, var2.y, WorldMapAreaData.getTileHeight(var2.x * -78439701 + (var2.size * 64 - 64), var2.size * 64 - 64 + var2.y, MouseRecorder.plane), var2.size * 64 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
 				}
 			}
-
-		}
-	}
-
-	@ObfuscatedName("jg")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "361090625"
-	)
-	static boolean method40(int var0) {
-		for (int var1 = 0; var1 < Client.field677; ++var1) {
-			if (Client.field815[var1] == var0) {
-				return true;
-			}
 		}
 
-		return false;
 	}
 }

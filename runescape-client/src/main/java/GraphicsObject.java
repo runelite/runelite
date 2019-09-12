@@ -3,74 +3,71 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("bq")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Entity {
-	@ObfuscatedName("qe")
-	@ObfuscatedGetter(
-		intValue = -487309312
+	@ObfuscatedName("fa")
+	@ObfuscatedSignature(
+		signature = "Lku;"
 	)
-	static int field1079;
-	@ObfuscatedName("gx")
-	@Export("regionLandArchives")
-	static byte[][] regionLandArchives;
-	@ObfuscatedName("s")
+	@Export("WorldMapElement_fonts")
+	static Fonts WorldMapElement_fonts;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -609520515
+		intValue = -46719175
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 528073861
+		intValue = 824152429
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = -652492191
 	)
 	@Export("cycleStart")
 	int cycleStart;
-	@ObfuscatedName("i")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1305204903
+		intValue = -1299632507
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("k")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1986692437
+		intValue = -1087465937
 	)
 	@Export("x")
 	int x;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 575337647
-	)
-	@Export("y")
-	int y;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = -893117639
+		intValue = 12234547
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Lij;"
+		signature = "Liw;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1568571077
+		intValue = 353830109
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -1439045539
+		intValue = 1621269353
 	)
 	@Export("frameCycle")
 	int frameCycle;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@Export("isFinished")
 	boolean isFinished;
 
@@ -84,20 +81,20 @@ public final class GraphicsObject extends Entity {
 		this.y = var4;
 		this.height = var5;
 		this.cycleStart = var7 + var6;
-		int var8 = HealthBarUpdate.SpotAnimationDefinition_get(this.id).sequence;
+		int var8 = NetCache.SpotAnimationDefinition_get(this.id).sequence;
 		if (var8 != -1) {
 			this.isFinished = false;
-			this.sequenceDefinition = Widget.SequenceDefinition_get(var8);
+			this.sequenceDefinition = class83.SequenceDefinition_get(var8);
 		} else {
 			this.isFinished = true;
 		}
 
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IS)V",
-		garbageValue = "-9690"
+		signature = "(II)V",
+		garbageValue = "477710925"
 	)
 	@Export("advance")
 	final void advance(int var1) {
@@ -116,14 +113,14 @@ public final class GraphicsObject extends Entity {
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)Ldo;",
-		garbageValue = "-419920513"
+		signature = "(B)Ldr;",
+		garbageValue = "-35"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		SpotAnimationDefinition var1 = HealthBarUpdate.SpotAnimationDefinition_get(this.id);
+		SpotAnimationDefinition var1 = NetCache.SpotAnimationDefinition_get(this.id);
 		Model var2;
 		if (!this.isFinished) {
 			var2 = var1.getModel(this.frame);
@@ -134,49 +131,65 @@ public final class GraphicsObject extends Entity {
 		return var2 == null ? null : var2;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "971415890"
+		signature = "(Lkt;B)V",
+		garbageValue = "-5"
 	)
-	public static boolean method1946(int var0) {
-		return var0 == WorldMapDecorationType.field2722.id;
-	}
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "85520367"
-	)
-	@Export("hasReflectionCheck")
-	public static boolean hasReflectionCheck() {
-		ReflectionCheck var0 = (ReflectionCheck)class96.reflectionChecks.last();
-		return var0 != null;
-	}
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(ILcr;ZI)I",
-		garbageValue = "886521701"
-	)
-	static int method1939(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? class286.field3623 : class297.field3693;
-		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETID) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.childIndex;
-			return 1;
-		} else {
-			return 2;
+	@Export("updatePlayer")
+	static final void updatePlayer(PacketBuffer var0) {
+		var0.importIndex();
+		int var1 = Client.localPlayerIndex;
+		Player var2 = Varps.localPlayer = Client.players[var1] = new Player();
+		var2.index = var1;
+		int var3 = var0.readBits(30);
+		byte var4 = (byte)(var3 >> 28);
+		int var5 = var3 >> 14 & 16383;
+		int var6 = var3 & 16383;
+		var2.pathX[0] = var5 - class4.baseX * 64;
+		var2.x = ((var2.pathX[0] << 7) + (var2.transformedSize() << 6)) * 62504387;
+		var2.pathY[0] = var6 - ScriptEvent.baseY;
+		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
+		MouseRecorder.plane = var2.plane = var4;
+		if (Players.field1221[var1] != null) {
+			var2.read(Players.field1221[var1]);
 		}
+
+		Players.Players_count = 0;
+		Players.Players_indices[++Players.Players_count - 1] = var1;
+		Players.field1217[var1] = 0;
+		Players.Players_emptyIdxCount = 0;
+
+		for (int var7 = 1; var7 < 2048; ++var7) {
+			if (var7 != var1) {
+				int var8 = var0.readBits(18);
+				int var9 = var8 >> 16;
+				int var10 = var8 >> 8 & 597;
+				int var11 = var8 & 597;
+				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
+				Players.Players_orientations[var7] = 0;
+				Players.Players_targetIndices[var7] = -1;
+				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
+				Players.field1217[var7] = 0;
+			}
+		}
+
+		var0.exportIndex();
+	}
+
+	@ObfuscatedName("hl")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "4"
+	)
+	@Export("addCancelMenuEntry")
+	static void addCancelMenuEntry() {
+		Client.menuOptionsCount = 0;
+		Client.isMenuOpen = false;
+		Client.menuActions[0] = "Cancel";
+		Client.menuTargets[0] = "";
+		Client.menuOpcodes[0] = 1006;
+		Client.menuShiftClick[0] = false;
+		Client.menuOptionsCount = 1;
 	}
 }

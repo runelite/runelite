@@ -3,134 +3,134 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("ds")
 @Implements("ModelData")
 public class ModelData extends Entity {
-	@ObfuscatedName("ak")
-	static int[] field1563;
-	@ObfuscatedName("ao")
-	static int[] field1564;
-	@ObfuscatedName("ac")
-	static int field1565;
-	@ObfuscatedName("ar")
+	@ObfuscatedName("ax")
+	static int[] field1551;
+	@ObfuscatedName("aj")
+	static int[] field1552;
+	@ObfuscatedName("ab")
+	static int field1553;
+	@ObfuscatedName("af")
 	@Export("ModelData_sine")
 	static int[] ModelData_sine;
-	@ObfuscatedName("au")
+	@ObfuscatedName("ak")
 	@Export("ModelData_cosine")
 	static int[] ModelData_cosine;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@Export("verticesCount")
 	int verticesCount;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("verticesX")
 	int[] verticesX;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("verticesY")
 	int[] verticesY;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("verticesZ")
 	int[] verticesZ;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@Export("faceCount")
 	int faceCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@Export("indices1")
 	int[] indices1;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@Export("indices2")
 	int[] indices2;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@Export("indices3")
 	int[] indices3;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@Export("faceRenderTypes")
 	byte[] faceRenderTypes;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@Export("faceRenderPriorities")
 	byte[] faceRenderPriorities;
-	@ObfuscatedName("f")
+	@ObfuscatedName("n")
 	@Export("faceAlphas")
 	byte[] faceAlphas;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@Export("textureCoords")
 	byte[] textureCoords;
-	@ObfuscatedName("r")
+	@ObfuscatedName("f")
 	@Export("faceColors")
 	short[] faceColors;
-	@ObfuscatedName("y")
+	@ObfuscatedName("s")
 	@Export("faceTextures")
 	short[] faceTextures;
 	@ObfuscatedName("p")
 	@Export("priority")
 	byte priority;
-	@ObfuscatedName("b")
+	@ObfuscatedName("e")
 	@Export("textureTriangleCount")
 	int textureTriangleCount;
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@Export("textureRenderTypes")
 	byte[] textureRenderTypes;
-	@ObfuscatedName("e")
+	@ObfuscatedName("q")
 	@Export("texTriangleX")
 	short[] texTriangleX;
-	@ObfuscatedName("z")
+	@ObfuscatedName("y")
 	@Export("texTriangleY")
 	short[] texTriangleY;
-	@ObfuscatedName("a")
+	@ObfuscatedName("r")
 	@Export("texTriangleZ")
 	short[] texTriangleZ;
-	@ObfuscatedName("w")
+	@ObfuscatedName("k")
 	@Export("vertexSkins")
 	int[] vertexSkins;
-	@ObfuscatedName("l")
+	@ObfuscatedName("w")
 	@Export("faceSkins")
 	int[] faceSkins;
-	@ObfuscatedName("h")
+	@ObfuscatedName("m")
 	@Export("vertexLabels")
 	int[][] vertexLabels;
-	@ObfuscatedName("v")
+	@ObfuscatedName("o")
 	@Export("faceLabelsAlpha")
 	int[][] faceLabelsAlpha;
-	@ObfuscatedName("m")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "[Lei;"
+		signature = "[Lem;"
 	)
 	@Export("faceNormals")
 	FaceNormal[] faceNormals;
-	@ObfuscatedName("o")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "[Ldl;"
+		signature = "[Ldf;"
 	)
 	@Export("vertexNormals")
 	VertexNormal[] vertexNormals;
-	@ObfuscatedName("av")
+	@ObfuscatedName("ag")
 	@ObfuscatedSignature(
-		signature = "[Ldl;"
+		signature = "[Ldf;"
 	)
-	VertexNormal[] field1566;
-	@ObfuscatedName("am")
+	VertexNormal[] field1542;
+	@ObfuscatedName("at")
 	@Export("ambient")
 	public short ambient;
-	@ObfuscatedName("ai")
+	@ObfuscatedName("ao")
 	@Export("contrast")
 	public short contrast;
-	@ObfuscatedName("af")
+	@ObfuscatedName("av")
 	@Export("isBoundsCalculated")
 	boolean isBoundsCalculated;
-	@ObfuscatedName("az")
-	int field1558;
-	@ObfuscatedName("aj")
-	int field1559;
 	@ObfuscatedName("an")
-	int field1560;
-	@ObfuscatedName("at")
-	int field1535;
+	int field1546;
+	@ObfuscatedName("al")
+	int field1531;
 	@ObfuscatedName("as")
-	int field1562;
+	int field1526;
+	@ObfuscatedName("ad")
+	int field1548;
+	@ObfuscatedName("ap")
+	int field1520;
 
 	static {
-		field1563 = new int[10000];
-		field1564 = new int[10000];
-		field1565 = 0;
+		field1551 = new int[10000];
+		field1552 = new int[10000];
+		field1553 = 0;
 		ModelData_sine = Rasterizer3D.Rasterizer3D_sine;
 		ModelData_cosine = Rasterizer3D.Rasterizer3D_cosine;
 	}
@@ -143,7 +143,7 @@ public class ModelData extends Entity {
 	}
 
 	@ObfuscatedSignature(
-		signature = "([Ldq;I)V"
+		signature = "([Lds;I)V"
 	)
 	public ModelData(ModelData[] var1, int var2) {
 		this.verticesCount = 0;
@@ -274,18 +274,18 @@ public class ModelData extends Entity {
 					}
 
 					this.faceColors[this.faceCount] = var10.faceColors[var11];
-					this.indices1[this.faceCount] = this.method2707(var10, var10.indices1[var11]);
-					this.indices2[this.faceCount] = this.method2707(var10, var10.indices2[var11]);
-					this.indices3[this.faceCount] = this.method2707(var10, var10.indices3[var11]);
+					this.indices1[this.faceCount] = this.method2734(var10, var10.indices1[var11]);
+					this.indices2[this.faceCount] = this.method2734(var10, var10.indices2[var11]);
+					this.indices3[this.faceCount] = this.method2734(var10, var10.indices3[var11]);
 					++this.faceCount;
 				}
 
 				for (var11 = 0; var11 < var10.textureTriangleCount; ++var11) {
 					byte var12 = this.textureRenderTypes[this.textureTriangleCount] = var10.textureRenderTypes[var11];
 					if (var12 == 0) {
-						this.texTriangleX[this.textureTriangleCount] = (short)this.method2707(var10, var10.texTriangleX[var11]);
-						this.texTriangleY[this.textureTriangleCount] = (short)this.method2707(var10, var10.texTriangleY[var11]);
-						this.texTriangleZ[this.textureTriangleCount] = (short)this.method2707(var10, var10.texTriangleZ[var11]);
+						this.texTriangleX[this.textureTriangleCount] = (short)this.method2734(var10, var10.texTriangleX[var11]);
+						this.texTriangleY[this.textureTriangleCount] = (short)this.method2734(var10, var10.texTriangleY[var11]);
+						this.texTriangleZ[this.textureTriangleCount] = (short)this.method2734(var10, var10.texTriangleZ[var11]);
 					}
 
 					++this.textureTriangleCount;
@@ -301,15 +301,15 @@ public class ModelData extends Entity {
 		this.priority = 0;
 		this.isBoundsCalculated = false;
 		if (var1[var1.length - 1] == -1 && var1[var1.length - 2] == -1) {
-			this.method2705(var1);
+			this.method2732(var1);
 		} else {
-			this.method2706(var1);
+			this.method2782(var1);
 		}
 
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ldq;ZZZZ)V",
+		signature = "(Lds;ZZZZ)V",
 		garbageValue = "1"
 	)
 	public ModelData(ModelData var1, boolean var2, boolean var3, boolean var4, boolean var5) {
@@ -375,13 +375,13 @@ public class ModelData extends Entity {
 		this.faceLabelsAlpha = var1.faceLabelsAlpha;
 		this.vertexNormals = var1.vertexNormals;
 		this.faceNormals = var1.faceNormals;
-		this.field1566 = var1.field1566;
+		this.field1542 = var1.field1542;
 		this.ambient = var1.ambient;
 		this.contrast = var1.contrast;
 	}
 
-	@ObfuscatedName("j")
-	void method2705(byte[] var1) {
+	@ObfuscatedName("x")
+	void method2732(byte[] var1) {
 		Buffer var2 = new Buffer(var1);
 		Buffer var3 = new Buffer(var1);
 		Buffer var4 = new Buffer(var1);
@@ -686,8 +686,8 @@ public class ModelData extends Entity {
 
 	}
 
-	@ObfuscatedName("i")
-	void method2706(byte[] var1) {
+	@ObfuscatedName("t")
+	void method2782(byte[] var1) {
 		boolean var2 = false;
 		boolean var3 = false;
 		Buffer var4 = new Buffer(var1);
@@ -963,11 +963,11 @@ public class ModelData extends Entity {
 
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ldq;I)I"
+		signature = "(Lds;I)I"
 	)
-	final int method2707(ModelData var1, int var2) {
+	final int method2734(ModelData var1, int var2) {
 		int var3 = -1;
 		int var4 = var1.verticesX[var2];
 		int var5 = var1.verticesY[var2];
@@ -994,11 +994,11 @@ public class ModelData extends Entity {
 		return var3;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "()Ldq;"
+		signature = "()Lds;"
 	)
-	public ModelData method2708() {
+	public ModelData method2735() {
 		ModelData var1 = new ModelData();
 		if (this.faceRenderTypes != null) {
 			var1.faceRenderTypes = new byte[this.faceCount];
@@ -1038,16 +1038,16 @@ public class ModelData extends Entity {
 		return var1;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "([[IIIIZI)Ldq;"
+		signature = "([[IIIIZI)Lds;"
 	)
-	public ModelData method2709(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
+	public ModelData method2733(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
 		this.calculateBounds();
-		int var7 = var2 + this.field1559;
-		int var8 = var2 + this.field1560;
-		int var9 = var4 + this.field1562;
-		int var10 = var4 + this.field1535;
+		int var7 = var2 + this.field1531;
+		int var8 = var2 + this.field1526;
+		int var9 = var4 + this.field1520;
+		int var10 = var4 + this.field1548;
 		if (var7 >= 0 && var8 + 128 >> 7 < var1.length && var9 >= 0 && var10 + 128 >> 7 < var1[0].length) {
 			var7 >>= 7;
 			var8 = var8 + 127 >> 7;
@@ -1132,8 +1132,8 @@ public class ModelData extends Entity {
 		}
 	}
 
-	@ObfuscatedName("t")
-	void method2710() {
+	@ObfuscatedName("j")
+	void method2737() {
 		int[] var1;
 		int var2;
 		int var10002;
@@ -1193,8 +1193,8 @@ public class ModelData extends Entity {
 
 	}
 
-	@ObfuscatedName("q")
-	public void method2769() {
+	@ObfuscatedName("v")
+	public void method2738() {
 		for (int var1 = 0; var1 < this.verticesCount; ++var1) {
 			int var2 = this.verticesX[var1];
 			this.verticesX[var1] = this.verticesZ[var1];
@@ -1204,8 +1204,8 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("d")
-	public void method2712() {
+	@ObfuscatedName("z")
+	public void method2739() {
 		for (int var1 = 0; var1 < this.verticesCount; ++var1) {
 			this.verticesX[var1] = -this.verticesX[var1];
 			this.verticesZ[var1] = -this.verticesZ[var1];
@@ -1214,8 +1214,8 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("f")
-	public void method2713() {
+	@ObfuscatedName("s")
+	public void method2740() {
 		for (int var1 = 0; var1 < this.verticesCount; ++var1) {
 			int var2 = this.verticesZ[var1];
 			this.verticesZ[var1] = this.verticesX[var1];
@@ -1225,8 +1225,8 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("c")
-	public void method2714(int var1) {
+	@ObfuscatedName("p")
+	public void method2741(int var1) {
 		int var2 = ModelData_sine[var1];
 		int var3 = ModelData_cosine[var1];
 
@@ -1239,7 +1239,7 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("e")
 	@Export("changeOffset")
 	public void changeOffset(int var1, int var2, int var3) {
 		for (int var4 = 0; var4 < this.verticesCount; ++var4) {
@@ -1254,7 +1254,7 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@Export("recolor")
 	public void recolor(short var1, short var2) {
 		for (int var3 = 0; var3 < this.faceCount; ++var3) {
@@ -1265,7 +1265,7 @@ public class ModelData extends Entity {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("q")
 	@Export("retexture")
 	public void retexture(short var1, short var2) {
 		if (this.faceTextures != null) {
@@ -1278,8 +1278,8 @@ public class ModelData extends Entity {
 		}
 	}
 
-	@ObfuscatedName("g")
-	public void method2718() {
+	@ObfuscatedName("r")
+	public void method2776() {
 		int var1;
 		for (var1 = 0; var1 < this.verticesCount; ++var1) {
 			this.verticesZ[var1] = -this.verticesZ[var1];
@@ -1294,7 +1294,7 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("k")
 	@Export("resize")
 	public void resize(int var1, int var2, int var3) {
 		for (int var4 = 0; var4 < this.verticesCount; ++var4) {
@@ -1306,7 +1306,7 @@ public class ModelData extends Entity {
 		this.invalidate();
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("w")
 	@Export("calculateVertexNormals")
 	public void calculateVertexNormals() {
 		if (this.vertexNormals == null) {
@@ -1382,52 +1382,52 @@ public class ModelData extends Entity {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("m")
 	@Export("invalidate")
 	void invalidate() {
 		this.vertexNormals = null;
-		this.field1566 = null;
+		this.field1542 = null;
 		this.faceNormals = null;
 		this.isBoundsCalculated = false;
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("o")
 	@Export("calculateBounds")
 	void calculateBounds() {
 		if (!this.isBoundsCalculated) {
 			super.height = 0;
-			this.field1558 = 0;
-			this.field1559 = 999999;
-			this.field1560 = -999999;
-			this.field1535 = -99999;
-			this.field1562 = 99999;
+			this.field1546 = 0;
+			this.field1531 = 999999;
+			this.field1526 = -999999;
+			this.field1548 = -99999;
+			this.field1520 = 99999;
 
 			for (int var1 = 0; var1 < this.verticesCount; ++var1) {
 				int var2 = this.verticesX[var1];
 				int var3 = this.verticesY[var1];
 				int var4 = this.verticesZ[var1];
-				if (var2 < this.field1559) {
-					this.field1559 = var2;
+				if (var2 < this.field1531) {
+					this.field1531 = var2;
 				}
 
-				if (var2 > this.field1560) {
-					this.field1560 = var2;
+				if (var2 > this.field1526) {
+					this.field1526 = var2;
 				}
 
-				if (var4 < this.field1562) {
-					this.field1562 = var4;
+				if (var4 < this.field1520) {
+					this.field1520 = var4;
 				}
 
-				if (var4 > this.field1535) {
-					this.field1535 = var4;
+				if (var4 > this.field1548) {
+					this.field1548 = var4;
 				}
 
 				if (-var3 > super.height) {
 					super.height = -var3;
 				}
 
-				if (var3 > this.field1558) {
-					this.field1558 = var3;
+				if (var3 > this.field1546) {
+					this.field1546 = var3;
 				}
 			}
 
@@ -1435,9 +1435,9 @@ public class ModelData extends Entity {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(IIIII)Ldo;"
+		signature = "(IIIII)Ldr;"
 	)
 	@Export("toModel")
 	public final Model toModel(int var1, int var2, int var3, int var4, int var5) {
@@ -1458,38 +1458,38 @@ public class ModelData extends Entity {
 				}
 			}
 
-			var8.field1699 = 0;
+			var8.field1657 = 0;
 
 			for (var10 = 0; var10 < this.textureTriangleCount; ++var10) {
 				if (var9[var10] > 0 && this.textureRenderTypes[var10] == 0) {
-					++var8.field1699;
+					++var8.field1657;
 				}
 			}
 
-			var8.field1691 = new int[var8.field1699];
-			var8.field1671 = new int[var8.field1699];
-			var8.field1672 = new int[var8.field1699];
+			var8.field1658 = new int[var8.field1657];
+			var8.field1659 = new int[var8.field1657];
+			var8.field1660 = new int[var8.field1657];
 			var10 = 0;
 
 			int var11;
 			for (var11 = 0; var11 < this.textureTriangleCount; ++var11) {
 				if (var9[var11] > 0 && this.textureRenderTypes[var11] == 0) {
-					var8.field1691[var10] = this.texTriangleX[var11] & '\uffff';
-					var8.field1671[var10] = this.texTriangleY[var11] & '\uffff';
-					var8.field1672[var10] = this.texTriangleZ[var11] & '\uffff';
+					var8.field1658[var10] = this.texTriangleX[var11] & '\uffff';
+					var8.field1659[var10] = this.texTriangleY[var11] & '\uffff';
+					var8.field1660[var10] = this.texTriangleZ[var11] & '\uffff';
 					var9[var11] = var10++;
 				} else {
 					var9[var11] = -1;
 				}
 			}
 
-			var8.field1666 = new byte[this.faceCount];
+			var8.field1701 = new byte[this.faceCount];
 
 			for (var11 = 0; var11 < this.faceCount; ++var11) {
 				if (this.textureCoords[var11] != -1) {
-					var8.field1666[var11] = (byte)var9[this.textureCoords[var11] & 255];
+					var8.field1701[var11] = (byte)var9[this.textureCoords[var11] & 255];
 				} else {
-					var8.field1666[var11] = -1;
+					var8.field1701[var11] = -1;
 				}
 			}
 		}
@@ -1532,7 +1532,7 @@ public class ModelData extends Entity {
 					if (var17 == 1) {
 						var19 = this.faceNormals[var16];
 						var14 = (var4 * var19.y + var5 * var19.z + var3 * var19.x) / (var7 / 2 + var7) + var1;
-						var8.faceColors1[var16] = method2725(this.faceColors[var16] & '\uffff', var14);
+						var8.faceColors1[var16] = method2752(this.faceColors[var16] & '\uffff', var14);
 						var8.faceColors3[var16] = -1;
 					} else if (var17 == 3) {
 						var8.faceColors1[var16] = 128;
@@ -1542,69 +1542,69 @@ public class ModelData extends Entity {
 					}
 				} else {
 					int var15 = this.faceColors[var16] & '\uffff';
-					if (this.field1566 != null && this.field1566[this.indices1[var16]] != null) {
-						var13 = this.field1566[this.indices1[var16]];
+					if (this.field1542 != null && this.field1542[this.indices1[var16]] != null) {
+						var13 = this.field1542[this.indices1[var16]];
 					} else {
 						var13 = this.vertexNormals[this.indices1[var16]];
 					}
 
 					var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-					var8.faceColors1[var16] = method2725(var15, var14);
-					if (this.field1566 != null && this.field1566[this.indices2[var16]] != null) {
-						var13 = this.field1566[this.indices2[var16]];
+					var8.faceColors1[var16] = method2752(var15, var14);
+					if (this.field1542 != null && this.field1542[this.indices2[var16]] != null) {
+						var13 = this.field1542[this.indices2[var16]];
 					} else {
 						var13 = this.vertexNormals[this.indices2[var16]];
 					}
 
 					var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-					var8.faceColors2[var16] = method2725(var15, var14);
-					if (this.field1566 != null && this.field1566[this.indices3[var16]] != null) {
-						var13 = this.field1566[this.indices3[var16]];
+					var8.faceColors2[var16] = method2752(var15, var14);
+					if (this.field1542 != null && this.field1542[this.indices3[var16]] != null) {
+						var13 = this.field1542[this.indices3[var16]];
 					} else {
 						var13 = this.vertexNormals[this.indices3[var16]];
 					}
 
 					var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-					var8.faceColors3[var16] = method2725(var15, var14);
+					var8.faceColors3[var16] = method2752(var15, var14);
 				}
 			} else if (var17 != 0) {
 				if (var17 == 1) {
 					var19 = this.faceNormals[var16];
 					var14 = (var4 * var19.y + var5 * var19.z + var3 * var19.x) / (var7 / 2 + var7) + var1;
-					var8.faceColors1[var16] = method2741(var14);
+					var8.faceColors1[var16] = method2783(var14);
 					var8.faceColors3[var16] = -1;
 				} else {
 					var8.faceColors3[var16] = -2;
 				}
 			} else {
-				if (this.field1566 != null && this.field1566[this.indices1[var16]] != null) {
-					var13 = this.field1566[this.indices1[var16]];
+				if (this.field1542 != null && this.field1542[this.indices1[var16]] != null) {
+					var13 = this.field1542[this.indices1[var16]];
 				} else {
 					var13 = this.vertexNormals[this.indices1[var16]];
 				}
 
 				var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-				var8.faceColors1[var16] = method2741(var14);
-				if (this.field1566 != null && this.field1566[this.indices2[var16]] != null) {
-					var13 = this.field1566[this.indices2[var16]];
+				var8.faceColors1[var16] = method2783(var14);
+				if (this.field1542 != null && this.field1542[this.indices2[var16]] != null) {
+					var13 = this.field1542[this.indices2[var16]];
 				} else {
 					var13 = this.vertexNormals[this.indices2[var16]];
 				}
 
 				var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-				var8.faceColors2[var16] = method2741(var14);
-				if (this.field1566 != null && this.field1566[this.indices3[var16]] != null) {
-					var13 = this.field1566[this.indices3[var16]];
+				var8.faceColors2[var16] = method2783(var14);
+				if (this.field1542 != null && this.field1542[this.indices3[var16]] != null) {
+					var13 = this.field1542[this.indices3[var16]];
 				} else {
 					var13 = this.vertexNormals[this.indices3[var16]];
 				}
 
 				var14 = (var4 * var13.y + var5 * var13.z + var3 * var13.x) / (var7 * var13.magnitude) + var1;
-				var8.faceColors3[var16] = method2741(var14);
+				var8.faceColors3[var16] = method2783(var14);
 			}
 		}
 
-		this.method2710();
+		this.method2737();
 		var8.verticesCount = this.verticesCount;
 		var8.verticesX = this.verticesX;
 		var8.verticesY = this.verticesY;
@@ -1615,16 +1615,16 @@ public class ModelData extends Entity {
 		var8.indices3 = this.indices3;
 		var8.faceRenderPriorities = this.faceRenderPriorities;
 		var8.faceAlphas = this.faceAlphas;
-		var8.field1690 = this.priority;
+		var8.field1656 = this.priority;
 		var8.vertexLabels = this.vertexLabels;
 		var8.faceLabelsAlpha = this.faceLabelsAlpha;
 		var8.faceTextures = this.faceTextures;
 		return var8;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lhz;II)Ldq;"
+		signature = "(Lhz;II)Lds;"
 	)
 	@Export("ModelData_get")
 	public static ModelData ModelData_get(AbstractArchive var0, int var1, int var2) {
@@ -1632,16 +1632,16 @@ public class ModelData extends Entity {
 		return var3 == null ? null : new ModelData(var3);
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Ldq;Ldq;IIIZ)V"
+		signature = "(Lds;Lds;IIIZ)V"
 	)
-	static void method2745(ModelData var0, ModelData var1, int var2, int var3, int var4, boolean var5) {
+	static void method2807(ModelData var0, ModelData var1, int var2, int var3, int var4, boolean var5) {
 		var0.calculateBounds();
 		var0.calculateVertexNormals();
 		var1.calculateBounds();
 		var1.calculateVertexNormals();
-		++field1565;
+		++field1553;
 		int var6 = 0;
 		int[] var7 = var1.verticesX;
 		int var8 = var1.verticesCount;
@@ -1651,30 +1651,30 @@ public class ModelData extends Entity {
 			VertexNormal var10 = var0.vertexNormals[var9];
 			if (var10.magnitude != 0) {
 				int var11 = var0.verticesY[var9] - var3;
-				if (var11 <= var1.field1558) {
+				if (var11 <= var1.field1546) {
 					int var12 = var0.verticesX[var9] - var2;
-					if (var12 >= var1.field1559 && var12 <= var1.field1560) {
+					if (var12 >= var1.field1531 && var12 <= var1.field1526) {
 						int var13 = var0.verticesZ[var9] - var4;
-						if (var13 >= var1.field1562 && var13 <= var1.field1535) {
+						if (var13 >= var1.field1520 && var13 <= var1.field1548) {
 							for (int var14 = 0; var14 < var8; ++var14) {
 								VertexNormal var15 = var1.vertexNormals[var14];
 								if (var12 == var7[var14] && var13 == var1.verticesZ[var14] && var11 == var1.verticesY[var14] && var15.magnitude != 0) {
-									if (var0.field1566 == null) {
-										var0.field1566 = new VertexNormal[var0.verticesCount];
+									if (var0.field1542 == null) {
+										var0.field1542 = new VertexNormal[var0.verticesCount];
 									}
 
-									if (var1.field1566 == null) {
-										var1.field1566 = new VertexNormal[var8];
+									if (var1.field1542 == null) {
+										var1.field1542 = new VertexNormal[var8];
 									}
 
-									VertexNormal var16 = var0.field1566[var9];
+									VertexNormal var16 = var0.field1542[var9];
 									if (var16 == null) {
-										var16 = var0.field1566[var9] = new VertexNormal(var10);
+										var16 = var0.field1542[var9] = new VertexNormal(var10);
 									}
 
-									VertexNormal var17 = var1.field1566[var14];
+									VertexNormal var17 = var1.field1542[var14];
 									if (var17 == null) {
-										var17 = var1.field1566[var14] = new VertexNormal(var15);
+										var17 = var1.field1542[var14] = new VertexNormal(var15);
 									}
 
 									var16.x += var15.x;
@@ -1686,8 +1686,8 @@ public class ModelData extends Entity {
 									var17.z += var10.z;
 									var17.magnitude += var10.magnitude;
 									++var6;
-									field1563[var9] = field1565;
-									field1564[var14] = field1565;
+									field1551[var9] = field1553;
+									field1552[var14] = field1553;
 								}
 							}
 						}
@@ -1698,7 +1698,7 @@ public class ModelData extends Entity {
 
 		if (var6 >= 3 && var5) {
 			for (var9 = 0; var9 < var0.faceCount; ++var9) {
-				if (field1563[var0.indices1[var9]] == field1565 && field1563[var0.indices2[var9]] == field1565 && field1563[var0.indices3[var9]] == field1565) {
+				if (field1551[var0.indices1[var9]] == field1553 && field1551[var0.indices2[var9]] == field1553 && field1551[var0.indices3[var9]] == field1553) {
 					if (var0.faceRenderTypes == null) {
 						var0.faceRenderTypes = new byte[var0.faceCount];
 					}
@@ -1708,7 +1708,7 @@ public class ModelData extends Entity {
 			}
 
 			for (var9 = 0; var9 < var1.faceCount; ++var9) {
-				if (field1565 == field1564[var1.indices1[var9]] && field1565 == field1564[var1.indices2[var9]] && field1565 == field1564[var1.indices3[var9]]) {
+				if (field1553 == field1552[var1.indices1[var9]] && field1553 == field1552[var1.indices2[var9]] && field1553 == field1552[var1.indices3[var9]]) {
 					if (var1.faceRenderTypes == null) {
 						var1.faceRenderTypes = new byte[var1.faceCount];
 					}
@@ -1720,8 +1720,8 @@ public class ModelData extends Entity {
 		}
 	}
 
-	@ObfuscatedName("m")
-	static final int method2725(int var0, int var1) {
+	@ObfuscatedName("ag")
+	static final int method2752(int var0, int var1) {
 		var1 = (var0 & 127) * var1 >> 7;
 		if (var1 < 2) {
 			var1 = 2;
@@ -1732,8 +1732,8 @@ public class ModelData extends Entity {
 		return (var0 & 65408) + var1;
 	}
 
-	@ObfuscatedName("o")
-	static final int method2741(int var0) {
+	@ObfuscatedName("at")
+	static final int method2783(int var0) {
 		if (var0 < 2) {
 			var0 = 2;
 		} else if (var0 > 126) {

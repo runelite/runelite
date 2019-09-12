@@ -1,25 +1,27 @@
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kr")
+@ObfuscatedName("ku")
 @Implements("Fonts")
 public class Fonts {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("spritesArchive")
 	AbstractArchive spritesArchive;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lhz;"
 	)
 	@Export("fontsArchive")
 	AbstractArchive fontsArchive;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("map")
 	HashMap map;
 
@@ -32,10 +34,10 @@ public class Fonts {
 		this.map = new HashMap();
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "([Lkz;I)Ljava/util/HashMap;",
-		garbageValue = "2107388628"
+		signature = "([Lkn;B)Ljava/util/HashMap;",
+		garbageValue = "-84"
 	)
 	@Export("createMap")
 	public HashMap createMap(FontName[] var1) {
@@ -47,7 +49,7 @@ public class Fonts {
 			if (this.map.containsKey(var5)) {
 				var2.put(var5, this.map.get(var5));
 			} else {
-				Font var6 = PcmPlayer.SpriteBuffer_getFontByName(this.spritesArchive, this.fontsArchive, var5.name, "");
+				Font var6 = Skeleton.SpriteBuffer_getFontByName(this.spritesArchive, this.fontsArchive, var5.name, "");
 				if (var6 != null) {
 					this.map.put(var5, var6);
 					var2.put(var5, var6);
@@ -58,23 +60,12 @@ public class Fonts {
 		return var2;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("an")
 	@ObfuscatedSignature(
-		signature = "(I)[Lha;",
-		garbageValue = "1384146854"
+		signature = "(Ljava/net/Socket;III)Lks;",
+		garbageValue = "1860750557"
 	)
-	public static ServerBuild[] method5240() {
-		return new ServerBuild[]{ServerBuild.WIP, ServerBuild.LIVE, ServerBuild.BUILDLIVE, ServerBuild.RC};
-	}
-
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;Lhz;I)V",
-		garbageValue = "-1215139257"
-	)
-	public static void method5234(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
-		SequenceDefinition.SequenceDefinition_archive = var0;
-		SequenceDefinition.SequenceDefinition_animationsArchive = var1;
-		SequenceDefinition.SequenceDefinition_skeletonsArchive = var2;
+	public static AbstractSocket method5293(Socket var0, int var1, int var2) throws IOException {
+		return new BufferedNetSocket(var0, var1, var2);
 	}
 }

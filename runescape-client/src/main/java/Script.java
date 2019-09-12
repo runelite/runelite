@@ -4,57 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cu")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("eo")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive20")
-	static Archive archive20;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 733828633
+		intValue = 1662651269
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 433175323
+		intValue = 925895493
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1193864261
+		intValue = -1615704029
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1480737507
+		intValue = -1886789561
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "[Lln;"
+		signature = "[Llj;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -66,95 +60,34 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(II)[Lln;",
-		garbageValue = "-825369330"
+		signature = "(IB)[Llj;",
+		garbageValue = "58"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 
-	@ObfuscatedName("hy")
+	@ObfuscatedName("gu")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIB)V",
-		garbageValue = "1"
+		signature = "(B)V",
+		garbageValue = "-4"
 	)
-	@Export("addPendingSpawnToScene")
-	static final void addPendingSpawnToScene(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-			if (Client.isLowDetail && var0 != ItemContainer.plane) {
-				return;
-			}
-
-			long var7 = 0L;
-			boolean var9 = true;
-			boolean var10 = false;
-			boolean var11 = false;
-			if (var1 == 0) {
-				var7 = Player.scene.getBoundaryObjectTag(var0, var2, var3);
-			}
-
-			if (var1 == 1) {
-				var7 = Player.scene.getWallDecorationTag(var0, var2, var3);
-			}
-
-			if (var1 == 2) {
-				var7 = Player.scene.getGameObjectTag(var0, var2, var3);
-			}
-
-			if (var1 == 3) {
-				var7 = Player.scene.getFloorDecorationTag(var0, var2, var3);
-			}
-
-			int var12;
-			if (0L != var7) {
-				var12 = Player.scene.getObjectFlags(var0, var2, var3, var7);
-				int var14 = BoundaryObject.Entity_unpackID(var7);
-				int var15 = var12 & 31;
-				int var16 = var12 >> 6 & 3;
-				ObjectDefinition var13;
-				if (var1 == 0) {
-					Player.scene.removeBoundaryObject(var0, var2, var3);
-					var13 = class215.getObjectDefinition(var14);
-					if (var13.interactType != 0) {
-						Client.collisionMaps[var0].method3497(var2, var3, var15, var16, var13.boolean1);
+	static final void method2201() {
+		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
+			if (var0.plane == MouseRecorder.plane && !var0.isFinished) {
+				if (Client.cycle >= var0.cycleStart) {
+					var0.advance(Client.field683);
+					if (var0.isFinished) {
+						var0.remove();
+					} else {
+						WorldMapIcon_1.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
 					}
 				}
-
-				if (var1 == 1) {
-					Player.scene.removeWallDecoration(var0, var2, var3);
-				}
-
-				if (var1 == 2) {
-					Player.scene.removeGameObject(var0, var2, var3);
-					var13 = class215.getObjectDefinition(var14);
-					if (var2 + var13.sizeX > 103 || var3 + var13.sizeX > 103 || var2 + var13.sizeY > 103 || var3 + var13.sizeY > 103) {
-						return;
-					}
-
-					if (var13.interactType != 0) {
-						Client.collisionMaps[var0].setFlagOffNonSquare(var2, var3, var13.sizeX, var13.sizeY, var16, var13.boolean1);
-					}
-				}
-
-				if (var1 == 3) {
-					Player.scene.removeFloorDecoration(var0, var2, var3);
-					var13 = class215.getObjectDefinition(var14);
-					if (var13.interactType == 1) {
-						Client.collisionMaps[var0].method3527(var2, var3);
-					}
-				}
-			}
-
-			if (var4 >= 0) {
-				var12 = var0;
-				if (var0 < 3 && (Tiles.Tiles_renderFlags[1][var2][var3] & 2) == 2) {
-					var12 = var0 + 1;
-				}
-
-				Client.addPendingGameObject(var0, var12, var2, var3, var4, var5, var6, Player.scene, Client.collisionMaps[var0]);
+			} else {
+				var0.remove();
 			}
 		}
 

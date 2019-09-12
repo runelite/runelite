@@ -1,130 +1,71 @@
-import java.awt.Component;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("go")
 public class class195 {
-	@ObfuscatedName("bs")
-	@ObfuscatedSignature(
-		signature = "Llq;"
-	)
-	static IndexedSprite field2368;
+	@ObfuscatedName("ak")
+	@Export("null_string")
+	protected static String null_string;
 
 	static {
 		new HashMap();
 	}
 
-	@ObfuscatedName("s")
-	static double method3623(double var0, double var2, double var4) {
-		double var8 = (var0 - var2) / var4;
-		double var6 = Math.exp(-var8 * var8 / 2.0D) / Math.sqrt(6.283185307179586D);
-		return var6 / var4;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(B)[Lga;",
+		garbageValue = "-55"
+	)
+	@Export("ServerPacket_values")
+	public static ServerPacket[] ServerPacket_values() {
+		return new ServerPacket[]{ServerPacket.field2141, ServerPacket.field2113, ServerPacket.field2122, ServerPacket.field2120, ServerPacket.field2100, ServerPacket.field2101, ServerPacket.field2102, ServerPacket.field2103, ServerPacket.field2104, ServerPacket.field2162, ServerPacket.field2118, ServerPacket.field2107, ServerPacket.field2108, ServerPacket.field2109, ServerPacket.field2110, ServerPacket.field2111, ServerPacket.field2112, ServerPacket.field2098, ServerPacket.field2105, ServerPacket.field2135, ServerPacket.field2134, ServerPacket.field2117, ServerPacket.field2181, ServerPacket.field2119, ServerPacket.field2099, ServerPacket.field2121, ServerPacket.field2096, ServerPacket.field2123, ServerPacket.field2116, ServerPacket.field2137, ServerPacket.field2126, ServerPacket.field2127, ServerPacket.field2142, ServerPacket.field2115, ServerPacket.field2130, ServerPacket.field2168, ServerPacket.field2132, ServerPacket.field2133, ServerPacket.field2131, ServerPacket.field2158, ServerPacket.field2136, ServerPacket.field2182, ServerPacket.field2138, ServerPacket.field2164, ServerPacket.field2172, ServerPacket.field2125, ServerPacket.field2129, ServerPacket.field2106, ServerPacket.field2144, ServerPacket.field2145, ServerPacket.field2146, ServerPacket.field2143, ServerPacket.field2128, ServerPacket.field2149, ServerPacket.field2150, ServerPacket.field2151, ServerPacket.field2152, ServerPacket.field2153, ServerPacket.field2154, ServerPacket.field2124, ServerPacket.field2156, ServerPacket.field2157, ServerPacket.field2147, ServerPacket.field2159, ServerPacket.field2160, ServerPacket.field2161, ServerPacket.field2148, ServerPacket.field2163, ServerPacket.field2155, ServerPacket.field2165, ServerPacket.field2166, ServerPacket.field2167, ServerPacket.field2139, ServerPacket.field2169, ServerPacket.field2170, ServerPacket.field2171, ServerPacket.field2097, ServerPacket.field2173, ServerPacket.field2174, ServerPacket.field2175, ServerPacket.field2176, ServerPacket.field2177, ServerPacket.field2178, ServerPacket.field2179, ServerPacket.field2180, ServerPacket.field2140};
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "-1990458984"
+		signature = "(II)Liq;",
+		garbageValue = "2111185945"
 	)
-	static final void method3627(int var0, int var1, int var2, int var3) {
-		for (int var4 = var1; var4 <= var3 + var1; ++var4) {
-			for (int var5 = var0; var5 <= var0 + var2; ++var5) {
-				if (var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-					class188.field2321[0][var5][var4] = 127;
-					if (var0 == var5 && var5 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 - 1][var4];
-					}
-
-					if (var5 == var0 + var2 && var5 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 + 1][var4];
-					}
-
-					if (var4 == var1 && var4 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 - 1];
-					}
-
-					if (var4 == var3 + var1 && var4 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 + 1];
-					}
-				}
-			}
-		}
-
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lmv;"
-	)
-	@Export("newRunException")
-	public static RunException newRunException(Throwable var0, String var1) {
-		RunException var2;
-		if (var0 instanceof RunException) {
-			var2 = (RunException)var0;
-			var2.message = var2.message + ' ' + var1;
+	@Export("KitDefinition_get")
+	public static KitDefinition KitDefinition_get(int var0) {
+		KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			var2 = new RunException(var0, var1);
-		}
-
-		return var2;
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(Ljava/awt/Component;S)V",
-		garbageValue = "24303"
-	)
-	static void method3629(Component var0) {
-		var0.removeMouseListener(MouseHandler.MouseHandler_instance);
-		var0.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
-		var0.removeFocusListener(MouseHandler.MouseHandler_instance);
-		MouseHandler.MouseHandler_currentButtonVolatile = 0;
-	}
-
-	@ObfuscatedName("im")
-	@ObfuscatedSignature(
-		signature = "(IIIIIII)V",
-		garbageValue = "-963502803"
-	)
-	static final void method3628(int var0, int var1, int var2, int var3, int var4, int var5) {
-		int var6 = var2 - var0;
-		int var7 = var3 - var1;
-		int var8 = var6 >= 0 ? var6 : -var6;
-		int var9 = var7 >= 0 ? var7 : -var7;
-		int var10 = var8;
-		if (var8 < var9) {
-			var10 = var9;
-		}
-
-		if (var10 != 0) {
-			int var11 = (var6 << 16) / var10;
-			int var12 = (var7 << 16) / var10;
-			if (var12 <= var11) {
-				var11 = -var11;
-			} else {
-				var12 = -var12;
+			byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
+			var1 = new KitDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			int var13 = var5 * var12 >> 17;
-			int var14 = var5 * var12 + 1 >> 17;
-			int var15 = var5 * var11 >> 17;
-			int var16 = var5 * var11 + 1 >> 17;
-			var0 -= Rasterizer2D.Rasterizer2D_xClipStart;
-			var1 -= Rasterizer2D.Rasterizer2D_yClipStart;
-			int var17 = var0 + var13;
-			int var18 = var0 - var14;
-			int var19 = var0 + var6 - var14;
-			int var20 = var0 + var6 + var13;
-			int var21 = var15 + var1;
-			int var22 = var1 - var16;
-			int var23 = var7 + var1 - var16;
-			int var24 = var7 + var15 + var1;
-			Rasterizer3D.method2933(var17, var18, var19);
-			Rasterizer3D.method2936(var21, var22, var23, var17, var18, var19, var4);
-			Rasterizer3D.method2933(var17, var19, var20);
-			Rasterizer3D.method2936(var21, var23, var24, var17, var19, var20, var4);
+			KitDefinition.KitDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "2"
+	)
+	public static void method3663() {
+		VarpDefinition.VarpDefinition_cached.clear();
+	}
+
+	@ObfuscatedName("kt")
+	@ObfuscatedSignature(
+		signature = "(Lkz;IB)V",
+		garbageValue = "4"
+	)
+	static void method3664(Buffer var0, int var1) {
+		byte[] var2 = var0.array;
+		if (Client.randomDatData == null) {
+			Client.randomDatData = new byte[24];
+		}
+
+		class300.writeRandomDat(var2, var1, Client.randomDatData, 0, 24);
+		class49.method828(var0, var1);
 	}
 }

@@ -4,100 +4,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ef")
 @Implements("GameObject")
 public final class GameObject {
-	@ObfuscatedName("sg")
-	@ObfuscatedSignature(
-		signature = "Lic;"
-	)
-	public static class237 field1921;
-	@ObfuscatedName("dg")
-	@ObfuscatedSignature(
-		signature = "Lid;"
-	)
-	@Export("archive10")
-	static Archive archive10;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 744501361
+		intValue = -373728187
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 2026651009
-	)
-	@Export("height")
-	int height;
-	@ObfuscatedName("i")
-	@ObfuscatedGetter(
-		intValue = -500411517
-	)
-	@Export("centerX")
-	int centerX;
-	@ObfuscatedName("k")
-	@ObfuscatedGetter(
-		intValue = -560576891
+		intValue = 351218671
 	)
 	@Export("centerY")
 	int centerY;
-	@ObfuscatedName("u")
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = -722622461
+	)
+	@Export("height")
+	int height;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = -1130119677
+	)
+	@Export("centerX")
+	int centerX;
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Len;"
+		signature = "Lel;"
 	)
 	@Export("entity")
 	public Entity entity;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 939156699
+		intValue = -1883842779
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 86850281
+		intValue = -1330255505
 	)
 	@Export("startX")
 	int startX;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -698919929
+		intValue = -941264089
 	)
 	@Export("endX")
 	int endX;
-	@ObfuscatedName("x")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1676112193
+		intValue = -2072718285
 	)
 	@Export("startY")
 	int startY;
-	@ObfuscatedName("d")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 2114738955
+		intValue = -1022796885
 	)
 	@Export("endY")
 	int endY;
-	@ObfuscatedName("f")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1792624973
+		intValue = -1238429947
 	)
-	int field1916;
-	@ObfuscatedName("c")
+	int field1904;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 1739525873
+		intValue = 792454525
 	)
 	@Export("lastDrawn")
 	int lastDrawn;
-	@ObfuscatedName("r")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		longValue = 7927595607641920085L
+		longValue = -8257733995685858193L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("y")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 692610593
+		intValue = -1096273189
 	)
 	@Export("flags")
 	int flags;
@@ -107,25 +96,99 @@ public final class GameObject {
 		this.flags = 0;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZZI)V",
-		garbageValue = "-1828723850"
+		signature = "(Lhz;Lhz;S)V",
+		garbageValue = "390"
 	)
-	@Export("openURL")
-	public static void openURL(String var0, boolean var1, boolean var2) {
-		StudioGame.method4056(var0, var1, "openjs", var2);
+	@Export("NpcDefinition_setArchives")
+	public static void NpcDefinition_setArchives(AbstractArchive var0, AbstractArchive var1) {
+		NPCDefinition.NpcDefinition_archive = var0;
+		NPCDefinition.NpcDefinition_modelArchive = var1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("x")
+	public static String method3262(long var0) {
+		if (var0 > 0L && var0 < 6582952005840035281L) {
+			if (var0 % 37L == 0L) {
+				return null;
+			} else {
+				int var2 = 0;
+
+				for (long var3 = var0; var3 != 0L; var3 /= 37L) {
+					++var2;
+				}
+
+				StringBuilder var5 = new StringBuilder(var2);
+
+				while (var0 != 0L) {
+					long var6 = var0;
+					var0 /= 37L;
+					var5.append(class288.base37Table[(int)(var6 - var0 * 37L)]);
+				}
+
+				return var5.reverse().toString();
+			}
+		} else {
+			return null;
+		}
+	}
+
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-2110373438"
+		signature = "(II)Lkc;",
+		garbageValue = "143572048"
 	)
-	@Export("ViewportMouse_unpackY")
-	public static int ViewportMouse_unpackY(int var0) {
-		long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
-		int var1 = (int)(var2 >>> 7 & 127L);
-		return var1;
+	public static PrivateChatMode method3263(int var0) {
+		PrivateChatMode[] var1 = Frames.ChatMode_values();
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			PrivateChatMode var3 = var1[var2];
+			if (var0 == var3.field3787) {
+				return var3;
+			}
+		}
+
+		return null;
+	}
+
+	@ObfuscatedName("gz")
+	@ObfuscatedSignature(
+		signature = "(Lby;ZI)V",
+		garbageValue = "100665877"
+	)
+	@Export("addPlayerToScene")
+	static void addPlayerToScene(Player var0, boolean var1) {
+		if (var0 != null && var0.isVisible() && !var0.isHidden) {
+			var0.isUnanimated = false;
+			if ((Client.isLowDetail && Players.Players_count > 50 || Players.Players_count > 200) && var1 && var0.readySequence == var0.movementSequence) {
+				var0.isUnanimated = true;
+			}
+
+			int var2 = var0.x * -78439701 >> 7;
+			int var3 = var0.y >> 7;
+			if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+				long var4 = WorldMapIcon_1.calculateTag(0, 0, 0, false, var0.index);
+				if (var0.model0 != null && Client.cycle >= var0.animationCycleStart && Client.cycle < var0.animationCycleEnd) {
+					var0.isUnanimated = false;
+					var0.tileHeight = WorldMapAreaData.getTileHeight(var0.x * -78439701, var0.y, MouseRecorder.plane);
+					var0.playerCycle = Client.cycle;
+					WorldMapIcon_1.scene.addNullableObject(MouseRecorder.plane, var0.x * -78439701, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field601, var0.field602, var0.field609, var0.field604);
+				} else {
+					if ((var0.x * -78439701 & 127) == 64 && (var0.y & 127) == 64) {
+						if (Client.tileLastDrawnActor[var2][var3] == Client.viewportDrawCount) {
+							return;
+						}
+
+						Client.tileLastDrawnActor[var2][var3] = Client.viewportDrawCount;
+					}
+
+					var0.tileHeight = WorldMapAreaData.getTileHeight(var0.x * -78439701, var0.y, MouseRecorder.plane);
+					var0.playerCycle = Client.cycle;
+					WorldMapIcon_1.scene.drawEntity(MouseRecorder.plane, var0.x * -78439701, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
+				}
+			}
+		}
+
 	}
 }

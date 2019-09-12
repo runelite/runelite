@@ -4,27 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hi")
 @Implements("SpriteMask")
 public class SpriteMask extends DualNode {
-	@ObfuscatedName("cu")
-	public static char field2499;
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1889581331
+		intValue = 1779870231
 	)
 	@Export("width")
 	public final int width;
-	@ObfuscatedName("j")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -300799133
+		intValue = 368220397
 	)
 	@Export("height")
 	public final int height;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("xWidths")
 	public final int[] xWidths;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@Export("xStarts")
 	public final int[] xStarts;
 
@@ -35,10 +33,10 @@ public class SpriteMask extends DualNode {
 		this.xStarts = var4;
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(III)Z",
-		garbageValue = "-1169016407"
+		garbageValue = "1440865418"
 	)
 	@Export("contains")
 	public boolean contains(int var1, int var2) {
@@ -50,15 +48,5 @@ public class SpriteMask extends DualNode {
 		}
 
 		return false;
-	}
-
-	@ObfuscatedName("jm")
-	@ObfuscatedSignature(
-		signature = "(ZB)V",
-		garbageValue = "57"
-	)
-	@Export("setTapToDrop")
-	static void setTapToDrop(boolean var0) {
-		Client.tapToDrop = var0;
 	}
 }

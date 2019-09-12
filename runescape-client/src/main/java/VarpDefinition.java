@@ -4,30 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("is")
 @Implements("VarpDefinition")
 public class VarpDefinition extends DualNode {
-	@ObfuscatedName("s")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("VarpDefinition_archive")
-	static AbstractArchive VarpDefinition_archive;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = -1812370505
-	)
-	@Export("VarpDefinition_fileCount")
-	public static int VarpDefinition_fileCount;
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Let;"
 	)
 	@Export("VarpDefinition_cached")
 	static EvictingDualNodeHashTable VarpDefinition_cached;
-	@ObfuscatedName("k")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -559924911
+		intValue = -1682787017
 	)
 	@Export("type")
 	public int type;
@@ -40,10 +28,10 @@ public class VarpDefinition extends DualNode {
 		this.type = 0;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lky;B)V",
-		garbageValue = "-60"
+		signature = "(Lkz;B)V",
+		garbageValue = "76"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -57,10 +45,10 @@ public class VarpDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lky;IB)V",
-		garbageValue = "-93"
+		signature = "(Lkz;IB)V",
+		garbageValue = "86"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -70,54 +58,63 @@ public class VarpDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("jv")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lbq;ZI)V",
-		garbageValue = "50109421"
+		signature = "(Lhz;Lhz;ZIS)V",
+		garbageValue = "-8911"
 	)
-	@Export("closeInterface")
-	static final void closeInterface(InterfaceParent var0, boolean var1) {
-		int var2 = var0.group;
-		int var3 = (int)var0.key;
-		var0.remove();
-		if (var1) {
-			UrlRequester.method3250(var2);
-		}
-
-		for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
-			if ((long)var2 == (var4.key >> 48 & 65535L)) {
-				var4.remove();
+	static void method4354(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
+		if (Login.field1181) {
+			if (var3 == 4) {
+				Login.loginIndex = 4;
 			}
-		}
 
-		Widget var7 = WorldMapElement.getWidget(var3);
-		if (var7 != null) {
-			FriendSystem.invalidateWidget(var7);
-		}
-
-		for (int var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-			if (PendingSpawn.isWidgetMenuOpcode(Client.menuOpcodes[var5])) {
-				if (var5 < Client.menuOptionsCount - 1) {
-					for (int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
-						Client.menuActions[var6] = Client.menuActions[var6 + 1];
-						Client.menuTargets[var6] = Client.menuTargets[var6 + 1];
-						Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
-						Client.menuIdentifiers[var6] = Client.menuIdentifiers[var6 + 1];
-						Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
-						Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
-						Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
-					}
-				}
-
-				--var5;
-				--Client.menuOptionsCount;
+		} else {
+			Login.loginIndex = var3;
+			Rasterizer2D.Rasterizer2D_clear();
+			byte[] var4 = var0.takeFileByNames("title.jpg", "");
+			Login.leftTitleSprite = class16.convertJpgToSprite(var4);
+			class191.rightTitleSprite = Login.leftTitleSprite.mirrorHorizontally();
+			if ((Client.worldProperties & 536870912) != 0) {
+				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+			} else {
+				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
 			}
-		}
 
-		GrandExchangeOfferNameComparator.calculateMenuBounds();
-		if (Client.rootInterface != -1) {
-			UserComparator6.runIntfCloseListeners(Client.rootInterface, 1);
-		}
+			Login.titleboxSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
+			class191.titlebuttonSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
+			UserComparator10.runesSprite = GrandExchangeOfferNameComparator.method122(var1, "runes", "");
+			FileSystem.title_muteSprite = GrandExchangeOfferNameComparator.method122(var1, "title_mute", "");
+			GrandExchangeOfferWorldComparator.options_buttons_0Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+			Login.field1153 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+			Login.options_buttons_2Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+			WorldMapDecoration.field202 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+			class4.field17 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subWidth;
+			class267.field3524 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subHeight;
+			UserComparator5.loginScreenRunesAnimation = new LoginScreenAnimation(UserComparator10.runesSprite);
+			if (var2) {
+				Login.Login_username = "";
+				Login.Login_password = "";
+			}
 
+			class222.field2729 = 0;
+			class81.otp = "";
+			Login.field1183 = true;
+			Login.worldSelectOpen = false;
+			if (!Actor.clientPreferences.titleMusicDisabled) {
+				PendingSpawn.method1681(2, WorldMapDecoration.archive6, "scape main", "", 255, false);
+			} else {
+				WallDecoration.method3256(2);
+			}
+
+			class173.method3575(false);
+			Login.field1181 = true;
+			Login.xPadding = (GraphicsDefaults.canvasWidth - 765) / 2;
+			Login.loginBoxX = Login.xPadding + 202;
+			VarcInt.loginBoxCenter = Login.loginBoxX + 180;
+			Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+			class191.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+			HealthBar.logoSprite.drawAt(Login.xPadding + 382 - HealthBar.logoSprite.subWidth / 2, 18);
+		}
 	}
 }
