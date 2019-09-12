@@ -26,6 +26,9 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
+import javax.annotation.Nullable;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -33,9 +36,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 @Getter
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
