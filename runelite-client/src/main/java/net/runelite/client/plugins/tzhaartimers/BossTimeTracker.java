@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tzhaartimers;
+package net.runelite.client.plugins.bosstimetracker;
 
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
@@ -33,13 +33,13 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class TzhaarTimers extends InfoBox
+public class BossTimeTracker extends InfoBox
 {
 	private final Instant startTime;
 	private LocalTime time;
 	private Instant lastTime;
 
-	public TzhaarTimers(BufferedImage image, TzhaarTimersPlugin plugin, Instant startTime, Instant lastTime)
+	public BossTimeTracker(BufferedImage image, BossTimeTrackerPlugin plugin, Instant startTime, Instant lastTime)
 	{
 		super(image, plugin);
 		this.startTime = startTime;
