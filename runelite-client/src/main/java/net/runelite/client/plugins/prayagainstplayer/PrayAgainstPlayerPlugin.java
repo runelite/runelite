@@ -56,7 +56,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.WeaponType;
 
 @PluginDescriptor(
 	name = "Pray Against Player",
