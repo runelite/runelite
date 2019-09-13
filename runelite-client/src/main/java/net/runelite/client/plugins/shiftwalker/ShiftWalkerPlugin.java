@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.events.ClientTick;
@@ -156,6 +157,10 @@ public class ShiftWalkerPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
+			if (client.getGameState() != GameState.LOGGED_IN)
+			{
+				return;
+			}
 			startPrioritizing();
 			setHotkeyActive(true);
 		}
@@ -163,6 +168,10 @@ public class ShiftWalkerPlugin extends Plugin
 		@Override
 		public void hotkeyReleased()
 		{
+			if (client.getGameState() != GameState.LOGGED_IN)
+			{
+				return;
+			}
 			stopPrioritizing();
 			setHotkeyActive(false);
 		}
