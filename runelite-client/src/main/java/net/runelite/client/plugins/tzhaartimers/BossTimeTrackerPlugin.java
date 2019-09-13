@@ -34,6 +34,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.eventbus.EventBus;
 
@@ -50,7 +51,7 @@ import static net.runelite.api.ItemID.INFERNAL_CAPE;
 @PluginDescriptor(
 	name = "Boss Time Tracker",
 	description = "Display elapsed time in the Fight Caves and Inferno",
-	tags = {"inferno", "fight", "caves", "cape", "timer", "tzhaar"},
+	tags = {"inferno", "fight", "caves", "cape", "timer", "tzhaar", "pvm"},
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
