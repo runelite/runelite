@@ -473,6 +473,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, true);
 			}
+			
 			if(config.swapStore())
 			{
 				swap("trade-builders-store", option, target, true);
