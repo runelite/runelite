@@ -50,7 +50,9 @@ import static net.runelite.api.ItemID.INFERNAL_CAPE;
 @PluginDescriptor(
 	name = "Boss Time Tracker",
 	description = "Display elapsed time in the Fight Caves and Inferno",
-	tags = {"inferno", "fight", "caves", "cape", "timer", "tzhaar"}
+	tags = {"inferno", "fight", "caves", "cape", "timer", "tzhaar"},
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
 public class BossTimeTrackerPlugin extends Plugin
 {
