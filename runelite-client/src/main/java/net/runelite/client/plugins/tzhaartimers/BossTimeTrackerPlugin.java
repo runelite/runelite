@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tzhaartimers;
+package net.runelite.client.plugins.bosstimetracker;
 
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -48,17 +48,17 @@ import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
 
 @PluginDescriptor(
-	name = "Tzhaar Timers",
+	name = "Boss Time Tracker",
 	description = "Display elapsed time in the Fight Caves and Inferno",
 	tags = {"inferno", "fight", "caves", "cape", "timer", "tzhaar"}
 )
-public class TzhaarTimersPlugin extends Plugin
+public class BossTimeTrackerPlugin extends Plugin
 {
 	private static final Pattern WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern COMPLETE_MESSAGE = Pattern.compile("Your (TzTok-Jad|TzKal-Zuk) kill count is:");
 	private static final Pattern PAUSED_MESSAGE = Pattern.compile("The (Inferno|Fight Cave) has been paused. You may now log out.");
-	private static final String CONFIG_GROUP = "tzhaartimers";
+	private static final String CONFIG_GROUP = "Boss Time Tracker";
 	private static final String CONFIG_TIME = "time";
 	private static final String CONFIG_STARTED = "started";
 	private static final String CONFIG_LASTTIME = "lasttime";
@@ -79,7 +79,7 @@ public class TzhaarTimersPlugin extends Plugin
 	private EventBus eventBus;
 
 	@Getter
-	private TzhaarTimers timer;
+	private BossTimeTracker timer;
 
 	private Instant startTime;
 	private Instant lastTime;
@@ -228,12 +228,12 @@ public class TzhaarTimersPlugin extends Plugin
 
 		if (checkInFightCaves())
 		{
-			timer = new TzhaarTimers(itemManager.getImage(FIRE_CAPE), this, startTime, lastTime);
+			timer = new BossTimeTracker(itemManager.getImage(FIRE_CAPE), this, startTime, lastTime);
 			infoBoxManager.addInfoBox(timer);
 		}
 		else if (checkInInferno())
 		{
-			timer = new TzhaarTimers(itemManager.getImage(INFERNAL_CAPE), this, startTime, lastTime);
+			timer = new BossTimeTracker(itemManager.getImage(INFERNAL_CAPE), this, startTime, lastTime);
 			infoBoxManager.addInfoBox(timer);
 		}
 	}
