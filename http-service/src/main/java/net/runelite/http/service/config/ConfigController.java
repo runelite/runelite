@@ -81,7 +81,10 @@ public class ConfigController
 			return;
 		}
 
-		configService.setKey(session.getUser(), key, value);
+		if (!configService.setKey(session.getUser(), key, value))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@RequestMapping(path = "/{key:.+}", method = DELETE)
@@ -98,6 +101,9 @@ public class ConfigController
 			return;
 		}
 
-		configService.unsetKey(session.getUser(), key);
+		if (!configService.unsetKey(session.getUser(), key))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 }

@@ -297,10 +297,50 @@ public interface ItemChargeConfig extends Config
 	void explorerRing(int explorerRing);
 
 	@ConfigItem(
+		keyName = "showRingOfForgingCount",
+		name = "Show Ring of Forging Charges",
+		description = "Configures if the Ring of Forging charge count is shown",
+		position = 20
+	)
+	default boolean showRingOfForgingCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfForging",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int ringOfForging()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfForging",
+		name = "",
+		description = ""
+	)
+	void ringOfForging(int ringOfForging);
+
+	@ConfigItem(
+		keyName = "ringOfForgingNotification",
+		name = "Ring of Forging Notification",
+		description = "Configures if the Ring of Forging breaking notification is enabled",
+		position = 21
+	)
+	default boolean ringOfForgingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 20
+		position = 22
 	)
 	default boolean showInfoboxes()
 	{

@@ -29,7 +29,7 @@ import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -65,6 +65,10 @@ import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -79,8 +83,7 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	@Inject
@@ -109,6 +112,12 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
+	private WSClient ws;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -193,7 +202,8 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+				timer = new RaidsTimer(this, Instant.now());
+				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -304,15 +314,28 @@ public class RaidsPlugin extends Plugin
 		final String rooms = getRaid().toRoomString();
 		final String raidData = "[" + layout + "]: " + rooms;
 
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(raidData)
-				.build())
-			.build());
+		final String layoutMessage = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(raidData)
+			.build();
+
+		final PartyMember localMember = party.getLocalMember();
+
+		if (party.getMembers().isEmpty() || localMember == null)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(layoutMessage)
+				.build());
+		}
+		else
+		{
+			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
+			message.setMemberId(localMember.getMemberId());
+			ws.send(message);
+		}
 	}
 
 	private void updateInfoBoxState()
@@ -367,28 +390,28 @@ public class RaidsPlugin extends Plugin
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			list.addAll(Text.fromCSV(input.toLowerCase()));
 		}
 	}
 
 	int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		List<String> bosses = Text.fromCSV(rotation);
 
 		if (rotationWhitelist.contains(rotation))
 		{
-			return bosses.length;
+			return bosses.size();
 		}
 
 		for (String whitelisted : rotationWhitelist)
 		{
 			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+			List<String> whitelistedBosses = Text.fromCSV(whitelisted);
 
-			for (int i = 0; i < whitelistedBosses.length; i++)
+			for (int i = 0; i < whitelistedBosses.size(); i++)
 			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
+				if (i < bosses.size() && whitelistedBosses.get(i).equals(bosses.get(i)))
 				{
 					matches++;
 				}

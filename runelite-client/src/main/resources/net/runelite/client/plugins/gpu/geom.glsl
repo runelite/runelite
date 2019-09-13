@@ -52,7 +52,7 @@ in vec4 vUv[];
 in float vFogAmount[];
 
 out vec4 Color;
-out float fHsl;
+centroid out float fHsl;
 out vec4 fUv;
 out float fogAmount;
 

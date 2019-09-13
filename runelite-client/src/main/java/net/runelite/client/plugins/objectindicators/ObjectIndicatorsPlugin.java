@@ -40,7 +40,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
@@ -69,7 +68,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Object Markers",
 	description = "Enable marking of objects using the Shift key",
@@ -80,6 +78,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
+	private static final String UNMARK = "Unmark object";
 
 	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
@@ -218,10 +217,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
+		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(MARK);
+		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -233,7 +234,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(MARK))
+		if (event.getMenuAction() != MenuAction.RUNELITE
+			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
 		{
 			return;
 		}

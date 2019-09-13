@@ -55,6 +55,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -76,6 +77,9 @@ public class RunecraftPlugin extends Plugin
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Set<AbyssRifts> rifts = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -89,6 +93,9 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
+	@Inject
+	private AbyssMinimapOverlay abyssMinimapOverlay;
 
 	@Inject
 	private RunecraftConfig config;
@@ -106,13 +113,15 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(abyssOverlay);
-		abyssOverlay.updateConfig();
+		overlayManager.add(abyssMinimapOverlay);
+		updateRifts();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
@@ -121,7 +130,10 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		abyssOverlay.updateConfig();
+		if (event.getGroup().equals("runecraft"))
+		{
+			updateRifts();
+		}
 	}
 
 	@Subscribe
@@ -204,6 +216,63 @@ public class RunecraftPlugin extends Plugin
 		if (npc == darkMage)
 		{
 			darkMage = null;
+		}
+	}
+
+	private void updateRifts()
+	{
+		rifts.clear();
+		if (config.showAir())
+		{
+			rifts.add(AIR_RIFT);
+		}
+		if (config.showBlood())
+		{
+			rifts.add(BLOOD_RIFT);
+		}
+		if (config.showBody())
+		{
+			rifts.add(BODY_RIFT);
+		}
+		if (config.showChaos())
+		{
+			rifts.add(CHAOS_RIFT);
+		}
+		if (config.showCosmic())
+		{
+			rifts.add(COSMIC_RIFT);
+		}
+		if (config.showDeath())
+		{
+			rifts.add(DEATH_RIFT);
+		}
+		if (config.showEarth())
+		{
+			rifts.add(EARTH_RIFT);
+		}
+		if (config.showFire())
+		{
+			rifts.add(FIRE_RIFT);
+		}
+		if (config.showLaw())
+		{
+			rifts.add(LAW_RIFT);
+		}
+		if (config.showMind())
+		{
+			rifts.add(MIND_RIFT);
+		}
+		if (config.showNature())
+		{
+			rifts.add(NATURE_RIFT);
+		}
+		if (config.showSoul())
+		{
+			rifts.add(SOUL_RIFT);
+		}
+		if (config.showWater())
+		{
+			rifts.add(WATER_RIFT);
 		}
 	}
 }

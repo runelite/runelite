@@ -24,7 +24,12 @@
  */
 package net.runelite.http.service.config;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -41,7 +46,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -50,9 +54,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class ConfigService
 {
+	private static final int MAX_DEPTH = 8;
+	private static final int MAX_VALUE_LENGTH = 262144;
+
 	private final Gson GSON = RuneLiteAPI.GSON;
 	private final UpdateOptions upsertUpdateOptions = new UpdateOptions().upsert(true);
 
@@ -123,7 +129,7 @@ public class ConfigService
 		return new Configuration(config);
 	}
 
-	public void setKey(
+	public boolean setKey(
 		int userId,
 		String key,
 		@Nullable String value
@@ -131,42 +137,50 @@ public class ConfigService
 	{
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
-			return;
+			return false;
 		}
 
 		String[] split = key.split("\\.", 2);
 		if (split.length != 2)
 		{
-			return;
+			return false;
+		}
+
+		if (!validateJson(value))
+		{
+			return false;
 		}
 
 		Object jsonValue = parseJsonString(value);
 		mongoCollection.updateOne(eq("_userId", userId),
 			set(split[0] + "." + split[1].replace('.', ':'), jsonValue),
 			upsertUpdateOptions);
+		return true;
 	}
 
-	public void unsetKey(
+	public boolean unsetKey(
 		int userId,
 		String key
 	)
 	{
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
-			return;
+			return false;
 		}
 
 		String[] split = key.split("\\.", 2);
 		if (split.length != 2)
 		{
-			return;
+			return false;
 		}
 
 		mongoCollection.updateOne(eq("_userId", userId),
 			unset(split[0] + "." + split[1].replace('.', ':')));
+		return true;
 	}
 
-	private static Object parseJsonString(String value)
+	@VisibleForTesting
+	static Object parseJsonString(String value)
 	{
 		Object jsonValue;
 		try
@@ -202,5 +216,72 @@ public class ConfigService
 			jsonValue = value;
 		}
 		return jsonValue;
+	}
+
+	@VisibleForTesting
+	static boolean validateJson(String value)
+	{
+		try
+		{
+			// I couldn't figure out a better way to do this than a second json parse
+			JsonElement jsonElement = RuneLiteAPI.GSON.fromJson(value, JsonElement.class);
+			return validateObject(jsonElement, 1);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			// the client submits the string representation of objects which is not always valid json,
+			// eg. a value with a ':' in it. We just ignore it now. We can't json encode the values client
+			// side due to them already being strings, which prevents gson from being able to convert them
+			// to ints/floats/maps etc.
+			return value.length() < MAX_VALUE_LENGTH;
+		}
+	}
+
+	private static boolean validateObject(JsonElement jsonElement, int depth)
+	{
+		if (depth >= MAX_DEPTH)
+		{
+			return false;
+		}
+
+		if (jsonElement.isJsonObject())
+		{
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet())
+			{
+				JsonElement element = entry.getValue();
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
+		}
+		else if (jsonElement.isJsonArray())
+		{
+			JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+			for (int i = 0; i < jsonArray.size(); ++i)
+			{
+				JsonElement element = jsonArray.get(i);
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
+		}
+		else if (jsonElement.isJsonPrimitive())
+		{
+			JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+			String value = jsonPrimitive.getAsString();
+			if (value.length() >= MAX_VALUE_LENGTH)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

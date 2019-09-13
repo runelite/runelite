@@ -67,7 +67,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
 
 	private final ChatboxPanelManager chatboxPanelManager;
-	private final ClientThread clientThread;
+	protected final ClientThread clientThread;
 
 	private static IntPredicate getDefaultCharValidator()
 	{

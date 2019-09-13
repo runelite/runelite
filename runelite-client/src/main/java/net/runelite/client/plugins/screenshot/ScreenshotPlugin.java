@@ -64,7 +64,6 @@ import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
@@ -235,6 +234,8 @@ public class ScreenshotPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
+
+		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
@@ -243,16 +244,6 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN
-			&& reportButton == null)
-		{
-			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
-		}
 	}
 
 	@Subscribe
@@ -648,11 +639,31 @@ public class ScreenshotPlugin extends Plugin
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
 
-			ImageIO.write(screenshot, "PNG", screenshotFile);
+			// To make sure that screenshots don't get overwritten, check if file exists,
+			// and if it does create file with same name and suffix.
+			int i = 1;
+			while (screenshotFile.exists())
+			{
+				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+			}
 
-			if (config.uploadScreenshot())
+			ImageIO.write(screenshot, "PNG", screenshotFile);
+			UploadStyle uploadStyle = config.uploadScreenshot();
+
+			if (uploadStyle == UploadStyle.IMGUR)
 			{
 				uploadScreenshot(screenshotFile);
+			}
+			else if (uploadStyle == UploadStyle.CLIPBOARD)
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+				clipboard.setContents(transferableBufferedImage, null);
+
+				if (config.notifyWhenTaken())
+				{
+					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+				}
 			}
 			else if (config.notifyWhenTaken())
 			{

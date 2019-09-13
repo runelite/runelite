@@ -33,10 +33,14 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -419,6 +423,110 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testCorrectlyCapturedTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("Dagannoth");
+		slayerPlugin.setAmount(143);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(142, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testIncorrectlyCapturedTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("Monster");
+		slayerPlugin.setAmount(98);
+
+		assert Task.getTask("Monster") == null;
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(97, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testJadTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("TzTok-Jad");
+		slayerPlugin.setAmount(1);
+
+		// One bat kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(110);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(1, slayerPlugin.getAmount());
+
+		// One Jad kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(25_360);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testZukTaskKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(100);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		slayerPlugin.setTaskName("TzKal-Zuk");
+		slayerPlugin.setAmount(1);
+
+		// One bat kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(125);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(1, slayerPlugin.getAmount());
+
+		// One Zuk kill
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(102_015);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
 	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER, null, 0);
@@ -536,8 +644,8 @@ public class SlayerPluginTest
 	public void testTaskLookup() throws IOException
 	{
 		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
-		task.setTask("task");
-		task.setLocation("loc");
+		task.setTask("Abyssal demons");
+		task.setLocation("Abyss");
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
@@ -574,5 +682,44 @@ public class SlayerPluginTest
 		slayerPlugin.taskLookup(chatMessage, "!task");
 
 		verify(chatMessageManager, never()).update(any(MessageNode.class));
+	}
+
+	@Test
+	public void testNewAccountSlayerKill()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		final ExperienceChanged experienceChanged = new ExperienceChanged();
+		experienceChanged.setSkill(Skill.SLAYER);
+
+		slayerPlugin.setTaskName("Bears");
+		slayerPlugin.setAmount(35);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(0);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		when(client.getSkillExperience(Skill.SLAYER)).thenReturn(27);
+		slayerPlugin.onExperienceChanged(experienceChanged);
+
+		assertEquals(34, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void infoboxNotAddedOnLogin()
+	{
+		when(slayerConfig.taskName()).thenReturn(Task.BLOODVELD.getName());
+		when(slayerConfig.showInfobox()).thenReturn(true);
+
+		GameStateChanged loggingIn = new GameStateChanged();
+		loggingIn.setGameState(GameState.LOGGING_IN);
+		slayerPlugin.onGameStateChanged(loggingIn);
+
+		GameStateChanged loggedIn = new GameStateChanged();
+		loggedIn.setGameState(GameState.LOGGED_IN);
+		slayerPlugin.onGameStateChanged(loggedIn);
+
+		verify(infoBoxManager, never()).addInfoBox(any());
 	}
 }
