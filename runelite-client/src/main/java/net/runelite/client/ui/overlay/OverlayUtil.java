@@ -286,14 +286,14 @@ public class OverlayUtil
 
 	public static void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color, BufferedImage image, int yOffset, int xOffset)
 	{
-		Point textLocation = new Point(actor.getConvexHull().getBounds().x + xOffset,
-			actor.getConvexHull().getBounds().y + yOffset);
+		Point textLocation = 		actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + yOffset);
 
-		renderImageLocation(graphics, textLocation, image);
-		xOffset = image.getWidth() + 1;
-		yOffset = (image.getHeight() - (int) graphics.getFontMetrics().getStringBounds(text, graphics).getHeight());
-		textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY() + image.getHeight() - yOffset);
-		renderTextLocation(graphics, textLocation, text, color);
+		if (textLocation != null)
+		{
+			renderImageLocation(graphics, textLocation, image);
+			textLocation = new Point(textLocation.getX() + xOffset , textLocation.getY());
+			renderTextLocation(graphics, textLocation, text, color);
+		}
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint, boolean shadows, int yOffset)

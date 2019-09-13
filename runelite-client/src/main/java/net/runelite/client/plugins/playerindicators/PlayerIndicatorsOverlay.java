@@ -28,10 +28,10 @@ package net.runelite.client.plugins.playerindicators;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +42,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -65,6 +66,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private PlayerIndicatorsService playerIndicatorsService;
 	@Inject
 	private Client client;
+	@Inject
+	private ClanManager clanManager;
 
 	@Inject
 	public PlayerIndicatorsOverlay(PlayerIndicatorsPlugin plugin, PlayerIndicatorsService playerIndicatorsService)
@@ -114,98 +117,105 @@ public class PlayerIndicatorsOverlay extends Overlay
 			}
 
 			final String builtString = nameSb.toString();
+			final int x = graphics.getFontMetrics().stringWidth(builtString);
+			final int y = graphics.getFontMetrics().getHeight();
 
-			if (skulls && actor.getSkullIcon() != null)
+			if (plugin.isHighlightClan() && actor.isClanMember() && plugin.isShowClanRanks() && relation == PlayerRelation.CLAN)
 			{
-				final int x = graphics.getFontMetrics().stringWidth(builtString);
-				final int y = graphics.getFontMetrics().getHeight();
-				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
-					ImageUtil.resizeImage(skullIcon, y, y), 0, x);
+				if (clanManager.getRank(actor.getName()) != null)
+				{
+					OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
+						ImageUtil.resizeImage(Objects.requireNonNull(clanManager
+							.getClanImage(clanManager.getRank(actor.getName()))), y, y), 0, ACTOR_HORIZONTAL_TEXT_MARGIN);
+					return;
+				}
 			}
+
+			if (skulls && actor.getSkullIcon() != null && relation.equals(PlayerRelation.TARGET))
+			{
+
+				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
+					ImageUtil.resizeImage(skullIcon, y, y), ACTOR_OVERHEAD_TEXT_MARGIN, ACTOR_HORIZONTAL_TEXT_MARGIN);
+			}
+
 			else
 			{
 				OverlayUtil.renderActorTextOverlay(graphics, actor, builtString, color);
 			}
 		}
-		if (Arrays.asList(plugin.getLocationHashMap()
-			.getOrDefault(relation, NULL_OBJ))
-			.contains(PlayerIndicationLocation.HULL))
+		if (actor.getConvexHull() != null && indicationLocations.contains(PlayerIndicationLocation.HULL))
 		{
-			if (actor.getConvexHull() == null)
-			{
-				return;
-			}
 			OverlayUtil.renderPolygon(graphics, actor.getConvexHull(), color);
 		}
 
-		if (Arrays.asList(plugin.getLocationHashMap()
-			.getOrDefault(relation, NULL_OBJ))
-			.contains(PlayerIndicationLocation.TILE))
+		if (indicationLocations.contains(PlayerIndicationLocation.TILE))
 		{
-			final Polygon poly = actor.getCanvasTilePoly();
-			if (poly != null)
+			if (actor.getCanvasTilePoly() != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
+				OverlayUtil.renderPolygon(graphics, actor.getCanvasTilePoly(), color);
 			}
 		}
 
-		if (plugin.isShowAgilityLevel() && checkWildy() && plugin.getResultCache().containsKey(actor.getName()))
+		if (relation.equals(PlayerRelation.TARGET))
 		{
-			if (textLocation == null)
+			if (plugin.isShowAgilityLevel() && checkWildy() && plugin.getResultCache().containsKey(actor.getName()))
 			{
-				return;
-			}
-
-			final int level = plugin.getResultCache().get(actor.getName()).getAgility().getLevel();
-
-			if (plugin.getAgilityFormat() == PlayerIndicatorsPlugin.AgilityFormats.ICONS)
-			{
-
-				final int width = plugin.isShowCombatLevel() ? graphics.getFontMetrics().stringWidth(name)
-					+ ACTOR_HORIZONTAL_TEXT_MARGIN : graphics.getFontMetrics().stringWidth(name);
-
-				final int height = graphics.getFontMetrics().getHeight();
-				if (level >= plugin.getAgilityFirstThreshold())
+				if (textLocation == null)
 				{
-					OverlayUtil.renderImageLocation(graphics,
-						new Point(textLocation.getX() + 5 + width,
-							textLocation.getY() - height),
-						ImageUtil.resizeImage(agilityIcon, height, height));
-				}
-				if (level >= plugin.getAgilitySecondThreshold())
-				{
-					OverlayUtil.renderImageLocation(graphics,
-						new Point(textLocation.getX() + agilityIcon.getWidth() + width,
-							textLocation.getY() - height),
-						ImageUtil.resizeImage(agilityIcon, height, height));
-				}
-				if (level < plugin.getAgilityFirstThreshold())
-				{
-					OverlayUtil.renderImageLocation(graphics,
-						new Point(textLocation.getX() + 5 + width,
-							textLocation.getY() - height),
-						ImageUtil.resizeImage(noAgilityIcon, height, height));
-				}
-			}
-			else
-			{
-				Color agiColor = Color.WHITE;
-
-				if (level >= plugin.getAgilityFirstThreshold())
-				{
-					agiColor = Color.CYAN;
-				}
-				else if (level >= plugin.getAgilitySecondThreshold())
-				{
-					agiColor = Color.GREEN;
-				}
-				else if (level < plugin.getAgilityFirstThreshold())
-				{
-					agiColor = Color.RED;
+					return;
 				}
 
-				final String n = level + " " + "Agility";
-				OverlayUtil.renderActorTextOverlay(graphics, actor, n, agiColor, 60);
+				final int level = plugin.getResultCache().get(actor.getName()).getAgility().getLevel();
+
+				if (plugin.getAgilityFormat() == PlayerIndicatorsPlugin.AgilityFormats.ICONS)
+				{
+
+					final int width = plugin.isShowCombatLevel() ? graphics.getFontMetrics().stringWidth(name)
+						+ ACTOR_HORIZONTAL_TEXT_MARGIN : graphics.getFontMetrics().stringWidth(name);
+
+					final int height = graphics.getFontMetrics().getHeight();
+					if (level >= plugin.getAgilityFirstThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + 5 + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(agilityIcon, height, height));
+					}
+					else if (level >= plugin.getAgilitySecondThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + agilityIcon.getWidth() + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(agilityIcon, height, height));
+					}
+					else if (level < plugin.getAgilityFirstThreshold())
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(textLocation.getX() + 5 + width,
+								textLocation.getY() - height),
+							ImageUtil.resizeImage(noAgilityIcon, height, height));
+					}
+				}
+				else
+				{
+					Color agiColor = Color.WHITE;
+
+					if (level >= plugin.getAgilityFirstThreshold())
+					{
+						agiColor = Color.CYAN;
+					}
+					else if (level >= plugin.getAgilitySecondThreshold())
+					{
+						agiColor = Color.GREEN;
+					}
+					else if (level < plugin.getAgilityFirstThreshold())
+					{
+						agiColor = Color.RED;
+					}
+
+					final String n = level + " " + "Agility";
+					OverlayUtil.renderActorTextOverlay(graphics, actor, n, agiColor, 60);
+				}
 			}
 		}
 	}
