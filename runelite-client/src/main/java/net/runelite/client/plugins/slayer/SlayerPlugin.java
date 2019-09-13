@@ -228,7 +228,7 @@ public class SlayerPlugin extends Plugin
 				streak = config.streak();
 				setExpeditiousChargeCount(config.expeditious());
 				setSlaughterChargeCount(config.slaughter());
-				clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
+				clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), false));
 			}
 		}
 
@@ -277,7 +277,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation());
+					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), false);
 					loginFlag = false;
 				}
 				break;
@@ -559,7 +559,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
 		{
 			return;
 		}
@@ -675,14 +675,23 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt, String location)
 	{
+		setTask(name, amt, initAmt, location, true);
+	}
+
+	private void setTask(String name, int amt, int initAmt, String location, boolean addCounter)
+	{
 		taskName = name;
 		amount = amt;
 		initialAmount = initAmt;
 		taskLocation = location;
 		save();
 		removeCounter();
-		addCounter();
-		infoTimer = Instant.now();
+
+		if (addCounter)
+		{
+			infoTimer = Instant.now();
+			addCounter();
+		}
 
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
