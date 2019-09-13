@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 
@@ -45,6 +44,8 @@ public class TotalStatsPanel extends JPanel
 		statsPanel.add(leftLabel, BorderLayout.WEST);
 
 		statsLabel = new JLabel();
+		statsLabel.setToolTipText(totalStats.getPlayerSuccessCount() + " successful off-pray attacks/" +
+			totalStats.getPlayerAttackCount() + " total attacks");
 		statsLabel.setText(totalStats.getPlayerStatsString());
 		statsLabel.setForeground(Color.WHITE);
 		statsPanel.add(statsLabel, BorderLayout.EAST);
@@ -86,6 +87,8 @@ public class TotalStatsPanel extends JPanel
 			statsLabel.setText(totalStats.getPlayerStatsString());
 			killsLabel.setText(numKills + " Kill" + (numKills != 1 ? "s" : ""));
 			deathsLabel.setText(numDeaths + " Death"  + (numDeaths != 1 ? "s" : ""));
+			statsLabel.setToolTipText(totalStats.getPlayerSuccessCount() + " successful off-pray attacks/" +
+				totalStats.getPlayerAttackCount() + " total attacks");
 		});
 	}
 

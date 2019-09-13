@@ -101,6 +101,7 @@ public class FightPerformance
 		this.opponentSuccessCount = opponentSuccessCount;
 		this.opponentSuccessRate = (double) this.opponentSuccessCount / (double) this.opponentAttackCount * 100.0;
 		this.opponentDied = false;
+		this.timeFightEnded = Instant.now();
 	}
 
 	public void addAttack(String playerName, boolean success)

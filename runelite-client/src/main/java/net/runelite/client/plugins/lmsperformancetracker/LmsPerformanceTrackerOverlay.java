@@ -39,8 +39,6 @@ import javax.inject.Inject;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
-
-
 public class LmsPerformanceTrackerOverlay extends Overlay
 {
 	private final PanelComponent panelComponent = new PanelComponent();

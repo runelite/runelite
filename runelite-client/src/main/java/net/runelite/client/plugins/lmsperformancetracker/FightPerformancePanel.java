@@ -2,7 +2,6 @@ package net.runelite.client.plugins.lmsperformancetracker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,15 +17,15 @@ import net.runelite.client.util.ImageUtil;
 // stats are fixed to the right.
 class FightPerformancePanel extends JPanel
 {
-	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss 'on' yyyy/MM/dd");
 
 	FightPerformancePanel(FightPerformance fight)
 	{
 		setLayout(new BorderLayout(5, 5));
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss 'on' yyyy/MM/dd");
-		String tooltipText = "Ended at " + dateFormat.format(Date.from(fight.getTimeFightEnded()));
+
+		String tooltipText = "Ended at " + DATE_FORMAT.format(Date.from(fight.getTimeFightEnded()));
 		setToolTipText(tooltipText);
 
 		Color background = getBackground();
@@ -55,6 +54,9 @@ class FightPerformancePanel extends JPanel
 		playerStatsPanel.add(playerStatsName, BorderLayout.WEST);
 
 		JLabel playerStats = new JLabel();
+		playerStats.setToolTipText(fight.getPlayerSuccessCount() + " successful off-pray attacks/" +
+			fight.getPlayerAttackCount() + " total attacks" +
+			(fight.playerWinning() ? " (green due to higher success ratio)" : ""));
 		playerStats.setText(fight.getPlayerStatsString());
 		playerStats.setForeground(fight.playerWinning() ? Color.GREEN : Color.WHITE);
 		playerStatsPanel.add(playerStats, BorderLayout.EAST);
@@ -75,6 +77,9 @@ class FightPerformancePanel extends JPanel
 		opponentStatsPanel.add(opponentStatsName, BorderLayout.WEST);
 
 		JLabel opponentStats = new JLabel();
+		opponentStats.setToolTipText(fight.getOpponentSuccessCount() + " successful off-pray attacks/" +
+			fight.getOpponentAttackCount() + " total attacks" +
+			(fight.opponentWinning() ? " (green due to higher success ratio)" : ""));
 		opponentStats.setText(fight.getOpponentStatsString());
 		opponentStats.setForeground(fight.opponentWinning() ? Color.GREEN : Color.WHITE);
 		opponentStatsPanel.add(opponentStats, BorderLayout.EAST);
