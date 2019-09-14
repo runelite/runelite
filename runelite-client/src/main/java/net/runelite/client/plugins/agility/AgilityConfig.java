@@ -99,10 +99,21 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "addLevelsToShortcutOptions",
+		name = "Show shortcut agility req. in options",
+		description = "Enable/disable showing shortcut agility level requirements in right-click options",
+		position = 7
+	)
+	default boolean showShortcutLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 7
+		position = 8
 	)
 	default boolean showTrapOverlay()
 	{
@@ -113,7 +124,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 8
+		position = 9
 	)
 	default Color getTrapColor()
 	{
@@ -124,7 +135,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 9
+		position = 10
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -135,7 +146,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 10
+		position = 11
 	)
 	default boolean showAgilityArenaTimer()
 	{
