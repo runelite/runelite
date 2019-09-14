@@ -34,7 +34,7 @@ public interface LmsPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "restrictToLms",
 		name = "Restrict to LMS",
-		description = "Restricts use within the LMS area. WARNING: cannot guarantee accuracy outside LMS, as we must specify each weapon's combat style.",
+		description = "Restricts use within the LMS area. WARNING: inaccurate outside LMS, as each weapon's combat style has to be manually specified.",
 		position = 0
 	)
 	default boolean restrictToLms()
@@ -56,7 +56,7 @@ public interface LmsPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "showOverlayTitle",
 		name = "Show Overlay Title",
-		description = "If enabled, the overlay will have a title to say it's the LMS Performance Tracker.",
+		description = "The overlay will have a title to say it's the LMS Performance Tracker.",
 		position = 2
 	)
 	default boolean showOverlayTitle()
@@ -65,10 +65,10 @@ public interface LmsPerformanceTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "saveFightHistory",
-			name = "Save Fight History",
-			description = "Enables the Panel which displays previous fight statistics.",
-			position = 3
+		keyName = "saveFightHistory",
+		name = "Save Fight History",
+		description = "Enables the Panel which displays previous fight statistics.",
+		position = 3
 	)
 	default boolean saveFightHistory()
 	{

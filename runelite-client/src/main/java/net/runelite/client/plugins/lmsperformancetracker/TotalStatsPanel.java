@@ -24,7 +24,7 @@ public class TotalStatsPanel extends JPanel
 	{
 		totalStats = new FightPerformance("Player", "");
 
-		setLayout(new GridLayout(3,1));
+		setLayout(new GridLayout(3, 1));
 		setBorder(new EmptyBorder(8, 8, 8, 8));
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
