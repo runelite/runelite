@@ -534,7 +534,7 @@ public class PestControlPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (game != null && chatMessage.getType() == ChatMessageType.SERVER)
+		if (game != null && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			Matcher matcher = SHIELD_DROP_PATTERN.matcher(chatMessage.getMessage());
 			if (matcher.lookingAt())
