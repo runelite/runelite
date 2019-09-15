@@ -127,6 +127,10 @@ public interface RSActor extends RSEntity, Actor
 	@Override
 	int getOrientation();
 
+	@Import("rotation")
+	@Override
+	int getCurrentOrientation();
+
 	// Health stuff
 
 	@Import("healthBars")

@@ -112,6 +112,8 @@ public interface Actor extends Entity
 	 */
 	int getOrientation();
 
+	int getCurrentOrientation();
+
 	/**
 	 * Gets the current animation the actor is performing.
 	 *

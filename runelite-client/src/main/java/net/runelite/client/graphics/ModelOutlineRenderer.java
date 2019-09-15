@@ -948,7 +948,7 @@ public class ModelOutlineRenderer
 
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
 				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
-				npc.getOrientation(), outlineWidth, innerColor, outerColor);
+				npc.getCurrentOrientation(), outlineWidth, innerColor, outerColor);
 		}
 	}
 
@@ -964,7 +964,7 @@ public class ModelOutlineRenderer
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
 				Perspective.getTileHeight(client, lp, client.getPlane()),
-				player.getOrientation(), outlineWidth, innerColor, outerColor);
+				player.getCurrentOrientation(), outlineWidth, innerColor, outerColor);
 		}
 	}
 
