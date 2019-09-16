@@ -188,6 +188,12 @@
     },
     {
       "level": 21,
+      "icon": 2130,
+      "name": "Pot of Cream",
+      "xp": 18
+    },
+    {
+      "level": 21,
       "icon": 9988,
       "name": "Roast Beast Meat",
       "xp": 82.5
@@ -331,6 +337,18 @@
       "xp": 115
     },
     {
+      "level": 38,
+      "icon": 6697,
+      "name": "Pat of Butter (Cream)",
+      "xp": 22.5
+    },
+    {
+      "level": 38,
+      "icon": 6697,
+      "name": "Pat of Butter (Milk)",
+      "xp": 40.5
+    },
+    {
       "level": 39,
       "icon": 1911,
       "name": "Dragon Bitter",
@@ -389,6 +407,24 @@
       "icon": 7188,
       "name": "Fish Pie",
       "xp": 164
+    },
+    {
+      "level": 48,
+      "icon": 1985,
+      "name": "Cheese (Butter)",
+      "xp": 23.5
+    },
+    {
+      "level": 48,
+      "icon": 1985,
+      "name": "Cheese (Cream)",
+      "xp": 46
+    },
+    {
+      "level": 48,
+      "icon": 1985,
+      "name": "Cheese (Milk)",
+      "xp": 64
     },
     {
       "level": 50,
