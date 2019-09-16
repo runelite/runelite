@@ -498,6 +498,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
+		else if (config.swapHouseAdvertisement() != HouseAdvertisementMode.VIEW && option.equals("view"))
+		{
+			switch (config.swapHouseAdvertisement())
+			{
+				case ADD_HOUSE:
+					swap("add-house", option, target, index);
+					break;
+				case VISIT_LAST:
+					swap("visit-last", option, target, index);
+					break;
+			}
+		}
 		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
 			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{
