@@ -216,12 +216,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getLocationName())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
-
 		if (getSecondEmote() != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -229,6 +223,12 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
+
+		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getLocationName())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (itemRequirements.length > 0)
 		{
