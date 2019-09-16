@@ -233,14 +233,6 @@ public class ClueScrollPlugin extends Plugin
 				((SkillChallengeClue) clue).setChallengeCompleted(true);
 			}
 		}
-
-		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
-			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
-		{
-			return;
-		}
-
-		resetClue(true);
 	}
 
 	@Subscribe
@@ -406,6 +398,15 @@ public class ClueScrollPlugin extends Plugin
 					}
 				}
 			}
+		}
+
+		// Reset clue when receiving a new beginner or master clue
+		// These clues use a single item ID, so we cannot detect step changes based on the item ID changing
+		final Widget chatDialogClueItem = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+		if (chatDialogClueItem != null
+			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
+		{
+			resetClue(true);
 		}
 
 		// If we have a clue, save that knowledge
