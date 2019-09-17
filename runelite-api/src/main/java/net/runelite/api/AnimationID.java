@@ -212,6 +212,7 @@ public final class AnimationID
 	public static final int COMBAT_AXE_BLOCK = 424; // tested w/ dh greataxe
 	public static final int COMBAT_SHIELD_BLOCK = 1156;
 	public static final int GRANITE_MAUL_BLOCK = 1666;
+	public static final int MAGES_BOOK_BLOCK = 2079;
 	public static final int COMBAT_DEFENDER_BLOCK = 4177; // Unsure about being used only with defender
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
@@ -220,12 +221,13 @@ public final class AnimationID
 	public static final int MELEE_SPEAR_STAB = 381; // tested w/ zammy hasta
 	public static final int MELEE_SWORD_STAB = 386; // tested w/ dragon sword
 	public static final int MELEE_SCIM_SLASH = 390; // tested w/ rune & dragon
+	public static final int MELEE_STAFF_CRUSH = 393; // tested with zuriel's staff
 	public static final int MELEE_RUNE_BATTLEAXE_SLASH = 395;
 	public static final int MELEE_RUNE_BATTLEAXE_CRUSH = 401; // also dwh crush animation
 	public static final int MELEE_RUNE_2H_CRUSH = 406;
 	public static final int MELEE_RUNE_2H_SLASH = 407;
 	public static final int MELEE_ANCIENT_STAFF_CRUSH = 414;
-	public static final int MELEE_STAFF_CRUSH = 419; // Common staff bash animation. Air/fire/etc staves, smoke battlestaff. Also zammy hasta crush
+	public static final int MELEE_STAFF_CRUSH_2 = 419; // Common staff bash animation. Air/fire/etc staves, smoke battlestaff. Also zammy hasta crush
 	public static final int MELEE_PUNCH = 422;
 	public static final int MELEE_KICK = 423;
 	public static final int MELEE_STAFF_STAB = 428; // tested with SOTD jab
@@ -237,6 +239,7 @@ public final class AnimationID
 	public static final int MELEE_GRANITE_MAUL_SPEC = 1667;
 	public static final int MELEE_DHAROKS_GREATAXE_CRUSH = 2066;
 	public static final int MELEE_DHAROKS_GREATAXE_SLASH = 2067;
+	public static final int MELEE_AHRIMS_STAFF_CRUSH = 2078;
 	public static final int MELEE_LEAF_BLADED_BATTLEAXE_CRUSH = 3852;
 	public static final int MELEE_BARRELCHEST_ANCHOR_CRUSH = 5865;
 	public static final int MELEE_LEAF_BLADED_BATTLEAXE_SLASH = 7004;
@@ -260,7 +263,7 @@ public final class AnimationID
 
 	// Ranged Attack Animations
 	public static final int RANGED_SHORTBOW = 426; // Confirmed same w/ 3 types of arrows, with maple, magic, and hunter's shortbow
-	public static final int RANGED_RUNE_KNIFE_PVP = 929; // 1 tick animation, has 1 tick delay between attacks. likely same for all knives
+	public static final int RANGED_RUNE_KNIFE_PVP = 929; // 1 tick animation, has 1 tick delay between attacks. likely same for all knives. Same for morrigan's javelins, both spec & normal attack.
 	public static final int RANGED_MAGIC_SHORTBOW_SPEC = 1074;
 	public static final int RANGED_CROSSBOW_PVP = 4230; // Tested RCB & ACB w/ dragonstone bolts (e) & diamond bolts (e)
 	public static final int RANGED_BLOWPIPE = 5061; // tested in PvP with all styles. Has 1 tick delay between animations in pvp.

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2019, Matsyir <https://github.com/Matsyir>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.lmsperformancetracker;
 
 import java.awt.BorderLayout;
