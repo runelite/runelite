@@ -214,10 +214,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 		switch (eventName)
 		{
-			case "bankTagsActive":
-				// tell the script the bank tag plugin is active
-				intStack[intStackSize - 1] = 1;
-				break;
 			case "setSearchBankInputText":
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
@@ -229,7 +225,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			}
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
-				String itemName = stringStack[stringStackSize - 2];
 				String search = stringStack[stringStackSize - 1];
 
 				boolean tagSearch = search.startsWith(TAG_SEARCH);
@@ -254,9 +249,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 					}
 					break;
 				}
-				else if (!tagSearch)
+				else if (tagSearch)
 				{
-					intStack[intStackSize - 2] = itemName.contains(search) ? 1 : 0;
+					intStack[intStackSize - 2] = 0;
 				}
 				break;
 			case "getSearchingTagTab":

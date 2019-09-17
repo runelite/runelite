@@ -47,7 +47,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
@@ -368,7 +367,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(DIVINE_RANGING);
 			removeGameTimer(DIVINE_MAGIC);
 		}
-		
+
 		if (!this.showCannon)
 		{
 			removeGameTimer(CANNON);
@@ -412,11 +411,8 @@ public class TimersPlugin extends Plugin
 		if (!this.showFreezes)
 		{
 			removeGameTimer(BIND);
-			removeGameTimer(HALFBIND);
 			removeGameTimer(SNARE);
-			removeGameTimer(HALFSNARE);
 			removeGameTimer(ENTANGLE);
-			removeGameTimer(HALFENTANGLE);
 			removeGameTimer(ICERUSH);
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
@@ -698,6 +694,12 @@ public class TimersPlugin extends Plugin
 		loggedInRace = false;
 
 		Player player = client.getLocalPlayer();
+
+		if (player == null)
+		{
+			return;
+		}
+
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
 		final boolean isSkulled = player.getSkullIcon() != null && player.getSkullIcon() != SkullIcon.SKULL_FIGHT_PIT;
@@ -786,13 +788,15 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (actor != client.getLocalPlayer())
+		Player player = client.getLocalPlayer();
+
+		if (player == null || actor != player)
 		{
 			return;
 		}
 
 		if (this.showHomeMinigameTeleports
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& player.getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
 		{
@@ -811,14 +815,15 @@ public class TimersPlugin extends Plugin
 			createGameTimer(DRAGON_FIRE_SHIELD);
 		}
 
-		lastAnimation = client.getLocalPlayer().getAnimation();
+		lastAnimation = player.getAnimation();
 	}
 
 	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
+		Player player = client.getLocalPlayer();
 
-		if (actor != client.getLocalPlayer())
+		if (player == null || actor != client.getLocalPlayer())
 		{
 			return;
 		}
@@ -832,44 +837,17 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getSpotAnimation() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFBIND);
-				}
-				else
-				{
-					createGameTimer(BIND);
-				}
+				createGameTimer(BIND);
 			}
 
 			if (actor.getSpotAnimation() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFSNARE);
-				}
-				else
-				{
-					createGameTimer(SNARE);
-				}
+				createGameTimer(SNARE);
 			}
 
 			if (actor.getSpotAnimation() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFENTANGLE);
-				}
-				else
-				{
-					createGameTimer(ENTANGLE);
-				}
+				createGameTimer(ENTANGLE);
 			}
 
 			// downgrade freeze based on graphic, if at the same tick as the freeze message
