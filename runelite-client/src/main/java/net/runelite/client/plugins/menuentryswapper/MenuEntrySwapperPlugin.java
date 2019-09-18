@@ -309,6 +309,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		addSwaps();
 		loadConstructionItems();
 		loadCustomSwaps(config.customSwaps(), customSwaps);
+		updateBuySellEntries();
+		addBuySellEntries();
+
 		keyManager.registerKeyListener(ctrlHotkey);
 		keyManager.registerKeyListener(hotkey);
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -324,6 +327,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		loadCustomSwaps("", customSwaps); // Removes all custom swaps
 		removeSwaps();
+		removeBuySellEntries();
+
 		keyManager.unregisterKeyListener(ctrlHotkey);
 		keyManager.unregisterKeyListener(hotkey);
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -363,36 +368,42 @@ public class MenuEntrySwapperPlugin extends Plugin
 		addSwaps();
 		loadConstructionItems();
 
-		if (!CONFIG_GROUP.equals(event.getGroup()))
+		switch (event.getKey())
 		{
-			if (event.getKey().equals("customSwaps"))
-			{
+			case "customSwaps":
 				loadCustomSwaps(this.configCustomSwaps, customSwaps);
-			}
+				return;
+			case "hideCastToB":
+			case "hideCastIgnoredToB":
+				if (this.hideCastToB)
+				{
+					setCastOptions(true);
+				}
+				else
+				{
+					resetCastOptions();
+				}
+				return;
+			case "hideCastCoX":
+			case "hideCastIgnoredCoX":
+				if (this.hideCastCoX)
+				{
+					setCastOptions(true);
+				}
+				else
+				{
+					resetCastOptions();
+				}
+				return;
 		}
 
-		else if ((event.getKey().equals("hideCastToB") || event.getKey().equals("hideCastIgnoredToB")))
+		if (event.getKey().startsWith("swapSell") || event.getKey().startsWith("swapBuy") ||
+			(event.getKey().startsWith("sell") || event.getKey().startsWith("buy")) && event.getKey().endsWith("Items"))
 		{
-			if (this.hideCastToB)
-			{
-				setCastOptions(true);
-			}
-			else
-			{
-				resetCastOptions();
-			}
-		}
-
-		else if ((event.getKey().equals("hideCastCoX") || event.getKey().equals("hideCastIgnoredCoX")))
-		{
-			if (this.hideCastCoX)
-			{
-				setCastOptions(true);
-			}
-			else
-			{
-				resetCastOptions();
-			}
+			removeBuySellEntries();
+			updateBuySellEntries();
+			addBuySellEntries();
+			return;
 		}
 	}
 
@@ -750,8 +761,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			dePrioSwaps.put(a, b);
 			menuManager.addSwap(a, b);
 		}
-
-		addBuySellEntries();
 
 		if (this.getWithdrawOne)
 		{
@@ -1205,8 +1214,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.removeSwap(e.getKey(), e.getValue());
 			dePrioIter.remove();
 		});
-
-		removeBuySellEntries();
 
 		Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 		{
@@ -1717,8 +1724,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapWildernessLever = config.swapWildernessLever();
 		this.swapHouseAd = config.swapHouseAd();
 		this.swapHouseAdMode = config.swapHouseAdMode();
-
-		updateBuySellEntries();
 	}
 
 	private void addBuySellEntries()
