@@ -48,34 +48,35 @@ ext {
     jbsdiff = '1.0'
     jclCore = '2.8'
     jedis = '3.1.0'
+    jfoenix = '9.0.9'
     jna = '5.4.0'
     jogamp = '2.3.2'
     jopt = '5.0.4'
     jooq = '3.12.1'
     junit = '4.12'
-    jupiter = '5.5.1'
+    jupiter = '5.5.2'
     logback = '1.2.3'
-    lombok = '1.18.8'
+    lombok = '1.18.10'
     mapstruct = '1.3.0.Final'
-    mariadbJdbc = '2.4.3'
+    mariadbJdbc = '2.4.4'
     mavenPluginAnnotations = '3.6.0'
     mavenPluginApi = '3.6.2'
-    minio = '6.0.10'
+    minio = '6.0.11'
     mockito = '3.0.0'
     mongodbDriverSync = '3.11.0'
     mysqlConnectorJava = '8.0.17'
     netty = '4.1.39.Final'
-    okhttp3 = '4.1.0'
+    okhttp3 = '4.2.0'
     orangeExtensions = '1.0'
     petitparser = '2.2.0'
     plexus = '3.2.1'
     rxjava = '2.2.12'
     rxrelay = '2.1.1'
-    scribejava = '6.7.0'
+    scribejava = '6.8.1'
     sisu = '0.3.3'
     slf4j = '1.7.28'
     springJdbc = '5.1.9.RELEASE'
-    springboot = '2.1.7.RELEASE'
+    springboot = '2.1.8.RELEASE'
     sql2o = '1.6.0'
     substance = '8.0.02'
     trident = '1.5.00'
@@ -136,8 +137,8 @@ subprojects {
     checkstyle {
         toolVersion = '6.4.1'
         sourceSets = [sourceSets.main]
-        configFile = rootProject.file("./checkstyle/checkstyle.xml")
-        configProperties = [ "suppressionFile" : rootProject.file("./checkstyle/suppressions.xml")]
+        configFile = file("${rootDir}/checkstyle/checkstyle.xml")
+        configProperties = [ "suppressionFile" : file("${rootDir}/checkstyle/suppressions.xml")]
         showViolations = true
         ignoreFailures = false
         maxWarnings = 0
@@ -155,7 +156,7 @@ subprojects {
 }
 
 wrapper {
-    gradleVersion = '5.6'
+    gradleVersion = '5.6.2'
 
     doLast {
         def optsEnvVar = "DEFAULT_JVM_OPTS"
