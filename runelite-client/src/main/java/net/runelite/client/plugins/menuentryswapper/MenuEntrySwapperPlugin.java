@@ -85,6 +85,7 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.comparables.BankComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.InventoryComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.comparables.ShopComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -174,6 +175,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private final Map<AbstractComparableEntry, Integer> customSwaps = new HashMap<>();
 	private final Map<AbstractComparableEntry, Integer> customShiftSwaps = new HashMap<>();
 	private final Map<AbstractComparableEntry, AbstractComparableEntry> dePrioSwaps = new HashMap<>();
+
+	// 1, 5, 10, 50
+	private final AbstractComparableEntry[][] buyEntries = new AbstractComparableEntry[4][];
+	private final AbstractComparableEntry[][] sellEntries = new AbstractComparableEntry[4][];
+
 	private List<String> bankItemNames = new ArrayList<>();
 	private BurningAmuletMode getBurningAmuletMode;
 	private CharterOption charterOption;
@@ -201,15 +207,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private SlayerRingMode getSlayerRingMode;
 	private String configCustomShiftSwaps;
 	private String configCustomSwaps;
-	private String getBuyFiftyItems;
-	private String getBuyFiveItems;
-	private String getBuyOneItems;
-	private String getBuyTenItems;
 	private String getRemovedObjects;
-	private String getSellFiftyItems;
-	private String getSellFiveItems;
-	private String getSellOneItems;
-	private String getSellTenItems;
 	private String getWithdrawAllItems;
 	private String getWithdrawFiveItems;
 	private String getWithdrawOneItems;
@@ -230,10 +228,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getSkillsNecklace;
 	private boolean getSlayerRing;
 	private boolean getSwapArdougneCape;
-	private boolean getSwapBuyFifty;
-	private boolean getSwapBuyFive;
-	private boolean getSwapBuyOne;
-	private boolean getSwapBuyTen;
 	private boolean getSwapConstructionCape;
 	private boolean getSwapCraftingCape;
 	private boolean getSwapExplorersRing;
@@ -241,10 +235,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getSwapPuro;
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
-	private boolean getSwapSellFifty;
-	private boolean getSwapSellFive;
-	private boolean getSwapSellOne;
-	private boolean getSwapSellTen;
 	private boolean getSwapTanning;
 	private boolean getWithdrawAll;
 	private boolean getWithdrawFive;
@@ -761,6 +751,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addSwap(a, b);
 		}
 
+		addBuySellEntries();
+
 		if (this.getWithdrawOne)
 		{
 			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
@@ -804,46 +796,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-All", item)).setPriority(10);
 				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-All", item)).setPriority(10);
 			});
-		}
-
-		if (this.getSwapBuyOne)
-		{
-			Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.addPriorityEntry("Buy 1", item).setPriority(100));
-		}
-
-		if (this.getSwapBuyFive)
-		{
-			Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.addPriorityEntry("Buy 5", item).setPriority(100));
-		}
-
-		if (this.getSwapBuyTen)
-		{
-			Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.addPriorityEntry("Buy 10", item).setPriority(100));
-		}
-
-		if (this.getSwapBuyFifty)
-		{
-			Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.addPriorityEntry("Buy 50", item).setPriority(100));
-		}
-
-		if (this.getSwapSellOne)
-		{
-			Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.addPriorityEntry("Sell 1", item).setPriority(100));
-		}
-
-		if (this.getSwapSellFive)
-		{
-			Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.addPriorityEntry("Sell 5", item).setPriority(100));
-		}
-
-		if (this.getSwapSellTen)
-		{
-			Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.addPriorityEntry("Sell 10", item).setPriority(100));
-		}
-
-		if (this.getSwapSellFifty)
-		{
-			Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.addPriorityEntry("Sell 50", item).setPriority(100));
 		}
 
 		if (this.getSwapTanning)
@@ -1253,6 +1205,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.removeSwap(e.getKey(), e.getValue());
 			dePrioIter.remove();
 		});
+
+		removeBuySellEntries();
+
 		Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
 		{
 			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-1", item));
@@ -1278,14 +1233,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-All", item));
 			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-All", item));
 		});
-		Text.fromCSV(this.getBuyOneItems).forEach(item -> menuManager.removePriorityEntry("Buy 1", item));
-		Text.fromCSV(this.getBuyFiveItems).forEach(item -> menuManager.removePriorityEntry("Buy 5", item));
-		Text.fromCSV(this.getBuyTenItems).forEach(item -> menuManager.removePriorityEntry("Buy 10", item));
-		Text.fromCSV(this.getBuyFiftyItems).forEach(item -> menuManager.removePriorityEntry("Buy 50", item));
-		Text.fromCSV(this.getSellOneItems).forEach(item -> menuManager.removePriorityEntry("Sell 1", item));
-		Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.removePriorityEntry("Sell 5", item));
-		Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.removePriorityEntry("Sell 10", item));
-		Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.removePriorityEntry("Sell 50", item));
+
 		menuManager.removePriorityEntry("Activate", "Box trap");
 		menuManager.removePriorityEntry("Assignment");
 		menuManager.removePriorityEntry("Bank");
@@ -1663,10 +1611,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.constructionCapeMode = config.constructionCapeMode();
 		this.getBurningAmulet = config.getBurningAmulet();
 		this.getBurningAmuletMode = config.getBurningAmuletMode();
-		this.getBuyFiftyItems = config.getBuyFiftyItems();
-		this.getBuyFiveItems = config.getBuyFiveItems();
-		this.getBuyOneItems = config.getBuyOneItems();
-		this.getBuyTenItems = config.getBuyTenItems();
 		this.getCombatBracelet = config.getCombatBracelet();
 		this.getCombatBraceletMode = config.getCombatBraceletMode();
 		this.getConstructionMode = config.getConstructionMode();
@@ -1685,19 +1629,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getRemovedObjects = config.getRemovedObjects();
 		this.getRingofWealth = config.getRingofWealth();
 		this.getRingofWealthMode = config.getRingofWealthMode();
-		this.getSellFiftyItems = config.getSellFiftyItems();
-		this.getSellFiveItems = config.getSellFiveItems();
-		this.getSellOneItems = config.getSellOneItems();
-		this.getSellTenItems = config.getSellTenItems();
 		this.getSkillsNecklace = config.getSkillsNecklace();
 		this.getSkillsNecklaceMode = config.getSkillsNecklaceMode();
 		this.getSlayerRing = config.getSlayerRing();
 		this.getSlayerRingMode = config.getSlayerRingMode();
 		this.getSwapArdougneCape = config.getSwapArdougneCape();
-		this.getSwapBuyFifty = config.getSwapBuyFifty();
-		this.getSwapBuyFive = config.getSwapBuyFive();
-		this.getSwapBuyOne = config.getSwapBuyOne();
-		this.getSwapBuyTen = config.getSwapBuyTen();
 		this.getSwapConstructionCape = config.getSwapConstructionCape();
 		this.getSwapCraftingCape = config.getSwapCraftingCape();
 		this.getSwapExplorersRing = config.getSwapExplorersRing();
@@ -1705,10 +1641,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSwapPuro = config.getSwapPuro();
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();
-		this.getSwapSellFifty = config.getSwapSellFifty();
-		this.getSwapSellFive = config.getSwapSellFive();
-		this.getSwapSellOne = config.getSwapSellOne();
-		this.getSwapSellTen = config.getSwapSellTen();
 		this.getSwapTanning = config.getSwapTanning();
 		this.getWithdrawAll = config.getWithdrawAll();
 		this.getWithdrawAllItems = config.getWithdrawAllItems();
@@ -1785,6 +1717,154 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapWildernessLever = config.swapWildernessLever();
 		this.swapHouseAd = config.swapHouseAd();
 		this.swapHouseAdMode = config.swapHouseAdMode();
+
+		updateBuySellEntries();
+	}
+
+	private void addBuySellEntries()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (buyEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : buyEntries[i])
+				{
+					menuManager.addPriorityEntry(entry);
+				}
+			}
+			if (sellEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : sellEntries[i])
+				{
+					menuManager.addPriorityEntry(entry);
+				}
+			}
+		}
+	}
+
+	private void removeBuySellEntries()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (buyEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : buyEntries[i])
+				{
+					menuManager.removePriorityEntry(entry);
+				}
+			}
+			if (sellEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : sellEntries[i])
+				{
+					menuManager.removePriorityEntry(entry);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Fills the buy/sell entry arrays
+	 */
+	private void updateBuySellEntries()
+	{
+		List<String> tmp;
+
+		if (config.getSwapBuyOne())
+		{
+			tmp = Text.fromCSV(config.getBuyOneItems());
+			buyEntries[0] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(buyEntries[0], tmp, true, 1);
+		}
+		else
+		{
+			buyEntries[0] = null;
+		}
+
+		if (config.getSwapBuyFive())
+		{
+			tmp = Text.fromCSV(config.getBuyFiveItems());
+			buyEntries[1] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(buyEntries[1], tmp, true, 5);
+		}
+		else
+		{
+			buyEntries[1] = null;
+		}
+
+		if (config.getSwapBuyTen())
+		{
+			tmp = Text.fromCSV(config.getBuyTenItems());
+			buyEntries[2] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(buyEntries[2], tmp, true, 10);
+		}
+		else
+		{
+			buyEntries[2] = null;
+		}
+
+		if (config.getSwapBuyFifty())
+		{
+			tmp = Text.fromCSV(config.getBuyFiftyItems());
+			buyEntries[3] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(buyEntries[3], tmp, true, 50);
+		}
+		else
+		{
+			buyEntries[3] = null;
+		}
+
+		if (config.getSwapSellOne())
+		{
+			tmp = Text.fromCSV(config.getSellOneItems());
+			sellEntries[0] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(sellEntries[0], tmp, false, 1);
+		}
+		else
+		{
+			sellEntries[0] = null;
+		}
+
+		if (config.getSwapSellFive())
+		{
+			tmp = Text.fromCSV(config.getSellFiveItems());
+			sellEntries[1] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(sellEntries[1], tmp, false, 5);
+		}
+		else
+		{
+			sellEntries[1] = null;
+		}
+
+		if (config.getSwapSellTen())
+		{
+			tmp = Text.fromCSV(config.getSellTenItems());
+			sellEntries[2] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(sellEntries[2], tmp, false, 10);
+		}
+		else
+		{
+			sellEntries[2] = null;
+		}
+
+		if (config.getSwapSellFifty())
+		{
+			tmp = Text.fromCSV(config.getSellFiftyItems());
+			sellEntries[3] = new AbstractComparableEntry[tmp.size()];
+
+			ShopComparableEntry.populateArray(sellEntries[3], tmp, false, 50);
+		}
+		else
+		{
+			sellEntries[3] = null;
+		}
 	}
 
 	/**
