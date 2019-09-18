@@ -58,6 +58,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import static net.runelite.api.Varbits.BUILDING_MODE;
+import static net.runelite.api.Varbits.WITHDRAW_X_AMOUNT;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
@@ -86,6 +87,7 @@ import net.runelite.client.plugins.menuentryswapper.comparables.BankComparableEn
 import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.InventoryComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.ShopComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.comparables.WithdrawComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -179,6 +181,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	// 1, 5, 10, 50
 	private final AbstractComparableEntry[][] buyEntries = new AbstractComparableEntry[4][];
 	private final AbstractComparableEntry[][] sellEntries = new AbstractComparableEntry[4][];
+	// 1, 5, 10, X, All
+	private final AbstractComparableEntry[][] withdrawEntries = new AbstractComparableEntry[5][];
 
 	private List<String> bankItemNames = new ArrayList<>();
 	private BurningAmuletMode getBurningAmuletMode;
@@ -208,12 +212,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private String configCustomShiftSwaps;
 	private String configCustomSwaps;
 	private String getRemovedObjects;
-	private String getWithdrawAllItems;
-	private String getWithdrawFiveItems;
-	private String getWithdrawOneItems;
-	private String getWithdrawTenItems;
-	private String getWithdrawXAmount;
-	private String getWithdrawXItems;
 	private XericsTalismanMode getXericsTalismanMode;
 	private boolean getBurningAmulet;
 	private boolean getCombatBracelet;
@@ -236,11 +234,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
 	private boolean getSwapTanning;
-	private boolean getWithdrawAll;
-	private boolean getWithdrawFive;
-	private boolean getWithdrawOne;
-	private boolean getWithdrawTen;
-	private boolean getWithdrawX;
 	private boolean getXericsTalisman;
 	private boolean hideBait;
 	private boolean hideCastCoX;
@@ -309,8 +302,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		addSwaps();
 		loadConstructionItems();
 		loadCustomSwaps(config.customSwaps(), customSwaps);
+
 		updateBuySellEntries();
 		addBuySellEntries();
+
+		updateWithdrawEntries();
+		addWithdrawEntries();
 
 		keyManager.registerKeyListener(ctrlHotkey);
 		keyManager.registerKeyListener(hotkey);
@@ -328,6 +325,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		loadCustomSwaps("", customSwaps); // Removes all custom swaps
 		removeSwaps();
 		removeBuySellEntries();
+		removeWithdrawEntries();
 
 		keyManager.unregisterKeyListener(ctrlHotkey);
 		keyManager.unregisterKeyListener(hotkey);
@@ -403,7 +401,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			removeBuySellEntries();
 			updateBuySellEntries();
 			addBuySellEntries();
-			return;
+		}
+		else if (event.getKey().startsWith("withdraw") || event.getKey().startsWith("deposit"))
+		{
+			removeWithdrawEntries();
+			updateWithdrawEntries();
+			addWithdrawEntries();
 		}
 	}
 
@@ -420,6 +423,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		buildingMode = client.getVar(BUILDING_MODE) == 1;
+		WithdrawComparableEntry.setX(client.getVar(WITHDRAW_X_AMOUNT));
 
 		setCastOptions(false);
 	}
@@ -754,51 +758,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			final AbstractComparableEntry b = newBaseComparableEntry(strings[0], "", -1, -1, false, false);
 			dePrioSwaps.put(a, b);
 			menuManager.addSwap(a, b);
-		}
-
-		if (this.getWithdrawOne)
-		{
-			Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
-			{
-				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-1", item)).setPriority(10);
-				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-1", item)).setPriority(10);
-			});
-		}
-
-		if (this.getWithdrawFive)
-		{
-			Text.fromCSV(this.getWithdrawFiveItems).forEach(item ->
-			{
-				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-5", item)).setPriority(10);
-				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-5", item)).setPriority(10);
-			});
-		}
-
-		if (this.getWithdrawTen)
-		{
-			Text.fromCSV(this.getWithdrawTenItems).forEach(item ->
-			{
-				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-10", item)).setPriority(10);
-				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-10", item)).setPriority(10);
-			});
-		}
-
-		if (this.getWithdrawX)
-		{
-			Text.fromCSV(this.getWithdrawXItems).forEach(item ->
-			{
-				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-" + this.getWithdrawXAmount, item)).setPriority(10);
-				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-" + this.getWithdrawXAmount, item)).setPriority(10);
-			});
-		}
-
-		if (this.getWithdrawAll)
-		{
-			Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
-			{
-				menuManager.addPriorityEntry(newBankComparableEntry("Withdraw-All", item)).setPriority(10);
-				menuManager.addPriorityEntry(newBankComparableEntry("Deposit-All", item)).setPriority(10);
-			});
 		}
 
 		if (this.getSwapTanning)
@@ -1209,32 +1168,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			dePrioIter.remove();
 		});
 
-		Text.fromCSV(this.getWithdrawOneItems).forEach(item ->
-		{
-			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-1", item));
-			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-1", item));
-		});
-		Text.fromCSV(this.getWithdrawFiveItems).forEach(item ->
-		{
-			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-5", item));
-			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-5", item));
-		});
-		Text.fromCSV(this.getWithdrawTenItems).forEach(item ->
-		{
-			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-10", item));
-			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-10", item));
-		});
-		Text.fromCSV(this.getWithdrawXItems).forEach(item ->
-		{
-			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-" + this.getWithdrawXAmount, item));
-			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-" + this.getWithdrawXAmount, item));
-		});
-		Text.fromCSV(this.getWithdrawAllItems).forEach(item ->
-		{
-			menuManager.removePriorityEntry(newBankComparableEntry("Withdraw-All", item));
-			menuManager.removePriorityEntry(newBankComparableEntry("Deposit-All", item));
-		});
-
 		menuManager.removePriorityEntry("Activate", "Box trap");
 		menuManager.removePriorityEntry("Assignment");
 		menuManager.removePriorityEntry("Bank");
@@ -1643,17 +1576,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();
 		this.getSwapTanning = config.getSwapTanning();
-		this.getWithdrawAll = config.getWithdrawAll();
-		this.getWithdrawAllItems = config.getWithdrawAllItems();
-		this.getWithdrawFive = config.getWithdrawFive();
-		this.getWithdrawFiveItems = config.getWithdrawFiveItems();
-		this.getWithdrawOne = config.getWithdrawOne();
-		this.getWithdrawOneItems = config.getWithdrawOneItems();
-		this.getWithdrawTen = config.getWithdrawTen();
-		this.getWithdrawTenItems = config.getWithdrawTenItems();
-		this.getWithdrawX = config.getWithdrawX();
-		this.getWithdrawXAmount = config.getWithdrawXAmount();
-		this.getWithdrawXItems = config.getWithdrawXItems();
 		this.getXericsTalisman = config.getXericsTalisman();
 		this.getXericsTalismanMode = config.getXericsTalismanMode();
 		this.hideBait = config.hideBait();
@@ -1863,6 +1785,99 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else
 		{
 			sellEntries[3] = null;
+		}
+	}
+
+	private void addWithdrawEntries()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (withdrawEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : withdrawEntries[i])
+				{
+					menuManager.addPriorityEntry(entry);
+				}
+			}
+		}
+	}
+
+	private void removeWithdrawEntries()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (withdrawEntries[i] != null)
+			{
+				for (AbstractComparableEntry entry : withdrawEntries[i])
+				{
+					menuManager.removePriorityEntry(entry);
+				}
+			}
+		}
+	}
+
+	private void updateWithdrawEntries()
+	{
+		List<String> tmp;
+
+		if (config.getWithdrawOne())
+		{
+			tmp = Text.fromCSV(config.getWithdrawOneItems());
+			withdrawEntries[0] = new AbstractComparableEntry[tmp.size()];
+
+			WithdrawComparableEntry.populateArray(withdrawEntries[0], tmp, WithdrawComparableEntry.Amount.ONE);
+		}
+		else
+		{
+			withdrawEntries[0] = null;
+		}
+
+		if (config.getWithdrawFive())
+		{
+			tmp = Text.fromCSV(config.getWithdrawFiveItems());
+			withdrawEntries[1] = new AbstractComparableEntry[tmp.size()];
+
+			WithdrawComparableEntry.populateArray(withdrawEntries[1], tmp, WithdrawComparableEntry.Amount.FIVE);
+		}
+		else
+		{
+			withdrawEntries[1] = null;
+		}
+
+		if (config.getWithdrawTen())
+		{
+			tmp = Text.fromCSV(config.getWithdrawTenItems());
+			withdrawEntries[2] = new AbstractComparableEntry[tmp.size()];
+
+			WithdrawComparableEntry.populateArray(withdrawEntries[2], tmp, WithdrawComparableEntry.Amount.TEN);
+		}
+		else
+		{
+			withdrawEntries[2] = null;
+		}
+
+		if (config.getWithdrawX())
+		{
+			tmp = Text.fromCSV(config.getWithdrawXItems());
+			withdrawEntries[3] = new AbstractComparableEntry[tmp.size()];
+
+			WithdrawComparableEntry.populateArray(withdrawEntries[3], tmp, WithdrawComparableEntry.Amount.X);
+		}
+		else
+		{
+			withdrawEntries[3] = null;
+		}
+
+		if (config.getWithdrawAll())
+		{
+			tmp = Text.fromCSV(config.getWithdrawAllItems());
+			withdrawEntries[4] = new AbstractComparableEntry[tmp.size()];
+
+			WithdrawComparableEntry.populateArray(withdrawEntries[4], tmp, WithdrawComparableEntry.Amount.ALL);
+		}
+		else
+		{
+			withdrawEntries[4] = null;
 		}
 	}
 

@@ -153,20 +153,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "withdrawXAmount",
-		name = "Amount",
-		description = "",
-		position = 7,
-		group = "Banking",
-		hidden = true,
-		unhide = "withdrawX"
-	)
-	default String getWithdrawXAmount()
-	{
-		return "";
-	}
-
-	@ConfigItem(
 		keyName = "withdrawXItems",
 		name = "Items",
 		description = "",
