@@ -433,12 +433,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		// TODO: Remove this? This makes everything here only work in wildy lol
-		if (!(MiscUtils.getWildernessLevelFrom(client, localPlayer.getWorldLocation()) >= 0))
-		{
-			return;
-		}
-
 		List<MenuEntry> menu_entries = new ArrayList<>();
 
 		for (MenuEntry entry : event.getMenuEntries())
