@@ -311,4 +311,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapStore",
+			name = "Builder Store",
+			description = "Swap Trade-General-Store with Trade-Builder-Store for Razmire Keelgan."
+	)
+	default boolean swapBuilderStore()
+	{
+		return true;
+	}
 }

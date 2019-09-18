@@ -458,6 +458,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, index);
 			}
+
+			if (config.swapBuilderStore())
+			{
+				swap("trade-builders-store", option, target, index);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
