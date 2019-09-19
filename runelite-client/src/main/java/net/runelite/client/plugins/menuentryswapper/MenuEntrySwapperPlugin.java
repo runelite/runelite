@@ -128,7 +128,6 @@ import org.apache.commons.lang3.StringUtils;
 @PluginDependency(PvpToolsPlugin.class)
 public class MenuEntrySwapperPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String HOTKEY = "menuentryswapper hotkey";
 	private static final String CONTROL = "menuentryswapper control";
 	private static final String HOTKEY_CHECK = "menuentryswapper hotkey check";
@@ -184,6 +183,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	// 1, 5, 10, X, All
 	private final AbstractComparableEntry[][] withdrawEntries = new AbstractComparableEntry[5][];
 
+	private String[] removedObjects;
+
 	private List<String> bankItemNames = new ArrayList<>();
 	private BurningAmuletMode getBurningAmuletMode;
 	private CharterOption charterOption;
@@ -211,7 +212,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private SlayerRingMode getSlayerRingMode;
 	private String configCustomShiftSwaps;
 	private String configCustomSwaps;
-	private String getRemovedObjects;
 	private XericsTalismanMode getXericsTalismanMode;
 	private boolean getBurningAmulet;
 	private boolean getCombatBracelet;
@@ -221,7 +221,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getGamesNecklace;
 	private boolean getGlory;
 	private boolean getNecklaceofPassage;
-	private boolean getRemoveObjects;
 	private boolean getRingofWealth;
 	private boolean getSkillsNecklace;
 	private boolean getSlayerRing;
@@ -309,6 +308,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		updateWithdrawEntries();
 		addWithdrawEntries();
 
+		updateRemovedObjects();
+
 		keyManager.registerKeyListener(ctrlHotkey);
 		keyManager.registerKeyListener(hotkey);
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -326,6 +327,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		removeSwaps();
 		removeBuySellEntries();
 		removeWithdrawEntries();
+
+		removedObjects = null;
 
 		keyManager.unregisterKeyListener(ctrlHotkey);
 		keyManager.unregisterKeyListener(hotkey);
@@ -393,6 +396,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					resetCastOptions();
 				}
 				return;
+			case "removeObjects":
+			case "removedObjects":
+				updateRemovedObjects();
+				return;
 		}
 
 		if (event.getKey().startsWith("swapSell") || event.getKey().startsWith("swapBuy") ||
@@ -412,7 +419,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void onGameStateChanged(GameStateChanged event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (event.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -532,27 +539,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final String target = Text.standardize(event.getTarget(), true);
 		final NPC hintArrowNpc = client.getHintArrowNpc();
 
-		if (this.getRemoveObjects && !this.getRemovedObjects.equals(""))
+		if (removedObjects != null)
 		{
-			// TODO: CACHE THIS
-			for (String removed : Text.fromCSV(this.getRemovedObjects))
+			final boolean hasArrow = target.contains("->");
+			final int targetLength = target.length();
+
+			for (final String object : removedObjects)
 			{
-				removed = Text.standardize(removed);
-				if (target.equals(removed))
-				{
-					client.setMenuOptionCount(client.getMenuOptionCount() - 1);
-					return;
-				}
-				else if (target.contains("->"))
-				{
-					String trimmed = target.split("->")[1].trim();
-					if (trimmed.length() >= removed.length() && trimmed.substring(0, removed.length()).equalsIgnoreCase(removed))
-					{
-						client.setMenuOptionCount(client.getMenuOptionCount() - 1);
-						return;
-					}
-				}
-				else if (target.length() >= removed.length() && StringUtils.startsWithIgnoreCase(target, removed))
+				if (target.equals(object)
+					|| hasArrow && target.endsWith(object)
+					|| targetLength > object.length() && target.startsWith(object))
 				{
 					client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 					return;
@@ -1559,8 +1555,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getGloryMode = config.getGloryMode();
 		this.getNecklaceofPassage = config.getNecklaceofPassage();
 		this.getNecklaceofPassageMode = config.getNecklaceofPassageMode();
-		this.getRemoveObjects = config.getRemoveObjects();
-		this.getRemovedObjects = config.getRemovedObjects();
 		this.getRingofWealth = config.getRingofWealth();
 		this.getRingofWealthMode = config.getRingofWealthMode();
 		this.getSkillsNecklace = config.getSkillsNecklace();
@@ -1878,6 +1872,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else
 		{
 			withdrawEntries[4] = null;
+		}
+	}
+
+	private void updateRemovedObjects()
+	{
+		if (config.getRemoveObjects())
+		{
+			removedObjects = Text.fromCSV(
+				Text.removeTags(config.getRemovedObjects().toLowerCase())
+			).toArray(new String[0]);
+		}
+		else
+		{
+			removedObjects = null;
 		}
 	}
 
