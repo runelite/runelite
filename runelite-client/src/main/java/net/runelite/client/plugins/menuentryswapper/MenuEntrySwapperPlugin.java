@@ -114,8 +114,6 @@ import net.runelite.client.plugins.pvptools.PvpToolsConfig;
 import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.util.HotkeyListener;
 import static net.runelite.client.util.MenuUtil.swap;
-import net.runelite.client.util.MiscUtils;
-import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
@@ -1167,7 +1165,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Activate", "Box trap");
 		menuManager.removePriorityEntry("Assignment");
 		menuManager.removePriorityEntry("Bank");
-		menuManager.removePriorityEntry("Buy All");
+		menuManager.removePriorityEntry("Buy <col=ff7000>All");
 		menuManager.removePriorityEntry("Buy-plank");
 		menuManager.removePriorityEntry("Buy-plank", "Sawmill operator");
 		menuManager.removePriorityEntry("Charter");
@@ -1233,7 +1231,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Story");
 		menuManager.removePriorityEntry("Stun", "Hoop snake");
 		menuManager.removePriorityEntry("Take-boat");
-		menuManager.removePriorityEntry("Tan All");
+		menuManager.removePriorityEntry("Tan <col=ff7000>All");
 		menuManager.removePriorityEntry("Teleport menu", "Portal nexus");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape(t)");
