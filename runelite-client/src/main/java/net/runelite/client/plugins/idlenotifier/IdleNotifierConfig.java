@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("idlenotifier")
 public interface IdleNotifierConfig extends Config
@@ -85,7 +86,7 @@ public interface IdleNotifierConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "movementidle",
 		name = "Idle Movement Notifications",
@@ -240,12 +241,24 @@ public interface IdleNotifierConfig extends Config
 		return false;
 	}
 
+
+	@ConfigSection(
+		position = 20,
+		keyName = "pvpSection",
+		name = "PvP",
+		description = ""
+	)
+	default boolean pvpSection()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		keyName = "pkers",
 		name = "PKer Notifier",
 		description = "Notifies if an attackable player based on your level range appears on screen.",
-		position = 20,
-		group = "PvP",
+		position = 21,
+		section = "pvpSection",
 		warning = "This will not notify you if the player is in your cc or is online on your friends list."
 	)
 	default boolean notifyPkers()
@@ -254,11 +267,11 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "resourceDoor",
-			name = "Resource Door Notifier",
-			description = "Notifies if the wilderness resource area door is opened",
-			position = 21,
-			group = "PvP"
+		keyName = "resourceDoor",
+		name = "Resource Door Notifier",
+		description = "Notifies if the wilderness resource area door is opened",
+		position = 22,
+		section = "pvpSection"
 	)
 	default boolean notifyResourceDoor()
 	{

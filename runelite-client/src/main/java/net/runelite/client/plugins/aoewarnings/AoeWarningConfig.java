@@ -33,8 +33,9 @@ import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
@@ -57,26 +58,38 @@ public interface AoeWarningConfig extends Config
 		}
 	}
 
+	@ConfigTitleSection(
+		keyName = "notifyTitle",
+		name = "Notify",
+		description = "",
+		position = -1
+	)
+	default Title notifyTitle()
+	{
+		return new Title();
+	}
+
 	@ConfigItem(
 		keyName = "aoeNotifyAll",
 		name = "Notify for all AoE warnings",
 		description = "Configures whether or not AoE Projectile Warnings should trigger a notification",
-		position = 0
+		position = 0,
+		titleSection = "notifyTitle"
 	)
 	default boolean aoeNotifyAll()
 	{
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "overlayStub",
+	@ConfigTitleSection(
+		keyName = "overlayTitle",
 		name = "Overlay",
 		description = "",
 		position = 1
 	)
-	default Stub overlayStub()
+	default Title overlayTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -84,7 +97,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Configures the color of the AoE Projectile Warnings overlay",
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default Color overlayColor()
 	{
@@ -95,7 +108,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "outline",
 		name = "Display Outline",
 		description = "Configures whether or not AoE Projectile Warnings have an outline",
-		parent = "overlayStub",
+		titleSection = "overlayTitle",
 		position = 3
 	)
 	default boolean isOutlineEnabled()
@@ -107,7 +120,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "delay",
 		name = "Fade Delay",
 		description = "Configures the amount of time in milliseconds that the warning lingers for after the projectile has touched the ground",
-		parent = "overlayStub",
+		titleSection = "overlayTitle",
 		position = 4
 	)
 	default int delay()
@@ -119,7 +132,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "fade",
 		name = "Fade Warnings",
 		description = "Configures whether or not AoE Projectile Warnings fade over time",
-		parent = "overlayStub",
+		titleSection = "overlayTitle",
 		position = 5
 	)
 	default boolean isFadeEnabled()
@@ -131,7 +144,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "tickTimers",
 		name = "Tick Timers",
 		description = "Configures whether or not AoE Projectile Warnings has tick timers overlaid as well.",
-		parent = "overlayStub",
+		titleSection = "overlayTitle",
 		position = 6
 	)
 	default boolean tickTimers()
@@ -139,17 +152,17 @@ public interface AoeWarningConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
+	@ConfigTitleSection(
+		keyName = "textTitle",
 		position = 7,
-		keyName = "text",
 		name = "Text",
 		description = "",
 		hidden = true,
 		unhide = "tickTimers"
 	)
-	default Stub text()
+	default Title textTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -157,7 +170,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "fontStyle",
 		name = "Font Style",
 		description = "Bold/Italics/Plain",
-		parent = "text",
+		titleSection = "textTitle",
 		hidden = true,
 		unhide = "tickTimers"
 	)
@@ -175,7 +188,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "textSize",
 		name = "Text Size",
 		description = "Text Size for Timers.",
-		parent = "text",
+		titleSection = "textTitle",
 		hidden = true,
 		unhide = "tickTimers"
 	)
@@ -189,7 +202,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "shadows",
 		name = "Shadows",
 		description = "Adds Shadows to text.",
-		parent = "text",
+		titleSection = "textTitle",
 		hidden = true,
 		unhide = "tickTimers"
 	)
@@ -198,34 +211,34 @@ public interface AoeWarningConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "npcStub",
+	@ConfigTitleSection(
+		keyName = "npcTitle",
 		name = "NPC's",
 		description = "",
 		position = 11
 	)
-	default Stub npcStub()
+	default Title npcTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
-	@ConfigItem(
-		keyName = "lizardmanaoeStub",
+	@ConfigTitleSection(
+		keyName = "lizardmanaoeTitle",
 		name = "Lizardman Shamans",
 		description = "",
 		position = 12,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub lizardmanaoeStub()
+	default Title lizardmanaoeTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "lizardmanaoe",
 		name = "Lizardman Shamans",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed",
-		parent = "lizardmanaoeStub",
+		titleSection = "lizardmanaoeTitle",
 		position = 13
 	)
 	default boolean isShamansEnabled()
@@ -237,7 +250,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "lizardmanaoenotify",
 		name = "Lizardman Shamans Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans should trigger a notification",
-		parent = "lizardmanaoeStub",
+		titleSection = "lizardmanaoeTitle",
 		position = 14,
 		hide = "aoeNotifyAll"
 	)
@@ -246,23 +259,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "archaeologistaoeStub",
+	@ConfigTitleSection(
+		keyName = "archaeologistaoeTitle",
 		name = "Crazy Archaeologist",
 		description = "",
 		position = 15,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub archaeologistaoeStub()
+	default Title archaeologistaoeTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "archaeologistaoe",
 		name = "Crazy Archaeologist",
 		description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed",
-		parent = "archaeologistaoeStub",
+		titleSection = "archaeologistaoeTitle",
 		position = 16
 	)
 	default boolean isArchaeologistEnabled()
@@ -274,7 +287,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "archaeologistaoenotify",
 		name = "Crazy Archaeologist Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Crazy Archaeologist should trigger a notification",
-		parent = "archaeologistaoeStub",
+		titleSection = "archaeologistaoeTitle",
 		position = 17,
 		hide = "aoeNotifyAll"
 	)
@@ -283,23 +296,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "icedemonStub",
+	@ConfigTitleSection(
+		keyName = "icedemonTitle",
 		name = "Ice Demon",
 		description = "",
 		position = 18,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub icedemonStub()
+	default Title icedemonTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "icedemon",
 		name = "Ice Demon",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed",
-		parent = "icedemonStub",
+		titleSection = "icedemonTitle",
 		position = 19
 	)
 	default boolean isIceDemonEnabled()
@@ -311,7 +324,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "icedemonnotify",
 		name = "Ice Demon Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon should trigger a notification",
-		parent = "icedemonStub",
+		titleSection = "icedemonTitle",
 		position = 20,
 		hide = "aoeNotifyAll"
 	)
@@ -320,23 +333,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "vasaStub",
+	@ConfigTitleSection(
+		keyName = "vasaTitle",
 		name = "Vasa",
 		description = "",
 		position = 21,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub vasaStub()
+	default Title vasaTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "vasa",
 		name = "Vasa",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed",
-		parent = "vasaStub",
+		titleSection = "vasaTitle",
 		position = 22
 	)
 	default boolean isVasaEnabled()
@@ -348,7 +361,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vasanotify",
 		name = "Vasa Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa should trigger a notification",
-		parent = "vasaStub",
+		titleSection = "vasaTitle",
 		position = 23,
 		hide = "aoeNotifyAll"
 	)
@@ -357,23 +370,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "tektonStub",
+	@ConfigTitleSection(
+		keyName = "tektonTitle",
 		name = "Tekton",
 		description = "",
 		position = 24,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub tektonStub()
+	default Title tektonTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "tekton",
 		name = "Tekton",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed",
-		parent = "tektonStub",
+		titleSection = "tektonTitle",
 		position = 25
 	)
 	default boolean isTektonEnabled()
@@ -385,7 +398,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "tektonnotify",
 		name = "Tekton Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton should trigger a notification",
-		parent = "tektonStub",
+		titleSection = "tektonTitle",
 		position = 26,
 		hide = "aoeNotifyAll"
 	)
@@ -394,23 +407,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "vorkathStub",
+	@ConfigTitleSection(
+		keyName = "vorkathTitle",
 		name = "Vorkath",
 		description = "",
 		position = 27,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub vorkathStub()
+	default Title vorkathTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "vorkath",
 		name = "Vorkath",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed",
-		parent = "vorkathStub",
+		titleSection = "vorkathTitle",
 		position = 28
 	)
 	default boolean isVorkathEnabled()
@@ -422,7 +435,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vorkathotify",
 		name = "Vorkath Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath should trigger a notification",
-		parent = "vorkathStub",
+		titleSection = "vorkathTitle",
 		position = 29,
 		hide = "aoeNotifyAll"
 	)
@@ -431,23 +444,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "galvekStub",
+	@ConfigTitleSection(
+		keyName = "galvekTitle",
 		name = "Galvek",
 		description = "",
 		position = 30,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub galvekStub()
+	default Title galvekTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "galvek",
 		name = "Galvek",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed",
-		parent = "galvekStub",
+		titleSection = "galvekTitle",
 		position = 31
 	)
 	default boolean isGalvekEnabled()
@@ -459,7 +472,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "galveknotify",
 		name = "Galvek Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek should trigger a notification",
-		parent = "galvekStub",
+		titleSection = "galvekTitle",
 		position = 32,
 		hide = "aoeNotifyAll"
 	)
@@ -468,23 +481,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "gargbossStub",
+	@ConfigTitleSection(
+		keyName = "gargbossTitle",
 		name = "Gargoyle Boss",
 		description = "",
 		position = 33,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub gargbossStub()
+	default Title gargbossTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "gargboss",
 		name = "Gargoyle Boss",
 		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed",
-		parent = "gargbossStub",
+		titleSection = "gargbossTitle",
 		position = 34
 	)
 	default boolean isGargBossEnabled()
@@ -496,7 +509,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "gargbossnotify",
 		name = "Gargoyle Boss Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Gargoyle Bosses should trigger a notification",
-		parent = "gargbossStub",
+		titleSection = "gargbossTitle",
 		position = 35,
 		hide = "aoeNotifyAll"
 	)
@@ -505,23 +518,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "vetionStub",
+	@ConfigTitleSection(
+		keyName = "vetionTitle",
 		name = "Vet'ion",
 		description = "",
 		position = 36,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub vetionStub()
+	default Title vetionTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "vetion",
 		name = "Vet'ion",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed",
-		parent = "vetionStub",
+		titleSection = "vetionTitle",
 		position = 37
 	)
 	default boolean isVetionEnabled()
@@ -533,7 +546,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vetionnotify",
 		name = "Vet'ion Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion should trigger a notification",
-		parent = "vetionStub",
+		titleSection = "vetionTitle",
 		position = 38,
 		hide = "aoeNotifyAll"
 	)
@@ -542,23 +555,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "chaosfanaticStub",
+	@ConfigTitleSection(
+		keyName = "chaosfanaticTitle",
 		name = "Chaos Fanatic",
 		description = "",
 		position = 39,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub chaosfanaticStub()
+	default Title chaosfanaticTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "chaosfanatic",
 		name = "Chaos Fanatic",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed",
-		parent = "chaosfanaticStub",
+		titleSection = "chaosfanaticTitle",
 		position = 40
 	)
 	default boolean isChaosFanaticEnabled()
@@ -570,7 +583,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "chaosfanaticnotify",
 		name = "Chaos Fanatic Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic should trigger a notification",
-		parent = "chaosfanaticStub",
+		titleSection = "chaosfanaticTitle",
 		position = 41,
 		hide = "aoeNotifyAll"
 	)
@@ -579,23 +592,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "olmStub",
+	@ConfigTitleSection(
+		keyName = "olmTitle",
 		name = "Olm",
 		description = "",
 		position = 42,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub olmStub()
+	default Title olmTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "olm",
 		name = "Olm",
 		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed",
-		parent = "olmStub",
+		titleSection = "olmTitle",
 		position = 43
 	)
 	default boolean isOlmEnabled()
@@ -607,7 +620,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "olmnotify",
 		name = "Olm Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm should trigger a notification",
-		parent = "olmStub",
+		titleSection = "olmTitle",
 		position = 44,
 		hide = "aoeNotifyAll"
 	)
@@ -616,23 +629,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "olmBombStub",
+	@ConfigTitleSection(
+		keyName = "olmBombsTitle",
 		name = "Bombs",
 		description = "",
 		position = 45,
-		parent = "olmStub"
+		titleSection = "olmTitle"
 	)
-	default Stub olmBombsStub()
+	default Title olmBombsTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "bombDisplay",
 		name = "Olm Bombs",
 		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs.",
-		parent = "olmBombStub",
+		titleSection = "olmBombsTitle",
 		position = 46
 	)
 	default boolean bombDisplay()
@@ -644,7 +657,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "bombDisplaynotify",
 		name = "Olm Bombs Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm Bombs should trigger a notification",
-		parent = "olmBombStub",
+		titleSection = "olmBombsTitle",
 		position = 47,
 		hide = "aoeNotifyAll"
 	)
@@ -653,23 +666,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "olmlightningStub",
+	@ConfigTitleSection(
+		keyName = "olmlightningTitle",
 		name = "Lightning Trails",
 		description = "",
 		position = 48,
-		parent = "olmStub"
+		titleSection = "olmTitle"
 	)
-	default Stub olmlightningStub()
+	default Title olmlightningTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "lightning",
 		name = "Olm Lightning Trails",
 		description = "Show Lightning Trails",
-		parent = "olmlightningStub",
+		titleSection = "olmlightningTitle",
 		position = 49
 	)
 	default boolean LightningTrail()
@@ -681,7 +694,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "lightningnotify",
 		name = "Olm Lightning Trails Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Olm Lightning Trails should trigger a notification",
-		parent = "olmlightningStub",
+		titleSection = "olmlightningTitle",
 		position = 50,
 		hide = "aoeNotifyAll"
 	)
@@ -690,23 +703,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "corpStub",
+	@ConfigTitleSection(
+		keyName = "corpTitle",
 		name = "Corporeal Beast",
 		description = "",
 		position = 51,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub corpStub()
+	default Title corpTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "corp",
 		name = "Corporeal Beast",
 		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed",
-		parent = "corpStub",
+		titleSection = "corpTitle",
 		position = 52
 	)
 	default boolean isCorpEnabled()
@@ -718,7 +731,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "corpnotify",
 		name = "Corporeal Beast Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Corporeal Beast should trigger a notification",
-		parent = "corpStub",
+		titleSection = "corpTitle",
 		position = 53,
 		hide = "aoeNotifyAll"
 	)
@@ -727,23 +740,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "wintertodtStub",
+	@ConfigTitleSection(
+		keyName = "wintertodtTitle",
 		name = "Wintertodt",
 		description = "",
 		position = 54,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub wintertodtStub()
+	default Title wintertodtTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "wintertodt",
 		name = "Wintertodt Snow Fall",
 		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed",
-		parent = "wintertodtStub",
+		titleSection = "wintertodtTitle",
 		position = 55
 	)
 	default boolean isWintertodtEnabled()
@@ -755,7 +768,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "wintertodtnotify",
 		name = "Wintertodt Snow Fall Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Wintertodt Snow Fall Notify should trigger a notification",
-		parent = "wintertodtStub",
+		titleSection = "wintertodtTitle",
 		position = 56,
 		hide = "aoeNotifyAll"
 	)
@@ -764,23 +777,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "xarpusStub",
+	@ConfigTitleSection(
+		keyName = "xarpusTitle",
 		name = "Xarpus",
 		description = "",
 		position = 57,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub xarpusStub()
+	default Title xarpusTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "isXarpusEnabled",
 		name = "Xarpus",
 		description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed",
-		parent = "xarpusStub",
+		titleSection = "xarpusTitle",
 		position = 58
 	)
 	default boolean isXarpusEnabled()
@@ -792,7 +805,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "isXarpusEnablednotify",
 		name = "Xarpus Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Xarpus should trigger a notification",
-		parent = "xarpusStub",
+		titleSection = "xarpusTitle",
 		position = 59,
 		hide = "aoeNotifyAll"
 	)
@@ -801,23 +814,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "addyDragsStub",
+	@ConfigTitleSection(
+		keyName = "addyDragsTitle",
 		name = "Addy Drags",
 		description = "",
 		position = 60,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub addyDragsStub()
+	default Title addyDragsTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "addyDrags",
 		name = "Addy Drags",
 		description = "Show Bad Areas",
-		parent = "addyDragsStub",
+		titleSection = "addyDragsTitle",
 		position = 61
 	)
 	default boolean addyDrags()
@@ -829,7 +842,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "addyDragsnotify",
 		name = "Addy Drags Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Addy Dragons should trigger a notification",
-		parent = "addyDragsStub",
+		titleSection = "addyDragsTitle",
 		position = 62,
 		hide = "aoeNotifyAll"
 	)
@@ -838,23 +851,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "drakeStub",
+	@ConfigTitleSection(
+		keyName = "drakeTitle",
 		name = "Drakes",
 		description = "",
 		position = 63,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub drakeStub()
+	default Title drakeTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "drake",
 		name = "Drakes Breath",
 		description = "Configures if Drakes Breath tile markers are displayed",
-		parent = "drakeStub",
+		titleSection = "drakeTitle",
 		position = 64
 	)
 	default boolean isDrakeEnabled()
@@ -866,7 +879,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "drakenotify",
 		name = "Drakes Breath Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Drakes Breath should trigger a notification",
-		parent = "drakeStub",
+		titleSection = "drakeTitle",
 		position = 65,
 		hide = "aoeNotifyAll"
 	)
@@ -875,23 +888,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "cerberusStub",
+	@ConfigTitleSection(
+		keyName = "cerberusTitle",
 		name = "Cerberus",
 		description = "",
 		position = 66,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub cerberusStub()
+	default Title cerberusTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "cerbFire",
 		name = "Cerberus Fire",
 		description = "Configures if Cerberus fire tile markers are displayed",
-		parent = "cerberusStub",
+		titleSection = "cerberusTitle",
 		position = 67
 	)
 	default boolean isCerbFireEnabled()
@@ -903,7 +916,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "cerbFirenotify",
 		name = "Cerberus Fire Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Cerberus his fire should trigger a notification",
-		parent = "cerberusStub",
+		titleSection = "cerberusTitle",
 		position = 68,
 		hide = "aoeNotifyAll"
 	)
@@ -912,23 +925,23 @@ public interface AoeWarningConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "demonicGorillaStub",
+	@ConfigTitleSection(
+		keyName = "demonicGorillaTitle",
 		name = "Demonic Gorilla",
 		description = "",
 		position = 69,
-		parent = "npcStub"
+		titleSection = "npcTitle"
 	)
-	default Stub demonicGorillaStub()
+	default Title demonicGorillaTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "demonicGorilla",
 		name = "Demonic Gorilla",
 		description = "Configures if Demonic Gorilla boulder tile markers are displayed",
-		parent = "demonicGorillaStub",
+		titleSection = "demonicGorillaTitle",
 		position = 70
 	)
 	default boolean isDemonicGorillaEnabled()
@@ -940,7 +953,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "demonicGorillaNotify",
 		name = "Demonic Gorilla Notify",
 		description = "Configures whether or not AoE Projectile Warnings for Demonic Gorilla boulders should trigger a notification",
-		parent = "demonicGorillaStub",
+		titleSection = "demonicGorillaTitle",
 		position = 71,
 		hide = "aoeNotifyAll"
 	)

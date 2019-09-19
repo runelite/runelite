@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Craftiii4 <craftiii4@gmail.com>
+ * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.ui.components;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AccessLevel;
-import lombok.Getter;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 
-public class ConfigPanelItem
+public class MinimumSizedPanel extends JPanel
 {
-
-	@Getter(AccessLevel.PUBLIC)
-	private ConfigPanelItem parent;
-
-	@Getter(AccessLevel.PUBLIC)
-	private List<ConfigPanelItem> children;
-
-	@Getter(AccessLevel.PUBLIC)
-	private ConfigItemDescriptor item;
-
-	public ConfigPanelItem(ConfigPanelItem parent, ConfigItemDescriptor item)
+	@Override
+	public Dimension getPreferredSize()
 	{
-		this.parent = parent;
-		this.children = new ArrayList<>();
-		this.item = item;
+		final Dimension pref = super.getPreferredSize();
+		final Dimension minimum = super.getMinimumSize();
+		return new Dimension(Math.max(pref.width, minimum.width), Math.max(pref.height, minimum.height));
 	}
 }

@@ -30,21 +30,22 @@ import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("fightcave")
 public interface FightCaveConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
+	@ConfigTitleSection(
 		keyName = "mainConfig",
+		position = 0,
 		name = "Main Config",
 		description = ""
 	)
-	default Stub mainConfig()
+	default Title mainConfig()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -52,7 +53,7 @@ public interface FightCaveConfig extends Config
 		keyName = "waveDisplay",
 		name = "Wave display",
 		description = "Shows monsters that will spawn on the selected wave(s).",
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default WaveDisplayMode waveDisplay()
 	{
@@ -64,22 +65,22 @@ public interface FightCaveConfig extends Config
 		keyName = "tickTimersWidget",
 		name = "Tick Timers in Prayer",
 		description = "Adds an overlay to the Prayer Interface with the ticks until next attack for that prayer.",
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default boolean tickTimersWidget()
 	{
 		return true;
 	}
 
-	@ConfigItem(
-		position = 3,
+	@ConfigTitleSection(
 		keyName = "text",
+		position = 3,
 		name = "Text",
 		description = ""
 	)
-	default Stub text()
+	default Title text()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -87,7 +88,7 @@ public interface FightCaveConfig extends Config
 		keyName = "fontStyle",
 		name = "Font Style",
 		description = "Plain | Bold | Italics",
-		parent = "text"
+		titleSection = "text"
 	)
 	default FontStyle fontStyle()
 	{
@@ -103,7 +104,7 @@ public interface FightCaveConfig extends Config
 		keyName = "textSize",
 		name = "Text Size",
 		description = "Text Size for Timers.",
-		parent = "text"
+		titleSection = "text"
 	)
 	default int textSize()
 	{
@@ -115,7 +116,7 @@ public interface FightCaveConfig extends Config
 		keyName = "shadows",
 		name = "Shadows",
 		description = "Adds Shadows to text.",
-		parent = "text"
+		titleSection = "text"
 	)
 	default boolean shadows()
 	{

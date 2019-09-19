@@ -27,28 +27,29 @@ package net.runelite.client.plugins.lootingbagviewer;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("lootingbagviewer")
 public interface LootingBagViewerConfig extends Config
 {
-	@ConfigItem(
-			keyName = "overlayStub",
-			name = "Overlays",
-			description = "",
-			position = 0
+	@ConfigTitleSection(
+		keyName = "overlayTitle",
+		name = "Overlays",
+		description = "",
+		position = 0
 	)
-	default Stub overlayStub()
+	default Title overlayTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
-			keyName = "renderViewer",
-			name = "Render Viewer",
-			description = "Shows second inventory on screen with looting bag items.",
-			position = 1,
-			parent = "overlayStub"
+		keyName = "renderViewer",
+		name = "Render Viewer",
+		description = "Shows second inventory on screen with looting bag items.",
+		position = 1,
+		titleSection = "overlayTitle"
 	)
 	default boolean renderViewer()
 	{
@@ -56,11 +57,11 @@ public interface LootingBagViewerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "renderLootingBag",
-			name = "Render Looting Bag Worth",
-			description = "Shows current amount of GP over the looting bag.",
-			position = 2,
-			parent = "overlayStub"
+		keyName = "renderLootingBag",
+		name = "Render Looting Bag Worth",
+		description = "Shows current amount of GP over the looting bag.",
+		position = 2,
+		titleSection = "overlayTitle"
 	)
 	default boolean renderLootingBag()
 	{

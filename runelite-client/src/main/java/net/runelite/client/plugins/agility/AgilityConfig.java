@@ -28,20 +28,21 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
+	@ConfigTitleSection(
 		keyName = "mainConfig",
+		position = 0,
 		name = "Main Config",
 		description = ""
 	)
-	default Stub mainConfig()
+	default Title mainConfig()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -51,7 +52,7 @@ public interface AgilityConfig extends Config
 		warning = "<html><center>Enabling this setting on a low end machine may severely affect your fps." +
 			"<br>Click yes to enable this setting, knowing it might affect performance.</center></html>",
 		position = 1,
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default boolean removeDistanceCap()
 	{
@@ -63,7 +64,7 @@ public interface AgilityConfig extends Config
 		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
 		position = 2,
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default boolean showLapCount()
 	{
@@ -75,7 +76,7 @@ public interface AgilityConfig extends Config
 		name = "Hide Lap Count",
 		description = "Time in minutes until the lap counter hides/resets",
 		position = 3,
-		parent = "mainConfig",
+		titleSection = "mainConfig",
 		hidden = true,
 		unhide = "showLapCount"
 	)
@@ -89,7 +90,7 @@ public interface AgilityConfig extends Config
 		name = "Show Laps Until Level",
 		description = "Show number of laps remaining until next level is reached.",
 		position = 4,
-		parent = "mainConfig",
+		titleSection = "mainConfig",
 		hidden = true,
 		unhide = "showLapCount"
 	)
@@ -103,7 +104,7 @@ public interface AgilityConfig extends Config
 		name = "Show Laps Until Goal",
 		description = "Show number of laps remaining until experience tracker goal is reached",
 		position = 5,
-		parent = "mainConfig",
+		titleSection = "mainConfig",
 		hidden = true,
 		unhide = "showLapCount"
 	)
@@ -117,7 +118,7 @@ public interface AgilityConfig extends Config
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
 		position = 6,
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default boolean showAgilityArenaTimer()
 	{
@@ -129,22 +130,22 @@ public interface AgilityConfig extends Config
 		name = "Show Shortcut Agility Reqs",
 		description = "Enable/disable showing shortcut agility level requirements in right-click options",
 		position = 7,
-		parent = "mainConfig"
+		titleSection = "mainConfig"
 	)
 	default boolean showShortcutLevel()
 	{
 		return false;
 	}
 
-	@ConfigItem(
-		position = 8,
+	@ConfigTitleSection(
 		keyName = "miscConfig",
+		position = 8,
 		name = "Misc Config",
 		description = ""
 	)
-	default Stub miscConfig()
+	default Title miscConfig()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -152,7 +153,7 @@ public interface AgilityConfig extends Config
 		name = "Highlight Marks of Grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
 		position = 9,
-		parent = "miscConfig"
+		titleSection = "miscConfig"
 	)
 	default boolean highlightMarks()
 	{
@@ -164,7 +165,7 @@ public interface AgilityConfig extends Config
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
 		position = 10,
-		parent = "miscConfig"
+		titleSection = "miscConfig"
 	)
 	default boolean highlightShortcuts()
 	{
@@ -176,7 +177,7 @@ public interface AgilityConfig extends Config
 		name = "Highlight Traps",
 		description = "Enable/disable the highlighting of traps on Agility courses",
 		position = 11,
-		parent = "miscConfig"
+		titleSection = "miscConfig"
 	)
 	default boolean showTrapOverlay()
 	{
@@ -188,7 +189,7 @@ public interface AgilityConfig extends Config
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
 		position = 12,
-		parent = "miscConfig"
+		titleSection = "miscConfig"
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -200,7 +201,7 @@ public interface AgilityConfig extends Config
 		name = "Global Overlay Color",
 		description = "Color of Agility overlay",
 		position = 13,
-		parent = "miscConfig"
+		titleSection = "miscConfig"
 	)
 	default Color getOverlayColor()
 	{
@@ -212,7 +213,7 @@ public interface AgilityConfig extends Config
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
 		position = 14,
-		parent = "miscConfig",
+		titleSection = "miscConfig",
 		hidden = true,
 		unhide = "showTrapOverlay"
 	)
@@ -226,7 +227,7 @@ public interface AgilityConfig extends Config
 		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
 		position = 15,
-		parent = "miscConfig",
+		titleSection = "miscConfig",
 		hidden = true,
 		unhide = "highlightMarks"
 	)

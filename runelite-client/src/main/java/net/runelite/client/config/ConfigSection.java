@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Craftiii4 <craftiii4@gmail.com>
+ * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,34 @@
  */
 package net.runelite.client.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AccessLevel;
-import lombok.Getter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class ConfigPanelItem
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ConfigSection
 {
+	int position();
 
-	@Getter(AccessLevel.PUBLIC)
-	private ConfigPanelItem parent;
+	String keyName();
 
-	@Getter(AccessLevel.PUBLIC)
-	private List<ConfigPanelItem> children;
+	String name();
 
-	@Getter(AccessLevel.PUBLIC)
-	private ConfigItemDescriptor item;
+	String description();
 
-	public ConfigPanelItem(ConfigPanelItem parent, ConfigItemDescriptor item)
-	{
-		this.parent = parent;
-		this.children = new ArrayList<>();
-		this.item = item;
-	}
+	String section() default "";
+
+	String titleSection() default "";
+
+	boolean hidden() default false;
+
+	String unhide() default "";
+
+	String unhideValue() default "";
+
+	String hide() default "";
+
+	String hideValue() default "";
 }

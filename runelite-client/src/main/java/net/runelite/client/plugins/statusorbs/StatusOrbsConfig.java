@@ -28,27 +28,28 @@ package net.runelite.client.plugins.statusorbs;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("statusorbs")
 public interface StatusOrbsConfig extends Config
 {
-	@ConfigItem(
+	@ConfigTitleSection(
 		keyName = "hp",
 		name = "Hitpoints",
 		description = "",
 		position = 0
 	)
-	default Stub hp()
+	default Title hp()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "dynamicHpHeart",
 		name = "Dynamic hitpoints heart",
 		description = "Changes the HP heart color to match players current affliction",
-		parent = "hp",
+		titleSection = "hp",
 		position = 1
 	)
 	default boolean dynamicHpHeart()
@@ -60,7 +61,7 @@ public interface StatusOrbsConfig extends Config
 		keyName = "showHitpoints",
 		name = "Show hitpoints regen",
 		description = "Show a ring around the hitpoints orb",
-		parent = "hp",
+		titleSection = "hp",
 		position = 2
 	)
 	default boolean showHitpoints()
@@ -72,7 +73,7 @@ public interface StatusOrbsConfig extends Config
 		keyName = "showWhenNoChange",
 		name = "Show hitpoints regen at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change",
-		parent = "hp",
+		titleSection = "hp",
 		position = 3
 	)
 	default boolean showWhenNoChange()
@@ -84,7 +85,7 @@ public interface StatusOrbsConfig extends Config
 		keyName = "notifyBeforeHpRegenDuration",
 		name = "Hitpoint Regen Notification (seconds)",
 		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification.",
-		parent = "hp",
+		titleSection = "hp",
 		position = 4
 	)
 	default int getNotifyBeforeHpRegenSeconds()
@@ -92,22 +93,22 @@ public interface StatusOrbsConfig extends Config
 		return 0;
 	}
 
-	@ConfigItem(
+	@ConfigTitleSection(
 		keyName = "spec",
 		name = "Special attack",
 		description = "",
 		position = 5
 	)
-	default Stub spec()
+	default Title spec()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "showSpecial",
 		name = "Show Spec. Attack regen",
 		description = "Show a ring around the Special Attack orb",
-		parent = "spec",
+		titleSection = "spec",
 		position = 6
 	)
 	default boolean showSpecial()
@@ -115,15 +116,15 @@ public interface StatusOrbsConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
+	@ConfigTitleSection(
 		keyName = "run",
 		name = "Run energy",
 		description = "",
 		position = 7
 	)
-	default Stub run()
+	default Title run()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -131,7 +132,7 @@ public interface StatusOrbsConfig extends Config
 		name = "Show run energy regen",
 		description = "Show a ring around the run regen orb",
 		position = 8,
-		parent = "run"
+		titleSection = "run"
 	)
 	default boolean showRun()
 	{
@@ -143,7 +144,7 @@ public interface StatusOrbsConfig extends Config
 		name = "Replace run orb text with run time left",
 		description = "Show the remaining run time (in seconds) next in the energy orb",
 		position = 9,
-		parent = "run"
+		titleSection = "run"
 	)
 	default boolean replaceOrbText()
 	{
