@@ -67,6 +67,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.util.Text;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -92,6 +93,7 @@ import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.FairyTreeMode;
 import net.runelite.client.plugins.menuentryswapper.util.GamesNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.GloryMode;
+import net.runelite.client.plugins.menuentryswapper.util.HouseAdvertisementMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
 import net.runelite.client.plugins.menuentryswapper.util.MaxCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.NecklaceOfPassageMode;
@@ -107,7 +109,6 @@ import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.util.HotkeyListener;
 import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.api.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -171,18 +172,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private final Map<AbstractComparableEntry, Integer> customShiftSwaps = new HashMap<>();
 	private final Map<AbstractComparableEntry, AbstractComparableEntry> dePrioSwaps = new HashMap<>();
 	private List<String> bankItemNames = new ArrayList<>();
-	private ConstructionMode getConstructionMode;
 	private BurningAmuletMode getBurningAmuletMode;
 	private CharterOption charterOption;
 	private CombatBraceletMode getCombatBraceletMode;
 	private ConstructionCapeMode constructionCapeMode;
+	private ConstructionMode getConstructionMode;
 	private DigsitePendantMode getDigsitePendantMode;
 	private DuelingRingMode getDuelingRingMode;
 	private FairyRingMode swapFairyRingMode;
 	private FairyTreeMode swapFairyTreeMode;
 	private GamesNecklaceMode getGamesNecklaceMode;
 	private GloryMode getGloryMode;
+	private HouseAdvertisementMode swapHouseAdMode;
 	private HouseMode swapHomePortalMode;
+	private Keybind hotkeyMod;
 	private MaxCapeMode maxMode;
 	private NecklaceOfPassageMode getNecklaceofPassageMode;
 	private ObeliskMode swapObeliskMode;
@@ -193,8 +196,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private Set<String> hideCastIgnoredToB;
 	private SkillsNecklaceMode getSkillsNecklaceMode;
 	private SlayerRingMode getSlayerRingMode;
-	private String configCustomSwaps;
 	private String configCustomShiftSwaps;
+	private String configCustomSwaps;
 	private String getBuyFiftyItems;
 	private String getBuyFiveItems;
 	private String getBuyOneItems;
@@ -276,6 +279,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapEnchant;
 	private boolean swapHardWoodGrove;
 	private boolean swapHarpoon;
+	private boolean swapHouseAd;
 	private boolean swapImps;
 	private boolean swapInteract;
 	private boolean swapMax;
@@ -296,7 +300,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapTrade;
 	private boolean swapTravel;
 	private boolean swapWildernessLever;
-	private Keybind hotkeyMod;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -1108,7 +1111,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.addPriorityEntry("Last-destination", false);
 				break;
 		}
-		
+
 		switch (this.swapFairyTreeMode)
 		{
 			case OFF:
@@ -1227,9 +1230,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry(this.maxMode.toString(), "max cape");
 		}
+
 		if (this.swapQuestCape)
 		{
 			menuManager.addPriorityEntry(this.questCapeMode.toString(), "quest point cape");
+		}
+
+		if (this.swapHouseAd)
+		{
+			menuManager.addPriorityEntry(this.swapHouseAdMode.getEntry());
 		}
 	}
 
@@ -1274,115 +1283,116 @@ public class MenuEntrySwapperPlugin extends Plugin
 		Text.fromCSV(this.getSellFiveItems).forEach(item -> menuManager.removePriorityEntry("Sell 5", item));
 		Text.fromCSV(this.getSellTenItems).forEach(item -> menuManager.removePriorityEntry("Sell 10", item));
 		Text.fromCSV(this.getSellFiftyItems).forEach(item -> menuManager.removePriorityEntry("Sell 50", item));
-		menuManager.removePriorityEntry("Tan All");
-		menuManager.removePriorityEntry("Buy-plank", "Sawmill operator");
+		menuManager.removePriorityEntry("Activate", "Box trap");
+		menuManager.removePriorityEntry("Assignment");
+		menuManager.removePriorityEntry("Bank");
 		menuManager.removePriorityEntry("Buy All");
+		menuManager.removePriorityEntry("Buy-plank");
+		menuManager.removePriorityEntry("Buy-plank", "Sawmill operator");
+		menuManager.removePriorityEntry("Charter");
+		menuManager.removePriorityEntry("Chase");
+		menuManager.removePriorityEntry("Claim");
+		menuManager.removePriorityEntry("Claim-slime");
+		menuManager.removePriorityEntry("Contract");
+		menuManager.removePriorityEntry("Decant");
+		menuManager.removePriorityEntry("Dream");
+		menuManager.removePriorityEntry("Edgeville", "Lever");
+		menuManager.removePriorityEntry("Empty", "Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Magic Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Mahogany Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Maple Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Oak Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Redwood Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Teak Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Willow Birdhouse");
+		menuManager.removePriorityEntry("Empty", "Yew Birdhouse");
+		menuManager.removePriorityEntry("Enchant");
+		menuManager.removePriorityEntry("Escort");
+		menuManager.removePriorityEntry("Exchange");
+		menuManager.removePriorityEntry("Fill", "Coal bag");
+		menuManager.removePriorityEntry("Fly");
+		menuManager.removePriorityEntry("Follow", "Elkoy");
+		menuManager.removePriorityEntry("Guzzle", "Dwarven rock cake");
+		menuManager.removePriorityEntry("Harpoon");
+		menuManager.removePriorityEntry("Heal");
+		menuManager.removePriorityEntry("Help");
+		menuManager.removePriorityEntry("Jatizso");
 		menuManager.removePriorityEntry("Kandarin Monastery");
+		menuManager.removePriorityEntry("Lay", "Box trap");
+		menuManager.removePriorityEntry("Metamorphosis", "Baby chinchompa");
 		menuManager.removePriorityEntry("Monastery Teleport");
-		menuManager.removePriorityEntry("Teleport", "Crafting cape");
-		menuManager.removePriorityEntry("Teleport", "Crafting cape(t)");
-		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
-		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
+		menuManager.removePriorityEntry("Neitiznot");
+		menuManager.removePriorityEntry("Pay (", false);
+		menuManager.removePriorityEntry("Pay");
+		menuManager.removePriorityEntry("Pay-fare");
+		menuManager.removePriorityEntry("Pay-toll(10gp)", "Gate");
+		menuManager.removePriorityEntry("Pay-toll(2-ecto)", "Energy barrier");
+		menuManager.removePriorityEntry("Perks", "Mounted Max Cape");
+		menuManager.removePriorityEntry("Pick-lots");
+		menuManager.removePriorityEntry("Pickpocket");
+		menuManager.removePriorityEntry("Private");
+		menuManager.removePriorityEntry("Quick-enter");
+		menuManager.removePriorityEntry("Quick-leave");
+		menuManager.removePriorityEntry("Quick-open");
+		menuManager.removePriorityEntry("Quick-pass");
+		menuManager.removePriorityEntry("Quick-pay", "Hardwood grove doors");
+		menuManager.removePriorityEntry("Quick-start");
+		menuManager.removePriorityEntry("Quick-travel");
+		menuManager.removePriorityEntry("Rellekka");
+		menuManager.removePriorityEntry("Repairs");
+		menuManager.removePriorityEntry("Reset", "Shaking box");
+		menuManager.removePriorityEntry("Search for traps");
+		menuManager.removePriorityEntry("Search");
+		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
+		menuManager.removePriorityEntry("Shop");
 		menuManager.removePriorityEntry("Spellbook", "Magic cape");
 		menuManager.removePriorityEntry("Spellbook", "Magic cape(t)");
+		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape");
+		menuManager.removePriorityEntry("Start-minigame");
+		menuManager.removePriorityEntry("Story");
+		menuManager.removePriorityEntry("Stun", "Hoop snake");
+		menuManager.removePriorityEntry("Take-boat");
+		menuManager.removePriorityEntry("Tan All");
+		menuManager.removePriorityEntry("Teleport menu", "Portal nexus");
+		menuManager.removePriorityEntry("Teleport", "Crafting cape");
+		menuManager.removePriorityEntry("Teleport", "Crafting cape(t)");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 2");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
-		menuManager.removePriorityEntry("Pickpocket");
-		menuManager.removePriorityEntry("Send-parcel", "Rionasta");
-		menuManager.removePriorityEntry(new BankComparableEntry("collect", "", false));
-		menuManager.removePriorityEntry("Bank");
-		menuManager.removePriorityEntry("Exchange");
-		menuManager.removePriorityEntry("Contract");
-		menuManager.removePriorityEntry("Repairs");
-		menuManager.removePriorityEntry("Claim-slime");
-		menuManager.removePriorityEntry("Decant");
-		menuManager.removePriorityEntry("Claim");
-		menuManager.removePriorityEntry("Heal");
-		menuManager.removePriorityEntry("Help");
-		menuManager.removePriorityEntry("Assignment");
-		menuManager.removePriorityEntry("Buy-plank");
-		menuManager.removePriorityEntry("Trade");
-		menuManager.removePriorityEntry("Trade-with");
-		menuManager.removePriorityEntry("Shop");
-		menuManager.removePriorityEntry("Story");
-		menuManager.removePriorityEntry("Escort");
-		menuManager.removePriorityEntry("Dream");
-		menuManager.removePriorityEntry("Start-minigame");
-		menuManager.removePriorityEntry("Travel");
-		menuManager.removePriorityEntry("Pay-fare");
-		menuManager.removePriorityEntry("Charter");
-		menuManager.removePriorityEntry("Take-boat");
-		menuManager.removePriorityEntry("Fly");
-		menuManager.removePriorityEntry("Jatizso");
-		menuManager.removePriorityEntry("Neitiznot");
-		menuManager.removePriorityEntry("Rellekka");
-		menuManager.removePriorityEntry("Follow", "Elkoy");
-		menuManager.removePriorityEntry("Transport");
 		menuManager.removePriorityEntry("Teleport", "Mage of zamorak");
-		menuManager.removePriorityEntry("Pay");
-		menuManager.removePriorityEntry("Pay (", false);
-		menuManager.removePriorityEntry("Quick-travel");
-		menuManager.removePriorityEntry("Enchant");
-		menuManager.removePriorityEntry("Edgeville", "Lever");
-		menuManager.removePriorityEntry("Metamorphosis", "Baby chinchompa");
-		menuManager.removePriorityEntry("Stun", "Hoop snake");
-		menuManager.removePriorityEntry("Pay-toll(2-ecto)", "Energy barrier");
-		menuManager.removePriorityEntry("Pay-toll(10gp)", "Gate");
-		menuManager.removePriorityEntry("Travel", "Trapdoor");
-		menuManager.removePriorityEntry("Harpoon");
-		menuManager.removePriorityEntry("Reset", "Shaking box");
-		menuManager.removePriorityEntry("Lay", "Box trap");
-		menuManager.removePriorityEntry("Activate", "Box trap");
-		menuManager.removePriorityEntry("Chase");
-		menuManager.removePriorityEntry("Empty", "Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Oak Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Willow Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Teak Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Maple Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Mahogany Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Yew Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Magic Birdhouse");
-		menuManager.removePriorityEntry("Empty", "Redwood Birdhouse");
-		menuManager.removePriorityEntry("Quick-enter");
-		menuManager.removePriorityEntry("Quick-start");
-		menuManager.removePriorityEntry("Quick-pass");
-		menuManager.removePriorityEntry("Quick-open");
-		menuManager.removePriorityEntry("Quick-leave");
-		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Crafting Cape");
-		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape");
-		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape");
-		menuManager.removePriorityEntry("Perks", "Mounted Max Cape");
-		menuManager.removePriorityEntry("Private");
-		menuManager.removePriorityEntry("Pick-lots");
-		menuManager.removePriorityEntry("Search");
-		menuManager.removePriorityEntry("Search for traps");
-		menuManager.removePriorityEntry("Guzzle", "Dwarven rock cake");
-		menuManager.removePriorityEntry(new InventoryComparableEntry("Rub", "", false));
-		menuManager.removePriorityEntry(new InventoryComparableEntry("Teleport", "", false));
-		menuManager.removePriorityEntry("Fill", "Coal bag");
-		menuManager.removePriorityEntry(newBankComparableEntry("Empty", "Coal bag"));
-		menuManager.removePriorityEntry(new InventoryComparableEntry("Use", "bone", false));
-		menuManager.removePriorityEntry("Teleport menu", "Portal nexus");
-		menuManager.removePriorityEntry("Quick-pay", "Hardwood grove doors");
+		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape");
+		menuManager.removePriorityEntry("Trade");
+		menuManager.removePriorityEntry("Trade-with");
+		menuManager.removePriorityEntry("Transport");
+		menuManager.removePriorityEntry("Travel");
+		menuManager.removePriorityEntry("Travel", "Trapdoor");
+		menuManager.removePriorityEntry(new BankComparableEntry("collect", "", false));
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getBurningAmuletMode.toString(), "burning amulet"));
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getCombatBraceletMode.toString(), "combat bracelet"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGamesNecklaceMode.toString(), "games necklace"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDuelingRingMode.toString(), "ring of dueling"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGloryMode.toString(), "glory"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSkillsNecklaceMode.toString(), "skills necklace"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getNecklaceofPassageMode.toString(), "necklace of passage"));
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDigsitePendantMode.toString(), "digsite pendant"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getDuelingRingMode.toString(), "ring of dueling"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGamesNecklaceMode.toString(), "games necklace"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getGloryMode.toString(), "glory"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getNecklaceofPassageMode.toString(), "necklace of passage"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getRingofWealthMode.toString(), "ring of wealth"));
+		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSkillsNecklaceMode.toString(), "skills necklace"));
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getSlayerRingMode.toString(), "slayer ring"));
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getXericsTalismanMode.toString(), "talisman"));
-		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getRingofWealthMode.toString(), "ring of wealth"));
-		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
-		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
+		menuManager.removePriorityEntry(new InventoryComparableEntry("Rub", "", false));
+		menuManager.removePriorityEntry(new InventoryComparableEntry("Teleport", "", false));
+		menuManager.removePriorityEntry(new InventoryComparableEntry("Use", "bone", false));
+		menuManager.removePriorityEntry(newBankComparableEntry("Empty", "Coal bag"));
+		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
+		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
 		menuManager.removePriorityEntry(this.getConstructionMode.getBuild());
 		menuManager.removePriorityEntry(this.getConstructionMode.getRemove());
+		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
+		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
+		menuManager.removePriorityEntry(this.swapHouseAdMode.getEntry());
 
 		switch (this.swapFairyRingMode)
 		{
@@ -1398,7 +1408,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				menuManager.removePriorityEntry("Last-destination", false);
 				break;
 		}
-		
+
 		switch (this.swapFairyTreeMode)
 		{
 			case OFF:
@@ -1770,6 +1780,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapTrade = config.swapTrade();
 		this.swapTravel = config.swapTravel();
 		this.swapWildernessLever = config.swapWildernessLever();
+		this.swapHouseAd = config.swapHouseAd();
+		this.swapHouseAdMode = config.swapHouseAdMode();
 	}
 
 	/**
