@@ -35,8 +35,14 @@ public class WithdrawComparableEntry extends AbstractComparableEntry
 			return false;
 		}
 
-		if (amount == Amount.X && !option.endsWith(x)
-			|| !option.endsWith(amount.suffix))
+		if (amount == Amount.X)
+		{
+			if (!option.endsWith(x))
+			{
+				return false;
+			}
+		}
+		else if (!option.endsWith(amount.suffix))
 		{
 			return false;
 		}
