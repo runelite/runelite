@@ -529,7 +529,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		final int eventId = event.getIdentifier();
 		final String option = event.getOption().toLowerCase();
-		final String target = event.getMenuEntry().getStandardizedTarget();
+		final String target = Text.standardize(event.getTarget(), true);
 		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (this.getRemoveObjects && !this.getRemovedObjects.equals(""))
@@ -762,7 +762,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getSwapTanning)
 		{
-			menuManager.addPriorityEntry("Tan All");
+			menuManager.addPriorityEntry("Tan <col=ff7000>All");
 		}
 
 		if (this.getSwapSawmill)
@@ -773,7 +773,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.getSwapSawmillPlanks)
 		{
 			//Not much we can do for this one, Buy all is the only thing, there is no target.
-			menuManager.addPriorityEntry("Buy All").setPriority(10);
+			menuManager.addPriorityEntry("Buy <col=ff7000>All").setPriority(10);
 		}
 
 		if (this.getSwapArdougneCape)
