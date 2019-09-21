@@ -108,4 +108,15 @@ public interface BankConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showMostExpensiveItemsOverlay",
+			name = "Show most expensive items overlay",
+			description = "Show the most expensive items overlay, according to grand exchange price",
+			position = 7
+	)
+	default boolean showMostExpensiveItemsOverlay()
+	{
+		return false;
+	}
 }

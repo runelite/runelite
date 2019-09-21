@@ -84,4 +84,9 @@ public class ProjectileID
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
 	public static final int VORKATH_ICE = 350;
+
+	public static final int HUNLEFF_MAGE_ATTACK = 1707;
+	public static final int HUNLEFF_CORRUPTED_MAGE_ATTACK = 1708;
+	public static final int HUNLEFF_RANGE_ATTACK = 1711;
+	public static final int HUNLEFF_CORRUPTED_RANGE_ATTACK = 1712;
 }

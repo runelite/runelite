@@ -504,7 +504,12 @@ public enum Varbits
 	EXPLORER_RING_ALCHS(4554),
 	EXPLORER_RING_RUNENERGY(4553),
 
-	WINTERTODT_TIMER(7980);
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * 1 is true, 0 is false.
+	 */
+	GAUNTLET_FINAL_ROOM_ENTERED(9177);
 
 	/**
 	 * The raw varbit ID.

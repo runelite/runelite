@@ -8,3 +8,4 @@ project.properties
 .project
 .settings/
 .classpath
+/out/artifacts/runelite_parent_jar/runelite-parent.jar
