@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.musiclist;
+package net.runelite.client.plugins.music;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,10 +54,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Music List",
+	name = "Music",
 	description = "Adds search and filter for the music list"
 )
-public class MusicListPlugin extends Plugin
+public class MusicPlugin extends Plugin
 {
 	@Inject
 	private Client client;
