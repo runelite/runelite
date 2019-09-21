@@ -38,6 +38,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.menus.AbstractComparableEntry;
@@ -181,7 +182,7 @@ public class BlackjackPlugin extends Plugin
 		public boolean matches(MenuEntry entry)
 		{
 			return
-				entry.getStandardizedTarget().equals(this.getTarget()) &&
+				Text.removeTags(entry.getTarget(), true).equalsIgnoreCase(this.getTarget()) &&
 				entry.getOption().equalsIgnoreCase(this.getOption());
 		}
 	}

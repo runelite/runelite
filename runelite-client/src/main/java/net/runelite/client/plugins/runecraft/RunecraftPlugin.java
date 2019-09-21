@@ -59,8 +59,8 @@ import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.menuentryswapper.BankComparableEntry;
-import net.runelite.client.plugins.menuentryswapper.EquipmentComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.comparables.BankComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentComparableEntry;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
 import net.runelite.client.ui.overlay.OverlayManager;
 

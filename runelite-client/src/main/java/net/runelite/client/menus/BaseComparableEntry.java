@@ -42,7 +42,7 @@ public class BaseComparableEntry extends AbstractComparableEntry
 
 	public BaseComparableEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
 	{
-		super.option = Text.standardize(option);
+		super.option = option.trim().toLowerCase();
 		super.target = Text.standardize(target);
 		super.id = id;
 		super.type = type;
@@ -61,7 +61,7 @@ public class BaseComparableEntry extends AbstractComparableEntry
 
 		if (strictTarget || !Strings.isNullOrEmpty(target))
 		{
-			String tgt = entry.getStandardizedTarget();
+			String tgt = Text.standardize(entry.getTarget(), true);
 
 			if (strictTarget && !tgt.equals(target) || !strictTarget && !tgt.contains(target))
 			{

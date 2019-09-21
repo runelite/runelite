@@ -28,7 +28,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.runelite.api.util.Text;
 
 /**
  * A menu entry in a right-click menu.
@@ -83,7 +82,6 @@ public class MenuEntry
 		this.param0 = param0;
 		this.param1 = param1;
 		this.forceLeftClick = forceLeftClick;
-		this.standardizedTarget = Text.standardize(target, true);
 	}
 
 	public static MenuEntry copy(MenuEntry src)
@@ -102,8 +100,5 @@ public class MenuEntry
 	public void setTarget(String target)
 	{
 		this.target = target;
-		this.standardizedTarget = Text.standardize(target, true);
 	}
-
-	private String standardizedTarget;
 }
