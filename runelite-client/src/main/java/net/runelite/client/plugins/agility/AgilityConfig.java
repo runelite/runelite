@@ -163,4 +163,16 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "pyramidBlockTimer",
+		name = "Agility Pyramid Block Timer",
+		description = "Configure whether a timer for moving blocks on the Agility Pyramid is displayed",
+		position = 11
+	)
+	default boolean showPyramidBlockTimer()
+	{
+		return true;
+	}
+
 }
