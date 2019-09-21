@@ -139,7 +139,7 @@ public final class FloorDecoration {
 	@Export("Widget_runOnTargetLeave")
 	static void Widget_runOnTargetLeave() {
 		if (Client.isSpellSelected) {
-			Widget var0 = class49.getWidgetChild(class83.field1138, Client.field687);
+			Widget var0 = class49.getWidgetChild(class83.selectedSpellWidget, Client.selectedSpellChildIndex);
 			if (var0 != null && var0.onTargetLeave != null) {
 				ScriptEvent var1 = new ScriptEvent();
 				var1.widget = var0;

@@ -741,8 +741,9 @@ public final class Player extends Actor {
 		signature = "(IIIII)V",
 		garbageValue = "16777215"
 	)
-	static void method1196(int var0, int var1, int var2, int var3) {
-		Widget var4 = class49.getWidgetChild(var0, var1);
+	@Export("selectSpell")
+	static void selectSpell(int widgetId, int childId, int clickMaskId, int id) {
+		Widget var4 = class49.getWidgetChild(widgetId, childId);
 		if (var4 != null && var4.onTargetEnter != null) {
 			ScriptEvent var5 = new ScriptEvent();
 			var5.widget = var4;
@@ -750,11 +751,11 @@ public final class Player extends Actor {
 			SecureRandomFuture.runScriptEvent(var5);
 		}
 
-		Client.field648 = var3;
+		Client.field648 = id;
 		Client.isSpellSelected = true;
-		class83.field1138 = var0;
-		Client.field687 = var1;
-		BuddyRankComparator.selectedSpellFlags = var2;
+		class83.selectedSpellWidget = widgetId;
+		Client.selectedSpellChildIndex = childId;
+		BuddyRankComparator.selectedSpellFlags = clickMaskId;
 		WorldMapID.invalidateWidget(var4);
 	}
 }

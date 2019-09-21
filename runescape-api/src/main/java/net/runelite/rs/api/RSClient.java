@@ -1016,6 +1016,10 @@ public interface RSClient extends RSGameShell, Client
 	@Import("selectedSpellName")
 	String getSelectedSpellName();
 
+	@Import("selectedSpellName")
+	@Override
+	void setSelectedSpellName(String name);
+
 	@Import("isSpellSelected")
 	boolean isSpellSelected();
 
@@ -1054,4 +1058,32 @@ public interface RSClient extends RSGameShell, Client
 	@Import("insertMenuItem")
 	@Override
 	void insertMenuItem(String action, String target, int opcode, int identifier, int argument1, int argument2, boolean forceLeftClick);
+
+	@Import("selectedItemId")
+	@Override
+	void setSelectedItemID(int id);
+
+	@Import("selectedItemSlot")
+	@Override
+	void setSelectedItemSlot(int index);
+
+	@Import("selectedItemWidget")
+	@Override
+	void setSelectedItemWidget(int widgetID);
+
+	@Import("selectedSpellWidget")
+	@Override
+	int getSelectedSpellWidget();
+
+	@Import("selectedSpellChildIndex")
+	@Override
+	int getSelectedSpellChildIndex();
+
+	@Import("selectedSpellWidget")
+	@Override
+	void setSelectedSpellWidget(int widgetID);
+
+	@Import("selectedSpellChildIndex")
+	@Override
+	void setSelectedSpellChildIndex(int index);
 }

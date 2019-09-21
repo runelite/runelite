@@ -323,11 +323,11 @@ public class EnumDefinition extends DualNode {
 			Client.destinationX = var0;
 			Client.destinationY = var1;
 			var8 = MenuAction.getPacketBufferNode(ClientPacket.field2196, Client.packetWriter.isaacCipher);
-			var8.packetBuffer.writeIntLE16(class83.field1138);
+			var8.packetBuffer.writeIntLE16(class83.selectedSpellWidget);
 			var8.packetBuffer.writeShort(var3);
 			var8.packetBuffer.method5500(ScriptEvent.baseY + var1);
 			var8.packetBuffer.method5566(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
-			var8.packetBuffer.writeIntME(Client.field687);
+			var8.packetBuffer.writeIntME(Client.selectedSpellChildIndex);
 			var8.packetBuffer.writeIntME(class4.baseX * 64 + var0);
 			Client.packetWriter.addNode(var8);
 		} else if (var2 == 3) {
@@ -412,8 +412,8 @@ public class EnumDefinition extends DualNode {
 					Client.destinationX = var0;
 					Client.destinationY = var1;
 					var9 = MenuAction.getPacketBufferNode(ClientPacket.field2280, Client.packetWriter.isaacCipher);
-					var9.packetBuffer.method5502(Client.field687);
-					var9.packetBuffer.writeIntLE16(class83.field1138);
+					var9.packetBuffer.method5502(Client.selectedSpellChildIndex);
+					var9.packetBuffer.writeIntLE16(class83.selectedSpellWidget);
 					var9.packetBuffer.method5500(var3);
 					var9.packetBuffer.method5493(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					Client.packetWriter.addNode(var9);
@@ -517,9 +517,9 @@ public class EnumDefinition extends DualNode {
 						Client.destinationX = var0;
 						Client.destinationY = var1;
 						var9 = MenuAction.getPacketBufferNode(ClientPacket.field2194, Client.packetWriter.isaacCipher);
-						var9.packetBuffer.writeIntLE(class83.field1138);
+						var9.packetBuffer.writeIntLE(class83.selectedSpellWidget);
 						var9.packetBuffer.writeShort(var3);
-						var9.packetBuffer.method5500(Client.field687);
+						var9.packetBuffer.method5500(Client.selectedSpellChildIndex);
 						var9.packetBuffer.method5566(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 						Client.packetWriter.addNode(var9);
 					}
@@ -547,8 +547,8 @@ public class EnumDefinition extends DualNode {
 					Client.destinationX = var0;
 					Client.destinationY = var1;
 					var8 = MenuAction.getPacketBufferNode(ClientPacket.field2233, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeIntLE(class83.field1138);
-					var8.packetBuffer.writeShort(Client.field687);
+					var8.packetBuffer.writeIntLE(class83.selectedSpellWidget);
+					var8.packetBuffer.writeShort(Client.selectedSpellChildIndex);
 					var8.packetBuffer.method5500(ScriptEvent.baseY + var1);
 					var8.packetBuffer.method5500(var3);
 					var8.packetBuffer.method5500(class4.baseX * 64 + var0);
@@ -645,7 +645,7 @@ public class EnumDefinition extends DualNode {
 							var16 = class49.getWidgetChild(var1, var0);
 							if (var16 != null) {
 								FloorDecoration.Widget_runOnTargetLeave();
-								Player.method1196(var1, var0, WorldMapElement.method4390(class60.getWidgetClickMask(var16)), var16.itemId);
+								Player.selectSpell(var1, var0, WorldMapElement.method4390(class60.getWidgetClickMask(var16)), var16.itemId);
 								Client.isItemSelected = 0;
 								Client.selectedSpellActionName = class16.method165(var16);
 								if (Client.selectedSpellActionName == null) {
@@ -709,11 +709,11 @@ public class EnumDefinition extends DualNode {
 								Client.field728 = var0;
 							} else if (var2 == 32) {
 								var8 = MenuAction.getPacketBufferNode(ClientPacket.field2219, Client.packetWriter.isaacCipher);
-								var8.packetBuffer.writeShort(Client.field687);
+								var8.packetBuffer.writeShort(Client.selectedSpellChildIndex);
 								var8.packetBuffer.method5500(var0);
 								var8.packetBuffer.writeShortLE(var1);
 								var8.packetBuffer.method5500(var3);
-								var8.packetBuffer.writeIntLE16(class83.field1138);
+								var8.packetBuffer.writeIntLE16(class83.selectedSpellWidget);
 								Client.packetWriter.addNode(var8);
 								Client.field727 = 0;
 								Entity.field1835 = Player.getWidget(var1);
@@ -944,8 +944,8 @@ public class EnumDefinition extends DualNode {
 												var16 = class49.getWidgetChild(var1, var0);
 												if (var16 != null) {
 													var9 = MenuAction.getPacketBufferNode(ClientPacket.field2229, Client.packetWriter.isaacCipher);
-													var9.packetBuffer.writeShortLE(class83.field1138);
-													var9.packetBuffer.writeIntME(Client.field687);
+													var9.packetBuffer.writeShortLE(class83.selectedSpellWidget);
+													var9.packetBuffer.writeIntME(Client.selectedSpellChildIndex);
 													var9.packetBuffer.writeIntLE(var1);
 													var9.packetBuffer.writeShort(var0);
 													var9.packetBuffer.writeIntME(Client.field648);

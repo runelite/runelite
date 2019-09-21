@@ -20,7 +20,8 @@ public class class83 {
 	@ObfuscatedGetter(
 		intValue = 670190247
 	)
-	static int field1138;
+	@Export("selectedSpellWidget")
+	static int selectedSpellWidget;
 
 	static {
 		field1142 = new BigInteger("10001", 16);

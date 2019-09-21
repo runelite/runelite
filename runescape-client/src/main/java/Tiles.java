@@ -360,7 +360,7 @@ public final class Tiles {
 										TileItem.method2093(var20 + 1, var9.id, var9.childIndex, var9.itemId, "");
 									} else if (var20 == 10) {
 										FloorDecoration.Widget_runOnTargetLeave();
-										Player.method1196(var9.id, var9.childIndex, WorldMapElement.method4390(class60.getWidgetClickMask(var9)), var9.itemId);
+										Player.selectSpell(var9.id, var9.childIndex, WorldMapElement.method4390(class60.getWidgetClickMask(var9)), var9.itemId);
 										Client.selectedSpellActionName = class16.method165(var9);
 										if (Client.selectedSpellActionName == null) {
 											Client.selectedSpellActionName = "null";

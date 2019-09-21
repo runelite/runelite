@@ -116,10 +116,10 @@ public interface Client extends GameShell
 	/**
 	 * Adds a new chat message to the chatbox.
 	 *
-	 * @param type the type of message
-	 * @param name the name of the player that sent the message
+	 * @param type    the type of message
+	 * @param name    the name of the player that sent the message
 	 * @param message the message contents
-	 * @param sender the sender/channel name
+	 * @param sender  the sender/channel name
 	 */
 	void addChatMessage(ChatMessageType type, String name, String message, String sender);
 
@@ -358,13 +358,13 @@ public interface Client extends GameShell
 	/**
 	 * Creates an item icon sprite with passed variables.
 	 *
-	 * @param itemId the item ID
-	 * @param quantity the item quantity
-	 * @param border whether to draw a border
+	 * @param itemId      the item ID
+	 * @param quantity    the item quantity
+	 * @param border      whether to draw a border
 	 * @param shadowColor the shadow color
-	 * @param stackable whether the item is stackable
-	 * @param noted whether the item is noted
-	 * @param scale the scale of the sprite
+	 * @param stackable   whether the item is stackable
+	 * @param noted       whether the item is noted
+	 * @param scale       the scale of the sprite
 	 * @return the created sprite
 	 */
 	@Nullable
@@ -373,9 +373,9 @@ public interface Client extends GameShell
 	/**
 	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
-	 * @param source the sprite index
+	 * @param source    the sprite index
 	 * @param archiveId the sprites archive ID
-	 * @param fileId the sprites file ID
+	 * @param fileId    the sprites file ID
 	 * @return the sprite image of the file
 	 */
 	@Nullable
@@ -504,6 +504,7 @@ public interface Client extends GameShell
 
 	/**
 	 * Creates a new widget element
+	 *
 	 * @return
 	 */
 	Widget createWidget();
@@ -633,6 +634,7 @@ public interface Client extends GameShell
 	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
 	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	 * }</pre>
+	 *
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates
@@ -711,14 +713,14 @@ public interface Client extends GameShell
 	 * Sets the value of a given variable.
 	 *
 	 * @param varbit the variable
-	 * @param value the new value
+	 * @param value  the new value
 	 */
 	void setVarbit(Varbits varbit, int value);
 
 	/**
 	 * Gets the value of a given variable.
 	 *
-	 * @param varps passed varbits
+	 * @param varps    passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
 	 * @see Varbits
@@ -728,7 +730,7 @@ public interface Client extends GameShell
 	/**
 	 * Gets the value of a given VarPlayer.
 	 *
-	 * @param varps passed varps
+	 * @param varps  passed varps
 	 * @param varpId the VarpPlayer id
 	 * @return the value
 	 * @see VarPlayer#id
@@ -738,9 +740,9 @@ public interface Client extends GameShell
 	/**
 	 * Sets the value of a given VarPlayer.
 	 *
-	 * @param varps passed varps
+	 * @param varps  passed varps
 	 * @param varpId the VarpPlayer id
-	 * @param value the value
+	 * @param value  the value
 	 * @see VarPlayer#id
 	 */
 	void setVarpValue(int[] varps, int varpId, int value);
@@ -748,9 +750,9 @@ public interface Client extends GameShell
 	/**
 	 * Sets the value of a given variable.
 	 *
-	 * @param varps passed varbits
+	 * @param varps  passed varbits
 	 * @param varbit the variable
-	 * @param value the value
+	 * @param value  the value
 	 * @see Varbits
 	 */
 	void setVarbitValue(int[] varps, int varbit, int value);
@@ -922,7 +924,7 @@ public interface Client extends GameShell
 	 * pixels.
 	 *
 	 * @param pixels the pixels
-	 * @param width the width
+	 * @param width  the width
 	 * @param height the height
 	 * @return the sprite image
 	 */
@@ -956,31 +958,31 @@ public interface Client extends GameShell
 	 * normally played.
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 *           {@link SoundEffectID} for some common ones
 	 */
 	void playSoundEffect(int id);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
-	 * @param x the ground coordinate on the x axis
-	 * @param y the ground coordinate on the y axis
+	 * @param id    the ID of the sound to play. Any int is allowed, but see
+	 *              {@link SoundEffectID} for some common ones
+	 * @param x     the ground coordinate on the x axis
+	 * @param y     the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 *              from
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
-	 * @param x the ground coordinate on the x axis
-	 * @param y the ground coordinate on the y axis
+	 * @param id    the ID of the sound to play. Any int is allowed, but see
+	 *              {@link SoundEffectID} for some common ones
+	 * @param x     the ground coordinate on the x axis
+	 * @param y     the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 *              from
 	 * @param delay the amount of frames before the sound starts playing
 	 */
 	void playSoundEffect(int id, int x, int y, int range, int delay);
@@ -1078,7 +1080,7 @@ public interface Client extends GameShell
 	/**
 	 * Checks whether a player is on the friends list.
 	 *
-	 * @param name the name of the player
+	 * @param name           the name of the player
 	 * @param mustBeLoggedIn if they player is online
 	 * @return true if the player is friends
 	 */
@@ -1261,7 +1263,7 @@ public interface Client extends GameShell
 
 	/**
 	 * Executes a client script from the cache
-	 *
+	 * <p>
 	 * This method must be ran on the client thread and is not reentrant
 	 *
 	 * @param args the script id, then any additional arguments to execute the script with
@@ -1651,6 +1653,7 @@ public interface Client extends GameShell
 
 	/**
 	 * Hops using in-game world hopper widget to another world
+	 *
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
@@ -1670,11 +1673,15 @@ public interface Client extends GameShell
 	void setGpu(boolean gpu);
 
 	int get3dZoom();
+
 	int getCenterX();
+
 	int getCenterY();
 
 	int getCameraX2();
+
 	int getCameraY2();
+
 	int getCameraZ2();
 
 	TextureProvider getTextureProvider();
@@ -1684,8 +1691,11 @@ public interface Client extends GameShell
 	void setRenderArea(boolean[][] renderArea);
 
 	int getRasterizer3D_clipMidX2();
+
 	int getRasterizer3D_clipNegativeMidX();
+
 	int getRasterizer3D_clipNegativeMidY();
+
 	int getRasterizer3D_clipMidY2();
 
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
@@ -1726,15 +1736,14 @@ public interface Client extends GameShell
 	void setRenderSelf(boolean enabled);
 
 	/**
-	 *
-	 * @param param0 This is SceneX for gameObject, index for items, and 0 for npc.
-	 * @param param1 This is SceneY for gameObject, static for items, and 0 for npc.
-	 * @param type Menu entry Action opcode.
-	 * @param id Targets ID
-	 * @param menuEntry Do these actually matter?
+	 * @param param0       This is SceneX for gameObject, index for items, and 0 for npc.
+	 * @param param1       This is SceneY for gameObject, static for items, and 0 for npc.
+	 * @param type         Menu entry Action opcode.
+	 * @param id           Targets ID
+	 * @param menuEntry    Do these actually matter?
 	 * @param targetString Do these actually matter?
-	 * @param canvasX Canvas X Point
-	 * @param canvasY Canvas Y Point
+	 * @param canvasX      Canvas X Point
+	 * @param canvasY      Canvas Y Point
 	 */
 	void invokeMenuAction(int param0, int param1, int type, int id, String menuEntry, String targetString, int canvasX, int canvasY);
 
@@ -1743,6 +1752,8 @@ public interface Client extends GameShell
 	void setPrintMenuActions(boolean b);
 
 	String getSelectedSpellName();
+
+	void setSelectedSpellName(String name);
 
 	boolean isSpellSelected();
 
@@ -1794,4 +1805,18 @@ public interface Client extends GameShell
 	 * Adds a MenuEntry to the current menu.
 	 */
 	void insertMenuItem(String action, String target, int opcode, int identifier, int argument1, int argument2, boolean forceLeftClick);
+
+	void setSelectedItemID(int id);
+
+	void setSelectedItemWidget(int widgetID);
+
+	void setSelectedItemSlot(int idx);
+
+	int getSelectedSpellWidget();
+
+	int getSelectedSpellChildIndex();
+
+	void setSelectedSpellWidget(int widgetID);
+
+	void setSelectedSpellChildIndex(int index);
 }
