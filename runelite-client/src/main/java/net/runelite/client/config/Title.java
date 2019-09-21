@@ -1,5 +1,5 @@
 package net.runelite.client.config;
 
-public class Stub
+public class Title
 {
 }

@@ -30,19 +30,109 @@ import net.runelite.api.ClanMemberRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
 {
 	EnumSet<PlayerIndicationLocation> defaultPlayerIndicatorMode = EnumSet.complementOf(EnumSet.of(PlayerIndicationLocation.HULL));
 
+	@ConfigSection(
+		name = "Yourself",
+		description = "",
+		position = 0,
+		keyName = "yourselfSection"
+	)
+	default boolean yourselfSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Friends",
+		description = "",
+		position = 1,
+		keyName = "friendsSection"
+	)
+	default boolean friendsSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Clan",
+		description = "",
+		position = 2,
+		keyName = "clanSection"
+	)
+	default boolean clanSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Team",
+		description = "",
+		position = 3,
+		keyName = "teamSection"
+	)
+	default boolean teamSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Target",
+		description = "",
+		position = 4,
+		keyName = "targetSection"
+	)
+	default boolean targetSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Other",
+		description = "",
+		position = 5,
+		keyName = "otherSection"
+	)
+	default boolean otherSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Callers",
+		description = "",
+		position = 6,
+		keyName = "callersSection"
+	)
+	default boolean callersSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Miscellaneous",
+		description = "",
+		position = 7,
+		keyName = "miscellaneousSection"
+	)
+	default boolean miscellaneousSection()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "drawOwnName",
 		name = "Highlight own player",
 		description = "Configures whether or not your own player should be highlighted",
-		group = "Yourself"
+		section = "yourselfSection"
 	)
 	default boolean highlightOwnPlayer()
 	{
@@ -54,7 +144,7 @@ public interface PlayerIndicatorsConfig extends Config
 		keyName = "ownNameColor",
 		name = "Own player color",
 		description = "Color of your own player",
-		group = "Yourself"
+		section = "yourselfSection"
 	)
 	default Color getOwnPlayerColor()
 	{
@@ -66,7 +156,7 @@ public interface PlayerIndicatorsConfig extends Config
 		keyName = "selfIndicatorModes",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Yourself",
+		section = "yourselfSection",
 		enumClass = PlayerIndicationLocation.class
 	)
 	default EnumSet<PlayerIndicationLocation> selfIndicatorModes()
@@ -75,11 +165,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 0,
 		keyName = "drawFriendNames",
 		name = "Highlight friends",
 		description = "Configures whether or not friends should be highlighted",
-		group = "Friends"
+		section = "friendsSection"
 	)
 	default boolean highlightFriends()
 	{
@@ -87,11 +177,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 1,
 		keyName = "friendNameColor",
 		name = "Friend color",
 		description = "Color of friend names",
-		group = "Friends"
+		section = "friendsSection"
 	)
 	default Color getFriendColor()
 	{
@@ -99,11 +189,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 2,
 		keyName = "friendIndicatorMode",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Friends",
+		section = "friendsSection",
 		enumClass = PlayerIndicationLocation.class
 
 	)
@@ -113,11 +203,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 0,
 		keyName = "highlightClan",
 		name = "Highlight clan members",
 		description = "Configures whether or clan members should be highlighted",
-		group = "Clan"
+		section = "clanSection"
 	)
 	default boolean highlightClan()
 	{
@@ -125,11 +215,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 1,
 		keyName = "clanMemberColor",
 		name = "Clan member color",
 		description = "Color of clan members",
-		group = "Clan"
+		section = "clanSection"
 	)
 	default Color getClanColor()
 	{
@@ -137,11 +227,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 2,
 		keyName = "clanIndicatorModes",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Clan",
+		section = "clanSection",
 		enumClass = PlayerIndicationLocation.class
 
 	)
@@ -151,11 +241,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 3,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names",
-		group = "Clan"
+		section = "clanSection"
 	)
 	default boolean showClanRanks()
 	{
@@ -163,11 +253,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 0,
 		keyName = "drawTeamMemberNames",
 		name = "Highlight team members",
 		description = "Configures whether or not team members should be highlighted",
-		group = "Team"
+		section = "teamSection"
 	)
 	default boolean highlightTeamMembers()
 	{
@@ -175,11 +265,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 1,
 		keyName = "teamMemberColor",
 		name = "Team member color",
 		description = "Color of team members",
-		group = "Team"
+		section = "teamSection"
 	)
 	default Color getTeamcolor()
 	{
@@ -187,11 +277,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 2,
 		keyName = "teamIndicatorModes",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Team",
+		section = "teamSection",
 		enumClass = PlayerIndicationLocation.class
 
 	)
@@ -201,11 +291,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 0,
 		keyName = "drawTargetsNames",
 		name = "Highlight attackable targets",
 		description = "Configures whether or not attackable targets should be highlighted",
-		group = "Target"
+		section = "targetSection"
 	)
 	default boolean highlightTargets()
 	{
@@ -213,11 +303,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 1,
 		keyName = "targetColor",
 		name = "Target member color",
 		description = "Color of attackable targets",
-		group = "Target"
+		section = "targetSection"
 	)
 	default Color getTargetsColor()
 	{
@@ -225,11 +315,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 2,
 		keyName = "targetsIndicatorModes",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Target",
+		section = "targetSection",
 		enumClass = PlayerIndicationLocation.class
 
 	)
@@ -239,11 +329,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 3,
 		keyName = "showAgility",
 		name = "Show Agility Levels",
 		description = "Show the agility level of attackable players next to their name while in the wilderness.",
-		group = "Target"
+		section = "targetSection"
 	)
 	default boolean showAgilityLevel()
 	{
@@ -251,11 +341,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 4,
 		keyName = "agilityFormat",
 		name = "Format",
 		description = "Whether to show the agility level as text, or as icons (1 skull >= 1st threshold, 2 skulls >= 2nd threshold).",
-		group = "Target"
+		section = "targetSection"
 	)
 	default PlayerIndicatorsPlugin.AgilityFormats agilityFormat()
 	{
@@ -263,11 +353,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 5,
 		keyName = "agilityFirstThreshold",
 		name = "First Threshold",
 		description = "When showing agility as icons, show one icon for agility >= this level.",
-		group = "Target"
+		section = "targetSection"
 	)
 	default int agilityFirstThreshold()
 	{
@@ -275,11 +365,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 6,
 		keyName = "agilitySecondThreshold",
 		name = "Second Threshold",
 		description = "When showing agility as icons, show two icons for agility >= this level.",
-		group = "Target"
+		section = "targetSection"
 	)
 	default int agilitySecondThreshold()
 	{
@@ -287,11 +377,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 7,
 		keyName = "playerSkull",
 		name = "Show Skull Information",
 		description = "shows",
-		group = "Target"
+		section = "targetSection"
 	)
 	default boolean playerSkull()
 	{
@@ -299,11 +389,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 8,
 		keyName = "minimapSkullLocation",
 		name = "Skull Icon Location",
 		description = "The location of the skull icon for skulled players",
-		group = "Target"
+		section = "targetSection"
 	)
 	default PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation()
 	{
@@ -311,11 +401,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 22,
+		position = 9,
 		keyName = "targetRisk",
 		name = "Indicate Target Risk",
 		description = "Indicates the risk (in K GP) of the target",
-		group = "Target"
+		section = "targetSection"
 	)
 	default boolean targetRisk()
 	{
@@ -323,11 +413,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
+		position = 10,
 		keyName = "showCombat",
 		name = "Show Combat Levels",
 		description = "Show the combat level of attackable players next to their name.",
-		group = "Target"
+		section = "targetSection"
 	)
 	default boolean showCombatLevel()
 	{
@@ -335,11 +425,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
+		position = 0,
 		keyName = "drawOtherPlayerNames",
 		name = "Highlight other players",
 		description = "Configures whether or not other players should be highlighted",
-		group = "Other"
+		section = "otherSection"
 	)
 	default boolean highlightOtherPlayers()
 	{
@@ -347,11 +437,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 25,
+		position = 1,
 		keyName = "otherPlayerColor",
 		name = "Other player color",
 		description = "Color of other players' names",
-		group = "Other"
+		section = "otherSection"
 	)
 	default Color getOtherColor()
 	{
@@ -359,11 +449,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 26,
+		position = 2,
 		keyName = "otherIndicatorModes",
 		name = "Indicator Mode",
 		description = "Location(s) of the overlay",
-		group = "Other",
+		section = "otherSection",
 		enumClass = PlayerIndicationLocation.class
 
 	)
@@ -372,38 +462,25 @@ public interface PlayerIndicatorsConfig extends Config
 		return defaultPlayerIndicatorMode;
 	}
 
-
-	@ConfigItem(
-		position = 11,
-		keyName = "playerNamePosition",
-		name = "Name position",
-		description = "Configures the position of drawn player names, or if they should be disabled",
-		parent = "Other Settings"
-	)
-	default PlayerNameLocation playerNamePosition()
-	{
-		return PlayerNameLocation.ABOVE_HEAD;
-	}
-
-	@ConfigItem(
-		position = 5,
+	@ConfigTitleSection(
 		keyName = "callerConfiguration",
+		position = 0,
 		name = "Caller Configuration",
 		description = "",
-		group = "Callers"
+		section = "callersSection"
 	)
-	default Stub callerConfiguration()
+	default Title callerConfiguration()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
-		position = 30,
+		position = 1,
 		keyName = "highlightCallers",
 		name = "Highlight Callers",
 		description = "Highlights Callers Onscreen",
-		group = "Callers",
-		parent = "callerConfiguration"
+		section = "callersSection",
+		titleSection = "callerConfiguration"
 	)
 	default boolean highlightCallers()
 	{
@@ -411,12 +488,12 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 31,
+		position = 2,
 		keyName = "useClanchatRanks",
 		name = "Use Ranks as Callers",
 		description = "Uses clanchat ranks as the list of callers",
-		group = "Callers",
-		parent = "callerConfiguration"
+		section = "callersSection",
+		titleSection = "callerConfiguration"
 	)
 	default boolean useClanchatRanks()
 	{
@@ -424,12 +501,12 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 32,
+		position = 3,
 		keyName = "callerRank",
 		name = "Minimum rank for Clan Caller",
 		description = "Chooses the minimum rank to use as clanchat callers.",
-		group = "Callers",
-		parent = "callerConfiguration"
+		section = "callersSection",
+		titleSection = "callerConfiguration"
 	)
 	default ClanMemberRank callerRank()
 	{
@@ -437,38 +514,38 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 33,
+		position = 4,
 		keyName = "callers",
 		name = "List of callers to highlight",
 		description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
 			" in the order you want them highlighted.",
-		group = "Callers",
-		parent = "callerConfiguration"
+		section = "callersSection",
+		titleSection = "callerConfiguration"
 	)
 	default String callers()
 	{
 		return " ";
 	}
 
-	@ConfigItem(
-		position = 5,
+	@ConfigTitleSection(
 		keyName = "callerIndicators",
+		position = 5,
 		name = "Caller Indicators",
 		description = "",
-		group = "Callers"
+		section = "callersSection"
 	)
-	default Stub callerIndicators()
+	default Title callerIndicators()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
-		position = 31,
+		position = 6,
 		keyName = "callerColor",
 		name = "Caller Color",
 		description = "Color of Indicated Callers",
-		group = "Callers",
-		parent = "callerIndicators"
+		section = "callersSection",
+		titleSection = "callerIndicators"
 	)
 	default Color callerColor()
 	{
@@ -476,12 +553,12 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 32,
+		position = 7,
 		keyName = "callerHighlightOptions",
 		name = "Caller indication methods",
 		description = "Location(s) of the overlay",
-		group = "Callers",
-		parent = "callerIndicators",
+		section = "callersSection",
+		titleSection = "callerIndicators",
 		enumClass = PlayerIndicationLocation.class
 	)
 	default EnumSet<PlayerIndicationLocation> callerHighlightOptions()
@@ -489,25 +566,25 @@ public interface PlayerIndicatorsConfig extends Config
 		return defaultPlayerIndicatorMode;
 	}
 
-	@ConfigItem(
-		position = 5,
+	@ConfigTitleSection(
 		keyName = "callerTargetIndicators",
+		position = 8,
 		name = "Caller Target Indicators",
 		description = "",
-		group = "Callers"
+		section = "callersSection"
 	)
-	default Stub callerTargetIndicators()
+	default Title callerTargetIndicators()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
-		position = 33,
+		position = 9,
 		keyName = "callersTargets",
 		name = "Calllers' targets",
 		description = "Highlights the targets of callers",
-		group = "Callers",
-		parent = "callerTargetIndicators"
+		section = "callersSection",
+		titleSection = "callerTargetIndicators"
 	)
 	default boolean callersTargets()
 	{
@@ -515,12 +592,12 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 34,
+		position = 10,
 		keyName = "callerTargetColor",
 		name = "Callers' targets color",
 		description = "Color of the the targets of callers",
-		group = "Callers",
-		parent = "callerTargetIndicators"
+		section = "callersSection",
+		titleSection = "callerTargetIndicators"
 	)
 	default Color callerTargetColor()
 	{
@@ -528,12 +605,12 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 35,
+		position = 11,
 		keyName = "callerTargetHighlightOptions",
 		name = "Pile indication methods",
 		description = "How to highlight the callers' target",
-		group = "Callers",
-		parent = "callerTargetIndicators",
+		section = "callersSection",
+		titleSection = "callerTargetIndicators",
 		enumClass = PlayerIndicationLocation.class
 	)
 	default EnumSet<PlayerIndicationLocation> callerTargetHighlightOptions()
@@ -541,13 +618,12 @@ public interface PlayerIndicatorsConfig extends Config
 		return defaultPlayerIndicatorMode;
 	}
 
-
 	@ConfigItem(
-		position = 36,
+		position = 0,
 		keyName = "unchargedGlory",
 		name = "Uncharged Glory Indication",
-		description = "Indicates if players have an uncharged glory",
-		parent = "Other Settings"
+		description = "Indicates if players have an uncharged glory (this only works if the above head indicator is selected)",
+		section = "miscellaneousSection"
 	)
 	default boolean unchargedGlory()
 	{

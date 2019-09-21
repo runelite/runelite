@@ -27,21 +27,22 @@ package net.runelite.client.plugins.freezetimers;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("freezetimers")
 public interface FreezeTimersConfig extends Config
 {
-	@ConfigItem(
-		keyName = "timersStub",
+	@ConfigTitleSection(
+		keyName = "timersTitle",
 		name = "Timers",
 		description = "",
 		position = 1
 	)
-	default Stub timersStub()
+	default Title timersTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -49,7 +50,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Show Players",
 		description = "Configure if the player overlay should be shown",
 		position = 2,
-		parent = "timersStub"
+		titleSection = "timersTitle"
 	)
 	default boolean showPlayers()
 	{
@@ -61,7 +62,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Show NPCs",
 		description = "Configure if the npc overlay should be shown",
 		position = 3,
-		parent = "timersStub"
+		titleSection = "timersTitle"
 	)
 	default boolean showNpcs()
 	{
@@ -73,7 +74,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Show Freeze Timers",
 		description = "Toggle overlay for Freeze timers",
 		position = 4,
-		parent = "timersStub"
+		titleSection = "timersTitle"
 	)
 	default boolean FreezeTimers()
 	{
@@ -85,7 +86,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Show TB Timers",
 		description = "Toggle overlay for TB timers",
 		position = 5,
-		parent = "timersStub"
+		titleSection = "timersTitle"
 	)
 	default boolean TB()
 	{
@@ -97,22 +98,22 @@ public interface FreezeTimersConfig extends Config
 		name = "Show Veng Timers",
 		description = "Toggle overlay for Veng timers",
 		position = 6,
-		parent = "timersStub"
+		titleSection = "timersTitle"
 	)
 	default boolean Veng()
 	{
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "overlayStub",
+	@ConfigTitleSection(
+		keyName = "overlayTitle",
 		name = "Overlay",
 		description = "",
 		position = 7
 	)
-	default Stub overlayStub()
+	default Title overlayTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -120,7 +121,7 @@ public interface FreezeTimersConfig extends Config
 		name = "X Offset",
 		description = "Increasing this will push further away from model. Does not apply to text timers.",
 		position = 8,
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default int offset()
 	{
@@ -132,7 +133,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Text Timers",
 		description = "Remove Images from Timers",
 		position = 9,
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default boolean noImage()
 	{
@@ -144,7 +145,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Font Style",
 		description = "Bold/Italics/Plain",
 		position = 10,
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default FontStyle fontStyle()
 	{
@@ -160,7 +161,7 @@ public interface FreezeTimersConfig extends Config
 		name = "Text Size",
 		description = "Text Size for Timers.",
 		position = 11,
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default int textSize()
 	{

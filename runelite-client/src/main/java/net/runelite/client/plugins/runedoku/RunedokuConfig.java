@@ -28,21 +28,22 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("runedoku")
 public interface RunedokuConfig extends Config
 {
 
-	@ConfigItem(
+	@ConfigTitleSection(
+		keyName = "colorTitle",
 		position = 0,
-		keyName = "colorStub",
 		name = "Colors",
 		description = "" //stubs don't show descriptions when hovered over
 	)
-	default Stub colorStub()
+	default Title colorTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -50,7 +51,7 @@ public interface RunedokuConfig extends Config
 		keyName = "mindRuneColor",
 		name = "Mind Rune Color",
 		description = "Color used to highlight Mind runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color mindRuneColor()
 	{
@@ -62,7 +63,7 @@ public interface RunedokuConfig extends Config
 		keyName = "fireRuneColor",
 		name = "Fire Rune Color",
 		description = "Color used to highlight Fire runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color fireRuneColor()
 	{
@@ -74,7 +75,7 @@ public interface RunedokuConfig extends Config
 		keyName = "bodyRuneColor",
 		name = "Body Rune Color",
 		description = "Color used to highlight Body runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color bodyRuneColor()
 	{
@@ -86,7 +87,7 @@ public interface RunedokuConfig extends Config
 		keyName = "airRuneColor",
 		name = "Air Rune Color",
 		description = "Color used to highlight Air runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color airRuneColor()
 	{
@@ -98,7 +99,7 @@ public interface RunedokuConfig extends Config
 		keyName = "deathRuneColor",
 		name = "Death Rune Color",
 		description = "Color used to highlight Death runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color deathRuneColor()
 	{
@@ -110,7 +111,7 @@ public interface RunedokuConfig extends Config
 		keyName = "waterRuneColor",
 		name = "Water Rune Color",
 		description = "Color used to highlight Water runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color waterRuneColor()
 	{
@@ -122,7 +123,7 @@ public interface RunedokuConfig extends Config
 		keyName = "chaosRuneColor",
 		name = "Chaos Rune Color",
 		description = "Color used to highlight Chaos runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color chaosRuneColor()
 	{
@@ -134,7 +135,7 @@ public interface RunedokuConfig extends Config
 		keyName = "earthRuneColor",
 		name = "Earth Rune Color",
 		description = "Color used to highlight Earth runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color earthRuneColor()
 	{
@@ -146,29 +147,30 @@ public interface RunedokuConfig extends Config
 		keyName = "lawRuneColor",
 		name = "Law Rune Color",
 		description = "Color used to highlight Law runes.",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color lawRuneColor()
 	{
 		return Color.CYAN;
 	}
 
-	@ConfigItem(
-		position = 10,
+	@ConfigTitleSection(
 		keyName = "miscFeature",
+		position = 10,
 		name = "Miscellaneous Features",
 		description = ""
 	)
-	default Stub miscFeature()
+	default Title miscFeature()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
 		position = 11,
 		keyName = "onlyHighlightSelectedPiece",
 		name = "Only Highlight Selected Piece",
-		description = "Instead of showing all, this option only show what rune you have selected."
+		description = "Instead of showing all, this option only show what rune you have selected.",
+		titleSection = "miscFeature"
 	)
 	default boolean onlyHighlightSelectedPiece()
 	{

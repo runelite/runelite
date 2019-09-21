@@ -30,21 +30,22 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
-	@ConfigItem(
-		keyName = "overlayStub",
+	@ConfigTitleSection(
+		keyName = "overlayTitle",
 		name = "Overlay Style",
 		description = "",
 		position = 0
 	)
-	default Stub overlayStub()
+	default Title overlayTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -52,7 +53,7 @@ public interface ObjectIndicatorsConfig extends Config
 		keyName = "objectMarkerRenderStyle",
 		name = "Highlight Style",
 		description = "Highlight setting",
-		parent = "overlayStub"
+		titleSection = "overlayTitle"
 	)
 	default RenderStyle objectMarkerRenderStyle()
 	{
@@ -65,7 +66,7 @@ public interface ObjectIndicatorsConfig extends Config
 		keyName = "objectMarkerOutlineRenderStyle",
 		name = "Outline Style",
 		description = "Highlight outline setting",
-		parent = "overlayStub",
+		titleSection = "overlayTitle",
 		hidden = true,
 		unhide = "objectMarkerRenderStyle",
 		unhideValue = "OUTLINE"
@@ -75,15 +76,15 @@ public interface ObjectIndicatorsConfig extends Config
 		return OutlineRenderStyle.NORMAL_OUTLINE;
 	}
 
-	@ConfigItem(
-		keyName = "colorStub",
+	@ConfigTitleSection(
+		keyName = "colorTitle",
 		name = "Colors",
 		description = "",
 		position = 3
 	)
-	default Stub colorStub()
+	default Title colorTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -91,7 +92,7 @@ public interface ObjectIndicatorsConfig extends Config
 		keyName = "markerColor",
 		name = "Marker color",
 		description = "Configures the outer color of object marker",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default Color objectMarkerColor()
 	{
@@ -106,7 +107,7 @@ public interface ObjectIndicatorsConfig extends Config
 		keyName = "objectMarkerAlpha",
 		name = "Alpha",
 		description = "Configures the opacity/alpha of object marker",
-		parent = "colorStub"
+		titleSection = "colorTitle"
 	)
 	default int objectMarkerAlpha()
 	{

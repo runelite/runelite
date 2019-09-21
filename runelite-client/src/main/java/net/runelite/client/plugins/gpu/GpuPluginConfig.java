@@ -27,8 +27,9 @@ package net.runelite.client.plugins.gpu;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.Stub;
+import net.runelite.client.config.Title;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
@@ -37,15 +38,15 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
 {
-	@ConfigItem(
-		keyName = "drawingStub",
+	@ConfigTitleSection(
+		keyName = "drawingTitle",
 		name = "Drawing",
 		description = "",
 		position = 1
 	)
-	default Stub drawingStub()
+	default Title drawingTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@Range(
@@ -57,7 +58,7 @@ public interface GpuPluginConfig extends Config
 		name = "Draw Distance",
 		description = "Draw distance",
 		position = 2,
-		parent = "drawingStub"
+		titleSection = "drawingTitle"
 	)
 	default int drawDistance()
 	{
@@ -69,22 +70,22 @@ public interface GpuPluginConfig extends Config
 		name = "Remove Color Banding",
 		description = "Smooths out the color banding that is present in the CPU renderer",
 		position = 3,
-		parent = "drawingStub"
+		titleSection = "drawingTitle"
 	)
 	default boolean smoothBanding()
 	{
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "ppStub",
+	@ConfigTitleSection(
+		keyName = "ppTitle",
 		name = "Post processing",
 		description = "",
 		position = 4
 	)
-	default Stub ppStub()
+	default Title ppTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@ConfigItem(
@@ -92,7 +93,7 @@ public interface GpuPluginConfig extends Config
 		name = "Anti Aliasing",
 		description = "Configures the anti-aliasing mode",
 		position = 5,
-		parent = "ppStub"
+		titleSection = "ppTitle"
 	)
 	default AntiAliasingMode antiAliasingMode()
 	{
@@ -104,22 +105,22 @@ public interface GpuPluginConfig extends Config
 		name = "Anisotropic Filtering",
 		description = "Configures the anisotropic filtering mode",
 		position = 6,
-		parent = "ppStub"
+		titleSection = "ppTitle"
 	)
 	default AnisotropicFilteringMode anisotropicFilteringMode()
 	{
 		return AnisotropicFilteringMode.DISABLED;
 	}
 
-	@ConfigItem(
-		keyName = "fogStub",
+	@ConfigTitleSection(
+		keyName = "fogTitle",
 		name = "Fog",
 		description = "",
 		position = 7
 	)
-	default Stub fogStub()
+	default Title fogTitle()
 	{
-		return new Stub();
+		return new Title();
 	}
 
 	@Range(
@@ -130,7 +131,7 @@ public interface GpuPluginConfig extends Config
 		name = "Depth",
 		description = "Distance from the scene edge the fog starts",
 		position = 8,
-		parent = "fogStub"
+		titleSection = "fogTitle"
 	)
 	default int fogDepth()
 	{
@@ -145,7 +146,7 @@ public interface GpuPluginConfig extends Config
 		name = "Roundness",
 		description = "Fog circularity in %",
 		position = 9,
-		parent = "fogStub"
+		titleSection = "fogTitle"
 	)
 	default int fogCircularity()
 	{
@@ -160,7 +161,7 @@ public interface GpuPluginConfig extends Config
 		name = "Density",
 		description = "Relative fog thickness",
 		position = 10,
-		parent = "fogStub"
+		titleSection = "fogTitle"
 	)
 	default int fogDensity()
 	{
