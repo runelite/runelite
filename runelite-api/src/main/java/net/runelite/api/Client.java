@@ -38,6 +38,7 @@ import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import org.slf4j.Logger;
 
@@ -1672,6 +1673,11 @@ public interface Client extends GameEngine
 	int getIf1DraggedItemIndex();
 
 	/**
+	 * Is a widget is in target mode?
+	 */
+	boolean getSpellSelected();
+
+	/**
 	 * Sets if a widget is in target mode
 	 */
 	void setSpellSelected(boolean selected);
@@ -1696,4 +1702,9 @@ public interface Client extends GameEngine
 	 * Returns the max item index + 1 from cache
 	 */
 	int getItemCount();
+
+	/**
+	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
+	 */
+	void setAllWidgetsAreOpTargetable(boolean value);
 }
