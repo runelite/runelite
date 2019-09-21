@@ -21,7 +21,7 @@ pulls:
 
 
 # Optionally, specify configuration settings that are specific to just 'issues' or 'pulls':
-issues
+issues:
   daysUntilStale: 120
   markComment: >
     This issue has been automatically marked as stale because it has not had
