@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Anthony Chen <https://github.com/achencoms>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +25,7 @@
  */
 package net.runelite.client.plugins.music;
 
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -37,8 +39,10 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -47,6 +51,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
@@ -55,7 +60,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Music",
-	description = "Adds search and filter for the music list"
+	description = "Adds search and filter for the music list, and additional volume control"
 )
 public class MusicPlugin extends Plugin
 {
@@ -64,6 +69,9 @@ public class MusicPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private MusicConfig musicConfig;
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
@@ -77,10 +85,17 @@ public class MusicPlugin extends Plugin
 
 	private MusicState currentMusicFilter = MusicState.ALL;
 
+	private int lastMusicVolume;
+	private int lastEffectVolume;
+	private int lastAreaEffectVolume;
+
 	@Override
 	protected void startUp()
 	{
+		lastMusicVolume = lastEffectVolume = lastAreaEffectVolume = -1;
+
 		clientThread.invoke(this::addMusicButtons);
+		clientThread.invoke(this::applyMusicVolumeConfig);
 	}
 
 	@Override
@@ -93,6 +108,12 @@ public class MusicPlugin extends Plugin
 		}
 
 		tracks = null;
+	}
+
+	@Provides
+	MusicConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MusicConfig.class);
 	}
 
 	@Subscribe
@@ -164,6 +185,46 @@ public class MusicPlugin extends Plugin
 		if (isChatboxOpen() && !isOnMusicTab())
 		{
 			chatboxPanelManager.close();
+		}
+	}
+
+	@Subscribe
+	public void onVolumeChanged(VolumeChanged volumeChanged)
+	{
+		applyMusicVolumeConfig();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals("music"))
+		{
+			clientThread.invokeLater(this::applyMusicVolumeConfig);
+		}
+	}
+
+	private void applyMusicVolumeConfig()
+	{
+		int musicVolume = musicConfig.getMusicVolume();
+		// Set the volume if it is >0, or if it was >0 and is now going back to 0
+		if (musicVolume > 0 || lastMusicVolume > 0)
+		{
+			client.setMusicVolume(musicVolume);
+			lastMusicVolume = musicVolume;
+		}
+
+		int soundEffectVolume = musicConfig.getSoundEffectVolume();
+		if (soundEffectVolume > 0 || lastEffectVolume > 0)
+		{
+			client.setSoundEffectVolume(soundEffectVolume);
+			lastEffectVolume = soundEffectVolume;
+		}
+
+		int areaSoundEffectVolume = musicConfig.getAreaSoundEffectVolume();
+		if (areaSoundEffectVolume > 0 || lastAreaEffectVolume > 0)
+		{
+			client.setAreaSoundEffectVolume(areaSoundEffectVolume);
+			lastAreaEffectVolume = areaSoundEffectVolume;
 		}
 	}
 
