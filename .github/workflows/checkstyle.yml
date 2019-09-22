@@ -1,9 +1,9 @@
-name: RunelitePlus continuous integration
+name: RunelitePlus - Code convention
 
 on: [pull_request, push]
 
 jobs:
-  build:
+  checkstyle:
 
     runs-on: windows-latest
 
@@ -15,9 +15,5 @@ jobs:
           java-version: 11
       - name: Assembling
         run: gradlew assemble --console=plain
-      - name: Building
-        run: gradlew build --stacktrace -x test -x checkstyleMain --console=plain
-      - name: Testing
-        run: gradlew test --stacktrace --console=plain
       - name: Checking code conventions
         run: gradlew checkstyleMain --console=plain

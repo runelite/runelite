@@ -47,11 +47,9 @@ import net.runelite.data.dump.MediaWikiTemplate;
 @Slf4j
 public class ItemLimitsDumper
 {
-	public static void dump(final Store store, final MediaWiki wiki) throws IOException
+	public static void dump(final Store store, final MediaWiki wiki, final File path) throws IOException
 	{
-		final File out = new File("../runelite-client/src/main/resources/net/runelite/client/plugins/grandexchange/");
-
-		log.info("Dumping item limits to {}", out);
+		log.info("Dumping item limits to {}", path);
 
 		final ItemManager itemManager = new ItemManager(store);
 		itemManager.load();
@@ -140,7 +138,7 @@ public class ItemLimitsDumper
 			log.debug("Dumped item limit for {} {}", item.id, name);
 		});
 
-		try (FileWriter fw = new FileWriter(new File(out, "ge_limits.json")))
+		try (FileWriter fw = new FileWriter(new File(path, "ge_limits.json")))
 		{
 			fw.write(App.GSON.toJson(limits));
 		}

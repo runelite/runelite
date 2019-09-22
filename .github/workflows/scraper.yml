@@ -1,0 +1,47 @@
+name: RunelitePlus - Scraper
+
+on:
+  schedule:
+    - cron: "0 0 * * 2,5"
+
+jobs:
+  scrape:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assembling cache client
+        run: ./gradlew :cache-client:assemble --console=plain
+      - name: Assembling scraper
+        run: ./gradlew :wiki-scraper:assemble --console=plain
+      - name: Building cache client
+        run: ./gradlew :cache-client:build --console=plain
+      - name: Building scraper
+        run: ./gradlew :wiki-scraper:build --console=plain
+      - name: Downloading jagex cache
+        run: ./gradlew :cache-client:update --console=plain
+      - name: Scraping NPC stats
+        run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
+      - name: Create NPC stats Pull Request
+        uses: peter-evans/create-pull-request@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: NPC-UPDATE
+          PULL_REQUEST_TITLE: 'Client: Update NPC stats'
+          PULL_REQUEST_BODY: This is an auto-generated PR with changes from the OSRS wiki
+          COMMIT_MESSAGE: 'Client: Update NPC stats'
+      - name: Scraping item stats
+        run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
+      - name: Create item stats Pull Request
+        uses: peter-evans/create-pull-request@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: ITEM-STATS-UPDATE
+          PULL_REQUEST_TITLE: 'Client: Update item stats'
+          PULL_REQUEST_BODY: This is an auto-generated PR with changes from the OSRS wiki
+          COMMIT_MESSAGE: 'Client: Update item stats'

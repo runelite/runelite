@@ -23,12 +23,34 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiter
 }
 
-task scrape {
+task npcStatsScrape {
     doLast {
         def path = sourceSets.main.runtimeClasspath
         def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
         def scrape = loader.loadClass('net.runelite.data.App')
-        scrape.main();
+        scrape.npcStats(rootProject.file("./runelite-client/src/main/resources/"));
+
+        loader.close()
+    }
+}
+
+task itemStatsScrape {
+    doLast {
+        def path = sourceSets.main.runtimeClasspath
+        def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
+        def scrape = loader.loadClass('net.runelite.data.App')
+        scrape.itemStats(rootProject.file("./runelite-client/src/main/resources/"));
+
+        loader.close()
+    }
+}
+
+task itemLimitsScrape {
+    doLast {
+        def path = sourceSets.main.runtimeClasspath
+        def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
+        def scrape = loader.loadClass('net.runelite.data.App')
+        scrape.itemLimits(rootProject.file("./runelite-client/src/main/resources/net/runelite/client/plugins/grandexchange/"));
 
         loader.close()
     }

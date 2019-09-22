@@ -12,3 +12,17 @@ dependencies {
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4j
     testImplementation project(path: ':cache', configuration: 'testArchives')
 }
+
+task update {
+    dependsOn ":cache-client:build"
+
+    doLast {
+        def path = sourceSets.main.runtimeClasspath
+        def loader = new URLClassLoader(path.collect { f -> f.toURI().toURL() } as URL[])
+        def cacheClient = loader.loadClass('net.runelite.cache.client.CacheClient')
+
+        cacheClient.getCache(rsversion);
+
+        loader.close()
+    }
+}

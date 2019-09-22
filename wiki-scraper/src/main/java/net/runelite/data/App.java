@@ -32,6 +32,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import net.runelite.cache.fs.Store;
 import net.runelite.data.dump.MediaWiki;
+import net.runelite.data.dump.wiki.ItemLimitsDumper;
+import net.runelite.data.dump.wiki.ItemStatsDumper;
 import net.runelite.data.dump.wiki.NpcStatsDumper;
 
 public class App
@@ -41,14 +43,16 @@ public class App
 		.disableHtmlEscaping()
 		.create();
 
-	public static void main(String[] args) throws IOException
+	private final static MediaWiki wiki = new MediaWiki("https://oldschool.runescape.wiki");
+
+	public static Store cacheStore() throws IOException
 	{
 		Path path = Paths.get(System.getProperty("user.home"), "jagexcache" + File.separator + "oldschool" + File.separator + "LIVE");
 		final File jagexcache = new File(String.valueOf(path));
 
 		if (!Files.exists(path))
 		{
-			return;
+			return null;
 		}
 
 		final Store cacheStore = new Store(jagexcache);
@@ -58,12 +62,21 @@ public class App
 		// Try to make this go faster (probably not very smart)
 		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "100");
 
-		final MediaWiki wiki = new MediaWiki("https://oldschool.runescape.wiki");
+		return cacheStore;
+	}
 
-		// Only use this to diff current limits with scraped limits
-		// ItemLimitsDumper.dump(cacheStore, wiki);
-		// ItemStatsDumper.dump(cacheStore, wiki);
+	public static void npcStats(File path) throws IOException
+	{
+		NpcStatsDumper.dump(cacheStore(), wiki, path);
+	}
 
-		NpcStatsDumper.dump(cacheStore, wiki);
+	public static void itemStats(File path) throws IOException
+	{
+		ItemStatsDumper.dump(cacheStore(), wiki, path);
+	}
+
+	public static void itemLimits(File path) throws IOException
+	{
+		ItemLimitsDumper.dump(cacheStore(), wiki, path);
 	}
 }

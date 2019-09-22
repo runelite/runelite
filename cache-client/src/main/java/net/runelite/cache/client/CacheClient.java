@@ -37,7 +37,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,30 @@ public class CacheClient implements AutoCloseable
 
 	private CompletableFuture<HandshakeResponseType> handshakeFuture;
 	private final Queue<PendingFileRequest> requests = new ArrayDeque<>();
+
+	public static void getCache(int clientRevision)
+	{
+		Path path = Paths.get(System.getProperty("user.home"), "jagexcache" + File.separator + "oldschool" + File.separator + "LIVE");
+		final File jagexcache = new File(String.valueOf(path));
+
+		jagexcache.mkdirs();
+
+		try (Store store = new Store(jagexcache))
+		{
+			store.load();
+			CacheClient c = new CacheClient(store, clientRevision);
+			c.connect();
+			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
+			handshake.get();
+			c.download();
+			c.close();
+			store.save();
+		}
+		catch (Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+	}
 
 	public CacheClient(Store store, int clientRevision)
 	{
