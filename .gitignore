@@ -13,6 +13,7 @@ git
 classes/artifacts/client_jar/run.bat
 classes/artifacts/client_jar/client.jar
 *.jar
+!gradle-wrapper.jar
 .live/
 **/build/*
 */out/
