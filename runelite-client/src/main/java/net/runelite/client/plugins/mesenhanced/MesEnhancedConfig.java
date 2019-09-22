@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cas <https://github.com/casvandongen>
+ * Copyright (c) 2019, Ganom <https://github.com/ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
