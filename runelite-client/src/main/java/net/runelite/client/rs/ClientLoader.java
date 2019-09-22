@@ -26,6 +26,7 @@
  */
 package net.runelite.client.rs;
 
+import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
@@ -34,10 +35,10 @@ import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -48,12 +49,16 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
+import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.ui.SplashScreen;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.compress.compressors.CompressorException;
@@ -61,8 +66,10 @@ import org.apache.commons.compress.compressors.CompressorException;
 @Slf4j
 public class ClientLoader implements Supplier<Applet>
 {
+	private static final int NUM_ATTEMPTS = 6;
+
 	private ClientUpdateCheckMode updateCheckMode;
-	private Applet client = null;
+	private Object client = null;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
@@ -76,10 +83,15 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			client = doLoad();
 		}
-		return client;
+
+		if (client instanceof Throwable)
+		{
+			throw new RuntimeException((Throwable) client);
+		}
+		return (Applet) client;
 	}
 
-	private Applet doLoad()
+	private Object doLoad()
 	{
 		if (updateCheckMode == NONE)
 		{
@@ -88,67 +100,144 @@ public class ClientLoader implements Supplier<Applet>
 
 		try
 		{
-			RSConfig config = ClientConfigLoader.fetch();
+			SplashScreen.stage(0, null, "Fetching applet viewer config");
+
+			HostSupplier hostSupplier = new HostSupplier();
+
+			String host = null;
+			RSConfig config;
+			for (int attempt = 0; ; attempt++)
+			{
+				try
+				{
+					config = ClientConfigLoader.fetch(host);
+
+					if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
+					{
+						throw new IOException("Invalid or missing jav_config");
+					}
+
+					break;
+				}
+				catch (IOException e)
+				{
+					log.info("Failed to get jav_config from host \"{}\" ({})", host, e.getMessage());
+
+					if (attempt >= NUM_ATTEMPTS)
+					{
+						throw e;
+					}
+
+					host = hostSupplier.get();
+				}
+			}
 
 			Map<String, byte[]> zipFile = new HashMap<>();
 			{
 				Certificate[] jagexCertificateChain = getJagexCertificateChain();
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
-				Request request = new Request.Builder()
-					.url(url)
-					.build();
+				HttpUrl url = HttpUrl.parse(codebase + initialJar);
 
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+				for (int attempt = 0; ; attempt++)
 				{
-					JarInputStream jis = new JarInputStream(response.body().byteStream());
+					zipFile.clear();
 
-					byte[] tmp = new byte[4096];
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-					for (; ; )
+					Request request = new Request.Builder()
+						.url(url)
+						.build();
+
+					try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 					{
-						JarEntry metadata = jis.getNextJarEntry();
-						if (metadata == null)
+						int length = (int) response.body().contentLength();
+						if (length < 0)
 						{
-							break;
+							length = 3 * 1024 * 1024;
 						}
+						final int flength = length;
+						InputStream istream = new FilterInputStream(response.body().byteStream())
+						{
+							private int read = 0;
 
-						buffer.reset();
+							@Override
+							public int read(byte[] b, int off, int len) throws IOException
+							{
+								int thisRead = super.read(b, off, len);
+								this.read += thisRead;
+								SplashScreen.stage(.05, .35, null, "Downloading Old School RuneScape", this.read, flength, true);
+								return thisRead;
+							}
+						};
+						JarInputStream jis = new JarInputStream(istream);
+
+						byte[] tmp = new byte[4096];
+						ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
 						for (; ; )
 						{
-							int n = jis.read(tmp);
-							if (n <= -1)
+							JarEntry metadata = jis.getNextJarEntry();
+							if (metadata == null)
 							{
 								break;
 							}
-							buffer.write(tmp, 0, n);
-						}
 
-						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
+							buffer.reset();
+							for (; ; )
+							{
+								int n = jis.read(tmp);
+								if (n <= -1)
+								{
+									break;
+								}
+								buffer.write(tmp, 0, n);
+							}
+
+							if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
+							{
+								if (metadata.getName().startsWith("META-INF/"))
+								{
+									// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
+									// anything in META-INF anyway.
+									continue;
+								}
+								else
+								{
+									throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
+								}
+							}
+
+							zipFile.put(metadata.getName(), buffer.toByteArray());
+						}
+						break;
+					}
+					catch (IOException e)
+					{
+						log.info("Failed to download gamepack from \"{}\" ({})", url, e.getMessage());
+
+						if (attempt >= NUM_ATTEMPTS)
 						{
-							if (metadata.getName().startsWith("META-INF/"))
-							{
-								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
-								// anything in META-INF anyway.
-								continue;
-							}
-							else
-							{
-								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
-							}
+							throw e;
 						}
 
-						zipFile.put(metadata.getName(), buffer.toByteArray());
+						url = url.newBuilder().host(hostSupplier.get()).build();
 					}
 				}
 			}
 
 			if (updateCheckMode == AUTO)
 			{
+				SplashScreen.stage(.35, null, "Patching");
 				Map<String, String> hashes;
 				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
 				{
+					if (is == null)
+					{
+						SwingUtilities.invokeLater(() ->
+							new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
+								"the client you need to re-run maven")
+								.addBuildingGuide()
+								.open());
+						throw new NullPointerException();
+					}
 					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
 					{
 					}.getType());
@@ -197,10 +286,13 @@ public class ClientLoader implements Supplier<Applet>
 					file.setValue(patchOs.toByteArray());
 
 					++patchCount;
+					SplashScreen.stage(.38, .45, null, "Patching", patchCount, zipFile.size(), false);
 				}
 
 				log.debug("Patched {} classes", patchCount);
 			}
+
+			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
 
 			String initialClass = config.getInitialClass();
 
@@ -230,21 +322,18 @@ public class ClientLoader implements Supplier<Applet>
 				log.info("client-patch {}", ((Client) rs).getBuildID());
 			}
 
+			SplashScreen.stage(.5, null, "Starting core classes");
+
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
 			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
 			| SecurityException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the client patch"
-					+ " is not in your classpath.");
-			}
-
 			log.error("Error loading RS!", e);
-			return null;
+
+			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			return e;
 		}
 	}
 

@@ -63,4 +63,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOpponentsInMenu",
+		name = "Show opponents in menu",
+		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
+		position = 3
+	)
+	default boolean showOpponentsInMenu()
+	{
+		return false;
+	}
 }

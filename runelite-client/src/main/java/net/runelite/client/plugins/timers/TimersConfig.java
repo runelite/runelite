@@ -44,7 +44,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		keyName = "showAntipoison",
 		name = "Antipoison/Venom timers",
-		description = "Configures whether timers for Antipoision, Antidoe, Antivenom are is displayed"
+		description = "Configures whether timers for Antipoison, Antidote and Antivenom are displayed"
 	)
 	default boolean showAntiPoison()
 	{

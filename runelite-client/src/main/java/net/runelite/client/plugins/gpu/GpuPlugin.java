@@ -235,15 +235,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				bufferId = uvBufferId = uniformBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
 
+				canvas = client.getCanvas();
+
+				if (!canvas.isDisplayable())
+				{
+					return false;
+				}
+
+				canvas.setIgnoreRepaint(true);
+
 				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
 
 				modelBufferUnordered = new GpuIntBuffer();
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
-
-				canvas = client.getCanvas();
-				canvas.setIgnoreRepaint(true);
 
 				if (log.isDebugEnabled())
 				{
@@ -340,7 +346,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				shutDown();
 			}
-
+			return true;
 		});
 	}
 

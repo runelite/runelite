@@ -34,6 +34,7 @@ public final class ScriptID
 	 * <li> int how far down to scroll </li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 3)
 	public static final int UPDATE_SCROLLBAR = 72;
 
 	/**
@@ -43,11 +44,13 @@ public final class ScriptID
 	 * <li> String Message to send </li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 1, string = 1)
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
 	 * Rebuilds the chatbox
 	 */
+	@ScriptArguments()
 	public static final int BUILD_CHATBOX = 216;
 
 	/**
@@ -58,6 +61,7 @@ public final class ScriptID
 	 * <li> String Player to send private message to</li>
 	 * </ul>
 	 */
+	@ScriptArguments(string = 1)
 	public static final int OPEN_PRIVATE_MESSAGE_INTERFACE = 107;
 
 	/**
@@ -66,14 +70,8 @@ public final class ScriptID
 	 * <li> String Message Prefix. Only used inside the GE search interfaces
 	 * </ul>
 	 */
+	@ScriptArguments(string = 1)
 	public static final int CHAT_TEXT_INPUT_REBUILD = 222;
-
-	/**
-	 * Layouts the bank widgets
-	 *
-	 * Takes 13 widget ids of various parts of the bank interface
-	 */
-	public static final int BANK_LAYOUT = 277;
 
 	/**
 	 * Closes the chatbox input
@@ -82,17 +80,23 @@ public final class ScriptID
 	 * <li> int (boolean) Restore to chat view </li>
 	 * </ul>
 	 */
-	public static final int RESET_CHATBOX_INPUT = 299;
+	@ScriptArguments(integer = 2)
+	public static final int MESSAGE_LAYER_CLOSE = 299;
 
 	/**
 	 * Readies the chatbox panel for things like the chatbox input
-	 * Inverse of RESET_CHATBOX_INPUT
+	 * Inverse of MESSAGE_LAYER_CLOSE
+	 * <ul>
+	 * <li> int (InputType) message layer type we are changing to </li>
+	 * </ul>
 	 */
-	public static final int CLEAR_CHATBOX_PANEL = 677;
+	@ScriptArguments(integer = 1)
+	public static final int MESSAGE_LAYER_OPEN = 677;
 
 	/**
 	 * Builds the chatbox input widget
 	 */
+	@ScriptArguments()
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
@@ -103,19 +107,21 @@ public final class ScriptID
 	 * <li> String Item Name </li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 2, string = 1)
 	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
 
 	/**
 	 * Checks the state of the given stash unit.
 	 * <ul>
 	 * <li>int (loc) The stash unit object id</li>
-	 *  <li>int Bitpacked stash unit states</li>
-	 *  <li>int Bitpacked stash unit states 2</li>
-	 *  <li>int Bitpacked stash unit states 3</li>
+	 * <li>int Bitpacked stash unit states</li>
+	 * <li>int Bitpacked stash unit states 2</li>
+	 * <li>int Bitpacked stash unit states 3</li>
 	 * </ul>
 	 *
 	 * Returns a pair of booleans indicating if the stash unit is built and if it is filled
 	 */
+	@ScriptArguments(integer = 4)
 	public static final int WATSON_STASH_UNIT_CHECK = 1479;
 
 	/**
@@ -128,6 +134,7 @@ public final class ScriptID
 	 * <li> int (QuestState) the normalized state of the quest
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 1)
 	public static final int QUESTLIST_PROGRESS = 2267;
 
 	/**
@@ -137,6 +144,7 @@ public final class ScriptID
 	 * <li> int Number of lines </li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 2)
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
 
 	/**
@@ -148,6 +156,7 @@ public final class ScriptID
 	 * <li> int  Reset zoom position </li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 2)
 	public static final int CAMERA_DO_ZOOM = 42;
 
 	/**
@@ -156,11 +165,13 @@ public final class ScriptID
 	 * This is used to eat events when you want a menu action attached to it
 	 * because you need an op listener attached to it for it to work
 	 */
+	@ScriptArguments()
 	public static final int NULL = 10003;
 
 	/**
 	 * Send a private message.
 	 */
+	@ScriptArguments(string = 2)
 	public static final int PRIVMSG = 10004;
 
 	/**
@@ -171,5 +182,6 @@ public final class ScriptID
 	 * <li>int Amount of exp to drop</li>
 	 * </ul>
 	 */
+	@ScriptArguments(integer = 2)
 	public static final int XPDROP_DISABLED = 2091;
 }
