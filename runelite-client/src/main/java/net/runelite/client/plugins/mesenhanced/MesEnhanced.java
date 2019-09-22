@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.mesenhanced;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -52,6 +54,9 @@ public class MesEnhanced extends Plugin
 	private Client client;
 	@Inject
 	private EventBus eventBus;
+	@Inject
+	private MesEnhancedConfig config;
+
 	private boolean tinder;
 	private boolean bones;
 	private boolean tick;
@@ -59,6 +64,12 @@ public class MesEnhanced extends Plugin
 	private int tinderId;
 	private int bonesIdx;
 	private int bonesId;
+
+	@Provides
+	MesEnhancedConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MesEnhancedConfig.class);
+	}
 
 	@Override
 	public void startUp()
@@ -97,14 +108,21 @@ public class MesEnhanced extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (!config.leftClickLog() && !config.quickBones())
+		{
+			return;
+		}
+
 		final int id = event.getIdentifier();
 
-		if (tinder && event.getType() == MenuOpcode.ITEM_USE.getId() && LIGHTABLE_LOGS.contains(id))
+		if (config.leftClickLog() && tinder && event.getType() == MenuOpcode.ITEM_USE.getId()
+			&& LIGHTABLE_LOGS.contains(id))
 		{
 			event.getMenuEntry().setOption(LIGHT);
 			event.setWasModified(true);
 		}
-		else if (bones && event.getType() == MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId() && event.getTarget().toLowerCase().contains("altar"))
+		else if (config.quickBones() && bones && event.getType() == MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId()
+			&& event.getTarget().toLowerCase().contains("altar"))
 		{
 			event.getMenuEntry().setOption(QUICK_BONE);
 			event.setWasModified(true);
@@ -113,20 +131,27 @@ public class MesEnhanced extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (!config.leftClickLog() && !config.quickBones())
+		{
+			return;
+		}
+
 		final MenuEntry entry = event.getMenuEntry();
 
-		if (tinder && event.getOpcode() == MenuOpcode.ITEM_USE.getId() && event.getOption().equals(LIGHT))
+		if (config.leftClickLog() && tinder && event.getOpcode() == MenuOpcode.ITEM_USE.getId()
+			&& event.getOption().equals(LIGHT))
 		{
 			entry.setOpcode(MenuOpcode.ITEM_USE_ON_WIDGET_ITEM.getId());
 			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
 			client.setSelectedItemSlot(tinderIdx);
 			client.setSelectedItemID(tinderId);
 		}
-		else if (bones && event.getOption().equals(QUICK_BONE) && tick)
+		else if (config.quickBones() && bones && event.getOption().equals(QUICK_BONE) && tick)
 		{
 			event.consume();
 		}
-		else if (bones && event.getOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId() && event.getOption().equals(QUICK_BONE))
+		else if (config.quickBones() && bones && event.getOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId()
+			&& event.getOption().equals(QUICK_BONE))
 		{
 			entry.setOpcode(MenuOpcode.ITEM_USE_ON_GAME_OBJECT.getId());
 			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
