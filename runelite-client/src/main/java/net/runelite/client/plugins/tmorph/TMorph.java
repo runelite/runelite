@@ -26,6 +26,7 @@ package net.runelite.client.plugins.tmorph;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Map;
 import javax.inject.Inject;
@@ -33,10 +34,12 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SpotAnimationChanged;
@@ -47,6 +50,8 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.Clipboard;
+import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.ObjectUtils;
 
 @PluginDescriptor(
@@ -61,6 +66,7 @@ public class TMorph extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
 	private static final Map<String, KitType> kit;
+	private static final Color COLOR = new Color(10, 134, 74, 255);
 
 	static
 	{
@@ -119,6 +125,63 @@ public class TMorph extends Plugin
 		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
+		eventBus.subscribe(CommandExecuted.class, this, this::onCommandExecuted);
+	}
+
+	private void onCommandExecuted(CommandExecuted event)
+	{
+		final String[] args = event.getArguments();
+
+		if (event.getCommand().equals("tmorph"))
+		{
+			try
+			{
+				if (args[0].equals("copy"))
+				{
+					final StringBuilder sb = new StringBuilder();
+					final Player player = client.getLocalPlayer();
+
+					if (player == null
+						|| player.getPlayerAppearance() == null
+						|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+						|| client.getViewportWidget() == null)
+					{
+						return;
+					}
+
+					for (KitType kitType : KitType.values())
+					{
+						if (kitType.equals(KitType.RING) || kitType.equals(KitType.AMMUNITION))
+						{
+							continue;
+						}
+
+						final int id = player.getPlayerAppearance().getEquipmentId(kitType);
+
+						if (id == -1)
+						{
+							continue;
+						}
+
+						sb.append(id);
+						sb.append(",-1");
+						sb.append(":");
+						sb.append(kitType.getName());
+						sb.append("\n");
+					}
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Your current gear has been copied to your clipboard", COLOR), null);
+					Clipboard.store(sb.toString());
+				}
+				else
+				{
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED), null);
+				}
+			}
+			catch (Exception e)
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED), null);
+			}
+		}
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -230,6 +293,10 @@ public class TMorph extends Plugin
 
 			if (item == ints[0])
 			{
+				if (ints[1] == -1)
+				{
+					continue;
+				}
 				player.getPlayerAppearance().getEquipmentIds()[slot.getIndex()] = ints[1] + 512;
 			}
 		}

@@ -37,7 +37,7 @@ public interface TMorphConfig extends Config
 		keyName = "swaps",
 		name = "Morphers",
 		description = "",
-		position = 0
+		position = 1
 	)
 	default Title swaps()
 	{
@@ -202,5 +202,19 @@ public interface TMorphConfig extends Config
 	default int graphicTarget()
 	{
 		return 0;
+	}
+
+	@ConfigTitleSection(
+		keyName = "copy",
+		name = "<html><center>If you would like to copy your equipped" +
+			"<br>gear, type \"::tmorph copy\" in chat." +
+			"<br>This will copy your gear to your" +
+			"<br>clipboard for easy copy paste.</center></html>",
+		description = "",
+		position = 50
+	)
+	default Title copy()
+	{
+		return new Title();
 	}
 }
