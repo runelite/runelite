@@ -91,9 +91,7 @@ public class WorldMapOverlay extends Overlay
 
 		final Rectangle worldMapRectangle = widget.getBounds();
 		final Area mapViewArea = getWorldMapClipArea(worldMapRectangle);
-		final Rectangle canvasBounds = client.getCanvas().getBounds();
-		// in fixed, the bounds are offset by the size of the black borders outside the canvas
-		canvasBounds.setLocation(0, 0);
+		final Rectangle canvasBounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		final Area canvasViewArea = getWorldMapClipArea(canvasBounds);
 		Area currentClip = null;
 
@@ -264,7 +262,9 @@ public class WorldMapOverlay extends Overlay
 
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
-		graphics.setClip(client.getCanvas().getBounds());
+		final Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+		final Area mapArea = getWorldMapClipArea(bounds);
+		graphics.setClip(mapArea);
 		graphics.setColor(JagexColors.TOOLTIP_BACKGROUND);
 		graphics.setFont(FontManager.getRunescapeFont());
 		FontMetrics fm = graphics.getFontMetrics();

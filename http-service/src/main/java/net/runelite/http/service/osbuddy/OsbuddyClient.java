@@ -37,20 +37,18 @@ import okhttp3.Response;
 
 public class OsbuddyClient
 {
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
-
 	public Map<Integer, OsbuddySummaryItem> getSummary() throws IOException
 	{
 		HttpUrl httpUrl = new HttpUrl.Builder()
 			.scheme("https")
-			.host("rsbuddy.com")
-			.addPathSegment("exchange")
+			.host("storage.googleapis.com")
+			.addPathSegment("osb-exchange")
 			.addPathSegment("summary.json")
 			.build();
 
 		Request request = new Request.Builder()
 			.url(httpUrl)
-			.header("User-Agent", USER_AGENT)
+			.header("User-Agent", "RuneLite")
 			.build();
 
 		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())

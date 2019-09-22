@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -76,7 +77,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2363, 3531, 0), "North-east of Eagles' Peak.")
 		.put(new WorldPoint(2919, 3535, 0), "East of Burthorpe pub.")
 		.put(new WorldPoint(3548, 3560, 0), "Inside Fenkenstrain's Castle.")
-		.put(new WorldPoint(1456, 3620, 0), "Graveyard west of Shayzien.")
+		.put(new WorldPoint(1456, 3620, 0), "Graveyard west of Shayzien (DJR).")
 		.put(new WorldPoint(2735, 3638, 0), "East of Rellekka, north-west of Golden Apple Tree (AJR).")
 		.put(new WorldPoint(2681, 3653, 0), "Rellekka, in the garden of the south-east house.")
 		.put(new WorldPoint(2537, 3881, 0), "Miscellania.")
@@ -198,12 +199,31 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 
 	private final String text;
 	private final WorldPoint location;
+	/**
+	 * For regions which are mirrored, the location of the the clue in the mirrored region.
+	 */
+	@Nullable
+	private final WorldPoint mirrorLocation;
 
-	public CoordinateClue(String text, WorldPoint location)
+	public CoordinateClue(String text, WorldPoint location, WorldPoint mirrorLocation)
 	{
 		this.text = text;
 		this.location = location;
+		this.mirrorLocation = mirrorLocation;
 		setRequiresSpade(true);
+	}
+
+	@Override
+	public WorldPoint[] getLocations()
+	{
+		if (mirrorLocation != null)
+		{
+			return new WorldPoint[]{location, mirrorLocation};
+		}
+		else
+		{
+			return new WorldPoint[]{location};
+		}
 	}
 
 	@Override
@@ -229,13 +249,14 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
-
-		if (localLocation == null)
+		for (WorldPoint worldPoint : getLocations())
 		{
-			return;
-		}
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
+			if (localLocation != null)
+			{
+				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
+			}
+		}
 	}
 }

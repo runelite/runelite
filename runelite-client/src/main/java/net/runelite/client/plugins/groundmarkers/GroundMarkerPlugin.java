@@ -209,12 +209,18 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
+			final Tile selectedSceneTile = client.getSelectedSceneTile();
+
+			if (selectedSceneTile == null)
+			{
+				return;
+			}
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
-			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getSelectedSceneTile().getLocalLocation());
+			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
 			final int regionId = worldPoint.getRegionID();
 			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor());
 

@@ -237,15 +237,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				bufferId = uvBufferId = uniformBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
 
+				canvas = client.getCanvas();
+
+				if (!canvas.isDisplayable())
+				{
+					return false;
+				}
+
+				canvas.setIgnoreRepaint(true);
+
 				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
 
 				modelBufferUnordered = new GpuIntBuffer();
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
-
-				canvas = client.getCanvas();
-				canvas.setIgnoreRepaint(true);
 
 				if (log.isDebugEnabled())
 				{
@@ -342,7 +348,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				shutDown();
 			}
-
+			return true;
 		});
 	}
 
@@ -1007,15 +1013,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				if (afEnabled)
 				{
-					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
-					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+					// Set on GL_NEAREST_MIPMAP_LINEAR (bilinear filtering with mipmaps) since the pixel nature of the game means that nearest filtering
+					// looks best for objects up close but allows linear filtering to resolve possible aliasing and noise with mipmaps from far away objects.
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR);
 
 					switch (anisotropicFilteringMode)
 					{
 						case BILINEAR:
-							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
-							break;
-						case TRILINEAR:
 							break;
 						default:
 							if (gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
@@ -1026,7 +1030,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 							}
 							else
 							{
-								log.warn("Ansiotropic filtering specified but no support detected. Defaulting to trilinear filtering.");
+								log.warn("Ansiotropic filtering specified but no support detected. Defaulting to bilinear filtering with mipmaps.");
 							}
 							break;
 					}
@@ -1034,12 +1038,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				else
 				{
 					// Reset texture filters and anisotropic filtering to default values if turned off.
-					if (lastAnisotropicFilteringMode.getSamples() > 1f && gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
+					if (gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
 					{
 						gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
 					}
 
-					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
 					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 				}
 			}

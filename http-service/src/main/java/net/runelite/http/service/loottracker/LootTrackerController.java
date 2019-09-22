@@ -53,7 +53,7 @@ public class LootTrackerController
 	private AuthFilter auth;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record) throws IOException
+	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody Collection<LootRecord> records) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)
@@ -62,7 +62,7 @@ public class LootTrackerController
 			return;
 		}
 
-		service.store(record, e.getUser());
+		service.store(records, e.getUser());
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 	}
 

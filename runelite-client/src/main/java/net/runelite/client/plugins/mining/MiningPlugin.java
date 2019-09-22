@@ -62,7 +62,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class MiningPlugin extends Plugin
 {
 	private static final int ROCK_DISTANCE = 14;
-	private static final int MINING_GUILD_REGION = 12183;
 
 	@Inject
 	private Client client;
@@ -123,11 +122,12 @@ public class MiningPlugin extends Plugin
 		}
 
 		final GameObject object = event.getGameObject();
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 			respawns.add(rockRespawn);
 		}
 	}
@@ -141,13 +141,14 @@ public class MiningPlugin extends Plugin
 		}
 
 		final WallObject object = event.getWallObject();
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		switch (object.getId())
 		{
 			case EMPTY_WALL:
 			{
 				Rock rock = Rock.AMETHYST;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -157,7 +158,7 @@ public class MiningPlugin extends Plugin
 			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			{
 				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -172,10 +173,5 @@ public class MiningPlugin extends Plugin
 				break;
 			}
 		}
-	}
-
-	private boolean inMiningGuild()
-	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
 	}
 }

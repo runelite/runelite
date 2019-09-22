@@ -32,8 +32,7 @@ import lombok.RequiredArgsConstructor;
 public enum AnisotropicFilteringMode
 {
 	DISABLED("Disabled", 0f),
-	BILINEAR("Bilinear", 0.5f),
-	TRILINEAR("Trilinear", 1f),
+	BILINEAR("Bilinear", 1f),
 	AF_2("x2", 2f),
 	AF_4("x4", 4f),
 	AF_8("x8", 8f),
