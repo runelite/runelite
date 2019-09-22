@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface ItemIdentificationConfig extends Config
 {
 	@ConfigItem(
+		keyName = "membersObject",
+		name = "Identify Members objects",
+		position = -5,
+		description = "Show the real item name instead of 'Members object'"
+	)
+	default boolean membersObject()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "identificationType",
 		name = "Identification Type",
 		position = -4,
