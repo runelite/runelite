@@ -56,12 +56,22 @@ public class WhaleWatchersProtOverlay extends Overlay
 			rectangle.setBounds(client.getCanvas().getBounds());
 			rectangle.setLocation(client.getCanvas().getLocation());
 			Stroke oldStroke = graphics.getStroke();
-			graphics.setStroke(new BasicStroke(10));
+			if (plugin.isLessObnoxiousProtWarning())
+			{
+				graphics.setStroke(new BasicStroke(3));
+			}
+			else
+			{
+				graphics.setStroke(new BasicStroke(10));
+			}
 			graphics.setColor(Color.RED);
 			graphics.draw(rectangle);
-			Font font = FontManager.getRunescapeBoldFont().deriveFont(Font.BOLD, 72);
-			graphics.setFont(font);
-			OverlayUtil.renderTextLocation(graphics, new Point((int) rectangle.getCenterX() - 50, font.getSize()), "Protect item prayer disabled!!!", Color.red);
+			if (!plugin.isLessObnoxiousProtWarning())
+			{
+				Font font = FontManager.getRunescapeBoldFont().deriveFont(Font.BOLD, 72);
+				graphics.setFont(font);
+				OverlayUtil.renderTextLocation(graphics, new Point((int) rectangle.getCenterX() - 50, font.getSize()), "Protect item prayer disabled!!!", Color.red);
+			}
 			graphics.setStroke(oldStroke);
 		}
 		return null;

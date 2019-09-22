@@ -91,6 +91,8 @@ public class WhaleWatchersPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean protectItemWarning;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean lessObnoxiousProtWarning;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showDamageCounter;
 	private boolean smiteableWarning;
 	private boolean gloryWarning;
@@ -317,6 +319,7 @@ public class WhaleWatchersPlugin extends Plugin
 	private void updateConfig()
 	{
 		this.protectItemWarning = config.protectItemWarning();
+		this.lessObnoxiousProtWarning = config.lessObnoxiousProtWarning();
 		this.showDamageCounter = config.showDamageCounter();
 		this.smiteableWarning = config.smiteableWarning();
 		this.gloryWarning = config.gloryWarning();
