@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.plugins.menuentryswapper.util.ArdougneCloakMode;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -334,22 +335,36 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapArdougneCape",
-		name = "Ardougne Cape",
+		keyName = "swapArdougneCloak",
+		name = "Ardougne Cloak",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
 		position = 2,
 		section = "equipmentSwapperSection"
 	)
-	default boolean getSwapArdougneCape()
+	default boolean getSwapArdougneCloak()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "ardougneCloakMode",
+		name = "Mode",
+		description = "",
+		position = 3,
+		section = "equipmentSwapperSection",
+		hidden = true,
+		unhide = "swapArdougneCloak"
+	)
+	default ArdougneCloakMode ardougneCloakMode()
+	{
+		return ArdougneCloakMode.TELE_TO_MONASTERY;
 	}
 
 	@ConfigItem(
 		keyName = "swapConstructionCape",
 		name = "Construction Cape",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
-		position = 3,
+		position = 4,
 		section = "equipmentSwapperSection"
 	)
 	default boolean getSwapConstructionCape()
@@ -361,7 +376,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "constructionCapeMode",
 		name = "Mode",
 		description = "",
-		position = 4,
+		position = 5,
 		section = "equipmentSwapperSection",
 		hidden = true,
 		unhide = "swapConstructionCape"
@@ -375,7 +390,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapCraftingCape",
 		name = "Crafting Cape",
 		description = "Enables swapping of 'Teleport' and 'Wear'.",
-		position = 5,
+		position = 6,
 		section = "equipmentSwapperSection"
 	)
 	default boolean getSwapCraftingCape()
@@ -387,7 +402,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapMagicCape",
 		name = "Magic Cape",
 		description = "Enables swapping of 'Spellbook' and 'Wear'.",
-		position = 6,
+		position = 7,
 		section = "equipmentSwapperSection"
 	)
 	default boolean getSwapMagicCape()
@@ -399,7 +414,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapExplorersRing",
 		name = "Explorer's Ring",
 		description = "Enables swapping of 'Spellbook' and 'Wear'.",
-		position = 7,
+		position = 8,
 		section = "equipmentSwapperSection"
 	)
 	default boolean getSwapExplorersRing()
@@ -411,7 +426,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapAdmire",
 		name = "Admire",
 		description = "Swap 'Admire' with 'Teleport', 'Spellbook' and 'Perks' (max cape) for mounted skill capes.",
-		position = 8,
+		position = 9,
 		section = "equipmentSwapperSection"
 	)
 	default boolean swapAdmire()
@@ -423,7 +438,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapQuestCape",
 		name = "Quest Cape",
 		description = "Enables swapping Quest cape options in worn interface.",
-		position = 9,
+		position = 10,
 		section = "equipmentSwapperSection"
 	)
 	default boolean swapQuestCape()
@@ -435,7 +450,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "questCapeMode",
 		name = "Mode",
 		description = "",
-		position = 10,
+		position = 11,
 		section = "equipmentSwapperSection",
 		hidden = true,
 		unhide = "swapQuestCape"

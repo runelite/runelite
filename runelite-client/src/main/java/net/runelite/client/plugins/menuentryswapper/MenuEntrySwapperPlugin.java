@@ -88,6 +88,7 @@ import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentCompara
 import net.runelite.client.plugins.menuentryswapper.comparables.InventoryComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.ShopComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.WithdrawComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.util.ArdougneCloakMode;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
 import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
@@ -187,6 +188,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private BurningAmuletMode getBurningAmuletMode;
 	private CharterOption charterOption;
 	private CombatBraceletMode getCombatBraceletMode;
+	private ArdougneCloakMode ardougneCloakMode;
 	private ConstructionCapeMode constructionCapeMode;
 	private ConstructionMode getConstructionMode;
 	private DigsitePendantMode getDigsitePendantMode;
@@ -222,7 +224,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getRingofWealth;
 	private boolean getSkillsNecklace;
 	private boolean getSlayerRing;
-	private boolean getSwapArdougneCape;
+	private boolean getSwapArdougneCloak;
 	private boolean getSwapConstructionCape;
 	private boolean getSwapCraftingCape;
 	private boolean getSwapExplorersRing;
@@ -770,10 +772,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addPriorityEntry("Buy <col=ff7000>All").setPriority(10);
 		}
 
-		if (this.getSwapArdougneCape)
+		if (this.getSwapArdougneCloak)
 		{
-			menuManager.addPriorityEntry("Kandarin Monastery");
-			menuManager.addPriorityEntry("Monastery Teleport");
+			menuManager.addPriorityEntry(this.ardougneCloakMode.toString()).setPriority(100);
+			menuManager.addPriorityEntry(this.ardougneCloakMode.toString2()).setPriority(100);
 		}
 
 		if (this.getSwapCraftingCape)
@@ -1536,6 +1538,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.charterOption = config.charterOption();
 		this.configCustomShiftSwaps = config.shiftCustomSwaps();
 		this.configCustomSwaps = config.customSwaps();
+		this.ardougneCloakMode = config.ardougneCloakMode();
 		this.constructionCapeMode = config.constructionCapeMode();
 		this.getBurningAmulet = config.getBurningAmulet();
 		this.getBurningAmuletMode = config.getBurningAmuletMode();
@@ -1559,7 +1562,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSkillsNecklaceMode = config.getSkillsNecklaceMode();
 		this.getSlayerRing = config.getSlayerRing();
 		this.getSlayerRingMode = config.getSlayerRingMode();
-		this.getSwapArdougneCape = config.getSwapArdougneCape();
+		this.getSwapArdougneCloak = config.getSwapArdougneCloak();
 		this.getSwapConstructionCape = config.getSwapConstructionCape();
 		this.getSwapCraftingCape = config.getSwapCraftingCape();
 		this.getSwapExplorersRing = config.getSwapExplorersRing();
