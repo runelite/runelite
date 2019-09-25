@@ -12,6 +12,7 @@ buildscript {
 }
 
 plugins {
+    id 'com.adarshr.test-logger' version '1.7.0' apply false
     id "com.github.ben-manes.versions" version "0.22.0" apply false
     id "com.gradle.build-scan" version "2.4"
 }
@@ -105,6 +106,7 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: 'com.adarshr.test-logger'
     apply plugin: 'java-library'
     apply plugin: 'maven'
     apply plugin: "com.github.ben-manes.versions"
