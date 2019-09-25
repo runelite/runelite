@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, David <Dava96@github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

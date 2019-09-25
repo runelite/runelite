@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, David <Dava96@github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,9 +44,9 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class WoodcuttingTimersOverlay extends Overlay
 {
-	// Range of Trees respawn time
+	// Regular trees have a respawn time that ranges between 36-60 seconds
 	static final int TREE_MAX_RESPAWN_TIME = 60;
-	private static final int TREE_MIN_RESPAWN_TIME = 30;
+	private static final int TREE_MIN_RESPAWN_TIME = 36;
 	private static final float TREE_RANDOM_PERCENT_THRESHOLD = (float) TREE_MIN_RESPAWN_TIME / TREE_MAX_RESPAWN_TIME;
 	private static final Color DARK_GREEN = new Color(0, 100, 0);
 
@@ -115,27 +116,24 @@ class WoodcuttingTimersOverlay extends Overlay
 				pieBorderColor = DARK_GREEN;
 			}
 
-			// The pie is already centred on these trees
+			// The pie is already centred on these trees as they are on one tile
 			if (tree == Tree.OAK_TREES || tree == Tree.YEW_TREES || tree == Tree.MAHOGANY_TREES || tree == Tree.TEAK_TREES || tree == Tree.REDWOODS)
 			{
-				ProgressPieComponent ppc = new ProgressPieComponent();
-				ppc.setBorderColor(pieBorderColor);
-				ppc.setFill(pieFillColor);
-				ppc.setPosition(point);
-				ppc.setProgress(percent);
-				ppc.render(graphics);
+				point = point;
 			}
 
-			// Centre the pie on these trees
+			// Centre the pie on these trees as they are spread over multiple tiles
 			if (tree == Tree.MAGIC_TREES || tree == Tree.MAPLE_TREES || tree == Tree.WILLOW_TREES || tree == Tree.REGULAR_TREES)
 			{
-				ProgressPieComponent centredPpc = new ProgressPieComponent();
-				centredPpc.setBorderColor(pieBorderColor);
-				centredPpc.setFill(pieFillColor);
-				centredPpc.setPosition(centrePoint);
-				centredPpc.setProgress(percent);
-				centredPpc.render(graphics);
+				point = centrePoint;
 			}
+
+			ProgressPieComponent ppc = new ProgressPieComponent();
+			ppc.setBorderColor(pieBorderColor);
+			ppc.setFill(pieFillColor);
+			ppc.setPosition(point);
+			ppc.setProgress(percent);
+			ppc.render(graphics);
 		}
 		return null;
 	}
