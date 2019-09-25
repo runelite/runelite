@@ -24,13 +24,22 @@
  */
 package net.runelite.client.plugins.notes;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("notes")
 public interface NotesConfig extends Config
 {
+	enum FontType
+	{
+		PLAIN,
+		BOLD,
+		ITALIC
+	}
+
 	@ConfigItem(
 		keyName = "notesData",
 		name = "",
@@ -48,4 +57,52 @@ public interface NotesConfig extends Config
 		description = ""
 	)
 	void notesData(String str);
+
+	@ConfigItem(
+		position = 0,
+		keyName = "font",
+		name = "Font",
+		description = "The name of the font"
+	)
+	default FontNotes font()
+	{
+		return FontNotes.RUNESCAPE_STANDARD;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "fontStyle",
+		name = "Font style",
+		description = "The style of the font"
+	)
+	default FontType fontStyle()
+	{
+		return FontType.PLAIN;
+	}
+
+	@Range(
+		min = 6,
+		max = 30
+	)
+	@ConfigItem(
+		position = 2,
+		keyName = "fontSize",
+		name = "Font size",
+		description = "The size of the font"
+	)
+	default int fontSize()
+	{
+		return 16;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "fontColour",
+		name = "Font colour",
+		description = "The colour of the font"
+	)
+	default Color fontColour()
+	{
+		return new Color(198, 198, 198);
+	}
 }
