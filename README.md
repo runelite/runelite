@@ -3,7 +3,7 @@
 
 
 # RuneLitePlus 
-[![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite)
+[![Build Status](https://github.com/runelite-extended/runelite/workflows/RunelitePlus%20-%20CI/badge.svg)](https://github.com/runelite-extended/runelite/actions)
 [![HitCount](http://hits.dwyl.io/runelite-extended/runelite.svg)](http://hits.dwyl.io/runelite-extended/runelite)  
 [RuneLitePlus](https://runelitepl.us)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
 
