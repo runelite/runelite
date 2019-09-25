@@ -140,7 +140,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		new SkillChallengeClue("Chop a yew tree.", ANY_AXE),
 		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
-		new SkillChallengeClue("Catch and cook a swordfish.", "cook a swordfish.", ANY_HARPOON),
+		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", item(ItemID.PURE_ESSENCE)),
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.SEED_DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
