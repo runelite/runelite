@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.notes;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -63,6 +65,9 @@ class NotesPanel extends PluginPanel
 		notesEditor.setTabSize(2);
 		notesEditor.setLineWrap(true);
 		notesEditor.setWrapStyleWord(true);
+
+		setFont(config.font().getFont(), config.fontStyle().ordinal(), config.fontSize());
+		setColour(config.fontColour());
 
 		JPanel notesContainer = new JPanel();
 		notesContainer.setLayout(new BorderLayout());
@@ -158,5 +163,15 @@ class NotesPanel extends PluginPanel
 	void setNotes(String data)
 	{
 		notesEditor.setText(data);
+	}
+
+	void setFont(Font font, int style, int size)
+	{
+		notesEditor.setFont(font.deriveFont(style, size));
+	}
+
+	void setColour(Color colour)
+	{
+		notesEditor.setForeground(colour);
 	}
 }
