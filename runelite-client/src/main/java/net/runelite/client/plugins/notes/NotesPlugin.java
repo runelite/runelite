@@ -95,6 +95,11 @@ public class NotesPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("notes"))
+		{
+			return;
+		}
+		
 		panel.setFont(config.font().getFont(), config.fontStyle().ordinal(), config.fontSize());
 		panel.setColour(config.fontColour());
 	}
