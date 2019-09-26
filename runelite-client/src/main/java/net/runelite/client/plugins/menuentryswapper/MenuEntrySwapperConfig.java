@@ -307,7 +307,14 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Enchant",
 		description = "Swap Talk-to with Enchant for Eluned"
 	)
-	default boolean swapEnchant()
+	default boolean swapEnchant() { return true;	}
+
+	@ConfigItem(
+		keyName = "swapPyramidPlunderMummy",
+		name = "Pyramid Plunder Start-minigame",
+		description =  "Swap Talk-to with Start-minigame at the Guardian Mummy"
+	)
+	default boolean swapPyramidPlunderMummy()
 	{
 		return true;
 	}

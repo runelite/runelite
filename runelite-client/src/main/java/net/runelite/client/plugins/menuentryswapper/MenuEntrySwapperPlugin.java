@@ -458,6 +458,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, index);
 			}
+
+			if (config.swapPyramidPlunderMummy())
+			{
+				swap("start-minigame", option, target, index);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
