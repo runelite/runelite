@@ -12,27 +12,9 @@ import net.runelite.client.config.Range;
 @ConfigGroup("drop")
 public interface DropPartyConfig extends Config
 {
-	@Getter
-	@AllArgsConstructor
-	enum FontStyle
-	{
-		BOLD("Bold", Font.BOLD),
-		ITALIC("Italic", Font.ITALIC),
-		PLAIN("Plain", Font.PLAIN);
-
-		private String name;
-		private int font;
-
-		@Override
-		public String toString()
-		{
-			return getName();
-		}
-	}
-
 	@ConfigItem(
 		keyName = "playerName",
-		name = "Dropping player:",
+		name = "Dropping player",
 		description = "selects what players name to mark tiles",
 		position = 0
 	)
@@ -91,5 +73,23 @@ public interface DropPartyConfig extends Config
 	default int textSize()
 	{
 		return 18;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	enum FontStyle
+	{
+		BOLD("Bold", Font.BOLD),
+		ITALIC("Italic", Font.ITALIC),
+		PLAIN("Plain", Font.PLAIN);
+
+		private String name;
+		private int font;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
 	}
 }
