@@ -1,56 +1,79 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("db")
 @Implements("ViewportMouse")
 public class ViewportMouse {
-	@ObfuscatedName("c")
+	@ObfuscatedName("nr")
+	@ObfuscatedGetter(
+		intValue = 69994429
+	)
+	@Export("widgetDragDuration")
+	static int widgetDragDuration;
+	@ObfuscatedName("z")
 	@Export("ViewportMouse_isInViewport")
 	static boolean ViewportMouse_isInViewport;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1996252149
+		intValue = 1421874705
 	)
 	@Export("ViewportMouse_x")
 	static int ViewportMouse_x;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 755947551
+		intValue = 197980329
 	)
 	@Export("ViewportMouse_y")
 	static int ViewportMouse_y;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@Export("ViewportMouse_false0")
 	static boolean ViewportMouse_false0;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1736158671
+		intValue = 1955374903
+	)
+	static int field1707;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -386992233
+	)
+	static int field1708;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -1018697137
+	)
+	static int field1714;
+	@ObfuscatedName("m")
+	@Export("Widget_loadedInterfaces")
+	static boolean[] Widget_loadedInterfaces;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = -96146427
+	)
+	static int field1718;
+	@ObfuscatedName("i")
+	@ObfuscatedGetter(
+		intValue = -737509043
 	)
 	static int field1711;
-	@ObfuscatedName("d")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 1750585749
-	)
-	static int field1712;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = 999378931
+		intValue = 1620511435
 	)
 	@Export("ViewportMouse_entityCount")
-	static int ViewportMouse_entityCount;
-	@ObfuscatedName("p")
+	public static int ViewportMouse_entityCount;
+	@ObfuscatedName("e")
 	@Export("ViewportMouse_entityTags")
 	public static long[] ViewportMouse_entityTags;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 1855998549
+	@ObfuscatedName("af")
+	@Export("client")
+	@ObfuscatedSignature(
+		signature = "Lclient;"
 	)
-	@Export("cacheGamebuild")
-	static int cacheGamebuild;
+	static Client client;
 
 	static {
 		ViewportMouse_isInViewport = false;
@@ -61,248 +84,162 @@ public class ViewportMouse {
 		ViewportMouse_entityTags = new long[1000];
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("gm")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-77"
+		signature = "(IIIIB)V",
+		garbageValue = "13"
 	)
-	public static boolean method2957() {
-		long var0 = SoundCache.method2480();
-		int var2 = (int)(var0 - NetCache.field3145);
-		NetCache.field3145 = var0;
-		if (var2 > 200) {
-			var2 = 200;
-		}
+	static final void method2950(int var0, int var1, int var2, int var3) {
+		Client.overheadTextCount = 0;
+		boolean var4 = false;
+		int var5 = -1;
+		int var6 = -1;
+		int var7 = Players.Players_count;
+		int[] var8 = Players.Players_indices;
 
-		NetCache.NetCache_loadTime += var2;
-		if (NetCache.NetCache_pendingResponsesCount == 0 && NetCache.NetCache_pendingPriorityResponsesCount == 0 && NetCache.NetCache_pendingWritesCount == 0 && NetCache.NetCache_pendingPriorityWritesCount == 0) {
-			return true;
-		} else if (NetCache.NetCache_socket == null) {
-			return false;
-		} else {
-			try {
-				if (NetCache.NetCache_loadTime > 30000) {
-					throw new IOException();
-				} else {
-					NetFileRequest var3;
-					Buffer var4;
-					while (NetCache.NetCache_pendingPriorityResponsesCount < 200 && NetCache.NetCache_pendingPriorityWritesCount > 0) {
-						var3 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.first();
-						var4 = new Buffer(4);
-						var4.writeByte(1);
-						var4.writeMedium((int)var3.key);
-						NetCache.NetCache_socket.write(var4.array, 0, 4);
-						NetCache.NetCache_pendingPriorityResponses.put(var3, var3.key);
-						--NetCache.NetCache_pendingPriorityWritesCount;
-						++NetCache.NetCache_pendingPriorityResponsesCount;
-					}
-
-					while (NetCache.NetCache_pendingResponsesCount < 200 && NetCache.NetCache_pendingWritesCount > 0) {
-						var3 = (NetFileRequest)NetCache.NetCache_pendingWritesQueue.removeLast();
-						var4 = new Buffer(4);
-						var4.writeByte(0);
-						var4.writeMedium((int)var3.key);
-						NetCache.NetCache_socket.write(var4.array, 0, 4);
-						var3.removeDual();
-						NetCache.NetCache_pendingResponses.put(var3, var3.key);
-						--NetCache.NetCache_pendingWritesCount;
-						++NetCache.NetCache_pendingResponsesCount;
-					}
-
-					for (int var15 = 0; var15 < 100; ++var15) {
-						int var16 = NetCache.NetCache_socket.available();
-						if (var16 < 0) {
-							throw new IOException();
-						}
-
-						if (var16 == 0) {
-							break;
-						}
-
-						NetCache.NetCache_loadTime = 0;
-						byte var5 = 0;
-						if (NetCache.NetCache_currentResponse == null) {
-							var5 = 8;
-						} else if (NetCache.field3154 == 0) {
-							var5 = 1;
-						}
-
-						int var6;
-						int var7;
-						int var8;
-						int var10;
-						byte[] var10000;
-						int var10001;
-						Buffer var22;
-						if (var5 > 0) {
-							var6 = var5 - NetCache.NetCache_responseHeaderBuffer.offset;
-							if (var6 > var16) {
-								var6 = var16;
-							}
-
-							NetCache.NetCache_socket.read(NetCache.NetCache_responseHeaderBuffer.array, NetCache.NetCache_responseHeaderBuffer.offset, var6);
-							if (NetCache.field3158 != 0) {
-								for (var7 = 0; var7 < var6; ++var7) {
-									var10000 = NetCache.NetCache_responseHeaderBuffer.array;
-									var10001 = var7 + NetCache.NetCache_responseHeaderBuffer.offset;
-									var10000[var10001] ^= NetCache.field3158;
-								}
-							}
-
-							var22 = NetCache.NetCache_responseHeaderBuffer;
-							var22.offset += var6;
-							if (NetCache.NetCache_responseHeaderBuffer.offset < var5) {
-								break;
-							}
-
-							if (NetCache.NetCache_currentResponse == null) {
-								NetCache.NetCache_responseHeaderBuffer.offset = 0;
-								var7 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
-								var8 = NetCache.NetCache_responseHeaderBuffer.readUnsignedShort();
-								int var9 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
-								var10 = NetCache.NetCache_responseHeaderBuffer.readInt();
-								long var11 = (long)(var8 + (var7 << 16));
-								NetFileRequest var13 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var11);
-								NetCache.field3156 = true;
-								if (var13 == null) {
-									var13 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var11);
-									NetCache.field3156 = false;
-								}
-
-								if (var13 == null) {
-									throw new IOException();
-								}
-
-								int var14 = var9 == 0 ? 5 : 9;
-								NetCache.NetCache_currentResponse = var13;
-								class336.NetCache_responseArchiveBuffer = new Buffer(var10 + var14 + NetCache.NetCache_currentResponse.padding);
-								class336.NetCache_responseArchiveBuffer.writeByte(var9);
-								class336.NetCache_responseArchiveBuffer.writeInt(var10);
-								NetCache.field3154 = 8;
-								NetCache.NetCache_responseHeaderBuffer.offset = 0;
-							} else if (NetCache.field3154 == 0) {
-								if (NetCache.NetCache_responseHeaderBuffer.array[0] == -1) {
-									NetCache.field3154 = 1;
-									NetCache.NetCache_responseHeaderBuffer.offset = 0;
-								} else {
-									NetCache.NetCache_currentResponse = null;
-								}
-							}
-						} else {
-							var6 = class336.NetCache_responseArchiveBuffer.array.length - NetCache.NetCache_currentResponse.padding;
-							var7 = 512 - NetCache.field3154;
-							if (var7 > var6 - class336.NetCache_responseArchiveBuffer.offset) {
-								var7 = var6 - class336.NetCache_responseArchiveBuffer.offset;
-							}
-
-							if (var7 > var16) {
-								var7 = var16;
-							}
-
-							NetCache.NetCache_socket.read(class336.NetCache_responseArchiveBuffer.array, class336.NetCache_responseArchiveBuffer.offset, var7);
-							if (NetCache.field3158 != 0) {
-								for (var8 = 0; var8 < var7; ++var8) {
-									var10000 = class336.NetCache_responseArchiveBuffer.array;
-									var10001 = var8 + class336.NetCache_responseArchiveBuffer.offset;
-									var10000[var10001] ^= NetCache.field3158;
-								}
-							}
-
-							var22 = class336.NetCache_responseArchiveBuffer;
-							var22.offset += var7;
-							NetCache.field3154 += var7;
-							if (var6 == class336.NetCache_responseArchiveBuffer.offset) {
-								if (NetCache.NetCache_currentResponse.key == 16711935L) {
-									DevicePcmPlayerProvider.NetCache_reference = class336.NetCache_responseArchiveBuffer;
-
-									for (var8 = 0; var8 < 256; ++var8) {
-										Archive var17 = NetCache.NetCache_archives[var8];
-										if (var17 != null) {
-											DevicePcmPlayerProvider.NetCache_reference.offset = var8 * 8 + 5;
-											var10 = DevicePcmPlayerProvider.NetCache_reference.readInt();
-											int var18 = DevicePcmPlayerProvider.NetCache_reference.readInt();
-											var17.loadIndex(var10, var18);
-										}
-									}
-								} else {
-									NetCache.NetCache_crc.reset();
-									NetCache.NetCache_crc.update(class336.NetCache_responseArchiveBuffer.array, 0, var6);
-									var8 = (int)NetCache.NetCache_crc.getValue();
-									if (var8 != NetCache.NetCache_currentResponse.crc) {
-										try {
-											NetCache.NetCache_socket.close();
-										} catch (Exception var20) {
-										}
-
-										++NetCache.NetCache_crcMismatches;
-										NetCache.NetCache_socket = null;
-										NetCache.field3158 = (byte)((int)(Math.random() * 255.0D + 1.0D));
-										return false;
-									}
-
-									NetCache.NetCache_crcMismatches = 0;
-									NetCache.NetCache_ioExceptions = 0;
-									NetCache.NetCache_currentResponse.archive.write((int)(NetCache.NetCache_currentResponse.key & 65535L), class336.NetCache_responseArchiveBuffer.array, (NetCache.NetCache_currentResponse.key & 16711680L) == 16711680L, NetCache.field3156);
-								}
-
-								NetCache.NetCache_currentResponse.remove();
-								if (NetCache.field3156) {
-									--NetCache.NetCache_pendingPriorityResponsesCount;
-								} else {
-									--NetCache.NetCache_pendingResponsesCount;
-								}
-
-								NetCache.field3154 = 0;
-								NetCache.NetCache_currentResponse = null;
-								class336.NetCache_responseArchiveBuffer = null;
-							} else {
-								if (NetCache.field3154 != 512) {
-									break;
-								}
-
-								NetCache.field3154 = 0;
-							}
-						}
-					}
-
-					return true;
-				}
-			} catch (IOException var21) {
-				try {
-					NetCache.NetCache_socket.close();
-				} catch (Exception var19) {
+		int var9;
+		for (var9 = 0; var9 < var7 + Client.npcCount; ++var9) {
+			Object var10;
+			if (var9 < var7) {
+				var10 = Client.players[var8[var9]];
+				if (var8[var9] == Client.combatTargetPlayerIndex) {
+					var4 = true;
+					var5 = var9;
+					continue;
 				}
 
-				++NetCache.NetCache_ioExceptions;
-				NetCache.NetCache_socket = null;
-				return false;
-			}
-		}
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "([BILjava/lang/CharSequence;I)I",
-		garbageValue = "-27737666"
-	)
-	public static int method2956(byte[] var0, int var1, CharSequence var2) {
-		int var3 = var2.length();
-		int var4 = var1;
-
-		for (int var5 = 0; var5 < var3; ++var5) {
-			char var6 = var2.charAt(var5);
-			if (var6 <= 127) {
-				var0[var4++] = (byte)var6;
-			} else if (var6 <= 2047) {
-				var0[var4++] = (byte)(192 | var6 >> 6);
-				var0[var4++] = (byte)(128 | var6 & '?');
+				if (var10 == class223.localPlayer) {
+					var6 = var9;
+					continue;
+				}
 			} else {
-				var0[var4++] = (byte)(224 | var6 >> '\f');
-				var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-				var0[var4++] = (byte)(128 | var6 & '?');
+				var10 = Client.npcs[Client.npcIndices[var9 - var7]];
+			}
+
+			class312.drawActor2d((Actor)var10, var9, var0, var1, var2, var3);
+		}
+
+		if (Client.renderSelf && var6 != -1) {
+			class312.drawActor2d(class223.localPlayer, var6, var0, var1, var2, var3);
+		}
+
+		if (var4) {
+			class312.drawActor2d(Client.players[Client.combatTargetPlayerIndex], var5, var0, var1, var2, var3);
+		}
+
+		for (var9 = 0; var9 < Client.overheadTextCount; ++var9) {
+			int var19 = Client.overheadTextXs[var9];
+			int var11 = Client.overheadTextYs[var9];
+			int var12 = Client.overheadTextXOffsets[var9];
+			int var13 = Client.overheadTextAscents[var9];
+			boolean var14 = true;
+
+			while (var14) {
+				var14 = false;
+
+				for (int var15 = 0; var15 < var9; ++var15) {
+					if (var11 + 2 > Client.overheadTextYs[var15] - Client.overheadTextAscents[var15] && var11 - var13 < Client.overheadTextYs[var15] + 2 && var19 - var12 < Client.overheadTextXOffsets[var15] + Client.overheadTextXs[var15] && var19 + var12 > Client.overheadTextXs[var15] - Client.overheadTextXOffsets[var15] && Client.overheadTextYs[var15] - Client.overheadTextAscents[var15] < var11) {
+						var11 = Client.overheadTextYs[var15] - Client.overheadTextAscents[var15];
+						var14 = true;
+					}
+				}
+			}
+
+			Client.viewportTempX = Client.overheadTextXs[var9];
+			Client.viewportTempY = Client.overheadTextYs[var9] = var11;
+			String var20 = Client.overheadText[var9];
+			if (Client.chatEffects == 0) {
+				int var16 = 16776960;
+				if (Client.overheadTextColors[var9] < 6) {
+					var16 = Client.field851[Client.overheadTextColors[var9]];
+				}
+
+				if (Client.overheadTextColors[var9] == 6) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? 16711680 : 16776960;
+				}
+
+				if (Client.overheadTextColors[var9] == 7) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? 255 : '\uffff';
+				}
+
+				if (Client.overheadTextColors[var9] == 8) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? '뀀' : 8454016;
+				}
+
+				int var17;
+				if (Client.overheadTextColors[var9] == 9) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = var17 * 1280 + 16711680;
+					} else if (var17 < 100) {
+						var16 = 16776960 - (var17 - 50) * 327680;
+					} else if (var17 < 150) {
+						var16 = (var17 - 100) * 5 + 65280;
+					}
+				}
+
+				if (Client.overheadTextColors[var9] == 10) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = var17 * 5 + 16711680;
+					} else if (var17 < 100) {
+						var16 = 16711935 - (var17 - 50) * 327680;
+					} else if (var17 < 150) {
+						var16 = (var17 - 100) * 327680 + 255 - (var17 - 100) * 5;
+					}
+				}
+
+				if (Client.overheadTextColors[var9] == 11) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = 16777215 - var17 * 327685;
+					} else if (var17 < 100) {
+						var16 = (var17 - 50) * 327685 + 65280;
+					} else if (var17 < 150) {
+						var16 = 16777215 - (var17 - 100) * 327680;
+					}
+				}
+
+				if (Client.overheadTextEffects[var9] == 0) {
+					class173.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0);
+				}
+
+				if (Client.overheadTextEffects[var9] == 1) {
+					class173.fontBold12.drawCenteredWave(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount);
+				}
+
+				if (Client.overheadTextEffects[var9] == 2) {
+					class173.fontBold12.drawCenteredWave2(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount);
+				}
+
+				if (Client.overheadTextEffects[var9] == 3) {
+					class173.fontBold12.drawCenteredShake(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount, 150 - Client.overheadTextCyclesRemaining[var9]);
+				}
+
+				if (Client.overheadTextEffects[var9] == 4) {
+					var17 = (150 - Client.overheadTextCyclesRemaining[var9]) * (class173.fontBold12.stringWidth(var20) + 100) / 150;
+					Rasterizer2D.Rasterizer2D_expandClip(var0 + Client.viewportTempX - 50, var1, var0 + Client.viewportTempX + 50, var3 + var1);
+					class173.fontBold12.draw(var20, var0 + Client.viewportTempX + 50 - var17, Client.viewportTempY + var1, var16, 0);
+					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
+				}
+
+				if (Client.overheadTextEffects[var9] == 5) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					int var18 = 0;
+					if (var17 < 25) {
+						var18 = var17 - 25;
+					} else if (var17 > 125) {
+						var18 = var17 - 125;
+					}
+
+					Rasterizer2D.Rasterizer2D_expandClip(var0, Client.viewportTempY + var1 - class173.fontBold12.ascent - 1, var0 + var2, Client.viewportTempY + var1 + 5);
+					class173.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, var18 + Client.viewportTempY + var1, var16, 0);
+					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
+				}
+			} else {
+				class173.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, 16776960, 0);
 			}
 		}
 
-		return var4 - var1;
 	}
 }

@@ -1,23 +1,17 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("el")
+@ObfuscatedName("er")
 @Implements("Entity")
 public abstract class Entity extends DualNode {
-	@ObfuscatedName("jn")
-	@ObfuscatedSignature(
-		signature = "Lhy;"
-	)
-	static Widget field1835;
-	@ObfuscatedName("cw")
+	@ObfuscatedName("ci")
 	@ObfuscatedGetter(
-		intValue = -160272347
+		intValue = -2145101269
 	)
 	@Export("height")
 	public int height;
@@ -26,17 +20,17 @@ public abstract class Entity extends DualNode {
 		this.height = 1000;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)Ldr;",
-		garbageValue = "-35"
+		signature = "(I)Ldh;",
+		garbageValue = "-62237472"
 	)
 	@Export("getModel")
 	protected Model getModel() {
 		return null;
 	}
 
-	@ObfuscatedName("cm")
+	@ObfuscatedName("cb")
 	@Export("draw")
 	void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
 		Model var11 = this.getModel();
@@ -47,227 +41,185 @@ public abstract class Entity extends DualNode {
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
-		garbageValue = "1018244137"
+		signature = "(CB)B",
+		garbageValue = "92"
 	)
-	@Export("getCacheDir")
-	static File getCacheDir(String var0, String var1, int var2) {
-		String var3 = var2 == 0 ? "" : "" + var2;
-		JagexCache.JagexCache_locationFile = new File(Message.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
-		String var4 = null;
-		String var5 = null;
-		boolean var6 = false;
-		int var11;
-		File var26;
-		if (JagexCache.JagexCache_locationFile.exists()) {
-			try {
-				AccessFile var7 = new AccessFile(JagexCache.JagexCache_locationFile, "rw", 10000L);
-
-				Buffer var8;
-				int var9;
-				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
-					var9 = var7.read(var8.array, var8.offset, var8.array.length - var8.offset);
-					if (var9 == -1) {
-						throw new IOException();
-					}
-				}
-
-				var8.offset = 0;
-				var9 = var8.readUnsignedByte();
-				if (var9 < 1 || var9 > 3) {
-					throw new IOException("" + var9);
-				}
-
-				int var10 = 0;
-				if (var9 > 1) {
-					var10 = var8.readUnsignedByte();
-				}
-
-				if (var9 <= 2) {
-					var4 = var8.readStringCp1252NullCircumfixed();
-					if (var10 == 1) {
-						var5 = var8.readStringCp1252NullCircumfixed();
-					}
-				} else {
-					var4 = var8.readCESU8();
-					if (var10 == 1) {
-						var5 = var8.readCESU8();
-					}
-				}
-
-				var7.close();
-			} catch (IOException var24) {
-				var24.printStackTrace();
-			}
-
-			if (var4 != null) {
-				var26 = new File(var4);
-				if (!var26.exists()) {
-					var4 = null;
-				}
-			}
-
-			if (var4 != null) {
-				var26 = new File(var4, "test.dat");
-
-				boolean var27;
-				try {
-					RandomAccessFile var15 = new RandomAccessFile(var26, "rw");
-					var11 = var15.read();
-					var15.seek(0L);
-					var15.write(var11);
-					var15.seek(0L);
-					var15.close();
-					var26.delete();
-					var27 = true;
-				} catch (Exception var22) {
-					var27 = false;
-				}
-
-				if (!var27) {
-					var4 = null;
-				}
-			}
+	@Export("charToByteCp1252")
+	public static byte charToByteCp1252(char var0) {
+		byte var1;
+		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+			var1 = (byte)var0;
+		} else if (var0 == 8364) {
+			var1 = -128;
+		} else if (var0 == 8218) {
+			var1 = -126;
+		} else if (var0 == 402) {
+			var1 = -125;
+		} else if (var0 == 8222) {
+			var1 = -124;
+		} else if (var0 == 8230) {
+			var1 = -123;
+		} else if (var0 == 8224) {
+			var1 = -122;
+		} else if (var0 == 8225) {
+			var1 = -121;
+		} else if (var0 == 710) {
+			var1 = -120;
+		} else if (var0 == 8240) {
+			var1 = -119;
+		} else if (var0 == 352) {
+			var1 = -118;
+		} else if (var0 == 8249) {
+			var1 = -117;
+		} else if (var0 == 338) {
+			var1 = -116;
+		} else if (var0 == 381) {
+			var1 = -114;
+		} else if (var0 == 8216) {
+			var1 = -111;
+		} else if (var0 == 8217) {
+			var1 = -110;
+		} else if (var0 == 8220) {
+			var1 = -109;
+		} else if (var0 == 8221) {
+			var1 = -108;
+		} else if (var0 == 8226) {
+			var1 = -107;
+		} else if (var0 == 8211) {
+			var1 = -106;
+		} else if (var0 == 8212) {
+			var1 = -105;
+		} else if (var0 == 732) {
+			var1 = -104;
+		} else if (var0 == 8482) {
+			var1 = -103;
+		} else if (var0 == 353) {
+			var1 = -102;
+		} else if (var0 == 8250) {
+			var1 = -101;
+		} else if (var0 == 339) {
+			var1 = -100;
+		} else if (var0 == 382) {
+			var1 = -98;
+		} else if (var0 == 376) {
+			var1 = -97;
+		} else {
+			var1 = 63;
 		}
 
-		if (var4 == null && var2 == 0) {
-			label139:
-			for (int var16 = 0; var16 < NetFileRequest.field3096.length; ++var16) {
-				for (int var17 = 0; var17 < GrandExchangeOfferWorldComparator.field30.length; ++var17) {
-					File var18 = new File(GrandExchangeOfferWorldComparator.field30[var17] + NetFileRequest.field3096[var16] + File.separatorChar + var0 + File.separatorChar);
-					if (var18.exists()) {
-						File var19 = new File(var18, "test.dat");
-
-						boolean var28;
-						try {
-							RandomAccessFile var12 = new RandomAccessFile(var19, "rw");
-							int var13 = var12.read();
-							var12.seek(0L);
-							var12.write(var13);
-							var12.seek(0L);
-							var12.close();
-							var19.delete();
-							var28 = true;
-						} catch (Exception var21) {
-							var28 = false;
-						}
-
-						if (var28) {
-							var4 = var18.toString();
-							var6 = true;
-							break label139;
-						}
-					}
-				}
-			}
-		}
-
-		if (var4 == null) {
-			var4 = Message.userHomeDirectory + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-			var6 = true;
-		}
-
-		if (var5 != null) {
-			File var25 = new File(var5);
-			var26 = new File(var4);
-
-			try {
-				File[] var31 = var25.listFiles();
-				File[] var30 = var31;
-
-				for (var11 = 0; var11 < var30.length; ++var11) {
-					File var29 = var30[var11];
-					File var20 = new File(var26, var29.getName());
-					boolean var14 = var29.renameTo(var20);
-					if (!var14) {
-						throw new IOException();
-					}
-				}
-			} catch (Exception var23) {
-				var23.printStackTrace();
-			}
-
-			var6 = true;
-		}
-
-		if (var6) {
-			WorldMapManager.method611(new File(var4), (File)null);
-		}
-
-		return new File(var4);
+		return var1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "-284240639"
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "67381036"
 	)
-	@Export("hslToRgb")
-	static final int hslToRgb(int var0, int var1, int var2) {
-		if (var2 > 179) {
-			var1 /= 2;
+	static String method3221() {
+		String var0 = "";
+
+		Message var2;
+		for (Iterator var1 = Messages.Messages_hashTable.iterator(); var1.hasNext(); var0 = var0 + var2.sender + ':' + var2.text + '\n') {
+			var2 = (Message)var1.next();
 		}
 
-		if (var2 > 192) {
-			var1 /= 2;
-		}
-
-		if (var2 > 217) {
-			var1 /= 2;
-		}
-
-		if (var2 > 243) {
-			var1 /= 2;
-		}
-
-		int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-		return var3;
+		return var0;
 	}
 
-	@ObfuscatedName("er")
+	@ObfuscatedName("aq")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-16"
+		signature = "(ILcu;ZI)I",
+		garbageValue = "160012965"
 	)
-	static void method3228() {
-		Client.packetWriter.clearBuffer();
-		Client.packetWriter.packetBuffer.offset = 0;
-		Client.packetWriter.serverPacket = null;
-		Client.packetWriter.field1274 = null;
-		Client.packetWriter.field1286 = null;
-		Client.packetWriter.field1287 = null;
-		Client.packetWriter.serverPacketLength = 0;
-		Client.packetWriter.field1283 = 0;
-		Client.rebootTimer = 0;
-		Client.menuOptionsCount = 0;
-		Client.isMenuOpen = false;
-		Client.minimapState = 0;
-		Client.destinationX = 0;
-
-		int var0;
-		for (var0 = 0; var0 < 2048; ++var0) {
-			Client.players[var0] = null;
-		}
-
-		Varps.localPlayer = null;
-
-		for (var0 = 0; var0 < Client.npcs.length; ++var0) {
-			NPC var1 = Client.npcs[var0];
-			if (var1 != null) {
-				var1.targetIndex = -1;
-				var1.false0 = false;
+	static int method3212(int var0, Script var1, boolean var2) {
+		if (var0 == ScriptOpcodes.VIEWPORT_SETFOV) {
+			Interpreter.Interpreter_intStackSize -= 2;
+			Client.field880 = (short)PlayerAppearance.method3966(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize]);
+			if (Client.field880 <= 0) {
+				Client.field880 = 256;
 			}
+
+			Client.field887 = (short)PlayerAppearance.method3966(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
+			if (Client.field887 <= 0) {
+				Client.field887 = 256;
+			}
+
+			return 1;
+		} else if (var0 == ScriptOpcodes.VIEWPORT_SETZOOM) {
+			Interpreter.Interpreter_intStackSize -= 2;
+			Client.zoomHeight = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
+			if (Client.zoomHeight <= 0) {
+				Client.zoomHeight = 256;
+			}
+
+			Client.zoomWidth = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1];
+			if (Client.zoomWidth <= 0) {
+				Client.zoomWidth = 320;
+			}
+
+			return 1;
+		} else if (var0 == ScriptOpcodes.VIEWPORT_CLAMPFOV) {
+			Interpreter.Interpreter_intStackSize -= 4;
+			Client.field686 = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
+			if (Client.field686 <= 0) {
+				Client.field686 = 1;
+			}
+
+			Client.field891 = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1];
+			if (Client.field891 <= 0) {
+				Client.field891 = 32767;
+			} else if (Client.field891 < Client.field686) {
+				Client.field891 = Client.field686;
+			}
+
+			Client.field892 = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 2];
+			if (Client.field892 <= 0) {
+				Client.field892 = 1;
+			}
+
+			Client.field893 = (short)Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 3];
+			if (Client.field893 <= 0) {
+				Client.field893 = 32767;
+			} else if (Client.field893 < Client.field892) {
+				Client.field893 = Client.field892;
+			}
+
+			return 1;
+		} else if (var0 == ScriptOpcodes.VIEWPORT_GETEFFECTIVESIZE) {
+			if (Client.viewportWidget != null) {
+				AbstractByteArrayCopier.setViewportShape(0, 0, Client.viewportWidget.width, Client.viewportWidget.height, false);
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.viewportWidth;
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.viewportHeight;
+			} else {
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = -1;
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = -1;
+			}
+
+			return 1;
+		} else if (var0 == ScriptOpcodes.VIEWPORT_GETZOOM) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.zoomHeight;
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.zoomWidth;
+			return 1;
+		} else if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4069(Client.field880);
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4069(Client.field887);
+			return 1;
+		} else if (var0 == 6220) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
+			return 1;
+		} else if (var0 == 6221) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
+			return 1;
+		} else if (var0 == 6222) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = FloorDecoration.canvasWidth;
+			return 1;
+		} else if (var0 == 6223) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = WallDecoration.canvasHeight;
+			return 1;
+		} else {
+			return 2;
 		}
-
-		class286.method5221();
-		WorldMapIcon_0.updateGameState(30);
-
-		for (var0 = 0; var0 < 100; ++var0) {
-			Client.field827[var0] = true;
-		}
-
-		MouseRecorder.method1145();
 	}
 }

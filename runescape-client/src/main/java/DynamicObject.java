@@ -4,66 +4,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("ce")
 @Implements("DynamicObject")
 public class DynamicObject extends Entity {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -440317767
+		intValue = 1757320161
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1457716031
+		intValue = 270171291
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 2004235481
+		intValue = 1684018413
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1247808451
+		intValue = -804761033
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 910065863
+		intValue = -1414323503
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 439709923
+		intValue = 1753767283
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Liw;"
+		signature = "Lix;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 1565823045
+		intValue = -1311165823
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1402940691
+		intValue = 972994897
 	)
 	@Export("cycleStart")
 	int cycleStart;
 
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIZLel;)V"
+		signature = "(IIIIIIIZLer;)V"
 	)
 	DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Entity var9) {
 		this.id = var1;
@@ -73,10 +73,10 @@ public class DynamicObject extends Entity {
 		this.x = var5;
 		this.y = var6;
 		if (var7 != -1) {
-			this.sequenceDefinition = class83.SequenceDefinition_get(var7);
+			this.sequenceDefinition = GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var7);
 			this.frame = 0;
 			this.cycleStart = Client.cycle - 1;
-			if (this.sequenceDefinition.field3502 == 0 && var9 != null && var9 instanceof DynamicObject) {
+			if (this.sequenceDefinition.field3517 == 0 && var9 != null && var9 instanceof DynamicObject) {
 				DynamicObject var10 = (DynamicObject)var9;
 				if (var10.sequenceDefinition == this.sequenceDefinition) {
 					this.frame = var10.frame;
@@ -93,10 +93,10 @@ public class DynamicObject extends Entity {
 
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)Ldr;",
-		garbageValue = "-35"
+		signature = "(I)Ldh;",
+		garbageValue = "-62237472"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
@@ -106,11 +106,11 @@ public class DynamicObject extends Entity {
 				var1 = 100;
 			}
 
-			label55: {
+			label56: {
 				do {
 					do {
 						if (var1 <= this.sequenceDefinition.frameLengths[this.frame]) {
-							break label55;
+							break label56;
 						}
 
 						var1 -= this.sequenceDefinition.frameLengths[this.frame];
@@ -126,7 +126,7 @@ public class DynamicObject extends Entity {
 			this.cycleStart = Client.cycle - var1;
 		}
 
-		ObjectDefinition var12 = WallDecoration.getObjectDefinition(this.id);
+		ObjectDefinition var12 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(this.id);
 		if (var12.transforms != null) {
 			var12 = var12.transform();
 		}
@@ -149,82 +149,115 @@ public class DynamicObject extends Entity {
 			int var6 = (var3 >> 1) + this.y;
 			int var7 = (var3 + 1 >> 1) + this.y;
 			int[][] var8 = Tiles.Tiles_heights[this.plane];
-			int var9 = var8[var5][var7] + var8[var4][var6] + var8[var5][var6] + var8[var4][var7] >> 2;
+			int var9 = var8[var5][var6] + var8[var4][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
 			int var10 = (this.x << 7) + (var2 << 6);
 			int var11 = (this.y << 7) + (var3 << 6);
 			return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Z",
-		garbageValue = "1791385097"
+		signature = "(I)Z",
+		garbageValue = "1880284014"
 	)
-	@Export("isNumber")
-	public static boolean isNumber(CharSequence var0) {
-		boolean var2 = false;
-		boolean var3 = false;
-		int var4 = 0;
-		int var5 = var0.length();
-		int var6 = 0;
-
-		boolean var1;
-		while (true) {
-			if (var6 >= var5) {
-				var1 = var3;
-				break;
+	@Export("isKeyDown")
+	public static final boolean isKeyDown() {
+		synchronized(KeyHandler.KeyHandler_instance) {
+			if (KeyHandler.field380 == KeyHandler.field378) {
+				return false;
+			} else {
+				SecureRandomFuture.field1230 = KeyHandler.field375[KeyHandler.field378];
+				KeyHandler.field381 = KeyHandler.field374[KeyHandler.field378];
+				KeyHandler.field378 = KeyHandler.field378 + 1 & 127;
+				return true;
 			}
+		}
+	}
 
-			label84: {
-				char var7 = var0.charAt(var6);
-				if (var6 == 0) {
-					if (var7 == '-') {
-						var2 = true;
-						break label84;
-					}
-
-					if (var7 == '+') {
-						break label84;
-					}
-				}
-
-				int var9;
-				if (var7 >= '0' && var7 <= '9') {
-					var9 = var7 - '0';
-				} else if (var7 >= 'A' && var7 <= 'Z') {
-					var9 = var7 - '7';
-				} else {
-					if (var7 < 'a' || var7 > 'z') {
-						var1 = false;
-						break;
-					}
-
-					var9 = var7 - 'W';
-				}
-
-				if (var9 >= 10) {
-					var1 = false;
-					break;
-				}
-
-				if (var2) {
-					var9 = -var9;
-				}
-
-				int var8 = var9 + var4 * 10;
-				if (var4 != var8 / 10) {
-					var1 = false;
-					break;
-				}
-
-				var4 = var8;
-				var3 = true;
-			}
-
-			++var6;
+	@ObfuscatedName("ao")
+	@ObfuscatedSignature(
+		signature = "(Ldc;I)V",
+		garbageValue = "1888530585"
+	)
+	@Export("PcmStream_disable")
+	static final void PcmStream_disable(PcmStream var0) {
+		var0.active = false;
+		if (var0.sound != null) {
+			var0.sound.position = 0;
 		}
 
-		return var1;
+		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
+			PcmStream_disable(var1);
+		}
+
+	}
+
+	@ObfuscatedName("ea")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "274251023"
+	)
+	static final void method2219() {
+		Client.packetWriter.close();
+		WorldMapIcon_1.method314();
+		PacketWriter.scene.clear();
+
+		for (int var0 = 0; var0 < 4; ++var0) {
+			Client.collisionMaps[var0].clear();
+		}
+
+		System.gc();
+		class197.field2386 = 1;
+		class197.musicTrackArchive = null;
+		class188.musicTrackGroupId = -1;
+		class49.musicTrackFileId = -1;
+		TileItem.field1223 = 0;
+		WorldMapSectionType.musicTrackBoolean = false;
+		MusicPatchNode2.field2382 = 2;
+		Client.field666 = -1;
+		Client.field759 = false;
+		ClientPacket.method3575();
+		MouseRecorder.updateGameState(10);
+	}
+
+	@ObfuscatedName("gn")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "652940971"
+	)
+	static final void method2221() {
+		for (Projectile var0 = (Projectile)Client.projectiles.last(); var0 != null; var0 = (Projectile)Client.projectiles.previous()) {
+			if (var0.plane == WorldMapRectangle.plane && Client.cycle <= var0.cycleEnd) {
+				if (Client.cycle >= var0.cycleStart) {
+					if (var0.targetIndex > 0) {
+						NPC var1 = Client.npcs[var0.targetIndex - 1];
+						if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y * 682054857 >= 0 && var1.y * 682054857 < 13312) {
+							var0.setDestination(var1.x, var1.y * 682054857, MusicPatchPcmStream.getTileHeight(var1.x, var1.y * 682054857, var0.plane) - var0.endHeight, Client.cycle);
+						}
+					}
+
+					if (var0.targetIndex < 0) {
+						int var2 = -var0.targetIndex - 1;
+						Player var3;
+						if (var2 == Client.localPlayerIndex) {
+							var3 = class223.localPlayer;
+						} else {
+							var3 = Client.players[var2];
+						}
+
+						if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y * 682054857 >= 0 && var3.y * 682054857 < 13312) {
+							var0.setDestination(var3.x, var3.y * 682054857, MusicPatchPcmStream.getTileHeight(var3.x, var3.y * 682054857, var0.plane) - var0.endHeight, Client.cycle);
+						}
+					}
+
+					var0.advance(Client.field698);
+					PacketWriter.scene.drawEntity(WorldMapRectangle.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
+				}
+			} else {
+				var0.remove();
+			}
+		}
+
 	}
 }

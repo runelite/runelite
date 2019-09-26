@@ -1,43 +1,59 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gl")
 public class class191 {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lge;"
+		signature = "Lgl;"
 	)
-	static final class191 field2330;
-	@ObfuscatedName("x")
+	static final class191 field2344;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lge;"
+		signature = "Lgl;"
 	)
-	static final class191 field2331;
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Lge;"
-	)
-	static final class191 field2337;
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Llt;"
-	)
-	@Export("titlebuttonSprite")
-	static IndexedSprite titlebuttonSprite;
+	static final class191 field2345;
 	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lli;"
+		signature = "Lgl;"
 	)
-	@Export("rightTitleSprite")
-	static Sprite rightTitleSprite;
+	static final class191 field2346;
 
 	static {
-		field2330 = new class191();
-		field2331 = new class191();
-		field2337 = new class191();
+		field2344 = new class191();
+		field2345 = new class191();
+		field2346 = new class191();
 	}
 
 	class191() {
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1561368496"
+	)
+	public static void method3631() {
+		if (KeyHandler.KeyHandler_instance != null) {
+			synchronized(KeyHandler.KeyHandler_instance) {
+				KeyHandler.KeyHandler_instance = null;
+			}
+		}
+
+	}
+
+	@ObfuscatedName("fa")
+	@ObfuscatedSignature(
+		signature = "(Lby;I)V",
+		garbageValue = "616240991"
+	)
+	static final void method3630(Actor var0) {
+		int var1 = var0.field948 - Client.cycle;
+		int var2 = var0.field932 * -527978816 + var0.field971 * 128;
+		int var3 = var0.field932 * -527978816 + var0.field973 * 128;
+		var0.x += (var2 - var0.x) / var1;
+		var0.y += (var3 - var0.y * 682054857) / var1 * -944175751;
+		var0.field949 = 0;
+		var0.orientation = var0.field977;
 	}
 }

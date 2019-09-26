@@ -4,35 +4,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lq")
+@ObfuscatedName("lu")
 @Implements("FillMode")
 public enum FillMode implements Enumerated {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Llq;"
+		signature = "Llu;"
 	)
 	@Export("SOLID")
 	SOLID(0, 0),
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Llq;"
+		signature = "Llu;"
 	)
-	field3855(1, 1),
-	@ObfuscatedName("t")
+	field3856(1, 1),
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Llq;"
+		signature = "Llu;"
 	)
-	field3852(2, 2);
+	field3857(2, 2);
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -494470033
+		intValue = -640256921
 	)
 	@Export("value")
 	public final int value;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1639084691
+		intValue = -532498775
 	)
 	@Export("id")
 	final int id;
@@ -42,32 +42,43 @@ public enum FillMode implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1410702910"
+		signature = "(S)I",
+		garbageValue = "221"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(Lhz;IIS)Lli;",
-		garbageValue = "-25317"
+		signature = "(I)Llf;",
+		garbageValue = "1508787563"
 	)
-	@Export("SpriteBuffer_getSprite")
-	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
-		byte[] var4 = var0.takeFile(var1, var2);
-		boolean var3;
-		if (var4 == null) {
-			var3 = false;
-		} else {
-			GrandExchangeOfferWorldComparator.SpriteBuffer_decode(var4);
-			var3 = true;
+	static Sprite method6007() {
+		Sprite var0 = new Sprite();
+		var0.width = class325.SpriteBuffer_spriteWidth;
+		var0.height = Frames.SpriteBuffer_spriteHeight;
+		var0.xOffset = class325.SpriteBuffer_xOffsets[0];
+		var0.yOffset = MusicPatchPcmStream.SpriteBuffer_yOffsets[0];
+		var0.subWidth = class325.SpriteBuffer_spriteWidths[0];
+		var0.subHeight = RunException.SpriteBuffer_spriteHeights[0];
+		int var1 = var0.subHeight * var0.subWidth;
+		byte[] var2 = PacketBufferNode.SpriteBuffer_pixels[0];
+		var0.pixels = new int[var1];
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var0.pixels[var3] = class325.SpriteBuffer_spritePalette[var2[var3] & 255];
 		}
 
-		return !var3 ? null : ChatChannel.method2218();
+		class325.SpriteBuffer_xOffsets = null;
+		MusicPatchPcmStream.SpriteBuffer_yOffsets = null;
+		class325.SpriteBuffer_spriteWidths = null;
+		RunException.SpriteBuffer_spriteHeights = null;
+		class325.SpriteBuffer_spritePalette = null;
+		PacketBufferNode.SpriteBuffer_pixels = null;
+		return var0;
 	}
 }

@@ -5,103 +5,109 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gf")
+@ObfuscatedName("gt")
 @Implements("Language")
 public class Language implements Enumerated {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_EN")
 	public static final Language Language_EN;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_DE")
 	static final Language Language_DE;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_FR")
 	public static final Language Language_FR;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_PT")
 	static final Language Language_PT;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_NL")
 	static final Language Language_NL;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_ES")
 	public static final Language Language_ES;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lgf;"
+		signature = "Lgt;"
 	)
 	@Export("Language_ES_MX")
 	static final Language Language_ES_MX;
-	@ObfuscatedName("n")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "[Lgf;"
+		signature = "[Lgt;"
 	)
 	@Export("Language_valuesOrdered")
-	public static final Language[] Language_valuesOrdered;
-	@ObfuscatedName("f")
+	static final Language[] Language_valuesOrdered;
+	@ObfuscatedName("bc")
 	@ObfuscatedSignature(
-		signature = "Ldy;"
+		signature = "[Llp;"
 	)
-	@Export("soundCache")
-	public static SoundCache soundCache;
-	@ObfuscatedName("v")
-	final String field2325;
-	@ObfuscatedName("d")
+	@Export("worldSelectFlagSprites")
+	static IndexedSprite[] worldSelectFlagSprites;
+	@ObfuscatedName("dz")
+	@ObfuscatedSignature(
+		signature = "Lie;"
+	)
+	@Export("archive7")
+	static Archive archive7;
+	@ObfuscatedName("m")
+	final String field2338;
+	@ObfuscatedName("y")
 	@Export("language")
 	final String language;
-	@ObfuscatedName("z")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1512457825
+		intValue = 1051697599
 	)
 	@Export("id")
 	final int id;
 
 	static {
-		Language_EN = new Language("EN", "en", "English", class192.field2345, 0, "GB");
-		Language_DE = new Language("DE", "de", "German", class192.field2345, 1, "DE");
-		Language_FR = new Language("FR", "fr", "French", class192.field2345, 2, "FR");
-		Language_PT = new Language("PT", "pt", "Portuguese", class192.field2345, 3, "BR");
-		Language_NL = new Language("NL", "nl", "Dutch", class192.field2340, 4, "NL");
-		Language_ES = new Language("ES", "es", "Spanish", class192.field2340, 5, "ES");
-		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2345, 6, "MX");
-		Language[] var0 = new Language[]{Language_ES_MX, Language_PT, Language_NL, Language_EN, Language_FR, Language_DE, Language_ES};
+		Language_EN = new Language("EN", "en", "English", class192.field2362, 0, "GB");
+		Language_DE = new Language("DE", "de", "German", class192.field2362, 1, "DE");
+		Language_FR = new Language("FR", "fr", "French", class192.field2362, 2, "FR");
+		Language_PT = new Language("PT", "pt", "Portuguese", class192.field2362, 3, "BR");
+		Language_NL = new Language("NL", "nl", "Dutch", class192.field2353, 4, "NL");
+		Language_ES = new Language("ES", "es", "Spanish", class192.field2353, 5, "ES");
+		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2362, 6, "MX");
+		Language[] var0 = method3629();
 		Language_valuesOrdered = new Language[var0.length];
-		Language[] var2 = var0;
+		Language[] var1 = var0;
 
-		for (int var3 = 0; var3 < var2.length; ++var3) {
-			Language var4 = var2[var3];
-			if (Language_valuesOrdered[var4.id] != null) {
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			Language var3 = var1[var2];
+			if (Language_valuesOrdered[var3.id] != null) {
 				throw new IllegalStateException();
 			}
 
-			Language_valuesOrdered[var4.id] = var4;
+			Language_valuesOrdered[var3.id] = var3;
 		}
 
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgh;ILjava/lang/String;)V"
+		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgs;ILjava/lang/String;)V"
 	)
 	Language(String var1, String var2, String var3, class192 var4, int var5, String var6) {
-		this.field2325 = var1;
+		this.field2338 = var1;
 		this.language = var2;
 		this.id = var5;
 		if (var6 != null) {
@@ -112,79 +118,93 @@ public class Language implements Enumerated {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1410702910"
-	)
-	@Export("rsOrdinal")
-	public int rsOrdinal() {
-		return this.id;
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(B)Ljava/lang/String;",
-		garbageValue = "109"
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "-1300604357"
 	)
 	@Export("getLanguage")
 	String getLanguage() {
 		return this.language;
 	}
 
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(S)I",
+		garbageValue = "221"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.id;
+	}
+
 	public String toString() {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	public String aai() {
+	public String aae() {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	public String aan() {
+	public String aah() {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	public String aar() {
+	public String aak() {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(II)Lit;",
-		garbageValue = "120634659"
+		signature = "(I)[Lgt;",
+		garbageValue = "1567762755"
 	)
-	public static VarbitDefinition method3627(int var0) {
-		VarbitDefinition var1 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
-			var1 = new VarbitDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+	static Language[] method3629() {
+		return new Language[]{Language_PT, Language_EN, Language_NL, Language_ES, Language_FR, Language_ES_MX, Language_DE};
+	}
+
+	@ObfuscatedName("n")
+	public static boolean method3627(long var0) {
+		boolean var2 = 0L != var0;
+		if (var2) {
+			boolean var3 = (int)(var0 >>> 16 & 1L) == 1;
+			var2 = !var3;
+		}
+
+		return var2;
+	}
+
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(II)Lgt;",
+		garbageValue = "-1627784008"
+	)
+	public static Language method3612(int var0) {
+		return var0 >= 0 && var0 < Language_valuesOrdered.length ? Language_valuesOrdered[var0] : null;
+	}
+
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(S)V",
+		garbageValue = "6522"
+	)
+	@Export("savePreferences")
+	static void savePreferences() {
+		AccessFile var0 = null;
+
+		try {
+			var0 = class185.getPreferencesFile("", class16.field101.name, true);
+			Buffer var1 = AbstractArchive.clientPreferences.toBuffer();
+			var0.write(var1.array, 0, var1.offset);
+		} catch (Exception var3) {
+		}
+
+		try {
+			if (var0 != null) {
+				var0.closeSync(true);
 			}
-
-			VarbitDefinition.VarbitDefinition_cached.put(var1, (long)var0);
-			return var1;
+		} catch (Exception var2) {
 		}
-	}
 
-	@ObfuscatedName("x")
-	@Export("ViewportMouse_unpackX")
-	public static int ViewportMouse_unpackX(long var0) {
-		return (int)(var0 >>> 7 & 127L);
-	}
-
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "1883889552"
-	)
-	static int method3634(int var0, int var1, int var2) {
-		if ((Tiles.Tiles_renderFlags[var0][var1][var2] & 8) != 0) {
-			return 0;
-		} else {
-			return var0 > 0 && (Tiles.Tiles_renderFlags[1][var1][var2] & 2) != 0 ? var0 - 1 : var0;
-		}
 	}
 }

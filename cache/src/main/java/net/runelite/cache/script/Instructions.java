@@ -458,6 +458,7 @@ public class Instructions
 		add(DOCHEAT, "docheat");
 		add(CHAT_SETMESSAGEFILTER, "chat_setmessagefilter");
 		add(CHAT_GETMESSAGEFILTER, "chat_getmessagefilter");
+		add(DEBUGMES, "debugmes");
 		add(GETWINDOWMODE, "getwindowmode");
 		add(SETWINDOWMODE, "setwindowmode");
 		add(GETDEFAULTWINDOWMODE, "getdefaultwindowmode");

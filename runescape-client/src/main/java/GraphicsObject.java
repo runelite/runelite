@@ -1,73 +1,71 @@
+import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("bp")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Entity {
-	@ObfuscatedName("fa")
-	@ObfuscatedSignature(
-		signature = "Lku;"
-	)
-	@Export("WorldMapElement_fonts")
-	static Fonts WorldMapElement_fonts;
-	@ObfuscatedName("c")
+	@ObfuscatedName("ec")
+	@Export("secureRandom")
+	static SecureRandom secureRandom;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -46719175
-	)
-	@Export("id")
-	int id;
-	@ObfuscatedName("x")
-	@ObfuscatedGetter(
-		intValue = 824152429
-	)
-	@Export("y")
-	int y;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = -652492191
-	)
-	@Export("cycleStart")
-	int cycleStart;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -1299632507
-	)
-	@Export("plane")
-	int plane;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = -1087465937
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = 12234547
+		intValue = -725302413
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("j")
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 781452541
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = 34616617
+	)
+	@Export("cycleStart")
+	int cycleStart;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -1951259679
+	)
+	@Export("plane")
+	int plane;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 1240960337
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -1722241771
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Liw;"
+		signature = "Lix;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 353830109
+		intValue = 926579167
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 1621269353
+		intValue = -1223841967
 	)
 	@Export("frameCycle")
 	int frameCycle;
-	@ObfuscatedName("z")
+	@ObfuscatedName("i")
 	@Export("isFinished")
 	boolean isFinished;
 
@@ -81,20 +79,20 @@ public final class GraphicsObject extends Entity {
 		this.y = var4;
 		this.height = var5;
 		this.cycleStart = var7 + var6;
-		int var8 = NetCache.SpotAnimationDefinition_get(this.id).sequence;
+		int var8 = InterfaceParent.SpotAnimationDefinition_get(this.id).sequence;
 		if (var8 != -1) {
 			this.isFinished = false;
-			this.sequenceDefinition = class83.SequenceDefinition_get(var8);
+			this.sequenceDefinition = GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var8);
 		} else {
 			this.isFinished = true;
 		}
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "477710925"
+		signature = "(IB)V",
+		garbageValue = "-72"
 	)
 	@Export("advance")
 	final void advance(int var1) {
@@ -113,14 +111,14 @@ public final class GraphicsObject extends Entity {
 		}
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)Ldr;",
-		garbageValue = "-35"
+		signature = "(I)Ldh;",
+		garbageValue = "-62237472"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		SpotAnimationDefinition var1 = NetCache.SpotAnimationDefinition_get(this.id);
+		SpotAnimationDefinition var1 = InterfaceParent.SpotAnimationDefinition_get(this.id);
 		Model var2;
 		if (!this.isFinished) {
 			var2 = var1.getModel(this.frame);
@@ -129,67 +127,5 @@ public final class GraphicsObject extends Entity {
 		}
 
 		return var2 == null ? null : var2;
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(Lkt;B)V",
-		garbageValue = "-5"
-	)
-	@Export("updatePlayer")
-	static final void updatePlayer(PacketBuffer var0) {
-		var0.importIndex();
-		int var1 = Client.localPlayerIndex;
-		Player var2 = Varps.localPlayer = Client.players[var1] = new Player();
-		var2.index = var1;
-		int var3 = var0.readBits(30);
-		byte var4 = (byte)(var3 >> 28);
-		int var5 = var3 >> 14 & 16383;
-		int var6 = var3 & 16383;
-		var2.pathX[0] = var5 - class4.baseX * 64;
-		var2.x = ((var2.pathX[0] << 7) + (var2.transformedSize() << 6)) * 62504387;
-		var2.pathY[0] = var6 - ScriptEvent.baseY;
-		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
-		MouseRecorder.plane = var2.plane = var4;
-		if (Players.field1221[var1] != null) {
-			var2.read(Players.field1221[var1]);
-		}
-
-		Players.Players_count = 0;
-		Players.Players_indices[++Players.Players_count - 1] = var1;
-		Players.field1217[var1] = 0;
-		Players.Players_emptyIdxCount = 0;
-
-		for (int var7 = 1; var7 < 2048; ++var7) {
-			if (var7 != var1) {
-				int var8 = var0.readBits(18);
-				int var9 = var8 >> 16;
-				int var10 = var8 >> 8 & 597;
-				int var11 = var8 & 597;
-				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
-				Players.Players_orientations[var7] = 0;
-				Players.Players_targetIndices[var7] = -1;
-				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
-				Players.field1217[var7] = 0;
-			}
-		}
-
-		var0.exportIndex();
-	}
-
-	@ObfuscatedName("hl")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "4"
-	)
-	@Export("addCancelMenuEntry")
-	static void addCancelMenuEntry() {
-		Client.menuOptionsCount = 0;
-		Client.isMenuOpen = false;
-		Client.menuActions[0] = "Cancel";
-		Client.menuTargets[0] = "";
-		Client.menuOpcodes[0] = 1006;
-		Client.menuShiftClick[0] = false;
-		Client.menuOptionsCount = 1;
 	}
 }

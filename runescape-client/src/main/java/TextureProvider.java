@@ -3,64 +3,53 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("dz")
 @Implements("TextureProvider")
 public class TextureProvider implements TextureLoader {
 	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = -1924995775
-	)
-	@Export("Interpreter_stringStackSize")
-	static int Interpreter_stringStackSize;
-	@ObfuscatedName("dx")
 	@ObfuscatedSignature(
-		signature = "Lio;"
-	)
-	@Export("archive13")
-	static Archive archive13;
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "[Ldu;"
+		signature = "[Ldg;"
 	)
 	@Export("textures")
 	Texture[] textures;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "Ljv;"
 	)
 	@Export("deque")
 	NodeDeque deque;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1017571935
+		intValue = 707785193
 	)
 	@Export("capacity")
 	int capacity;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1253604875
+		intValue = -55735149
 	)
 	@Export("remaining")
 	int remaining;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@Export("brightness")
 	double brightness;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -407607489
+		intValue = 678440487
 	)
 	@Export("textureSize")
 	int textureSize;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("archive")
 	AbstractArchive archive;
 
 	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;IDI)V"
+		signature = "(Lhp;Lhp;IDI)V"
 	)
 	public TextureProvider(AbstractArchive var1, AbstractArchive var2, int var3, double var4, int var6) {
 		this.deque = new NodeDeque();
@@ -83,10 +72,10 @@ public class TextureProvider implements TextureLoader {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "0"
+		signature = "(I)I",
+		garbageValue = "-2135448801"
 	)
 	@Export("getLoadedPercentage")
 	public int getLoadedPercentage() {
@@ -102,7 +91,7 @@ public class TextureProvider implements TextureLoader {
 
 				for (int var7 = 0; var7 < var6.length; ++var7) {
 					int var8 = var6[var7];
-					if (this.archive.method4142(var8)) {
+					if (this.archive.method4115(var8)) {
 						++var2;
 					}
 				}
@@ -116,17 +105,17 @@ public class TextureProvider implements TextureLoader {
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("setBrightness")
 	public void setBrightness(double var1) {
 		this.brightness = var1;
 		this.clear();
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(II)[I",
-		garbageValue = "-1189972175"
+		signature = "(IB)[I",
+		garbageValue = "2"
 	)
 	@Export("getTexturePixels")
 	public int[] getTexturePixels(int var1) {
@@ -156,39 +145,39 @@ public class TextureProvider implements TextureLoader {
 		return null;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(II)I",
-		garbageValue = "168409140"
+		garbageValue = "1942090144"
 	)
 	@Export("getAverageTextureRGB")
 	public int getAverageTextureRGB(int var1) {
 		return this.textures[var1] != null ? this.textures[var1].averageRGB : 0;
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "1740870730"
+		garbageValue = "1238853491"
 	)
-	public boolean vmethod3240(int var1) {
-		return this.textures[var1].field1590;
+	public boolean vmethod3232(int var1) {
+		return this.textures[var1].field1587;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-1205212261"
+		garbageValue = "-818075958"
 	)
 	@Export("isLowDetail")
 	public boolean isLowDetail(int var1) {
 		return this.textureSize == 64;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "0"
+		signature = "(I)V",
+		garbageValue = "170454088"
 	)
 	@Export("clear")
 	public void clear() {
@@ -202,10 +191,10 @@ public class TextureProvider implements TextureLoader {
 		this.remaining = this.capacity;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(IS)V",
-		garbageValue = "-1153"
+		signature = "(IB)V",
+		garbageValue = "60"
 	)
 	@Export("animate")
 	public void animate(int var1) {
@@ -219,24 +208,61 @@ public class TextureProvider implements TextureLoader {
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-		garbageValue = "969491526"
+		signature = "(I)V",
+		garbageValue = "-1068033058"
 	)
-	public static String method2727(CharSequence var0) {
-		return HealthBarDefinition.method4481('*', var0.length());
+	static void method2753() {
+		Tiles.Tiles_minPlane = 99;
+		Tiles.field501 = new byte[4][104][104];
+		Tiles.field483 = new byte[4][104][104];
+		DevicePcmPlayerProvider.field393 = new byte[4][104][104];
+		class287.field3634 = new byte[4][104][104];
+		Tiles.field488 = new int[4][105][105];
+		Tiles.field486 = new byte[4][105][105];
+		DevicePcmPlayerProvider.field386 = new int[105][105];
+		Tiles.Tiles_hue = new int[104];
+		ArchiveLoader.Tiles_saturation = new int[104];
+		Tiles.Tiles_lightness = new int[104];
+		FontName.Tiles_hueMultiplier = new int[104];
+		Tiles.field487 = new int[104];
 	}
 
-	@ObfuscatedName("ig")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIII)V",
-		garbageValue = "-1345116753"
+		signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
+		garbageValue = "-14"
 	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (TaskHandler.loadInterface(var0)) {
-			Tiles.updateInterface(class289.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+	@Export("loadClassFromDescriptor")
+	static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
+		if (var0.equals("B")) {
+			return Byte.TYPE;
+		} else if (var0.equals("I")) {
+			return Integer.TYPE;
+		} else if (var0.equals("S")) {
+			return Short.TYPE;
+		} else if (var0.equals("J")) {
+			return Long.TYPE;
+		} else if (var0.equals("Z")) {
+			return Boolean.TYPE;
+		} else if (var0.equals("F")) {
+			return Float.TYPE;
+		} else if (var0.equals("D")) {
+			return Double.TYPE;
+		} else if (var0.equals("C")) {
+			return Character.TYPE;
+		} else {
+			return var0.equals("void") ? Void.TYPE : Reflection.findClass(var0);
 		}
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "-114"
+	)
+	public static void method2742() {
+		ParamDefinition.ParamDefinition_cached.clear();
 	}
 }

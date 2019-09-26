@@ -1,70 +1,82 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("t")
+@ObfuscatedName("v")
 final class class2 implements class0 {
-	@ObfuscatedName("bj")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Llt;"
+		signature = "Lhp;"
 	)
-	@Export("worldSelectLeftSprite")
-	static IndexedSprite worldSelectLeftSprite;
+	@Export("Widget_fontsArchive")
+	static AbstractArchive Widget_fontsArchive;
+	@ObfuscatedName("ix")
+	@ObfuscatedGetter(
+		intValue = 1489483619
+	)
+	@Export("selectedItemWidget")
+	static int selectedItemWidget;
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkz;B)V",
-		garbageValue = "1"
+		signature = "(Ljava/lang/Object;Lkl;B)V",
+		garbageValue = "0"
 	)
-	public void vmethod42(Object var1, Buffer var2) {
-		this.method20((Long)var1, var2);
+	public void vmethod64(Object var1, Buffer var2) {
+		this.method18((Long)var1, var2);
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkz;S)Ljava/lang/Object;",
-		garbageValue = "31810"
+		signature = "(Lkl;B)Ljava/lang/Object;",
+		garbageValue = "-93"
 	)
-	public Object vmethod41(Buffer var1) {
+	public Object vmethod55(Buffer var1) {
 		return var1.readLong();
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Long;Lkz;B)V",
-		garbageValue = "3"
+		signature = "(Ljava/lang/Long;Lkl;B)V",
+		garbageValue = "33"
 	)
-	void method20(Long var1, Buffer var2) {
+	void method18(Long var1, Buffer var2) {
 		var2.writeLong(var1);
 	}
 
-	@ObfuscatedName("gn")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "291099501"
+		signature = "(II)I",
+		garbageValue = "-620659228"
 	)
-	@Export("addNpcsToScene")
-	static final void addNpcsToScene(boolean var0) {
-		for (int var1 = 0; var1 < Client.npcCount; ++var1) {
-			NPC var2 = Client.npcs[Client.npcIndices[var1]];
-			if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.transformIsVisible()) {
-				int var3 = var2.x * -78439701 >> 7;
-				int var4 = var2.y >> 7;
-				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-					if (var2.size == 1 && (var2.x * -78439701 & 127) == 64 && (var2.y & 127) == 64) {
-						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
-							continue;
-						}
+	public static int method30(int var0) {
+		return var0 >> 11 & 63;
+	}
 
-						Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
-					}
+	@ObfuscatedName("v")
+	@Export("ViewportMouse_unpackX")
+	public static int ViewportMouse_unpackX(long var0) {
+		return (int)(var0 >>> 0 & 127L);
+	}
 
-					long var5 = WorldMapIcon_1.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
-					var2.playerCycle = Client.cycle;
-					WorldMapIcon_1.scene.drawEntity(MouseRecorder.plane, var2.x * -78439701, var2.y, WorldMapAreaData.getTileHeight(var2.x * -78439701 + (var2.size * 64 - 64), var2.size * 64 - 64 + var2.y, MouseRecorder.plane), var2.size * 64 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
-				}
-			}
-		}
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;II)I",
+		garbageValue = "-2101135652"
+	)
+	public static int method29(CharSequence var0, int var1) {
+		return SoundCache.parseIntCustomRadix(var0, var1, true);
+	}
 
+	@ObfuscatedName("kk")
+	@ObfuscatedSignature(
+		signature = "(Lho;I)I",
+		garbageValue = "425196182"
+	)
+	@Export("getWidgetClickMask")
+	static int getWidgetClickMask(Widget var0) {
+		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
+		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

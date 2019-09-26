@@ -4,39 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ao")
+@ObfuscatedName("aw")
 @Implements("WorldMapLabel")
 public class WorldMapLabel {
-	@ObfuscatedName("dq")
+	@ObfuscatedName("cj")
 	@ObfuscatedSignature(
-		signature = "Lio;"
+		signature = "Lbn;"
 	)
-	@Export("archive14")
-	static Archive archive14;
-	@ObfuscatedName("c")
+	@Export("mouseRecorder")
+	static MouseRecorder mouseRecorder;
+	@ObfuscatedName("db")
+	@ObfuscatedSignature(
+		signature = "Lie;"
+	)
+	@Export("archive19")
+	static Archive archive19;
+	@ObfuscatedName("z")
 	@Export("text")
 	String text;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1500544575
+		intValue = -38349507
 	)
 	@Export("width")
 	int width;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 654109137
+		intValue = -212014043
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lq;"
+		signature = "Lg;"
 	)
 	@Export("size")
 	WorldMapLabelSize size;
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;IILq;)V"
+		signature = "(Ljava/lang/String;IILg;)V"
 	)
 	WorldMapLabel(String var1, int var2, int var3, WorldMapLabelSize var4) {
 		this.text = var1;
@@ -45,26 +51,29 @@ public class WorldMapLabel {
 		this.size = var4;
 	}
 
-	@ObfuscatedName("ak")
+	@ObfuscatedName("ah")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "55939772"
+		signature = "(ILhb;ZI)V",
+		garbageValue = "203573450"
 	)
-	static int method381(int var0) {
-		return (int)((Math.log((double)var0) / Interpreter.field1070 - 7.0D) * 256.0D);
+	static void method439(int var0, Coord var1, boolean var2) {
+		WorldMapArea var3 = Decimator.getWorldMap().getMapArea(var0);
+		int var4 = class223.localPlayer.plane;
+		int var5 = class223.baseX * 64 + (class223.localPlayer.x >> 7);
+		int var6 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
+		Coord var7 = new Coord(var4, var5, var6);
+		Decimator.getWorldMap().method6426(var3, var7, var1, var2);
 	}
 
-	@ObfuscatedName("ju")
+	@ObfuscatedName("kq")
 	@ObfuscatedSignature(
-		signature = "(Lhy;I)Lhy;",
-		garbageValue = "-658225047"
+		signature = "(B)V",
+		garbageValue = "125"
 	)
-	static Widget method382(Widget var0) {
-		Widget var1 = FontName.method5290(var0);
-		if (var1 == null) {
-			var1 = var0.parent;
-		}
-
-		return var1;
+	@Export("Clan_leaveChat")
+	static final void Clan_leaveChat() {
+		PacketBufferNode var0 = InterfaceParent.getPacketBufferNode(ClientPacket.field2237, Client.packetWriter.isaacCipher);
+		var0.packetBuffer.writeByte(0);
+		Client.packetWriter.addNode(var0);
 	}
 }

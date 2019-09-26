@@ -3,81 +3,141 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("ff")
 public enum class160 implements Enumerated {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lfr;"
+		signature = "Lff;"
 	)
-	field1975(1, 0),
-	@ObfuscatedName("x")
+	field1979(3, 0),
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lfr;"
+		signature = "Lff;"
 	)
-	field1972(2, 1),
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Lfr;"
-	)
-	field1973(3, 2),
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "Lfr;"
-	)
-	field1974(0, 3);
-
+	field1976(1, 1),
 	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = 361058639
+	@ObfuscatedSignature(
+		signature = "Lff;"
 	)
-	@Export("Interpreter_intStackSize")
-	static int Interpreter_intStackSize;
-	@ObfuscatedName("d")
-	static int[][] field1977;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = -1405442637
-	)
-	public final int field1978;
+	field1985(2, 2),
 	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "Lff;"
+	)
+	field1977(0, 3);
+
+	@ObfuscatedName("ei")
+	@Export("worldHost")
+	static String worldHost;
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 1965131589
+		intValue = -1676935957
+	)
+	public final int field1984;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 1779758939
 	)
 	@Export("id")
 	final int id;
 
 	class160(int var3, int var4) {
-		this.field1978 = var3;
+		this.field1984 = var3;
 		this.id = var4;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1410702910"
+		signature = "(S)I",
+		garbageValue = "221"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "2"
+		signature = "(IIB)I",
+		garbageValue = "18"
 	)
-	@Export("Messages_getHistorySize")
-	static int Messages_getHistorySize(int var0) {
-		ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(var0);
-		return var1 == null ? 0 : var1.size();
+	static final int method3412(int var0, int var1) {
+		int var2 = var0 + var1 * 57;
+		var2 ^= var2 << 13;
+		int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+		return var3 >> 19 & 255;
 	}
 
-	@ObfuscatedName("gr")
+	@ObfuscatedName("gz")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-744343031"
+		signature = "(B)V",
+		garbageValue = "-44"
 	)
-	static boolean method3419() {
-		return (Client.drawPlayerNames & 1) != 0;
+	static final void method3413() {
+		for (PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.last(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.previous()) {
+			if (var0.hitpoints > 0) {
+				--var0.hitpoints;
+			}
+
+			boolean var1;
+			int var2;
+			int var3;
+			ObjectDefinition var4;
+			if (var0.hitpoints == 0) {
+				if (var0.objectId >= 0) {
+					var2 = var0.objectId;
+					var3 = var0.field921;
+					var4 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var2);
+					if (var3 == 11) {
+						var3 = 10;
+					}
+
+					if (var3 >= 5 && var3 <= 8) {
+						var3 = 4;
+					}
+
+					var1 = var4.method4555(var3);
+					if (!var1) {
+						continue;
+					}
+				}
+
+				class1.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.objectId, var0.field922, var0.field921);
+				var0.remove();
+			} else {
+				if (var0.delay > 0) {
+					--var0.delay;
+				}
+
+				if (var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102) {
+					if (var0.id >= 0) {
+						var2 = var0.id;
+						var3 = var0.field916;
+						var4 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var2);
+						if (var3 == 11) {
+							var3 = 10;
+						}
+
+						if (var3 >= 5 && var3 <= 8) {
+							var3 = 4;
+						}
+
+						var1 = var4.method4555(var3);
+						if (!var1) {
+							continue;
+						}
+					}
+
+					class1.addPendingSpawnToScene(var0.plane, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field916);
+					var0.delay = -1;
+					if (var0.objectId == var0.id && var0.objectId == -1) {
+						var0.remove();
+					} else if (var0.id == var0.objectId && var0.field922 == var0.orientation && var0.field921 == var0.field916) {
+						var0.remove();
+					}
+				}
+			}
+		}
+
 	}
 }

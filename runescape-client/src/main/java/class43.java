@@ -1,56 +1,82 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("ae")
 public final class class43 {
-	@ObfuscatedName("bu")
+	@ObfuscatedName("dq")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lky;"
 	)
-	static StudioGame field359;
-	@ObfuscatedName("bm")
-	@ObfuscatedSignature(
-		signature = "Lgf;"
-	)
-	@Export("clientLanguage")
-	static Language clientLanguage;
-	@ObfuscatedName("ce")
-	@ObfuscatedGetter(
-		intValue = 121062689
-	)
-	public static int field361;
+	@Export("js5Socket")
+	static AbstractSocket js5Socket;
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lkt;I)I",
-		garbageValue = "-1826944981"
+		signature = "(Ljava/awt/Component;I)V",
+		garbageValue = "-416045608"
 	)
-	@Export("decode")
-	static int decode(PacketBuffer var0) {
-		int var1 = var0.readBits(2);
-		int var2;
-		if (var1 == 0) {
-			var2 = 0;
-		} else if (var1 == 1) {
-			var2 = var0.readBits(5);
-		} else if (var1 == 2) {
-			var2 = var0.readBits(8);
-		} else {
-			var2 = var0.readBits(11);
-		}
-
-		return var2;
+	static void method838(Component var0) {
+		var0.addMouseListener(MouseHandler.MouseHandler_instance);
+		var0.addMouseMotionListener(MouseHandler.MouseHandler_instance);
+		var0.addFocusListener(MouseHandler.MouseHandler_instance);
 	}
 
-	@ObfuscatedName("fw")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-980502076"
+		signature = "(II)Ljava/lang/String;",
+		garbageValue = "1930428495"
 	)
-	@Export("getWindowedMode")
-	static int getWindowedMode() {
-		return Client.isResizable ? 2 : 1;
+	static final String method839(int var0) {
+		if (var0 < 100000) {
+			return "<col=ffff00>" + var0 + "</col>";
+		} else {
+			return var0 < 10000000 ? "<col=ffffff>" + var0 / 1000 + "K" + "</col>" : "<col=00ff80>" + var0 / 1000000 + "M" + "</col>";
+		}
+	}
+
+	@ObfuscatedName("jw")
+	@ObfuscatedSignature(
+		signature = "(Lho;I)Z",
+		garbageValue = "-1205677722"
+	)
+	static final boolean method840(Widget var0) {
+		int var1 = var0.contentType;
+		if (var1 == 205) {
+			Client.logoutTimer = 250;
+			return true;
+		} else {
+			int var2;
+			int var3;
+			if (var1 >= 300 && var1 <= 313) {
+				var2 = (var1 - 300) / 2;
+				var3 = var1 & 1;
+				Client.playerAppearance.changeAppearance(var2, var3 == 1);
+			}
+
+			if (var1 >= 314 && var1 <= 323) {
+				var2 = (var1 - 314) / 2;
+				var3 = var1 & 1;
+				Client.playerAppearance.method3965(var2, var3 == 1);
+			}
+
+			if (var1 == 324) {
+				Client.playerAppearance.changeSex(false);
+			}
+
+			if (var1 == 325) {
+				Client.playerAppearance.changeSex(true);
+			}
+
+			if (var1 == 326) {
+				PacketBufferNode var4 = InterfaceParent.getPacketBufferNode(ClientPacket.field2228, Client.packetWriter.isaacCipher);
+				Client.playerAppearance.write(var4.packetBuffer);
+				Client.packetWriter.addNode(var4);
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

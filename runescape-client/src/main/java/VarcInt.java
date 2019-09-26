@@ -1,31 +1,30 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ih")
+@ObfuscatedName("is")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("VarcInt_archive")
-	static AbstractArchive VarcInt_archive;
-	@ObfuscatedName("x")
+	public static AbstractArchive VarcInt_archive;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lem;"
 	)
 	@Export("VarcInt_cached")
-	static EvictingDualNodeHashTable VarcInt_cached;
-	@ObfuscatedName("k")
-	@ObfuscatedGetter(
-		intValue = -59845961
+	public static EvictingDualNodeHashTable VarcInt_cached;
+	@ObfuscatedName("dp")
+	@ObfuscatedSignature(
+		signature = "Lie;"
 	)
-	@Export("loginBoxCenter")
-	static int loginBoxCenter;
-	@ObfuscatedName("t")
+	@Export("archive18")
+	static Archive archive18;
+	@ObfuscatedName("v")
 	@Export("persist")
 	public boolean persist;
 
@@ -33,53 +32,35 @@ public class VarcInt extends DualNode {
 		VarcInt_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	VarcInt() {
+	public VarcInt() {
 		this.persist = false;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lkz;B)V",
-		garbageValue = "9"
+		signature = "(Lkl;B)V",
+		garbageValue = "32"
 	)
-	void method4394(Buffer var1) {
+	public void method4360(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4395(var1, var2);
+			this.method4363(var1, var2);
 		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkz;IB)V",
-		garbageValue = "-46"
+		signature = "(Lkl;II)V",
+		garbageValue = "-773678840"
 	)
-	void method4395(Buffer var1, int var2) {
+	void method4363(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
 		}
 
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(Lhz;I)V",
-		garbageValue = "-1900079219"
-	)
-	public static void method4407(AbstractArchive var0) {
-		ParamDefinition.ParamDefinition_archive = var0;
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(B)[Lie;",
-		garbageValue = "-105"
-	)
-	static HorizontalAlignment[] method4396() {
-		return new HorizontalAlignment[]{HorizontalAlignment.field3430, HorizontalAlignment.HorizontalAlignment_centered, HorizontalAlignment.field3428};
 	}
 }

@@ -3,15 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dm")
+@ObfuscatedName("dn")
 @Implements("SoundSystem")
 public class SoundSystem implements Runnable {
-	@ObfuscatedName("j")
-	@Export("SpriteBuffer_spriteHeights")
-	public static int[] SpriteBuffer_spriteHeights;
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "[Ldh;"
+		signature = "[Ldv;"
 	)
 	@Export("players")
 	volatile PcmPlayer[] players;
@@ -29,8 +26,42 @@ public class SoundSystem implements Runnable {
 				}
 			}
 		} catch (Exception var4) {
-			class188.RunException_sendStackTrace((String)null, var4);
+			class32.RunException_sendStackTrace((String)null, var4);
 		}
 
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(Lkl;II)V",
+		garbageValue = "536478263"
+	)
+	public static void method2464(Buffer var0, int var1) {
+		if (JagexCache.JagexCache_randomDat != null) {
+			try {
+				JagexCache.JagexCache_randomDat.seek(0L);
+				JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
+			} catch (Exception var3) {
+			}
+		}
+
+	}
+
+	@ObfuscatedName("jn")
+	@ObfuscatedSignature(
+		signature = "(Lho;IIII)V",
+		garbageValue = "-877706061"
+	)
+	@Export("drawCompass")
+	static final void drawCompass(Widget var0, int var1, int var2, int var3) {
+		SpriteMask var4 = var0.getSpriteMask(false);
+		if (var4 != null) {
+			if (Client.minimapState < 3) {
+				AttackOption.compass.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
+			} else {
+				Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
+			}
+
+		}
 	}
 }

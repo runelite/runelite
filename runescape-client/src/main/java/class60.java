@@ -2,71 +2,84 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bc")
 public class class60 {
-	@ObfuscatedName("pg")
+	@ObfuscatedName("gg")
+	@Export("regionLandArchiveIds")
+	static int[] regionLandArchiveIds;
+
+	@ObfuscatedName("fv")
 	@ObfuscatedSignature(
-		signature = "Lli;"
+		signature = "(I)V",
+		garbageValue = "-410662040"
 	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
+	static final void method1191() {
+		if (Client.field643 != WorldMapRectangle.plane) {
+			Client.field643 = WorldMapRectangle.plane;
+			int var0 = WorldMapRectangle.plane;
+			int[] var1 = ObjectSound.sceneMinimapSprite.pixels;
+			int var2 = var1.length;
 
-	@ObfuscatedName("hv")
-	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;I)V",
-		garbageValue = "1939345864"
-	)
-	static void method1122(int var0, String var1) {
-		int var2 = Players.Players_count;
-		int[] var3 = Players.Players_indices;
-		boolean var4 = false;
-		Username var5 = new Username(var1, class4.loginType);
-
-		for (int var6 = 0; var6 < var2; ++var6) {
-			Player var7 = Client.players[var3[var6]];
-			if (var7 != null && var7 != Varps.localPlayer && var7.username != null && var7.username.equals(var5)) {
-				PacketBufferNode var8;
-				if (var0 == 1) {
-					var8 = MenuAction.getPacketBufferNode(ClientPacket.field2237, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5500(var3[var6]);
-					var8.packetBuffer.method5566(0);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 4) {
-					var8 = MenuAction.getPacketBufferNode(ClientPacket.field2248, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeByte(0);
-					var8.packetBuffer.method5500(var3[var6]);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 6) {
-					var8 = MenuAction.getPacketBufferNode(ClientPacket.field2250, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5502(var3[var6]);
-					var8.packetBuffer.method5491(0);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 7) {
-					var8 = MenuAction.getPacketBufferNode(ClientPacket.field2268, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5491(0);
-					var8.packetBuffer.method5500(var3[var6]);
-					Client.packetWriter.addNode(var8);
-				}
-
-				var4 = true;
-				break;
+			int var3;
+			for (var3 = 0; var3 < var2; ++var3) {
+				var1[var3] = 0;
 			}
+
+			int var4;
+			int var5;
+			for (var3 = 1; var3 < 103; ++var3) {
+				var4 = (103 - var3) * 2048 + 24628;
+
+				for (var5 = 1; var5 < 103; ++var5) {
+					if ((Tiles.Tiles_renderFlags[var0][var5][var3] & 24) == 0) {
+						PacketWriter.scene.drawTileMinimap(var1, var4, 512, var0, var5, var3);
+					}
+
+					if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var5][var3] & 8) != 0) {
+						PacketWriter.scene.drawTileMinimap(var1, var4, 512, var0 + 1, var5, var3);
+					}
+
+					var4 += 4;
+				}
+			}
+
+			var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+			var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+			ObjectSound.sceneMinimapSprite.setRaster();
+
+			int var6;
+			for (var5 = 1; var5 < 103; ++var5) {
+				for (var6 = 1; var6 < 103; ++var6) {
+					if ((Tiles.Tiles_renderFlags[var0][var6][var5] & 24) == 0) {
+						class42.drawObject(var0, var6, var5, var3, var4);
+					}
+
+					if (var0 < 3 && (Tiles.Tiles_renderFlags[var0 + 1][var6][var5] & 8) != 0) {
+						class42.drawObject(var0 + 1, var6, var5, var3, var4);
+					}
+				}
+			}
+
+			Client.mapIconCount = 0;
+
+			for (var5 = 0; var5 < 104; ++var5) {
+				for (var6 = 0; var6 < 104; ++var6) {
+					long var7 = PacketWriter.scene.getFloorDecorationTag(WorldMapRectangle.plane, var5, var6);
+					if (0L != var7) {
+						int var9 = class81.Entity_unpackID(var7);
+						int var10 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var9).mapIconId;
+						if (var10 >= 0) {
+							Client.mapIcons[Client.mapIconCount] = Decimator.WorldMapElement_get(var10).getSpriteBool(false);
+							Client.mapIconXs[Client.mapIconCount] = var5;
+							Client.mapIconYs[Client.mapIconCount] = var6;
+							++Client.mapIconCount;
+						}
+					}
+				}
+			}
+
+			class42.rasterProvider.apply();
 		}
 
-		if (!var4) {
-			WorldMapCacheName.addGameMessage(4, "", "Unable to find " + var1);
-		}
-
-	}
-
-	@ObfuscatedName("kn")
-	@ObfuscatedSignature(
-		signature = "(Lhy;S)I",
-		garbageValue = "-12983"
-	)
-	@Export("getWidgetClickMask")
-	static int getWidgetClickMask(Widget var0) {
-		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
-		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

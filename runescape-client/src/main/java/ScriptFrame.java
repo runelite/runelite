@@ -4,31 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("bv")
 @Implements("ScriptFrame")
 public class ScriptFrame {
-	@ObfuscatedName("hp")
-	@ObfuscatedGetter(
-		intValue = 583805703
-	)
-	@Export("cameraX")
-	static int cameraX;
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "Lcu;"
 	)
 	@Export("script")
 	Script script;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 669580895
+		intValue = 173320539
 	)
 	@Export("pc")
 	int pc;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@Export("intLocals")
 	int[] intLocals;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@Export("stringLocals")
 	String[] stringLocals;
 
@@ -36,33 +30,75 @@ public class ScriptFrame {
 		this.pc = -1;
 	}
 
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(IIII)Lli;",
-		garbageValue = "-283029695"
-	)
-	static Sprite method1085(int var0, int var1, int var2) {
-		DemotingHashTable var3 = WorldMapRegion.WorldMapRegion_cachedSprites;
-		long var4 = (long)(var2 << 16 | var0 << 8 | var1);
-		return (Sprite)var3.get(var4);
+	@ObfuscatedName("z")
+	public static final int method1158(double var0, double var2, double var4) {
+		double var6 = var4;
+		double var8 = var4;
+		double var10 = var4;
+		if (var2 != 0.0D) {
+			double var12;
+			if (var4 < 0.5D) {
+				var12 = (1.0D + var2) * var4;
+			} else {
+				var12 = var2 + var4 - var4 * var2;
+			}
+
+			double var14 = var4 * 2.0D - var12;
+			double var16 = 0.3333333333333333D + var0;
+			if (var16 > 1.0D) {
+				--var16;
+			}
+
+			double var20 = var0 - 0.3333333333333333D;
+			if (var20 < 0.0D) {
+				++var20;
+			}
+
+			if (var16 * 6.0D < 1.0D) {
+				var6 = var16 * (var12 - var14) * 6.0D + var14;
+			} else if (var16 * 2.0D < 1.0D) {
+				var6 = var12;
+			} else if (3.0D * var16 < 2.0D) {
+				var6 = var14 + 6.0D * (var12 - var14) * (0.6666666666666666D - var16);
+			} else {
+				var6 = var14;
+			}
+
+			if (6.0D * var0 < 1.0D) {
+				var8 = var0 * (var12 - var14) * 6.0D + var14;
+			} else if (2.0D * var0 < 1.0D) {
+				var8 = var12;
+			} else if (3.0D * var0 < 2.0D) {
+				var8 = var14 + 6.0D * (var12 - var14) * (0.6666666666666666D - var0);
+			} else {
+				var8 = var14;
+			}
+
+			if (6.0D * var20 < 1.0D) {
+				var10 = var14 + (var12 - var14) * 6.0D * var20;
+			} else if (var20 * 2.0D < 1.0D) {
+				var10 = var12;
+			} else if (3.0D * var20 < 2.0D) {
+				var10 = var14 + 6.0D * (0.6666666666666666D - var20) * (var12 - var14);
+			} else {
+				var10 = var14;
+			}
+		}
+
+		int var22 = (int)(var6 * 256.0D);
+		int var13 = (int)(256.0D * var8);
+		int var23 = (int)(256.0D * var10);
+		int var15 = var23 + (var13 << 8) + (var22 << 16);
+		return var15;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "46"
+		signature = "(Lhp;Lhp;I)V",
+		garbageValue = "-1912847764"
 	)
-	@Export("WorldMapRegion_clearCachedSprites")
-	static void WorldMapRegion_clearCachedSprites() {
-		WorldMapRegion.WorldMapRegion_cachedSprites.clear();
-	}
-
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "1564175728"
-	)
-	public static int method1086(int var0) {
-		return var0 >> 17 & 7;
+	public static void method1157(AbstractArchive var0, AbstractArchive var1) {
+		HealthBarDefinition.HealthBarDefinition_archive = var0;
+		HealthBarDefinition.HitSplatDefinition_spritesArchive = var1;
 	}
 }

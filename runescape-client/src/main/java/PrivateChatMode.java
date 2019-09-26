@@ -6,34 +6,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("kc")
 @Implements("PrivateChatMode")
 public class PrivateChatMode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "Lkc;"
 	)
-	static final PrivateChatMode field3789;
-	@ObfuscatedName("x")
+	static final PrivateChatMode field3790;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "Lkc;"
 	)
-	public static final PrivateChatMode field3786;
-	@ObfuscatedName("t")
+	public static final PrivateChatMode field3791;
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "Lkc;"
 	)
-	static final PrivateChatMode field3788;
-	@ObfuscatedName("g")
+	static final PrivateChatMode field3792;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -2108036815
+		intValue = -1358406113
 	)
-	public final int field3787;
+	public final int field3793;
 
 	static {
-		field3789 = new PrivateChatMode(0);
-		field3786 = new PrivateChatMode(1);
-		field3788 = new PrivateChatMode(2);
+		field3790 = new PrivateChatMode(0);
+		field3791 = new PrivateChatMode(1);
+		field3792 = new PrivateChatMode(2);
 	}
 
 	PrivateChatMode(int var1) {
-		this.field3787 = var1;
+		this.field3793 = var1;
 	}
 }

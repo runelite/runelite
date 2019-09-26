@@ -4,158 +4,137 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fc")
 @Implements("MilliClock")
 public class MilliClock extends Clock {
-	@ObfuscatedName("qb")
+	@ObfuscatedName("z")
+	long[] field1993;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -669204480
+		intValue = 1174263325
 	)
-	static int field1990;
-	@ObfuscatedName("c")
-	long[] field1982;
-	@ObfuscatedName("x")
+	int field1992;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1242742979
+		intValue = -133065269
 	)
-	int field1983;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 1756511381
-	)
-	int field1991;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		longValue = 2067357926353532881L
-	)
-	long field1985;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = -1118758251
-	)
-	int field1986;
+	int field1994;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1868084299
+		longValue = 4855142476282651555L
 	)
-	int field1987;
+	long field1997;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -118742351
+	)
+	int field1996;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -432514755
+	)
+	int field1995;
 
 	MilliClock() {
-		this.field1982 = new long[10];
-		this.field1983 = 256;
-		this.field1991 = 1;
-		this.field1986 = 0;
-		this.field1985 = SoundCache.method2480();
+		this.field1993 = new long[10];
+		this.field1992 = 256;
+		this.field1994 = 1;
+		this.field1996 = 0;
+		this.field1997 = class30.method566();
 
 		for (int var1 = 0; var1 < 10; ++var1) {
-			this.field1982[var1] = this.field1985;
+			this.field1993[var1] = this.field1997;
 		}
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-250719361"
+		signature = "(B)V",
+		garbageValue = "-54"
 	)
 	@Export("mark")
 	public void mark() {
 		for (int var1 = 0; var1 < 10; ++var1) {
-			this.field1982[var1] = 0L;
+			this.field1993[var1] = 0L;
 		}
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(III)I",
-		garbageValue = "1652957447"
+		garbageValue = "569029249"
 	)
 	@Export("wait")
 	public int wait(int var1, int var2) {
-		int var3 = this.field1983;
-		int var4 = this.field1991;
-		this.field1983 = 300;
-		this.field1991 = 1;
-		this.field1985 = SoundCache.method2480();
-		if (this.field1982[this.field1987] == 0L) {
-			this.field1983 = var3;
-			this.field1991 = var4;
-		} else if (this.field1985 > this.field1982[this.field1987]) {
-			this.field1983 = (int)((long)(var1 * 2560) / (this.field1985 - this.field1982[this.field1987]));
+		int var3 = this.field1992;
+		int var4 = this.field1994;
+		this.field1992 = 300;
+		this.field1994 = 1;
+		this.field1997 = class30.method566();
+		if (0L == this.field1993[this.field1995]) {
+			this.field1992 = var3;
+			this.field1994 = var4;
+		} else if (this.field1997 > this.field1993[this.field1995]) {
+			this.field1992 = (int)((long)(var1 * 2560) / (this.field1997 - this.field1993[this.field1995]));
 		}
 
-		if (this.field1983 < 25) {
-			this.field1983 = 25;
+		if (this.field1992 < 25) {
+			this.field1992 = 25;
 		}
 
-		if (this.field1983 > 256) {
-			this.field1983 = 256;
-			this.field1991 = (int)((long)var1 - (this.field1985 - this.field1982[this.field1987]) / 10L);
+		if (this.field1992 > 256) {
+			this.field1992 = 256;
+			this.field1994 = (int)((long)var1 - (this.field1997 - this.field1993[this.field1995]) / 10L);
 		}
 
-		if (this.field1991 > var1) {
-			this.field1991 = var1;
+		if (this.field1994 > var1) {
+			this.field1994 = var1;
 		}
 
-		this.field1982[this.field1987] = this.field1985;
-		this.field1987 = (this.field1987 + 1) % 10;
-		int var5;
-		if (this.field1991 > 1) {
-			for (var5 = 0; var5 < 10; ++var5) {
-				if (0L != this.field1982[var5]) {
-					this.field1982[var5] += (long)this.field1991;
+		this.field1993[this.field1995] = this.field1997;
+		this.field1995 = (this.field1995 + 1) % 10;
+		if (this.field1994 > 1) {
+			for (int var5 = 0; var5 < 10; ++var5) {
+				if (0L != this.field1993[var5]) {
+					this.field1993[var5] += (long)this.field1994;
 				}
 			}
 		}
 
-		if (this.field1991 < var2) {
-			this.field1991 = var2;
+		if (this.field1994 < var2) {
+			this.field1994 = var2;
 		}
 
-		FriendsList.sleepMillis((long)this.field1991);
+		long var10 = (long)this.field1994;
+		if (var10 > 0L) {
+			if (var10 % 10L == 0L) {
+				long var7 = var10 - 1L;
 
-		for (var5 = 0; this.field1986 < 256; this.field1986 += this.field1983) {
-			++var5;
-		}
+				try {
+					Thread.sleep(var7);
+				} catch (InterruptedException var16) {
+				}
 
-		this.field1986 &= 255;
-		return var5;
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;ZB)[B",
-		garbageValue = "-72"
-	)
-	@Export("serialize")
-	public static byte[] serialize(Object var0, boolean var1) {
-		if (var0 == null) {
-			return null;
-		} else if (var0 instanceof byte[]) {
-			byte[] var6 = (byte[])((byte[])var0);
-			if (var1) {
-				int var4 = var6.length;
-				byte[] var5 = new byte[var4];
-				System.arraycopy(var6, 0, var5, 0, var4);
-				return var5;
+				try {
+					Thread.sleep(1L);
+				} catch (InterruptedException var15) {
+				}
 			} else {
-				return var6;
+				try {
+					Thread.sleep(var10);
+				} catch (InterruptedException var14) {
+				}
 			}
-		} else if (var0 instanceof AbstractByteArrayCopier) {
-			AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
-			return var2.get();
-		} else {
-			throw new IllegalArgumentException();
 		}
-	}
 
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "578447595"
-	)
-	public static boolean method3432(int var0) {
-		return (var0 >> 30 & 1) != 0;
+		int var13;
+		for (var13 = 0; this.field1996 < 256; this.field1996 += this.field1992) {
+			++var13;
+		}
+
+		this.field1996 &= 255;
+		return var13;
 	}
 }

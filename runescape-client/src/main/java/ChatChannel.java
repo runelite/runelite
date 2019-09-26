@@ -4,18 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cc")
 @Implements("ChatChannel")
 public class ChatChannel {
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "[Lbj;"
+		signature = "[Lbe;"
 	)
 	@Export("messages")
 	Message[] messages;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 26719133
+		intValue = -864101903
 	)
 	@Export("count")
 	int count;
@@ -24,10 +24,10 @@ public class ChatChannel {
 		this.messages = new Message[100];
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbj;",
-		garbageValue = "2"
+		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbe;",
+		garbageValue = "56"
 	)
 	@Export("addMessage")
 	Message addMessage(int var1, String var2, String var3, String var4) {
@@ -55,159 +55,223 @@ public class ChatChannel {
 		return var5;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(II)Lbj;",
-		garbageValue = "-1600519730"
+		signature = "(II)Lbe;",
+		garbageValue = "601749225"
 	)
 	@Export("getMessage")
 	Message getMessage(int var1) {
 		return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(S)I",
-		garbageValue = "255"
+		signature = "(I)I",
+		garbageValue = "-135495526"
 	)
 	@Export("size")
 	int size() {
 		return this.count;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("ft")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;Lhz;B)V",
-		garbageValue = "-105"
+		signature = "(I)V",
+		garbageValue = "247037730"
 	)
-	public static void method2220(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
-		HitSplatDefinition.HitSplatDefinition_archive = var0;
-		HitSplatDefinition.field3300 = var1;
-		class189.HitSplatDefinition_fontsArchive = var2;
-	}
-
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)[B",
-		garbageValue = "1945232856"
-	)
-	public static byte[] method2212(CharSequence var0) {
-		int var1 = var0.length();
-		byte[] var2 = new byte[var1];
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			char var4 = var0.charAt(var3);
-			if (var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
-				var2[var3] = (byte)var4;
-			} else if (var4 == 8364) {
-				var2[var3] = -128;
-			} else if (var4 == 8218) {
-				var2[var3] = -126;
-			} else if (var4 == 402) {
-				var2[var3] = -125;
-			} else if (var4 == 8222) {
-				var2[var3] = -124;
-			} else if (var4 == 8230) {
-				var2[var3] = -123;
-			} else if (var4 == 8224) {
-				var2[var3] = -122;
-			} else if (var4 == 8225) {
-				var2[var3] = -121;
-			} else if (var4 == 710) {
-				var2[var3] = -120;
-			} else if (var4 == 8240) {
-				var2[var3] = -119;
-			} else if (var4 == 352) {
-				var2[var3] = -118;
-			} else if (var4 == 8249) {
-				var2[var3] = -117;
-			} else if (var4 == 338) {
-				var2[var3] = -116;
-			} else if (var4 == 381) {
-				var2[var3] = -114;
-			} else if (var4 == 8216) {
-				var2[var3] = -111;
-			} else if (var4 == 8217) {
-				var2[var3] = -110;
-			} else if (var4 == 8220) {
-				var2[var3] = -109;
-			} else if (var4 == 8221) {
-				var2[var3] = -108;
-			} else if (var4 == 8226) {
-				var2[var3] = -107;
-			} else if (var4 == 8211) {
-				var2[var3] = -106;
-			} else if (var4 == 8212) {
-				var2[var3] = -105;
-			} else if (var4 == 732) {
-				var2[var3] = -104;
-			} else if (var4 == 8482) {
-				var2[var3] = -103;
-			} else if (var4 == 353) {
-				var2[var3] = -102;
-			} else if (var4 == 8250) {
-				var2[var3] = -101;
-			} else if (var4 == 339) {
-				var2[var3] = -100;
-			} else if (var4 == 382) {
-				var2[var3] = -98;
-			} else if (var4 == 376) {
-				var2[var3] = -97;
-			} else {
-				var2[var3] = 63;
+	static final void method2233() {
+		int var0 = class225.field3045 * 16384 + 64;
+		int var1 = Clock.field2039 * 128 + 64;
+		int var2 = MusicPatchPcmStream.getTileHeight(var0, var1, WorldMapRectangle.plane) - GrandExchangeOfferOwnWorldComparator.field627;
+		if (GrandExchangeOfferOwnWorldComparator.cameraX < var0) {
+			GrandExchangeOfferOwnWorldComparator.cameraX = (var0 - GrandExchangeOfferOwnWorldComparator.cameraX) * Messages.field1262 / 1000 + GrandExchangeOfferOwnWorldComparator.cameraX + MouseRecorder.field572;
+			if (GrandExchangeOfferOwnWorldComparator.cameraX > var0) {
+				GrandExchangeOfferOwnWorldComparator.cameraX = var0;
 			}
 		}
 
-		return var2;
-	}
-
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "(I)Lli;",
-		garbageValue = "1800491151"
-	)
-	static Sprite method2218() {
-		Sprite var0 = new Sprite();
-		var0.width = class325.SpriteBuffer_spriteWidth;
-		var0.height = class325.SpriteBuffer_spriteHeight;
-		var0.xOffset = class325.SpriteBuffer_xOffsets[0];
-		var0.yOffset = SecureRandomCallable.SpriteBuffer_yOffsets[0];
-		var0.subWidth = class325.SpriteBuffer_spriteWidths[0];
-		var0.subHeight = SoundSystem.SpriteBuffer_spriteHeights[0];
-		int var1 = var0.subWidth * var0.subHeight;
-		byte[] var2 = InvDefinition.SpriteBuffer_pixels[0];
-		var0.pixels = new int[var1];
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var0.pixels[var3] = class325.SpriteBuffer_spritePalette[var2[var3] & 255];
+		if (GrandExchangeOfferOwnWorldComparator.cameraX > var0) {
+			GrandExchangeOfferOwnWorldComparator.cameraX -= Messages.field1262 * (GrandExchangeOfferOwnWorldComparator.cameraX - var0) / 1000 + MouseRecorder.field572;
+			if (GrandExchangeOfferOwnWorldComparator.cameraX < var0) {
+				GrandExchangeOfferOwnWorldComparator.cameraX = var0;
+			}
 		}
 
-		class192.SpriteBuffer_clear();
-		return var0;
+		if (Varcs.cameraY < var2) {
+			Varcs.cameraY = (var2 - Varcs.cameraY) * Messages.field1262 / 1000 + Varcs.cameraY + MouseRecorder.field572;
+			if (Varcs.cameraY > var2) {
+				Varcs.cameraY = var2;
+			}
+		}
+
+		if (Varcs.cameraY > var2) {
+			Varcs.cameraY -= Messages.field1262 * (Varcs.cameraY - var2) / 1000 + MouseRecorder.field572;
+			if (Varcs.cameraY < var2) {
+				Varcs.cameraY = var2;
+			}
+		}
+
+		if (WorldMapIcon_1.cameraZ < var1) {
+			WorldMapIcon_1.cameraZ = (var1 - WorldMapIcon_1.cameraZ) * Messages.field1262 / 1000 + WorldMapIcon_1.cameraZ + MouseRecorder.field572;
+			if (WorldMapIcon_1.cameraZ > var1) {
+				WorldMapIcon_1.cameraZ = var1;
+			}
+		}
+
+		if (WorldMapIcon_1.cameraZ > var1) {
+			WorldMapIcon_1.cameraZ -= Messages.field1262 * (WorldMapIcon_1.cameraZ - var1) / 1000 + MouseRecorder.field572;
+			if (WorldMapIcon_1.cameraZ < var1) {
+				WorldMapIcon_1.cameraZ = var1;
+			}
+		}
+
+		var0 = GameShell.field455 * 128 + 64;
+		var1 = SecureRandomFuture.field1228 * 16384 + 64;
+		var2 = MusicPatchPcmStream.getTileHeight(var0, var1, WorldMapRectangle.plane) - class14.field90;
+		int var3 = var0 - GrandExchangeOfferOwnWorldComparator.cameraX;
+		int var4 = var2 - Varcs.cameraY;
+		int var5 = var1 - WorldMapIcon_1.cameraZ;
+		int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3));
+		int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
+		int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
+		if (var7 < 128) {
+			var7 = 128;
+		}
+
+		if (var7 > 383) {
+			var7 = 383;
+		}
+
+		if (IgnoreList.cameraPitch < var7) {
+			IgnoreList.cameraPitch = (var7 - IgnoreList.cameraPitch) * ScriptEvent.field570 / 1000 + IgnoreList.cameraPitch + class80.field1126;
+			if (IgnoreList.cameraPitch > var7) {
+				IgnoreList.cameraPitch = var7;
+			}
+		}
+
+		if (IgnoreList.cameraPitch > var7) {
+			IgnoreList.cameraPitch -= ScriptEvent.field570 * (IgnoreList.cameraPitch - var7) / 1000 + class80.field1126;
+			if (IgnoreList.cameraPitch < var7) {
+				IgnoreList.cameraPitch = var7;
+			}
+		}
+
+		int var9 = var8 - WorldMapSection2.cameraYaw;
+		if (var9 > 1024) {
+			var9 -= 2048;
+		}
+
+		if (var9 < -1024) {
+			var9 += 2048;
+		}
+
+		if (var9 > 0) {
+			WorldMapSection2.cameraYaw = WorldMapSection2.cameraYaw + class80.field1126 + var9 * ScriptEvent.field570 / 1000;
+			WorldMapSection2.cameraYaw &= 2047;
+		}
+
+		if (var9 < 0) {
+			WorldMapSection2.cameraYaw -= class80.field1126 + -var9 * ScriptEvent.field570 / 1000;
+			WorldMapSection2.cameraYaw &= 2047;
+		}
+
+		int var10 = var8 - WorldMapSection2.cameraYaw;
+		if (var10 > 1024) {
+			var10 -= 2048;
+		}
+
+		if (var10 < -1024) {
+			var10 += 2048;
+		}
+
+		if (var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
+			WorldMapSection2.cameraYaw = var8;
+		}
+
 	}
 
 	@ObfuscatedName("jx")
 	@ObfuscatedSignature(
-		signature = "(IIIILli;Lhi;I)V",
-		garbageValue = "219480869"
+		signature = "(IB)V",
+		garbageValue = "73"
 	)
-	@Export("drawSpriteOnMinimap")
-	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
-		if (var4 != null) {
-			int var6 = Client.camAngleY & 2047;
-			int var7 = var3 * var3 + var2 * var2;
-			if (var7 <= 6400) {
-				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
-				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
-				int var10 = var9 * var2 + var3 * var8 >> 16;
-				int var11 = var3 * var9 - var8 * var2 >> 16;
-				if (var7 > 2500) {
-					var4.method6102(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
-				} else {
-					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
+	static void method2225(int var0) {
+		ParamDefinition.tempMenuAction = new MenuAction();
+		ParamDefinition.tempMenuAction.argument1 = Client.menuArguments1[var0];
+		ParamDefinition.tempMenuAction.argument2 = Client.menuArguments2[var0];
+		ParamDefinition.tempMenuAction.opcode = Client.menuOpcodes[var0];
+		ParamDefinition.tempMenuAction.argument0 = Client.menuIdentifiers[var0];
+		ParamDefinition.tempMenuAction.action = Client.menuActions[var0];
+	}
+
+	@ObfuscatedName("ja")
+	@ObfuscatedSignature(
+		signature = "([Lho;II)V",
+		garbageValue = "559815398"
+	)
+	@Export("drawModelComponents")
+	static final void drawModelComponents(Widget[] var0, int var1) {
+		for (int var2 = 0; var2 < var0.length; ++var2) {
+			Widget var3 = var0[var2];
+			if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !WorldMapSectionType.isComponentHidden(var3))) {
+				int var5;
+				if (var3.type == 0) {
+					if (!var3.isIf3 && WorldMapSectionType.isComponentHidden(var3) && var3 != NetSocket.mousedOverWidgetIf1) {
+						continue;
+					}
+
+					drawModelComponents(var0, var3.id);
+					if (var3.children != null) {
+						drawModelComponents(var3.children, var3.id);
+					}
+
+					InterfaceParent var7 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
+					if (var7 != null) {
+						var5 = var7.group;
+						if (WorldMapData_0.loadInterface(var5)) {
+							drawModelComponents(UserComparator5.Widget_interfaceComponents[var5], -1);
+						}
+					}
 				}
 
+				if (var3.type == 6) {
+					if (var3.sequenceId != -1 || var3.sequenceId2 != -1) {
+						boolean var4 = Projectile.runCs1(var3);
+						if (var4) {
+							var5 = var3.sequenceId2;
+						} else {
+							var5 = var3.sequenceId;
+						}
+
+						if (var5 != -1) {
+							SequenceDefinition var6 = GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var5);
+
+							for (var3.modelFrameCycle += Client.field698; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; WorldMapSectionType.invalidateWidget(var3)) {
+								var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
+								++var3.modelFrame;
+								if (var3.modelFrame >= var6.frameIds.length) {
+									var3.modelFrame -= var6.frameCount;
+									if (var3.modelFrame < 0 || var3.modelFrame >= var6.frameIds.length) {
+										var3.modelFrame = 0;
+									}
+								}
+							}
+						}
+					}
+
+					if (var3.field2601 != 0 && !var3.isIf3) {
+						int var8 = var3.field2601 >> 16;
+						var5 = var3.field2601 << 16 >> 16;
+						var8 *= Client.field698;
+						var5 *= Client.field698;
+						var3.modelAngleX = var8 + var3.modelAngleX & 2047;
+						var3.modelAngleY = var5 + var3.modelAngleY & 2047;
+						WorldMapSectionType.invalidateWidget(var3);
+					}
+				}
 			}
 		}
+
 	}
 }

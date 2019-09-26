@@ -4,42 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gn")
 @Implements("PacketBufferNode")
 public class PacketBufferNode extends Node {
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "[Lgj;"
+		signature = "[Lgn;"
 	)
 	@Export("PacketBufferNode_packetBufferNodes")
 	static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1509343701
+		intValue = 6984373
 	)
 	@Export("PacketBufferNode_packetBufferNodeCount")
 	static int PacketBufferNode_packetBufferNodeCount;
-	@ObfuscatedName("c")
+	@ObfuscatedName("y")
+	@Export("SpriteBuffer_pixels")
+	public static byte[][] SpriteBuffer_pixels;
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lgw;"
+		signature = "Lgy;"
 	)
 	@Export("clientPacket")
-	public ClientPacket clientPacket;
-	@ObfuscatedName("x")
+	ClientPacket clientPacket;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1279904825
+		intValue = -1214677313
 	)
 	@Export("clientPacketLength")
-	public int clientPacketLength;
-	@ObfuscatedName("t")
+	int clientPacketLength;
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lkt;"
+		signature = "Lkf;"
 	)
 	@Export("packetBuffer")
 	public PacketBuffer packetBuffer;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1995143083
+		intValue = 232074557
 	)
 	@Export("index")
 	public int index;
@@ -52,10 +55,10 @@ public class PacketBufferNode extends Node {
 	PacketBufferNode() {
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "1"
+		signature = "(I)V",
+		garbageValue = "-873176834"
 	)
 	@Export("release")
 	public void release() {
@@ -64,41 +67,27 @@ public class PacketBufferNode extends Node {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-1275149709"
+		signature = "(II)Lil;",
+		garbageValue = "1677952312"
 	)
-	public static String method3616(String var0) {
-		int var1 = var0.length();
-		char[] var2 = new char[var1];
-		byte var3 = 2;
-
-		for (int var4 = 0; var4 < var1; ++var4) {
-			char var5 = var0.charAt(var4);
-			if (var3 == 0) {
-				var5 = Character.toLowerCase(var5);
-			} else if (var3 == 2 || Character.isUpperCase(var5)) {
-				var5 = WorldMapDecoration.method302(var5);
+	@Export("getNpcDefinition")
+	public static NPCDefinition getNpcDefinition(int var0) {
+		NPCDefinition var1 = (NPCDefinition)NPCDefinition.NpcDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = NPCDefinition.NpcDefinition_archive.takeFile(9, var0);
+			var1 = new NPCDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			if (Character.isLetter(var5)) {
-				var3 = 0;
-			} else if (var5 != '.' && var5 != '?' && var5 != '!') {
-				if (Character.isSpaceChar(var5)) {
-					if (var3 != 2) {
-						var3 = 1;
-					}
-				} else {
-					var3 = 1;
-				}
-			} else {
-				var3 = 2;
-			}
-
-			var2[var4] = var5;
+			var1.postDecode();
+			NPCDefinition.NpcDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-
-		return new String(var2);
 	}
 }

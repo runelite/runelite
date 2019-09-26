@@ -4,39 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("df")
+@ObfuscatedName("dp")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("x")
-	@ObfuscatedGetter(
-		intValue = 717279929
+	@ObfuscatedName("bd")
+	@ObfuscatedSignature(
+		signature = "Lhs;"
 	)
-	@Export("y")
-	int y;
-	@ObfuscatedName("t")
+	static ServerBuild field1726;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 933713205
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -190922053
-	)
-	@Export("z")
-	int z;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 906423943
+		intValue = 511779629
 	)
 	@Export("magnitude")
 	int magnitude;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 162355823
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = 669484941
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -1691554905
+	)
+	@Export("z")
+	int z;
 
 	VertexNormal() {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ldf;)V"
+		signature = "(Ldp;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x;
@@ -45,83 +50,85 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude;
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(IIIZIZI)V",
-		garbageValue = "-1345116753"
+		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+		garbageValue = "-1499927610"
 	)
-	@Export("doWorldSorting")
-	static void doWorldSorting(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-		if (var0 < var1) {
-			int var6 = (var0 + var1) / 2;
-			int var7 = var0;
-			World var8 = World.World_worlds[var6];
-			World.World_worlds[var6] = World.World_worlds[var1];
-			World.World_worlds[var1] = var8;
+	public static String method2957(CharSequence var0) {
+		long var3 = 0L;
+		int var5 = var0.length();
 
-			for (int var9 = var0; var9 < var1; ++var9) {
-				World var11 = World.World_worlds[var9];
-				int var12 = VerticalAlignment.compareWorlds(var11, var8, var2, var3);
-				int var10;
-				if (var12 != 0) {
-					if (var3) {
-						var10 = -var12;
-					} else {
-						var10 = var12;
-					}
-				} else if (var4 == -1) {
-					var10 = 0;
-				} else {
-					int var13 = VerticalAlignment.compareWorlds(var11, var8, var4, var5);
-					if (var5) {
-						var10 = -var13;
-					} else {
-						var10 = var13;
-					}
-				}
-
-				if (var10 <= 0) {
-					World var14 = World.World_worlds[var9];
-					World.World_worlds[var9] = World.World_worlds[var7];
-					World.World_worlds[var7++] = var14;
-				}
+		for (int var6 = 0; var6 < var5; ++var6) {
+			var3 *= 37L;
+			char var7 = var0.charAt(var6);
+			if (var7 >= 'A' && var7 <= 'Z') {
+				var3 += (long)(var7 + 1 - 65);
+			} else if (var7 >= 'a' && var7 <= 'z') {
+				var3 += (long)(var7 + 1 - 97);
+			} else if (var7 >= '0' && var7 <= '9') {
+				var3 += (long)(var7 + 27 - 48);
 			}
 
-			World.World_worlds[var1] = World.World_worlds[var7];
-			World.World_worlds[var7] = var8;
-			doWorldSorting(var0, var7 - 1, var2, var3, var4, var5);
-			doWorldSorting(var7 + 1, var1, var2, var3, var4, var5);
+			if (var3 >= 177917621779460413L) {
+				break;
+			}
 		}
 
+		while (var3 % 37L == 0L && 0L != var3) {
+			var3 /= 37L;
+		}
+
+		String var8 = World.base37DecodeLong(var3);
+		if (var8 == null) {
+			var8 = "";
+		}
+
+		return var8;
 	}
 
 	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lkz;J)V"
+		signature = "(I)V",
+		garbageValue = "-1992175982"
 	)
-	static void method2958(Buffer var0, long var1) {
-		var1 /= 10L;
-		if (var1 < 0L) {
-			var1 = 0L;
-		} else if (var1 > 65535L) {
-			var1 = 65535L;
-		}
-
-		var0.writeShort((int)var1);
+	public static void method2956() {
+		class49.midiPcmStream.clear();
+		class197.field2386 = 1;
+		class197.musicTrackArchive = null;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-214641711"
+		signature = "(B)V",
+		garbageValue = "11"
 	)
-	public static void method2960(boolean var0) {
-		if (var0 != ItemDefinition.ItemDefinition_inMembersWorld) {
-			ItemDefinition.ItemDefinition_cached.clear();
-			ItemDefinition.ItemDefinition_cachedModels.clear();
-			ItemDefinition.ItemDefinition_cachedSprites.clear();
-			ItemDefinition.ItemDefinition_inMembersWorld = var0;
+	public static void method2955() {
+		synchronized(MouseHandler.MouseHandler_instance) {
+			MouseHandler.MouseHandler_currentButton = MouseHandler.MouseHandler_currentButtonVolatile;
+			MouseHandler.MouseHandler_x = MouseHandler.MouseHandler_xVolatile;
+			MouseHandler.MouseHandler_y = MouseHandler.MouseHandler_yVolatile;
+			MouseHandler.MouseHandler_millis = MouseHandler.MouseHandler_lastMovedVolatile;
+			MouseHandler.MouseHandler_lastButton = MouseHandler.MouseHandler_lastButtonVolatile;
+			MouseHandler.MouseHandler_lastPressedX = MouseHandler.MouseHandler_lastPressedXVolatile;
+			MouseHandler.MouseHandler_lastPressedY = MouseHandler.MouseHandler_lastPressedYVolatile;
+			MouseHandler.MouseHandler_lastPressedTimeMillis = MouseHandler.MouseHandler_lastPressedTimeMillisVolatile;
+			MouseHandler.MouseHandler_lastButtonVolatile = 0;
 		}
+	}
 
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(Lhp;IIS)Z",
+		garbageValue = "18259"
+	)
+	static boolean method2958(AbstractArchive var0, int var1, int var2) {
+		byte[] var3 = var0.takeFile(var1, var2);
+		if (var3 == null) {
+			return false;
+		} else {
+			Tiles.SpriteBuffer_decode(var3);
+			return true;
+		}
 	}
 }

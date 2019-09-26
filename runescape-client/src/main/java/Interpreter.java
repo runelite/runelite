@@ -4,53 +4,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bw")
 @Implements("Interpreter")
 public class Interpreter {
-	@ObfuscatedName("t")
+	@ObfuscatedName("qg")
+	@ObfuscatedSignature(
+		signature = "Ldr;"
+	)
+	@Export("decimator")
+	static Decimator decimator;
+	@ObfuscatedName("v")
 	@Export("Interpreter_intLocals")
 	static int[] Interpreter_intLocals;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@Export("Interpreter_arrayLengths")
 	static int[] Interpreter_arrayLengths;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@Export("Interpreter_arrays")
 	static int[][] Interpreter_arrays;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@Export("Interpreter_intStack")
 	static int[] Interpreter_intStack;
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 313560965
+	)
+	@Export("Interpreter_intStackSize")
+	static int Interpreter_intStackSize;
+	@ObfuscatedName("y")
 	@Export("Interpreter_stringStack")
 	static String[] Interpreter_stringStack;
-	@ObfuscatedName("n")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -642929591
+		intValue = -133806221
+	)
+	@Export("Interpreter_stringStackSize")
+	static int Interpreter_stringStackSize;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 1889538287
 	)
 	@Export("Interpreter_frameDepth")
 	static int Interpreter_frameDepth;
-	@ObfuscatedName("h")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "[Lbu;"
+		signature = "[Lbv;"
 	)
 	@Export("Interpreter_frames")
 	static ScriptFrame[] Interpreter_frames;
-	@ObfuscatedName("p")
+	@ObfuscatedName("e")
 	@Export("Interpreter_calendar")
 	static java.util.Calendar Interpreter_calendar;
-	@ObfuscatedName("e")
+	@ObfuscatedName("w")
 	@Export("Interpreter_MONTHS")
 	static final String[] Interpreter_MONTHS;
-	@ObfuscatedName("q")
-	static boolean field1067;
-	@ObfuscatedName("y")
-	static boolean field1068;
-	@ObfuscatedName("r")
+	@ObfuscatedName("g")
+	static boolean field1074;
+	@ObfuscatedName("x")
+	static boolean field1075;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 3372955
+		intValue = -1964719699
 	)
-	static int field1066;
-	@ObfuscatedName("o")
-	static final double field1070;
+	static int field1089;
+	@ObfuscatedName("d")
+	static final double field1077;
 
 	static {
 		Interpreter_arrayLengths = new int[5];
@@ -61,69 +79,110 @@ public class Interpreter {
 		Interpreter_frames = new ScriptFrame[50];
 		Interpreter_calendar = java.util.Calendar.getInstance();
 		Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-		field1067 = false;
-		field1068 = false;
-		field1066 = 0;
-		field1070 = Math.log(2.0D);
+		field1074 = false;
+		field1075 = false;
+		field1089 = 0;
+		field1077 = Math.log(2.0D);
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(II)Lic;",
-		garbageValue = "2054556426"
+		signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;Lgt;I)I",
+		garbageValue = "-1997764542"
 	)
-	@Export("HitSplatDefinition_get")
-	public static HitSplatDefinition HitSplatDefinition_get(int var0) {
-		HitSplatDefinition var1 = (HitSplatDefinition)HitSplatDefinition.HitSplatDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
-			var1 = new HitSplatDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+	@Export("compareStrings")
+	public static int compareStrings(CharSequence var0, CharSequence var1, Language var2) {
+		int var3 = var0.length();
+		int var4 = var1.length();
+		int var5 = 0;
+		int var6 = 0;
+		char var7 = 0;
+		char var8 = 0;
+
+		while (var5 - var7 < var3 || var6 - var8 < var4) {
+			if (var5 - var7 >= var3) {
+				return -1;
 			}
 
-			HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);
-			return var1;
+			if (var6 - var8 >= var4) {
+				return 1;
+			}
+
+			char var9;
+			if (var7 != 0) {
+				var9 = var7;
+				boolean var14 = false;
+			} else {
+				var9 = var0.charAt(var5++);
+			}
+
+			char var10;
+			if (var8 != 0) {
+				var10 = var8;
+				boolean var15 = false;
+			} else {
+				var10 = var1.charAt(var6++);
+			}
+
+			var7 = class14.method175(var9);
+			var8 = class14.method175(var10);
+			var9 = class13.standardizeChar(var9, var2);
+			var10 = class13.standardizeChar(var10, var2);
+			if (var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+				var9 = Character.toLowerCase(var9);
+				var10 = Character.toLowerCase(var10);
+				if (var10 != var9) {
+					return MusicPatchNode.lowercaseChar(var9, var2) - MusicPatchNode.lowercaseChar(var10, var2);
+				}
+			}
+		}
+
+		int var16 = Math.min(var3, var4);
+
+		char var12;
+		int var17;
+		for (var17 = 0; var17 < var16; ++var17) {
+			if (var2 == Language.Language_FR) {
+				var5 = var3 - 1 - var17;
+				var6 = var4 - 1 - var17;
+			} else {
+				var6 = var17;
+				var5 = var17;
+			}
+
+			char var11 = var0.charAt(var5);
+			var12 = var1.charAt(var6);
+			if (var11 != var12 && Character.toUpperCase(var11) != Character.toUpperCase(var12)) {
+				var11 = Character.toLowerCase(var11);
+				var12 = Character.toLowerCase(var12);
+				if (var12 != var11) {
+					return MusicPatchNode.lowercaseChar(var11, var2) - MusicPatchNode.lowercaseChar(var12, var2);
+				}
+			}
+		}
+
+		var17 = var3 - var4;
+		if (var17 != 0) {
+			return var17;
+		} else {
+			for (int var18 = 0; var18 < var16; ++var18) {
+				var12 = var0.charAt(var18);
+				char var13 = var1.charAt(var18);
+				if (var13 != var12) {
+					return MusicPatchNode.lowercaseChar(var12, var2) - MusicPatchNode.lowercaseChar(var13, var2);
+				}
+			}
+
+			return 0;
 		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Ljava/lang/String;Ljava/lang/String;B)Llt;",
-		garbageValue = "105"
+		signature = "(Ljava/lang/String;IB)Z",
+		garbageValue = "106"
 	)
-	@Export("SpriteBuffer_getIndexedSpriteByName")
-	public static IndexedSprite SpriteBuffer_getIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
-		int var3 = var0.getGroupId(var1);
-		int var4 = var0.getFileId(var3, var2);
-		byte[] var7 = var0.takeFile(var3, var4);
-		boolean var6;
-		if (var7 == null) {
-			var6 = false;
-		} else {
-			GrandExchangeOfferWorldComparator.SpriteBuffer_decode(var7);
-			var6 = true;
-		}
-
-		IndexedSprite var5;
-		if (!var6) {
-			var5 = null;
-		} else {
-			IndexedSprite var8 = new IndexedSprite();
-			var8.width = class325.SpriteBuffer_spriteWidth;
-			var8.height = class325.SpriteBuffer_spriteHeight;
-			var8.xOffset = class325.SpriteBuffer_xOffsets[0];
-			var8.yOffset = SecureRandomCallable.SpriteBuffer_yOffsets[0];
-			var8.subWidth = class325.SpriteBuffer_spriteWidths[0];
-			var8.subHeight = SoundSystem.SpriteBuffer_spriteHeights[0];
-			var8.palette = class325.SpriteBuffer_spritePalette;
-			var8.pixels = InvDefinition.SpriteBuffer_pixels[0];
-			class192.SpriteBuffer_clear();
-			var5 = var8;
-		}
-
-		return var5;
+	static boolean method2021(String var0, int var1) {
+		return WorldMapID.method567(var0, var1, "openjs");
 	}
 }

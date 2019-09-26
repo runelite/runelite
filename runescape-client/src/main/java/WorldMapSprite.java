@@ -3,21 +3,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("az")
 @Implements("WorldMapSprite")
 public final class WorldMapSprite {
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("Widget_fontsArchive")
-	static AbstractArchive Widget_fontsArchive;
-	@ObfuscatedName("bk")
-	@ObfuscatedSignature(
-		signature = "Lho;"
-	)
-	static ServerBuild field226;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("tileColors")
 	final int[] tileColors;
 
@@ -29,123 +18,164 @@ public final class WorldMapSprite {
 		this.tileColors = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "2"
+		signature = "(IIS)I",
+		garbageValue = "-9220"
 	)
 	@Export("getTileColor")
 	final int getTileColor(int var1, int var2) {
 		return this.tileColors[var2 * 64 + var1];
 	}
 
-	@ObfuscatedName("aq")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(ILhj;ZI)V",
-		garbageValue = "-310129392"
+		signature = "(IB)I",
+		garbageValue = "-104"
 	)
-	static void method380(int var0, Coord var1, boolean var2) {
-		WorldMapArea var3 = class1.getWorldMap().getMapArea(var0);
-		int var4 = Varps.localPlayer.plane;
-		int var5 = class4.baseX * 64 + (Varps.localPlayer.x * -78439701 >> 7);
-		int var6 = (Varps.localPlayer.y >> 7) + ScriptEvent.baseY;
-		Coord var7 = new Coord(var4, var5, var6);
-		class1.getWorldMap().method6431(var3, var7, var1, var2);
-	}
-
-	@ObfuscatedName("eh")
-	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "79"
-	)
-	@Export("getLoginError")
-	static void getLoginError(int var0) {
-		if (var0 == -3) {
-			Canvas.setLoginResponseString("Connection timed out.", "Please try using a different world.", "");
-		} else if (var0 == -2) {
-			Canvas.setLoginResponseString("", "Error connecting to server.", "");
-		} else if (var0 == -1) {
-			Canvas.setLoginResponseString("No response from server.", "Please try using a different world.", "");
-		} else if (var0 == 3) {
-			Login.loginIndex = 3;
-			Login.field1161 = 1;
-		} else if (var0 == 4) {
-			Login.loginIndex = 12;
-			Login.field1156 = 0;
-		} else if (var0 == 5) {
-			Login.field1161 = 2;
-			Canvas.setLoginResponseString("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-		} else if (var0 == 68 || !Client.onMobile && var0 == 6) {
-			Canvas.setLoginResponseString("RuneScape has been updated!", "Please reload this page.", "");
-		} else if (var0 == 7) {
-			Canvas.setLoginResponseString("This world is full.", "Please use a different world.", "");
-		} else if (var0 == 8) {
-			Canvas.setLoginResponseString("Unable to connect.", "Login server offline.", "");
-		} else if (var0 == 9) {
-			Canvas.setLoginResponseString("Login limit exceeded.", "Too many connections from your address.", "");
-		} else if (var0 == 10) {
-			Canvas.setLoginResponseString("Unable to connect.", "Bad session id.", "");
-		} else if (var0 == 11) {
-			Canvas.setLoginResponseString("We suspect someone knows your password.", "Press 'change your password' on front page.", "");
-		} else if (var0 == 12) {
-			Canvas.setLoginResponseString("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-		} else if (var0 == 13) {
-			Canvas.setLoginResponseString("Could not complete login.", "Please try using a different world.", "");
-		} else if (var0 == 14) {
-			Canvas.setLoginResponseString("The server is being updated.", "Please wait 1 minute and try again.", "");
-		} else if (var0 == 16) {
-			Canvas.setLoginResponseString("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-		} else if (var0 == 17) {
-			Canvas.setLoginResponseString("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-		} else if (var0 == 18) {
-			Login.loginIndex = 12;
-			Login.field1156 = 1;
-		} else if (var0 == 19) {
-			Canvas.setLoginResponseString("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-		} else if (var0 == 20) {
-			Canvas.setLoginResponseString("Invalid loginserver requested.", "Please try using a different world.", "");
-		} else if (var0 == 22) {
-			Canvas.setLoginResponseString("Malformed login packet.", "Please try again.", "");
-		} else if (var0 == 23) {
-			Canvas.setLoginResponseString("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-		} else if (var0 == 24) {
-			Canvas.setLoginResponseString("Error loading your profile.", "Please contact customer support.", "");
-		} else if (var0 == 25) {
-			Canvas.setLoginResponseString("Unexpected loginserver response.", "Please try using a different world.", "");
-		} else if (var0 == 26) {
-			Canvas.setLoginResponseString("This computers address has been blocked", "as it was used to break our rules.", "");
-		} else if (var0 == 27) {
-			Canvas.setLoginResponseString("", "Service unavailable.", "");
-		} else if (var0 == 31) {
-			Canvas.setLoginResponseString("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-		} else if (var0 == 32) {
-			Canvas.setLoginResponseString("Your attempt to log into your account was", "unsuccessful.  Don't worry, you can sort", "this out by visiting the billing system.");
-		} else if (var0 == 37) {
-			Canvas.setLoginResponseString("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-		} else if (var0 == 38) {
-			Canvas.setLoginResponseString("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-		} else if (var0 == 55) {
-			Login.loginIndex = 8;
+	@Export("getVarbit")
+	public static int getVarbit(int var0) {
+		VarbitDefinition var2 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+		VarbitDefinition var1;
+		if (var2 != null) {
+			var1 = var2;
 		} else {
-			if (var0 == 56) {
-				Canvas.setLoginResponseString("Enter the 6-digit code generated by your", "authenticator app.", "");
-				WorldMapIcon_0.updateGameState(11);
-				return;
+			byte[] var7 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
+			var2 = new VarbitDefinition();
+			if (var7 != null) {
+				var2.decode(new Buffer(var7));
 			}
 
-			if (var0 == 57) {
-				Canvas.setLoginResponseString("The code you entered was incorrect.", "Please try again.", "");
-				WorldMapIcon_0.updateGameState(11);
-				return;
-			}
-
-			if (var0 == 61) {
-				Login.loginIndex = 7;
-			} else {
-				Canvas.setLoginResponseString("Unexpected server response", "Please try using a different world.", "");
-			}
+			VarbitDefinition.VarbitDefinition_cached.put(var2, (long)var0);
+			var1 = var2;
 		}
 
-		WorldMapIcon_0.updateGameState(10);
+		int var3 = var1.baseVar;
+		int var4 = var1.startBit;
+		int var5 = var1.endBit;
+		int var6 = Varps.Varps_masks[var5 - var4];
+		return Varps.Varps_main[var3] >> var4 & var6;
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(Lhp;Lhp;ZII)V",
+		garbageValue = "257961128"
+	)
+	static void method435(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
+		if (Login.field1160) {
+			if (var3 == 4) {
+				Login.loginIndex = 4;
+			}
+
+		} else {
+			Login.loginIndex = var3;
+			Rasterizer2D.Rasterizer2D_clear();
+			byte[] var4 = var0.takeFileByNames("title.jpg", "");
+			WorldMapID.leftTitleSprite = class40.convertJpgToSprite(var4);
+			class51.rightTitleSprite = WorldMapID.leftTitleSprite.mirrorHorizontally();
+			if ((Client.worldProperties & 536870912) != 0) {
+				FontName.logoSprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+			} else {
+				FontName.logoSprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
+			}
+
+			class32.titleboxSprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
+			AbstractRasterProvider.titlebuttonSprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
+			Login.runesSprite = WorldMapIcon_0.method222(var1, "runes", "");
+			UserComparator7.title_muteSprite = WorldMapIcon_0.method222(var1, "title_mute", "");
+			class195.options_buttons_0Sprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+			ClientPreferences.field1046 = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+			class42.options_buttons_2Sprite = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+			Login.field1163 = WorldMapRectangle.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+			class83.field1145 = class195.options_buttons_0Sprite.subWidth;
+			WorldMapCacheName.field286 = class195.options_buttons_0Sprite.subHeight;
+			BufferedSink.loginScreenRunesAnimation = new LoginScreenAnimation(Login.runesSprite);
+			if (var2) {
+				Login.Login_username = "";
+				Login.Login_password = "";
+			}
+
+			class185.field2305 = 0;
+			DesktopPlatformInfoProvider.otp = "";
+			Login.field1183 = true;
+			Login.worldSelectOpen = false;
+			if (!AbstractArchive.clientPreferences.titleMusicDisabled) {
+				WorldMapData_0.method194(2, class225.archive6, "scape main", "", 255, false);
+			} else {
+				class197.field2386 = 1;
+				class197.musicTrackArchive = null;
+				class188.musicTrackGroupId = -1;
+				class49.musicTrackFileId = -1;
+				TileItem.field1223 = 0;
+				WorldMapSectionType.musicTrackBoolean = false;
+				MusicPatchNode2.field2382 = 2;
+			}
+
+			DirectByteArrayCopier.method3915(false);
+			Login.field1160 = true;
+			Login.xPadding = (FloorDecoration.canvasWidth - 765) / 2;
+			Login.loginBoxX = Login.xPadding + 202;
+			GrandExchangeOfferUnitPriceComparator.loginBoxCenter = Login.loginBoxX + 180;
+			WorldMapID.leftTitleSprite.drawAt(Login.xPadding, 0);
+			class51.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+			FontName.logoSprite.drawAt(Login.xPadding + 382 - FontName.logoSprite.subWidth / 2, 18);
+		}
+	}
+
+	@ObfuscatedName("fx")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ZB)V",
+		garbageValue = "-87"
+	)
+	@Export("drawLoadingMessage")
+	static final void drawLoadingMessage(String var0, boolean var1) {
+		if (Client.showLoadingMessages) {
+			byte var2 = 4;
+			int var3 = var2 + 6;
+			int var4 = var2 + 6;
+			int var5 = GraphicsDefaults.fontPlain12.lineWidth(var0, 250);
+			int var6 = GraphicsDefaults.fontPlain12.lineCount(var0, 250) * 13;
+			Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+			Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 16777215);
+			GraphicsDefaults.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+			int var7 = var3 - var2;
+			int var8 = var4 - var2;
+			int var9 = var5 + var2 + var2;
+			int var10 = var2 + var6 + var2;
+
+			int var11;
+			for (var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
+				if (Client.rootWidgetXs[var11] + Client.rootWidgetWidths[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var8 + var10) {
+					Client.field841[var11] = true;
+				}
+			}
+
+			if (var1) {
+				class42.rasterProvider.drawFull(0, 0);
+			} else {
+				var11 = var3;
+				int var12 = var4;
+				int var13 = var5;
+				int var14 = var6;
+
+				for (int var15 = 0; var15 < Client.rootWidgetCount; ++var15) {
+					if (Client.rootWidgetXs[var15] + Client.rootWidgetWidths[var15] > var11 && Client.rootWidgetXs[var15] < var11 + var13 && Client.rootWidgetYs[var15] + Client.rootWidgetHeights[var15] > var12 && Client.rootWidgetYs[var15] < var14 + var12) {
+						Client.field842[var15] = true;
+					}
+				}
+			}
+
+		}
+	}
+
+	@ObfuscatedName("in")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "-240794843"
+	)
+	@Export("getTapToDrop")
+	static boolean getTapToDrop() {
+		return Client.tapToDrop;
 	}
 }

@@ -3,13 +3,22 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("eb")
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "[Llp;"
+	)
+	@Export("title_muteSprite")
+	static IndexedSprite[] title_muteSprite;
+	@ObfuscatedName("ft")
+	@ObfuscatedSignature(
+		signature = "Lkr;"
+	)
+	@Export("WorldMapElement_fonts")
+	static Fonts WorldMapElement_fonts;
 	@ObfuscatedName("z")
-	@Export("Tiles_hue")
-	static int[] Tiles_hue;
-	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -17,10 +26,10 @@ public class UserComparator7 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lje;Lje;I)I",
-		garbageValue = "955067035"
+		signature = "(Ljl;Ljl;I)I",
+		garbageValue = "1477313663"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -35,53 +44,61 @@ public class UserComparator7 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "1115745838"
+		signature = "(Lbo;Lbo;IZI)I",
+		garbageValue = "-147225017"
 	)
-	static int method3382(int var0, int var1) {
-		if (var0 == -2) {
-			return 12345678;
-		} else if (var0 == -1) {
-			if (var1 < 0) {
-				var1 = 0;
-			} else if (var1 > 127) {
-				var1 = 127;
+	@Export("compareWorlds")
+	static int compareWorlds(World var0, World var1, int var2, boolean var3) {
+		if (var2 == 1) {
+			int var4 = var0.population;
+			int var5 = var1.population;
+			if (!var3) {
+				if (var4 == -1) {
+					var4 = 2001;
+				}
+
+				if (var5 == -1) {
+					var5 = 2001;
+				}
 			}
 
-			var1 = 127 - var1;
-			return var1;
+			return var4 - var5;
+		} else if (var2 == 2) {
+			return var0.location - var1.location;
+		} else if (var2 == 3) {
+			if (var0.activity.equals("-")) {
+				if (var1.activity.equals("-")) {
+					return 0;
+				} else {
+					return var3 ? -1 : 1;
+				}
+			} else if (var1.activity.equals("-")) {
+				return var3 ? 1 : -1;
+			} else {
+				return var0.activity.compareTo(var1.activity);
+			}
+		} else if (var2 == 4) {
+			return var0.method1774() ? (var1.method1774() ? 0 : 1) : (var1.method1774() ? -1 : 0);
+		} else if (var2 == 5) {
+			return var0.method1802() ? (var1.method1802() ? 0 : 1) : (var1.method1802() ? -1 : 0);
+		} else if (var2 == 6) {
+			return var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0);
+		} else if (var2 == 7) {
+			return var0.isMembersOnly() ? (var1.isMembersOnly() ? 0 : 1) : (var1.isMembersOnly() ? -1 : 0);
 		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
+			return var0.id - var1.id;
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(II)Ljava/lang/String;",
-		garbageValue = "2041476927"
+		signature = "(CB)Z",
+		garbageValue = "1"
 	)
-	@Export("colorStartTag")
-	static String colorStartTag(int var0) {
-		return "<col=" + Integer.toHexString(var0) + ">";
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(Lhz;Ljava/lang/String;Ljava/lang/String;IZB)V",
-		garbageValue = "-11"
-	)
-	public static void method3376(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
-		int var5 = var0.getGroupId(var1);
-		int var6 = var0.getFileId(var5, var2);
-		class49.method826(var0, var5, var6, var3, var4);
+	@Export("isCharAlphabetic")
+	public static boolean isCharAlphabetic(char var0) {
+		return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
 	}
 }

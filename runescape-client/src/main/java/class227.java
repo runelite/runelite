@@ -1,43 +1,51 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hw")
 public final class class227 {
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(I)[Llq;",
-		garbageValue = "1253106160"
+	@ObfuscatedName("ny")
+	@ObfuscatedGetter(
+		intValue = 130681721
 	)
-	@Export("FillMode_values")
-	public static FillMode[] FillMode_values() {
-		return new FillMode[]{FillMode.SOLID, FillMode.field3852, FillMode.field3855};
-	}
+	static int field3061;
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("je")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "1135145838"
+		signature = "(Lho;IIS)V",
+		garbageValue = "16256"
 	)
-	public static boolean method4110(int var0) {
-		return var0 >= WorldMapDecorationType.field2714.id && var0 <= WorldMapDecorationType.field2715.id;
-	}
+	@Export("clickWidget")
+	static final void clickWidget(Widget var0, int var1, int var2) {
+		if (Client.clickedWidget == null && !Client.isMenuOpen) {
+			if (var0 != null) {
+				Widget var4 = GrandExchangeEvents.method81(var0);
+				if (var4 == null) {
+					var4 = var0.parent;
+				}
 
-	@ObfuscatedName("ax")
-	@ObfuscatedSignature(
-		signature = "(Ldg;I)V",
-		garbageValue = "574899"
-	)
-	@Export("PcmStream_disable")
-	static final void PcmStream_disable(PcmStream var0) {
-		var0.active = false;
-		if (var0.sound != null) {
-			var0.sound.position = 0;
+				if (var4 != null) {
+					Client.clickedWidget = var0;
+					var4 = GrandExchangeEvents.method81(var0);
+					if (var4 == null) {
+						var4 = var0.parent;
+					}
+
+					Client.clickedWidgetParent = var4;
+					Client.widgetClickX = var1;
+					Client.widgetClickY = var2;
+					ViewportMouse.widgetDragDuration = 0;
+					Client.isDraggingWidget = false;
+					int var5 = BuddyRankComparator.getNewestMenuIdx();
+					if (var5 != -1) {
+						ChatChannel.method2225(var5);
+					}
+
+					return;
+				}
+			}
+
 		}
-
-		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
-			PcmStream_disable(var1);
-		}
-
 	}
 }

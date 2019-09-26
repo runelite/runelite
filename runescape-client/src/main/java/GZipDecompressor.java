@@ -4,10 +4,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lu")
+@ObfuscatedName("lr")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@Export("inflater")
 	Inflater inflater;
 
@@ -22,10 +22,10 @@ public class GZipDecompressor {
 	GZipDecompressor(int var1, int var2, int var3) {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lkz;[BB)V",
-		garbageValue = "0"
+		signature = "(Lkl;[BI)V",
+		garbageValue = "-1227959018"
 	)
 	@Export("decompress")
 	public void decompress(Buffer var1, byte[] var2) {
@@ -45,32 +45,6 @@ public class GZipDecompressor {
 			this.inflater.reset();
 		} else {
 			throw new RuntimeException("");
-		}
-	}
-
-	@ObfuscatedName("fb")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZI)V",
-		garbageValue = "-1847999572"
-	)
-	@Export("drawLoadingMessage")
-	static final void drawLoadingMessage(String var0, boolean var1) {
-		if (Client.showLoadingMessages) {
-			byte var2 = 4;
-			int var3 = var2 + 6;
-			int var4 = var2 + 6;
-			int var5 = class197.fontPlain12.lineWidth(var0, 250);
-			int var6 = class197.fontPlain12.lineCount(var0, 250) * 13;
-			Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-			Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 16777215);
-			class197.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-			HealthBar.method2007(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2);
-			if (var1) {
-				DevicePcmPlayerProvider.rasterProvider.drawFull(0, 0);
-			} else {
-				WorldMapElement.method4392(var3, var4, var5, var6);
-			}
-
 		}
 	}
 }

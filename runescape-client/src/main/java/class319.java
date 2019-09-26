@@ -1,13 +1,11 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lp")
+@ObfuscatedName("ln")
 public class class319 {
-	@ObfuscatedName("hf")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 977386879
+		intValue = 2052078695
 	)
-	@Export("cameraPitch")
-	static int cameraPitch;
+	public static int field3843;
 }

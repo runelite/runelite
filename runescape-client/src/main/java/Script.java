@@ -7,48 +7,54 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cu")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lem;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("x")
+	@ObfuscatedName("dh")
+	@ObfuscatedSignature(
+		signature = "Lie;"
+	)
+	@Export("archive15")
+	static Archive archive15;
+	@ObfuscatedName("n")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 1662651269
+		intValue = 1534316869
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 925895493
+		intValue = -473600855
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -1615704029
+		intValue = -171399011
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -1886789561
+		intValue = -1063868631
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "[Llj;"
+		signature = "[Llb;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -60,36 +66,13 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(IB)[Llj;",
-		garbageValue = "58"
+		signature = "(II)[Llb;",
+		garbageValue = "1885034841"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
-	}
-
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-4"
-	)
-	static final void method2201() {
-		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
-			if (var0.plane == MouseRecorder.plane && !var0.isFinished) {
-				if (Client.cycle >= var0.cycleStart) {
-					var0.advance(Client.field683);
-					if (var0.isFinished) {
-						var0.remove();
-					} else {
-						WorldMapIcon_1.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
-					}
-				}
-			} else {
-				var0.remove();
-			}
-		}
-
 	}
 }

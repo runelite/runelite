@@ -3,50 +3,49 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("il")
+@ObfuscatedName("iu")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("FloorUnderlayDefinition_archive")
 	public static AbstractArchive FloorUnderlayDefinition_archive;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lem;"
 	)
 	@Export("FloorUnderlayDefinition_cached")
-	static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
-	@ObfuscatedName("t")
+	public static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 502539723
+		intValue = -1923870903
 	)
 	@Export("rgb")
 	int rgb;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -387630933
+		intValue = -2031878355
 	)
 	@Export("hue")
 	public int hue;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1309988489
+		intValue = 922832793
 	)
 	@Export("saturation")
 	public int saturation;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1550343627
+		intValue = 1084903515
 	)
 	@Export("lightness")
 	public int lightness;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 241046707
+		intValue = 568958993
 	)
 	@Export("hueMultiplier")
 	public int hueMultiplier;
@@ -59,20 +58,20 @@ public class FloorUnderlayDefinition extends DualNode {
 		this.rgb = 0;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-2017124449"
+		garbageValue = "-2090929650"
 	)
 	@Export("postDecode")
 	void postDecode() {
 		this.setHsl(this.rgb);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lkz;II)V",
-		garbageValue = "-336580480"
+		signature = "(Lkl;II)V",
+		garbageValue = "-840924474"
 	)
 	@Export("decode")
 	void decode(Buffer var1, int var2) {
@@ -86,10 +85,10 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lkz;III)V",
-		garbageValue = "1777076366"
+		signature = "(Lkl;III)V",
+		garbageValue = "-1673078715"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2, int var3) {
@@ -99,10 +98,10 @@ public class FloorUnderlayDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "1419999023"
+		garbageValue = "307020215"
 	)
 	@Export("setHsl")
 	void setHsl(int var1) {
@@ -130,7 +129,7 @@ public class FloorUnderlayDefinition extends DualNode {
 		double var12 = 0.0D;
 		double var14 = 0.0D;
 		double var16 = (var10 + var8) / 2.0D;
-		if (var8 != var10) {
+		if (var10 != var8) {
 			if (var16 < 0.5D) {
 				var14 = (var10 - var8) / (var8 + var10);
 			}
@@ -142,15 +141,15 @@ public class FloorUnderlayDefinition extends DualNode {
 			if (var10 == var2) {
 				var12 = (var4 - var6) / (var10 - var8);
 			} else if (var10 == var4) {
-				var12 = (var6 - var2) / (var10 - var8) + 2.0D;
+				var12 = 2.0D + (var6 - var2) / (var10 - var8);
 			} else if (var6 == var10) {
-				var12 = (var2 - var4) / (var10 - var8) + 4.0D;
+				var12 = 4.0D + (var2 - var4) / (var10 - var8);
 			}
 		}
 
 		var12 /= 6.0D;
 		this.saturation = (int)(256.0D * var14);
-		this.lightness = (int)(256.0D * var16);
+		this.lightness = (int)(var16 * 256.0D);
 		if (this.saturation < 0) {
 			this.saturation = 0;
 		} else if (this.saturation > 255) {
@@ -164,7 +163,7 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 
 		if (var16 > 0.5D) {
-			this.hueMultiplier = (int)((1.0D - var16) * var14 * 512.0D);
+			this.hueMultiplier = (int)(512.0D * var14 * (1.0D - var16));
 		} else {
 			this.hueMultiplier = (int)(512.0D * var16 * var14);
 		}
@@ -176,55 +175,27 @@ public class FloorUnderlayDefinition extends DualNode {
 		this.hue = (int)((double)this.hueMultiplier * var12);
 	}
 
-	@ObfuscatedName("ag")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZB)I",
-		garbageValue = "1"
+		signature = "(B)[Lcn;",
+		garbageValue = "126"
 	)
-	static int method4423(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
-			class160.Interpreter_intStackSize -= 3;
-			class192.queueSoundEffect(Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 2]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
-			WorldMapData_1.playSong(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
-			class160.Interpreter_intStackSize -= 2;
-			SecureRandomCallable.playSoundJingle(Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1]);
-			return 1;
-		} else {
-			return 2;
-		}
+	static AttackOption[] method4383() {
+		return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
 	}
 
-	@ObfuscatedName("fu")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lby;IIB)V",
-		garbageValue = "0"
+		signature = "(IIB)I",
+		garbageValue = "1"
 	)
-	@Export("performPlayerAnimation")
-	static void performPlayerAnimation(Player var0, int var1, int var2) {
-		if (var0.sequence == var1 && var1 != -1) {
-			int var3 = class83.SequenceDefinition_get(var1).field3502;
-			if (var3 == 1) {
-				var0.sequenceFrame = 0;
-				var0.sequenceFrameCycle = 0;
-				var0.sequenceDelay = var2;
-				var0.field924 = 0;
-			}
-
-			if (var3 == 2) {
-				var0.field924 = 0;
-			}
-		} else if (var1 == -1 || var0.sequence == -1 || class83.SequenceDefinition_get(var1).field3504 >= class83.SequenceDefinition_get(var0.sequence).field3504) {
-			var0.sequence = var1;
-			var0.sequenceFrame = 0;
-			var0.sequenceFrameCycle = 0;
-			var0.sequenceDelay = var2;
-			var0.field924 = 0;
-			var0.field969 = var0.pathLength;
+	@Export("ItemContainer_getCount")
+	static int ItemContainer_getCount(int var0, int var1) {
+		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var2 == null) {
+			return 0;
+		} else {
+			return var1 >= 0 && var1 < var2.quantities.length ? var2.quantities[var1] : 0;
 		}
-
 	}
 }
