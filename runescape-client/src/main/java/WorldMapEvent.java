@@ -1,43 +1,45 @@
-import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("aq")
 @Implements("WorldMapEvent")
 public class WorldMapEvent {
-	@ObfuscatedName("d")
-	@Export("ByteArrayPool_arrays")
-	static byte[][][] ByteArrayPool_arrays;
-	@ObfuscatedName("ey")
-	@Export("secureRandom")
-	static SecureRandom secureRandom;
-	@ObfuscatedName("gn")
-	@Export("regionMapArchiveIds")
-	static int[] regionMapArchiveIds;
-	@ObfuscatedName("c")
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "Lhc;"
+	)
+	@Export("NetCache_currentResponse")
+	static NetFileRequest NetCache_currentResponse;
+	@ObfuscatedName("ek")
+	@ObfuscatedSignature(
+		signature = "Lie;"
+	)
+	@Export("archive20")
+	static Archive archive20;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -85527785
+		intValue = -133473401
 	)
 	@Export("mapElement")
 	public int mapElement;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lhj;"
+		signature = "Lhb;"
 	)
 	@Export("coord1")
 	public Coord coord1;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lhj;"
+		signature = "Lhb;"
 	)
 	@Export("coord2")
 	public Coord coord2;
 
 	@ObfuscatedSignature(
-		signature = "(ILhj;Lhj;)V"
+		signature = "(ILhb;Lhb;)V"
 	)
 	public WorldMapEvent(int var1, Coord var2, Coord var3) {
 		this.mapElement = var1;
@@ -45,40 +47,78 @@ public class WorldMapEvent {
 		this.coord2 = var3;
 	}
 
-	@ObfuscatedName("ij")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lhy;III)V",
-		garbageValue = "-2056894678"
+		signature = "(III)I",
+		garbageValue = "1393398598"
 	)
-	@Export("alignWidgetPosition")
-	static void alignWidgetPosition(Widget var0, int var1, int var2) {
-		if (var0.xAlignment == 0) {
-			var0.x = var0.rawX;
-		} else if (var0.xAlignment == 1) {
-			var0.x = var0.rawX + (var1 - var0.width) / 2;
-		} else if (var0.xAlignment == 2) {
-			var0.x = var1 - var0.width - var0.rawX;
-		} else if (var0.xAlignment == 3) {
-			var0.x = var0.rawX * var1 >> 14;
-		} else if (var0.xAlignment == 4) {
-			var0.x = (var0.rawX * var1 >> 14) + (var1 - var0.width) / 2;
+	static int method801(int var0, int var1) {
+		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var2 == null) {
+			return 0;
+		} else if (var1 == -1) {
+			return 0;
 		} else {
-			var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
-		}
+			int var3 = 0;
 
-		if (var0.yAlignment == 0) {
-			var0.y = var0.rawY;
-		} else if (var0.yAlignment == 1) {
-			var0.y = (var2 - var0.height) / 2 + var0.rawY;
-		} else if (var0.yAlignment == 2) {
-			var0.y = var2 - var0.height - var0.rawY;
-		} else if (var0.yAlignment == 3) {
-			var0.y = var2 * var0.rawY >> 14;
-		} else if (var0.yAlignment == 4) {
-			var0.y = (var2 - var0.height) / 2 + (var2 * var0.rawY >> 14);
+			for (int var4 = 0; var4 < var2.quantities.length; ++var4) {
+				if (var2.ids[var4] == var1) {
+					var3 += var2.quantities[var4];
+				}
+			}
+
+			return var3;
+		}
+	}
+
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(BI)C",
+		garbageValue = "1512501229"
+	)
+	public static char method802(byte var0) {
+		int var1 = var0 & 255;
+		if (var1 == 0) {
+			throw new IllegalArgumentException("" + Integer.toString(var1, 16));
 		} else {
-			var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
-		}
+			if (var1 >= 128 && var1 < 160) {
+				char var2 = class287.cp1252AsciiExtension[var1 - 128];
+				if (var2 == 0) {
+					var2 = '?';
+				}
 
+				var1 = var2;
+			}
+
+			return (char)var1;
+		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "782060885"
+	)
+	static final int method800(int var0, int var1) {
+		if (var0 == -2) {
+			return 12345678;
+		} else if (var0 == -1) {
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
+
+			return var1;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
+
+			return (var0 & 65408) + var1;
+		}
 	}
 }

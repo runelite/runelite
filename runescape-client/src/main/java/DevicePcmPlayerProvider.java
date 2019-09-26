@@ -3,172 +3,95 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ac")
+@ObfuscatedName("ag")
 @Implements("DevicePcmPlayerProvider")
 public class DevicePcmPlayerProvider implements PcmPlayerProvider {
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "[Lmw;"
-	)
-	@Export("JagexCache_idxFiles")
-	public static BufferedFile[] JagexCache_idxFiles;
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "Lkz;"
-	)
-	@Export("NetCache_reference")
-	static Buffer NetCache_reference;
-	@ObfuscatedName("ay")
-	@ObfuscatedSignature(
-		signature = "Llf;"
-	)
-	@Export("rasterProvider")
-	public static AbstractRasterProvider rasterProvider;
-	@ObfuscatedName("iz")
+	@ObfuscatedName("sg")
 	@ObfuscatedGetter(
-		intValue = -102001369
+		intValue = 408059263
 	)
-	@Export("selectedItemId")
-	static int selectedItemId;
+	@Export("foundItemIdCount")
+	static int foundItemIdCount;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -1430118873
+	)
+	@Export("KitDefinition_fileCount")
+	public static int KitDefinition_fileCount;
+	@ObfuscatedName("p")
+	static byte[][][] field393;
+	@ObfuscatedName("y")
+	static int[][] field386;
+	@ObfuscatedName("i")
+	public static short[][] field390;
+	@ObfuscatedName("ja")
+	@ObfuscatedSignature(
+		signature = "Lho;"
+	)
+	static Widget field391;
+	@ObfuscatedName("lk")
+	@ObfuscatedGetter(
+		intValue = -783171563
+	)
+	@Export("selectedItemSlot")
+	static int selectedItemSlot;
 
 	DevicePcmPlayerProvider() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(I)Ldh;",
-		garbageValue = "-131796443"
+		signature = "(I)Ldv;",
+		garbageValue = "-79742550"
 	)
 	@Export("player")
 	public PcmPlayer player() {
 		return new DevicePcmPlayer();
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("im")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "24"
+		signature = "(IIIIIII)V",
+		garbageValue = "405770761"
 	)
-	static final int method811(int var0, int var1) {
-		int var2 = method805(var0 - 1, var1 - 1) + method805(var0 + 1, var1 - 1) + method805(var0 - 1, var1 + 1) + method805(1 + var0, 1 + var1);
-		int var3 = method805(var0 - 1, var1) + method805(1 + var0, var1) + method805(var0, var1 - 1) + method805(var0, 1 + var1);
-		int var4 = method805(var0, var1);
-		return var2 / 16 + var3 / 8 + var4 / 4;
-	}
-
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "118"
-	)
-	static final int method805(int var0, int var1) {
-		int var2 = var0 + var1 * 57;
-		var2 ^= var2 << 13;
-		int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-		return var3 >> 19 & 255;
-	}
-
-	@ObfuscatedName("ao")
-	@ObfuscatedSignature(
-		signature = "(ILcu;ZB)I",
-		garbageValue = "13"
-	)
-	static int method809(int var0, Script var1, boolean var2) {
-		int var3;
-		int var4;
-		int var6;
-		if (var0 == ScriptOpcodes.ENUM_STRING) {
-			class160.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
-			EnumDefinition var5 = NetFileRequest.getEnum(var3);
-			if (var5.outputType != 's') {
-			}
-
-			for (var6 = 0; var6 < var5.outputCount; ++var6) {
-				if (var4 == var5.keys[var6]) {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var5.strVals[var6];
-					var5 = null;
-					break;
-				}
-			}
-
-			if (var5 != null) {
-				Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var5.defaultStr;
-			}
-
-			return 1;
-		} else if (var0 != ScriptOpcodes.ENUM) {
-			if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
-				var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-				EnumDefinition var10 = NetFileRequest.getEnum(var3);
-				Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var10.size();
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
-			class160.Interpreter_intStackSize -= 4;
-			var3 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
-			var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
-			int var9 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 2];
-			var6 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 3];
-			EnumDefinition var7 = NetFileRequest.getEnum(var9);
-			if (var3 == var7.inputType && var4 == var7.outputType) {
-				for (int var8 = 0; var8 < var7.outputCount; ++var8) {
-					if (var6 == var7.keys[var8]) {
-						if (var4 == 115) {
-							Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var7.strVals[var8];
-						} else {
-							Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var7.intVals[var8];
-						}
-
-						var7 = null;
-						break;
-					}
-				}
-
-				if (var7 != null) {
-					if (var4 == 115) {
-						Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var7.defaultStr;
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var7.defaultInt;
-					}
-				}
-
-				return 1;
-			} else {
-				if (var4 == 115) {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = "null";
-				} else {
-					Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = 0;
-				}
-
-				return 1;
-			}
+	static final void method877(int var0, int var1, int var2, int var3, int var4, int var5) {
+		int var6 = var2 - var0;
+		int var7 = var3 - var1;
+		int var8 = var6 >= 0 ? var6 : -var6;
+		int var9 = var7 >= 0 ? var7 : -var7;
+		int var10 = var8;
+		if (var8 < var9) {
+			var10 = var9;
 		}
-	}
 
-	@ObfuscatedName("jc")
-	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "105"
-	)
-	@Export("Widget_resetModelFrames")
-	static final void Widget_resetModelFrames(int var0) {
-		if (TaskHandler.loadInterface(var0)) {
-			Widget[] var1 = class289.Widget_interfaceComponents[var0];
-
-			for (int var2 = 0; var2 < var1.length; ++var2) {
-				Widget var3 = var1[var2];
-				if (var3 != null) {
-					var3.modelFrame = 0;
-					var3.modelFrameCycle = 0;
-				}
+		if (var10 != 0) {
+			int var11 = (var6 << 16) / var10;
+			int var12 = (var7 << 16) / var10;
+			if (var12 <= var11) {
+				var11 = -var11;
+			} else {
+				var12 = -var12;
 			}
 
+			int var13 = var5 * var12 >> 17;
+			int var14 = var5 * var12 + 1 >> 17;
+			int var15 = var5 * var11 >> 17;
+			int var16 = var5 * var11 + 1 >> 17;
+			var0 -= Rasterizer2D.Rasterizer2D_xClipStart;
+			var1 -= Rasterizer2D.Rasterizer2D_yClipStart;
+			int var17 = var0 + var13;
+			int var18 = var0 - var14;
+			int var19 = var0 + var6 - var14;
+			int var20 = var0 + var13 + var6;
+			int var21 = var15 + var1;
+			int var22 = var1 - var16;
+			int var23 = var7 + var1 - var16;
+			int var24 = var15 + var7 + var1;
+			Rasterizer3D.method2968(var17, var18, var19);
+			Rasterizer3D.method2971(var21, var22, var23, var17, var18, var19, var4);
+			Rasterizer3D.method2968(var17, var19, var20);
+			Rasterizer3D.method2971(var21, var23, var24, var17, var19, var20, var4);
 		}
 	}
 }

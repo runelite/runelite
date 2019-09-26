@@ -4,185 +4,185 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("il")
 @Implements("NPCDefinition")
 public class NPCDefinition extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("NpcDefinition_archive")
-	static AbstractArchive NpcDefinition_archive;
-	@ObfuscatedName("x")
+	public static AbstractArchive NpcDefinition_archive;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("NpcDefinition_modelArchive")
-	static AbstractArchive NpcDefinition_modelArchive;
-	@ObfuscatedName("t")
+	public static AbstractArchive NpcDefinition_modelArchive;
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lem;"
 	)
 	@Export("NpcDefinition_cached")
 	public static EvictingDualNodeHashTable NpcDefinition_cached;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lem;"
 	)
 	@Export("NpcDefinition_cachedModels")
 	public static EvictingDualNodeHashTable NpcDefinition_cachedModels;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 1179562569
+		intValue = 795033679
 	)
 	@Export("id")
 	public int id;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@Export("name")
 	public String name;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1130309811
+		intValue = -441203939
 	)
 	@Export("size")
 	public int size;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@Export("models")
 	int[] models;
-	@ObfuscatedName("d")
-	int[] field3442;
-	@ObfuscatedName("z")
+	@ObfuscatedName("y")
+	int[] field3448;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1926244731
+		intValue = -182220755
 	)
 	@Export("readySequence")
 	public int readySequence;
-	@ObfuscatedName("n")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1860203865
+		intValue = -1669190657
 	)
 	@Export("turnLeftSequence")
 	public int turnLeftSequence;
-	@ObfuscatedName("h")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1645839893
+		intValue = -394985883
 	)
 	@Export("turnRightSequence")
 	public int turnRightSequence;
-	@ObfuscatedName("f")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1654352409
+		intValue = 1951589919
 	)
 	@Export("walkSequence")
 	public int walkSequence;
-	@ObfuscatedName("s")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -481831155
+		intValue = 1113665339
 	)
 	@Export("walkBackSequence")
 	public int walkBackSequence;
-	@ObfuscatedName("p")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1281358171
+		intValue = -1204590857
 	)
 	@Export("walkLeftSequence")
 	public int walkLeftSequence;
-	@ObfuscatedName("e")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 635151657
+		intValue = -2041030831
 	)
 	@Export("walkRightSequence")
 	public int walkRightSequence;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("recolorFrom")
 	short[] recolorFrom;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@Export("recolorTo")
 	short[] recolorTo;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@Export("retextureFrom")
 	short[] retextureFrom;
-	@ObfuscatedName("r")
+	@ObfuscatedName("h")
 	@Export("retextureTo")
 	short[] retextureTo;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@Export("actions")
 	public String[] actions;
-	@ObfuscatedName("w")
+	@ObfuscatedName("f")
 	@Export("drawMapDot")
 	public boolean drawMapDot;
-	@ObfuscatedName("m")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 1016212355
+		intValue = 1360683279
 	)
 	@Export("combatLevel")
 	public int combatLevel;
-	@ObfuscatedName("o")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1692227669
+		intValue = 758770497
 	)
 	@Export("widthScale")
 	int widthScale;
-	@ObfuscatedName("a")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -865473463
+		intValue = -1757828027
 	)
 	@Export("heightScale")
 	int heightScale;
-	@ObfuscatedName("b")
+	@ObfuscatedName("k")
 	@Export("isVisible")
 	public boolean isVisible;
-	@ObfuscatedName("ag")
+	@ObfuscatedName("ac")
 	@ObfuscatedGetter(
-		intValue = 1170326303
+		intValue = 1963706097
 	)
 	@Export("ambient")
 	int ambient;
-	@ObfuscatedName("at")
+	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = 1272255561
+		intValue = -1216133169
 	)
 	@Export("contrast")
 	int contrast;
-	@ObfuscatedName("ao")
+	@ObfuscatedName("aw")
 	@ObfuscatedGetter(
-		intValue = -559174833
+		intValue = 246799047
 	)
 	@Export("headIconPrayer")
 	public int headIconPrayer;
-	@ObfuscatedName("av")
+	@ObfuscatedName("aa")
 	@ObfuscatedGetter(
-		intValue = -1537984033
+		intValue = 950956241
 	)
 	@Export("rotation")
 	public int rotation;
-	@ObfuscatedName("an")
+	@ObfuscatedName("ap")
 	@Export("transforms")
 	public int[] transforms;
-	@ObfuscatedName("al")
+	@ObfuscatedName("ar")
 	@ObfuscatedGetter(
-		intValue = -1455750217
+		intValue = 1759904707
 	)
 	@Export("transformVarbit")
 	int transformVarbit;
-	@ObfuscatedName("as")
+	@ObfuscatedName("ab")
 	@ObfuscatedGetter(
-		intValue = -1354222713
+		intValue = -313433817
 	)
 	@Export("transformVarp")
 	int transformVarp;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("ax")
 	@Export("isInteractable")
 	public boolean isInteractable;
-	@ObfuscatedName("ap")
+	@ObfuscatedName("as")
 	@Export("isClickable")
 	public boolean isClickable;
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ao")
 	@Export("isFollower")
 	public boolean isFollower;
-	@ObfuscatedName("aj")
+	@ObfuscatedName("al")
 	@ObfuscatedSignature(
-		signature = "Llj;"
+		signature = "Llb;"
 	)
 	@Export("params")
 	IterableNodeHashTable params;
@@ -219,19 +219,19 @@ public class NPCDefinition extends DualNode {
 		this.isFollower = false;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-772276819"
+		signature = "(B)V",
+		garbageValue = "-117"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lkz;S)V",
-		garbageValue = "510"
+		signature = "(Lkl;B)V",
+		garbageValue = "-41"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -245,10 +245,10 @@ public class NPCDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lkz;IB)V",
-		garbageValue = "18"
+		signature = "(Lkl;II)V",
+		garbageValue = "-1943278683"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -303,10 +303,10 @@ public class NPCDefinition extends DualNode {
 			}
 		} else if (var2 == 60) {
 			var3 = var1.readUnsignedByte();
-			this.field3442 = new int[var3];
+			this.field3448 = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4) {
-				this.field3442[var4] = var1.readUnsignedShort();
+				this.field3448[var4] = var1.readUnsignedShort();
 			}
 		} else if (var2 == 93) {
 			this.drawMapDot = false;
@@ -334,7 +334,7 @@ public class NPCDefinition extends DualNode {
 			} else if (var2 == 111) {
 				this.isFollower = true;
 			} else if (var2 == 249) {
-				this.params = FloorOverlayDefinition.readStringIntParameters(var1, this.params);
+				this.params = UserComparator5.readStringIntParameters(var1, this.params);
 			}
 		} else {
 			this.transformVarbit = var1.readUnsignedShort();
@@ -370,10 +370,10 @@ public class NPCDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(Liw;ILiw;II)Ldr;",
-		garbageValue = "-248037111"
+		signature = "(Lix;ILix;IS)Ldh;",
+		garbageValue = "-24084"
 	)
 	@Export("getModel")
 	public final Model getModel(SequenceDefinition var1, int var2, SequenceDefinition var3, int var4) {
@@ -444,23 +444,23 @@ public class NPCDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(S)Lds;",
-		garbageValue = "25216"
+		signature = "(B)Ldw;",
+		garbageValue = "58"
 	)
 	@Export("getModelData")
 	public final ModelData getModelData() {
 		if (this.transforms != null) {
 			NPCDefinition var1 = this.transform();
 			return var1 == null ? null : var1.getModelData();
-		} else if (this.field3442 == null) {
+		} else if (this.field3448 == null) {
 			return null;
 		} else {
 			boolean var5 = false;
 
-			for (int var2 = 0; var2 < this.field3442.length; ++var2) {
-				if (!NpcDefinition_modelArchive.tryLoadFile(this.field3442[var2], 0)) {
+			for (int var2 = 0; var2 < this.field3448.length; ++var2) {
+				if (!NpcDefinition_modelArchive.tryLoadFile(this.field3448[var2], 0)) {
 					var5 = true;
 				}
 			}
@@ -468,10 +468,10 @@ public class NPCDefinition extends DualNode {
 			if (var5) {
 				return null;
 			} else {
-				ModelData[] var6 = new ModelData[this.field3442.length];
+				ModelData[] var6 = new ModelData[this.field3448.length];
 
-				for (int var3 = 0; var3 < this.field3442.length; ++var3) {
-					var6[var3] = ModelData.ModelData_get(NpcDefinition_modelArchive, this.field3442[var3], 0);
+				for (int var3 = 0; var3 < this.field3448.length; ++var3) {
+					var6[var3] = ModelData.ModelData_get(NpcDefinition_modelArchive, this.field3448[var3], 0);
 				}
 
 				ModelData var7;
@@ -499,16 +499,16 @@ public class NPCDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(I)Lia;",
-		garbageValue = "816548420"
+		signature = "(I)Lil;",
+		garbageValue = "1423511184"
 	)
 	@Export("transform")
 	public final NPCDefinition transform() {
 		int var1 = -1;
 		if (this.transformVarbit != -1) {
-			var1 = WorldMapCacheName.getVarbit(this.transformVarbit);
+			var1 = WorldMapSprite.getVarbit(this.transformVarbit);
 		} else if (this.transformVarp != -1) {
 			var1 = Varps.Varps_main[this.transformVarp];
 		}
@@ -520,13 +520,13 @@ public class NPCDefinition extends DualNode {
 			var2 = this.transforms[this.transforms.length - 1];
 		}
 
-		return var2 != -1 ? FontName.getNpcDefinition(var2) : null;
+		return var2 != -1 ? PacketBufferNode.getNpcDefinition(var2) : null;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-1304116843"
+		signature = "(B)Z",
+		garbageValue = "-43"
 	)
 	@Export("transformIsVisible")
 	public boolean transformIsVisible() {
@@ -535,7 +535,7 @@ public class NPCDefinition extends DualNode {
 		} else {
 			int var1 = -1;
 			if (this.transformVarbit != -1) {
-				var1 = WorldMapCacheName.getVarbit(this.transformVarbit);
+				var1 = WorldMapSprite.getVarbit(this.transformVarbit);
 			} else if (this.transformVarp != -1) {
 				var1 = Varps.Varps_main[this.transformVarp];
 			}
@@ -548,55 +548,86 @@ public class NPCDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "1"
+		signature = "(III)I",
+		garbageValue = "-1804168798"
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
-		return class65.method1177(this.params, var1, var2);
+		return HealthBar.method2030(this.params, var1, var2);
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "88"
+		signature = "(ILjava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "-1270482233"
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		IterableNodeHashTable var4 = this.params;
-		String var3;
-		if (var4 == null) {
-			var3 = var2;
-		} else {
-			ObjectNode var5 = (ObjectNode)var4.get((long)var1);
-			if (var5 == null) {
-				var3 = var2;
-			} else {
-				var3 = (String)var5.obj;
-			}
+		return class96.method2259(this.params, var1, var2);
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(Lhp;III)Llf;",
+		garbageValue = "-1092680498"
+	)
+	@Export("SpriteBuffer_getSprite")
+	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
+		return !VertexNormal.method2958(var0, var1, var2) ? null : FillMode.method6007();
+	}
+
+	@ObfuscatedName("gr")
+	@ObfuscatedSignature(
+		signature = "(IIIIIIII)V",
+		garbageValue = "474931921"
+	)
+	static final void method4665(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+		int var8 = var6 - 334;
+		if (var8 < 0) {
+			var8 = 0;
+		} else if (var8 > 100) {
+			var8 = 100;
 		}
 
-		return var3;
-	}
+		int var9 = (Client.zoomWidth - Client.zoomHeight) * var8 / 100 + Client.zoomHeight;
+		int var7 = var5 * var9 / 256;
+		var8 = 2048 - var3 & 2047;
+		var9 = 2048 - var4 & 2047;
+		int var10 = 0;
+		int var11 = 0;
+		int var12 = var7;
+		int var13;
+		int var14;
+		int var15;
+		if (var8 != 0) {
+			var13 = Rasterizer3D.Rasterizer3D_sine[var8];
+			var14 = Rasterizer3D.Rasterizer3D_cosine[var8];
+			var15 = var11 * var14 - var7 * var13 >> 16;
+			var12 = var14 * var7 + var13 * var11 >> 16;
+			var11 = var15;
+		}
 
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;B)V",
-		garbageValue = "0"
-	)
-	public static void method4749(AbstractArchive var0, AbstractArchive var1) {
-		HealthBarDefinition.HealthBarDefinition_archive = var0;
-		HealthBarDefinition.HitSplatDefinition_spritesArchive = var1;
-	}
+		if (var9 != 0) {
+			var13 = Rasterizer3D.Rasterizer3D_sine[var9];
+			var14 = Rasterizer3D.Rasterizer3D_cosine[var9];
+			var15 = var10 * var14 + var13 * var12 >> 16;
+			var12 = var12 * var14 - var10 * var13 >> 16;
+			var10 = var15;
+		}
 
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-265097719"
-	)
-	public static boolean method4750(int var0) {
-		return var0 >= WorldMapDecorationType.field2704.id && var0 <= WorldMapDecorationType.field2697.id || var0 == WorldMapDecorationType.field2698.id;
+		GrandExchangeOfferOwnWorldComparator.cameraX = var0 - var10;
+		Varcs.cameraY = var1 - var11;
+		WorldMapIcon_1.cameraZ = var2 - var12;
+		IgnoreList.cameraPitch = var3;
+		WorldMapSection2.cameraYaw = var4;
+		if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (ObjectSound.oculusOrbFocalPointX >> 7 != class223.localPlayer.x >> 7 || class14.oculusOrbFocalPointY >> 7 != class223.localPlayer.y * 682054857 >> 7)) {
+			var13 = class223.localPlayer.plane;
+			var14 = class223.baseX * 64 + (ObjectSound.oculusOrbFocalPointX >> 7);
+			var15 = class286.baseY * 64 + (class14.oculusOrbFocalPointY >> 7);
+			class287.method5205(var14, var15, var13, true);
+		}
+
 	}
 }

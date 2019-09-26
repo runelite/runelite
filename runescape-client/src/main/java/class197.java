@@ -3,105 +3,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gr")
 public class class197 {
-	@ObfuscatedName("c")
+	@ObfuscatedName("ok")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lct;"
+	)
+	@Export("varcs")
+	static Varcs varcs;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Lhp;"
 	)
 	@Export("musicPatchesArchive")
 	public static AbstractArchive musicPatchesArchive;
-	@ObfuscatedName("x")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("musicSamplesArchive")
-	public static AbstractArchive musicSamplesArchive;
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("soundEffectsArchive")
 	public static AbstractArchive soundEffectsArchive;
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "Lgt;"
-	)
-	@Export("midiPcmStream")
-	public static MidiPcmStream midiPcmStream;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 1354024537
+		intValue = 1857449183
 	)
-	public static int field2376;
-	@ObfuscatedName("u")
+	public static int field2386;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhp;"
 	)
 	@Export("musicTrackArchive")
 	public static AbstractArchive musicTrackArchive;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = -497843855
-	)
-	@Export("musicTrackGroupId")
-	public static int musicTrackGroupId;
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = -393064307
-	)
-	@Export("musicTrackFileId")
-	public static int musicTrackFileId;
-	@ObfuscatedName("fk")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lkf;"
+		signature = "Lgh;"
 	)
-	@Export("fontPlain12")
-	static Font fontPlain12;
-	@ObfuscatedName("gz")
-	@Export("regions")
-	static int[] regions;
+	@Export("musicTrack")
+	public static MusicTrack musicTrack;
+	@ObfuscatedName("ba")
+	static String field2390;
+	@ObfuscatedName("gw")
+	@Export("regionMapArchiveIds")
+	static int[] regionMapArchiveIds;
 
 	static {
-		field2376 = 0;
-	}
-
-	@ObfuscatedName("iq")
-	@ObfuscatedSignature(
-		signature = "([Lhy;Lhy;ZI)V",
-		garbageValue = "-974819502"
-	)
-	@Export("revalidateWidgetScroll")
-	static void revalidateWidgetScroll(Widget[] var0, Widget var1, boolean var2) {
-		int var3 = var1.scrollWidth != 0 ? var1.scrollWidth : var1.width;
-		int var4 = var1.scrollHeight != 0 ? var1.scrollHeight : var1.height;
-		class80.resizeInterface(var0, var1.id, var3, var4, var2);
-		if (var1.children != null) {
-			class80.resizeInterface(var1.children, var1.id, var3, var4, var2);
-		}
-
-		InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
-		if (var5 != null) {
-			Occluder.resizeComponents(var5.group, var3, var4, var2);
-		}
-
-		if (var1.contentType == 1337) {
-		}
-
-	}
-
-	@ObfuscatedName("kd")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "1549074319"
-	)
-	@Export("clanKickUser")
-	static final void clanKickUser(String var0) {
-		if (GrandExchangeOfferUnitPriceComparator.clanChat != null) {
-			PacketBufferNode var1 = MenuAction.getPacketBufferNode(ClientPacket.field2218, Client.packetWriter.isaacCipher);
-			var1.packetBuffer.writeByte(Varcs.stringCp1252NullTerminatedByteSize(var0));
-			var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-			Client.packetWriter.addNode(var1);
-		}
+		field2386 = 0;
 	}
 }

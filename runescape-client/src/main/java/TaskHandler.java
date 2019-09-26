@@ -7,31 +7,40 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fm")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("javaVersion")
 	public static String javaVersion;
-	@ObfuscatedName("t")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lfc;"
+		signature = "Lhp;"
+	)
+	@Export("Widget_modelsArchive")
+	static AbstractArchive Widget_modelsArchive;
+	@ObfuscatedName("ah")
+	@Export("hasFocus")
+	protected static boolean hasFocus;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lfv;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lfc;"
+		signature = "Lfv;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@Export("isClosed")
 	boolean isClosed;
 
@@ -55,10 +64,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-72"
+		signature = "(I)V",
+		garbageValue = "1673059069"
 	)
 	@Export("close")
 	public final void close() {
@@ -74,10 +83,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;I)Lfc;",
-		garbageValue = "-1315009014"
+		signature = "(IIILjava/lang/Object;S)Lfv;",
+		garbageValue = "255"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -98,20 +107,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;IS)Lfc;",
-		garbageValue = "-16284"
+		signature = "(Ljava/lang/String;II)Lfv;",
+		garbageValue = "2091612218"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;II)Lfc;",
-		garbageValue = "-1670540626"
+		signature = "(Ljava/lang/Runnable;II)Lfv;",
+		garbageValue = "-1627707278"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -166,96 +175,10 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(Lll;I)I",
-		garbageValue = "-428557907"
-	)
-	public static final int method3464(LoginType var0) {
-		if (var0 == null) {
-			return 12;
-		} else {
-			switch(var0.field4033) {
-			case 7:
-				return 20;
-			default:
-				return 12;
-			}
-		}
-	}
-
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-1906197616"
-	)
-	@Export("loadInterface")
-	public static boolean loadInterface(int var0) {
-		if (UserComparator3.Widget_loadedInterfaces[var0]) {
-			return true;
-		} else if (!ArchiveDiskActionHandler.Widget_archive.tryLoadGroup(var0)) {
-			return false;
-		} else {
-			int var1 = ArchiveDiskActionHandler.Widget_archive.getGroupFileCount(var0);
-			if (var1 == 0) {
-				UserComparator3.Widget_loadedInterfaces[var0] = true;
-				return true;
-			} else {
-				if (class289.Widget_interfaceComponents[var0] == null) {
-					class289.Widget_interfaceComponents[var0] = new Widget[var1];
-				}
-
-				for (int var2 = 0; var2 < var1; ++var2) {
-					if (class289.Widget_interfaceComponents[var0][var2] == null) {
-						byte[] var3 = ArchiveDiskActionHandler.Widget_archive.takeFile(var0, var2);
-						if (var3 != null) {
-							class289.Widget_interfaceComponents[var0][var2] = new Widget();
-							class289.Widget_interfaceComponents[var0][var2].id = var2 + (var0 << 16);
-							if (var3[0] == -1) {
-								class289.Widget_interfaceComponents[var0][var2].decode(new Buffer(var3));
-							} else {
-								class289.Widget_interfaceComponents[var0][var2].decodeLegacy(new Buffer(var3));
-							}
-						}
-					}
-				}
-
-				UserComparator3.Widget_loadedInterfaces[var0] = true;
-				return true;
-			}
-		}
-	}
-
-	@ObfuscatedName("as")
-	@ObfuscatedSignature(
-		signature = "([BI)[B",
-		garbageValue = "1618033265"
-	)
-	@Export("decompressBytes")
-	static final byte[] decompressBytes(byte[] var0) {
-		Buffer var1 = new Buffer(var0);
-		int var2 = var1.readUnsignedByte();
-		int var3 = var1.readInt();
-		if (var3 < 0 || AbstractArchive.field3120 != 0 && var3 > AbstractArchive.field3120) {
-			throw new RuntimeException();
-		} else if (var2 == 0) {
-			byte[] var4 = new byte[var3];
-			var1.readBytes(var4, 0, var3);
-			return var4;
-		} else {
-			int var6 = var1.readInt();
-			if (var6 >= 0 && (AbstractArchive.field3120 == 0 || var6 <= AbstractArchive.field3120)) {
-				byte[] var5 = new byte[var6];
-				if (var2 == 1) {
-					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
-				} else {
-					AbstractArchive.gzipDecompressor.decompress(var1, var5);
-				}
-
-				return var5;
-			} else {
-				throw new RuntimeException();
-			}
-		}
+	@ObfuscatedName("z")
+	static double method3425(double var0, double var2, double var4) {
+		double var8 = (var0 - var2) / var4;
+		double var6 = Math.exp(-var8 * var8 / 2.0D) / Math.sqrt(6.283185307179586D);
+		return var6 / var4;
 	}
 }

@@ -3,190 +3,94 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("gg")
+@ObfuscatedName("gf")
 @Implements("MusicPatchNode2")
 public class MusicPatchNode2 {
-	@ObfuscatedName("ap")
-	@ObfuscatedSignature(
-		signature = "Llr;"
-	)
-	static Bounds field2369;
-	@ObfuscatedName("c")
-	byte[] field2365;
-	@ObfuscatedName("x")
-	byte[] field2361;
-	@ObfuscatedName("t")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 111263501
+		intValue = -1235370225
 	)
-	int field2368;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = 618770801
-	)
-	int field2360;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 616473833
-	)
-	int field2364;
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = -479359019
-	)
-	int field2363;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = 1576699207
-	)
-	int field2366;
+	public static int field2382;
+	@ObfuscatedName("z")
+	byte[] field2376;
+	@ObfuscatedName("n")
+	byte[] field2374;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -2126224299
+		intValue = 93349913
 	)
-	int field2367;
-	@ObfuscatedName("d")
+	int field2375;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 339059033
+		intValue = -1109994129
 	)
-	int field2370;
+	int field2373;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 1372771045
+	)
+	int field2377;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 1580268847
+	)
+	int field2378;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -1867393453
+	)
+	int field2379;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 1316855939
+	)
+	int field2380;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = -1262915041
+	)
+	int field2381;
 
 	MusicPatchNode2() {
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("fq")
 	@ObfuscatedSignature(
-		signature = "(CI)Z",
-		garbageValue = "-634952153"
+		signature = "(II)V",
+		garbageValue = "-521075601"
 	)
-	@Export("isCharPrintable")
-	public static boolean isCharPrintable(char var0) {
-		if (var0 >= ' ' && var0 <= '~') {
-			return true;
-		} else if (var0 >= 160 && var0 <= 255) {
-			return true;
-		} else {
-			return var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376;
+	@Export("playSong")
+	static void playSong(int var0) {
+		if (var0 == -1 && !Client.field759) {
+			VertexNormal.method2956();
+		} else if (var0 != -1 && var0 != Client.field666 && Client.field761 != 0 && !Client.field759) {
+			Archive var1 = class225.archive6;
+			int var2 = Client.field761;
+			class197.field2386 = 1;
+			class197.musicTrackArchive = var1;
+			class188.musicTrackGroupId = var0;
+			class49.musicTrackFileId = 0;
+			TileItem.field1223 = var2;
+			WorldMapSectionType.musicTrackBoolean = false;
+			field2382 = 2;
 		}
+
+		Client.field666 = var0;
 	}
 
-	@ObfuscatedName("ad")
+	@ObfuscatedName("ic")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZB)I",
-		garbageValue = "-15"
+		signature = "(IB)Z",
+		garbageValue = "-93"
 	)
-	static int method3666(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.OC_NAME) {
-			var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-			Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = Player.ItemDefinition_get(var3).name;
-			return 1;
-		} else {
-			int var4;
-			ItemDefinition var5;
-			if (var0 == ScriptOpcodes.OC_OP) {
-				class160.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
-				var5 = Player.ItemDefinition_get(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
-				} else {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = "";
-				}
-
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_IOP) {
-				class160.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
-				var5 = Player.ItemDefinition_get(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
-				} else {
-					Interpreter.Interpreter_stringStack[++TextureProvider.Interpreter_stringStackSize - 1] = "";
-				}
-
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_COST) {
-				var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = Player.ItemDefinition_get(var3).price;
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_STACKABLE) {
-				var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = Player.ItemDefinition_get(var3).isStackable == 1 ? 1 : 0;
-				return 1;
-			} else {
-				ItemDefinition var6;
-				if (var0 == ScriptOpcodes.OC_CERT) {
-					var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					var6 = Player.ItemDefinition_get(var3);
-					if (var6.noteTemplate == -1 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNCERT) {
-					var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					var6 = Player.ItemDefinition_get(var3);
-					if (var6.noteTemplate >= 0 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_MEMBERS) {
-					var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = Player.ItemDefinition_get(var3).isMembersOnly ? 1 : 0;
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_PLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					var6 = Player.ItemDefinition_get(var3);
-					if (var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNPLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					var6 = Player.ItemDefinition_get(var3);
-					if (var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_FIND) {
-					String var7 = Interpreter.Interpreter_stringStack[--TextureProvider.Interpreter_stringStackSize];
-					var4 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-					KeyHandler.findItemDefinitions(var7, var4 == 1);
-					Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = GrandExchangeOfferNameComparator.foundItemIdCount;
-					return 1;
-				} else if (var0 != ScriptOpcodes.OC_FINDNEXT) {
-					if (var0 == ScriptOpcodes.OC_FINDRESET) {
-						ArchiveLoader.foundItemIndex = 0;
-						return 1;
-					} else {
-						return 2;
-					}
-				} else {
-					if (BoundaryObject.foundItemIds != null && ArchiveLoader.foundItemIndex < GrandExchangeOfferNameComparator.foundItemIdCount) {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = BoundaryObject.foundItemIds[++ArchiveLoader.foundItemIndex - 1] & '\uffff';
-					} else {
-						Interpreter.Interpreter_intStack[++class160.Interpreter_intStackSize - 1] = -1;
-					}
-
-					return 1;
-				}
+	static boolean method3649(int var0) {
+		for (int var1 = 0; var1 < Client.field857; ++var1) {
+			if (Client.field859[var1] == var0) {
+				return true;
 			}
 		}
+
+		return false;
 	}
 }

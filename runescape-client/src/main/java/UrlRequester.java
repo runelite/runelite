@@ -7,19 +7,29 @@ import java.util.LinkedList;
 import java.util.Queue;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("en")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-	@ObfuscatedName("c")
+	@ObfuscatedName("u")
+	@Export("Interpreter_stringLocals")
+	static String[] Interpreter_stringLocals;
+	@ObfuscatedName("kx")
+	@ObfuscatedGetter(
+		intValue = 1912035221
+	)
+	@Export("menuX")
+	static int menuX;
+	@ObfuscatedName("z")
 	@Export("thread")
 	final Thread thread;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("isClosed")
 	volatile boolean isClosed;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@Export("requests")
 	Queue requests;
 
@@ -30,10 +40,10 @@ public class UrlRequester implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/URL;I)Leq;",
-		garbageValue = "1332012444"
+		signature = "(Ljava/net/URL;I)Leh;",
+		garbageValue = "1658949504"
 	)
 	@Export("request")
 	public UrlRequest request(URL var1) {
@@ -45,10 +55,10 @@ public class UrlRequester implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1487923235"
+		garbageValue = "-1861698120"
 	)
 	@Export("close")
 	public void close() {
@@ -111,18 +121,18 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				class188.RunException_sendStackTrace((String)null, var17);
+				class32.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("ge")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "6"
+		signature = "(CI)C",
+		garbageValue = "1748894504"
 	)
-	static boolean method3273() {
-		return (Client.drawPlayerNames & 8) != 0;
+	static char method3256(char var0) {
+		return var0 != 181 && var0 != 402 ? Character.toTitleCase(var0) : var0;
 	}
 }

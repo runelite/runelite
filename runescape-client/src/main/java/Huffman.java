@@ -3,16 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("ht")
 @Implements("Huffman")
 public class Huffman {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@Export("masks")
 	int[] masks;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("bits")
 	byte[] bits;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@Export("keys")
 	int[] keys;
 
@@ -99,10 +99,10 @@ public class Huffman {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "([BII[BII)I",
-		garbageValue = "-1468979642"
+		garbageValue = "2067037926"
 	)
 	@Export("compress")
 	int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -120,7 +120,7 @@ public class Huffman {
 			int var11 = var7 >> 3;
 			int var12 = var7 & 7;
 			var6 &= -var12 >> 31;
-			int var13 = (var10 + var12 - 1 >> 3) + var11;
+			int var13 = (var12 + var10 - 1 >> 3) + var11;
 			var12 += 24;
 			var4[var11] = (byte)(var6 |= var9 >>> var12);
 			if (var11 < var13) {
@@ -150,10 +150,10 @@ public class Huffman {
 		return (var7 + 7 >> 3) - var5;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "([BI[BIII)I",
-		garbageValue = "-103624284"
+		garbageValue = "98933619"
 	)
 	@Export("decompress")
 	int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -292,29 +292,5 @@ public class Huffman {
 
 			return var7 + 1 - var2;
 		}
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "-31428"
-	)
-	static void method3942() {
-		Players.Players_count = 0;
-
-		for (int var0 = 0; var0 < 2048; ++var0) {
-			Players.field1221[var0] = null;
-			Players.field1220[var0] = 1;
-		}
-
-	}
-
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-434876538"
-	)
-	static final void method3943() {
-		WorldMapSection2.method283("You can't add yourself to your own ignore list");
 	}
 }

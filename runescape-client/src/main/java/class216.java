@@ -1,125 +1,191 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hq")
 public class class216 {
-	@ObfuscatedName("ja")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Ldt;"
+		signature = "(II)Liy;",
+		garbageValue = "1314955897"
 	)
-	@Export("textureProvider")
-	static TextureProvider textureProvider;
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "-1625750481"
-	)
-	static int method4015(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var3 = Player.getWidget(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
+	@Export("KitDefinition_get")
+	public static KitDefinition KitDefinition_get(int var0) {
+		KitDefinition var1 = (KitDefinition)KitDefinition.KitDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			var3 = var2 ? UserComparator9.field1941 : MidiPcmStream.field2410;
-		}
+			byte[] var2 = KitDefinition.KitDefinition_archive.takeFile(3, var0);
+			var1 = new KitDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
 
-		String var4 = Interpreter.Interpreter_stringStack[--TextureProvider.Interpreter_stringStackSize];
-		int[] var5 = null;
-		if (var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
-			int var6 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-			if (var6 > 0) {
-				for (var5 = new int[var6]; var6-- > 0; var5[var6] = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]) {
+			KitDefinition.KitDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
+	}
+
+	@ObfuscatedName("ia")
+	@ObfuscatedSignature(
+		signature = "(Lho;IB)I",
+		garbageValue = "25"
+	)
+	static final int method4003(Widget var0, int var1) {
+		if (var0.cs1Instructions != null && var1 < var0.cs1Instructions.length) {
+			try {
+				int[] var2 = var0.cs1Instructions[var1];
+				int var3 = 0;
+				int var4 = 0;
+				byte var5 = 0;
+
+				while (true) {
+					int var6 = var2[var4++];
+					int var7 = 0;
+					byte var8 = 0;
+					if (var6 == 0) {
+						return var3;
+					}
+
+					if (var6 == 1) {
+						var7 = Client.currentLevels[var2[var4++]];
+					}
+
+					if (var6 == 2) {
+						var7 = Client.levels[var2[var4++]];
+					}
+
+					if (var6 == 3) {
+						var7 = Client.experience[var2[var4++]];
+					}
+
+					int var9;
+					Widget var10;
+					int var11;
+					int var12;
+					if (var6 == 4) {
+						var9 = var2[var4++] << 16;
+						var9 += var2[var4++];
+						var10 = Canvas.getWidget(var9);
+						var11 = var2[var4++];
+						if (var11 != -1 && (!Occluder.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+							for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+								if (var11 + 1 == var10.itemIds[var12]) {
+									var7 += var10.itemQuantities[var12];
+								}
+							}
+						}
+					}
+
+					if (var6 == 5) {
+						var7 = Varps.Varps_main[var2[var4++]];
+					}
+
+					if (var6 == 6) {
+						var7 = Skills.Skills_experienceTable[Client.levels[var2[var4++]] - 1];
+					}
+
+					if (var6 == 7) {
+						var7 = Varps.Varps_main[var2[var4++]] * 100 / 46875;
+					}
+
+					if (var6 == 8) {
+						var7 = class223.localPlayer.combatLevel;
+					}
+
+					if (var6 == 9) {
+						for (var9 = 0; var9 < 25; ++var9) {
+							if (Skills.Skills_enabled[var9]) {
+								var7 += Client.levels[var9];
+							}
+						}
+					}
+
+					if (var6 == 10) {
+						var9 = var2[var4++] << 16;
+						var9 += var2[var4++];
+						var10 = Canvas.getWidget(var9);
+						var11 = var2[var4++];
+						if (var11 != -1 && (!Occluder.ItemDefinition_get(var11).isMembersOnly || Client.isMembersWorld)) {
+							for (var12 = 0; var12 < var10.itemIds.length; ++var12) {
+								if (var11 + 1 == var10.itemIds[var12]) {
+									var7 = 999999999;
+									break;
+								}
+							}
+						}
+					}
+
+					if (var6 == 11) {
+						var7 = Client.runEnergy;
+					}
+
+					if (var6 == 12) {
+						var7 = Client.weight;
+					}
+
+					if (var6 == 13) {
+						var9 = Varps.Varps_main[var2[var4++]];
+						int var13 = var2[var4++];
+						var7 = (var9 & 1 << var13) != 0 ? 1 : 0;
+					}
+
+					if (var6 == 14) {
+						var9 = var2[var4++];
+						var7 = WorldMapSprite.getVarbit(var9);
+					}
+
+					if (var6 == 15) {
+						var8 = 1;
+					}
+
+					if (var6 == 16) {
+						var8 = 2;
+					}
+
+					if (var6 == 17) {
+						var8 = 3;
+					}
+
+					if (var6 == 18) {
+						var7 = class223.baseX * 64 + (class223.localPlayer.x >> 7);
+					}
+
+					if (var6 == 19) {
+						var7 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
+					}
+
+					if (var6 == 20) {
+						var7 = var2[var4++];
+					}
+
+					if (var8 == 0) {
+						if (var5 == 0) {
+							var3 += var7;
+						}
+
+						if (var5 == 1) {
+							var3 -= var7;
+						}
+
+						if (var5 == 2 && var7 != 0) {
+							var3 /= var7;
+						}
+
+						if (var5 == 3) {
+							var3 *= var7;
+						}
+
+						var5 = 0;
+					} else {
+						var5 = var8;
+					}
 				}
+			} catch (Exception var14) {
+				return -1;
 			}
-
-			var4 = var4.substring(0, var4.length() - 1);
-		}
-
-		Object[] var8 = new Object[var4.length() + 1];
-
-		int var7;
-		for (var7 = var8.length - 1; var7 >= 1; --var7) {
-			if (var4.charAt(var7 - 1) == 's') {
-				var8[var7] = Interpreter.Interpreter_stringStack[--TextureProvider.Interpreter_stringStackSize];
-			} else {
-				var8[var7] = new Integer(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
-			}
-		}
-
-		var7 = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-		if (var7 != -1) {
-			var8[0] = new Integer(var7);
 		} else {
-			var8 = null;
+			return -2;
 		}
-
-		if (var0 == ScriptOpcodes.CC_SETONCLICK) {
-			var3.onClick = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONHOLD) {
-			var3.onHold = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONRELEASE) {
-			var3.onRelease = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONMOUSEOVER) {
-			var3.onMouseOver = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONMOUSELEAVE) {
-			var3.onMouseLeave = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONDRAG) {
-			var3.onDrag = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONTARGETLEAVE) {
-			var3.onTargetLeave = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONVARTRANSMIT) {
-			var3.onVarTransmit = var8;
-			var3.varTransmitTriggers = var5;
-		} else if (var0 == ScriptOpcodes.CC_SETONTIMER) {
-			var3.onTimer = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONOP) {
-			var3.onOp = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONDRAGCOMPLETE) {
-			var3.onDragComplete = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONCLICKREPEAT) {
-			var3.onClickRepeat = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONMOUSEREPEAT) {
-			var3.onMouseRepeat = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONINVTRANSMIT) {
-			var3.onInvTransmit = var8;
-			var3.invTransmitTriggers = var5;
-		} else if (var0 == ScriptOpcodes.CC_SETONSTATTRANSMIT) {
-			var3.onStatTransmit = var8;
-			var3.statTransmitTriggers = var5;
-		} else if (var0 == ScriptOpcodes.CC_SETONTARGETENTER) {
-			var3.onTargetEnter = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONSCROLLWHEEL) {
-			var3.onScroll = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONCHATTRANSMIT) {
-			var3.onChatTransmit = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONKEY) {
-			var3.onKey = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONFRIENDTRANSMIT) {
-			var3.onFriendTransmit = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONCLANTRANSMIT) {
-			var3.onClanTransmit = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONMISCTRANSMIT) {
-			var3.onMiscTransmit = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONDIALOGABORT) {
-			var3.onDialogAbort = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONSUBCHANGE) {
-			var3.onSubChange = var8;
-		} else if (var0 == ScriptOpcodes.CC_SETONSTOCKTRANSMIT) {
-			var3.onStockTransmit = var8;
-		} else if (var0 == 1426) {
-			var3.field2655 = var8;
-		} else {
-			if (var0 != ScriptOpcodes.CC_SETONRESIZE) {
-				return 2;
-			}
-
-			var3.onResize = var8;
-		}
-
-		var3.hasListener = true;
-		return 1;
 	}
 }

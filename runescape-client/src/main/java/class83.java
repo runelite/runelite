@@ -1,77 +1,49 @@
+import java.awt.Component;
 import java.math.BigInteger;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cg")
 public class class83 {
-	@ObfuscatedName("c")
-	static final BigInteger field1142;
-	@ObfuscatedName("x")
-	static final BigInteger field1139;
-	@ObfuscatedName("kc")
+	@ObfuscatedName("z")
+	static final BigInteger field1148;
+	@ObfuscatedName("n")
+	static final BigInteger field1149;
+	@ObfuscatedName("aj")
 	@ObfuscatedGetter(
-		intValue = 2081723437
+		intValue = 1818915939
 	)
-	@Export("menuY")
-	static int menuY;
-	@ObfuscatedName("lk")
-	@ObfuscatedGetter(
-		intValue = 670190247
-	)
-	@Export("selectedSpellWidget")
-	static int selectedSpellWidget;
+	static int field1145;
 
 	static {
-		field1142 = new BigInteger("10001", 16);
-		field1139 = new BigInteger("f8a2c48a898ebf7a2a5069193f0c6798757879d298af09a6fa94e569d45b09f67aeef8e6bb8a61650d597c743104fdef7d07b24af92df6be995877e9a7dd6a630d3e62c14e70427b959ff70735f96135d73434e73aabbd6aa8cf0b97dae7e2b6b70e646ff550b0ad8a4d8d18675714e5228b026d85e8f2f24607ba69d7404571", 16);
+		field1148 = new BigInteger("10001", 16);
+		field1149 = new BigInteger("a8cda33f9c45f0b9d1675c38ec69da6be4143320190060c229bb35ed91677a4447e09e77031e824aed13bfab51ba180bbda7e279a128f3eb016e9b0dd752a948431798626fc36ac10e036d945f2752d0d874c65a86d3e001a17bf9d63d8bc263b07be4ebc613d01781023a07de698e75248b582e682f1751395f61b9ec1bcbb3", 16);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(II)Liw;",
-		garbageValue = "-2100671163"
+		signature = "(Ljava/awt/Component;I)V",
+		garbageValue = "2076208439"
 	)
-	@Export("SequenceDefinition_get")
-	public static SequenceDefinition SequenceDefinition_get(int var0) {
-		SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
-			var1 = new SequenceDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
-			return var1;
-		}
+	static void method2065(Component var0) {
+		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
+		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
+		KeyHandler.field373 = -1;
 	}
 
-	@ObfuscatedName("jh")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lhy;III)V",
-		garbageValue = "858308141"
+		signature = "(Lhp;IIIZI)V",
+		garbageValue = "-476776598"
 	)
-	@Export("clickWidget")
-	static final void clickWidget(Widget var0, int var1, int var2) {
-		if (Client.clickedWidget == null && !Client.isMenuOpen) {
-			if (var0 != null && WorldMapLabel.method382(var0) != null) {
-				Client.clickedWidget = var0;
-				Client.clickedWidgetParent = WorldMapLabel.method382(var0);
-				Client.widgetClickX = var1;
-				Client.widgetClickY = var2;
-				ArchiveLoader.widgetDragDuration = 0;
-				Client.isDraggingWidget = false;
-				int var3 = WorldMapCacheName.getNewestMenuIdx();
-				if (var3 != -1) {
-					UserComparator3.method3399(var3);
-				}
-
-			}
-		}
+	public static void method2064(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
+		class197.field2386 = 1;
+		class197.musicTrackArchive = var0;
+		class188.musicTrackGroupId = var1;
+		class49.musicTrackFileId = var2;
+		TileItem.field1223 = var3;
+		WorldMapSectionType.musicTrackBoolean = var4;
+		MusicPatchNode2.field2382 = 10000;
 	}
 }

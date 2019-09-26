@@ -3,170 +3,169 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("q")
+@ObfuscatedName("g")
 @Implements("WorldMapLabelSize")
 public class WorldMapLabelSize {
-	@ObfuscatedName("c")
+	@ObfuscatedName("qv")
 	@ObfuscatedSignature(
-		signature = "Lq;"
+		signature = "Lca;"
+	)
+	@Export("pcmStreamMixer")
+	static PcmStreamMixer pcmStreamMixer;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "Lg;"
 	)
 	@Export("WorldMapLabelSize_small")
 	public static final WorldMapLabelSize WorldMapLabelSize_small;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lq;"
+		signature = "Lg;"
 	)
 	@Export("WorldMapLabelSize_medium")
 	public static final WorldMapLabelSize WorldMapLabelSize_medium;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lq;"
+		signature = "Lg;"
 	)
 	@Export("WorldMapLabelSize_large")
 	public static final WorldMapLabelSize WorldMapLabelSize_large;
-	@ObfuscatedName("gy")
+	@ObfuscatedName("bc")
 	@ObfuscatedSignature(
-		signature = "[Lli;"
+		signature = "Lgt;"
 	)
-	@Export("mapMarkerSprites")
-	static Sprite[] mapMarkerSprites;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -776092595
+	@Export("clientLanguage")
+	static Language clientLanguage;
+	@ObfuscatedName("du")
+	@ObfuscatedSignature(
+		signature = "Lie;"
 	)
-	final int field113;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 1063281473
-	)
-	final int field114;
+	@Export("archive1")
+	static Archive archive1;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1099337759
+		intValue = -1343624191
 	)
-	final int field116;
+	final int field107;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -1129278847
+	)
+	final int field108;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 1652176271
+	)
+	final int field109;
 
 	static {
 		WorldMapLabelSize_small = new WorldMapLabelSize(1, 0, 4);
-		WorldMapLabelSize_medium = new WorldMapLabelSize(2, 1, 2);
-		WorldMapLabelSize_large = new WorldMapLabelSize(0, 2, 0);
+		WorldMapLabelSize_medium = new WorldMapLabelSize(0, 1, 2);
+		WorldMapLabelSize_large = new WorldMapLabelSize(2, 2, 0);
 	}
 
 	WorldMapLabelSize(int var1, int var2, int var3) {
-		this.field113 = var1;
-		this.field114 = var2;
-		this.field116 = var3;
+		this.field107 = var1;
+		this.field108 = var2;
+		this.field109 = var3;
+	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(FI)Z",
+		garbageValue = "-1695259698"
+	)
+	boolean method198(float var1) {
+		return var1 >= (float)this.field109;
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I)[Lg;",
+		garbageValue = "1124237372"
+	)
+	static WorldMapLabelSize[] method196() {
+		return new WorldMapLabelSize[]{WorldMapLabelSize_large, WorldMapLabelSize_small, WorldMapLabelSize_medium};
+	}
+
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		signature = "(S)I",
+		garbageValue = "255"
+	)
+	public static int method197() {
+		return ++MouseHandler.MouseHandler_idleCycles - 1;
 	}
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(FB)Z",
-		garbageValue = "104"
+		signature = "(IIII)I",
+		garbageValue = "-962048478"
 	)
-	boolean method167(float var1) {
-		return var1 >= (float)this.field116;
+	static final int method202(int var0, int var1, int var2) {
+		int var3 = var0 / var2;
+		int var4 = var0 & var2 - 1;
+		int var5 = var1 / var2;
+		int var6 = var1 & var2 - 1;
+		int var7 = Login.method2096(var3, var5);
+		int var8 = Login.method2096(var3 + 1, var5);
+		int var9 = Login.method2096(var3, var5 + 1);
+		int var10 = Login.method2096(var3 + 1, var5 + 1);
+		int var12 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
+		int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
+		int var14 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
+		int var13 = ((65536 - var14) * var9 >> 16) + (var10 * var14 >> 16);
+		int var16 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var6 * 1024 / var2] >> 1;
+		int var15 = ((65536 - var16) * var11 >> 16) + (var13 * var16 >> 16);
+		return var15;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("hu")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "966574081"
+		signature = "(ILjava/lang/String;I)V",
+		garbageValue = "-1330882873"
 	)
-	static int method166(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var3 = Player.getWidget(Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize]);
-		} else {
-			var3 = var2 ? UserComparator9.field1941 : MidiPcmStream.field2410;
+	static void method201(int var0, String var1) {
+		int var2 = Players.Players_count;
+		int[] var3 = Players.Players_indices;
+		boolean var4 = false;
+		Username var5 = new Username(var1, WorldMapSection1.loginType);
+
+		for (int var6 = 0; var6 < var2; ++var6) {
+			Player var7 = Client.players[var3[var6]];
+			if (var7 != null && var7 != class223.localPlayer && var7.username != null && var7.username.equals(var5)) {
+				PacketBufferNode var8;
+				if (var0 == 1) {
+					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2231, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.writeIntME(var3[var6]);
+					var8.packetBuffer.method5452(0);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 4) {
+					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2271, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.writeShortLE(var3[var6]);
+					var8.packetBuffer.method5453(0);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 6) {
+					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2214, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.writeShort(var3[var6]);
+					var8.packetBuffer.method5452(0);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 7) {
+					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2274, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.method5461(var3[var6]);
+					var8.packetBuffer.method5452(0);
+					Client.packetWriter.addNode(var8);
+				}
+
+				var4 = true;
+				break;
+			}
 		}
 
-		WorldMapID.invalidateWidget(var3);
-		if (var0 != ScriptOpcodes.CC_SETOBJECT && var0 != ScriptOpcodes.CC_SETOBJECT_NONUM && var0 != ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM) {
-			if (var0 == ScriptOpcodes.CC_SETNPCHEAD) {
-				var3.modelType = 2;
-				var3.modelId = Interpreter.Interpreter_intStack[--class160.Interpreter_intStackSize];
-				return 1;
-			} else if (var0 == ScriptOpcodes.CC_SETPLAYERHEAD_SELF) {
-				var3.modelType = 3;
-				var3.modelId = Varps.localPlayer.appearance.getChatHeadId();
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
-			class160.Interpreter_intStackSize -= 2;
-			int var4 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize];
-			int var5 = Interpreter.Interpreter_intStack[class160.Interpreter_intStackSize + 1];
-			var3.itemId = var4;
-			var3.itemQuantity = var5;
-			ItemDefinition var6 = Player.ItemDefinition_get(var4);
-			var3.modelAngleX = var6.xan2d;
-			var3.modelAngleY = var6.yan2d;
-			var3.modelAngleZ = var6.zan2d;
-			var3.modelOffsetX = var6.offsetX2d;
-			var3.modelOffsetY = var6.offsetY2d;
-			var3.modelZoom = var6.zoom2d;
-			if (var0 == ScriptOpcodes.CC_SETOBJECT_NONUM) {
-				var3.itemQuantityMode = 0;
-			} else if (var0 == ScriptOpcodes.CC_SETOBJECT_ALWAYS_NUM | 1 == var6.isStackable) {
-				var3.itemQuantityMode = 1;
-			} else {
-				var3.itemQuantityMode = 2;
-			}
-
-			if (var3.field2582 > 0) {
-				var3.modelZoom = var3.modelZoom * 32 / var3.field2582;
-			} else if (var3.rawWidth > 0) {
-				var3.modelZoom = var3.modelZoom * 32 / var3.rawWidth;
-			}
-
-			return 1;
-		}
-	}
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;B)V",
-		garbageValue = "-55"
-	)
-	static final void method172(String var0) {
-		PacketBufferNode var1 = MenuAction.getPacketBufferNode(ClientPacket.field2190, Client.packetWriter.isaacCipher);
-		var1.packetBuffer.writeByte(Varcs.stringCp1252NullTerminatedByteSize(var0));
-		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-		Client.packetWriter.addNode(var1);
-	}
-
-	@ObfuscatedName("hp")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "408332868"
-	)
-	static final void method173() {
-		int var0 = FileSystem.menuX;
-		int var1 = class83.menuY;
-		int var2 = class173.menuWidth;
-		int var3 = FaceNormal.menuHeight;
-		int var4 = 6116423;
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, var4);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0 + 1, var1 + 1, var2 - 2, 16, 0);
-		Rasterizer2D.Rasterizer2D_drawRectangle(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
-		HealthBar.fontBold12.draw("Choose Option", var0 + 3, var1 + 14, var4, -1);
-		int var5 = MouseHandler.MouseHandler_x;
-		int var6 = MouseHandler.MouseHandler_y;
-
-		for (int var7 = 0; var7 < Client.menuOptionsCount; ++var7) {
-			int var8 = var1 + (Client.menuOptionsCount - 1 - var7) * 15 + 31;
-			int var9 = 16777215;
-			if (var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
-				var9 = 16776960;
-			}
-
-			HealthBar.fontBold12.draw(class188.method3620(var7), var0 + 3, var8, var9, 0);
+		if (!var4) {
+			class210.addGameMessage(4, "", "Unable to find " + var1);
 		}
 
-		WorldMapElement.method4392(FileSystem.menuX, class83.menuY, class173.menuWidth, FaceNormal.menuHeight);
 	}
 }

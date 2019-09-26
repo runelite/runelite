@@ -4,67 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ad")
+@ObfuscatedName("ax")
 @Implements("WorldMapSection1")
 public class WorldMapSection1 implements WorldMapSection {
-	@ObfuscatedName("ra")
-	@ObfuscatedGetter(
-		intValue = -1957533263
-	)
-	static int field285;
-	@ObfuscatedName("cy")
-	@Export("mouseCam")
-	static boolean mouseCam;
-	@ObfuscatedName("ej")
+	@ObfuscatedName("bj")
 	@ObfuscatedSignature(
-		signature = "Lio;"
+		signature = "Lli;"
 	)
-	@Export("archive20")
-	static Archive archive20;
-	@ObfuscatedName("ek")
+	@Export("loginType")
+	static LoginType loginType;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1031385521
-	)
-	@Export("port1")
-	static int port1;
-	@ObfuscatedName("gk")
-	@ObfuscatedGetter(
-		intValue = -2034428449
-	)
-	static int field286;
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = 1694999719
+		intValue = -202088829
 	)
 	@Export("minPlane")
 	int minPlane;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1331792243
+		intValue = 844746677
 	)
 	@Export("planes")
 	int planes;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -37279275
+		intValue = 577078223
 	)
 	@Export("regionStartX")
 	int regionStartX;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 2016686439
+		intValue = -98820949
 	)
 	@Export("regionStartY")
 	int regionStartY;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1812547009
+		intValue = 1420932505
 	)
 	@Export("regionEndX")
 	int regionEndX;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1750083521
+		intValue = 1812674669
 	)
 	@Export("regionEndY")
 	int regionEndY;
@@ -72,10 +53,10 @@ public class WorldMapSection1 implements WorldMapSection {
 	WorldMapSection1() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lag;S)V",
-		garbageValue = "32767"
+		signature = "(Lac;I)V",
+		garbageValue = "2098672163"
 	)
 	@Export("expandBounds")
 	public void expandBounds(WorldMapArea var1) {
@@ -97,10 +78,10 @@ public class WorldMapSection1 implements WorldMapSection {
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(IIII)Z",
-		garbageValue = "950167825"
+		garbageValue = "-327883108"
 	)
 	@Export("containsCoord")
 	public boolean containsCoord(int var1, int var2, int var3) {
@@ -111,20 +92,20 @@ public class WorldMapSection1 implements WorldMapSection {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "(III)Z",
-		garbageValue = "1510325414"
+		garbageValue = "-1535371561"
 	)
 	@Export("containsPosition")
 	public boolean containsPosition(int var1, int var2) {
 		return var1 >> 6 == this.regionEndX && var2 >> 6 == this.regionEndY;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(IIII)[I",
-		garbageValue = "-771447481"
+		garbageValue = "-1322751923"
 	)
 	@Export("getBorderTileLengths")
 	public int[] getBorderTileLengths(int var1, int var2, int var3) {
@@ -136,10 +117,10 @@ public class WorldMapSection1 implements WorldMapSection {
 		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(IIB)Lhj;",
-		garbageValue = "0"
+		signature = "(III)Lhb;",
+		garbageValue = "1439979703"
 	)
 	@Export("coord")
 	public Coord coord(int var1, int var2) {
@@ -152,10 +133,10 @@ public class WorldMapSection1 implements WorldMapSection {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(Lkz;I)V",
-		garbageValue = "1954302512"
+		signature = "(Lkl;B)V",
+		garbageValue = "-99"
 	)
 	@Export("read")
 	public void read(Buffer var1) {
@@ -168,72 +149,217 @@ public class WorldMapSection1 implements WorldMapSection {
 		this.postRead();
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-197052473"
+		garbageValue = "1580543944"
 	)
 	@Export("postRead")
 	void postRead() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(II)Liu;",
-		garbageValue = "837782921"
+		signature = "(Lhp;Lhp;ZLkn;I)V",
+		garbageValue = "956714191"
 	)
-	@Export("WorldMapElement_get")
-	public static WorldMapElement WorldMapElement_get(int var0) {
-		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
+	public static void method608(AbstractArchive var0, AbstractArchive var1, boolean var2, Font var3) {
+		ItemDefinition.ItemDefinition_archive = var0;
+		ItemDefinition.ItemDefinition_modelArchive = var1;
+		class162.ItemDefinition_inMembersWorld = var2;
+		JagexCache.ItemDefinition_fileCount = ItemDefinition.ItemDefinition_archive.getGroupFileCount(10);
+		FaceNormal.ItemDefinition_fontPlain11 = var3;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "544666683"
+		signature = "(III)Lcu;",
+		garbageValue = "-1499115361"
 	)
-	public static int method539(int var0, int var1) {
-		int var2;
-		for (var2 = 0; var1 > 0; --var1) {
-			var2 = var2 << 1 | var0 & 1;
-			var0 >>>= 1;
-		}
-
-		return var2;
-	}
-
-	@ObfuscatedName("ho")
-	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "20"
-	)
-	@Export("resumePauseWidget")
-	static void resumePauseWidget(int var0, int var1) {
-		PacketBufferNode var2 = MenuAction.getPacketBufferNode(ClientPacket.field2276, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeIntLE16(var0);
-		var2.packetBuffer.method5500(var1);
-		Client.packetWriter.addNode(var2);
-	}
-
-	@ObfuscatedName("iu")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lhy;I)Ljava/lang/String;",
-		garbageValue = "1800929391"
-	)
-	static String method551(String var0, Widget var1) {
-		if (var0.indexOf("%") != -1) {
-			for (int var2 = 1; var2 <= 5; ++var2) {
-				while (true) {
-					int var3 = var0.indexOf("%" + var2);
-					if (var3 == -1) {
-						break;
+	static Script method591(int var0, int var1) {
+		Script var2 = (Script)Script.Script_cached.get((long)(var0 << 16));
+		if (var2 != null) {
+			return var2;
+		} else {
+			String var3 = String.valueOf(var0);
+			int var4 = GrandExchangeOfferOwnWorldComparator.archive12.getGroupId(var3);
+			if (var4 == -1) {
+				return null;
+			} else {
+				byte[] var5 = GrandExchangeOfferOwnWorldComparator.archive12.takeFileFlat(var4);
+				if (var5 != null) {
+					if (var5.length <= 1) {
+						return null;
 					}
 
-					var0 = var0.substring(0, var3) + class81.method2032(class286.method5218(var1, var2 - 1)) + var0.substring(var3 + 2);
+					var2 = class3.newScript(var5);
+					if (var2 != null) {
+						Script.Script_cached.put(var2, (long)(var0 << 16));
+						return var2;
+					}
 				}
+
+				return null;
+			}
+		}
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "1323185906"
+	)
+	public static final void method582(int var0, int var1) {
+		ViewportMouse.ViewportMouse_x = var0;
+		ViewportMouse.ViewportMouse_y = var1;
+		ViewportMouse.ViewportMouse_isInViewport = true;
+		ViewportMouse.ViewportMouse_entityCount = 0;
+		ViewportMouse.ViewportMouse_false0 = false;
+	}
+
+	@ObfuscatedName("gx")
+	@ObfuscatedSignature(
+		signature = "(IIIIIIIIIB)V",
+		garbageValue = "-11"
+	)
+	@Export("updatePendingSpawn")
+	static final void updatePendingSpawn(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+		PendingSpawn var9 = null;
+
+		for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
+			if (var0 == var10.plane && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+				var9 = var10;
+				break;
 			}
 		}
 
-		return var0;
+		if (var9 == null) {
+			var9 = new PendingSpawn();
+			var9.plane = var0;
+			var9.type = var3;
+			var9.x = var1;
+			var9.y = var2;
+			GrandExchangeEvent.method88(var9);
+			Client.pendingSpawns.addFirst(var9);
+		}
+
+		var9.id = var4;
+		var9.field916 = var5;
+		var9.orientation = var6;
+		var9.delay = var7;
+		var9.hitpoints = var8;
+	}
+
+	@ObfuscatedName("hd")
+	@ObfuscatedSignature(
+		signature = "(IIIILjava/lang/String;B)V",
+		garbageValue = "31"
+	)
+	static void method605(int var0, int var1, int var2, int var3, String var4) {
+		Widget var5 = GrandExchangeOfferWorldComparator.getWidgetChild(var1, var2);
+		if (var5 != null) {
+			if (var5.onOp != null) {
+				ScriptEvent var6 = new ScriptEvent();
+				var6.widget = var5;
+				var6.opIndex = var0;
+				var6.targetName = var4;
+				var6.args = var5.onOp;
+				ParamDefinition.runScriptEvent(var6);
+			}
+
+			boolean var11 = true;
+			if (var5.contentType > 0) {
+				var11 = class43.method840(var5);
+			}
+
+			if (var11) {
+				int var8 = class2.getWidgetClickMask(var5);
+				int var9 = var0 - 1;
+				boolean var7 = (var8 >> var9 + 1 & 1) != 0;
+				if (var7) {
+					PacketBufferNode var10;
+					if (var0 == 1) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2244, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 2) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2249, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 3) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 4) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2194, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 5) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2204, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 6) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2200, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 7) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2251, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 8) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2203, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 9) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2213, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+					if (var0 == 10) {
+						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2285, Client.packetWriter.isaacCipher);
+						var10.packetBuffer.writeInt(var1);
+						var10.packetBuffer.writeShort(var2);
+						var10.packetBuffer.writeShort(var3);
+						Client.packetWriter.addNode(var10);
+					}
+
+				}
+			}
+		}
 	}
 }

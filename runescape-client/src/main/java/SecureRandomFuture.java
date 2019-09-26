@@ -8,19 +8,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cb")
 @Implements("SecureRandomFuture")
 public class SecureRandomFuture {
-	@ObfuscatedName("ho")
+	@ObfuscatedName("rq")
 	@ObfuscatedGetter(
-		intValue = -209939989
+		intValue = 163955328
 	)
-	@Export("oculusOrbFocalPointX")
-	static int oculusOrbFocalPointX;
-	@ObfuscatedName("c")
+	static int field1228;
+	@ObfuscatedName("cb")
+	@ObfuscatedGetter(
+		intValue = 515695907
+	)
+	public static int field1230;
+	@ObfuscatedName("z")
 	@Export("executor")
 	ExecutorService executor;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@Export("future")
 	Future future;
 
@@ -29,10 +33,10 @@ public class SecureRandomFuture {
 		this.future = this.executor.submit(new SecureRandomCallable());
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "17"
+		signature = "(I)V",
+		garbageValue = "-128121805"
 	)
 	@Export("shutdown")
 	void shutdown() {
@@ -40,54 +44,55 @@ public class SecureRandomFuture {
 		this.executor = null;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-1733947901"
+		garbageValue = "-55622200"
 	)
 	@Export("isDone")
 	boolean isDone() {
 		return this.future.isDone();
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/security/SecureRandom;",
-		garbageValue = "1840325785"
+		garbageValue = "311645204"
 	)
 	@Export("get")
 	SecureRandom get() {
 		try {
 			return (SecureRandom)this.future.get();
-		} catch (Exception var4) {
-			SecureRandom var3 = new SecureRandom();
-			var3.nextInt();
-			return var3;
+		} catch (Exception var2) {
+			return AttackOption.method2077();
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("ha")
 	@ObfuscatedSignature(
-		signature = "(Lbs;I)V",
-		garbageValue = "-1751721951"
+		signature = "(I)V",
+		garbageValue = "-1765847825"
 	)
-	@Export("runScriptEvent")
-	public static void runScriptEvent(ScriptEvent var0) {
-		GameShell.runScript(var0, 500000);
-	}
+	static void method2134() {
+		for (int var0 = 0; var0 < Client.menuOptionsCount; ++var0) {
+			if (BZip2State.method5688(Client.menuOpcodes[var0])) {
+				if (var0 < Client.menuOptionsCount - 1) {
+					for (int var1 = var0; var1 < Client.menuOptionsCount - 1; ++var1) {
+						Client.menuActions[var1] = Client.menuActions[var1 + 1];
+						Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+						Client.menuOpcodes[var1] = Client.menuOpcodes[var1 + 1];
+						Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+						Client.menuArguments1[var1] = Client.menuArguments1[var1 + 1];
+						Client.menuArguments2[var1] = Client.menuArguments2[var1 + 1];
+						Client.menuShiftClick[var1] = Client.menuShiftClick[var1 + 1];
+					}
+				}
 
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "1744475740"
-	)
-	public static int method2101(int var0) {
-		return Entity_unpackID(ViewportMouse.ViewportMouse_entityTags[var0]);
-	}
+				--var0;
+				--Client.menuOptionsCount;
+			}
+		}
 
-	@ObfuscatedName("l")
-	@Export("Entity_unpackID")
-	public static int Entity_unpackID(long var0) {
-		return (int)(var0 >>> 17 & 4294967295L);
+		UserComparator6.calculateMenuBounds(FriendSystem.menuWidth / 2 + UrlRequester.menuX, class51.menuY);
 	}
 }

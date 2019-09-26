@@ -2,36 +2,33 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fk")
 public class class162 implements class161 {
-	@ObfuscatedName("bf")
+	@ObfuscatedName("m")
+	@Export("ItemDefinition_inMembersWorld")
+	static boolean ItemDefinition_inMembersWorld;
+	@ObfuscatedName("s")
+	public static String field1990;
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
-		signature = "[Lli;"
+		signature = "Lll;"
 	)
-	@Export("worldSelectBackSprites")
-	static Sprite[] worldSelectBackSprites;
+	static Bounds field1988;
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;Lhz;Lhz;B)V",
-		garbageValue = "-41"
+		signature = "(II)V",
+		garbageValue = "1376590669"
 	)
-	@Export("Widget_setArchives")
-	public static void Widget_setArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
-		ArchiveDiskActionHandler.Widget_archive = var0;
-		class293.Widget_modelsArchive = var1;
-		HealthBar.Widget_spritesArchive = var2;
-		WorldMapSprite.Widget_fontsArchive = var3;
-		class289.Widget_interfaceComponents = new Widget[ArchiveDiskActionHandler.Widget_archive.getGroupCount()][];
-		UserComparator3.Widget_loadedInterfaces = new boolean[ArchiveDiskActionHandler.Widget_archive.getGroupCount()];
-	}
+	@Export("clearItemContainer")
+	static void clearItemContainer(int var0) {
+		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var1 != null) {
+			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
+				var1.ids[var2] = -1;
+				var1.quantities[var2] = 0;
+			}
 
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "849753199"
-	)
-	public static void method3424() {
-		WorldMapRegion.WorldMapRegion_cachedSprites.demote(5);
+		}
 	}
 }

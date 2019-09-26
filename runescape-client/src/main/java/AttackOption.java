@@ -1,40 +1,59 @@
+import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("cn")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lcl;"
+		signature = "Lcn;"
 	)
 	@Export("AttackOption_dependsOnCombatLevels")
 	AttackOption_dependsOnCombatLevels(0),
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lcl;"
+		signature = "Lcn;"
 	)
 	@Export("AttackOption_alwaysRightClick")
 	AttackOption_alwaysRightClick(1),
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lcl;"
+		signature = "Lcn;"
 	)
 	@Export("AttackOption_leftClickWhereAvailable")
 	AttackOption_leftClickWhereAvailable(2),
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lcl;"
+		signature = "Lcn;"
 	)
 	@Export("AttackOption_hidden")
 	AttackOption_hidden(3);
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("dw")
+	@ObfuscatedSignature(
+		signature = "Lie;"
+	)
+	@Export("archive9")
+	static Archive archive9;
+	@ObfuscatedName("gr")
+	@ObfuscatedSignature(
+		signature = "Llf;"
+	)
+	@Export("compass")
+	static Sprite compass;
+	@ObfuscatedName("lc")
 	@ObfuscatedGetter(
-		intValue = 1962411245
+		intValue = 629841565
+	)
+	@Export("selectedSpellWidget")
+	static int selectedSpellWidget;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -1814915457
 	)
 	@Export("id")
 	final int id;
@@ -43,121 +62,107 @@ public enum AttackOption implements Enumerated {
 		this.id = var3;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1410702910"
+		signature = "(S)I",
+		garbageValue = "221"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "([BI)Lcu;",
-		garbageValue = "447128018"
+		signature = "(I)Ljava/security/SecureRandom;",
+		garbageValue = "639446581"
 	)
-	@Export("newScript")
-	static Script newScript(byte[] var0) {
-		Script var1 = new Script();
-		Buffer var2 = new Buffer(var0);
-		var2.offset = var2.array.length - 2;
-		int var3 = var2.readUnsignedShort();
-		int var4 = var2.array.length - 2 - var3 - 12;
-		var2.offset = var4;
-		int var5 = var2.readInt();
-		var1.localIntCount = var2.readUnsignedShort();
-		var1.localStringCount = var2.readUnsignedShort();
-		var1.intArgumentCount = var2.readUnsignedShort();
-		var1.stringArgumentCount = var2.readUnsignedShort();
-		int var6 = var2.readUnsignedByte();
-		int var7;
-		int var8;
-		if (var6 > 0) {
-			var1.switches = var1.newIterableNodeHashTable(var6);
+	static SecureRandom method2077() {
+		SecureRandom var0 = new SecureRandom();
+		var0.nextInt();
+		return var0;
+	}
 
-			for (var7 = 0; var7 < var6; ++var7) {
-				var8 = var2.readUnsignedShort();
-				int var9;
-				int var11;
-				if (var8 > 0) {
-					var11 = var8 - 1;
-					var11 |= var11 >>> 1;
-					var11 |= var11 >>> 2;
-					var11 |= var11 >>> 4;
-					var11 |= var11 >>> 8;
-					var11 |= var11 >>> 16;
-					int var10 = var11 + 1;
-					var9 = var10;
-				} else {
-					var9 = 1;
-				}
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(Lkf;I)V",
+		garbageValue = "-379415067"
+	)
+	@Export("updatePlayer")
+	static final void updatePlayer(PacketBuffer var0) {
+		var0.importIndex();
+		int var1 = Client.localPlayerIndex;
+		Player var2 = class223.localPlayer = Client.players[var1] = new Player();
+		var2.index = var1;
+		int var3 = var0.readBits(30);
+		byte var4 = (byte)(var3 >> 28);
+		int var5 = var3 >> 14 & 16383;
+		int var6 = var3 & 16383;
+		var2.pathX[0] = var5 - class223.baseX * 64;
+		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
+		var2.pathY[0] = var6 - class286.baseY * 64;
+		var2.y = ((var2.pathY[0] << 7) + (var2.transformedSize() << 6)) * -944175751;
+		WorldMapRectangle.plane = var2.plane = var4;
+		if (Players.field1236[var1] != null) {
+			var2.read(Players.field1236[var1]);
+		}
 
-				IterableNodeHashTable var13 = new IterableNodeHashTable(var9);
-				var1.switches[var7] = var13;
+		Players.Players_count = 0;
+		Players.Players_indices[++Players.Players_count - 1] = var1;
+		Players.field1244[var1] = 0;
+		Players.Players_emptyIdxCount = 0;
 
-				while (var8-- > 0) {
-					var11 = var2.readInt();
-					int var12 = var2.readInt();
-					var13.put(new IntegerNode(var12), (long)var11);
-				}
+		for (int var7 = 1; var7 < 2048; ++var7) {
+			if (var1 != var7) {
+				int var8 = var0.readBits(18);
+				int var9 = var8 >> 16;
+				int var10 = var8 >> 8 & 597;
+				int var11 = var8 & 597;
+				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
+				Players.Players_orientations[var7] = 0;
+				Players.Players_targetIndices[var7] = -1;
+				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
+				Players.field1244[var7] = 0;
 			}
 		}
 
-		var2.offset = 0;
-		var2.readStringCp1252NullTerminatedOrNull();
-		var1.opcodes = new int[var5];
-		var1.intOperands = new int[var5];
-		var1.stringOperands = new String[var5];
+		var0.exportIndex();
+	}
 
-		for (var7 = 0; var2.offset < var4; var1.opcodes[var7++] = var8) {
-			var8 = var2.readUnsignedShort();
-			if (var8 == 3) {
-				var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
-			} else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
-				var1.intOperands[var7] = var2.readInt();
-			} else {
-				var1.intOperands[var7] = var2.readUnsignedByte();
+	@ObfuscatedName("ed")
+	@ObfuscatedSignature(
+		signature = "(IZZZI)Lie;",
+		garbageValue = "1568056482"
+	)
+	@Export("newArchive")
+	static Archive newArchive(int var0, boolean var1, boolean var2, boolean var3) {
+		ArchiveDisk var4 = null;
+		if (JagexCache.JagexCache_dat2File != null) {
+			var4 = new ArchiveDisk(var0, JagexCache.JagexCache_dat2File, class189.JagexCache_idxFiles[var0], 1000000);
+		}
+
+		return new Archive(var4, WorldMapData_0.masterDisk, var0, var1, var2, var3);
+	}
+
+	@ObfuscatedName("hj")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
+		garbageValue = "844579626"
+	)
+	@Export("insertMenuItem")
+	static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+		if (!Client.isMenuOpen) {
+			if (Client.menuOptionsCount < 500) {
+				Client.menuActions[Client.menuOptionsCount] = var0;
+				Client.menuTargets[Client.menuOptionsCount] = var1;
+				Client.menuOpcodes[Client.menuOptionsCount] = var2;
+				Client.menuIdentifiers[Client.menuOptionsCount] = var3;
+				Client.menuArguments1[Client.menuOptionsCount] = var4;
+				Client.menuArguments2[Client.menuOptionsCount] = var5;
+				Client.menuShiftClick[Client.menuOptionsCount] = var6;
+				++Client.menuOptionsCount;
 			}
+
 		}
-
-		return var1;
-	}
-
-	@ObfuscatedName("gg")
-	@ObfuscatedSignature(
-		signature = "(Lbe;IB)V",
-		garbageValue = "8"
-	)
-	@Export("getActorScreenLocation")
-	static final void getActorScreenLocation(Actor var0, int var1) {
-		NPC.worldToScreen(var0.x * -78439701, var0.y, var1);
-	}
-
-	@ObfuscatedName("jb")
-	@ObfuscatedSignature(
-		signature = "(IIIILli;Lhi;I)V",
-		garbageValue = "-1905138972"
-	)
-	@Export("worldToMinimap")
-	static final void worldToMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
-		int var6 = var3 * var3 + var2 * var2;
-		if (var6 > 4225 && var6 < 90000) {
-			int var7 = Client.camAngleY & 2047;
-			int var8 = Rasterizer3D.Rasterizer3D_sine[var7];
-			int var9 = Rasterizer3D.Rasterizer3D_cosine[var7];
-			int var10 = var3 * var8 + var9 * var2 >> 16;
-			int var11 = var3 * var9 - var8 * var2 >> 16;
-			double var12 = Math.atan2((double)var10, (double)var11);
-			int var14 = var5.width / 2 - 25;
-			int var15 = (int)(Math.sin(var12) * (double)var14);
-			int var16 = (int)(Math.cos(var12) * (double)var14);
-			byte var17 = 20;
-			FontName.redHintArrowSprite.method6104(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-		} else {
-			ChatChannel.drawSpriteOnMinimap(var0, var1, var2, var3, var4, var5);
-		}
-
 	}
 }

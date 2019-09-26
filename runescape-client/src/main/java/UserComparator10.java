@@ -4,21 +4,17 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("et")
 @Implements("UserComparator10")
 public class UserComparator10 extends AbstractUserComparator {
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "[Llt;"
-	)
-	@Export("runesSprite")
-	static IndexedSprite[] runesSprite;
-	@ObfuscatedName("dn")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		longValue = -5864527508821093591L
+		intValue = 406517207
 	)
-	static long field1946;
-	@ObfuscatedName("c")
+	static int field1956;
+	@ObfuscatedName("o")
+	static boolean field1957;
+	@ObfuscatedName("z")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -26,10 +22,10 @@ public class UserComparator10 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lje;Lje;I)I",
-		garbageValue = "1179427520"
+		signature = "(Ljl;Ljl;I)I",
+		garbageValue = "-1576408369"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -44,39 +40,25 @@ public class UserComparator10 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "-52"
+		signature = "(II)Lia;",
+		garbageValue = "12340961"
 	)
-	@Export("iLog")
-	public static int iLog(int var0) {
-		int var1 = 0;
-		if (var0 < 0 || var0 >= 65536) {
-			var0 >>>= 16;
-			var1 += 16;
-		}
+	@Export("getEnum")
+	public static EnumDefinition getEnum(int var0) {
+		EnumDefinition var1 = (EnumDefinition)EnumDefinition.EnumDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
+			var1 = new EnumDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
 
-		if (var0 >= 256) {
-			var0 >>>= 8;
-			var1 += 8;
+			EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-
-		if (var0 >= 16) {
-			var0 >>>= 4;
-			var1 += 4;
-		}
-
-		if (var0 >= 4) {
-			var0 >>>= 2;
-			var1 += 2;
-		}
-
-		if (var0 >= 1) {
-			var0 >>>= 1;
-			++var1;
-		}
-
-		return var0 + var1;
 	}
 }

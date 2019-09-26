@@ -3,19 +3,32 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("is")
+@ObfuscatedName("iq")
 @Implements("VarpDefinition")
 public class VarpDefinition extends DualNode {
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Let;"
+		signature = "Lhp;"
+	)
+	@Export("VarpDefinition_archive")
+	public static AbstractArchive VarpDefinition_archive;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 1786777659
+	)
+	@Export("VarpDefinition_fileCount")
+	public static int VarpDefinition_fileCount;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lem;"
 	)
 	@Export("VarpDefinition_cached")
 	static EvictingDualNodeHashTable VarpDefinition_cached;
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1682787017
+		intValue = 223624365
 	)
 	@Export("type")
 	public int type;
@@ -28,10 +41,10 @@ public class VarpDefinition extends DualNode {
 		this.type = 0;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkz;B)V",
-		garbageValue = "76"
+		signature = "(Lkl;I)V",
+		garbageValue = "769888015"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -45,10 +58,10 @@ public class VarpDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lkz;IB)V",
-		garbageValue = "86"
+		signature = "(Lkl;II)V",
+		garbageValue = "217607439"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -58,63 +71,29 @@ public class VarpDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;ZIS)V",
-		garbageValue = "-8911"
+		signature = "(ILcu;ZI)I",
+		garbageValue = "-1744608160"
 	)
-	static void method4354(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
-		if (Login.field1181) {
-			if (var3 == 4) {
-				Login.loginIndex = 4;
+	static int method4335(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
+		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemId;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
+			if (var3.itemId != -1) {
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemQuantity;
+			} else {
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
 			}
 
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETID) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.childIndex;
+			return 1;
 		} else {
-			Login.loginIndex = var3;
-			Rasterizer2D.Rasterizer2D_clear();
-			byte[] var4 = var0.takeFileByNames("title.jpg", "");
-			Login.leftTitleSprite = class16.convertJpgToSprite(var4);
-			class191.rightTitleSprite = Login.leftTitleSprite.mirrorHorizontally();
-			if ((Client.worldProperties & 536870912) != 0) {
-				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
-			} else {
-				HealthBar.logoSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
-			}
-
-			Login.titleboxSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
-			class191.titlebuttonSprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
-			UserComparator10.runesSprite = GrandExchangeOfferNameComparator.method122(var1, "runes", "");
-			FileSystem.title_muteSprite = GrandExchangeOfferNameComparator.method122(var1, "title_mute", "");
-			GrandExchangeOfferWorldComparator.options_buttons_0Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
-			Login.field1153 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
-			Login.options_buttons_2Sprite = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
-			WorldMapDecoration.field202 = Interpreter.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
-			class4.field17 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subWidth;
-			class267.field3524 = GrandExchangeOfferWorldComparator.options_buttons_0Sprite.subHeight;
-			UserComparator5.loginScreenRunesAnimation = new LoginScreenAnimation(UserComparator10.runesSprite);
-			if (var2) {
-				Login.Login_username = "";
-				Login.Login_password = "";
-			}
-
-			class222.field2729 = 0;
-			class81.otp = "";
-			Login.field1183 = true;
-			Login.worldSelectOpen = false;
-			if (!Actor.clientPreferences.titleMusicDisabled) {
-				PendingSpawn.method1681(2, WorldMapDecoration.archive6, "scape main", "", 255, false);
-			} else {
-				WallDecoration.method3256(2);
-			}
-
-			class173.method3575(false);
-			Login.field1181 = true;
-			Login.xPadding = (GraphicsDefaults.canvasWidth - 765) / 2;
-			Login.loginBoxX = Login.xPadding + 202;
-			VarcInt.loginBoxCenter = Login.loginBoxX + 180;
-			Login.leftTitleSprite.drawAt(Login.xPadding, 0);
-			class191.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-			HealthBar.logoSprite.drawAt(Login.xPadding + 382 - HealthBar.logoSprite.subWidth / 2, 18);
+			return 2;
 		}
 	}
 }

@@ -4,69 +4,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("eo")
 @Implements("BoundaryObject")
 public final class BoundaryObject {
-	@ObfuscatedName("ok")
+	@ObfuscatedName("dc")
 	@ObfuscatedSignature(
-		signature = "Lcj;"
+		signature = "Lie;"
 	)
-	@Export("varcs")
-	static Varcs varcs;
-	@ObfuscatedName("sm")
-	@Export("foundItemIds")
-	static short[] foundItemIds;
-	@ObfuscatedName("c")
+	@Export("archive3")
+	static Archive archive3;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -2123632967
-	)
-	@Export("tileHeight")
-	int tileHeight;
-	@ObfuscatedName("x")
-	@ObfuscatedGetter(
-		intValue = 1852557733
-	)
-	@Export("y")
-	int y;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 728809035
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = 848853075
+		intValue = -21907105
 	)
 	@Export("orientationA")
 	int orientationA;
-	@ObfuscatedName("l")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1849497569
+		intValue = 614934347
+	)
+	@Export("tileHeight")
+	int tileHeight;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -602196191
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -1866626591
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -1916194803
 	)
 	@Export("orientationB")
 	int orientationB;
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Ler;"
 	)
 	@Export("entity1")
 	public Entity entity1;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lel;"
+		signature = "Ler;"
 	)
 	@Export("entity2")
 	public Entity entity2;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		longValue = -720242261539970297L
+		longValue = 7018407287880452951L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1272619537
+		intValue = -461421073
 	)
 	@Export("flags")
 	int flags;
@@ -76,16 +73,12 @@ public final class BoundaryObject {
 		this.flags = 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(IB)Ljava/lang/String;",
-		garbageValue = "-17"
+		signature = "(CB)Z",
+		garbageValue = "31"
 	)
-	static final String method3230(int var0) {
-		if (var0 < 100000) {
-			return "<col=ffff00>" + var0 + "</col>";
-		} else {
-			return var0 < 10000000 ? "<col=ffffff>" + var0 / 1000 + "K" + "</col>" : "<col=00ff80>" + var0 / 1000000 + "M" + "</col>";
-		}
+	static final boolean method3222(char var0) {
+		return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
 	}
 }

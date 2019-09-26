@@ -1,43 +1,38 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fa")
 @Implements("CollisionMap")
 public class CollisionMap {
-	@ObfuscatedName("x")
+	@ObfuscatedName("ax")
 	@ObfuscatedGetter(
-		intValue = 1935458159
-	)
-	@Export("VarpDefinition_fileCount")
-	public static int VarpDefinition_fileCount;
-	@ObfuscatedName("ad")
-	@ObfuscatedGetter(
-		intValue = -1822416471
+		intValue = 2078354851
 	)
 	@Export("xInset")
 	int xInset;
-	@ObfuscatedName("ap")
+	@ObfuscatedName("as")
 	@ObfuscatedGetter(
-		intValue = 711877459
+		intValue = -518382829
 	)
 	@Export("yInset")
 	int yInset;
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ao")
 	@ObfuscatedGetter(
-		intValue = 942404383
+		intValue = 1308792903
 	)
 	@Export("xSize")
 	int xSize;
-	@ObfuscatedName("aj")
+	@ObfuscatedName("al")
 	@ObfuscatedGetter(
-		intValue = 1645469007
+		intValue = -888202655
 	)
 	@Export("ySize")
 	int ySize;
-	@ObfuscatedName("ab")
+	@ObfuscatedName("ad")
 	@Export("flags")
 	public int[][] flags;
 
@@ -50,10 +45,10 @@ public class CollisionMap {
 		this.clear();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1948261737"
+		signature = "(B)V",
+		garbageValue = "11"
 	)
 	@Export("clear")
 	public void clear() {
@@ -69,12 +64,12 @@ public class CollisionMap {
 
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(IIIIZI)V",
-		garbageValue = "807460009"
+		garbageValue = "1400659630"
 	)
-	public void method3534(int var1, int var2, int var3, int var4, boolean var5) {
+	public void method3502(int var1, int var2, int var3, int var4, boolean var5) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		if (var3 == 0) {
@@ -221,10 +216,10 @@ public class CollisionMap {
 
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(IIIIZB)V",
-		garbageValue = "-41"
+		signature = "(IIIIZI)V",
+		garbageValue = "1277713715"
 	)
 	@Export("addGameObject")
 	public void addGameObject(int var1, int var2, int var3, int var4, boolean var5) {
@@ -248,10 +243,10 @@ public class CollisionMap {
 
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "116"
+		signature = "(III)V",
+		garbageValue = "-691975667"
 	)
 	@Export("setBlockedByFloor")
 	public void setBlockedByFloor(int var1, int var2) {
@@ -261,10 +256,10 @@ public class CollisionMap {
 		var10000[var2] |= 2097152;
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "0"
+		signature = "(III)V",
+		garbageValue = "-119630021"
 	)
 	@Export("setBlockedByFloorDec")
 	public void setBlockedByFloorDec(int var1, int var2) {
@@ -274,10 +269,10 @@ public class CollisionMap {
 		var10000[var2] |= 262144;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(IIII)V",
-		garbageValue = "-1965469777"
+		signature = "(IIIB)V",
+		garbageValue = "-3"
 	)
 	@Export("setFlag")
 	void setFlag(int var1, int var2, int var3) {
@@ -285,12 +280,12 @@ public class CollisionMap {
 		var10000[var2] |= var3;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(IIIIZB)V",
-		garbageValue = "-91"
+		signature = "(IIIIZI)V",
+		garbageValue = "1060838313"
 	)
-	public void method3536(int var1, int var2, int var3, int var4, boolean var5) {
+	public void method3508(int var1, int var2, int var3, int var4, boolean var5) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		if (var3 == 0) {
@@ -437,10 +432,10 @@ public class CollisionMap {
 
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "(IIIIIZI)V",
-		garbageValue = "-1821218728"
+		garbageValue = "-476929644"
 	)
 	@Export("setFlagOffNonSquare")
 	public void setFlagOffNonSquare(int var1, int var2, int var3, int var4, int var5, boolean var6) {
@@ -470,10 +465,10 @@ public class CollisionMap {
 
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(IIII)V",
-		garbageValue = "-156666572"
+		signature = "(IIIB)V",
+		garbageValue = "6"
 	)
 	@Export("setFlagOff")
 	void setFlagOff(int var1, int var2, int var3) {
@@ -481,15 +476,54 @@ public class CollisionMap {
 		var10000[var2] &= ~var3;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "848915256"
+		signature = "(IIS)V",
+		garbageValue = "-6856"
 	)
-	public void method3541(int var1, int var2) {
+	public void method3511(int var1, int var2) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		int[] var10000 = this.flags[var1];
 		var10000[var2] &= -262145;
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I[BLkg;I)V",
+		garbageValue = "1190241493"
+	)
+	static void method3530(int var0, byte[] var1, ArchiveDisk var2) {
+		ArchiveDiskAction var3 = new ArchiveDiskAction();
+		var3.type = 0;
+		var3.key = (long)var0;
+		var3.data = var1;
+		var3.archiveDisk = var2;
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+			ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
+		}
+
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+			if (ArchiveDiskActionHandler.field3127 == 0) {
+				UserComparator5.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+				UserComparator5.ArchiveDiskActionHandler_thread.setDaemon(true);
+				UserComparator5.ArchiveDiskActionHandler_thread.start();
+				UserComparator5.ArchiveDiskActionHandler_thread.setPriority(5);
+			}
+
+			ArchiveDiskActionHandler.field3127 = 600;
+		}
+	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(Ljava/awt/Component;I)V",
+		garbageValue = "-1662439433"
+	)
+	static void method3538(Component var0) {
+		var0.removeMouseListener(MouseHandler.MouseHandler_instance);
+		var0.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
+		var0.removeFocusListener(MouseHandler.MouseHandler_instance);
+		MouseHandler.MouseHandler_currentButtonVolatile = 0;
 	}
 }

@@ -1,19 +1,12 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fh")
+@ObfuscatedName("fd")
 @Implements("BuddyRankComparator")
 public class BuddyRankComparator extends AbstractUserComparator {
-	@ObfuscatedName("my")
-	@ObfuscatedGetter(
-		intValue = 30724641
-	)
-	@Export("selectedSpellFlags")
-	static int selectedSpellFlags;
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -21,10 +14,10 @@ public class BuddyRankComparator extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lje;Lje;S)I",
-		garbageValue = "28982"
+		signature = "(Ljl;Ljl;I)I",
+		garbageValue = "-1443378495"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -37,5 +30,15 @@ public class BuddyRankComparator extends AbstractUserComparator {
 
 	public int compare(Object var1, Object var2) {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
+	}
+
+	@ObfuscatedName("hs")
+	@ObfuscatedSignature(
+		signature = "(B)I",
+		garbageValue = "96"
+	)
+	@Export("getNewestMenuIdx")
+	static final int getNewestMenuIdx() {
+		return Client.menuOptionsCount - 1;
 	}
 }

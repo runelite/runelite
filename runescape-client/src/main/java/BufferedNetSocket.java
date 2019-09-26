@@ -1,30 +1,38 @@
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ka")
+@ObfuscatedName("kd")
 @Implements("BufferedNetSocket")
 public class BufferedNetSocket extends AbstractSocket {
-	@ObfuscatedName("c")
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = 966969419
+	)
+	@Export("cacheGamebuild")
+	public static int cacheGamebuild;
+	@ObfuscatedName("z")
 	@Export("socket")
 	Socket socket;
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lkl;"
+		signature = "Lkx;"
 	)
 	@Export("source")
 	BufferedSource source;
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lkv;"
 	)
 	@Export("sink")
 	BufferedSink sink;
 
-	BufferedNetSocket(Socket var1, int var2, int var3) throws IOException {
+	public BufferedNetSocket(Socket var1, int var2, int var3) throws IOException {
 		this.socket = var1;
 		this.socket.setSoTimeout(30000);
 		this.socket.setTcpNoDelay(true);
@@ -34,10 +42,10 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.sink = new BufferedSink(this.socket.getOutputStream(), var3);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-75"
+		garbageValue = "-119"
 	)
 	@Export("close")
 	public void close() {
@@ -51,50 +59,50 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.source.close();
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "1827163357"
+		garbageValue = "1784126558"
 	)
 	@Export("readUnsignedByte")
 	public int readUnsignedByte() throws IOException {
 		return this.source.readUnsignedByte();
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1354053248"
+		signature = "(B)I",
+		garbageValue = "3"
 	)
 	@Export("available")
 	public int available() throws IOException {
 		return this.source.available();
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-377412375"
+		garbageValue = "-336706705"
 	)
 	@Export("isAvailable")
 	public boolean isAvailable(int var1) throws IOException {
 		return this.source.isAvailable(var1);
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		signature = "([BIII)I",
-		garbageValue = "2063129771"
+		garbageValue = "-2035668362"
 	)
 	@Export("read")
 	public int read(byte[] var1, int var2, int var3) throws IOException {
 		return this.source.read(var1, var2, var3);
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "([BIIB)V",
-		garbageValue = "9"
+		garbageValue = "-68"
 	)
 	@Export("write")
 	public void write(byte[] var1, int var2, int var3) throws IOException {
@@ -105,7 +113,51 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.close();
 	}
 
-	protected void aaj() {
+	protected void aav() {
 		this.close();
+	}
+
+	protected void aao() {
+		this.close();
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "2009022285"
+	)
+	@Export("loadWorlds")
+	static boolean loadWorlds() {
+		try {
+			if (class51.World_request == null) {
+				class51.World_request = Client.urlRequester.request(new URL(WorldMapSectionType.field150));
+			} else if (class51.World_request.isDone()) {
+				byte[] var0 = class51.World_request.getResponse();
+				Buffer var1 = new Buffer(var0);
+				var1.readInt();
+				World.World_count = var1.readUnsignedShort();
+				World.World_worlds = new World[World.World_count];
+
+				World var3;
+				for (int var2 = 0; var2 < World.World_count; var3.index = var2++) {
+					var3 = World.World_worlds[var2] = new World();
+					var3.id = var1.readUnsignedShort();
+					var3.properties = var1.readInt();
+					var3.host = var1.readStringCp1252NullTerminated();
+					var3.activity = var1.readStringCp1252NullTerminated();
+					var3.location = var1.readUnsignedByte();
+					var3.population = var1.readShort();
+				}
+
+				WorldMapData_0.sortWorlds(World.World_worlds, 0, World.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
+				class51.World_request = null;
+				return true;
+			}
+		} catch (Exception var4) {
+			var4.printStackTrace();
+			class51.World_request = null;
+		}
+
+		return false;
 	}
 }
