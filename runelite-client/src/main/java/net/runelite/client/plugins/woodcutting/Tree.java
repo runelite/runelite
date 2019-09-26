@@ -27,7 +27,6 @@ package net.runelite.client.plugins.woodcutting;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.Map;
-import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.TREE;
 import static net.runelite.api.ObjectID.TREE_1277;
@@ -65,7 +64,6 @@ enum Tree
 	REDWOODS(Duration.ofMinutes(2), REDWOOD, REDWOOD_29669, REDWOOD_29670, REDWOOD_29671);
 
 	private final Duration respawnTime;
-	@Getter(AccessLevel.PACKAGE)
 	private final int[] treeIds;
 
 	Tree(Duration respawnTime, int... treeIds)
