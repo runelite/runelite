@@ -103,4 +103,9 @@ public class FontManager
 	{
 		return runescapeBoldFont;
 	}
+
+	public static Font getRunescapeMonospaceFont()
+	{
+		return runescapeMonospaceFont;
+	}
 }
