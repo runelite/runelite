@@ -65,7 +65,7 @@ public interface WildernessLocationsConfig extends Config
 
 	@ConfigItem(
 		keyName = "outlineLocations",
-		name = "Outline Locatoins",
+		name = "Outline Locations",
 		description = "Draws an outline for the area of each location in the wilderness",
 		position = 5
 	)
