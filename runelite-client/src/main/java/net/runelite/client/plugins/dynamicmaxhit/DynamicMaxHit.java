@@ -73,7 +73,7 @@ import net.runelite.http.api.item.ItemStats;
 	name = "Dynamic Max Hit",
 	description = "Dynamic Max Hit Calculations",
 	tags = {"broken", "op", "shit"},
-	type = PluginType.EXTERNAL,
+	type = PluginType.PVP,
 	enabledByDefault = false
 )
 @Slf4j
