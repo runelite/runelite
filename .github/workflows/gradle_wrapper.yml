@@ -1,0 +1,25 @@
+name: RunelitePlus - Gradle Wrapper
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  update:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+    - name: Update Gradle Wrapper
+      run: ./gradlew wrapper --gradle-version $(curl -s https://api.github.com/repos/gradle/gradle/releases/latest | grep -Po '"name":.*?[^\\]",' | sed -r 's/[\"name:, ]+//g') --distribution-type all
+    - name: Create Gradle wrapper update Pull Request
+      uses: peter-evans/create-pull-request@v1.2.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PULL_REQUEST_BRANCH: GRADLE-WRAPPER-UPDATE
+        PULL_REQUEST_TITLE: 'project: Update gradle wrapper'
+        PULL_REQUEST_BODY: This is an auto-generated PR with an updated gradle version
+        COMMIT_MESSAGE: 'project: Update gradle wrapper'
