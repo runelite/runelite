@@ -19,7 +19,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -28,9 +27,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.kit.KitType;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConstant;
@@ -44,7 +42,6 @@ public class NyloHandler extends RoomHandler
 	final List<NPC> waveSpawns = new ArrayList<>();
 	final List<NPC> waveAgros = new ArrayList<>();
 	private final MenuManager menuManager;
-	private final ItemManager itemManager;
 	private final EventBus eventBus;
 	public long startTime = 0L;
 	int startTick = 0;
@@ -57,12 +54,10 @@ public class NyloHandler extends RoomHandler
 	private int wave = 0;
 	private NyloOverlay overlay = null;
 	private NyloPredictor predictor = null;
-	private AttackStyle currentAttack = null;
 
-	public NyloHandler(final Client client, final TheatrePlugin plugin, final MenuManager menuManager, final ItemManager itemManager, final EventBus eventBus)
+	public NyloHandler(final Client client, final TheatrePlugin plugin, final MenuManager menuManager, final EventBus eventBus)
 	{
 		super(client, plugin);
-		this.itemManager = itemManager;
 		this.menuManager = menuManager;
 		this.eventBus = eventBus;
 	}
@@ -125,22 +120,12 @@ public class NyloHandler extends RoomHandler
 	{
 		this.pillars.clear();
 		this.spiders.clear();
-
 		this.wave = 0;
-
 		this.predictor = new NyloPredictor(client, this);
 		this.waveSpawns.clear();
 		this.waveAgros.clear();
 		this.predictor.reset();
-		removeMenuSwaps();
-
-	}
-
-	private void removeMenuSwaps()
-	{
-		menuManager.removeHiddenEntry("Attack", "Nylocas Hagios");
-		menuManager.removeHiddenEntry("Attack", "Nylocas Ischyros");
-		menuManager.removeHiddenEntry("Attack", "Nylocas Toxobolos");
+		menuManager.removeSwaps("Nylocas Hagios", "Nylocas Toxobolos", "Nylocas Ischyros");
 	}
 
 	public void onConfigChanged()
@@ -407,121 +392,25 @@ public class NyloHandler extends RoomHandler
 		}
 	}
 
-	private AttackStyle checkAttackStyle(int weaponId)
-	{
-		switch (weaponId)
-		{
-			case ItemID.TOXIC_BLOWPIPE:
-			case ItemID.TWISTED_BOW:
-			case ItemID.CRAWS_BOW:
-				return AttackStyle.RANGE2H;
-			case ItemID.ABYSSAL_WHIP:
-			case ItemID.ABYSSAL_TENTACLE:
-			case ItemID.SCYTHE_OF_VITUR:
-			case ItemID.SCYTHE_OF_VITUR_22664:
-			case ItemID.SCYTHE_OF_VITUR_UNCHARGED:
-			case ItemID.HAM_JOINT:
-			case ItemID.SWIFT_BLADE:
-			case ItemID.BANDOS_GODSWORD:
-			case ItemID.BANDOS_GODSWORD_20782:
-			case ItemID.BANDOS_GODSWORD_21060:
-			case ItemID.BANDOS_GODSWORD_OR:
-			case ItemID.DRAGON_WARHAMMER:
-			case ItemID.DRAGON_CLAWS:
-			case ItemID.EVENT_RPG:
-			case ItemID.GHRAZI_RAPIER:
-			case ItemID.GHRAZI_RAPIER_23628:
-			case ItemID.BLADE_OF_SAELDOR:
-			case ItemID.CRYSTAL_HALBERD:
-			case ItemID.DRAGON_SCIMITAR:
-			case ItemID.RUNE_SCIMITAR:
-				return AttackStyle.MELEE;
-			case ItemID.KODAI_WAND:
-			case ItemID.MASTER_WAND:
-			case ItemID.TRIDENT_OF_THE_SEAS:
-			case ItemID.TRIDENT_OF_THE_SWAMP:
-			case ItemID.SANGUINESTI_STAFF:
-			case ItemID.IBANS_STAFF:
-			case ItemID.IBANS_STAFF_1410:
-			case ItemID.IBANS_STAFF_U:
-			case ItemID.TRIDENT_OF_THE_SWAMP_E:
-			case ItemID.TRIDENT_OF_THE_SEAS_E:
-				return AttackStyle.MAGE;
-			case ItemID.RED_CHINCHOMPA:
-			case ItemID.CHINCHOMPA:
-			case ItemID.BLACK_CHINCHOMPA:
-			case ItemID.ARMADYL_CROSSBOW:
-			case ItemID.DRAGON_CROSSBOW:
-			case ItemID.RUNE_CROSSBOW:
-			case ItemID.DORGESHUUN_CROSSBOW:
-				return AttackStyle.RANGE;
-			case ItemID.AVERNIC_DEFENDER:
-			case ItemID.DRAGON_DEFENDER:
-			case ItemID.DRAGON_DEFENDER_T:
-				if (currentAttack == AttackStyle.RANGE2H)
-				{
-					return AttackStyle.MELEE;
-				}
-			default:
-				return currentAttack;
-		}
-	}
-
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getOption().equalsIgnoreCase("equip") &&
-			!event.getOption().equalsIgnoreCase("wield") &&
-			!event.getOption().equalsIgnoreCase("hold"))
-		{
-			if (currentAttack != null)
-			{
-				return;
-			}
-		}
-		if (currentAttack == null)
-		{
-			if (client.getLocalPlayer() != null
-				&& client.getViewportWidget() != null
-				&& client.getLocalPlayer().getPlayerAppearance() != null
-				&& client.getLocalPlayer().getPlayerAppearance().getEquipmentId(KitType.WEAPON) != 0
-			)
-			{
-				currentAttack = checkAttackStyle(client.getLocalPlayer().getPlayerAppearance().getEquipmentId(KitType.WEAPON));
-			}
-		}
-		if (event.getOption().equalsIgnoreCase("equip") ||
-			event.getOption().equalsIgnoreCase("wield") ||
-			event.getOption().equalsIgnoreCase("hold"))
-		{
-			currentAttack = checkAttackStyle(event.getIdentifier());
-		}
-		if (currentAttack != null)
-		{
-			doSwaps();
-		}
-	}
+		final String option = event.getOption().toLowerCase();
 
-	private void doSwaps()
-	{
-		switch (currentAttack)
+		if (!option.equals("equip") && !option.equals("wield") && !option.equals("hold"))
 		{
-			case RANGE:
-			case RANGE2H:
-				removeMenuSwaps();
-				menuManager.addHiddenEntry("Attack", "Nylocas Hagios");
-				menuManager.addHiddenEntry("Attack", "Nylocas Ischyros");
-				break;
-			case MELEE:
-				removeMenuSwaps();
-				menuManager.addHiddenEntry("Attack", "Nylocas Hagios");
-				menuManager.addHiddenEntry("Attack", "Nylocas Toxobolos");
-				break;
-			case MAGE:
-				removeMenuSwaps();
-				menuManager.addHiddenEntry("Attack", "Nylocas Ischyros");
-				menuManager.addHiddenEntry("Attack", "Nylocas Toxobolos");
-				break;
+			return;
 		}
+
+		final int id = event.getIdentifier();
+		final Set<AbstractComparableEntry> entries = Weapons.getEntries(id);
+		menuManager.removeSwaps("Nylocas Hagios", "Nylocas Toxobolos", "Nylocas Ischyros");
+
+		if (entries.isEmpty())
+		{
+			return;
+		}
+
+		entries.forEach(menuManager::addHiddenEntry);
 	}
 
 	private void recalculateLocal()

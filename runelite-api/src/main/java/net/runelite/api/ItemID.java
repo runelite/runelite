@@ -11139,7 +11139,9 @@ public final class ItemID
 	public static final int CRYSTAL_SHIELD = 23991;
 	public static final int CRYSTAL_SHIELD_INACTIVE = 23993;
 	public static final int BLADE_OF_SAELDOR = 23995;
+	public static final int BLADE_OF_SAELDOR_23996 = 23996;	
 	public static final int BLADE_OF_SAELDOR_INACTIVE = 23997;
+	public static final int BLADE_OF_SAELDOR_INACTIVE_23999 = 23999;
 	public static final int CRYSTAL_GRAIL = 24000;
 	public static final int ELVEN_BOOTS = 24003;
 	public static final int ELVEN_GLOVES = 24006;

@@ -123,7 +123,7 @@ public class TheatrePlugin extends Plugin
 		room = TheatreRoom.UNKNOWN;
 		maidenHandler = new MaidenHandler(client, this, modelOutline);
 		bloatHandler = new BloatHandler(client, this);
-		nyloHandler = new NyloHandler(client, this, menuManager, itemManager, eventBus);
+		nyloHandler = new NyloHandler(client, this, menuManager, eventBus);
 		sotetsegHandler = new SotetsegHandler(client, this);
 		xarpusHandler = new XarpusHandler(client, this);
 		verzikHandler = new VerzikHandler(client, this);
