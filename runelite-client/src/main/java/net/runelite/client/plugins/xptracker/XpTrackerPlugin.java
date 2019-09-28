@@ -195,11 +195,11 @@ public class XpTrackerPlugin extends Plugin
 				fetchXp = true;
 				lastWorldType = type;
 				resetState();
-				// Must be set from hitting the LOGGING_IN case below
+				// Must be set from hitting the LOGGING_IN or HOPPING case below
 				assert initializeTracker;
 			}
 		}
-		else if (state == GameState.LOGGING_IN)
+		else if (state == GameState.LOGGING_IN || state == GameState.HOPPING)
 		{
 			initializeTracker = true;
 		}
