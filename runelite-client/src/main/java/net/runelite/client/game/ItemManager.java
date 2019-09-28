@@ -84,7 +84,7 @@ public class ItemManager
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
 
-	private final ItemClient itemClient = new ItemClient();
+	private final ItemClient itemClient;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
@@ -155,11 +155,13 @@ public class ItemManager
 		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread,
+		ItemClient itemClient)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
+		this.itemClient = itemClient;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 		scheduledExecutorService.submit(this::loadStats);
