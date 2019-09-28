@@ -107,4 +107,10 @@ shadowJar {
     exclude("net/runelite/injector/**")
 }
 
+task copyToLib(type: Copy) {
+    into "$buildDir/lib"
+    from configurations.runtime
+}
+
 tasks.build.dependsOn tasks.shadowJar
+tasks.shadowJar.dependsOn tasks.copyToLib
