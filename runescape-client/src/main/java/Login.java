@@ -160,7 +160,7 @@ public class Login {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "432150558"
 	)
-	static int method2111(int var0, Script var1, boolean var2) {
+	static int method2115(int var0, Script var1, boolean var2) {
 		int var3 = -1;
 		Widget var4;
 		if (var0 >= 2000) {
@@ -221,10 +221,10 @@ public class Login {
 		signature = "(III)I",
 		garbageValue = "-161600604"
 	)
-	static final int method2096(int var0, int var1) {
-		int var2 = class160.method3412(var0 - 1, var1 - 1) + class160.method3412(var0 + 1, var1 - 1) + class160.method3412(var0 - 1, 1 + var1) + class160.method3412(1 + var0, var1 + 1);
-		int var3 = class160.method3412(var0 - 1, var1) + class160.method3412(var0 + 1, var1) + class160.method3412(var0, var1 - 1) + class160.method3412(var0, var1 + 1);
-		int var4 = class160.method3412(var0, var1);
+	static final int method2100(int var0, int var1) {
+		int var2 = class160.method3416(var0 - 1, var1 - 1) + class160.method3416(var0 + 1, var1 - 1) + class160.method3416(var0 - 1, 1 + var1) + class160.method3416(1 + var0, var1 + 1);
+		int var3 = class160.method3416(var0 - 1, var1) + class160.method3416(var0 + 1, var1) + class160.method3416(var0, var1 - 1) + class160.method3416(var0, var1 + 1);
+		int var4 = class160.method3416(var0, var1);
 		return var2 / 16 + var3 / 8 + var4 / 4;
 	}
 
@@ -233,7 +233,7 @@ public class Login {
 		signature = "(B)V",
 		garbageValue = "8"
 	)
-	static void method2110() {
+	static void method2114() {
 		int var0 = Players.Players_count;
 		int[] var1 = Players.Players_indices;
 

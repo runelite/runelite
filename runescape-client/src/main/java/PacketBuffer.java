@@ -76,8 +76,8 @@ public class PacketBuffer extends Buffer {
 		signature = "(I)Z",
 		garbageValue = "-1080759401"
 	)
-	public boolean method5380() {
-		int var1 = super.array[super.offset] - this.isaacCipher.method6191() & 255;
+	public boolean method5395() {
+		int var1 = super.array[super.offset] - this.isaacCipher.method6214() & 255;
 		return var1 >= 128;
 	}
 
@@ -97,7 +97,7 @@ public class PacketBuffer extends Buffer {
 		signature = "([BIII)V",
 		garbageValue = "1740365961"
 	)
-	public void method5385(byte[] var1, int var2, int var3) {
+	public void method5400(byte[] var1, int var2, int var3) {
 		for (int var4 = 0; var4 < var3; ++var4) {
 			var1[var4 + var2] = (byte)(super.array[++super.offset - 1] - this.isaacCipher.nextInt());
 		}
@@ -164,7 +164,7 @@ public class PacketBuffer extends Buffer {
 		signature = "(ILcu;ZB)I",
 		garbageValue = "82"
 	)
-	static int method5408(int var0, Script var1, boolean var2) {
+	static int method5423(int var0, Script var1, boolean var2) {
 		int var3;
 		int var4;
 		int var6;

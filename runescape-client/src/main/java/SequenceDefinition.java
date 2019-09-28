@@ -371,8 +371,8 @@ public class SequenceDefinition extends DualNode {
 		signature = "(II)V",
 		garbageValue = "-645881783"
 	)
-	static final void method4744(int var0) {
-		DynamicObject.method2219();
+	static final void method4756(int var0) {
+		DynamicObject.method2223();
 		switch(var0) {
 		case 1:
 			Login.loginIndex = 24;

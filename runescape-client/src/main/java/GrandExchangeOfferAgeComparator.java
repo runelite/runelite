@@ -64,7 +64,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 		} else {
 			long var1;
 			try {
-				URL var3 = new URL(FaceNormal.method3225("services", false) + "m=accountappeal/login.ws");
+				URL var3 = new URL(FaceNormal.method3229("services", false) + "m=accountappeal/login.ws");
 				URLConnection var4 = var3.openConnection();
 				var4.setRequestProperty("connection", "close");
 				var4.setDoInput(true);
@@ -179,7 +179,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 
 				byte var43;
 				try {
-					URL var17 = new URL(FaceNormal.method3225("services", false) + "m=accountappeal/login.ws");
+					URL var17 = new URL(FaceNormal.method3229("services", false) + "m=accountappeal/login.ws");
 					URLConnection var18 = var17.openConnection();
 					var18.setDoInput(true);
 					var18.setDoOutput(true);
@@ -382,7 +382,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 				ObjectSound var22 = new ObjectSound();
 				var22.plane = var0;
 				var22.x = var1 * 128;
-				var22.y = var2 * 128;
+				var22.y = var2 * 16384;
 				var23 = var8.sizeX;
 				var24 = var8.sizeY;
 				if (var4 == 1 || var4 == 3) {
@@ -390,8 +390,8 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 					var24 = var8.sizeX;
 				}
 
-				var22.field1059 = (var23 + var1) * 128;
-				var22.field1060 = (var24 + var2) * 128;
+				var22.field1059 = (var23 + var1) * 16384;
+				var22.field1060 = (var24 + var2) * 16384;
 				var22.soundEffectId = var8.ambientSoundId;
 				var22.field1061 = var8.int4 * 128;
 				var22.field1064 = var8.int5;
@@ -432,7 +432,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 						var34 = new DynamicObject(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Entity)null);
 					}
 
-					var6.method3052(var0, var1, var2, var16, 1, 1, (Entity)var34, 0, var19, var21);
+					var6.method3056(var0, var1, var2, var16, 1, 1, (Entity)var34, 0, var19, var21);
 					if (var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
 						var10000 = Tiles.field488[var0][var1];
 						var10000[var2] |= 2340;
@@ -493,11 +493,11 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 					}
 
 					if (var8.interactType != 0 && var7 != null) {
-						var7.method3502(var1, var2, var5, var4, var8.boolean1);
+						var7.method3508(var1, var2, var5, var4, var8.boolean1);
 					}
 
 					if (var8.int2 != 16) {
-						var6.method3123(var0, var1, var2, var8.int2);
+						var6.method3127(var0, var1, var2, var8.int2);
 					}
 
 				} else if (var5 == 1) {
@@ -521,7 +521,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 					}
 
 					if (var8.interactType != 0 && var7 != null) {
-						var7.method3502(var1, var2, var5, var4, var8.boolean1);
+						var7.method3508(var1, var2, var5, var4, var8.boolean1);
 					}
 
 				} else {
@@ -564,11 +564,11 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 						}
 
 						if (var8.interactType != 0 && var7 != null) {
-							var7.method3502(var1, var2, var5, var4, var8.boolean1);
+							var7.method3508(var1, var2, var5, var4, var8.boolean1);
 						}
 
 						if (var8.int2 != 16) {
-							var6.method3123(var0, var1, var2, var8.int2);
+							var6.method3127(var0, var1, var2, var8.int2);
 						}
 
 					} else if (var5 == 3) {
@@ -592,7 +592,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 						}
 
 						if (var8.interactType != 0 && var7 != null) {
-							var7.method3502(var1, var2, var5, var4, var8.boolean1);
+							var7.method3508(var1, var2, var5, var4, var8.boolean1);
 						}
 
 					} else if (var5 == 9) {
@@ -602,13 +602,13 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 							var34 = new DynamicObject(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Entity)null);
 						}
 
-						var6.method3052(var0, var1, var2, var16, 1, 1, (Entity)var34, 0, var19, var21);
+						var6.method3056(var0, var1, var2, var16, 1, 1, (Entity)var34, 0, var19, var21);
 						if (var8.interactType != 0 && var7 != null) {
 							var7.addGameObject(var1, var2, var9, var10, var8.boolean1);
 						}
 
 						if (var8.int2 != 16) {
-							var6.method3123(var0, var1, var2, var8.int2);
+							var6.method3127(var0, var1, var2, var8.int2);
 						}
 
 					} else if (var5 == 4) {
@@ -687,10 +687,10 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 					var34 = new DynamicObject(var3, 10, var4, var0, var1, var2, var8.animationId, true, (Entity)null);
 				}
 
-				if (var34 != null && var6.method3052(var0, var1, var2, var16, var9, var10, (Entity)var34, var5 == 11 ? 256 : 0, var19, var21) && var8.clipped) {
+				if (var34 != null && var6.method3056(var0, var1, var2, var16, var9, var10, (Entity)var34, var5 == 11 ? 256 : 0, var19, var21) && var8.clipped) {
 					var23 = 15;
 					if (var34 instanceof Model) {
-						var23 = ((Model)var34).method2855() / 4;
+						var23 = ((Model)var34).method2859() / 4;
 						if (var23 > 30) {
 							var23 = 30;
 						}

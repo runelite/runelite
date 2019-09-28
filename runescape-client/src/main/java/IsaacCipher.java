@@ -46,7 +46,7 @@ public final class IsaacCipher {
 			this.results[var2] = var1[var2];
 		}
 
-		this.method6193();
+		this.method6216();
 	}
 
 	@ObfuscatedName("z")
@@ -69,7 +69,7 @@ public final class IsaacCipher {
 		signature = "(I)I",
 		garbageValue = "2039703989"
 	)
-	public final int method6191() {
+	public final int method6214() {
 		if (this.valuesRemaining == 0) {
 			this.generateMoreResults();
 			this.valuesRemaining = 256;
@@ -114,7 +114,7 @@ public final class IsaacCipher {
 		signature = "(I)V",
 		garbageValue = "-135595454"
 	)
-	final void method6193() {
+	final void method6216() {
 		int var9 = -1640531527;
 		int var8 = -1640531527;
 		int var7 = -1640531527;

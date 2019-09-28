@@ -53,7 +53,7 @@ public class VorbisCodebook {
 			}
 		}
 
-		this.method2312();
+		this.method2316();
 		var2 = VorbisSample.readBits(4);
 		if (var2 > 0) {
 			float var15 = VorbisSample.float32Unpack(VorbisSample.readBits(32));
@@ -115,7 +115,7 @@ public class VorbisCodebook {
 	}
 
 	@ObfuscatedName("n")
-	void method2312() {
+	void method2316() {
 		int[] var1 = new int[this.entries];
 		int[] var2 = new int[33];
 
@@ -209,7 +209,7 @@ public class VorbisCodebook {
 	}
 
 	@ObfuscatedName("v")
-	int method2313() {
+	int method2317() {
 		int var1;
 		for (var1 = 0; this.keys[var1] >= 0; var1 = VorbisSample.readBit() != 0 ? this.keys[var1] : var1 + 1) {
 		}
@@ -218,8 +218,8 @@ public class VorbisCodebook {
 	}
 
 	@ObfuscatedName("u")
-	float[] method2314() {
-		return this.field1325[this.method2313()];
+	float[] method2318() {
+		return this.field1325[this.method2317()];
 	}
 
 	@ObfuscatedName("z")

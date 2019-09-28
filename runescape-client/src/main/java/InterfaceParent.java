@@ -152,7 +152,7 @@ public class InterfaceParent extends Node {
 	static final void updateNpcs(boolean var0, PacketBuffer var1) {
 		Client.field640 = 0;
 		Client.field633 = 0;
-		Decimator.method2496();
+		Decimator.method2500();
 
 		int var2;
 		NPC var4;
@@ -225,7 +225,7 @@ public class InterfaceParent extends Node {
 			var4.readySequence = var4.definition.readySequence;
 			var4.turnLeftSequence = var4.definition.turnLeftSequence;
 			var4.turnRightSequence = var4.definition.turnRightSequence;
-			var4.method2038(class223.localPlayer.pathX[0] + var5, class223.localPlayer.pathY[0] + var6, var9 == 1);
+			var4.method2042(class223.localPlayer.pathX[0] + var5, class223.localPlayer.pathY[0] + var6, var9 == 1);
 		}
 
 		var1.exportIndex();
@@ -241,7 +241,7 @@ public class InterfaceParent extends Node {
 					var6 = -1;
 				}
 
-				var7 = var1.method5496();
+				var7 = var1.method5511();
 				if (var6 == var4.sequence && var6 != -1) {
 					var8 = GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var6).field3517;
 					if (var8 == 1) {
@@ -265,7 +265,7 @@ public class InterfaceParent extends Node {
 			}
 
 			if ((var5 & 1) != 0) {
-				var6 = var1.method5456();
+				var6 = var1.method5471();
 				int var10;
 				int var11;
 				int var12;
@@ -291,15 +291,15 @@ public class InterfaceParent extends Node {
 					}
 				}
 
-				var7 = var1.method5496();
+				var7 = var1.method5511();
 				if (var7 > 0) {
 					for (var8 = 0; var8 < var7; ++var8) {
 						var9 = var1.readUShortSmart();
 						var10 = var1.readUShortSmart();
 						if (var10 != 32767) {
 							var11 = var1.readUShortSmart();
-							var12 = var1.method5456();
-							int var13 = var10 > 0 ? var1.method5456() : var12;
+							var12 = var1.method5471();
+							int var13 = var10 > 0 ? var1.method5471() : var12;
 							var4.addHealthBar(var9, Client.cycle, var10, var11, var12, var13);
 						} else {
 							var4.removeHealthBar(var9);
@@ -309,14 +309,14 @@ public class InterfaceParent extends Node {
 			}
 
 			if ((var5 & 2) != 0) {
-				var4.targetIndex = var1.method5465();
+				var4.targetIndex = var1.method5480();
 				if (var4.targetIndex == 65535) {
 					var4.targetIndex = -1;
 				}
 			}
 
 			if ((var5 & 32) != 0) {
-				var4.definition = PacketBufferNode.getNpcDefinition(var1.method5632());
+				var4.definition = PacketBufferNode.getNpcDefinition(var1.method5647());
 				var4.field932 = var4.definition.size * 772175475;
 				var4.field982 = var4.definition.rotation;
 				var4.walkSequence = var4.definition.walkSequence;
@@ -329,18 +329,18 @@ public class InterfaceParent extends Node {
 			}
 
 			if ((var5 & 4) != 0) {
-				var6 = var1.method5465();
-				var7 = var1.method5632();
+				var6 = var1.method5480();
+				var7 = var1.method5647();
 				var8 = var4.x - (var6 - class223.baseX * 64 - class223.baseX * 64) * 64;
-				var9 = var4.y * 682054857 - (var7 - class286.baseY * 64 - class286.baseY * 64) * 64;
+				var9 = var4.y - (var7 - class286.baseY * 64 - class286.baseY * 64) * 64;
 				if (var8 != 0 || var9 != 0) {
 					var4.field957 = (int)(Math.atan2((double)var8, (double)var9) * 325.949D) & 2047;
 				}
 			}
 
 			if ((var5 & 8) != 0) {
-				var4.spotAnimation = var1.method5632();
-				var6 = var1.method5546();
+				var4.spotAnimation = var1.method5647();
+				var6 = var1.method5561();
 				var4.heightOffset = var6 >> 16;
 				var4.field969 = (var6 & 65535) + Client.cycle;
 				var4.spotAnimationFrame = 0;

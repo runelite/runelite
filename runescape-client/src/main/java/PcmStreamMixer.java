@@ -48,7 +48,7 @@ public class PcmStreamMixer extends PcmStream {
 	}
 
 	@ObfuscatedName("v")
-	void method2271() {
+	void method2275() {
 		if (this.field1319 > 0) {
 			for (PcmStreamMixerListener var1 = (PcmStreamMixerListener)this.field1318.last(); var1 != null; var1 = (PcmStreamMixerListener)this.field1318.previous()) {
 				var1.field1421 -= this.field1319;
@@ -64,7 +64,7 @@ public class PcmStreamMixer extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "(Lfx;Lde;)V"
 	)
-	void method2294(Node var1, PcmStreamMixerListener var2) {
+	void method2298(Node var1, PcmStreamMixerListener var2) {
 		while (this.field1318.sentinel != var1 && ((PcmStreamMixerListener)var1).field1421 <= var2.field1421) {
 			var1 = var1.previous;
 		}
@@ -77,7 +77,7 @@ public class PcmStreamMixer extends PcmStream {
 	@ObfuscatedSignature(
 		signature = "(Lde;)V"
 	)
-	void method2272(PcmStreamMixerListener var1) {
+	void method2276(PcmStreamMixerListener var1) {
 		var1.remove();
 		var1.remove2();
 		Node var2 = this.field1318.sentinel.previous;
@@ -108,7 +108,7 @@ public class PcmStreamMixer extends PcmStream {
 	}
 
 	@ObfuscatedName("m")
-	protected int vmethod3873() {
+	protected int vmethod3882() {
 		return 0;
 	}
 
@@ -132,16 +132,16 @@ public class PcmStreamMixer extends PcmStream {
 			var2 += var4;
 			var3 -= var4;
 			this.field1319 += var4;
-			this.method2271();
+			this.method2275();
 			PcmStreamMixerListener var5 = (PcmStreamMixerListener)this.field1318.last();
 			synchronized(var5) {
 				int var7 = var5.update();
 				if (var7 < 0) {
 					var5.field1421 = 0;
-					this.method2272(var5);
+					this.method2276(var5);
 				} else {
 					var5.field1421 = var7;
-					this.method2294(var5.previous, var5);
+					this.method2298(var5.previous, var5);
 				}
 			}
 		} while(var3 != 0);
@@ -176,16 +176,16 @@ public class PcmStreamMixer extends PcmStream {
 			this.skipSubStreams(var2);
 			var1 -= var2;
 			this.field1319 += var2;
-			this.method2271();
+			this.method2275();
 			PcmStreamMixerListener var3 = (PcmStreamMixerListener)this.field1318.last();
 			synchronized(var3) {
 				int var5 = var3.update();
 				if (var5 < 0) {
 					var3.field1421 = 0;
-					this.method2272(var3);
+					this.method2276(var3);
 				} else {
 					var3.field1421 = var5;
-					this.method2294(var3.previous, var3);
+					this.method2298(var3.previous, var3);
 				}
 			}
 		} while(var1 != 0);

@@ -88,16 +88,16 @@ public class Players {
 			}
 
 			int var2 = var0.x >> 7;
-			int var3 = var0.y * 682054857 >> 7;
+			int var3 = var0.y >> 7;
 			if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
 				long var4 = class267.calculateTag(0, 0, 0, false, var0.index);
 				if (var0.model0 != null && Client.cycle >= var0.animationCycleStart && Client.cycle < var0.animationCycleEnd) {
 					var0.isUnanimated = false;
-					var0.tileHeight = MusicPatchPcmStream.getTileHeight(var0.x, var0.y * 682054857, WorldMapRectangle.plane);
+					var0.tileHeight = MusicPatchPcmStream.getTileHeight(var0.x, var0.y, WorldMapRectangle.plane);
 					var0.playerCycle = Client.cycle;
-					PacketWriter.scene.addNullableObject(WorldMapRectangle.plane, var0.x, var0.y * 682054857, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field622, var0.field611, var0.field612, var0.field613);
+					PacketWriter.scene.addNullableObject(WorldMapRectangle.plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field622, var0.field611, var0.field612, var0.field613);
 				} else {
-					if ((var0.x & 127) == 64 && (var0.y * 682054857 & 127) == 64) {
+					if ((var0.x & 127) == 64 && (var0.y & 127) == 64) {
 						if (Client.tileLastDrawnActor[var2][var3] == Client.viewportDrawCount) {
 							return;
 						}
@@ -105,9 +105,9 @@ public class Players {
 						Client.tileLastDrawnActor[var2][var3] = Client.viewportDrawCount;
 					}
 
-					var0.tileHeight = MusicPatchPcmStream.getTileHeight(var0.x, var0.y * 682054857, WorldMapRectangle.plane);
+					var0.tileHeight = MusicPatchPcmStream.getTileHeight(var0.x, var0.y, WorldMapRectangle.plane);
 					var0.playerCycle = Client.cycle;
-					PacketWriter.scene.drawEntity(WorldMapRectangle.plane, var0.x, var0.y * 682054857, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
+					PacketWriter.scene.drawEntity(WorldMapRectangle.plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
 				}
 			}
 		}

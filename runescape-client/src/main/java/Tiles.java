@@ -285,7 +285,7 @@ public final class Tiles {
 		} else if (var0 == ScriptOpcodes.CHAT_SETFILTER) {
 			Interpreter.Interpreter_intStackSize -= 3;
 			Client.publicChatMode = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
-			class219.privateChatMode = Fonts.method5258(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
+			class219.privateChatMode = Fonts.method5273(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
 			if (class219.privateChatMode == null) {
 				class219.privateChatMode = PrivateChatMode.field3791;
 			}
@@ -487,7 +487,7 @@ public final class Tiles {
 					var8.packetBuffer.writeByte(var4);
 					var8.packetBuffer.writeByte(var17);
 					var8.packetBuffer.writeByte(var7);
-					ArchiveDisk.method5779(var8.packetBuffer, var3);
+					ArchiveDisk.method5796(var8.packetBuffer, var3);
 					var8.packetBuffer.writeLengthByte(var8.packetBuffer.offset - var9);
 					Client.packetWriter.addNode(var8);
 					return 1;
@@ -499,7 +499,7 @@ public final class Tiles {
 					var11.packetBuffer.writeShort(0);
 					int var13 = var11.packetBuffer.offset;
 					var11.packetBuffer.writeStringCp1252NullTerminated(var3);
-					ArchiveDisk.method5779(var11.packetBuffer, var12);
+					ArchiveDisk.method5796(var11.packetBuffer, var12);
 					var11.packetBuffer.writeLengthShort(var11.packetBuffer.offset - var13);
 					Client.packetWriter.addNode(var11);
 					return 1;
@@ -529,7 +529,7 @@ public final class Tiles {
 					} else if (var0 == ScriptOpcodes.CHAT_GETMESSAGEFILTER) {
 						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = Client.field907;
 						return 1;
-					} else if (var0 == ScriptOpcodes.DEBUGMES) {
+					} else if (var0 == 5023) {
 						var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
 						System.out.println(var3);
 						return 1;

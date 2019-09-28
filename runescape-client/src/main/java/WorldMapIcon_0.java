@@ -108,7 +108,7 @@ public class WorldMapIcon_0 extends AbstractWorldMapIcon {
 	public static IndexedSprite[] method222(AbstractArchive var0, String var1, String var2) {
 		int var3 = var0.getGroupId(var1);
 		int var4 = var0.getFileId(var3, var2);
-		return class297.method5374(var0, var3, var4);
+		return class297.method5389(var0, var3, var4);
 	}
 
 	@ObfuscatedName("jd")

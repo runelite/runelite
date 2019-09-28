@@ -9,7 +9,7 @@ public class class247 {
 		signature = "(II)Ljava/lang/String;",
 		garbageValue = "1617248140"
 	)
-	static String method4443(int var0) {
+	static String method4455(int var0) {
 		return "<img=" + var0 + ">";
 	}
 

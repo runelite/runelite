@@ -155,16 +155,16 @@ public class class3 implements Enumerated {
 		for (ObjectSound var4 = (ObjectSound)ObjectSound.objectSounds.last(); var4 != null; var4 = (ObjectSound)ObjectSound.objectSounds.previous()) {
 			if (var4.soundEffectId != -1 || var4.soundEffectIds != null) {
 				int var5 = 0;
-				if (var1 > var4.field1059 * 16384) {
-					var5 += var1 - var4.field1059 * 16384;
+				if (var1 > var4.field1059 * 128) {
+					var5 += var1 - var4.field1059 * 128;
 				} else if (var1 < var4.x * 16384) {
 					var5 += var4.x * 16384 - var1;
 				}
 
-				if (var2 > var4.field1060 * 16384) {
-					var5 += var2 - var4.field1060 * 16384;
-				} else if (var2 < var4.y * 16384) {
-					var5 += var4.y * 16384 - var2;
+				if (var2 > var4.field1060 * 128) {
+					var5 += var2 - var4.field1060 * 128;
+				} else if (var2 < var4.y * 128) {
+					var5 += var4.y * 128 - var2;
 				}
 
 				if (var5 - 64 <= var4.field1061 && Client.field868 != 0 && var0 == var4.plane) {
@@ -186,7 +186,7 @@ public class class3 implements Enumerated {
 							}
 						}
 					} else {
-						var4.stream1.method2515(var6);
+						var4.stream1.method2519(var6);
 					}
 
 					if (var4.stream2 == null) {
@@ -203,7 +203,7 @@ public class class3 implements Enumerated {
 							}
 						}
 					} else {
-						var4.stream2.method2515(var6);
+						var4.stream2.method2519(var6);
 						if (!var4.stream2.hasNext()) {
 							var4.stream2 = null;
 						}
@@ -250,7 +250,7 @@ public class class3 implements Enumerated {
 
 			for (var7 = 0; var7 < var6; ++var7) {
 				var8 = var2.readUnsignedShort();
-				IterableNodeHashTable var9 = new IterableNodeHashTable(var8 > 0 ? Timer.method4923(var8) : 1);
+				IterableNodeHashTable var9 = new IterableNodeHashTable(var8 > 0 ? Timer.method4935(var8) : 1);
 				var1.switches[var7] = var9;
 
 				while (var8-- > 0) {
@@ -359,7 +359,7 @@ public class class3 implements Enumerated {
 					var23 = new DynamicObject(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Entity)null);
 				}
 
-				var7.method3052(var0, var2, var3, var17, 1, 1, (Entity)var23, 0, var20, var22);
+				var7.method3056(var0, var2, var3, var17, 1, 1, (Entity)var23, 0, var20, var22);
 				if (var9.interactType != 0) {
 					var8.addGameObject(var2, var3, var10, var11, var9.boolean1);
 				}
@@ -373,7 +373,7 @@ public class class3 implements Enumerated {
 
 				var7.newBoundaryObject(var0, var2, var3, var17, (Entity)var23, (Entity)null, Tiles.field489[var5], 0, var20, var22);
 				if (var9.interactType != 0) {
-					var8.method3502(var2, var3, var6, var5, var9.boolean1);
+					var8.method3508(var2, var3, var6, var5, var9.boolean1);
 				}
 
 			} else if (var6 == 1) {
@@ -385,7 +385,7 @@ public class class3 implements Enumerated {
 
 				var7.newBoundaryObject(var0, var2, var3, var17, (Entity)var23, (Entity)null, Tiles.field493[var5], 0, var20, var22);
 				if (var9.interactType != 0) {
-					var8.method3502(var2, var3, var6, var5, var9.boolean1);
+					var8.method3508(var2, var3, var6, var5, var9.boolean1);
 				}
 
 			} else {
@@ -404,7 +404,7 @@ public class class3 implements Enumerated {
 
 					var7.newBoundaryObject(var0, var2, var3, var17, (Entity)var24, (Entity)var25, Tiles.field489[var5], Tiles.field489[var29], var20, var22);
 					if (var9.interactType != 0) {
-						var8.method3502(var2, var3, var6, var5, var9.boolean1);
+						var8.method3508(var2, var3, var6, var5, var9.boolean1);
 					}
 
 				} else if (var6 == 3) {
@@ -416,7 +416,7 @@ public class class3 implements Enumerated {
 
 					var7.newBoundaryObject(var0, var2, var3, var17, (Entity)var23, (Entity)null, Tiles.field493[var5], 0, var20, var22);
 					if (var9.interactType != 0) {
-						var8.method3502(var2, var3, var6, var5, var9.boolean1);
+						var8.method3508(var2, var3, var6, var5, var9.boolean1);
 					}
 
 				} else if (var6 == 9) {
@@ -426,7 +426,7 @@ public class class3 implements Enumerated {
 						var23 = new DynamicObject(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Entity)null);
 					}
 
-					var7.method3052(var0, var2, var3, var17, 1, 1, (Entity)var23, 0, var20, var22);
+					var7.method3056(var0, var2, var3, var17, 1, 1, (Entity)var23, 0, var20, var22);
 					if (var9.interactType != 0) {
 						var8.addGameObject(var2, var3, var10, var11, var9.boolean1);
 					}
@@ -508,7 +508,7 @@ public class class3 implements Enumerated {
 			}
 
 			if (var23 != null) {
-				var7.method3052(var0, var2, var3, var17, var10, var11, (Entity)var23, var6 == 11 ? 256 : 0, var20, var22);
+				var7.method3056(var0, var2, var3, var17, var10, var11, (Entity)var23, var6 == 11 ? 256 : 0, var20, var22);
 			}
 
 			if (var9.interactType != 0) {

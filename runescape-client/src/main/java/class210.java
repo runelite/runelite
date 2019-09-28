@@ -26,7 +26,7 @@ public class class210 {
 		signature = "(I)V",
 		garbageValue = "2143242016"
 	)
-	static void method3939() {
+	static void method3948() {
 		PacketBufferNode var0 = InterfaceParent.getPacketBufferNode(ClientPacket.field2256, Client.packetWriter.isaacCipher);
 		var0.packetBuffer.writeByte(class247.getWindowedMode());
 		var0.packetBuffer.writeShort(FloorDecoration.canvasWidth);

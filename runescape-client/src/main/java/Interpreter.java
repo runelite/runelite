@@ -182,7 +182,7 @@ public class Interpreter {
 		signature = "(Ljava/lang/String;IB)Z",
 		garbageValue = "106"
 	)
-	static boolean method2021(String var0, int var1) {
+	static boolean method2025(String var0, int var1) {
 		return WorldMapID.method567(var0, var1, "openjs");
 	}
 }

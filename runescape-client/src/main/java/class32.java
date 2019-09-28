@@ -216,7 +216,7 @@ public class class32 {
 					int var15 = class2.ViewportMouse_unpackX(ViewportMouse.ViewportMouse_entityTags[var8]);
 					int var16 = var15;
 					int var17 = ArchiveLoader.method1173(var8);
-					int var18 = class81.method2059(var8);
+					int var18 = class81.method2063(var8);
 					int var19 = class81.Entity_unpackID(ViewportMouse.ViewportMouse_entityTags[var8]);
 					int var20 = var19;
 					if (var18 == 2 && PacketWriter.scene.getObjectFlags(WorldMapRectangle.plane, var15, var17, var11) >= 0) {
@@ -281,10 +281,10 @@ public class class32 {
 							break label336;
 						}
 
-						if (var32.definition.size == 1 && (var32.x & 127) == 64 && (var32.y * 682054857 & 127) == 64) {
+						if (var32.definition.size == 1 && (var32.x & 127) == 64 && (var32.y & 127) == 64) {
 							for (var22 = 0; var22 < Client.npcCount; ++var22) {
 								var23 = Client.npcs[Client.npcIndices[var22]];
-								if (var23 != null && var23 != var32 && var23.definition.size == 1 && var23.x == var32.x && var32.y * 682054857 == var23.y * 682054857) {
+								if (var23 != null && var23 != var32 && var23.definition.size == 1 && var23.x == var32.x && var23.y == var32.y) {
 									class186.addNpcToMenu(var23.definition, Client.npcIndices[var22], var16, var17);
 								}
 							}
@@ -294,7 +294,7 @@ public class class32 {
 
 							for (var37 = 0; var37 < var22; ++var37) {
 								var25 = Client.players[var35[var37]];
-								if (var25 != null && var32.x == var25.x && var32.y * 682054857 == var25.y * 682054857) {
+								if (var25 != null && var32.x == var25.x && var32.y == var25.y) {
 									GrandExchangeEvent.addPlayerToMenu(var25, var35[var37], var16, var17);
 								}
 							}
@@ -309,10 +309,10 @@ public class class32 {
 							break label336;
 						}
 
-						if ((var33.x & 127) == 64 && (var33.y * 682054857 & 127) == 64) {
+						if ((var33.x & 127) == 64 && (var33.y & 127) == 64) {
 							for (var22 = 0; var22 < Client.npcCount; ++var22) {
 								var23 = Client.npcs[Client.npcIndices[var22]];
-								if (var23 != null && var23.definition.size == 1 && var23.x == var33.x && var23.y * 682054857 == var33.y * 682054857) {
+								if (var23 != null && var23.definition.size == 1 && var23.x == var33.x && var33.y == var23.y) {
 									class186.addNpcToMenu(var23.definition, Client.npcIndices[var22], var16, var17);
 								}
 							}
@@ -322,7 +322,7 @@ public class class32 {
 
 							for (var37 = 0; var37 < var22; ++var37) {
 								var25 = Client.players[var35[var37]];
-								if (var25 != null && var33 != var25 && var33.x == var25.x && var33.y * 682054857 == var25.y * 682054857) {
+								if (var25 != null && var33 != var25 && var33.x == var25.x && var33.y == var25.y) {
 									GrandExchangeEvent.addPlayerToMenu(var25, var35[var37], var16, var17);
 								}
 							}

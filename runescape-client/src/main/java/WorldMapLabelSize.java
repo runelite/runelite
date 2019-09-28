@@ -108,10 +108,10 @@ public class WorldMapLabelSize {
 		int var4 = var0 & var2 - 1;
 		int var5 = var1 / var2;
 		int var6 = var1 & var2 - 1;
-		int var7 = Login.method2096(var3, var5);
-		int var8 = Login.method2096(var3 + 1, var5);
-		int var9 = Login.method2096(var3, var5 + 1);
-		int var10 = Login.method2096(var3 + 1, var5 + 1);
+		int var7 = Login.method2100(var3, var5);
+		int var8 = Login.method2100(var3 + 1, var5);
+		int var9 = Login.method2100(var3, var5 + 1);
+		int var10 = Login.method2100(var3 + 1, var5 + 1);
 		int var12 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
 		int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
 		int var14 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
@@ -139,22 +139,22 @@ public class WorldMapLabelSize {
 				if (var0 == 1) {
 					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2231, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeIntME(var3[var6]);
-					var8.packetBuffer.method5452(0);
+					var8.packetBuffer.method5467(0);
 					Client.packetWriter.addNode(var8);
 				} else if (var0 == 4) {
 					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2271, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShortLE(var3[var6]);
-					var8.packetBuffer.method5453(0);
+					var8.packetBuffer.method5468(0);
 					Client.packetWriter.addNode(var8);
 				} else if (var0 == 6) {
 					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2214, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort(var3[var6]);
-					var8.packetBuffer.method5452(0);
+					var8.packetBuffer.method5467(0);
 					Client.packetWriter.addNode(var8);
 				} else if (var0 == 7) {
 					var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2274, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5461(var3[var6]);
-					var8.packetBuffer.method5452(0);
+					var8.packetBuffer.method5476(var3[var6]);
+					var8.packetBuffer.method5467(0);
 					Client.packetWriter.addNode(var8);
 				}
 

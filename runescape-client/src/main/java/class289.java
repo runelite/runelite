@@ -93,7 +93,7 @@ public class class289 {
 		signature = "(IIZI)V",
 		garbageValue = "-1781394642"
 	)
-	static final void method5213(int var0, int var1, boolean var2) {
+	static final void method5228(int var0, int var1, boolean var2) {
 		if (!var2 || var0 != ServerPacket.field2131 || MusicPatchNode.field2422 != var1) {
 			ServerPacket.field2131 = var0;
 			MusicPatchNode.field2422 = var1;
@@ -122,7 +122,7 @@ public class class289 {
 					}
 
 					var8.x -= var5 * 128;
-					var8.y -= var6 * -595411840;
+					var8.y -= var6 * 128;
 				}
 			}
 
@@ -137,7 +137,7 @@ public class class289 {
 					}
 
 					var21.x -= var5 * 128;
-					var21.y -= var6 * -595411840;
+					var21.y -= var6 * 128;
 				}
 			}
 

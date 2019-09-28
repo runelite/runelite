@@ -43,7 +43,7 @@ public class FriendLoginUpdate extends Link {
 		signature = "(ILcu;ZS)I",
 		garbageValue = "-14883"
 	)
-	static int method5178(int var0, Script var1, boolean var2) {
+	static int method5193(int var0, Script var1, boolean var2) {
 		Widget var3;
 		if (var0 >= 2000) {
 			var0 -= 1000;

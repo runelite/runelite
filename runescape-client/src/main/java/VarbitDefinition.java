@@ -475,12 +475,12 @@ public class VarbitDefinition extends DualNode {
 					var45 += 15;
 					var44 = 277;
 					var31 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter + -117;
-					IndexedSprite var34 = ClientPacket.method3572(Client.Login_isUsernameRemembered, Login.field1176);
+					IndexedSprite var34 = ClientPacket.method3578(Client.Login_isUsernameRemembered, Login.field1176);
 					var34.drawAt(var31, var44);
 					var31 = var31 + var34.subWidth + 5;
 					var1.draw("Remember username", var31, var44 + 13, 16776960, 0);
 					var31 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter + 24;
-					var34 = ClientPacket.method3572(AbstractArchive.clientPreferences.hideUsername, Login.field1192);
+					var34 = ClientPacket.method3578(AbstractArchive.clientPreferences.hideUsername, Login.field1192);
 					var34.drawAt(var31, var44);
 					var31 = var31 + var34.subWidth + 5;
 					var1.draw("Hide username", var31, var44 + 13, 16776960, 0);
@@ -667,7 +667,7 @@ public class VarbitDefinition extends DualNode {
 								var25 = "";
 								break;
 							default:
-								TilePaint.method3039(false);
+								TilePaint.method3043(false);
 							}
 
 							var0.drawCentered(var4, Login.loginBoxX + 180, var44, 16776960, 0);

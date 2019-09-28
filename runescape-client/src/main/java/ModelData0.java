@@ -1,5 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -7,6 +8,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ModelData0")
 public class ModelData0 {
 	@ObfuscatedName("ha")
+	@ObfuscatedGetter(
+		intValue = -1351160427
+	)
 	static int field1840;
 
 	ModelData0() {
@@ -17,7 +21,7 @@ public class ModelData0 {
 		signature = "(II)Z",
 		garbageValue = "1264128253"
 	)
-	public static boolean method3211(int var0) {
+	public static boolean method3215(int var0) {
 		return (var0 >> 28 & 1) != 0;
 	}
 
@@ -37,7 +41,7 @@ public class ModelData0 {
 		signature = "(II)V",
 		garbageValue = "1738289394"
 	)
-	static final void method3210(int var0) {
+	static final void method3214(int var0) {
 		if (var0 >= 0) {
 			int var1 = Client.menuArguments1[var0];
 			int var2 = Client.menuArguments2[var0];

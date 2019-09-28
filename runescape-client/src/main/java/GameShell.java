@@ -29,7 +29,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class GameShell extends Applet implements Runnable, FocusListener, WindowListener {
 	@ObfuscatedName("rx")
 	@ObfuscatedGetter(
-		intValue = 41369600
+		intValue = 1980034688
 	)
 	static int field455;
 	@ObfuscatedName("z")
@@ -307,7 +307,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	@Export("setUpKeyboard")
 	protected final void setUpKeyboard() {
-		Skills.method4076();
+		Skills.method4088();
 		java.awt.Canvas var1 = this.canvas;
 		var1.setFocusTraversalKeysEnabled(false);
 		var1.addKeyListener(KeyHandler.KeyHandler_instance);
@@ -422,8 +422,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	)
 	@Export("replaceCanvas")
 	final void replaceCanvas() {
-		class83.method2065(this.canvas);
-		CollisionMap.method3538(this.canvas);
+		class83.method2069(this.canvas);
+		CollisionMap.method3544(this.canvas);
 		if (this.mouseWheelHandler != null) {
 			this.mouseWheelHandler.removeFrom(this.canvas);
 		}

@@ -150,7 +150,7 @@ public class LoginScreenAnimation {
 		this.field1029 = 0;
 		this.field1031 = new int[32768];
 		this.field1015 = new int[32768];
-		this.method1824((IndexedSprite)null);
+		this.method1828((IndexedSprite)null);
 		this.field1020 = new int[32768];
 		this.field1027 = new int[32768];
 	}
@@ -160,7 +160,7 @@ public class LoginScreenAnimation {
 		signature = "(I)V",
 		garbageValue = "-1384251878"
 	)
-	void method1817() {
+	void method1821() {
 		this.field1030 = null;
 		this.field1021 = null;
 		this.field1022 = null;
@@ -195,10 +195,10 @@ public class LoginScreenAnimation {
 
 		this.field1025 = var2;
 		if (var3 > 0) {
-			this.method1819(var3);
+			this.method1823(var3);
 		}
 
-		this.method1836(var1);
+		this.method1840(var1);
 	}
 
 	@ObfuscatedName("u")
@@ -206,13 +206,13 @@ public class LoginScreenAnimation {
 		signature = "(II)V",
 		garbageValue = "-1108655518"
 	)
-	final void method1819(int var1) {
+	final void method1823(int var1) {
 		this.field1029 += var1 * 128;
 		int var2;
 		if (this.field1029 > this.field1031.length) {
 			this.field1029 -= this.field1031.length;
 			var2 = (int)(Math.random() * 12.0D);
-			this.method1824(this.sprites[var2]);
+			this.method1828(this.sprites[var2]);
 		}
 
 		var2 = 0;
@@ -340,7 +340,7 @@ public class LoginScreenAnimation {
 		signature = "(IIII)I",
 		garbageValue = "1638746019"
 	)
-	final int method1820(int var1, int var2, int var3) {
+	final int method1824(int var1, int var2, int var3) {
 		int var4 = 256 - var3;
 		return (var3 * (var2 & 65280) + var4 * (var1 & 65280) & 16711680) + (var4 * (var1 & 16711935) + var3 * (var2 & 16711935) & -16711936) >> 8;
 	}
@@ -350,19 +350,19 @@ public class LoginScreenAnimation {
 		signature = "(IB)V",
 		garbageValue = "97"
 	)
-	final void method1836(int var1) {
+	final void method1840(int var1) {
 		int var2 = this.field1019.length;
 		if (this.field1023 * 16 > 0) {
-			this.method1822(this.field1023 * 16, this.field1021);
+			this.method1826(this.field1023 * 16, this.field1021);
 		} else if (this.field1014 * 16 > 0) {
-			this.method1822(this.field1014 * 16, this.field1022);
+			this.method1826(this.field1014 * 16, this.field1022);
 		} else {
 			for (int var3 = 0; var3 < var2; ++var3) {
 				this.field1019[var3] = this.field1030[var3];
 			}
 		}
 
-		this.method1823(var1);
+		this.method1827(var1);
 	}
 
 	@ObfuscatedName("q")
@@ -370,16 +370,16 @@ public class LoginScreenAnimation {
 		signature = "(I[II)V",
 		garbageValue = "-1982126918"
 	)
-	final void method1822(int var1, int[] var2) {
+	final void method1826(int var1, int[] var2) {
 		int var3 = this.field1019.length;
 
 		for (int var4 = 0; var4 < var3; ++var4) {
 			if (var1 > 768) {
-				this.field1019[var4] = this.method1820(this.field1030[var4], var2[var4], 1024 - var1);
+				this.field1019[var4] = this.method1824(this.field1030[var4], var2[var4], 1024 - var1);
 			} else if (var1 > 256) {
 				this.field1019[var4] = var2[var4];
 			} else {
-				this.field1019[var4] = this.method1820(var2[var4], this.field1030[var4], 256 - var1);
+				this.field1019[var4] = this.method1824(var2[var4], this.field1030[var4], 256 - var1);
 			}
 		}
 
@@ -390,7 +390,7 @@ public class LoginScreenAnimation {
 		signature = "(II)V",
 		garbageValue = "-224486060"
 	)
-	final void method1823(int var1) {
+	final void method1827(int var1) {
 		int var2 = 0;
 
 		for (int var3 = 1; var3 < 255; ++var3) {
@@ -434,7 +434,7 @@ public class LoginScreenAnimation {
 		signature = "(Llp;I)V",
 		garbageValue = "1363271921"
 	)
-	final void method1824(IndexedSprite var1) {
+	final void method1828(IndexedSprite var1) {
 		int var2;
 		for (var2 = 0; var2 < this.field1031.length; ++var2) {
 			this.field1031[var2] = 0;
@@ -502,7 +502,7 @@ public class LoginScreenAnimation {
 		signature = "(CI)Z",
 		garbageValue = "1979853088"
 	)
-	public static boolean method1839(char var0) {
+	public static boolean method1843(char var0) {
 		if ((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
 			if (var0 != 0) {
 				char[] var1 = class287.cp1252AsciiExtension;
@@ -541,7 +541,7 @@ public class LoginScreenAnimation {
 		signature = "([BIII)I",
 		garbageValue = "-1562433827"
 	)
-	static int method1844(byte[] var0, int var1, int var2) {
+	static int method1848(byte[] var0, int var1, int var2) {
 		int var3 = -1;
 
 		for (int var4 = var1; var4 < var2; ++var4) {
@@ -557,7 +557,7 @@ public class LoginScreenAnimation {
 		signature = "([BII)V",
 		garbageValue = "-2002563170"
 	)
-	static void method1828(byte[] var0, int var1) {
+	static void method1832(byte[] var0, int var1) {
 		if (Client.randomDatData == null) {
 			Client.randomDatData = new byte[24];
 		}

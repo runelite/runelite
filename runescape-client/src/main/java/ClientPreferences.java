@@ -58,7 +58,7 @@ public class ClientPreferences {
 		this.rememberedUsername = null;
 		this.hideUsername = false;
 		this.parameters = new LinkedHashMap();
-		this.method1847(true);
+		this.method1851(true);
 	}
 
 	@ObfuscatedSignature(
@@ -102,10 +102,10 @@ public class ClientPreferences {
 					this.hideUsername = var1.readBoolean();
 				}
 			} else {
-				this.method1847(true);
+				this.method1851(true);
 			}
 		} else {
-			this.method1847(true);
+			this.method1851(true);
 		}
 
 	}
@@ -115,7 +115,7 @@ public class ClientPreferences {
 		signature = "(ZI)V",
 		garbageValue = "864937253"
 	)
-	void method1847(boolean var1) {
+	void method1851(boolean var1) {
 	}
 
 	@ObfuscatedName("n")
@@ -149,7 +149,7 @@ public class ClientPreferences {
 		signature = "(B)V",
 		garbageValue = "-70"
 	)
-	static void method1857() {
+	static void method1861() {
 		Players.Players_count = 0;
 
 		for (int var0 = 0; var0 < 2048; ++var0) {
@@ -173,7 +173,7 @@ public class ClientPreferences {
 			if (Client.minimapState != 2 && Client.minimapState != 5) {
 				int var5 = Client.camAngleY & 2047;
 				int var6 = class223.localPlayer.x / 32 + 48;
-				int var7 = 464 - class223.localPlayer.y * 682054857 / 32;
+				int var7 = 464 - class223.localPlayer.y / 32;
 				ObjectSound.sceneMinimapSprite.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
 
 				int var8;
@@ -181,7 +181,7 @@ public class ClientPreferences {
 				int var10;
 				for (var8 = 0; var8 < Client.mapIconCount; ++var8) {
 					var9 = Client.mapIconXs[var8] * 4 + 2 - class223.localPlayer.x / 32;
-					var10 = Client.mapIconYs[var8] * 4 + 2 - class223.localPlayer.y * 682054857 / 32;
+					var10 = Client.mapIconYs[var8] * 4 + 2 - class223.localPlayer.y / 32;
 					class208.drawSpriteOnMinimap(var1, var2, var9, var10, Client.mapIcons[var8], var4);
 				}
 
@@ -192,7 +192,7 @@ public class ClientPreferences {
 						NodeDeque var15 = Client.groundItems[WorldMapRectangle.plane][var8][var9];
 						if (var15 != null) {
 							var11 = var8 * 4 + 2 - class223.localPlayer.x / 32;
-							var12 = var9 * 4 + 2 - class223.localPlayer.y * 682054857 / 32;
+							var12 = var9 * 4 + 2 - class223.localPlayer.y / 32;
 							class208.drawSpriteOnMinimap(var1, var2, var11, var12, class13.mapDotSprites[0], var4);
 						}
 					}
@@ -208,7 +208,7 @@ public class ClientPreferences {
 
 						if (var18 != null && var18.drawMapDot && var18.isInteractable) {
 							var11 = var16.x / 32 - class223.localPlayer.x / 32;
-							var12 = var16.y * 682054857 / 32 - class223.localPlayer.y * 682054857 / 32;
+							var12 = var16.y / 32 - class223.localPlayer.y / 32;
 							class208.drawSpriteOnMinimap(var1, var2, var11, var12, class13.mapDotSprites[1], var4);
 						}
 					}
@@ -221,7 +221,7 @@ public class ClientPreferences {
 					Player var17 = Client.players[var19[var10]];
 					if (var17 != null && var17.isVisible() && !var17.isHidden && var17 != class223.localPlayer) {
 						var12 = var17.x / 32 - class223.localPlayer.x / 32;
-						int var13 = var17.y * 682054857 / 32 - class223.localPlayer.y * 682054857 / 32;
+						int var13 = var17.y / 32 - class223.localPlayer.y / 32;
 						boolean var14 = false;
 						if (class223.localPlayer.team != 0 && var17.team != 0 && var17.team == class223.localPlayer.team) {
 							var14 = true;
@@ -244,14 +244,14 @@ public class ClientPreferences {
 						NPC var20 = Client.npcs[Client.hintArrowNpcIndex];
 						if (var20 != null) {
 							var11 = var20.x / 32 - class223.localPlayer.x / 32;
-							var12 = var20.y * 682054857 / 32 - class223.localPlayer.y * 682054857 / 32;
+							var12 = var20.y / 32 - class223.localPlayer.y / 32;
 							FloorDecoration.worldToMinimap(var1, var2, var11, var12, GameObject.mapMarkerSprites[1], var4);
 						}
 					}
 
 					if (Client.hintArrowType == 2) {
 						var10 = Client.hintArrowX * 4 - class223.baseX * 256 + 2 - class223.localPlayer.x / 32;
-						var11 = Client.hintArrowY * 4 - class286.baseY * 256 + 2 - class223.localPlayer.y * 682054857 / 32;
+						var11 = Client.hintArrowY * 4 - class286.baseY * 256 + 2 - class223.localPlayer.y / 32;
 						FloorDecoration.worldToMinimap(var1, var2, var10, var11, GameObject.mapMarkerSprites[1], var4);
 					}
 
@@ -259,7 +259,7 @@ public class ClientPreferences {
 						Player var21 = Client.players[Client.hintArrowPlayerIndex];
 						if (var21 != null) {
 							var11 = var21.x / 32 - class223.localPlayer.x / 32;
-							var12 = var21.y * 682054857 / 32 - class223.localPlayer.y * 682054857 / 32;
+							var12 = var21.y / 32 - class223.localPlayer.y / 32;
 							FloorDecoration.worldToMinimap(var1, var2, var11, var12, GameObject.mapMarkerSprites[1], var4);
 						}
 					}
@@ -267,7 +267,7 @@ public class ClientPreferences {
 
 				if (Client.destinationX != 0) {
 					var10 = Client.destinationX * 4 + 2 - class223.localPlayer.x / 32;
-					var11 = Client.destinationY * 4 + 2 - class223.localPlayer.y * 682054857 / 32;
+					var11 = Client.destinationY * 4 + 2 - class223.localPlayer.y / 32;
 					class208.drawSpriteOnMinimap(var1, var2, var10, var11, GameObject.mapMarkerSprites[0], var4);
 				}
 

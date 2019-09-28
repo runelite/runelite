@@ -16,7 +16,7 @@ public class class222 {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1931429415"
 	)
-	static int method4078(int var0, Script var1, boolean var2) {
+	static int method4090(int var0, Script var1, boolean var2) {
 		int var3;
 		if (var0 == ScriptOpcodes.OC_NAME) {
 			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
@@ -134,7 +134,7 @@ public class class222 {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1936251414"
 	)
-	static int method4077(int var0, Script var1, boolean var2) {
+	static int method4089(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.LOGOUT) {
 			Client.logoutTimer = 250;
 			return 1;

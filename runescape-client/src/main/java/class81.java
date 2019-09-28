@@ -23,7 +23,7 @@ public class class81 {
 		signature = "(ILcu;ZB)I",
 		garbageValue = "116"
 	)
-	static int method2058(int var0, Script var1, boolean var2) {
+	static int method2062(int var0, Script var1, boolean var2) {
 		int var4 = -1;
 		Widget var3;
 		if (var0 >= 2000) {
@@ -212,8 +212,8 @@ public class class81 {
 		signature = "(II)I",
 		garbageValue = "550144839"
 	)
-	public static int method2059(int var0) {
-		return Client.method1707(ViewportMouse.ViewportMouse_entityTags[var0]);
+	public static int method2063(int var0) {
+		return Client.method1708(ViewportMouse.ViewportMouse_entityTags[var0]);
 	}
 
 	@ObfuscatedName("m")

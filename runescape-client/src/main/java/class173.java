@@ -41,7 +41,7 @@ public class class173 {
 		signature = "(Ljava/lang/CharSequence;I)I",
 		garbageValue = "1868348372"
 	)
-	public static int method3550(CharSequence var0) {
+	public static int method3556(CharSequence var0) {
 		int var1 = var0.length();
 		int var2 = 0;
 

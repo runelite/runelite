@@ -82,24 +82,12 @@ public class Username implements Comparable {
 		return this.compareToTyped((Username)var1);
 	}
 
-	public String aah() {
-		return this.getName();
-	}
-
-	public String aae() {
-		return this.getName();
-	}
-
-	public String aak() {
-		return this.getName();
-	}
-
 	@ObfuscatedName("ai")
 	@ObfuscatedSignature(
 		signature = "([BII)I",
 		garbageValue = "-42849866"
 	)
-	public static int method5132(byte[] var0, int var1) {
-		return LoginScreenAnimation.method1844(var0, 0, var1);
+	public static int method5147(byte[] var0, int var1) {
+		return LoginScreenAnimation.method1848(var0, 0, var1);
 	}
 }

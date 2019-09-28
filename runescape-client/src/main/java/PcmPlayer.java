@@ -272,7 +272,7 @@ public class PcmPlayer {
 		signature = "(I)V",
 		garbageValue = "580966872"
 	)
-	public final void method2393() {
+	public final void method2397() {
 		this.field1394 = true;
 	}
 
@@ -356,7 +356,7 @@ public class PcmPlayer {
 		if (this.stream != null && this.field1399 <= 0) {
 			this.field1399 += UrlRequest.PcmPlayer_sampleRate >> 4;
 			DynamicObject.PcmStream_disable(this.stream);
-			this.method2398(this.stream, this.stream.vmethod2687());
+			this.method2402(this.stream, this.stream.vmethod2691());
 			int var4 = 0;
 			int var5 = 255;
 
@@ -394,7 +394,7 @@ public class PcmPlayer {
 									var11 = var11.after;
 								} else {
 									var11.active = true;
-									int var13 = var11.vmethod3873();
+									int var13 = var11.vmethod3882();
 									var4 += var13;
 									if (var12 != null) {
 										var12.position += var13;
@@ -407,7 +407,7 @@ public class PcmPlayer {
 									PcmStream var14 = var11.firstSubStream();
 									if (var14 != null) {
 										for (int var15 = var11.field1462; var14 != null; var14 = var11.nextSubStream()) {
-											this.method2398(var14, var15 * var14.vmethod2687() >> 8);
+											this.method2402(var14, var15 * var14.vmethod2691() >> 8);
 										}
 									}
 
@@ -462,7 +462,7 @@ public class PcmPlayer {
 		signature = "(Ldc;II)V",
 		garbageValue = "1373941757"
 	)
-	final void method2398(PcmStream var1, int var2) {
+	final void method2402(PcmStream var1, int var2) {
 		int var3 = var2 >> 5;
 		PcmStream var4 = this.field1401[var3];
 		if (var4 == null) {

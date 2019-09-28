@@ -49,7 +49,7 @@ public class Messages {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-1500079981"
 	)
-	static int method2207(int var0, Script var1, boolean var2) {
+	static int method2211(int var0, Script var1, boolean var2) {
 		String var3;
 		if (var0 == ScriptOpcodes.MES) {
 			var3 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -152,7 +152,7 @@ public class Messages {
 							var6.packetBuffer.writeShort(1 + class268.stringCp1252NullTerminatedByteSize(var7) + class268.stringCp1252NullTerminatedByteSize(var5));
 							var6.packetBuffer.writeStringCp1252NullTerminated(var7);
 							var6.packetBuffer.writeStringCp1252NullTerminated(var5);
-							var6.packetBuffer.method5453(var15);
+							var6.packetBuffer.method5468(var15);
 							Client.packetWriter.addNode(var6);
 							return 1;
 						}

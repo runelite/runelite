@@ -137,7 +137,7 @@ public class EnumDefinition extends DualNode {
 		signature = "(Ljava/lang/String;B)V",
 		garbageValue = "54"
 	)
-	static final void method4496(String var0) {
+	static final void method4508(String var0) {
 		class210.addGameMessage(30, "", var0);
 	}
 }

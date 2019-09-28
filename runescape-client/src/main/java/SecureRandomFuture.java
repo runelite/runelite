@@ -64,7 +64,7 @@ public class SecureRandomFuture {
 		try {
 			return (SecureRandom)this.future.get();
 		} catch (Exception var2) {
-			return AttackOption.method2077();
+			return AttackOption.method2081();
 		}
 	}
 
@@ -73,9 +73,9 @@ public class SecureRandomFuture {
 		signature = "(I)V",
 		garbageValue = "-1765847825"
 	)
-	static void method2134() {
+	static void method2138() {
 		for (int var0 = 0; var0 < Client.menuOptionsCount; ++var0) {
-			if (BZip2State.method5688(Client.menuOpcodes[var0])) {
+			if (BZip2State.method5703(Client.menuOpcodes[var0])) {
 				if (var0 < Client.menuOptionsCount - 1) {
 					for (int var1 = var0; var1 < Client.menuOptionsCount - 1; ++var1) {
 						Client.menuActions[var1] = Client.menuActions[var1 + 1];

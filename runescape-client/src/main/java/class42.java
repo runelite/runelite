@@ -216,7 +216,7 @@ public class class42 implements WorldMapSection {
 			var8 = var7 >> 6 & 3;
 			var9 = var7 & 31;
 			var10 = var3;
-			if (Language.method3627(var5)) {
+			if (Language.method3635(var5)) {
 				var10 = var4;
 			}
 
@@ -311,7 +311,7 @@ public class class42 implements WorldMapSection {
 				}
 			} else if (var9 == 9) {
 				var12 = 15658734;
-				if (Language.method3627(var5)) {
+				if (Language.method3635(var5)) {
 					var12 = 15597568;
 				}
 

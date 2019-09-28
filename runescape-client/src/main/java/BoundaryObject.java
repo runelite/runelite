@@ -78,7 +78,7 @@ public final class BoundaryObject {
 		signature = "(CB)Z",
 		garbageValue = "31"
 	)
-	static final boolean method3222(char var0) {
+	static final boolean method3226(char var0) {
 		return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
 	}
 }

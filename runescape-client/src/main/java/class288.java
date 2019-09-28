@@ -25,7 +25,7 @@ public final class class288 {
 		signature = "(Ljava/lang/CharSequence;I)I",
 		garbageValue = "757556043"
 	)
-	public static int method5209(CharSequence var0) {
+	public static int method5224(CharSequence var0) {
 		int var1 = var0.length();
 		int var2 = 0;
 

@@ -14,6 +14,9 @@ public abstract class Actor extends Entity {
 	@Export("x")
 	int x;
 	@ObfuscatedName("ap")
+	@ObfuscatedGetter(
+		intValue = 682054857
+	)
 	@Export("y")
 	int y;
 	@ObfuscatedName("ar")
@@ -374,7 +377,7 @@ public abstract class Actor extends Entity {
 		signature = "(B)V",
 		garbageValue = "4"
 	)
-	final void method1761() {
+	final void method1765() {
 		this.pathLength = 0;
 		this.field988 = 0;
 	}

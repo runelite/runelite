@@ -99,7 +99,7 @@ public abstract class AbstractArchive {
 	)
 	@Export("decodeIndex")
 	void decodeIndex(byte[] var1) {
-		this.hash = Username.method5132(var1, var1.length);
+		this.hash = Username.method5147(var1, var1.length);
 		Buffer var2 = new Buffer(MusicPatch.decompressBytes(var1));
 		int var3 = var2.readUnsignedByte();
 		if (var3 >= 5 && var3 <= 7) {
@@ -109,7 +109,7 @@ public abstract class AbstractArchive {
 
 			int var4 = var2.readUnsignedByte();
 			if (var3 >= 7) {
-				this.groupCount = var2.method5443();
+				this.groupCount = var2.method5458();
 			} else {
 				this.groupCount = var2.readUnsignedShort();
 			}
@@ -120,7 +120,7 @@ public abstract class AbstractArchive {
 			int var7;
 			if (var3 >= 7) {
 				for (var7 = 0; var7 < this.groupCount; ++var7) {
-					this.groupIds[var7] = var5 += var2.method5443();
+					this.groupIds[var7] = var5 += var2.method5458();
 					if (this.groupIds[var7] > var6) {
 						var6 = this.groupIds[var7];
 					}
@@ -176,7 +176,7 @@ public abstract class AbstractArchive {
 					this.fileIds[var8] = new int[var9];
 
 					for (var11 = 0; var11 < var9; ++var11) {
-						var12 = this.fileIds[var8][var11] = var5 += var2.method5443();
+						var12 = this.fileIds[var8][var11] = var5 += var2.method5458();
 						if (var12 > var10) {
 							var10 = var12;
 						}
@@ -300,7 +300,7 @@ public abstract class AbstractArchive {
 		signature = "(II)Z",
 		garbageValue = "-812316387"
 	)
-	public boolean method4115(int var1) {
+	public boolean method4127(int var1) {
 		if (this.files.length == 1) {
 			return this.tryLoadFile(0, var1);
 		} else if (this.files[var1].length == 1) {
@@ -523,12 +523,12 @@ public abstract class AbstractArchive {
 				return true;
 			} else {
 				byte[] var18;
-				if (var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
-					var18 = GrandExchangeOfferUnitPriceComparator.serialize(this.groups[var1], false);
-				} else {
+				if (var2 != null && (var2[0] != 0 || var2[1] != 0 || var2[2] != 0 || var2[3] != 0)) {
 					var18 = GrandExchangeOfferUnitPriceComparator.serialize(this.groups[var1], true);
 					Buffer var8 = new Buffer(var18);
 					var8.xteaDecrypt(var2, 5, var8.array.length);
+				} else {
+					var18 = GrandExchangeOfferUnitPriceComparator.serialize(this.groups[var1], false);
 				}
 
 				byte[] var20 = MusicPatch.decompressBytes(var18);

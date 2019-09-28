@@ -137,7 +137,7 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 			var8 = 4;
 		}
 
-		this.method6216(var5);
+		this.method6239(var5);
 		Runtime.getRuntime();
 		int var10 = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
 		int var11;
@@ -163,11 +163,11 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "-611564637"
 	)
-	void method6216(String var1) {
+	void method6239(String var1) {
 		if (var1.startsWith("1.")) {
-			this.method6209(var1);
+			this.method6232(var1);
 		} else {
-			this.method6210(var1);
+			this.method6233(var1);
 		}
 
 	}
@@ -177,7 +177,7 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "1764264863"
 	)
-	void method6209(String var1) {
+	void method6232(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {
@@ -195,7 +195,7 @@ public class DesktopPlatformInfoProvider implements PlatformInfoProvider {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "-775775529"
 	)
-	void method6210(String var1) {
+	void method6233(String var1) {
 		String[] var2 = var1.split("\\.");
 
 		try {

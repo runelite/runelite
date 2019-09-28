@@ -101,7 +101,7 @@ public class HealthBar extends Node {
 	)
 	@Export("isEmpty")
 	boolean isEmpty() {
-		return this.updates.method4763();
+		return this.updates.method4775();
 	}
 
 	@ObfuscatedName("n")
@@ -109,7 +109,7 @@ public class HealthBar extends Node {
 		signature = "(Llb;III)I",
 		garbageValue = "-1932083268"
 	)
-	static int method2030(IterableNodeHashTable var0, int var1, int var2) {
+	static int method2034(IterableNodeHashTable var0, int var1, int var2) {
 		if (var0 == null) {
 			return var2;
 		} else {
@@ -165,7 +165,7 @@ public class HealthBar extends Node {
 		signature = "(Lby;I)V",
 		garbageValue = "1394806934"
 	)
-	static final void method2028(Actor var0) {
+	static final void method2032(Actor var0) {
 		if (var0.field976 == Client.cycle || var0.sequence == -1 || var0.sequenceDelay != 0 || var0.sequenceFrameCycle + 1 > GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var0.sequence).frameLengths[var0.sequenceFrame]) {
 			int var1 = var0.field976 - var0.field948;
 			int var2 = Client.cycle - var0.field948;
@@ -174,7 +174,7 @@ public class HealthBar extends Node {
 			int var5 = var0.field972 * 128 + var0.field932 * -527978816;
 			int var6 = var0.field932 * -527978816 + var0.field974 * 128;
 			var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
-			var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1 * -944175751;
+			var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
 		}
 
 		var0.field949 = 0;

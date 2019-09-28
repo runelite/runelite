@@ -26,7 +26,7 @@ public class class83 {
 		signature = "(Ljava/awt/Component;I)V",
 		garbageValue = "2076208439"
 	)
-	static void method2065(Component var0) {
+	static void method2069(Component var0) {
 		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
 		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
 		KeyHandler.field373 = -1;
@@ -37,7 +37,7 @@ public class class83 {
 		signature = "(Lhp;IIIZI)V",
 		garbageValue = "-476776598"
 	)
-	public static void method2064(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
+	public static void method2068(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
 		class197.field2386 = 1;
 		class197.musicTrackArchive = var0;
 		class188.musicTrackGroupId = var1;

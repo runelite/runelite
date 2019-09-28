@@ -39,9 +39,9 @@ public class class325 {
 		int var11;
 		int var12;
 		if (var0.field948 > Client.cycle) {
-			class191.method3630(var0);
+			class191.method3639(var0);
 		} else if (var0.field976 >= Client.cycle) {
-			HealthBar.method2028(var0);
+			HealthBar.method2032(var0);
 		} else {
 			var0.movementSequence = var0.readySequence;
 			if (var0.pathLength == 0) {
@@ -62,7 +62,7 @@ public class class325 {
 					}
 
 					var11 = var0.x;
-					var12 = var0.y * 682054857;
+					var12 = var0.y;
 					var4 = var0.pathX[var0.pathLength - 1] * 128 + var0.field932 * -527978816;
 					int var5 = var0.field932 * -527978816 + var0.pathY[var0.pathLength - 1] * 128;
 					if (var11 < var4) {
@@ -168,19 +168,19 @@ public class class325 {
 							}
 
 							if (var12 < var5) {
-								var0.y += -944175751 * var9;
-								if (var0.y * 682054857 > var5) {
-									var0.y = var5 * -944175751;
+								var0.y += var9;
+								if (var0.y > var5) {
+									var0.y = var5;
 								}
 							} else if (var12 > var5) {
-								var0.y -= var9 * -944175751;
-								if (var0.y * 682054857 < var5) {
-									var0.y = var5 * -944175751;
+								var0.y -= var9;
+								if (var0.y < var5) {
+									var0.y = var5;
 								}
 							}
 						}
 
-						if (var4 == var0.x && var0.y * 682054857 == var5) {
+						if (var4 == var0.x && var5 == var0.y) {
 							--var0.pathLength;
 							if (var0.field988 > 0) {
 								--var0.field988;
@@ -188,7 +188,7 @@ public class class325 {
 						}
 					} else {
 						var0.x = var4;
-						var0.y = var5 * -944175751;
+						var0.y = var5;
 						--var0.pathLength;
 						if (var0.field988 > 0) {
 							--var0.field988;
@@ -198,24 +198,24 @@ public class class325 {
 			}
 		}
 
-		if (var0.x < 128 || var0.y * 682054857 < 128 || var0.x >= 13184 || var0.y * 682054857 >= 13184) {
+		if (var0.x < 128 || var0.y < 128 || var0.x >= 13184 || var0.y >= 13184) {
 			var0.sequence = -1;
 			var0.spotAnimation = -1;
 			var0.field948 = 0;
 			var0.field976 = 0;
 			var0.x = var0.pathX[0] * 128 + var0.field932 * -527978816;
-			var0.y = var0.field932 * 1330337984 + var0.pathY[0] * -595411840;
-			var0.method1761();
+			var0.y = var0.field932 * -527978816 + var0.pathY[0] * 128;
+			var0.method1765();
 		}
 
-		if (class223.localPlayer == var0 && (var0.x < 1536 || var0.y * 682054857 < 1536 || var0.x >= 11776 || var0.y * 682054857 >= 11776)) {
+		if (class223.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
 			var0.sequence = -1;
 			var0.spotAnimation = -1;
 			var0.field948 = 0;
 			var0.field976 = 0;
 			var0.x = var0.field932 * -527978816 + var0.pathX[0] * 128;
-			var0.y = var0.field932 * 1330337984 + var0.pathY[0] * -595411840;
-			var0.method1761();
+			var0.y = var0.field932 * -527978816 + var0.pathY[0] * 128;
+			var0.method1765();
 		}
 
 		if (var0.field982 != 0) {
@@ -229,7 +229,7 @@ public class class325 {
 
 				if (var13 != null) {
 					var12 = var0.x - ((Actor)var13).x;
-					var4 = var0.y * 682054857 - ((Actor)var13).y * 682054857;
+					var4 = var0.y - ((Actor)var13).y;
 					if (var12 != 0 || var4 != 0) {
 						var0.orientation = (int)(Math.atan2((double)var12, (double)var4) * 325.949D) & 2047;
 					}
@@ -299,13 +299,13 @@ public class class325 {
 				if (var0.movementFrame < var2.frameIds.length && var0.movementFrameCycle > var2.frameLengths[var0.movementFrame]) {
 					var0.movementFrameCycle = 1;
 					++var0.movementFrame;
-					class30.addSequenceSoundEffect(var2, var0.movementFrame, var0.x, var0.y * 682054857);
+					class30.addSequenceSoundEffect(var2, var0.movementFrame, var0.x, var0.y);
 				}
 
 				if (var0.movementFrame >= var2.frameIds.length) {
 					var0.movementFrameCycle = 0;
 					var0.movementFrame = 0;
-					class30.addSequenceSoundEffect(var2, var0.movementFrame, var0.x, var0.y * 682054857);
+					class30.addSequenceSoundEffect(var2, var0.movementFrame, var0.x, var0.y);
 				}
 			} else {
 				var0.movementSequence = -1;
@@ -325,7 +325,7 @@ public class class325 {
 					if (var0.spotAnimationFrame < var3.frameIds.length && var0.spotAnimationFrameCycle > var3.frameLengths[var0.spotAnimationFrame]) {
 						var0.spotAnimationFrameCycle = 1;
 						++var0.spotAnimationFrame;
-						class30.addSequenceSoundEffect(var3, var0.spotAnimationFrame, var0.x, var0.y * 682054857);
+						class30.addSequenceSoundEffect(var3, var0.spotAnimationFrame, var0.x, var0.y);
 					}
 
 					if (var0.spotAnimationFrame >= var3.frameIds.length && (var0.spotAnimationFrame < 0 || var0.spotAnimationFrame >= var3.frameIds.length)) {
@@ -354,7 +354,7 @@ public class class325 {
 				if (var0.sequenceFrame < var2.frameIds.length && var0.sequenceFrameCycle > var2.frameLengths[var0.sequenceFrame]) {
 					var0.sequenceFrameCycle = 1;
 					++var0.sequenceFrame;
-					class30.addSequenceSoundEffect(var2, var0.sequenceFrame, var0.x, var0.y * 682054857);
+					class30.addSequenceSoundEffect(var2, var0.sequenceFrame, var0.x, var0.y);
 				}
 
 				if (var0.sequenceFrame >= var2.frameIds.length) {
@@ -363,7 +363,7 @@ public class class325 {
 					if (var0.field965 >= var2.field3503) {
 						var0.sequence = -1;
 					} else if (var0.sequenceFrame >= 0 && var0.sequenceFrame < var2.frameIds.length) {
-						class30.addSequenceSoundEffect(var2, var0.sequenceFrame, var0.x, var0.y * 682054857);
+						class30.addSequenceSoundEffect(var2, var0.sequenceFrame, var0.x, var0.y);
 					} else {
 						var0.sequence = -1;
 					}
@@ -386,7 +386,7 @@ public class class325 {
 		signature = "(I)V",
 		garbageValue = "-761836956"
 	)
-	static void method6167() {
+	static void method6190() {
 		for (InterfaceParent var0 = (InterfaceParent)Client.interfaceParents.first(); var0 != null; var0 = (InterfaceParent)Client.interfaceParents.next()) {
 			int var1 = var0.group;
 			if (WorldMapData_0.loadInterface(var1)) {

@@ -80,9 +80,9 @@ public class ChatChannel {
 		signature = "(I)V",
 		garbageValue = "247037730"
 	)
-	static final void method2233() {
-		int var0 = class225.field3045 * 16384 + 64;
-		int var1 = Clock.field2039 * 128 + 64;
+	static final void method2237() {
+		int var0 = class225.field3045 * 128 + 64;
+		int var1 = Clock.field2039 * 16384 + 64;
 		int var2 = MusicPatchPcmStream.getTileHeight(var0, var1, WorldMapRectangle.plane) - GrandExchangeOfferOwnWorldComparator.field627;
 		if (GrandExchangeOfferOwnWorldComparator.cameraX < var0) {
 			GrandExchangeOfferOwnWorldComparator.cameraX = (var0 - GrandExchangeOfferOwnWorldComparator.cameraX) * Messages.field1262 / 1000 + GrandExchangeOfferOwnWorldComparator.cameraX + MouseRecorder.field572;
@@ -126,7 +126,7 @@ public class ChatChannel {
 			}
 		}
 
-		var0 = GameShell.field455 * 128 + 64;
+		var0 = GameShell.field455 * 16384 + 64;
 		var1 = SecureRandomFuture.field1228 * 16384 + 64;
 		var2 = MusicPatchPcmStream.getTileHeight(var0, var1, WorldMapRectangle.plane) - class14.field90;
 		int var3 = var0 - GrandExchangeOfferOwnWorldComparator.cameraX;
@@ -196,7 +196,7 @@ public class ChatChannel {
 		signature = "(IB)V",
 		garbageValue = "73"
 	)
-	static void method2225(int var0) {
+	static void method2229(int var0) {
 		ParamDefinition.tempMenuAction = new MenuAction();
 		ParamDefinition.tempMenuAction.argument1 = Client.menuArguments1[var0];
 		ParamDefinition.tempMenuAction.argument2 = Client.menuArguments2[var0];

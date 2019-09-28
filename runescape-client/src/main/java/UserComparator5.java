@@ -55,7 +55,7 @@ public class UserComparator5 extends AbstractUserComparator {
 		int var2 = var0.readUnsignedByte();
 		int var3;
 		if (var1 == null) {
-			var3 = Timer.method4923(var2);
+			var3 = Timer.method4935(var2);
 			var1 = new IterableNodeHashTable(var3);
 		}
 
@@ -80,7 +80,7 @@ public class UserComparator5 extends AbstractUserComparator {
 		signature = "(Ljava/lang/String;B)I",
 		garbageValue = "103"
 	)
-	public static int method3383(String var0) {
+	public static int method3387(String var0) {
 		return var0.length() + 2;
 	}
 }

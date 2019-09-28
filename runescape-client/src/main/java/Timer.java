@@ -73,7 +73,7 @@ public class Timer {
 		signature = "(B)V",
 		garbageValue = "-20"
 	)
-	public void method4924() {
+	public void method4936() {
 		this.field3561 = class30.method566();
 	}
 
@@ -82,7 +82,7 @@ public class Timer {
 		signature = "(B)V",
 		garbageValue = "1"
 	)
-	public void method4925() {
+	public void method4937() {
 		if (-1L != this.field3561) {
 			this.field3565 = class30.method566() - this.field3561;
 			this.field3561 = -1L;
@@ -95,7 +95,7 @@ public class Timer {
 		signature = "(II)V",
 		garbageValue = "-1928577406"
 	)
-	public void method4926(int var1) {
+	public void method4938(int var1) {
 		this.field3562 = class30.method566();
 		this.field3567 = var1;
 	}
@@ -105,7 +105,7 @@ public class Timer {
 		signature = "(I)V",
 		garbageValue = "-1202204199"
 	)
-	public void method4927() {
+	public void method4939() {
 		if (-1L != this.field3562) {
 			this.field3564 = class30.method566() - this.field3562;
 			this.field3562 = -1L;
@@ -120,7 +120,7 @@ public class Timer {
 		signature = "(I)V",
 		garbageValue = "-832320221"
 	)
-	public void method4928() {
+	public void method4940() {
 		this.field3563 = false;
 		this.field3568 = 0;
 	}
@@ -130,8 +130,8 @@ public class Timer {
 		signature = "(I)V",
 		garbageValue = "1318451763"
 	)
-	public void method4929() {
-		this.method4927();
+	public void method4941() {
+		this.method4939();
 	}
 
 	@ObfuscatedName("q")
@@ -179,7 +179,7 @@ public class Timer {
 		signature = "(IB)I",
 		garbageValue = "7"
 	)
-	public static int method4923(int var0) {
+	public static int method4935(int var0) {
 		--var0;
 		var0 |= var0 >>> 1;
 		var0 |= var0 >>> 2;

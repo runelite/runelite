@@ -60,7 +60,7 @@ public class UserComparator9 extends AbstractUserComparator {
 		signature = "(IS)I",
 		garbageValue = "-18305"
 	)
-	public static int method3355(int var0) {
+	public static int method3359(int var0) {
 		return var0 >> 17 & 7;
 	}
 }

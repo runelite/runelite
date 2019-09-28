@@ -88,7 +88,7 @@ public class Language implements Enumerated {
 		Language_NL = new Language("NL", "nl", "Dutch", class192.field2353, 4, "NL");
 		Language_ES = new Language("ES", "es", "Spanish", class192.field2353, 5, "ES");
 		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class192.field2362, 6, "MX");
-		Language[] var0 = method3629();
+		Language[] var0 = method3638();
 		Language_valuesOrdered = new Language[var0.length];
 		Language[] var1 = var0;
 
@@ -142,29 +142,17 @@ public class Language implements Enumerated {
 		return this.getLanguage().toLowerCase(Locale.ENGLISH);
 	}
 
-	public String aae() {
-		return this.getLanguage().toLowerCase(Locale.ENGLISH);
-	}
-
-	public String aah() {
-		return this.getLanguage().toLowerCase(Locale.ENGLISH);
-	}
-
-	public String aak() {
-		return this.getLanguage().toLowerCase(Locale.ENGLISH);
-	}
-
 	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(I)[Lgt;",
 		garbageValue = "1567762755"
 	)
-	static Language[] method3629() {
+	static Language[] method3638() {
 		return new Language[]{Language_PT, Language_EN, Language_NL, Language_ES, Language_FR, Language_ES_MX, Language_DE};
 	}
 
 	@ObfuscatedName("n")
-	public static boolean method3627(long var0) {
+	public static boolean method3635(long var0) {
 		boolean var2 = 0L != var0;
 		if (var2) {
 			boolean var3 = (int)(var0 >>> 16 & 1L) == 1;
@@ -179,7 +167,7 @@ public class Language implements Enumerated {
 		signature = "(II)Lgt;",
 		garbageValue = "-1627784008"
 	)
-	public static Language method3612(int var0) {
+	public static Language method3618(int var0) {
 		return var0 >= 0 && var0 < Language_valuesOrdered.length ? Language_valuesOrdered[var0] : null;
 	}
 

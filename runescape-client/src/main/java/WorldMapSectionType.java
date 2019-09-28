@@ -95,7 +95,7 @@ public enum WorldMapSectionType implements Enumerated {
 
 		for (int var2 = 0; var2 < var1.length; ++var2) {
 			PlayerType var3 = var1[var2];
-			if (var3.modIcon != -1 && var0.startsWith(class247.method4443(var3.modIcon))) {
+			if (var3.modIcon != -1 && var0.startsWith(class247.method4455(var3.modIcon))) {
 				var0 = var0.substring(6 + Integer.toString(var3.modIcon).length());
 				break;
 			}

@@ -40,7 +40,7 @@ public class WorldMapDecoration {
 
 	@ObfuscatedName("z")
 	static boolean method346(long var0) {
-		return Client.method1707(var0) == 2;
+		return Client.method1708(var0) == 2;
 	}
 
 	@ObfuscatedName("z")

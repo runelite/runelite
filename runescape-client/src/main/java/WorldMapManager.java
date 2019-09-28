@@ -78,13 +78,13 @@ public final class WorldMapManager {
 	int tileX;
 	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 16562041
+		intValue = 1059970624
 	)
 	@Export("tileY")
 	int tileY;
 	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -2004318801
+		intValue = 572615616
 	)
 	@Export("tileWidth")
 	int tileWidth;
@@ -144,8 +144,8 @@ public final class WorldMapManager {
 			this.mapAreaData.getOriginPlane();
 			this.mapAreaData.getOriginY();
 			this.tileX = this.mapAreaData.getRegionLowX() * 64;
-			this.tileY = this.mapAreaData.getRegionLowY() * 64;
-			this.tileWidth = (this.mapAreaData.getRegionHighX() - this.mapAreaData.getRegionLowX() + 1) * 64;
+			this.tileY = this.mapAreaData.getRegionLowY() * 4096;
+			this.tileWidth = (this.mapAreaData.getRegionHighX() - this.mapAreaData.getRegionLowX() + 1) * 4096;
 			this.tileHeight = (this.mapAreaData.getRegionHighY() - this.mapAreaData.getRegionLowY() + 1) * 4096;
 			int var16 = this.mapAreaData.getRegionHighX() - this.mapAreaData.getRegionLowX() + 1;
 			int var9 = this.mapAreaData.getRegionHighY() - this.mapAreaData.getRegionLowY() + 1;
@@ -235,7 +235,7 @@ public final class WorldMapManager {
 		Rasterizer2D.Rasterizer2D_setClipArray(var12);
 		var18 = (int)(var14 * 64.0F);
 		var19 = this.tileX * 4096 + var1;
-		int var20 = this.tileY * 4096 + var2;
+		int var20 = this.tileY * 64 + var2;
 
 		for (int var21 = var13.x; var21 < var13.width + var13.x; ++var21) {
 			for (int var22 = var13.y; var22 < var13.y + var13.height; ++var22) {
@@ -256,7 +256,7 @@ public final class WorldMapManager {
 		float var15 = this.getPixelsPerTile(var7 - var5, var3 - var1);
 		int var16 = (int)(64.0F * var15);
 		int var17 = this.tileX * 4096 + var1;
-		int var18 = this.tileY * 4096 + var2;
+		int var18 = this.tileY * 64 + var2;
 
 		int var19;
 		int var20;
@@ -311,8 +311,8 @@ public final class WorldMapManager {
 
 					while (var11.hasNext()) {
 						AbstractWorldMapIcon var12 = (AbstractWorldMapIcon)var11.next();
-						int var13 = var3 * (var12.coord2.x - this.tileX * 4096) / (this.tileWidth * 4096);
-						int var14 = var4 - (var12.coord2.y - this.tileY * 4096) * var4 / (this.tileHeight * 64);
+						int var13 = var3 * (var12.coord2.x - this.tileX * 4096) / (this.tileWidth * 64);
+						int var14 = var4 - var4 * (var12.coord2.y - this.tileY * 64) / (this.tileHeight * 64);
 						Rasterizer2D.Rasterizer2D_drawCircleAlpha(var13 + var1, var14 + var2, 2, 16776960, 256);
 					}
 				}
@@ -334,7 +334,7 @@ public final class WorldMapManager {
 			float var13 = this.getPixelsPerTile(var7, var3 - var1);
 			int var14 = (int)(var13 * 64.0F);
 			int var15 = this.tileX * 4096 + var1;
-			int var16 = this.tileY * 4096 + var2;
+			int var16 = this.tileY * 64 + var2;
 
 			for (int var17 = var12.x; var17 < var12.x + var12.width; ++var17) {
 				for (int var18 = var12.y; var18 < var12.y + var12.height; ++var18) {
@@ -358,9 +358,9 @@ public final class WorldMapManager {
 	WorldMapRectangle createWorldMapRectangle(int var1, int var2, int var3, int var4) {
 		WorldMapRectangle var5 = new WorldMapRectangle(this);
 		int var6 = this.tileX * 4096 + var1;
-		int var7 = this.tileY * 4096 + var2;
+		int var7 = this.tileY * 64 + var2;
 		int var8 = var3 + this.tileX * 4096;
-		int var9 = this.tileY * 4096 + var4;
+		int var9 = this.tileY * 64 + var4;
 		int var10 = var6 / 64;
 		int var11 = var7 / 64;
 		int var12 = var8 / 64;
@@ -696,10 +696,10 @@ public final class WorldMapManager {
 							}
 
 							if ((var6 & 8) != 0) {
-								var8 = var0.method5456();
+								var8 = var0.method5471();
 								byte[] var17 = new byte[var8];
 								Buffer var10 = new Buffer(var17);
-								var0.method5479(var17, 0, var8);
+								var0.method5494(var17, 0, var8);
 								Players.field1236[var4] = var10;
 								var16.read(var10);
 							}
@@ -710,8 +710,8 @@ public final class WorldMapManager {
 							if ((var6 & 128) != 0) {
 								var8 = var0.readUnsignedShort();
 								PlayerType var22 = (PlayerType)NetSocket.findEnumerated(class226.PlayerType_values(), var0.readUnsignedByte());
-								boolean var18 = var0.method5456() == 1;
-								var11 = var0.method5456();
+								boolean var18 = var0.method5471() == 1;
+								var11 = var0.method5471();
 								var12 = var0.offset;
 								if (var16.username != null && var16.appearance != null) {
 									boolean var13 = false;
@@ -721,9 +721,9 @@ public final class WorldMapManager {
 
 									if (!var13 && Client.field634 == 0 && !var16.isHidden) {
 										Players.field1246.offset = 0;
-										var0.method5478(Players.field1246.array, 0, var11);
+										var0.method5493(Players.field1246.array, 0, var11);
 										Players.field1246.offset = 0;
-										String var14 = AbstractFont.escapeBrackets(NetSocket.method3467(class65.method1250(Players.field1246)));
+										String var14 = AbstractFont.escapeBrackets(NetSocket.method3471(class65.method1250(Players.field1246)));
 										var16.overheadText = var14.trim();
 										var16.overheadTextColor = var8 >> 8;
 										var16.overheadTextEffect = var8 & 255;
@@ -737,7 +737,7 @@ public final class WorldMapManager {
 										}
 
 										if (var22.modIcon != -1) {
-											class210.addGameMessage(var15, class247.method4443(var22.modIcon) + var16.username.getName(), var14);
+											class210.addGameMessage(var15, class247.method4455(var22.modIcon) + var16.username.getName(), var14);
 										} else {
 											class210.addGameMessage(var15, var16.username.getName(), var14);
 										}
@@ -752,7 +752,7 @@ public final class WorldMapManager {
 							}
 
 							if ((var6 & 16) != 0) {
-								var8 = var0.method5632();
+								var8 = var0.method5647();
 								if (var8 == 65535) {
 									var8 = -1;
 								}
@@ -766,13 +766,13 @@ public final class WorldMapManager {
 							}
 
 							if ((var6 & 1024) != 0) {
-								var16.field971 = var0.method5458();
-								var16.field973 = var0.method5460();
-								var16.field972 = var0.method5458();
-								var16.field974 = var0.method5458();
+								var16.field971 = var0.method5473();
+								var16.field973 = var0.method5475();
+								var16.field972 = var0.method5473();
+								var16.field974 = var0.method5473();
 								var16.field948 = var0.readUnsignedShort() + Client.cycle;
-								var16.field976 = var0.method5632() + Client.cycle;
-								var16.field977 = var0.method5465();
+								var16.field976 = var0.method5647() + Client.cycle;
+								var16.field977 = var0.method5480();
 								if (var16.field621) {
 									var16.field971 += var16.tileX;
 									var16.field973 += var16.tileY;
@@ -791,7 +791,7 @@ public final class WorldMapManager {
 							}
 
 							if ((var6 & 4) != 0) {
-								var8 = var0.method5455();
+								var8 = var0.method5470();
 								int var19;
 								int var21;
 								int var23;
@@ -817,15 +817,15 @@ public final class WorldMapManager {
 									}
 								}
 
-								var9 = var0.method5496();
+								var9 = var0.method5511();
 								if (var9 > 0) {
 									for (var23 = 0; var23 < var9; ++var23) {
 										var11 = var0.readUShortSmart();
 										var12 = var0.readUShortSmart();
 										if (var12 != 32767) {
 											var21 = var0.readUShortSmart();
-											var19 = var0.method5455();
-											var15 = var12 > 0 ? var0.method5455() : var19;
+											var19 = var0.method5470();
+											var15 = var12 > 0 ? var0.method5470() : var19;
 											var16.addHealthBar(var11, Client.cycle, var12, var21, var19, var15);
 										} else {
 											var16.removeHealthBar(var11);
@@ -835,7 +835,7 @@ public final class WorldMapManager {
 							}
 
 							if ((var6 & 64) != 0) {
-								var16.targetIndex = var0.method5632();
+								var16.targetIndex = var0.method5647();
 								if (var16.targetIndex == 65535) {
 									var16.targetIndex = -1;
 								}
@@ -966,7 +966,7 @@ public final class WorldMapManager {
 			Client.meslayerContinueWidget = null;
 		}
 
-		SecureRandomFuture.method2134();
+		SecureRandomFuture.method2138();
 		GameShell.revalidateWidgetScroll(UserComparator5.Widget_interfaceComponents[var0 >> 16], var4, false);
 		class186.runWidgetOnLoadListener(var1);
 		if (Client.rootInterface != -1) {

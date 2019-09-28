@@ -151,7 +151,7 @@ public final class Tile extends Node {
 		signature = "(I)Lgn;",
 		garbageValue = "283500885"
 	)
-	public static PacketBufferNode method2845() {
+	public static PacketBufferNode method2849() {
 		PacketBufferNode var0;
 		if (PacketBufferNode.PacketBufferNode_packetBufferNodeCount == 0) {
 			var0 = new PacketBufferNode();

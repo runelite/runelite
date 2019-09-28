@@ -218,7 +218,7 @@ public class FloorOverlayDefinition extends DualNode {
 		signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
 		garbageValue = "137024567"
 	)
-	public static String method4704(CharSequence[] var0, int var1, int var2) {
+	public static String method4716(CharSequence[] var0, int var1, int var2) {
 		if (var2 == 0) {
 			return "";
 		} else if (var2 == 1) {

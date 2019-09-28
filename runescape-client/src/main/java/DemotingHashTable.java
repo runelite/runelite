@@ -114,7 +114,7 @@ public final class DemotingHashTable {
 
 				this.removeWrapper(var5);
 				if (this.field1944 != null) {
-					this.field1944.method3298(var5.get());
+					this.field1944.method3302(var5.get());
 				}
 			}
 

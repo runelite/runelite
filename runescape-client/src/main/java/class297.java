@@ -8,8 +8,8 @@ public class class297 {
 		signature = "(Lhp;IIB)[Llp;",
 		garbageValue = "0"
 	)
-	public static IndexedSprite[] method5374(AbstractArchive var0, int var1, int var2) {
-		if (!VertexNormal.method2958(var0, var1, var2)) {
+	public static IndexedSprite[] method5389(AbstractArchive var0, int var1, int var2) {
+		if (!VertexNormal.method2962(var0, var1, var2)) {
 			return null;
 		} else {
 			IndexedSprite[] var4 = new IndexedSprite[class325.SpriteBuffer_spriteCount];

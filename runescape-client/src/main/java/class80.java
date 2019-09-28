@@ -52,7 +52,7 @@ public class class80 {
 		signature = "(B)V",
 		garbageValue = "84"
 	)
-	public static void method2053() {
+	public static void method2057() {
 		if (NetCache.NetCache_socket != null) {
 			NetCache.NetCache_socket.close();
 		}
@@ -64,12 +64,12 @@ public class class80 {
 		signature = "([BIIIIIIILex;[Lfa;I)V",
 		garbageValue = "1963296713"
 	)
-	static final void method2047(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, Scene var8, CollisionMap[] var9) {
+	static final void method2051(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, Scene var8, CollisionMap[] var9) {
 		Buffer var10 = new Buffer(var0);
 		int var11 = -1;
 
 		while (true) {
-			int var12 = var10.method5442();
+			int var12 = var10.method5457();
 			if (var12 == 0) {
 				return;
 			}

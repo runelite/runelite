@@ -198,7 +198,7 @@ public class DynamicObject extends Entity {
 		signature = "(I)V",
 		garbageValue = "274251023"
 	)
-	static final void method2219() {
+	static final void method2223() {
 		Client.packetWriter.close();
 		WorldMapIcon_1.method314();
 		PacketWriter.scene.clear();
@@ -217,7 +217,7 @@ public class DynamicObject extends Entity {
 		MusicPatchNode2.field2382 = 2;
 		Client.field666 = -1;
 		Client.field759 = false;
-		ClientPacket.method3575();
+		ClientPacket.method3581();
 		MouseRecorder.updateGameState(10);
 	}
 
@@ -226,14 +226,14 @@ public class DynamicObject extends Entity {
 		signature = "(I)V",
 		garbageValue = "652940971"
 	)
-	static final void method2221() {
+	static final void method2225() {
 		for (Projectile var0 = (Projectile)Client.projectiles.last(); var0 != null; var0 = (Projectile)Client.projectiles.previous()) {
 			if (var0.plane == WorldMapRectangle.plane && Client.cycle <= var0.cycleEnd) {
 				if (Client.cycle >= var0.cycleStart) {
 					if (var0.targetIndex > 0) {
 						NPC var1 = Client.npcs[var0.targetIndex - 1];
-						if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y * 682054857 >= 0 && var1.y * 682054857 < 13312) {
-							var0.setDestination(var1.x, var1.y * 682054857, MusicPatchPcmStream.getTileHeight(var1.x, var1.y * 682054857, var0.plane) - var0.endHeight, Client.cycle);
+						if (var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+							var0.setDestination(var1.x, var1.y, MusicPatchPcmStream.getTileHeight(var1.x, var1.y, var0.plane) - var0.endHeight, Client.cycle);
 						}
 					}
 
@@ -246,8 +246,8 @@ public class DynamicObject extends Entity {
 							var3 = Client.players[var2];
 						}
 
-						if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y * 682054857 >= 0 && var3.y * 682054857 < 13312) {
-							var0.setDestination(var3.x, var3.y * 682054857, MusicPatchPcmStream.getTileHeight(var3.x, var3.y * 682054857, var0.plane) - var0.endHeight, Client.cycle);
+						if (var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+							var0.setDestination(var3.x, var3.y, MusicPatchPcmStream.getTileHeight(var3.x, var3.y, var0.plane) - var0.endHeight, Client.cycle);
 						}
 					}
 

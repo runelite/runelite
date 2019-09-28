@@ -107,17 +107,17 @@ public class GraphicsDefaults {
 				var3.readMedium();
 				break;
 			case 2:
-				this.compass = var3.method5438();
-				this.field3797 = var3.method5438();
-				this.mapScenes = var3.method5438();
-				this.headIconsPk = var3.method5438();
-				this.field3800 = var3.method5438();
-				this.field3796 = var3.method5438();
-				this.field3802 = var3.method5438();
-				this.field3803 = var3.method5438();
-				this.field3804 = var3.method5438();
-				this.field3807 = var3.method5438();
-				this.field3806 = var3.method5438();
+				this.compass = var3.method5453();
+				this.field3797 = var3.method5453();
+				this.mapScenes = var3.method5453();
+				this.headIconsPk = var3.method5453();
+				this.field3800 = var3.method5453();
+				this.field3796 = var3.method5453();
+				this.field3802 = var3.method5453();
+				this.field3803 = var3.method5453();
+				this.field3804 = var3.method5453();
+				this.field3807 = var3.method5453();
+				this.field3806 = var3.method5453();
 			}
 		}
 	}

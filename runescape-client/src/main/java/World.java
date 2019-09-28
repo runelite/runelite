@@ -99,7 +99,7 @@ public class World {
 		signature = "(I)Z",
 		garbageValue = "-622240981"
 	)
-	boolean method1802() {
+	boolean method1806() {
 		return (2 & this.properties) != 0;
 	}
 
@@ -118,7 +118,7 @@ public class World {
 		signature = "(I)Z",
 		garbageValue = "100459661"
 	)
-	boolean method1774() {
+	boolean method1778() {
 		return (8 & this.properties) != 0;
 	}
 
@@ -192,7 +192,7 @@ public class World {
 		signature = "(III)I",
 		garbageValue = "-1827551520"
 	)
-	public static int method1810(int var0, int var1) {
+	public static int method1814(int var0, int var1) {
 		int var2 = var0 >>> 31;
 		return (var0 + var2) / var1 - var2;
 	}
@@ -202,7 +202,7 @@ public class World {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1196159395"
 	)
-	static int method1811(int var0, Script var1, boolean var2) {
+	static int method1815(int var0, Script var1, boolean var2) {
 		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
 		if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class2.method30(class2.getWidgetClickMask(var3));
@@ -239,7 +239,7 @@ public class World {
 	)
 	@Export("getActorScreenLocation")
 	static final void getActorScreenLocation(Actor var0, int var1) {
-		PlayerAppearance.worldToScreen(var0.x, var0.y * 682054857, var1);
+		PlayerAppearance.worldToScreen(var0.x, var0.y, var1);
 	}
 
 	@ObfuscatedName("jj")

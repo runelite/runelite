@@ -60,7 +60,7 @@ public final class WorldMapRectangle {
 		int var3 = var0.getGroupId(var1);
 		int var4 = var0.getFileId(var3, var2);
 		IndexedSprite var5;
-		if (!VertexNormal.method2958(var0, var3, var4)) {
+		if (!VertexNormal.method2962(var0, var3, var4)) {
 			var5 = null;
 		} else {
 			IndexedSprite var7 = new IndexedSprite();

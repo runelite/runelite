@@ -18,7 +18,7 @@ public class SecureRandomCallable implements Callable {
 	}
 
 	public Object call() {
-		return AttackOption.method2077();
+		return AttackOption.method2081();
 	}
 
 	@ObfuscatedName("z")
@@ -69,17 +69,17 @@ public class SecureRandomCallable implements Callable {
 				var12 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var9 / Rasterizer3D.Rasterizer3D_zoom;
 				var13 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var10 / Rasterizer3D.Rasterizer3D_zoom;
 				int var14 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var10 / Rasterizer3D.Rasterizer3D_zoom;
-				int var15 = Rasterizer3D.method2982(var12, var9, var6, var5);
-				var16 = Rasterizer3D.method2974(var12, var9, var6, var5);
+				int var15 = Rasterizer3D.method2986(var12, var9, var6, var5);
+				var16 = Rasterizer3D.method2978(var12, var9, var6, var5);
 				var12 = var15;
-				var15 = Rasterizer3D.method2982(var14, var10, var6, var5);
-				var17 = Rasterizer3D.method2974(var14, var10, var6, var5);
+				var15 = Rasterizer3D.method2986(var14, var10, var6, var5);
+				var17 = Rasterizer3D.method2978(var14, var10, var6, var5);
 				var14 = var15;
-				var15 = Rasterizer3D.method2980(var11, var16, var8, var7);
-				var16 = Rasterizer3D.method2981(var11, var16, var8, var7);
+				var15 = Rasterizer3D.method2984(var11, var16, var8, var7);
+				var16 = Rasterizer3D.method2985(var11, var16, var8, var7);
 				var11 = var15;
-				var15 = Rasterizer3D.method2980(var13, var17, var8, var7);
-				var17 = Rasterizer3D.method2981(var13, var17, var8, var7);
+				var15 = Rasterizer3D.method2984(var13, var17, var8, var7);
+				var17 = Rasterizer3D.method2985(var13, var17, var8, var7);
 				ViewportMouse.field1707 = (var15 + var11) / 2;
 				ViewportMouse.field1708 = (var12 + var14) / 2;
 				ViewportMouse.field1714 = (var16 + var17) / 2;

@@ -558,9 +558,9 @@ public class Model extends Entity {
 			int var9 = Model_sine[var1];
 
 			for (int var10 = 0; var10 < this.verticesCount; ++var10) {
-				int var11 = Rasterizer3D.method2978(this.verticesX[var10], this.verticesZ[var10], var8, var9);
+				int var11 = Rasterizer3D.method2982(this.verticesX[var10], this.verticesZ[var10], var8, var9);
 				int var12 = this.verticesY[var10];
-				int var13 = Rasterizer3D.method2979(this.verticesX[var10], this.verticesZ[var10], var8, var9);
+				int var13 = Rasterizer3D.method2983(this.verticesX[var10], this.verticesZ[var10], var8, var9);
 				if (var11 < var2) {
 					var2 = var11;
 				}
@@ -642,7 +642,7 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("q")
-	void method2854() {
+	void method2858() {
 		if (this.boundsType != 2) {
 			this.boundsType = 2;
 			this.xzRadius = 0;
@@ -664,7 +664,7 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("m")
-	public int method2855() {
+	public int method2859() {
 		this.calculateBoundsCylinder();
 		return this.xzRadius;
 	}
@@ -998,10 +998,10 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("j")
-	public final void method2866(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+	public final void method2870(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
 		field1681[0] = -1;
 		if (this.boundsType != 2 && this.boundsType != 1) {
-			this.method2854();
+			this.method2858();
 		}
 
 		int var8 = Rasterizer3D.Rasterizer3D_clipMidX;
@@ -1062,10 +1062,10 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("d")
-	public final void method2867(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+	public final void method2871(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
 		field1681[0] = -1;
 		if (this.boundsType != 2 && this.boundsType != 1) {
-			this.method2854();
+			this.method2858();
 		}
 
 		int var9 = Rasterizer3D.Rasterizer3D_clipMidX;
@@ -1237,7 +1237,7 @@ public class Model extends Entity {
 						var9 = field1682[var7];
 
 						for (var10 = 0; var10 < var8; ++var10) {
-							this.method2870(var9[var10]);
+							this.method2874(var9[var10]);
 						}
 					}
 				}
@@ -1304,7 +1304,7 @@ public class Model extends Entity {
 
 				for (var15 = 0; var15 < 10; ++var15) {
 					while (var15 == 0 && var10 > var7) {
-						this.method2870(var30[var11++]);
+						this.method2874(var30[var11++]);
 						if (var11 == var12 && var30 != field1645[11]) {
 							var11 = 0;
 							var12 = field1683[11];
@@ -1320,7 +1320,7 @@ public class Model extends Entity {
 					}
 
 					while (var15 == 3 && var10 > var8) {
-						this.method2870(var30[var11++]);
+						this.method2874(var30[var11++]);
 						if (var11 == var12 && var30 != field1645[11]) {
 							var11 = 0;
 							var12 = field1683[11];
@@ -1336,7 +1336,7 @@ public class Model extends Entity {
 					}
 
 					while (var15 == 5 && var10 > var27) {
-						this.method2870(var30[var11++]);
+						this.method2874(var30[var11++]);
 						if (var11 == var12 && var30 != field1645[11]) {
 							var11 = 0;
 							var12 = field1683[11];
@@ -1355,12 +1355,12 @@ public class Model extends Entity {
 					int[] var32 = field1645[var15];
 
 					for (var18 = 0; var18 < var16; ++var18) {
-						this.method2870(var32[var18]);
+						this.method2874(var32[var18]);
 					}
 				}
 
 				while (var10 != -1000) {
-					this.method2870(var30[var11++]);
+					this.method2874(var30[var11++]);
 					if (var11 == var12 && var30 != field1645[11]) {
 						var11 = 0;
 						var30 = field1645[11];
@@ -1380,9 +1380,9 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("k")
-	final void method2870(int var1) {
+	final void method2874(int var1) {
 		if (field1673[var1]) {
-			this.method2871(var1);
+			this.method2875(var1);
 		} else {
 			int var2 = this.indices1[var1];
 			int var3 = this.indices2[var1];
@@ -1410,21 +1410,21 @@ public class Model extends Entity {
 				}
 
 				if (this.faceColors3[var1] == -1) {
-					Rasterizer3D.method2973(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var5], field1677[var6], field1677[var7], field1652[var5], field1652[var6], field1652[var7], field1679[var5], field1679[var6], field1679[var7], this.faceTextures[var1]);
+					Rasterizer3D.method2977(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var5], field1677[var6], field1677[var7], field1652[var5], field1652[var6], field1652[var7], field1679[var5], field1679[var6], field1679[var7], this.faceTextures[var1]);
 				} else {
-					Rasterizer3D.method2973(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors2[var1], this.faceColors3[var1], field1677[var5], field1677[var6], field1677[var7], field1652[var5], field1652[var6], field1652[var7], field1679[var5], field1679[var6], field1679[var7], this.faceTextures[var1]);
+					Rasterizer3D.method2977(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors2[var1], this.faceColors3[var1], field1677[var5], field1677[var6], field1677[var7], field1652[var5], field1652[var6], field1652[var7], field1679[var5], field1679[var6], field1679[var7], this.faceTextures[var1]);
 				}
 			} else if (this.faceColors3[var1] == -1) {
-				Rasterizer3D.method2971(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], field1699[this.faceColors1[var1]]);
+				Rasterizer3D.method2975(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], field1699[this.faceColors1[var1]]);
 			} else {
-				Rasterizer3D.method2969(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors2[var1], this.faceColors3[var1]);
+				Rasterizer3D.method2973(modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], this.faceColors1[var1], this.faceColors2[var1], this.faceColors3[var1]);
 			}
 
 		}
 	}
 
 	@ObfuscatedName("ac")
-	final void method2871(int var1) {
+	final void method2875(int var1) {
 		int var2 = Rasterizer3D.Rasterizer3D_clipMidX;
 		int var3 = Rasterizer3D.Rasterizer3D_clipMidY;
 		int var4 = 0;
@@ -1542,14 +1542,14 @@ public class Model extends Entity {
 				}
 
 				if (this.faceColors3[var1] == -1) {
-					Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], this.faceTextures[var1]);
+					Rasterizer3D.method2977(var14, var15, var16, var11, var12, var13, this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], this.faceTextures[var1]);
 				} else {
-					Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], this.faceTextures[var1]);
+					Rasterizer3D.method2977(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], this.faceTextures[var1]);
 				}
 			} else if (this.faceColors3[var1] == -1) {
-				Rasterizer3D.method2971(var14, var15, var16, var11, var12, var13, field1699[this.faceColors1[var1]]);
+				Rasterizer3D.method2975(var14, var15, var16, var11, var12, var13, field1699[this.faceColors1[var1]]);
 			} else {
-				Rasterizer3D.method2969(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2]);
+				Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2]);
 			}
 		}
 
@@ -1572,19 +1572,19 @@ public class Model extends Entity {
 
 				short var21 = this.faceTextures[var1];
 				if (this.faceColors3[var1] == -1) {
-					Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
-					Rasterizer3D.method2973(var14, var16, field1676[3], var11, var13, field1688[3], this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
+					Rasterizer3D.method2977(var14, var15, var16, var11, var12, var13, this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
+					Rasterizer3D.method2977(var14, var16, field1676[3], var11, var13, field1688[3], this.faceColors1[var1], this.faceColors1[var1], this.faceColors1[var1], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
 				} else {
-					Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
-					Rasterizer3D.method2973(var14, var16, field1676[3], var11, var13, field1688[3], field1690[0], field1690[2], field1690[3], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
+					Rasterizer3D.method2977(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
+					Rasterizer3D.method2977(var14, var16, field1676[3], var11, var13, field1688[3], field1690[0], field1690[2], field1690[3], field1677[var17], field1677[var18], field1677[var19], field1652[var17], field1652[var18], field1652[var19], field1679[var17], field1679[var18], field1679[var19], var21);
 				}
 			} else if (this.faceColors3[var1] == -1) {
 				var17 = field1699[this.faceColors1[var1]];
-				Rasterizer3D.method2971(var14, var15, var16, var11, var12, var13, var17);
-				Rasterizer3D.method2971(var14, var16, field1676[3], var11, var13, field1688[3], var17);
+				Rasterizer3D.method2975(var14, var15, var16, var11, var12, var13, var17);
+				Rasterizer3D.method2975(var14, var16, field1676[3], var11, var13, field1688[3], var17);
 			} else {
-				Rasterizer3D.method2969(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2]);
-				Rasterizer3D.method2969(var14, var16, field1676[3], var11, var13, field1688[3], field1690[0], field1690[2], field1690[3]);
+				Rasterizer3D.method2973(var14, var15, var16, var11, var12, var13, field1690[0], field1690[1], field1690[2]);
+				Rasterizer3D.method2973(var14, var16, field1676[3], var11, var13, field1688[3], field1690[0], field1690[2], field1690[3]);
 			}
 		}
 
@@ -1624,10 +1624,10 @@ public class Model extends Entity {
 							}
 
 							boolean var26 = var25 || this.field1685 > 0;
-							int var27 = Clock.method3459();
+							int var27 = Clock.method3463();
 							int var28 = ViewportMouse.ViewportMouse_y;
 							boolean var30 = ViewportMouse.ViewportMouse_isInViewport;
-							boolean var32 = Language.method3627(var9);
+							boolean var32 = Language.method3635(var9);
 							boolean var33 = false;
 							int var35;
 							int var36;

@@ -85,35 +85,35 @@ public final class TileItem extends Entity {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1159842254"
 	)
-	static int method2125(int var0, Script var1, boolean var2) {
+	static int method2129(int var0, Script var1, boolean var2) {
 		if (var0 < 1000) {
 			return WorldMapSection2.method342(var0, var1, var2);
 		} else if (var0 < 1100) {
-			return Login.method2111(var0, var1, var2);
+			return Login.method2115(var0, var1, var2);
 		} else if (var0 < 1200) {
-			return class81.method2058(var0, var1, var2);
+			return class81.method2062(var0, var1, var2);
 		} else if (var0 < 1300) {
-			return FriendLoginUpdate.method5178(var0, var1, var2);
+			return FriendLoginUpdate.method5193(var0, var1, var2);
 		} else if (var0 < 1400) {
 			return class40.method797(var0, var1, var2);
 		} else if (var0 < 1500) {
 			return Tiles.method1110(var0, var1, var2);
 		} else if (var0 < 1600) {
-			return FontName.method5256(var0, var1, var2);
+			return FontName.method5271(var0, var1, var2);
 		} else if (var0 < 1700) {
-			return UserComparator6.method3403(var0, var1, var2);
+			return UserComparator6.method3407(var0, var1, var2);
 		} else if (var0 < 1800) {
-			return VarpDefinition.method4335(var0, var1, var2);
+			return VarpDefinition.method4347(var0, var1, var2);
 		} else if (var0 < 1900) {
-			return World.method1811(var0, var1, var2);
+			return World.method1815(var0, var1, var2);
 		} else if (var0 < 2000) {
-			return ClientPacket.method3573(var0, var1, var2);
+			return ClientPacket.method3579(var0, var1, var2);
 		} else if (var0 < 2100) {
-			return Login.method2111(var0, var1, var2);
+			return Login.method2115(var0, var1, var2);
 		} else if (var0 < 2200) {
-			return class81.method2058(var0, var1, var2);
+			return class81.method2062(var0, var1, var2);
 		} else if (var0 < 2300) {
-			return FriendLoginUpdate.method5178(var0, var1, var2);
+			return FriendLoginUpdate.method5193(var0, var1, var2);
 		} else if (var0 < 2400) {
 			return class40.method797(var0, var1, var2);
 		} else if (var0 < 2500) {
@@ -121,23 +121,23 @@ public final class TileItem extends Entity {
 		} else if (var0 < 2600) {
 			return class51.method921(var0, var1, var2);
 		} else if (var0 < 2700) {
-			return Client.method1746(var0, var1, var2);
+			return Client.method1750(var0, var1, var2);
 		} else if (var0 < 2800) {
-			return UserComparator6.method3407(var0, var1, var2);
+			return UserComparator6.method3411(var0, var1, var2);
 		} else if (var0 < 2900) {
 			return WorldMapRegion.method506(var0, var1, var2);
 		} else if (var0 < 3000) {
-			return ClientPacket.method3573(var0, var1, var2);
+			return ClientPacket.method3579(var0, var1, var2);
 		} else if (var0 < 3200) {
-			return Messages.method2207(var0, var1, var2);
+			return Messages.method2211(var0, var1, var2);
 		} else if (var0 < 3300) {
-			return ReflectionCheck.method2267(var0, var1, var2);
+			return ReflectionCheck.method2271(var0, var1, var2);
 		} else if (var0 < 3400) {
-			return ServerPacket.method3571(var0, var1, var2);
+			return ServerPacket.method3577(var0, var1, var2);
 		} else if (var0 < 3500) {
-			return PacketBuffer.method5408(var0, var1, var2);
+			return PacketBuffer.method5423(var0, var1, var2);
 		} else if (var0 < 3700) {
-			return Buddy.method5099(var0, var1, var2);
+			return Buddy.method5111(var0, var1, var2);
 		} else if (var0 < 4000) {
 			return AbstractWorldMapData.method289(var0, var1, var2);
 		} else if (var0 < 4100) {
@@ -145,7 +145,7 @@ public final class TileItem extends Entity {
 		} else if (var0 < 4200) {
 			return WorldMapData_0.method177(var0, var1, var2);
 		} else if (var0 < 4300) {
-			return class222.method4078(var0, var1, var2);
+			return class222.method4090(var0, var1, var2);
 		} else if (var0 < 5100) {
 			return Tiles.method1156(var0, var1, var2);
 		} else if (var0 < 5400) {
@@ -153,13 +153,13 @@ public final class TileItem extends Entity {
 		} else if (var0 < 5600) {
 			return WorldMapData_1.method749(var0, var1, var2);
 		} else if (var0 < 5700) {
-			return class222.method4077(var0, var1, var2);
+			return class222.method4089(var0, var1, var2);
 		} else if (var0 < 6300) {
-			return Entity.method3212(var0, var1, var2);
+			return Entity.method3216(var0, var1, var2);
 		} else if (var0 < 6600) {
-			return class219.method4068(var0, var1, var2);
+			return class219.method4080(var0, var1, var2);
 		} else {
-			return var0 < 6700 ? UserComparator6.method3398(var0, var1, var2) : 2;
+			return var0 < 6700 ? UserComparator6.method3402(var0, var1, var2) : 2;
 		}
 	}
 

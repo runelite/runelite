@@ -59,9 +59,9 @@ public class class237 {
 		signature = "(II)V",
 		garbageValue = "1811962046"
 	)
-	void method4287(int var1) {
+	void method4299(int var1) {
 		int var2 = var1 * 2 + 1;
-		double[] var3 = class287.method5206(0.0D, (double)((float)var1 / 3.0F), var1);
+		double[] var3 = class287.method5221(0.0D, (double)((float)var1 / 3.0F), var1);
 		double var4 = var3[var1] * var3[var1];
 		int[] var6 = new int[var2 * var2];
 		boolean var7 = false;
@@ -84,9 +84,9 @@ public class class237 {
 		signature = "(IB)Llf;",
 		garbageValue = "-125"
 	)
-	Sprite method4286(int var1) {
+	Sprite method4298(int var1) {
 		if (!this.spriteMap.containsKey(var1)) {
-			this.method4287(var1);
+			this.method4299(var1);
 		}
 
 		return (Sprite)this.spriteMap.get(var1);
@@ -95,9 +95,9 @@ public class class237 {
 	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "(IIB)V",
-		garbageValue = "5"
+		garbageValue = "-43"
 	)
-	public final void method4289(int var1, int var2) {
+	public final void method4301(int var1, int var2) {
 		if (this.field3165 < this.field3163.length) {
 			this.field3163[this.field3165] = var1;
 			this.field3161[this.field3165] = var2;
@@ -108,9 +108,9 @@ public class class237 {
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1070284652"
+		garbageValue = "1335191014"
 	)
-	public final void method4288() {
+	public final void method4300() {
 		this.field3165 = 0;
 	}
 
@@ -119,9 +119,9 @@ public class class237 {
 		signature = "(IILlf;FI)V",
 		garbageValue = "-177737442"
 	)
-	public final void method4291(int var1, int var2, Sprite var3, float var4) {
+	public final void method4303(int var1, int var2, Sprite var3, float var4) {
 		int var5 = (int)(var4 * 18.0F);
-		Sprite var6 = this.method4286(var5);
+		Sprite var6 = this.method4298(var5);
 		int var7 = var5 * 2 + 1;
 		Bounds var8 = new Bounds(0, 0, var3.subWidth, var3.subHeight);
 		Bounds var9 = new Bounds(0, 0);
@@ -137,8 +137,8 @@ public class class237 {
 			int var13 = (int)((float)(var11 - var1) * var4) - var5;
 			int var14 = (int)((float)var3.subHeight - var4 * (float)(var12 - var2)) - var5;
 			this.bounds.setLow(var13, var14);
-			this.bounds.method5893(var8, var9);
-			this.method4292(var6, var3, var9);
+			this.bounds.method5913(var8, var9);
+			this.method4304(var6, var3, var9);
 		}
 
 		System.nanoTime();
@@ -170,7 +170,7 @@ public class class237 {
 		signature = "(Llf;Llf;Lll;I)V",
 		garbageValue = "-1255792875"
 	)
-	void method4292(Sprite var1, Sprite var2, Bounds var3) {
+	void method4304(Sprite var1, Sprite var2, Bounds var3) {
 		if (var3.highX != 0 && var3.highY != 0) {
 			int var4 = 0;
 			int var5 = 0;

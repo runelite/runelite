@@ -170,7 +170,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 	public final void keyTyped(KeyEvent var1) {
 		if (KeyHandler_instance != null) {
 			char var2 = var1.getKeyChar();
-			if (var2 != 0 && var2 != '\uffff' && LoginScreenAnimation.method1839(var2)) {
+			if (var2 != 0 && var2 != '\uffff' && LoginScreenAnimation.method1843(var2)) {
 				int var3 = field371 + 1 & 127;
 				if (var3 != field378) {
 					field375[field371] = -1;
@@ -302,7 +302,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 								var32 = false;
 							}
 
-							var20 = TileItem.method2125(var29, var3, var32);
+							var20 = TileItem.method2129(var29, var3, var32);
 							switch(var20) {
 							case 0:
 								return;
@@ -320,7 +320,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 						} else if (var29 == ScriptOpcodes.SET_VARP) {
 							var11 = var6[var17];
 							Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-							NetSocket.method3468(var11);
+							NetSocket.method3472(var11);
 						} else if (var29 == ScriptOpcodes.SCONST) {
 							Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var17];
 						} else if (var29 == ScriptOpcodes.JUMP) {
@@ -362,7 +362,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 							Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = WorldMapSprite.getVarbit(var11);
 						} else if (var29 == ScriptOpcodes.SET_VARBIT) {
 							var11 = var6[var17];
-							WorldMapElement.method4348(var11, Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
+							WorldMapElement.method4360(var11, Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
 						} else if (var29 == ScriptOpcodes.IF_ICMPLE) {
 							Interpreter.Interpreter_intStackSize -= 2;
 							if (Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize] <= Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]) {
@@ -384,7 +384,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 						} else if (var29 == ScriptOpcodes.JOIN_STRING) {
 							var11 = var6[var17];
 							Interpreter.Interpreter_stringStackSize -= var11;
-							String var31 = FloorOverlayDefinition.method4704(Interpreter.Interpreter_stringStack, Interpreter.Interpreter_stringStackSize, var11);
+							String var31 = FloorOverlayDefinition.method4716(Interpreter.Interpreter_stringStack, Interpreter.Interpreter_stringStackSize, var11);
 							Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var31;
 						} else if (var29 == ScriptOpcodes.POP_INT) {
 							--Interpreter.Interpreter_intStackSize;
@@ -588,7 +588,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
 					label1329:
 					while (true) {
-						var10 = var8.method5442();
+						var10 = var8.method5457();
 						if (var10 == 0) {
 							var0 &= var7;
 							break;
@@ -659,9 +659,9 @@ public final class KeyHandler implements KeyListener, FocusListener {
 				}
 
 				WorldMapID.playPcmPlayers();
-				TextureProvider.method2753();
+				TextureProvider.method2757();
 				var1 = WorldMapIcon_1.regionLandArchives.length;
-				ClientPacket.method3575();
+				ClientPacket.method3581();
 				GrandExchangeOffer.method129(true);
 				int var5;
 				int var20;
@@ -704,7 +704,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 							var9 = -1;
 
 							while (true) {
-								var10 = var8.method5442();
+								var10 = var8.method5457();
 								if (var10 == 0) {
 									break;
 								}
@@ -872,7 +872,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
 									for (var11 = 0; var11 < MouseHandler.regions.length; ++var11) {
 										if (MouseHandler.regions[var11] == var10 && ArchiveLoader.regionMapArchives[var11] != null) {
-											class80.method2047(ArchiveLoader.regionMapArchives[var11], var46, var3 * 8, var4 * 8, var6, (var48 & 7) * 8, (var9 & 7) * 8, var65, PacketWriter.scene, Client.collisionMaps);
+											class80.method2051(ArchiveLoader.regionMapArchives[var11], var46, var3 * 8, var4 * 8, var6, (var48 & 7) * 8, (var9 & 7) * 8, var65, PacketWriter.scene, Client.collisionMaps);
 											break;
 										}
 									}
@@ -1085,11 +1085,11 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
 										var34 = 0;
 										if (var33 != -1) {
-											var34 = Rasterizer3D.Rasterizer3D_colorPalette[class192.method3639(var33, 96)];
+											var34 = Rasterizer3D.Rasterizer3D_colorPalette[class192.method3648(var33, 96)];
 										}
 
 										if (var57 == 0) {
-											var63.addTile(var4, var13, var51, 0, 0, -1, var24, var25, var26, var27, class192.method3639(var32, var28), class192.method3639(var32, var29), class192.method3639(var32, var58), class192.method3639(var32, var31), 0, 0, 0, 0, var34, 0);
+											var63.addTile(var4, var13, var51, 0, 0, -1, var24, var25, var26, var27, class192.method3648(var32, var28), class192.method3648(var32, var29), class192.method3648(var32, var58), class192.method3648(var32, var31), 0, 0, 0, 0, var34, 0);
 										} else {
 											var35 = DevicePcmPlayerProvider.field393[var4][var13][var51] + 1;
 											byte var70 = class287.field3634[var4][var13][var51];
@@ -1152,7 +1152,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 												var43 = Rasterizer3D.Rasterizer3D_colorPalette[WorldMapEvent.method800(var42, 96)];
 											}
 
-											var63.addTile(var4, var13, var51, var35, var70, var40, var24, var25, var26, var27, class192.method3639(var32, var28), class192.method3639(var32, var29), class192.method3639(var32, var58), class192.method3639(var32, var31), WorldMapEvent.method800(var41, var28), WorldMapEvent.method800(var41, var29), WorldMapEvent.method800(var41, var58), WorldMapEvent.method800(var41, var31), var34, var43);
+											var63.addTile(var4, var13, var51, var35, var70, var40, var24, var25, var26, var27, class192.method3648(var32, var28), class192.method3648(var32, var29), class192.method3648(var32, var58), class192.method3648(var32, var31), WorldMapEvent.method800(var41, var28), WorldMapEvent.method800(var41, var29), WorldMapEvent.method800(var41, var58), WorldMapEvent.method800(var41, var31), var34, var43);
 										}
 									}
 								}
@@ -1162,7 +1162,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
 					for (var13 = 1; var13 < 103; ++var13) {
 						for (var14 = 1; var14 < 103; ++var14) {
-							var63.setTileMinPlane(var4, var14, var13, class189.method3606(var4, var14, var13));
+							var63.setTileMinPlane(var4, var14, var13, class189.method3612(var4, var14, var13));
 						}
 					}
 
@@ -1173,7 +1173,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 					Tiles.field486[var4] = null;
 				}
 
-				var63.method3067(-50, -10, -50);
+				var63.method3071(-50, -10, -50);
 
 				for (var4 = 0; var4 < 104; ++var4) {
 					for (var5 = 0; var5 < 104; ++var5) {
@@ -1408,7 +1408,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 
 				MouseRecorder.updateGameState(30);
 				WorldMapID.playPcmPlayers();
-				Friend.method5133();
+				Friend.method5148();
 				var73 = InterfaceParent.getPacketBufferNode(ClientPacket.field2229, Client.packetWriter.isaacCipher);
 				Client.packetWriter.addNode(var73);
 				WorldMapDecoration.method343();

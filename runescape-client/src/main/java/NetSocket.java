@@ -234,14 +234,6 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		this.close();
 	}
 
-	protected void aav() {
-		this.close();
-	}
-
-	protected void aao() {
-		this.close();
-	}
-
 	public void run() {
 		try {
 			while (true) {
@@ -348,7 +340,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
 		garbageValue = "-175447114"
 	)
-	public static String method3467(String var0) {
+	public static String method3471(String var0) {
 		int var1 = var0.length();
 		char[] var2 = new char[var1];
 		byte var3 = 2;
@@ -358,7 +350,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 			if (var3 == 0) {
 				var5 = Character.toLowerCase(var5);
 			} else if (var3 == 2 || Character.isUpperCase(var5)) {
-				var5 = UrlRequester.method3256(var5);
+				var5 = UrlRequester.method3260(var5);
 			}
 
 			if (Character.isLetter(var5)) {
@@ -386,8 +378,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		signature = "(II)V",
 		garbageValue = "-1514465632"
 	)
-	static final void method3468(int var0) {
-		class325.method6167();
+	static final void method3472(int var0) {
+		class325.method6190();
 
 		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
 			if (var1.obj != null) {
@@ -446,15 +438,15 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
 				if (var3 != Client.field761) {
 					if (Client.field761 == 0 && Client.field666 != -1) {
-						class83.method2064(class225.archive6, Client.field666, 0, var3, false);
+						class83.method2068(class225.archive6, Client.field666, 0, var3, false);
 						Client.field759 = false;
 					} else if (var3 == 0) {
-						VertexNormal.method2956();
+						VertexNormal.method2960();
 						Client.field759 = false;
 					} else if (class197.field2386 != 0) {
 						TileItem.field1223 = var3;
 					} else {
-						class49.midiPcmStream.method3751(var3);
+						class49.midiPcmStream.method3760(var3);
 					}
 
 					Client.field761 = var3;
@@ -522,7 +514,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 			}
 
 			if (var4 == 18) {
-				Client.playerAttackOption = (AttackOption)findEnumerated(FloorUnderlayDefinition.method4383(), var2);
+				Client.playerAttackOption = (AttackOption)findEnumerated(FloorUnderlayDefinition.method4395(), var2);
 				if (Client.playerAttackOption == null) {
 					Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
 				}
@@ -537,7 +529,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 			}
 
 			if (var4 == 22) {
-				Client.npcAttackOption = (AttackOption)findEnumerated(FloorUnderlayDefinition.method4383(), var2);
+				Client.npcAttackOption = (AttackOption)findEnumerated(FloorUnderlayDefinition.method4395(), var2);
 				if (Client.npcAttackOption == null) {
 					Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
 				}

@@ -17,7 +17,7 @@ public abstract class AbstractWorldMapData {
 	static int selectedItemId;
 	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 461674944
+		intValue = -517574656
 	)
 	@Export("regionXLow")
 	int regionXLow;
@@ -210,7 +210,7 @@ public abstract class AbstractWorldMapData {
 					WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
 					for (var11 = 0; var11 < var9; ++var11) {
-						int var12 = var3.method5438();
+						int var12 = var3.method5453();
 						int var13 = var3.readUnsignedByte();
 						var14[var11] = new WorldMapDecoration(var12, var13 >> 2, var13 & 3);
 					}

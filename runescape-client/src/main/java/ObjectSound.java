@@ -27,7 +27,7 @@ public final class ObjectSound extends Node {
 	static int oculusOrbFocalPointX;
 	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1622269101
+		intValue = 1492014720
 	)
 	int field1059;
 	@ObfuscatedName("v")
@@ -50,13 +50,13 @@ public final class ObjectSound extends Node {
 	ObjectDefinition obj;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 514830237
+		intValue = 1473760896
 	)
 	@Export("y")
 	int y;
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -394210361
+		intValue = 1080681344
 	)
 	int field1060;
 	@ObfuscatedName("m")

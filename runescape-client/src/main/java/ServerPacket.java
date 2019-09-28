@@ -555,7 +555,7 @@ public class ServerPacket {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-402041204"
 	)
-	static int method3571(int var0, Script var1, boolean var2) {
+	static int method3577(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.CLIENTCLOCK) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.cycle;
 			return 1;
@@ -601,7 +601,7 @@ public class ServerPacket {
 				if (var0 == ScriptOpcodes.COORD) {
 					var3 = WorldMapRectangle.plane;
 					var4 = class223.baseX * 64 + (class223.localPlayer.x >> 7);
-					var5 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
+					var5 = class286.baseY * 64 + (class223.localPlayer.y >> 7);
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);
 					return 1;
 				} else if (var0 == ScriptOpcodes.COORDX) {

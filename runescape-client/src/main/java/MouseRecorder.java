@@ -161,9 +161,9 @@ public class MouseRecorder implements Runnable {
 				Client.loginState = 0;
 				Client.field669 = 0;
 				Client.field670 = 0;
-				Client.timer.method4926(var0);
+				Client.timer.method4938(var0);
 				if (var0 != 20) {
-					PlayerType.method4092(false);
+					PlayerType.method4104(false);
 				}
 			}
 
@@ -200,7 +200,7 @@ public class MouseRecorder implements Runnable {
 					GrandExchangeOfferTotalQuantityComparator.worldSelectArrows = null;
 					Frames.worldSelectStars = null;
 					Skeleton.field1767 = null;
-					BufferedSink.loginScreenRunesAnimation.method1817();
+					BufferedSink.loginScreenRunesAnimation.method1821();
 					class197.field2386 = 1;
 					class197.musicTrackArchive = null;
 					class188.musicTrackGroupId = -1;
@@ -208,7 +208,7 @@ public class MouseRecorder implements Runnable {
 					TileItem.field1223 = 0;
 					WorldMapSectionType.musicTrackBoolean = false;
 					MusicPatchNode2.field2382 = 2;
-					DirectByteArrayCopier.method3915(true);
+					DirectByteArrayCopier.method3924(true);
 					Login.field1160 = false;
 				}
 			} else {
@@ -226,9 +226,9 @@ public class MouseRecorder implements Runnable {
 	)
 	static final void method1213() {
 		if (Client.logoutTimer > 0) {
-			DynamicObject.method2219();
+			DynamicObject.method2223();
 		} else {
-			Client.timer.method4925();
+			Client.timer.method4937();
 			updateGameState(40);
 			class30.field251 = Client.packetWriter.getSocket();
 			Client.packetWriter.removeSocket();

@@ -43,7 +43,7 @@ public abstract class PcmStream extends Node {
 	protected abstract PcmStream nextSubStream();
 
 	@ObfuscatedName("m")
-	protected abstract int vmethod3873();
+	protected abstract int vmethod3882();
 
 	@ObfuscatedName("y")
 	@Export("fill")
@@ -54,7 +54,7 @@ public abstract class PcmStream extends Node {
 	protected abstract void skip(int var1);
 
 	@ObfuscatedName("ah")
-	int vmethod2687() {
+	int vmethod2691() {
 		return 255;
 	}
 

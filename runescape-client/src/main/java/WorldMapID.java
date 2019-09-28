@@ -66,7 +66,7 @@ public class WorldMapID {
 			}
 
 			if (class51.field406.startsWith("win") && !var3) {
-				Interpreter.method2021(var0, 0);
+				Interpreter.method2025(var0, 0);
 				return;
 			}
 
@@ -75,9 +75,9 @@ public class WorldMapID {
 				return;
 			}
 
-			Interpreter.method2021(var0, 2);
+			Interpreter.method2025(var0, 2);
 		} else {
-			Interpreter.method2021(var0, 3);
+			Interpreter.method2025(var0, 3);
 		}
 
 	}

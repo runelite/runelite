@@ -124,7 +124,7 @@ public class ParamDefinition extends DualNode {
 		signature = "(II)Z",
 		garbageValue = "-786706549"
 	)
-	static final boolean method4468(int var0) {
+	static final boolean method4480(int var0) {
 		if (var0 < 0) {
 			return false;
 		} else {

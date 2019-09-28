@@ -50,7 +50,7 @@ public class MenuAction {
 		signature = "(Lky;ZS)V",
 		garbageValue = "-32250"
 	)
-	public static void method2063(AbstractSocket var0, boolean var1) {
+	public static void method2067(AbstractSocket var0, boolean var1) {
 		if (NetCache.NetCache_socket != null) {
 			try {
 				NetCache.NetCache_socket.close();
@@ -61,7 +61,7 @@ public class MenuAction {
 		}
 
 		NetCache.NetCache_socket = var0;
-		DirectByteArrayCopier.method3915(var1);
+		DirectByteArrayCopier.method3924(var1);
 		NetCache.NetCache_responseHeaderBuffer.offset = 0;
 		WorldMapEvent.NetCache_currentResponse = null;
 		FaceNormal.NetCache_responseArchiveBuffer = null;
@@ -114,7 +114,7 @@ public class MenuAction {
 		signature = "(I)V",
 		garbageValue = "1201643852"
 	)
-	public static final void method2062() {
+	public static final void method2066() {
 		ViewportMouse.ViewportMouse_isInViewport = false;
 		ViewportMouse.ViewportMouse_entityCount = 0;
 	}

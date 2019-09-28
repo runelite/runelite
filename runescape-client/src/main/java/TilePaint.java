@@ -63,7 +63,7 @@ public final class TilePaint {
 		signature = "(Lkl;II)Ljava/lang/String;",
 		garbageValue = "-964205547"
 	)
-	static String method3038(Buffer var0, int var1) {
+	static String method3042(Buffer var0, int var1) {
 		try {
 			int var2 = var0.readUShortSmart();
 			if (var2 > var1) {
@@ -94,7 +94,7 @@ public final class TilePaint {
 		signature = "(ZI)V",
 		garbageValue = "-2065502658"
 	)
-	static void method3039(boolean var0) {
+	static void method3043(boolean var0) {
 		Login.Login_response1 = "";
 		Login.Login_response2 = "Enter your username/email & password.";
 		Login.Login_response3 = "";

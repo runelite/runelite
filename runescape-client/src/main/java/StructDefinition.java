@@ -84,7 +84,7 @@ public class StructDefinition extends DualNode {
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
-		return HealthBar.method2030(this.params, var1, var2);
+		return HealthBar.method2034(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("p")
@@ -94,6 +94,6 @@ public class StructDefinition extends DualNode {
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		return class96.method2259(this.params, var1, var2);
+		return class96.method2263(this.params, var1, var2);
 	}
 }

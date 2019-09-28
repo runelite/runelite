@@ -200,10 +200,10 @@ public class WorldMapRegion {
 		Coord var6 = new Coord(var2, var3 + this.regionX * 64, this.regionY * 64 + var4);
 		Coord var7 = null;
 		if (this.worldMapData_0 != null) {
-			var7 = new Coord(this.worldMapData_0.minPlane + var2, var3 + this.worldMapData_0.regionXLow * 4096, var4 + this.worldMapData_0.regionYLow * 64);
+			var7 = new Coord(this.worldMapData_0.minPlane + var2, var3 + this.worldMapData_0.regionXLow * 64, var4 + this.worldMapData_0.regionYLow * 64);
 		} else {
 			WorldMapData_1 var8 = (WorldMapData_1)var5;
-			var7 = new Coord(var2 + var8.minPlane, var8.regionXLow * 4096 + var3 + var8.getChunkXLow() * 8, var8.regionYLow * 64 + var4 + var8.getChunkYLow() * 8);
+			var7 = new Coord(var2 + var8.minPlane, var8.regionXLow * 64 + var3 + var8.getChunkXLow() * 8, var8.regionYLow * 64 + var4 + var8.getChunkYLow() * 8);
 		}
 
 		Object var10;
@@ -707,7 +707,7 @@ public class WorldMapRegion {
 
 				for (int var8 = 0; var8 < var7.length; ++var8) {
 					WorldMapDecoration var9 = var7[var8];
-					if (!Strings.method4079(var9.decoration)) {
+					if (!Strings.method4091(var9.decoration)) {
 						int var11 = var9.decoration;
 						boolean var10 = var11 == WorldMapDecorationType.field2721.id;
 						if (!var10) {
@@ -718,9 +718,9 @@ public class WorldMapRegion {
 					ObjectDefinition var12 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var9.objectDefinitionId);
 					if (var12.mapSceneId != -1) {
 						if (var12.mapSceneId != 46 && var12.mapSceneId != 52) {
-							var4[var12.mapSceneId].method6019(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2, this.pixelsPerTile * 2);
+							var4[var12.mapSceneId].method6042(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2, this.pixelsPerTile * 2);
 						} else {
-							var4[var12.mapSceneId].method6019(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2 + 1, this.pixelsPerTile * 2 + 1);
+							var4[var12.mapSceneId].method6042(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2 + 1, this.pixelsPerTile * 2 + 1);
 						}
 					}
 				}

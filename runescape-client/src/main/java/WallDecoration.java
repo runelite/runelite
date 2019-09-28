@@ -113,7 +113,7 @@ public final class WallDecoration {
 		signature = "(I)V",
 		garbageValue = "-1910753346"
 	)
-	static final void method3251() {
+	static final void method3255() {
 		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
 			int var1 = Client.npcIndices[var0];
 			NPC var2 = Client.npcs[var1];

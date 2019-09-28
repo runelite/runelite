@@ -59,7 +59,7 @@ public class WorldMapCacheName {
 		garbageValue = "1512894139"
 	)
 	static final void method644() {
-		EnumDefinition.method4496("Your ignore list is full. Max of 100 for free users, and 400 for members");
+		EnumDefinition.method4508("Your ignore list is full. Max of 100 for free users, and 400 for members");
 	}
 
 	@ObfuscatedName("ht")

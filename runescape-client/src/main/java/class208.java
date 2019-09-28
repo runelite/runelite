@@ -56,7 +56,7 @@ public class class208 {
 				int var10 = var9 * var2 + var3 * var8 >> 16;
 				int var11 = var3 * var9 - var8 * var2 >> 16;
 				if (var7 > 2500) {
-					var4.method6065(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
+					var4.method6088(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
 				} else {
 					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
 				}

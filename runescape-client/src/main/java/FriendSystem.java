@@ -52,7 +52,7 @@ public class FriendSystem {
 		signature = "(I)Z",
 		garbageValue = "-537546182"
 	)
-	boolean method1859() {
+	boolean method1863() {
 		return this.field1052 == 2;
 	}
 
@@ -61,7 +61,7 @@ public class FriendSystem {
 		signature = "(I)V",
 		garbageValue = "-1827488115"
 	)
-	final void method1860() {
+	final void method1864() {
 		this.field1052 = 1;
 	}
 

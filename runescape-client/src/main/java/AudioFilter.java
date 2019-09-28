@@ -39,14 +39,14 @@ public class AudioFilter {
 	}
 
 	@ObfuscatedName("z")
-	float method2670(int var1, int var2, float var3) {
+	float method2674(int var1, int var2, float var3) {
 		float var4 = (float)this.field1452[var1][0][var2] + var3 * (float)(this.field1452[var1][1][var2] - this.field1452[var1][0][var2]);
 		var4 *= 0.0015258789F;
 		return 1.0F - (float)Math.pow(10.0D, (double)(-var4 / 20.0F));
 	}
 
 	@ObfuscatedName("v")
-	float method2672(int var1, int var2, float var3) {
+	float method2676(int var1, int var2, float var3) {
 		float var4 = (float)this.field1458[var1][0][var2] + var3 * (float)(this.field1458[var1][1][var2] - this.field1458[var1][0][var2]);
 		var4 *= 1.2207031E-4F;
 		return normalize(var4);
@@ -66,15 +66,15 @@ public class AudioFilter {
 		if (this.pairs[var1] == 0) {
 			return 0;
 		} else {
-			var3 = this.method2670(var1, 0, var2);
-			field1454[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method2672(var1, 0, var2));
+			var3 = this.method2674(var1, 0, var2);
+			field1454[var1][0] = -2.0F * var3 * (float)Math.cos((double)this.method2676(var1, 0, var2));
 			field1454[var1][1] = var3 * var3;
 
 			float[] var10000;
 			int var4;
 			for (var4 = 1; var4 < this.pairs[var1]; ++var4) {
-				var3 = this.method2670(var1, var4, var2);
-				float var5 = -2.0F * var3 * (float)Math.cos((double)this.method2672(var1, var4, var2));
+				var3 = this.method2674(var1, var4, var2);
+				float var5 = -2.0F * var3 * (float)Math.cos((double)this.method2676(var1, var4, var2));
 				float var6 = var3 * var3;
 				field1454[var1][var4 * 2 + 1] = field1454[var1][var4 * 2 - 1] * var6;
 				field1454[var1][var4 * 2] = field1454[var1][var4 * 2 - 1] * var5 + field1454[var1][var4 * 2 - 2] * var6;
@@ -109,7 +109,7 @@ public class AudioFilter {
 	@ObfuscatedSignature(
 		signature = "(Lkl;Ldm;)V"
 	)
-	final void method2674(Buffer var1, SoundEnvelope var2) {
+	final void method2678(Buffer var1, SoundEnvelope var2) {
 		int var3 = var1.readUnsignedByte();
 		this.pairs[0] = var3 >> 4;
 		this.pairs[1] = var3 & 15;
