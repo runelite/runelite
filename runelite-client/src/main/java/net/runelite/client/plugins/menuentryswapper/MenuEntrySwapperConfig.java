@@ -307,7 +307,8 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Enchant",
 			description = "Swap Talk-to with Enchant for Eluned"
 	)
-	default boolean swapEnchant() {
+	default boolean swapEnchant()
+	{
 		return true;
 	}
 
@@ -316,7 +317,8 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Kourend Library Help",
 			description = "Swap Talk-to with Help for Sam, Villia, and Professor Gracklebone in the Kourend Library"
 	)
-	default boolean swapHelp() {
+	default boolean swapHelp()
+	{
 		return true;
 	}
 }
