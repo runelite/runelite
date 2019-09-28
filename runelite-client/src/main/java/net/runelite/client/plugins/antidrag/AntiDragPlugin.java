@@ -42,7 +42,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.customcursor.CustomCursorConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
@@ -93,6 +92,7 @@ public class AntiDragPlugin extends Plugin
 
 	private boolean alwaysOn;
 	private boolean keybind;
+	private boolean holdkeybind;
 	private Keybind key;
 	private int dragDelay;
 	private boolean reqfocus;
@@ -109,7 +109,7 @@ public class AntiDragPlugin extends Plugin
 		addSubscriptions();
 		updateConfig();
 
-		if (this.keybind)
+		if (this.keybind || this.holdkeybind)
 		{
 			keyManager.registerKeyListener(hotkeyListener);
 		}
@@ -125,6 +125,7 @@ public class AntiDragPlugin extends Plugin
 		keyManager.unregisterKeyListener(hotkeyListener);
 		toggleDrag = false;
 		overlayManager.remove(overlay);
+		clientUI.resetCursor();
 	}
 
 	private void addSubscriptions()
@@ -151,6 +152,18 @@ public class AntiDragPlugin extends Plugin
 					keyManager.unregisterKeyListener(hotkeyListener);
 				}
 			}
+			if
+			(event.getKey().equals(("holdkeybind")))
+			{
+				if (this.holdkeybind)
+				{
+					keyManager.registerKeyListener(hotkeyListener);
+				}
+				else
+				{
+					keyManager.unregisterKeyListener(hotkeyListener);
+				}
+			}
 			if (event.getKey().equals("alwaysOn"))
 			{
 				client.setInventoryDragDelay(this.alwaysOn ? this.dragDelay : DEFAULT_DELAY);
@@ -158,6 +171,10 @@ public class AntiDragPlugin extends Plugin
 			if (event.getKey().equals("dragDelay") && this.alwaysOn)
 			{
 				client.setInventoryDragDelay(this.dragDelay);
+			}
+			if (event.getKey().equals(("changeCursor")))
+			{
+				clientUI.resetCursor();
 			}
 		}
 	}
@@ -167,7 +184,7 @@ public class AntiDragPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGGED_IN:
-				if (keybind)
+				if (keybind || holdkeybind)
 				{
 					keyManager.registerKeyListener(hotkeyListener);
 				}
@@ -181,6 +198,7 @@ public class AntiDragPlugin extends Plugin
 	{
 		this.alwaysOn = config.alwaysOn();
 		this.keybind = config.keybind();
+		this.holdkeybind = config.holdkeybind();
 		this.key = config.key();
 		this.dragDelay = config.dragDelay();
 		this.reqfocus = config.reqfocus();
@@ -227,11 +245,37 @@ public class AntiDragPlugin extends Plugin
 			{
 				overlayManager.remove(overlay);
 				client.setInventoryDragDelay(DEFAULT_DELAY);
+				clientUI.resetCursor();
+			}
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			if (alwaysOn)
+			{
+				return;
+			}
+
+			toggleDrag = !toggleDrag;
+			if (toggleDrag)
+			{
+				if (configOverlay)
+				{
+					overlayManager.add(overlay);
+				}
 				if (changeCursor)
 				{
-					net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
 					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
 				}
+
+				client.setInventoryDragDelay(dragDelay);
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+				clientUI.resetCursor();
 			}
 		}
 	};

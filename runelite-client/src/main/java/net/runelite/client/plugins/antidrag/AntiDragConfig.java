@@ -42,8 +42,8 @@ public interface AntiDragConfig extends Config
 		keyName = "alwaysOn",
 		name = "Always On",
 		description = "Makes the anti-drag always active and disables the hotkey toggle",
-		disabledBy = "keybind",
-		hide = "keybind"
+		disabledBy = "keybind || holdkeybind",
+		hide = "keybind || holdkeybind"
 	)
 	default boolean alwaysOn()
 	{
@@ -55,10 +55,23 @@ public interface AntiDragConfig extends Config
 		keyName = "keybind",
 		name = "Toggle with Keybind",
 		description = "Toggle anti drag on and off, rather than always on.",
-		disabledBy = "alwaysOn",
-		hide = "alwaysOn"
+		disabledBy = "alwaysOn || holdkeybind",
+		hide = "alwaysOn || holdkeybind"
 	)
 	default boolean keybind()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "holdkeybind",
+		name = "Hold with Keybind",
+		description = "Hold anti drag key to turn it on, rather than toggle it on or off.",
+		disabledBy = "alwaysOn || keybind",
+		hide = "alwaysOn || keybind"
+	)
+	default boolean holdkeybind()
 	{
 		return false;
 	}
@@ -67,9 +80,9 @@ public interface AntiDragConfig extends Config
 		keyName = "key",
 		name = "Keybind",
 		description = "The keybind you want to use for antidrag",
-		position = 2,
+		position = 3,
 		hidden = true,
-		unhide = "keybind"
+		unhide = "keybind || holdkeybind"
 	)
 	default Keybind key()
 	{
@@ -80,7 +93,7 @@ public interface AntiDragConfig extends Config
 		keyName = "dragDelay",
 		name = "Drag Delay",
 		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 3
+		position = 4
 	)
 	default int dragDelay()
 	{
@@ -91,9 +104,9 @@ public interface AntiDragConfig extends Config
 		keyName = "reqfocus",
 		name = "Reset on focus loss",
 		description = "Disable antidrag when losing focus (like alt tabbing)",
-		position = 4,
+		position = 5,
 		hidden = true,
-		unhide = "keybind"
+		unhide = "keybind || holdkeybind"
 	)
 	default boolean reqfocus()
 	{
@@ -104,9 +117,9 @@ public interface AntiDragConfig extends Config
 		keyName = "overlay",
 		name = "Enable overlay",
 		description = "Do you really need a description?",
-		position = 5,
+		position = 6,
 		hidden = true,
-		unhide = "keybind"
+		unhide = "keybind || holdkeybind"
 	)
 	default boolean overlay()
 	{
@@ -119,8 +132,8 @@ public interface AntiDragConfig extends Config
 		name = "Overlay color",
 		description = "Change the overlay color, duh",
 		hidden = true,
-		unhide = "keybind",
-		position = 6
+		unhide = "keybind || holdkeybind",
+		position = 7
 	)
 	default Color color()
 	{
@@ -131,9 +144,9 @@ public interface AntiDragConfig extends Config
 		keyName = "changeCursor",
 		name = "Change Cursor",
 		description = "Change cursor when you have anti-drag enabled.",
-		position = 7,
+		position = 8,
 		hidden = true,
-		unhide = "keybind"
+		unhide = "keybind || holdkeybind"
 	)
 	default boolean changeCursor()
 	{
@@ -145,11 +158,11 @@ public interface AntiDragConfig extends Config
 		name = "Cursor",
 		description = "Select which cursor you wish to use",
 		hidden = true,
-		unhide = "keybind",
-		position = 8
+		unhide = "changeCursor",
+		position = 9
 	)
 	default CustomCursor selectedCursor()
 	{
-		return CustomCursor.DRAGON_SCIMITAR;
+		return CustomCursor.RS3_GOLD;
 	}
 }
