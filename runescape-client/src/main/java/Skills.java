@@ -32,7 +32,7 @@ public class Skills {
 		signature = "(S)V",
 		garbageValue = "255"
 	)
-	static void method4088() {
+	static void method4076() {
 		if (TaskHandler.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
 			KeyHandler.KeyHandler_keyCodes[186] = 57;
 			KeyHandler.KeyHandler_keyCodes[187] = 27;

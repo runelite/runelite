@@ -7,20 +7,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bv")
 @Implements("ScriptFrame")
 public class ScriptFrame {
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "Lcu;"
-	)
-	@Export("script")
-	Script script;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = 173320539
-	)
-	@Export("pc")
-	int pc;
-	@ObfuscatedName("v")
-	@Export("intLocals")
+      @ObfuscatedName("n")
+      @Export("pc")
+      public int pc;
+      @ObfuscatedName("z")
+      @ObfuscatedSignature(
+            signature = "Lcu;"
+      )
+      @Export("script")
+      Script script;
+      // $FF: renamed from: pc int
+      @ObfuscatedName("n")
+      @ObfuscatedGetter(
+            intValue = 173320539
+      )
+      int field_36 = -1;
+      @ObfuscatedName("v")
+      @Export("intLocals")
 	int[] intLocals;
 	@ObfuscatedName("u")
 	@Export("stringLocals")

@@ -112,9 +112,7 @@ public class RenameUniqueTest
 
 			InvokeInstruction ii = (InvokeInstruction) i;
 			Assert.assertTrue(ii.getMethod().getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN
-					|| ii.getMethod().getClazz().getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN
-					|| ii.getMethod().getName().equals("run")
-					|| ii.getMethod().getName().equals("add"));
+				|| ii.getMethod().getClazz().getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN);
 		}
 	}
 }

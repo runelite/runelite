@@ -136,4 +136,20 @@ public final class AccessFile {
 		}
 
 	}
+
+	protected void aav() throws Throwable {
+		if (this.file != null) {
+			System.out.println("");
+			this.close();
+		}
+
+	}
+
+	protected void aao() throws Throwable {
+		if (this.file != null) {
+			System.out.println("");
+			this.close();
+		}
+
+	}
 }
