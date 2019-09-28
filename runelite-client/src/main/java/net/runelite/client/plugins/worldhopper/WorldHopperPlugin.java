@@ -140,6 +140,9 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperPingOverlay worldHopperOverlay;
 
+	@Inject
+	private WorldClient worldClient;
+
 	private ScheduledExecutorService hopperExecutorService;
 
 	private NavigationButton navButton;
@@ -508,7 +511,7 @@ public class WorldHopperPlugin extends Plugin
 
 		try
 		{
-			WorldResult worldResult = new WorldClient().lookupWorlds();
+			WorldResult worldResult = worldClient.lookupWorlds();
 
 			if (worldResult != null)
 			{
