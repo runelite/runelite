@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.tobdamagecount;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
@@ -50,6 +51,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+
 
 @PluginDescriptor(
 	name = "ToB Damage Counter",
@@ -205,6 +207,7 @@ public class DamageCounterPlugin extends Plugin
 
 			}
 		}
+
 	}
 
 
@@ -293,35 +296,43 @@ public class DamageCounterPlugin extends Plugin
 	//prevent people from spectating to get the damage message, it is impossible for them to get damage
 	private void DamagePrint(NPC actor, double percent)
 	{
+		int playerCount = getPlayers();
 		String MessageDamage;
-		if (percent >= 50)
+		if (playerCount >= 2 && playerCount <= 5) 
 		{
-			MessageDamage = "Well done carrying the team!" +
-				"WOWIE!! You did" + DAMAGEFORMAT.format(DamageCount) + " damage to " +
-				actor.getName() + "! You did %" + String.format("%.2f", percent) + " of the damage";
+			if (percent >= (2.0 / playerCount) * 100) 
+			{
+				MessageDamage = "[Exceptional performance] Damage dealt to " + actor.getName() + ": "
+						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+			} 
+			else if (percent >= (1.0 / playerCount) * 100) 
+			{
+				MessageDamage = "[Above-average performance] Damage dealt to " + actor.getName() + ": "
+						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+			} 
+			else 
+			{
+				MessageDamage = "[Under performance] Damage dealt to " + actor.getName() + ": "
+						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+			}
 		}
-		else if (percent >= 25)
+		else 
 		{
-			MessageDamage = "Well done carrying some dead weight in your team! " +
-				"Awesome! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
-				actor.getName() + "! You did %" + String.format("%.2f", percent) + " of the damage";
-		}
-		else if (percent >= 1)
-		{
-			MessageDamage = "Well done everyone is pulling their weight! " +
-				"You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
-				actor.getName() + "! You did %" + String.format("%.2f", percent) + " of the damage";
-		}
-		else
-		{
-			MessageDamage = "Didn't do much, " +
-				"leech, you did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
-				actor.getName() + "! You did %" + String.format("%.2f", percent) + " of the damage";
+			MessageDamage = "Damage dealt to " + actor.getName() + ": "
+					+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
 		}
 
 		sendChatMessage(MessageDamage);
-		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
+		String MessageTaken = "Damage taken: " + DAMAGEFORMAT.format(DamageTaken) + ".";
 		sendChatMessage(MessageTaken);
+	}
+
+	public int getPlayers()
+	{
+		List<Player> players = client.getPlayers();
+		int numPlayers = players.size();
+
+		return numPlayers;
 	}
 
 	//whenever you have died in tob you will get a death message with damage
@@ -345,8 +356,7 @@ public class DamageCounterPlugin extends Plugin
 		}
 	}
 
-	//sends a message saying this "You have done XYZ damage to boss name! or the death message
-	// "Well done! you have done your best, you have done XYZ damage to boss name
+
 	private void sendChatMessage(String chatMessage)
 	{
 		final String message = new ChatMessageBuilder()
