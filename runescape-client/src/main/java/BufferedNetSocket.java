@@ -113,6 +113,14 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.close();
 	}
 
+	protected void aav() {
+		this.close();
+	}
+
+	protected void aao() {
+		this.close();
+	}
+
 	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(I)Z",

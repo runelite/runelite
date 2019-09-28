@@ -38,7 +38,7 @@ public class UserComparator1 implements Comparator {
 		signature = "(I)V",
 		garbageValue = "456557125"
 	)
-	public static void method5847() {
+	public static void method5827() {
 		PlayerAppearance.PlayerAppearance_cachedModels.clear();
 	}
 }
