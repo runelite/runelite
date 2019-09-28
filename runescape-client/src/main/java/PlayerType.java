@@ -97,11 +97,11 @@ public enum PlayerType implements Enumerated {
 		signature = "(ZI)V",
 		garbageValue = "297483019"
 	)
-	static final void method4092(boolean var0) {
+	static final void method4104(boolean var0) {
 		if (var0) {
 			Client.field672 = Login.field1183 ? class160.field1976 : class160.field1977;
 		} else {
-			Client.field672 = AbstractArchive.clientPreferences.parameters.containsKey(class288.method5209(Login.Login_username)) ? class160.field1979 : class160.field1985;
+			Client.field672 = AbstractArchive.clientPreferences.parameters.containsKey(class288.method5224(Login.Login_username)) ? class160.field1979 : class160.field1985;
 		}
 
 	}
@@ -121,8 +121,8 @@ public enum PlayerType implements Enumerated {
 		int var7;
 		int var8;
 		if (!Client.isInInstance) {
-			var2 = var1.method5632();
-			int var3 = var1.method5464();
+			var2 = var1.method5647();
+			int var3 = var1.method5479();
 			var4 = var1.readUnsignedShort();
 			class296.xteaKeys = new int[var4][4];
 
@@ -160,11 +160,11 @@ public enum PlayerType implements Enumerated {
 				}
 			}
 
-			class289.method5213(var2, var3, true);
+			class289.method5228(var2, var3, true);
 		} else {
 			var2 = var1.readUnsignedShort();
-			boolean var15 = var1.method5496() == 1;
-			var4 = var1.method5632();
+			boolean var15 = var1.method5511() == 1;
+			var4 = var1.method5647();
 			var5 = var1.readUnsignedShort();
 			var1.importIndex();
 
@@ -228,7 +228,7 @@ public enum PlayerType implements Enumerated {
 				}
 			}
 
-			class289.method5213(var4, var2, !var15);
+			class289.method5228(var4, var2, !var15);
 		}
 
 	}

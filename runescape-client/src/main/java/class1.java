@@ -105,7 +105,7 @@ final class class1 implements class0 {
 					PacketWriter.scene.removeBoundaryObject(var0, var2, var3);
 					var13 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var14);
 					if (var13.interactType != 0) {
-						Client.collisionMaps[var0].method3508(var2, var3, var15, var16, var13.boolean1);
+						Client.collisionMaps[var0].method3514(var2, var3, var15, var16, var13.boolean1);
 					}
 				}
 
@@ -129,7 +129,7 @@ final class class1 implements class0 {
 					PacketWriter.scene.removeFloorDecoration(var0, var2, var3);
 					var13 = GrandExchangeOfferOwnWorldComparator.getObjectDefinition(var14);
 					if (var13.interactType == 1) {
-						Client.collisionMaps[var0].method3511(var2, var3);
+						Client.collisionMaps[var0].method3517(var2, var3);
 					}
 				}
 			}
@@ -163,7 +163,7 @@ final class class1 implements class0 {
 				Client.field909.approxDestinationSizeX = 1;
 				Client.field909.approxDestinationSizeY = 1;
 				class65 var10 = Client.field909;
-				int var11 = class192.method3637(var4, var5, var9, var10, Client.collisionMaps[var0.plane], true, Client.field910, Client.field911);
+				int var11 = class192.method3646(var4, var5, var9, var10, Client.collisionMaps[var0.plane], true, Client.field910, Client.field911);
 				if (var11 >= 1) {
 					for (int var12 = 0; var12 < var11 - 1; ++var12) {
 						var0.method1263(Client.field910[var12], Client.field911[var12], var3);
@@ -188,12 +188,12 @@ final class class1 implements class0 {
 			}
 
 			ObjectSound.oculusOrbFocalPointX = class223.localPlayer.x;
-			int var2 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x, class223.localPlayer.y * 682054857, WorldMapRectangle.plane) - Client.camFollowHeight * -844153885;
-			if (var2 < ModelData0.field1840 * -1351160427) {
-				ModelData0.field1840 = var2 * -506989123;
+			int var2 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x, class223.localPlayer.y, WorldMapRectangle.plane) - Client.camFollowHeight;
+			if (var2 < ModelData0.field1840) {
+				ModelData0.field1840 = var2;
 			}
 
-			class14.oculusOrbFocalPointY = class223.localPlayer.y * 682054857;
+			class14.oculusOrbFocalPointY = class223.localPlayer.y;
 			Client.field879 = false;
 		}
 

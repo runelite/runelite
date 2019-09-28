@@ -35,7 +35,7 @@ public class Strings {
 		signature = "(II)Z",
 		garbageValue = "-552615239"
 	)
-	public static boolean method4079(int var0) {
+	public static boolean method4091(int var0) {
 		return var0 >= WorldMapDecorationType.field2704.id && var0 <= WorldMapDecorationType.field2720.id;
 	}
 

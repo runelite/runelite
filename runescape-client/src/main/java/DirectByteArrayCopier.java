@@ -50,7 +50,7 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 		signature = "(ZI)V",
 		garbageValue = "-2052817052"
 	)
-	public static void method3915(boolean var0) {
+	public static void method3924(boolean var0) {
 		if (NetCache.NetCache_socket != null) {
 			try {
 				Buffer var1 = new Buffer(4);

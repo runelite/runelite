@@ -28,7 +28,7 @@ public final class NPC extends Actor {
 		signature = "(IBB)V",
 		garbageValue = "-90"
 	)
-	final void method2044(int var1, byte var2) {
+	final void method2048(int var1, byte var2) {
 		int var3 = super.pathX[0];
 		int var4 = super.pathY[0];
 		if (var1 == 0) {
@@ -91,7 +91,7 @@ public final class NPC extends Actor {
 		signature = "(IIZB)V",
 		garbageValue = "1"
 	)
-	final void method2038(int var1, int var2, boolean var3) {
+	final void method2042(int var1, int var2, boolean var3) {
 		if (super.sequence != -1 && GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(super.sequence).field3510 == 1) {
 			super.sequence = -1;
 		}
@@ -123,7 +123,7 @@ public final class NPC extends Actor {
 		super.pathX[0] = var1;
 		super.pathY[0] = var2;
 		super.x = super.pathX[0] * 128 + super.field932 * -527978816;
-		super.y = super.field932 * 1330337984 + super.pathY[0] * -595411840;
+		super.y = super.pathY[0] * 128 + super.field932 * -527978816;
 	}
 
 	@ObfuscatedName("y")
@@ -177,7 +177,7 @@ public final class NPC extends Actor {
 		signature = "(Ljava/lang/String;II)V",
 		garbageValue = "89732729"
 	)
-	static final void method2046(String var0, int var1) {
+	static final void method2050(String var0, int var1) {
 		PacketBufferNode var2 = InterfaceParent.getPacketBufferNode(ClientPacket.field2254, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeByte(class268.stringCp1252NullTerminatedByteSize(var0) + 1);
 		var2.packetBuffer.writeByte(var1);

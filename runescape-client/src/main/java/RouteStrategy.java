@@ -48,7 +48,7 @@ public abstract class RouteStrategy {
 		signature = "(IILfi;Lfa;I)Z",
 		garbageValue = "-1798427460"
 	)
-	static final boolean method3555(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
+	static final boolean method3561(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
 		int var4 = var0;
 		int var5 = var1;
 		byte var6 = 64;

@@ -111,15 +111,15 @@ public class ScriptEvent extends Node {
 			int var2 = 0;
 
 			int var3;
-			for (var3 = var0.length(); var2 < var3 && BoundaryObject.method3222(var0.charAt(var2)); ++var2) {
+			for (var3 = var0.length(); var2 < var3 && BoundaryObject.method3226(var0.charAt(var2)); ++var2) {
 			}
 
-			while (var3 > var2 && BoundaryObject.method3222(var0.charAt(var3 - 1))) {
+			while (var3 > var2 && BoundaryObject.method3226(var0.charAt(var3 - 1))) {
 				--var3;
 			}
 
 			int var4 = var3 - var2;
-			if (var4 >= 1 && var4 <= BufferedSink.method5777(var1)) {
+			if (var4 >= 1 && var4 <= BufferedSink.method5794(var1)) {
 				StringBuilder var5 = new StringBuilder(var4);
 
 				for (int var6 = var2; var6 < var3; ++var6) {
@@ -573,7 +573,7 @@ public class ScriptEvent extends Node {
 											}
 
 											if (!var10.isIf3) {
-												var45 = InvDefinition.method4323(var45, var10);
+												var45 = InvDefinition.method4335(var45, var10);
 											}
 
 											var39.drawLines(var45, var12, var13, var10.width, var10.height, var20, var10.textShadowed ? 0 : -1, var10.textXAlignment, var10.textYAlignment, var10.textLineHeight);
@@ -604,7 +604,7 @@ public class ScriptEvent extends Node {
 												if (!var10.spriteTiling) {
 													var22 = var10.width * 4096 / var20;
 													if (var10.spriteAngle != 0) {
-														var40.method6068(var10.width / 2 + var12, var10.height / 2 + var13, var10.spriteAngle, var22);
+														var40.method6091(var10.width / 2 + var12, var10.height / 2 + var13, var10.spriteAngle, var22);
 													} else if (var14 != 0) {
 														var40.drawTransScaledAt(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
 													} else if (var20 == var10.width && var21 == var10.height) {
@@ -620,7 +620,7 @@ public class ScriptEvent extends Node {
 													for (var24 = 0; var24 < var22; ++var24) {
 														for (var25 = 0; var25 < var23; ++var25) {
 															if (var10.spriteAngle != 0) {
-																var40.method6068(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var25 * var21, var10.spriteAngle, 4096);
+																var40.method6091(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var25 * var21, var10.spriteAngle, 4096);
 															} else if (var14 != 0) {
 																var40.drawTransAt(var12 + var24 * var20, var13 + var25 * var21, 256 - (var14 & 255));
 															} else {
@@ -676,18 +676,18 @@ public class ScriptEvent extends Node {
 												}
 											}
 
-											Rasterizer3D.method2988(var10.width / 2 + var12, var10.height / 2 + var13);
+											Rasterizer3D.method2992(var10.width / 2 + var12, var10.height / 2 + var13);
 											var23 = Rasterizer3D.Rasterizer3D_sine[var10.modelAngleX] * var10.modelZoom >> 16;
 											var24 = Rasterizer3D.Rasterizer3D_cosine[var10.modelAngleX] * var10.modelZoom >> 16;
 											if (var42 != null) {
 												if (!var10.isIf3) {
-													var42.method2866(0, var10.modelAngleY, 0, var10.modelAngleX, 0, var23, var24);
+													var42.method2870(0, var10.modelAngleY, 0, var10.modelAngleX, 0, var23, var24);
 												} else {
 													var42.calculateBoundsCylinder();
 													if (var10.modelOrthog) {
-														var42.method2867(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var22 + var23 + var10.modelOffsetY, var24 + var10.modelOffsetY, var10.modelZoom);
+														var42.method2871(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var22 + var23 + var10.modelOffsetY, var24 + var10.modelOffsetY, var10.modelZoom);
 													} else {
-														var42.method2866(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var23 + var22 + var10.modelOffsetY, var24 + var10.modelOffsetY);
+														var42.method2870(0, var10.modelAngleY, var10.modelAngleZ, var10.modelAngleX, var10.modelOffsetX, var23 + var22 + var10.modelOffsetY, var24 + var10.modelOffsetY);
 													}
 												}
 											}
@@ -739,7 +739,7 @@ public class ScriptEvent extends Node {
 												String var33 = var10.text;
 
 												String var44;
-												for (var33 = InvDefinition.method4323(var33, var10); var33.length() > 0; var20 = var20 + var32.ascent + 1) {
+												for (var33 = InvDefinition.method4335(var33, var10); var33.length() > 0; var20 = var20 + var32.ascent + 1) {
 													var24 = var33.indexOf("<br>");
 													if (var24 != -1) {
 														var44 = var33.substring(0, var24);
@@ -776,7 +776,7 @@ public class ScriptEvent extends Node {
 												var33 = var10.text;
 												var26 = var25 + var32.ascent + 2;
 
-												for (var33 = InvDefinition.method4323(var33, var10); var33.length() > 0; var26 = var26 + var32.ascent + 1) {
+												for (var33 = InvDefinition.method4335(var33, var10); var33.length() > 0; var26 = var26 + var32.ascent + 1) {
 													int var35 = var33.indexOf("<br>");
 													if (var35 != -1) {
 														var44 = var33.substring(0, var35);

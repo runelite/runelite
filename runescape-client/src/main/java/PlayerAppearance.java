@@ -120,7 +120,7 @@ public class PlayerAppearance {
 		signature = "(IZI)V",
 		garbageValue = "-278552632"
 	)
-	public void method3965(int var1, boolean var2) {
+	public void method3977(int var1, boolean var2) {
 		int var3 = this.bodyColors[var1];
 		if (!var2) {
 			do {
@@ -128,14 +128,14 @@ public class PlayerAppearance {
 				if (var3 < 0) {
 					var3 = field2519[var1].length - 1;
 				}
-			} while(!NetCache.method4284(var1, var3));
+			} while(!NetCache.method4296(var1, var3));
 		} else {
 			do {
 				++var3;
 				if (var3 >= field2519[var1].length) {
 					var3 = 0;
 				}
-			} while(!NetCache.method4284(var1, var3));
+			} while(!NetCache.method4296(var1, var3));
 		}
 
 		this.bodyColors[var1] = var3;
@@ -296,7 +296,7 @@ public class PlayerAppearance {
 						}
 
 						if (var13 >= 512) {
-							var14 = Occluder.ItemDefinition_get(var13 - 512).method4593(this.isFemale);
+							var14 = Occluder.ItemDefinition_get(var13 - 512).method4605(this.isFemale);
 							if (var14 != null) {
 								var16[var11++] = var14;
 							}
@@ -353,11 +353,11 @@ public class PlayerAppearance {
 			int var3;
 			for (int var2 = 0; var2 < 12; ++var2) {
 				var3 = this.equipment[var2];
-				if (var3 >= 256 && var3 < 512 && !class216.KitDefinition_get(var3 - 256).method4411()) {
+				if (var3 >= 256 && var3 < 512 && !class216.KitDefinition_get(var3 - 256).method4423()) {
 					var1 = true;
 				}
 
-				if (var3 >= 512 && !Occluder.ItemDefinition_get(var3 - 512).method4611(this.isFemale)) {
+				if (var3 >= 512 && !Occluder.ItemDefinition_get(var3 - 512).method4623(this.isFemale)) {
 					var1 = true;
 				}
 			}
@@ -380,7 +380,7 @@ public class PlayerAppearance {
 					}
 
 					if (var5 >= 512) {
-						var6 = Occluder.ItemDefinition_get(var5 - 512).method4595(this.isFemale);
+						var6 = Occluder.ItemDefinition_get(var5 - 512).method4607(this.isFemale);
 						if (var6 != null) {
 							var7[var3++] = var6;
 						}
@@ -419,7 +419,7 @@ public class PlayerAppearance {
 		signature = "(I)Z",
 		garbageValue = "-1021250910"
 	)
-	public static boolean method3998() {
+	public static boolean method4010() {
 		long var0 = class30.method566();
 		int var2 = (int)(var0 - NetCache.field3142);
 		NetCache.field3142 = var0;
@@ -638,7 +638,7 @@ public class PlayerAppearance {
 		signature = "(B)[Lin;",
 		garbageValue = "101"
 	)
-	static HorizontalAlignment[] method4000() {
+	static HorizontalAlignment[] method4012() {
 		return new HorizontalAlignment[]{HorizontalAlignment.field3442, HorizontalAlignment.field3444, HorizontalAlignment.HorizontalAlignment_centered};
 	}
 
@@ -647,7 +647,7 @@ public class PlayerAppearance {
 		signature = "(II)I",
 		garbageValue = "1781991052"
 	)
-	static int method3966(int var0) {
+	static int method3978(int var0) {
 		return (int)Math.pow(2.0D, (double)(7.0F + (float)var0 / 256.0F));
 	}
 

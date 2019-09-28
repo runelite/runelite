@@ -88,7 +88,7 @@ public class FaceNormal {
 		signature = "(Lho;II)Ljava/lang/String;",
 		garbageValue = "-1147965976"
 	)
-	static String method3224(Widget var0, int var1) {
+	static String method3228(Widget var0, int var1) {
 		int var3 = class2.getWidgetClickMask(var0);
 		boolean var2 = (var3 >> var1 + 1 & 1) != 0;
 		if (!var2 && var0.onOp == null) {
@@ -103,7 +103,7 @@ public class FaceNormal {
 		signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
 		garbageValue = "17"
 	)
-	static String method3225(String var0, boolean var1) {
+	static String method3229(String var0, boolean var1) {
 		String var2 = var1 ? "https://" : "http://";
 		if (Client.gameBuild == 1) {
 			var0 = var0 + "-wtrc";

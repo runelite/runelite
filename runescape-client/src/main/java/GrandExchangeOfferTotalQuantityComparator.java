@@ -111,15 +111,15 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 			var5 = var4 >> 2;
 			var6 = var4 & 3;
 			var7 = Client.field697[var5];
-			var8 = var1.method5456();
+			var8 = var1.method5471();
 			var9 = (var8 >> 4 & 7) + class40.field326;
 			var10 = (var8 & 7) + WorldMapSection2.field195;
-			byte var11 = var1.method5459();
-			var12 = var1.method5465();
-			var13 = var1.method5464();
+			byte var11 = var1.method5474();
+			var12 = var1.method5480();
+			var13 = var1.method5479();
 			var14 = var1.readUnsignedShort();
-			int var15 = var1.method5465();
-			byte var16 = var1.method5458();
+			int var15 = var1.method5480();
+			byte var16 = var1.method5473();
 			Player var17;
 			if (var15 == Client.localPlayerIndex) {
 				var17 = class223.localPlayer;
@@ -181,8 +181,8 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		int var38;
 		int var40;
 		if (class185.field2302 == var0) {
-			var37 = var1.method5465();
-			var38 = var1.method5456();
+			var37 = var1.method5480();
+			var38 = var1.method5471();
 			var4 = (var38 >> 4 & 7) + class40.field326;
 			var5 = (var38 & 7) + WorldMapSection2.field195;
 			var6 = var1.readUnsignedByte();
@@ -191,7 +191,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 			var9 = Client.field697[var7];
 			if (var4 >= 0 && var5 >= 0 && var4 < 103 && var5 < 103) {
 				if (var9 == 0) {
-					BoundaryObject var31 = PacketWriter.scene.method3064(WorldMapRectangle.plane, var4, var5);
+					BoundaryObject var31 = PacketWriter.scene.method3068(WorldMapRectangle.plane, var4, var5);
 					if (var31 != null) {
 						var40 = class81.Entity_unpackID(var31.tag);
 						if (var7 == 2) {
@@ -204,7 +204,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 				}
 
 				if (var9 == 1) {
-					WallDecoration var42 = PacketWriter.scene.method3065(WorldMapRectangle.plane, var4, var5);
+					WallDecoration var42 = PacketWriter.scene.method3069(WorldMapRectangle.plane, var4, var5);
 					if (var42 != null) {
 						var40 = class81.Entity_unpackID(var42.tag);
 						if (var7 != 4 && var7 != 5) {
@@ -223,7 +223,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 				}
 
 				if (var9 == 2) {
-					GameObject var43 = PacketWriter.scene.method3066(WorldMapRectangle.plane, var4, var5);
+					GameObject var43 = PacketWriter.scene.method3070(WorldMapRectangle.plane, var4, var5);
 					if (var7 == 11) {
 						var7 = 10;
 					}
@@ -244,10 +244,10 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		} else {
 			TileItem var33;
 			if (class185.field2304 == var0) {
-				var37 = var1.method5455();
+				var37 = var1.method5470();
 				var38 = (var37 >> 4 & 7) + class40.field326;
 				var4 = (var37 & 7) + WorldMapSection2.field195;
-				var5 = var1.method5632();
+				var5 = var1.method5647();
 				if (var38 >= 0 && var4 >= 0 && var38 < 104 && var4 < 104) {
 					NodeDeque var32 = Client.groundItems[WorldMapRectangle.plane][var38][var4];
 					if (var32 != null) {
@@ -267,11 +267,11 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 				}
 
 			} else if (class185.field2296 == var0) {
-				var37 = var1.method5456();
+				var37 = var1.method5471();
 				var38 = var37 >> 2;
 				var4 = var37 & 3;
 				var5 = Client.field697[var38];
-				var6 = var1.method5455();
+				var6 = var1.method5470();
 				var7 = (var6 >> 4 & 7) + class40.field326;
 				var8 = (var6 & 7) + WorldMapSection2.field195;
 				if (var7 >= 0 && var8 >= 0 && var7 < 104 && var8 < 104) {
@@ -279,9 +279,9 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 				}
 
 			} else if (class185.field2297 == var0) {
-				var37 = var1.method5465();
-				var38 = var1.method5464();
-				var4 = var1.method5455();
+				var37 = var1.method5480();
+				var38 = var1.method5479();
+				var4 = var1.method5470();
 				var5 = (var4 >> 4 & 7) + class40.field326;
 				var6 = (var4 & 7) + WorldMapSection2.field195;
 				if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
@@ -298,14 +298,14 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 
 			} else {
 				if (class185.field2300 == var0) {
-					var37 = var1.method5496();
+					var37 = var1.method5511();
 					var38 = (var37 >> 4 & 7) + class40.field326;
 					var4 = (var37 & 7) + WorldMapSection2.field195;
-					var5 = var1.method5496();
+					var5 = var1.method5511();
 					var6 = var5 >> 4 & 15;
 					var7 = var5 & 7;
 					var8 = var1.readUnsignedShort();
-					var9 = var1.method5496();
+					var9 = var1.method5511();
 					if (var38 >= 0 && var4 >= 0 && var38 < 104 && var4 < 104) {
 						var10 = var6 + 1;
 						if (class223.localPlayer.pathX[0] >= var38 - var10 && class223.localPlayer.pathX[0] <= var10 + var38 && class223.localPlayer.pathY[0] >= var4 - var10 && class223.localPlayer.pathY[0] <= var10 + var4 && Client.field868 != 0 && var7 > 0 && Client.soundEffectCount < 50) {
@@ -324,7 +324,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 					var38 = var37 >> 2;
 					var4 = var37 & 3;
 					var5 = Client.field697[var38];
-					var6 = var1.method5455();
+					var6 = var1.method5470();
 					var7 = (var6 >> 4 & 7) + class40.field326;
 					var8 = (var6 & 7) + WorldMapSection2.field195;
 					var9 = var1.readUnsignedShort();
@@ -333,19 +333,19 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 					}
 
 				} else if (class185.field2295 == var0) {
-					var37 = var1.method5632();
-					var38 = var1.method5496();
+					var37 = var1.method5647();
+					var38 = var1.method5511();
 					var4 = (var38 >> 4 & 7) + class40.field326;
 					var5 = (var38 & 7) + WorldMapSection2.field195;
-					var6 = var1.method5464();
-					var7 = var1.method5632();
-					byte var39 = var1.method5460();
-					var9 = var1.method5496() * 4;
+					var6 = var1.method5479();
+					var7 = var1.method5647();
+					byte var39 = var1.method5475();
+					var9 = var1.method5511() * 4;
 					var10 = var1.readUnsignedByte();
-					var40 = var1.method5455();
-					byte var41 = var1.method5458();
-					var13 = var1.method5471();
-					var14 = var1.method5496() * 4;
+					var40 = var1.method5470();
+					byte var41 = var1.method5473();
+					var13 = var1.method5486();
+					var14 = var1.method5511() * 4;
 					var12 = var41 + var4;
 					var8 = var39 + var5;
 					if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104 && var12 >= 0 && var8 >= 0 && var12 < 104 && var8 < 104 && var37 != 65535) {
@@ -360,12 +360,12 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 
 				} else if (class185.field2303 != var0) {
 					if (class185.field2301 == var0) {
-						var37 = var1.method5632();
-						var38 = var1.method5455();
-						var4 = var1.method5455();
+						var37 = var1.method5647();
+						var38 = var1.method5470();
+						var4 = var1.method5470();
 						var5 = (var4 >> 4 & 7) + class40.field326;
 						var6 = (var4 & 7) + WorldMapSection2.field195;
-						var7 = var1.method5464();
+						var7 = var1.method5479();
 						if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
 							var5 = var5 * 128 + 64;
 							var6 = var6 * 128 + 64;
@@ -375,12 +375,12 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 
 					}
 				} else {
-					var37 = var1.method5464();
-					var38 = var1.method5465();
-					var4 = var1.method5456();
+					var37 = var1.method5479();
+					var38 = var1.method5480();
+					var4 = var1.method5471();
 					var5 = (var4 >> 4 & 7) + class40.field326;
 					var6 = (var4 & 7) + WorldMapSection2.field195;
-					var7 = var1.method5465();
+					var7 = var1.method5480();
 					if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
 						NodeDeque var35 = Client.groundItems[WorldMapRectangle.plane][var5][var6];
 						if (var35 != null) {

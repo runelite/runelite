@@ -9,7 +9,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class Clock {
 	@ObfuscatedName("qq")
 	@ObfuscatedGetter(
-		intValue = 1800617984
+		intValue = -757684608
 	)
 	static int field2039;
 
@@ -52,7 +52,7 @@ public abstract class Clock {
 		signature = "(I)I",
 		garbageValue = "1644538233"
 	)
-	static final int method3459() {
+	static final int method3463() {
 		return ViewportMouse.ViewportMouse_x;
 	}
 

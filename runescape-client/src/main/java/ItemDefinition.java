@@ -244,7 +244,7 @@ public class ItemDefinition extends DualNode {
 	public int ambient;
 	@ObfuscatedName("bh")
 	@ObfuscatedGetter(
-		intValue = 807356389
+		intValue = 1020464737
 	)
 	@Export("contrast")
 	public int contrast;
@@ -471,7 +471,7 @@ public class ItemDefinition extends DualNode {
 			} else if (var2 == 113) {
 				this.ambient = var1.readByte();
 			} else if (var2 == 114) {
-				this.contrast = var1.readByte() * 5;
+				this.contrast = var1.readByte();
 			} else if (var2 == 115) {
 				this.team = var1.readUnsignedByte();
 			} else if (var2 == 139) {
@@ -674,7 +674,7 @@ public class ItemDefinition extends DualNode {
 					}
 				}
 
-				var5 = var6.toModel(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+				var5 = var6.toModel(this.ambient + 64, this.contrast * 5 + 768, -50, -10, -50);
 				var5.isSingleTile = true;
 				ItemDefinition_cachedModels.put(var5, (long)this.id);
 				return var5;
@@ -747,7 +747,7 @@ public class ItemDefinition extends DualNode {
 		signature = "(ZB)Ldw;",
 		garbageValue = "22"
 	)
-	public final ModelData method4593(boolean var1) {
+	public final ModelData method4605(boolean var1) {
 		int var2 = this.maleModel;
 		int var3 = this.maleModel1;
 		int var4 = this.maleModel2;
@@ -803,7 +803,7 @@ public class ItemDefinition extends DualNode {
 		signature = "(ZB)Z",
 		garbageValue = "100"
 	)
-	public final boolean method4611(boolean var1) {
+	public final boolean method4623(boolean var1) {
 		int var2 = this.maleHeadModel;
 		int var3 = this.maleHeadModel2;
 		if (var1) {
@@ -832,7 +832,7 @@ public class ItemDefinition extends DualNode {
 		signature = "(ZI)Ldw;",
 		garbageValue = "1830989293"
 	)
-	public final ModelData method4595(boolean var1) {
+	public final ModelData method4607(boolean var1) {
 		int var2 = this.maleHeadModel;
 		int var3 = this.maleHeadModel2;
 		if (var1) {
@@ -874,7 +874,7 @@ public class ItemDefinition extends DualNode {
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
-		return HealthBar.method2030(this.params, var1, var2);
+		return HealthBar.method2034(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("f")
@@ -884,7 +884,7 @@ public class ItemDefinition extends DualNode {
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		return class96.method2259(this.params, var1, var2);
+		return class96.method2263(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("j")
@@ -910,7 +910,7 @@ public class ItemDefinition extends DualNode {
 		signature = "(B)Lbl;",
 		garbageValue = "66"
 	)
-	static ClientPreferences method4655() {
+	static ClientPreferences method4667() {
 		AccessFile var0 = null;
 		ClientPreferences var1 = new ClientPreferences();
 

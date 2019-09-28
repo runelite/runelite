@@ -61,7 +61,7 @@ public enum class160 implements Enumerated {
 		signature = "(IIB)I",
 		garbageValue = "18"
 	)
-	static final int method3412(int var0, int var1) {
+	static final int method3416(int var0, int var1) {
 		int var2 = var0 + var1 * 57;
 		var2 ^= var2 << 13;
 		int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
@@ -73,7 +73,7 @@ public enum class160 implements Enumerated {
 		signature = "(B)V",
 		garbageValue = "-44"
 	)
-	static final void method3413() {
+	static final void method3417() {
 		for (PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.last(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.previous()) {
 			if (var0.hitpoints > 0) {
 				--var0.hitpoints;
@@ -96,7 +96,7 @@ public enum class160 implements Enumerated {
 						var3 = 4;
 					}
 
-					var1 = var4.method4555(var3);
+					var1 = var4.method4567(var3);
 					if (!var1) {
 						continue;
 					}
@@ -122,7 +122,7 @@ public enum class160 implements Enumerated {
 							var3 = 4;
 						}
 
-						var1 = var4.method4555(var3);
+						var1 = var4.method4567(var3);
 						if (!var1) {
 							continue;
 						}

@@ -48,7 +48,9 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 		{
 			if (cf.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
+			{
 				continue;
+			}
 			
 			map.map(cf.getPoolClass(), "class" + i++);
 		}
@@ -61,8 +63,10 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 			for (Field field : cf.getFields())
 			{
-				if (field.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN && !field.getName().startsWith("__") || field.getName().equals(DeobAnnotations.getExportedName(field.getAnnotations())))
+				if (!Deob.isObfuscated(field.getName()) || field.getName().equals(DeobAnnotations.getExportedName(field.getAnnotations())))
+				{
 					continue;
+				}
 				
 				map.map(field.getPoolField(), "field" + i++);
 			}
@@ -75,8 +79,10 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 			for (Method method : cf.getMethods())
 			{
-				if (method.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN && !method.getName().startsWith("__") || method.getName().equals(DeobAnnotations.getExportedName(method.getAnnotations())))
+				if (!Deob.isObfuscated(method.getName()) || method.getName().equals(DeobAnnotations.getExportedName(method.getAnnotations())))
+				{
 					continue;
+				}
 				
 				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
 				assert !virtualMethods.isEmpty();

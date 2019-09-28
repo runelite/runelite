@@ -51,7 +51,7 @@ public final class Canvas extends java.awt.Canvas {
 	)
 	@Export("SpriteBuffer_getSpriteArray")
 	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
-		return !VertexNormal.method2958(var0, var1, var2) ? null : AbstractWorldMapIcon.method642();
+		return !VertexNormal.method2962(var0, var1, var2) ? null : AbstractWorldMapIcon.method642();
 	}
 
 	@ObfuscatedName("al")

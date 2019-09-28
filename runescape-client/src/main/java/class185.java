@@ -247,7 +247,7 @@ public class class185 {
 		signature = "(S)V",
 		garbageValue = "16256"
 	)
-	static final void method3587() {
+	static final void method3593() {
 		Client.field830 = Client.cycleCntr;
 		GrandExchangeOfferAgeComparator.ClanChat_inClanChat = true;
 	}

@@ -91,7 +91,7 @@ public class TextureProvider implements TextureLoader {
 
 				for (int var7 = 0; var7 < var6.length; ++var7) {
 					int var8 = var6[var7];
-					if (this.archive.method4115(var8)) {
+					if (this.archive.method4127(var8)) {
 						++var2;
 					}
 				}
@@ -160,7 +160,7 @@ public class TextureProvider implements TextureLoader {
 		signature = "(II)Z",
 		garbageValue = "1238853491"
 	)
-	public boolean vmethod3232(int var1) {
+	public boolean vmethod3236(int var1) {
 		return this.textures[var1].field1587;
 	}
 
@@ -213,7 +213,7 @@ public class TextureProvider implements TextureLoader {
 		signature = "(I)V",
 		garbageValue = "-1068033058"
 	)
-	static void method2753() {
+	static void method2757() {
 		Tiles.Tiles_minPlane = 99;
 		Tiles.field501 = new byte[4][104][104];
 		Tiles.field483 = new byte[4][104][104];
@@ -262,7 +262,7 @@ public class TextureProvider implements TextureLoader {
 		signature = "(B)V",
 		garbageValue = "-114"
 	)
-	public static void method2742() {
+	public static void method2746() {
 		ParamDefinition.ParamDefinition_cached.clear();
 	}
 }

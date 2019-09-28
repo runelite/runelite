@@ -79,7 +79,7 @@ public class ClanChat extends UserList {
 	)
 	@Export("readName")
 	final void readName(String var1) {
-		this.name = VertexNormal.method2957(var1);
+		this.name = VertexNormal.method2961(var1);
 	}
 
 	@ObfuscatedName("m")
@@ -89,7 +89,7 @@ public class ClanChat extends UserList {
 	)
 	@Export("setOwner")
 	final void setOwner(String var1) {
-		this.owner = VertexNormal.method2957(var1);
+		this.owner = VertexNormal.method2961(var1);
 	}
 
 	@ObfuscatedName("y")
@@ -151,7 +151,7 @@ public class ClanChat extends UserList {
 		signature = "(Lkl;B)V",
 		garbageValue = "-31"
 	)
-	public final void method5151(Buffer var1) {
+	public final void method5166(Buffer var1) {
 		Username var2 = new Username(var1.readStringCp1252NullTerminated(), this.loginType);
 		int var3 = var1.readUnsignedShort();
 		byte var4 = var1.readByte();

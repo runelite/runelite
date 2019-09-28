@@ -36,7 +36,7 @@ public class SoundSystem implements Runnable {
 		signature = "(Lkl;II)V",
 		garbageValue = "536478263"
 	)
-	public static void method2464(Buffer var0, int var1) {
+	public static void method2468(Buffer var0, int var1) {
 		if (JagexCache.JagexCache_randomDat != null) {
 			try {
 				JagexCache.JagexCache_randomDat.seek(0L);

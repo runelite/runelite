@@ -59,7 +59,7 @@ public class UrlRequest {
 		signature = "(I)V",
 		garbageValue = "142413926"
 	)
-	public static void method3265() {
+	public static void method3269() {
 		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
 			if (ArchiveDiskActionHandler.field3127 != 0) {
 				ArchiveDiskActionHandler.field3127 = 1;
@@ -137,7 +137,7 @@ public class UrlRequest {
 					++var7;
 				}
 
-				if (Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y * 682054857 >= 1536 && var4.x < 11776 && var4.y * 682054857 < 11776) {
+				if (Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
 					if (var2) {
 						var4.field621 = true;
 						var4.tileX = var6;
@@ -201,7 +201,7 @@ public class UrlRequest {
 					var7 += 2;
 				}
 
-				if (Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y * 682054857 < 1536 || var4.x >= 11776 || var4.y * 682054857 >= 11776)) {
+				if (Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
 					var4.resetPath(var6, var7);
 					var4.field621 = false;
 				} else if (var2) {
@@ -234,7 +234,7 @@ public class UrlRequest {
 
 					var10 = var8 + var4.pathX[0];
 					var11 = var9 + var4.pathY[0];
-					if (Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y * 682054857 < 1536 || var4.x >= 11776 || var4.y * 682054857 >= 11776)) {
+					if (Client.localPlayerIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
 						var4.resetPath(var10, var11);
 						var4.field621 = false;
 					} else if (var2) {
@@ -258,7 +258,7 @@ public class UrlRequest {
 					var9 = var6 & 16383;
 					var10 = (class223.baseX * 64 + var8 + var4.pathX[0] & 16383) - class223.baseX * 64;
 					var11 = (class286.baseY * 64 + var9 + var4.pathY[0] & 16383) - class286.baseY * 64;
-					if (Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y * 682054857 >= 1536 && var4.x < 11776 && var4.y * 682054857 < 11776) {
+					if (Client.localPlayerIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
 						if (var2) {
 							var4.field621 = true;
 							var4.tileX = var10;
@@ -287,7 +287,7 @@ public class UrlRequest {
 		signature = "(B)V",
 		garbageValue = "1"
 	)
-	static void method3275() {
+	static void method3279() {
 		if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
 			Players.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
 		}

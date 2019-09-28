@@ -33,11 +33,6 @@ public final class Client extends GameShell implements Usernamed {
 		intValue = -659707133
 	)
 	static int field638;
-	@ObfuscatedName("sj")
-	@ObfuscatedGetter(
-		intValue = 11492349
-	)
-	public static int field905;
 	@ObfuscatedName("og")
 	@ObfuscatedGetter(
 		longValue = -2357868230662320483L
@@ -62,6 +57,11 @@ public final class Client extends GameShell implements Usernamed {
 	)
 	@Export("cycleCntr")
 	static int cycleCntr;
+	@ObfuscatedName("sj")
+	@ObfuscatedGetter(
+		intValue = 11492349
+	)
+	public static int field905;
 	@ObfuscatedName("ng")
 	@ObfuscatedGetter(
 		intValue = -1435027681
@@ -903,6 +903,9 @@ public final class Client extends GameShell implements Usernamed {
 	@Export("oculusOrbState")
 	static int oculusOrbState;
 	@ObfuscatedName("hj")
+	@ObfuscatedGetter(
+		intValue = -844153885
+	)
 	@Export("camFollowHeight")
 	static int camFollowHeight;
 	@ObfuscatedName("hc")
@@ -1348,7 +1351,7 @@ public final class Client extends GameShell implements Usernamed {
 		mouseCamClickedX = 0;
 		mouseCamClickedY = 0;
 		oculusOrbState = 0;
-		camFollowHeight = 289544614;
+		camFollowHeight = 50;
 		field766 = 0;
 		field714 = 0;
 		field715 = 0;
@@ -1600,7 +1603,7 @@ public final class Client extends GameShell implements Usernamed {
 		this.setUpMouse();
 		KeyHandler.mouseWheel = this.mouseWheel();
 		WorldMapData_0.masterDisk = new ArchiveDisk(255, JagexCache.JagexCache_dat2File, JagexCache.JagexCache_idx255File, 500000);
-		AbstractArchive.clientPreferences = ItemDefinition.method4655();
+		AbstractArchive.clientPreferences = ItemDefinition.method4667();
 		this.setUpClipboard();
 		String var4 = WorldMapManager.null_string;
 		class51.applet = this;
@@ -1636,14 +1639,14 @@ public final class Client extends GameShell implements Usernamed {
 				int var5;
 				try {
 					if (class197.field2386 == 1) {
-						var5 = class49.midiPcmStream.method3736();
+						var5 = class49.midiPcmStream.method3745();
 						if (var5 > 0 && class49.midiPcmStream.isReady()) {
 							var5 -= MusicPatchNode2.field2382;
 							if (var5 < 0) {
 								var5 = 0;
 							}
 
-							class49.midiPcmStream.method3751(var5);
+							class49.midiPcmStream.method3760(var5);
 						} else {
 							class49.midiPcmStream.clear();
 							class49.midiPcmStream.removeAll();
@@ -1701,7 +1704,7 @@ public final class Client extends GameShell implements Usernamed {
 					KeyHandler.field380 = KeyHandler.field371;
 				}
 
-				VertexNormal.method2955();
+				VertexNormal.method2959();
 				if (KeyHandler.mouseWheel != null) {
 					var5 = KeyHandler.mouseWheel.useRotation();
 					mouseWheelRotation = var5;
@@ -1711,18 +1714,18 @@ public final class Client extends GameShell implements Usernamed {
 					class189.load();
 					WorldMapDecoration.method343();
 				} else if (gameState == 5) {
-					LoginPacket.method3581(this);
+					LoginPacket.method3587(this);
 					class189.load();
 					WorldMapDecoration.method343();
 				} else if (gameState != 10 && gameState != 11) {
 					if (gameState == 20) {
-						LoginPacket.method3581(this);
+						LoginPacket.method3587(this);
 						this.doCycleLoggedOut();
 					} else if (gameState == 25) {
 						KeyHandler.method851();
 					}
 				} else {
-					LoginPacket.method3581(this);
+					LoginPacket.method3587(this);
 				}
 
 				if (gameState == 30) {
@@ -1763,7 +1766,7 @@ public final class Client extends GameShell implements Usernamed {
 
 					if (class49.midiPcmStream.loadMusicTrack(class197.musicTrack, class197.musicPatchesArchive, FriendLoginUpdate.soundCache, 22050)) {
 						class49.midiPcmStream.clearAll();
-						class49.midiPcmStream.method3751(TileItem.field1223);
+						class49.midiPcmStream.method3760(TileItem.field1223);
 						class49.midiPcmStream.setMusicTrack(class197.musicTrack, WorldMapSectionType.musicTrackBoolean);
 						class197.field2386 = 0;
 						class197.musicTrack = null;
@@ -1870,8 +1873,8 @@ public final class Client extends GameShell implements Usernamed {
 
 		WorldMapLabel.mouseRecorder = null;
 		packetWriter.close();
-		class191.method3631();
-		method1565();
+		class191.method3640();
+		method1566();
 		KeyHandler.mouseWheel = null;
 		if (class219.pcmPlayer0 != null) {
 			class219.pcmPlayer0.shutdown();
@@ -1881,14 +1884,14 @@ public final class Client extends GameShell implements Usernamed {
 			GrandExchangeOfferWorldComparator.pcmPlayer1.shutdown();
 		}
 
-		class80.method2053();
-		UrlRequest.method3265();
+		class80.method2057();
+		UrlRequest.method3269();
 		if (urlRequester != null) {
 			urlRequester.close();
 			urlRequester = null;
 		}
 
-		Occluder.method3248();
+		Occluder.method3252();
 	}
 
 	@ObfuscatedName("am")
@@ -1930,10 +1933,10 @@ public final class Client extends GameShell implements Usernamed {
 							worldProperties = Integer.parseInt(var2);
 							break;
 						case 6:
-							WorldMapLabelSize.clientLanguage = Language.method3612(Integer.parseInt(var2));
+							WorldMapLabelSize.clientLanguage = Language.method3618(Integer.parseInt(var2));
 							break;
 						case 7:
-							VertexNormal.field1726 = FloorDecoration.method2837(Integer.parseInt(var2));
+							VertexNormal.field1726 = FloorDecoration.method2841(Integer.parseInt(var2));
 							break;
 						case 8:
 							if (var2.equalsIgnoreCase("true")) {
@@ -2123,7 +2126,7 @@ public final class Client extends GameShell implements Usernamed {
 	@Export("doCycleJs5")
 	void doCycleJs5() {
 		if (gameState != 1000) {
-			boolean var1 = PlayerAppearance.method3998();
+			boolean var1 = PlayerAppearance.method4010();
 			if (!var1) {
 				this.doCycleJs5Connect();
 			}
@@ -2204,7 +2207,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					if (js5ConnectState == 4) {
-						MenuAction.method2063(class43.js5Socket, gameState > 20);
+						MenuAction.method2067(class43.js5Socket, gameState > 20);
 						Login.js5SocketTask = null;
 						class43.js5Socket = null;
 						js5ConnectState = 0;
@@ -2313,7 +2316,7 @@ public final class Client extends GameShell implements Usernamed {
 
 			if (loginState == 2) {
 				packetWriter.clearBuffer();
-				PacketBufferNode var22 = Tile.method2845();
+				PacketBufferNode var22 = Tile.method2849();
 				var22.packetBuffer.writeByte(LoginPacket.field2289.id);
 				packetWriter.addNode(var22);
 				packetWriter.flush();
@@ -2325,11 +2328,11 @@ public final class Client extends GameShell implements Usernamed {
 			int var14;
 			if (loginState == 3) {
 				if (class219.pcmPlayer0 != null) {
-					class219.pcmPlayer0.method2393();
+					class219.pcmPlayer0.method2397();
 				}
 
 				if (GrandExchangeOfferWorldComparator.pcmPlayer1 != null) {
-					GrandExchangeOfferWorldComparator.pcmPlayer1.method2393();
+					GrandExchangeOfferWorldComparator.pcmPlayer1.method2397();
 				}
 
 				var13 = true;
@@ -2340,11 +2343,11 @@ public final class Client extends GameShell implements Usernamed {
 				if (var13) {
 					var14 = ((AbstractSocket)var1).readUnsignedByte();
 					if (class219.pcmPlayer0 != null) {
-						class219.pcmPlayer0.method2393();
+						class219.pcmPlayer0.method2397();
 					}
 
 					if (GrandExchangeOfferWorldComparator.pcmPlayer1 != null) {
-						GrandExchangeOfferWorldComparator.pcmPlayer1.method2393();
+						GrandExchangeOfferWorldComparator.pcmPlayer1.method2397();
 					}
 
 					if (var14 != 0) {
@@ -2408,7 +2411,7 @@ public final class Client extends GameShell implements Usernamed {
 						var23.offset += 4;
 						break;
 					case 3:
-						var23.writeInt((Integer)AbstractArchive.clientPreferences.parameters.get(class288.method5209(Login.Login_username)));
+						var23.writeInt((Integer)AbstractArchive.clientPreferences.parameters.get(class288.method5224(Login.Login_username)));
 					}
 
 					var23.writeByte(class312.field3818.rsOrdinal());
@@ -2417,7 +2420,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				var23.encryptRsa(class83.field1148, class83.field1149);
 				DirectByteArrayCopier.field2482 = var25;
-				PacketBufferNode var5 = Tile.method2845();
+				PacketBufferNode var5 = Tile.method2849();
 				var5.packetBuffer.offset = 0;
 				if (gameState == 40) {
 					var5.packetBuffer.writeByte(LoginPacket.field2290.id);
@@ -2569,7 +2572,7 @@ public final class Client extends GameShell implements Usernamed {
 						var14 |= var2.readByteIsaac() << 16;
 						var14 |= var2.readByteIsaac() << 8;
 						var14 |= var2.readByteIsaac();
-						var16 = class288.method5209(Login.Login_username);
+						var16 = class288.method5224(Login.Login_username);
 						if (AbstractArchive.clientPreferences.parameters.size() >= 10 && !AbstractArchive.clientPreferences.parameters.containsKey(var16)) {
 							Iterator var17 = AbstractArchive.clientPreferences.parameters.entrySet().iterator();
 							var17.next();
@@ -2618,7 +2621,7 @@ public final class Client extends GameShell implements Usernamed {
 					if (((AbstractSocket)var1).available() >= packetWriter.serverPacketLength) {
 						var2.offset = 0;
 						((AbstractSocket)var1).read(var2.array, 0, packetWriter.serverPacketLength);
-						timer.method4927();
+						timer.method4939();
 						mouseLastLastPressedTimeMillis = -1L;
 						WorldMapLabel.mouseRecorder.index = 0;
 						TaskHandler.hasFocus = true;
@@ -2652,7 +2655,7 @@ public final class Client extends GameShell implements Usernamed {
 						playerAttackOption = AttackOption.AttackOption_hidden;
 						npcAttackOption = AttackOption.AttackOption_hidden;
 						npcCount = 0;
-						ClientPreferences.method1857();
+						ClientPreferences.method1861();
 
 						for (var33 = 0; var33 < 2048; ++var33) {
 							players[var33] = null;
@@ -2706,14 +2709,14 @@ public final class Client extends GameShell implements Usernamed {
 							playerOptionsPriorities[var33] = false;
 						}
 
-						FontName.method5251();
+						FontName.method5266();
 						isLoading = true;
 
 						for (var33 = 0; var33 < 100; ++var33) {
 							field841[var33] = true;
 						}
 
-						class210.method3939();
+						class210.method3948();
 						Varps.clanChat = null;
 
 						for (var33 = 0; var33 < 8; ++var33) {
@@ -2778,7 +2781,7 @@ public final class Client extends GameShell implements Usernamed {
 							((AbstractSocket)var1).read(var2.array, 0, packetWriter.serverPacketLength);
 							var2.offset = 0;
 							var33 = packetWriter.serverPacketLength;
-							timer.method4929();
+							timer.method4941();
 							packetWriter.clearBuffer();
 							packetWriter.packetBuffer.offset = 0;
 							packetWriter.serverPacket = null;
@@ -2806,14 +2809,14 @@ public final class Client extends GameShell implements Usernamed {
 								}
 							}
 
-							FontName.method5251();
+							FontName.method5266();
 							MouseRecorder.updateGameState(30);
 
 							for (var14 = 0; var14 < 100; ++var14) {
 								field841[var14] = true;
 							}
 
-							class210.method3939();
+							class210.method3948();
 							AttackOption.updatePlayer(var2);
 							if (var33 != var2.offset) {
 								throw new RuntimeException();
@@ -2861,7 +2864,7 @@ public final class Client extends GameShell implements Usernamed {
 				KeyHandler.addCancelMenuEntry();
 			}
 
-			for (int var1 = 0; var1 < 100 && this.method1606(packetWriter); ++var1) {
+			for (int var1 = 0; var1 < 100 && this.method1607(packetWriter); ++var1) {
 			}
 
 			if (gameState == 30) {
@@ -2886,7 +2889,7 @@ public final class Client extends GameShell implements Usernamed {
 							timer.write(var14.packetBuffer);
 							var14.packetBuffer.writeLengthByte(var14.packetBuffer.offset - var15);
 							packetWriter.addNode(var14);
-							timer.method4928();
+							timer.method4940();
 						}
 
 						int var4;
@@ -3043,8 +3046,8 @@ public final class Client extends GameShell implements Usernamed {
 								}
 
 								field860 = var19;
-								var14.packetBuffer.method5470((int)var21);
-								var14.packetBuffer.method5446(KeyHandler.field376[var5]);
+								var14.packetBuffer.method5485((int)var21);
+								var14.packetBuffer.method5461(KeyHandler.field376[var5]);
 							}
 
 							var14.packetBuffer.writeLengthShort(var14.packetBuffer.offset - var15);
@@ -3064,7 +3067,7 @@ public final class Client extends GameShell implements Usernamed {
 							field721 = false;
 							var14 = InterfaceParent.getPacketBufferNode(ClientPacket.field2209, packetWriter.isaacCipher);
 							var14.packetBuffer.writeShortLE(camAngleX);
-							var14.packetBuffer.method5461(camAngleY);
+							var14.packetBuffer.method5476(camAngleY);
 							packetWriter.addNode(var14);
 						}
 
@@ -3083,7 +3086,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (Tiles.worldMap != null) {
-							Tiles.worldMap.method6291();
+							Tiles.worldMap.method6314();
 						}
 
 						if (GrandExchangeOfferAgeComparator.ClanChat_inClanChat) {
@@ -3091,7 +3094,7 @@ public final class Client extends GameShell implements Usernamed {
 								Varps.clanChat.sort();
 							}
 
-							Archive.method4266();
+							Archive.method4278();
 							GrandExchangeOfferAgeComparator.ClanChat_inClanChat = false;
 						}
 
@@ -3100,8 +3103,8 @@ public final class Client extends GameShell implements Usernamed {
 							return;
 						}
 
-						class160.method3413();
-						HealthBarUpdate.method1765();
+						class160.method3417();
+						HealthBarUpdate.method1769();
 						++packetWriter.field1297;
 						if (packetWriter.field1297 > 750) {
 							MouseRecorder.method1213();
@@ -3109,7 +3112,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						class32.method571();
-						WallDecoration.method3251();
+						WallDecoration.method3255();
 						int[] var36 = Players.Players_indices;
 
 						for (var15 = 0; var15 < Players.Players_count; ++var15) {
@@ -3160,7 +3163,7 @@ public final class Client extends GameShell implements Usernamed {
 
 						while (DynamicObject.isKeyDown() && field857 < 128) {
 							if (staffModLevel >= 2 && KeyHandler.KeyHandler_pressedKeys[82] && SecureRandomFuture.field1230 == 66) {
-								String var39 = Entity.method3221();
+								String var39 = Entity.method3225();
 								ViewportMouse.client.clipboardSetString(var39);
 							} else if (oculusOrbState != 1 || KeyHandler.field381 <= 0) {
 								field859[field857] = SecureRandomFuture.field1230;
@@ -3179,7 +3182,7 @@ public final class Client extends GameShell implements Usernamed {
 							}
 
 							if (var4 != class223.localPlayer.plane) {
-								class287.method5205(class223.localPlayer.pathX[0] + class223.baseX * 64, class223.localPlayer.pathY[0] + class286.baseY * 64, var4, false);
+								class287.method5220(class223.localPlayer.pathX[0] + class223.baseX * 64, class223.localPlayer.pathY[0] + class286.baseY * 64, var4, false);
 							}
 
 							mouseWheelRotation = 0;
@@ -3208,12 +3211,12 @@ public final class Client extends GameShell implements Usernamed {
 														if (var40 == null) {
 															this.method1323();
 															if (Tiles.worldMap != null) {
-																Tiles.worldMap.method6249(WorldMapRectangle.plane, class223.baseX * 64 + (class223.localPlayer.x >> 7), class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7), false);
+																Tiles.worldMap.method6272(WorldMapRectangle.plane, class223.baseX * 64 + (class223.localPlayer.x >> 7), class286.baseY * 64 + (class223.localPlayer.y >> 7), false);
 																Tiles.worldMap.loadCache();
 															}
 
 															if (clickedWidget != null) {
-																this.method1327();
+																this.method1328();
 															}
 
 															if (Frames.dragInventoryWidget != null) {
@@ -3257,10 +3260,10 @@ public final class Client extends GameShell implements Usernamed {
 																			}
 
 																			var18 = InterfaceParent.getPacketBufferNode(ClientPacket.field2222, packetWriter.isaacCipher);
-																			var18.packetBuffer.method5615(Frames.dragInventoryWidget.id);
+																			var18.packetBuffer.method5630(Frames.dragInventoryWidget.id);
 																			var18.packetBuffer.writeShort(dragItemSlotDestination);
 																			var18.packetBuffer.writeByte(var33);
-																			var18.packetBuffer.method5461(dragItemSlotSource);
+																			var18.packetBuffer.method5476(dragItemSlotSource);
 																			packetWriter.addNode(var18);
 																		}
 																	} else if (this.shouldLeftClickOpenMenu()) {
@@ -3277,16 +3280,16 @@ public final class Client extends GameShell implements Usernamed {
 																}
 															}
 
-															if (Scene.method3081()) {
+															if (Scene.method3085()) {
 																var4 = Scene.Scene_selectedX;
 																var5 = Scene.Scene_selectedY;
 																var18 = InterfaceParent.getPacketBufferNode(ClientPacket.field2281, packetWriter.isaacCipher);
 																var18.packetBuffer.writeByte(5);
 																var18.packetBuffer.writeShortLE(class223.baseX * 64 + var4);
-																var18.packetBuffer.method5461(class286.baseY * 64 + var5);
-																var18.packetBuffer.method5453(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0);
+																var18.packetBuffer.method5476(class286.baseY * 64 + var5);
+																var18.packetBuffer.method5468(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0);
 																packetWriter.addNode(var18);
-																Scene.method3082();
+																Scene.method3086();
 																mouseCrossX = MouseHandler.MouseHandler_lastPressedX;
 																mouseCrossY = MouseHandler.MouseHandler_lastPressedY;
 																mouseCrossColor = 1;
@@ -3328,7 +3331,7 @@ public final class Client extends GameShell implements Usernamed {
 
 															if (oculusOrbState == 0) {
 																var4 = class223.localPlayer.x;
-																var5 = class223.localPlayer.y * 682054857;
+																var5 = class223.localPlayer.y;
 																if (ObjectSound.oculusOrbFocalPointX - var4 < -500 || ObjectSound.oculusOrbFocalPointX - var4 > 500 || class14.oculusOrbFocalPointY - var5 < -500 || class14.oculusOrbFocalPointY - var5 > 500) {
 																	ObjectSound.oculusOrbFocalPointX = var4;
 																	class14.oculusOrbFocalPointY = var5;
@@ -3377,7 +3380,7 @@ public final class Client extends GameShell implements Usernamed {
 																	field722 += (var10 - field722) / 80;
 																}
 
-																ModelData0.field1840 = (MusicPatchPcmStream.getTileHeight(class223.localPlayer.x, 682054857 * class223.localPlayer.y, WorldMapRectangle.plane) - -844153885 * camFollowHeight) * -506989123;
+																ModelData0.field1840 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x, class223.localPlayer.y, WorldMapRectangle.plane) - camFollowHeight;
 															} else if (oculusOrbState == 1) {
 																class1.method15();
 																short var34 = -1;
@@ -3440,8 +3443,8 @@ public final class Client extends GameShell implements Usernamed {
 																	}
 
 																	if (field715 != 0) {
-																		ModelData0.field1840 += var7 * field715 * -506989123;
-																		if (ModelData0.field1840 * -1351160427 > 0) {
+																		ModelData0.field1840 += var7 * field715;
+																		if (ModelData0.field1840 > 0) {
 																			ModelData0.field1840 = 0;
 																		}
 																	}
@@ -3495,7 +3498,7 @@ public final class Client extends GameShell implements Usernamed {
 															}
 
 															if (isCameraLocked) {
-																ChatChannel.method2233();
+																ChatChannel.method2237();
 															}
 
 															for (var4 = 0; var4 < 5; ++var4) {
@@ -3719,7 +3722,7 @@ public final class Client extends GameShell implements Usernamed {
 			}
 		}
 
-		class3.method51(WorldMapRectangle.plane, class223.localPlayer.x, class223.localPlayer.y * 682054857, field698);
+		class3.method51(WorldMapRectangle.plane, class223.localPlayer.x, class223.localPlayer.y, field698);
 		field698 = 0;
 	}
 
@@ -3728,7 +3731,7 @@ public final class Client extends GameShell implements Usernamed {
 		signature = "(Lcl;I)Z",
 		garbageValue = "-1809167955"
 	)
-	final boolean method1606(PacketWriter var1) {
+	final boolean method1607(PacketWriter var1) {
 		AbstractSocket var2 = var1.getSocket();
 		PacketBuffer var3 = var1.packetBuffer;
 		if (var2 == null) {
@@ -3750,7 +3753,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					var3.offset = 0;
-					if (var3.method5380()) {
+					if (var3.method5395()) {
 						if (!var2.isAvailable(1)) {
 							return false;
 						}
@@ -3796,7 +3799,7 @@ public final class Client extends GameShell implements Usernamed {
 				var3.offset = 0;
 				var2.read(var3.array, 0, var1.serverPacketLength);
 				var1.field1297 = 0;
-				timer.method4924();
+				timer.method4936();
 				var1.field1301 = var1.field1291;
 				var1.field1291 = var1.field1300;
 				var1.field1300 = var1.serverPacket;
@@ -3811,7 +3814,7 @@ public final class Client extends GameShell implements Usernamed {
 				long var9;
 				int var16;
 				if (ServerPacket.field2122 == var1.serverPacket) {
-					var16 = var3.method5464();
+					var16 = var3.method5479();
 					if (var16 == 65535) {
 						var16 = -1;
 					}
@@ -3821,8 +3824,8 @@ public final class Client extends GameShell implements Usernamed {
 						var5 = -1;
 					}
 
-					var6 = var3.method5467();
-					var7 = var3.method5467();
+					var6 = var3.method5482();
+					var7 = var3.method5482();
 
 					for (var8 = var16; var8 <= var5; ++var8) {
 						var9 = ((long)var7 << 32) + (long)var8;
@@ -3840,16 +3843,16 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2167 == var1.serverPacket) {
 					var16 = var3.readUnsignedByte();
-					NetCache.method4267(var16);
+					NetCache.method4279(var16);
 					var1.serverPacket = null;
 					return true;
 				}
 
 				Widget var46;
 				if (ServerPacket.field2095 == var1.serverPacket) {
-					var16 = var3.method5469();
-					var5 = var3.method5469();
-					var6 = var3.method5467();
+					var16 = var3.method5484();
+					var5 = var3.method5484();
+					var6 = var3.method5482();
 					var46 = Canvas.getWidget(var6);
 					if (var5 != var46.rawX || var16 != var46.rawY || var46.xAlignment != 0 || var46.yAlignment != 0) {
 						var46.rawX = var5;
@@ -3874,7 +3877,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2143 == var1.serverPacket) {
-					rebootTimer = var3.method5464() * 30;
+					rebootTimer = var3.method5479() * 30;
 					field833 = cycleCntr;
 					var1.serverPacket = null;
 					return true;
@@ -3896,7 +3899,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2118 == var1.serverPacket) {
-					Occluder.method3247(var3.readStringCp1252NullTerminated());
+					Occluder.method3251(var3.readStringCp1252NullTerminated());
 					var1.serverPacket = null;
 					return true;
 				}
@@ -3928,10 +3931,10 @@ public final class Client extends GameShell implements Usernamed {
 					var7 = var3.readUnsignedShort();
 
 					for (var8 = 0; var8 < var7; ++var8) {
-						var19 = var3.method5464();
-						var10 = var3.method5455();
+						var19 = var3.method5479();
+						var10 = var3.method5470();
 						if (var10 == 255) {
-							var10 = var3.method5467();
+							var10 = var3.method5482();
 						}
 
 						if (var18 != null && var8 < var18.itemIds.length) {
@@ -3946,7 +3949,7 @@ public final class Client extends GameShell implements Usernamed {
 						WorldMapSectionType.invalidateWidget(var18);
 					}
 
-					class325.method6167();
+					class325.method6190();
 					field820[++field825 - 1 & 31] = var5 & 32767;
 					var1.serverPacket = null;
 					return true;
@@ -3954,14 +3957,14 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2126 == var1.serverPacket) {
 					isCameraLocked = true;
-					class225.field3045 = var3.readUnsignedByte() * 128;
-					Clock.field2039 = var3.readUnsignedByte() * 16384;
+					class225.field3045 = var3.readUnsignedByte() * 16384;
+					Clock.field2039 = var3.readUnsignedByte() * 128;
 					GrandExchangeOfferOwnWorldComparator.field627 = var3.readUnsignedShort();
 					MouseRecorder.field572 = var3.readUnsignedByte();
 					Messages.field1262 = var3.readUnsignedByte();
 					if (Messages.field1262 >= 100) {
-						GrandExchangeOfferOwnWorldComparator.cameraX = class225.field3045 * 16384 + 64;
-						WorldMapIcon_1.cameraZ = Clock.field2039 * 128 + 64;
+						GrandExchangeOfferOwnWorldComparator.cameraX = class225.field3045 * 128 + 64;
+						WorldMapIcon_1.cameraZ = Clock.field2039 * 16384 + 64;
 						Varcs.cameraY = MusicPatchPcmStream.getTileHeight(GrandExchangeOfferOwnWorldComparator.cameraX, WorldMapIcon_1.cameraZ, WorldMapRectangle.plane) - GrandExchangeOfferOwnWorldComparator.field627;
 					}
 
@@ -3980,17 +3983,17 @@ public final class Client extends GameShell implements Usernamed {
 					var5 = var3.readInt();
 					var6 = class4.getGcDuration();
 					PacketBufferNode var48 = InterfaceParent.getPacketBufferNode(ClientPacket.field2199, packetWriter.isaacCipher);
-					var48.packetBuffer.method5453(var6);
+					var48.packetBuffer.method5468(var6);
 					var48.packetBuffer.writeInt(var16);
-					var48.packetBuffer.method5474(var5);
-					var48.packetBuffer.method5446(GameShell.fps);
+					var48.packetBuffer.method5489(var5);
+					var48.packetBuffer.method5461(GameShell.fps);
 					packetWriter.addNode(var48);
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2164 == var1.serverPacket) {
-					class325.method6167();
+					class325.method6190();
 					weight = var3.readShort();
 					field833 = cycleCntr;
 					var1.serverPacket = null;
@@ -4001,7 +4004,7 @@ public final class Client extends GameShell implements Usernamed {
 					var16 = var3.readInt();
 					if (var16 != field718) {
 						field718 = var16;
-						UserComparator4.method3346();
+						UserComparator4.method3350();
 					}
 
 					var1.serverPacket = null;
@@ -4010,10 +4013,10 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2115 == var1.serverPacket) {
 					if (Varps.clanChat != null) {
-						Varps.clanChat.method5151(var3);
+						Varps.clanChat.method5166(var3);
 					}
 
-					class185.method3587();
+					class185.method3593();
 					var1.serverPacket = null;
 					return true;
 				}
@@ -4021,7 +4024,7 @@ public final class Client extends GameShell implements Usernamed {
 				InterfaceParent var17;
 				Widget var20;
 				if (ServerPacket.field2166 == var1.serverPacket) {
-					var16 = var3.method5467();
+					var16 = var3.method5482();
 					var5 = var3.readInt();
 					InterfaceParent var52 = (InterfaceParent)interfaceParents.get((long)var5);
 					var17 = (InterfaceParent)interfaceParents.get((long)var16);
@@ -4087,9 +4090,9 @@ public final class Client extends GameShell implements Usernamed {
 					if (!var44 && field634 == 0) {
 						field889[field856] = var12;
 						field856 = (field856 + 1) % 100;
-						String var25 = AbstractFont.escapeBrackets(NetSocket.method3467(class65.method1250(var3)));
+						String var25 = AbstractFont.escapeBrackets(NetSocket.method3471(class65.method1250(var3)));
 						if (var11.modIcon != -1) {
-							WorldMapData_1.addChatMessage(9, class247.method4443(var11.modIcon) + var36, var25, World.base37DecodeLong(var21));
+							WorldMapData_1.addChatMessage(9, class247.method4455(var11.modIcon) + var36, var25, World.base37DecodeLong(var21));
 						} else {
 							WorldMapData_1.addChatMessage(9, var36, var25, World.base37DecodeLong(var21));
 						}
@@ -4102,7 +4105,7 @@ public final class Client extends GameShell implements Usernamed {
 				if (ServerPacket.field2165 == var1.serverPacket) {
 					var3.offset += 28;
 					if (var3.checkCrc()) {
-						ArchiveDisk.method5781(var3, var3.offset - 28);
+						ArchiveDisk.method5801(var3, var3.offset - 28);
 					}
 
 					var1.serverPacket = null;
@@ -4125,8 +4128,8 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2106 == var1.serverPacket) {
-					var16 = var3.method5489();
-					var5 = var3.method5477();
+					var16 = var3.method5504();
+					var5 = var3.method5492();
 					var18 = Canvas.getWidget(var5);
 					if (var16 != var18.sequenceId || var16 == -1) {
 						var18.sequenceId = var16;
@@ -4141,8 +4144,8 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2170 == var1.serverPacket) {
 					var16 = var3.readInt();
-					var5 = var3.method5467();
-					var6 = var3.method5464();
+					var5 = var3.method5482();
+					var6 = var3.method5479();
 					if (var6 == 65535) {
 						var6 = -1;
 					}
@@ -4193,8 +4196,8 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2141 == var1.serverPacket) {
-					var16 = var3.method5477();
-					var5 = var3.method5465();
+					var16 = var3.method5492();
+					var5 = var3.method5480();
 					var18 = Canvas.getWidget(var16);
 					if (var18.modelType != 2 || var5 != var18.modelId) {
 						var18.modelType = 2;
@@ -4234,7 +4237,7 @@ public final class Client extends GameShell implements Usernamed {
 					if (!var29 && field634 == 0) {
 						field889[field856] = var27;
 						field856 = (field856 + 1) % 100;
-						String var30 = AbstractFont.escapeBrackets(NetSocket.method3467(class65.method1250(var3)));
+						String var30 = AbstractFont.escapeBrackets(NetSocket.method3471(class65.method1250(var3)));
 						byte var14;
 						if (var26.isPrivileged) {
 							var14 = 7;
@@ -4243,7 +4246,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (var26.modIcon != -1) {
-							class210.addGameMessage(var14, class247.method4443(var26.modIcon) + var36, var30);
+							class210.addGameMessage(var14, class247.method4455(var26.modIcon) + var36, var30);
 						} else {
 							class210.addGameMessage(var14, var36, var30);
 						}
@@ -4255,7 +4258,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				Widget var55;
 				if (ServerPacket.field2103 == var1.serverPacket) {
-					var16 = var3.method5467();
+					var16 = var3.method5482();
 					var55 = Canvas.getWidget(var16);
 
 					for (var6 = 0; var6 < var55.itemIds.length; ++var6) {
@@ -4275,21 +4278,21 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2137 == var1.serverPacket) {
-					var16 = var3.method5546();
-					var5 = var3.method5464();
+					var16 = var3.method5561();
+					var5 = var3.method5479();
 					Varps.Varps_temp[var5] = var16;
 					if (Varps.Varps_main[var5] != var16) {
 						Varps.Varps_main[var5] = var16;
 					}
 
-					NetSocket.method3468(var5);
+					NetSocket.method3472(var5);
 					field782[++field823 - 1 & 31] = var5;
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2124 == var1.serverPacket) {
-					class40.field326 = var3.method5456();
+					class40.field326 = var3.method5471();
 					WorldMapSection2.field195 = var3.readUnsignedByte();
 					var1.serverPacket = null;
 					return true;
@@ -4310,9 +4313,9 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2175 == var1.serverPacket) {
-					var16 = var3.method5496();
+					var16 = var3.method5511();
 					var31 = var3.readStringCp1252NullTerminated();
-					var6 = var3.method5455();
+					var6 = var3.method5470();
 					if (var6 >= 1 && var6 <= 8) {
 						if (var31.equalsIgnoreCase("null")) {
 							var31 = null;
@@ -4341,7 +4344,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2162 == var1.serverPacket) {
-					Tiles.friendSystem.method1860();
+					Tiles.friendSystem.method1864();
 					field744 = cycleCntr;
 					var1.serverPacket = null;
 					return true;
@@ -4349,7 +4352,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2130 == var1.serverPacket) {
 					var16 = var3.readUnsignedByte();
-					SequenceDefinition.method4744(var16);
+					SequenceDefinition.method4756(var16);
 					var1.serverPacket = null;
 					return false;
 				}
@@ -4382,7 +4385,7 @@ public final class Client extends GameShell implements Usernamed {
 						Varps.clanChat.readUpdate(var3);
 					}
 
-					class185.method3587();
+					class185.method3593();
 					var1.serverPacket = null;
 					return true;
 				}
@@ -4434,7 +4437,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2152 == var1.serverPacket) {
-					var16 = var3.method5465();
+					var16 = var3.method5480();
 					WorldMapAreaData.method717(var16);
 					field820[++field825 - 1 & 31] = var16 & 32767;
 					var1.serverPacket = null;
@@ -4442,7 +4445,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2183 == var1.serverPacket) {
-					var16 = var3.method5465();
+					var16 = var3.method5480();
 					rootInterface = var16;
 					this.resizeRoot(false);
 					WorldMapManager.Widget_resetModelFrames(var16);
@@ -4486,7 +4489,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2098 == var1.serverPacket) {
 					byte[] var38 = new byte[var1.serverPacketLength];
-					var3.method5385(var38, 0, var38.length);
+					var3.method5400(var38, 0, var38.length);
 					Buffer var59 = new Buffer(var38);
 					var51 = var59.readStringCp1252NullTerminated();
 					ArchiveDiskActionHandler.openURL(var51, true, false);
@@ -4496,7 +4499,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2132 == var1.serverPacket) {
 					var45 = var3.readUnsignedByte() == 1;
-					var5 = var3.method5467();
+					var5 = var3.method5482();
 					var18 = Canvas.getWidget(var5);
 					if (var45 != var18.isHidden) {
 						var18.isHidden = var45;
@@ -4541,15 +4544,15 @@ public final class Client extends GameShell implements Usernamed {
 						WorldMapSectionType.invalidateWidget(var18);
 					}
 
-					class325.method6167();
+					class325.method6190();
 					field820[++field825 - 1 & 31] = var5 & 32767;
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2158 == var1.serverPacket) {
-					var16 = var3.method5546();
-					var5 = var3.method5465();
+					var16 = var3.method5561();
+					var5 = var3.method5480();
 					var18 = Canvas.getWidget(var16);
 					if (var18.modelType != 1 || var5 != var18.modelId) {
 						var18.modelType = 1;
@@ -4563,7 +4566,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2135 == var1.serverPacket) {
 					var16 = var3.readUnsignedShort();
-					var5 = var3.method5467();
+					var5 = var3.method5482();
 					var6 = var16 >> 10 & 31;
 					var7 = var16 >> 5 & 31;
 					var8 = var16 & 31;
@@ -4580,8 +4583,8 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2102 == var1.serverPacket) {
 					var16 = var3.readUnsignedShort();
-					var5 = var3.method5465();
-					var6 = var3.method5632();
+					var5 = var3.method5480();
+					var6 = var3.method5647();
 					var7 = var3.readInt();
 					var20 = Canvas.getWidget(var7);
 					if (var5 != var20.modelAngleX || var6 != var20.modelAngleY || var16 != var20.modelZoom) {
@@ -4596,17 +4599,17 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2101 == var1.serverPacket) {
-					tradeChatMode = var3.method5496();
-					publicChatMode = var3.method5455();
+					tradeChatMode = var3.method5511();
+					publicChatMode = var3.method5470();
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2140 == var1.serverPacket) {
-					class325.method6167();
-					var16 = var3.method5546();
-					var5 = var3.method5455();
-					var6 = var3.method5496();
+					class325.method6190();
+					var16 = var3.method5561();
+					var5 = var3.method5470();
+					var6 = var3.method5511();
 					experience[var5] = var16;
 					currentLevels[var5] = var6;
 					levels[var5] = 1;
@@ -4629,9 +4632,9 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2107 == var1.serverPacket) {
-					var16 = var3.method5465();
-					var5 = var3.method5477();
-					var6 = var3.method5632();
+					var16 = var3.method5480();
+					var5 = var3.method5492();
+					var6 = var3.method5647();
 					var46 = Canvas.getWidget(var5);
 					var46.field2601 = var16 + (var6 << 16);
 					var1.serverPacket = null;
@@ -4660,13 +4663,13 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2163 == var1.serverPacket) {
 					isCameraLocked = true;
-					GameShell.field455 = var3.readUnsignedByte() * 16384;
+					GameShell.field455 = var3.readUnsignedByte() * 128;
 					SecureRandomFuture.field1228 = var3.readUnsignedByte() * 128;
 					class14.field90 = var3.readUnsignedShort();
 					class80.field1126 = var3.readUnsignedByte();
 					ScriptEvent.field570 = var3.readUnsignedByte();
 					if (ScriptEvent.field570 >= 100) {
-						var16 = GameShell.field455 * 128 + 64;
+						var16 = GameShell.field455 * 16384 + 64;
 						var5 = SecureRandomFuture.field1228 * 16384 + 64;
 						var6 = MusicPatchPcmStream.getTileHeight(var16, var5, WorldMapRectangle.plane) - class14.field90;
 						var7 = var16 - GrandExchangeOfferOwnWorldComparator.cameraX;
@@ -4731,21 +4734,21 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2117 == var1.serverPacket) {
-					var16 = var3.method5465();
+					var16 = var3.method5480();
 					byte var40 = var3.readByte();
 					Varps.Varps_temp[var16] = var40;
 					if (Varps.Varps_main[var16] != var40) {
 						Varps.Varps_main[var16] = var40;
 					}
 
-					NetSocket.method3468(var16);
+					NetSocket.method3472(var16);
 					field782[++field823 - 1 & 31] = var16;
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2182 == var1.serverPacket) {
-					class325.method6167();
+					class325.method6190();
 					runEnergy = var3.readUnsignedByte();
 					field833 = cycleCntr;
 					var1.serverPacket = null;
@@ -4753,7 +4756,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2176 == var1.serverPacket) {
-					var16 = var3.method5467();
+					var16 = var3.method5482();
 					var55 = Canvas.getWidget(var16);
 					var55.modelType = 3;
 					var55.modelId = class223.localPlayer.appearance.getChatHeadId();
@@ -4763,8 +4766,8 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2160 == var1.serverPacket) {
-					WorldMapSection2.field195 = var3.method5496();
-					class40.field326 = var3.method5456();
+					WorldMapSection2.field195 = var3.method5511();
+					class40.field326 = var3.method5471();
 
 					for (var16 = class40.field326; var16 < class40.field326 + 8; ++var16) {
 						for (var5 = WorldMapSection2.field195; var5 < WorldMapSection2.field195 + 8; ++var5) {
@@ -4795,7 +4798,7 @@ public final class Client extends GameShell implements Usernamed {
 					for (var16 = 0; var16 < Varps.Varps_main.length; ++var16) {
 						if (Varps.Varps_temp[var16] != Varps.Varps_main[var16]) {
 							Varps.Varps_main[var16] = Varps.Varps_temp[var16];
-							NetSocket.method3468(var16);
+							NetSocket.method3472(var16);
 							field782[++field823 - 1 & 31] = var16;
 						}
 					}
@@ -4825,7 +4828,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2127 == var1.serverPacket) {
-					var16 = var3.method5467();
+					var16 = var3.method5482();
 					var31 = var3.readStringCp1252NullTerminated();
 					var18 = Canvas.getWidget(var16);
 					if (!var31.equals(var18.text)) {
@@ -4849,12 +4852,12 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2178 == var1.serverPacket) {
-					var16 = var3.method5632();
+					var16 = var3.method5647();
 					if (var16 == 65535) {
 						var16 = -1;
 					}
 
-					var5 = var3.method5473();
+					var5 = var3.method5488();
 					ClientPacket.playSoundJingle(var16, var5);
 					var1.serverPacket = null;
 					return true;
@@ -4875,7 +4878,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 					}
 
-					class325.method6167();
+					class325.method6190();
 					field823 += 32;
 					var1.serverPacket = null;
 					return true;
@@ -4946,14 +4949,14 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2179 == var1.serverPacket) {
 					var36 = var3.readStringCp1252NullTerminated();
-					var31 = AbstractFont.escapeBrackets(NetSocket.method3467(class65.method1250(var3)));
+					var31 = AbstractFont.escapeBrackets(NetSocket.method3471(class65.method1250(var3)));
 					class210.addGameMessage(6, var36, var31);
 					var1.serverPacket = null;
 					return true;
 				}
 
 				if (ServerPacket.field2111 == var1.serverPacket) {
-					DynamicObject.method2219();
+					DynamicObject.method2223();
 					var1.serverPacket = null;
 					return false;
 				}
@@ -4969,7 +4972,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2113 == var1.serverPacket) {
 					WorldMapManager.updatePlayers(var3, var1.serverPacketLength);
-					Archive.method4238();
+					Archive.method4250();
 					var1.serverPacket = null;
 					return true;
 				}
@@ -4990,7 +4993,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2110 == var1.serverPacket) {
-					class40.field326 = var3.method5456();
+					class40.field326 = var3.method5471();
 					WorldMapSection2.field195 = var3.readUnsignedByte();
 
 					while (var3.offset < var1.serverPacketLength) {
@@ -5036,7 +5039,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2112 == var1.serverPacket) {
-					class219.privateChatMode = Fonts.method5258(var3.readUnsignedByte());
+					class219.privateChatMode = Fonts.method5273(var3.readUnsignedByte());
 					var1.serverPacket = null;
 					return true;
 				}
@@ -5056,8 +5059,8 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2119 == var1.serverPacket) {
-					var16 = var3.method5467();
-					var5 = var3.method5632();
+					var16 = var3.method5482();
+					var5 = var3.method5647();
 					var18 = Canvas.getWidget(var16);
 					if (var18 != null && var18.type == 0) {
 						if (var5 > var18.scrollHeight - var18.height) {
@@ -5079,7 +5082,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				class32.RunException_sendStackTrace("" + (var1.serverPacket != null ? var1.serverPacket.id : -1) + "," + (var1.field1291 != null ? var1.field1291.id : -1) + "," + (var1.field1301 != null ? var1.field1301.id : -1) + "," + var1.serverPacketLength, (Throwable)null);
-				DynamicObject.method2219();
+				DynamicObject.method2223();
 			} catch (IOException var34) {
 				MouseRecorder.method1213();
 			} catch (Exception var35) {
@@ -5090,7 +5093,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				class32.RunException_sendStackTrace(var31, var35);
-				DynamicObject.method2219();
+				DynamicObject.method2223();
 			}
 
 			return true;
@@ -5182,7 +5185,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (var7 != -1) {
-							ModelData0.method3210(var7);
+							ModelData0.method3214(var7);
 						}
 
 						isMenuOpen = false;
@@ -5205,7 +5208,7 @@ public final class Client extends GameShell implements Usernamed {
 							var14 = menuArguments1[var2];
 							var5 = menuArguments2[var2];
 							Widget var15 = Canvas.getWidget(var5);
-							if (ModelData0.method3211(class2.getWidgetClickMask(var15)) || WorldMapSection0.method249(class2.getWidgetClickMask(var15))) {
+							if (ModelData0.method3215(class2.getWidgetClickMask(var15)) || WorldMapSection0.method249(class2.getWidgetClickMask(var15))) {
 								if (Frames.dragInventoryWidget != null && !field748 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
 									class3.method47(field745, field746);
 								}
@@ -5221,7 +5224,7 @@ public final class Client extends GameShell implements Usernamed {
 								field745 = MouseHandler.MouseHandler_lastPressedX;
 								field746 = MouseHandler.MouseHandler_lastPressedY;
 								if (var2 >= 0) {
-									ChatChannel.method2225(var2);
+									ChatChannel.method2229(var2);
 								}
 
 								WorldMapSectionType.invalidateWidget(Frames.dragInventoryWidget);
@@ -5235,7 +5238,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					if ((var16 == 1 || !WorldMapIcon_1.mouseCam && var16 == 4) && menuOptionsCount > 0) {
-						ModelData0.method3210(var2);
+						ModelData0.method3214(var2);
 					}
 
 					if (var16 == 2 && menuOptionsCount > 0) {
@@ -5255,7 +5258,7 @@ public final class Client extends GameShell implements Usernamed {
 	@Export("shouldLeftClickOpenMenu")
 	final boolean shouldLeftClickOpenMenu() {
 		int var1 = BuddyRankComparator.getNewestMenuIdx();
-		return (leftClickOpensMenu == 1 && menuOptionsCount > 2 || ParamDefinition.method4468(var1)) && !menuShiftClick[var1];
+		return (leftClickOpensMenu == 1 && menuOptionsCount > 2 || ParamDefinition.method4480(var1)) && !menuShiftClick[var1];
 	}
 
 	@ObfuscatedName("ho")
@@ -5307,7 +5310,7 @@ public final class Client extends GameShell implements Usernamed {
 		signature = "(I)V",
 		garbageValue = "-808375331"
 	)
-	final void method1327() {
+	final void method1328() {
 		WorldMapSectionType.invalidateWidget(clickedWidget);
 		++ViewportMouse.widgetDragDuration;
 		if (field817 && field814) {
@@ -5366,8 +5369,8 @@ public final class Client extends GameShell implements Usernamed {
 						PacketBufferNode var9 = InterfaceParent.getPacketBufferNode(ClientPacket.field2278, packetWriter.isaacCipher);
 						var9.packetBuffer.writeShortLE(draggedOnWidget.childIndex);
 						var9.packetBuffer.writeShortLE(draggedOnWidget.itemId);
-						var9.packetBuffer.method5461(clickedWidget.childIndex);
-						var9.packetBuffer.method5615(draggedOnWidget.id);
+						var9.packetBuffer.method5476(clickedWidget.childIndex);
+						var9.packetBuffer.method5630(draggedOnWidget.id);
 						var9.packetBuffer.writeIntME(clickedWidget.itemId);
 						var9.packetBuffer.writeInt(clickedWidget.id);
 						packetWriter.addNode(var9);
@@ -5404,7 +5407,7 @@ public final class Client extends GameShell implements Usernamed {
 		signature = "(I)V",
 		garbageValue = "431297908"
 	)
-	public static void method1565() {
+	public static void method1566() {
 		if (MouseHandler.MouseHandler_instance != null) {
 			synchronized(MouseHandler.MouseHandler_instance) {
 				MouseHandler.MouseHandler_instance = null;
@@ -5414,7 +5417,7 @@ public final class Client extends GameShell implements Usernamed {
 	}
 
 	@ObfuscatedName("q")
-	static int method1707(long var0) {
+	static int method1708(long var0) {
 		return (int)(var0 >>> 14 & 3L);
 	}
 
@@ -5423,7 +5426,7 @@ public final class Client extends GameShell implements Usernamed {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-1109826367"
 	)
-	static int method1746(int var0, Script var1, boolean var2) {
+	static int method1750(int var0, Script var1, boolean var2) {
 		Widget var3 = Canvas.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
 		if (var0 == ScriptOpcodes.IF_GETSCROLLX) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollX;
@@ -5473,79 +5476,5 @@ public final class Client extends GameShell implements Usernamed {
 		} else {
 			return 2;
 		}
-	}
-
-	static void aaf() {
-		if (field879 && class223.localPlayer != null) {
-			int var0 = class223.localPlayer.pathX[0];
-			int var1 = class223.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
-				return;
-			}
-
-			ObjectSound.oculusOrbFocalPointX = class223.localPlayer.x;
-			int var2 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x * 1389855768, class223.localPlayer.y * -1163478977, WorldMapRectangle.plane) - camFollowHeight * 341280813;
-			if (var2 < ModelData0.field1840 * -1351160427) {
-				ModelData0.field1840 = var2 * 376443893;
-			}
-
-			class14.oculusOrbFocalPointY = class223.localPlayer.y * 682054857;
-			field879 = false;
-		}
-
-	}
-
-	static void aaw() {
-		if (field879 && class223.localPlayer != null) {
-			int var0 = class223.localPlayer.pathX[0];
-			int var1 = class223.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
-				return;
-			}
-
-			ObjectSound.oculusOrbFocalPointX = class223.localPlayer.x;
-			int var2 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x, class223.localPlayer.y * 682054857, WorldMapRectangle.plane) - camFollowHeight * -844153885;
-			if (var2 < ModelData0.field1840 * -1351160427) {
-				ModelData0.field1840 = var2 * -506989123;
-			}
-
-			class14.oculusOrbFocalPointY = class223.localPlayer.y * 682054857;
-			field879 = false;
-		}
-
-	}
-
-	static void aac() {
-		if (field879 && class223.localPlayer != null) {
-			int var0 = class223.localPlayer.pathX[0];
-			int var1 = class223.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 638955859 || var1 >= 104) {
-				return;
-			}
-
-			ObjectSound.oculusOrbFocalPointX = class223.localPlayer.x;
-			int var2 = MusicPatchPcmStream.getTileHeight(class223.localPlayer.x * -646834471, class223.localPlayer.y * 1282427502, WorldMapRectangle.plane * -75268835) - camFollowHeight * -844153885;
-			if (var2 < ModelData0.field1840 * -1351160427) {
-				ModelData0.field1840 = var2 * -506989123;
-			}
-
-			class14.oculusOrbFocalPointY = class223.localPlayer.y * 471723272;
-			field879 = false;
-		}
-
-	}
-
-	static void aad() {
-		if (StudioGame.field3086 != null) {
-			field905 = cycle;
-			StudioGame.field3086.method4288();
-
-			for (int var0 = 0; var0 < players.length; ++var0) {
-				if (players[var0] != null) {
-					StudioGame.field3086.method4289(class223.baseX * 64 + (players[var0].x * 152504076 >> 7), class286.baseY * 64 + (players[var0].y * 682054857 >> 7));
-				}
-			}
-		}
-
 	}
 }

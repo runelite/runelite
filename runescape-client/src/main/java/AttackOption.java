@@ -77,7 +77,7 @@ public enum AttackOption implements Enumerated {
 		signature = "(I)Ljava/security/SecureRandom;",
 		garbageValue = "639446581"
 	)
-	static SecureRandom method2077() {
+	static SecureRandom method2081() {
 		SecureRandom var0 = new SecureRandom();
 		var0.nextInt();
 		return var0;
@@ -101,7 +101,7 @@ public enum AttackOption implements Enumerated {
 		var2.pathX[0] = var5 - class223.baseX * 64;
 		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
 		var2.pathY[0] = var6 - class286.baseY * 64;
-		var2.y = ((var2.pathY[0] << 7) + (var2.transformedSize() << 6)) * -944175751;
+		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
 		WorldMapRectangle.plane = var2.plane = var4;
 		if (Players.field1236[var1] != null) {
 			var2.read(Players.field1236[var1]);

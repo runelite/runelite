@@ -140,7 +140,7 @@ public class NPCDefinition extends DualNode {
 	int ambient;
 	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -1216133169
+		intValue = -1785698549
 	)
 	@Export("contrast")
 	int contrast;
@@ -321,7 +321,7 @@ public class NPCDefinition extends DualNode {
 		} else if (var2 == 100) {
 			this.ambient = var1.readByte();
 		} else if (var2 == 101) {
-			this.contrast = var1.readByte();
+			this.contrast = var1.readByte() * 5;
 		} else if (var2 == 102) {
 			this.headIconPrayer = var1.readUnsignedShort();
 		} else if (var2 == 103) {
@@ -421,7 +421,7 @@ public class NPCDefinition extends DualNode {
 					}
 				}
 
-				var5 = var11.toModel(this.ambient + 64, this.contrast * 5 + 850, -30, -50, -30);
+				var5 = var11.toModel(this.ambient + 64, this.contrast + 850, -30, -50, -30);
 				NpcDefinition_cachedModels.put(var5, (long)this.id);
 			}
 
@@ -555,7 +555,7 @@ public class NPCDefinition extends DualNode {
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
-		return HealthBar.method2030(this.params, var1, var2);
+		return HealthBar.method2034(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("i")
@@ -565,7 +565,7 @@ public class NPCDefinition extends DualNode {
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		return class96.method2259(this.params, var1, var2);
+		return class96.method2263(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("v")
@@ -575,7 +575,7 @@ public class NPCDefinition extends DualNode {
 	)
 	@Export("SpriteBuffer_getSprite")
 	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
-		return !VertexNormal.method2958(var0, var1, var2) ? null : FillMode.method6007();
+		return !VertexNormal.method2962(var0, var1, var2) ? null : FillMode.method6030();
 	}
 
 	@ObfuscatedName("gr")
@@ -583,7 +583,7 @@ public class NPCDefinition extends DualNode {
 		signature = "(IIIIIIII)V",
 		garbageValue = "474931921"
 	)
-	static final void method4665(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+	static final void method4677(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
 		int var8 = var6 - 334;
 		if (var8 < 0) {
 			var8 = 0;
@@ -622,11 +622,11 @@ public class NPCDefinition extends DualNode {
 		WorldMapIcon_1.cameraZ = var2 - var12;
 		IgnoreList.cameraPitch = var3;
 		WorldMapSection2.cameraYaw = var4;
-		if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (ObjectSound.oculusOrbFocalPointX >> 7 != class223.localPlayer.x >> 7 || class14.oculusOrbFocalPointY >> 7 != class223.localPlayer.y * 682054857 >> 7)) {
+		if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (ObjectSound.oculusOrbFocalPointX >> 7 != class223.localPlayer.x >> 7 || class14.oculusOrbFocalPointY >> 7 != class223.localPlayer.y >> 7)) {
 			var13 = class223.localPlayer.plane;
 			var14 = class223.baseX * 64 + (ObjectSound.oculusOrbFocalPointX >> 7);
 			var15 = class286.baseY * 64 + (class14.oculusOrbFocalPointY >> 7);
-			class287.method5205(var14, var15, var13, true);
+			class287.method5220(var14, var15, var13, true);
 		}
 
 	}

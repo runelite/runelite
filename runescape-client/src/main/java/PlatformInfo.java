@@ -179,13 +179,13 @@ public class PlatformInfo extends Node {
 	@Export("size")
 	public int size() {
 		byte var1 = 39;
-		int var2 = var1 + UserComparator5.method3383(this.field3924);
-		var2 += UserComparator5.method3383(this.field3925);
-		var2 += UserComparator5.method3383(this.field3934);
-		var2 += UserComparator5.method3383(this.field3932);
-		var2 += UserComparator5.method3383(this.field3927);
-		var2 += UserComparator5.method3383(this.field3906);
-		var2 += UserComparator5.method3383(this.field3936);
+		int var2 = var1 + UserComparator5.method3387(this.field3924);
+		var2 += UserComparator5.method3387(this.field3925);
+		var2 += UserComparator5.method3387(this.field3934);
+		var2 += UserComparator5.method3387(this.field3932);
+		var2 += UserComparator5.method3387(this.field3927);
+		var2 += UserComparator5.method3387(this.field3906);
+		var2 += UserComparator5.method3387(this.field3936);
 		return var2;
 	}
 }

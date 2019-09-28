@@ -132,7 +132,7 @@ public class UrlRequester implements Runnable {
 		signature = "(CI)C",
 		garbageValue = "1748894504"
 	)
-	static char method3256(char var0) {
+	static char method3260(char var0) {
 		return var0 != 181 && var0 != 402 ? Character.toTitleCase(var0) : var0;
 	}
 }

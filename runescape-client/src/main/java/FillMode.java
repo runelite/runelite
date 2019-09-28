@@ -57,7 +57,7 @@ public enum FillMode implements Enumerated {
 		signature = "(I)Llf;",
 		garbageValue = "1508787563"
 	)
-	static Sprite method6007() {
+	static Sprite method6030() {
 		Sprite var0 = new Sprite();
 		var0.width = class325.SpriteBuffer_spriteWidth;
 		var0.height = Frames.SpriteBuffer_spriteHeight;

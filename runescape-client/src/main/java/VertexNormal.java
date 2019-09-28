@@ -55,7 +55,7 @@ public class VertexNormal {
 		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
 		garbageValue = "-1499927610"
 	)
-	public static String method2957(CharSequence var0) {
+	public static String method2961(CharSequence var0) {
 		long var3 = 0L;
 		int var5 = var0.length();
 
@@ -92,7 +92,7 @@ public class VertexNormal {
 		signature = "(I)V",
 		garbageValue = "-1992175982"
 	)
-	public static void method2956() {
+	public static void method2960() {
 		class49.midiPcmStream.clear();
 		class197.field2386 = 1;
 		class197.musicTrackArchive = null;
@@ -103,7 +103,7 @@ public class VertexNormal {
 		signature = "(B)V",
 		garbageValue = "11"
 	)
-	public static void method2955() {
+	public static void method2959() {
 		synchronized(MouseHandler.MouseHandler_instance) {
 			MouseHandler.MouseHandler_currentButton = MouseHandler.MouseHandler_currentButtonVolatile;
 			MouseHandler.MouseHandler_x = MouseHandler.MouseHandler_xVolatile;
@@ -122,7 +122,7 @@ public class VertexNormal {
 		signature = "(Lhp;IIS)Z",
 		garbageValue = "18259"
 	)
-	static boolean method2958(AbstractArchive var0, int var1, int var2) {
+	static boolean method2962(AbstractArchive var0, int var1, int var2) {
 		byte[] var3 = var0.takeFile(var1, var2);
 		if (var3 == null) {
 			return false;

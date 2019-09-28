@@ -31,7 +31,7 @@ public class class216 {
 		signature = "(Lho;IB)I",
 		garbageValue = "25"
 	)
-	static final int method4003(Widget var0, int var1) {
+	static final int method4015(Widget var0, int var1) {
 		if (var0.cs1Instructions != null && var1 < var0.cs1Instructions.length) {
 			try {
 				int[] var2 = var0.cs1Instructions[var1];
@@ -152,7 +152,7 @@ public class class216 {
 					}
 
 					if (var6 == 19) {
-						var7 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
+						var7 = class286.baseY * 64 + (class223.localPlayer.y >> 7);
 					}
 
 					if (var6 == 20) {

@@ -89,7 +89,7 @@ public class ViewportMouse {
 		signature = "(IIIIB)V",
 		garbageValue = "13"
 	)
-	static final void method2950(int var0, int var1, int var2, int var3) {
+	static final void method2954(int var0, int var1, int var2, int var3) {
 		Client.overheadTextCount = 0;
 		boolean var4 = false;
 		int var5 = -1;

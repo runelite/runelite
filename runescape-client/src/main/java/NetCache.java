@@ -139,7 +139,7 @@ public class NetCache {
 		signature = "(IIS)Z",
 		garbageValue = "20573"
 	)
-	static boolean method4284(int var0, int var1) {
+	static boolean method4296(int var0, int var1) {
 		return var0 != 4 || var1 < 8;
 	}
 
@@ -163,7 +163,7 @@ public class NetCache {
 		signature = "(IB)V",
 		garbageValue = "-101"
 	)
-	static void method4267(int var0) {
+	static void method4279(int var0) {
 		Client.oculusOrbState = var0;
 	}
 }

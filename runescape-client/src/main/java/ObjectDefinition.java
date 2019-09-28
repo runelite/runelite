@@ -107,7 +107,7 @@ public class ObjectDefinition extends DualNode {
 	public int int1;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 1385916293
+		intValue = -1687714560
 	)
 	@Export("clipType")
 	int clipType;
@@ -137,7 +137,7 @@ public class ObjectDefinition extends DualNode {
 	int ambient;
 	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -1558537711
+		intValue = -308737111
 	)
 	@Export("contrast")
 	int contrast;
@@ -275,7 +275,7 @@ public class ObjectDefinition extends DualNode {
 		this.interactType = 2;
 		this.boolean1 = true;
 		this.int1 = -1;
-		this.clipType = -1;
+		this.clipType = -256;
 		this.nonFlatShading = false;
 		this.modelClipped = false;
 		this.animationId = -1;
@@ -416,7 +416,7 @@ public class ObjectDefinition extends DualNode {
 		} else if (var2 == 29) {
 			this.ambient = var1.readByte();
 		} else if (var2 == 39) {
-			this.contrast = var1.readByte();
+			this.contrast = var1.readByte() * 25;
 		} else if (var2 >= 30 && var2 < 35) {
 			this.actions[var2 - 30] = var1.readStringCp1252NullTerminated();
 			if (this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -481,7 +481,7 @@ public class ObjectDefinition extends DualNode {
 					this.soundEffectIds[var4] = var1.readUnsignedShort();
 				}
 			} else if (var2 == 81) {
-				this.clipType = var1.readUnsignedByte() * 256;
+				this.clipType = var1.readUnsignedByte() * 65536;
 			} else if (var2 == 82) {
 				this.mapIconId = var1.readUnsignedShort();
 			} else if (var2 == 249) {
@@ -526,7 +526,7 @@ public class ObjectDefinition extends DualNode {
 		signature = "(II)Z",
 		garbageValue = "1830976839"
 	)
-	public final boolean method4555(int var1) {
+	public final boolean method4567(int var1) {
 		if (this.models != null) {
 			for (int var4 = 0; var4 < this.models.length; ++var4) {
 				if (this.models[var4] == var1) {
@@ -592,10 +592,10 @@ public class ObjectDefinition extends DualNode {
 			}
 
 			if (!this.nonFlatShading) {
-				var9 = var10.toModel(this.ambient + 64, this.contrast * 25 + 768, -50, -10, -50);
+				var9 = var10.toModel(this.ambient + 64, this.contrast + 768, -50, -10, -50);
 			} else {
 				var10.ambient = (short)(this.ambient + 64);
-				var10.contrast = (short)(this.contrast * 25 + 768);
+				var10.contrast = (short)(this.contrast + 768);
 				var10.calculateVertexNormals();
 				var9 = var10;
 			}
@@ -604,14 +604,14 @@ public class ObjectDefinition extends DualNode {
 		}
 
 		if (this.nonFlatShading) {
-			var9 = ((ModelData)var9).method2760();
+			var9 = ((ModelData)var9).method2764();
 		}
 
-		if (this.clipType * 65536 >= 0) {
+		if (this.clipType * 256 >= 0) {
 			if (var9 instanceof Model) {
-				var9 = ((Model)var9).contourGround(var3, var4, var5, var6, true, this.clipType * 65536);
+				var9 = ((Model)var9).contourGround(var3, var4, var5, var6, true, this.clipType * 256);
 			} else if (var9 instanceof ModelData) {
-				var9 = ((ModelData)var9).method2761(var3, var4, var5, var6, true, this.clipType * 65536);
+				var9 = ((ModelData)var9).method2765(var3, var4, var5, var6, true, this.clipType * 256);
 			}
 		}
 
@@ -639,12 +639,12 @@ public class ObjectDefinition extends DualNode {
 				return null;
 			}
 
-			var9 = var10.toModel(this.ambient + 64, this.contrast * 25 + 768, -50, -10, -50);
+			var9 = var10.toModel(this.ambient + 64, this.contrast + 768, -50, -10, -50);
 			ObjectDefinition_cachedModels.put(var9, var7);
 		}
 
-		if (this.clipType * 65536 >= 0) {
-			var9 = var9.contourGround(var3, var4, var5, var6, true, this.clipType * 65536);
+		if (this.clipType * 256 >= 0) {
+			var9 = var9.contourGround(var3, var4, var5, var6, true, this.clipType * 256);
 		}
 
 		return var9;
@@ -671,11 +671,11 @@ public class ObjectDefinition extends DualNode {
 				return null;
 			}
 
-			var11 = var12.toModel(this.ambient + 64, this.contrast * 25 + 768, -50, -10, -50);
+			var11 = var12.toModel(this.ambient + 64, this.contrast + 768, -50, -10, -50);
 			ObjectDefinition_cachedModels.put(var11, var9);
 		}
 
-		if (var7 == null && this.clipType * 65536 == -1) {
+		if (var7 == null && this.clipType * 256 == -1) {
 			return var11;
 		} else {
 			if (var7 != null) {
@@ -684,8 +684,8 @@ public class ObjectDefinition extends DualNode {
 				var11 = var11.toSharedSequenceModel(true);
 			}
 
-			if (this.clipType * 65536 >= 0) {
-				var11 = var11.contourGround(var3, var4, var5, var6, false, this.clipType * 65536);
+			if (this.clipType * 256 >= 0) {
+				var11 = var11.contourGround(var3, var4, var5, var6, false, this.clipType * 256);
 			}
 
 			return var11;
@@ -733,7 +733,7 @@ public class ObjectDefinition extends DualNode {
 					}
 
 					if (var4) {
-						var3.method2770();
+						var3.method2774();
 					}
 
 					ObjectDefinition_cachedModelData.put(var3, (long)var7);
@@ -775,7 +775,7 @@ public class ObjectDefinition extends DualNode {
 				}
 
 				if (var10) {
-					var3.method2770();
+					var3.method2774();
 				}
 
 				ObjectDefinition_cachedModelData.put(var3, (long)var5);
@@ -797,17 +797,17 @@ public class ObjectDefinition extends DualNode {
 
 		ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, this.recolorFrom == null, null == this.retextureFrom, true);
 		if (var1 == 4 && var2 > 3) {
-			var8.method2763(256);
+			var8.method2767(256);
 			var8.changeOffset(45, 0, -45);
 		}
 
 		var2 &= 3;
 		if (var2 == 1) {
-			var8.method2831();
+			var8.method2835();
 		} else if (var2 == 2) {
-			var8.method2757();
+			var8.method2761();
 		} else if (var2 == 3) {
-			var8.method2796();
+			var8.method2800();
 		}
 
 		if (this.recolorFrom != null) {
@@ -864,7 +864,7 @@ public class ObjectDefinition extends DualNode {
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
-		return HealthBar.method2030(this.params, var1, var2);
+		return HealthBar.method2034(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("o")
@@ -874,7 +874,7 @@ public class ObjectDefinition extends DualNode {
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		return class96.method2259(this.params, var1, var2);
+		return class96.method2263(this.params, var1, var2);
 	}
 
 	@ObfuscatedName("a")

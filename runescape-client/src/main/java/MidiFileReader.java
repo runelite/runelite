@@ -150,7 +150,7 @@ public class MidiFileReader {
 		}
 
 		if (var5 != 240 && var5 != 247) {
-			return this.method3803(var1, var5);
+			return this.method3812(var1, var5);
 		} else {
 			int var3 = this.buffer.readVarInt();
 			if (var5 == 247 && var3 > 0) {
@@ -158,7 +158,7 @@ public class MidiFileReader {
 				if (var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
 					++this.buffer.offset;
 					this.field2453[var1] = var4;
-					return this.method3803(var1, var4);
+					return this.method3812(var1, var4);
 				}
 			}
 
@@ -169,7 +169,7 @@ public class MidiFileReader {
 	}
 
 	@ObfuscatedName("c")
-	int method3803(int var1, int var2) {
+	int method3812(int var1, int var2) {
 		int var4;
 		if (var2 == 255) {
 			int var7 = this.buffer.readUnsignedByte();
@@ -209,7 +209,7 @@ public class MidiFileReader {
 	}
 
 	@ObfuscatedName("b")
-	long method3804(int var1) {
+	long method3813(int var1) {
 		return this.field2450 + (long)var1 * (long)this.field2442;
 	}
 

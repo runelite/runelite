@@ -116,7 +116,7 @@ public enum class312 implements Enumerated {
 			int var16;
 			int var22;
 			int var23;
-			if (!var0.healthBars.method4763()) {
+			if (!var0.healthBars.method4775()) {
 				World.getActorScreenLocation(var0, var0.defaultHeight + 15);
 
 				for (HealthBar var89 = (HealthBar)var0.healthBars.last(); var89 != null; var89 = (HealthBar)var0.healthBars.previous()) {
@@ -379,7 +379,7 @@ public enum class312 implements Enumerated {
 							int var40 = 0;
 							int var41 = 0;
 							int var42 = 0;
-							Sprite var97 = var93.method4508();
+							Sprite var97 = var93.method4520();
 							int var43;
 							if (var97 != null) {
 								var22 = var97.subWidth;
@@ -391,7 +391,7 @@ public enum class312 implements Enumerated {
 								var26 = var97.xOffset;
 							}
 
-							var98 = var93.method4505();
+							var98 = var93.method4517();
 							if (var98 != null) {
 								var23 = var98.subWidth;
 								var43 = var98.subHeight;
@@ -402,7 +402,7 @@ public enum class312 implements Enumerated {
 								var27 = var98.xOffset;
 							}
 
-							var86 = var93.method4506();
+							var86 = var93.method4518();
 							if (var86 != null) {
 								var24 = var86.subWidth;
 								var43 = var86.subHeight;
@@ -413,7 +413,7 @@ public enum class312 implements Enumerated {
 								var28 = var86.xOffset;
 							}
 
-							var87 = var93.method4530();
+							var87 = var93.method4542();
 							if (var87 != null) {
 								var25 = var87.subWidth;
 								var43 = var87.subHeight;
@@ -425,7 +425,7 @@ public enum class312 implements Enumerated {
 							}
 
 							if (var84 != null) {
-								var30 = var84.method4508();
+								var30 = var84.method4520();
 								if (var30 != null) {
 									var34 = var30.subWidth;
 									var43 = var30.subHeight;
@@ -436,7 +436,7 @@ public enum class312 implements Enumerated {
 									var38 = var30.xOffset;
 								}
 
-								var31 = var84.method4505();
+								var31 = var84.method4517();
 								if (var31 != null) {
 									var35 = var31.subWidth;
 									var43 = var31.subHeight;
@@ -447,7 +447,7 @@ public enum class312 implements Enumerated {
 									var39 = var31.xOffset;
 								}
 
-								var32 = var84.method4506();
+								var32 = var84.method4518();
 								if (var32 != null) {
 									var36 = var32.subWidth;
 									var43 = var32.subHeight;
@@ -458,7 +458,7 @@ public enum class312 implements Enumerated {
 									var40 = var32.xOffset;
 								}
 
-								var33 = var84.method4530();
+								var33 = var84.method4542();
 								if (var33 != null) {
 									var37 = var33.subWidth;
 									var43 = var33.subHeight;

@@ -115,7 +115,7 @@ public class VorbisFloor {
 	}
 
 	@ObfuscatedName("v")
-	int method2376(int var1, int var2, int var3, int var4, int var5) {
+	int method2380(int var1, int var2, int var3, int var4, int var5) {
 		int var6 = var4 - var2;
 		int var7 = var3 - var1;
 		int var8 = var6 < 0 ? -var6 : var6;
@@ -125,7 +125,7 @@ public class VorbisFloor {
 	}
 
 	@ObfuscatedName("u")
-	void method2380(int var1, int var2, int var3, int var4, float[] var5, int var6) {
+	void method2384(int var1, int var2, int var3, int var4, float[] var5, int var6) {
 		int var7 = var4 - var2;
 		int var8 = var3 - var1;
 		int var9 = var7 < 0 ? -var7 : var7;
@@ -210,13 +210,13 @@ public class VorbisFloor {
 				int var10 = (1 << var9) - 1;
 				int var11 = 0;
 				if (var9 > 0) {
-					var11 = VorbisSample.VorbisSample_codebooks[this.classMasterbooks[var7]].method2313();
+					var11 = VorbisSample.VorbisSample_codebooks[this.classMasterbooks[var7]].method2317();
 				}
 
 				for (int var12 = 0; var12 < var8; ++var12) {
 					int var13 = this.subclassBooks[var7][var11 & var10];
 					var11 >>>= var9;
-					field1380[var5++] = var13 >= 0 ? VorbisSample.VorbisSample_codebooks[var13].method2313() : 0;
+					field1380[var5++] = var13 >= 0 ? VorbisSample.VorbisSample_codebooks[var13].method2317() : 0;
 				}
 			}
 
@@ -225,7 +225,7 @@ public class VorbisFloor {
 	}
 
 	@ObfuscatedName("q")
-	void method2373(float[] var1, int var2) {
+	void method2377(float[] var1, int var2) {
 		int var3 = this.field1376.length;
 		int var4 = field1371[this.multiplier - 1];
 		boolean[] var5 = field1381;
@@ -238,9 +238,9 @@ public class VorbisFloor {
 		int var9;
 		int var10;
 		for (var6 = 2; var6 < var3; ++var6) {
-			var7 = method2379(field1379, var6);
-			var8 = method2367(field1379, var6);
-			var9 = this.method2376(field1379[var7], field1380[var7], field1379[var8], field1380[var8], field1379[var6]);
+			var7 = method2383(field1379, var6);
+			var8 = method2371(field1379, var6);
+			var9 = this.method2380(field1379[var7], field1380[var7], field1379[var8], field1380[var8], field1379[var6]);
 			var10 = field1380[var6];
 			int var11 = var4 - var9;
 			int var13 = (var11 < var9 ? var11 : var9) << 1;
@@ -268,7 +268,7 @@ public class VorbisFloor {
 			if (field1381[var8]) {
 				var9 = field1379[var8];
 				var10 = field1380[var8] * this.multiplier;
-				this.method2380(var6, var7, var9, var10, var1, var2);
+				this.method2384(var6, var7, var9, var10, var1, var2);
 				if (var9 >= var2) {
 					return;
 				}
@@ -287,7 +287,7 @@ public class VorbisFloor {
 	}
 
 	@ObfuscatedName("z")
-	static int method2379(int[] var0, int var1) {
+	static int method2383(int[] var0, int var1) {
 		int var2 = var0[var1];
 		int var3 = -1;
 		int var4 = Integer.MIN_VALUE;
@@ -304,7 +304,7 @@ public class VorbisFloor {
 	}
 
 	@ObfuscatedName("n")
-	static int method2367(int[] var0, int var1) {
+	static int method2371(int[] var0, int var1) {
 		int var2 = var0[var1];
 		int var3 = -1;
 		int var4 = Integer.MAX_VALUE;

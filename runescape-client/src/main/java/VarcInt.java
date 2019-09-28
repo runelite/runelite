@@ -41,14 +41,14 @@ public class VarcInt extends DualNode {
 		signature = "(Lkl;B)V",
 		garbageValue = "32"
 	)
-	public void method4360(Buffer var1) {
+	public void method4372(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4363(var1, var2);
+			this.method4375(var1, var2);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class VarcInt extends DualNode {
 		signature = "(Lkl;II)V",
 		garbageValue = "-773678840"
 	)
-	void method4363(Buffer var1, int var2) {
+	void method4375(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
 		}

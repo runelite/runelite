@@ -158,9 +158,9 @@ public class WorldMapElement extends DualNode {
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 1) {
-			this.sprite1 = var1.method5438();
+			this.sprite1 = var1.method5453();
 		} else if (var2 == 2) {
-			this.sprite2 = var1.method5438();
+			this.sprite2 = var1.method5453();
 		} else if (var2 == 3) {
 			this.name = var1.readStringCp1252NullTerminated();
 		} else if (var2 == 4) {
@@ -209,7 +209,7 @@ public class WorldMapElement extends DualNode {
 				if (var2 == 17) {
 					this.menuTargetName = var1.readStringCp1252NullTerminated();
 				} else if (var2 == 18) {
-					var1.method5438();
+					var1.method5453();
 				} else if (var2 == 19) {
 					this.category = var1.readUnsignedShort();
 				} else if (var2 == 21) {
@@ -224,11 +224,11 @@ public class WorldMapElement extends DualNode {
 					var1.readShort();
 					var1.readShort();
 				} else if (var2 == 25) {
-					var1.method5438();
+					var1.method5453();
 				} else if (var2 == 28) {
 					var1.readUnsignedByte();
 				} else if (var2 == 29) {
-					this.horizontalAlignment = (HorizontalAlignment)NetSocket.findEnumerated(PlayerAppearance.method4000(), var1.readUnsignedByte());
+					this.horizontalAlignment = (HorizontalAlignment)NetSocket.findEnumerated(PlayerAppearance.method4012(), var1.readUnsignedByte());
 				} else if (var2 == 30) {
 					VerticalAlignment[] var6 = new VerticalAlignment[]{VerticalAlignment.field3172, VerticalAlignment.field3170, VerticalAlignment.VerticalAlignment_centered};
 					this.verticalAlignment = (VerticalAlignment)NetSocket.findEnumerated(var6, var1.readUnsignedByte());
@@ -243,7 +243,7 @@ public class WorldMapElement extends DualNode {
 		signature = "(B)V",
 		garbageValue = "9"
 	)
-	public void method4338() {
+	public void method4350() {
 		if (this.field3189 != null) {
 			for (int var1 = 0; var1 < this.field3189.length; var1 += 2) {
 				if (this.field3189[var1] < this.field3200) {
@@ -312,7 +312,7 @@ public class WorldMapElement extends DualNode {
 		signature = "(III)V",
 		garbageValue = "-1979971580"
 	)
-	public static void method4348(int var0, int var1) {
+	public static void method4360(int var0, int var1) {
 		VarbitDefinition var3 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
 		VarbitDefinition var2;
 		if (var3 != null) {

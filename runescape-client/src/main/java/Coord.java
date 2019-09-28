@@ -104,24 +104,12 @@ public class Coord {
 		return this.toString(",");
 	}
 
-	public String aah() {
-		return this.toString(",");
-	}
-
-	public String aae() {
-		return this.toString(",");
-	}
-
-	public String aak() {
-		return this.toString(",");
-	}
-
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)V",
 		garbageValue = "-2118719705"
 	)
-	static void method3964() {
+	static void method3976() {
 		Login.worldSelectOpen = false;
 		WorldMapID.leftTitleSprite.drawAt(Login.xPadding, 0);
 		class51.rightTitleSprite.drawAt(Login.xPadding + 382, 0);

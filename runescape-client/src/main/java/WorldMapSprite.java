@@ -112,7 +112,7 @@ public final class WorldMapSprite {
 				MusicPatchNode2.field2382 = 2;
 			}
 
-			DirectByteArrayCopier.method3915(false);
+			DirectByteArrayCopier.method3924(false);
 			Login.field1160 = true;
 			Login.xPadding = (FloorDecoration.canvasWidth - 765) / 2;
 			Login.loginBoxX = Login.xPadding + 202;

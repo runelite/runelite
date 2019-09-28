@@ -181,7 +181,7 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
 			Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
 			Rasterizer2D.Rasterizer2D_clear();
 			Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
-			Rasterizer3D.method2988(16, 16);
+			Rasterizer3D.method2992(16, 16);
 			Rasterizer3D.field1754 = false;
 			if (var9.placeholderTemplate != -1) {
 				var20.drawTransBgAt(0, 0);
@@ -197,7 +197,7 @@ final class GrandExchangeOfferWorldComparator implements Comparator {
 			int var17 = var16 * Rasterizer3D.Rasterizer3D_sine[var9.xan2d] >> 16;
 			int var18 = var16 * Rasterizer3D.Rasterizer3D_cosine[var9.xan2d] >> 16;
 			var19.calculateBoundsCylinder();
-			var19.method2866(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
+			var19.method2870(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
 			if (var9.notedId != -1) {
 				var20.drawTransBgAt(0, 0);
 			}

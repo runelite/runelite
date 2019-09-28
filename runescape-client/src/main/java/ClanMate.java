@@ -103,7 +103,7 @@ public class ClanMate extends Buddy {
 		signature = "(Lhp;Lhp;III)Lkn;",
 		garbageValue = "-569680121"
 	)
-	public static Font method4964(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
-		return !VertexNormal.method2958(var0, var2, var3) ? null : class49.method893(var1.takeFile(var2, var3));
+	public static Font method4976(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
+		return !VertexNormal.method2962(var0, var2, var3) ? null : class49.method893(var1.takeFile(var2, var3));
 	}
 }

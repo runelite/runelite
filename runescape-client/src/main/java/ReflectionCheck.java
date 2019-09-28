@@ -61,7 +61,7 @@ public class ReflectionCheck extends Node {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-884073904"
 	)
-	static int method2267(int var0, Script var1, boolean var2) {
+	static int method2271(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
 			Interpreter.Interpreter_intStackSize -= 3;
 			Message.queueSoundEffect(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize], Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 2]);

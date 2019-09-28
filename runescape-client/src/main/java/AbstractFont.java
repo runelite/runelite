@@ -193,7 +193,7 @@ public abstract class AbstractFont extends Rasterizer2D {
 				if (var13 != 32 && var13 != 160) {
 					for (var8 = 0; var8 < 256; ++var8) {
 						if (var8 != 32 && var8 != 160) {
-							this.kerning[var8 + (var13 << 8)] = (byte)method5275(var11, var12, var4, this.advances, var10, var13, var8);
+							this.kerning[var8 + (var13 << 8)] = (byte)method5290(var11, var12, var4, this.advances, var10, var13, var8);
 						}
 					}
 				}
@@ -712,11 +712,11 @@ public abstract class AbstractFont extends Rasterizer2D {
 
 						int var13 = this.advances[var7];
 						if (AbstractFont_strike != -1) {
-							Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var13, AbstractFont_strike);
+							Rasterizer2D.method5958(var2, var3 + (int)((double)this.ascent * 0.7D), var13, AbstractFont_strike);
 						}
 
 						if (AbstractFont_underline != -1) {
-							Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent + 1, var13, AbstractFont_underline);
+							Rasterizer2D.method5958(var2, var3 + this.ascent + 1, var13, AbstractFont_underline);
 						}
 
 						var2 += var13;
@@ -830,11 +830,11 @@ public abstract class AbstractFont extends Rasterizer2D {
 
 						int var18 = this.advances[var10];
 						if (AbstractFont_strike != -1) {
-							Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + (int)((double)this.ascent * 0.7D), var18, AbstractFont_strike);
+							Rasterizer2D.method5958(var2, var3 + (int)((double)this.ascent * 0.7D), var18, AbstractFont_strike);
 						}
 
 						if (AbstractFont_underline != -1) {
-							Rasterizer2D.Rasterizer2D_drawHorizontalLine(var2, var3 + this.ascent, var18, AbstractFont_underline);
+							Rasterizer2D.method5958(var2, var3 + this.ascent, var18, AbstractFont_underline);
 						}
 
 						var2 += var18;
@@ -847,7 +847,7 @@ public abstract class AbstractFont extends Rasterizer2D {
 	}
 
 	@ObfuscatedName("i")
-	static int method5275(byte[][] var0, byte[][] var1, int[] var2, int[] var3, int[] var4, int var5, int var6) {
+	static int method5290(byte[][] var0, byte[][] var1, int[] var2, int[] var3, int[] var4, int var5, int var6) {
 		int var7 = var2[var5];
 		int var8 = var7 + var4[var5];
 		int var9 = var2[var6];

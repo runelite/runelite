@@ -39,7 +39,7 @@ public final class class227 {
 					Client.isDraggingWidget = false;
 					int var5 = BuddyRankComparator.getNewestMenuIdx();
 					if (var5 != -1) {
-						ChatChannel.method2225(var5);
+						ChatChannel.method2229(var5);
 					}
 
 					return;

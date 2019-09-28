@@ -73,14 +73,14 @@ public class IterableNodeDeque implements Iterable, Collection {
 	)
 	@Export("last")
 	public Node last() {
-		return this.method4784((Node)null);
+		return this.method4796((Node)null);
 	}
 
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "(Lfx;)Lfx;"
 	)
-	Node method4784(Node var1) {
+	Node method4796(Node var1) {
 		Node var2;
 		if (var1 == null) {
 			var2 = this.sentinel.previous;
@@ -114,7 +114,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	@ObfuscatedName("m")
-	int method4762() {
+	int method4774() {
 		int var1 = 0;
 
 		for (Node var2 = this.sentinel.previous; var2 != this.sentinel; var2 = var2.previous) {
@@ -125,7 +125,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	@ObfuscatedName("y")
-	public boolean method4763() {
+	public boolean method4775() {
 		return this.sentinel.previous == this.sentinel;
 	}
 
@@ -133,8 +133,8 @@ public class IterableNodeDeque implements Iterable, Collection {
 	@ObfuscatedSignature(
 		signature = "()[Lfx;"
 	)
-	Node[] method4807() {
-		Node[] var1 = new Node[this.method4762()];
+	Node[] method4819() {
+		Node[] var1 = new Node[this.method4774()];
 		int var2 = 0;
 
 		for (Node var3 = this.sentinel.previous; var3 != this.sentinel; var3 = var3.previous) {
@@ -148,7 +148,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	@ObfuscatedSignature(
 		signature = "(Lfx;)Z"
 	)
-	boolean method4766(Node var1) {
+	boolean method4778(Node var1) {
 		this.addFirst(var1);
 		return true;
 	}
@@ -158,11 +158,11 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	public int size() {
-		return this.method4762();
+		return this.method4774();
 	}
 
 	public boolean isEmpty() {
-		return this.method4763();
+		return this.method4775();
 	}
 
 	public boolean contains(Object var1) {
@@ -184,7 +184,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	public boolean add(Object var1) {
-		return this.method4766((Node)var1);
+		return this.method4778((Node)var1);
 	}
 
 	public boolean equals(Object var1) {
@@ -212,7 +212,7 @@ public class IterableNodeDeque implements Iterable, Collection {
 	}
 
 	public Object[] toArray() {
-		return this.method4807();
+		return this.method4819();
 	}
 
 	public boolean removeAll(Collection var1) {

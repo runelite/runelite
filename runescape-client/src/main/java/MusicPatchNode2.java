@@ -63,7 +63,7 @@ public class MusicPatchNode2 {
 	@Export("playSong")
 	static void playSong(int var0) {
 		if (var0 == -1 && !Client.field759) {
-			VertexNormal.method2956();
+			VertexNormal.method2960();
 		} else if (var0 != -1 && var0 != Client.field666 && Client.field761 != 0 && !Client.field759) {
 			Archive var1 = class225.archive6;
 			int var2 = Client.field761;
@@ -84,7 +84,7 @@ public class MusicPatchNode2 {
 		signature = "(IB)Z",
 		garbageValue = "-93"
 	)
-	static boolean method3649(int var0) {
+	static boolean method3658(int var0) {
 		for (int var1 = 0; var1 < Client.field857; ++var1) {
 			if (Client.field859[var1] == var0) {
 				return true;

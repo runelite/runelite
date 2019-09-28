@@ -81,7 +81,7 @@ public class MusicPatchNode extends Node {
 	int field2431;
 	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -1163841633
+		intValue = 1967284030
 	)
 	int field2432;
 	@ObfuscatedName("e")
@@ -129,7 +129,7 @@ public class MusicPatchNode extends Node {
 		signature = "(B)V",
 		garbageValue = "2"
 	)
-	void method3785() {
+	void method3794() {
 		this.patch = null;
 		this.rawSound = null;
 		this.field2435 = null;
@@ -161,14 +161,14 @@ public class MusicPatchNode extends Node {
 		signature = "(Lho;III)V",
 		garbageValue = "1345950027"
 	)
-	static final void method3789(Widget var0, int var1, int var2) {
+	static final void method3798(Widget var0, int var1, int var2) {
 		if (var0.buttonType == 1) {
 			WorldMapData_1.insertMenuItemNoShift(var0.buttonText, "", 24, 0, 0, var0.id);
 		}
 
 		String var3;
 		if (var0.buttonType == 2 && !Client.isSpellSelected) {
-			var3 = VerticalAlignment.method4309(var0);
+			var3 = VerticalAlignment.method4321(var0);
 			if (var3 != null) {
 				WorldMapData_1.insertMenuItemNoShift(var3, World.colorStartTag(65280) + var0.spellName, 25, 0, -1, var0.id);
 			}
@@ -321,19 +321,19 @@ public class MusicPatchNode extends Node {
 				}
 			} else {
 				for (var19 = 9; var19 >= 5; --var19) {
-					String var21 = FaceNormal.method3224(var0, var19);
+					String var21 = FaceNormal.method3228(var0, var19);
 					if (var21 != null) {
 						WorldMapData_1.insertMenuItemNoShift(var21, var0.dataText, 1007, var19 + 1, var0.childIndex, var0.id);
 					}
 				}
 
-				var3 = VerticalAlignment.method4309(var0);
+				var3 = VerticalAlignment.method4321(var0);
 				if (var3 != null) {
 					WorldMapData_1.insertMenuItemNoShift(var3, var0.dataText, 25, 0, var0.childIndex, var0.id);
 				}
 
 				for (var4 = 4; var4 >= 0; --var4) {
-					String var22 = FaceNormal.method3224(var0, var4);
+					String var22 = FaceNormal.method3228(var0, var4);
 					if (var22 != null) {
 						AttackOption.insertMenuItem(var22, var0.dataText, 57, var4 + 1, var0.childIndex, var0.id, var0.field2687);
 					}
@@ -492,7 +492,7 @@ public class MusicPatchNode extends Node {
 							if (var9.contentType == 1400) {
 								Tiles.worldMap.addElementMenuOptions(var10, var11, var9.width, var9.height, var17, var18);
 							} else {
-								method3789(var9, var17 - var10, var18 - var11);
+								method3798(var9, var17 - var10, var18 - var11);
 							}
 						}
 
@@ -509,7 +509,7 @@ public class MusicPatchNode extends Node {
 											var24 = KeyHandler.KeyHandler_pressedKeys[var9.field2552[var20][var23]];
 										}
 
-										if (MusicPatchNode2.method3649(var9.field2552[var20][var23]) || var24) {
+										if (MusicPatchNode2.method3658(var9.field2552[var20][var23]) || var24) {
 											var21 = true;
 											if (var9.field2684 != null && var9.field2684[var20] > Client.cycle) {
 												break;
@@ -530,7 +530,7 @@ public class MusicPatchNode extends Node {
 									} else if (var20 == 10) {
 										class208.Widget_runOnTargetLeave();
 										class32.selectSpell(var9.id, var9.childIndex, class2.method30(class2.getWidgetClickMask(var9)), var9.itemId);
-										Client.selectedSpellActionName = VerticalAlignment.method4309(var9);
+										Client.selectedSpellActionName = VerticalAlignment.method4321(var9);
 										if (Client.selectedSpellActionName == null) {
 											Client.selectedSpellActionName = "null";
 										}
@@ -586,7 +586,7 @@ public class MusicPatchNode extends Node {
 							}
 
 							if (var9.contentType == 1400) {
-								Tiles.worldMap.method6422(var17, var18, var33 & var34, var33 & var21);
+								Tiles.worldMap.method6445(var17, var18, var33 & var34, var33 & var21);
 							}
 
 							if (Client.clickedWidget != null && var9 != Client.clickedWidget && var33 && GrandExchangeOfferTotalQuantityComparator.method93(class2.getWidgetClickMask(var9))) {

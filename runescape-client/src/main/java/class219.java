@@ -23,7 +23,7 @@ public class class219 {
 		signature = "(I)V",
 		garbageValue = "689014870"
 	)
-	public static void method4067() {
+	public static void method4079() {
 		SpotAnimationDefinition.SpotAnimationDefinition_cached.clear();
 		SpotAnimationDefinition.SpotAnimationDefinition_cachedModels.clear();
 	}
@@ -33,7 +33,7 @@ public class class219 {
 		signature = "(II)I",
 		garbageValue = "412788434"
 	)
-	static int method4069(int var0) {
+	static int method4081(int var0) {
 		return (int)((Math.log((double)var0) / Interpreter.field1077 - 7.0D) * 256.0D);
 	}
 
@@ -42,7 +42,7 @@ public class class219 {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1490314370"
 	)
-	static int method4068(int var0, Script var1, boolean var2) {
+	static int method4080(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.WORLDLIST_FETCH) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = BufferedNetSocket.loadWorlds() ? 1 : 0;
 			return 1;

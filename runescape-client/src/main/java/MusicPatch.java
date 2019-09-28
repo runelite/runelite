@@ -357,7 +357,7 @@ public class MusicPatch extends Node {
 				var32 = var41 * (var30 - var44) + (var30 - var44) / 2;
 
 				for (var33 = var44; var33 < var30; ++var33) {
-					var34 = World.method1810(var32, var30 - var44);
+					var34 = World.method1814(var32, var30 - var44);
 					this.field2459[var33] = (byte)(var34 * this.field2459[var33] + 32 >> 6);
 					var32 += var31 - var41;
 				}
@@ -405,7 +405,7 @@ public class MusicPatch extends Node {
 				var32 = var47 * (var30 - var44) + (var30 - var44) / 2;
 
 				for (var33 = var44; var33 < var30; ++var33) {
-					var34 = World.method1810(var32, var30 - var44);
+					var34 = World.method1814(var32, var30 - var44);
 					int var35 = var34 + (this.field2456[var33] & 255);
 					if (var35 < 0) {
 						var35 = 0;
@@ -483,7 +483,7 @@ public class MusicPatch extends Node {
 		signature = "(Ldq;[B[IB)Z",
 		garbageValue = "43"
 	)
-	boolean method3847(SoundCache var1, byte[] var2, int[] var3) {
+	boolean method3856(SoundCache var1, byte[] var2, int[] var3) {
 		boolean var4 = true;
 		int var5 = 0;
 		RawSound var6 = null;
@@ -531,7 +531,7 @@ public class MusicPatch extends Node {
 		signature = "(B)V",
 		garbageValue = "10"
 	)
-	public static void method3859() {
+	public static void method3868() {
 		VarpDefinition.VarpDefinition_cached.clear();
 	}
 

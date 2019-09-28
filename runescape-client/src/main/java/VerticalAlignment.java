@@ -62,7 +62,7 @@ public enum VerticalAlignment implements Enumerated {
 		signature = "(Lho;I)Ljava/lang/String;",
 		garbageValue = "-2118508660"
 	)
-	static String method4309(Widget var0) {
+	static String method4321(Widget var0) {
 		if (class2.method30(class2.getWidgetClickMask(var0)) == 0) {
 			return null;
 		} else {

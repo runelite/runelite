@@ -63,7 +63,7 @@ public class DevicePcmPlayer extends PcmPlayer {
 			var4 += var4 >>> 16;
 			int var3 = var4 & 255;
 			if (var3 != 1) {
-				this.open(Timer.method4923(var1));
+				this.open(Timer.method4935(var1));
 			} else {
 				this.line = null;
 				throw var5;

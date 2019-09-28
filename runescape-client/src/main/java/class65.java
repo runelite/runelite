@@ -49,6 +49,6 @@ public class class65 extends RouteStrategy {
 		garbageValue = "-714921437"
 	)
 	public static String method1250(Buffer var0) {
-		return TilePaint.method3038(var0, 32767);
+		return TilePaint.method3042(var0, 32767);
 	}
 }

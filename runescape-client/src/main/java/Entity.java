@@ -117,7 +117,7 @@ public abstract class Entity extends DualNode {
 		signature = "(I)Ljava/lang/String;",
 		garbageValue = "67381036"
 	)
-	static String method3221() {
+	static String method3225() {
 		String var0 = "";
 
 		Message var2;
@@ -133,15 +133,15 @@ public abstract class Entity extends DualNode {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "160012965"
 	)
-	static int method3212(int var0, Script var1, boolean var2) {
+	static int method3216(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.VIEWPORT_SETFOV) {
 			Interpreter.Interpreter_intStackSize -= 2;
-			Client.field880 = (short)PlayerAppearance.method3966(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize]);
+			Client.field880 = (short)PlayerAppearance.method3978(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize]);
 			if (Client.field880 <= 0) {
 				Client.field880 = 256;
 			}
 
-			Client.field887 = (short)PlayerAppearance.method3966(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
+			Client.field887 = (short)PlayerAppearance.method3978(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
 			if (Client.field887 <= 0) {
 				Client.field887 = 256;
 			}
@@ -203,8 +203,8 @@ public abstract class Entity extends DualNode {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.zoomWidth;
 			return 1;
 		} else if (var0 == ScriptOpcodes.VIEWPORT_GETFOV) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4069(Client.field880);
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4069(Client.field887);
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4081(Client.field880);
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class219.method4081(Client.field887);
 			return 1;
 		} else if (var0 == 6220) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;

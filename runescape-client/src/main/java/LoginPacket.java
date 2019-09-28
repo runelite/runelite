@@ -58,7 +58,7 @@ public class LoginPacket implements class181 {
 		field2290 = new LoginPacket(18, -2);
 		field2291 = new LoginPacket(27, 0);
 		LoginPacket_indexedValues = new LoginPacket[32];
-		LoginPacket[] var0 = class192.method3640();
+		LoginPacket[] var0 = class192.method3649();
 
 		for (int var1 = 0; var1 < var0.length; ++var1) {
 			LoginPacket_indexedValues[var0[var1].id] = var0[var1];
@@ -101,7 +101,7 @@ public class LoginPacket implements class181 {
 		signature = "(Lbh;S)V",
 		garbageValue = "21228"
 	)
-	static void method3581(GameShell var0) {
+	static void method3587(GameShell var0) {
 		int var4;
 		if (Login.worldSelectOpen) {
 			while (true) {
@@ -155,14 +155,14 @@ public class LoginPacket implements class181 {
 					}
 
 					if (MouseHandler.MouseHandler_lastPressedX >= Login.xPadding + 708 && MouseHandler.MouseHandler_lastPressedY >= 4 && MouseHandler.MouseHandler_lastPressedX <= Login.xPadding + 708 + 50 && MouseHandler.MouseHandler_lastPressedY <= 20) {
-						Coord.method3964();
+						Coord.method3976();
 						break;
 					}
 
 					if (Login.hoveredWorldIndex != -1) {
 						World var5 = World.World_worlds[Login.hoveredWorldIndex];
 						class4.changeWorld(var5);
-						Coord.method3964();
+						Coord.method3976();
 					} else {
 						if (Login.worldSelectPage > 0 && WorldMapIcon_0.worldSelectLeftSprite != null && MouseHandler.MouseHandler_lastPressedX >= 0 && MouseHandler.MouseHandler_lastPressedX <= WorldMapIcon_0.worldSelectLeftSprite.subWidth && MouseHandler.MouseHandler_lastPressedY >= WallDecoration.canvasHeight / 2 - 50 && MouseHandler.MouseHandler_lastPressedY <= WallDecoration.canvasHeight / 2 + 50) {
 							--Login.worldSelectPage;
@@ -176,7 +176,7 @@ public class LoginPacket implements class181 {
 				}
 
 				if (SecureRandomFuture.field1230 == 13) {
-					Coord.method3964();
+					Coord.method3976();
 					break;
 				}
 
@@ -194,9 +194,9 @@ public class LoginPacket implements class181 {
 				AbstractArchive.clientPreferences.titleMusicDisabled = !AbstractArchive.clientPreferences.titleMusicDisabled;
 				Language.savePreferences();
 				if (!AbstractArchive.clientPreferences.titleMusicDisabled) {
-					UserComparator4.method3345(class225.archive6, "scape main", "", 255, false);
+					UserComparator4.method3349(class225.archive6, "scape main", "", 255, false);
 				} else {
-					VertexNormal.method2956();
+					VertexNormal.method2960();
 				}
 			}
 
@@ -284,7 +284,7 @@ public class LoginPacket implements class181 {
 						var8 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter - 80;
 						var9 = 291;
 						if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
-							ArchiveDiskActionHandler.openURL(FaceNormal.method3225("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
+							ArchiveDiskActionHandler.openURL(FaceNormal.method3229("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws", true, false);
 						}
 
 						var8 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter + 80;
@@ -330,7 +330,7 @@ public class LoginPacket implements class181 {
 									Login.currentLoginField = 0;
 								}
 							} else {
-								TilePaint.method3039(false);
+								TilePaint.method3043(false);
 							}
 						}
 					} else {
@@ -383,7 +383,7 @@ public class LoginPacket implements class181 {
 									}
 
 									PlayerType.setLoginResponseString("", "Connecting to server...", "");
-									PlayerType.method4092(false);
+									PlayerType.method4104(false);
 									MouseRecorder.updateGameState(20);
 									return;
 								}
@@ -479,7 +479,7 @@ public class LoginPacket implements class181 {
 												}
 
 												PlayerType.setLoginResponseString("", "Connecting to server...", "");
-												PlayerType.method4092(false);
+												PlayerType.method4104(false);
 												MouseRecorder.updateGameState(20);
 												return;
 											}
@@ -496,7 +496,7 @@ public class LoginPacket implements class181 {
 								var20 = Login.loginBoxX + 180;
 								var22 = 276;
 								if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-									TilePaint.method3039(false);
+									TilePaint.method3043(false);
 								}
 
 								var20 = Login.loginBoxX + 180;
@@ -520,7 +520,7 @@ public class LoginPacket implements class181 {
 
 										class185.field2305 = Integer.parseInt(DesktopPlatformInfoProvider.otp);
 										DesktopPlatformInfoProvider.otp = "";
-										PlayerType.method4092(true);
+										PlayerType.method4104(true);
 										PlayerType.setLoginResponseString("", "Connecting to server...", "");
 										MouseRecorder.updateGameState(20);
 										return;
@@ -531,7 +531,7 @@ public class LoginPacket implements class181 {
 									}
 
 									if (var4 == 1 && var25 >= Login.loginBoxX + 180 - 34 && var25 <= Login.loginBoxX + 34 + 180 && var18 >= 351 && var18 <= 363) {
-										ArchiveDiskActionHandler.openURL(FaceNormal.method3225("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
+										ArchiveDiskActionHandler.openURL(FaceNormal.method3229("secure", true) + "m=totp-authenticator/disableTOTPRequest", true, false);
 									}
 
 									var20 = Login.loginBoxX + 180 + 80;
@@ -573,7 +573,7 @@ public class LoginPacket implements class181 {
 
 												class185.field2305 = Integer.parseInt(DesktopPlatformInfoProvider.otp);
 												DesktopPlatformInfoProvider.otp = "";
-												PlayerType.method4092(true);
+												PlayerType.method4104(true);
 												PlayerType.setLoginResponseString("", "Connecting to server...", "");
 												MouseRecorder.updateGameState(20);
 												return;
@@ -594,14 +594,14 @@ public class LoginPacket implements class181 {
 
 									var20 = Login.loginBoxX + 180 + 80;
 									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-										TilePaint.method3039(true);
+										TilePaint.method3043(true);
 									}
 
 									var9 = 361;
 									if (class162.field1988 != null) {
 										var24 = class162.field1988.highX / 2;
 										if (var4 == 1 && var25 >= class162.field1988.lowX - var24 && var25 <= var24 + class162.field1988.lowX && var18 >= var9 - 15 && var18 < var9) {
-											ArchiveDiskActionHandler.openURL(FaceNormal.method3225("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
+											ArchiveDiskActionHandler.openURL(FaceNormal.method3229("secure", true) + "m=weblogin/g=oldscape/cant_log_in", true, false);
 										}
 									}
 
@@ -616,7 +616,7 @@ public class LoginPacket implements class181 {
 										}
 
 										if (SecureRandomFuture.field1230 == 13) {
-											TilePaint.method3039(true);
+											TilePaint.method3043(true);
 										} else {
 											if (SecureRandomFuture.field1230 == 85 && Login.Login_username.length() > 0) {
 												Login.Login_username = Login.Login_username.substring(0, Login.Login_username.length() - 1);
@@ -638,20 +638,20 @@ public class LoginPacket implements class181 {
 											if (!DynamicObject.isKeyDown()) {
 												var21 = 321;
 												if (var4 == 1 && var18 >= var21 - 20 && var18 <= var21 + 20) {
-													TilePaint.method3039(true);
+													TilePaint.method3043(true);
 												}
 
 												return;
 											}
 										} while(SecureRandomFuture.field1230 != 84 && SecureRandomFuture.field1230 != 13);
 
-										TilePaint.method3039(true);
+										TilePaint.method3043(true);
 									}
 								} else if (Login.loginIndex == 7) {
 									var20 = Login.loginBoxX + 180 - 80;
 									var22 = 321;
 									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-										ArchiveDiskActionHandler.openURL(FaceNormal.method3225("secure", true) + "m=dob/set_dob.ws", true, false);
+										ArchiveDiskActionHandler.openURL(FaceNormal.method3229("secure", true) + "m=dob/set_dob.ws", true, false);
 										PlayerType.setLoginResponseString("", "Page has opened in a new window.", "(Please check your popup blocker.)");
 										Login.loginIndex = 6;
 										return;
@@ -659,7 +659,7 @@ public class LoginPacket implements class181 {
 
 									var20 = Login.loginBoxX + 180 + 80;
 									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-										TilePaint.method3039(true);
+										TilePaint.method3043(true);
 									}
 								} else if (Login.loginIndex == 8) {
 									var20 = Login.loginBoxX + 180 - 80;
@@ -673,7 +673,7 @@ public class LoginPacket implements class181 {
 
 									var20 = Login.loginBoxX + 180 + 80;
 									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-										TilePaint.method3039(true);
+										TilePaint.method3043(true);
 									}
 								} else if (Login.loginIndex == 12) {
 									String var16 = "";
@@ -685,7 +685,7 @@ public class LoginPacket implements class181 {
 										var16 = "https://support.runescape.com/hc/en-gb/articles/206103939-My-account-is-locked";
 										break;
 									default:
-										TilePaint.method3039(false);
+										TilePaint.method3043(false);
 									}
 
 									var8 = Login.loginBoxX + 180;
@@ -700,20 +700,20 @@ public class LoginPacket implements class181 {
 									var8 = Login.loginBoxX + 180;
 									var9 = 326;
 									if (var4 == 1 && var25 >= var8 - 75 && var25 <= var8 + 75 && var18 >= var9 - 20 && var18 <= var9 + 20) {
-										TilePaint.method3039(false);
+										TilePaint.method3043(false);
 									}
 								} else if (Login.loginIndex == 24) {
 									var20 = Login.loginBoxX + 180;
 									var22 = 301;
 									if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-										TilePaint.method3039(false);
+										TilePaint.method3043(false);
 									}
 								}
 							}
 						} else {
 							while (DynamicObject.isKeyDown()) {
 								if (SecureRandomFuture.field1230 == 84) {
-									TilePaint.method3039(false);
+									TilePaint.method3043(false);
 								} else if (SecureRandomFuture.field1230 == 13) {
 									Login.loginIndex = 0;
 								}
@@ -722,7 +722,7 @@ public class LoginPacket implements class181 {
 							var20 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter - 80;
 							var22 = 321;
 							if (var4 == 1 && var25 >= var20 - 75 && var25 <= var20 + 75 && var18 >= var22 - 20 && var18 <= var22 + 20) {
-								TilePaint.method3039(false);
+								TilePaint.method3043(false);
 							}
 
 							var20 = GrandExchangeOfferUnitPriceComparator.loginBoxCenter + 80;

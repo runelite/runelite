@@ -204,7 +204,7 @@ public final class BZip2State {
 		signature = "(II)Z",
 		garbageValue = "157596925"
 	)
-	static boolean method5688(int var0) {
+	static boolean method5703(int var0) {
 		return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
 	}
 }

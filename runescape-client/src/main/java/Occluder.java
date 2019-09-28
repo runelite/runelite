@@ -184,7 +184,7 @@ public final class Occluder {
 		signature = "(B)V",
 		garbageValue = "-37"
 	)
-	public static void method3248() {
+	public static void method3252() {
 		try {
 			JagexCache.JagexCache_dat2File.close();
 
@@ -204,7 +204,7 @@ public final class Occluder {
 		signature = "(Ljava/lang/String;I)V",
 		garbageValue = "-1221499190"
 	)
-	static void method3247(String var0) {
+	static void method3251(String var0) {
 		class197.field2390 = var0;
 
 		try {

@@ -80,9 +80,9 @@ public class UserComparator7 extends AbstractUserComparator {
 				return var0.activity.compareTo(var1.activity);
 			}
 		} else if (var2 == 4) {
-			return var0.method1774() ? (var1.method1774() ? 0 : 1) : (var1.method1774() ? -1 : 0);
+			return var0.method1778() ? (var1.method1778() ? 0 : 1) : (var1.method1778() ? -1 : 0);
 		} else if (var2 == 5) {
-			return var0.method1802() ? (var1.method1802() ? 0 : 1) : (var1.method1802() ? -1 : 0);
+			return var0.method1806() ? (var1.method1806() ? 0 : 1) : (var1.method1806() ? -1 : 0);
 		} else if (var2 == 6) {
 			return var0.isPvp() ? (var1.isPvp() ? 0 : 1) : (var1.isPvp() ? -1 : 0);
 		} else if (var2 == 7) {

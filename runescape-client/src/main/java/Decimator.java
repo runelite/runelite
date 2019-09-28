@@ -171,7 +171,7 @@ public class Decimator {
 		signature = "(I)V",
 		garbageValue = "851552801"
 	)
-	static final void method2496() {
+	static final void method2500() {
 		PacketBuffer var0 = Client.packetWriter.packetBuffer;
 		var0.importIndex();
 		int var1 = var0.readBits(8);
@@ -207,7 +207,7 @@ public class Decimator {
 							Client.npcIndices[++Client.npcCount - 1] = var3;
 							var4.npcCycle = Client.cycle;
 							var7 = var0.readBits(3);
-							var4.method2044(var7, (byte)1);
+							var4.method2048(var7, (byte)1);
 							var8 = var0.readBits(1);
 							if (var8 == 1) {
 								Client.field681[++Client.field633 - 1] = var3;
@@ -216,9 +216,9 @@ public class Decimator {
 							Client.npcIndices[++Client.npcCount - 1] = var3;
 							var4.npcCycle = Client.cycle;
 							var7 = var0.readBits(3);
-							var4.method2044(var7, (byte)2);
+							var4.method2048(var7, (byte)2);
 							var8 = var0.readBits(3);
-							var4.method2044(var8, (byte)2);
+							var4.method2048(var8, (byte)2);
 							int var9 = var0.readBits(1);
 							if (var9 == 1) {
 								Client.field681[++Client.field633 - 1] = var3;

@@ -117,7 +117,7 @@ public enum class192 implements Enumerated {
 		signature = "(I)[Lge;",
 		garbageValue = "-311102379"
 	)
-	static LoginPacket[] method3640() {
+	static LoginPacket[] method3649() {
 		return new LoginPacket[]{LoginPacket.field2287, LoginPacket.field2288, LoginPacket.field2291, LoginPacket.field2290, LoginPacket.field2289};
 	}
 
@@ -126,7 +126,7 @@ public enum class192 implements Enumerated {
 		signature = "(IIILfi;Lfa;Z[I[IB)I",
 		garbageValue = "-91"
 	)
-	public static int method3637(int var0, int var1, int var2, RouteStrategy var3, CollisionMap var4, boolean var5, int[] var6, int[] var7) {
+	public static int method3646(int var0, int var1, int var2, RouteStrategy var3, CollisionMap var4, boolean var5, int[] var6, int[] var7) {
 		int var9;
 		for (int var8 = 0; var8 < 128; ++var8) {
 			for (var9 = 0; var9 < 128; ++var9) {
@@ -137,9 +137,9 @@ public enum class192 implements Enumerated {
 
 		boolean var27;
 		if (var2 == 1) {
-			var27 = method3632(var0, var1, var3, var4);
+			var27 = method3641(var0, var1, var3, var4);
 		} else if (var2 == 2) {
-			var27 = RouteStrategy.method3555(var0, var1, var3, var4);
+			var27 = RouteStrategy.method3561(var0, var1, var3, var4);
 		} else {
 			var27 = class14.method172(var0, var1, var2, var3, var4);
 		}
@@ -243,7 +243,7 @@ public enum class192 implements Enumerated {
 		signature = "(IILfi;Lfa;I)Z",
 		garbageValue = "-1742878989"
 	)
-	static final boolean method3632(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
+	static final boolean method3641(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
 		int var4 = var0;
 		int var5 = var1;
 		byte var6 = 64;
@@ -376,7 +376,7 @@ public enum class192 implements Enumerated {
 		signature = "(IIS)I",
 		garbageValue = "5004"
 	)
-	static final int method3639(int var0, int var1) {
+	static final int method3648(int var0, int var1) {
 		if (var0 == -1) {
 			return 12345678;
 		} else {

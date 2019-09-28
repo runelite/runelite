@@ -43,7 +43,7 @@ public class UserComparator3 extends AbstractUserComparator {
 		signature = "(Ljava/lang/CharSequence;I)[B",
 		garbageValue = "-772174627"
 	)
-	public static byte[] method3390(CharSequence var0) {
+	public static byte[] method3394(CharSequence var0) {
 		int var1 = var0.length();
 		byte[] var2 = new byte[var1];
 

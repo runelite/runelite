@@ -46,7 +46,7 @@ public class class96 {
 		signature = "(Llb;ILjava/lang/String;I)Ljava/lang/String;",
 		garbageValue = "539746719"
 	)
-	static String method2259(IterableNodeHashTable var0, int var1, String var2) {
+	static String method2263(IterableNodeHashTable var0, int var1, String var2) {
 		if (var0 == null) {
 			return var2;
 		} else {

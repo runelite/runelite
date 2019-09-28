@@ -336,7 +336,7 @@ public class MusicTrack extends Node {
 	}
 
 	@ObfuscatedName("n")
-	void method3886() {
+	void method3895() {
 		if (this.table == null) {
 			this.table = new NodeHashTable(16);
 			int[] var1 = new int[16];

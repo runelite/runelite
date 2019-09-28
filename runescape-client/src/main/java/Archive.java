@@ -150,7 +150,7 @@ public class Archive extends AbstractArchive {
 		signature = "(I)Z",
 		garbageValue = "2035998705"
 	)
-	public boolean method4223() {
+	public boolean method4235() {
 		return this.field3131;
 	}
 
@@ -214,7 +214,7 @@ public class Archive extends AbstractArchive {
 			}
 
 			if (this.masterDisk != null) {
-				CollisionMap.method3530(this.index, var2, this.masterDisk);
+				CollisionMap.method3536(this.index, var2, this.masterDisk);
 			}
 
 			this.decodeIndex(var2);
@@ -223,7 +223,7 @@ public class Archive extends AbstractArchive {
 			var2[var2.length - 2] = (byte)(super.groupVersions[var1] >> 8);
 			var2[var2.length - 1] = (byte)super.groupVersions[var1];
 			if (this.archiveDisk != null) {
-				CollisionMap.method3530(var1, var2, this.archiveDisk);
+				CollisionMap.method3536(var1, var2, this.archiveDisk);
 				this.validGroups[var1] = true;
 			}
 
@@ -371,7 +371,7 @@ public class Archive extends AbstractArchive {
 		signature = "(II)Z",
 		garbageValue = "-433634856"
 	)
-	public boolean method4231(int var1) {
+	public boolean method4243(int var1) {
 		return this.validGroups[var1];
 	}
 
@@ -380,7 +380,7 @@ public class Archive extends AbstractArchive {
 		signature = "(II)Z",
 		garbageValue = "805361618"
 	)
-	public boolean method4232(int var1) {
+	public boolean method4244(int var1) {
 		return this.getGroupFileIds(var1) != null;
 	}
 
@@ -415,7 +415,7 @@ public class Archive extends AbstractArchive {
 		signature = "(I)V",
 		garbageValue = "-212508230"
 	)
-	static final void method4266() {
+	static final void method4278() {
 		for (int var0 = 0; var0 < Players.Players_count; ++var0) {
 			Player var1 = Client.players[Players.Players_indices[var0]];
 			var1.clearIsInClanChat();
@@ -428,14 +428,14 @@ public class Archive extends AbstractArchive {
 		signature = "(I)V",
 		garbageValue = "26372698"
 	)
-	static void method4238() {
+	static void method4250() {
 		if (StudioGame.field3086 != null) {
 			Client.field905 = Client.cycle;
-			StudioGame.field3086.method4288();
+			StudioGame.field3086.method4300();
 
 			for (int var0 = 0; var0 < Client.players.length; ++var0) {
 				if (Client.players[var0] != null) {
-					StudioGame.field3086.method4289(class223.baseX * 64 + (Client.players[var0].x >> 7), class286.baseY * 64 + (Client.players[var0].y * 682054857 >> 7));
+					StudioGame.field3086.method4301(class223.baseX * 64 + (Client.players[var0].x >> 7), class286.baseY * 64 + (Client.players[var0].y >> 7));
 				}
 			}
 		}

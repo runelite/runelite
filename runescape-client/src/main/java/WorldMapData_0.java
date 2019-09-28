@@ -43,12 +43,12 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		} else {
 			super.minPlane = var1.readUnsignedByte();
 			super.planes = var1.readUnsignedByte();
-			super.regionXLow = var1.readUnsignedShort() * 64;
+			super.regionXLow = var1.readUnsignedShort() * 4096;
 			super.regionYLow = var1.readUnsignedShort() * 4096;
 			super.regionX = var1.readUnsignedShort();
 			super.regionY = var1.readUnsignedShort();
-			super.groupId = var1.method5438();
-			super.fileId = var1.method5438();
+			super.groupId = var1.method5453();
+			super.fileId = var1.method5453();
 		}
 	}
 
@@ -334,7 +334,7 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 						return 1;
 					} else if (var0 == ScriptOpcodes.COMPARE) {
 						Interpreter.Interpreter_stringStackSize -= 2;
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class189.method3609(Interpreter.compareStrings(Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize], Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1], WorldMapLabelSize.clientLanguage));
+						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class189.method3615(Interpreter.compareStrings(Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize], Interpreter.Interpreter_stringStack[Interpreter.Interpreter_stringStackSize + 1], WorldMapLabelSize.clientLanguage));
 						return 1;
 					} else {
 						int var5;

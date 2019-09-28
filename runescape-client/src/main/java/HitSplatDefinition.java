@@ -172,17 +172,17 @@ public class HitSplatDefinition extends DualNode {
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 1) {
-			this.fontId = var1.method5438();
+			this.fontId = var1.method5453();
 		} else if (var2 == 2) {
 			this.textColor = var1.readMedium();
 		} else if (var2 == 3) {
-			this.field3319 = var1.method5438();
+			this.field3319 = var1.method5453();
 		} else if (var2 == 4) {
-			this.field3321 = var1.method5438();
+			this.field3321 = var1.method5453();
 		} else if (var2 == 5) {
-			this.field3332 = var1.method5438();
+			this.field3332 = var1.method5453();
 		} else if (var2 == 6) {
-			this.field3322 = var1.method5438();
+			this.field3322 = var1.method5453();
 		} else if (var2 == 7) {
 			this.field3323 = var1.readShort();
 		} else if (var2 == 8) {
@@ -300,7 +300,7 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(I)Llf;",
 		garbageValue = "106816510"
 	)
-	public Sprite method4508() {
+	public Sprite method4520() {
 		if (this.field3319 < 0) {
 			return null;
 		} else {
@@ -323,7 +323,7 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(I)Llf;",
 		garbageValue = "-123360505"
 	)
-	public Sprite method4505() {
+	public Sprite method4517() {
 		if (this.field3332 < 0) {
 			return null;
 		} else {
@@ -346,7 +346,7 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(B)Llf;",
 		garbageValue = "88"
 	)
-	public Sprite method4506() {
+	public Sprite method4518() {
 		if (this.field3321 < 0) {
 			return null;
 		} else {
@@ -369,7 +369,7 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(I)Llf;",
 		garbageValue = "750571201"
 	)
-	public Sprite method4530() {
+	public Sprite method4542() {
 		if (this.field3322 < 0) {
 			return null;
 		} else {
@@ -401,7 +401,7 @@ public class HitSplatDefinition extends DualNode {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = ClanMate.method4964(GrandExchangeOfferNameComparator.field66, HitSplatDefinition_fontsArchive, this.fontId, 0);
+				var1 = ClanMate.method4976(GrandExchangeOfferNameComparator.field66, HitSplatDefinition_fontsArchive, this.fontId, 0);
 				if (var1 != null) {
 					HitSplatDefinition_cachedFonts.put(var1, (long)this.fontId);
 				}

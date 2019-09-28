@@ -70,7 +70,7 @@ public class HealthBarUpdate extends Node {
 		signature = "(I)V",
 		garbageValue = "146894465"
 	)
-	static final void method1765() {
+	static final void method1769() {
 		for (int var0 = 0; var0 < Client.soundEffectCount; ++var0) {
 			int var10002 = Client.queuedSoundEffectDelays[var0]--;
 			if (Client.queuedSoundEffectDelays[var0] >= -10) {
@@ -98,7 +98,7 @@ public class HealthBarUpdate extends Node {
 						}
 
 						int var6 = Client.soundLocations[var0] >> 8 & 255;
-						int var7 = var6 * 128 + 64 - class223.localPlayer.y * 682054857;
+						int var7 = var6 * 128 + 64 - class223.localPlayer.y;
 						if (var7 < 0) {
 							var7 = -var7;
 						}
@@ -152,7 +152,7 @@ public class HealthBarUpdate extends Node {
 
 			if (!var12) {
 				if (Client.field761 != 0 && Client.field666 != -1) {
-					class83.method2064(class225.archive6, Client.field666, 0, Client.field761, false);
+					class83.method2068(class225.archive6, Client.field666, 0, Client.field761, false);
 				}
 
 				Client.field759 = false;

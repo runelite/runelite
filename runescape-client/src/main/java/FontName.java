@@ -74,7 +74,7 @@ public class FontName {
 		signature = "(B)[Lko;",
 		garbageValue = "-88"
 	)
-	public static FontName[] method5257() {
+	public static FontName[] method5272() {
 		return new FontName[]{FontName_verdana13, FontName_bold12, FontName_verdana11, FontName_plain12, FontName_verdana15, FontName_plain11};
 	}
 
@@ -83,7 +83,7 @@ public class FontName {
 		signature = "(B)V",
 		garbageValue = "14"
 	)
-	static void method5251() {
+	static void method5266() {
 		ItemContainer.itemContainers = new NodeHashTable(32);
 	}
 
@@ -92,7 +92,7 @@ public class FontName {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-1537038267"
 	)
-	static int method5256(int var0, Script var1, boolean var2) {
+	static int method5271(int var0, Script var1, boolean var2) {
 		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
 		if (var0 == ScriptOpcodes.CC_GETX) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.x;
@@ -142,7 +142,7 @@ public class FontName {
 			WorldMapSectionType.invalidateWidget(var5);
 		}
 
-		SecureRandomFuture.method2134();
+		SecureRandomFuture.method2138();
 		if (Client.rootInterface != -1) {
 			class40.runIntfCloseListeners(Client.rootInterface, 1);
 		}

@@ -640,7 +640,7 @@ public class ClientPacket implements class181 {
 		signature = "(I)V",
 		garbageValue = "470229947"
 	)
-	static void method3575() {
+	static void method3581() {
 		for (ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
 			if (var0.stream1 != null) {
 				WorldMapLabelSize.pcmStreamMixer.removeSubStream(var0.stream1);
@@ -661,7 +661,7 @@ public class ClientPacket implements class181 {
 		signature = "(ZZI)Llp;",
 		garbageValue = "-1999354479"
 	)
-	static IndexedSprite method3572(boolean var0, boolean var1) {
+	static IndexedSprite method3578(boolean var0, boolean var1) {
 		return var0 ? (var1 ? Login.field1163 : class42.options_buttons_2Sprite) : (var1 ? ClientPreferences.field1046 : class195.options_buttons_0Sprite);
 	}
 
@@ -670,7 +670,7 @@ public class ClientPacket implements class181 {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-2131546736"
 	)
-	static int method3573(int var0, Script var1, boolean var2) {
+	static int method3579(int var0, Script var1, boolean var2) {
 		Widget var3;
 		if (var0 >= 2000) {
 			var0 -= 1000;
@@ -705,7 +705,7 @@ public class ClientPacket implements class181 {
 	@Export("playSoundJingle")
 	static void playSoundJingle(int var0, int var1) {
 		if (Client.field761 != 0 && var0 != -1) {
-			class83.method2064(ClanMate.archive11, var0, 0, Client.field761, false);
+			class83.method2068(ClanMate.archive11, var0, 0, Client.field761, false);
 			Client.field759 = true;
 		}
 

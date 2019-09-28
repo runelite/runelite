@@ -259,7 +259,7 @@ public final class Projectile extends Entity {
 			return false;
 		} else {
 			for (int var1 = 0; var1 < var0.cs1Comparisons.length; ++var1) {
-				int var2 = class216.method4003(var0, var1);
+				int var2 = class216.method4015(var0, var1);
 				int var3 = var0.cs1ComparisonValues[var1];
 				if (var0.cs1Comparisons[var1] == 2) {
 					if (var2 >= var3) {

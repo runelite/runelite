@@ -126,7 +126,7 @@ public class class189 {
 		signature = "(IIIS)I",
 		garbageValue = "22050"
 	)
-	static int method3606(int var0, int var1, int var2) {
+	static int method3612(int var0, int var1, int var2) {
 		if ((Tiles.Tiles_renderFlags[var0][var1][var2] & 8) != 0) {
 			return 0;
 		} else {
@@ -139,7 +139,7 @@ public class class189 {
 		signature = "(II)I",
 		garbageValue = "-1300861116"
 	)
-	public static int method3609(int var0) {
+	public static int method3615(int var0) {
 		if (var0 > 0) {
 			return 1;
 		} else {
@@ -215,7 +215,7 @@ public class class189 {
 			var0 += WorldMapLabel.archive19.percentage() / 100;
 			var0 += VarcInt.archive18.percentage() / 100;
 			var0 += WorldMapEvent.archive20.percentage() / 100;
-			var0 += Client.archive17.method4223() && Client.archive17.isFullyLoaded() ? 1 : 0;
+			var0 += Client.archive17.method4235() && Client.archive17.isFullyLoaded() ? 1 : 0;
 			if (var0 != 100) {
 				if (var0 != 0) {
 					Login.Login_loadingText = "Checking for updates - " + var0 + "%";
@@ -252,7 +252,7 @@ public class class189 {
 				PcmPlayer.PcmPlayer_stereo = var27;
 				MenuAction.PcmPlayer_count = 2;
 				MidiPcmStream var26 = new MidiPcmStream();
-				var26.method3737(9, 128);
+				var26.method3746(9, 128);
 				class219.pcmPlayer0 = GrandExchangeOfferNameComparator.method151(GameShell.taskHandler, 0, 22050);
 				class219.pcmPlayer0.setStream(var26);
 				var2 = Script.archive15;
@@ -271,8 +271,8 @@ public class class189 {
 				Client.titleLoadingStage = 50;
 				UserComparator7.WorldMapElement_fonts = new Fonts(GrandExchangeOfferAgeComparator.archive8, Tile.archive13);
 			} else if (Client.titleLoadingStage == 50) {
-				var0 = FontName.method5257().length;
-				Client.fontsMap = UserComparator7.WorldMapElement_fonts.createMap(FontName.method5257());
+				var0 = FontName.method5272().length;
+				Client.fontsMap = UserComparator7.WorldMapElement_fonts.createMap(FontName.method5272());
 				if (Client.fontsMap.size() < var0) {
 					Login.Login_loadingText = "Loading fonts - " + Client.fontsMap.size() * 100 / var0 + "%";
 					Login.Login_loadingPercent = 40;
@@ -410,7 +410,7 @@ public class class189 {
 								WorldMapElement.WorldMapElement_cached[var18] = new WorldMapElement(var18);
 								if (var19 != null) {
 									WorldMapElement.WorldMapElement_cached[var18].decode(new Buffer(var19));
-									WorldMapElement.WorldMapElement_cached[var18].method4338();
+									WorldMapElement.WorldMapElement_cached[var18].method4350();
 								}
 							}
 						}
@@ -434,7 +434,7 @@ public class class189 {
 					}
 
 					if (class14.mapSceneSprites == null) {
-						class14.mapSceneSprites = class297.method5374(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.mapScenes, 0);
+						class14.mapSceneSprites = class297.method5389(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.mapScenes, 0);
 					} else {
 						++var0;
 					}
@@ -476,13 +476,13 @@ public class class189 {
 					}
 
 					if (class4.scrollBarSprites == null) {
-						class4.scrollBarSprites = class297.method5374(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.field3807, 0);
+						class4.scrollBarSprites = class297.method5389(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.field3807, 0);
 					} else {
 						++var0;
 					}
 
 					if (WorldMapData_0.modIconSprites == null) {
-						WorldMapData_0.modIconSprites = class297.method5374(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.field3806, 0);
+						WorldMapData_0.modIconSprites = class297.method5389(GrandExchangeOfferAgeComparator.archive8, WorldMapData_0.spriteIds.field3806, 0);
 					} else {
 						++var0;
 					}

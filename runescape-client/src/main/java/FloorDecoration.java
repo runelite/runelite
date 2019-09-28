@@ -58,7 +58,7 @@ public final class FloorDecoration {
 		signature = "(II)Lhs;",
 		garbageValue = "-1156266256"
 	)
-	public static ServerBuild method2837(int var0) {
+	public static ServerBuild method2841(int var0) {
 		ServerBuild[] var1 = new ServerBuild[]{ServerBuild.BUILDLIVE, ServerBuild.LIVE, ServerBuild.RC, ServerBuild.WIP};
 		ServerBuild[] var2 = var1;
 
@@ -91,7 +91,7 @@ public final class FloorDecoration {
 			int var15 = (int)(Math.sin(var12) * (double)var14);
 			int var16 = (int)(Math.cos(var12) * (double)var14);
 			byte var17 = 20;
-			PendingSpawn.redHintArrowSprite.method6067(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+			PendingSpawn.redHintArrowSprite.method6090(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
 		} else {
 			class208.drawSpriteOnMinimap(var0, var1, var2, var3, var4, var5);
 		}

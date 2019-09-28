@@ -180,7 +180,7 @@ public class FloorUnderlayDefinition extends DualNode {
 		signature = "(B)[Lcn;",
 		garbageValue = "126"
 	)
-	static AttackOption[] method4383() {
+	static AttackOption[] method4395() {
 		return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
 	}
 

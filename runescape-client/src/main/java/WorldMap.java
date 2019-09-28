@@ -364,7 +364,7 @@ public class WorldMap {
 		signature = "(B)V",
 		garbageValue = "-104"
 	)
-	public void method6291() {
+	public void method6314() {
 		WorldMapRegion.WorldMapRegion_cachedSprites.demote(5);
 	}
 
@@ -424,9 +424,9 @@ public class WorldMap {
 		signature = "(IIZZI)V",
 		garbageValue = "-1491433552"
 	)
-	public void method6422(int var1, int var2, boolean var3, boolean var4) {
+	public void method6445(int var1, int var2, boolean var3, boolean var4) {
 		long var5 = class30.method566();
-		this.method6282(var1, var2, var4, var5);
+		this.method6305(var1, var2, var4, var5);
 		if (!this.hasTarget() && (var4 || var3)) {
 			if (var4) {
 				this.field3957 = var1;
@@ -441,7 +441,7 @@ public class WorldMap {
 				this.setWorldMapPosition(this.field3979 - (int)((float)var7 / this.zoomTarget), (int)((float)var8 / this.zoomTarget) + this.field3991, false);
 			}
 		} else {
-			this.method6246();
+			this.method6269();
 		}
 
 		if (var4) {
@@ -453,7 +453,7 @@ public class WorldMap {
 	}
 
 	@ObfuscatedName("r")
-	void method6282(int var1, int var2, boolean var3, long var4) {
+	void method6305(int var1, int var2, boolean var3, long var4) {
 		if (this.currentMapArea != null) {
 			int var6 = (int)((float)this.centerTileX + ((float)(var1 - this.worldMapDisplayX) - (float)this.getDisplayWith() * this.zoom / 2.0F) / this.zoom);
 			int var7 = (int)((float)this.centerTileY - ((float)(var2 - this.worldMapDisplayY) - (float)this.getDisplayHeight() * this.zoom / 2.0F) / this.zoom);
@@ -461,7 +461,7 @@ public class WorldMap {
 			if (this.mouseCoord != null && var3) {
 				boolean var8 = Client.staffModLevel >= 2;
 				if (var8 && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
-					class287.method5205(this.mouseCoord.x, this.mouseCoord.y, this.mouseCoord.plane, false);
+					class287.method5220(this.mouseCoord.x, this.mouseCoord.y, this.mouseCoord.plane, false);
 				} else {
 					boolean var9 = true;
 					if (this.field3986) {
@@ -545,7 +545,7 @@ public class WorldMap {
 		this.centerTileY = var2;
 		class30.method566();
 		if (var3) {
-			this.method6246();
+			this.method6269();
 		}
 
 	}
@@ -555,7 +555,7 @@ public class WorldMap {
 		signature = "(I)V",
 		garbageValue = "953529386"
 	)
-	final void method6246() {
+	final void method6269() {
 		this.field3982 = -1;
 		this.field3957 = -1;
 		this.field3991 = -1;
@@ -598,7 +598,7 @@ public class WorldMap {
 		signature = "(IIIZI)V",
 		garbageValue = "-2123284790"
 	)
-	public void method6249(int var1, int var2, int var3, boolean var4) {
+	public void method6272(int var1, int var2, int var3, boolean var4) {
 		WorldMapArea var5 = this.mapAreaAtCoord(var1, var2, var3);
 		if (var5 == null) {
 			if (!var4) {
@@ -685,7 +685,7 @@ public class WorldMap {
 		signature = "(Lac;Lhb;Lhb;ZI)V",
 		garbageValue = "-1837684354"
 	)
-	public void method6426(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
+	public void method6449(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
 		if (var1 != null) {
 			if (this.currentMapArea == null || var1 != this.currentMapArea) {
 				this.initializeWorldMapManager(var1);
@@ -772,7 +772,7 @@ public class WorldMap {
 				this.worldMapManager.drawElements(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, var1, var2, var3 + var1, var2 + var4, this.field3993, this.flashingElements, this.flashCycle, this.cyclesPerFlash, var10);
 			}
 
-			this.method6259(var1, var2, var3, var4, var8, var9);
+			this.method6282(var1, var2, var3, var4, var8, var9);
 			var10 = Client.staffModLevel >= 2;
 			if (var10 && this.showCoord && this.mouseCoord != null) {
 				this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 16776960, -1);
@@ -791,7 +791,7 @@ public class WorldMap {
 		signature = "(IIIIIII)Z",
 		garbageValue = "-219082293"
 	)
-	boolean method6313(int var1, int var2, int var3, int var4, int var5, int var6) {
+	boolean method6336(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (this.sprite == null) {
 			return true;
 		} else if (this.sprite.subWidth == var1 && this.sprite.subHeight == var2) {
@@ -814,7 +814,7 @@ public class WorldMap {
 		signature = "(IIIIIIB)V",
 		garbageValue = "-51"
 	)
-	void method6259(int var1, int var2, int var3, int var4, int var5, int var6) {
+	void method6282(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (StudioGame.field3086 != null) {
 			int var7 = 512 / (this.worldMapManager.pixelsPerTile * 2);
 			int var8 = var3 + 512;
@@ -826,7 +826,7 @@ public class WorldMap {
 			int var12 = this.getDisplayY() - var6 / 2 - var7;
 			int var13 = var1 - (var11 + var7 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
 			int var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
-			if (this.method6313(var8, var9, var13, var14, var3, var4)) {
+			if (this.method6336(var8, var9, var13, var14, var3, var4)) {
 				if (this.sprite != null && this.sprite.subWidth == var8 && this.sprite.subHeight == var9) {
 					Arrays.fill(this.sprite.pixels, 0);
 				} else {
@@ -836,7 +836,7 @@ public class WorldMap {
 				this.minCachedTileX = this.getDisplayX() - var5 / 2 - var7;
 				this.minCachedTileY = this.getDisplayY() - var6 / 2 - var7;
 				this.cachedPixelsPerTile = this.worldMapManager.pixelsPerTile;
-				StudioGame.field3086.method4291(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
+				StudioGame.field3086.method4303(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
 				this.field4004 = Client.field905;
 				var13 = var1 - (var7 + var11 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
 				var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
@@ -844,9 +844,9 @@ public class WorldMap {
 
 			Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
 			if (1.0F == var10) {
-				this.sprite.method6059(var13, var14, 192);
+				this.sprite.method6082(var13, var14, 192);
 			} else {
-				this.sprite.method6062(var13, var14, (int)(var10 * (float)var8), (int)((float)var9 * var10), 192);
+				this.sprite.method6085(var13, var14, (int)(var10 * (float)var8), (int)((float)var9 * var10), 192);
 			}
 		}
 
@@ -1208,7 +1208,7 @@ public class WorldMap {
 			this.enabledElements.remove(var1);
 		}
 
-		this.method6247();
+		this.method6270();
 	}
 
 	@ObfuscatedName("bd")
@@ -1235,7 +1235,7 @@ public class WorldMap {
 			}
 		}
 
-		this.method6247();
+		this.method6270();
 	}
 
 	@ObfuscatedName("bm")
@@ -1273,7 +1273,7 @@ public class WorldMap {
 		signature = "(I)V",
 		garbageValue = "-1172651735"
 	)
-	void method6247() {
+	void method6270() {
 		this.field3993.clear();
 		this.field3993.addAll(this.enabledElements);
 		this.field3993.addAll(this.enabledElementIds);
@@ -1320,7 +1320,7 @@ public class WorldMap {
 		signature = "(ILhb;I)Lhb;",
 		garbageValue = "1301957345"
 	)
-	public Coord method6293(int var1, Coord var2) {
+	public Coord method6316(int var1, Coord var2) {
 		if (!this.cacheLoader.isLoaded()) {
 			return null;
 		} else if (!this.worldMapManager.isLoaded()) {

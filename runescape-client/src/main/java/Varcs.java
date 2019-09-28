@@ -57,7 +57,7 @@ public class Varcs {
 				byte[] var5 = VarcInt.VarcInt_archive.takeFile(19, var2);
 				var4 = new VarcInt();
 				if (var5 != null) {
-					var4.method4360(new Buffer(var5));
+					var4.method4372(new Buffer(var5));
 				}
 
 				VarcInt.VarcInt_cached.put(var4, (long)var2);
@@ -68,7 +68,7 @@ public class Varcs {
 		}
 
 		var2 = 0;
-		if (FaceNormal.archive2.method4232(15)) {
+		if (FaceNormal.archive2.method4244(15)) {
 			var2 = FaceNormal.archive2.getGroupFileCount(15);
 		}
 
@@ -249,7 +249,7 @@ public class Varcs {
 	void read() {
 		AccessFile var1 = this.getPreferencesFile(false);
 
-		label230: {
+		label227: {
 			try {
 				byte[] var2 = new byte[(int)var1.length()];
 
@@ -262,62 +262,62 @@ public class Varcs {
 				}
 
 				Buffer var14 = new Buffer(var2);
-				if (var14.array.length - var14.offset >= 1) {
-					int var15 = var14.readUnsignedByte();
-					if (var15 >= 0 && var15 <= 2) {
-						int var7;
-						int var8;
-						int var9;
-						int var16;
-						if (var15 >= 2) {
-							var16 = var14.readUnsignedShort();
-							var7 = 0;
-
-							while (true) {
-								if (var7 >= var16) {
-									break label230;
-								}
-
-								var8 = var14.readUnsignedShort();
-								var9 = var14.readUnsignedByte();
-								class3 var10 = (class3)NetSocket.findEnumerated(class3.method41(), var9);
-								Object var11 = var10.method35(var14);
-								if (this.intsPersistence[var8]) {
-									this.map.put(var8, var11);
-								}
-
-								++var7;
-							}
-						} else {
-							var16 = var14.readUnsignedShort();
-
-							for (var7 = 0; var7 < var16; ++var7) {
-								var8 = var14.readUnsignedShort();
-								var9 = var14.readInt();
-								if (this.intsPersistence[var8]) {
-									this.map.put(var8, var9);
-								}
-							}
-
-							var7 = var14.readUnsignedShort();
-							var8 = 0;
-
-							while (true) {
-								if (var8 >= var7) {
-									break label230;
-								}
-
-								var14.readUnsignedShort();
-								var14.readStringCp1252NullTerminated();
-								++var8;
-							}
-						}
-					}
-
+				if (var14.array.length - var14.offset < 1) {
 					return;
 				}
+
+				int var15 = var14.readUnsignedByte();
+				if (var15 >= 0 && var15 <= 2) {
+					int var7;
+					int var8;
+					int var9;
+					int var16;
+					if (var15 >= 2) {
+						var16 = var14.readUnsignedShort();
+						var7 = 0;
+
+						while (true) {
+							if (var7 >= var16) {
+								break label227;
+							}
+
+							var8 = var14.readUnsignedShort();
+							var9 = var14.readUnsignedByte();
+							class3 var10 = (class3)NetSocket.findEnumerated(class3.method41(), var9);
+							Object var11 = var10.method35(var14);
+							if (this.intsPersistence[var8]) {
+								this.map.put(var8, var11);
+							}
+
+							++var7;
+						}
+					} else {
+						var16 = var14.readUnsignedShort();
+
+						for (var7 = 0; var7 < var16; ++var7) {
+							var8 = var14.readUnsignedShort();
+							var9 = var14.readInt();
+							if (this.intsPersistence[var8]) {
+								this.map.put(var8, var9);
+							}
+						}
+
+						var7 = var14.readUnsignedShort();
+						var8 = 0;
+
+						while (true) {
+							if (var8 >= var7) {
+								break label227;
+							}
+
+							var14.readUnsignedShort();
+							var14.readStringCp1252NullTerminated();
+							++var8;
+						}
+					}
+				}
 			} catch (Exception var25) {
-				break label230;
+				break label227;
 			} finally {
 				try {
 					var1.close();

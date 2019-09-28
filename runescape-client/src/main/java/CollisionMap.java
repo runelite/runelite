@@ -69,7 +69,7 @@ public class CollisionMap {
 		signature = "(IIIIZI)V",
 		garbageValue = "1400659630"
 	)
-	public void method3502(int var1, int var2, int var3, int var4, boolean var5) {
+	public void method3508(int var1, int var2, int var3, int var4, boolean var5) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		if (var3 == 0) {
@@ -285,7 +285,7 @@ public class CollisionMap {
 		signature = "(IIIIZI)V",
 		garbageValue = "1060838313"
 	)
-	public void method3508(int var1, int var2, int var3, int var4, boolean var5) {
+	public void method3514(int var1, int var2, int var3, int var4, boolean var5) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		if (var3 == 0) {
@@ -481,7 +481,7 @@ public class CollisionMap {
 		signature = "(IIS)V",
 		garbageValue = "-6856"
 	)
-	public void method3511(int var1, int var2) {
+	public void method3517(int var1, int var2) {
 		var1 -= this.xInset;
 		var2 -= this.yInset;
 		int[] var10000 = this.flags[var1];
@@ -493,7 +493,7 @@ public class CollisionMap {
 		signature = "(I[BLkg;I)V",
 		garbageValue = "1190241493"
 	)
-	static void method3530(int var0, byte[] var1, ArchiveDisk var2) {
+	static void method3536(int var0, byte[] var1, ArchiveDisk var2) {
 		ArchiveDiskAction var3 = new ArchiveDiskAction();
 		var3.type = 0;
 		var3.key = (long)var0;
@@ -520,7 +520,7 @@ public class CollisionMap {
 		signature = "(Ljava/awt/Component;I)V",
 		garbageValue = "-1662439433"
 	)
-	static void method3538(Component var0) {
+	static void method3544(Component var0) {
 		var0.removeMouseListener(MouseHandler.MouseHandler_instance);
 		var0.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
 		var0.removeFocusListener(MouseHandler.MouseHandler_instance);

@@ -38,7 +38,7 @@ public class UserComparator6 extends AbstractUserComparator {
 		signature = "([BIII)Ljava/lang/String;",
 		garbageValue = "1774248129"
 	)
-	public static String method3404(byte[] var0, int var1, int var2) {
+	public static String method3408(byte[] var0, int var1, int var2) {
 		char[] var3 = new char[var2];
 		int var4 = 0;
 		int var5 = var1;
@@ -96,7 +96,7 @@ public class UserComparator6 extends AbstractUserComparator {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-1182264787"
 	)
-	static int method3403(int var0, Script var1, boolean var2) {
+	static int method3407(int var0, Script var1, boolean var2) {
 		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
 		if (var0 == ScriptOpcodes.CC_GETSCROLLX) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollX;
@@ -153,7 +153,7 @@ public class UserComparator6 extends AbstractUserComparator {
 		signature = "(ILcu;ZB)I",
 		garbageValue = "126"
 	)
-	static int method3407(int var0, Script var1, boolean var2) {
+	static int method3411(int var0, Script var1, boolean var2) {
 		Widget var3;
 		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
 			var3 = Canvas.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
@@ -191,13 +191,13 @@ public class UserComparator6 extends AbstractUserComparator {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "600807723"
 	)
-	static int method3398(int var0, Script var1, boolean var2) {
+	static int method3402(int var0, Script var1, boolean var2) {
 		int var3;
 		if (var0 == 6600) {
 			var3 = WorldMapRectangle.plane;
 			int var9 = class223.baseX * 64 + (class223.localPlayer.x >> 7);
-			int var5 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
-			Decimator.getWorldMap().method6249(var3, var9, var5, true);
+			int var5 = class286.baseY * 64 + (class223.localPlayer.y >> 7);
+			Decimator.getWorldMap().method6272(var3, var9, var5, true);
 			return 1;
 		} else {
 			WorldMapArea var11;
@@ -451,7 +451,7 @@ public class UserComparator6 extends AbstractUserComparator {
 										Interpreter.Interpreter_intStackSize -= 2;
 										var3 = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
 										var12 = new Coord(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
-										var7 = Decimator.getWorldMap().method6293(var3, var12);
+										var7 = Decimator.getWorldMap().method6316(var3, var12);
 										if (var7 == null) {
 											Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = -1;
 										} else {

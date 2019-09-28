@@ -33,7 +33,7 @@ public class class191 {
 		signature = "(I)V",
 		garbageValue = "1561368496"
 	)
-	public static void method3631() {
+	public static void method3640() {
 		if (KeyHandler.KeyHandler_instance != null) {
 			synchronized(KeyHandler.KeyHandler_instance) {
 				KeyHandler.KeyHandler_instance = null;
@@ -47,12 +47,12 @@ public class class191 {
 		signature = "(Lby;I)V",
 		garbageValue = "616240991"
 	)
-	static final void method3630(Actor var0) {
+	static final void method3639(Actor var0) {
 		int var1 = var0.field948 - Client.cycle;
 		int var2 = var0.field932 * -527978816 + var0.field971 * 128;
 		int var3 = var0.field932 * -527978816 + var0.field973 * 128;
 		var0.x += (var2 - var0.x) / var1;
-		var0.y += (var3 - var0.y * 682054857) / var1 * -944175751;
+		var0.y += (var3 - var0.y) / var1;
 		var0.field949 = 0;
 		var0.orientation = var0.field977;
 	}

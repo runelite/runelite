@@ -95,7 +95,7 @@ public class GrandExchangeEvents {
 		garbageValue = "91"
 	)
 	static Widget method81(Widget var0) {
-		int var1 = UserComparator9.method3355(class2.getWidgetClickMask(var0));
+		int var1 = UserComparator9.method3359(class2.getWidgetClickMask(var0));
 		if (var1 == 0) {
 			return null;
 		} else {

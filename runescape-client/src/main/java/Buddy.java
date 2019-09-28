@@ -67,7 +67,7 @@ public class Buddy extends User {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "1426462552"
 	)
-	static int method5099(int var0, Script var1, boolean var2) {
+	static int method5111(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.FRIEND_COUNT) {
 			if (Tiles.friendSystem.field1052 == 0) {
 				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = -2;
@@ -82,7 +82,7 @@ public class Buddy extends User {
 			int var3;
 			if (var0 == ScriptOpcodes.FRIEND_GETNAME) {
 				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				if (Tiles.friendSystem.method1859() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
+				if (Tiles.friendSystem.method1863() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
 					Friend var8 = (Friend)Tiles.friendSystem.friendsList.get(var3);
 					Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var8.getName();
 					Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var8.getPreviousName();
@@ -94,7 +94,7 @@ public class Buddy extends User {
 				return 1;
 			} else if (var0 == ScriptOpcodes.FRIEND_GETWORLD) {
 				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				if (Tiles.friendSystem.method1859() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
+				if (Tiles.friendSystem.method1863() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = ((Buddy)Tiles.friendSystem.friendsList.get(var3)).world;
 				} else {
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
@@ -103,7 +103,7 @@ public class Buddy extends User {
 				return 1;
 			} else if (var0 == ScriptOpcodes.FRIEND_GETRANK) {
 				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				if (Tiles.friendSystem.method1859() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
+				if (Tiles.friendSystem.method1863() && var3 >= 0 && var3 < Tiles.friendSystem.friendsList.getSize()) {
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = ((Buddy)Tiles.friendSystem.friendsList.get(var3)).rank;
 				} else {
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
@@ -115,7 +115,7 @@ public class Buddy extends User {
 				if (var0 == ScriptOpcodes.FRIEND_SETRANK) {
 					var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
 					int var6 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-					NPC.method2046(var5, var6);
+					NPC.method2050(var5, var6);
 					return 1;
 				} else if (var0 == ScriptOpcodes.FRIEND_ADD) {
 					var5 = Interpreter.Interpreter_stringStack[--Interpreter.Interpreter_stringStackSize];
@@ -199,7 +199,7 @@ public class Buddy extends User {
 					WorldMapLabel.Clan_leaveChat();
 					return 1;
 				} else if (var0 == ScriptOpcodes.IGNORE_COUNT) {
-					if (!Tiles.friendSystem.method1859()) {
+					if (!Tiles.friendSystem.method1863()) {
 						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = -1;
 					} else {
 						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Tiles.friendSystem.ignoreList.getSize();
@@ -208,7 +208,7 @@ public class Buddy extends User {
 					return 1;
 				} else if (var0 == ScriptOpcodes.IGNORE_GETNAME) {
 					var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-					if (Tiles.friendSystem.method1859() && var3 >= 0 && var3 < Tiles.friendSystem.ignoreList.getSize()) {
+					if (Tiles.friendSystem.method1863() && var3 >= 0 && var3 < Tiles.friendSystem.ignoreList.getSize()) {
 						Ignored var4 = (Ignored)Tiles.friendSystem.ignoreList.get(var3);
 						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var4.getName();
 						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var4.getPreviousName();

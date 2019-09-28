@@ -68,9 +68,9 @@ public class Bounds {
 		signature = "(Lll;Lll;I)V",
 		garbageValue = "2079875928"
 	)
-	public void method5893(Bounds var1, Bounds var2) {
-		this.method5905(var1, var2);
-		this.method5894(var1, var2);
+	public void method5913(Bounds var1, Bounds var2) {
+		this.method5927(var1, var2);
+		this.method5914(var1, var2);
 	}
 
 	@ObfuscatedName("u")
@@ -78,7 +78,7 @@ public class Bounds {
 		signature = "(Lll;Lll;B)V",
 		garbageValue = "-1"
 	)
-	void method5905(Bounds var1, Bounds var2) {
+	void method5927(Bounds var1, Bounds var2) {
 		var2.lowX = this.lowX;
 		var2.highX = this.highX;
 		if (this.lowX < var1.lowX) {
@@ -86,8 +86,8 @@ public class Bounds {
 			var2.lowX = var1.lowX;
 		}
 
-		if (var2.method5896() > var1.method5896()) {
-			var2.highX -= var2.method5896() - var1.method5896();
+		if (var2.method5916() > var1.method5916()) {
+			var2.highX -= var2.method5916() - var1.method5916();
 		}
 
 		if (var2.highX < 0) {
@@ -101,7 +101,7 @@ public class Bounds {
 		signature = "(Lll;Lll;I)V",
 		garbageValue = "-1654040739"
 	)
-	void method5894(Bounds var1, Bounds var2) {
+	void method5914(Bounds var1, Bounds var2) {
 		var2.lowY = this.lowY;
 		var2.highY = this.highY;
 		if (this.lowY < var1.lowY) {
@@ -109,8 +109,8 @@ public class Bounds {
 			var2.lowY = var1.lowY;
 		}
 
-		if (var2.method5892() > var1.method5892()) {
-			var2.highY -= var2.method5892() - var1.method5892();
+		if (var2.method5912() > var1.method5912()) {
+			var2.highY -= var2.method5912() - var1.method5912();
 		}
 
 		if (var2.highY < 0) {
@@ -124,7 +124,7 @@ public class Bounds {
 		signature = "(I)I",
 		garbageValue = "769635987"
 	)
-	int method5896() {
+	int method5916() {
 		return this.lowX + this.highX;
 	}
 
@@ -133,23 +133,11 @@ public class Bounds {
 		signature = "(B)I",
 		garbageValue = "59"
 	)
-	int method5892() {
+	int method5912() {
 		return this.highY + this.lowY;
 	}
 
 	public String toString() {
-		return null;
-	}
-
-	public String aak() {
-		return null;
-	}
-
-	public String aae() {
-		return null;
-	}
-
-	public String aah() {
 		return null;
 	}
 }

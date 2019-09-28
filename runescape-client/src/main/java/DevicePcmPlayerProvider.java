@@ -88,10 +88,10 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
 			int var22 = var1 - var16;
 			int var23 = var7 + var1 - var16;
 			int var24 = var15 + var7 + var1;
-			Rasterizer3D.method2968(var17, var18, var19);
-			Rasterizer3D.method2971(var21, var22, var23, var17, var18, var19, var4);
-			Rasterizer3D.method2968(var17, var19, var20);
-			Rasterizer3D.method2971(var21, var23, var24, var17, var19, var20, var4);
+			Rasterizer3D.method2972(var17, var18, var19);
+			Rasterizer3D.method2975(var21, var22, var23, var17, var18, var19, var4);
+			Rasterizer3D.method2972(var17, var19, var20);
+			Rasterizer3D.method2975(var21, var23, var24, var17, var19, var20, var4);
 		}
 	}
 }

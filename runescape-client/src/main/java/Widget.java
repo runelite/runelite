@@ -1318,7 +1318,7 @@ public class Widget extends Node {
 			if (var1 != null) {
 				return var1;
 			} else {
-				var1 = ClanMate.method4964(ClientPreferences.Widget_spritesArchive, class2.Widget_fontsArchive, this.fontId, 0);
+				var1 = ClanMate.method4976(ClientPreferences.Widget_spritesArchive, class2.Widget_fontsArchive, this.fontId, 0);
 				if (var1 != null) {
 					Widget_cachedFonts.put(var1, (long)this.fontId);
 				} else {
@@ -1430,7 +1430,7 @@ public class Widget extends Node {
 						return null;
 					}
 
-					var7 = var8.toModel(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
+					var7 = var8.toModel(var9.ambient + 64, var9.contrast * 5 + 768, -50, -10, -50);
 				}
 
 				Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));

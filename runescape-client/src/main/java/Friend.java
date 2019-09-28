@@ -61,7 +61,7 @@ public class Friend extends Buddy {
 		signature = "(I)V",
 		garbageValue = "530220947"
 	)
-	static void method5133() {
+	static void method5148() {
 		Tiles.field501 = null;
 		Tiles.field483 = null;
 		DevicePcmPlayerProvider.field393 = null;
@@ -84,7 +84,7 @@ public class Friend extends Buddy {
 	@Export("drawEntities")
 	static final void drawEntities(int var0, int var1, int var2, int var3) {
 		++Client.viewportDrawCount;
-		if (class223.localPlayer.x >> 7 == Client.destinationX && class223.localPlayer.y * 682054857 >> 7 == Client.destinationY) {
+		if (class223.localPlayer.x >> 7 == Client.destinationX && class223.localPlayer.y >> 7 == Client.destinationY) {
 			Client.destinationX = 0;
 		}
 
@@ -92,11 +92,11 @@ public class Friend extends Buddy {
 			Players.addPlayerToScene(class223.localPlayer, false);
 		}
 
-		UrlRequest.method3275();
+		UrlRequest.method3279();
 		class4.addNpcsToScene(true);
-		Login.method2110();
+		Login.method2114();
 		class4.addNpcsToScene(false);
-		DynamicObject.method2221();
+		DynamicObject.method2225();
 
 		for (GraphicsObject var4 = (GraphicsObject)Client.graphicsObjects.last(); var4 != null; var4 = (GraphicsObject)Client.graphicsObjects.previous()) {
 			if (var4.plane == WorldMapRectangle.plane && !var4.isFinished) {
@@ -138,10 +138,10 @@ public class Friend extends Buddy {
 
 			var5 = Client.camAngleY & 2047;
 			var6 = ObjectSound.oculusOrbFocalPointX;
-			var7 = ModelData0.field1840 * -1351160427;
+			var7 = ModelData0.field1840;
 			var8 = class14.oculusOrbFocalPointY;
 			var11 = var15 * 3 + 600;
-			NPCDefinition.method4665(var6, var7, var8, var15, var5, var11, var3);
+			NPCDefinition.method4677(var6, var7, var8, var15, var5, var11, var3);
 		}
 
 		int var9;
@@ -161,7 +161,7 @@ public class Friend extends Buddy {
 							var8 = class14.oculusOrbFocalPointY >> 7;
 						} else {
 							var7 = class223.localPlayer.x >> 7;
-							var8 = class223.localPlayer.y * 682054857 >> 7;
+							var8 = class223.localPlayer.y >> 7;
 						}
 
 						var9 = GrandExchangeOfferOwnWorldComparator.cameraX >> 7;
@@ -253,8 +253,8 @@ public class Friend extends Buddy {
 						}
 					}
 
-					if (class223.localPlayer.x >= 0 && class223.localPlayer.y * 682054857 >= 0 && class223.localPlayer.x < 13312 && class223.localPlayer.y * 682054857 < 13312) {
-						if ((Tiles.Tiles_renderFlags[WorldMapRectangle.plane][class223.localPlayer.x >> 7][class223.localPlayer.y * 682054857 >> 7] & 4) != 0) {
+					if (class223.localPlayer.x >= 0 && class223.localPlayer.y >= 0 && class223.localPlayer.x < 13312 && class223.localPlayer.y < 13312) {
+						if ((Tiles.Tiles_renderFlags[WorldMapRectangle.plane][class223.localPlayer.x >> 7][class223.localPlayer.y >> 7] & 4) != 0) {
 							var6 = WorldMapRectangle.plane;
 						}
 
@@ -318,7 +318,7 @@ public class Friend extends Buddy {
 		if (var10 >= var0 && var10 < var0 + var2 && var11 >= var1 && var11 < var3 + var1) {
 			WorldMapSection1.method582(var10 - var0, var11 - var1);
 		} else {
-			MenuAction.method2062();
+			MenuAction.method2066();
 		}
 
 		WorldMapID.playPcmPlayers();
@@ -330,12 +330,12 @@ public class Friend extends Buddy {
 		Rasterizer3D.Rasterizer3D_zoom = var12;
 		WorldMapID.playPcmPlayers();
 		PacketWriter.scene.clearTempGameObjects();
-		ViewportMouse.method2950(var0, var1, var2, var3);
+		ViewportMouse.method2954(var0, var1, var2, var3);
 		Message.method1231(var0, var1);
 		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).animate(Client.field698);
 		Client.field634 = 0;
 		var13 = class223.baseX * 64 + (class223.localPlayer.x >> 7);
-		var14 = class286.baseY * 64 + (class223.localPlayer.y * 682054857 >> 7);
+		var14 = class286.baseY * 64 + (class223.localPlayer.y >> 7);
 		if (var13 >= 3053 && var13 <= 3156 && var14 >= 3056 && var14 <= 3136) {
 			Client.field634 = 1;
 		}

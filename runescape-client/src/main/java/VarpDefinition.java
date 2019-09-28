@@ -76,7 +76,7 @@ public class VarpDefinition extends DualNode {
 		signature = "(ILcu;ZI)I",
 		garbageValue = "-1744608160"
 	)
-	static int method4335(int var0, Script var1, boolean var2) {
+	static int method4347(int var0, Script var1, boolean var2) {
 		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
 		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
 			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemId;

@@ -42,7 +42,7 @@ public class MusicPatchPcmStream extends PcmStream {
 		signature = "(Lgu;[IIIII)V",
 		garbageValue = "1901627378"
 	)
-	void method3870(MusicPatchNode var1, int[] var2, int var3, int var4, int var5) {
+	void method3879(MusicPatchNode var1, int[] var2, int var3, int var4, int var5) {
 		if ((this.superStream.field2404[var1.field2420] & 4) != 0 && var1.field2433 < 0) {
 			int var6 = this.superStream.field2401[var1.field2420] / UrlRequest.PcmPlayer_sampleRate;
 
@@ -65,20 +65,20 @@ public class MusicPatchPcmStream extends PcmStream {
 
 				RawPcmStream var10 = var1.stream;
 				if (this.superStream.field2408[var1.field2420] == 0) {
-					var1.stream = RawPcmStream.method2544(var1.rawSound, var10.method2527(), var10.method2518(), var10.method2519());
+					var1.stream = RawPcmStream.method2548(var1.rawSound, var10.method2531(), var10.method2522(), var10.method2523());
 				} else {
-					var1.stream = RawPcmStream.method2544(var1.rawSound, var10.method2527(), 0, var10.method2519());
-					this.superStream.method3673(var1, var1.patch.field2457[var1.field2424] < 0);
-					var1.stream.method2523(var8, var10.method2518());
+					var1.stream = RawPcmStream.method2548(var1.rawSound, var10.method2531(), 0, var10.method2523());
+					this.superStream.method3682(var1, var1.patch.field2457[var1.field2424] < 0);
+					var1.stream.method2527(var8, var10.method2522());
 				}
 
 				if (var1.patch.field2457[var1.field2424] < 0) {
 					var1.stream.setNumLoops(-1);
 				}
 
-				var10.method2525(var8);
+				var10.method2529(var8);
 				var10.fill(var2, var3, var5 - var3);
-				if (var10.method2529()) {
+				if (var10.method2533()) {
 					this.mixer.addSubStream(var10);
 				}
 			}
@@ -92,17 +92,17 @@ public class MusicPatchPcmStream extends PcmStream {
 		signature = "(Lgu;IB)V",
 		garbageValue = "66"
 	)
-	void method3866(MusicPatchNode var1, int var2) {
+	void method3875(MusicPatchNode var1, int var2) {
 		if ((this.superStream.field2404[var1.field2420] & 4) != 0 && var1.field2433 < 0) {
 			int var3 = this.superStream.field2401[var1.field2420] / UrlRequest.PcmPlayer_sampleRate;
 			int var4 = (var3 + 1048575 - var1.field2419) / var3;
 			var1.field2419 = var3 * var2 + var1.field2419 & 1048575;
 			if (var4 <= var2) {
 				if (this.superStream.field2408[var1.field2420] == 0) {
-					var1.stream = RawPcmStream.method2544(var1.rawSound, var1.stream.method2527(), var1.stream.method2518(), var1.stream.method2519());
+					var1.stream = RawPcmStream.method2548(var1.rawSound, var1.stream.method2531(), var1.stream.method2522(), var1.stream.method2523());
 				} else {
-					var1.stream = RawPcmStream.method2544(var1.rawSound, var1.stream.method2527(), 0, var1.stream.method2519());
-					this.superStream.method3673(var1, var1.patch.field2457[var1.field2424] < 0);
+					var1.stream = RawPcmStream.method2548(var1.rawSound, var1.stream.method2531(), 0, var1.stream.method2523());
+					this.superStream.method3682(var1, var1.patch.field2457[var1.field2424] < 0);
 				}
 
 				if (var1.patch.field2457[var1.field2424] < 0) {
@@ -148,7 +148,7 @@ public class MusicPatchPcmStream extends PcmStream {
 	}
 
 	@ObfuscatedName("m")
-	protected int vmethod3873() {
+	protected int vmethod3882() {
 		return 0;
 	}
 
@@ -158,21 +158,21 @@ public class MusicPatchPcmStream extends PcmStream {
 		this.mixer.fill(var1, var2, var3);
 
 		for (MusicPatchNode var6 = (MusicPatchNode)this.queue.last(); var6 != null; var6 = (MusicPatchNode)this.queue.previous()) {
-			if (!this.superStream.method3695(var6)) {
+			if (!this.superStream.method3704(var6)) {
 				int var4 = var2;
 				int var5 = var3;
 
 				do {
 					if (var5 <= var6.field2438) {
-						this.method3870(var6, var1, var4, var5, var4 + var5);
+						this.method3879(var6, var1, var4, var5, var4 + var5);
 						var6.field2438 -= var5;
 						break;
 					}
 
-					this.method3870(var6, var1, var4, var6.field2438, var4 + var5);
+					this.method3879(var6, var1, var4, var6.field2438, var4 + var5);
 					var4 += var6.field2438;
 					var5 -= var6.field2438;
-				} while(!this.superStream.method3696(var6, var1, var4, var5));
+				} while(!this.superStream.method3705(var6, var1, var4, var5));
 			}
 		}
 
@@ -184,19 +184,19 @@ public class MusicPatchPcmStream extends PcmStream {
 		this.mixer.skip(var1);
 
 		for (MusicPatchNode var3 = (MusicPatchNode)this.queue.last(); var3 != null; var3 = (MusicPatchNode)this.queue.previous()) {
-			if (!this.superStream.method3695(var3)) {
+			if (!this.superStream.method3704(var3)) {
 				int var2 = var1;
 
 				do {
 					if (var2 <= var3.field2438) {
-						this.method3866(var3, var2);
+						this.method3875(var3, var2);
 						var3.field2438 -= var2;
 						break;
 					}
 
-					this.method3866(var3, var3.field2438);
+					this.method3875(var3, var3.field2438);
 					var2 -= var3.field2438;
-				} while(!this.superStream.method3696(var3, (int[])null, 0, var2));
+				} while(!this.superStream.method3705(var3, (int[])null, 0, var2));
 			}
 		}
 
@@ -205,7 +205,7 @@ public class MusicPatchPcmStream extends PcmStream {
 	@ObfuscatedName("gf")
 	@ObfuscatedSignature(
 		signature = "(IIII)I",
-		garbageValue = "-781967444"
+		garbageValue = "-2075145984"
 	)
 	@Export("getTileHeight")
 	static final int getTileHeight(int var0, int var1, int var2) {

@@ -144,7 +144,7 @@ public class VorbisSample extends Node {
 	}
 
 	@ObfuscatedName("q")
-	float[] method2340(int var1) {
+	float[] method2344(int var1) {
 		VorbisSample_setData(this.field1349[var1], 0);
 		readBit();
 		int var2 = readBits(TileItem.iLog(VorbisSample_mapping.length - 1));
@@ -193,14 +193,14 @@ public class VorbisSample extends Node {
 		for (var17 = 0; var17 < var14.submaps; ++var17) {
 			VorbisResidue var18 = VorbisSample_residues[var14.submapResidue[var17]];
 			float[] var19 = field1353;
-			var18.method2489(var19, var4 >> 1, var45);
+			var18.method2493(var19, var4 >> 1, var45);
 		}
 
 		int var40;
 		if (!var15) {
 			var17 = var14.mappingMux;
 			var40 = var14.submapFloor[var17];
-			VorbisSample_floors[var40].method2373(field1353, var4 >> 1);
+			VorbisSample_floors[var40].method2377(field1353, var4 >> 1);
 		}
 
 		int var42;
@@ -419,7 +419,7 @@ public class VorbisSample extends Node {
 					return null;
 				}
 
-				float[] var2 = this.method2340(this.field1343);
+				float[] var2 = this.method2344(this.field1343);
 				if (var2 != null) {
 					int var3 = this.field1363;
 					int var4 = var2.length;
@@ -508,7 +508,7 @@ public class VorbisSample extends Node {
 	}
 
 	@ObfuscatedName("p")
-	static void method2339(byte[] var0) {
+	static void method2343(byte[] var0) {
 		VorbisSample_setData(var0, 0);
 		VorbisSample_blockSize0 = 1 << readBits(4);
 		VorbisSample_blockSize1 = 1 << readBits(4);
@@ -625,14 +625,14 @@ public class VorbisSample extends Node {
 	@ObfuscatedSignature(
 		signature = "(Lhp;)Z"
 	)
-	static boolean method2341(AbstractArchive var0) {
+	static boolean method2345(AbstractArchive var0) {
 		if (!field1348) {
 			byte[] var1 = var0.takeFile(0, 0);
 			if (var1 == null) {
 				return false;
 			}
 
-			method2339(var1);
+			method2343(var1);
 			field1348 = true;
 		}
 
@@ -645,7 +645,7 @@ public class VorbisSample extends Node {
 	)
 	@Export("readMusicSample")
 	static VorbisSample readMusicSample(AbstractArchive var0, int var1, int var2) {
-		if (!method2341(var0)) {
+		if (!method2345(var0)) {
 			var0.tryLoadFile(var1, var2);
 			return null;
 		} else {
