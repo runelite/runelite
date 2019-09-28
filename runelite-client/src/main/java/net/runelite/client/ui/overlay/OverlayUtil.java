@@ -72,6 +72,17 @@ public class OverlayUtil
 		graphics.setStroke(originalStroke);
 	}
 
+	public static void renderPolygonThin(Graphics2D graphics, Polygon poly, Color color)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(1));
+		graphics.drawPolygon(poly);
+		graphics.setColor(new Color(0, 0, 0, 50));
+		graphics.fillPolygon(poly);
+		graphics.setStroke(originalStroke);
+	}
+
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(Color.BLACK);
@@ -286,12 +297,12 @@ public class OverlayUtil
 
 	public static void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color, BufferedImage image, int yOffset, int xOffset)
 	{
-		Point textLocation = 		actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + yOffset);
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + yOffset);
 
 		if (textLocation != null)
 		{
 			renderImageLocation(graphics, textLocation, image);
-			textLocation = new Point(textLocation.getX() + xOffset , textLocation.getY());
+			textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY());
 			renderTextLocation(graphics, textLocation, text, color);
 		}
 	}

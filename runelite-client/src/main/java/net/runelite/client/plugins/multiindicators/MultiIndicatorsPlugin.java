@@ -120,6 +120,8 @@ public class MultiIndicatorsPlugin extends Plugin
 	private Color safeZoneColor;
 	@Getter(AccessLevel.PACKAGE)
 	private Color wildernessLevelLinesColor;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean thinnerLines;
 
 	@Provides
 	MultiIndicatorsConfig getConfig(ConfigManager configManager)
@@ -407,5 +409,6 @@ public class MultiIndicatorsPlugin extends Plugin
 		this.multicombatColor = config.multicombatColor();
 		this.safeZoneColor = config.safeZoneColor();
 		this.wildernessLevelLinesColor = config.wildernessLevelLinesColor();
+		this.thinnerLines = config.thinnerLines();
 	}
 }

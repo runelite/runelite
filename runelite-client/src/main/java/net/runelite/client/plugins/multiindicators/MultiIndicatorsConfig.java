@@ -121,4 +121,15 @@ public interface MultiIndicatorsConfig extends Config
 		return Color.WHITE;
 	}
 
+	@ConfigItem(
+		keyName = "thinnerLines",
+		name = "Thin lines",
+		description = "Render multi lines, safe zone lines, and wildy level lines as 1 pixel wide instead of 2",
+		position = 9
+	)
+	default boolean thinnerLines()
+	{
+		return false;
+	}
+
 }

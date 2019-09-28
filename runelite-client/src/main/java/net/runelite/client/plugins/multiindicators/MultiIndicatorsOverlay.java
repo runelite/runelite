@@ -64,7 +64,14 @@ public class MultiIndicatorsOverlay extends Overlay
 
 	private Color getTransparentColorVersion(Color c)
 	{
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 92);
+		if (plugin.isThinnerLines()) //The thin lines are difficult to see with low opacity, but they are visible and less obtrusive with full opacity
+		{
+			return c;
+		}
+		else
+		{
+			return new Color(c.getRed(), c.getGreen(), c.getBlue(), 92);
+		}
 	}
 
 	private void renderPath(Graphics2D graphics, GeneralPath path, Color color)
@@ -77,8 +84,14 @@ public class MultiIndicatorsOverlay extends Overlay
 			MAX_LOCAL_DRAW_LENGTH * 2);
 
 		graphics.setColor(color);
-		graphics.setStroke(new BasicStroke(2));
-
+		if (plugin.isThinnerLines())
+		{
+			graphics.setStroke(new BasicStroke(1));
+		}
+		else
+		{
+			graphics.setStroke(new BasicStroke(2));
+		}
 		path = Geometry.clipPath(path, viewArea);
 		path = Geometry.filterPath(path, (p1, p2) ->
 			Perspective.localToCanvas(client, new LocalPoint((int) p1[0], (int) p1[1]), client.getPlane()) != null &&

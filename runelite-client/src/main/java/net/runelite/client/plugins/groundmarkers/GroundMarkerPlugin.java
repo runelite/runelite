@@ -173,6 +173,8 @@ public class GroundMarkerPlugin extends Plugin
 	private boolean showMinimap;
 	@Getter(AccessLevel.PACKAGE)
 	private int minimapOverlayOpacity;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean thinMarkers;
 
 	@Provides
 	GroundMarkerConfig provideConfig(ConfigManager configManager)
@@ -259,7 +261,7 @@ public class GroundMarkerPlugin extends Plugin
 	/**
 	 * Rotate the chunk containing the given point to rotation 0
 	 *
-	 * @param point point
+	 * @param point    point
 	 * @param rotation rotation
 	 * @return world point
 	 */
@@ -271,7 +273,7 @@ public class GroundMarkerPlugin extends Plugin
 	/**
 	 * Rotate the coordinates in the chunk according to chunk rotation
 	 *
-	 * @param point point
+	 * @param point    point
 	 * @param rotation rotation
 	 * @return world point
 	 */
@@ -509,5 +511,6 @@ public class GroundMarkerPlugin extends Plugin
 		this.markerColor12 = config.markerColor12();
 		this.showMinimap = config.showMinimap();
 		this.minimapOverlayOpacity = config.minimapOverlayOpacity();
+		this.thinMarkers = config.thinMarkers();
 	}
 }

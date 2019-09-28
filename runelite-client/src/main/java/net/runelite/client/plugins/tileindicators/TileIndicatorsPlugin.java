@@ -63,13 +63,19 @@ public class TileIndicatorsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightDestinationTile;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean thinDestinationTile;
+	@Getter(AccessLevel.PACKAGE)
 	private Color highlightCurrentColor;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightCurrentTile;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean thinCurrentTile;
+	@Getter(AccessLevel.PACKAGE)
 	private Color highlightHoveredColor;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightHoveredTile;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean thinHoveredTile;
 
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -108,9 +114,12 @@ public class TileIndicatorsPlugin extends Plugin
 	{
 		this.highlightDestinationColor = config.highlightDestinationColor();
 		this.highlightDestinationTile = config.highlightDestinationTile();
+		this.thinDestinationTile = config.thinDestinationTile();
 		this.highlightCurrentColor = config.highlightCurrentColor();
 		this.highlightCurrentTile = config.highlightCurrentTile();
+		this.thinCurrentTile = config.thinCurrentTile();
 		this.highlightHoveredColor = config.highlightHoveredColor();
 		this.highlightHoveredTile = config.highlightHoveredTile();
+		this.thinHoveredTile = config.thinHoveredTile();
 	}
 }

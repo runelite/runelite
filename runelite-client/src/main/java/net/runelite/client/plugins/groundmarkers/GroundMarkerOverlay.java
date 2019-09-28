@@ -126,6 +126,13 @@ public class GroundMarkerOverlay extends Overlay
 			case 12:
 				color = plugin.getMarkerColor12();
 		}
-		OverlayUtil.renderPolygon(graphics, poly, color);
+		if (plugin.isThinMarkers())
+		{
+			OverlayUtil.renderPolygonThin(graphics, poly, color);
+		}
+		else
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
 	}
 }

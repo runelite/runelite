@@ -283,4 +283,15 @@ public interface GroundMarkerConfig extends Config
 	{
 		return 100;
 	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "thinMarkers",
+		name = "Thin markesr",
+		description = "Render marked tile borders as 1 pixel wide instead of 2"
+	)
+	default boolean thinMarkers()
+	{
+		return false;
+	}
 }

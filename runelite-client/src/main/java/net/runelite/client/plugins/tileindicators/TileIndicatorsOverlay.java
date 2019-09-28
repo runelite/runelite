@@ -63,12 +63,26 @@ public class TileIndicatorsOverlay extends Overlay
 			// If we have tile "selected" render it
 			client.getSelectedSceneTile() != null)
 		{
-			renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
+			if (plugin.isThinHoveredTile())
+			{
+				renderTileThin(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
+			}
+			else
+			{
+				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), plugin.getHighlightHoveredColor());
+			}
 		}
 
 		if (plugin.isHighlightDestinationTile())
 		{
-			renderTile(graphics, client.getLocalDestinationLocation(), plugin.getHighlightDestinationColor());
+			if (plugin.isThinDestinationTile())
+			{
+				renderTileThin(graphics, client.getLocalDestinationLocation(), plugin.getHighlightDestinationColor());
+			}
+			else
+			{
+				renderTile(graphics, client.getLocalDestinationLocation(), plugin.getHighlightDestinationColor());
+			}
 		}
 
 		if (plugin.isHighlightCurrentTile())
@@ -85,7 +99,14 @@ public class TileIndicatorsOverlay extends Overlay
 				return null;
 			}
 
-			renderTile(graphics, playerPosLocal, plugin.getHighlightCurrentColor());
+			if (plugin.isThinCurrentTile())
+			{
+				renderTileThin(graphics, playerPosLocal, plugin.getHighlightCurrentColor());
+			}
+			else
+			{
+				renderTile(graphics, playerPosLocal, plugin.getHighlightCurrentColor());
+			}
 		}
 
 		return null;
@@ -106,5 +127,22 @@ public class TileIndicatorsOverlay extends Overlay
 		}
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
+	}
+
+	private void renderTileThin(final Graphics2D graphics, final LocalPoint dest, final Color color)
+	{
+		if (dest == null)
+		{
+			return;
+		}
+
+		final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygonThin(graphics, poly, color);
 	}
 }
