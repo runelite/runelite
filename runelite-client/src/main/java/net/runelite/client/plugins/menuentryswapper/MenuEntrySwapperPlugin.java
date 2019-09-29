@@ -310,10 +310,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		updateRemovedObjects();
 
-		keyManager.registerKeyListener(ctrlHotkey);
-		keyManager.registerKeyListener(hotkey);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
+			keyManager.registerKeyListener(ctrlHotkey);
+			keyManager.registerKeyListener(hotkey);
 			setCastOptions(true);
 		}
 	}
@@ -421,10 +421,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
 		{
+			keyManager.unregisterKeyListener(ctrlHotkey);
+			keyManager.unregisterKeyListener(hotkey);
 			return;
 		}
 
 		loadConstructionItems();
+		keyManager.registerKeyListener(ctrlHotkey);
+		keyManager.registerKeyListener(hotkey);
 	}
 
 	private void onVarbitChanged(VarbitChanged event)
