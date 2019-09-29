@@ -319,6 +319,6 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapQuickLeave()
 	{
-		return true;
+		return false;
 	}
 }
