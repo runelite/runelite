@@ -57,12 +57,11 @@ class KourendLibraryOverlay extends Overlay
 	private final Client client;
 	private final KourendLibraryConfig config;
 	private final KourendLibraryPlugin plugin;
-
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
 
 	@Inject
-	private KourendLibraryOverlay(Library library, Client client, KourendLibraryConfig config, KourendLibraryPlugin plugin)
+	private KourendLibraryOverlay(Library library, Client client, KourendLibraryConfig config, KourendLibraryPlugin plugin, KourendLibraryPanel panel, KourendLibraryPanel klPanel)
 	{
 		this.library = library;
 		this.client = client;
@@ -160,7 +159,17 @@ class KourendLibraryOverlay extends Overlay
 							(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
 							screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
 						);
-						OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), color);
+						Book b = library.getCustomerBook();
+						Polygon poly = getCanvasTilePoly(client, localBookcase);
+						if (b.getShortName() == book.getShortName())
+						{
+							OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), Color.GREEN);
+							OverlayUtil.renderPolygon(g, poly, Color.GREEN);
+						}
+						else
+						{
+							OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), color);
+						}
 						g.drawImage(
 							book.getIcon(),
 							screenBookcase.getX() - (book.getIcon().getWidth() / 2),
