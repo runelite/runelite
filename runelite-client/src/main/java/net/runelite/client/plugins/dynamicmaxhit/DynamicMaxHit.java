@@ -150,6 +150,7 @@ public class DynamicMaxHit extends Plugin
 	{
 		eventBus.unregister(this);
 		overlayManager.remove(attackerOverlay);
+		menuManager.removePlayerMenuItem(CALC);
 	}
 
 	private void addSubscriptions()
