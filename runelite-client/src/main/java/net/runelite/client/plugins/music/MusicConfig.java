@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.demonicgorilla;
+package net.runelite.client.plugins.music;
 
-import lombok.Getter;
-import net.runelite.api.Player;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
-public class PendingGorillaAttack
+@ConfigGroup("music")
+public interface MusicConfig extends Config
 {
-	@Getter
-	private DemonicGorilla attacker;
-
-	@Getter
-	private DemonicGorilla.AttackStyle attackStyle;
-
-	@Getter
-	private Player target;
-
-	@Getter
-	private int finishesOnTick;
-
-	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
-								Player target, int finishesOnTick)
+	@ConfigItem(
+		keyName = "musicVolume",
+		name = "Music Volume",
+		description = "Overrides music volume in game with more granular control",
+		position = 1
+	)
+	@Range(
+		min = 0,
+		max = 255
+	)
+	default int getMusicVolume()
 	{
-		this.attacker = attacker;
-		this.attackStyle = attackStyle;
-		this.target = target;
-		this.finishesOnTick = finishesOnTick;
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "soundEffectVolume",
+		name = "Sound Effect Volume",
+		description = "Overrides the sound effect volume in game with more granular control",
+		position = 2
+	)
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getSoundEffectVolume()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "Area Sound Effect Volume",
+		description = "Overrides the area sound effect volume in game with more granular control",
+		position = 3
+	)
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getAreaSoundEffectVolume()
+	{
+		return 0;
 	}
 }

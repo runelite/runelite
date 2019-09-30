@@ -99,7 +99,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapContract()
 	{
-		return true; 
+		return true;
 	}
 
 	@ConfigItem(
@@ -122,7 +122,7 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(		
+	@ConfigItem(
 		keyName = "swapDarkMage",
 		name = "Repairs",
 		description = "Swap Talk-to with Repairs for Dark Mage"
@@ -190,6 +190,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default HouseMode swapHomePortal()
 	{
 		return HouseMode.HOME;
+	}
+
+	@ConfigItem(
+		keyName = "swapHouseAdvertisement",
+		name = "House Advertisement",
+		description = "Swap View with Add-House or Visit-Last on House Advertisement board"
+	)
+	default HouseAdvertisementMode swapHouseAdvertisement()
+	{
+		return HouseAdvertisementMode.VIEW;
 	}
 
 	@ConfigItem(

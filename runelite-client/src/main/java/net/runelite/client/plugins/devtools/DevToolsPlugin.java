@@ -352,6 +352,11 @@ public class DevToolsPlugin extends Plugin
 				client.playSoundEffect(id);
 				break;
 			}
+			case "msg":
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", String.join(" ", args), "");
+				break;
+			}
 		}
 	}
 

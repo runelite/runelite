@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.menuentryswapper;
 
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public interface LocationClueScroll
+@Getter
+@RequiredArgsConstructor
+public enum HouseAdvertisementMode
 {
-	WorldPoint getLocation();
+	VIEW("View"),
+	ADD_HOUSE("Add-House"),
+	VISIT_LAST("Visit-Last");
 
-	default WorldPoint[] getLocations()
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		WorldPoint location = getLocation();
-		return location == null ? new WorldPoint[0] : new WorldPoint[]{location};
+		return name;
 	}
 }

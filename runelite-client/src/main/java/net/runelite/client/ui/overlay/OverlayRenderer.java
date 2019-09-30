@@ -304,7 +304,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 						graphics.setColor(previous);
 					}
 
-					if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
+					if (menuEntries == null && !client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse))
 					{
 						menuEntries = createRightClickMenuEntries(overlay);
 					}
