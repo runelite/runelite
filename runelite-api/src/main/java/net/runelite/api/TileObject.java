@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 /**
  * Represents an object that a tile holds.
  */
-public interface TileObject
+public interface TileObject extends Locatable
 {
 	/**
 	 * Gets the hashed value of this object.
