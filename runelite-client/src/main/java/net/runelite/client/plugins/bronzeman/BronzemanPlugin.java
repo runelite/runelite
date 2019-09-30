@@ -22,6 +22,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -39,8 +40,9 @@ import java.util.List;
  */
 @PluginDescriptor(
 	name = "Bronze Man Mode",
-	description = "Show boss spawn timer overlays",
-	tags = {"combat", "pve", "overlay", "pvp", "challenge", "bronzeman", "ironman"},
+	description = "Restrict yourself as an Iron Meme with GE use for items you have unlocked.",
+	tags = {"Bronze", "pve", "restrict", "game", "challenge", "bronzeman", "ironman"},
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 @Slf4j
