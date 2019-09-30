@@ -38,6 +38,7 @@ import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import org.slf4j.Logger;
 
@@ -945,6 +946,42 @@ public interface Client extends GameEngine
 	List<GraphicsObject> getGraphicsObjects();
 
 	/**
+	 * Gets the music volume
+	 * @return volume 0-255 inclusive
+	 */
+	int getMusicVolume();
+
+	/**
+	 * Sets the music volume
+	 * @param volume 0-255 inclusive
+	 */
+	void setMusicVolume(int volume);
+
+	/**
+	 * Gets the sound effect volume
+	 * @return volume 0-127 inclusive
+	 */
+	int getSoundEffectVolume();
+
+	/**
+	 * Sets the sound effect volume
+	 * @param volume 0-127 inclusive
+	 */
+	void setSoundEffectVolume(int volume);
+
+	/**
+	 * Gets the area sound effect volume
+	 * @return volume 0-127 inclusive
+	 */
+	int getAreaSoundEffectVolume();
+
+	/**
+	 * Sets the area sound effect volume
+	 * @param volume 0-127 inclusive
+	 */
+	void setAreaSoundEffectVolume(int volume);
+
+	/**
 	 * Play a sound effect at the player's current location. This is how UI,
 	 * and player-generated (e.g. mining, woodcutting) sound effects are
 	 * normally played.
@@ -1636,6 +1673,11 @@ public interface Client extends GameEngine
 	int getIf1DraggedItemIndex();
 
 	/**
+	 * Is a widget is in target mode?
+	 */
+	boolean getSpellSelected();
+
+	/**
 	 * Sets if a widget is in target mode
 	 */
 	void setSpellSelected(boolean selected);
@@ -1660,4 +1702,9 @@ public interface Client extends GameEngine
 	 * Returns the max item index + 1 from cache
 	 */
 	int getItemCount();
+
+	/**
+	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
+	 */
+	void setAllWidgetsAreOpTargetable(boolean value);
 }

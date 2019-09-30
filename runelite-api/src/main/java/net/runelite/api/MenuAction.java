@@ -231,6 +231,11 @@ public enum MenuAction
 	WIDGET_DEFAULT(57),
 
 	/**
+	 * Casting a spell / op target on a widget
+	 */
+	SPELL_CAST_ON_WIDGET(58),
+
+	/**
 	 * Menu action triggered by examining an object.
 	 */
 	EXAMINE_OBJECT(1002),

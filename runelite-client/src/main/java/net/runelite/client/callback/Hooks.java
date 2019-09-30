@@ -50,6 +50,7 @@ import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
@@ -60,6 +61,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -128,6 +130,7 @@ public class Hooks implements Callbacks
 	private Graphics2D stretchedGraphics;
 
 	private long lastCheck;
+	private boolean ignoreNextNpcUpdate;
 	private boolean shouldProcessGameTick;
 
 	private static MainBufferProvider lastMainBufferProvider;
@@ -463,15 +466,37 @@ public class Hooks implements Callbacks
 		overlayManager.getItemWidgets().clear();
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			case LOGGING_IN:
+			case HOPPING:
+				ignoreNextNpcUpdate = true;
+		}
+	}
+
 	@Override
 	public void updateNpcs()
 	{
-		// The NPC update event seem to run every server tick,
-		// but having the game tick event after all packets
-		// have been processed is typically more useful.
-		shouldProcessGameTick = true;
+		if (ignoreNextNpcUpdate)
+		{
+			// After logging in an NPC update happens outside of the normal game tick, which
+			// is sent prior to skills and vars being bursted, so ignore it.
+			ignoreNextNpcUpdate = false;
+			log.debug("Skipping login updateNpc");
+		}
+		else
+		{
+			// The NPC update event seem to run every server tick,
+			// but having the game tick event after all packets
+			// have been processed is typically more useful.
+			shouldProcessGameTick = true;
+		}
+
 		// Replay deferred events, otherwise if two npc
-		// update packets get processed in one frame, a
+		// update packets get processed in one client tick, a
 		// despawn event could be published prior to the
 		// spawn event, which is deferred
 		deferredEventBus.replay();
