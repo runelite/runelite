@@ -85,6 +85,12 @@
       "xp": 10
     },
     {
+      "level": 28,
+      "icon": 561,
+      "name": "Nature Rune Chest",
+      "xp": 25
+    },
+    {
       "level": 32,
       "icon": 3247,
       "name": "Rogue",
@@ -163,6 +169,12 @@
       "xp": 84.3
     },
     {
+      "level": 64,
+      "icon": 13383,
+      "name": "Stone Chest",
+      "xp": 280
+    },
+    {
       "level": 65,
       "icon": 6422,
       "name": "Magic Stall",
@@ -211,10 +223,22 @@
       "xp": 160
     },
     {
+      "level": 78,
+      "icon": 1623,
+      "name": "Dorgesh-Kaan Rich Chest",
+      "xp": 650
+    },
+    {
       "level": 80,
       "icon": 3259,
       "name": "Hero",
       "xp": 275
+    },
+    {
+      "level": 84,
+      "icon": 1615,
+      "name": "Rogues' Castle Chest",
+      "xp": 100
     },
     {
       "level": 85,
