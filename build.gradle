@@ -13,8 +13,9 @@ buildscript {
 
 plugins {
     id 'com.adarshr.test-logger' version '1.7.0' apply false
-    id "com.github.ben-manes.versions" version "0.22.0" apply false
+    id "com.github.ben-manes.versions" version "0.22.0"
     id "com.gradle.build-scan" version "2.4"
+    id 'se.patrikerdes.use-latest-versions' version '0.2.8'
 }
 
 apply plugin: 'application'
@@ -109,7 +110,6 @@ subprojects {
     apply plugin: 'com.adarshr.test-logger'
     apply plugin: 'java-library'
     apply plugin: 'maven'
-    apply plugin: "com.github.ben-manes.versions"
     apply plugin: 'fernflower'
 
     sourceCompatibility = 1.8
@@ -170,4 +170,24 @@ wrapper {
 run {
     classpath = childProjects.client.sourceSets.main.runtimeClasspath
     mainClassName = "net.runelite.client.RuneLite"
+}
+
+def isNonStable = { String version ->
+    def unstableKeyword = ['ALPHA', 'BETA', 'RC'].any { it -> version.toUpperCase().contains(it) }
+
+    return unstableKeyword
+}
+
+dependencyUpdates {
+    checkForGradleUpdate = false
+
+    resolutionStrategy {
+        componentSelection {
+            all {
+                if (isNonStable(candidate.version)) {
+                    reject()
+                }
+            }
+        }
+    }
 }

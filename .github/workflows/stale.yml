@@ -1,4 +1,4 @@
-name: Mark stale issues and pull requests
+name: OpenOSRS - Stale issues and PRs
 
 on:
   schedule:
@@ -6,11 +6,10 @@ on:
 
 jobs:
   stale:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/stale@v1
+      - uses: actions/stale@master
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: 'Stale issue message'
