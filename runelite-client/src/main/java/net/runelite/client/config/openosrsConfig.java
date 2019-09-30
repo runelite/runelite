@@ -26,8 +26,8 @@
  */
 package net.runelite.client.config;
 
-@ConfigGroup("runeliteplus")
-public interface RuneLitePlusConfig extends Config
+@ConfigGroup("openosrs")
+public interface OpenOSRSConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enableOpacity",

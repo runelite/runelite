@@ -101,7 +101,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -139,13 +139,13 @@ public class ConfigPanel extends PluginPanel
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
-	private static final String RUNELITEPLUS_PLUGIN = "RuneLitePlus";
+	private static final String openosrs_PLUGIN = "openosrs";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
-	private final RuneLitePlusConfig runeLitePlusConfig;
+	private final OpenOSRSConfig OpenOSRSConfig;
 	private final ChatColorConfig chatColorConfig;
 	private final ColorPickerManager colorPickerManager;
 	public static List<PluginListItem> pluginList = new ArrayList<>();
@@ -176,7 +176,7 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-				RuneLiteConfig runeLiteConfig, RuneLitePlusConfig runeLitePlusConfig, ChatColorConfig chatColorConfig,
+				RuneLiteConfig runeLiteConfig, OpenOSRSConfig OpenOSRSConfig, ChatColorConfig chatColorConfig,
 				ColorPickerManager colorPickerManager)
 	{
 		super(false);
@@ -184,7 +184,7 @@ public class ConfigPanel extends PluginPanel
 		this.configManager = configManager;
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
-		this.runeLitePlusConfig = runeLitePlusConfig;
+		this.OpenOSRSConfig = OpenOSRSConfig;
 		this.chatColorConfig = chatColorConfig;
 		this.colorPickerManager = colorPickerManager;
 
@@ -289,13 +289,13 @@ public class ConfigPanel extends PluginPanel
 		runeLite.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(runeLite);
 
-		// set RuneLitePlus config on top, as it should always have been
-		final PluginListItem runeLitePlus = new PluginListItem(this, configManager, runeLitePlusConfig,
-			configManager.getConfigDescriptor(runeLitePlusConfig),
-			RUNELITEPLUS_PLUGIN, "RuneLitePlus client settings", "client");
-		runeLitePlus.setPinned(pinnedPlugins.contains(RUNELITEPLUS_PLUGIN));
-		runeLitePlus.nameLabel.setForeground(Color.WHITE);
-		pluginList.add(runeLitePlus);
+		// set openosrs config on top, as it should always have been
+		final PluginListItem openosrs = new PluginListItem(this, configManager, OpenOSRSConfig,
+			configManager.getConfigDescriptor(OpenOSRSConfig),
+			openosrs_PLUGIN, "openosrs client settings", "client");
+		openosrs.setPinned(pinnedPlugins.contains(openosrs_PLUGIN));
+		openosrs.nameLabel.setForeground(Color.WHITE);
+		pluginList.add(openosrs);
 
 		List<PluginListItem> externalPlugins = new ArrayList<>();
 		// populate pluginList with all external Plugins
@@ -578,7 +578,7 @@ public class ConfigPanel extends PluginPanel
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
-		if (!listItem.getName().equals("RuneLitePlus"))
+		if (!listItem.getName().equals("openosrs"))
 		{
 			topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
 		}

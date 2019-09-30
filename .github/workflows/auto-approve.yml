@@ -1,4 +1,4 @@
-name: RunelitePlus - Auto approve
+name: openosrs - Auto approve
 
 on: pull_request
 

@@ -17,7 +17,7 @@ import org.jooq.impl.DSL;
 @Slf4j
 public class DatabaseManager
 {
-	private static final String DB_URL = "jdbc:h2:" + RUNELITE_DIR + File.separator + "RunelitePlus;AUTO_SERVER=TRUE";
+	private static final String DB_URL = "jdbc:h2:" + RUNELITE_DIR + File.separator + "openosrs;AUTO_SERVER=TRUE";
 
 	//  Database credentials
 	private static final String USER = "RLP";

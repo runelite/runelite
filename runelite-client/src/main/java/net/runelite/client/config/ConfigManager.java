@@ -71,7 +71,7 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "runeliteplus.properties";
+	private static final String SETTINGS_FILE_NAME = "openosrs.properties";
 	private static final String STANDARD_SETTINGS_FILE_NAME = "settings.properties";
 	private static final File SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
 	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, STANDARD_SETTINGS_FILE_NAME);

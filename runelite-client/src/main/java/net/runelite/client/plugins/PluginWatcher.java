@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.config.OpenOSRSConfig;
 
 @Singleton
 @Slf4j
@@ -54,7 +54,7 @@ public class PluginWatcher extends Thread
 {
 	private static final File BASE = RuneLite.PLUGIN_DIR;
 
-	private final RuneLitePlusConfig runelitePlusConfig;
+	private final OpenOSRSConfig OpenOSRSConfig;
 	private final PluginManager pluginManager;
 	private final WatchService watchService;
 	private final WatchKey watchKey;
@@ -63,9 +63,9 @@ public class PluginWatcher extends Thread
 	private ConfigManager configManager;
 
 	@Inject
-	public PluginWatcher(RuneLitePlusConfig runelitePlusConfig, PluginManager pluginManager) throws IOException
+	public PluginWatcher(OpenOSRSConfig OpenOSRSConfig, PluginManager pluginManager) throws IOException
 	{
-		this.runelitePlusConfig = runelitePlusConfig;
+		this.OpenOSRSConfig = OpenOSRSConfig;
 		this.pluginManager = pluginManager;
 
 		setName("Plugin Watcher");
@@ -85,7 +85,7 @@ public class PluginWatcher extends Thread
 	@Override
 	public void run()
 	{
-		if (runelitePlusConfig.enablePlugins())
+		if (OpenOSRSConfig.enablePlugins())
 		{
 			scan();
 		}
@@ -97,7 +97,7 @@ public class PluginWatcher extends Thread
 				WatchKey key = watchService.take();
 				Thread.sleep(50);
 
-				if (!runelitePlusConfig.enablePlugins())
+				if (!OpenOSRSConfig.enablePlugins())
 				{
 					key.reset();
 					continue;

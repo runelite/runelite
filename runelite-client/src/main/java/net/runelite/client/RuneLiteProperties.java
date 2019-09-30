@@ -32,12 +32,12 @@ import java.util.Properties;
 @Singleton
 public class RuneLiteProperties
 {
-	private static final String RUNELITE_TITLE = "runelite.plus.title";
+	private static final String RUNELITE_TITLE = "open.osrs.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
-	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
+	private static final String RUNELITE_PLUS_VERSION = "open.osrs.version";
+	private static final String RUNELITE_PLUS_DATE = "open.osrs.builddate";
 	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.plus.discord.appid";
+	private static final String DISCORD_APP_ID = "open.osrs.discord.appid";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
 	private static final String GITHUB_LINK = "runelite.github.link";
 	private static final String WIKI_LINK = "runelite.wiki.link";
@@ -51,7 +51,7 @@ public class RuneLiteProperties
 
 	static
 	{
-		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("/runelite.plus.properties"))
+		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("/open.osrs.properties"))
 		{
 			properties.load(in);
 		}
