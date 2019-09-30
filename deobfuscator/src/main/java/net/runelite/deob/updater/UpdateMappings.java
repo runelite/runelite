@@ -96,7 +96,7 @@ public class UpdateMappings
 			JarUtil.loadJar(new File(args[0])),
 			JarUtil.loadJar(new File(args[1]))
 		);
-			u.update();
+		u.update();
 		u.save(new File(args[2]));
 	}
 }
