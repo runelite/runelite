@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -124,10 +123,12 @@ public class PlayerIndicatorsOverlay extends Overlay
 			{
 				if (clanManager.getRank(actor.getName()) != null)
 				{
-					OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
-						ImageUtil.resizeImage(Objects.requireNonNull(clanManager
-							.getClanImage(clanManager.getRank(actor.getName()))), y, y), 0, ACTOR_HORIZONTAL_TEXT_MARGIN);
-					return;
+					final BufferedImage clanRankImage = clanManager.getClanImage(clanManager.getRank(actor.getName()));
+					if (clanRankImage != null)
+					{
+						OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
+							ImageUtil.resizeImage(clanRankImage, y, y), 0, ACTOR_HORIZONTAL_TEXT_MARGIN);
+					}
 				}
 			}
 

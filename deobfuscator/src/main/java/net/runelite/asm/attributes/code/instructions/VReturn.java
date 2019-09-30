@@ -49,6 +49,7 @@ public class VReturn extends Instruction implements ReturnInstruction
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
+
 		
 		frame.stop();
 
