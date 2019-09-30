@@ -69,11 +69,11 @@ enum TransportationPointLocation
 	PORTSARIM_TO_PEST_CONTROL("Ship to Pest Control", new WorldPoint(3039, 3201, 0), new WorldPoint(2659, 2675, 0)),
 	RELLEKKA_TO_JATIZSO_NEITIZNOT("Ship to Jatizso/Neitiznot", new WorldPoint(2639, 3710, 0)),
 	RELLEKKA_TO_MISCELLANIA("Ship to Miscellania", new WorldPoint(2627, 3692, 0), new WorldPoint(2579, 3846, 0)),
-	RELLEKKA_TO_WATERBIRTH("Ship to Waterbirth", new WorldPoint(2621, 3683, 0), new WorldPoint(2549, 3758, 0)),
+	RELLEKKA_TO_WATERBIRTH("Ship to Waterbirth", new WorldPoint(2618, 3685, 0), new WorldPoint(2549, 3758, 0)),
 	RELLEKKA_TO_WEISS_ICEBERG("Ship to Weiss/Iceberg", new WorldPoint(2707, 3735, 0)),
 	RELLEKKA_TO_UNGAEL("Ship to Ungael", new WorldPoint(2638, 3698, 0), new WorldPoint(2276, 4034, 0)),
 	RIMMINGTON_TO_CORSAIR_COVE("Ship to Corsair Cove", new WorldPoint(2909, 3227, 0 ), new WorldPoint(2577, 2839, 0)),
-	WATERBIRTH_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2549, 3758, 0), new WorldPoint(2621, 3683, 0)),
+	WATERBIRTH_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2549, 3758, 0), new WorldPoint(2618, 3685, 0)),
 	WEISS_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2847, 3967, 0), new WorldPoint(2707, 3735, 0)),
 	UNGAEL_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2276, 4034, 0), new WorldPoint(2638, 3698, 0)),
 
