@@ -393,8 +393,7 @@ public class SlayerPlugin extends Plugin
 				currentTask.setPaused(true);
 				break;
 			case LOGGED_IN:
-				if (loginTick && this.amount != -1
-					&& !this.taskName.isEmpty())
+				if (loginTick && this.amount != -1 && !this.taskName.isEmpty() && currentTask.getTaskName() == null)
 				{
 					setTask(this.taskName, this.amount, this.initialAmount, true, this.taskLocation, this.lastCertainAmount, false);
 				}
@@ -753,6 +752,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		final Task task = Task.getTask(taskName);
+		int delta = slayerExp - cachedXp;
 
 		// null tasks are technically valid, it only means they arent explicitly defined in the Task enum
 		// allow them through so that if there is a task capture failure the counter will still work
@@ -762,7 +762,7 @@ public class SlayerPlugin extends Plugin
 		// to the expected exp gain for the task.
 		if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
 		{
-			killedOne();
+			killedOne(delta);
 		}
 		else
 		{
@@ -780,9 +780,7 @@ public class SlayerPlugin extends Plugin
 			int killCount = estimateKillCount(potentialNPCs, gains);
 			for (int i = 0; i < killCount; i++)
 			{
-				killedOne();
-				int delta = slayerExp - cachedXp;
-				currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
+				killedOne(delta);
 			}
 		}
 
@@ -840,7 +838,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	private void killedOne()
+	private void killedOne(int delta)
 	{
 		if (currentTask.getAmount() == 0)
 		{
@@ -849,6 +847,7 @@ public class SlayerPlugin extends Plugin
 
 		currentTask.setAmount(currentTask.getAmount() - 1);
 		currentTask.setElapsedKills(currentTask.getElapsedKills() + 1);
+		currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
 		if (doubleTroubleExtraKill())
 		{
 			currentTask.setAmount(currentTask.getAmount() - 1);
@@ -1208,27 +1207,9 @@ public class SlayerPlugin extends Plugin
 		client.refreshChat();
 	}
 
-	void pointsLookup(ChatMessage chatMessage, String message)
+	private void pointsLookup(ChatMessage chatMessage, String message)
 	{
 		if (!this.pointsCommand)
-		{
-			return;
-		}
-
-		ChatMessageType type = chatMessage.getType();
-
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.removeTags(chatMessage.getName())
-				.replace('\u00A0', ' ');
-		}
-
-		if (Integer.toString(getPoints()) == null)
 		{
 			return;
 		}
@@ -1313,7 +1294,7 @@ public class SlayerPlugin extends Plugin
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
-	void setPoints(int points)
+	private void setPoints(int points)
 	{
 		this.points = points;
 		this.cachedPoints = points;

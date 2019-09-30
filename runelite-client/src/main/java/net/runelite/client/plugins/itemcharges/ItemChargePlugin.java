@@ -76,16 +76,18 @@ public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
 		"Your dodgy necklace has (\\d+) charges? left\\.");
-	private static final Pattern SLAUGHTER_CHECK_PATTERN = Pattern.compile(
+	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile(
+		"Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile(
+		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile(
 		"Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
-	private static final Pattern EXPEDITIOUS_CHECK_PATTERN = Pattern.compile(
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile(
 		"Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
 	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
-	private static final Pattern SLAUGHTER_ACTIVATE_PATTERN = Pattern.compile(
-		"Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
-	private static final Pattern EXPEDITIOUS_ACTIVATE_PATTERN = Pattern.compile(
-		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
 	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
@@ -331,11 +333,7 @@ public class ItemChargePlugin extends Plugin
 	{
 		String message = event.getMessage();
 		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
-		Matcher slaughterCheckMatcher = SLAUGHTER_CHECK_PATTERN.matcher(message);
-		Matcher expeditiousCheckMatcher = EXPEDITIOUS_CHECK_PATTERN.matcher(message);
 		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
-		Matcher slaughterActivateMatcher = SLAUGHTER_ACTIVATE_PATTERN.matcher(message);
-		Matcher expeditiousActivateMatcher = EXPEDITIOUS_ACTIVATE_PATTERN.matcher(message);
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
@@ -347,6 +345,10 @@ public class ItemChargePlugin extends Plugin
 		Matcher chronicleLastChargeMatcher = CHRONICLE_LAST_CHARGE_PATTERN.matcher(message);
 		Matcher chronicleOutOfChargesMatcher = CHRONICLE_OUT_OF_CHARGES_PATTERN.matcher(message);
 		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
+		Matcher slaughterMatcher = CHAT_BRACELET_SLAUGHTER_REGEX.matcher(Text.removeTags(message));
+		Matcher expeditiousMatcher = CHAT_BRACELET_EXPEDITIOUS_REGEX.matcher(Text.removeTags(message));
+		Matcher slaughterChargeMatcher = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(Text.removeTags(message));
+		Matcher expeditiousChargeMatcher = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(Text.removeTags(message));
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -354,29 +356,29 @@ public class ItemChargePlugin extends Plugin
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
 			}
+			else if (Text.removeTags(message).startsWith(CHAT_BRACELET_SLAUGHTER))
+			{
+				updateBraceletOfSlaughterCharges(slaughterMatcher.find() ? Integer.parseInt(slaughterMatcher.group(1)) : MAX_SLAUGHTER_CHARGES);
+			}
+			else if (Text.removeTags(message).startsWith(CHAT_BRACELET_EXPEDITIOUS))
+			{
+				updateExpeditiousCharges(expeditiousMatcher.find() ? Integer.parseInt(expeditiousMatcher.group(1)) : MAX_EXPEDITIOUS_CHARGES);
+			}
+			else if (slaughterChargeMatcher.find())
+			{
+				updateBraceletOfSlaughterCharges(Integer.parseInt(slaughterChargeMatcher.group(1)));
+			}
+			else if (expeditiousChargeMatcher.find())
+			{
+				updateExpeditiousCharges(Integer.parseInt(expeditiousChargeMatcher.group(1)));
+			}
 			else if (dodgyCheckMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyCheckMatcher.group(1)));
 			}
-			else if (slaughterCheckMatcher.find())
-			{
-				updateBraceletOfSlaughterCharges(Integer.parseInt(slaughterCheckMatcher.group(1)));
-			}
-			else if (expeditiousCheckMatcher.find())
-			{
-				updateExpeditiousCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
-			}
 			else if (dodgyProtectMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
-			}
-			else if (slaughterActivateMatcher.find())
-			{
-				updateBraceletOfSlaughterCharges(Integer.parseInt(slaughterActivateMatcher.group(1)));
-			}
-			else if (expeditiousActivateMatcher.find())
-			{
-				updateExpeditiousCharges(Integer.parseInt(expeditiousActivateMatcher.group(1)));
 			}
 			else if (dodgyBreakMatcher.find())
 			{
