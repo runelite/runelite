@@ -36,11 +36,15 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
+import net.runelite.api.NPC;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -124,6 +128,7 @@ public class OpponentInfoPlugin extends Plugin
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
+		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 	}
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
@@ -197,5 +202,29 @@ public class OpponentInfoPlugin extends Plugin
 		this.lookupOnInteraction = config.lookupOnInteraction();
 		this.hitpointsDisplayStyle = config.hitpointsDisplayStyle();
 		this.showOpponentsOpponent = config.showOpponentsOpponent();
+	}
+
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (menuEntryAdded.getType() != MenuOpcode.NPC_SECOND_OPTION.getId()
+			|| !menuEntryAdded.getOption().equals("Attack")
+			|| !config.showOpponentsInMenu())
+		{
+			return;
+		}
+
+		int npcIndex = menuEntryAdded.getIdentifier();
+		NPC npc = client.getCachedNPCs()[npcIndex];
+		if (npc == null)
+		{
+			return;
+		}
+
+		if (npc.getInteracting() == client.getLocalPlayer() || lastOpponent == npc)
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntryAdded.getTarget());
+			client.setMenuEntries(menuEntries);
+		}
 	}
 }
