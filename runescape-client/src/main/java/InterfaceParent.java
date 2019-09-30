@@ -212,7 +212,7 @@ public class InterfaceParent extends Node {
 
 			var9 = var1.readBits(1);
 			var4.definition = PacketBufferNode.getNpcDefinition(var1.readBits(14));
-			var4.field932 = var4.definition.size * 772175475;
+			var4.size = var4.definition.size * 772175475;
 			var4.field982 = var4.definition.rotation;
 			if (var4.field982 == 0) {
 				var4.rotation = 0;
@@ -317,7 +317,7 @@ public class InterfaceParent extends Node {
 
 			if ((var5 & 32) != 0) {
 				var4.definition = PacketBufferNode.getNpcDefinition(var1.method5647());
-				var4.field932 = var4.definition.size * 772175475;
+				var4.size = var4.definition.size * 772175475;
 				var4.field982 = var4.definition.rotation;
 				var4.walkSequence = var4.definition.walkSequence;
 				var4.walkBackSequence = var4.definition.walkBackSequence;

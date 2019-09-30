@@ -63,8 +63,8 @@ public class class325 {
 
 					var11 = var0.x;
 					var12 = var0.y;
-					var4 = var0.pathX[var0.pathLength - 1] * 128 + var0.field932 * -527978816;
-					int var5 = var0.field932 * -527978816 + var0.pathY[var0.pathLength - 1] * 128;
+					var4 = var0.pathX[var0.pathLength - 1] * 128 + var0.size * -527978816;
+					int var5 = var0.size * -527978816 + var0.pathY[var0.pathLength - 1] * 128;
 					if (var11 < var4) {
 						if (var12 < var5) {
 							var0.orientation = 1280;
@@ -203,8 +203,8 @@ public class class325 {
 			var0.spotAnimation = -1;
 			var0.field948 = 0;
 			var0.field976 = 0;
-			var0.x = var0.pathX[0] * 128 + var0.field932 * -527978816;
-			var0.y = var0.field932 * -527978816 + var0.pathY[0] * 128;
+			var0.x = var0.pathX[0] * 128 + var0.size * -527978816;
+			var0.y = var0.size * -527978816 + var0.pathY[0] * 128;
 			var0.method1765();
 		}
 
@@ -213,8 +213,8 @@ public class class325 {
 			var0.spotAnimation = -1;
 			var0.field948 = 0;
 			var0.field976 = 0;
-			var0.x = var0.field932 * -527978816 + var0.pathX[0] * 128;
-			var0.y = var0.field932 * -527978816 + var0.pathY[0] * 128;
+			var0.x = var0.size * -527978816 + var0.pathX[0] * 128;
+			var0.y = var0.size * -527978816 + var0.pathY[0] * 128;
 			var0.method1765();
 		}
 

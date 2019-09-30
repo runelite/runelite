@@ -29,7 +29,8 @@ public abstract class Actor extends Entity {
 	@Export("isWalking")
 	boolean isWalking;
 	@ObfuscatedName("ax")
-	int field932;
+	@Export("size")
+	int size;
 	@ObfuscatedName("as")
 	@ObfuscatedGetter(
 		intValue = -334562759
@@ -315,7 +316,7 @@ public abstract class Actor extends Entity {
 
 	Actor() {
 		this.isWalking = false;
-		this.field932 = 772175475;
+		this.size = 772175475;
 		this.readySequence = -1;
 		this.turnLeftSequence = -1;
 		this.turnRightSequence = -1;

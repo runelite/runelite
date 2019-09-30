@@ -2110,7 +2110,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				ViewportMouse.client = this;
-				class319.field3843 = clientType;
+				ClientType.clientType = clientType;
 				this.startThread(765, 503, 184);
 			}
 		} catch (RuntimeException var22) {
@@ -5267,9 +5267,9 @@ public final class Client extends GameShell implements Usernamed {
 		garbageValue = "1638335073"
 	)
 	@Export("openMenu")
-	final void openMenu(int var1, int var2) {
-		UserComparator6.calculateMenuBounds(var1, var2);
-		PacketWriter.scene.menuOpen(WorldMapRectangle.plane, var1, var2, false);
+	final void openMenu(int screenX, int screenY) {
+		UserComparator6.calculateMenuBounds(screenX, screenY);
+		PacketWriter.scene.menuOpen(WorldMapRectangle.plane, screenX, screenY, false);
 		isMenuOpen = true;
 	}
 
