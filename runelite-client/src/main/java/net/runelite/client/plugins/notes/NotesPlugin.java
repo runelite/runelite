@@ -25,9 +25,6 @@
 package net.runelite.client.plugins.notes;
 
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionOpen;
@@ -36,6 +33,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.image.BufferedImage;
 
 @PluginDescriptor(
 	name = "Notes",
@@ -51,6 +52,9 @@ public class NotesPlugin extends Plugin
 
 	@Inject
 	private NotesConfig config;
+
+    @Inject
+    private NotesManager notesManager;
 
 	@Inject
 	private EventBus eventBus;
@@ -82,6 +86,9 @@ public class NotesPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+        notesManager.loadNotes();
+        panel.rebuild();
 	}
 
 	@Override
@@ -94,8 +101,7 @@ public class NotesPlugin extends Plugin
 
 	private void onSessionOpen(SessionOpen event)
 	{
-		// update notes
-		String data = config.notesData();
-		panel.setNotes(data);
+        notesManager.loadNotes();
+        panel.rebuild();
 	}
 }

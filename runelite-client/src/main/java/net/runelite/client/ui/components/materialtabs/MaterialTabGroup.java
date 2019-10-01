@@ -24,11 +24,10 @@
  */
 package net.runelite.client.ui.components.materialtabs;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
 
 /**
  * This class will be a container (group) for the new Material Tabs. It will
@@ -83,10 +82,20 @@ public class MaterialTabGroup extends JPanel
 		return tabs.get(index);
 	}
 
-	public void addTab(MaterialTab tab)
-	{
+	public void addTab(MaterialTab tab) {
 		tabs.add(tab);
 		add(tab, BorderLayout.NORTH);
+
+		invalidate();
+		repaint();
+	}
+
+	public void removeTab(MaterialTab tab) {
+		tabs.remove(tab);
+		remove(tab);
+
+		invalidate();
+		repaint();
 	}
 
 	/***
