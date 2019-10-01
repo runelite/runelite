@@ -79,12 +79,24 @@ jobs:
 
   merge:
     name: Merge
-    needs: approve
+    needs: [build, test, checkstyle, approve]
     runs-on: ubuntu-latest
 
     steps:
       - name: Merge pull request
         if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
         uses: managedkaos/merge-pull-request@master
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  cleanup:
+    name: Cleanup
+    needs: [build, test, checkstyle, approve, merge]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Remove merged branch
+        if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
+        uses: jessfraz/branch-cleanup-action@master
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
