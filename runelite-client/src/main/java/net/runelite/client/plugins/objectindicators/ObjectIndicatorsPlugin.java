@@ -51,6 +51,7 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
@@ -60,6 +61,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -155,6 +159,28 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		{
 			hotKeyPressed = false;
 		}
+	}
+
+	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		checkObjectPoints(event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		WallObject previous = event.getPrevious();
+		WallObject wallObject = event.getWallObject();
+
+		objects.remove(previous);
+		checkObjectPoints(wallObject);
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		objects.remove(event.getWallObject());
 	}
 
 	@Subscribe
@@ -296,6 +322,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		final GameObject[] tileGameObjects = tile.getGameObjects();
 		final DecorativeObject tileDecorativeObject = tile.getDecorativeObject();
+		final WallObject tileWallObject = tile.getWallObject();
+
+		if (tileWallObject != null && tileWallObject.getId() == id)
+		{
+			return tileWallObject;
+		}
 
 		if (tileDecorativeObject != null && tileDecorativeObject.getId() == id)
 		{

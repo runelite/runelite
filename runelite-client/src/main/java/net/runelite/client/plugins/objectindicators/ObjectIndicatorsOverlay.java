@@ -32,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -71,6 +72,11 @@ class ObjectIndicatorsOverlay extends Overlay
 			if (object instanceof GameObject)
 			{
 				polygon = ((GameObject) object).getConvexHull();
+			}
+			else if (object instanceof WallObject)
+			{
+				polygon = ((WallObject) object).getConvexHull();
+				polygon2 = ((WallObject) object).getConvexHull2();
 			}
 			else if (object instanceof DecorativeObject)
 			{
