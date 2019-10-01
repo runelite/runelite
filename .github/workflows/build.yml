@@ -4,7 +4,7 @@ on: [pull_request, push]
 
 jobs:
   pr-lint:
-    name: Title linter
+    name: PR title
     runs-on: ubuntu-latest
     
     steps:
@@ -73,7 +73,7 @@ jobs:
 
   merge:
     name: Merge
-    needs: [build, test, checkstyle, approve]
+    needs: approve
     runs-on: ubuntu-latest
 
     steps:
@@ -85,7 +85,7 @@ jobs:
 
   cleanup:
     name: Cleanup
-    needs: [build, test, checkstyle, approve, merge]
+    needs: merge
     runs-on: ubuntu-latest
 
     steps:
