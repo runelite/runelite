@@ -79,6 +79,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
 	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
+	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
 
 	static
 	{
@@ -151,6 +152,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
+		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -304,6 +306,14 @@ public class WorldMapPlugin extends Plugin
 				}
 			}).map(TeleportPoint::new)
 			.forEach(worldMapPointManager::add);
+
+		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+		if (config.runecraftingAltarIcon())
+		{
+			Arrays.stream(RunecraftingAltarLocation.values())
+				.map(RunecraftingAltarPoint::new)
+				.forEach(worldMapPointManager::add);
+		}
 	}
 
 	private void updateQuestStartPointIcons()
