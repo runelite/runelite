@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,7 @@ import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.BANK_CONTENT_CONTAINER;
+import static net.runelite.api.widgets.WidgetInfo.BANK_ITEM_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.BANK_TAB_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
@@ -69,6 +71,8 @@ public abstract class WidgetItemOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final Rectangle oldBounds = graphics.getClipBounds();
+		boolean shouldClip = false;
 		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
 		for (WidgetItem widgetItem : itemWidgets)
 		{
@@ -83,7 +87,25 @@ public abstract class WidgetItemOverlay extends Overlay
 				continue;
 			}
 
+			// Clip bank item overlays at the top or bottom of the screen
+			if (widget.getId() == BANK_ITEM_CONTAINER.getId())
+			{
+				Widget parent = widget.getParent();
+				Rectangle pBounds = parent.getBounds();
+				Rectangle wBounds = widget.getBounds();
+				shouldClip = (wBounds.y < pBounds.y && (wBounds.y + wBounds.height) >= pBounds.y)
+					|| (wBounds.y < pBounds.y + pBounds.height && (wBounds.y + wBounds.height) >= pBounds.y + pBounds.height );
+				if (shouldClip)
+				{
+					graphics.setClip(parent.getBounds());
+				}
+			}
+
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
+			if (shouldClip)
+			{
+				graphics.setClip(oldBounds);
+			}
 		}
 		return null;
 	}
