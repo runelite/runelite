@@ -76,3 +76,15 @@ jobs:
         uses: hmarr/auto-approve-action@master
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  merge:
+    name: Merge
+    needs: approve
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Merge pull request
+        if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
+        uses: managedkaos/merge-pull-request@master
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
