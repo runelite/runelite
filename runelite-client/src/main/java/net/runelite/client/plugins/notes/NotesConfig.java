@@ -31,10 +31,10 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("notes")
 public interface NotesConfig extends Config
 {
-    String CONFIG_GROUP = "notes";
-    String NOTES = "notes";
+	String CONFIG_GROUP = "notes";
+	String NOTES = "notes";
 
-    int MAX_NOTES = 5;
+	int MAX_NOTES = 5;
 
 	@ConfigItem(
 		keyName = "notesData",

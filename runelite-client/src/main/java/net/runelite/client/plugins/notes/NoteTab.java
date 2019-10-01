@@ -24,100 +24,123 @@
  */
 package net.runelite.client.plugins.notes;
 
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.ui.ColorScheme;
-
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.AbstractAction;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ColorScheme;
 
 @Slf4j
-class NoteTab extends JPanel {
-    private final NotesManager manager;
-    private final JTextArea notesEditor = new JTextArea();
-    private final UndoManager undoRedo = new UndoManager();
+class NoteTab extends JPanel
+{
+	private final NotesManager manager;
+	private final JTextArea notesEditor = new JTextArea();
+	private final UndoManager undoRedo = new UndoManager();
 
-    private int index;
+	private int index;
 
-    NoteTab(NotesManager mManager, int mIndex) {
-        manager = mManager;
-        index = mIndex;
+	NoteTab(NotesManager mManager, int mIndex)
+	{
+		manager = mManager;
+		index = mIndex;
 
-        setLayout(new BorderLayout());
-        setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		setLayout(new BorderLayout());
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-        notesEditor.setTabSize(2);
-        notesEditor.setLineWrap(true);
-        notesEditor.setWrapStyleWord(true);
+		notesEditor.setTabSize(2);
+		notesEditor.setLineWrap(true);
+		notesEditor.setWrapStyleWord(true);
 
-        notesEditor.setOpaque(false);
+		notesEditor.setOpaque(false);
 
-        notesEditor.setText(manager.getNotes().get(mIndex));
+		notesEditor.setText(manager.getNotes().get(mIndex));
 
-        // setting the limit to a 500 as UndoManager registers every key press,
-        // which means that be default we would be able to undo only a sentence.
-        // note: the default limit is 100
-        undoRedo.setLimit(500);
-        notesEditor.getDocument().addUndoableEditListener(e -> undoRedo.addEdit(e.getEdit()));
+		// setting the limit to a 500 as UndoManager registers every key press,
+		// which means that be default we would be able to undo only a sentence.
+		// note: the default limit is 100
+		undoRedo.setLimit(500);
+		notesEditor.getDocument().addUndoableEditListener(e -> undoRedo.addEdit(e.getEdit()));
 
-        notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
-        notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+		notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
+		notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
 
-        notesEditor.getActionMap().put("Undo", new AbstractAction("Undo") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (undoRedo.canUndo()) {
-                        undoRedo.undo();
-                    }
-                } catch (CannotUndoException ex) {
-                    log.warn("Notes Document Unable To Undo: " + ex);
-                }
-            }
-        });
+		notesEditor.getActionMap().put("Undo", new AbstractAction("Undo")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if (undoRedo.canUndo())
+					{
+						undoRedo.undo();
+					}
+				}
+				catch (CannotUndoException ex)
+				{
+					log.warn("Notes Document Unable To Undo: " + ex);
+				}
+			}
+		});
 
-        notesEditor.getActionMap().put("Redo", new AbstractAction("Redo") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (undoRedo.canRedo()) {
-                        undoRedo.redo();
-                    }
-                } catch (CannotUndoException ex) {
-                    log.warn("Notes Document Unable To Redo: " + ex);
-                }
-            }
-        });
+		notesEditor.getActionMap().put("Redo", new AbstractAction("Redo")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if (undoRedo.canRedo())
+					{
+						undoRedo.redo();
+					}
+				}
+				catch (CannotUndoException ex)
+				{
+					log.warn("Notes Document Unable To Redo: " + ex);
+				}
+			}
+		});
 
-        notesEditor.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
+		notesEditor.addFocusListener(new FocusListener()
+		{
+			@Override
+			public void focusGained(FocusEvent e)
+			{
 
-            }
+			}
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                notesChanged(notesEditor.getDocument());
-            }
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				notesChanged(notesEditor.getDocument());
+			}
 
-            private void notesChanged(Document doc) {
-                try {
-                    // get document text and save to config whenever editor is changed
-                    String data = doc.getText(0, doc.getLength());
-                    manager.updateNote(index, data);
-                } catch (BadLocationException ex) {
-                    log.warn("Notes Document Bad Location: " + ex);
-                }
-            }
-        });
-        add(notesEditor, BorderLayout.CENTER);
-        setBorder(new EmptyBorder(10, 10, 10, 10));
-    }
+			private void notesChanged(Document doc)
+			{
+				try
+				{
+					// get document text and save to config whenever editor is changed
+					String data = doc.getText(0, doc.getLength());
+					manager.updateNote(index, data);
+				}
+				catch (BadLocationException ex)
+				{
+					log.warn("Notes Document Bad Location: " + ex);
+				}
+			}
+		});
+		add(notesEditor, BorderLayout.CENTER);
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+	}
 }

@@ -26,6 +26,24 @@
  */
 package net.runelite.client.plugins.notes;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.getRootFrame;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.notes.events.PageAdded;
@@ -36,134 +54,138 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import static javax.swing.JOptionPane.*;
-
 @Slf4j
 @Singleton
-class NotesPanel extends PluginPanel {
-    @Inject
-    private NotesManager notesManager;
+class NotesPanel extends PluginPanel
+{
+	@Inject
+	private NotesManager notesManager;
 
-    @Inject
-    private EventBus eventBus;
+	@Inject
+	private EventBus eventBus;
 
-    private final JPanel display = new JPanel();
-    private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
-    private final ImageIcon addIcon = new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), "add_icon.png"));
-    private MaterialTab addTab;
-    private List<MaterialTab> tabs = new ArrayList<>();
+	private final JPanel display = new JPanel();
+	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
+	private final ImageIcon addIcon = new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), "add_icon.png"));
+	private MaterialTab addTab;
+	private List<MaterialTab> tabs = new ArrayList<>();
 
-    void init(final NotesConfig config) {
-        eventBus.subscribe(PageAdded.class, this, this::onPageAdded);
-        eventBus.subscribe(PageDeleted.class, this, this::onPageDeleted);
+	void init(final NotesConfig config)
+	{
+		eventBus.subscribe(PageAdded.class, this, this::onPageAdded);
+		eventBus.subscribe(PageDeleted.class, this, this::onPageDeleted);
 
-        // this may or may not qualify as a hack
-        // but this lets the editor pane expand to fill the whole parent panel
-        getParent().setLayout(new BorderLayout());
-        getParent().add(this, BorderLayout.CENTER);
+		// this may or may not qualify as a hack
+		// but this lets the editor pane expand to fill the whole parent panel
+		getParent().setLayout(new BorderLayout());
+		getParent().add(this, BorderLayout.CENTER);
 
-        setLayout(new BorderLayout());
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        tabGroup.setBorder(new EmptyBorder(0, 0, 10, 0));
+		tabGroup.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        buildAddTab();
+		buildAddTab();
 
-        add(tabGroup, BorderLayout.NORTH);
-        add(display, BorderLayout.CENTER);
-    }
+		add(tabGroup, BorderLayout.NORTH);
+		add(display, BorderLayout.CENTER);
+	}
 
-    private void buildAddTab() {
-        addTab = new MaterialTab(addIcon, tabGroup, new JPanel());
-        addTab.setOnSelectEvent(() -> {
-            notesManager.addPage();
-            return false;
-        });
-    }
+	private void buildAddTab()
+	{
+		addTab = new MaterialTab(addIcon, tabGroup, new JPanel());
+		addTab.setOnSelectEvent(() -> {
+			notesManager.addPage();
+			return false;
+		});
+	}
 
-    void rebuild() {
-        tabs = new LinkedList<>();
-        tabGroup.removeAll();
+	void rebuild()
+	{
+		tabs = new LinkedList<>();
+		tabGroup.removeAll();
 
-        int totalNotes = notesManager.getNotes().size();
+		int totalNotes = notesManager.getNotes().size();
 
-        for (int i = 0; i < totalNotes; i++) {
-            MaterialTab tab = buildTab(i);
-            tabs.add(tab);
-            tabGroup.addTab(tab);
-        }
+		for (int i = 0; i < totalNotes; i++)
+		{
+			MaterialTab tab = buildTab(i);
+			tabs.add(tab);
+			tabGroup.addTab(tab);
+		}
 
-        if (totalNotes < NotesConfig.MAX_NOTES) {
-            tabGroup.addTab(addTab);
-        }
+		if (totalNotes < NotesConfig.MAX_NOTES)
+		{
+			tabGroup.addTab(addTab);
+		}
 
-        if (tabs.size() > 0) {
-            // select the first tab
-            tabGroup.select(tabGroup.getTab(0));
-        }
+		if (tabs.size() > 0)
+		{
+			// select the first tab
+			tabGroup.select(tabGroup.getTab(0));
+		}
 
-        revalidate();
-        repaint();
-    }
+		revalidate();
+		repaint();
+	}
 
-    private void onPageAdded(PageAdded e) {
-        MaterialTab tab = buildTab(e.getIndex());
-        tabs.add(tab);
-        tabGroup.addTab(tab);
+	private void onPageAdded(PageAdded e)
+	{
+		MaterialTab tab = buildTab(e.getIndex());
+		tabs.add(tab);
+		tabGroup.addTab(tab);
 
-        // re-add add button to make it last
-        tabGroup.removeTab(addTab);
-        if (notesManager.getNotes().size() < NotesConfig.MAX_NOTES) {
-            tabGroup.addTab(addTab);
-        }
+		// re-add add button to make it last
+		tabGroup.removeTab(addTab);
+		if (notesManager.getNotes().size() < NotesConfig.MAX_NOTES)
+		{
+			tabGroup.addTab(addTab);
+		}
 
-        revalidate();
-        repaint();
-    }
+		revalidate();
+		repaint();
+	}
 
-    private void onPageDeleted(PageDeleted e) {
-        rebuild();
-    }
+	private void onPageDeleted(PageDeleted e)
+	{
+		rebuild();
+	}
 
-    private MaterialTab buildTab(int index) {
-        String name = String.valueOf(index + 1);
-        NoteTab noteTab = new NoteTab(notesManager, index);
+	private MaterialTab buildTab(int index)
+	{
+		String name = String.valueOf(index + 1);
+		NoteTab noteTab = new NoteTab(notesManager, index);
 
-        MaterialTab materialTab = new MaterialTab(name, tabGroup, noteTab);
-        materialTab.setPreferredSize(new Dimension(30, 27));
-        materialTab.setName(name);
+		MaterialTab materialTab = new MaterialTab(name, tabGroup, noteTab);
+		materialTab.setPreferredSize(new Dimension(30, 27));
+		materialTab.setName(name);
 
-        final JMenuItem deleteMenuItem = new JMenuItem();
-        deleteMenuItem.setText(String.format("Delete note %s", name));
+		final JMenuItem deleteMenuItem = new JMenuItem();
+		deleteMenuItem.setText(String.format("Delete note %s", name));
 
-        deleteMenuItem.addActionListener(e -> {
-            if (JOptionPane.showConfirmDialog(getRootFrame(), String.format("Delete note page %s?", name), "Notes", YES_NO_OPTION) != YES_OPTION) {
-                return;
-            }
-            try {
-                notesManager.deletePage(index);
-            } catch (DeleteOnlyPageException err) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(getRootFrame(),
-                        "Cannot delete the last page",
-                        "Notes", ERROR_MESSAGE));
-            }
-        });
+		deleteMenuItem.addActionListener(e -> {
+			if (JOptionPane.showConfirmDialog(getRootFrame(), String.format("Delete note page %s?", name), "Notes", YES_NO_OPTION) != YES_OPTION)
+			{
+				return;
+			}
+			try
+			{
+				notesManager.deletePage(index);
+			}
+			catch (DeleteOnlyPageException err)
+			{
+				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(getRootFrame(),
+					"Cannot delete the last page",
+					"Notes", ERROR_MESSAGE));
+			}
+		});
 
-        final JPopupMenu contextMenu = new JPopupMenu();
-        contextMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contextMenu.add(deleteMenuItem);
+		final JPopupMenu contextMenu = new JPopupMenu();
+		contextMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contextMenu.add(deleteMenuItem);
 
-        materialTab.setComponentPopupMenu(contextMenu);
+		materialTab.setComponentPopupMenu(contextMenu);
 
-        return materialTab;
-    }
+		return materialTab;
+	}
 }
