@@ -820,20 +820,23 @@ public class SlayerPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
+		if (!event.getGroup().equals("slayer"))
 		{
 			return;
 		}
 
 		updateConfig();
 
-		if (this.showInfobox)
+		if (event.getKey().equals("infobox"))
 		{
-			clientThread.invoke(this::addCounter);
-		}
-		else
-		{
-			removeCounter();
+			if (this.showInfobox)
+			{
+				clientThread.invoke(this::addCounter);
+			}
+			else
+			{
+				removeCounter();
+			}
 		}
 	}
 
