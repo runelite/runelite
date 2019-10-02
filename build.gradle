@@ -64,7 +64,7 @@ ext {
     mavenPluginAnnotations = '3.6.0'
     mavenPluginApi = '3.6.2'
     minio = '6.0.11'
-    mockito = '3.0.0'
+    mockito = '3.1.0'
     mongodbDriverSync = '3.11.0'
     mysqlConnectorJava = '8.0.17'
     netty = '4.1.42.Final'
