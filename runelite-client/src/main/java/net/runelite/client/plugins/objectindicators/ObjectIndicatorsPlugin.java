@@ -170,8 +170,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWallObjectChanged(WallObjectChanged event)
 	{
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
+		final WallObject previous = event.getPrevious();
+		final WallObject wallObject = event.getWallObject();
 
 		objects.remove(previous);
 		checkObjectPoints(wallObject);
@@ -212,7 +212,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		GameState gameState = gameStateChanged.getGameState();
+		final GameState gameState = gameStateChanged.getGameState();
 		if (gameState == GameState.LOADING)
 		{
 			// Reload points with new map regions
@@ -229,7 +229,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			}
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (gameState != GameState.LOGGED_IN)
 		{
 			objects.clear();
 		}
@@ -279,14 +279,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
-		String name = objectDefinition.getName();
-		if (Strings.isNullOrEmpty(name))
-		{
-			return;
-		}
-
-		markObject(name, object);
+		markObject(object);
 	}
 
 	private void checkObjectPoints(TileObject object)
@@ -302,13 +295,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY()
+					&& objectPoint.getId() == object.getId())
 			{
-				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
-				{
-					objects.add(object);
-					break;
-				}
+				objects.add(object);
+				break;
 			}
 		}
 	}
@@ -364,7 +355,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return null;
 	}
 
-	private void markObject(String name, final TileObject object)
+	private void markObject(final TileObject object)
 	{
 		if (object == null)
 		{
@@ -374,7 +365,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final ObjectPoint point = new ObjectPoint(
-			name,
+			object.getId(),
 			regionId,
 			worldPoint.getX() & (REGION_SIZE - 1),
 			worldPoint.getY() & (REGION_SIZE - 1),

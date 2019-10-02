@@ -61,8 +61,11 @@ class ObjectIndicatorsOverlay extends Overlay
 	{
 		for (TileObject object : plugin.getObjects())
 		{
-			if (object.getPlane() != client.getPlane())
+			if (object.getPlane() != client.getPlane() && !(object instanceof WallObject))
 			{
+				//If veins in mlm upper level are depleted when the player logs in, the plane is 1
+				//But if the player sees it get depleted it will be on plane 0
+				//I don't know if this extends to other WallObjects.
 				continue;
 			}
 

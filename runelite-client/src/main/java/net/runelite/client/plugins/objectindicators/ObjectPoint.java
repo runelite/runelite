@@ -30,7 +30,7 @@ import lombok.Value;
 @Value
 class ObjectPoint
 {
-	private String name;
+	private int id;
 	private int regionId;
 	private int regionX;
 	private int regionY;
