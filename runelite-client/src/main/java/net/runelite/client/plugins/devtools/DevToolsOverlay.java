@@ -32,6 +32,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.inject.Inject;
@@ -286,10 +287,10 @@ class DevToolsOverlay extends Overlay
 
 					// Draw a polygon around the convex hull
 					// of the model vertices
-					Polygon p = gameObject.getConvexHull();
+					Shape p = gameObject.getConvexHull();
 					if (p != null)
 					{
-						graphics.drawPolygon(p);
+						graphics.draw(p);
 					}
 				}
 			}
@@ -330,16 +331,16 @@ class DevToolsOverlay extends Overlay
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
 
-			Polygon p = decorObject.getConvexHull();
+			Shape p = decorObject.getConvexHull();
 			if (p != null)
 			{
-				graphics.drawPolygon(p);
+				graphics.draw(p);
 			}
 
 			p = decorObject.getConvexHull2();
 			if (p != null)
 			{
-				graphics.drawPolygon(p);
+				graphics.draw(p);
 			}
 		}
 	}
