@@ -48,6 +48,7 @@ enum TransportationPointLocation
 	FISHINGPLAT_TO_ARDOUGNE("Ship to Ardougne", new WorldPoint(2779, 3271, 0), new WorldPoint(2722, 3304, 0)),
 	HARMLESS_TO_PORT_PHASMATYS("Ship to Port Phasmatys", new WorldPoint(3682, 2951, 0), new WorldPoint(3709, 3497, 0)),
 	ICEBERG_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2657, 3988, 0), new WorldPoint(2707, 3735, 0)),
+	ISLAND_OF_STONE_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2470, 3994, 0), new WorldPoint(2621, 3692, 0)),
 	ISLAND_TO_APE_ATOLL("Ship to Ape Atoll", new WorldPoint(2891, 2726, 0), new WorldPoint(2802, 2706, 0)),
 	JATIZSO_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2420, 3780, 0), new WorldPoint(2639, 3710, 0)),
 	KARAMJA_TO_PORT_SARIM("Ship to Port Sarim", new WorldPoint(2955, 3144, 0), new WorldPoint(3029, 3218, 0)),
