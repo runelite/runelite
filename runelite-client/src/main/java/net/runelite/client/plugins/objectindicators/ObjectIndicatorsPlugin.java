@@ -333,45 +333,55 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final DecorativeObject tileDecorativeObject = tile.getDecorativeObject();
 		final WallObject tileWallObject = tile.getWallObject();
 
-		if (tileWallObject != null && tileWallObject.getId() == id)
+		if (objectIdEquals(tileWallObject, id))
 		{
 			return tileWallObject;
 		}
 
-		if (tileDecorativeObject != null && tileDecorativeObject.getId() == id)
+		if (objectIdEquals(tileDecorativeObject, id))
 		{
 			return tileDecorativeObject;
 		}
 
 		for (GameObject object : tileGameObjects)
 		{
-			if (object == null)
-			{
-				continue;
-			}
-
-			if (object.getId() == id)
+			if (objectIdEquals(object, id))
 			{
 				return object;
-			}
-
-			// Menu action EXAMINE_OBJECT sends the transformed object id, not the base id, unlike
-			// all of the GAME_OBJECT_OPTION actions, so check the id against the impostor ids
-			final ObjectComposition comp = client.getObjectDefinition(object.getId());
-
-			if (comp.getImpostorIds() != null)
-			{
-				for (int impostorId : comp.getImpostorIds())
-				{
-					if (impostorId == id)
-					{
-						return object;
-					}
-				}
 			}
 		}
 
 		return null;
+	}
+
+	private boolean objectIdEquals(TileObject tileObject, int id)
+	{
+		if (tileObject == null)
+		{
+			return false;
+		}
+
+		if (tileObject.getId() == id)
+		{
+			return true;
+		}
+
+		// Menu action EXAMINE_OBJECT sends the transformed object id, not the base id, unlike
+		// all of the GAME_OBJECT_OPTION actions, so check the id against the impostor ids
+		final ObjectComposition comp = client.getObjectDefinition(tileObject.getId());
+
+		if (comp.getImpostorIds() != null)
+		{
+			for (int impostorId : comp.getImpostorIds())
+			{
+				if (impostorId == id)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private void markObject(String name, final TileObject object)
