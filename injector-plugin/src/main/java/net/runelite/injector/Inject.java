@@ -56,9 +56,9 @@ import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.runelite.injector.raw.HidePlayerAttacks;
 
 // import net.runelite.injector.raw.DrawMenu;
-// import net.runelite.injector.raw.HidePlayerAttacks;
 
 public class Inject
 {
@@ -319,7 +319,7 @@ public class Inject
 		new RenderDraw(this).inject();
 		// new DrawMenu(this).inject();
 		new Occluder(this).inject();
-		// new HidePlayerAttacks(this).inject();
+		new HidePlayerAttacks(this).inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)

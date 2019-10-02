@@ -37,7 +37,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_MAP);
 		this.client = client;
 		this.plugin = plugin;
 	}

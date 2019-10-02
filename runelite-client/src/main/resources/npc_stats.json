@@ -5801,16 +5801,7 @@
     "combatLevel": 66,
     "slayerLevel": 1,
     "attackSpeed": 15,
-    "attackLevel": 90,
-    "strengthLevel": 90,
-    "defenceLevel": 90,
-    "rangeLevel": 1,
-    "magicLevel": 70,
-    "magic": 70,
-    "stabDef": 40,
-    "slashDef": 90,
-    "crushDef": 90,
-    "magicDef": 34
+    "magic": 70
   },
   "800": {
     "name": "Locust rider",
@@ -6955,18 +6946,6 @@
     "attackLevel": 25,
     "strengthLevel": 50,
     "defenceLevel": 25,
-    "rangeLevel": 1,
-    "magicLevel": 1
-  },
-  "1038": {
-    "name": "Monkey",
-    "hitpoints": 6,
-    "combatLevel": 3,
-    "slayerLevel": 1,
-    "attackSpeed": 4,
-    "attackLevel": 2,
-    "strengthLevel": 3,
-    "defenceLevel": 2,
     "rangeLevel": 1,
     "magicLevel": 1
   },
@@ -8168,7 +8147,9 @@
     "strengthLevel": 35,
     "defenceLevel": 35,
     "rangeLevel": 30,
-    "magicLevel": 10
+    "magicLevel": 10,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "1369": {
     "name": "Air elemental",
@@ -11839,24 +11820,6 @@
     "crushDef": 175,
     "rangeDef": 250
   },
-  "2263": {
-    "name": "Bardur",
-    "hitpoints": 99,
-    "combatLevel": 94,
-    "attackSpeed": 6,
-    "attackLevel": 99,
-    "strengthLevel": 40,
-    "defenceLevel": 99,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "stabDef": 150,
-    "slashDef": 150,
-    "crushDef": 150,
-    "rangeDef": 150,
-    "magicDef": 150,
-    "bonusAttack": 100,
-    "bonusStrength": 100
-  },
   "2264": {
     "name": "Dagannoth fledgeling",
     "hitpoints": 100,
@@ -13681,7 +13644,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "2791": {
     "name": "Cow",
@@ -13693,7 +13658,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "2792": {
     "name": "Cow calf",
@@ -13717,7 +13684,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "2794": {
     "name": "Cow calf",
@@ -13741,7 +13710,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "2801": {
     "name": "Cow calf",
@@ -16031,7 +16002,7 @@
     "hitpoints": 20,
     "combatLevel": 18,
     "slayerLevel": 1,
-    "attackSpeed": 6,
+    "attackSpeed": 4,
     "attackLevel": 12,
     "strengthLevel": 16,
     "defenceLevel": 19,
@@ -18716,26 +18687,6 @@
     "rangeLevel": 1,
     "magicLevel": 1
   },
-  "3897": {
-    "name": "Koschei the deathless",
-    "hitpoints": 79,
-    "attackSpeed": 4
-  },
-  "3898": {
-    "name": "Koschei the deathless",
-    "hitpoints": 79,
-    "attackSpeed": 4
-  },
-  "3899": {
-    "name": "Koschei the deathless",
-    "hitpoints": 79,
-    "attackSpeed": 4
-  },
-  "3900": {
-    "name": "Koschei the deathless",
-    "hitpoints": 79,
-    "attackSpeed": 4
-  },
   "3901": {
     "name": "Fox",
     "hitpoints": 30,
@@ -18867,18 +18818,6 @@
   },
   "3940": {
     "name": "Lanzig",
-    "hitpoints": 50,
-    "combatLevel": 48,
-    "attackSpeed": 4,
-    "attackLevel": 40,
-    "strengthLevel": 40,
-    "defenceLevel": 40,
-    "rangeLevel": 1,
-    "magicLevel": 1,
-    "bonusStrength": 20
-  },
-  "3942": {
-    "name": "Freygerd",
     "hitpoints": 50,
     "combatLevel": 48,
     "attackSpeed": 4,
@@ -22127,7 +22066,7 @@
     "hitpoints": 15,
     "combatLevel": 13,
     "slayerLevel": 1,
-    "attackSpeed": 6,
+    "attackSpeed": 4,
     "attackLevel": 10,
     "strengthLevel": 10,
     "defenceLevel": 12,
@@ -25428,7 +25367,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "5848": {
     "name": "Tanglefoot",
@@ -27385,10 +27326,15 @@
   },
   "6340": {
     "name": "Cow (hard)",
-    "hitpoints": 8,
+    "hitpoints": 160,
     "combatLevel": 170,
     "slayerLevel": 1,
-    "attackSpeed": 4
+    "attackSpeed": 4,
+    "attackLevel": 200,
+    "strengthLevel": 200,
+    "defenceLevel": 1,
+    "rangeLevel": 1,
+    "magicLevel": 1
   },
   "6342": {
     "name": "Barrelchest",
@@ -28249,7 +28195,9 @@
     "strengthLevel": 1,
     "defenceLevel": 1,
     "rangeLevel": 1,
-    "magicLevel": 1
+    "magicLevel": 1,
+    "poisonImmune": true,
+    "venomImmune": true
   },
   "6402": {
     "name": "Mosquito swarm",
@@ -29533,7 +29481,7 @@
     "hitpoints": 130,
     "combatLevel": 80,
     "slayerLevel": 1,
-    "attackSpeed": 6,
+    "attackSpeed": 4,
     "attackLevel": 55,
     "strengthLevel": 60,
     "defenceLevel": 50,
@@ -35559,6 +35507,7 @@
     "name": "Galvek",
     "hitpoints": 1200,
     "combatLevel": 608,
+    "attackSpeed": 6,
     "attackLevel": 632,
     "strengthLevel": 268,
     "defenceLevel": 188,
@@ -35575,12 +35524,14 @@
     "bonusRangeStrength": 6,
     "bonusMagicDamage": 42,
     "poisonImmune": true,
-    "venomImmune": true
+    "venomImmune": true,
+    "dragon": true
   },
   "8095": {
     "name": "Galvek",
     "hitpoints": 1200,
     "combatLevel": 608,
+    "attackSpeed": 6,
     "attackLevel": 632,
     "strengthLevel": 268,
     "defenceLevel": 188,
@@ -35597,7 +35548,8 @@
     "bonusRangeStrength": 6,
     "bonusMagicDamage": 42,
     "poisonImmune": true,
-    "venomImmune": true
+    "venomImmune": true,
+    "dragon": true
   },
   "8096": {
     "name": "Galvek",
@@ -35753,6 +35705,7 @@
     "name": "Galvek",
     "hitpoints": 1200,
     "combatLevel": 608,
+    "attackSpeed": 6,
     "attackLevel": 632,
     "strengthLevel": 268,
     "defenceLevel": 188,
@@ -35769,7 +35722,8 @@
     "bonusRangeStrength": 6,
     "bonusMagicDamage": 42,
     "poisonImmune": true,
-    "venomImmune": true
+    "venomImmune": true,
+    "dragon": true
   },
   "8178": {
     "name": "Galvek",
@@ -38227,5 +38181,196 @@
     "bonusAttack": 14,
     "bonusStrength": 28,
     "bonusRangeStrength": 28
+  },
+  "9258": {
+    "name": "Basilisk Sentinel",
+    "hitpoints": 460,
+    "combatLevel": 351,
+    "slayerLevel": 40,
+    "attackSpeed": 4,
+    "attackLevel": 274,
+    "strengthLevel": 274,
+    "defenceLevel": 274,
+    "rangeLevel": 1,
+    "magicLevel": 274,
+    "stabDef": 40,
+    "slashDef": 40,
+    "magicDef": 40
+  },
+  "9282": {
+    "name": "Basilisk Youngling",
+    "hitpoints": 60,
+    "combatLevel": 57,
+    "slayerLevel": 40,
+    "attackSpeed": 4,
+    "attackLevel": 25,
+    "strengthLevel": 40,
+    "defenceLevel": 70,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 20,
+    "slashDef": 20,
+    "magicDef": 20
+  },
+  "9287": {
+    "name": "Monstrous Basilisk",
+    "hitpoints": 170,
+    "combatLevel": 135,
+    "attackSpeed": 4,
+    "attackLevel": 88,
+    "strengthLevel": 98,
+    "defenceLevel": 130,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 35,
+    "slashDef": 35,
+    "magicDef": 35,
+    "poisonImmune": true,
+    "venomImmune": true
+  },
+  "9288": {
+    "name": "Monstrous Basilisk",
+    "hitpoints": 170,
+    "combatLevel": 135,
+    "attackSpeed": 4,
+    "attackLevel": 88,
+    "strengthLevel": 98,
+    "defenceLevel": 130,
+    "rangeLevel": 1,
+    "magicLevel": 1,
+    "stabDef": 35,
+    "slashDef": 35,
+    "magicDef": 35,
+    "poisonImmune": true,
+    "venomImmune": true
+  },
+  "9289": {
+    "name": "The Jormungand",
+    "hitpoints": 600,
+    "combatLevel": 363,
+    "slayerLevel": 40,
+    "attackSpeed": 5,
+    "attackLevel": 180,
+    "strengthLevel": 180,
+    "defenceLevel": 180,
+    "rangeLevel": 180,
+    "magicLevel": 180,
+    "stabDef": 50,
+    "slashDef": 50,
+    "crushDef": 10,
+    "rangeDef": 50,
+    "magicDef": 50,
+    "bonusStrength": 12,
+    "bonusRangeStrength": 12,
+    "bonusMagicDamage": 12
+  },
+  "9290": {
+    "name": "The Jormungand",
+    "hitpoints": 600,
+    "combatLevel": 363,
+    "slayerLevel": 40,
+    "attackSpeed": 5,
+    "attackLevel": 180,
+    "strengthLevel": 180,
+    "defenceLevel": 180,
+    "rangeLevel": 180,
+    "magicLevel": 180,
+    "stabDef": 50,
+    "slashDef": 50,
+    "crushDef": 10,
+    "rangeDef": 50,
+    "magicDef": 50,
+    "bonusStrength": 12,
+    "bonusRangeStrength": 12,
+    "bonusMagicDamage": 12
+  },
+  "9291": {
+    "name": "The Jormungand",
+    "hitpoints": 600,
+    "combatLevel": 363,
+    "slayerLevel": 40,
+    "attackSpeed": 5,
+    "attackLevel": 180,
+    "strengthLevel": 180,
+    "defenceLevel": 180,
+    "rangeLevel": 180,
+    "magicLevel": 180,
+    "stabDef": 50,
+    "slashDef": 50,
+    "crushDef": 10,
+    "rangeDef": 50,
+    "magicDef": 50,
+    "bonusStrength": 12,
+    "bonusRangeStrength": 12,
+    "bonusMagicDamage": 12
+  },
+  "9292": {
+    "name": "The Jormungand",
+    "hitpoints": 600,
+    "combatLevel": 363,
+    "slayerLevel": 40,
+    "attackSpeed": 5,
+    "attackLevel": 180,
+    "strengthLevel": 180,
+    "defenceLevel": 180,
+    "rangeLevel": 180,
+    "magicLevel": 180,
+    "stabDef": 50,
+    "slashDef": 50,
+    "crushDef": 10,
+    "rangeDef": 50,
+    "magicDef": 50,
+    "bonusStrength": 12,
+    "bonusRangeStrength": 12,
+    "bonusMagicDamage": 12
+  },
+  "9293": {
+    "name": "Basilisk Knight",
+    "hitpoints": 200,
+    "combatLevel": 182,
+    "slayerLevel": 40,
+    "attackSpeed": 4,
+    "attackLevel": 150,
+    "strengthLevel": 150,
+    "defenceLevel": 150,
+    "rangeLevel": 1,
+    "magicLevel": 150,
+    "stabDef": 25,
+    "slashDef": 25,
+    "magicDef": 25
+  },
+  "9295": {
+    "name": "Typhor",
+    "hitpoints": 280,
+    "combatLevel": 194,
+    "slayerLevel": 40,
+    "attackSpeed": 4,
+    "attackLevel": 150,
+    "strengthLevel": 150,
+    "defenceLevel": 150,
+    "rangeLevel": 1,
+    "magicLevel": 150,
+    "stabDef": 25,
+    "slashDef": 25,
+    "magicDef": 25,
+    "poisonImmune": true,
+    "venomImmune": true
+  },
+  "9296": {
+    "name": "Typhor",
+    "hitpoints": 280,
+    "combatLevel": 194,
+    "slayerLevel": 40,
+    "attackSpeed": 4,
+    "attackLevel": 150,
+    "strengthLevel": 150,
+    "defenceLevel": 150,
+    "rangeLevel": 1,
+    "magicLevel": 150,
+    "stabDef": 25,
+    "slashDef": 25,
+    "magicDef": 25,
+    "poisonImmune": true,
+    "venomImmune": true
   }
 }
