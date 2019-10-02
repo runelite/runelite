@@ -37,9 +37,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
@@ -78,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "objects", "mark", "marker"},
 	enabledByDefault = false
 )
+@Slf4j
 public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
@@ -279,9 +282,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+		// object.getId() is always the base object id, getObjectComposition transforms it to
+		// the correct object we see
+		ObjectComposition objectDefinition = getObjectComposition(object.getId());
 		String name = objectDefinition.getName();
-		if (Strings.isNullOrEmpty(name))
+		// Name is probably never "null" - however prevent adding it if it is, as it will
+		// become ambiguous as objects with no name are assigned name "null"
+		if (Strings.isNullOrEmpty(name) || name.equals("null"))
 		{
 			return;
 		}
@@ -304,8 +311,10 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
 					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
-				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
+				// Transform object to get the name which matches against what we've stored
+				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
 				{
+					log.debug("Marking object {} due to matching {}", object, objectPoint);
 					objects.add(object);
 					break;
 				}
@@ -346,7 +355,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 				return object;
 			}
 
-			// Check impostors
+			// Menu action EXAMINE_OBJECT sends the transformed object id, not the base id, unlike
+			// all of the GAME_OBJECT_OPTION actions, so check the id against the impostor ids
 			final ObjectComposition comp = client.getObjectDefinition(object.getId());
 
 			if (comp.getImpostorIds() != null)
@@ -386,11 +396,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		{
 			objectPoints.remove(point);
 			objects.remove(object);
+			log.debug("Unmarking object: {}", point);
 		}
 		else
 		{
 			objectPoints.add(point);
 			objects.add(object);
+			log.debug("Marking object: {}", point);
 		}
 
 		savePoints(regionId, objectPoints);
@@ -418,8 +430,20 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return null;
 		}
 
-		return GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
+		// Prior to multiloc support the plugin would mark objects named "null", which breaks
+		// in most cases due to the specific object being identified being ambiguous, so remove
+		// them
+		return points.stream()
+			.filter(point -> !point.getName().equals("null"))
+			.collect(Collectors.toSet());
+	}
+
+	private ObjectComposition getObjectComposition(int id)
+	{
+		ObjectComposition objectComposition = client.getObjectDefinition(id);
+		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
 	}
 }
