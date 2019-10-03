@@ -91,8 +91,8 @@ public class AntiDragPlugin extends Plugin
 	}
 
 	private boolean alwaysOn;
-	private boolean keybind;
-	private boolean holdkeybind;
+	private boolean toggleKeyBind;
+	private boolean holdKeyBind;
 	private Keybind key;
 	private int dragDelay;
 	private boolean reqfocus;
@@ -109,7 +109,7 @@ public class AntiDragPlugin extends Plugin
 		addSubscriptions();
 		updateConfig();
 
-		if (this.keybind || this.holdkeybind)
+		if (this.toggleKeyBind || this.holdKeyBind)
 		{
 			keyManager.registerKeyListener(hotkeyListener);
 		}
@@ -141,9 +141,9 @@ public class AntiDragPlugin extends Plugin
 		{
 			updateConfig();
 
-			if (event.getKey().equals("keybind"))
+			if (event.getKey().equals("toggleKeyBind"))
 			{
-				if (this.keybind)
+				if (this.toggleKeyBind)
 				{
 					keyManager.registerKeyListener(hotkeyListener);
 				}
@@ -153,9 +153,9 @@ public class AntiDragPlugin extends Plugin
 				}
 			}
 			if
-			(event.getKey().equals(("holdkeybind")))
+			(event.getKey().equals("holdKeyBind"))
 			{
-				if (this.holdkeybind)
+				if (this.holdKeyBind)
 				{
 					keyManager.registerKeyListener(hotkeyListener);
 				}
@@ -184,7 +184,7 @@ public class AntiDragPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGGED_IN:
-				if (keybind || holdkeybind)
+				if (toggleKeyBind || holdKeyBind)
 				{
 					keyManager.registerKeyListener(hotkeyListener);
 				}
@@ -197,8 +197,8 @@ public class AntiDragPlugin extends Plugin
 	private void updateConfig()
 	{
 		this.alwaysOn = config.alwaysOn();
-		this.keybind = config.keybind();
-		this.holdkeybind = config.holdkeybind();
+		this.toggleKeyBind = config.toggleKeyBind();
+		this.holdKeyBind = config.holdKeyBind();
 		this.key = config.key();
 		this.dragDelay = config.dragDelay();
 		this.reqfocus = config.reqfocus();
