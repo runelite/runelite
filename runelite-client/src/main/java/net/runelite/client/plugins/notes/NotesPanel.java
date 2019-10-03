@@ -134,8 +134,10 @@ class NotesPanel extends PluginPanel
 		repaint();
 	}
 
-	private void onConfigChanged(ConfigChanged e){
-		if(!e.getGroup().equals(NotesConfig.CONFIG_GROUP)){
+	private void onConfigChanged(ConfigChanged e)
+	{
+		if (!e.getGroup().equals(NotesConfig.CONFIG_GROUP))
+		{
 			return;
 		}
 
