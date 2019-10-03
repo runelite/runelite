@@ -48,7 +48,6 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
-import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -294,13 +293,9 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 		}
 	}
 
-	private void search(String search)
+	public void search(String search)
 	{
-		LinkBrowser.browse(WikiPlugin.WIKI_BASE.newBuilder()
-			.addQueryParameter("search", search)
-			.addQueryParameter(WikiPlugin.UTM_SORUCE_KEY, WikiPlugin.UTM_SORUCE_VALUE)
-			.build()
-			.toString());
+		WikiPlugin.search(search);
 		chatboxPanelManager.close();
 	}
 }

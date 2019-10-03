@@ -107,6 +107,15 @@ public class WikiPlugin extends Plugin
 
 	private boolean wikiSelected = false;
 
+	public static void search(String search)
+	{
+		LinkBrowser.browse(WikiPlugin.WIKI_BASE.newBuilder()
+			.addQueryParameter("search", search)
+			.addQueryParameter(WikiPlugin.UTM_SORUCE_KEY, WikiPlugin.UTM_SORUCE_VALUE)
+			.build()
+			.toString());
+	}
+
 	@Override
 	public void startUp()
 	{
@@ -365,5 +374,7 @@ public class WikiPlugin extends Plugin
 
 			client.setMenuEntries(menuEntries);
 		}
+
 	}
+
 }
