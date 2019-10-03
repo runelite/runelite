@@ -189,7 +189,8 @@ public class GauntletPlugin extends Plugin
 		if (client.getGameState() != GameState.STARTING && client.getGameState() != GameState.UNKNOWN)
 		{
 			completeStartup = false;
-			clientThread.invoke(() -> {
+			clientThread.invoke(() ->
+			{
 				timer.initStates();
 				completeStartup = true;
 			});

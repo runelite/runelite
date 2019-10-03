@@ -137,7 +137,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = '6.4.1'
+        toolVersion = '8.25'
         sourceSets = [sourceSets.main]
         configFile = file("${rootDir}/checkstyle/checkstyle.xml")
         configProperties = [ "suppressionFile" : file("${rootDir}/checkstyle/suppressions.xml")]
