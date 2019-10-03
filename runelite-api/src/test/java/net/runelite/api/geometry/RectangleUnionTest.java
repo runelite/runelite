@@ -34,17 +34,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.Test;
 
-@Slf4j
 public class RectangleUnionTest
 {
 	private static final int ITERATIONS = 100;
 	private static final int WIDTH = 1000;
 	private static final int MAX_RECTS = 50;
 
-	// @Test
+	@Test
 	public void test() throws IOException
 	{
 		for (int count = 1; count < MAX_RECTS; count++)
@@ -53,7 +52,7 @@ public class RectangleUnionTest
 			{
 				Random rand = new Random(count << 16 | r);
 				String id = count + "rects_iteration" + r;
-				log.info(id);
+
 				BufferedImage wanted = new BufferedImage(WIDTH, WIDTH, BufferedImage.TYPE_BYTE_BINARY);
 				BufferedImage got = new BufferedImage(WIDTH, WIDTH, BufferedImage.TYPE_BYTE_BINARY);
 
@@ -83,7 +82,6 @@ public class RectangleUnionTest
 					while (y1 >= y2);
 
 					RectangleUnion.Rectangle rect = new RectangleUnion.Rectangle(x1, y1, x2, y2);
-					log.trace("{}", rect);
 					rects.add(rect);
 
 					wg.fillRect(x1, y1, x2 - x1, y2 - y1);
