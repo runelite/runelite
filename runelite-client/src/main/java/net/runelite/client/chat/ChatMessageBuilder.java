@@ -56,6 +56,18 @@ public class ChatMessageBuilder
 		return this;
 	}
 
+	public ChatMessageBuilder underline(final String message)
+	{
+		builder.append("<u>" + message + "</u>");
+		return this;
+	}
+
+	public ChatMessageBuilder appendRaw(final String message)
+	{
+		builder.append(message);
+		return this;
+	}
+
 	public String build()
 	{
 		return builder.toString();
