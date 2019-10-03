@@ -107,7 +107,7 @@ public class ObjectDefinition extends DualNode {
 	public int int1;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1687714560
+		intValue = 1385916293
 	)
 	@Export("clipType")
 	int clipType;
@@ -137,7 +137,7 @@ public class ObjectDefinition extends DualNode {
 	int ambient;
 	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -308737111
+		intValue = -1558537711
 	)
 	@Export("contrast")
 	int contrast;

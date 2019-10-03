@@ -244,7 +244,7 @@ public class ItemDefinition extends DualNode {
 	public int ambient;
 	@ObfuscatedName("bh")
 	@ObfuscatedGetter(
-		intValue = 1020464737
+		intValue = 807356389
 	)
 	@Export("contrast")
 	public int contrast;

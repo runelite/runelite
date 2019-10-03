@@ -29,7 +29,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class GameShell extends Applet implements Runnable, FocusListener, WindowListener {
 	@ObfuscatedName("rx")
 	@ObfuscatedGetter(
-		intValue = 1980034688
+		intValue = 41369600
 	)
 	static int field455;
 	@ObfuscatedName("z")

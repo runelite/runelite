@@ -9,7 +9,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class Clock {
 	@ObfuscatedName("qq")
 	@ObfuscatedGetter(
-		intValue = -757684608
+		intValue = 1800617984
 	)
 	static int field2039;
 
