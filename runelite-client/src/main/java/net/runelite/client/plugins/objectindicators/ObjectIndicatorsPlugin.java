@@ -47,6 +47,7 @@ import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.GroundObject;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ObjectComposition;
@@ -55,14 +56,16 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -213,6 +216,20 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned groundObjectSpawned)
+	{
+		final GroundObject groundObject = groundObjectSpawned.getGroundObject();
+		checkObjectPoints(groundObject);
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned groundObjectDespawned)
+	{
+		GroundObject groundObject = groundObjectDespawned.getGroundObject();
+		objects.remove(groundObject);
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
@@ -332,6 +349,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final GameObject[] tileGameObjects = tile.getGameObjects();
 		final DecorativeObject tileDecorativeObject = tile.getDecorativeObject();
 		final WallObject tileWallObject = tile.getWallObject();
+		final GroundObject groundObject = tile.getGroundObject();
 
 		if (objectIdEquals(tileWallObject, id))
 		{
@@ -341,6 +359,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		if (objectIdEquals(tileDecorativeObject, id))
 		{
 			return tileDecorativeObject;
+		}
+
+		if (objectIdEquals(groundObject, id))
+		{
+			return groundObject;
 		}
 
 		for (GameObject object : tileGameObjects)
