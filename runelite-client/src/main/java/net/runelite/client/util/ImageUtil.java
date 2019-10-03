@@ -441,13 +441,16 @@ public class ImageUtil
 		return recoloredImage;
 	}
 
-	public static BufferedImage recolorImage(BufferedImage image, final Color color) {
+	public static BufferedImage recolorImage(BufferedImage image, final Color color)
+	{
 		int width = image.getWidth();
 		int height = image.getHeight();
 		WritableRaster raster = image.getRaster();
 
-		for (int xx = 0; xx < width; xx++) {
-			for (int yy = 0; yy < height; yy++) {
+		for (int xx = 0; xx < width; xx++)
+		{
+			for (int yy = 0; yy < height; yy++)
+			{
 				int[] pixels = raster.getPixel(xx, yy, (int[]) null);
 				pixels[0] = color.getRed();
 				pixels[1] = color.getGreen();
