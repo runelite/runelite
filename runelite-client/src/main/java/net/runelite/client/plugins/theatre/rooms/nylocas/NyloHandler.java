@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -248,7 +249,7 @@ public class NyloHandler extends RoomHandler
 		{
 			try
 			{
-				Polygon objectClickbox = npc.getConvexHull();
+				Shape objectClickbox = npc.getConvexHull();
 
 				Color color;
 				String name = npc.getName() != null ? npc.getName() : "";
@@ -266,7 +267,8 @@ public class NyloHandler extends RoomHandler
 					color = Color.LIGHT_GRAY;
 				}
 
-				renderPoly(graphics, color, objectClickbox);
+				graphics.setColor(color);
+				graphics.draw(objectClickbox);
 			}
 			catch (Exception ex)
 			{

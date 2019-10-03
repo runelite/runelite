@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -43,12 +44,12 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.util.Text;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.api.util.Text;
 
 @Singleton
 public class TargetClickboxOverlay extends Overlay
@@ -129,7 +130,7 @@ public class TargetClickboxOverlay extends Overlay
 				break;
 
 			case HULL:
-				Polygon objectClickbox = actor.getConvexHull();
+				Shape objectClickbox = actor.getConvexHull();
 
 				if (objectClickbox == null)
 				{

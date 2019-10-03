@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
@@ -46,12 +47,12 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.util.Text;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.api.util.Text;
 
 @Singleton
 public class NpcSceneOverlay extends Overlay
@@ -181,8 +182,9 @@ public class NpcSceneOverlay extends Overlay
 				renderPoly(graphics, color, tilePoly);
 				break;
 			case HULL:
-				final Polygon objectClickbox = actor.getConvexHull();
-				renderPoly(graphics, color, objectClickbox);
+				final Shape objectClickbox = actor.getConvexHull();
+				graphics.setColor(color);
+				graphics.draw(objectClickbox);
 				break;
 			case THIN_OUTLINE:
 				modelOutliner.drawOutline(actor, 1, color);

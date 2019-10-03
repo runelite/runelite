@@ -2,7 +2,7 @@ package net.runelite.client.plugins.raids.shortcuts;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -48,7 +48,7 @@ public class ShortcutOverlay extends Overlay
 		{
 			if (shortcut.getPlane() == client.getPlane())
 			{
-				Polygon poly;
+				Shape poly;
 				if ((shortcut instanceof GameObject))
 				{
 					poly = ((GameObject) shortcut).getConvexHull();

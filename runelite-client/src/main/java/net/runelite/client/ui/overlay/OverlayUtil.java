@@ -33,8 +33,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import net.runelite.api.Actor;
@@ -61,14 +61,14 @@ public class OverlayUtil
 	private static final int MINIMAP_DOT_RADIUS = 4;
 	private static final double UNIT = Math.PI / 1024.0d;
 
-	public static void renderPolygon(Graphics2D graphics, Polygon poly, Color color)
+	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
 		graphics.setColor(color);
 		final Stroke originalStroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(2));
-		graphics.drawPolygon(poly);
+		graphics.draw(poly);
 		graphics.setColor(new Color(0, 0, 0, 50));
-		graphics.fillPolygon(poly);
+		graphics.fill(poly);
 		graphics.setStroke(originalStroke);
 	}
 
@@ -211,7 +211,7 @@ public class OverlayUtil
 		renderImageLocation(client, graphics, localLocation, image, 0);
 	}
 
-	public static void renderHoverableArea(Graphics2D graphics, Area area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	public static void renderHoverableArea(Graphics2D graphics, Shape area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
 	{
 		if (area != null)
 		{
@@ -326,7 +326,7 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderClickBox(Graphics2D graphics, Point mousePosition, Area objectClickbox, Color configColor)
+	public static void renderClickBox(Graphics2D graphics, Point mousePosition, Shape objectClickbox, Color configColor)
 	{
 		if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 		{

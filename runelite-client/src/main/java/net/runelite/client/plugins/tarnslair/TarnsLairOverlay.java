@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -69,11 +70,11 @@ public class TarnsLairOverlay extends Overlay
 		{
 			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				Polygon p = tile.getGameObjects()[0].getConvexHull();
+				Shape p = tile.getGameObjects()[0].getConvexHull();
 				if (p != null)
 				{
 					graphics.setColor(Color.GREEN);
-					graphics.drawPolygon(p);
+					graphics.draw(p);
 				}
 			}
 		});
@@ -82,11 +83,11 @@ public class TarnsLairOverlay extends Overlay
 		{
 			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				Polygon p = tile.getGameObjects()[0].getConvexHull();
+				Shape p = tile.getGameObjects()[0].getConvexHull();
 				if (p != null)
 				{
 					graphics.setColor(Color.CYAN);
-					graphics.drawPolygon(p);
+					graphics.draw(p);
 				}
 			}
 		});

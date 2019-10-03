@@ -63,7 +63,9 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private final WorldClient worldClient = new WorldClient();
+	@Inject
+	private WorldClient worldClient;
+
 	private int worldCache;
 	private boolean worldChangeRequired;
 

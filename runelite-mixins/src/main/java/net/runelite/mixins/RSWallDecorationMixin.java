@@ -1,10 +1,11 @@
 package net.runelite.mixins;
 
+import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.geom.Area;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
-import java.awt.Polygon;
-import java.awt.geom.Area;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -86,14 +87,14 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 
 	@Inject
 	@Override
-	public Area getClickbox()
+	public Shape getClickbox()
 	{
 		Area clickbox = new Area();
 
 		LocalPoint lp = getLocalLocation();
-		Area clickboxA = Perspective.getClickbox(client, getModel1(), 0,
+		Shape clickboxA = Perspective.getClickbox(client, getModel1(), 0,
 			new LocalPoint(lp.getX() + getXOffset(), lp.getY() + getYOffset()));
-		Area clickboxB = Perspective.getClickbox(client, getModel2(), 0, lp);
+		Shape clickboxB = Perspective.getClickbox(client, getModel2(), 0, lp);
 
 		if (clickboxA == null && clickboxB == null)
 		{
@@ -102,15 +103,10 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 
 		if (clickboxA != null)
 		{
-			clickbox.add(clickboxA);
+			return clickboxA;
 		}
 
-		if (clickboxB != null)
-		{
-			clickbox.add(clickboxB);
-		}
-
-		return clickbox;
+		return clickboxB;
 	}
 
 	@Inject

@@ -29,8 +29,10 @@ import com.google.gson.JsonParseException;
 import io.reactivex.Observable;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import javax.inject.Inject;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -39,6 +41,14 @@ import org.slf4j.LoggerFactory;
 public class WorldClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
+
+	private final OkHttpClient client;
+
+	@Inject
+	public WorldClient(OkHttpClient client)
+	{
+		this.client = client;
+	}
 
 	public Observable<WorldResult> lookupWorlds()
 	{
@@ -54,7 +64,7 @@ public class WorldClient
 				.url(url)
 				.build();
 
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+			try (Response response = client.newCall(request).execute())
 			{
 				if (!response.isSuccessful())
 				{

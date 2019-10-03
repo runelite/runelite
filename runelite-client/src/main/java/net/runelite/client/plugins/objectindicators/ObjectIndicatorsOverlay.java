@@ -28,8 +28,7 @@ package net.runelite.client.plugins.objectindicators;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import static java.lang.Math.floor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -101,8 +100,8 @@ class ObjectIndicatorsOverlay extends Overlay
 					}
 					break;
 				case HULL:
-					final Polygon polygon;
-					Polygon polygon2 = null;
+					final Shape polygon;
+					Shape polygon2 = null;
 
 					if (object instanceof GameObject)
 					{
@@ -129,7 +128,7 @@ class ObjectIndicatorsOverlay extends Overlay
 					}
 					break;
 				case CLICKBOX:
-					Area clickbox = object.getClickbox();
+					Shape clickbox = object.getClickbox();
 					if (clickbox != null)
 					{
 						OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), TRANSPARENT, objectColor, objectColor.darker());
