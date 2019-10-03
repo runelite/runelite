@@ -70,6 +70,7 @@ public class NotesManager
 		if (notes == null)
 		{
 			notes = new ArrayList<>();
+			notes.add("");
 		}
 
 		// migrate from legacy single tab notes
