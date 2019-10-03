@@ -17,7 +17,7 @@ public abstract class AbstractWorldMapData {
 	static int selectedItemId;
 	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -517574656
+		intValue = 461674944
 	)
 	@Export("regionXLow")
 	int regionXLow;

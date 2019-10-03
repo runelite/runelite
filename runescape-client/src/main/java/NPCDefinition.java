@@ -140,7 +140,7 @@ public class NPCDefinition extends DualNode {
 	int ambient;
 	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -1785698549
+		intValue = -1216133169
 	)
 	@Export("contrast")
 	int contrast;
