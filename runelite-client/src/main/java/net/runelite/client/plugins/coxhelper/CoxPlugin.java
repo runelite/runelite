@@ -217,9 +217,16 @@ public class CoxPlugin extends Plugin
 			{
 				for (Player player : client.getPlayers())
 				{
-					if (player.getName().equals(tpMatcher.group(1)))
+					final String rawPlayerName = player.getName();
+
+					if (rawPlayerName != null)
 					{
-						victims.add(new Victim(player, Victim.Type.TELEPORT));
+						final String fixedPlayerName = Text.sanitize(rawPlayerName);
+
+						if (fixedPlayerName.equals(tpMatcher.group(1)))
+						{
+							victims.add(new Victim(player, Victim.Type.TELEPORT));
+						}
 					}
 				}
 			}
