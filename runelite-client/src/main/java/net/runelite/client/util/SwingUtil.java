@@ -392,13 +392,13 @@ public class SwingUtil
 		stylizeJPanels(pane);
 
 		final Frame frame = component == null ? JOptionPane.getRootFrame() : JOptionPane.getFrameForComponent(component);
-		final JDialog dialog = new JDialog(frame, "RuneLitePlus Error", true);
+		final JDialog dialog = new JDialog(frame, "openosrs Error", true);
 		dialog.setContentPane(pane);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setAlwaysOnTop(true);
 		dialog.setAutoRequestFocus(true);
 		dialog.setLocationRelativeTo(null);
-		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/runeliteplus_transparent.png"));
+		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/openosrs_transparent.png"));
 
 		// Listen for value changes and close dialog when necessary
 		pane.addPropertyChangeListener(e -> {

@@ -24,7 +24,7 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package net.runelite.client.plugins.runeliteplus;
+package net.runelite.client.plugins.openosrs;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
@@ -38,7 +38,7 @@ import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -49,15 +49,15 @@ import net.runelite.client.util.HotkeyListener;
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
 	hidden = true, // prevent users from disabling
-	name = "RunelitePlus"
+	name = "openosrs"
 )
 @Singleton
 @Slf4j
-public class RuneLitePlusPlugin extends Plugin
+public class OpenOSRSPlugin extends Plugin
 {
-	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
+	private final openosrsKeyListener keyListener = new openosrsKeyListener();
 	@Inject
-	private RuneLitePlusConfig config;
+	private OpenOSRSConfig config;
 
 	@Inject
 	private KeyManager keyManager;
@@ -113,7 +113,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runeliteplus"))
+		if (!event.getGroup().equals("openosrs"))
 		{
 			return;
 		}
@@ -214,7 +214,7 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 	}
 
-	private class RuneLitePlusKeyListener implements KeyListener
+	private class openosrsKeyListener implements KeyListener
 	{
 		private int lastKeyCycle;
 

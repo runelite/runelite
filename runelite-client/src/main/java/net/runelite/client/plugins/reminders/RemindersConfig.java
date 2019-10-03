@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, RuneLitePlus <https://runelitepl.us>
+ * Copyright (c) 2019, openosrs <https://openosrs.com>
  * Copyright (c) 2019, kyle <https://github.com/Kyleeld>
  * All rights reserved.
  *

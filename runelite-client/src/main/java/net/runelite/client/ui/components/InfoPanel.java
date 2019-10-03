@@ -55,11 +55,11 @@ import net.runelite.client.util.LinkBrowser;
 public class InfoPanel extends JPanel
 {
 	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNELITE_PLUS_VERSION = "runelite.plus.version";
-	private static final String RUNELITE_PLUS_DATE = "runelite.plus.builddate";
+	private static final String RUNELITE_PLUS_VERSION = "open.osrs.version";
+	private static final String RUNELITE_PLUS_DATE = "open.osrs.builddate";
 	private static final Color DARK_GREY = new Color(10, 10, 10, 255);
 
-	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/runeliteplus_transparent.png");
+	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/openosrs_transparent.png");
 	static final Dimension PANEL_SIZE = new Dimension(200, RuneLiteSplashScreen.FRAME_SIZE.height);
 	private static final Dimension VERSION_SIZE = new Dimension(PANEL_SIZE.width, 25);
 	private static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
@@ -69,7 +69,7 @@ public class InfoPanel extends JPanel
 
 	public InfoPanel()
 	{
-		try (InputStream in = getClass().getResourceAsStream("/runelite.plus.properties"))
+		try (InputStream in = getClass().getResourceAsStream("/open.osrs.properties"))
 		{
 			properties.load(in);
 		}
@@ -120,7 +120,7 @@ public class InfoPanel extends JPanel
 		this.add(logsFolder, c);
 		c.gridy++;
 
-		final JLabel discord = createPanelButton("Get help on Discord", "Instant invite link to join the RuneLitePlus discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()));
+		final JLabel discord = createPanelButton("Get help on Discord", "Instant invite link to join the openosrs discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()));
 		this.add(discord, c);
 		c.gridy++;
 

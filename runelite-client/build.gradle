@@ -80,12 +80,12 @@ static def getDate() {
 def buildDate = getDate()
 
 processResources {
-    from file("src/main/resources/runelite.plus.properties"), {
+    from file("src/main/resources/open.osrs.properties"), {
         filter(ReplaceTokens, tokens: [
                 "project.version": project.version,
                 "rs.version": rsversion.toString(),
-                "runelite.plus.version": plusVersion.toString(),
-                "runelite.plus.builddate": buildDate.toString()
+                "open.osrs.version": plusVersion.toString(),
+                "open.osrs.builddate": buildDate.toString()
         ])
     }
 }

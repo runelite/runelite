@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2019, Kyleeld <https://github.com/kyleeld>
- * Copyright (c) 2019, RuneLitePlus <https://runelitepl.us>
+ * Copyright (c) 2019, openosrs <https://openosrs.com>
  *
  * All rights reserved.
  *

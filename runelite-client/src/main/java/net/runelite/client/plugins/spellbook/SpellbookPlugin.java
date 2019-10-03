@@ -505,7 +505,7 @@ public class SpellbookPlugin extends Plugin
 
 		// Runs magic_spellbook_rebuild
 		// The magic numbers probably are mobile specific widgetids
-		// runeliteplus mobile when?
+		// openosrs mobile when?
 		clientThread.invoke(() ->
 			client.runScript(
 				MAGIC_SPELLBOOK_REDRAW,
