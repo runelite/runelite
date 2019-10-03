@@ -45,6 +45,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.notes.events.PageAdded;
 import net.runelite.client.plugins.notes.events.PageDeleted;
@@ -69,11 +70,15 @@ class NotesPanel extends PluginPanel
 	private final ImageIcon addIcon = new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), "add_icon.png"));
 	private MaterialTab addTab;
 	private List<MaterialTab> tabs = new ArrayList<>();
+	private NotesConfig config;
 
-	void init(final NotesConfig config)
+	void init(final NotesConfig mConfig)
 	{
+		config = mConfig;
+
 		eventBus.subscribe(PageAdded.class, this, this::onPageAdded);
 		eventBus.subscribe(PageDeleted.class, this, this::onPageDeleted);
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 
 		// this may or may not qualify as a hack
 		// but this lets the editor pane expand to fill the whole parent panel
@@ -114,7 +119,7 @@ class NotesPanel extends PluginPanel
 			tabGroup.addTab(tab);
 		}
 
-		if (totalNotes < NotesConfig.MAX_NOTES)
+		if (totalNotes < config.maxNotes())
 		{
 			tabGroup.addTab(addTab);
 		}
@@ -129,6 +134,14 @@ class NotesPanel extends PluginPanel
 		repaint();
 	}
 
+	private void onConfigChanged(ConfigChanged e){
+		if(!e.getGroup().equals(NotesConfig.CONFIG_GROUP)){
+			return;
+		}
+
+		rebuild();
+	}
+
 	private void onPageAdded(PageAdded e)
 	{
 		MaterialTab tab = buildTab(e.getIndex());
@@ -137,7 +150,7 @@ class NotesPanel extends PluginPanel
 
 		// re-add add button to make it last
 		tabGroup.removeTab(addTab);
-		if (notesManager.getNotes().size() < NotesConfig.MAX_NOTES)
+		if (notesManager.getNotes().size() < config.maxNotes())
 		{
 			tabGroup.addTab(addTab);
 		}

@@ -78,6 +78,12 @@ public class NotesManager
 		{
 			log.info("Adding tab for legacy note data");
 			notes.add(0, config.notesData());
+
+			if (notes.size() == 2 && notes.get(1).equals(""))
+			{
+				// remove the default empty note page
+				notes.remove(1);
+			}
 		}
 	}
 
