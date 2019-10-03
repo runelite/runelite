@@ -139,7 +139,7 @@ public class ConfigPanel extends PluginPanel
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
-	private static final String openosrs_PLUGIN = "openosrs";
+	private static final String openosrs_PLUGIN = "OpenOSRS";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -164,7 +164,7 @@ public class ConfigPanel extends PluginPanel
 		BACK_ICON = new ImageIcon(backIcon);
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 
-		final BufferedImage orangeBackIcon = ImageUtil.fillImage(backIcon, ColorScheme.BRAND_ORANGE);
+		final BufferedImage orangeBackIcon = ImageUtil.fillImage(backIcon, ColorScheme.BRAND_BLUE);
 
 		final BufferedImage sectionRetractIcon = ImageUtil.rotateImage(orangeBackIcon, Math.PI * 1.5);
 		SECTION_RETRACT_ICON = new ImageIcon(sectionRetractIcon);
@@ -289,10 +289,10 @@ public class ConfigPanel extends PluginPanel
 		runeLite.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(runeLite);
 
-		// set openosrs config on top, as it should always have been
+		// set OpenOSRS config on top, as it should always have been
 		final PluginListItem openosrs = new PluginListItem(this, configManager, OpenOSRSConfig,
 			configManager.getConfigDescriptor(OpenOSRSConfig),
-			openosrs_PLUGIN, "openosrs client settings", "client");
+			openosrs_PLUGIN, "OpenOSRS client settings", "client");
 		openosrs.setPinned(pinnedPlugins.contains(openosrs_PLUGIN));
 		openosrs.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(openosrs);
@@ -578,11 +578,6 @@ public class ConfigPanel extends PluginPanel
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
-		if (!listItem.getName().equals("openosrs"))
-		{
-			topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
-		}
-
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
@@ -607,7 +602,7 @@ public class ConfigPanel extends PluginPanel
 
 			JLabel headerLabel = new JLabel(cs.name());
 			headerLabel.setFont(FontManager.getRunescapeFont());
-			headerLabel.setForeground(ColorScheme.BRAND_ORANGE);
+			headerLabel.setForeground(ColorScheme.BRAND_BLUE);
 			if (!description.equals(""))
 			{
 				headerLabel.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
@@ -679,7 +674,7 @@ public class ConfigPanel extends PluginPanel
 
 			JLabel configEntryName = new JLabel(cs.name());
 			configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
-			configEntryName.setForeground(ColorScheme.BRAND_ORANGE);
+			configEntryName.setForeground(ColorScheme.BRAND_BLUE);
 			item.add(configEntryName, BorderLayout.NORTH);
 
 			final JPanel sectionContents = new JPanel();

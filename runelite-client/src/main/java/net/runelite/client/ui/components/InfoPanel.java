@@ -59,7 +59,7 @@ public class InfoPanel extends JPanel
 	private static final String RUNELITE_PLUS_DATE = "open.osrs.builddate";
 	private static final Color DARK_GREY = new Color(10, 10, 10, 255);
 
-	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/openosrs_transparent.png");
+	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/openosrs.png");
 	static final Dimension PANEL_SIZE = new Dimension(200, RuneLiteSplashScreen.FRAME_SIZE.height);
 	private static final Dimension VERSION_SIZE = new Dimension(PANEL_SIZE.width, 25);
 	private static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
@@ -104,12 +104,8 @@ public class InfoPanel extends JPanel
 		c.anchor = GridBagConstraints.SOUTH;
 		c.weighty = 0;
 
-		// Version
-		this.add(createPanelTextButton("RuneLite Version: " + properties.getProperty(RUNELITE_VERSION)), c);
-		c.gridy++;
-
-		// Plus version
-		this.add(createPanelTextButton("Plus Version: " + properties.getProperty(RUNELITE_PLUS_VERSION)), c);
+		// OpenOSRS version
+		this.add(createPanelTextButton("OpenOSRS Version: " + properties.getProperty(RUNELITE_PLUS_VERSION)), c);
 		c.gridy++;
 
 		// Build date
@@ -138,7 +134,7 @@ public class InfoPanel extends JPanel
 		final JLabel textButton = new JLabel(title);
 		textButton.setFont(FontManager.getRunescapeSmallFont());
 		textButton.setHorizontalAlignment(JLabel.CENTER);
-		textButton.setForeground(ColorScheme.BRAND_ORANGE);
+		textButton.setForeground(ColorScheme.BRAND_BLUE);
 		textButton.setBackground(null);
 		textButton.setPreferredSize(VERSION_SIZE);
 		textButton.setMinimumSize(VERSION_SIZE);

@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.components.table.TableComponent;
 @Singleton
 class WaveOverlay extends Overlay
 {
-	private static final Color HEADER_COLOR = ColorScheme.BRAND_ORANGE;
+	private static final Color HEADER_COLOR = ColorScheme.BRAND_BLUE;
 
 	private final FightCaveConfig config;
 	private final FightCavePlugin plugin;

@@ -70,7 +70,7 @@ public class RuneLiteAPI
 		"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
 	private static final Properties properties = new Properties();
 	private static String rlUserAgent;
-	private static String rlpUserAgent;
+	private static String openosrsUserAgent;
 
 	static
 	{
@@ -83,7 +83,7 @@ public class RuneLiteAPI
 			String rlpCommit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
 
-			rlpUserAgent = "openosrs/" + version + "-" + rlpCommit + (dirty ? "+" : "");
+			openosrsUserAgent = "openosrs/" + version + "-" + rlpCommit + (dirty ? "+" : "");
 			rlUserAgent = "openosrs/" + version;
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 
@@ -128,7 +128,7 @@ public class RuneLiteAPI
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
-						.header("User-Agent", rlpUserAgent)
+						.header("User-Agent", openosrsUserAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
@@ -206,7 +206,7 @@ public class RuneLiteAPI
 			byte[] chunk = new byte[4096];
 			int bytesRead;
 			URLConnection conn = toDownload.openConnection();
-			conn.setRequestProperty("User-Agent", rlpUserAgent);
+			conn.setRequestProperty("User-Agent", openosrsUserAgent);
 			stream = conn.getInputStream();
 
 			while ((bytesRead = stream.read(chunk)) > 0)

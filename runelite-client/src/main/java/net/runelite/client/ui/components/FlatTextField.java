@@ -67,7 +67,7 @@ public class FlatTextField extends JPanel
 		this.textField.setBorder(null);
 		this.textField.setOpaque(false);
 		this.textField.setSelectedTextColor(Color.WHITE);
-		this.textField.setSelectionColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		this.textField.setSelectionColor(ColorScheme.BRAND_BLUE_TRANSPARENT);
 
 		add(textField, BorderLayout.CENTER);
 

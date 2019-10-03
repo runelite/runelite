@@ -37,6 +37,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -49,7 +50,7 @@ import net.runelite.client.util.HotkeyListener;
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
 	hidden = true, // prevent users from disabling
-	name = "openosrs"
+	name = "OpenOSRS"
 )
 @Singleton
 @Slf4j
@@ -71,6 +72,9 @@ public class OpenOSRSPlugin extends Plugin
 	@Inject
 	private EventBus eventbus;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
 		@Override
@@ -90,6 +94,7 @@ public class OpenOSRSPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		migrateConfigs();
 		addSubscriptions();
 
 		entered = -1;
@@ -246,6 +251,38 @@ public class OpenOSRSPlugin extends Plugin
 		@Override
 		public void keyReleased(KeyEvent keyEvent)
 		{
+		}
+	}
+
+	/**
+	 * Migrates configs from runenergy and regenmeter to this plugin and deletes the old config values.
+	 * This method should be removed after a reasonable amount of time.
+	 */
+	@Deprecated
+	private void migrateConfigs()
+	{
+		migrateConfig("runeliteplus", "enableOpacity");
+		migrateConfig("runeliteplus", "opacityPercentage");
+		migrateConfig("runeliteplus", "keyboardPin");
+		migrateConfig("runeliteplus", "enablePlugins");
+		migrateConfig("runeliteplus", "detachHotkey");
+	}
+
+	/**
+	 * Wrapper for migrating individual config options
+	 * This method should be removed after a reasonable amount of time.
+	 *
+	 * @param group old group name
+	 * @param key   key name to migrate
+	 */
+	@Deprecated
+	private void migrateConfig(String group, String key)
+	{
+		String value = configManager.getConfiguration(group, key);
+		if (value != null)
+		{
+			configManager.setConfiguration("openosrs", key, value);
+			configManager.unsetConfiguration(group, key);
 		}
 	}
 }

@@ -70,7 +70,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("openosrs API started");
+				log.info("OpenOSRS API started");
 			}
 
 			@Override
@@ -93,7 +93,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 					log.warn(null, ex);
 				}
 
-				log.info("openosrs API stopped");
+				log.info("OpenOSRS API stopped");
 			}
 
 		};

@@ -1,6 +1,6 @@
 apply plugin: 'war'
 
-description = 'Web Service Plus'
+description = 'Web Service OpenOSRS'
 
 dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
