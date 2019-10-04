@@ -29,14 +29,19 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -48,10 +53,19 @@ class InventoryViewerOverlay extends Overlay
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
 		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
+	static final String MENU_OPTION = "Toggle";
+	static final String MENU_TARGET = "Inventory Viewer";
+
 	private final Client client;
 	private final ItemManager itemManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
+
+	private final BufferedImage MINIMIZED_IMAGE;
+
+	@Setter
+	@Getter
+	private boolean minimized;
 
 	@Inject
 	private InventoryViewerOverlay(Client client, ItemManager itemManager)
@@ -62,6 +76,10 @@ class InventoryViewerOverlay extends Overlay
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
+
+		MINIMIZED_IMAGE = itemManager.getImage(ItemID.BAG_FULL_OF_GEMS);
+
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, MENU_OPTION, MENU_TARGET));
 	}
 
 	@Override
@@ -75,6 +93,12 @@ class InventoryViewerOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
+
+		if (minimized)
+		{
+			panelComponent.getChildren().add(new ImageComponent(MINIMIZED_IMAGE));
+			return panelComponent.render(graphics);
+		}
 
 		final Item[] items = itemContainer.getItems();
 

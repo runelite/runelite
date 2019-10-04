@@ -25,9 +25,15 @@
 package net.runelite.client.plugins.inventoryviewer;
 
 import javax.inject.Inject;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.inventoryviewer.InventoryViewerOverlay.MENU_OPTION;
+import static net.runelite.client.plugins.inventoryviewer.InventoryViewerOverlay.MENU_TARGET;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Inventory Viewer",
@@ -53,5 +59,15 @@ public class InventoryViewerPlugin extends Plugin
 	public void shutDown()
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		if (event.getMenuAction() == RUNELITE_OVERLAY && event.getMenuOption().equals(MENU_OPTION)
+			&& Text.removeTags(event.getMenuTarget()).equals(MENU_TARGET))
+		{
+			overlay.setMinimized(!overlay.isMinimized());
+		}
 	}
 }
