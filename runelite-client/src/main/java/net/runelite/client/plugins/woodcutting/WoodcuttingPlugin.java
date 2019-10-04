@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -90,9 +91,11 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingConfig config;
 
 	@Getter
+	@Nullable
 	private WoodcuttingSession session;
 
 	@Getter
+	@Nullable
 	private Axe axe;
 
 	@Getter
