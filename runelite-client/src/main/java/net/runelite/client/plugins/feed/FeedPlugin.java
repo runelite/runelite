@@ -67,12 +67,14 @@ public class FeedPlugin extends Plugin
 	private ScheduledExecutorService executorService;
 
 	@Inject
+	private FeedClient feedClient;
+
+	@Inject
 	private EventBus eventBus;
 
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
 
-	private final FeedClient feedClient = new FeedClient();
 	private final Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
 	{
 		try

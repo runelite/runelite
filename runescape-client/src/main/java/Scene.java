@@ -317,39 +317,42 @@ public class Scene {
 
 	@ObfuscatedName("p")
 	@Export("addTile")
-	public void addTile(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19, int var20) {
+	public void addTile(int z, int x, int y, int shape, int rotation, int texture, int heightSw, int heightNw,
+						int heightNe, int heightSe, int underlaySwColor, int underlayNwColor, int underlayNeColor,
+						int underlaySeColor, int overlaySwColor, int overlayNwColor, int overlayNeColor,
+						int overlaySeColor, int underlayRgb, int overlayRgb) {
 		TilePaint var21;
 		int var22;
-		if (var4 == 0) {
-			var21 = new TilePaint(var11, var12, var13, var14, -1, var19, false);
+		if (shape == 0) {
+			var21 = new TilePaint(underlaySwColor, underlayNwColor, underlayNeColor, underlaySeColor, -1, underlayRgb, false);
 
-			for (var22 = var1; var22 >= 0; --var22) {
-				if (this.tiles[var22][var2][var3] == null) {
-					this.tiles[var22][var2][var3] = new Tile(var22, var2, var3);
+			for (var22 = z; var22 >= 0; --var22) {
+				if (this.tiles[var22][x][y] == null) {
+					this.tiles[var22][x][y] = new Tile(var22, x, y);
 				}
 			}
 
-			this.tiles[var1][var2][var3].paint = var21;
-		} else if (var4 != 1) {
-			TileModel var23 = new TileModel(var4, var5, var6, var2, var3, var7, var8, var9, var10, var11, var12, var13, var14, var15, var16, var17, var18, var19, var20);
+			this.tiles[z][x][y].paint = var21;
+		} else if (shape != 1) {
+			TileModel var23 = new TileModel(shape, rotation, texture, x, y, heightSw, heightNw, heightNe, heightSe, underlaySwColor, underlayNwColor, underlayNeColor, underlaySeColor, overlaySwColor, overlayNwColor, overlayNeColor, overlaySeColor, underlayRgb, overlayRgb);
 
-			for (var22 = var1; var22 >= 0; --var22) {
-				if (this.tiles[var22][var2][var3] == null) {
-					this.tiles[var22][var2][var3] = new Tile(var22, var2, var3);
+			for (var22 = z; var22 >= 0; --var22) {
+				if (this.tiles[var22][x][y] == null) {
+					this.tiles[var22][x][y] = new Tile(var22, x, y);
 				}
 			}
 
-			this.tiles[var1][var2][var3].model = var23;
+			this.tiles[z][x][y].model = var23;
 		} else {
-			var21 = new TilePaint(var15, var16, var17, var18, var6, var20, var8 == var7 && var7 == var9 && var10 == var7);
+			var21 = new TilePaint(overlaySwColor, overlayNwColor, overlayNeColor, overlaySeColor, texture, overlayRgb, heightNw == heightSw && heightSw == heightNe && heightSe == heightSw);
 
-			for (var22 = var1; var22 >= 0; --var22) {
-				if (this.tiles[var22][var2][var3] == null) {
-					this.tiles[var22][var2][var3] = new Tile(var22, var2, var3);
+			for (var22 = z; var22 >= 0; --var22) {
+				if (this.tiles[var22][x][y] == null) {
+					this.tiles[var22][x][y] = new Tile(var22, x, y);
 				}
 			}
 
-			this.tiles[var1][var2][var3].paint = var21;
+			this.tiles[z][x][y].paint = var21;
 		}
 	}
 
@@ -970,61 +973,61 @@ public class Scene {
 
 	@ObfuscatedName("ai")
 	@Export("drawTileMinimap")
-	public void drawTileMinimap(int[] var1, int var2, int var3, int var4, int var5, int var6) {
-		Tile var7 = this.tiles[var4][var5][var6];
-		if (var7 != null) {
-			TilePaint var8 = var7.paint;
-			int var10;
-			if (var8 != null) {
-				int var9 = var8.rgb;
-				if (var9 != 0) {
-					for (var10 = 0; var10 < 4; ++var10) {
-						var1[var2] = var9;
-						var1[var2 + 1] = var9;
-						var1[var2 + 2] = var9;
-						var1[var2 + 3] = var9;
-						var2 += var3;
+	public void drawTileMinimap(int[] pixels, int index, int width, int plane, int x, int y) {
+		Tile tile = this.tiles[plane][x][y];
+		if (tile != null) {
+			TilePaint tilePaint = tile.paint;
+			int shape;
+			if (tilePaint != null) {
+				int rgb = tilePaint.rgb;
+				if (rgb != 0) {
+					for (shape = 0; shape < 4; ++shape) {
+						pixels[index] = rgb;
+						pixels[index + 1] = rgb;
+						pixels[index + 2] = rgb;
+						pixels[index + 3] = rgb;
+						index += width;
 					}
 
 				}
 			} else {
-				TileModel var18 = var7.model;
-				if (var18 != null) {
-					var10 = var18.shape;
-					int var11 = var18.rotation;
-					int var12 = var18.underlayRgb;
-					int var13 = var18.overlayRgb;
-					int[] var14 = this.tileShape2D[var10];
-					int[] var15 = this.tileRotation2D[var11];
+				TileModel tileModel = tile.model;
+				if (tileModel != null) {
+					shape = tileModel.shape;
+					int rotation = tileModel.rotation;
+					int underlayRgb = tileModel.underlayRgb;
+					int overlayRgb = tileModel.overlayRgb;
+					int[] shapes = this.tileShape2D[shape];
+					int[] rotations = this.tileRotation2D[rotation];
 					int var16 = 0;
 					int var17;
-					if (var12 != 0) {
+					if (underlayRgb != 0) {
 						for (var17 = 0; var17 < 4; ++var17) {
-							var1[var2] = var14[var15[var16++]] == 0 ? var12 : var13;
-							var1[var2 + 1] = var14[var15[var16++]] == 0 ? var12 : var13;
-							var1[var2 + 2] = var14[var15[var16++]] == 0 ? var12 : var13;
-							var1[var2 + 3] = var14[var15[var16++]] == 0 ? var12 : var13;
-							var2 += var3;
+							pixels[index] = shapes[rotations[var16++]] == 0 ? underlayRgb : overlayRgb;
+							pixels[index + 1] = shapes[rotations[var16++]] == 0 ? underlayRgb : overlayRgb;
+							pixels[index + 2] = shapes[rotations[var16++]] == 0 ? underlayRgb : overlayRgb;
+							pixels[index + 3] = shapes[rotations[var16++]] == 0 ? underlayRgb : overlayRgb;
+							index += width;
 						}
 					} else {
 						for (var17 = 0; var17 < 4; ++var17) {
-							if (var14[var15[var16++]] != 0) {
-								var1[var2] = var13;
+							if (shapes[rotations[var16++]] != 0) {
+								pixels[index] = overlayRgb;
 							}
 
-							if (var14[var15[var16++]] != 0) {
-								var1[var2 + 1] = var13;
+							if (shapes[rotations[var16++]] != 0) {
+								pixels[index + 1] = overlayRgb;
 							}
 
-							if (var14[var15[var16++]] != 0) {
-								var1[var2 + 2] = var13;
+							if (shapes[rotations[var16++]] != 0) {
+								pixels[index + 2] = overlayRgb;
 							}
 
-							if (var14[var15[var16++]] != 0) {
-								var1[var2 + 3] = var13;
+							if (shapes[rotations[var16++]] != 0) {
+								pixels[index + 3] = overlayRgb;
 							}
 
-							var2 += var3;
+							index += width;
 						}
 					}
 
@@ -1035,13 +1038,13 @@ public class Scene {
 
 	@ObfuscatedName("am")
 	@Export("menuOpen")
-	public void menuOpen(int var1, int var2, int var3, boolean var4) {
-		if (!method3085() || var4) {
+	public void menuOpen(int plane, int screenX, int screenY, boolean walking) {
+		if (!method3085() || walking) {
 			checkClick = true;
-			viewportWalking = var4;
-			Scene_selectedPlane = var1;
-			Scene_selectedScreenX = var2;
-			Scene_selectedScreenY = var3;
+			viewportWalking = walking;
+			Scene_selectedPlane = plane;
+			Scene_selectedScreenX = screenX;
+			Scene_selectedScreenY = screenY;
 			Scene_selectedX = -1;
 			Scene_selectedY = -1;
 		}

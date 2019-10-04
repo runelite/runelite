@@ -46,11 +46,14 @@ import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
@@ -147,6 +150,12 @@ public class RuneLite
 
 	@Inject
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
+
+	@Inject
+	private Hooks hooks;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Inject
 	@Nullable
@@ -347,6 +356,8 @@ public class RuneLite
 			commandManager.get();
 			lootManager.get();
 			chatboxPanelManager.get();
+
+			eventBus.subscribe(GameStateChanged.class, this, hooks::onGameStateChanged);
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

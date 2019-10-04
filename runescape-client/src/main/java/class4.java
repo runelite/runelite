@@ -152,7 +152,7 @@ final class class4 implements class0 {
 				int var3 = var2.x >> 7;
 				int var4 = var2.y >> 7;
 				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-					if (var2.field932 * 1669471931 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+					if (var2.size * 1669471931 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
 						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
 							continue;
 						}
@@ -162,7 +162,7 @@ final class class4 implements class0 {
 
 					long var5 = class267.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
 					var2.playerCycle = Client.cycle;
-					PacketWriter.scene.drawEntity(WorldMapRectangle.plane, var2.x, var2.y, MusicPatchPcmStream.getTileHeight(var2.field932 * -527978816 - 64 + var2.x, var2.field932 * -527978816 - 64 + var2.y, WorldMapRectangle.plane), var2.field932 * -527978816 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
+					PacketWriter.scene.drawEntity(WorldMapRectangle.plane, var2.x, var2.y, MusicPatchPcmStream.getTileHeight(var2.size * -527978816 - 64 + var2.x, var2.size * -527978816 - 64 + var2.y, WorldMapRectangle.plane), var2.size * -527978816 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
 				}
 			}
 		}

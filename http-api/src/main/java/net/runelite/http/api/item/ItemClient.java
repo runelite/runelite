@@ -35,8 +35,10 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -45,6 +47,14 @@ import org.slf4j.LoggerFactory;
 public class ItemClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemClient.class);
+
+	private final OkHttpClient client;
+
+	@Inject
+	public ItemClient(OkHttpClient client)
+	{
+		this.client = client;
+	}
 
 	public ItemPrice lookupItemPrice(int itemId) throws IOException
 	{
@@ -60,7 +70,7 @@ public class ItemClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -96,7 +106,7 @@ public class ItemClient
 				.url(url)
 				.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -129,7 +139,7 @@ public class ItemClient
 
 		return Observable.defer(() ->
 		{
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+			try (Response response = client.newCall(request).execute())
 			{
 				if (!response.isSuccessful())
 				{
@@ -162,7 +172,7 @@ public class ItemClient
 				.url(url)
 				.build();
 
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+			try (Response response = client.newCall(request).execute())
 			{
 				if (!response.isSuccessful())
 				{
@@ -197,7 +207,7 @@ public class ItemClient
 				.url(url)
 				.build();
 
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+			try (Response response = client.newCall(request).execute())
 			{
 				if (!response.isSuccessful())
 				{
@@ -233,7 +243,7 @@ public class ItemClient
 				.url(url)
 				.build();
 
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+			try (Response response = client.newCall(request).execute())
 			{
 				if (!response.isSuccessful())
 				{

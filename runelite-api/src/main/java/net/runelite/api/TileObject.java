@@ -28,7 +28,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import javax.annotation.Nullable;
 
 /**
@@ -132,5 +132,5 @@ public interface TileObject extends Locatable
 	 * @return the clickable area
 	 */
 	@Nullable
-	Area getClickbox();
+	Shape getClickbox();
 }

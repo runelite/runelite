@@ -167,6 +167,10 @@ public enum VarPlayer
 	MUSIC_TRACKS_UNLOCKED_18(1681),
 	MUSIC_TRACKS_UNLOCKED_19(2065),
 
+	MUSIC_VOLUME(168),
+	SOUND_EFFECT_VOLUME(169),
+	AREA_EFFECT_VOLUME(872),
+
 	/**
 	 * f2p Quest varbits, these don't hold the completion value.
 	 */

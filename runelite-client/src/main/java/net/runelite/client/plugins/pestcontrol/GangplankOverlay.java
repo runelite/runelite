@@ -30,7 +30,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Shape;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
@@ -92,12 +92,12 @@ public class GangplankOverlay extends Overlay
 
 		if (noviceGangplankTile != null)
 		{
-			Polygon polygon = noviceGangplankTile.getGameObjects()[0].getConvexHull();
+			Shape polygon = noviceGangplankTile.getGameObjects()[0].getConvexHull();
 			if (polygon != null)
 			{
 				graphics.setColor(noviceCbColor);
 				graphics.setStroke(new BasicStroke(2));
-				graphics.drawPolygon(polygon);
+				graphics.draw(polygon);
 				graphics.setColor(setColorAlpha(noviceCbColor, 45));
 				graphics.fill(polygon);
 
@@ -112,12 +112,12 @@ public class GangplankOverlay extends Overlay
 
 		if (intermediateGangplankTile != null)
 		{
-			Polygon polygon = intermediateGangplankTile.getGameObjects()[0].getConvexHull();
+			Shape polygon = intermediateGangplankTile.getGameObjects()[0].getConvexHull();
 			if (polygon != null)
 			{
 				graphics.setColor(intermediateCbColor);
 				graphics.setStroke(new BasicStroke(2));
-				graphics.drawPolygon(polygon);
+				graphics.draw(polygon);
 				graphics.setColor(setColorAlpha(intermediateCbColor, 45));
 				graphics.fill(polygon);
 
@@ -132,12 +132,12 @@ public class GangplankOverlay extends Overlay
 
 		if (veteranGangplankTile != null)
 		{
-			Polygon polygon = veteranGangplankTile.getGameObjects()[0].getConvexHull();
+			Shape polygon = veteranGangplankTile.getGameObjects()[0].getConvexHull();
 			if (polygon != null)
 			{
 				graphics.setColor(veteranCbColor);
 				graphics.setStroke(new BasicStroke(2));
-				graphics.drawPolygon(polygon);
+				graphics.draw(polygon);
 				graphics.setColor(setColorAlpha(veteranCbColor, 45));
 				graphics.fill(polygon);
 

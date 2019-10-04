@@ -30,7 +30,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
@@ -185,7 +185,7 @@ public class RepairOverlay extends Overlay
 		return null;
 	}
 
-	private void renderObjectOverlay(Graphics2D graphics, Area area, Color color, Point mousePosition)
+	private void renderObjectOverlay(Graphics2D graphics, Shape area, Color color, Point mousePosition)
 	{
 		if (area == null)
 		{

@@ -141,6 +141,9 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperPingOverlay worldHopperOverlay;
 
+	@Inject
+	private WorldClient worldClient;
+
 	private ScheduledExecutorService hopperExecutorService;
 
 	private NavigationButton navButton;
@@ -533,7 +536,7 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Fetching worlds");
 
-		new WorldClient().lookupWorlds()
+		worldClient.lookupWorlds()
 			.subscribeOn(Schedulers.io())
 			.take(1)
 			.subscribe(

@@ -5,6 +5,7 @@ description = 'Web API'
 dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
 
+    compileOnly group: 'javax.inject', name: 'javax.inject', version: javaxInject
     compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok
 
     implementation group: 'com.google.code.gson', name: 'gson', version: gson

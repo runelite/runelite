@@ -169,10 +169,10 @@ public class HealthBar extends Node {
 		if (var0.field976 == Client.cycle || var0.sequence == -1 || var0.sequenceDelay != 0 || var0.sequenceFrameCycle + 1 > GrandExchangeOfferUnitPriceComparator.SequenceDefinition_get(var0.sequence).frameLengths[var0.sequenceFrame]) {
 			int var1 = var0.field976 - var0.field948;
 			int var2 = Client.cycle - var0.field948;
-			int var3 = var0.field932 * -527978816 + var0.field971 * 128;
-			int var4 = var0.field932 * -527978816 + var0.field973 * 128;
-			int var5 = var0.field972 * 128 + var0.field932 * -527978816;
-			int var6 = var0.field932 * -527978816 + var0.field974 * 128;
+			int var3 = var0.size * -527978816 + var0.field971 * 128;
+			int var4 = var0.size * -527978816 + var0.field973 * 128;
+			int var5 = var0.field972 * 128 + var0.size * -527978816;
+			int var6 = var0.size * -527978816 + var0.field974 * 128;
 			var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
 			var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
 		}

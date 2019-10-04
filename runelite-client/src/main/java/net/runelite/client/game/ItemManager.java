@@ -136,7 +136,7 @@ public class ItemManager
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
-	private final ItemClient itemClient = new ItemClient();
+	private final ItemClient itemClient;
 	private final ImmutableMap<Integer, ItemStats> itemStatMap;
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemDefinition> itemDefinitions;
@@ -149,12 +149,14 @@ public class ItemManager
 		Client client,
 		ScheduledExecutorService executor,
 		ClientThread clientThread,
-		EventBus eventbus
+		EventBus eventbus,
+		ItemClient itemClient
 	)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
+		this.itemClient = itemClient;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 		scheduledExecutorService.submit(this::loadStats);

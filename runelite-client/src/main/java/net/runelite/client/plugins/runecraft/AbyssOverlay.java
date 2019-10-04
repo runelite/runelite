@@ -30,7 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.NPC;
@@ -105,7 +105,7 @@ class AbyssOverlay extends Overlay
 		}
 
 		Point mousePosition = client.getMouseCanvasPosition();
-		Area objectClickbox = object.getClickbox();
+		Shape objectClickbox = object.getClickbox();
 		if (objectClickbox != null)
 		{
 			if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
