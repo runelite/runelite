@@ -59,7 +59,7 @@ jobs:
       - name: Downloading jagex cache
         run: ./gradlew :cache-client:update --console=plain
       - name: Scraping item stats
-        run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
+        run: ./gradlew :wiki-scraper:itemStatsScrape --console=plain
       - name: Create item stats Pull Request
         uses: peter-evans/create-pull-request@master
         env:
