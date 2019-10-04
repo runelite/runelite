@@ -28,15 +28,15 @@ import java.time.Instant;
 
 class WoodcuttingSession
 {
-	private Instant lastLogCut;
+	private Instant lastChopping;
 
-	void setLastLogCut()
+	void setLastChopping()
 	{
-		lastLogCut = Instant.now();
+		lastChopping = Instant.now();
 	}
 
-	Instant getLastLogCut()
+	Instant getLastChopping()
 	{
-		return lastLogCut;
+		return lastChopping;
 	}
 }

@@ -148,13 +148,19 @@ public class WoodcuttingPlugin extends Plugin
 
 		respawns.removeIf(TreeRespawn::isExpired);
 
-		if (session == null || session.getLastLogCut() == null)
+		if (session == null || session.getLastChopping() == null)
 		{
 			return;
 		}
 
+		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
+		{
+			session.setLastChopping();
+			return;
+		}
+
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
+		Duration sinceCut = Duration.between(session.getLastChopping(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
@@ -175,7 +181,7 @@ public class WoodcuttingPlugin extends Plugin
 					session = new WoodcuttingSession();
 				}
 
-				session.setLastLogCut();
+				session.setLastChopping();
 			}
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
