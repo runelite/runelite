@@ -1006,7 +1006,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.swapBones)
 		{
-			menuManager.addPriorityEntry(new InventoryComparableEntry("Use", "bone", false));
+			menuManager.addSwap("Bury", "bone", "Use");
 		}
 
 		if (this.swapNexus)
@@ -1269,7 +1269,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getXericsTalismanMode.toString(), "talisman"));
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Rub", "", false));
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Teleport", "", false));
-		menuManager.removePriorityEntry(new InventoryComparableEntry("Use", "bone", false));
 		menuManager.removePriorityEntry(newBankComparableEntry("Empty", "Coal bag"));
 		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
 		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
@@ -1278,7 +1277,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(this.maxMode.toString(), "max cape");
 		menuManager.removePriorityEntry(this.questCapeMode.toString(), "quest point cape");
 		menuManager.removePriorityEntry(this.swapHouseAdMode.getEntry());
-
+		menuManager.removeSwap("Bury", "bone", "Use");
+		
 		switch (this.swapFairyRingMode)
 		{
 			case OFF:
