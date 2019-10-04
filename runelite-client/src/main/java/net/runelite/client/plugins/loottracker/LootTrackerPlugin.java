@@ -170,6 +170,7 @@ public class LootTrackerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
+	private GameStateChanged gameStateChanged;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -213,17 +214,20 @@ public class LootTrackerPlugin extends Plugin
 		if (accountSession.getUuid() != null)
 		{
 			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+			chestLooted = false;
+			panel.resetLootPanel();
 		}
 		else
 		{
 			lootTrackerClient = null;
 		}
 	}
-
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
 		submitLoot();
+		chestLooted = false;
+		panel.resetLootPanel();
 		lootTrackerClient = null;
 	}
 
@@ -305,9 +309,9 @@ public class LootTrackerPlugin extends Plugin
 	protected void shutDown()
 	{
 		submitLoot();
-		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		chestLooted = false;
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -316,6 +320,12 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			chestLooted = false;
+		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			chestLooted = false;
+			panel.resetLootPanel();
+			lootTrackerClient = null;
 		}
 	}
 

@@ -326,7 +326,6 @@ class LootTrackerPanel extends PluginPanel
 				client.delete(currentView);
 			}
 		});
-
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -342,6 +341,21 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+	}
+
+	void resetLootPanel()
+	{
+		records.removeIf(r -> r.matches(currentView));
+		boxes.removeIf(b -> b.matches(currentView));
+		updateOverall();
+		logsContainer.removeAll();
+		logsContainer.repaint();
+        // Delete all loot, or loot matching the current view
+		LootTrackerClient client = plugin.getLootTrackerClient();
+		if (client != null && config.syncPanel())
+		{
+			client.delete(currentView);
+		}
 	}
 
 	void updateCollapseText()
