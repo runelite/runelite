@@ -50,6 +50,7 @@ import static net.runelite.api.ItemID.MITHRIL_AXE;
 import static net.runelite.api.ItemID.RUNE_AXE;
 import static net.runelite.api.ItemID.STEEL_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
+import net.runelite.api.Player;
 
 @AllArgsConstructor
 @Getter
@@ -82,6 +83,11 @@ enum Axe
 		}
 
 		AXE_ANIM_IDS = builder.build();
+	}
+
+	boolean matchesChoppingAnimation(final Player player)
+	{
+		return player != null && animId == player.getAnimation();
 	}
 
 	static Axe findAxeByAnimId(int animId)

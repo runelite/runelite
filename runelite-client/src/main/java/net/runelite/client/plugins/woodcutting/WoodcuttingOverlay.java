@@ -81,7 +81,7 @@ class WoodcuttingOverlay extends Overlay
 		panelComponent.getChildren().clear();
 
 		Axe axe = plugin.getAxe();
-		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
+		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
