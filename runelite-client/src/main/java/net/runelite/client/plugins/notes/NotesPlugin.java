@@ -53,6 +53,9 @@ public class NotesPlugin extends Plugin
 	private NotesConfig config;
 
 	@Inject
+	private NotesManager notesManager;
+
+	@Inject
 	private EventBus eventBus;
 
 	private NotesPanel panel;
@@ -82,6 +85,9 @@ public class NotesPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		notesManager.loadNotes();
+		panel.rebuild();
 	}
 
 	@Override
@@ -94,8 +100,7 @@ public class NotesPlugin extends Plugin
 
 	private void onSessionOpen(SessionOpen event)
 	{
-		// update notes
-		String data = config.notesData();
-		panel.setNotes(data);
+		notesManager.loadNotes();
+		panel.rebuild();
 	}
 }
