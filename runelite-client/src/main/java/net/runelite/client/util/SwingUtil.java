@@ -331,8 +331,7 @@ public class SwingUtil
 		button.setOpaque(true);
 
 		// Selecting the button option requires us to determine which parent element is the JOptionPane
-		button.addActionListener(e ->
-		{
+		button.addActionListener(e -> {
 			JComponent component = (JComponent) e.getSource();
 			while (component != null)
 			{
@@ -402,8 +401,7 @@ public class SwingUtil
 		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/runeliteplus_transparent.png"));
 
 		// Listen for value changes and close dialog when necessary
-		pane.addPropertyChangeListener(e ->
-		{
+		pane.addPropertyChangeListener(e -> {
 			String prop = e.getPropertyName();
 
 			if (dialog.isVisible()
