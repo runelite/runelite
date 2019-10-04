@@ -406,6 +406,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("repairs", option, target, index);
 			}
 
+			if (config.swapHeal())
+			{
+				swap("heal", option, target, true);
+			}
+
 			// make sure assignment swap is higher priority than trade swap for slayer masters
 			if (config.swapAssignment())
 			{
