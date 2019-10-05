@@ -1,9 +1,9 @@
 datasource:
-  runeliteplus:
+  openosrs:
     jndiName: java:comp/env/jdbc/runelite
-  runeliteplus-cache:
+  openosrs-cache:
     jndiName: java:comp/env/jdbc/runelite-cache2
-  runeliteplus-tracker:
+  openosrs-tracker:
     jndiName: java:comp/env/jdbc/runelite-tracker
 
 # By default Spring tries to register the datasource as an MXBean,

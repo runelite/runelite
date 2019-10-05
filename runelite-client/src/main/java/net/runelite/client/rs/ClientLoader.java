@@ -81,7 +81,7 @@ public class ClientLoader
 		catch (ClassNotFoundException e)
 		{
 			RuneLiteSplashScreen.setError("Unable to load client", "Class not found. This means you"
-				+ " are not running RuneLitePlus with Gradle as the injected client"
+				+ " are not running OpenOSRS with Gradle as the injected client"
 				+ " is not in your classpath.");
 
 			log.error("Error loading RS!", e);

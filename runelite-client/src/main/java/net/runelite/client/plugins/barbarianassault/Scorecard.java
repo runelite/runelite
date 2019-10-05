@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
- * Copyright (c) 2019, https://runelitepl.us
+ * Copyright (c) 2019, https://openosrs.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

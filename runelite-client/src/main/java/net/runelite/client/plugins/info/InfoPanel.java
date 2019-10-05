@@ -113,7 +113,7 @@ public class InfoPanel extends PluginPanel
 		JLabel version = new JLabel(htmlLabel("RuneLite version: ", RuneLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
-		JLabel plusVersion = new JLabel(htmlLabel("RuneLitePlus version: ", RuneLiteProperties.getPlusVersion()));
+		JLabel plusVersion = new JLabel(htmlLabel("OpenOSRS version: ", RuneLiteProperties.getPlusVersion()));
 		plusVersion.setFont(smallFont);
 
 		JLabel revision = new JLabel();
@@ -168,7 +168,7 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "License info", "for distribution", "https://github.com/runelite-extended/runelite/blob/master/LICENSE"));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open logs directory", "(for bug reports)", LOGS_DIR));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", "https://discord.gg/HN5gf3m"));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the RuneLitePlus devs", RuneLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the OpenOSRS devs", RuneLiteProperties.getPatreonLink()));
 		/*		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));*/
 
 		add(versionPanel, BorderLayout.NORTH);

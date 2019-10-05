@@ -24,7 +24,7 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-package net.runelite.client.plugins.runeliteplus;
+package net.runelite.client.plugins.openosrs;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
@@ -37,8 +37,9 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -49,15 +50,15 @@ import net.runelite.client.util.HotkeyListener;
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
 	hidden = true, // prevent users from disabling
-	name = "RunelitePlus"
+	name = "OpenOSRS"
 )
 @Singleton
 @Slf4j
-public class RuneLitePlusPlugin extends Plugin
+public class OpenOSRSPlugin extends Plugin
 {
-	private final RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
+	private final openosrsKeyListener keyListener = new openosrsKeyListener();
 	@Inject
-	private RuneLitePlusConfig config;
+	private OpenOSRSConfig config;
 
 	@Inject
 	private KeyManager keyManager;
@@ -70,6 +71,9 @@ public class RuneLitePlusPlugin extends Plugin
 
 	@Inject
 	private EventBus eventbus;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
@@ -90,6 +94,7 @@ public class RuneLitePlusPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		migrateConfigs();
 		addSubscriptions();
 
 		entered = -1;
@@ -113,7 +118,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runeliteplus"))
+		if (!event.getGroup().equals("openosrs"))
 		{
 			return;
 		}
@@ -214,7 +219,7 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 	}
 
-	private class RuneLitePlusKeyListener implements KeyListener
+	private class openosrsKeyListener implements KeyListener
 	{
 		private int lastKeyCycle;
 
@@ -246,6 +251,38 @@ public class RuneLitePlusPlugin extends Plugin
 		@Override
 		public void keyReleased(KeyEvent keyEvent)
 		{
+		}
+	}
+
+	/**
+	 * Migrates configs from runenergy and regenmeter to this plugin and deletes the old config values.
+	 * This method should be removed after a reasonable amount of time.
+	 */
+	@Deprecated
+	private void migrateConfigs()
+	{
+		migrateConfig("runeliteplus", "enableOpacity");
+		migrateConfig("runeliteplus", "opacityPercentage");
+		migrateConfig("runeliteplus", "keyboardPin");
+		migrateConfig("runeliteplus", "enablePlugins");
+		migrateConfig("runeliteplus", "detachHotkey");
+	}
+
+	/**
+	 * Wrapper for migrating individual config options
+	 * This method should be removed after a reasonable amount of time.
+	 *
+	 * @param group old group name
+	 * @param key   key name to migrate
+	 */
+	@Deprecated
+	private void migrateConfig(String group, String key)
+	{
+		String value = configManager.getConfiguration(group, key);
+		if (value != null)
+		{
+			configManager.setConfiguration("openosrs", key, value);
+			configManager.unsetConfiguration(group, key);
 		}
 	}
 }

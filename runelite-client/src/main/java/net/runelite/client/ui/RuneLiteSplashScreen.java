@@ -48,12 +48,12 @@ public class RuneLiteSplashScreen extends JFrame
 
 	private RuneLiteSplashScreen()
 	{
-		this.setTitle("RuneLitePlus");
+		this.setTitle("OpenOSRS");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(FRAME_SIZE);
 		this.setLayout(new BorderLayout());
 		this.setUndecorated(true);
-		this.setIconImage(ImageUtil.getResourceStreamFromClass(RuneLiteSplashScreen.class, "/runeliteplus.png"));
+		this.setIconImage(ImageUtil.getResourceStreamFromClass(RuneLiteSplashScreen.class, "/openosrs.png"));
 
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

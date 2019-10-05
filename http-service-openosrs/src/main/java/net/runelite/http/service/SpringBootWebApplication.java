@@ -70,7 +70,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("RuneLitePlus API started");
+				log.info("OpenOSRS API started");
 			}
 
 			@Override
@@ -93,27 +93,27 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 					log.warn(null, ex);
 				}
 
-				log.info("RuneLitePlus API stopped");
+				log.info("OpenOSRS API stopped");
 			}
 
 		};
 	}
 
-	@ConfigurationProperties(prefix = "datasource.runeliteplus")
+	@ConfigurationProperties(prefix = "datasource.openosrs")
 	@Bean("dataSourceRuneLite")
 	public DataSourceProperties dataSourceProperties()
 	{
 		return new DataSourceProperties();
 	}
 
-	@ConfigurationProperties(prefix = "datasource.runeliteplus-cache")
+	@ConfigurationProperties(prefix = "datasource.openosrs-cache")
 	@Bean("dataSourceRuneLiteCache")
 	public DataSourceProperties dataSourcePropertiesCache()
 	{
 		return new DataSourceProperties();
 	}
 
-	@ConfigurationProperties(prefix = "datasource.runeliteplus-tracker")
+	@ConfigurationProperties(prefix = "datasource.openosrs-tracker")
 	@Bean("dataSourceRuneLiteTracker")
 	public DataSourceProperties dataSourcePropertiesTracker()
 	{

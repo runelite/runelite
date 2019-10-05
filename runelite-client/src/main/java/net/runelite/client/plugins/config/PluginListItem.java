@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
@@ -98,8 +99,8 @@ public class PluginListItem extends JPanel
 		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
 		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
 		CONFIG_ICON = new ImageIcon(configIcon);
-		ON_SWITCHER = new ImageIcon(onSwitcher);
-		ON_STAR = new ImageIcon(onStar);
+		ON_SWITCHER = new ImageIcon(ImageUtil.recolorImage(onSwitcher, new Color(0, 106, 221)));
+		ON_STAR = new ImageIcon(ImageUtil.recolorImage(onStar, new Color(0, 106, 221)));
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
 		BufferedImage offSwitcherImage = ImageUtil.flipImage(
 			ImageUtil.grayscaleOffset(
@@ -199,7 +200,7 @@ public class PluginListItem extends JPanel
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 		attachToggleButtonListener(toggleButton);
 
-		if (name.equals("RuneLitePlus"))
+		if (name.equals("OpenOSRS"))
 		{
 			toggleButton.setVisible(false);
 		}

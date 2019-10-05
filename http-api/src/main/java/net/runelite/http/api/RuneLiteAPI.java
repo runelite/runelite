@@ -62,15 +62,15 @@ public class RuneLiteAPI
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 	private static final String BASE = "https://api.runelite.net";
-	private static final String RLPLUS_BASE = "https://api.runelitepl.us";
-	private static final String RLPLUS_SESSION = "https://session.runelitepl.us";
+	private static final String OPENOSRS_BASE = /*"https://api.openosrs.com*/ "https://api.runelitepl.us";
+	private static final String OPENOSRS_SESSION = /*"https://session.openosrs.com"*/ "https://session.runelitepl.us";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final String MAVEN_METADATA =
 		"http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
 	private static final Properties properties = new Properties();
 	private static String rlUserAgent;
-	private static String rlpUserAgent;
+	private static String openosrsUserAgent;
 
 	static
 	{
@@ -83,8 +83,8 @@ public class RuneLiteAPI
 			String rlpCommit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
 
-			rlpUserAgent = "RuneLitePlus/" + version + "-" + rlpCommit + (dirty ? "+" : "");
-			rlUserAgent = "RuneLitePlus/" + version;
+			openosrsUserAgent = "openosrs/" + version + "-" + rlpCommit + (dirty ? "+" : "");
+			rlUserAgent = "openosrs/" + version;
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 
 			parseMavenVersion();
@@ -128,7 +128,7 @@ public class RuneLiteAPI
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
-						.header("User-Agent", rlpUserAgent)
+						.header("User-Agent", openosrsUserAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
@@ -136,9 +136,9 @@ public class RuneLiteAPI
 			.build();
 	}
 
-	public static HttpUrl getRuneLitePlusSessionBase()
+	public static HttpUrl getopenosrsSessionBase()
 	{
-		return HttpUrl.parse(RLPLUS_SESSION);
+		return HttpUrl.parse(OPENOSRS_SESSION);
 	}
 
 	public static HttpUrl getApiBase()
@@ -155,7 +155,7 @@ public class RuneLiteAPI
 
 	public static HttpUrl getPlusApiBase()
 	{
-		return HttpUrl.parse(RLPLUS_BASE + "/http-service-" + getRlpVersion());
+		return HttpUrl.parse(OPENOSRS_BASE + "/http-service-" + getRlpVersion());
 	}
 
 	public static HttpUrl getStaticBase()
@@ -206,7 +206,7 @@ public class RuneLiteAPI
 			byte[] chunk = new byte[4096];
 			int bytesRead;
 			URLConnection conn = toDownload.openConnection();
-			conn.setRequestProperty("User-Agent", rlpUserAgent);
+			conn.setRequestProperty("User-Agent", openosrsUserAgent);
 			stream = conn.getInputStream();
 
 			while ((bytesRead = stream.read(chunk)) > 0)

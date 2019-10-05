@@ -50,7 +50,7 @@ public class MessagePanel extends JPanel
 	private static final Dimension BAR_SIZE = new Dimension(PANEL_SIZE.width, 30);
 	private static final int MESSAGE_AREA_PADDING = 15;
 
-	private final JLabel titleLabel = new JLabel("Welcome to RuneLitePlus");
+	private final JLabel titleLabel = new JLabel("Welcome to OpenOSRS");
 	private final JLabel messageArea;
 	private final JLabel barLabel = new JLabel("Doing something important");
 	private final JProgressBar bar = new JProgressBar(0, 100);
@@ -80,7 +80,7 @@ public class MessagePanel extends JPanel
 		c.gridy++;
 
 		// alternate message action
-		messageArea = new JLabel("<html><div style='text-align:center;'>Fork of RuneLite that provides more functionality and less restrictions whilst staying open source.</div></html>")
+		messageArea = new JLabel("<html><div style='text-align:center;'>Open-source client for Old School RuneScape with more functionality and less restrictions.</div></html>")
 		{
 			@Override
 			public Dimension getPreferredSize()
@@ -118,8 +118,8 @@ public class MessagePanel extends JPanel
 		this.add(barLabel, c);
 		c.gridy++;
 
-		bar.setBackground(ColorScheme.BRAND_ORANGE_TRANSPARENT.darker());
-		bar.setForeground(ColorScheme.BRAND_ORANGE);
+		bar.setBackground(ColorScheme.BRAND_BLUE_TRANSPARENT.darker());
+		bar.setForeground(ColorScheme.BRAND_BLUE);
 		bar.setMinimumSize(BAR_SIZE);
 		bar.setMaximumSize(BAR_SIZE);
 		bar.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));

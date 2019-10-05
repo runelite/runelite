@@ -2,10 +2,10 @@
 
 
 
-# RuneLitePlus 
-[![Build Status](https://github.com/runelite-extended/runelite/workflows/RunelitePlus%20-%20CI/badge.svg)](https://github.com/runelite-extended/runelite/actions)
+# OpenOSRS 
+[![Build Status](https://github.com/runelite-extended/runelite/workflows/openosrs%20-%20CI/badge.svg)](https://github.com/runelite-extended/runelite/actions)
 [![HitCount](http://hits.dwyl.io/runelite-extended/runelite.svg)](http://hits.dwyl.io/runelite-extended/runelite)  
-[RuneLitePlus](https://runelitepl.us)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
+[OpenOSRS](https://openosrs.com)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
 
 ## Discord
 [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
@@ -14,9 +14,9 @@
 
 - [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
 - [deobfuscator](deobfuscator/src/main/java/net/runelite/deob) - Can decompile and cleanup gamepacks as well as map updates to newer revs
-- [http-api](http-api/src/main/java/net/runelite/http/api) - API for runelite and runeliteplus
+- [http-api](http-api/src/main/java/net/runelite/http/api) - API for runelite and OpenOSRS
 - [http-service](http-service/src/main/java/net/runelite/http/service) - Service for https://api.runelite.net
-- [http-service-plus](http-service-plus/src/main/java/net/runelite/http/service) - Service for https://api.runelitepl.us
+- [http-service-plus](http-service-plus/src/main/java/net/runelite/http/service) - Service for https://api.openosrs.com
 - [injector-plugin](injector-plugin/src/main/java/net/runelite/injector) - Tool for implementing our modifications to the gamepack
 - [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
 - [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Classes containing the Objects to be injected using the injector-plugin
@@ -49,7 +49,7 @@ Disable Default World plugin if you have it enabled, this causes issues with cod
 ```  
 ## License
 
-RuneLitePlus is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
+OpenOSRS is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 
 ## Contribute and Develop
 

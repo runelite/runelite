@@ -41,7 +41,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.config.RuneLitePlusConfig;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
@@ -123,9 +123,9 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-	RuneLitePlusConfig providePlusConfig(ConfigManager configManager)
+	OpenOSRSConfig providePlusConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RuneLitePlusConfig.class);
+		return configManager.getConfig(OpenOSRSConfig.class);
 	}
 
 	@Provides

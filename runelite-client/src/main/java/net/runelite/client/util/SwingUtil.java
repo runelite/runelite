@@ -98,15 +98,15 @@ public class SwingUtil
 		UIManager.put("MenuItem.foreground", Color.WHITE);
 		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
 		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
-		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_BLUE_TRANSPARENT);
 		UIManager.put("TextField.selectionForeground", Color.WHITE);
-		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_BLUE_TRANSPARENT);
 		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
-		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_BLUE_TRANSPARENT);
 		UIManager.put("TextArea.selectionForeground", Color.WHITE);
-		UIManager.put("ProgressBar.background", ColorScheme.BRAND_ORANGE_TRANSPARENT.darker());
-		UIManager.put("ProgressBar.foreground", ColorScheme.BRAND_ORANGE);
-		UIManager.put("ProgressBar.selectionBackground", ColorScheme.BRAND_ORANGE);
+		UIManager.put("ProgressBar.background", ColorScheme.BRAND_BLUE_TRANSPARENT.darker());
+		UIManager.put("ProgressBar.foreground", ColorScheme.BRAND_BLUE);
+		UIManager.put("ProgressBar.selectionBackground", ColorScheme.BRAND_BLUE);
 		UIManager.put("ProgressBar.selectionForeground", Color.BLACK);
 		UIManager.put("ProgressBar.border", new EmptyBorder(0, 0, 0, 0));
 		UIManager.put("ProgressBar.verticalSize", new Dimension(12, 10));
@@ -392,13 +392,13 @@ public class SwingUtil
 		stylizeJPanels(pane);
 
 		final Frame frame = component == null ? JOptionPane.getRootFrame() : JOptionPane.getFrameForComponent(component);
-		final JDialog dialog = new JDialog(frame, "RuneLitePlus Error", true);
+		final JDialog dialog = new JDialog(frame, "OpenOSRS Error", true);
 		dialog.setContentPane(pane);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setAlwaysOnTop(true);
 		dialog.setAutoRequestFocus(true);
 		dialog.setLocationRelativeTo(null);
-		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/runeliteplus_transparent.png"));
+		dialog.setIconImage(ImageUtil.getResourceStreamFromClass(SwingUtil.class, "/openosrs.png"));
 
 		// Listen for value changes and close dialog when necessary
 		pane.addPropertyChangeListener(e -> {

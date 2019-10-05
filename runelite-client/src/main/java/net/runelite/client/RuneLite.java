@@ -282,7 +282,7 @@ public class RuneLite
 			RuneLiteSplashScreen.setError("Error while loading!", "Please check your internet connection and your DNS settings.");
 		});
 
-		RuneLiteSplashScreen.stage(0, "Starting RuneLitePlus injector");
+		RuneLiteSplashScreen.stage(0, "Starting OpenOSRS injector");
 
 		final long start = System.currentTimeMillis();
 

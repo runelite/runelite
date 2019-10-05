@@ -26,7 +26,7 @@
  */
 
 /*
-Modified java.awt.Robot for use with RuneLitePlus. Hopefully we can make it stand far apart.
+Modified java.awt.Robot for use with openosrs. Hopefully we can make it stand far apart.
 Uses
 https://github.com/JoonasVali/NaturalMouseMotion
 for mouse motion.

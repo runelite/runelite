@@ -107,7 +107,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 public class ClientUI
 {
 	private static final String CONFIG_GROUP = "runelite";
-	private static final String PLUS_CONFIG_GROUP = "runeliteplus";
+	private static final String PLUS_CONFIG_GROUP = "openosrs";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_OPACITY = "enableOpacity";
@@ -115,7 +115,7 @@ public class ClientUI
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static boolean allowInput = false;
-	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runeliteplus.png");
+	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/openosrs.png");
 
 	@Getter
 	private TrayIcon trayIcon;
@@ -536,7 +536,7 @@ public class ClientUI
 		if (client != null && !(client instanceof Client))
 		{
 			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"RuneLitePlus has not yet been updated to work with the latest\n"
+				"OpenOSRS has not yet been updated to work with the latest\n"
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
 		}

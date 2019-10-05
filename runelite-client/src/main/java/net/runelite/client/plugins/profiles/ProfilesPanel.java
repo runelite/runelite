@@ -76,7 +76,7 @@ class ProfilesPanel extends PluginPanel
 	private static final String PASSWORD_LABEL = "Account Password";
 	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
 		"field then press %s. <br /><br /> You can now add as many accounts as you would like. <br /><br /> The next time you restart " +
-		"RunelitePlus, enter your encryption password and click load accounts to see the accounts you entered.";
+		"openosrs, enter your encryption password and click load accounts to see the accounts you entered.";
 
 	@Inject
 	@Nullable
