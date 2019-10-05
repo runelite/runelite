@@ -222,6 +222,7 @@ public class LootTrackerPlugin extends Plugin
 			lootTrackerClient = null;
 		}
 	}
+
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{

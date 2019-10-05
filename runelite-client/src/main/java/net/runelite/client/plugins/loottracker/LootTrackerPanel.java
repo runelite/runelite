@@ -326,6 +326,7 @@ class LootTrackerPanel extends PluginPanel
 				client.delete(currentView);
 			}
 		});
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -350,7 +351,6 @@ class LootTrackerPanel extends PluginPanel
 		updateOverall();
 		logsContainer.removeAll();
 		logsContainer.repaint();
-        // Delete all loot, or loot matching the current view
 		LootTrackerClient client = plugin.getLootTrackerClient();
 		if (client != null && config.syncPanel())
 		{
@@ -358,7 +358,7 @@ class LootTrackerPanel extends PluginPanel
 		}
 	}
 
-	void updateCollapseText()
+	private void updateCollapseText()
 	{
 		if (isAllCollapsed())
 		{
