@@ -27,6 +27,7 @@ package net.runelite.client.plugins.boosts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -89,18 +90,19 @@ class BoostsOverlay extends Overlay
 				.build());
 		}
 
+		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
+
+		if (boostedSkills.isEmpty())
+		{
+			return panelComponent.render(graphics);
+		}
+
 		if (plugin.canShowBoosts())
 		{
-			for (Skill skill : plugin.getShownSkills())
+			for (Skill skill : boostedSkills)
 			{
 				final int boosted = client.getBoostedSkillLevel(skill);
 				final int base = client.getRealSkillLevel(skill);
-
-				if (boosted == base)
-				{
-					continue;
-				}
-
 				final int boost = boosted - base;
 				final Color strColor = getTextColor(boost);
 				String str;
