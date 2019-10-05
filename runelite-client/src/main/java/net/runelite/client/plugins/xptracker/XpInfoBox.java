@@ -139,18 +139,18 @@ class XpInfoBox extends JPanel
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
 		popupMenu.add(canvasItem);
+		popupMenu.addPopupMenuListener(new SimplePopupMenuListener(e ->
+			canvasItem.setText(xpTrackerPlugin.hasOverlay(skill) ? REMOVE_STATE : ADD_STATE)));
 
 		canvasItem.addActionListener(e ->
 		{
 			if (canvasItem.getText().equals(REMOVE_STATE))
 			{
 				xpTrackerPlugin.removeOverlay(skill);
-				canvasItem.setText(ADD_STATE);
 			}
 			else
 			{
 				xpTrackerPlugin.addOverlay(skill);
-				canvasItem.setText(REMOVE_STATE);
 			}
 		});
 
