@@ -29,7 +29,7 @@ jobs:
       - name: Scraping NPC stats
         run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
       - name: Create NPC stats Pull Request
-        uses: peter-evans/create-pull-request@master
+        uses: Owain94/create-pull-request@master
         env:
           GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
           PULL_REQUEST_BRANCH: NPC-UPDATE
@@ -61,7 +61,7 @@ jobs:
       - name: Scraping item stats
         run: ./gradlew :wiki-scraper:itemStatsScrape --console=plain
       - name: Create item stats Pull Request
-        uses: peter-evans/create-pull-request@master
+        uses: Owain94/create-pull-request@master
         env:
           GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
           PULL_REQUEST_BRANCH: ITEM-STATS-UPDATE
