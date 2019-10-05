@@ -15,7 +15,7 @@ jobs:
       - name: Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version $(curl -s https://api.github.com/repos/gradle/gradle/releases/latest | grep -Po '"name":.*?[^\\]",' | sed -r 's/[\"name:, ]+//g') --distribution-type all --console=plain
       - name: Create Gradle wrapper update Pull Request
-        uses: peter-evans/create-pull-request@master
+        uses: Owain94/create-pull-request@master
         env:
           GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
           PULL_REQUEST_BRANCH: GRADLE-WRAPPER-UPDATE
@@ -33,7 +33,7 @@ jobs:
     - name: Update Gradle dependencies
       run: ./gradlew useLatestVersions --console=plain
     - name: Create Gradle dependencies update Pull Request
-      uses: peter-evans/create-pull-request@master
+      uses: Owain94/create-pull-request@master
       env:
         GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
         PULL_REQUEST_BRANCH: GRADLE-DEPENDENCY-UPDATE
