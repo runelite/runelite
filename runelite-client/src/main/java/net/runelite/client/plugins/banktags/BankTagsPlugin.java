@@ -71,6 +71,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
+import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
@@ -278,6 +279,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			String initialValue = Text.toCSV(tags);
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+				.addCharValidator(FILTERED_CHARS)
 				.value(initialValue)
 				.onDone((newValue) ->
 					clientThread.invoke(() ->
