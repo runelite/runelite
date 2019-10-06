@@ -44,14 +44,18 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JTextField uiFieldNewLevel;
+	private final JTextField uiFieldNewXP;
 
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(2, 2, 7, 7));
+		setLayout(new GridLayout(3, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
+		uiFieldNewLevel = addComponent("New Level", false);
+		uiFieldNewXP = addComponent("New Experience", false);
 	}
 
 	int getCurrentLevelInput()
@@ -94,6 +98,26 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
+	int getNewLevelInput()
+	{
+		return getInput(uiFieldNewLevel);
+	}
+
+	void setNewLevelInput(Object value)
+	{
+		setInput(uiFieldNewLevel, value);
+	}
+
+	int getNewXPInput()
+	{
+		return getInput(uiFieldNewXP);
+	}
+
+	void setNewXPInput(Object value)
+	{
+		setInput(uiFieldNewXP, value);
+	}
+
 	private int getInput(JTextField field)
 	{
 		try
@@ -118,6 +142,32 @@ class UICalculatorInputArea extends JPanel
 
 		final JLabel uiLabel = new JLabel(label);
 		final FlatTextField uiInput = new FlatTextField();
+
+		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
+
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		uiLabel.setForeground(Color.WHITE);
+
+		container.add(uiLabel, BorderLayout.NORTH);
+		container.add(uiInput, BorderLayout.CENTER);
+
+		add(container);
+
+		return uiInput.getTextField();
+	}
+
+	private JTextField addComponent(String label, boolean enabled)
+	{
+		final JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		final JLabel uiLabel = new JLabel(label);
+		final FlatTextField uiInput = new FlatTextField();
+
+		uiInput.setEditable(enabled);
 
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);

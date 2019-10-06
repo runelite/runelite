@@ -96,12 +96,14 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldCurrentLevel().addActionListener(e ->
 		{
 			onFieldCurrentLevelUpdated();
+			calculateLevelFromInputActions();
 			uiInput.getUiFieldTargetLevel().requestFocusInWindow();
 		});
 
 		uiInput.getUiFieldCurrentXP().addActionListener(e ->
 		{
 			onFieldCurrentXPUpdated();
+			calculateLevelFromInputActions();
 			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
@@ -133,7 +135,6 @@ class SkillCalculator extends JPanel
 		renderBonusOptions();
 
 		// Add the combined action slot.
-		combinedActionSlot.setNewLevel(1);
 		add(combinedActionSlot);
 
 		// Add the search bar
@@ -294,15 +295,14 @@ class SkillCalculator extends JPanel
 				}
 			});
 
-			slot.getUiItemsInput().addActionListener(e -> {
+			slot.getUiActionsInput().addActionListener(e ->
+			{
 				if (slot.getNumInputActions() == 0)
 				{
-					slot.getUiItemsInput().setText("0");
+					slot.getUiActionsInput().setText("0");
 				}
-				else
-				{
-					calculateLevelFromInputActions();
-				}
+
+				calculateLevelFromInputActions();
 			});
 		}
 
@@ -329,7 +329,8 @@ class SkillCalculator extends JPanel
 		int newTotalXp = currentXP + (int) Math.floor(cumulativeXpGain);
 		int newLevel = Experience.getLevelForXp(newTotalXp);
 
-		combinedActionSlot.setNewLevel(newLevel);
+		uiInput.setNewLevelInput(newLevel);
+		uiInput.setNewXPInput(newTotalXp);
 	}
 
 	private void calculate()

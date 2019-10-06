@@ -67,7 +67,7 @@ class UIActionSlot extends JPanel
 	private final JPanel uiInfo;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final FlatTextField uiItemsInput;
+	private final FlatTextField uiActionsInput;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
@@ -128,14 +128,14 @@ class UIActionSlot extends JPanel
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
-		uiItemsInput = new FlatTextField();
-		uiItemsInput.setText("0");
-		uiItemsInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		uiItemsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+		uiActionsInput = new FlatTextField();
+        uiActionsInput.setText("0");
+        uiActionsInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
+        uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
-		uiInfo.add(uiItemsInput);
+		uiInfo.add(uiActionsInput);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -145,7 +145,7 @@ class UIActionSlot extends JPanel
 	{
 		try
 		{
-			return Integer.parseInt(uiItemsInput.getText());
+			return Integer.parseInt(uiActionsInput.getText());
 		}
 		catch (NumberFormatException e)
 		{
