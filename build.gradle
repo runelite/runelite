@@ -132,7 +132,7 @@ subprojects {
         maven { url "http://repo1.maven.org/maven2" }
         maven { url "http://repo.runelite.net" }
         maven { url "http://repo.maven.apache.org/maven2" }
-        maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+        maven { url "https://raw.githubusercontent.com/open-osrs/hosting/master" }
 
         if (System.getenv("NEXUS-URL") != null) {
             maven { url System.getenv("NEXUS-URL") }
