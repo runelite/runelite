@@ -53,7 +53,13 @@ public enum VarPlayer
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
-	
+
+	/**
+	 * The 11 least significant bits of this var correspond to the player
+	 * you're currently fighting. Value is -1 when not fighting any player.
+	 *
+	 * Client.getVar(ATTACKING_PLAYER) & 2047 == Client.getLocalInteractingIndex();
+	 */
 	ATTACKING_PLAYER(1075),
 
 	/**
