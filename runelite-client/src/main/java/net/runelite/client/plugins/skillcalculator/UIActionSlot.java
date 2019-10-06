@@ -26,12 +26,16 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -98,15 +102,17 @@ class UIActionSlot extends JPanel
 				if (!isSelected)
 				{
 					setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+					uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 				}
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
-			{
+            {
 				if (!isSelected)
 				{
 					updateBackground();
+                    uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 				}
 			}
 		};
@@ -130,7 +136,7 @@ class UIActionSlot extends JPanel
 
 		uiActionsInput = new FlatTextField();
         uiActionsInput.setText("0");
-        uiActionsInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
+        uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
         uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 
 		uiInfo.add(uiLabelName);
@@ -192,6 +198,7 @@ class UIActionSlot extends JPanel
 		}
 
 		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+        uiActionsInput.setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
 	}
 
 	@Override
