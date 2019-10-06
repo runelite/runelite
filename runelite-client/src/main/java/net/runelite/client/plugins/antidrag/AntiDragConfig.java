@@ -101,14 +101,14 @@ public interface AntiDragConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "reqfocus",
+		keyName = "reqFocus",
 		name = "Reset on focus loss",
 		description = "Disable antidrag when losing focus (like alt tabbing)",
 		position = 5,
 		hidden = true,
 		unhide = "toggleKeyBind || holdKeyBind"
 	)
-	default boolean reqfocus()
+	default boolean reqFocus()
 	{
 		return false;
 	}
