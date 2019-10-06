@@ -407,6 +407,10 @@ public class LootTrackerPlugin extends Plugin
 				eventType = "Kingdom of Miscellania";
 				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
 				break;
+			case (WidgetID.FISHING_TRAWLER_REWARD_GROUP_ID):
+				eventType = "Fishing Trawler";
+				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
+				break;
 			default:
 				return;
 		}
