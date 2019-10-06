@@ -311,14 +311,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
-  
-  @ConfigItem(
-      keyName = "swapCastleWars",
-      name = "Castle Wars",
-      description = "Swap Take-1 with Take-5 for from tables in Castle Wars"
-  )
-  default boolean swapCastleWars()
-  {
-    return true;
-  }
+
+	@ConfigItem(
+		keyName = "swapCastleWars",
+		name = "Castle Wars",
+		description = "Swap Take-1 with Take-5 for from tables in Castle Wars"
+	)
+	default boolean swapCastleWars()
+	{
+		return true;
+	}
 }
