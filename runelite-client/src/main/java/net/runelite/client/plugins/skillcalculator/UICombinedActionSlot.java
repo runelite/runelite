@@ -44,6 +44,7 @@ class UICombinedActionSlot extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 	private final JShadowedLabel uiLabelActions;
 	private final JShadowedLabel uiLabelTitle;
+	private final JShadowedLabel uiNewLevel;
 
 	UICombinedActionSlot(SpriteManager spriteManager)
 	{
@@ -61,7 +62,7 @@ class UICombinedActionSlot extends JPanel
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 		add(uiIcon, BorderLayout.LINE_START);
 
-		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
+		JPanel uiInfo = new JPanel(new GridLayout(3, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		uiLabelTitle = new JShadowedLabel("No Action Selected");
@@ -71,8 +72,13 @@ class UICombinedActionSlot extends JPanel
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
+		uiNewLevel = new JShadowedLabel("New level: 1");
+		uiNewLevel.setFont(FontManager.getRunescapeFont());
+		uiNewLevel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
 		uiInfo.add(uiLabelTitle);
 		uiInfo.add(uiLabelActions);
+		uiInfo.add(uiNewLevel);
 
 		add(uiInfo, BorderLayout.CENTER);
 	}
@@ -85,5 +91,9 @@ class UICombinedActionSlot extends JPanel
 	void setTitle(String text)
 	{
 		uiLabelTitle.setText(text);
+	}
+
+	void setNewLevel(int level) {
+		uiNewLevel.setText("New level: " + level);
 	}
 }

@@ -133,6 +133,7 @@ class SkillCalculator extends JPanel
 		renderBonusOptions();
 
 		// Add the combined action slot.
+		combinedActionSlot.setNewLevel(1);
 		add(combinedActionSlot);
 
 		// Add the search bar
@@ -292,11 +293,46 @@ class SkillCalculator extends JPanel
 					updateCombinedAction();
 				}
 			});
+
+			slot.getUiItemsInput().addActionListener(e -> {
+				if (slot.getNumInputActions() == 0)
+				{
+					slot.getUiItemsInput().setText("0");
+				}
+				else
+				{
+					calculateLevelFromInputActions();
+				}
+			});
 		}
 
 		// Refresh the rendering of this panel.
 		revalidate();
 		repaint();
+	}
+
+	private void calculateLevelFromInputActions()
+	{
+		double cumulativeXpGain = 0;
+
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			int numActions = slot.getNumInputActions();
+			if (numActions <= 0) continue;
+
+			SkillDataEntry action = slot.getAction();
+
+			double xpGain = (action.isIgnoreBonus()) ? action.getXp() * numActions : action.getXp() * numActions * xpFactor;
+			cumulativeXpGain += xpGain;
+		}
+
+		int newTotalXp = currentXP + (int) Math.floor(cumulativeXpGain);
+
+		int newLevel = Experience.getLevelForXp(newTotalXp);
+		System.out.println("Xp gain: " + cumulativeXpGain);
+		System.out.println("new level: " + newLevel);
+
+		combinedActionSlot.setNewLevel(newLevel);
 	}
 
 	private void calculate()
