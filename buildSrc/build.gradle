@@ -1,5 +1,5 @@
 repositories {
-    maven { url "https://raw.githubusercontent.com/runelite-extended/maven-repo/master" }
+    maven { url "https://raw.githubusercontent.com/open-osrs/hosting/master" }
 }
 dependencies {
     compile localGroovy()
