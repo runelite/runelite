@@ -601,9 +601,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
-		{
-			swap("use", option, target, index);
-		}
+    {
+      swap("use", option, target, index);
+    }
+    else if (config.swapCastleWars() && option.equals("take-from"))
+    {
+      swap("take-5", option, target, index);
+    }
 	}
 
 	private static boolean shouldSwapPickpocket(String target)
