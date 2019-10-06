@@ -327,10 +327,7 @@ class SkillCalculator extends JPanel
 		}
 
 		int newTotalXp = currentXP + (int) Math.floor(cumulativeXpGain);
-
 		int newLevel = Experience.getLevelForXp(newTotalXp);
-		System.out.println("Xp gain: " + cumulativeXpGain);
-		System.out.println("new level: " + newLevel);
 
 		combinedActionSlot.setNewLevel(newLevel);
 	}
