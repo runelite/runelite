@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -209,14 +210,14 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onLoginResponse(LoginResponse loginResponse)
 	{
-		AccountSession accountSession = sessionManager.getAccountSession();
-		if (accountSession.getUuid() != null)
+		final AccountSession accountSession = sessionManager.getAccountSession();
+		final UUID account = accountSession.getUuid();
+
+		if (account != null)
 		{
-			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
-		}
-		else
-		{
-			lootTrackerClient = null;
+			resetPanelAndQueue();
+			lootTrackerClient = new LootTrackerClient(account);
+			loadLootRecords();
 		}
 	}
 
@@ -225,6 +226,17 @@ public class LootTrackerPlugin extends Plugin
 	{
 		submitLoot();
 		lootTrackerClient = null;
+		resetPanelAndQueue();
+	}
+
+	private void resetPanelAndQueue()
+	{
+		synchronized (queuedLoots)
+		{
+			queuedLoots.clear();
+		}
+
+		SwingUtilities.invokeLater(panel::removeRecords);
 	}
 
 	@Subscribe
@@ -259,45 +271,7 @@ public class LootTrackerPlugin extends Plugin
 		if (accountSession != null)
 		{
 			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
-
-			clientThread.invokeLater(() ->
-			{
-				switch (client.getGameState())
-				{
-					case STARTING:
-					case UNKNOWN:
-						return false;
-				}
-
-				executor.submit(() ->
-				{
-					Collection<LootRecord> lootRecords;
-
-					if (!config.syncPanel())
-					{
-						return;
-					}
-
-					try
-					{
-						lootRecords = lootTrackerClient.get();
-					}
-					catch (IOException e)
-					{
-						log.debug("Unable to look up loot", e);
-						return;
-					}
-
-					log.debug("Loaded {} data entries", lootRecords.size());
-
-					clientThread.invokeLater(() ->
-					{
-						Collection<LootTrackerRecord> records = convertToLootTrackerRecord(lootRecords);
-						SwingUtilities.invokeLater(() -> panel.addRecords(records));
-					});
-				});
-				return true;
-			});
+			loadLootRecords();
 		}
 	}
 
@@ -569,6 +543,51 @@ public class LootTrackerPlugin extends Plugin
 		lootTrackerClient.submit(copy);
 	}
 
+	void loadLootRecords()
+	{
+		clientThread.invokeLater(() ->
+		{
+			switch (client.getGameState())
+			{
+				case STARTING:
+				case UNKNOWN:
+					return false;
+			}
+
+			executor.submit(() ->
+			{
+				Collection<LootRecord> lootRecords;
+
+				if (!config.syncPanel())
+				{
+					return;
+				}
+
+				try
+				{
+					lootRecords = lootTrackerClient.get();
+				}
+				catch (IOException e)
+				{
+					log.debug("Unable to look up loot", e);
+					return;
+				}
+
+				log.debug("Loaded {} data entries", lootRecords.size());
+
+				clientThread.invokeLater(() ->
+				{
+					Collection<LootTrackerRecord> records = convertToLootTrackerRecord(lootRecords);
+					SwingUtilities.invokeLater(() ->
+					{
+						panel.addRecords(records);
+					});
+				});
+			});
+			return true;
+		});
+	}
+
 	private void takeInventorySnapshot()
 	{
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
@@ -576,7 +595,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			inventorySnapshot = HashMultiset.create();
 			Arrays.stream(itemContainer.getItems())
-					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 
