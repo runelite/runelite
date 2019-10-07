@@ -45,21 +45,22 @@ import lombok.Setter;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UIActionSlot extends JPanel
 {
 	private static final Border GREEN_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border RED_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border ORANGE_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
@@ -68,6 +69,9 @@ class UIActionSlot extends JPanel
 	private final JShadowedLabel uiLabelActions;
 
 	private final JPanel uiInfo;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final FlatTextField uiActionsInput;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
@@ -98,15 +102,17 @@ class UIActionSlot extends JPanel
 				if (!isSelected)
 				{
 					setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+					uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 				}
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
-			{
+            {
 				if (!isSelected)
 				{
 					updateBackground();
+                    uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 				}
 			}
 		};
@@ -117,7 +123,7 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo = new JPanel(new GridLayout(3, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
@@ -128,11 +134,29 @@ class UIActionSlot extends JPanel
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
+		uiActionsInput = new FlatTextField();
+        uiActionsInput.setText("0");
+        uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+        uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
+		uiInfo.add(uiActionsInput);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
+	}
+
+	int getNumInputActions()
+	{
+		try
+		{
+			return Integer.parseInt(uiActionsInput.getText());
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
 	}
 
 	void setSelected(boolean selected)
@@ -174,6 +198,7 @@ class UIActionSlot extends JPanel
 		}
 
 		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+        uiActionsInput.setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
 	}
 
 	@Override
