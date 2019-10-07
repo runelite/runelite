@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
@@ -239,34 +240,37 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if (item.getItemId() != ItemID.COINS_995)
 			{
-				if (item.getGePrice() > 0)
+				if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 				{
-					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
-				}
+					if (item.getGePrice() > 0)
+					{
+						itemStringBuilder.append(" (EX: ")
+								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
+					}
 
-				if (item.getHaPrice() > 0)
-				{
-					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+					if (item.getHaPrice() > 0)
+					{
+						itemStringBuilder.append(" (HA: ")
+								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
+					}
 				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
-
-				if (price > 0)
+				else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 				{
-					itemStringBuilder
-						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+							? item.getGePrice()
+							: item.getHaPrice();
+
+					if (price > 0)
+					{
+						itemStringBuilder
+							.append(" (")
+							.append(StackFormatter.quantityToStackSize(price))
+							.append(" gp)");
+					}
 				}
 			}
 
