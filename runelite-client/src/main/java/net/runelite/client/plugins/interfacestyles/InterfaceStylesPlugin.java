@@ -40,6 +40,7 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostHealthBar;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -103,6 +104,17 @@ public class InterfaceStylesPlugin extends Plugin
 		if (config.getGroup().equals("interfaceStyles"))
 		{
 			clientThread.invoke(this::updateAllOverrides);
+		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if ("forceStackStones".equals(event.getEventName()) && config.alwaysStack())
+		{
+			int[] intStack = client.getIntStack();
+			int intStackSize = client.getIntStackSize();
+			intStack[intStackSize - 1] = 1;
 		}
 	}
 
