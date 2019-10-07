@@ -71,7 +71,7 @@ ext {
     mongodbDriverSync = '3.11.0'
     mysqlConnectorJava = '8.0.17'
     netty = '4.1.42.Final'
-    okhttp3 = '4.2.1'
+    okhttp3 = '4.2.2'
     orangeExtensions = '1.0'
     petitparser = '2.2.0'
     plexus = '3.2.1'
