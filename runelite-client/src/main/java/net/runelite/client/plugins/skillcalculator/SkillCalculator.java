@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -41,6 +42,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.http.api.item.Item;
+import net.runelite.http.api.item.SearchResult;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -52,10 +56,12 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
+
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+	private static final String[] buyables = {"Prayer", "Firemaking", "Construction", "Smithing", "Cooking", "Herblore"}; //, "Crafting", "Magic", "Fletching", "Farming",
 
 	private final UICalculatorInputArea uiInput;
 	private final Client client;
@@ -74,6 +80,7 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private String skillName = null;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -118,10 +125,12 @@ class SkillCalculator extends JPanel
 		xpFactor = 1.0f;
 
 		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
+		Skill skill = calculatorType.getSkill();
+		currentXP = client.getSkillExperience(skill);
 		currentLevel = Experience.getLevelForXp(currentXP);
 		targetLevel = enforceSkillBounds(currentLevel + 1);
 		targetXP = Experience.getXpForLevel(targetLevel);
+		skillName = skill.getName();
 
 		// Remove all components (action slots) from this panel.
 		removeAll();
@@ -301,6 +310,15 @@ class SkillCalculator extends JPanel
 
 	private void calculate()
 	{
+		boolean buyable = false;
+		for (String skill : buyables)
+		{
+			if (skillName == skill)
+			{
+				buyable = true;
+				break;
+			}
+		}
 		for (UIActionSlot slot : uiActionSlots)
 		{
 			int actionCount = 0;
@@ -313,13 +331,148 @@ class SkillCalculator extends JPanel
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
 
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "), true);
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
+
+			String actionName = action.getName();
+
+			if (buyable)
+			{
+				if (skillName.equals("Construction") && !actionName.contains("Plank")) continue;
+				if (skillName.equals("Prayer") && actionName.contains("Ensouled")) continue;
+				if (skillName.equals("Smithing") && !actionName.contains("Silver") && !actionName.contains("Gold")) continue;
+				if (skillName.equals("Cooking") && (actionName.contains("Potato") || actionName.contains("Pizza") || actionName.contains("Batta") || actionName.contains("Snail") || actionName.contains("Cake") || actionName.contains("Roast"))) continue;
+				if (actionName.equals("Gold Bar (Goldsmith Gauntlets)")) actionName = "Gold Bar";
+
+				SearchResult result;
+				try
+				{
+					result = itemManager.searchForItem(actionName);
+				}
+				catch (ExecutionException ex)
+				{
+					return;
+				}
+				if (result == null || result.getItems().isEmpty()) continue;
+				//System.out.println(result.getItems());
+				Item item = retrieveFromList(result.getItems(), actionName);
+				if (item == null) continue;
+				int itemPrice = itemManager.getItemPrice(item.getId());
+
+				double gpPerXp;
+				if (skillName.equals("Herblore"))
+				{
+					String[] ingredients = action.getIngredients();
+					if (ingredients == null) continue;
+					String primary = ingredients[0];
+					int seconPrice = 0;
+					try
+					{
+						result = itemManager.searchForItem(primary);
+					}
+					catch (ExecutionException ex)
+					{
+						return;
+					}
+					if (result == null || result.getItems().isEmpty()) continue;
+					//System.out.println("a " + result.getItems());
+					Item primItem = retrieveFromList(result.getItems(), primary);
+					if (primItem == null) continue;
+					int primPrice = itemManager.getItemPrice(primItem.getId());
+					//System.out.println("primPrice: "+primPrice);
+
+					if (ingredients.length == 2)
+					{
+						String secondary = ingredients[1];
+						try
+						{
+							result = itemManager.searchForItem(secondary);
+						}
+						catch (ExecutionException ex)
+						{
+							return;
+						}
+						if (result == null || result.getItems().isEmpty()) continue;
+						//System.out.println("b "+result.getItems());
+						Item seconItem = retrieveFromList(result.getItems(), secondary);
+						if (seconItem == null) continue;
+						seconPrice = itemManager.getItemPrice(seconItem.getId());
+						if (secondary.equals("Lava scale shard") || secondary.equals("Amylase crystal")) seconPrice *= 4;
+						if (secondary.equals("Zulrah scales")) seconPrice *= 20;
+					}
+					gpPerXp = (primPrice + seconPrice - itemPrice) / xp;
+
+
+				}
+				else if (skillName.equals("Smithing"))
+				{
+					String ore = actionName.substring(0, actionName.length() - 3) + "Ore";
+					try
+					{
+						result = itemManager.searchForItem(ore);
+					}
+					catch (ExecutionException ex)
+					{
+						return;
+					}
+					if (result == null || result.getItems().isEmpty()) continue;
+
+					Item oreItem = retrieveFromList(result.getItems(), ore);
+					if (oreItem == null) continue;
+					int orePrice = itemManager.getItemPrice(oreItem.getId());
+					gpPerXp = (orePrice - itemPrice) / xp;
+				}
+				else if (skillName.equals("Cooking"))
+				{
+					if (actionName.contains("Cooked")) actionName = actionName.substring(7);
+					String raw = "Raw " + actionName;
+					try
+					{
+						result = itemManager.searchForItem(raw);
+					}
+					catch (ExecutionException ex)
+					{
+						return;
+					}
+					if (result == null || result.getItems().isEmpty()) continue;
+
+					Item rawItem = retrieveFromList(result.getItems(), raw);
+					if (rawItem == null) continue;
+					int rawPrice = itemManager.getItemPrice(rawItem.getId());
+					gpPerXp = (rawPrice - itemPrice) / xp;
+				}
+				else
+				{
+					gpPerXp = itemPrice / xp;
+				}
+				slot.setText(String.format("%.2f", gpPerXp) + " gp/exp", false);
+			}
 		}
 
 		updateCombinedAction();
+	}
+
+	/**
+	 * Compares the names of the items in the list with the original input.
+	 * Returns the item if its name is equal to the original input or null
+	 * if it can't find the item.
+	 *
+	 * @param items         List of items.
+	 * @param originalInput String with the original input.
+	 * @return Item which has a name equal to the original input.
+	 */
+	private Item retrieveFromList(List<Item> items, String originalInput)
+	{
+		for (Item item : items)
+		{
+			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+			{
+				return item;
+			}
+		}
+		return null;
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)

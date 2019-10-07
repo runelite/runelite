@@ -66,6 +66,7 @@ class UIActionSlot extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
 	private final JShadowedLabel uiLabelActions;
+	private final JShadowedLabel uiLabelGpXp;
 
 	private final JPanel uiInfo;
 
@@ -117,7 +118,7 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo = new JPanel(new GridLayout(3, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
@@ -128,8 +129,13 @@ class UIActionSlot extends JPanel
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
+		uiLabelGpXp = new JShadowedLabel("gp/exp not available");
+		uiLabelGpXp.setFont(FontManager.getRunescapeSmallFont());
+		uiLabelGpXp.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
+		uiInfo.add(uiLabelGpXp);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -153,9 +159,16 @@ class UIActionSlot extends JPanel
 		this.updateBackground();
 	}
 
-	void setText(String text)
+	void setText(String text, boolean actionsLabel)
 	{
-		uiLabelActions.setText(text);
+		if (actionsLabel)
+		{
+			uiLabelActions.setText(text);
+		}
+		else
+		{
+			uiLabelGpXp.setText(text);
+		}
 	}
 
 	private void updateBackground()
