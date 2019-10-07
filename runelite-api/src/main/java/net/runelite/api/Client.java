@@ -1819,4 +1819,24 @@ public interface Client extends GameShell
 	void setSelectedSpellWidget(int widgetID);
 
 	void setSelectedSpellChildIndex(int index);
+
+	/**
+	 * Scales values from pixels onto canvas
+	 *
+	 * @see net.runelite.client.util.ImageUtil#resizeSprite(Client, Sprite, int, int)
+	 *
+	 * @param canvas the array we're writing to
+	 * @param pixels pixels to draw
+	 * @param color should be 0
+	 * @param pixelX x index
+	 * @param pixelY y index
+	 * @param canvasIdx index in canvas (canvas[canvasIdx])
+	 * @param canvasOffset x offset
+	 * @param newWidth new width
+	 * @param newHeight new height
+	 * @param pixelWidth pretty much horizontal scale
+	 * @param pixelHeight pretty much vertical scale
+	 * @param oldWidth old width
+	 */
+	void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY, int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth);
 }

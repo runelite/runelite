@@ -34,6 +34,8 @@ import java.util.Collection;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import static net.runelite.api.Perspective.getCanvasTileAreaPoly;
 import net.runelite.api.Projectile;
@@ -47,9 +49,17 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 @Singleton
 class HydraSceneOverlay extends Overlay
 {
-	private static final Color GREEN = new Color(0, 255, 0, 100);
-	private static final Color RED = new Color(255, 0, 0, 100);
-	private static final Color REDFILL = new Color(255, 0, 0, 50);
+	@Setter(AccessLevel.PACKAGE)
+	private Color poisonBorder;
+
+	@Setter(AccessLevel.PACKAGE)
+	private Color poisonFill;
+
+	@Setter(AccessLevel.PACKAGE)
+	private Color goodFountain;
+
+	@Setter(AccessLevel.PACKAGE)
+	private Color badFountain;
 
 	private final HydraPlugin plugin;
 	private final Client client;
@@ -69,12 +79,12 @@ class HydraSceneOverlay extends Overlay
 		Hydra hydra = plugin.getHydra();
 		final Map<LocalPoint, Projectile> poisonProjectiles = plugin.getPoisonProjectiles();
 
-		if (!poisonProjectiles.isEmpty())
+		if (plugin.isCounting() && !poisonProjectiles.isEmpty())
 		{
 			drawPoisonArea(graphics, poisonProjectiles);
 		}
 
-		if (hydra.getPhase().getFountain() != null)
+		if (plugin.isFountain() && hydra.getPhase().getFountain() != null)
 		{
 			drawFountain(graphics, hydra);
 		}
@@ -103,9 +113,9 @@ class HydraSceneOverlay extends Overlay
 		}
 
 		graphics.setPaintMode();
-		graphics.setColor(RED);
+		graphics.setColor(poisonBorder);
 		graphics.draw(poisonTiles);
-		graphics.setColor(REDFILL);
+		graphics.setColor(poisonFill);
 		graphics.fill(poisonTiles);
 	}
 
@@ -141,11 +151,11 @@ class HydraSceneOverlay extends Overlay
 
 		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp, 1, 1)))    // coords
 		{                                                                                            // WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
-			color = GREEN;
+			color = goodFountain;
 		}
 		else
 		{
-			color = RED;
+			color = badFountain;
 		}
 
 		graphics.setColor(color);
