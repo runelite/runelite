@@ -2,7 +2,7 @@
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2019, alanbaumgartner <https://github.com/alanbaumgartner>
  * Copyright (c) 2019, Kyle <https://github.com/kyleeld>
- * Copyright (c) 2019, lucouswin <https://github.com/lucouswin>
+ * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1293,6 +1293,17 @@ public interface MenuEntrySwapperConfig extends Config
 	//------------------------------------------------------------//
 
 	@ConfigItem(
+		keyName = "lastJewel",
+		name = "Last Destination for Jewellery Box",
+		description = "Adds a \"Last-destination\" menu option when Jewellery Boxes are right clicked",
+		section = "teleportationSection"
+	)
+	default boolean lastJewel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapFairyRing",
 		name = "Fairy Ring",
 		description = "Swap 'Zanaris' with 'Last-destination' or 'Configure' on Fairy rings.",
@@ -1913,4 +1924,23 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return "cure other, energy transfer, heal other, vengeance other";
 	}
+
+	@ConfigItem(
+		keyName = "lastDes",
+		name = "",
+		description = "Last jewellery box destination (option)",
+		hidden = true
+	)
+	default String lastDes()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "lastDes",
+		name = "",
+		description = "Last jewellery box destination (option)",
+		hidden = true
+	)
+	void lastDes(String des);
 }

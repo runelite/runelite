@@ -255,14 +255,15 @@ public class WorldMapSection1 implements WorldMapSection {
 		signature = "(IIIILjava/lang/String;B)V",
 		garbageValue = "31"
 	)
-	static void method605(int var0, int var1, int var2, int var3, String var4) {
-		Widget var5 = GrandExchangeOfferWorldComparator.getWidgetChild(var1, var2);
+	@Export("widgetDefaultMenuAction")
+	static void widgetDefaultMenuAction(int opIndex, int parent, int childIdx, int itemID, String target) {
+		Widget var5 = GrandExchangeOfferWorldComparator.getWidgetChild(parent, childIdx);
 		if (var5 != null) {
 			if (var5.onOp != null) {
 				ScriptEvent var6 = new ScriptEvent();
 				var6.widget = var5;
-				var6.opIndex = var0;
-				var6.targetName = var4;
+				var6.opIndex = opIndex;
+				var6.targetName = target;
 				var6.args = var5.onOp;
 				ParamDefinition.runScriptEvent(var6);
 			}
@@ -274,87 +275,87 @@ public class WorldMapSection1 implements WorldMapSection {
 
 			if (var11) {
 				int var8 = class2.getWidgetClickMask(var5);
-				int var9 = var0 - 1;
+				int var9 = opIndex - 1;
 				boolean var7 = (var8 >> var9 + 1 & 1) != 0;
 				if (var7) {
 					PacketBufferNode var10;
-					if (var0 == 1) {
+					if (opIndex == 1) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2244, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 2) {
+					if (opIndex == 2) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2249, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 3) {
+					if (opIndex == 3) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 4) {
+					if (opIndex == 4) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2194, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 5) {
+					if (opIndex == 5) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2204, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 6) {
+					if (opIndex == 6) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2200, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 7) {
+					if (opIndex == 7) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2251, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 8) {
+					if (opIndex == 8) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2203, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 9) {
+					if (opIndex == 9) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2213, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 
-					if (var0 == 10) {
+					if (opIndex == 10) {
 						var10 = InterfaceParent.getPacketBufferNode(ClientPacket.field2285, Client.packetWriter.isaacCipher);
-						var10.packetBuffer.writeInt(var1);
-						var10.packetBuffer.writeShort(var2);
-						var10.packetBuffer.writeShort(var3);
+						var10.packetBuffer.writeInt(parent);
+						var10.packetBuffer.writeShort(childIdx);
+						var10.packetBuffer.writeShort(itemID);
 						Client.packetWriter.addNode(var10);
 					}
 

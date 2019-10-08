@@ -3209,7 +3209,7 @@ public final class Client extends GameShell implements Usernamed {
 													do {
 														var40 = (ScriptEvent)scriptEvents.removeLast();
 														if (var40 == null) {
-															this.method1323();
+															this.menu();
 															if (Tiles.worldMap != null) {
 																Tiles.worldMap.method6272(WorldMapRectangle.plane, class223.baseX * 64 + (class223.localPlayer.x >> 7), class286.baseY * 64 + (class223.localPlayer.y >> 7), false);
 																Tiles.worldMap.loadCache();
@@ -5105,7 +5105,8 @@ public final class Client extends GameShell implements Usernamed {
 		signature = "(S)V",
 		garbageValue = "255"
 	)
-	final void method1323() {
+	@Export("menu")
+	final void menu() {
 		boolean var1 = false;
 
 		int var2;
@@ -5185,7 +5186,7 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (var7 != -1) {
-							ModelData0.method3214(var7);
+							ModelData0.clickMenuIndex(var7);
 						}
 
 						isMenuOpen = false;
@@ -5238,7 +5239,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					if ((var16 == 1 || !WorldMapIcon_1.mouseCam && var16 == 4) && menuOptionsCount > 0) {
-						ModelData0.method3214(var2);
+						ModelData0.clickMenuIndex(var2);
 					}
 
 					if (var16 == 2 && menuOptionsCount > 0) {

@@ -1,0 +1,637 @@
+.id                 1685
+.int_stack_count    2
+.string_stack_count 1
+.int_var_count      15
+.string_var_count   2
+   invoke                 2157
+   iconst                 38666241
+   sload                  0
+   iconst                 0
+   invoke                 228
+   pop_int               
+   iconst                 38666240
+   cc_deleteall          
+   iconst                 0
+   istore                 2
+   iconst                 0
+   istore                 3
+   iconst                 38666240
+   if_getwidth
+   istore                 4
+   iload                  4
+   iconst                 10
+   sub
+   iconst                 10
+   sub
+   iconst                 5
+   sub
+   istore                 4
+   iload                  4
+   iconst                 2
+   div
+   istore                 5
+   iconst                 38666240
+   if_getheight
+   istore                 6
+   iload                  6
+   iconst                 40
+   sub
+   iconst                 10
+   sub
+   iconst                 5
+   sub
+   iconst                 5
+   sub
+   istore                 6
+   iconst                 0
+   istore                 7
+   iconst                 0
+   istore                 8
+   iconst                 0
+   istore                 9
+   iconst                 5
+   istore                 10
+   iconst                 6
+   istore                 11
+   iconst                 4
+   istore                 12
+   iload                  10
+   iload                  11
+   add
+   iload                  12
+   add
+   istore                 13
+   iload                  10
+   iload                  13
+   iload                  6
+   scale
+   istore                 7
+   iload                  11
+   iload                  13
+   iload                  6
+   scale
+   istore                 8
+   iload                  12
+   iload                  13
+   iload                  6
+   scale
+   istore                 9
+   iload                  5
+   iload                  7
+   iconst                 0
+   iconst                 0
+   iconst                 38666242
+   if_setsize
+   iconst                 10
+   iconst                 40
+   iconst                 0
+   iconst                 0
+   iconst                 38666242
+   if_setposition
+   iload                  5
+   iload                  7
+   iconst                 0
+   iconst                 0
+   iconst                 38666243
+   if_setsize
+   iconst                 10
+   iload                  5
+   add
+   iconst                 5
+   add
+   iconst                 40
+   iconst                 0
+   iconst                 0
+   iconst                 38666243
+   if_setposition
+   iload                  5
+   iload                  8
+   iconst                 0
+   iconst                 0
+   iconst                 38666244
+   if_setsize
+   iconst                 10
+   iconst                 40
+   iload                  7
+   add
+   iconst                 5
+   add
+   iconst                 0
+   iconst                 0
+   iconst                 38666244
+   if_setposition
+   iload                  5
+   iload                  8
+   iconst                 0
+   iconst                 0
+   iconst                 38666245
+   if_setsize
+   iconst                 10
+   iload                  5
+   add
+   iconst                 5
+   add
+   iconst                 40
+   iload                  7
+   add
+   iconst                 5
+   add
+   iconst                 0
+   iconst                 0
+   iconst                 38666245
+   if_setposition
+   iload                  5
+   iload                  9
+   iconst                 0
+   iconst                 0
+   iconst                 38666246
+   if_setsize
+   iconst                 10
+   iconst                 40
+   iload                  7
+   add
+   iload                  8
+   add
+   iconst                 5
+   add
+   iconst                 5
+   add
+   iconst                 0
+   iconst                 0
+   iconst                 38666246
+   if_setposition
+   iload                  5
+   iload                  9
+   iconst                 0
+   iconst                 0
+   iconst                 38666247
+   if_setsize
+   iconst                 10
+   iload                  5
+   add
+   iconst                 5
+   add
+   iconst                 40
+   iload                  7
+   add
+   iload                  8
+   add
+   iconst                 5
+   add
+   iconst                 5
+   add
+   iconst                 0
+   iconst                 0
+   iconst                 38666247
+   if_setposition
+   iconst                 38666242
+   iconst                 1
+   sconst                 "Ring of Dueling"
+   iconst                 2552
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666242
+   iconst                 3
+   invoke                 1687
+   istore                 3
+   istore                 2
+   iconst                 38666242
+   iconst                 1
+   sconst                 "Duel Arena"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 0
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666242
+   iconst                 1
+   sconst                 "Castle Wars"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 1
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666242
+   iconst                 1
+   sconst                 "Clan Wars"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 2
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666243
+   iconst                 1
+   sconst                 "Games Necklace"
+   iconst                 3853
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666243
+   iconst                 5
+   invoke                 1687
+   istore                 3
+   istore                 2
+   iconst                 38666243
+   iconst                 1
+   sconst                 "Burthorpe"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 3
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666243
+   iconst                 1
+   sconst                 "Barbarian Outpost"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 4
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666243
+   iconst                 1
+   sconst                 "Corporeal Beast"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 5
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "Tears of Guthix"
+   sstore                 1
+   iload                  1
+   iconst                 0
+   testbit               
+   iconst                 0
+   if_icmpeq              LABEL279
+   jump                   LABEL284
+LABEL279:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL284:
+   iconst                 38666243
+   iconst                 1
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 6
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "Wintertodt Camp"
+   sstore                 1
+   iload                  1
+   iconst                 1
+   testbit               
+   iconst                 0
+   if_icmpeq              LABEL303
+   jump                   LABEL308
+LABEL303:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL308:
+   iconst                 38666243
+   iconst                 1
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 7
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666244
+   iconst                 2
+   sconst                 "Combat bracelet"
+   iconst                 11972
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666244
+   iconst                 4
+   invoke                 1687
+   istore                 3
+   istore                 2
+   iconst                 38666244
+   iconst                 2
+   sconst                 "Warriors' Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 8
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666244
+   iconst                 2
+   sconst                 "Champions' Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 9
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666244
+   iconst                 2
+   sconst                 "Monastery"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 10
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666244
+   iconst                 2
+   sconst                 "Ranging Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 11
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666245
+   iconst                 2
+   sconst                 "Skills necklace"
+   iconst                 11968
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666245
+   iconst                 6
+   invoke                 1687
+   istore                 3
+   istore                 2
+   iconst                 38666245
+   iconst                 2
+   sconst                 "Fishing Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 12
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666245
+   iconst                 2
+   sconst                 "Mining Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 13
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666245
+   iconst                 2
+   sconst                 "Crafting Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 14
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666245
+   iconst                 2
+   sconst                 "Cooking Guild"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 15
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "Woodcutting Guild"
+   sstore                 1
+   iload                  1
+   iconst                 1
+   testbit               
+   iconst                 0
+   if_icmpeq              LABEL439
+   jump                   LABEL444
+LABEL439:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL444:
+   iconst                 38666245
+   iconst                 2
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 16
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "Farming Guild"
+   sstore                 1
+   iload                  1
+   iconst                 1
+   testbit
+   iconst                 0
+   if_icmpeq              LABEL463
+   jump                   LABEL468
+LABEL463:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL468:
+   iconst                 38666245
+   iconst                 2
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 17
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666246
+   iconst                 3
+   sconst                 "Ring of Wealth"
+   iconst                 11980
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666246
+   iconst                 4
+   invoke                 1687
+   istore                 3
+   istore                 2
+   sconst                 "Miscellania"
+   sstore                 1
+   iload                  1
+   iconst                 2
+   testbit               
+   iconst                 0
+   if_icmpeq              LABEL499
+   jump                   LABEL504
+LABEL499:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL504:
+   iconst                 38666246
+   iconst                 3
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 18
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666246
+   iconst                 3
+   sconst                 "Grand Exchange"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 19
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666246
+   iconst                 3
+   sconst                 "Falador Park"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 20
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "Dondakan's Rock"
+   sstore                 1
+   iload                  1
+   iconst                 3
+   testbit               
+   iconst                 0
+   if_icmpeq              LABEL545
+   jump                   LABEL550
+LABEL545:
+   sconst                 "<str>"
+   sload                  1
+   sconst                 "</str>"
+   join_string            3
+   sstore                 1
+LABEL550:
+   iconst                 38666246
+   iconst                 3
+   sload                  1
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 21
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666247
+   iconst                 3
+   sconst                 "Amulet of Glory"
+   iconst                 11978
+   iload                  0
+   invoke                 1686
+   istore                 14
+   iconst                 38666247
+   iconst                 4
+   invoke                 1687
+   istore                 3
+   istore                 2
+   iconst                 38666247
+   iconst                 3
+   sconst                 "Edgeville"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 22
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666247
+   iconst                 3
+   sconst                 "Karamja"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 23
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666247
+   iconst                 3
+   sconst                 "Draynor Village"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 24
+   invoke                 1688
+   istore                 2
+   istore                 14
+   iconst                 38666247
+   iconst                 3
+   sconst                 "Al Kharid"
+   iload                  3
+   iload                  0
+   iload                  14
+   iload                  2
+   iconst                 25
+   invoke                 1688
+   istore                 2
+   istore                 14
+   sconst                 "jewelleryBoxDone"
+   runelite_callback
+   return                

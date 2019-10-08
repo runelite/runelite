@@ -156,6 +156,7 @@ public class WidgetID
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
+	public static final int JEWELLERY_BOX_GROUP_ID = 590;
 
 	static class WorldMap
 	{
@@ -1153,5 +1154,15 @@ public class WidgetID
 	static class LmsKDA
 	{
 		static final int INFO = 4;
+	}
+
+	static class JewelBox
+	{
+		static final int DUEL_RING = 2;
+		static final int GAME_NECK = 3;
+		static final int COMB_BRAC = 4;
+		static final int SKIL_NECK = 5;
+		static final int RING_OFGP = 6;
+		static final int AMUL_GLOR = 7; // yes
 	}
 }

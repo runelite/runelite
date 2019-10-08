@@ -320,6 +320,10 @@ public interface RSWidget extends Widget
 	@Override
 	Object[] getOnLoadListener();
 
+	@Import("onOp")
+	@Override
+	Object[] getOnOp();
+
 	@Import("onDialogAbort")
 	@Override
 	void setOnDialogAbortListener(Object... args);

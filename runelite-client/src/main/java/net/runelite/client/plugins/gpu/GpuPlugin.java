@@ -291,11 +291,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
 
-				if (log.isDebugEnabled())
-				{
-					System.setProperty("jogl.debug", "true");
-				}
-
 				GLProfile.initSingleton();
 
 				GLProfile glProfile = GLProfile.get(GLProfile.GL4);

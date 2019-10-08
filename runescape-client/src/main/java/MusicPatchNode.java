@@ -526,7 +526,7 @@ public class MusicPatchNode extends Node {
 
 								if (var22) {
 									if (var20 < 10) {
-										WorldMapSection1.method605(var20 + 1, var9.id, var9.childIndex, var9.itemId, "");
+										WorldMapSection1.widgetDefaultMenuAction(var20 + 1, var9.id, var9.childIndex, var9.itemId, "");
 									} else if (var20 == 10) {
 										class208.Widget_runOnTargetLeave();
 										class32.selectSpell(var9.id, var9.childIndex, class2.method30(class2.getWidgetClickMask(var9)), var9.itemId);

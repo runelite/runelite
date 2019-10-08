@@ -86,6 +86,7 @@ import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.events.Menu;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -1670,6 +1671,24 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		return false;
+	}
+
+	@Copy("menu")
+	void rs$menu()
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("menu")
+	void rl$menu()
+	{
+		Menu menu = Menu.MENU;
+		menu.reset();
+		getCallbacks().post(Menu.class, menu);
+		if (menu.shouldRun())
+		{
+			rs$menu();
+		}
 	}
 
 	@Inject
