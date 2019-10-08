@@ -108,11 +108,11 @@ class UIActionSlot extends JPanel
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
-            {
+			{
 				if (!isSelected)
 				{
 					updateBackground();
-                    uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+					uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 				}
 			}
 		};
@@ -135,9 +135,9 @@ class UIActionSlot extends JPanel
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
 		uiActionsInput = new FlatTextField();
-        uiActionsInput.setText("0");
-        uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-        uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+		uiActionsInput.setText("0");
+		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
@@ -198,7 +198,7 @@ class UIActionSlot extends JPanel
 		}
 
 		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
-        uiActionsInput.setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+		uiActionsInput.setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
 	}
 
 	@Override
