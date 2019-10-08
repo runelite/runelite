@@ -37,9 +37,10 @@ import javax.annotation.Nullable;
 enum TransportationPointLocation
 {
 	//Ships
-	ARDOUGNE_TO_BRIMHAVEN("Ship to Brimhaven", new WorldPoint(2675, 3275, 0), new WorldPoint(2772, 3234, 0)),
+	ARDOUGNE_TO_BRIMHAVEN("Ship to Brimhaven / Rimmington", new WorldPoint(2675, 3275, 0)),
 	ARDOUGNE_TO_FISHINGPLAT("Ship to Fishing Platform", new WorldPoint(2722, 3304, 0), new WorldPoint(2779, 3271, 0)),
-	BRIMHAVEN_TO_ARDOUGNE("Ship to Ardougne", new WorldPoint(2772, 3234, 0), new WorldPoint(2675, 3275, 0)),
+	BRIMHAVEN_TO_ARDOUGNE("Ship to Ardougne / Rimmington", new WorldPoint(2772, 3234, 0)),
+	RIMMINGTON_TO_ARDOUGNE("Ship to Ardougne / Brimhaven", new WorldPoint(2915, 3224, 0)),
 	CATHERBY_TO_KEEP_LE_FAYE("Ship to Keep Le Faye", new WorldPoint(2804, 3421, 0), new WorldPoint(2769, 3402, 0)),
 	CORSAIR_TO_RIMMINGTON("Ship to Rimmington", new WorldPoint(2577, 2839, 0), new WorldPoint(2909, 3227, 0 )),
 	DRAGONTOOTH_TO_PHASMATYS("Ship to Port Phasmatys", new WorldPoint(3791, 3561, 0), new WorldPoint(3703, 3487, 0)),
@@ -50,7 +51,7 @@ enum TransportationPointLocation
 	ICEBERG_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2657, 3988, 0), new WorldPoint(2707, 3735, 0)),
 	ISLAND_TO_APE_ATOLL("Ship to Ape Atoll", new WorldPoint(2891, 2726, 0), new WorldPoint(2802, 2706, 0)),
 	JATIZSO_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2420, 3780, 0), new WorldPoint(2639, 3710, 0)),
-	KARAMJA_TO_PORT_SARIM("Ship to Port Sarim", new WorldPoint(2955, 3144, 0), new WorldPoint(3029, 3218, 0)),
+	KARAMJA_TO_PORT_SARIM("Ship to Port Sarim", new WorldPoint(2955, 3145, 0), new WorldPoint(3029, 3218, 0)),
 	KARAMJA_TO_PORT_KHAZARD("Ship to Port Khazard", new WorldPoint(2763, 2957, 0), new WorldPoint(2653, 3166, 0)),
 	LANDSEND_TO_PORTSARIM_PORTPISCARILIUS("Ship to Port Sarim/Port Piscarilius", new WorldPoint(1503, 3398, 0)),
 	LUNAR_ISLE_TO_PIRATES_COVE("Ship to Pirates' Cove", new WorldPoint(2137, 3899, 0), new WorldPoint(2223, 3796, 0)),
@@ -108,7 +109,7 @@ enum TransportationPointLocation
 	CHARTER_BRIMHAVEN("Charter Ship", new WorldPoint(2760, 3238, 0)),
 	CHARTER_CATHERBY("Charter Ship", new WorldPoint(2791, 3415, 0)),
 	CHARTER_CORSAIR_("Charter Ship", new WorldPoint(2589, 2851, 0)),
-	CHARTER_KARAMJA_NORTH("Charter Ship", new WorldPoint(2954, 3159, 0)),
+	CHARTER_KARAMJA_NORTH("Charter Ship", new WorldPoint(2954, 3158, 0)),
 	CHARTER_KARAMJA_EAST("Charter Ship", new WorldPoint(2999, 3032, 0)),
 	CHARTER_KHAZARD("Charter Ship", new WorldPoint(2673, 3143, 0)),
 	CHARTER_MOSLE_HARMLESS("Charter Ship", new WorldPoint(3669, 2931, 0)),
