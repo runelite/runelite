@@ -41,6 +41,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -139,18 +141,34 @@ class XpInfoBox extends JPanel
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
 		popupMenu.add(canvasItem);
+		popupMenu.addPopupMenuListener(new PopupMenuListener()
+		{
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent)
+			{
+				canvasItem.setText(xpTrackerPlugin.hasOverlay(skill) ? REMOVE_STATE : ADD_STATE);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent)
+			{
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent popupMenuEvent)
+			{
+			}
+		});
 
 		canvasItem.addActionListener(e ->
 		{
 			if (canvasItem.getText().equals(REMOVE_STATE))
 			{
 				xpTrackerPlugin.removeOverlay(skill);
-				canvasItem.setText(ADD_STATE);
 			}
 			else
 			{
 				xpTrackerPlugin.addOverlay(skill);
-				canvasItem.setText(REMOVE_STATE);
 			}
 		});
 
