@@ -37548,6 +37548,7 @@
     "name": "Sarachnis",
     "hitpoints": 400,
     "combatLevel": 318,
+    "slayerLevel": 1,
     "attackSpeed": 4,
     "attackLevel": 200,
     "strengthLevel": 240,
@@ -38184,8 +38185,9 @@
   },
   "9258": {
     "name": "Basilisk Sentinel",
+    "hitpoints": 400,
     "combatLevel": 358,
-    "slayerLevel": 40,
+    "slayerLevel": 60,
     "attackSpeed": 4,
     "attackLevel": 274,
     "strengthLevel": 274,
