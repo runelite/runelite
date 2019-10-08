@@ -22,6 +22,7 @@ jobs:
           PULL_REQUEST_TITLE: 'project: Update gradle wrapper'
           PULL_REQUEST_BODY: This is an auto-generated PR with an updated gradle version
           COMMIT_MESSAGE: 'project: Update gradle wrapper'
+          PULL_REQUEST_LABELS: automated pull request, gradle
 
   update-dependencies:
     runs-on: ubuntu-latest
@@ -40,3 +41,4 @@ jobs:
         PULL_REQUEST_TITLE: 'project: Update gradle dependencies'
         PULL_REQUEST_BODY: This is an auto-generated PR with an updated gradle dependencies versions
         COMMIT_MESSAGE: 'project: Update gradle dependencies'
+        PULL_REQUEST_LABELS: automated pull request, gradle
