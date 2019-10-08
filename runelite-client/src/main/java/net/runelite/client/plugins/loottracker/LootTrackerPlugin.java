@@ -76,7 +76,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -91,6 +90,7 @@ import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
+import net.runelite.http.api.ws.messages.LoginResponse;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -207,7 +207,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	public void onLoginResponse(LoginResponse loginResponse)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
