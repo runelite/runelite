@@ -39,6 +39,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarClientIntChanged;
@@ -207,21 +208,21 @@ public class MusicPlugin extends Plugin
 	{
 		int musicVolume = musicConfig.getMusicVolume();
 		// Set the volume if it is >0, or if it was >0 and is now going back to 0
-		if (musicVolume > 0 || lastMusicVolume > 0)
+		if ((musicVolume > 0 || lastMusicVolume > 0) && client.getVar(VarPlayer.MUSIC_VOLUME) != 4)
 		{
 			client.setMusicVolume(musicVolume);
 			lastMusicVolume = musicVolume;
 		}
 
 		int soundEffectVolume = musicConfig.getSoundEffectVolume();
-		if (soundEffectVolume > 0 || lastEffectVolume > 0)
+		if ((soundEffectVolume > 0 || lastEffectVolume > 0) && client.getVar(VarPlayer.SOUND_EFFECT_VOLUME) != 4)
 		{
 			client.setSoundEffectVolume(soundEffectVolume);
 			lastEffectVolume = soundEffectVolume;
 		}
 
 		int areaSoundEffectVolume = musicConfig.getAreaSoundEffectVolume();
-		if (areaSoundEffectVolume > 0 || lastAreaEffectVolume > 0)
+		if ((areaSoundEffectVolume > 0 || lastAreaEffectVolume > 0) && client.getVar(VarPlayer.AREA_EFFECT_VOLUME) != 4)
 		{
 			client.setAreaSoundEffectVolume(areaSoundEffectVolume);
 			lastAreaEffectVolume = areaSoundEffectVolume;
