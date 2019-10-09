@@ -63,7 +63,7 @@ public interface TMorphConfig extends Config
 
 	@ConfigItem(
 		keyName = "rangeSwap",
-		name = "Swap Set 3",
+		name = "Swap Set 2",
 		description = "<html><center>Proper Format is id,id:Slot" +
 			"<br>For example: 6570,21295:Cape" +
 			"<br>Valid Slots: Helmet, Cape, Amulet, Weapon, Torso, Shield, Legs, Head, Hands, Boots, Jaw, Ring, Ammo</center></html>",
