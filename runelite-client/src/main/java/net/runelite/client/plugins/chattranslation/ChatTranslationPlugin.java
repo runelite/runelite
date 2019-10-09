@@ -39,7 +39,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Chat Translator",
 	description = "Translates messages from one Language to another.",
-	tags = {"translate", "language", "english", "spanish", "dutch", "french"},
+	tags = {"translate", "language", "english", "spanish", "dutch", "french", "welsh", "german"},
 	type = PluginType.UTILITY
 )
 @Singleton
@@ -221,8 +221,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 				try
 				{
-					//Automatically check language of message and translate to selected language.
-					String translation = translator.translate("auto", this.publicTargetLanguage.toString(), message);
+					String translation = translator.translate("auto", this.publicTargetLanguage.toShortString(), message);
 					if (translation != null)
 					{
 						final MessageNode messageNode = chatMessage.getMessageNode();
@@ -264,7 +263,15 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			{
 				try
 				{
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translator.translate("auto", config.playerTargetLanguage().toString(), message));
+					if (config.playerTargetLanguage() == Languages.GERMAN)
+					{
+						// This is 'sort of' needed as German will translate the / and it will send to public-chat instead of clan-chat.
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "/" + translator.translate("auto", config.playerTargetLanguage().toShortString(), message));
+					}
+					else
+					{
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translator.translate("auto", config.playerTargetLanguage().toShortString(), message));
+					}
 				}
 				catch (Exception e)
 				{
@@ -278,13 +285,13 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			try
 			{
 				//Automatically check language of message and translate to selected language.
-				String translation = translator.translate("auto", this.playerTargetLanguage.toString(), message);
+				String translation = translator.translate("auto", this.playerTargetLanguage.toShortString(), message);
 				if (translation != null)
 				{
 					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, translation);
 
 					clientThread.invoke(() ->
-						client.runScript(CHATBOX_INPUT, 0, translation));
+							client.runScript(CHATBOX_INPUT, 0, translation));
 				}
 				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
