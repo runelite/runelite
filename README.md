@@ -3,8 +3,8 @@
 
 
 # OpenOSRS 
-[![Build Status](https://github.com/runelite-extended/runelite/workflows/openosrs%20-%20CI/badge.svg)](https://github.com/runelite-extended/runelite/actions)
-[![HitCount](http://hits.dwyl.io/runelite-extended/runelite.svg)](http://hits.dwyl.io/runelite-extended/runelite)  
+[![Build Status](https://github.com/open-osrs/runelite/workflows/OpenOSRS%20-%20CI/badge.svg)](https://github.com/open-osrs/runelite/actions)
+[![HitCount](http://hits.dwyl.io/open-osrs/runelite.svg)](http://hits.dwyl.io/open-osrs/runelite)  
 [OpenOSRS](https://openosrs.com)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
 
 ## Discord
@@ -24,7 +24,7 @@
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
 ## Building
-We have migrated the project to Gradle. Information on how to setup and build the project can be found at https://github.com/runelite-extended/runelite/wiki/Building-with-IntelliJ-IDEA
+We have migrated the project to Gradle. Information on how to setup and build the project can be found at https://github.com/open-osrs/runelite/wiki/Building-with-IntelliJ-IDEA
 
 ## Private Servers
 Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
@@ -53,4 +53,4 @@ OpenOSRS is licensed under the BSD 2-clause license. See the license header in t
 
 ## Contribute and Develop
 
-We've set up a separate document for our [contribution guidelines](https://github.com/runelite-extended/runelite/blob/master/.github/CONTRIBUTING.md).
+We've set up a separate document for our [contribution guidelines](https://github.com/open-osrs/runelite/blob/master/.github/CONTRIBUTING.md).
