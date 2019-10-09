@@ -28,20 +28,29 @@ package net.runelite.client.plugins.screenmarkers.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerGroup;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
@@ -50,6 +59,16 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 {
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon ADD_GROUP_ICON;
+	private static final ImageIcon ADD_GROUP_HOVER_ICON;
+
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_HOVER_ICON;
+	private static final ImageIcon INVISIBLE_ICON;
+	private static final ImageIcon INVISIBLE_HOVER_ICON;
+
+	private static final ImageIcon DELETE_ICON;
+	private static final ImageIcon DELETE_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
@@ -57,9 +76,15 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
-	private final JLabel title = new JLabel();
+	private final JLabel addGroup = new JLabel(ADD_GROUP_ICON);
+	private final JLabel groupVisibility = new JLabel();
+	private final JLabel deleteGroup = new JLabel(DELETE_ICON);
+	private final JLabel renameGroup = new JLabel("Rename");
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
+	private final JPanel groupActions = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+
+	private JPanel title = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 	private final ScreenMarkerPlugin plugin;
 
@@ -80,6 +105,23 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage addGroupIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_group_icon.png");
+		ADD_GROUP_ICON = new ImageIcon(addGroupIcon);
+		ADD_GROUP_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addGroupIcon, 0.53f));
+
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
+
+		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "invisible_icon.png");
+		INVISIBLE_ICON = new ImageIcon(invisibleImg);
+		INVISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -100));
+
+		final BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "delete_icon.png");
+		DELETE_ICON = new ImageIcon(deleteImg);
+		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
+
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -92,11 +134,25 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		JPanel northPanel = new JPanel(new BorderLayout());
 		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
 
-		title.setText("Screen Markers");
-		title.setForeground(Color.WHITE);
+		JPanel addActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 
-		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addMarker, BorderLayout.EAST);
+		addActions.add(addGroup);
+		addActions.add(addMarker);
+
+		JPanel titlePanel = new JPanel(new BorderLayout());
+
+		titlePanel.add(title, BorderLayout.WEST);
+		titlePanel.add(addActions, BorderLayout.EAST);
+
+		northPanel.add(titlePanel, BorderLayout.NORTH);
+
+		groupActions.setBorder(new EmptyBorder(4, 0, 0, 0));
+
+		groupActions.add(groupVisibility);
+		groupActions.add(deleteGroup);
+		groupActions.add(renameGroup);
+
+		northPanel.add(groupActions, BorderLayout.WEST);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -143,6 +199,107 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			}
 		});
 
+		addGroup.setToolTipText("Add new screen marker group");
+		addGroup.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				plugin.createGroup();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				addGroup.setIcon(ADD_GROUP_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				addGroup.setIcon(ADD_GROUP_ICON);
+			}
+		});
+
+		groupVisibility.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				plugin.getCurrentGroup().setVisible(!plugin.getCurrentGroup().isVisible());
+				plugin.updateConfig();
+				updateGroupVisibility();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				groupVisibility.setIcon(plugin.getCurrentGroup().isVisible() ? VISIBLE_HOVER_ICON : INVISIBLE_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				updateGroupVisibility();
+			}
+		});
+
+		deleteGroup.setIcon(DELETE_ICON);
+		deleteGroup.setToolTipText("Delete screen marker");
+		deleteGroup.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				int confirm = JOptionPane.showConfirmDialog(ScreenMarkerPluginPanel.this,
+					"Are you sure you want to permanently delete this screen marker group and all the markers it contains?",
+					"Warning", JOptionPane.OK_CANCEL_OPTION);
+				if (confirm == 0)
+				{
+					plugin.deleteGroup();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				deleteGroup.setIcon(DELETE_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				deleteGroup.setIcon(DELETE_ICON);
+			}
+		});
+
+		renameGroup.setFont(FontManager.getRunescapeSmallFont());
+		renameGroup.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
+		renameGroup.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				String input = JOptionPane.showInputDialog(ScreenMarkerPluginPanel.this,
+				"Enter a new name for " + plugin.getCurrentGroup(),
+				plugin.getCurrentGroup().getName());
+				plugin.getCurrentGroup().setName(input);
+				plugin.updateConfig();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				renameGroup.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker().darker());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				renameGroup.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
+			}
+		});
+
 		centerPanel.add(markerView, BorderLayout.CENTER);
 
 		add(northPanel, BorderLayout.NORTH);
@@ -151,6 +308,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 	public void rebuild()
 	{
+		comboBox();
+
+		groupActions.setVisible(plugin.getCurrentGroup() != plugin.getMainGroup());
+
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1;
@@ -159,7 +320,11 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		markerView.removeAll();
 
-		for (final ScreenMarkerOverlay marker : plugin.getScreenMarkers())
+		List<ScreenMarkerOverlay> markersInCurrentGroup = new ArrayList<>();
+		markersInCurrentGroup.addAll(plugin.getScreenMarkers());
+		markersInCurrentGroup.removeIf(m -> m.getMarker().getGroup() != plugin.getCurrentGroup().getId());
+
+		for (final ScreenMarkerOverlay marker : markersInCurrentGroup)
 		{
 			markerView.add(new ScreenMarkerPanel(plugin, marker), constraints);
 			constraints.gridy++;
@@ -168,9 +333,8 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			constraints.gridy++;
 		}
 
-		boolean empty = constraints.gridy == 0;
-		noMarkersPanel.setVisible(empty);
-		title.setVisible(!empty);
+		noMarkersPanel.setVisible(markersInCurrentGroup.isEmpty());
+		title.setVisible(!markersInCurrentGroup.isEmpty() || !plugin.getScreenMarkerGroups().isEmpty());
 
 		markerView.add(noMarkersPanel, constraints);
 		constraints.gridy++;
@@ -180,6 +344,27 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		repaint();
 		revalidate();
+		updateGroupVisibility();
+	}
+
+	private void comboBox()
+	{
+		JComboBox<ScreenMarkerGroup> groupBox = new JComboBox<>();
+		groupBox.addItem(plugin.getMainGroup());
+		plugin.getScreenMarkerGroups().forEach(groupBox::addItem);
+		groupBox.setSelectedItem(plugin.getCurrentGroup());
+		groupBox.setForeground(Color.WHITE);
+		groupBox.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent actionEvent)
+			{
+				plugin.setCurrentGroup((ScreenMarkerGroup) groupBox.getSelectedItem());
+				rebuild();
+			}
+		});
+		title.removeAll();
+		title.add(groupBox);
 	}
 
 	/* Enables/Disables new marker creation mode */
@@ -199,11 +384,17 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		creationPanel.setVisible(on);
 		addMarker.setVisible(!on);
+		addGroup.setVisible(!on);
 
 		if (on)
 		{
 			creationPanel.lockConfirm();
 			plugin.setMouseListenerEnabled(true);
 		}
+	}
+
+	private void updateGroupVisibility()
+	{
+		groupVisibility.setIcon(plugin.getCurrentGroup().isVisible() ? VISIBLE_ICON : INVISIBLE_ICON);
 	}
 }
