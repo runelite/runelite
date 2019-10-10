@@ -70,19 +70,3 @@ jobs:
         uses: hmarr/auto-approve-action@master
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-  merge:
-    name: Merge
-    needs: approve
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Integration check
-      if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
-      uses: squalrus/merge-bot@v0.2.0
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        reviewers: false
-        labels: automated pull request
-        method: merge
-  
