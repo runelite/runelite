@@ -33,8 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A set of utility functions to use when
- * formatting numbers for to stack sizes.
+ * A set of utility functions to use when formatting quantities
  */
 public class StackFormatter
 {
@@ -70,12 +69,12 @@ public class StackFormatter
 	);
 
 	/**
-	 * Convert a quantity to a nicely formatted stack size.
-	 * See the StackFormatterTest to see expected output.
+	 * Convert a quantity to a short, comma separated, SI-prefix style string
+	 *
+	 * example: {@code 9,450}, {@code 2.14B}, {@code 100K}
 	 *
 	 * @param quantity The quantity to convert.
-	 * @return A condensed version, with commas, K, M or B
-	 * as needed to 3 significant figures.
+	 * @return a 6 or less character string, possibly with a decimal point, commas or K/M/B suffix
 	 */
 	public static String quantityToStackSize(long quantity)
 	{
@@ -115,41 +114,7 @@ public class StackFormatter
 	}
 
 	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape.
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS,
-	 * with K after 100,000 and M after 10,000,000
-	 */
-	public static String quantityToRSStackSize(int quantity)
-	{
-		if (quantity == Integer.MIN_VALUE)
-		{
-			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
-			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
-		}
-		else if (quantity < 0)
-		{
-			return "-" + quantityToRSStackSize(-quantity);
-		}
-		else if (quantity < 100_000)
-		{
-			return Integer.toString(quantity);
-		}
-		else if (quantity < 10_000_000)
-		{
-			return quantity / 1_000 + "K";
-		}
-		else
-		{
-			return quantity / 1_000_000 + "M";
-		}
-	}
-
-	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape. (with decimals)
+	 * Convert a quantity to a short SI-prefix style string with decimals
 	 * <p>
 	 * This differs from quantityToRSStack in that it displays
 	 * decimals. Ex: 27100 is 27.1k (not 27k)

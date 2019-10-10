@@ -60,22 +60,6 @@ public class StackFormatterTest
 	}
 
 	@Test
-	public void quantityToRSStackSize()
-	{
-		assertEquals("0", StackFormatter.quantityToRSStackSize(0));
-		assertEquals("99999", StackFormatter.quantityToRSStackSize(99_999));
-		assertEquals("100K", StackFormatter.quantityToRSStackSize(100_000));
-		assertEquals("10M", StackFormatter.quantityToRSStackSize(10_000_000));
-		assertEquals("2147M", StackFormatter.quantityToRSStackSize(Integer.MAX_VALUE));
-
-		assertEquals("0", StackFormatter.quantityToRSStackSize(-0));
-		assertEquals("-400", StackFormatter.quantityToRSStackSize(-400));
-		assertEquals("-400K", StackFormatter.quantityToRSStackSize(-400_000));
-		assertEquals("-40M", StackFormatter.quantityToRSStackSize(-40_000_000));
-		assertEquals("-2147M", StackFormatter.quantityToRSStackSize(Integer.MIN_VALUE));
-	}
-
-	@Test
 	public void quantityToStackSize()
 	{
 		assertEquals("0", StackFormatter.quantityToStackSize(0));
