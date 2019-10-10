@@ -38846,6 +38846,11 @@
     "quest": true,
     "weight": 0.4
   },
+  "10873": {
+    "name": "Metal sheet",
+    "quest": true,
+    "weight": 0.6
+  },
   "10874": {
     "name": "Coloured ball",
     "quest": true,
