@@ -61,7 +61,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Bank",
@@ -241,11 +241,11 @@ public class BankPlugin extends Plugin
 
 			if (config.showExact())
 			{
-				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
+				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
 			}
 		}
 
@@ -260,11 +260,11 @@ public class BankPlugin extends Plugin
 
 			if (config.showExact())
 			{
-				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
+				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
 			}
 		}
 
@@ -369,7 +369,7 @@ public class BankPlugin extends Plugin
 			long compare;
 			try
 			{
-				compare = StackFormatter.stackSizeToQuantity(matcher.group("num"));
+				compare = QuantityFormatter.parseQuantity(matcher.group("num"));
 			}
 			catch (ParseException e)
 			{
@@ -398,8 +398,8 @@ public class BankPlugin extends Plugin
 			long compare1, compare2;
 			try
 			{
-				compare1 = StackFormatter.stackSizeToQuantity(num1);
-				compare2 = StackFormatter.stackSizeToQuantity(num2);
+				compare1 = QuantityFormatter.parseQuantity(num1);
+				compare2 = QuantityFormatter.parseQuantity(num2);
 			}
 			catch (ParseException e)
 			{

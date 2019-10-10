@@ -53,7 +53,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 class LootTrackerBox extends JPanel
@@ -181,8 +181,8 @@ class LootTrackerBox extends JPanel
 	{
 		buildItems();
 
-		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		priceLabel.setToolTipText(StackFormatter.formatNumber(totalPrice) + " gp");
+		priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
+		priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
 		final long kills = getTotalKills();
 		if (kills > 1)
@@ -354,6 +354,6 @@ class LootTrackerBox extends JPanel
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ") " + ignoredLabel;
+		return name + " x " + quantity + " (" + QuantityFormatter.quantityToStackSize(price) + ") " + ignoredLabel;
 	}
 }

@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 /**
  * A set of utility functions to use when formatting quantities
  */
-public class StackFormatter
+public class QuantityFormatter
 {
 	/**
 	 * A list of suffixes to use when formatting stack sizes.
@@ -152,7 +152,7 @@ public class StackFormatter
 	 * @param string The string to convert.
 	 * @return A long representation of it.
 	 */
-	public static synchronized long stackSizeToQuantity(String string) throws ParseException
+	public static synchronized long parseQuantity(String string) throws ParseException
 	{
 		int multiplier = getMultiplier(string);
 		float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
