@@ -47,22 +47,13 @@ public class StackFormatter
 	 */
 	private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
 
-	/**
-	 * A number formatter
-	 */
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
-	/**
-	 * A decimal number formatter
-	 */
 	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
 		"#,###.#",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
 
-	/**
-	 * A more precise decimal number formatter, outputting thousandths
-	 */
 	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
 		"#,###.###",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
@@ -114,15 +105,12 @@ public class StackFormatter
 	}
 
 	/**
-	 * Convert a quantity to a short SI-prefix style string with decimals
-	 * <p>
-	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27.1k (not 27k)
-	 * <p>
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS, with decimals,
+	 * Convert a quantity to a short SI-prefix style string, possibly with a decimal,
 	 * with K after 100,000 and M after 10,000,000
+	 * 
+	 * example: {@code 9,450}, {@code 2.1B}, {@code 100K}
+	 * 
+	 * @see #quantityToRSDecimalStack(int, boolean) 
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
@@ -130,17 +118,14 @@ public class StackFormatter
 	}
 
 	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape. (with decimals)
-	 * <p>
-	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27.1k (not 27k)
-	 * <p>
-	 *
-	 * @param quantity The quantity to convert.
-	 * @param precise If true, the returned string will have thousandths precision if quantity is larger than 1 million.
-	 * @return The stack size as it would appear in RS, with decimals,
+	 * Convert a quantity to a short SI-prefix style string, possibly with decimals,
 	 * with K after 100,000 and M after 10,000,000
+	 *
+	 * example without {@code precise}: {@code 9,450}, {@code 2.1B}, {@code 8.4M}
+	 * example with {@code precise}: {@code 9,450}, {@code 2.147B}, {@code 8.32M}
+	 *
+	 * @param precise If true, allow thousandths precision if {@code quantity} is larger than 1 million.
+	 *                Otherwise have at most a single decimal
 	 */
 	public static String quantityToRSDecimalStack(int quantity, boolean precise)
 	{
@@ -175,27 +160,21 @@ public class StackFormatter
 	}
 
 	/**
-	 * Specialization of format.
+	 * Formats a number to be comma delimited. No suffixes are given
 	 *
-	 * @param number the long number to format
-	 * @return the formatted String
-	 * @throws ArithmeticException if rounding is needed with rounding
-	 *                             mode being set to RoundingMode.UNNECESSARY
-	 * @see java.text.Format#format
+	 * example: {@code 10,123,351}, {@code 5}
 	 */
 	public static String formatNumber(final long number)
 	{
 		return NUMBER_FORMATTER.format(number);
 	}
 
+
 	/**
-	 * Specialization of format.
+	 * Formats a number to be comma delimited. No suffixes are given. Has at
+	 * most 3 decimal places
 	 *
-	 * @param number the double number to format
-	 * @return the formatted String
-	 * @throws ArithmeticException if rounding is needed with rounding
-	 *                             mode being set to RoundingMode.UNNECESSARY
-	 * @see java.text.Format#format
+	 * example: {@code 10,123,351}, {@code 5.612}
 	 */
 	public static String formatNumber(double number)
 	{
