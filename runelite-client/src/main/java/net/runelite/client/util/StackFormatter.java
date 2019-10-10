@@ -67,7 +67,7 @@ public class StackFormatter
 	 * @param quantity The quantity to convert.
 	 * @return a 6 or less character string, possibly with a decimal point, commas or K/M/B suffix
 	 */
-	public static String quantityToStackSize(long quantity)
+	public static synchronized String quantityToStackSize(long quantity)
 	{
 		if (quantity < 0)
 		{
@@ -127,7 +127,7 @@ public class StackFormatter
 	 * @param precise If true, allow thousandths precision if {@code quantity} is larger than 1 million.
 	 *                Otherwise have at most a single decimal
 	 */
-	public static String quantityToRSDecimalStack(int quantity, boolean precise)
+	public static synchronized String quantityToRSDecimalStack(int quantity, boolean precise)
 	{
 		String quantityStr = String.valueOf(quantity);
 		if (quantityStr.length() <= 4)
@@ -152,7 +152,7 @@ public class StackFormatter
 	 * @param string The string to convert.
 	 * @return A long representation of it.
 	 */
-	public static long stackSizeToQuantity(String string) throws ParseException
+	public static synchronized long stackSizeToQuantity(String string) throws ParseException
 	{
 		int multiplier = getMultiplier(string);
 		float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
@@ -164,7 +164,7 @@ public class StackFormatter
 	 *
 	 * example: {@code 10,123,351}, {@code 5}
 	 */
-	public static String formatNumber(final long number)
+	public static synchronized String formatNumber(final long number)
 	{
 		return NUMBER_FORMATTER.format(number);
 	}
@@ -176,7 +176,7 @@ public class StackFormatter
 	 *
 	 * example: {@code 10,123,351}, {@code 5.612}
 	 */
-	public static String formatNumber(double number)
+	public static synchronized String formatNumber(double number)
 	{
 		return NUMBER_FORMATTER.format(number);
 	}
