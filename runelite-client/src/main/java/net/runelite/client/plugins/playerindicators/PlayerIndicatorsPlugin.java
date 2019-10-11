@@ -186,6 +186,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		if (event.getTarget() == null)
+		{
+			return;
+		}
+
 		callerPiles.put(caller.getName(), event.getTarget());
 	}
 
@@ -286,7 +291,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 			int image2 = -1;
 			Color color = null;
 
-			if (this.highlightFriends && client.isFriended(player.getName(), false))
+			if (this.highlightCallers && isCaller(player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
+				{
+					color = relationColorHashMap.get(PlayerRelation.CALLER);
+				}
+			}
+			else if (this.highlightCallerTargets && isPile(player))
+			{
+				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
+				{
+					color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
+				}
+			}
+			else if (this.highlightFriends && client.isFriended(player.getName(), false))
 			{
 				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.FRIEND)).contains(PlayerIndicationLocation.MENU))
 				{
@@ -328,20 +347,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 					color = relationColorHashMap.get(PlayerRelation.TARGET);
 				}
 			}
-			else if (this.highlightCallers && isCaller(player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.CALLER);
-				}
-			}
-			else if (this.highlightCallerTargets && isPile(player))
-			{
-				if (Arrays.asList(this.locationHashMap.get(PlayerRelation.CALLER_TARGET)).contains(PlayerIndicationLocation.MENU))
-				{
-					color = relationColorHashMap.get(PlayerRelation.CALLER_TARGET);
-				}
-			}
+
 
 			if (this.playerSkull && !player.isClanMember() && player.getSkullIcon() != null)
 			{
@@ -450,7 +456,13 @@ public class PlayerIndicatorsPlugin extends Plugin
 	 */
 	public boolean isPile(Actor actor)
 	{
-		if (!(actor instanceof Player))
+		/**
+		 if (!(actor instanceof Player))
+		 {
+		 return false;
+		 }
+		 **/
+		if (actor == null)
 		{
 			return false;
 		}

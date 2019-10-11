@@ -95,6 +95,21 @@ public class PlayerIndicatorsService
 		final List<Player> players = client.getPlayers();
 		for (Player p : players)
 		{
+			if (caller.test(p))
+			{
+				consumer.accept(p, PlayerRelation.CALLER);
+				continue;
+			}
+			if (callerTarget.test(p) )
+			{
+				consumer.accept(p, PlayerRelation.CALLER_TARGET);
+				continue;
+			}
+			if (other.test(p))
+			{
+				consumer.accept(p, PlayerRelation.OTHER);
+				continue;
+			}
 			if (self.test(p))
 			{
 				consumer.accept(p, PlayerRelation.SELF);
@@ -118,21 +133,6 @@ public class PlayerIndicatorsService
 			if (target.test(p))
 			{
 				consumer.accept(p, PlayerRelation.TARGET);
-				continue;
-			}
-			if (caller.test(p))
-			{
-				consumer.accept(p, PlayerRelation.CALLER);
-				continue;
-			}
-			if (callerTarget.test(p) )
-			{
-				consumer.accept(p, PlayerRelation.CALLER_TARGET);
-				continue;
-			}
-			if (other.test(p))
-			{
-				consumer.accept(p, PlayerRelation.OTHER);
 			}
 		}
 }
