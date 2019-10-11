@@ -311,4 +311,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapTeleportSpell",
+		name = "Shift-click teleport spells",
+		description = "Swap teleport spells that have a second destination on shift"
+	)
+	default boolean swapTeleportSpell()
+	{
+		return false;
+	}
 }
