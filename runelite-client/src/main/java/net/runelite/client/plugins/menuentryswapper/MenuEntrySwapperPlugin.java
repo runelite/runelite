@@ -651,15 +651,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 					{
 						for (Item i : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
 						{
-							 invItemNames.add(client.getItemDefinition((i.getId())).getName());
+							invItemNames.add(client.getItemDefinition((i.getId())).getName());
 						}
 						if ((invItemNames.contains("Clue scroll (easy)") || bankItemNames.contains("Clue scroll (easy)")))
 						{
-							 menuManager.addSwap("loot", target, "use");
+							menuManager.addSwap("loot", target, "use");
 						}
 						else
 						{
-							 menuManager.removeSwaps(target);
+							menuManager.removeSwaps(target);
 						}
 					}
 					break;
