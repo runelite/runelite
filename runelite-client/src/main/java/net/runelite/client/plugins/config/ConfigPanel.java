@@ -491,14 +491,14 @@ public class ConfigPanel extends PluginPanel
 	{
 		if (text.isEmpty())
 		{
-			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
+			pluginList.stream().filter(item -> pinned == item.isPinned() && !item.isHidden()).forEach(mainPanel::add);
 			return;
 		}
 
 		final String[] searchTerms = text.toLowerCase().split(" ");
 		pluginList.forEach(listItem ->
 		{
-			if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms))
+			if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms) && !listItem.isHidden())
 			{
 				mainPanel.add(listItem);
 			}
