@@ -206,7 +206,7 @@ public class OpponentInfoPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (menuEntryAdded.getType() != MenuOpcode.NPC_SECOND_OPTION.getId()
+		if (menuEntryAdded.getOpcode() != MenuOpcode.NPC_SECOND_OPTION.getId()
 			|| !menuEntryAdded.getOption().equals("Attack")
 			|| !config.showOpponentsInMenu())
 		{

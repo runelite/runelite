@@ -89,7 +89,7 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(new MenuEntry(
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(
 			"Examine",
 			"Something",
 			ItemID.ABYSSAL_WHIP,
@@ -97,7 +97,7 @@ public class ExaminePluginTest
 			123,
 			456,
 			false
-		));
+		);
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "A weapon from the abyss.", "", 0);
@@ -112,7 +112,7 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(new MenuEntry(
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked(
 			"Examine",
 			"Something",
 			ItemID.ABYSSAL_WHIP,
@@ -120,8 +120,7 @@ public class ExaminePluginTest
 			123,
 			456,
 			false
-		));
-
+		);
 
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 

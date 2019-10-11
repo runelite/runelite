@@ -2,9 +2,9 @@ package net.runelite.client.plugins.chattranslation;
 
 import lombok.Getter;
 
+// TODO: Doesn't Locale pretty much do this as well?
 public enum Languages
 {
-
 	ENGLISH("English", "en"),
 	WELSH("Welsh", "cy"),
 	DUTCH("Dutch", "nl"),

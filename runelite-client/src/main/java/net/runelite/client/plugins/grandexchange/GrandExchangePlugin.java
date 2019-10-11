@@ -54,7 +54,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemDefinition;
 import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.MenuOpcode;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -420,7 +419,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	private void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntry)
 	{
 		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
 		// should always return false when quick lookup is disabled.
@@ -430,7 +429,6 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry menuEntry = event.getMenuEntry();
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
@@ -448,7 +446,7 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.SHOP_INVENTORY_GROUP_ID:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-				event.setWasModified(true);
+				menuEntry.setModified(true);
 		}
 	}
 

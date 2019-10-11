@@ -244,7 +244,7 @@ public class CorpPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getType() != NPC_SECOND_OPTION.getId()
+		if (event.getOpcode() != NPC_SECOND_OPTION.getId()
 			|| !this.leftClickCore || !event.getOption().equals(ATTACK))
 		{
 			return;
@@ -257,8 +257,8 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		event.getMenuEntry().setOpcode(NPC_SECOND_OPTION.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-		event.setWasModified(true);
+		event.setOpcode(NPC_SECOND_OPTION.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+		event.setModified(true);
 	}
 
 	private void onConfigChanged(ConfigChanged configChanged)

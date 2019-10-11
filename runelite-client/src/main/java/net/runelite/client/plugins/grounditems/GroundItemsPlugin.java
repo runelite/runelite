@@ -931,27 +931,25 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded lastEntry)
 	{
 		if (this.itemHighlightMode != OVERLAY)
 		{
-			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == CAST_ON_ITEM;
-			if (!(event.getOption().equals("Take") && event.getType() == THIRD_OPTION) && !telegrabEntry)
+			final boolean telegrabEntry = lastEntry.getOption().equals("Cast") && lastEntry.getTarget().startsWith(TELEGRAB_TEXT) && lastEntry.getOpcode() == CAST_ON_ITEM;
+			if (!(lastEntry.getOption().equals("Take") && lastEntry.getOpcode() == THIRD_OPTION) && !telegrabEntry)
 			{
 				return;
 			}
 
-			int itemId = event.getIdentifier();
+			int itemId = lastEntry.getIdentifier();
 			Scene scene = client.getScene();
-			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+			Tile tile = scene.getTiles()[client.getPlane()][lastEntry.getParam0()][lastEntry.getParam1()];
 			TileItemPile tileItemPile = tile.getItemLayer();
 
 			if (tileItemPile == null)
 			{
 				return;
 			}
-
-			final MenuEntry lastEntry = event.getMenuEntry();
 
 			int quantity = 1;
 			Node current = tileItemPile.getBottom();
@@ -985,7 +983,7 @@ public class GroundItemsPlugin extends Plugin
 				{
 					final String optionText = telegrabEntry ? "Cast" : "Take";
 					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
-					event.setWasModified(true);
+					lastEntry.setModified(true);
 				}
 
 				if (mode == BOTH || mode == NAME)
@@ -1005,17 +1003,17 @@ public class GroundItemsPlugin extends Plugin
 					}
 
 					lastEntry.setTarget(target);
-					event.setWasModified(true);
+					lastEntry.setModified(true);
 				}
 			}
 
 			if (this.showMenuItemQuantities && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-				event.setWasModified(true);
+				lastEntry.setModified(true);
 			}
 
-			if (this.removeIgnored && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
+			if (this.removeIgnored && lastEntry.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(lastEntry.getTarget())))
 			{
 				client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 			}

@@ -202,7 +202,7 @@ public class HiscorePlugin extends Plugin
 			return;
 		}
 
-		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		int groupId = WidgetInfo.TO_GROUP(event.getParam1());
 		String option = event.getOption();
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
@@ -218,8 +218,8 @@ public class HiscorePlugin extends Plugin
 			lookup.setOption(LOOKUP);
 			lookup.setTarget(event.getTarget());
 			lookup.setOpcode(MenuOpcode.RUNELITE.getId());
-			lookup.setParam0(event.getActionParam0());
-			lookup.setParam1(event.getActionParam1());
+			lookup.setParam0(event.getParam0());
+			lookup.setParam1(event.getParam1());
 			lookup.setIdentifier(event.getIdentifier());
 
 			if (client != null)

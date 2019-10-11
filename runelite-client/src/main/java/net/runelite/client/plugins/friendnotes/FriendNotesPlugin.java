@@ -174,7 +174,7 @@ public class FriendNotesPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());
 
 		// Look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
@@ -189,8 +189,8 @@ public class FriendNotesPlugin extends Plugin
 				event.getTarget(),
 				MenuOpcode.RUNELITE.getId(),
 				0,
-				event.getActionParam0(),
-				event.getActionParam1(),
+				event.getParam0(),
+				event.getParam1(),
 				false
 			);
 		}
@@ -202,7 +202,7 @@ public class FriendNotesPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		if (WidgetInfo.TO_GROUP(event.getParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
 		{
 			if (Strings.isNullOrEmpty(event.getTarget()))
 			{

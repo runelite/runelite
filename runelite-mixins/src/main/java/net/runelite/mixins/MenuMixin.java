@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.MenuEntry;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
@@ -108,5 +109,35 @@ public abstract class MenuMixin implements RSClient
 				rasterizerFillRectangleAlpha(x + 3, rowY - 12, w - 6, 15, 0xffffff, 80);
 			}
 		}
+	}
+
+	@Inject
+	@Override
+	public MenuEntry getLeftClickMenuEntry()
+	{
+		final int i = getMenuOptionCount() - 1;
+		return new MenuEntry(
+			getMenuOptions()[i],
+			getMenuTargets()[i],
+			getMenuIdentifiers()[i],
+			getMenuOpcodes()[i],
+			getMenuArguments1()[i],
+			getMenuArguments2()[i],
+			getMenuForceLeftClick()[i]
+		);
+	}
+
+	@Inject
+	@Override
+	public void setLeftClickMenuEntry(final MenuEntry entry)
+	{
+		final int i = getMenuOptionCount() - 1;
+		getMenuOptions()[i] = entry.getOption();
+		getMenuTargets()[i] = entry.getTarget();
+		getMenuIdentifiers()[i] = entry.getIdentifier();
+		getMenuOpcodes()[i] = entry.getOpcode();
+		getMenuArguments1()[i] = entry.getParam0();
+		getMenuArguments2()[i] = entry.getParam1();
+		getMenuForceLeftClick()[i] = entry.isForceLeftClick();
 	}
 }

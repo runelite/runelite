@@ -314,11 +314,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			Widget item = container.getChild(event.getActionParam0());
+			Widget item = container.getChild(event.getParam0());
 			int itemID = item.getItemId();
 			String text = EDIT_TAGS_MENU_OPTION;
 			int tagCount = tagManager.getTags(itemID, false).size() + tagManager.getTags(itemID, true).size();
@@ -333,8 +333,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				event.getTarget(),
 				MenuOpcode.RUNELITE.getId(),
 				event.getIdentifier(),
-				event.getActionParam0(),
-				event.getActionParam1(),
+				event.getParam0(),
+				event.getParam1(),
 				false
 			);
 		}
@@ -344,12 +344,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuOpcode() == MenuOpcode.RUNELITE
 			&& event.getOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
 			event.consume();
-			int inventoryIndex = event.getActionParam0();
+			int inventoryIndex = event.getParam0();
 			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			if (bankContainer == null)
 			{

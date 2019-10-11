@@ -244,7 +244,7 @@ public class MiningPlugin extends Plugin
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		//TODO: should work hopefully
-		if (event.getMenuOpcode() != MenuOpcode.RUNELITE || event.getActionParam1() != WidgetInfo.INVENTORY.getId())
+		if (event.getMenuOpcode() != MenuOpcode.RUNELITE || event.getParam1() != WidgetInfo.INVENTORY.getId())
 		{
 			return;
 		}

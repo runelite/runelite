@@ -377,8 +377,8 @@ public class MotherlodePlugin extends Plugin
 		if (MINE_SPOTS.contains(menu.getIdentifier()) &&  menu.getMenuOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION)
 		{
 			resetIdleChecks();
-			int veinX = menu.getActionParam0();
-			int veinY = menu.getActionParam1();
+			int veinX = menu.getParam0();
+			int veinY = menu.getParam1();
 			targetVeinLocation = WorldPoint.fromScene(client, veinX, veinY, client.getPlane());
 		}
 	}

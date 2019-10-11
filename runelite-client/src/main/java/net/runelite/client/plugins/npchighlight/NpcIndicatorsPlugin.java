@@ -298,7 +298,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int type = event.getType();
+		int type = event.getOpcode();
 
 		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
 		{
@@ -309,9 +309,9 @@ public class NpcIndicatorsPlugin extends Plugin
 			NPC_MENU_ACTIONS.contains(MenuOpcode.of(type)) &&
 			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
 		{
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getMenuEntry().getTarget()), this.getHighlightColor);
-			event.getMenuEntry().setTarget(target);
-			event.setWasModified(true);
+			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), this.getHighlightColor);
+			event.setTarget(target);
+			event.setModified(true);
 		}
 		else if (hotKeyPressed && type == MenuOpcode.EXAMINE_NPC.getId())
 		{
@@ -321,8 +321,8 @@ public class NpcIndicatorsPlugin extends Plugin
 				event.getTarget(),
 				MenuOpcode.RUNELITE.getId(),
 				event.getIdentifier(),
-				event.getActionParam0(),
-				event.getActionParam1(),
+				event.getParam0(),
+				event.getParam1(),
 				false
 			);
 		}

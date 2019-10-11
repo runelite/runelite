@@ -119,7 +119,7 @@ public class FriendTaggingPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
@@ -132,8 +132,8 @@ public class FriendTaggingPlugin extends Plugin
 				event.getTarget(),
 				MenuOpcode.RUNELITE.getId(),
 				0,
-				event.getActionParam0(),
-				event.getActionParam1(),
+				event.getParam0(),
+				event.getParam1(),
 				false
 			);
 			// Add menu entry
@@ -173,7 +173,7 @@ public class FriendTaggingPlugin extends Plugin
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		if (WidgetInfo.TO_GROUP(event.getParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
 		{
 			if (Strings.isNullOrEmpty(event.getTarget()))
 			{

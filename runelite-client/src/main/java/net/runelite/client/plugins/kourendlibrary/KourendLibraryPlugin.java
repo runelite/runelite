@@ -210,7 +210,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuOpcode.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuOpcode() && menuOpt.getTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam0(), menuOpt.getActionParam1(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getParam0(), menuOpt.getParam1(), client.getPlane());
 			overlay.setHidden(false);
 		}
 	}

@@ -247,14 +247,14 @@ public class MenuManager
 	{
 		for (AbstractComparableEntry e : hiddenEntries)
 		{
-			if (e.matches(event.getMenuEntry()))
+			if (e.matches(event))
 			{
 				client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 				return;
 			}
 		}
 
-		int widgetId = event.getActionParam1();
+		int widgetId = event.getParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
 
 		for (WidgetMenuOption currentMenu : options)
@@ -443,7 +443,7 @@ public class MenuManager
 			return; // not a player menu
 		}
 
-		int widgetId = event.getActionParam1();
+		int widgetId = event.getParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
 
 		for (WidgetMenuOption curMenuOption : options)

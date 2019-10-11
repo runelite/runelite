@@ -24,21 +24,18 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.runelite.api.MenuEntry;
 
 /**
  * An event when a new entry is added to a right-click menu.
  */
-@Data
-@RequiredArgsConstructor
-public class MenuEntryAdded implements Event
+public class MenuEntryAdded extends MenuEntry implements Event
 {
-	/**
-	 * The MenuEntry object that was actually added
-	 */
-	private final MenuEntry menuEntry;
+	public MenuEntryAdded(String option, String target, int identifier, int opcode, int param0, int param1, boolean forceLeftClick)
+	{
+		super(option, target, identifier, opcode, param0, param1, forceLeftClick);
+	}
 
 	/**
 	 * If this is set to true client mixin will update
@@ -47,40 +44,11 @@ public class MenuEntryAdded implements Event
 	 * Checks if count is the same, but doesn't check if there's
 	 * been multiple changes
 	 */
-	private boolean wasModified;
+	@Setter
+	private boolean modified;
 
-	public String getOption()
+	public boolean hasBeenModified()
 	{
-		return menuEntry.getOption();
-	}
-
-	public String getTarget()
-	{
-		return menuEntry.getTarget();
-	}
-
-	public int getType()
-	{
-		return menuEntry.getOpcode();
-	}
-
-	public int getIdentifier()
-	{
-		return menuEntry.getIdentifier();
-	}
-
-	public int getActionParam0()
-	{
-		return menuEntry.getParam0();
-	}
-
-	public int getActionParam1()
-	{
-		return menuEntry.getParam1();
-	}
-
-	public boolean isForceLeftClick()
-	{
-		return menuEntry.isForceLeftClick();
+		return modified;
 	}
 }

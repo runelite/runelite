@@ -114,7 +114,7 @@ public class SlayermusiqPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int widgetID = event.getActionParam1();
+		int widgetID = event.getParam1();
 		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
@@ -139,8 +139,8 @@ public class SlayermusiqPlugin extends Plugin
 
 	private MenuEntry createSlayermusiqOptionMenuEntry(MenuEntryAdded event)
 	{
-		int widgetIndex = event.getActionParam0();
-		int widgetID = event.getActionParam1();
+		int widgetIndex = event.getParam0();
+		int widgetID = event.getParam1();
 
 		MenuEntry menuEntry = new MenuEntry();
 		menuEntry.setTarget(event.getTarget());

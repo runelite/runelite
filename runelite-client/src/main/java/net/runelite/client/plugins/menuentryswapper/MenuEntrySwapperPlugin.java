@@ -608,7 +608,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (this.getSwapPuro && isPuroPuro())
 		{
-			if (event.getType() == WALK.getId())
+			if (event.getOpcode() == WALK.getId())
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
@@ -627,7 +627,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(MenuOpcode.of(event.getType())))
+			&& NPC_MENU_TYPES.contains(MenuOpcode.of(event.getOpcode())))
 		{
 			return;
 		}
@@ -722,17 +722,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked entry)
 	{
-		if (event.getOpcode() == MenuOpcode.WIDGET_DEFAULT.getId() &&
-			WidgetInfo.TO_GROUP(event.getActionParam1()) == WidgetID.JEWELLERY_BOX_GROUP_ID)
+		if (entry.getOpcode() == MenuOpcode.WIDGET_DEFAULT.getId() &&
+			WidgetInfo.TO_GROUP(entry.getParam1()) == WidgetID.JEWELLERY_BOX_GROUP_ID)
 		{
-			if (event.getOption().equals(lastDes == null ? null : lastDes.getOption()))
+			if (entry.getOption().equals(lastDes == null ? null : lastDes.getOption()))
 			{
 				return;
 			}
 
-			JewelleryBoxDestination newDest = JewelleryBoxDestination.withOption(event.getOption());
+			JewelleryBoxDestination newDest = JewelleryBoxDestination.withOption(entry.getOption());
 			if (newDest == null)
 			{
 				return;
@@ -741,17 +741,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			lastDes = newDest;
 			config.lastDes(lastDes.getOption());
 		}
-		else if (event.getOption().equals("Teleport") && event.getTarget().contains("Jewellery Box"))
+		else if (entry.getOption().equals("Teleport") && entry.getTarget().contains("Jewellery Box"))
 		{
-			eventBus.unregister("wait for widget");
+			eventBus.unregister(JEWEL_WIDGET);
 		}
 		else if (lastDes != null &&
-			event.getOpcode() == MenuOpcode.PRIO_RUNELITE.getId() &&
-			event.getOption().equals(lastDes.getOption()))
+			entry.getOpcode() == MenuOpcode.PRIO_RUNELITE.getId() &&
+			entry.getOption().equals(lastDes.getOption()))
 		{
-			MenuEntry e = event.getMenuEntry();
-			e.setOption("Teleport");
-			e.setOpcode(MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId());
+			entry.setOption("Teleport");
+			entry.setOpcode(MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId());
 
 			eventBus.subscribe(ScriptCallbackEvent.class, JEWEL_WIDGET, this::onScriptCallback);
 		}

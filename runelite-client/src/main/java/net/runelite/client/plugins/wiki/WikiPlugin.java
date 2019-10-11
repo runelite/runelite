@@ -252,7 +252,7 @@ public class WikiPlugin extends Plugin
 					}
 					id = lc.getId();
 					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getActionParam0(), ev.getActionParam1(), client.getPlane());
+					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
 					break;
 				}
 				default:
@@ -334,8 +334,8 @@ public class WikiPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int widgetIndex = event.getActionParam0();
-		int widgetID = event.getActionParam1();
+		int widgetIndex = event.getParam0();
+		int widgetID = event.getParam1();
 
 		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{

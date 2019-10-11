@@ -242,12 +242,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotKeyPressed || event.getType() != MenuOpcode.EXAMINE_OBJECT.getId())
+		if (!hotKeyPressed || event.getOpcode() != MenuOpcode.EXAMINE_OBJECT.getId())
 		{
 			return;
 		}
 
-		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getParam0()][event.getParam1()];
 
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
@@ -255,8 +255,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
-		menuEntry.setParam0(event.getActionParam0());
-		menuEntry.setParam1(event.getActionParam1());
+		menuEntry.setParam0(event.getParam0());
+		menuEntry.setParam1(event.getParam1());
 		menuEntry.setIdentifier(event.getIdentifier());
 		menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
 		client.setMenuEntries(menuEntries);
@@ -272,8 +272,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam0();
-		final int y = event.getActionParam1();
+		final int x = event.getParam0();
+		final int y = event.getParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 

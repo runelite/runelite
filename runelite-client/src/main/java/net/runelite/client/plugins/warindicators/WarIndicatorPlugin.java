@@ -136,7 +136,7 @@ public class WarIndicatorPlugin extends Plugin
 
 	private void onMenuEntryAdded(MenuEntryAdded onMenuEntryAdded)
 	{
-		int type = onMenuEntryAdded.getType();
+		int type = onMenuEntryAdded.getOpcode();
 
 		if (type >= 2000)
 		{
