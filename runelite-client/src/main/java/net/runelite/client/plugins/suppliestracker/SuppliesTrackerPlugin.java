@@ -517,7 +517,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
-		if ((eatPattern.matcher(event.getTarget().toLowerCase()).find() || drinkPattern.matcher(event.getTarget().toLowerCase()).find()) &&
+		if ((eatPattern.matcher(event.getOption().toLowerCase()).find() || drinkPattern.matcher(event.getOption().toLowerCase()).find()) &&
 			actionStack.stream().noneMatch(a ->
 			{
 				if (a instanceof MenuAction.ItemAction)
