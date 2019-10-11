@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientSessionManager
 {
-	private final SessionClient sessionClient = new SessionClient();
+	private final SessionClient sessionClient = new SessionClient(this);
 	private final ScheduledExecutorService executorService;
 
 	private ScheduledFuture<?> scheduledFuture;
@@ -52,17 +52,21 @@ public class ClientSessionManager
 
 	public void start()
 	{
-		try
-		{
-			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error opening session", ex);
-		}
+		sessionClient.open();
 
 		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 10, TimeUnit.MINUTES);
+	}
+
+	void setUuid(UUID uuid)
+	{
+		this.sessionId = uuid;
+		log.debug("Opened session {}", sessionId);
+	}
+
+	void error(IOException e)
+	{
+		log.warn("Client session error, resetting UUID", e.getCause());
+		sessionId = null;
 	}
 
 	public void shutdown()
@@ -85,29 +89,12 @@ public class ClientSessionManager
 
 	private void ping()
 	{
-		try
+		if (sessionId == null)
 		{
-			if (sessionId == null)
-			{
-				sessionId = sessionClient.open();
-				log.debug("Opened session {}", sessionId);
-				return;
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
+			sessionClient.open();
+			return;
 		}
 
-		try
-		{
-			sessionClient.ping(sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Resetting session", ex);
-			sessionId = null;
-		}
-
+		sessionClient.ping(sessionId);
 	}
 }
