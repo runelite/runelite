@@ -27,6 +27,9 @@ package net.runelite.api;
 
 // Note: This class won't always be complete: these sprites were manually gathered
 // through the cache and widget inspector. Please add new sprites as you happen to use them.
+/**
+ * Utility class used for mapping sprite IDs.
+ */
 public final class SpriteID
 {
 	public static final int RS2_CHATBOX_BUTTONS = 0;

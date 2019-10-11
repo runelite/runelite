@@ -27,6 +27,9 @@ package net.runelite.api;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+* An enumeration of quests and miniquests.
+*/
 @RequiredArgsConstructor
 public enum Quest
 {
