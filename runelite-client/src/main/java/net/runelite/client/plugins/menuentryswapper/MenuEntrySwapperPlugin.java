@@ -604,6 +604,38 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, index);
 		}
+
+		if (shiftModifier && config.swapTeleportSpell())
+		{
+			if (target.equals("varrock teleport"))
+			{
+				swapTeleport(target, option, "grand exchange", index);
+			}
+			else if (target.equals("camelot teleport"))
+			{
+				swapTeleport(target, option, "seers'", index);
+			}
+			else if (target.equals("watchtower teleport"))
+			{
+				swapTeleport(target, option, "yanille", index);
+			}
+			else if (target.equals("teleport to house"))
+			{
+				swapTeleport(target, option, "outside", index);
+			}
+		}
+	}
+
+	private void swapTeleport(String target, String option, String optionA, int index)
+	{
+		if (option.equals("cast"))
+		{
+			swap(optionA, option, target, index);
+		}
+		else if (option.equals(optionA))
+		{
+			swap("cast", option, target, index);
+		}
 	}
 
 	private static boolean shouldSwapPickpocket(String target)
