@@ -664,6 +664,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 			switch (target)
 			{
+				case "young impling jar":
+					if (client.getItemContainer(InventoryID.INVENTORY) != null)
+					{
+						for (Item i : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
+						{
+							invItemNames.add(client.getItemDefinition((i.getId())).getName());
+						}
+						if (invItemNames.contains("Clue scroll (easy)") || bankItemNames.contains("Clue scroll (easy)") || invItemNames.contains("Clue scroll (beginner)") || bankItemNames.contains("Clue scroll (beginner)"))
+						{
+							menuManager.addSwap("loot", target, "use");
+						}
+						else
+						{
+							menuManager.removeSwaps(target);
+						}
+					}
+					break;
 				case "eclectic impling jar":
 					if (client.getItemContainer(InventoryID.INVENTORY) != null)
 					{
