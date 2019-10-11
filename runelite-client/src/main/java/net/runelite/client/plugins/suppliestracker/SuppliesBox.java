@@ -39,45 +39,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.ItemID.ADMIRAL_PIE;
-import static net.runelite.api.ItemID.ANCHOVY_PIZZA;
-import static net.runelite.api.ItemID.APPLE_PIE;
-import static net.runelite.api.ItemID.BOTANICAL_PIE;
-import static net.runelite.api.ItemID.CAKE;
-import static net.runelite.api.ItemID.CHOCOLATE_CAKE;
-import static net.runelite.api.ItemID.CHOCOLATE_SLICE;
-import static net.runelite.api.ItemID.FISH_PIE;
-import static net.runelite.api.ItemID.GARDEN_PIE;
-import static net.runelite.api.ItemID.HALF_AN_ADMIRAL_PIE;
-import static net.runelite.api.ItemID.HALF_AN_APPLE_PIE;
-import static net.runelite.api.ItemID.HALF_A_BOTANICAL_PIE;
-import static net.runelite.api.ItemID.HALF_A_FISH_PIE;
-import static net.runelite.api.ItemID.HALF_A_GARDEN_PIE;
-import static net.runelite.api.ItemID.HALF_A_MEAT_PIE;
-import static net.runelite.api.ItemID.HALF_A_MUSHROOM_PIE;
-import static net.runelite.api.ItemID.HALF_A_REDBERRY_PIE;
-import static net.runelite.api.ItemID.HALF_A_SUMMER_PIE;
-import static net.runelite.api.ItemID.HALF_A_WILD_PIE;
-import static net.runelite.api.ItemID.MEAT_PIE;
-import static net.runelite.api.ItemID.MEAT_PIZZA;
-import static net.runelite.api.ItemID.MUSHROOM_PIE;
-import static net.runelite.api.ItemID.PINEAPPLE_PIZZA;
-import static net.runelite.api.ItemID.PLAIN_PIZZA;
-import static net.runelite.api.ItemID.REDBERRY_PIE;
-import static net.runelite.api.ItemID.SLICE_OF_CAKE;
-import static net.runelite.api.ItemID.SUMMER_PIE;
-import static net.runelite.api.ItemID.WILD_PIE;
-import static net.runelite.api.ItemID._12_ANCHOVY_PIZZA;
-import static net.runelite.api.ItemID._12_MEAT_PIZZA;
-import static net.runelite.api.ItemID._12_PINEAPPLE_PIZZA;
-import static net.runelite.api.ItemID._12_PLAIN_PIZZA;
+import net.runelite.api.ItemDefinition;
+import static net.runelite.api.ItemID.*;
+import net.runelite.api.util.Text;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.api.util.Text;
-import net.runelite.http.api.item.ItemPrice;
 
 @Singleton
 class SuppliesBox extends JPanel
@@ -241,7 +210,7 @@ class SuppliesBox extends JPanel
 			{
 				final SuppliesTrackerItem item = items.get(i);
 				final JLabel imageLabel = new JLabel();
-				imageLabel.setToolTipText(buildToolTip(item));
+				imageLabel.setToolTipText(buildToolTip(getModifiedItemId(item.getName(), item.getId()), item.getQuantity()));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -358,20 +327,21 @@ class SuppliesBox extends JPanel
 	{
 		String nameModified = name.replace("(4)", "(1)");
 		int itemId = 0;
-		List<ItemPrice> itemList = itemManager.search(nameModified);
-		for (ItemPrice item : itemList)
+
+		if (itemManager.search(nameModified).size() > 0)
 		{
-			itemId = item.getId();
+			itemId = itemManager.search(nameModified).get(0).getId();
 		}
+
 		return itemId;
 	}
 
-	private static String buildToolTip(SuppliesTrackerItem item)
+	private String buildToolTip(int itemId, int qty)
 	{
+		ItemDefinition item = this.itemManager.getItemDefinition(itemId);
 		final String name = item.getName();
-		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
-		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ") ";
+		return name + " x " + qty + " (" + StackFormatter.quantityToStackSize(price * qty) + ") ";
 	}
 
 }
