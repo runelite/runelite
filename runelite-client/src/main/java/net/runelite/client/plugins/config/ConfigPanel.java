@@ -281,14 +281,6 @@ public class ConfigPanel extends PluginPanel
 	{
 		final List<String> pinnedPlugins = getPinnedPluginNames();
 
-		// set RuneLite config on top, as it should always have been
-		final PluginListItem runeLite = new PluginListItem(this, configManager, runeLiteConfig,
-			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
-		runeLite.nameLabel.setForeground(Color.WHITE);
-		pluginList.add(runeLite);
-
 		// set OpenOSRS config on top, as it should always have been
 		final PluginListItem openosrs = new PluginListItem(this, configManager, OpenOSRSConfig,
 			configManager.getConfigDescriptor(OpenOSRSConfig),
@@ -296,6 +288,14 @@ public class ConfigPanel extends PluginPanel
 		openosrs.setPinned(pinnedPlugins.contains(openosrs_PLUGIN));
 		openosrs.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(openosrs);
+
+		// set RuneLite config on top, as it should always have been
+		final PluginListItem runeLite = new PluginListItem(this, configManager, runeLiteConfig,
+			configManager.getConfigDescriptor(runeLiteConfig),
+			RUNELITE_PLUGIN, "RuneLite client settings", "client");
+		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
+		runeLite.nameLabel.setForeground(Color.WHITE);
+		pluginList.add(runeLite);
 
 		List<PluginListItem> externalPlugins = new ArrayList<>();
 		// populate pluginList with all external Plugins
