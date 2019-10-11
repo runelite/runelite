@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+/**
+ * An enumeration of the state of a quest.
+ */
 public enum QuestState
 {
 	IN_PROGRESS,

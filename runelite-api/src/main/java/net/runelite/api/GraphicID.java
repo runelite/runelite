@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+/**
+ * Utility class used for mapping IDs of certain animations.
+ */
 public class GraphicID
 {
 	public static final int WINE_MAKE = 47;

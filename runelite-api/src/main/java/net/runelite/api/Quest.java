@@ -28,6 +28,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+/**
+ * An enumeration of quests and miniquests.
+ */
 public enum Quest
 {
 	//Free Quests

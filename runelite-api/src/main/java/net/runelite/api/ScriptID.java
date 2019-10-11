@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+/**
+ * Utility class used for mapping sprite IDs.
+ */
 public final class ScriptID
 {
 	/**
@@ -55,7 +58,7 @@ public final class ScriptID
 
 	/**
 	 * Opens the Private Message chat interface
-	 *
+	 * <p>
 	 * Jagex refers to this script as {@code meslayer_mode6}
 	 * <ul>
 	 * <li> String Player to send private message to</li>
@@ -118,7 +121,7 @@ public final class ScriptID
 	 * <li>int Bitpacked stash unit states 2</li>
 	 * <li>int Bitpacked stash unit states 3</li>
 	 * </ul>
-	 *
+	 * <p>
 	 * Returns a pair of booleans indicating if the stash unit is built and if it is filled
 	 */
 	@ScriptArguments(integer = 4)
@@ -149,7 +152,7 @@ public final class ScriptID
 
 	/**
 	 * Handles zoom input
-	 *
+	 * <p>
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
 	 * <li> int  Reset zoom position </li>
@@ -161,7 +164,7 @@ public final class ScriptID
 
 	/**
 	 * Does nothing
-	 *
+	 * <p>
 	 * This is used to eat events when you want a menu action attached to it
 	 * because you need an op listener attached to it for it to work
 	 */
