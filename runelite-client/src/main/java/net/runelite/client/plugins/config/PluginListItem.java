@@ -203,11 +203,6 @@ public class PluginListItem extends JPanel
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 		attachToggleButtonListener(toggleButton);
 
-		if (name.equals("OpenOSRS"))
-		{
-			toggleButton.setVisible(false);
-		}
-
 		buttonPanel.add(toggleButton);
 	}
 
