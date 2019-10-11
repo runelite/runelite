@@ -54,6 +54,7 @@ import net.runelite.client.plugins.menuentryswapper.util.QuestCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
+import net.runelite.client.plugins.menuentryswapper.util.SwapGrimyHerbMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
 
 
@@ -1125,6 +1126,32 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean getSwapPuro()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGrimyHerb",
+		name = "Grimy Herbs",
+		description = "",
+		position = 6,
+		section = "skillingSection"
+	)
+	default boolean getSwapGrimyHerb()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGrimyHerbMode",
+		name = "Mode",
+		description = "",
+		position = 7,
+		section = "skillingSection",
+		hidden = true,
+		unhide = "swapGrimyHerb"
+	)
+	default SwapGrimyHerbMode swapGrimyHerbMode()
+	{
+		return SwapGrimyHerbMode.DYNAMIC;
 	}
 
 	//------------------------------------------------------------//

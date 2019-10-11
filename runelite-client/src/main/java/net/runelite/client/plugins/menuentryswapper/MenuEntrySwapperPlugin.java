@@ -91,6 +91,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.comparables.BankComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentComparableEntry;
+import net.runelite.client.plugins.menuentryswapper.comparables.GrimyHerbComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.InventoryComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.ShopComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.WithdrawComparableEntry;
@@ -117,6 +118,7 @@ import net.runelite.client.plugins.menuentryswapper.util.QuestCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.RingOfWealthMode;
 import net.runelite.client.plugins.menuentryswapper.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.SlayerRingMode;
+import net.runelite.client.plugins.menuentryswapper.util.SwapGrimyHerbMode;
 import net.runelite.client.plugins.menuentryswapper.util.XericsTalismanMode;
 import net.runelite.client.plugins.pvptools.PvpToolsConfig;
 import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
@@ -218,6 +220,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private OccultAltarMode swapOccultMode;
 	private QuestCapeMode questCapeMode;
 	private RingOfWealthMode getRingofWealthMode;
+	private SwapGrimyHerbMode swapGrimyHerbMode;
 	private Set<String> hideCastIgnoredCoX;
 	private Set<String> hideCastIgnoredToB;
 	private SkillsNecklaceMode getSkillsNecklaceMode;
@@ -242,6 +245,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean getSwapExplorersRing;
 	private boolean getSwapMagicCape;
 	private boolean getSwapPuro;
+	private boolean getSwapGrimyHerb;
 	private boolean getSwapSawmill;
 	private boolean getSwapSawmillPlanks;
 	private boolean getSwapTanning;
@@ -1296,6 +1300,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry(this.swapHouseAdMode.getEntry());
 		}
+
+		if (this.getSwapGrimyHerb)
+		{
+			menuManager.addPriorityEntry(new GrimyHerbComparableEntry(this.swapGrimyHerbMode, client));
+		}
 	}
 
 	private void removeSwaps()
@@ -1408,6 +1417,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new EquipmentComparableEntry(this.getXericsTalismanMode.toString(), "talisman"));
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Rub", "", false));
 		menuManager.removePriorityEntry(new InventoryComparableEntry("Teleport", "", false));
+		menuManager.removePriorityEntry(new GrimyHerbComparableEntry(this.swapGrimyHerbMode, client));
 		menuManager.removePriorityEntry(newBankComparableEntry("Empty", "Coal bag"));
 		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape");
 		menuManager.removePriorityEntry(this.constructionCapeMode.toString(), "Construct. cape(t)");
@@ -1701,6 +1711,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getNecklaceofPassageMode = config.getNecklaceofPassageMode();
 		this.getRingofWealth = config.getRingofWealth();
 		this.getRingofWealthMode = config.getRingofWealthMode();
+		this.swapGrimyHerbMode = config.swapGrimyHerbMode();
 		this.getSkillsNecklace = config.getSkillsNecklace();
 		this.getSkillsNecklaceMode = config.getSkillsNecklaceMode();
 		this.getSlayerRing = config.getSlayerRing();
@@ -1711,6 +1722,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.getSwapExplorersRing = config.getSwapExplorersRing();
 		this.getSwapMagicCape = config.getSwapMagicCape();
 		this.getSwapPuro = config.getSwapPuro();
+		this.getSwapGrimyHerb = config.getSwapGrimyHerb();
 		this.getSwapSawmill = config.getSwapSawmill();
 		this.getSwapSawmillPlanks = config.getSwapSawmillPlanks();
 		this.getSwapTanning = config.getSwapTanning();
