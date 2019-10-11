@@ -30,14 +30,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 
 class SessionClient
 {
-	UUID open() throws IOException
+	private final ClientSessionManager manager;
+
+	SessionClient(ClientSessionManager manager)
+	{
+		this.manager = manager;
+	}
+
+	void open()
 	{
 		HttpUrl url = RuneLiteAPI.getopenosrsSessionBase().newBuilder()
 			.build();
@@ -46,20 +56,34 @@ class SessionClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			ResponseBody body = response.body();
-			
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
-		}
-		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
-		{
-			throw new IOException(ex);
-		}
+			@Override
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
+			{
+				manager.error(e);
+			}
+
+			@Override
+			public void onResponse(@NotNull Call call, @NotNull Response response)
+			{
+				try
+				{
+					ResponseBody body = response.body();
+
+					InputStream in = body.byteStream();
+
+					manager.setUuid(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class));
+				}
+				catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
+				{
+					manager.error(new IOException(ex));
+				}
+			}
+		});
 	}
 
-	void ping(UUID uuid) throws IOException
+	void ping(UUID uuid)
 	{
 		HttpUrl url = RuneLiteAPI.getopenosrsSessionBase().newBuilder()
 			.addPathSegment("ping")
@@ -70,13 +94,23 @@ class SessionClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			if (!response.isSuccessful())
+			@Override
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
-				throw new IOException("Unsuccessful ping");
+				manager.error(e);
 			}
-		}
+
+			@Override
+			public void onResponse(@NotNull Call call, @NotNull Response response)
+			{
+				if (!response.isSuccessful())
+				{
+					manager.error(new IOException("Failed ping"));
+				}
+			}
+		});
 	}
 
 	void delete(UUID uuid) throws IOException
