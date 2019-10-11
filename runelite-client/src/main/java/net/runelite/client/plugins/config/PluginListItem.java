@@ -93,6 +93,9 @@ public class PluginListItem extends JPanel
 	@Getter
 	private boolean isPinned = false;
 
+	@Getter
+	private boolean isHidden = false;
+
 	static
 	{
 		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
@@ -253,6 +256,11 @@ public class PluginListItem extends JPanel
 		isPinned = pinned;
 		pinButton.setIcon(pinned ? ON_STAR : OFF_STAR);
 		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
+	}
+
+	public void setHidden(boolean hidden)
+	{
+		isHidden = hidden;
 	}
 
 	private void updateToggleButton(IconButton button)

@@ -29,29 +29,119 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("pluginsorter")
 public interface PluginSorterConfig extends Config
 {
-	boolean pluginsHidden = false;
+	@ConfigTitleSection(
+		keyName = "hidePluginsTitle",
+		name = "Hiding",
+		description = "",
+		position = 0
+	)
+	default Title hidePluginsTitle()
+	{
+		return new Title();
+	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "hidePlugins",
 		name = "Hide Plugins",
-		description = "Hides all 3rd party plugins if checked"
+		description = "Hides all OpenOSRS plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePvmPlugins || hidePvpPlugins || hideSkillingPlugins || hideUtilityPlugins || hideExternalPlugins"
 	)
 	default boolean hidePlugins()
 	{
-		return pluginsHidden;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "hideExternalPlugins",
+		name = "Hide External Plugins",
+		description = "Hides all OpenOSRS external plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePlugins"
+	)
+	default boolean hideExternalPlugins()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "hidePvmPlugins",
+		name = "Hide PvM Plugins",
+		description = "Hides all OpenOSRS PvM plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePlugins"
+	)
+	default boolean hidePvmPlugins()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "hideSkillingPlugins",
+		name = "Hide Skillinh Plugins",
+		description = "Hides all OpenOSRS skilling plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePlugins"
+	)
+	default boolean hideSkillingPlugins()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "hidePvpPlugins",
+		name = "Hide PvP Plugins",
+		description = "Hides all OpenOSRS Pvp plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePlugins"
+	)
+	default boolean hidePvpPlugins()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "hideUtilityPlugins",
+		name = "Hide Utility Plugins",
+		description = "Hides all OpenOSRS utility plugins if checked",
+		titleSection = "hidePluginsTitle",
+		hide = "hidePlugins"
+	)
+	default boolean hideUtilityPlugins()
+	{
+		return false;
+	}
+
+	@ConfigTitleSection(
+		keyName = "pluginsColorTitle",
+		name = "Colors",
+		description = "",
+		position = 7
+	)
+	default Title pluginsColorTitle()
+	{
+		return new Title();
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 1,
+		position = 8,
 		keyName = "externalColor",
 		name = "External color",
-		description = "Configure the color of external plugins"
+		description = "Configure the color of external plugins",
+		titleSection = "pluginsColorTitle"
 	)
 	default Color externalColor()
 	{
@@ -60,10 +150,11 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 2,
+		position = 9,
 		keyName = "pvmColor",
 		name = "PVM color",
-		description = "Configure the color of PVM related plugins"
+		description = "Configure the color of PVM related plugins",
+		titleSection = "pluginsColorTitle"
 	)
 	default Color pvmColor()
 	{
@@ -72,10 +163,11 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 3,
+		position = 10,
 		keyName = "pvpColor",
 		name = "PVP color",
-		description = "Configure the color of PVP related plugins"
+		description = "Configure the color of PVP related plugins",
+		titleSection = "pluginsColorTitle"
 	)
 	default Color pvpColor()
 	{
@@ -84,10 +176,11 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 4,
+		position = 11,
 		keyName = "skillingColor",
 		name = "Skilling color",
-		description = "Configure the color of Skilling related plugins"
+		description = "Configure the color of Skilling related plugins",
+		titleSection = "pluginsColorTitle"
 	)
 	default Color skillingColor()
 	{
@@ -96,10 +189,11 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 5,
+		position = 12,
 		keyName = "utilityColor",
 		name = "Utility color",
-		description = "Configure the color of Utility related plugins"
+		description = "Configure the color of Utility related plugins",
+		titleSection = "pluginsColorTitle"
 	)
 	default Color utilityColor()
 	{
