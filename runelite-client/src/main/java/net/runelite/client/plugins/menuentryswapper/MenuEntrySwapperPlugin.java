@@ -644,26 +644,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 			List<String> invItemNames = new ArrayList<>();
-			if (target.equals("gourmet impling jar"))
-			{
-				if (client.getItemContainer(InventoryID.INVENTORY) != null)
-				{
-					for (Item i : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
-					{
-						invItemNames.add(client.getItemDefinition((i.getId())).getName());
-					}
-					if ((invItemNames.contains("Clue scroll (easy)") || bankItemNames.contains("Clue scroll (easy)")))
-					{
-						menuManager.addSwap("loot", target, "use");
-					}
-					else
-					{
-						menuManager.removeSwaps(target);
-					}
-				}
-			}
 			switch (target)
 			{
+				case "gourmet impling jar":
+					if (client.getItemContainer(InventoryID.INVENTORY) != null)
+					{
+						for (Item i : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
+						{
+							 invItemNames.add(client.getItemDefinition((i.getId())).getName());
+						}
+						if ((invItemNames.contains("Clue scroll (easy)") || bankItemNames.contains("Clue scroll (easy)")))
+						{
+							 menuManager.addSwap("loot", target, "use");
+						}
+						else
+						{
+							 menuManager.removeSwaps(target);
+						}
+					}
+					break;
 				case "young impling jar":
 					if (client.getItemContainer(InventoryID.INVENTORY) != null)
 					{
