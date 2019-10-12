@@ -26,8 +26,8 @@
 package net.runelite.client.game;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -35,7 +35,9 @@ import javax.swing.JLabel;
 
 public class AsyncBufferedImage extends BufferedImage
 {
-	private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
+	private final List<Runnable> listeners = new ArrayList<>();
+	private boolean loaded;
+
 	public AsyncBufferedImage(int width, int height, int imageType)
 	{
 		super(width, height, imageType);
@@ -44,19 +46,28 @@ public class AsyncBufferedImage extends BufferedImage
 	/**
 	 * Call when the buffer has been changed
 	 */
-	public void changed()
+	public synchronized void changed()
 	{
+		loaded = true;
 		for (Runnable r : listeners)
 		{
 			r.run();
 		}
+		listeners.clear();
 	}
 
 	/**
 	 * Register a function to be ran when the buffer has changed
 	 */
-	public void onChanged(Runnable r)
+	public synchronized void onChanged(Runnable r)
 	{
+		if (loaded)
+		{
+			// If the image has already been loaded, further listeners will not fire. Do not
+			// queue them to avoid leaking listeners.
+			return;
+		}
+
 		listeners.add(r);
 	}
 
@@ -78,7 +89,13 @@ public class AsyncBufferedImage extends BufferedImage
 
 	private ImageIcon makeIcon(JComponent c)
 	{
-		listeners.add(c::repaint);
+		synchronized (this)
+		{
+			if (!loaded)
+			{
+				listeners.add(c::repaint);
+			}
+		}
 		return new ImageIcon(this);
 	}
 }
