@@ -6450,7 +6450,7 @@
     "hitpoints": 40,
     "combatLevel": 28,
     "slayerLevel": 1,
-    "attackSpeed": 3,
+    "attackSpeed": 4,
     "attackLevel": 20,
     "strengthLevel": 20,
     "defenceLevel": 20,
@@ -6467,7 +6467,7 @@
     "hitpoints": 40,
     "combatLevel": 28,
     "slayerLevel": 1,
-    "attackSpeed": 3,
+    "attackSpeed": 4,
     "attackLevel": 20,
     "strengthLevel": 20,
     "defenceLevel": 20,
@@ -6550,7 +6550,7 @@
     "hitpoints": 40,
     "combatLevel": 28,
     "slayerLevel": 1,
-    "attackSpeed": 3,
+    "attackSpeed": 4,
     "attackLevel": 20,
     "strengthLevel": 20,
     "defenceLevel": 20,
@@ -17003,8 +17003,7 @@
     "name": "Leon d'Cour",
     "hitpoints": 123,
     "combatLevel": 141,
-    "attackSpeed": 4,
-    "defenceLevel": 69
+    "attackSpeed": 4
   },
   "3361": {
     "name": "Kourend guard",
