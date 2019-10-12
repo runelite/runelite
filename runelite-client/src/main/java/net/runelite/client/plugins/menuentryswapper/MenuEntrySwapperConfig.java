@@ -253,6 +253,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapPyramidPlunder",
+		name = "Pyramid Plunder",
+		description = "Swap Talk-to with Start-minigame, Leave tomb with Quick-Leave"
+	)
+	default boolean swapPyramidPlunder() { return false; }
+
+	@ConfigItem(
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"

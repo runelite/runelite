@@ -458,6 +458,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, index);
 			}
+			if (config.swapPyramidPlunder() && target.contains("guardian mummy"))
+			{
+				swap("start-minigame", option, target, index);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
@@ -577,6 +581,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapPick() && option.equals("pick"))
 		{
 			swap("pick-lots", option, target, index);
+		}
+		else if (config.swapPyramidPlunder() && option.equals("leave tomb") && target.contains("tomb door"))
+		{
+			swap("quick-leave", option, target, index);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
