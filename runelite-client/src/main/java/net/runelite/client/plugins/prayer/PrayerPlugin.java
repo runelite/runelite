@@ -42,11 +42,13 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -85,6 +87,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private PrayerConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
@@ -245,8 +250,11 @@ public class PrayerPlugin extends Plugin
 				}
 			}
 
-			int bonus = PrayerItems.getItemPrayerBonus(item.getId());
-			total += bonus;
+			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
 		}
 
 		if (hasSanfew || hasSuperRestore || hasPrayerPotion)

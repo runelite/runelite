@@ -30,15 +30,7 @@ import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 
 @AllArgsConstructor
 @Getter
@@ -225,7 +217,11 @@ enum ItemWithCharge
 	WSKIN1(WATERSKIN, WATERSKIN1, 1),
 	WSKIN2(WATERSKIN, WATERSKIN2, 2),
 	WSKIN3(WATERSKIN, WATERSKIN3, 3),
-	WSKIN4(WATERSKIN, WATERSKIN4, 4);
+	WSKIN4(WATERSKIN, WATERSKIN4, 4),
+	GREST1(GUTHIX_REST, GUTHIX_REST1, 1),
+	GREST2(GUTHIX_REST, GUTHIX_REST2, 2),
+	GREST3(GUTHIX_REST, GUTHIX_REST3, 3),
+	GREST4(GUTHIX_REST, GUTHIX_REST4, 4);
 
 	private final ItemChargeType type;
 	private final int id;

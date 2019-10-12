@@ -263,6 +263,17 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	/**
+	 * Check if there is an overlay on the canvas for the skill.
+	 *
+	 * @param skill the skill which should have an overlay.
+	 * @return true if the skill has an overlay.
+	 */
+	boolean hasOverlay(final Skill skill)
+	{
+		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
+	}
+
+	/**
 	 * Reset internal state and re-initialize all skills with XP currently cached by the RS client
 	 * This is called by the user manually clicking resetSkillState in the UI.
 	 * It reloads the current skills from the client after resetting internal state.
@@ -707,10 +718,5 @@ public class XpTrackerPlugin extends Plugin
 		{
 			pauseSkill(skill, pause);
 		}
-	}
-
-	private boolean hasOverlay(final Skill skill)
-	{
-		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
 	}
 }

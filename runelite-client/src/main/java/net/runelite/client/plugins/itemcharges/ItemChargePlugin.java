@@ -340,6 +340,7 @@ public class ItemChargePlugin extends Plugin
 		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
 		if (lastExplorerRingCharge != explorerRingCharge)
 		{
+			lastExplorerRingCharge = explorerRingCharge;
 			updateExplorerRingCharges(explorerRingCharge);
 		}
 	}
