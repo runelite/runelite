@@ -220,7 +220,7 @@ class XpStateSingle
 		// Determine XP goals, overall has no goals
 		if (skill != Skill.OVERALL)
 		{
-			if (goalStartXp <= 0 || currentXp > goalEndXp)
+			if (goalStartXp < 0 || currentXp > goalEndXp)
 			{
 				startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp((int) currentXp));
 			}

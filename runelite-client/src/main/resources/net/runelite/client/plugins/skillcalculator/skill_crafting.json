@@ -218,6 +218,12 @@
       "xp": 54
     },
     {
+      "level": 26,
+      "icon": 6209,
+      "name": "Drift Net",
+      "xp": 55
+    },
+    {
       "level": 27,
       "icon": 1605,
       "name": "Emerald",
@@ -306,6 +312,12 @@
       "icon": 21102,
       "name": "Jade Amulet (U)",
       "xp": 70
+    },
+    {
+      "level": 35,
+      "icon": 6235,
+      "name": "Broodoo shield",
+      "xp": 100
     },
     {
       "level": 36,
