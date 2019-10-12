@@ -26,6 +26,7 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -99,9 +100,9 @@ import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -297,108 +298,9 @@ public class ConfigPanel extends PluginPanel
 		runeLite.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(runeLite);
 
-		List<PluginListItem> externalPlugins = new ArrayList<>();
-		// populate pluginList with all external Plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				externalPlugins.add(listItem);
-			});
-
-		externalPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(externalPlugins);
-
-		List<PluginListItem> pvmPlugins = new ArrayList<>();
-
-		// populate pluginList with all non-hidden plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				pvmPlugins.add(listItem);
-			});
-
-		pvmPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(pvmPlugins);
-
-		List<PluginListItem> skillingPlugins = new ArrayList<>();
-
-		// populate pluginList with all non-hidden plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.SKILLING))
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				skillingPlugins.add(listItem);
-			});
-
-		skillingPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(skillingPlugins);
-
-		List<PluginListItem> pvpPlugins = new ArrayList<>();
-		// populate pluginList with all PVP Plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				pvpPlugins.add(listItem);
-			});
-
-		pvpPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(pvpPlugins);
-
-		List<PluginListItem> utilPlugins = new ArrayList<>();
-		// populate pluginList with all PVP Plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				utilPlugins.add(listItem);
-			});
-
-		utilPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(utilPlugins);
-
 		// populate pluginList with all vanilla RL plugins
-		List<PluginListItem> vanillaPlugins = new ArrayList<>();
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.SKILLING))
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))
+		List<PluginListItem> plugins = new ArrayList<>();
+		pluginManager.getPlugins()
 			.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -407,7 +309,7 @@ public class ConfigPanel extends PluginPanel
 
 					final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
 					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-					vanillaPlugins.add(listItem);
+					plugins.add(listItem);
 				}
 			);
 
@@ -416,23 +318,23 @@ public class ConfigPanel extends PluginPanel
 			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
 		chatColor.nameLabel.setForeground(Color.WHITE);
-		vanillaPlugins.add(chatColor);
+		plugins.add(chatColor);
 
-		vanillaPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		pluginList.addAll(vanillaPlugins);
-
-		// Add plugin sorter to bottom
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
-			.forEach(plugin ->
+		ImmutableList<PluginType> definedOrder = ImmutableList.of(PluginType.EXTERNAL, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.GENERAL_USE, PluginType.PLUGIN_ORGANIZER);
+		Comparator<PluginListItem> pluginTypeComparator = Comparator.comparing(plugin ->
+		{
+			PluginType type = PluginType.GENERAL_USE;
+			Plugin sortPlugin = plugin.getPlugin();
+			if (sortPlugin != null)
 			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+				type = sortPlugin.getClass().getAnnotation(PluginDescriptor.class).type();
+			}
 
-				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-				pluginList.add(listItem);
-			});
+			return definedOrder.indexOf(type);
+		});
+
+		plugins.sort(pluginTypeComparator.thenComparing(PluginListItem::getName));
+		pluginList.addAll(plugins);
 	}
 
 	void refreshPluginList()
