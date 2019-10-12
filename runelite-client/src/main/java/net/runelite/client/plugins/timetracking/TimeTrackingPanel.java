@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;

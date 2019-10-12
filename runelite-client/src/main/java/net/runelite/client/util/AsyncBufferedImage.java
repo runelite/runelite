@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.game;
+package net.runelite.client.util;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
