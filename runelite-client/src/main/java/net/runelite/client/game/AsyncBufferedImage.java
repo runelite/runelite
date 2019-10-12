@@ -44,9 +44,9 @@ public class AsyncBufferedImage extends BufferedImage
 	}
 
 	/**
-	 * Call when the buffer has been changed
+	 * Call when the image has been loaded
 	 */
-	public synchronized void changed()
+	public synchronized void loaded()
 	{
 		loaded = true;
 		for (Runnable r : listeners)
@@ -57,9 +57,10 @@ public class AsyncBufferedImage extends BufferedImage
 	}
 
 	/**
-	 * Register a function to be ran when the buffer has changed
+	 * Register a function to be ran when the image has been loaded.
+	 * If the image is already loaded, the function will not be ran.
 	 */
-	public synchronized void onChanged(Runnable r)
+	public synchronized void onLoaded(Runnable r)
 	{
 		if (loaded)
 		{

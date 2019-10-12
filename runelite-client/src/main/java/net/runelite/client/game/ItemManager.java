@@ -415,7 +415,7 @@ public class ItemManager
 				return false;
 			}
 			sprite.toBufferedImage(img);
-			img.changed();
+			img.loaded();
 			return true;
 		});
 		return img;

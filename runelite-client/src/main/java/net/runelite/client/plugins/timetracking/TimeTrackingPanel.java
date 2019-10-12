@@ -116,7 +116,7 @@ class TimeTrackingPanel extends PluginPanel
 			BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
 			materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
 		};
-		icon.onChanged(resize);
+		icon.onLoaded(resize);
 		resize.run();
 
 		materialTab.setOnSelectEvent(() ->

@@ -78,7 +78,7 @@ public class InfoBoxManager
 		if (image instanceof AsyncBufferedImage)
 		{
 			AsyncBufferedImage abi = (AsyncBufferedImage) image;
-			abi.onChanged(() -> updateInfoBoxImage(infoBox));
+			abi.onLoaded(() -> updateInfoBoxImage(infoBox));
 		}
 	}
 
