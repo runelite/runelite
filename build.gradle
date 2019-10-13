@@ -91,7 +91,7 @@ allprojects {
     apply plugin: 'maven'
     if (this.name != 'rs-client') apply plugin: 'checkstyle'
 
-    group = 'us.runelitepl'
+    group = 'com.openosrs'
     version = '1.5.35-SNAPSHOT'
 
     ext {
@@ -114,6 +114,7 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven'
     apply plugin: 'fernflower'
+    apply plugin: 'maven-publish'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -124,6 +125,24 @@ subprojects {
 
     tasks.withType(GroovyCompile).configureEach {
         options.incremental = true
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = "runelite"
+                url = uri("https://maven.pkg.github.com/open-osrs/runelite")
+                credentials {
+                    username = System.getProperty("gpr_user")
+                    password = System.getProperty("gpr_key")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                from(components.java)
+            }
+        }
     }
 
     repositories {
@@ -149,16 +168,8 @@ subprojects {
         maxWarnings = 0
     }
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(url: System.getenv("NEXUS_URL")) {
-                    authentication(userName: System.getenv("NEXUS_USER"), password: System.getenv("NEXUS_PASSWORD"))
-                }
-            }
-        }
-    }
 }
+
 
 wrapper {
     gradleVersion = '5.6.2'
