@@ -306,7 +306,7 @@ public class ConfigPanel extends PluginPanel
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
-		topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
+		topPanel.add(listItem.getConfigToggleButton(), BorderLayout.EAST);
 
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
