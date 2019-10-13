@@ -161,13 +161,13 @@ public class WorldMapDecoration {
 
 		int var0;
 		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.field430[var0] = 0L;
+			GameShell.graphicsTickTimes[var0] = 0L;
 		}
 
 		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.field431[var0] = 0L;
+			GameShell.clientTickTimes[var0] = 0L;
 		}
 
-		GameShell.field419 = 0;
+		GameShell.gameCyclesToDo = 0;
 	}
 }

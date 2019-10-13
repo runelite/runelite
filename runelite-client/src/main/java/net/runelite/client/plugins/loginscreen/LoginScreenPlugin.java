@@ -83,6 +83,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		updateConfig();
 		addSubscriptions();
 
+		client.setHideDisconnect(config.hideDisconnected());
+
 		applyUsername();
 		keyManager.registerKeyListener(this);
 	}
@@ -96,6 +98,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		{
 			client.getPreferences().setRememberedUsername(usernameCache);
 		}
+
+		client.setHideDisconnect(false);
 
 		keyManager.unregisterKeyListener(this);
 	}
@@ -246,6 +250,12 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		if (!event.getGroup().equals("loginscreen"))
 		{
+			return;
+		}
+
+		if (event.getKey().equals("hideDisconnect"))
+		{
+			client.setHideDisconnect(config.hideDisconnected());
 			return;
 		}
 

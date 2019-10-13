@@ -109,7 +109,8 @@ public class Coord {
 		signature = "(I)V",
 		garbageValue = "-2118719705"
 	)
-	static void method3976() {
+	@Export("closeWorldSelect")
+	static void closeWorldSelect() {
 		Login.worldSelectOpen = false;
 		WorldMapID.leftTitleSprite.drawAt(Login.xPadding, 0);
 		class51.rightTitleSprite.drawAt(Login.xPadding + 382, 0);

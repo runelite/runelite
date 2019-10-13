@@ -47,10 +47,10 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		garbageValue = "-1447475674"
 	)
 	static int method100() {
-		if (Client.archiveLoaders != null && Client.archiveLoaderArchive < Client.archiveLoaders.size()) {
+		if (Client.archiveLoaders != null && Client.archiveLoadersDone < Client.archiveLoaders.size()) {
 			int var0 = 0;
 
-			for (int var1 = 0; var1 <= Client.archiveLoaderArchive; ++var1) {
+			for (int var1 = 0; var1 <= Client.archiveLoadersDone; ++var1) {
 				var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).loadedCount;
 			}
 

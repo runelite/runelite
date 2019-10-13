@@ -40,7 +40,7 @@ public class MilliClock extends Clock {
 		this.field1992 = 256;
 		this.field1994 = 1;
 		this.field1996 = 0;
-		this.field1997 = class30.method566();
+		this.field1997 = class30.currentTimeMillis();
 
 		for (int var1 = 0; var1 < 10; ++var1) {
 			this.field1993[var1] = this.field1997;
@@ -72,7 +72,7 @@ public class MilliClock extends Clock {
 		int var4 = this.field1994;
 		this.field1992 = 300;
 		this.field1994 = 1;
-		this.field1997 = class30.method566();
+		this.field1997 = class30.currentTimeMillis();
 		if (0L == this.field1993[this.field1995]) {
 			this.field1992 = var3;
 			this.field1994 = var4;

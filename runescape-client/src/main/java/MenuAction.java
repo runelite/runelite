@@ -92,7 +92,7 @@ public class MenuAction {
 						}
 
 						NetCache.NetCache_loadTime = 0;
-						NetCache.field3142 = class30.method566();
+						NetCache.field3142 = class30.currentTimeMillis();
 						return;
 					}
 

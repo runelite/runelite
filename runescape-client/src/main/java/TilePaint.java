@@ -94,7 +94,8 @@ public final class TilePaint {
 		signature = "(ZI)V",
 		garbageValue = "-2065502658"
 	)
-	static void method3043(boolean var0) {
+	@Export("Login_promptCredentials")
+	static void Login_promptCredentials(boolean var0) {
 		Login.Login_response1 = "";
 		Login.Login_response2 = "Enter your username/email & password.";
 		Login.Login_response3 = "";

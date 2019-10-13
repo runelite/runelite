@@ -34,7 +34,8 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "syncusername",
 		name = "Sync username",
-		description = "Syncs the username that is currently remembered between computers"
+		description = "Syncs the username that is currently remembered between computers",
+		position = 1
 	)
 	default boolean syncUsername()
 	{
@@ -44,9 +45,21 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "pasteenabled",
 		name = "Ctrl-V paste",
-		description = "Enables Ctrl+V pasting on the login screen"
+		description = "Enables Ctrl+V pasting on the login screen",
+		position = 2
 	)
 	default boolean pasteEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideDisconnect",
+		name = "Hide 5 min log message",
+		description = "Hides the \"You have been disconnected\" message which appears when you get 5 minute logged",
+		position = 3
+	)
+	default boolean hideDisconnected()
 	{
 		return false;
 	}

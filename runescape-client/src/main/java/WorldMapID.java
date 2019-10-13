@@ -33,7 +33,8 @@ public class WorldMapID {
 	@ObfuscatedGetter(
 		intValue = -81572617
 	)
-	static int field259;
+	@Export("clientTickTimeIdx")
+	static int clientTickTimeIdx;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
 		intValue = -1325901065

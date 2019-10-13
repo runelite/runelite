@@ -122,7 +122,7 @@ final class class4 implements class0 {
 		}
 
 		if (AbstractUserComparator.garbageCollector != null) {
-			long var9 = class30.method566();
+			long var9 = class30.currentTimeMillis();
 			long var3 = AbstractUserComparator.garbageCollector.getCollectionTime();
 			if (GameShell.garbageCollectorLastCollectionTime != -1L) {
 				long var5 = var3 - GameShell.garbageCollectorLastCollectionTime;

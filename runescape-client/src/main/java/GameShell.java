@@ -63,7 +63,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@ObfuscatedGetter(
 		intValue = 1528666585
 	)
-	static int field419;
+	@Export("gameCyclesToDo")
+	static int gameCyclesToDo;
 	@ObfuscatedName("m")
 	@ObfuscatedGetter(
 		intValue = 1545406367
@@ -89,9 +90,11 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	@Export("clock")
 	static Clock clock;
 	@ObfuscatedName("a")
-	static long[] field430;
+	@Export("graphicsTickTimes")
+	static long[] graphicsTickTimes;
 	@ObfuscatedName("t")
-	static long[] field431;
+	@Export("clientTickTimes")
+	static long[] clientTickTimes;
 	@ObfuscatedName("ao")
 	@ObfuscatedGetter(
 		intValue = -1408016773
@@ -201,8 +204,8 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		cycleDurationMillis = 20;
 		fiveOrOne = 1;
 		fps = 0;
-		field430 = new long[32];
-		field431 = new long[32];
+		graphicsTickTimes = new long[32];
+		clientTickTimes = new long[32];
 		field443 = 500;
 		volatileFocus = true;
 		garbageCollectorLastCollectionTime = -1L;
@@ -524,7 +527,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 
 		this.isCanvasInvalid = false;
-		this.field446 = class30.method566();
+		this.field446 = class30.currentTimeMillis();
 	}
 
 	@ObfuscatedName("h")
@@ -564,11 +567,12 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		signature = "(I)V",
 		garbageValue = "-1775618326"
 	)
-	void method963() {
-		long var1 = class30.method566();
-		long var3 = field431[WorldMapID.field259];
-		field431[WorldMapID.field259] = var1;
-		WorldMapID.field259 = WorldMapID.field259 + 1 & 31;
+	@Export("clientTick")
+	void clientTick() {
+		long var1 = class30.currentTimeMillis();
+		long var3 = clientTickTimes[WorldMapID.clientTickTimeIdx];
+		clientTickTimes[WorldMapID.clientTickTimeIdx] = var1;
+		WorldMapID.clientTickTimeIdx = WorldMapID.clientTickTimeIdx + 1 & 31;
 		if (0L != var3 && var1 > var3) {
 		}
 
@@ -584,12 +588,13 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		signature = "(I)V",
 		garbageValue = "-2138228896"
 	)
-	void method956() {
+	@Export("graphicsTick")
+	void graphicsTick() {
 		Container var1 = this.container();
-		long var2 = class30.method566();
-		long var4 = field430[Varcs.field1255];
-		field430[Varcs.field1255] = var2;
-		Varcs.field1255 = Varcs.field1255 + 1 & 31;
+		long var2 = class30.currentTimeMillis();
+		long var4 = graphicsTickTimes[Varcs.graphicsTickTimeIdx];
+		graphicsTickTimes[Varcs.graphicsTickTimeIdx] = var2;
+		Varcs.graphicsTickTimeIdx = Varcs.graphicsTickTimeIdx + 1 & 31;
 		if (var4 != 0L && var2 > var4) {
 			int var6 = (int)(var2 - var4);
 			fps = ((var6 >> 1) + 32000) / var6;
@@ -848,7 +853,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	public final void destroy() {
 		if (this == gameShell && !isKilled) {
-			stopTimeMs = class30.method566();
+			stopTimeMs = class30.currentTimeMillis();
 			long var1 = 4999L;
 
 			try {
@@ -868,7 +873,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	public final synchronized void paint(Graphics var1) {
 		if (this == gameShell && !isKilled) {
 			this.field420 = true;
-			if (class30.method566() - this.field446 > 1000L) {
+			if (class30.currentTimeMillis() - this.field446 > 1000L) {
 				Rectangle var2 = var1.getClipBounds();
 				if (var2 == null || var2.width >= FloorDecoration.canvasWidth && var2.height >= WallDecoration.canvasHeight) {
 					this.isCanvasInvalid = true;
@@ -910,14 +915,14 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			this.setUp();
 			clock = ItemContainer.newClock();
 
-			while (0L == stopTimeMs || class30.method566() < stopTimeMs) {
-				field419 = clock.wait(cycleDurationMillis, fiveOrOne);
+			while (0L == stopTimeMs || class30.currentTimeMillis() < stopTimeMs) {
+				gameCyclesToDo = clock.wait(cycleDurationMillis, fiveOrOne);
 
-				for (int var5 = 0; var5 < field419; ++var5) {
-					this.method963();
+				for (int var5 = 0; var5 < gameCyclesToDo; ++var5) {
+					this.clientTick();
 				}
 
-				this.method956();
+				this.graphicsTick();
 				this.post(this.canvas);
 			}
 		} catch (Exception var6) {
@@ -936,7 +941,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	public final void stop() {
 		if (this == gameShell && !isKilled) {
-			stopTimeMs = class30.method566() + 4000L;
+			stopTimeMs = class30.currentTimeMillis() + 4000L;
 		}
 	}
 
