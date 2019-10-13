@@ -19500,6 +19500,17 @@
     "rangeLevel": 1,
     "magicLevel": 1
   },
+  "4111": {
+    "name": "Ceolburg",
+    "hitpoints": 10,
+    "combatLevel": 4,
+    "attackSpeed": 4,
+    "attackLevel": 3,
+    "strengthLevel": 2,
+    "defenceLevel": 3,
+    "rangeLevel": 1,
+    "magicLevel": 1
+  },
   "4114": {
     "name": "White Knight",
     "hitpoints": 55,
