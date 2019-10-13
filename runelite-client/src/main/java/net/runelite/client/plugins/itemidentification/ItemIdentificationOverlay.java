@@ -35,6 +35,7 @@ import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -43,11 +44,14 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 class ItemIdentificationOverlay extends WidgetItemOverlay
 {
 	private final ItemIdentificationPlugin plugin;
+	private final ItemManager itemManager;
 
 	@Inject
-	ItemIdentificationOverlay(final ItemIdentificationPlugin plugin)
+	ItemIdentificationOverlay(ItemIdentificationPlugin plugin, ItemManager itemManager)
 	{
 		this.plugin = plugin;
+		this.itemManager = itemManager;
+
 		showOnInventory();
 		showOnBank();
 		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
@@ -56,7 +60,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		ItemIdentification iden = ItemIdentification.get(itemId);
+		ItemIdentification iden = findItemIdentification(itemId);
 		if (iden == null)
 		{
 			return;
@@ -98,7 +102,6 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 		renderText(graphics, itemWidget.getCanvasBounds(), iden);
-
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
@@ -116,5 +119,11 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 				break;
 		}
 		textComponent.render(graphics);
+	}
+
+	private ItemIdentification findItemIdentification(final int itemID)
+	{
+		final int realItemId = itemManager.canonicalize(itemID);
+		return ItemIdentification.get(realItemId);
 	}
 }

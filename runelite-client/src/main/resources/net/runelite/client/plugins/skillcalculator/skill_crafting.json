@@ -314,6 +314,12 @@
       "xp": 70
     },
     {
+      "level": 35,
+      "icon": 6235,
+      "name": "Broodoo shield",
+      "xp": 100
+    },
+    {
       "level": 36,
       "icon": 5376,
       "name": "Basket",

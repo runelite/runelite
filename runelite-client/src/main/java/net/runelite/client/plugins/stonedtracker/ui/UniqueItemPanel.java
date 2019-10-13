@@ -38,10 +38,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.stonedtracker.data.UniqueItem;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
@@ -92,7 +92,7 @@ class UniqueItemPanel extends JPanel
 
 			// in case the image is blank we will refresh it upon load
 			// Should only trigger if image hasn't been added
-			image.onChanged(() ->
+			image.onLoaded(() ->
 			{
 				icon.setIcon(new ImageIcon(ImageUtil.alphaOffset(image, alpha)));
 				icon.revalidate();

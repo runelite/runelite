@@ -37,11 +37,11 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.plugins.skillcalculator.banked.BankedCalculator;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
 import net.runelite.client.plugins.skillcalculator.banked.beans.BankedItem;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.util.AsyncBufferedImage;
 
 @Getter(AccessLevel.PUBLIC)
 public class GridItem extends JLabel
