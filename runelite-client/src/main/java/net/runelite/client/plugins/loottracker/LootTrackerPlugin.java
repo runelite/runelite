@@ -33,6 +33,8 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -350,7 +352,7 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		initDatabase();
+		Completable.fromAction(this::initDatabase).subscribeOn(Schedulers.io()).subscribe();
 		addSubscriptions();
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
