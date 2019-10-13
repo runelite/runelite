@@ -136,7 +136,6 @@ enum ItemIdentification
 	STRAWBERRY_BASKET(Type.BASKET, "Strawbe", "STR", ItemID.STRAWBERRIES1, ItemID.STRAWBERRIES2, ItemID.STRAWBERRIES3, ItemID.STRAWBERRIES4, ItemID.STRAWBERRIES5),
 	TOMATO_BASKET(Type.BASKET, "Tomato", "TOM", ItemID.TOMATOES1, ItemID.TOMATOES2, ItemID.TOMATOES3, ItemID.TOMATOES4, ItemID.TOMATOES5);
 
-
 	final Type type;
 	final String medName;
 	final String shortName;

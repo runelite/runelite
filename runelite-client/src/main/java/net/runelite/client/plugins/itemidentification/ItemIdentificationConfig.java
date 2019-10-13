@@ -119,6 +119,5 @@ public interface ItemIdentificationConfig extends Config
 		name = "Baskets",
 		description = "Show identification on Baskets"
 	)
-
 	default boolean showBaskets() { return false; }
 }
