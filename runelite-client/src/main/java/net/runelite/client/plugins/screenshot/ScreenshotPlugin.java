@@ -573,7 +573,7 @@ public class ScreenshotPlugin extends Plugin
 	 * and optionally uploads it to an image-hosting service.
 	 *
 	 * @param fileName    Filename to use, without file extension.
-	 * @param subDir    Sub directory where the file will be put.
+	 * @param subDir      Sub directory where the file will be put.
 	 */
 	private void takeScreenshot(String fileName, String subDir)
 	{
