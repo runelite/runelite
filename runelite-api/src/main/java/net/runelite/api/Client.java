@@ -1857,4 +1857,10 @@ public interface Client extends GameShell
 	 * when you only want to change the left click one.
 	 */
 	void setLeftClickMenuEntry(MenuEntry entry);
+
+	/**
+	 * If this field is set to true, getting 5 minute logged won't show
+	 * the "You have been disconnected." message anymore.
+	 */
+	void setHideDisconnect(boolean dontShow);
 }

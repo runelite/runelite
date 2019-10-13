@@ -215,7 +215,7 @@ public final class Occluder {
 				var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
 			} else {
 				String var4 = var3 + "; Expires=";
-				long var6 = class30.method566() + 94608000000L;
+				long var6 = class30.currentTimeMillis() + 94608000000L;
 				Calendar.Calendar_calendar.setTime(new Date(var6));
 				int var8 = Calendar.Calendar_calendar.get(7);
 				int var9 = Calendar.Calendar_calendar.get(5);

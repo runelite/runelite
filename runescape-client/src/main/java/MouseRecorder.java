@@ -226,7 +226,7 @@ public class MouseRecorder implements Runnable {
 	)
 	static final void method1213() {
 		if (Client.logoutTimer > 0) {
-			DynamicObject.method2223();
+			DynamicObject.logOut();
 		} else {
 			Client.timer.method4937();
 			updateGameState(40);

@@ -198,7 +198,8 @@ public class DynamicObject extends Entity {
 		signature = "(I)V",
 		garbageValue = "274251023"
 	)
-	static final void method2223() {
+	@Export("logOut")
+	static final void logOut() {
 		Client.packetWriter.close();
 		WorldMapIcon_1.method314();
 		PacketWriter.scene.clear();

@@ -1090,4 +1090,10 @@ public interface RSClient extends RSGameShell, Client
 	@Import("Sprite_drawScaled")
 	@Override
 	void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY, int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth);
+
+	/**
+	 * This sets the login screen to where it asks for username/pass
+	 */
+	@Import("Login_promptCredentials")
+	void promptCredentials(boolean clearPass);
 }

@@ -308,8 +308,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = 426040267
 	)
-	@Export("archiveLoaderArchive")
-	static int archiveLoaderArchive;
+	@Export("archiveLoadersDone")
+	static int archiveLoadersDone;
 	@ObfuscatedName("rm")
 	static boolean[] field835;
 	@ObfuscatedName("pz")
@@ -1546,7 +1546,7 @@ public final class Client extends GameShell implements Usernamed {
 		GrandExchangeEvents_worldComparator = new GrandExchangeOfferOwnWorldComparator();
 		field905 = -1;
 		archiveLoaders = new ArrayList(10);
-		archiveLoaderArchive = 0;
+		archiveLoadersDone = 0;
 		field908 = 0;
 		field909 = new class65();
 		field910 = new int[50];
@@ -1560,7 +1560,7 @@ public final class Client extends GameShell implements Usernamed {
 	)
 	@Export("resizeGame")
 	protected final void resizeGame() {
-		field754 = class30.method566() + 500L;
+		field754 = class30.currentTimeMillis() + 500L;
 		this.resizeJS();
 		if (rootInterface != -1) {
 			this.resizeRoot(true);
@@ -1636,108 +1636,105 @@ public final class Client extends GameShell implements Usernamed {
 			}
 
 			if (var1 == null) {
-				int var5;
-				try {
-					if (class197.field2386 == 1) {
-						var5 = class49.midiPcmStream.method3745();
-						if (var5 > 0 && class49.midiPcmStream.isReady()) {
-							var5 -= MusicPatchNode2.field2382;
-							if (var5 < 0) {
-								var5 = 0;
-							}
-
-							class49.midiPcmStream.method3760(var5);
-						} else {
-							class49.midiPcmStream.clear();
-							class49.midiPcmStream.removeAll();
-							if (class197.musicTrackArchive != null) {
-								class197.field2386 = 2;
-							} else {
-								class197.field2386 = 0;
-							}
-
-							class197.musicTrack = null;
-							FriendLoginUpdate.soundCache = null;
-						}
-					}
-				} catch (Exception var9) {
-					var9.printStackTrace();
-					class49.midiPcmStream.clear();
-					class197.field2386 = 0;
-					class197.musicTrack = null;
-					FriendLoginUpdate.soundCache = null;
-					class197.musicTrackArchive = null;
-				}
-
-				WorldMapID.playPcmPlayers();
-				synchronized(KeyHandler.KeyHandler_instance) {
-					++KeyHandler.KeyHandler_idleCycles;
-					KeyHandler.field378 = KeyHandler.field380;
-					KeyHandler.field361 = 0;
-					int var6;
-					if (KeyHandler.field373 >= 0) {
-						while (KeyHandler.field373 != KeyHandler.field372) {
-							var6 = KeyHandler.field365[KeyHandler.field372];
-							KeyHandler.field372 = KeyHandler.field372 + 1 & 127;
-							if (var6 < 0) {
-								KeyHandler.KeyHandler_pressedKeys[~var6] = false;
-							} else {
-								if (!KeyHandler.KeyHandler_pressedKeys[var6] && KeyHandler.field361 < KeyHandler.field376.length - 1) {
-									KeyHandler.field376[++KeyHandler.field361 - 1] = var6;
-								}
-
-								KeyHandler.KeyHandler_pressedKeys[var6] = true;
-							}
-						}
-					} else {
-						for (var6 = 0; var6 < 112; ++var6) {
-							KeyHandler.KeyHandler_pressedKeys[var6] = false;
-						}
-
-						KeyHandler.field373 = KeyHandler.field372;
-					}
-
-					if (KeyHandler.field361 > 0) {
-						KeyHandler.KeyHandler_idleCycles = 0;
-					}
-
-					KeyHandler.field380 = KeyHandler.field371;
-				}
-
-				VertexNormal.method2959();
-				if (KeyHandler.mouseWheel != null) {
-					var5 = KeyHandler.mouseWheel.useRotation();
-					mouseWheelRotation = var5;
-				}
-
-				if (gameState == 0) {
-					class189.load();
-					WorldMapDecoration.method343();
-				} else if (gameState == 5) {
-					LoginPacket.method3587(this);
-					class189.load();
-					WorldMapDecoration.method343();
-				} else if (gameState != 10 && gameState != 11) {
-					if (gameState == 20) {
-						LoginPacket.method3587(this);
-						this.doCycleLoggedOut();
-					} else if (gameState == 25) {
-						KeyHandler.method851();
-					}
-				} else {
-					LoginPacket.method3587(this);
-				}
-
-				if (gameState == 30) {
-					this.doCycleLoggedIn();
-				} else if (gameState == 40 || gameState == 45) {
-					this.doCycleLoggedOut();
-				}
-
-				return;
+				break;
 			}
 
 			var1.archive.load(var1.archiveDisk, (int)var1.key, var1.data, false);
+		}
+
+		try {
+			if (class197.field2386 == 1) {
+				int var5 = class49.midiPcmStream.method3745();
+				if (var5 > 0 && class49.midiPcmStream.isReady()) {
+					var5 -= MusicPatchNode2.field2382;
+					if (var5 < 0) {
+						var5 = 0;
+					}
+
+					class49.midiPcmStream.method3760(var5);
+				} else {
+					class49.midiPcmStream.clear();
+					class49.midiPcmStream.removeAll();
+					if (class197.musicTrackArchive != null) {
+						class197.field2386 = 2;
+					} else {
+						class197.field2386 = 0;
+					}
+
+					class197.musicTrack = null;
+					FriendLoginUpdate.soundCache = null;
+				}
+			}
+		} catch (Exception var9) {
+			var9.printStackTrace();
+			class49.midiPcmStream.clear();
+			class197.field2386 = 0;
+			class197.musicTrack = null;
+			FriendLoginUpdate.soundCache = null;
+			class197.musicTrackArchive = null;
+		}
+
+		WorldMapID.playPcmPlayers();
+		synchronized(KeyHandler.KeyHandler_instance) {
+			++KeyHandler.KeyHandler_idleCycles;
+			KeyHandler.field378 = KeyHandler.field380;
+			KeyHandler.field361 = 0;
+			int var6;
+			if (KeyHandler.field373 >= 0) {
+				while (KeyHandler.field373 != KeyHandler.field372) {
+					var6 = KeyHandler.field365[KeyHandler.field372];
+					KeyHandler.field372 = KeyHandler.field372 + 1 & 127;
+					if (var6 < 0) {
+						KeyHandler.KeyHandler_pressedKeys[~var6] = false;
+					} else {
+						if (!KeyHandler.KeyHandler_pressedKeys[var6] && KeyHandler.field361 < KeyHandler.field376.length - 1) {
+							KeyHandler.field376[++KeyHandler.field361 - 1] = var6;
+						}
+
+						KeyHandler.KeyHandler_pressedKeys[var6] = true;
+					}
+				}
+			} else {
+				for (var6 = 0; var6 < 112; ++var6) {
+					KeyHandler.KeyHandler_pressedKeys[var6] = false;
+				}
+
+				KeyHandler.field373 = KeyHandler.field372;
+			}
+
+			if (KeyHandler.field361 > 0) {
+				KeyHandler.KeyHandler_idleCycles = 0;
+			}
+
+			KeyHandler.field380 = KeyHandler.field371;
+		}
+
+		VertexNormal.method2959();
+		if (KeyHandler.mouseWheel != null) {
+			int var5 = KeyHandler.mouseWheel.useRotation();
+			mouseWheelRotation = var5;
+		}
+
+		if (gameState == 0) {
+			class189.load();
+			WorldMapDecoration.method343();
+		} else if (gameState == 5) {
+			LoginPacket.doCycleTitle(this);
+			class189.load();
+			WorldMapDecoration.method343();
+		} else if (gameState == 10 || gameState == 11) {
+			LoginPacket.doCycleTitle(this);
+		} else if (gameState == 20) {
+			LoginPacket.doCycleTitle(this);
+			this.doCycleLoggedOut();
+		} else if (gameState == 25) {
+			KeyHandler.method851();
+		}
+
+		if (gameState == 30) {
+			this.doCycleLoggedIn();
+		} else if (gameState == 40 || gameState == 45) {
+			this.doCycleLoggedOut();
 		}
 	}
 
@@ -1792,7 +1789,7 @@ public final class Client extends GameShell implements Usernamed {
 			class219.pcmPlayer0.tryDiscard();
 		}
 
-		if ((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field754 && class30.method566() > field754) {
+		if ((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field754 && class30.currentTimeMillis() > field754) {
 			UserComparator8.setWindowedMode(class247.getWindowedMode());
 		}
 
@@ -2188,7 +2185,7 @@ public final class Client extends GameShell implements Usernamed {
 						var5.writeInt(184);
 						class43.js5Socket.write(var5.array, 0, 5);
 						++js5ConnectState;
-						VerticalAlignment.field3175 = class30.method566();
+						VerticalAlignment.field3175 = class30.currentTimeMillis();
 					}
 
 					if (js5ConnectState == 3) {
@@ -2200,7 +2197,7 @@ public final class Client extends GameShell implements Usernamed {
 							}
 
 							++js5ConnectState;
-						} else if (class30.method566() - VerticalAlignment.field3175 > 30000L) {
+						} else if (class30.currentTimeMillis() - VerticalAlignment.field3175 > 30000L) {
 							this.js5Error(-2);
 							return;
 						}
@@ -3037,7 +3034,7 @@ public final class Client extends GameShell implements Usernamed {
 							var14 = InterfaceParent.getPacketBufferNode(ClientPacket.field2224, packetWriter.isaacCipher);
 							var14.packetBuffer.writeShort(0);
 							var15 = var14.packetBuffer.offset;
-							long var19 = class30.method566();
+							long var19 = class30.currentTimeMillis();
 
 							for (var5 = 0; var5 < KeyHandler.field361; ++var5) {
 								long var21 = var19 - field860;
@@ -3883,15 +3880,15 @@ public final class Client extends GameShell implements Usernamed {
 					return true;
 				}
 
-				boolean var45;
-				if (ServerPacket.field2109 == var1.serverPacket) {
-					var45 = var3.readUnsignedByte() == 1;
-					if (var45) {
-						class81.field1135 = class30.method566() - var3.readLong();
-						TileItem.grandExchangeEvents = new GrandExchangeEvents(var3, true);
-					} else {
-						TileItem.grandExchangeEvents = null;
-					}
+			boolean var45;
+			if (ServerPacket.field2109 == var1.serverPacket) {
+				var45 = var3.readUnsignedByte() == 1;
+				if (var45) {
+					class81.field1135 = class30.currentTimeMillis() - var3.readLong();
+					TileItem.grandExchangeEvents = new GrandExchangeEvents(var3, true);
+				} else {
+					TileItem.grandExchangeEvents = null;
+				}
 
 					field832 = cycleCntr;
 					var1.serverPacket = null;
@@ -4352,7 +4349,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2130 == var1.serverPacket) {
 					var16 = var3.readUnsignedByte();
-					SequenceDefinition.method4756(var16);
+					SequenceDefinition.forceDisconnect(var16);
 					var1.serverPacket = null;
 					return false;
 				}
@@ -4956,7 +4953,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2111 == var1.serverPacket) {
-					DynamicObject.method2223();
+					DynamicObject.logOut();
 					var1.serverPacket = null;
 					return false;
 				}
@@ -5082,7 +5079,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				class32.RunException_sendStackTrace("" + (var1.serverPacket != null ? var1.serverPacket.id : -1) + "," + (var1.field1291 != null ? var1.field1291.id : -1) + "," + (var1.field1301 != null ? var1.field1301.id : -1) + "," + var1.serverPacketLength, (Throwable)null);
-				DynamicObject.method2223();
+				DynamicObject.logOut();
 			} catch (IOException var34) {
 				MouseRecorder.method1213();
 			} catch (Exception var35) {
@@ -5093,7 +5090,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				class32.RunException_sendStackTrace(var31, var35);
-				DynamicObject.method2223();
+				DynamicObject.logOut();
 			}
 
 			return true;

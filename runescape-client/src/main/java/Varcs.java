@@ -16,7 +16,8 @@ public class Varcs {
 	@ObfuscatedGetter(
 		intValue = -1292567711
 	)
-	static int field1255;
+	@Export("graphicsTickTimeIdx")
+	static int graphicsTickTimeIdx;
 	@ObfuscatedName("ho")
 	@ObfuscatedGetter(
 		intValue = -2002882325
@@ -237,7 +238,7 @@ public class Varcs {
 		}
 
 		this.unwrittenChanges = false;
-		this.field1253 = class30.method566();
+		this.field1253 = class30.currentTimeMillis();
 	}
 
 	@ObfuscatedName("i")
@@ -339,7 +340,7 @@ public class Varcs {
 	)
 	@Export("tryWrite")
 	void tryWrite() {
-		if (this.unwrittenChanges && this.field1253 < class30.method566() - 60000L) {
+		if (this.unwrittenChanges && this.field1253 < class30.currentTimeMillis() - 60000L) {
 			this.write();
 		}
 

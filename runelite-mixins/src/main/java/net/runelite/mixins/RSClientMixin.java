@@ -201,11 +201,7 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean printMenuActions;
 
 	@Inject
-	@Override
-	public void setPrintMenuActions(boolean yes)
-	{
-		printMenuActions = yes;
-	}
+	private static boolean hideDisconnect = false;
 
 	@Inject
 	private static boolean hideFriendAttackOptions = false;
@@ -221,6 +217,20 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static Set<String> unhiddenCasts = new HashSet<String>();
+
+	@Inject
+	@Override
+	public void setPrintMenuActions(boolean yes)
+	{
+		printMenuActions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setHideDisconnect(boolean dontShow)
+	{
+		hideDisconnect = dontShow;
+	}
 
 	@Inject
 	@Override
@@ -1756,5 +1766,21 @@ public abstract class RSClientMixin implements RSClient
 	public void setModulus(BigInteger modulus)
 	{
 		this.modulus = modulus;
+	}
+
+	@Copy("forceDisconnect")
+	static void rs$forceDisconnect(int reason)
+	{
+	}
+
+	@Replace("forceDisconnect")
+	static void forceDisconnect(int reason)
+	{
+		rs$forceDisconnect(reason);
+
+		if (hideDisconnect && reason == 1)
+		{
+			client.promptCredentials(true);
+		}
 	}
 }

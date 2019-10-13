@@ -33,7 +33,7 @@ public class FriendLoginUpdate extends Link {
 		signature = "(Ljq;I)V"
 	)
 	FriendLoginUpdate(Username var1, int var2) {
-		this.field3627 = (int)(class30.method566() / 1000L);
+		this.field3627 = (int)(class30.currentTimeMillis() / 1000L);
 		this.username = var1;
 		this.world = (short)var2;
 	}

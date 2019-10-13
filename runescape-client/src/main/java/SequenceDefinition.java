@@ -371,8 +371,9 @@ public class SequenceDefinition extends DualNode {
 		signature = "(II)V",
 		garbageValue = "-645881783"
 	)
-	static final void method4756(int var0) {
-		DynamicObject.method2223();
+	@Export("forceDisconnect")
+	static final void forceDisconnect(int var0) {
+		DynamicObject.logOut();
 		switch(var0) {
 		case 1:
 			Login.loginIndex = 24;

@@ -420,7 +420,7 @@ public class PlayerAppearance {
 		garbageValue = "-1021250910"
 	)
 	public static boolean method4010() {
-		long var0 = class30.method566();
+		long var0 = class30.currentTimeMillis();
 		int var2 = (int)(var0 - NetCache.field3142);
 		NetCache.field3142 = var0;
 		if (var2 > 200) {
