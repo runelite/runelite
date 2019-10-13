@@ -42,10 +42,10 @@ import lombok.Getter;
 import net.runelite.api.ItemDefinition;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.util.Text;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.StackFormatter;
 
 @Singleton

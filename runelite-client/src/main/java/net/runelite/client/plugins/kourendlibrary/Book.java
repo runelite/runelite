@@ -30,7 +30,7 @@ import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
-import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
 enum Book

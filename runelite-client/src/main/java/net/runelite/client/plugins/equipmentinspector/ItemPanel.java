@@ -30,9 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.kit.KitType;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import org.apache.commons.lang3.StringUtils;
 
 class ItemPanel extends JPanel

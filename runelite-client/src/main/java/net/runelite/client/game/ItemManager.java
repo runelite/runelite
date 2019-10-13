@@ -62,6 +62,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemDefinition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
@@ -134,7 +135,6 @@ public class ItemManager
 		put(AGILITY_CAPE_13340, AGILITY_CAPE).
 		build();
 	private final Client client;
-	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
 	private final ItemClient itemClient;
 	private final ImmutableMap<Integer, ItemStats> itemStatMap;
@@ -154,12 +154,11 @@ public class ItemManager
 	)
 	{
 		this.client = client;
-		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
 		this.itemClient = itemClient;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
-		scheduledExecutorService.submit(this::loadStats);
+		executor.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		executor.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
@@ -462,7 +461,7 @@ public class ItemManager
 				return false;
 			}
 			sprite.toBufferedImage(img);
-			img.changed();
+			img.loaded();
 			return true;
 		});
 		return img;

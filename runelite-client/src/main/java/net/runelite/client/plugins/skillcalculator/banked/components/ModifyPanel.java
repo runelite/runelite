@@ -47,7 +47,6 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Constants;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.skillcalculator.banked.BankedCalculator;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
@@ -58,6 +57,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ComboBoxIconEntry;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import net.runelite.client.util.AsyncBufferedImage;
 
 public class ModifyPanel extends JPanel
 {
@@ -199,7 +199,7 @@ public class ModifyPanel extends JPanel
 		final boolean stackable = item.getItemInfo().isStackable() || amount > 1;
 		final AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, stackable);
 		final Runnable resize = () -> image.setIcon(new ImageIcon(icon.getScaledInstance(ICON_SIZE.width, ICON_SIZE.height, Image.SCALE_SMOOTH)));
-		icon.onChanged(resize);
+		icon.onLoaded(resize);
 		resize.run();
 
 		final String itemName = item.getItemInfo().getName();
@@ -254,7 +254,7 @@ public class ModifyPanel extends JPanel
 			final double xp = a.getXp() * xpFactor;
 			final JPanel container = createShadowedLabel(icon, a.getName(), FORMAT_COMMA.format(xp) + "xp");
 
-			img.onChanged(() ->
+			img.onLoaded(() ->
 			{
 				icon.setImage(img);
 				container.repaint();
@@ -282,7 +282,7 @@ public class ModifyPanel extends JPanel
 				final ComboBoxIconEntry entry = new ComboBoxIconEntry(icon, name, option);
 				dropdown.addItem(entry);
 
-				img.onChanged(() ->
+				img.onLoaded(() ->
 				{
 					icon.setImage(img);
 					dropdown.revalidate();

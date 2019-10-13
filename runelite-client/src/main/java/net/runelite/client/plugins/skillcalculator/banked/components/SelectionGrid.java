@@ -35,10 +35,10 @@ import javax.swing.JPanel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.skillcalculator.banked.BankedCalculator;
 import net.runelite.client.plugins.skillcalculator.banked.beans.BankedItem;
+import net.runelite.client.util.AsyncBufferedImage;
 
 /**
  * A grid that supports mouse events
