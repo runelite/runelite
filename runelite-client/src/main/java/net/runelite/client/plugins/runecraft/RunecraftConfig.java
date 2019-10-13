@@ -95,6 +95,18 @@ public interface RunecraftConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "degradeOverlay",
+		name = "Show Uses until Degrade",
+		description = "This will show how many uses are left on a pouch until they degrade.",
+		position = 6,
+		titleSection = "utilTitle"
+	)
+	default boolean degradeOverlay()
+	{
+		return true;
+	}
+
 	@ConfigTitleSection(
 		keyName = "riftsTitle",
 		name = "Rifts",
