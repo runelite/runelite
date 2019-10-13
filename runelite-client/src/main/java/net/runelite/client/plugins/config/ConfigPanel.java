@@ -26,7 +26,6 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,7 +45,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +105,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -320,20 +317,6 @@ public class ConfigPanel extends PluginPanel
 		chatColor.nameLabel.setForeground(Color.WHITE);
 		plugins.add(chatColor);
 
-		ImmutableList<PluginType> definedOrder = ImmutableList.of(PluginType.EXTERNAL, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.GENERAL_USE, PluginType.PLUGIN_ORGANIZER);
-		Comparator<PluginListItem> pluginTypeComparator = Comparator.comparing(plugin ->
-		{
-			PluginType type = PluginType.GENERAL_USE;
-			Plugin sortPlugin = plugin.getPlugin();
-			if (sortPlugin != null)
-			{
-				type = sortPlugin.getClass().getAnnotation(PluginDescriptor.class).type();
-			}
-
-			return definedOrder.indexOf(type);
-		});
-
-		plugins.sort(pluginTypeComparator.thenComparing(PluginListItem::getName));
 		pluginList.addAll(plugins);
 	}
 

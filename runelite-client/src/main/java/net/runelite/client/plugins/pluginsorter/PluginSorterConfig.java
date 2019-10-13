@@ -25,6 +25,9 @@
 package net.runelite.client.plugins.pluginsorter;
 
 import java.awt.Color;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -35,11 +38,50 @@ import net.runelite.client.config.Title;
 @ConfigGroup("pluginsorter")
 public interface PluginSorterConfig extends Config
 {
+	@Getter(AccessLevel.PACKAGE)
+	@AllArgsConstructor
+	enum SortStyle
+	{
+		CATEGORY("Category"),
+		ALPHABETICALLY("Alphabetically");
+
+		private String name;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
+	}
+
+	@ConfigTitleSection(
+		keyName = "pluginSortingTitle",
+		name = "Sorting",
+		description = "",
+		position = 0
+	)
+	default Title pluginSortingTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "pluginSortMode",
+		name = "Sorting mode",
+		description = "Sorts plugins ",
+		titleSection = "pluginSortingTitle"
+	)
+	default SortStyle pluginSortMode()
+	{
+		return SortStyle.CATEGORY;
+	}
+
 	@ConfigTitleSection(
 		keyName = "hidePluginsTitle",
 		name = "Hiding",
 		description = "",
-		position = 0
+		position = 2
 	)
 	default Title hidePluginsTitle()
 	{
@@ -47,7 +89,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 3,
 		keyName = "hidePlugins",
 		name = "Hide Plugins",
 		description = "Hides all OpenOSRS plugins if checked",
@@ -60,7 +102,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 4,
 		keyName = "hideExternalPlugins",
 		name = "Hide External Plugins",
 		description = "Hides all OpenOSRS external plugins if checked",
@@ -73,7 +115,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 5,
 		keyName = "hidePvmPlugins",
 		name = "Hide PvM Plugins",
 		description = "Hides all OpenOSRS PvM plugins if checked",
@@ -86,7 +128,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "hideSkillingPlugins",
 		name = "Hide Skillinh Plugins",
 		description = "Hides all OpenOSRS skilling plugins if checked",
@@ -99,7 +141,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 7,
 		keyName = "hidePvpPlugins",
 		name = "Hide PvP Plugins",
 		description = "Hides all OpenOSRS Pvp plugins if checked",
@@ -112,7 +154,7 @@ public interface PluginSorterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 8,
 		keyName = "hideUtilityPlugins",
 		name = "Hide Utility Plugins",
 		description = "Hides all OpenOSRS utility plugins if checked",
@@ -128,7 +170,7 @@ public interface PluginSorterConfig extends Config
 		keyName = "pluginsColorTitle",
 		name = "Colors",
 		description = "",
-		position = 7
+		position = 9
 	)
 	default Title pluginsColorTitle()
 	{
@@ -137,7 +179,7 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "externalColor",
 		name = "External color",
 		description = "Configure the color of external plugins",
@@ -150,7 +192,7 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "pvmColor",
 		name = "PVM color",
 		description = "Configure the color of PVM related plugins",
@@ -163,7 +205,7 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 10,
+		position = 12,
 		keyName = "pvpColor",
 		name = "PVP color",
 		description = "Configure the color of PVP related plugins",
@@ -176,7 +218,7 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "skillingColor",
 		name = "Skilling color",
 		description = "Configure the color of Skilling related plugins",
@@ -189,7 +231,7 @@ public interface PluginSorterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "utilityColor",
 		name = "Utility color",
 		description = "Configure the color of Utility related plugins",

@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.pluginsorter;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.Comparator;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.events.ConfigChanged;
@@ -53,11 +55,29 @@ public class PluginSorterPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
+	private PluginSorterConfig.SortStyle pluginSortMode;
 	private Color externalColor;
 	private Color pvmColor;
 	private Color pvpColor;
 	private Color skillingColor;
 	private Color utilityColor;
+
+	private final ImmutableList<PluginType> definedOrder = ImmutableList.of(PluginType.IMPORTANT, PluginType.EXTERNAL, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.GENERAL_USE, PluginType.PLUGIN_ORGANIZER);
+	private final Comparator<PluginListItem> pluginTypeComparator = Comparator.comparing(plugin ->
+	{
+		PluginType type = PluginType.GENERAL_USE;
+		Plugin sortPlugin = plugin.getPlugin();
+		if (sortPlugin != null)
+		{
+			type = sortPlugin.getClass().getAnnotation(PluginDescriptor.class).type();
+		}
+		else if (plugin.configDescriptor.getGroup().value().equals("openosrs") || plugin.configDescriptor.getGroup().value().equals("runelite"))
+		{
+			type = PluginType.IMPORTANT;
+		}
+
+		return definedOrder.indexOf(type);
+	});
 
 	@Provides
 	PluginSorterConfig provideConfig(ConfigManager configManager)
@@ -148,10 +168,20 @@ public class PluginSorterPlugin extends Plugin
 				}
 			}
 		}
+
+		if (this.pluginSortMode == PluginSorterConfig.SortStyle.CATEGORY)
+		{
+			ConfigPanel.pluginList.sort(pluginTypeComparator.thenComparing(PluginListItem::getName));
+		}
+		else
+		{
+			ConfigPanel.pluginList.sort(Comparator.comparing(PluginListItem::getName));
+		}
 	}
 
 	private void updateConfig()
 	{
+		this.pluginSortMode = config.pluginSortMode();
 		this.externalColor = config.externalColor();
 		this.pvmColor = config.pvmColor();
 		this.pvpColor = config.pvpColor();
