@@ -103,8 +103,8 @@ public class RuneLite
 	@Inject
 	public DiscordService discordService;
 
-//	@Inject
-//	private ClientSessionManager clientSessionManager;
+	@Inject
+	private ClientSessionManager clientSessionManager;
 
 	@Inject
 	private ClientUI clientUI;
@@ -334,7 +334,7 @@ public class RuneLite
 
 		// Start client session
 		RuneLiteSplashScreen.stage(.75, "Starting core interface");
-		// clientSessionManager.start();
+		clientSessionManager.start();
 
 		// Initialize UI
 		RuneLiteSplashScreen.stage(.80, "Initialize UI");
@@ -386,7 +386,7 @@ public class RuneLite
 	public void shutdown()
 	{
 		configManager.sendConfig();
-		// clientSessionManager.shutdown();
+		clientSessionManager.shutdown();
 		discordService.close();
 	}
 
