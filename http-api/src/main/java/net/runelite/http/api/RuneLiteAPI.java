@@ -63,7 +63,7 @@ public class RuneLiteAPI
 	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 	private static final String BASE = "https://api.runelite.net";
 	private static final String OPENOSRS_BASE = /*"https://api.openosrs.com*/ "https://api.runelitepl.us";
-	private static final String OPENOSRS_SESSION = /*"https://session.openosrs.com"*/ "https://session.runelitepl.us";
+	private static final String OPENOSRS_SESSION = /*"https://session.openosrs.com"*/ "https://session.openosrs.com";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final String MAVEN_METADATA =
