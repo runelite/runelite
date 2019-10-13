@@ -79,7 +79,7 @@ public interface PluginSorterConfig extends Config
 
 	@ConfigTitleSection(
 		keyName = "hidePluginsTitle",
-		name = "Hiding",
+		name = "Hide By Type",
 		description = "",
 		position = 2
 	)
@@ -91,7 +91,7 @@ public interface PluginSorterConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "hidePlugins",
-		name = "Hide Plugins",
+		name = "Hide All Plugins",
 		description = "Hides all OpenOSRS plugins if checked",
 		titleSection = "hidePluginsTitle",
 		hide = "hidePvmPlugins || hidePvpPlugins || hideSkillingPlugins || hideUtilityPlugins || hideExternalPlugins"
@@ -130,7 +130,7 @@ public interface PluginSorterConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "hideSkillingPlugins",
-		name = "Hide Skillinh Plugins",
+		name = "Hide Skilling Plugins",
 		description = "Hides all OpenOSRS skilling plugins if checked",
 		titleSection = "hidePluginsTitle",
 		hide = "hidePlugins"
