@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class RaidsOverlay extends Overlay
 {
 	private static final int OLM_PLANE = 0;
+	static final String BROADCAST_ACTION = "Broadcast layout";
 
 	private Client client;
 	private RaidsPlugin plugin;
@@ -63,6 +65,7 @@ public class RaidsOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
 	}
 
 	@Override
