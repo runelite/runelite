@@ -24,106 +24,68 @@
  */
 package net.runelite.client;
 
-import com.google.gson.JsonParseException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import io.reactivex.Observable;
 import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 
 class SessionClient
 {
-	private final ClientSessionManager manager;
-
-	SessionClient(ClientSessionManager manager)
+	Observable<UUID> openSession()
 	{
-		this.manager = manager;
-	}
+		final HttpUrl url = RuneLiteAPI.getSessionBase();
 
-	void open()
-	{
-		HttpUrl url = RuneLiteAPI.getopenosrsSessionBase().newBuilder()
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		return Observable.fromCallable(() ->
 		{
-			@Override
-			public void onFailure(@NotNull Call call, @NotNull IOException e)
+			Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				manager.error(e);
-			}
-
-			@Override
-			public void onResponse(@NotNull Call call, @NotNull Response response)
-			{
-				try
-				{
-					ResponseBody body = response.body();
-
-					InputStream in = body.byteStream();
-
-					manager.setUuid(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class));
-				}
-				catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
-				{
-					manager.error(new IOException(ex));
-				}
+				return RuneLiteAPI.GSON.fromJson(response.body().string(), UUID.class);
 			}
 		});
 	}
 
-	void ping(UUID uuid)
+	Observable pingSession(UUID uuid)
 	{
-		HttpUrl url = RuneLiteAPI.getopenosrsSessionBase().newBuilder()
+		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
 			.build();
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		return Observable.defer(() ->
 		{
-			@Override
-			public void onFailure(@NotNull Call call, @NotNull IOException e)
-			{
-				manager.error(e);
-			}
+			Request request = new Request.Builder()
+				.url(url)
+				.build();
 
-			@Override
-			public void onResponse(@NotNull Call call, @NotNull Response response)
+
+			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				if (!response.isSuccessful())
-				{
-					manager.error(new IOException("Failed ping"));
-				}
+				return Observable.empty();
 			}
 		});
 	}
 
-	void delete(UUID uuid) throws IOException
+	Observable delete(UUID uuid)
 	{
-		HttpUrl url = RuneLiteAPI.getopenosrsSessionBase().newBuilder()
+		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addQueryParameter("session", uuid.toString())
 			.build();
 
-		Request request = new Request.Builder()
-			.delete()
-			.url(url)
-			.build();
+		return Observable.defer(() ->
+		{
+			Request request = new Request.Builder()
+				.delete()
+				.url(url)
+				.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).execute().close();
+			RuneLiteAPI.CLIENT.newCall(request).execute().close();
+			return Observable.empty();
+		});
 	}
 }
