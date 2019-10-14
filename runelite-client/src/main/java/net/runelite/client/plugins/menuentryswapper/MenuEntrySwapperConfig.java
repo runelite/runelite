@@ -315,7 +315,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 			keyName = "swapPvpAttack",
 			name = "PvP Attack",
-			description = "Swap attack option when in PvP safe areas."
+			description = "Swap Attack with Walk here when in PvP safe zones."
 	)
 	default boolean swapPvpAttack() {
 		return true;
