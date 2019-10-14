@@ -297,7 +297,8 @@ public class ConfigPanel extends PluginPanel
 
 		// populate pluginList with all vanilla RL plugins
 		List<PluginListItem> plugins = new ArrayList<>();
-		pluginManager.getPlugins()
+		pluginManager.getPlugins().stream()
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
 			.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
