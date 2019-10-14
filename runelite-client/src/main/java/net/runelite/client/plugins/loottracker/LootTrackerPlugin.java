@@ -352,7 +352,6 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		Completable.fromAction(this::initDatabase).subscribeOn(Schedulers.io()).subscribe();
 		addSubscriptions();
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
@@ -372,106 +371,110 @@ public class LootTrackerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		AccountSession accountSession = sessionManager.getAccountSession();
-		if (accountSession != null || this.localPersistence)
-		{
-
-			clientThread.invokeLater(() ->
+		Completable.fromAction(this::initDatabase)
+			.subscribeOn(Schedulers.io())
+			.subscribe(() ->
 			{
-				switch (client.getGameState())
+				AccountSession accountSession = sessionManager.getAccountSession();
+				if (accountSession != null || this.localPersistence)
 				{
-					case STARTING:
-					case UNKNOWN:
-						return false;
-				}
-
-				executor.submit(() ->
-				{
-					if (this.syncPanel && lootTrackerClient != null)
-					{
-						if (accountSession != null)
-						{
-							lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
-						}
-						try
-						{
-							lootRecords = lootTrackerClient.get();
-						}
-						catch (IOException e)
-						{
-							log.debug("Unable to look up loot", e);
-							return;
-						}
-						log.info("Loaded {} remote data entries", lootRecords.size());
-					}
-
-					if (this.localPersistence)
-					{
-						DSLContext dslContext = databaseManager.getDsl();
-
-						Result<Record> records = dslContext
-							.selectDistinct(
-								LOOTTRACKEREVENTS.UNIQUEID
-							).select(
-								LOOTTRACKEREVENTS.EVENTID,
-								LOOTTRACKEREVENTS.TYPE,
-								LOOTTRACKEREVENTS.TIME,
-								USER.USERNAME
-							)
-							.from(LOOTTRACKEREVENTS)
-							.join(LOOTTRACKERLINK).on(LOOTTRACKERLINK.EVENTUNIQUEID.eq(LOOTTRACKEREVENTS.UNIQUEID))
-							.join(USER).on(LOOTTRACKERLINK.USERUNIQUEID.eq(USER.UNIQUEID))
-							.fetch();
-
-						for (Record record : records)
-						{
-							Result<Record2<Integer, Integer>> drops = dslContext
-								.select(
-									LOOTTRACKERLOOT.ITEMID,
-									LOOTTRACKERLOOT.QUANTITY
-								)
-								.from(LOOTTRACKERLOOT)
-								.join(LOOTTRACKERLINK).on(LOOTTRACKERLOOT.UNIQUEID.eq(LOOTTRACKERLINK.DROPUNIQUEID))
-								.where(LOOTTRACKERLINK.EVENTUNIQUEID.eq(record.getValue(LOOTTRACKEREVENTS.UNIQUEID)))
-								.fetch();
-
-							final List<GameItem> gameItems = new ArrayList<>();
-
-							for (Record drop : drops)
-							{
-								GameItem gameItem = new GameItem();
-								gameItem.setId(drop.getValue(LOOTTRACKERLOOT.ITEMID));
-								gameItem.setQty(drop.getValue(LOOTTRACKERLOOT.QUANTITY));
-
-								gameItems.add(gameItem);
-							}
-
-							LootRecord lootRecord = new LootRecord();
-							lootRecord.setEventId(record.getValue(LOOTTRACKEREVENTS.EVENTID));
-							lootRecord.setUsername(record.getValue(USER.USERNAME));
-							lootRecord.setType(record.getValue(LOOTTRACKEREVENTS.TYPE, LootRecordType.class));
-							lootRecord.setDrops(gameItems);
-							lootRecord.setTime(record.getValue(LOOTTRACKEREVENTS.TIME).toInstant());
-
-							lootRecords.add(lootRecord);
-						}
-
-						if (lootRecords.size() > 0)
-						{
-							log.info("Loaded {} locally stored loot records", lootRecords.size());
-						}
-					}
-
-					Collection<LootRecord> finalLootRecords = lootRecords;
 					clientThread.invokeLater(() ->
 					{
-						Collection<LootTrackerRecord> records = convertToLootTrackerRecord(finalLootRecords);
-						SwingUtilities.invokeLater(() -> panel.addRecords(records));
+						switch (client.getGameState())
+						{
+							case STARTING:
+							case UNKNOWN:
+								return false;
+						}
+
+						executor.submit(() ->
+						{
+							if (this.syncPanel && lootTrackerClient != null)
+							{
+								if (accountSession != null)
+								{
+									lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+								}
+								try
+								{
+									lootRecords = lootTrackerClient.get();
+								}
+								catch (IOException e)
+								{
+									log.debug("Unable to look up loot", e);
+									return;
+								}
+								log.info("Loaded {} remote data entries", lootRecords.size());
+							}
+
+							if (this.localPersistence)
+							{
+								DSLContext dslContext = databaseManager.getDsl();
+
+								Result<Record> records = dslContext
+									.selectDistinct(
+										LOOTTRACKEREVENTS.UNIQUEID
+									).select(
+										LOOTTRACKEREVENTS.EVENTID,
+										LOOTTRACKEREVENTS.TYPE,
+										LOOTTRACKEREVENTS.TIME,
+										USER.USERNAME
+									)
+									.from(LOOTTRACKEREVENTS)
+									.join(LOOTTRACKERLINK).on(LOOTTRACKERLINK.EVENTUNIQUEID.eq(LOOTTRACKEREVENTS.UNIQUEID))
+									.join(USER).on(LOOTTRACKERLINK.USERUNIQUEID.eq(USER.UNIQUEID))
+									.fetch();
+
+								for (Record record : records)
+								{
+									Result<Record2<Integer, Integer>> drops = dslContext
+										.select(
+											LOOTTRACKERLOOT.ITEMID,
+											LOOTTRACKERLOOT.QUANTITY
+										)
+										.from(LOOTTRACKERLOOT)
+										.join(LOOTTRACKERLINK).on(LOOTTRACKERLOOT.UNIQUEID.eq(LOOTTRACKERLINK.DROPUNIQUEID))
+										.where(LOOTTRACKERLINK.EVENTUNIQUEID.eq(record.getValue(LOOTTRACKEREVENTS.UNIQUEID)))
+										.fetch();
+
+									final List<GameItem> gameItems = new ArrayList<>();
+
+									for (Record drop : drops)
+									{
+										GameItem gameItem = new GameItem();
+										gameItem.setId(drop.getValue(LOOTTRACKERLOOT.ITEMID));
+										gameItem.setQty(drop.getValue(LOOTTRACKERLOOT.QUANTITY));
+
+										gameItems.add(gameItem);
+									}
+
+									LootRecord lootRecord = new LootRecord();
+									lootRecord.setEventId(record.getValue(LOOTTRACKEREVENTS.EVENTID));
+									lootRecord.setUsername(record.getValue(USER.USERNAME));
+									lootRecord.setType(record.getValue(LOOTTRACKEREVENTS.TYPE, LootRecordType.class));
+									lootRecord.setDrops(gameItems);
+									lootRecord.setTime(record.getValue(LOOTTRACKEREVENTS.TIME).toInstant());
+
+									lootRecords.add(lootRecord);
+								}
+
+								if (lootRecords.size() > 0)
+								{
+									log.info("Loaded {} locally stored loot records", lootRecords.size());
+								}
+							}
+
+							Collection<LootRecord> finalLootRecords = lootRecords;
+							clientThread.invokeLater(() ->
+							{
+								Collection<LootTrackerRecord> records = convertToLootTrackerRecord(finalLootRecords);
+								SwingUtilities.invokeLater(() -> panel.addRecords(records));
+							});
+						});
+						return true;
 					});
-				});
-				return true;
+				}
 			});
-		}
 	}
 
 	@Override
