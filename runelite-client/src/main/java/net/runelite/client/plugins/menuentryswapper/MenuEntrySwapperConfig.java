@@ -311,4 +311,13 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapPvpAttack",
+			name = "PvP Attack",
+			description = "Swap attack option when in PvP safe areas."
+	)
+	default boolean swapPvpAttack() {
+		return true;
+	}
 }

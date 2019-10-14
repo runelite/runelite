@@ -33,12 +33,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
+import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -46,6 +41,7 @@ import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -59,6 +55,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+
+import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
@@ -604,11 +602,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, index);
 		}
+		else if (config.swapPvpAttack() && option.equals("attack") && shouldSwapAttack())
+		{
+			swap("walk here", option, target, index);
+		}
 	}
 
 	private static boolean shouldSwapPickpocket(String target)
 	{
 		return !target.startsWith("villager") && !target.startsWith("bandit") && !target.startsWith("menaphite thug");
+	}
+
+	private boolean shouldSwapAttack()
+	{
+		if (WorldType.isPvpWorld(client.getWorldType()))
+		{
+			Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
+			return widget != null && !widget.isSelfHidden();
+		} else return false;
 	}
 
 	@Subscribe
