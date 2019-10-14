@@ -317,7 +317,8 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "PvP Attack",
 			description = "Swap Attack with Walk here when in PvP safe zones."
 	)
-	default boolean swapPvpAttack() {
+	default boolean swapPvpAttack()
+	{
 		return true;
 	}
 }
