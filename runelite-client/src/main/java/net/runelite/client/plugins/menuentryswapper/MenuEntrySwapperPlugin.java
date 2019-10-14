@@ -619,7 +619,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
 			return widget != null && !widget.isSelfHidden();
-		} else return false;
+		} else
+			{
+				return false;
+			}
 	}
 
 	@Subscribe
