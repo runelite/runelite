@@ -69,7 +69,7 @@ ext {
     minio = '6.0.11'
     mockito = '3.1.0'
     mongodbDriverSync = '3.11.1'
-    mysqlConnectorJava = '8.0.17'
+    mysqlConnectorJava = '8.0.18'
     netty = '4.1.42.Final'
     okhttp3 = '4.2.2'
     orangeExtensions = '1.0'
