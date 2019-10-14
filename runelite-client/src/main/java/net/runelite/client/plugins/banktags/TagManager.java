@@ -29,9 +29,12 @@ import com.google.common.base.Strings;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -51,9 +54,12 @@ import net.runelite.client.util.Text;
 public class TagManager
 {
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String ITEM_TEXT_KEY_PREFIX = "item_text_";
+	private static final String ITEM_TEXT_SPLITTER = "¬";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
+	private final Table<Integer, String, String> itemTexts = HashBasedTable.create();
 
 	@Inject
 	private TagManager(
@@ -179,6 +185,66 @@ public class TagManager
 
 			setTags(id, tags, id < 0);
 		});
+	}
+
+	String getTextString(int itemId)
+	{
+		itemId = getItemId(itemId, false);
+
+		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_TEXT_KEY_PREFIX + itemId);
+		if (config == null)
+		{
+			return "";
+		}
+
+		return config;
+	}
+
+	Collection<String> getTexts(int itemId)
+	{
+		return new LinkedHashSet<>(Text.fromCSV(getTextString(itemId).toLowerCase()));
+	}
+
+	String getItemText(int itemId, String tag)
+	{
+		if (!itemTexts.containsRow(itemId))
+		{
+			final Collection<String> texts = getTexts(itemId);
+
+			for (String raw : texts)
+			{
+				final String[] data = raw.split(ITEM_TEXT_SPLITTER);
+				itemTexts.put(itemId, data[0], data[1]);
+			}
+		}
+		return itemTexts.get(itemId, tag);
+	}
+
+	void setItemText(int itemId, String tag, String text)
+	{
+		if (text == null)
+		{
+			itemTexts.remove(itemId, tag);
+		}
+		else
+		{
+			itemTexts.put(itemId, tag, text);
+		}
+
+		//Commit to config
+		final Map<String, String> row = itemTexts.row(itemId);
+		if (row.isEmpty())
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_TEXT_KEY_PREFIX + itemId);
+		}
+		else
+		{
+			String newConfig = row.entrySet().stream()
+			.map(kv -> kv.getKey() + ITEM_TEXT_SPLITTER + kv.getValue())
+			.collect(Collectors.joining(","));
+			configManager.setConfiguration(CONFIG_GROUP, ITEM_TEXT_KEY_PREFIX + itemId, newConfig);
+		}
+
 	}
 
 	private int getItemId(int itemId, boolean variation)
