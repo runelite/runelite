@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -126,6 +127,9 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
@@ -308,30 +312,33 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
-		Arrays.stream(TeleportLocationData.values())
-			.filter(data ->
-			{
-				switch (data.getType())
+		// This next part gets 142 icons from disk, and does so on the EDT (at first run)
+		executor.submit(() ->
+			Arrays.stream(TeleportLocationData.values())
+				.filter(data ->
 				{
-					case NORMAL_MAGIC:
-						return this.normalTeleportIcon;
-					case ANCIENT_MAGICKS:
-						return this.ancientTeleportIcon;
-					case LUNAR_MAGIC:
-						return this.lunarTeleportIcon;
-					case ARCEUUS_MAGIC:
-						return this.arceuusTeleportIcon;
-					case JEWELLERY:
-						return this.jewelleryTeleportIcon;
-					case SCROLL:
-						return this.scrollTeleportIcon;
-					case OTHER:
-						return this.miscellaneousTeleportIcon;
-					default:
-						return false;
-				}
-			}).map(TeleportPoint::new)
-			.forEach(worldMapPointManager::add);
+					switch (data.getType())
+					{
+						case NORMAL_MAGIC:
+							return this.normalTeleportIcon;
+						case ANCIENT_MAGICKS:
+							return this.ancientTeleportIcon;
+						case LUNAR_MAGIC:
+							return this.lunarTeleportIcon;
+						case ARCEUUS_MAGIC:
+							return this.arceuusTeleportIcon;
+						case JEWELLERY:
+							return this.jewelleryTeleportIcon;
+						case SCROLL:
+							return this.scrollTeleportIcon;
+						case OTHER:
+							return this.miscellaneousTeleportIcon;
+						default:
+							return false;
+					}
+				}).map(TeleportPoint::new)
+				.forEach(worldMapPointManager::add)
+			);
 	}
 
 	private void updateQuestStartPointIcons()
