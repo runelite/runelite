@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -40,11 +42,15 @@ import net.runelite.api.Constants;
 import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
@@ -62,7 +68,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.wiki.WikiPlugin;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.sanitize;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
@@ -78,7 +86,7 @@ import org.apache.commons.text.WordUtils;
 @PluginDescriptor(
 	name = "Chat Commands",
 	description = "Enable chat commands",
-	tags = {"grand", "exchange", "level", "prices"}
+	tags = {"grand", "exchange", "level", "prices", "wiki"}
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
@@ -102,6 +110,9 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
+	private static final String WIKI_COMMAND_STRING = "!wiki";
+
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add Friend");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -153,6 +164,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
+		chatCommandManager.registerCommandAsync(WIKI_COMMAND_STRING, this::wikiLookup);
 	}
 
 	@Override
@@ -172,12 +184,80 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
+		chatCommandManager.unregisterCommand(WIKI_COMMAND_STRING);
 	}
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int widgetIndex = event.getActionParam0();
+		int widgetID = event.getActionParam1();
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+		if (config.wiki() &&
+			(WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.CHATBOX_MESSAGES.getGroupId()
+				|| WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId()))
+		{
+			if (!AFTER_OPTIONS.contains(event.getOption()))
+			{
+				return;
+			}
+
+			boolean privateMessage = false;
+			if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+			{
+				privateMessage = true;
+			}
+
+			int groupID = WidgetInfo.TO_GROUP(widgetID);
+			int menuWidgetID = WidgetInfo.TO_CHILD(widgetID);
+
+			//Translate from static to dynamic chat message widget to get message.
+			String text = "";
+			try
+			{
+				Widget[] chatMessages = client.getWidget(groupID, privateMessage ? 0 : 58).getDynamicChildren();
+				text = chatMessages[(menuWidgetID - (privateMessage ? 1 : 59)) * 2 + 1].getText();
+			}
+			catch (NullPointerException npe)
+			{
+				log.debug("Resolving text widget failed.", npe);
+				return;
+			}
+
+			if (text.contains("<wiki>"))
+			{
+				text = Text.removeTags(text).trim();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				menuEntry.setTarget("<img=13> " + text);
+				menuEntry.setOption("Search Wiki");
+				menuEntry.setParam0(widgetIndex);
+				menuEntry.setParam1(widgetID);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
+
+				client.setMenuEntries(menuEntries);
+			}
+		}
+	}
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked ev)
+	{
+		switch (ev.getMenuAction())
+		{
+			case RUNELITE:
+				String searchText = Text.removeTags(ev.getMenuTarget()).trim();
+				searchText = searchText.replaceAll("[Uu]ser:", "");
+				WikiPlugin.search(searchText);
+				break;
+		}
 	}
 
 	private void setKc(String boss, int killcount)
@@ -802,7 +882,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -863,7 +943,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void playerSkillLookup(ChatMessage chatMessage, String message)
 	{
@@ -1383,5 +1463,35 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private void wikiLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.wiki())
+		{
+			return;
+		}
+
+		if (message.length() <= WIKI_COMMAND_STRING.length())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+		String search = message.substring(WIKI_COMMAND_STRING.length() + 1);
+
+		final String response = new ChatMessageBuilder()
+			.appendRaw("<wiki>") //Detected by menu option
+			.img(15)
+			.append(" ")
+			.img(13)
+			.underline(search)
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 }

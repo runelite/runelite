@@ -121,6 +121,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
+		keyName = "wiki",
+		name = "Wiki Command",
+		description = "Configures whether the wiki search command is enabled<br> !wiki [search term]"
+	)
+	default boolean wiki()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
 		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
