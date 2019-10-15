@@ -185,6 +185,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private void removeInvalidTags(final String key)
 	{
 		final String value = configManager.getConfiguration(CONFIG_GROUP, key);
+		if (value == null)
+		{
+			return;
+		}
+
 		String replaced = value.replaceAll("[<>/]", "");
 		if (!value.equals(replaced))
 		{
