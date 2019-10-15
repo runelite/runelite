@@ -29,7 +29,7 @@ dependencies {
     providedCompile group: 'org.projectlombok', name: 'lombok', version: lombok
     providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: springboot
 
-    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: okhttp3
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springboot) {
         exclude(module: 'commons-logging')

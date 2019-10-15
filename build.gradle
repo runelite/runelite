@@ -43,7 +43,7 @@ ext {
     gson = '2.8.6'
     guava = '28.1-jre'
     guice = '4.2.2'
-    h2 = '1.4.199'
+    h2 = '1.4.200'
     hamcrest = '2.1'
     httpcore = '4.4.12'
     httpmime = '4.5.10'
