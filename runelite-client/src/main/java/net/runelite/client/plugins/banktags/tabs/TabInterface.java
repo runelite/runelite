@@ -177,6 +177,11 @@ public class TabInterface
 		return activeTab != null;
 	}
 
+	public String getActiveTag()
+	{
+		return activeTab == null ? null : activeTab.getTag();
+	}
+
 	public void init()
 	{
 		if (isHidden())

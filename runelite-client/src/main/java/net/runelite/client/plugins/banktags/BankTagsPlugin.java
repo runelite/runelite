@@ -73,6 +73,7 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -86,6 +87,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final String EDIT_TEXT_MENU_OPTION = "Edit-text";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
 
@@ -110,6 +112,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private MouseManager mouseManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private BankTagOverlay overlay;
 
 	@Inject
 	private BankTagsConfig config;
@@ -144,6 +152,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+		overlayManager.add(overlay);
 	}
 
 	@Override
@@ -153,6 +162,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
+		overlayManager.remove(overlay);
 
 		shiftPressed = false;
 	}
@@ -215,22 +225,41 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
 			int itemID = item.getItemId();
-			String text = EDIT_TAGS_MENU_OPTION;
+
+			// Create `Edit Text` option
+			if (tabInterface.isActive())
+			{
+				MenuEntry editText = new MenuEntry();
+				editText.setParam0(event.getActionParam0());
+				editText.setParam1(event.getActionParam1());
+				editText.setTarget(event.getTarget());
+				editText.setOption(EDIT_TEXT_MENU_OPTION);
+				editText.setType(MenuAction.RUNELITE.getId());
+				editText.setIdentifier(event.getIdentifier());
+				entries = Arrays.copyOf(entries, entries.length + 2);
+				entries[entries.length - 2] = editText;
+			}
+			else
+			{
+				entries = Arrays.copyOf(entries, entries.length + 1);
+			}
+
+			// Create `Edit Tags` option
+			String tagsText = EDIT_TAGS_MENU_OPTION;
 			int tagCount = tagManager.getTags(itemID, false).size() + tagManager.getTags(itemID, true).size();
 
 			if (tagCount > 0)
 			{
-				text += " (" + tagCount + ")";
+				tagsText += " (" + tagCount + ")";
 			}
 
 			MenuEntry editTags = new MenuEntry();
 			editTags.setParam0(event.getActionParam0());
 			editTags.setParam1(event.getActionParam1());
 			editTags.setTarget(event.getTarget());
-			editTags.setOption(text);
+			editTags.setOption(tagsText);
 			editTags.setType(MenuAction.RUNELITE.getId());
 			editTags.setIdentifier(event.getIdentifier());
-			entries = Arrays.copyOf(entries, entries.length + 1);
 			entries[entries.length - 1] = editTags;
 			client.setMenuEntries(entries);
 		}
@@ -242,10 +271,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
+			&& event.getMenuAction() == MenuAction.RUNELITE)
 		{
-			event.consume();
 			int inventoryIndex = event.getActionParam();
 			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			if (bankContainer == null)
@@ -267,50 +294,79 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			String name = itemComposition.getName();
 
-			// Get both tags and vartags and append * to end of vartags name
-			Collection<String> tags = tagManager.getTags(itemId, false);
-			tagManager.getTags(itemId, true).stream()
-				.map(i -> i + "*")
-				.forEach(tags::add);
-
 			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
 			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
-			String initialValue = Text.toCSV(tags);
+			boolean eventHandled = false;
 
-			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
-				.value(initialValue)
-				.onDone((newValue) ->
-					clientThread.invoke(() ->
-					{
-						// Split inputted tags to vartags (ending with *) and regular tags
-						final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
-						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
-						{
-							newTags.remove(s);
-							return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
-						}).collect(Collectors.toList());
-
-						// And save them
-						tagManager.setTagString(itemId, Text.toCSV(newTags), false);
-						tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
-
-						// Check both previous and current tags in case the tag got removed in new tags or in case
-						// the tag got added in new tags
-						tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-						tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-					}))
-				.build();
-
-			if (isSearchOpen)
+			if (event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
 			{
-				bankSearch.reset(false);
-				bankSearch.search(InputType.SEARCH, searchText, false);
+				event.consume();
+				eventHandled = true;
+
+				// Get both tags and vartags and append * to end of vartags name
+				Collection<String> tags = tagManager.getTags(itemId, false);
+				tagManager.getTags(itemId, true).stream()
+					.map(i -> i + "*")
+					.forEach(tags::add);
+
+
+				String initialValue = Text.toCSV(tags);
+
+				chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+					.value(initialValue)
+					.onDone((newValue) ->
+						clientThread.invoke(() ->
+						{
+							// Split inputted tags to vartags (ending with *) and regular tags
+							final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
+							final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
+							{
+								newTags.remove(s);
+								return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+							}).collect(Collectors.toList());
+
+							// And save them
+							tagManager.setTagString(itemId, Text.toCSV(newTags), false);
+							tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
+
+							// Check both previous and current tags in case the tag got removed in new tags or in case
+							// the tag got added in new tags
+							tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+							tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+						}))
+					.build();
+			}
+			else if (event.getMenuOption().startsWith(EDIT_TEXT_MENU_OPTION))
+			{
+				event.consume();
+				eventHandled = true;
+
+				final String currentTab = tabInterface.getActiveTag();
+
+				String text = tagManager.getItemText(itemId, currentTab);
+				if (text == null)
+				{
+					text = "";
+				}
+
+				chatboxPanelManager.openTextInput(name + " overlay text")
+					.value(text)
+					.onDone((newValue) ->
+						clientThread.invoke(() -> tagManager.setItemText(itemId, currentTab, newValue.replace(",", " "))))
+					.build();
+			}
+
+			if (eventHandled)
+			{
+				if (isSearchOpen)
+				{
+					bankSearch.reset(false);
+					bankSearch.search(InputType.SEARCH, searchText, false);
+				}
+				return;
 			}
 		}
-		else
-		{
-			tabInterface.handleClick(event);
-		}
+		tabInterface.handleClick(event);
 	}
 
 	@Subscribe
