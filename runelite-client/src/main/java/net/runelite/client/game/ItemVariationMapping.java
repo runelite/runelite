@@ -26,44 +26,20 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.InputStream;
+import com.google.gson.stream.JsonReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.Iterator;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Converts variation items to it's base item counterparts
  */
+@Slf4j
 public class ItemVariationMapping
 {
-	private static final Map<Integer, Integer> MAPPINGS;
-
-	static
-	{
-		final Gson gson = new Gson();
-		final TypeToken<Map<String, Collection<Integer>>> typeToken = new TypeToken<Map<String, Collection<Integer>>>()
-		{
-		};
-
-		final InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json");
-		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData), typeToken.getType());
-
-		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
-		for (Collection<Integer> value : itemVariations.values())
-		{
-			final Iterator<Integer> iterator = value.iterator();
-			final int base = iterator.next();
-
-			while (iterator.hasNext())
-			{
-				builder.put(iterator.next(), base);
-			}
-		}
-		MAPPINGS = builder.build();
-	}
+	private static Map<Integer, Integer> MAPPINGS;
 
 	/**
 	 * Get base item id for provided variation item id.
@@ -74,5 +50,40 @@ public class ItemVariationMapping
 	public static int map(int itemId)
 	{
 		return MAPPINGS.getOrDefault(itemId, itemId);
+	}
+
+	static void load() throws IOException
+	{
+		try (JsonReader reader = new JsonReader(new InputStreamReader(ItemVariationMapping.class.getResourceAsStream("/item_variations.json"), StandardCharsets.UTF_8)))
+		{
+			ImmutableMap.Builder<Integer, Integer> builder = ImmutableMap.builderWithExpectedSize(5039);
+			reader.beginObject();
+
+			while (reader.hasNext())
+			{
+				// Names are useless
+				reader.skipValue();
+				reader.beginArray();
+
+				int base = reader.nextInt();
+				while (reader.hasNext())
+				{
+					builder.put(
+						reader.nextInt(),
+						base
+					);
+				}
+
+				reader.endArray();
+			}
+
+			reader.endObject();
+			MAPPINGS = builder.build();
+		}
+	}
+
+	static int getSize()
+	{
+		return MAPPINGS.size();
 	}
 }

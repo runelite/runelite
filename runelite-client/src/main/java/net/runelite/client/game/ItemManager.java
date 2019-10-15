@@ -28,6 +28,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
+import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -192,6 +193,13 @@ public class ItemManager
 
 		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventbus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
+
+		Completable.fromAction(ItemVariationMapping::load)
+			.subscribeOn(Schedulers.computation())
+			.subscribe(
+				() -> log.debug("Loaded {} item variations", ItemVariationMapping.getSize()),
+				ex -> log.warn("Error loading item variations", ex)
+			);
 	}
 
 	private void loadPrices()
