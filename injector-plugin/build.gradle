@@ -33,9 +33,11 @@ dependencies {
 
 compileJava {
     dependsOn ":rs-client:build"
-}
 
-compileJava.outputs.upToDateWhen { false }
+    inputs.dir("${project.rootDir}/runescape-client/")
+    inputs.dir("${project.rootDir}/runescape-api/")
+    inputs.dir("${project.rootDir}/runelite-mixins/")
+}
 
 compileJava.doLast() {
     copy {
