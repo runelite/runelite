@@ -24,9 +24,15 @@
  */
 package net.runelite.client.game;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import lombok.Builder;
 import lombok.Value;
 
 @Value
+@Builder(builderClassName = "Builder")
 public class NPCStats
 {
 	private final String name;
@@ -77,4 +83,120 @@ public class NPCStats
 
 		return (1 + Math.floor(averageLevel * (averageDefBonus + bonusStrength + bonusAttack) / 5120) / 40);
 	}
+
+	// Because this class is here we can't add the TypeAdapter to gson (easily)
+	// doesn't mean we can't use one to do it a bit quicker
+	public static final TypeAdapter<NPCStats> NPC_STATS_TYPE_ADAPTER = new TypeAdapter<NPCStats>()
+	{
+		@Override
+		public void write(JsonWriter out, NPCStats value)
+		{
+			throw new UnsupportedOperationException("Not supported");
+		}
+
+		@Override
+		public NPCStats read(JsonReader in) throws IOException
+		{
+			in.beginObject();
+			NPCStats.Builder builder = NPCStats.builder();
+
+			// Name is the only one that's guaranteed
+			in.skipValue();
+			builder.name(in.nextString());
+
+			while (in.hasNext())
+			{
+				switch (in.nextName())
+				{
+					case "hitpoints":
+						builder.hitpoints(in.nextInt());
+						break;
+					case "combatLevel":
+						builder.combatLevel(in.nextInt());
+						break;
+					case "slayerLevel":
+						builder.slayerLevel(in.nextInt());
+						break;
+					case "attackSpeed":
+						builder.attackSpeed(in.nextInt());
+						break;
+					case "attackLevel":
+						builder.attackLevel(in.nextInt());
+						break;
+					case "strengthLevel":
+						builder.strengthLevel(in.nextInt());
+						break;
+					case "defenceLevel":
+						builder.defenceLevel(in.nextInt());
+						break;
+					case "rangeLevel":
+						builder.rangeLevel(in.nextInt());
+						break;
+					case "magicLevel":
+						builder.magicLevel(in.nextInt());
+						break;
+					case "stab":
+						builder.stab(in.nextInt());
+						break;
+					case "slash":
+						builder.slash(in.nextInt());
+						break;
+					case "crush":
+						builder.crush(in.nextInt());
+						break;
+					case "range":
+						builder.range(in.nextInt());
+						break;
+					case "magic":
+						builder.magic(in.nextInt());
+						break;
+					case "stabDef":
+						builder.stabDef(in.nextInt());
+						break;
+					case "slashDef":
+						builder.slashDef(in.nextInt());
+						break;
+					case "crushDef":
+						builder.crushDef(in.nextInt());
+						break;
+					case "rangeDef":
+						builder.rangeDef(in.nextInt());
+						break;
+					case "magicDef":
+						builder.magicDef(in.nextInt());
+						break;
+					case "bonusAttack":
+						builder.bonusAttack(in.nextInt());
+						break;
+					case "bonusStrength":
+						builder.bonusStrength(in.nextInt());
+						break;
+					case "bonusRangeStrength":
+						builder.bonusRangeStrength(in.nextInt());
+						break;
+					case "bonusMagicDamage":
+						builder.bonusMagicDamage(in.nextInt());
+						break;
+					case "poisonImmune":
+						builder.poisonImmune(in.nextBoolean());
+						break;
+					case "venomImmune":
+						builder.venomImmune(in.nextBoolean());
+						break;
+					case "dragon":
+						builder.dragon(in.nextBoolean());
+						break;
+					case "demon":
+						builder.demon(in.nextBoolean());
+						break;
+					case "undead":
+						builder.undead(in.nextBoolean());
+						break;
+				}
+			}
+
+			in.endObject();
+			return builder.build();
+		}
+	};
 }

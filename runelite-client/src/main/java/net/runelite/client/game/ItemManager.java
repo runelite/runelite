@@ -28,14 +28,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -137,12 +133,11 @@ public class ItemManager
 	private final Client client;
 	private final ClientThread clientThread;
 	private final ItemClient itemClient;
-	private final ImmutableMap<Integer, ItemStats> itemStatMap;
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemDefinition> itemDefinitions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
-	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
+	private ImmutableMap<Integer, ItemStats> itemStats = ImmutableMap.of();
 
 	@Inject
 	public ItemManager(
@@ -166,7 +161,7 @@ public class ItemManager
 			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
 			{
 				@Override
-				public AsyncBufferedImage load(@NotNull ImageKey key) throws Exception
+				public AsyncBufferedImage load(@NotNull ImageKey key)
 				{
 					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
@@ -178,7 +173,7 @@ public class ItemManager
 			.build(new CacheLoader<Integer, ItemDefinition>()
 			{
 				@Override
-				public ItemDefinition load(@NotNull Integer key) throws Exception
+				public ItemDefinition load(@NotNull Integer key)
 				{
 					return client.getItemDefinition(key);
 				}
@@ -190,24 +185,21 @@ public class ItemManager
 			.build(new CacheLoader<OutlineKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(@NotNull OutlineKey key) throws Exception
+				public BufferedImage load(@NotNull OutlineKey key)
 				{
 					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
 			});
 
-		final Gson gson = new Gson();
-
-		final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
-		{
-		}.getType();
-
-		final InputStream statsFile = getClass().getResourceAsStream("/item_stats.json");
-		final Map<Integer, ItemStats> stats = gson.fromJson(new InputStreamReader(statsFile), typeToken);
-		itemStatMap = ImmutableMap.copyOf(stats);
-
 		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventbus.subscribe(PostItemDefinition.class, this, this::onPostItemDefinition);
+
+		Completable.fromAction(ItemVariationMapping::load)
+			.subscribeOn(Schedulers.computation())
+			.subscribe(
+				() -> log.debug("Loaded {} item variations", ItemVariationMapping.getSize()),
+				ex -> log.warn("Error loading item variations", ex)
+			);
 	}
 
 	private void loadPrices()
@@ -215,21 +207,9 @@ public class ItemManager
 		itemClient.getPrices()
 			.subscribeOn(Schedulers.io())
 			.subscribe(
-				(prices) ->
-				{
-					if (prices != null)
-					{
-						ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
-						for (ItemPrice price : prices)
-						{
-							map.put(price.getId(), price);
-						}
-						itemPrices = map.build();
-					}
-
-					log.debug("Loaded {} prices", itemPrices.size());
-				},
-				(e) -> log.warn("error loading prices!", e)
+				m -> itemPrices = m,
+				e -> log.warn("Error loading prices", e),
+				() -> log.debug("Loaded {} prices", itemPrices.size())
 			);
 	}
 
@@ -238,16 +218,9 @@ public class ItemManager
 		itemClient.getStats()
 			.subscribeOn(Schedulers.io())
 			.subscribe(
-				(stats) ->
-				{
-					if (stats != null)
-					{
-						itemStats = ImmutableMap.copyOf(stats);
-					}
-
-					log.debug("Loaded {} stats", itemStats.size());
-				},
-				(e) -> log.warn("error loading stats!", e)
+				m -> itemStats = m,
+				e -> log.warn("Error fetching stats", e),
+				() -> log.debug("Loaded {} stats", itemStats.size())
 			);
 	}
 
@@ -376,12 +349,12 @@ public class ItemManager
 	{
 		ItemDefinition itemDefinition = getItemDefinition(itemId);
 
-		if (itemDefinition.getName() == null || !allowNote && itemDefinition.getNote() != -1)
+		if (!allowNote && itemDefinition.getNote() != -1)
 		{
 			return null;
 		}
 
-		return itemStatMap.get(canonicalize(itemId));
+		return itemStats.get(canonicalize(itemId));
 	}
 
 	/**

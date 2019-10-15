@@ -77,10 +77,13 @@ public class StonedTrackerPlugin extends Plugin
 
 	@Inject
 	private ClientToolbar clientToolbar;
+
 	@Inject
 	public StonedTrackerConfig config;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ItemManager itemManager;
 

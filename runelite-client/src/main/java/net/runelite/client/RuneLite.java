@@ -375,6 +375,7 @@ public class RuneLite
 		if (this.client != null)
 		{
 			scheduler.registerObject(modelOutlineRenderer.get());
+			scheduler.registerObject(clientSessionManager);
 		}
 
 		// Close the splash screen

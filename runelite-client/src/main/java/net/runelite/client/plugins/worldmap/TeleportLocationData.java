@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import java.awt.image.BufferedImage;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.util.ImageUtil;
 
 @Getter
 enum TeleportLocationData
@@ -188,6 +190,24 @@ enum TeleportLocationData
 	private final String tooltip;
 	private final WorldPoint location;
 	private final String iconPath;
+	private BufferedImage image;
+
+	BufferedImage getImage()
+	{
+		if (image == null)
+		{
+			try
+			{
+				image = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, this.getIconPath());
+			}
+			catch (RuntimeException e)
+			{
+				return WorldMapPlugin.BLANK_ICON;
+			}
+		}
+
+		return image;
+	}
 
 	TeleportLocationData(TeleportType type, String destination, int magicLevel, WorldPoint location, String iconPath)
 	{

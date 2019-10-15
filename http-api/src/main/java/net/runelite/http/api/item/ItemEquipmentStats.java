@@ -28,7 +28,7 @@ import lombok.Builder;
 import lombok.Value;
 
 @Value
-@Builder
+@Builder(builderClassName = "Builder")
 public class ItemEquipmentStats
 {
 	private int slot;

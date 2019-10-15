@@ -275,7 +275,7 @@ public class ChatClient
 			throw new IOException("Layout " + layout + " is not valid!");
 		}
 
-		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("layout")
 			.addQueryParameter("name", username)
@@ -287,7 +287,7 @@ public class ChatClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
 		}
@@ -318,7 +318,7 @@ public class ChatClient
 
 	public String getLayout(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("layout")
 			.addQueryParameter("name", username)
@@ -328,7 +328,7 @@ public class ChatClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -353,7 +353,7 @@ public class ChatClient
 
 	public House[] getHosts(int world, String location) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("hosts")
 			.addQueryParameter("world", Integer.toString(world))
@@ -364,7 +364,7 @@ public class ChatClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -411,7 +411,7 @@ public class ChatClient
 
 	public boolean submitHost(int world, String location, House house) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("hosts")
 			.addQueryParameter("world", Integer.toString(world))
@@ -431,7 +431,7 @@ public class ChatClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
 		}
@@ -439,7 +439,7 @@ public class ChatClient
 
 	public boolean removeHost(int world, String location, House house) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getPlusApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("hosts")
 			.addQueryParameter("world", Integer.toString(world))
@@ -460,7 +460,7 @@ public class ChatClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.RLP_CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
 		}

@@ -25,6 +25,7 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
+import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -37,7 +38,6 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -57,13 +57,11 @@ public class SessionManager
 	private AccountSession accountSession;
 
 	private final EventBus eventBus;
-	private final ConfigManager configManager;
 	private final WSClient wsClient;
 
 	@Inject
-	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
+	private SessionManager(EventBus eventBus, WSClient wsClient)
 	{
-		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 
@@ -94,13 +92,26 @@ public class SessionManager
 
 		// Check if session is still valid
 		AccountClient accountClient = new AccountClient(session.getUuid());
-		if (!accountClient.sessionCheck())
-		{
-			log.debug("Loaded session {} is invalid", session.getUuid());
-			return;
-		}
-
-		openSession(session, false);
+		accountClient.sessionCheck()
+			.subscribeOn(Schedulers.io())
+			.subscribe(b ->
+			{
+				if (!b)
+				{
+					log.debug("Loaded session {} is invalid", session.getUuid());
+				}
+				else
+				{
+					openSession(session, false);
+				}
+			}, ex ->
+			{
+				if (ex instanceof IOException)
+				{
+					log.debug("Unable to verify session", ex);
+					openSession(session, false);
+				}
+			});
 	}
 
 	private void saveSession()
@@ -143,13 +154,6 @@ public class SessionManager
 
 		accountSession = session;
 
-		if (session.getUsername() != null)
-		{
-			// Initialize config for new session
-			// If the session isn't logged in yet, don't switch to the new config
-			configManager.switchSession();
-		}
-
 		eventBus.post(SessionOpen.class, new SessionOpen());
 	}
 
@@ -175,9 +179,6 @@ public class SessionManager
 		}
 
 		accountSession = null; // No more account
-
-		// Restore config
-		configManager.switchSession();
 
 		eventBus.post(SessionClose.class, new SessionClose());
 	}
