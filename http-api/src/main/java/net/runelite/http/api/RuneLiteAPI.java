@@ -26,6 +26,10 @@ package net.runelite.http.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.runelite.http.api.item.ItemEquipmentStats;
+import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.item.ItemStats;
+import net.runelite.http.api.util.TypeAdapters;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -56,7 +60,12 @@ public class RuneLiteAPI
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson GSON = new GsonBuilder()
+		.setPrettyPrinting()
+		.registerTypeAdapter(ItemStats.class, TypeAdapters.ITEMSTATS)
+		.registerTypeAdapter(ItemEquipmentStats.class, TypeAdapters.EQUIPMENTSTATS)
+		.registerTypeAdapter(ItemPrice.class, TypeAdapters.ITEMPRICE)
+		.create();
 
 	private static final String BASE = "https://api.runelite.net";
 	private static final String WSBASE = "https://api.runelite.net/ws";
