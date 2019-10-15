@@ -390,6 +390,11 @@ public class SlayerPlugin extends Plugin
 			}
 		}
 
+        if (config.statTimeout() == 0)
+		{
+			return;     // Prevent infobox disappearing when user enters '0' timeout
+        }
+        
 		if (infoTimer != null)
 		{
 			Duration timeSinceInfobox = Duration.between(infoTimer, Instant.now());
