@@ -388,11 +388,11 @@ public class SlayerPlugin extends Plugin
 					break;
 				}
 			}
-		}
-
+        }
+        
         if (config.statTimeout() == 0)
-		{
-			return;     // Prevent infobox disappearing when user enters '0' timeout
+        {
+            return;
         }
         
 		if (infoTimer != null)
