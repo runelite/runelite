@@ -99,6 +99,7 @@ allprojects {
         cacheversion = 165
         plusVersion = '2.1.8.0'
 
+
         gitCommit = localGitCommit
         gitCommitShort = localGitCommitShort
         gitDirty = localGitDirty
