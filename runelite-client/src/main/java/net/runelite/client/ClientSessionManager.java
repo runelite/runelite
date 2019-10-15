@@ -69,7 +69,7 @@ public class ClientSessionManager
 		sessionClient.pingSession(sessionId)
 			.subscribeOn(Schedulers.io())
 			.observeOn(Schedulers.from(clientThread))
-			.doOnError(e -> this.error((Throwable) e))
+			.doOnError(this::error)
 			.subscribe();
 	}
 
@@ -80,7 +80,7 @@ public class ClientSessionManager
 			sessionClient.delete(sessionId)
 				.subscribeOn(Schedulers.io())
 				.observeOn(Schedulers.from(clientThread))
-				.doOnError(e -> this.error((Throwable) e))
+				.doOnError(this::error)
 				.subscribe();
 
 			sessionId = null;

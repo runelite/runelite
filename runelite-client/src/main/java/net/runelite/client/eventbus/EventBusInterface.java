@@ -8,6 +8,8 @@ public interface EventBusInterface
 {
 	<T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action);
 
+	<T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil);
+
 	void unregister(@NonNull Object lifecycle);
 
 	<T> void post(Class<T> eventClass, @NonNull Event event);

@@ -38,7 +38,7 @@ import net.runelite.client.util.StringFileUtils;
 
 final class ClientPanel extends JPanel
 {
-	public ClientPanel(@Nullable Applet client)
+	ClientPanel(@Nullable Applet client)
 	{
 		setSize(Constants.GAME_FIXED_SIZE);
 		setMinimumSize(Constants.GAME_FIXED_SIZE);
@@ -71,7 +71,7 @@ final class ClientPanel extends JPanel
 
 		add(client, BorderLayout.CENTER);
 
-		// api.renderableThis causes the whole game frame to be redrawn each frame instead
+		// This causes the whole game frame to be redrawn each frame instead
 		// of only the viewport, so we can hook to MainBufferProvider#draw
 		// and draw anywhere without it leaving artifacts
 		if (client instanceof Client)

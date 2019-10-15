@@ -35,7 +35,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.components.InfoPanel;
 import net.runelite.client.ui.components.MessagePanel;
-import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class RuneLiteSplashScreen extends JFrame
@@ -53,7 +52,7 @@ public class RuneLiteSplashScreen extends JFrame
 		this.setSize(FRAME_SIZE);
 		this.setLayout(new BorderLayout());
 		this.setUndecorated(true);
-		this.setIconImage(ImageUtil.getResourceStreamFromClass(RuneLiteSplashScreen.class, "/openosrs.png"));
+		this.setIconImage(ClientUI.ICON);
 
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

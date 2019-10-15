@@ -84,9 +84,8 @@ public class RuneLiteAPI
 
 	static
 	{
-		try
+		try (InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties"))
 		{
-			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
 			version = properties.getProperty("runelite.version");
