@@ -160,7 +160,7 @@ public class ItemManager
 			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
 			{
 				@Override
-				public AsyncBufferedImage load(@NotNull ImageKey key) throws Exception
+				public AsyncBufferedImage load(@NotNull ImageKey key)
 				{
 					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
@@ -172,7 +172,7 @@ public class ItemManager
 			.build(new CacheLoader<Integer, ItemDefinition>()
 			{
 				@Override
-				public ItemDefinition load(@NotNull Integer key) throws Exception
+				public ItemDefinition load(@NotNull Integer key)
 				{
 					return client.getItemDefinition(key);
 				}
@@ -184,7 +184,7 @@ public class ItemManager
 			.build(new CacheLoader<OutlineKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(@NotNull OutlineKey key) throws Exception
+				public BufferedImage load(@NotNull OutlineKey key)
 				{
 					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
@@ -199,21 +199,9 @@ public class ItemManager
 		itemClient.getPrices()
 			.subscribeOn(Schedulers.io())
 			.subscribe(
-				(prices) ->
-				{
-					if (prices != null)
-					{
-						ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
-						for (ItemPrice price : prices)
-						{
-							map.put(price.getId(), price);
-						}
-						itemPrices = map.build();
-					}
-
-					log.debug("Loaded {} prices", itemPrices.size());
-				},
-				(e) -> log.warn("error loading prices!", e)
+				m -> itemPrices = m,
+				e -> log.warn("Error loading prices", e),
+				() -> log.debug("Loaded {} prices", itemPrices.size())
 			);
 	}
 

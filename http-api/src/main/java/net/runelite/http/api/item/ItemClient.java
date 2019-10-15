@@ -189,7 +189,7 @@ public class ItemClient
 		});
 	}
 
-	public Observable<ItemPrice[]> getPrices()
+	public Observable<ImmutableMap<Integer, ItemPrice>> getPrices()
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
@@ -199,27 +199,29 @@ public class ItemClient
 
 		logger.debug("Built URI: {}", url);
 
-
-		return Observable.defer(() ->
+		return Observable.fromCallable(() ->
 		{
 			Request request = new Request.Builder()
 				.url(url)
 				.build();
 
-			try (Response response = client.newCall(request).execute())
+			try (JsonReader reader = new JsonReader(client.newCall(request).execute().body().charStream()))
 			{
-				if (!response.isSuccessful())
+				ImmutableMap.Builder<Integer, ItemPrice> builder = ImmutableMap.builderWithExpectedSize(3666);
+				reader.beginArray();
+
+				while (reader.hasNext())
 				{
-					logger.warn("Error looking up prices: {}", response);
-					return Observable.just(null);
+					ItemPrice price = RuneLiteAPI.GSON.fromJson(reader, ItemPrice.class);
+
+					builder.put(
+						price.getId(),
+						price
+					);
 				}
 
-				InputStream in = response.body().byteStream();
-				return Observable.just(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class));
-			}
-			catch (JsonParseException ex)
-			{
-				return Observable.error(ex);
+				reader.endArray();
+				return builder.build();
 			}
 		});
 	}
