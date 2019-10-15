@@ -39,7 +39,7 @@ import net.runelite.data.dump.wiki.NpcStatsDumper;
 public class App
 {
 	public static final Gson GSON = new GsonBuilder()
-		.setPrettyPrinting()
+		// .setPrettyPrinting()
 		.disableHtmlEscaping()
 		.create();
 
