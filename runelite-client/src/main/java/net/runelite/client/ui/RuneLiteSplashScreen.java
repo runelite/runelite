@@ -26,7 +26,6 @@ package net.runelite.client.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -111,29 +110,17 @@ public class RuneLiteSplashScreen extends JFrame
 
 	public static void init()
 	{
-		try
+		SwingUtilities.invokeLater(() ->
 		{
-			SwingUtilities.invokeAndWait(() ->
+			try
 			{
-				if (INSTANCE != null)
-				{
-					return;
-				}
-
-				try
-				{
-					INSTANCE = new RuneLiteSplashScreen();
-				}
-				catch (Exception e)
-				{
-					log.warn("Unable to start splash screen", e);
-				}
-			});
-		}
-		catch (InterruptedException | InvocationTargetException bs)
-		{
-			throw new RuntimeException(bs);
-		}
+				INSTANCE = new RuneLiteSplashScreen();
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to start splash screen", e);
+			}
+		});
 	}
 
 	public static void close()
