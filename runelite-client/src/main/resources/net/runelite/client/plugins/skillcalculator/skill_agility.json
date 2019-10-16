@@ -20,6 +20,21 @@
     },
     {
       "level": 30,
+      "icon": 6970,
+      "name": "Agility Pyramid",
+      "xp": 1022,
+      "xpScalings":
+      [
+        {
+          "startLevel": 0,
+          "endLevel": 99,
+          "levelCoefficient": 8,
+          "maxResult": 700
+        }
+      ]
+    },
+    {
+      "level": 30,
       "icon": 11849,
       "name": "Varrock Rooftop",
       "xp": 238
