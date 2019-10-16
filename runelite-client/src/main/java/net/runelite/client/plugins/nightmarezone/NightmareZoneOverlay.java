@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 class NightmareZoneOverlay extends Overlay
 {
@@ -108,15 +108,15 @@ class NightmareZoneOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")
-			.right(StackFormatter.formatNumber(currentPoints))
+			.right(QuantityFormatter.formatNumber(currentPoints))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points/Hour: ")
-			.right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
+			.right(QuantityFormatter.formatNumber(plugin.getPointsPerHour()))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Total: ")
-			.right(StackFormatter.formatNumber(totalPoints))
+			.right(QuantityFormatter.formatNumber(totalPoints))
 			.build());
 
 		return panelComponent.render(graphics);

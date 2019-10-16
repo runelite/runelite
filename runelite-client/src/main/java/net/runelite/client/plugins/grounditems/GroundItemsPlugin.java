@@ -90,7 +90,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.O
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -673,7 +673,7 @@ public class GroundItemsPlugin extends Plugin
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
 					.append(")");
 			}
 		}
