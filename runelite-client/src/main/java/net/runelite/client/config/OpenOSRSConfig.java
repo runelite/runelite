@@ -29,11 +29,46 @@ package net.runelite.client.config;
 @ConfigGroup("openosrs")
 public interface OpenOSRSConfig extends Config
 {
+	@ConfigTitleSection(
+		keyName = "pluginsTitle",
+		name = "Plugins",
+		description = "",
+		position = 1
+	)
+	default Title pluginsTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+		position = 2,
+		titleSection = "pluginsTitle"
+	)
+	default boolean enablePlugins()
+	{
+		return false;
+	}
+
+	@ConfigTitleSection(
+		keyName = "opacityTitle",
+		name = "Opacity",
+		description = "",
+		position = 3
+	)
+	default Title opacityTitle()
+	{
+		return new Title();
+	}
+
 	@ConfigItem(
 		keyName = "enableOpacity",
 		name = "Enable opacity",
 		description = "Enables opacity for the whole window.<br>NOTE: This only stays enabled if your pc supports this!",
-		position = 0
+		position = 4,
+		titleSection = "opacityTitle"
 	)
 	default boolean enableOpacity()
 	{
@@ -48,31 +83,33 @@ public interface OpenOSRSConfig extends Config
 		keyName = "opacityPercentage",
 		name = "Opacity percentage",
 		description = "Changes the opacity of the window if opacity is enabled",
-		position = 1
+		position = 5,
+		titleSection = "opacityTitle"
 	)
 	default int opacityPercentage()
 	{
 		return 100;
 	}
 
+	@ConfigTitleSection(
+		keyName = "miscTitle",
+		name = "Miscellaneous",
+		description = "",
+		position = 6
+	)
+	default Title miscTitle()
+	{
+		return new Title();
+	}
+
 	@ConfigItem(
 		keyName = "keyboardPin",
 		name = "Keyboard bank pin",
 		description = "Enables you to type your bank pin",
-		position = 2
+		position = 7,
+		titleSection = "miscTitle"
 	)
 	default boolean keyboardPin()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		position = 3
-	)
-	default boolean enablePlugins()
 	{
 		return false;
 	}
@@ -81,7 +118,8 @@ public interface OpenOSRSConfig extends Config
 		keyName = "detachHotkey",
 		name = "Detach Cam",
 		description = "Detach Camera hotkey, press this and it will activate detatched camera.",
-		position = 4
+		position = 8,
+		titleSection = "miscTitle"
 	)
 	default Keybind detachHotkey()
 	{
