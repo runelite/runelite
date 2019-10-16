@@ -52,10 +52,26 @@ public class EventBus implements EventBusInterface
 		Disposable disposable = getSubject(eventClass)
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
-			.subscribe(action, error ->
-			{
-				log.error("Error in eventbus", error);
-			});
+			.subscribe(action, error -> log.error("Error in eventbus", error));
+
+		getCompositeDisposable(lifecycle).add(disposable);
+		subscriptionList.put(lifecycle, eventClass);
+	}
+
+	@Override
+	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil)
+	{
+		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
+		{
+			return;
+		}
+
+		Disposable disposable = getSubject(eventClass)
+			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
+			.cast(eventClass) // Cast it for easier usage
+			.take(takeUntil)
+			.doFinally(() -> unregister(lifecycle))
+			.subscribe(action, error -> log.error("Error in eventbus", error));
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);

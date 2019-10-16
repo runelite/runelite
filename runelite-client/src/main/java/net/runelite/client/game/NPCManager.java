@@ -26,12 +26,12 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.InputStream;
+import com.google.gson.stream.JsonReader;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,20 +41,37 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class NPCManager
 {
-	private final ImmutableMap<Integer, NPCStats> statsMap;
+	private ImmutableMap<Integer, NPCStats> statsMap;
 
 	@Inject
 	private NPCManager()
 	{
-		final Gson gson = new Gson();
+		Completable.fromAction(this::loadStats)
+			.subscribeOn(Schedulers.computation())
+			.subscribe(
+				() -> log.debug("Loaded {} NPC stats", statsMap.size()),
+				ex -> log.warn("Error loading NPC stats", ex)
+			);
+	}
 
-		final Type typeToken = new TypeToken<Map<Integer, NPCStats>>()
+	private void loadStats() throws IOException
+	{
+		try (JsonReader reader = new JsonReader(new InputStreamReader(NPCManager.class.getResourceAsStream("/npc_stats.json"), StandardCharsets.UTF_8)))
 		{
-		}.getType();
+			ImmutableMap.Builder<Integer, NPCStats> builder = ImmutableMap.builderWithExpectedSize(2821);
+			reader.beginObject();
 
-		final InputStream statsFile = getClass().getResourceAsStream("/npc_stats.json");
-		final Map<Integer, NPCStats> stats = gson.fromJson(new InputStreamReader(statsFile), typeToken);
-		statsMap = ImmutableMap.copyOf(stats);
+			while (reader.hasNext())
+			{
+				builder.put(
+					Integer.parseInt(reader.nextName()),
+					NPCStats.NPC_STATS_TYPE_ADAPTER.read(reader)
+				);
+			}
+
+			reader.endObject();
+			statsMap = builder.build();
+		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
+ * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +23,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.rs;
 
-import org.junit.Test;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldResult;
+import okhttp3.HttpUrl;
 
-/**
- *
- * @author Adam
- */
-public class ClientConfigLoaderTest
+@Slf4j
+class HostSupplier implements Supplier<HttpUrl>
 {
-	@Test
-	public void test()
+	private final Random random = new Random();
+	private Queue<HttpUrl> hosts = new ArrayDeque<>();
+
+	@Override
+	public HttpUrl get()
 	{
-		final RSConfig config = ClientConfigLoader.fetch().blockingGet();
-
-		for (String key : config.getClassLoaderProperties().keySet())
+		if (!hosts.isEmpty())
 		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
+			return hosts.poll();
 		}
 
-		System.out.println("Applet properties:");
+		List<HttpUrl> newHosts = new  WorldClient(RuneLiteAPI.CLIENT)
+			.lookupWorlds()
+			.map(WorldResult::getWorlds)
+			.blockingSingle()
+			.stream()
+			.map(World::getAddress)
+			.map(HttpUrl::parse)
+			.collect(Collectors.toList());
 
-		for (String key : config.getAppletProperties().keySet())
+		Collections.shuffle(newHosts, random);
+
+		hosts.addAll(newHosts.subList(0, 16));
+
+		while (hosts.size() < 2)
 		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
+			hosts.add(HttpUrl.parse("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM"));
 		}
+
+		return hosts.poll();
 	}
-
 }

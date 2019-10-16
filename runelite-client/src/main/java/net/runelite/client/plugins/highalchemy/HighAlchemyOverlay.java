@@ -56,9 +56,9 @@ public class HighAlchemyOverlay extends WidgetItemOverlay
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 
-		int natPrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		int natPrice = itemManager.getItemPrice(ItemID.NATURE_RUNE, true);
 		this.alchPrice = natPrice;
-		this.alchPriceNoStaff = natPrice + 5 * itemManager.getItemPrice(ItemID.FIRE_RUNE);
+		this.alchPriceNoStaff = natPrice + 5 * itemManager.getItemPrice(ItemID.FIRE_RUNE, true);
 
 		showOnBank();
 		showOnInventory();

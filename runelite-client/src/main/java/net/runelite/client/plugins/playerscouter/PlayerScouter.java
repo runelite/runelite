@@ -551,6 +551,7 @@ public class PlayerScouter extends Plugin
 				}
 
 				ItemStats item = itemManager.getItemStats(gear, false);
+				String name = itemManager.getItemDefinition(gear).getName();
 
 				if (item == null)
 				{
@@ -559,7 +560,7 @@ public class PlayerScouter extends Plugin
 				}
 
 				fieldList.add(FieldEmbed.builder()
-					.name(item.getName())
+					.name(name)
 					.value("Value: " + StackFormatter.quantityToRSDecimalStack(value))
 					.inline(true)
 					.build());

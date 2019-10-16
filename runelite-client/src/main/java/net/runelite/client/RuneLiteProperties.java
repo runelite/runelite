@@ -24,12 +24,10 @@
  */
 package net.runelite.client;
 
-import com.google.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Singleton
 public class RuneLiteProperties
 {
 	private static final String RUNELITE_TITLE = "open.osrs.title";

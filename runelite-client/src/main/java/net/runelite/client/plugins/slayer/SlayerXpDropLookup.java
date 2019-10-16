@@ -26,6 +26,7 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -38,14 +39,15 @@ class SlayerXpDropLookup
 	// floating point math equality
 	private static final double EPSILON = 1e-6;
 
-	private void loadXpJson()
+	private void loadXpJson() throws IOException
 	{
-		final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json");
-		Gson gson = new Gson();
-		xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
+		try (final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json"))
 		{
-
-		}.getType());
+			Gson gson = new Gson();
+			xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
+			{
+			}.getType());
+		}
 	}
 
 	/**
@@ -129,6 +131,13 @@ class SlayerXpDropLookup
 
 	SlayerXpDropLookup()
 	{
-		loadXpJson();
+		try
+		{
+			loadXpJson();
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

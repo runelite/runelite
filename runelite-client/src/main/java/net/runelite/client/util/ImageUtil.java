@@ -36,6 +36,7 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -361,7 +362,10 @@ public class ImageUtil
 		{
 			synchronized (ImageIO.class)
 			{
-				return ImageIO.read(c.getResourceAsStream(path));
+				try (InputStream in = c.getResourceAsStream(path))
+				{
+					return ImageIO.read(in);
+				}
 			}
 		}
 		catch (IOException e)

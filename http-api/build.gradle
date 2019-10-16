@@ -9,6 +9,7 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok
 
     implementation group: 'com.google.code.gson', name: 'gson', version: gson
+    implementation group: 'com.google.guava', name: 'guava', version: guava
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: okhttp3
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxjava
     implementation group: 'org.apache.commons', name: 'commons-csv', version: apacheCommonsCsv
