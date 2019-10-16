@@ -186,7 +186,7 @@ public class BankPlugin extends Plugin
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
 		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-        eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
+		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
 		searchString = "";
 	}
 

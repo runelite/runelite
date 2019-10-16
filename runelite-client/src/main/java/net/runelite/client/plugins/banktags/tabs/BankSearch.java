@@ -69,23 +69,23 @@ public class BankSearch
 		});
 	}
 
-    public void layoutBank()
-    {
-        Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-        if (bankContainer == null || bankContainer.isHidden())
-        {
-            return;
-        }
+	public void layoutBank()
+	{
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainer == null || bankContainer.isHidden())
+		{
+			return;
+		}
 
-        Object[] scriptArgs = bankContainer.getOnInvTransmit();
+		Object[] scriptArgs = bankContainer.getOnInvTransmit();
 
-        if (scriptArgs == null)
-        {
-            return;
-        }
+		if (scriptArgs == null)
+		{
+			return;
+		}
 
-        client.runScript(scriptArgs);
-    }
+		client.runScript(scriptArgs);
+	}
 
 	public void reset(boolean closeChat)
 	{
