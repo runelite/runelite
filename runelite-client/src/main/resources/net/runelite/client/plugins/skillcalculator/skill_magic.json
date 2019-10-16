@@ -2,6 +2,20 @@
   "actions": [
     {
       "level": 1,
+      "icon": 13513,
+      "name": "Book of Arcane Knowledge",
+      "xp": 11,
+      "xpScalings":
+      [
+        {
+          "startLevel": 1,
+          "endLevel": 99,
+          "levelCoefficient": 11
+        }
+      ]
+    },
+    {
+      "level": 1,
       "sprite": 15,
       "name": "Wind Strike",
       "xp": 5.5

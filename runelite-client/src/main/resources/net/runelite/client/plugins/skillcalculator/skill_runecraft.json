@@ -2,6 +2,20 @@
   "actions": [
     {
       "level": 1,
+      "icon": 13513,
+      "name": "Book of Arcane Knowledge",
+      "xp": 4,
+      "xpScalings":
+      [
+        {
+          "startLevel": 1,
+          "endLevel": 99,
+          "levelCoefficient": 4
+        }
+      ]
+    },
+    {
+      "level": 1,
       "icon": 5527,
       "name": "Air Tiara",
       "xp": 25
