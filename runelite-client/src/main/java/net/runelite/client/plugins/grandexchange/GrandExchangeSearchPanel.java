@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Setter;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -220,10 +221,11 @@ class GrandExchangeSearchPanel extends JPanel
 		SwingUtilities.invokeLater(() ->
 		{
 			int index = 0;
+			int natRune = itemManager.getItemPrice(ItemID.NATURE_RUNE);
 			for (GrandExchangeItems item : itemsList)
 			{
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
+					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit(), natRune);
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
