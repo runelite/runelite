@@ -30,6 +30,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -61,6 +63,7 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
@@ -85,8 +88,8 @@ public class RuneLite
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	public static boolean allowPrivateServer = false;
 	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
+	public static boolean allowPrivateServer = false;
 
 	@Getter
 	private static Injector injector;
@@ -198,16 +201,30 @@ public class RuneLite
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
 
+		if (options.has("help"))
+		{
+			parser.printHelpOn(System.out);
+			System.exit(0);
+		}
+
+		if (options.has("debug"))
+		{
+			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+			logger.setLevel(Level.DEBUG);
+		}
+
 		if (options.has("bootstrap"))
 		{
 			Bootstrapper.main(false);
 			System.exit(0);
 		}
+
 		if (options.has("bootstrap-staging"))
 		{
 			Bootstrapper.main(true);
 			System.exit(0);
 		}
+
 		if (options.has("proxy"))
 		{
 			String[] proxy = options.valueOf(proxyInfo).split(":");
@@ -238,10 +255,18 @@ public class RuneLite
 			}
 		}
 
-		if (options.has("help"))
+		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+		Completable.fromAction(clientLoader::get)
+			.subscribeOn(Schedulers.single())
+			.subscribe();
+
+		Completable.fromAction(ClassPreloader::preload)
+			.subscribeOn(Schedulers.computation())
+			.subscribe();
+
+		if (!options.has("no-splash"))
 		{
-			parser.printHelpOn(System.out);
-			System.exit(0);
+			RuneLiteSplashScreen.init();
 		}
 
 		final boolean developerMode = options.has("developer-mode");
@@ -252,27 +277,13 @@ public class RuneLite
 			assert assertions = true;
 			if (!assertions)
 			{
-				java.util.logging.Logger.getAnonymousLogger().warning("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+				log.warn("Developers should enable assertions; Add `-ea` to your JVM arguments`");
 			}
-		}
-
-		if (!options.has("no-splash"))
-		{
-			RuneLiteSplashScreen.init();
-		}
-
-		RuneLiteSplashScreen.stage(0, "Initializing client");
-
-		PROFILES_DIR.mkdirs();
-
-		if (options.has("debug"))
-		{
-			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-			logger.setLevel(Level.DEBUG);
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
+			log.error("Uncaught exception:", throwable);
 			if (throwable instanceof AbstractMethodError)
 			{
 				RuneLiteSplashScreen.setError("Out of date!", "Classes are out of date; Build with Gradle again.");
@@ -284,13 +295,16 @@ public class RuneLite
 
 		RuneLiteSplashScreen.stage(0, "Starting OpenOSRS injector");
 
+		PROFILES_DIR.mkdirs();
+
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
+			clientLoader,
 			true));
 
 		injector.getInstance(RuneLite.class).start();
+
 		final long end = System.currentTimeMillis();
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();

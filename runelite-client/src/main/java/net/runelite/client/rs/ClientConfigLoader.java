@@ -25,68 +25,92 @@
  */
 package net.runelite.client.rs;
 
+import io.reactivex.Single;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
 class ClientConfigLoader
 {
-	public ClientConfigLoader()
+	private ClientConfigLoader()
 	{
+		throw new RuntimeException();
 	}
 
 	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
+	private static final int MAX_ATTEMPTS = 16;
 
-	static RSConfig fetch() throws IOException
+	static Single<RSConfig> fetch()
 	{
-		final Request request = new Request.Builder()
-			.url(CONFIG_URL)
-			.build();
-
-		final RSConfig config = new RSConfig();
-
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		return Single.create(obs ->
 		{
-			if (!response.isSuccessful())
+			int attempt = 0;
+
+			HostSupplier supplier = null;
+			HttpUrl url = HttpUrl.parse(CONFIG_URL);
+
+			final RSConfig config = new RSConfig();
+
+			while (attempt++ < MAX_ATTEMPTS)
 			{
-				throw new IOException("Unsuccessful response: " + response.message());
+				final Request request = new Request.Builder()
+					.url(url)
+					.build();
+
+				try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+				{
+					if (!response.isSuccessful())
+					{
+						if (supplier == null)
+						{
+							supplier = new HostSupplier();
+						}
+
+						url = supplier.get();
+						continue;
+					}
+
+					String str;
+					final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+					while ((str = in.readLine()) != null)
+					{
+						int idx = str.indexOf('=');
+
+						if (idx == -1)
+						{
+							continue;
+						}
+
+						String s = str.substring(0, idx);
+
+						switch (s)
+						{
+							case "param":
+								str = str.substring(idx + 1);
+								idx = str.indexOf('=');
+								s = str.substring(0, idx);
+
+								config.getAppletProperties().put(s, str.substring(idx + 1));
+								break;
+							case "msg":
+								// ignore
+								break;
+							default:
+								config.getClassLoaderProperties().put(s, str.substring(idx + 1));
+								break;
+						}
+					}
+
+					obs.onSuccess(config);
+					return;
+				}
 			}
 
-			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-			while ((str = in.readLine()) != null)
-			{
-				int idx = str.indexOf('=');
-
-				if (idx == -1)
-				{
-					continue;
-				}
-
-				String s = str.substring(0, idx);
-
-				switch (s)
-				{
-					case "param":
-						str = str.substring(idx + 1);
-						idx = str.indexOf('=');
-						s = str.substring(0, idx);
-
-						config.getAppletProperties().put(s, str.substring(idx + 1));
-						break;
-					case "msg":
-						// ignore
-						break;
-					default:
-						config.getClassLoaderProperties().put(s, str.substring(idx + 1));
-						break;
-				}
-			}
-		}
-
-		return config;
+			obs.onError(new IOException("Too many attempts"));
+		});
 	}
 }

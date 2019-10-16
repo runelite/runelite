@@ -28,11 +28,11 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.google.inject.Provides;
 import io.reactivex.schedulers.Schedulers;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -85,6 +85,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.api.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
@@ -107,7 +108,6 @@ public class GrandExchangePlugin extends Plugin
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
-	private static final Gson GSON = new Gson();
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
 	{
 	};
@@ -173,12 +173,14 @@ public class GrandExchangePlugin extends Plugin
 	private boolean enableGELimits;
 	private boolean enableAfford;
 
-	private static Map<Integer, Integer> loadGELimits()
+	private static Map<Integer, Integer> loadGELimits() throws IOException
 	{
-		final InputStream geLimitData = GrandExchangePlugin.class.getResourceAsStream("ge_limits.json");
-		final Map<Integer, Integer> itemGELimits = GSON.fromJson(new InputStreamReader(geLimitData), BUY_LIMIT_TOKEN.getType());
-		log.debug("Loaded {} limits", itemGELimits.size());
-		return itemGELimits;
+		try (final JsonReader geLimitData = new JsonReader(new InputStreamReader(GrandExchangePlugin.class.getResourceAsStream("ge_limits.json"))))
+		{
+			final Map<Integer, Integer> itemGELimits = RuneLiteAPI.GSON.fromJson(geLimitData, BUY_LIMIT_TOKEN.getType());
+			log.debug("Loaded {} limits", itemGELimits.size());
+			return itemGELimits;
+		}
 	}
 
 	private SavedOffer getOffer(int slot)
@@ -188,12 +190,12 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return null;
 		}
-		return GSON.fromJson(offer, SavedOffer.class);
+		return RuneLiteAPI.GSON.fromJson(offer, SavedOffer.class);
 	}
 
 	private void setOffer(int slot, SavedOffer offer)
 	{
-		configManager.setConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot), GSON.toJson(offer));
+		configManager.setConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot), RuneLiteAPI.GSON.toJson(offer));
 	}
 
 	private void deleteOffer(int slot)
@@ -208,7 +210,7 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp()
+	protected void startUp() throws Exception
 	{
 		updateConfig();
 		addSubscriptions();

@@ -32,32 +32,44 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 
 @Slf4j
-@Singleton
-public class ClientLoader
+public class ClientLoader implements Supplier<Applet>
 {
-	private final ClientUpdateCheckMode updateCheckMode;
+	private ClientUpdateCheckMode updateCheckMode;
+	private Object client = null;
 
-	@Inject
-	private ClientLoader(
-		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode)
+	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
 		this.updateCheckMode = updateCheckMode;
 	}
 
-	public Applet load()
+	@Override
+	public synchronized Applet get()
+	{
+		if (client == null)
+		{
+			client = doLoad();
+		}
+
+		if (client instanceof Throwable)
+		{
+			throw new RuntimeException((Throwable) client);
+		}
+		return (Applet) client;
+	}
+
+	private Object doLoad()
 	{
 		try
 		{
 			RuneLiteSplashScreen.stage(.2, "Fetching applet viewer config");
-			final RSConfig config = ClientConfigLoader.fetch();
+
+			final RSConfig config = ClientConfigLoader.fetch().blockingGet();
 
 			switch (updateCheckMode)
 			{
@@ -92,7 +104,7 @@ public class ClientLoader
 	private static Applet loadRLPlus(final RSConfig config)
 	throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		RuneLiteSplashScreen.stage(.465, "Starting Old School RuneScape");
+		RuneLiteSplashScreen.stage(.465, "Starting Open Old School RuneScape");
 
 		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
 		{
@@ -126,7 +138,7 @@ public class ClientLoader
 	private static Applet loadVanilla(final RSConfig config)
 	throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		RuneLiteSplashScreen.stage(.465, "Starting Old School RuneScape");
+		RuneLiteSplashScreen.stage(.465, "Starting Vanilla Old School RuneScape");
 
 		final String codebase = config.getCodeBase();
 		final String initialJar = config.getInitialJar();

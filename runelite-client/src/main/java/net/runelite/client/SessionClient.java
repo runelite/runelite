@@ -24,7 +24,9 @@
  */
 package net.runelite.client;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import java.io.IOException;
 import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -50,34 +52,36 @@ class SessionClient
 		});
 	}
 
-	Observable pingSession(UUID uuid)
+	Completable pingSession(UUID uuid)
 	{
 		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
 			.build();
 
-		return Observable.defer(() ->
+		return Completable.fromAction(() ->
 		{
 			Request request = new Request.Builder()
 				.url(url)
 				.build();
 
-
 			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 			{
-				return Observable.empty();
+				if (!response.isSuccessful())
+				{
+					throw new IOException("Unsuccesful ping");
+				}
 			}
 		});
 	}
 
-	Observable delete(UUID uuid)
+	Completable delete(UUID uuid)
 	{
 		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addQueryParameter("session", uuid.toString())
 			.build();
 
-		return Observable.defer(() ->
+		return Completable.fromAction(() ->
 		{
 			Request request = new Request.Builder()
 				.delete()
@@ -85,7 +89,6 @@ class SessionClient
 				.build();
 
 			RuneLiteAPI.CLIENT.newCall(request).execute().close();
-			return Observable.empty();
 		});
 	}
 }
