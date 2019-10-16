@@ -55,6 +55,48 @@
       "xp": 157.5
     },
     {
+      "level": 50,
+      "icon": 20695,
+      "name": "Bruma Root",
+      "xp": 150,
+      "xpScalings":
+      [
+        {
+          "startLevel": 50,
+          "endLevel": 99,
+          "levelCoefficient": 3
+        }
+      ]
+    },
+    {
+      "level": 50,
+      "icon": 20696,
+      "name": "Bruma Kindling",
+      "xp": 190,
+      "xpScalings":
+      [
+        {
+          "startLevel": 50,
+          "endLevel": 99,
+          "levelCoefficient": 3.8
+        }
+      ]
+    },
+    {
+      "level": 50,
+      "icon": 20703,
+      "name": "Subdue Wintertodt",
+      "xp": 5000,
+      "xpScalings":
+      [
+        {
+          "startLevel": 50,
+          "endLevel": 99,
+          "levelCoefficient": 100
+        }
+      ]
+    },
+    {
       "level": 60,
       "icon": 1515,
       "name": "Yew Logs",

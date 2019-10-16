@@ -2,6 +2,20 @@
   "actions": [
     {
       "level": 1,
+      "icon": 20696,
+      "name": "Bruma Kindling",
+      "xp": 0.6,
+      "xpScalings":
+      [
+        {
+          "startLevel": 1,
+          "endLevel": 99,
+          "levelCoefficient": 0.6
+        }
+      ]
+    },
+    {
+      "level": 1,
       "icon": 52,
       "name": "Arrow Shaft",
       "xp": 5
