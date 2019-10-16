@@ -39,10 +39,13 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.plugins.skillcalculator.beans.XpScaling;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
@@ -307,23 +310,87 @@ class SkillCalculator extends JPanel
 	{
 		for (UIActionSlot slot : uiActionSlots)
 		{
-			int actionCount = 0;
-			int neededXP = targetXP - currentXP;
-			SkillDataEntry action = slot.getAction();
-			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+			final SkillDataEntry action = slot.getAction();
+			final ActionSequenceInfo sequence = calculateActionSequence(action, currentXP, targetXP, xpFactor);
 
-			if (neededXP > 0)
-			{
-				actionCount = (int) Math.ceil(neededXP / xp);
-			}
-
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(sequence.getActionXp(), sequence.getActionCount(), "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
-			slot.setValue(xp);
+			slot.setValue(sequence.getActionXp());
 		}
 
 		updateCombinedAction();
+	}
+
+	@VisibleForTesting
+	static ActionSequenceInfo calculateActionSequence(SkillDataEntry action, int startXP, int goalXP, float xpFactor)
+	{
+		final int neededXp = goalXP - startXP;
+		double actionXp = action.isIgnoreBonus() ? action.getXp() : action.getXp() * xpFactor;
+
+		if (neededXp <= 0)
+		{
+			return new ActionSequenceInfo(actionXp, 0);
+		}
+
+		if (action.getXpScalings() == null)
+		{
+			return new ActionSequenceInfo(actionXp, (int) Math.ceil(neededXp / actionXp));
+		}
+
+		int accumulatedActions = 0;
+		double accumulatedXp = 0;
+
+		while (accumulatedXp < neededXp)
+		{
+			final int accumulatedLvl = Experience.getLevelForXp((int) (startXP + accumulatedXp));
+			actionXp = calculateScaledActionXp(accumulatedLvl, action);
+			actionXp *= action.isIgnoreBonus() ? 1 : xpFactor;
+
+			final double xpToScalingChange;
+
+			if (accumulatedLvl < Experience.MAX_REAL_LEVEL)
+			{
+				xpToScalingChange = Experience.getXpForLevel(accumulatedLvl + 1) - startXP - accumulatedXp;
+			}
+			else
+			{
+				xpToScalingChange = goalXP - startXP - accumulatedXp;
+			}
+
+			final int requiredActions = (int) Math.ceil(xpToScalingChange / actionXp);
+
+			accumulatedXp += requiredActions * actionXp;
+			accumulatedActions += requiredActions;
+		}
+
+		return new ActionSequenceInfo(accumulatedXp / accumulatedActions, accumulatedActions);
+	}
+
+	private static double calculateScaledActionXp(int level, SkillDataEntry action)
+	{
+		double fullActionXp = action.getXp();
+
+		for (XpScaling xpScaling : action.getXpScalings())
+		{
+			if (level < xpScaling.getStartLevel())
+			{
+				continue;
+			}
+
+			final double scaledActionXp = xpScaling.getLevelCoefficient() * (level - xpScaling.getStartLevel());
+
+			if (xpScaling.getMaxResult() != 0 && scaledActionXp > xpScaling.getMaxResult())
+			{
+				fullActionXp += xpScaling.getMaxResult();
+			}
+			else
+			{
+				fullActionXp += scaledActionXp;
+			}
+		}
+
+		return fullActionXp;
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
@@ -411,6 +478,15 @@ class SkillCalculator extends JPanel
 	private boolean slotContainsText(UIActionSlot slot, String text)
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
+	@Value
+	@AllArgsConstructor
+	@VisibleForTesting
+	static class ActionSequenceInfo
+	{
+		private final double actionXp;
+		private final int actionCount;
 	}
 
 }
