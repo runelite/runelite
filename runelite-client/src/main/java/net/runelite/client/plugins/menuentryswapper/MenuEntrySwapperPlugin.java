@@ -33,7 +33,13 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -621,9 +627,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return widget != null && !widget.isSelfHidden();
 		}
 		else
-			{
-				return false;
-			}
+		{
+			return false;
+		}
 	}
 
 	@Subscribe
