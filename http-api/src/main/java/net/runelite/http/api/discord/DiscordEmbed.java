@@ -61,49 +61,20 @@ public class DiscordEmbed
 	VideoEmbed video;
 	ProviderEmbed provider;
 	AuthorEmbed author;
-	@Builder.Default
-	List<FieldEmbed> fields = new ArrayList<>();
+	final List<FieldEmbed> fields = new ArrayList<>();
 
-	public DiscordEmbed()
+	public DiscordEmbed(AuthorEmbed author, ThumbnailEmbed thumb, String description, FooterEmbed footer, String color, List<FieldEmbed> fields)
 	{
-
+		this.author = author;
+		this.thumbnail = thumb;
+		this.description = description;
+		this.footer = footer;
+		this.color = color;
+		this.fields.addAll(fields);
 	}
 
-	public DiscordEmbed(String title, String description)
+	public DiscordMessage toDiscordMessage(String username, String content, String avatarUrl)
 	{
-		this(title, description, null);
-	}
-
-	public DiscordEmbed(String title, String description, String url)
-	{
-		setTitle(title);
-		setDescription(description);
-		setUrl(url);
-	}
-
-	public static DiscordMessage toDiscordMessage(DiscordEmbed embed, String username, String avatarURL)
-	{
-		return DiscordMessage.builder()
-			.username(username)
-			.avatarUrl(avatarURL)
-			.content("")
-			.embed(embed)
-			.build();
-	}
-
-	public DiscordMessage toDiscordMessage(String username, String avatarUrl)
-	{
-		return DiscordEmbed.toDiscordMessage(this, username, avatarUrl);
-	}
-
-	public static class DiscordEmbedBuilder
-	{
-		List<FieldEmbed> fields = new ArrayList<>();
-
-		public DiscordEmbedBuilder field(FieldEmbed field)
-		{
-			fields.add(field);
-			return this;
-		}
+		return new DiscordMessage(username, content, avatarUrl, this);
 	}
 }
