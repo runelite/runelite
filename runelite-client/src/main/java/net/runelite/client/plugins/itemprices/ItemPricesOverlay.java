@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Singleton
 class ItemPricesOverlay extends Overlay
@@ -185,11 +185,11 @@ class ItemPricesOverlay extends Overlay
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
 		{
-			return StackFormatter.formatNumber(qty) + " gp";
+			return QuantityFormatter.formatNumber(qty) + " gp";
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return StackFormatter.formatNumber(qty * 1000) + " gp";
+			return QuantityFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
 		ItemDefinition itemDef = itemManager.getItemDefinition(id);
@@ -236,12 +236,12 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(StackFormatter.quantityToStackSize(gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
 				.append(" gp");
 			if (plugin.isShowEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(gePrice))
+					.append(QuantityFormatter.quantityToStackSize(gePrice))
 					.append(" ea)");
 			}
 		}
@@ -253,12 +253,12 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(StackFormatter.quantityToStackSize(haValue * qty))
+				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
 			if (plugin.isShowEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(haValue))
+					.append(QuantityFormatter.quantityToStackSize(haValue))
 					.append(" ea)");
 			}
 		}

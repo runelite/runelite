@@ -63,8 +63,8 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.PvPUtil;
-import static net.runelite.client.util.StackFormatter.quantityToRSDecimalStack;
 import net.runelite.api.util.Text;
+import net.runelite.client.util.QuantityFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -536,7 +536,7 @@ public class PvpToolsPlugin extends Plugin
 			}
 			wealth += value;
 		}
-		panel.totalRiskLabel.setText(htmlLabel("Total risk: ", quantityToRSDecimalStack(wealth)));
+		panel.totalRiskLabel.setText(htmlLabel("Total risk: ", QuantityFormatter.quantityToRSDecimalStack(wealth)));
 		panel.totalRiskLabel.repaint();
 
 		int itemLimit = 0;
@@ -572,7 +572,7 @@ public class PvpToolsPlugin extends Plugin
 			}
 		}
 		panel.riskProtectingItem.setText(htmlLabel("Risk Protecting Item: ",
-			quantityToRSDecimalStack(descendingMap.keySet().stream().mapToInt(Integer::intValue).sum())));
+			QuantityFormatter.quantityToRSDecimalStack(descendingMap.keySet().stream().mapToInt(Integer::intValue).sum())));
 		panel.riskProtectingItem.repaint();
 
 		panel.biggestItemLabel.setText("Most Valuable Item: ");

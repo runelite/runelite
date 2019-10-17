@@ -25,58 +25,52 @@
 package net.runelite.api;
 
 /**
- * Represents the template of a specific object.
+ * Information about a specific {@link ObjectID}
  */
 public interface ObjectDefinition
 {
 	/**
 	 * Gets ID for the object.
 	 *
-	 * @return the object ID
+	 * @see ObjectID
 	 */
 	int getId();
 
 	/**
 	 * Gets the name of the object.
-	 *
-	 * @return the object name
 	 */
 	String getName();
 
 	/**
-	 * Gets an array of possible right-click menu actions that can be
-	 * performed on the object.
-	 *
-	 * @return the menu actions
+	 * The 5 menuops this object has when in world. Index 0 corresponds to
+	 * {@link MenuAction#GAME_OBJECT_FIRST_OPTION}, Index 2 to
+	 * {@link MenuAction#GAME_OBJECT_SECOND_OPTION} and so on.
 	 */
 	String[] getActions();
 
 	/**
-	 * Gets the map scene ID for the object.
-	 *
-	 * @return the scene ID
+	 * Gets the index of this object in the {@link Client#getMapScene()}
+	 * array, or -1 if it has no map scene icon
 	 */
 	int getMapSceneId();
 
 	/**
-	 * Gets the map icon ID for the object.
-	 *
-	 * @return the map icon ID
+	 * Gets the index of this object in the {@link Client#getMapIcons()}
+	 * array, or -1 if it has no full map icon
 	 */
 	int getMapIconId();
 
 	/**
-	 * Gets IDs for objects that are considered fakes of this object,
-	 * such as barrows walls.
-	 *
-	 * @return the impostor IDs
+	 * Get the {@link ObjectID}s of objects this can transform into, depending
+	 * on a {@link Varbits} or {@link VarPlayer}
 	 */
 	int[] getImpostorIds();
 
 	/**
-	 * Gets the impostor composition for this object.
+	 * Get the object composition the player's state says this object should
+	 * transmogrify into.
 	 *
-	 * @return the impostor
+	 * @throws NullPointerException if {@link #getImpostorIds()} is null
 	 */
 	ObjectDefinition getImpostor();
 }

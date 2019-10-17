@@ -64,7 +64,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import static net.runelite.api.util.Text.sanitize;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
@@ -861,11 +861,11 @@ public class ChatCommandsPlugin extends Plugin
 						builder.append(ChatColorType.NORMAL);
 						builder.append(": GE ");
 						builder.append(ChatColorType.HIGHLIGHT);
-						builder.append(StackFormatter.formatNumber(itemPrice));
+						builder.append(QuantityFormatter.formatNumber(itemPrice));
 						builder.append(ChatColorType.NORMAL);
 						builder.append(": OSB ");
 						builder.append(ChatColorType.HIGHLIGHT);
-						builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
+						builder.append(QuantityFormatter.formatNumber(osbresult.getOverall_average()));
 
 						ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 						if (itemComposition != null)
@@ -875,7 +875,7 @@ public class ChatCommandsPlugin extends Plugin
 								.append(ChatColorType.NORMAL)
 								.append(" HA value ")
 								.append(ChatColorType.HIGHLIGHT)
-								.append(StackFormatter.formatNumber(alchPrice));
+								.append(QuantityFormatter.formatNumber(alchPrice));
 						}
 
 						String response = builder.build();

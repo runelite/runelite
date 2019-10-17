@@ -33,7 +33,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 class LootGrid extends JPanel
 {
@@ -81,8 +81,8 @@ class LootGrid extends JPanel
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
 
-		return "<html>" + name + " x " + StackFormatter.formatNumber(quantity)
-			+ "<br/>Price: " + StackFormatter.quantityToStackSize(price)
-			+ "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price) + "</html>";
+		return "<html>" + name + " x " + QuantityFormatter.formatNumber(quantity)
+			+ "<br/>Price: " + QuantityFormatter.quantityToStackSize(price)
+			+ "<br/>Total: " + QuantityFormatter.quantityToStackSize(quantity * price) + "</html>";
 	}
 }

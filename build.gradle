@@ -92,7 +92,7 @@ allprojects {
     if (this.name != 'rs-client') apply plugin: 'checkstyle'
 
     group = 'com.openosrs'
-    version = '1.5.36-SNAPSHOT'
+    version = '1.5.37-SNAPSHOT'
 
     ext {
         rsversion = 184

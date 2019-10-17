@@ -100,7 +100,7 @@ import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -1213,7 +1213,7 @@ public class GroundItemsPlugin extends Plugin
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
 					.append(")");
 			}
 		}

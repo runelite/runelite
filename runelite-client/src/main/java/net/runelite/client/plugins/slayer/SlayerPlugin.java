@@ -633,7 +633,7 @@ public class SlayerPlugin extends Plugin
 			forcedWait--;
 		}
 
-		if (infoTimer != null)
+		if (infoTimer != null && config.statTimeout() != 0)
 		{
 			Duration timeSinceInfobox = Duration.between(infoTimer, Instant.now());
 			Duration statTimeout = Duration.ofMinutes(this.statTimeout);

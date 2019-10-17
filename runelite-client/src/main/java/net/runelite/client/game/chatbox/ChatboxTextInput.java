@@ -129,6 +129,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		this.clientThread = clientThread;
 	}
 
+	public ChatboxTextInput addCharValidator(IntPredicate validator)
+	{
+		this.charValidator = this.charValidator.and(validator);
+		return this;
+	}
+
 	public ChatboxTextInput lines(int lines)
 	{
 		this.lines = lines;
@@ -151,7 +157,15 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	public ChatboxTextInput value(String value)
 	{
-		this.value = new StringBuffer(value);
+		StringBuffer sb = new StringBuffer();
+		for (char c : value.toCharArray())
+		{
+			if (charValidator.test(c))
+			{
+				sb.append(c);
+			}
+		}
+		this.value = sb;
 		cursorAt(this.value.length());
 		return this;
 	}

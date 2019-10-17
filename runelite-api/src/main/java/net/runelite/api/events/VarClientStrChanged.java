@@ -29,6 +29,7 @@ import lombok.Value;
 
 /**
  * An event where a client var string has changed.
+ * @see net.runelite.api.VarClientStr
  */
 @Value
 public class VarClientStrChanged implements Event

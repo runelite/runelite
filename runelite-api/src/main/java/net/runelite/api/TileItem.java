@@ -30,17 +30,10 @@ package net.runelite.api;
 public interface TileItem extends Entity
 {
 	/**
-	 * Gets the items ID.
-	 *
 	 * @return the ID of the item
 	 * @see ItemID
 	 */
 	int getId();
 
-	/**
-	 * Gets the items quantity.
-	 *
-	 * @return the items quantity
-	 */
 	int getQuantity();
 }
