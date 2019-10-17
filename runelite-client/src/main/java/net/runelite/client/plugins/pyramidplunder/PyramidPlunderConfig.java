@@ -27,16 +27,29 @@ package net.runelite.client.plugins.pyramidplunder;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("pyramidplunder")
 public interface PyramidPlunderConfig extends Config
 {
+	@ConfigTitleSection(
+		keyName = "overlaysTitle",
+		name = "Overlays",
+		description = "",
+		position = 1
+	)
+	default Title overlaysTitle()
+	{
+		return new Title();
+	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "showPlunderStatus",
 		name = "Show session stats",
-		description = "Configures whether to display pyramid plunder session stats"
+		description = "Configures whether to display pyramid plunder session stats",
+		titleSection = "overlaysTitle"
 	)
 	default boolean showPlunderStatus()
 	{
@@ -44,43 +57,11 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "highlightDoors",
-		name = "Highlights doors",
-		description = "Highlights the four doors in each room"
-	)
-	default boolean highlightDoors()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 3,
-		keyName = "highlightSpearTrap",
-		name = "Highlights spear traps",
-		description = "Highlights the spear traps in each room"
-	)
-	default boolean highlightSpearTrap()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showTimer",
-		name = "Display numerical timer",
-		description = "Displays a numerical timer instead of the default timer"
-	)
-	default boolean showTimer()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
 		keyName = "hideWidget",
 		name = "Hide default widget",
-		description = "Hide the default widget"
+		description = "Hide the default widget",
+		titleSection = "overlaysTitle"
 	)
 	default boolean hideWidget()
 	{
@@ -88,10 +69,69 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
+		keyName = "showTimer",
+		name = "Display numerical timer",
+		description = "Displays a numerical timer instead of the default timer",
+		titleSection = "overlaysTitle"
+	)
+	default boolean showTimer()
+	{
+		return true;
+	}
+
+	@ConfigTitleSection(
+		keyName = "highlightsTitle",
+		name = "Highlights",
+		description = "",
+		position = 5
+	)
+	default Title highlightsTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
 		position = 6,
+		keyName = "highlightDoors",
+		name = "Highlights doors",
+		description = "Highlights the four doors in each room",
+		titleSection = "highlightsTitle"
+	)
+	default boolean highlightDoors()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "highlightSpearTrap",
+		name = "Highlights spear traps",
+		description = "Highlights the spear traps in each room",
+		titleSection = "highlightsTitle"
+	)
+	default boolean highlightSpearTrap()
+	{
+		return false;
+	}
+
+	@ConfigTitleSection(
+		keyName = "warningsTitle",
+		name = "Warnings",
+		description = "",
+		position = 8
+	)
+	default Title warningsTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		position = 9,
 		keyName = "firstWarningTime",
 		name = "First warning time",
-		description = "Recolor time left(s)"
+		description = "Recolor time left(s)",
+		titleSection = "warningsTitle"
 	)
 	default int firstWarningTime()
 	{
@@ -99,14 +139,14 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 10,
 		keyName = "secondWarningTime",
 		name = "Second warning time",
-		description = "Recolor time left(s)"
+		description = "Recolor time left(s)",
+		titleSection = "warningsTitle"
 	)
 	default int secondWarningTime()
 	{
 		return 30;
 	}
-
 }
