@@ -240,7 +240,7 @@ public class MenuManager
 
 		// Need to set the event entries to prevent conflicts
 		event.setMenuEntries(arrayEntries);
-		event.setModified(true);
+		event.setModified();
 	}
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
@@ -889,7 +889,7 @@ public class MenuManager
 	}
 
 	@AllArgsConstructor
-	private class SortMapping implements Comparable<SortMapping>
+	private static class SortMapping implements Comparable<SortMapping>
 	{
 		private final int priority;
 		private final MenuEntry entry;

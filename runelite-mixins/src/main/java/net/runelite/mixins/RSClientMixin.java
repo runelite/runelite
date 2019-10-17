@@ -750,7 +750,7 @@ public abstract class RSClientMixin implements RSClient
 
 			client.getCallbacks().post(MenuEntryAdded.class, event);
 
-			if (event.hasBeenModified() && client.getMenuOptionCount() == newCount)
+			if (event.isModified() && client.getMenuOptionCount() == newCount)
 			{
 				options[oldCount] = event.getOption();
 				targets[oldCount] = event.getTarget();

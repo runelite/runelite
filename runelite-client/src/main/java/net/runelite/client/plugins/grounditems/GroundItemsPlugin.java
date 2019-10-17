@@ -983,7 +983,7 @@ public class GroundItemsPlugin extends Plugin
 				{
 					final String optionText = telegrabEntry ? "Cast" : "Take";
 					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
-					lastEntry.setModified(true);
+					lastEntry.setModified();
 				}
 
 				if (mode == BOTH || mode == NAME)
@@ -1003,14 +1003,14 @@ public class GroundItemsPlugin extends Plugin
 					}
 
 					lastEntry.setTarget(target);
-					lastEntry.setModified(true);
+					lastEntry.setModified();
 				}
 			}
 
 			if (this.showMenuItemQuantities && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-				lastEntry.setModified(true);
+				lastEntry.setModified();
 			}
 
 			if (this.removeIgnored && lastEntry.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(lastEntry.getTarget())))

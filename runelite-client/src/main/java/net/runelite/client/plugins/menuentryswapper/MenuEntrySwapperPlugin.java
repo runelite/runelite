@@ -578,7 +578,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		event.setMenuEntries(menu_entries.toArray(new MenuEntry[0]));
-		event.setModified(true);
+		event.setModified();
 	}
 
 	public void onMenuEntryAdded(MenuEntryAdded event)

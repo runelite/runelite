@@ -448,7 +448,7 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.SHOP_INVENTORY_GROUP_ID:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-				menuEntry.setModified(true);
+				menuEntry.setModified();
 		}
 	}
 

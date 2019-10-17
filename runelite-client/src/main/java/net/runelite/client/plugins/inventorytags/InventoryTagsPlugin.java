@@ -250,7 +250,7 @@ public class InventoryTagsPlugin extends Plugin
 
 			// Need to set the event entries to prevent conflicts
 			event.setMenuEntries(menuList);
-			event.setModified(true);
+			event.setModified();
 		}
 	}
 

@@ -24,7 +24,7 @@
  */
 package net.runelite.api.events;
 
-import lombok.Setter;
+import lombok.Getter;
 import net.runelite.api.MenuEntry;
 
 /**
@@ -44,11 +44,11 @@ public class MenuEntryAdded extends MenuEntry implements Event
 	 * Checks if count is the same, but doesn't check if there's
 	 * been multiple changes
 	 */
-	@Setter
+	@Getter
 	private boolean modified;
 
-	public boolean hasBeenModified()
+	public void setModified()
 	{
-		return modified;
+		this.modified = true;
 	}
 }

@@ -258,7 +258,7 @@ public class CorpPlugin extends Plugin
 		}
 
 		event.setOpcode(NPC_SECOND_OPTION.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-		event.setModified(true);
+		event.setModified();
 	}
 
 	private void onConfigChanged(ConfigChanged configChanged)
