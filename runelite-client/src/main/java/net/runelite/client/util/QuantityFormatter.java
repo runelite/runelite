@@ -37,10 +37,9 @@ import java.util.regex.Pattern;
 import net.runelite.client.RuneLite;
 
 /**
- * A set of utility functions to use when
- * formatting numbers for to stack sizes.
+ * A set of utility functions to use when formatting quantities
  */
-public class StackFormatter
+public class QuantityFormatter
 {
 	/**
 	 * A list of suffixes to use when formatting stack sizes.
@@ -52,43 +51,17 @@ public class StackFormatter
 	 */
 	private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
 
-	/**
-	 * A number formatter
-	 */
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
-	/**
-	 * A decimal number formatter
-	 */
 	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
 		"#,###.#",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
 
-	/**
-	 * A more precise decimal number formatter, outputting thousandths
-	 */
 	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
 		"#,###.###",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
-
-	/**
-	 * Attempts to call the platform to get a localized time string based on
-	 * the users preferences. Falls back on using locale default if it is on a
-	 * platform that has no consistent way of obtaining this information.
-	 *
-	 * @param localDateTime The LocalDateTime object to format as a string
-	 * @return The formatted string.
-	 */
-	public static String getPlatformTimeStringFromLocalDateTime(LocalDateTime localDateTime)
-	{
-		if (OSType.getOSType() == OSType.Windows)
-		{
-			return WinApi.getTimeFormatString(localDateTime);
-		}
-		return StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(localDateTime.toLocalTime());
-	}
 
 	/**
 	 * Get a localized DateTimeFormatter for use.
@@ -101,15 +74,17 @@ public class StackFormatter
 		return DateTimeFormatter.ofLocalizedTime(formatStyle).withLocale(RuneLite.SYSTEM_LOCALE);
 	}
 
+
 	/**
-	 * Convert a quantity to a nicely formatted stack size.
-	 * See the StackFormatterTest to see expected output.
+	 * Convert a quantity to a short, comma separated, SI-prefix style string
+	 *
+	 * example: {@code 9,450}, {@code 2.14B}, {@code 100K}
+
 	 *
 	 * @param quantity The quantity to convert.
-	 * @return A condensed version, with commas, K, M or B
-	 * as needed to 3 significant figures.
+	 * @return a 6 or less character string, possibly with a decimal point, commas or K/M/B suffix
 	 */
-	public static String quantityToStackSize(long quantity)
+	public static synchronized String quantityToStackSize(long quantity)
 	{
 		if (quantity < 0)
 		{
@@ -147,49 +122,12 @@ public class StackFormatter
 	}
 
 	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape.
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS,
+	 * Convert a quantity to a short SI-prefix style string, possibly with a decimal,
 	 * with K after 100,000 and M after 10,000,000
-	 */
-	public static String quantityToRSStackSize(int quantity)
-	{
-		if (quantity == Integer.MIN_VALUE)
-		{
-			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
-			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
-		}
-		else if (quantity < 0)
-		{
-			return "-" + quantityToRSStackSize(-quantity);
-		}
-		else if (quantity < 100_000)
-		{
-			return Integer.toString(quantity);
-		}
-		else if (quantity < 10_000_000)
-		{
-			return quantity / 1_000 + "K";
-		}
-		else
-		{
-			return quantity / 1_000_000 + "M";
-		}
-	}
-
-	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape. (with decimals)
-	 * <p>
-	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27.1k (not 27k)
-	 * <p>
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS, with decimals,
-	 * with K after 100,000 and M after 10,000,000
+	 * 
+	 * example: {@code 9,450}, {@code 2.1B}, {@code 100K}
+	 * 
+	 * @see #quantityToRSDecimalStack(int, boolean) 
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
@@ -197,19 +135,16 @@ public class StackFormatter
 	}
 
 	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape. (with decimals)
-	 * <p>
-	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27.1k (not 27k)
-	 * <p>
-	 *
-	 * @param quantity The quantity to convert.
-	 * @param precise  If true, the returned string will have thousandths precision if quantity is larger than 1 million.
-	 * @return The stack size as it would appear in RS, with decimals,
+	 * Convert a quantity to a short SI-prefix style string, possibly with decimals,
 	 * with K after 100,000 and M after 10,000,000
+	 *
+	 * example without {@code precise}: {@code 9,450}, {@code 2.1B}, {@code 8.4M}
+	 * example with {@code precise}: {@code 9,450}, {@code 2.147B}, {@code 8.32M}
+	 *
+	 * @param precise If true, allow thousandths precision if {@code quantity} is larger than 1 million.
+	 *                Otherwise have at most a single decimal
 	 */
-	public static String quantityToRSDecimalStack(int quantity, boolean precise)
+	public static synchronized String quantityToRSDecimalStack(int quantity, boolean precise)
 	{
 		String quantityStr = String.valueOf(quantity);
 		if (quantityStr.length() <= 4)
@@ -234,7 +169,7 @@ public class StackFormatter
 	 * @param string The string to convert.
 	 * @return A long representation of it.
 	 */
-	public static long stackSizeToQuantity(String string) throws ParseException
+	public static synchronized long parseQuantity(String string) throws ParseException
 	{
 		int multiplier = getMultiplier(string);
 		float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
@@ -242,29 +177,23 @@ public class StackFormatter
 	}
 
 	/**
-	 * Specialization of format.
+	 * Formats a number to be comma delimited. No suffixes are given
 	 *
-	 * @param number the long number to format
-	 * @return the formatted String
-	 * @throws ArithmeticException if rounding is needed with rounding
-	 *                             mode being set to RoundingMode.UNNECESSARY
-	 * @see java.text.Format#format
+	 * example: {@code 10,123,351}, {@code 5}
 	 */
-	public static String formatNumber(final long number)
+	public static synchronized String formatNumber(final long number)
 	{
 		return NUMBER_FORMATTER.format(number);
 	}
 
+
 	/**
-	 * Specialization of format.
+	 * Formats a number to be comma delimited. No suffixes are given. Has at
+	 * most 3 decimal places
 	 *
-	 * @param number the double number to format
-	 * @return the formatted String
-	 * @throws ArithmeticException if rounding is needed with rounding
-	 *                             mode being set to RoundingMode.UNNECESSARY
-	 * @see java.text.Format#format
+	 * example: {@code 10,123,351}, {@code 5.612}
 	 */
-	public static String formatNumber(double number)
+	public static synchronized String formatNumber(double number)
 	{
 		return NUMBER_FORMATTER.format(number);
 	}
@@ -306,5 +235,22 @@ public class StackFormatter
 		{
 			return 1;
 		}
+	}
+
+	/**
+	 * Attempts to call the platform to get a localized time string based on
+	 * the users preferences. Falls back on using locale default if it is on a
+	 * platform that has no consistent way of obtaining this information.
+	 *
+	 * @param localDateTime The LocalDateTime object to format as a string
+	 * @return The formatted string.
+	 */
+	public static String getPlatformTimeStringFromLocalDateTime(LocalDateTime localDateTime)
+	{
+		if (OSType.getOSType() == OSType.Windows)
+		{
+			return WinApi.getTimeFormatString(localDateTime);
+		}
+		return QuantityFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(localDateTime.toLocalTime());
 	}
 }

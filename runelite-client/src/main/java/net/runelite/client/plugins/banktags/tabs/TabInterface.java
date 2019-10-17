@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -94,6 +95,8 @@ import net.runelite.api.util.Text;
 @Singleton
 public class TabInterface
 {
+	public static final IntPredicate FILTERED_CHARS = c -> "</>".indexOf(c) == -1;
+
 	private static final Color HILIGHT_COLOR = JagexColors.MENU_TARGET;
 	private static final String SCROLL_UP = "Scroll up";
 	private static final String SCROLL_DOWN = "Scroll down";
@@ -253,6 +256,7 @@ public class TabInterface
 		}
 
 		chatboxPanelManager.openTextInput((inventory ? "Inventory " : "Equipment ") + " tags:")
+			.addCharValidator(FILTERED_CHARS)
 			.onDone((newTags) ->
 				clientThread.invoke(() ->
 				{
@@ -274,6 +278,7 @@ public class TabInterface
 		{
 			case NewTab.NEW_TAB:
 				chatboxPanelManager.openTextInput("Tag name")
+					.addCharValidator(FILTERED_CHARS)
 					.onDone((tagName) -> clientThread.invoke(() ->
 					{
 						if (!Strings.isNullOrEmpty(tagName))
@@ -286,7 +291,6 @@ public class TabInterface
 					.build();
 				break;
 			case NewTab.IMPORT_TAB:
-
 				try
 				{
 					final String dataString = Toolkit
@@ -297,7 +301,24 @@ public class TabInterface
 						.trim();
 
 					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
-					final String name = dataIter.next();
+					String name = dataIter.next();
+					StringBuffer sb = new StringBuffer();
+					for (char c : name.toCharArray())
+					{
+						if (FILTERED_CHARS.test(c))
+						{
+							sb.append(c);
+						}
+					}
+
+					if (sb.length() == 0)
+					{
+						notifier.notify("Failed to import tag tab from clipboard, invalid format.");
+						return;
+					}
+
+					name = sb.toString();
+
 					final String icon = dataIter.next();
 					tabManager.setIcon(name, icon);
 
@@ -785,6 +806,7 @@ public class TabInterface
 	private void renameTab(String oldTag)
 	{
 		chatboxPanelManager.openTextInput("Enter new tag name for tag \"" + oldTag + "\":")
+			.addCharValidator(FILTERED_CHARS)
 			.onDone((newTag) -> clientThread.invoke(() ->
 			{
 				if (!Strings.isNullOrEmpty(newTag) && !newTag.equalsIgnoreCase(oldTag))

@@ -118,8 +118,8 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
 import net.runelite.api.util.Text;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -627,7 +627,7 @@ public class LootTrackerPlugin extends Plugin
 			if (WorldType.isDeadmanWorld(client.getWorldType()) || WorldType.isHighRiskWorld(client.getWorldType()) ||
 				WorldType.isPvpWorld(client.getWorldType()) || client.getVar(Varbits.IN_WILDERNESS) == 1)
 			{
-				final String totalValue = StackFormatter.quantityToRSStackSize(playerLootReceived.getItems().stream()
+				final String totalValue = QuantityFormatter.quantityToStackSize(playerLootReceived.getItems().stream()
 					.mapToInt(itemStack -> itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity()).sum());
 
 				chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.CONSOLE).runeLiteFormattedMessage(
@@ -725,7 +725,7 @@ public class LootTrackerPlugin extends Plugin
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Your loot is worth around ")
-				.append(StackFormatter.formatNumber(chestPrice))
+				.append(QuantityFormatter.formatNumber(chestPrice))
 				.append(" coins.")
 				.append(ChatColorType.NORMAL);
 

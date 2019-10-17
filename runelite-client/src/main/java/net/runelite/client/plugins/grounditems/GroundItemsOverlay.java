@@ -59,7 +59,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Singleton
 public class GroundItemsOverlay extends Overlay
@@ -270,7 +270,7 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+						.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
 						.append(")");
 				}
 			}
@@ -280,14 +280,14 @@ public class GroundItemsOverlay extends Overlay
 				if (item.getGePrice() > 0)
 				{
 					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
 						.append(" gp)");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
 						.append(" gp)");
 				}
 			}
@@ -301,7 +301,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					itemStringBuilder
 						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
+						.append(QuantityFormatter.quantityToStackSize(price))
 						.append(" gp)");
 				}
 			}

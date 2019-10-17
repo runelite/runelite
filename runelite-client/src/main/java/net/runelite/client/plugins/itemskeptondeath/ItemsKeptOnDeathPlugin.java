@@ -62,7 +62,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Items Kept on Death",
@@ -586,7 +586,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			total += (long) price * w.getItemQuantity();
 		}
 		final Widget lostValue = client.getWidget(WidgetInfo.ITEMS_LOST_VALUE);
-		lostValue.setText(StackFormatter.quantityToStackSize(total) + " gp");
+		lostValue.setText(QuantityFormatter.quantityToStackSize(total) + " gp");
 
 		// Update Max items kept
 		final Widget max = client.getWidget(WidgetInfo.ITEMS_KEPT_MAX);

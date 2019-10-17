@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Getter
 class TextPanel extends JPanel
@@ -58,7 +58,7 @@ class TextPanel extends JPanel
 		totalText.setForeground(Color.WHITE);
 
 		// Item Values (Colored off Total Value of item)
-		final JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.LEFT);
+		final JLabel total = new JLabel(QuantityFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.LEFT);
 		total.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		total.setForeground(getRSValueColor(totalValue));
 
@@ -74,7 +74,7 @@ class TextPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
-		panel.setToolTipText(StackFormatter.formatNumber(totalValue));
+		panel.setToolTipText(QuantityFormatter.formatNumber(totalValue));
 
 		this.add(panel, c);
 	}

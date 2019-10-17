@@ -42,7 +42,7 @@ import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Getter
 class ItemPanel extends JPanel
@@ -84,7 +84,7 @@ class ItemPanel extends JPanel
 		labelName.setForeground(getRSValueColor(this.record.getPrice()));
 		labelName.setVerticalAlignment(SwingUtilities.BOTTOM);
 
-		final JShadowedLabel labelValue = new JShadowedLabel(StackFormatter.quantityToStackSize(total) + " gp");
+		final JShadowedLabel labelValue = new JShadowedLabel(QuantityFormatter.quantityToStackSize(total) + " gp");
 		labelValue.setFont(FontManager.getRunescapeSmallFont());
 		labelValue.setForeground(getRSValueColor(total));
 		labelValue.setVerticalAlignment(SwingUtilities.TOP);
@@ -113,9 +113,9 @@ class ItemPanel extends JPanel
 		final int quantity = record.getQuantity();
 		final long price = record.getPrice();
 
-		return "<html>" + name + " x " + StackFormatter.formatNumber(quantity)
-			+ "<br/>Price: " + StackFormatter.quantityToStackSize(price)
-			+ "<br/>Total: " + StackFormatter.quantityToStackSize(quantity * price) + "</html>";
+		return "<html>" + name + " x " + QuantityFormatter.formatNumber(quantity)
+			+ "<br/>Price: " + QuantityFormatter.quantityToStackSize(price)
+			+ "<br/>Total: " + QuantityFormatter.quantityToStackSize(quantity * price) + "</html>";
 	}
 
 	private static Color getRSValueColor(long val)

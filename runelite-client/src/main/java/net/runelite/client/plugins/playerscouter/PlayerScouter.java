@@ -69,7 +69,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.PvPUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.discord.DiscordClient;
 import net.runelite.http.api.discord.DiscordEmbed;
 import net.runelite.http.api.discord.DiscordMessage;
@@ -495,7 +495,7 @@ public class PlayerScouter extends Plugin
 
 		fieldList.add(FieldEmbed.builder()
 			.name("Risk")
-			.value(StackFormatter.quantityToRSDecimalStack(player.getRisk()))
+			.value(QuantityFormatter.quantityToRSDecimalStack(player.getRisk()))
 			.inline(true)
 			.build());
 
@@ -561,7 +561,7 @@ public class PlayerScouter extends Plugin
 
 				fieldList.add(FieldEmbed.builder()
 					.name(name)
-					.value("Value: " + StackFormatter.quantityToRSDecimalStack(value))
+					.value("Value: " + QuantityFormatter.quantityToRSDecimalStack(value))
 					.inline(true)
 					.build());
 			}
