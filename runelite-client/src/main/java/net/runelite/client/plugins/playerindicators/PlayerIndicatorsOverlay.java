@@ -131,14 +131,12 @@ public class PlayerIndicatorsOverlay extends Overlay
 					}
 				}
 			}
-
-			if (skulls && actor.getSkullIcon() != null && relation.equals(PlayerRelation.TARGET))
+			else if (skulls && actor.getSkullIcon() != null && relation.equals(PlayerRelation.TARGET))
 			{
 
 				OverlayUtil.renderActorTextAndImage(graphics, actor, builtString, color,
 					ImageUtil.resizeImage(skullIcon, y, y), ACTOR_OVERHEAD_TEXT_MARGIN, ACTOR_HORIZONTAL_TEXT_MARGIN);
 			}
-
 			else
 			{
 				OverlayUtil.renderActorTextOverlay(graphics, actor, builtString, color);
