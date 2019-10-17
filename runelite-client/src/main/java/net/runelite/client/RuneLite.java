@@ -323,19 +323,18 @@ public class RuneLite
 		}
 
 		// Load user configuration
-
 		RuneLiteSplashScreen.stage(.57, "Loading user config");
 		configManager.load();
 
 		// Load the session, including saved configuration
-		sessionManager.loadSession();
 		RuneLiteSplashScreen.stage(.58, "Loading session data");
-
-		// Begin watching for new plugins
-		pluginManager.watch();
+		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
+
+		// Load external plugins
+		pluginManager.loadExternalPlugins();
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
