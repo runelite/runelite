@@ -300,7 +300,6 @@ public class BankPlugin extends Plugin
 				searchBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 			}
 		}
-
 	}
 
 	public void onItemContainerChanged(ItemContainerChanged event)
