@@ -92,12 +92,12 @@ allprojects {
     if (this.name != 'rs-client') apply plugin: 'checkstyle'
 
     group = 'com.openosrs'
-    version = '1.5.35-SNAPSHOT'
+    version = '1.5.36-SNAPSHOT'
 
     ext {
         rsversion = 184
         cacheversion = 165
-        plusVersion = '2.1.7.0'
+        plusVersion = '2.1.8.0'
 
         gitCommit = localGitCommit
         gitCommitShort = localGitCommitShort
