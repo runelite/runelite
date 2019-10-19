@@ -636,14 +636,14 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final long price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+		final long gePrice = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 		return new LootTrackerItem(
 			itemId,
 			itemComposition.getName(),
 			quantity,
-			price,
+			gePrice,
 			ignored);
 	}
 

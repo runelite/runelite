@@ -261,7 +261,7 @@ class LootTrackerBox extends JPanel
 				continue;
 			}
 
-			totalPrice += entry.getPrice();
+			totalPrice += entry.getGePrice();
 
 			int quantity = 0;
 			for (final LootTrackerItem i : items)
@@ -277,9 +277,9 @@ class LootTrackerBox extends JPanel
 			if (quantity > 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
-				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
+				long gePricePerItem = entry.getGePrice() == 0 ? 0 : (entry.getGePrice() / entry.getQuantity());
 
-				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity, entry.isIgnored()));
+				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, gePricePerItem * newQuantity, entry.isIgnored()));
 			}
 			else
 			{
@@ -287,7 +287,7 @@ class LootTrackerBox extends JPanel
 			}
 		}
 
-		items.sort((i1, i2) -> Long.compare(i2.getPrice(), i1.getPrice()));
+		items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -352,8 +352,8 @@ class LootTrackerBox extends JPanel
 	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
-		final long price = item.getPrice();
+		final long gePrice = item.getGePrice();
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return name + " x " + quantity + " (" + QuantityFormatter.quantityToStackSize(price) + ") " + ignoredLabel;
+		return name + " x " + quantity + " (" + QuantityFormatter.quantityToStackSize(gePrice) + ") " + ignoredLabel;
 	}
 }

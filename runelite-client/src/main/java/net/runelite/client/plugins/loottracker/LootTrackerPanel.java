@@ -613,7 +613,7 @@ class LootTrackerPanel extends PluginPanel
 					continue;
 				}
 
-				overallGp += item.getPrice();
+				overallGp += item.getGePrice();
 			}
 
 			if (present > 0)
