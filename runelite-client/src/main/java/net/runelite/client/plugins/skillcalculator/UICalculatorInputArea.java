@@ -80,9 +80,9 @@ class UICalculatorInputArea extends JPanel
 		uiFieldNewXP = uiFlatTextNewXP.getTextField();
 
 		JPanel uiPanelCurrentLevel = createComponent(uiLabelCurrentLevel, uiFlatTextCurrentLevel);
-		JPanel uiPanelCurrentXP = createComponent(uiLabelCurrentXP, uiFlatTextCurrentLevel);
-		JPanel uiPanelTargetLevel = createComponent(uiLabelTargetLevel, uiFlatTextCurrentLevel);
-		JPanel uiPanelTargetXP = createComponent(uiLabelTargetXP, uiFlatTextCurrentLevel);
+		JPanel uiPanelCurrentXP = createComponent(uiLabelCurrentXP, uiFlatTextCurrentXP);
+		JPanel uiPanelTargetLevel = createComponent(uiLabelTargetLevel, uiFlatTextTargetLevel);
+		JPanel uiPanelTargetXP = createComponent(uiLabelTargetXP, uiFlatTextTargetXP);
 		// We need to keep a reference to these ones so that we can add/remove them
 		uiPanelNewLevel = createComponent(uiLabelNewLevel, uiFlatTextNewLevel);
 		uiPanelNewXP = createComponent(uiLabelNewXP, uiFlatTextNewXP);
