@@ -69,6 +69,10 @@ public enum ChatMessageType
 	 */
 	MODPRIVATECHAT(7),
 	/**
+	 * A message set to twitch chat.
+	 */
+	TWITCH(8),
+	/**
 	 * A message received in clan chat.
 	 */
 	FRIENDSCHAT(9),

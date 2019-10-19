@@ -141,6 +141,9 @@ public class ChatMessageManager
 			case FRIENDSCHAT:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
 				break;
+			case TWITCH:
+				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
+				break;
 		}
 
 		senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
@@ -219,6 +222,8 @@ public class ChatMessageManager
 					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
 				case FRIENDSCHAT:
 					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
+				case TWITCH:
+					return JagexColors.CHAT_TWITCH_TEXT_OPAQUE_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
@@ -239,6 +244,7 @@ public class ChatMessageManager
 					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case FRIENDSCHAT:
 					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
+				case TWITCH:
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
@@ -310,6 +316,11 @@ public class ChatMessageManager
 				ChatMessageType.PRIVATECHAT);
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.MODPRIVATECHAT);
+		}
+		if (chatColorConfig.opaqueTwitchMessages() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueTwitchMessages(),  false),
+				ChatMessageType.TWITCH);
 		}
 		if (chatColorConfig.opaqueClanChatInfo() != null)
 		{
