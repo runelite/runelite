@@ -60,6 +60,16 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showPriceType",
+		name = "Show Price Type",
+		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+	)
+	default boolean showPriceType()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"

@@ -519,7 +519,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), plugin::toggleItem);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
@@ -625,8 +625,14 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
+		String priceType = "";
+		if (config.showPriceType())
+		{
+			priceType = config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? "HA " : "GE ";
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
-		overallGpLabel.setText(htmlLabel("Total value: ", config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? overallHa : overallGe));
+		overallGpLabel.setText(htmlLabel("Total " + priceType + "value: ", config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? overallHa : overallGe));
 		overallGpLabel.setToolTipText("<html>Total GE price: " + QuantityFormatter.formatNumber(overallGe)
 			+ "<br>Total HA price: " + QuantityFormatter.formatNumber(overallHa) + "</html>");
 		updateCollapseText();

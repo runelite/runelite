@@ -70,6 +70,7 @@ class LootTrackerBox extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 	private final LootTrackerPriceType priceType;
+	private final boolean showPriceType;
 
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -84,6 +85,7 @@ class LootTrackerBox extends JPanel
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
 		final LootTrackerPriceType priceType,
+		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
@@ -91,6 +93,7 @@ class LootTrackerBox extends JPanel
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
+		this.showPriceType = showPriceType;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -184,7 +187,13 @@ class LootTrackerBox extends JPanel
 	{
 		buildItems();
 
-		priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
+		String priceTypeString = " ";
+		if (showPriceType)
+		{
+			priceTypeString = priceType == LootTrackerPriceType.HIGH_ALCHEMY ? "HA: " : "GE: ";
+		}
+
+		priceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
 		priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
 		final long kills = getTotalKills();
