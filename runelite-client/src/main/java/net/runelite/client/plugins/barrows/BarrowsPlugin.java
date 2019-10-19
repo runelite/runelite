@@ -70,7 +70,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.ui.overlay.infobox.LoopTimer;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
@@ -288,7 +288,7 @@ public class BarrowsPlugin extends Plugin
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Your chest is worth around ")
-				.append(StackFormatter.formatNumber(chestPrice))
+				.append(QuantityFormatter.formatNumber(chestPrice))
 				.append(" coins.")
 				.append(ChatColorType.NORMAL);
 

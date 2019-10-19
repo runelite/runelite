@@ -93,7 +93,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "World Hopper",
-	description = "Allows you to quickly hop worlds"
+	description = "Allows you to quickly hop worlds",
+	tags = {"ping"}
 )
 @Slf4j
 public class WorldHopperPlugin extends Plugin
@@ -138,6 +139,9 @@ public class WorldHopperPlugin extends Plugin
 
 	@Inject
 	private WorldHopperPingOverlay worldHopperOverlay;
+
+	@Inject
+	private WorldClient worldClient;
 
 	private ScheduledExecutorService hopperExecutorService;
 
@@ -507,7 +511,7 @@ public class WorldHopperPlugin extends Plugin
 
 		try
 		{
-			WorldResult worldResult = new WorldClient().lookupWorlds();
+			WorldResult worldResult = worldClient.lookupWorlds();
 
 			if (worldResult != null)
 			{

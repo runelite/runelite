@@ -39,4 +39,5 @@ enum ItemChargeType
 	FRUIT_BASKET,
 	SACK,
 	RING_OF_FORGING,
+	GUTHIX_REST,
 }

@@ -33,6 +33,8 @@ import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 
 @Slf4j
@@ -51,11 +53,11 @@ class HostSupplier implements Supplier<String>
 
 		try
 		{
-			List<String> newHosts = new WorldClient()
+			List<String> newHosts = new WorldClient(RuneLiteAPI.CLIENT)
 				.lookupWorlds()
 				.getWorlds()
 				.stream()
-				.map(i -> i.getAddress())
+				.map(World::getAddress)
 				.collect(Collectors.toList());
 
 			Collections.shuffle(newHosts, random);

@@ -82,6 +82,7 @@ class InventoryGridOverlay extends Overlay
 		final int if1DraggedItemIndex = client.getIf1DraggedItemIndex();
 		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
 		final int itemId = draggedItem.getId();
+		final Rectangle initialBounds = draggedItem.getCanvasBounds();
 
 		if (itemId == -1)
 		{
@@ -91,19 +92,15 @@ class InventoryGridOverlay extends Overlay
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
 			WidgetItem widgetItem = inventoryWidget.getWidgetItem(i);
+			final int targetItemId = widgetItem.getId();
 
 			final Rectangle bounds = widgetItem.getCanvasBounds();
 			boolean inBounds = bounds.contains(mousePoint);
 
 			if (config.showItem() && inBounds)
 			{
-				final BufferedImage draggedItemImage = itemManager.getImage(itemId);
-				final int x = (int) bounds.getX();
-				final int y = (int) bounds.getY();
-
-				graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
-				graphics.drawImage(draggedItemImage, x, y, null);
-				graphics.setComposite(AlphaComposite.SrcOver);
+				drawItem(graphics, bounds, itemId);
+				drawItem(graphics, initialBounds, targetItemId);
 			}
 
 			if (config.showHighlight() && inBounds)
@@ -119,5 +116,21 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private void drawItem(Graphics2D graphics, Rectangle bounds, int itemId)
+	{
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		final BufferedImage draggedItemImage = itemManager.getImage(itemId);
+		final int x = (int) bounds.getX();
+		final int y = (int) bounds.getY();
+
+		graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
+		graphics.drawImage(draggedItemImage, x, y, null);
+		graphics.setComposite(AlphaComposite.SrcOver);
 	}
 }

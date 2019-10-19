@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.music;
 
-package net.runelite.client.game;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
-public class AsyncBufferedImage extends BufferedImage
+@ConfigGroup("music")
+public interface MusicConfig extends Config
 {
-	private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
-	public AsyncBufferedImage(int width, int height, int imageType)
+	@ConfigItem(
+		keyName = "musicVolume",
+		name = "Music Volume",
+		description = "Overrides music volume in game with more granular control",
+		position = 1
+	)
+	@Range(
+		min = 0,
+		max = 255
+	)
+	default int getMusicVolume()
 	{
-		super(width, height, imageType);
+		return 0;
 	}
 
-	/**
-	 * Call when the buffer has been changed
-	 */
-	public void changed()
+	@ConfigItem(
+		keyName = "soundEffectVolume",
+		name = "Sound Effect Volume",
+		description = "Overrides the sound effect volume in game with more granular control",
+		position = 2
+	)
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getSoundEffectVolume()
 	{
-		for (Runnable r : listeners)
-		{
-			r.run();
-		}
+		return 0;
 	}
 
-	/**
-	 * Register a function to be ran when the buffer has changed
-	 */
-	public void onChanged(Runnable r)
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "Area Sound Effect Volume",
+		description = "Overrides the area sound effect volume in game with more granular control",
+		position = 3
+	)
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getAreaSoundEffectVolume()
 	{
-		listeners.add(r);
-	}
-
-	/**
-	 * Calls setIcon on c, ensuring it is repainted when this changes
-	 */
-	public void addTo(JButton c)
-	{
-		c.setIcon(makeIcon(c));
-	}
-
-	/**
-	 * Calls setIcon on c, ensuring it is repainted when this changes
-	 */
-	public void addTo(JLabel c)
-	{
-		c.setIcon(makeIcon(c));
-	}
-
-	private ImageIcon makeIcon(JComponent c)
-	{
-		listeners.add(c::repaint);
-		return new ImageIcon(this);
+		return 0;
 	}
 }

@@ -64,10 +64,12 @@ public class FeedPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executorService;
 
+	@Inject
+	private FeedClient feedClient;
+
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
 
-	private FeedClient feedClient = new FeedClient();
 	private Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
 	{
 		try

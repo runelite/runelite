@@ -43,7 +43,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.Setter;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;

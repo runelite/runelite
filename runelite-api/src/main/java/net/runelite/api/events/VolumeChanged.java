@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,31 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.demonicgorilla;
+package net.runelite.api.events;
 
-import lombok.Getter;
-import net.runelite.api.Player;
+import lombok.Value;
 
-public class PendingGorillaAttack
+@Value
+public class VolumeChanged
 {
-	@Getter
-	private DemonicGorilla attacker;
-
-	@Getter
-	private DemonicGorilla.AttackStyle attackStyle;
-
-	@Getter
-	private Player target;
-
-	@Getter
-	private int finishesOnTick;
-
-	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
-								Player target, int finishesOnTick)
+	public enum Type
 	{
-		this.attacker = attacker;
-		this.attackStyle = attackStyle;
-		this.target = target;
-		this.finishesOnTick = finishesOnTick;
+		MUSIC,
+		EFFECTS,
+		AREA
 	}
+
+	private final Type type;
 }

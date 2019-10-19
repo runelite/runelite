@@ -195,11 +195,11 @@ public class XpTrackerPlugin extends Plugin
 				fetchXp = true;
 				lastWorldType = type;
 				resetState();
-				// Must be set from hitting the LOGGING_IN case below
+				// Must be set from hitting the LOGGING_IN or HOPPING case below
 				assert initializeTracker;
 			}
 		}
-		else if (state == GameState.LOGGING_IN)
+		else if (state == GameState.LOGGING_IN || state == GameState.HOPPING)
 		{
 			initializeTracker = true;
 		}
@@ -260,6 +260,17 @@ public class XpTrackerPlugin extends Plugin
 	void removeOverlay(Skill skill)
 	{
 		overlayManager.removeIf(e -> e instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) e).getSkill() == skill);
+	}
+
+	/**
+	 * Check if there is an overlay on the canvas for the skill.
+	 *
+	 * @param skill the skill which should have an overlay.
+	 * @return true if the skill has an overlay.
+	 */
+	boolean hasOverlay(final Skill skill)
+	{
+		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
 	}
 
 	/**
@@ -707,10 +718,5 @@ public class XpTrackerPlugin extends Plugin
 		{
 			pauseSkill(skill, pause);
 		}
-	}
-
-	private boolean hasOverlay(final Skill skill)
-	{
-		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
 	}
 }

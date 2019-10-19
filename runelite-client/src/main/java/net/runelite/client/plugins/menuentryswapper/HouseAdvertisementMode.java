@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.demonicgorilla;
+package net.runelite.client.plugins.menuentryswapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.Player;
-import net.runelite.api.coords.WorldArea;
+import lombok.RequiredArgsConstructor;
 
-public class MemorizedPlayer
+@Getter
+@RequiredArgsConstructor
+public enum HouseAdvertisementMode
 {
-	@Getter
-	private Player player;
+	VIEW("View"),
+	ADD_HOUSE("Add-House"),
+	VISIT_LAST("Visit-Last");
 
-	@Getter
-	@Setter
-	private WorldArea lastWorldArea;
+	private final String name;
 
-	@Getter
-	private List<Hitsplat> recentHitsplats;
-
-	public MemorizedPlayer(Player player)
+	@Override
+	public String toString()
 	{
-		this.player = player;
-		this.recentHitsplats = new ArrayList<>();
+		return name;
 	}
 }

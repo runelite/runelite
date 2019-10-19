@@ -28,6 +28,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import java.applet.Applet;
+import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
@@ -49,12 +50,15 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RuneLiteModule extends AbstractModule
 {
+	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
+
 	private final Supplier<Applet> clientLoader;
 	private final boolean developerMode;
 
@@ -69,7 +73,9 @@ public class RuneLiteModule extends AbstractModule
 	{
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
-		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT);
+		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT.newBuilder()
+			.cache(new Cache(new File(RuneLite.RUNELITE_DIR, "cache" + File.separator + "okhttp"), MAX_OKHTTP_CACHE_SIZE))
+			.build());
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);

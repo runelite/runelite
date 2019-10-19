@@ -43,7 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
-import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
@@ -106,9 +105,10 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
 	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "<col=4f006f>Your Tele Block has been removed because you killed ";
+	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 
 	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
-	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes, 0 seconds\\.</col>");
+	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes\\.</col>");
 	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 
@@ -324,11 +324,8 @@ public class TimersPlugin extends Plugin
 		if (!config.showFreezes())
 		{
 			removeGameTimer(BIND);
-			removeGameTimer(HALFBIND);
 			removeGameTimer(SNARE);
-			removeGameTimer(HALFSNARE);
 			removeGameTimer(ENTANGLE);
-			removeGameTimer(HALFENTANGLE);
 			removeGameTimer(ICERUSH);
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
@@ -596,6 +593,11 @@ public class TimersPlugin extends Plugin
 			createGameTimer(PRAYER_ENHANCE);
 		}
 
+		if (config.showPrayerEnhance() && event.getMessage().equals(PRAYER_ENHANCE_EXPIRED))
+		{
+			removeGameTimer(PRAYER_ENHANCE);
+		}
+
 		if (config.showCharge() && event.getMessage().equals(CHARGE_MESSAGE))
 		{
 			createGameTimer(CHARGE);
@@ -787,44 +789,17 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFBIND);
-				}
-				else
-				{
-					createGameTimer(BIND);
-				}
+				createGameTimer(BIND);
 			}
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFSNARE);
-				}
-				else
-				{
-					createGameTimer(SNARE);
-				}
+				createGameTimer(SNARE);
 			}
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
-				{
-					createGameTimer(HALFENTANGLE);
-				}
-				else
-				{
-					createGameTimer(ENTANGLE);
-				}
+				createGameTimer(ENTANGLE);
 			}
 
 			// downgrade freeze based on graphic, if at the same tick as the freeze message
