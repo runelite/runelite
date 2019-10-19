@@ -47,15 +47,37 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldNewLevel;
 	private final JTextField uiFieldNewXP;
 
+	private final JPanel uiPanelNewLevel;
+	private final JPanel uiPanelNewXP;
+
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(3, 2, 7, 7));
-		uiFieldCurrentLevel = addComponent("Current Level");
-		uiFieldCurrentXP = addComponent("Current Experience");
-		uiFieldTargetLevel = addComponent("Target Level");
-		uiFieldTargetXP = addComponent("Target Experience");
-		uiFieldNewLevel = addComponent("New Level", false);
-		uiFieldNewXP = addComponent("New Experience", false);
+		setLayout(new GridLayout(2, 2, 7, 7));
+
+		JLabel uiLabelCurrentLevel = createLabel("Current Level");
+		JLabel uiLabelCurrentXP = createLabel("Current Experience");
+		JLabel uiLabelTargetLevel = createLabel("Target Level");
+		JLabel uiLabelTargetXP = createLabel("Target Experience");
+		JLabel uiLabelNewLevel = createLabel("New Level");
+		JLabel uiLabelNewXP = createLabel("New Experience");
+
+		uiFieldCurrentLevel = createComponent(uiLabelCurrentLevel);
+		uiFieldCurrentXP = createComponent(uiLabelCurrentXP);
+		uiFieldTargetLevel = createComponent(uiLabelTargetLevel);
+		uiFieldTargetXP = createComponent(uiLabelTargetXP);
+
+		// Create the "New Level/XP" fields separately because we need to keep a reference to the text field and the panel.
+
+		FlatTextField uiFlatTextNewLevel = new FlatTextField();
+		FlatTextField uiFlatTextNewXP = new FlatTextField();
+		uiFieldNewLevel = uiFlatTextNewLevel.getTextField();
+		uiFieldNewXP = uiFlatTextNewXP.getTextField();
+
+		uiFlatTextNewLevel.setEditable(false);
+		uiFlatTextNewXP.setEditable(false);
+
+		uiPanelNewLevel = createNewComponent(uiLabelNewLevel, uiFlatTextNewLevel);
+		uiPanelNewXP = createNewComponent(uiLabelNewXP, uiFlatTextNewXP);
 	}
 
 	int getCurrentLevelInput()
@@ -98,22 +120,12 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
-	int getNewLevelInput()
-	{
-		return getInput(uiFieldNewLevel);
-	}
-
 	void setNewLevelInput(Object value)
 	{
 		setInput(uiFieldNewLevel, value);
 	}
 
-	int getNewXPInput()
-	{
-		return getInput(uiFieldNewXP);
-	}
-
-	void setNewXPInput(Object value)
+	void setNewXpInput(Object value)
 	{
 		setInput(uiFieldNewXP, value);
 	}
@@ -135,21 +147,16 @@ class UICalculatorInputArea extends JPanel
 		field.setText(String.valueOf(value));
 	}
 
-	private JTextField addComponent(String label)
+	private JTextField createComponent(JLabel uiLabel)
 	{
 		final JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
 
-		final JLabel uiLabel = new JLabel(label);
 		final FlatTextField uiInput = new FlatTextField();
 
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
-
-		uiLabel.setFont(FontManager.getRunescapeSmallFont());
-		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
-		uiLabel.setForeground(Color.WHITE);
 
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);
@@ -159,29 +166,51 @@ class UICalculatorInputArea extends JPanel
 		return uiInput.getTextField();
 	}
 
-	private JTextField addComponent(String label, boolean enabled)
+	private JPanel createNewComponent(JLabel uiLabel, FlatTextField uiInput)
 	{
-		final JPanel container = new JPanel();
+		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
-
-		final JLabel uiLabel = new JLabel(label);
-		final FlatTextField uiInput = new FlatTextField();
-
-		uiInput.setEditable(enabled);
 
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
+		container.add(uiLabel, BorderLayout.NORTH);
+		container.add(uiInput, BorderLayout.CENTER);
+
+		return container;
+	}
+
+	private JLabel createLabel(String label)
+	{
+		JLabel uiLabel = new JLabel(label);
+
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 		uiLabel.setForeground(Color.WHITE);
 
-		container.add(uiLabel, BorderLayout.NORTH);
-		container.add(uiInput, BorderLayout.CENTER);
+		return uiLabel;
+	}
 
-		add(container);
+	void addNewFields()
+	{
+		setLayout(new GridLayout(3, 2, 7, 7));
 
-		return uiInput.getTextField();
+		add(uiPanelNewLevel);
+		add(uiPanelNewXP);
+
+		revalidate();
+		repaint();
+	}
+
+	void removeNewFields()
+	{
+		remove(uiPanelNewLevel);
+		remove(uiPanelNewXP);
+
+		setLayout(new GridLayout(2, 2, 7, 7));
+
+		revalidate();
+		repaint();
 	}
 }

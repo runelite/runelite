@@ -28,6 +28,8 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -74,6 +76,7 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private int numExpandedActionSlots = 0;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -139,6 +142,12 @@ class SkillCalculator extends JPanel
 
 		// Add the search bar
 		add(searchBar);
+
+		// Reset the expanded slot counter.
+		numExpandedActionSlots = 0;
+
+		// Change labels back to target level and xp only.
+		removeNewFields();
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
@@ -279,6 +288,8 @@ class SkillCalculator extends JPanel
 					if (!e.isShiftDown())
 					{
 						clearCombinedSlots();
+
+						toggleSlotExpanded(slot);
 					}
 
 					if (slot.isSelected())
@@ -294,16 +305,6 @@ class SkillCalculator extends JPanel
 					updateCombinedAction();
 				}
 			});
-
-			slot.getUiActionsInput().addActionListener(e ->
-			{
-				if (slot.getNumInputActions() == 0)
-				{
-					slot.getUiActionsInput().setText("0");
-				}
-
-				calculateLevelFromInputActions();
-			});
 		}
 
 		// Refresh the rendering of this panel.
@@ -318,7 +319,10 @@ class SkillCalculator extends JPanel
 		for (UIActionSlot slot : uiActionSlots)
 		{
 			int numActions = slot.getNumInputActions();
-			if (numActions <= 0) continue;
+			if (numActions <= 0)
+			{
+				continue;
+			}
 
 			SkillDataEntry action = slot.getAction();
 
@@ -327,33 +331,45 @@ class SkillCalculator extends JPanel
 		}
 
 		int newTotalXp = currentXP + (int) Math.floor(cumulativeXpGain);
+
+		if (newTotalXp < 0 || newTotalXp > Experience.MAX_SKILL_XP)
+		{
+			newTotalXp = Experience.MAX_SKILL_XP;
+		}
+
 		int newLevel = Experience.getLevelForXp(newTotalXp);
 
 		uiInput.setNewLevelInput(newLevel);
-		uiInput.setNewXPInput(newTotalXp);
+		uiInput.setNewXpInput(newTotalXp);
+
 	}
 
 	private void calculate()
 	{
 		for (UIActionSlot slot : uiActionSlots)
 		{
-			int actionCount = 0;
-			int neededXP = targetXP - currentXP;
-			SkillDataEntry action = slot.getAction();
-			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
-
-			if (neededXP > 0)
-			{
-				actionCount = (int) Math.ceil(neededXP / xp);
-			}
-
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
-			slot.setAvailable(currentLevel >= action.getLevel());
-			slot.setOverlapping(action.getLevel() < targetLevel);
-			slot.setValue(xp);
+			calculateSlot(slot);
 		}
 
 		updateCombinedAction();
+	}
+
+	private void calculateSlot(UIActionSlot slot)
+	{
+		int actionCount = 0;
+		int neededXP = targetXP - currentXP;
+		SkillDataEntry action = slot.getAction();
+		double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+
+		if (neededXP > 0)
+		{
+			actionCount = (int) Math.ceil(neededXP / xp);
+		}
+
+		slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+		slot.setAvailable(currentLevel >= action.getLevel());
+		slot.setOverlapping(action.getLevel() < targetLevel);
+		slot.setValue(xp);
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
@@ -441,6 +457,98 @@ class SkillCalculator extends JPanel
 	private boolean slotContainsText(UIActionSlot slot, String text)
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
+	private void toggleSlotExpanded(UIActionSlot slot)
+	{
+		if (!slot.isExpanded())
+		{
+			expandSlot(slot);
+		}
+		else
+		{
+			retractSlot(slot);
+		}
+
+		calculateSlot(slot);
+	}
+
+	private void expandSlot(UIActionSlot slot)
+	{
+		numExpandedActionSlots++;
+
+		slot.expand();
+		calculateSlot(slot);
+
+		slot.getUiActionsInput().addActionListener(a ->
+		{
+			addNewFields();
+
+			if (slot.getNumInputActions() == 0)
+			{
+				retractSlot(slot);
+			}
+
+			calculateLevelFromInputActions();
+		});
+
+		slot.getUiActionsInput().getTextField().addFocusListener(new FocusListener()
+		{
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if (slot.getNumInputActions() == 0)
+				{
+					retractSlot(slot);
+				}
+				else
+				{
+					calculateLevelFromInputActions();
+				}
+			}
+		});
+
+		slot.getUiActionsInput().getTextField().requestFocusInWindow();
+		slot.getUiActionsInput().setText(null);
+	}
+
+	private void retractSlot(UIActionSlot slot)
+	{
+		if (!slot.isExpanded())
+		{
+			return;
+		}
+
+		numExpandedActionSlots = Math.max(0, --numExpandedActionSlots);
+
+		slot.retract();
+
+		if (numExpandedActionSlots == 0)
+		{
+			removeNewFields();
+		}
+
+		calculateSlot(slot);
+	}
+
+	private void addNewFields()
+	{
+		uiInput.addNewFields();
+		revalidate();
+		repaint();
+	}
+
+	private void removeNewFields()
+	{
+		uiInput.removeNewFields();
+		revalidate();
+		repaint();
 	}
 
 }

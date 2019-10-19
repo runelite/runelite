@@ -51,27 +51,32 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 class UIActionSlot extends JPanel
 {
 	private static final Border GREEN_BORDER = new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
-			BorderFactory.createEmptyBorder(7, 12, 7, 7));
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border RED_BORDER = new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
-			BorderFactory.createEmptyBorder(7, 12, 7, 7));
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border ORANGE_BORDER = new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
-			BorderFactory.createEmptyBorder(7, 12, 7, 7));
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
-	private final JShadowedLabel uiLabelActions;
+	private JShadowedLabel uiInfoLabel;
 
-	private final JPanel uiInfo;
+	private JPanel uiInfo;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final FlatTextField uiActionsInput;
+	private JPanel uiLabelledInputActions;
+
+	@Getter(AccessLevel.PACKAGE)
+	private FlatTextField uiActionsInput;
+
+	private JLabel uiActionsLabel;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
@@ -81,6 +86,9 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isOverlapping;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean expanded = false;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -102,7 +110,6 @@ class UIActionSlot extends JPanel
 				if (!isSelected)
 				{
 					setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
-					uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 				}
 			}
 
@@ -112,7 +119,6 @@ class UIActionSlot extends JPanel
 				if (!isSelected)
 				{
 					updateBackground();
-					uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 				}
 			}
 		};
@@ -123,40 +129,10 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(3, 1));
-		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
-
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
-		uiLabelName.setForeground(Color.WHITE);
-
-		uiLabelActions = new JShadowedLabel("Unknown");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-
-		uiActionsInput = new FlatTextField();
-		uiActionsInput.setText("0");
-		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiActionsInput.setHoverBackgroundColor(ColorScheme.DARKER_GRAY_HOVER_COLOR);
-
-		uiInfo.add(uiLabelName);
-		uiInfo.add(uiLabelActions);
-		uiInfo.add(uiActionsInput);
+		uiInfo = createInfoPanel(false);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
-	}
-
-	int getNumInputActions()
-	{
-		try
-		{
-			return Integer.parseInt(uiActionsInput.getText());
-		}
-		catch (NumberFormatException e)
-		{
-			return 0;
-		}
 	}
 
 	void setSelected(boolean selected)
@@ -179,7 +155,7 @@ class UIActionSlot extends JPanel
 
 	void setText(String text)
 	{
-		uiLabelActions.setText(text);
+		uiInfoLabel.setText(text);
 	}
 
 	private void updateBackground()
@@ -198,7 +174,6 @@ class UIActionSlot extends JPanel
 		}
 
 		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
-		uiActionsInput.setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
 	}
 
 	@Override
@@ -209,5 +184,88 @@ class UIActionSlot extends JPanel
 		{
 			uiInfo.setBackground(color);
 		}
+		if (uiActionsLabel != null)
+		{
+			uiActionsLabel.setBackground(color);
+		}
+		if (uiActionsInput != null)
+		{
+			uiActionsInput.setBackground(color);
+		}
+		if (uiLabelledInputActions != null)
+		{
+			uiLabelledInputActions.setBackground(color);
+		}
+	}
+
+	int getNumInputActions()
+	{
+		try
+		{
+			return Integer.parseInt(uiActionsInput.getText());
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
+	private JPanel createInfoPanel(boolean expanded)
+	{
+		int rows = expanded ? 3 : 2;
+
+		JPanel slot = new JPanel(new GridLayout(rows, 1));
+		slot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		slot.setBorder(new EmptyBorder(0, 5, 0, 0));
+
+		// The name of the action
+		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+		uiLabelName.setForeground(Color.WHITE);
+
+		// The label that displays how many actions until the target level
+		uiInfoLabel = new JShadowedLabel("Unknown");
+		uiInfoLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiInfoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		// The panel that lets you input how many actions you will do
+		uiLabelledInputActions = new JPanel(new BorderLayout());
+
+		uiActionsInput = new FlatTextField();
+		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		uiActionsLabel = new JLabel("Actions:");
+		uiActionsLabel.setFont(FontManager.getRunescapeFont());
+		uiActionsLabel.setForeground(Color.WHITE);
+		uiActionsLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiActionsLabel.setToolTipText("Enter how many actions you will complete to see the level you will achieve");
+
+		uiLabelledInputActions.add(uiActionsLabel, BorderLayout.WEST);
+		uiLabelledInputActions.add(uiActionsInput, BorderLayout.CENTER);
+
+		slot.add(uiLabelName);
+		slot.add(uiInfoLabel);
+
+		if (expanded)
+		{
+			slot.add(uiLabelledInputActions);
+		}
+
+		return slot;
+	}
+
+	void expand()
+	{
+		remove(uiInfo);
+		uiInfo = createInfoPanel(true);
+		add(uiInfo);
+		expanded = true;
+	}
+
+	void retract()
+	{
+		remove(uiInfo);
+		uiInfo = createInfoPanel(false);
+		add(uiInfo);
+		expanded = false;
 	}
 }
