@@ -61,23 +61,37 @@ class UICalculatorInputArea extends JPanel
 		JLabel uiLabelNewLevel = createLabel("New Level");
 		JLabel uiLabelNewXP = createLabel("New Experience");
 
-		uiFieldCurrentLevel = createComponent(uiLabelCurrentLevel);
-		uiFieldCurrentXP = createComponent(uiLabelCurrentXP);
-		uiFieldTargetLevel = createComponent(uiLabelTargetLevel);
-		uiFieldTargetXP = createComponent(uiLabelTargetXP);
-
-		// Create the "New Level/XP" fields separately because we need to keep a reference to the text field and the panel.
-
+		FlatTextField uiFlatTextCurrentLevel = new FlatTextField();
+		FlatTextField uiFlatTextCurrentXP = new FlatTextField();
+		FlatTextField uiFlatTextTargetLevel = new FlatTextField();
+		FlatTextField uiFlatTextTargetXP = new FlatTextField();
 		FlatTextField uiFlatTextNewLevel = new FlatTextField();
 		FlatTextField uiFlatTextNewXP = new FlatTextField();
-		uiFieldNewLevel = uiFlatTextNewLevel.getTextField();
-		uiFieldNewXP = uiFlatTextNewXP.getTextField();
 
+		// The "New" fields do not need to be edited
 		uiFlatTextNewLevel.setEditable(false);
 		uiFlatTextNewXP.setEditable(false);
 
-		uiPanelNewLevel = createNewComponent(uiLabelNewLevel, uiFlatTextNewLevel);
-		uiPanelNewXP = createNewComponent(uiLabelNewXP, uiFlatTextNewXP);
+		uiFieldCurrentLevel = uiFlatTextCurrentLevel.getTextField();
+		uiFieldCurrentXP = uiFlatTextCurrentXP.getTextField();
+		uiFieldTargetLevel = uiFlatTextTargetLevel.getTextField();
+		uiFieldTargetXP = uiFlatTextTargetXP.getTextField();
+		uiFieldNewLevel = uiFlatTextNewLevel.getTextField();
+		uiFieldNewXP = uiFlatTextNewXP.getTextField();
+
+		JPanel uiPanelCurrentLevel = createComponent(uiLabelCurrentLevel, uiFlatTextCurrentLevel);
+		JPanel uiPanelCurrentXP = createComponent(uiLabelCurrentXP, uiFlatTextCurrentLevel);
+		JPanel uiPanelTargetLevel = createComponent(uiLabelTargetLevel, uiFlatTextCurrentLevel);
+		JPanel uiPanelTargetXP = createComponent(uiLabelTargetXP, uiFlatTextCurrentLevel);
+		// We need to keep a reference to these ones so that we can add/remove them
+		uiPanelNewLevel = createComponent(uiLabelNewLevel, uiFlatTextNewLevel);
+		uiPanelNewXP = createComponent(uiLabelNewXP, uiFlatTextNewXP);
+
+		// We only want to add the Current/Target fields by default
+		add(uiPanelCurrentLevel);
+		add(uiPanelCurrentXP);
+		add(uiPanelTargetLevel);
+		add(uiPanelTargetXP);
 	}
 
 	int getCurrentLevelInput()
@@ -147,26 +161,7 @@ class UICalculatorInputArea extends JPanel
 		field.setText(String.valueOf(value));
 	}
 
-	private JTextField createComponent(JLabel uiLabel)
-	{
-		final JPanel container = new JPanel();
-		container.setLayout(new BorderLayout());
-
-		final FlatTextField uiInput = new FlatTextField();
-
-		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
-
-		container.add(uiLabel, BorderLayout.NORTH);
-		container.add(uiInput, BorderLayout.CENTER);
-
-		add(container);
-
-		return uiInput.getTextField();
-	}
-
-	private JPanel createNewComponent(JLabel uiLabel, FlatTextField uiInput)
+	private JPanel createComponent(JLabel uiLabel, FlatTextField uiInput)
 	{
 		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
@@ -198,9 +193,6 @@ class UICalculatorInputArea extends JPanel
 
 		add(uiPanelNewLevel);
 		add(uiPanelNewXP);
-
-		revalidate();
-		repaint();
 	}
 
 	void removeNewFields()
@@ -209,8 +201,5 @@ class UICalculatorInputArea extends JPanel
 		remove(uiPanelNewXP);
 
 		setLayout(new GridLayout(2, 2, 7, 7));
-
-		revalidate();
-		repaint();
 	}
 }

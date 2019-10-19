@@ -69,14 +69,10 @@ class UIActionSlot extends JPanel
 	private JShadowedLabel uiInfoLabel;
 
 	private JPanel uiInfo;
-
-	@Getter(AccessLevel.PACKAGE)
 	private JPanel uiLabelledInputActions;
 
 	@Getter(AccessLevel.PACKAGE)
 	private FlatTextField uiActionsInput;
-
-	private JLabel uiActionsLabel;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
@@ -129,7 +125,36 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = createInfoPanel(false);
+		uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
+
+		// The name of the action
+		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+		uiLabelName.setForeground(Color.WHITE);
+
+		// The label that displays how many actions until the target level
+		uiInfoLabel = new JShadowedLabel("Unknown");
+		uiInfoLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiInfoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		// The panel that lets you input how many actions you will do
+		uiLabelledInputActions = new JPanel(new BorderLayout());
+
+		uiActionsInput = new FlatTextField();
+		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		JLabel uiActionsLabel = new JLabel("Actions:");
+		uiActionsLabel.setFont(FontManager.getRunescapeFont());
+		uiActionsLabel.setForeground(Color.WHITE);
+		uiActionsLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiActionsLabel.setToolTipText("Enter how many actions you will complete to see the level you will achieve");
+
+		uiLabelledInputActions.add(uiActionsLabel, BorderLayout.WEST);
+		uiLabelledInputActions.add(uiActionsInput, BorderLayout.CENTER);
+
+		uiInfo.add(uiLabelName);
+		uiInfo.add(uiInfoLabel);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -184,10 +209,6 @@ class UIActionSlot extends JPanel
 		{
 			uiInfo.setBackground(color);
 		}
-		if (uiActionsLabel != null)
-		{
-			uiActionsLabel.setBackground(color);
-		}
 		if (uiActionsInput != null)
 		{
 			uiActionsInput.setBackground(color);
@@ -210,62 +231,27 @@ class UIActionSlot extends JPanel
 		}
 	}
 
-	private JPanel createInfoPanel(boolean expanded)
-	{
-		int rows = expanded ? 3 : 2;
-
-		JPanel slot = new JPanel(new GridLayout(rows, 1));
-		slot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		slot.setBorder(new EmptyBorder(0, 5, 0, 0));
-
-		// The name of the action
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
-		uiLabelName.setForeground(Color.WHITE);
-
-		// The label that displays how many actions until the target level
-		uiInfoLabel = new JShadowedLabel("Unknown");
-		uiInfoLabel.setFont(FontManager.getRunescapeSmallFont());
-		uiInfoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-
-		// The panel that lets you input how many actions you will do
-		uiLabelledInputActions = new JPanel(new BorderLayout());
-
-		uiActionsInput = new FlatTextField();
-		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-		uiActionsLabel = new JLabel("Actions:");
-		uiActionsLabel.setFont(FontManager.getRunescapeFont());
-		uiActionsLabel.setForeground(Color.WHITE);
-		uiActionsLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiActionsLabel.setToolTipText("Enter how many actions you will complete to see the level you will achieve");
-
-		uiLabelledInputActions.add(uiActionsLabel, BorderLayout.WEST);
-		uiLabelledInputActions.add(uiActionsInput, BorderLayout.CENTER);
-
-		slot.add(uiLabelName);
-		slot.add(uiInfoLabel);
-
-		if (expanded)
-		{
-			slot.add(uiLabelledInputActions);
-		}
-
-		return slot;
-	}
-
 	void expand()
 	{
-		remove(uiInfo);
-		uiInfo = createInfoPanel(true);
-		add(uiInfo);
+		uiInfo.setLayout(new GridLayout(3, 1));
+		uiInfo.add(uiLabelledInputActions);
+
 		expanded = true;
+
+		revalidate();
+		repaint();
 	}
 
 	void retract()
 	{
-		remove(uiInfo);
-		uiInfo = createInfoPanel(false);
-		add(uiInfo);
+		uiInfo.remove(uiLabelledInputActions);
+		uiInfo.setLayout(new GridLayout(2, 1));
+
+		uiActionsInput.setText(null);
+
 		expanded = false;
+
+		revalidate();
+		repaint();
 	}
 }

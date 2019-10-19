@@ -146,7 +146,7 @@ class SkillCalculator extends JPanel
 		// Reset the expanded slot counter.
 		numExpandedActionSlots = 0;
 
-		// Change labels back to target level and xp only.
+		// Change fields back to being target level and xp only.
 		removeNewFields();
 
 		// Create action slots for the skill actions.
@@ -303,6 +303,38 @@ class SkillCalculator extends JPanel
 
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
+				}
+			});
+
+			slot.getUiActionsInput().addActionListener(a ->
+			{
+				addNewFields();
+
+				if (slot.getNumInputActions() == 0)
+				{
+					retractSlot(slot);
+				}
+
+				calculateLevelFromInputActions();
+			});
+
+			slot.getUiActionsInput().getTextField().addFocusListener(new FocusListener()
+			{
+				@Override
+				public void focusGained(FocusEvent e)
+				{
+
+				}
+
+				@Override
+				public void focusLost(FocusEvent e)
+				{
+					if (slot.getNumInputActions() == 0)
+					{
+						retractSlot(slot);
+					}
+
+					calculateLevelFromInputActions();
 				}
 			});
 		}
@@ -480,40 +512,6 @@ class SkillCalculator extends JPanel
 		slot.expand();
 		calculateSlot(slot);
 
-		slot.getUiActionsInput().addActionListener(a ->
-		{
-			addNewFields();
-
-			if (slot.getNumInputActions() == 0)
-			{
-				retractSlot(slot);
-			}
-
-			calculateLevelFromInputActions();
-		});
-
-		slot.getUiActionsInput().getTextField().addFocusListener(new FocusListener()
-		{
-			@Override
-			public void focusGained(FocusEvent e)
-			{
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				if (slot.getNumInputActions() == 0)
-				{
-					retractSlot(slot);
-				}
-				else
-				{
-					calculateLevelFromInputActions();
-				}
-			}
-		});
-
 		slot.getUiActionsInput().getTextField().requestFocusInWindow();
 		slot.getUiActionsInput().setText(null);
 	}
@@ -525,7 +523,7 @@ class SkillCalculator extends JPanel
 			return;
 		}
 
-		numExpandedActionSlots = Math.max(0, --numExpandedActionSlots);
+		numExpandedActionSlots--;
 
 		slot.retract();
 
@@ -535,6 +533,7 @@ class SkillCalculator extends JPanel
 		}
 
 		calculateSlot(slot);
+		calculateLevelFromInputActions();
 	}
 
 	private void addNewFields()
