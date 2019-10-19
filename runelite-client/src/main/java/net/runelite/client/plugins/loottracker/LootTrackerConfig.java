@@ -50,6 +50,16 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+		keyName = "priceType",
+		name = "Price Type",
+		description = "What type of price to use for calculating value."
+	)
+	default LootTrackerPriceType priceType()
+	{
+		return LootTrackerPriceType.GRAND_EXCHANGE;
+	}
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"

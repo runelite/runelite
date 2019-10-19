@@ -69,6 +69,7 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
+	private final LootTrackerPriceType priceType;
 
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -82,12 +83,14 @@ class LootTrackerBox extends JPanel
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
+		final LootTrackerPriceType priceType,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
+		this.priceType = priceType;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -261,7 +264,7 @@ class LootTrackerBox extends JPanel
 				continue;
 			}
 
-			totalPrice += entry.getGePrice();
+			totalPrice += priceType == LootTrackerPriceType.HIGH_ALCHEMY ? entry.getHaPrice() : entry.getGePrice();
 
 			int quantity = 0;
 			for (final LootTrackerItem i : items)
@@ -278,8 +281,9 @@ class LootTrackerBox extends JPanel
 			{
 				int newQuantity = entry.getQuantity() + quantity;
 				long gePricePerItem = entry.getGePrice() == 0 ? 0 : (entry.getGePrice() / entry.getQuantity());
+				long haPricePerItem = entry.getHaPrice() == 0 ? 0 : (entry.getHaPrice() / entry.getQuantity());
 
-				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, gePricePerItem * newQuantity, entry.isIgnored()));
+				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, gePricePerItem * newQuantity, haPricePerItem * newQuantity, entry.isIgnored()));
 			}
 			else
 			{
@@ -287,7 +291,14 @@ class LootTrackerBox extends JPanel
 			}
 		}
 
-		items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
+		if (priceType == LootTrackerPriceType.HIGH_ALCHEMY)
+		{
+			items.sort((i1, i2) -> Long.compare(i2.getHaPrice(), i1.getHaPrice()));
+		}
+		else
+		{
+			items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
+		}
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -353,7 +364,10 @@ class LootTrackerBox extends JPanel
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
 		final long gePrice = item.getGePrice();
+		final long haPrice = item.getHaPrice();
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return name + " x " + quantity + " (" + QuantityFormatter.quantityToStackSize(gePrice) + ") " + ignoredLabel;
+		return "<html>" + name + " x " + quantity + ignoredLabel
+			+ "<br>GE: " + QuantityFormatter.quantityToStackSize(gePrice)
+			+ "<br>HA: " + QuantityFormatter.quantityToStackSize(haPrice) + "</html>";
 	}
 }

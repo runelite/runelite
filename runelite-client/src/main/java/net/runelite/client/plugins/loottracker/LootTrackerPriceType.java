@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,24 +24,8 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@AllArgsConstructor
-class LootTrackerItem
+public enum LootTrackerPriceType
 {
-	@Getter
-	private final int id;
-	@Getter
-	private final String name;
-	@Getter
-	private final int quantity;
-	@Getter
-	private final long gePrice;
-	@Getter
-	private final long haPrice;
-	@Getter
-	@Setter
-	private boolean ignored;
+	GRAND_EXCHANGE,
+	HIGH_ALCHEMY
 }
