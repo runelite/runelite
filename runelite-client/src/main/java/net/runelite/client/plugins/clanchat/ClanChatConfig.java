@@ -119,7 +119,7 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "forceF2PMessages",
 		name = "Force F2P Join/Leave messages",
-		description = "Ignores message rank requirement for people in Free-2-Play worlds.",
+		description = "Ignores message rank requirement for people in Free-to-Play worlds.",
 		position = 7
 	)
 	default boolean forceF2PMessages()
@@ -130,7 +130,7 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "forceP2PMessages",
 		name = "Force P2P Join/Leave messages",
-		description = "Ignores message rank requirement for people in Pay-2-Play worlds.",
+		description = "Ignores message rank requirement for people in member's worlds.",
 		position = 8
 	)
 	default boolean forceP2PMessages()
