@@ -74,6 +74,9 @@ public class ItemChargePluginTest
 	private static final String CHECK_XERICS_TALISMAN_CHARGES = "The talisman has 2 charges.";
 	private static final String CHECK_XERICS_TALISMAN_SINGLE_CHARGE = "The talisman has one charge.";
 
+	private static final String CHECK_SOULBEARER_CHARGE = "The soul bearer has 5 charges.";
+	private static final String CHECK_SOULBEARER_SINGLE_CHARGE = "The soul bearer has one charge.";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -188,6 +191,16 @@ public class ItemChargePluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_XERICS_TALISMAN_SINGLE_CHARGE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).xericTalisman(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_SOULBEARER_CHARGE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).soulBearer(eq(5));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_SOULBEARER_SINGLE_CHARGE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).soulBearer(eq(1));
 		reset(config);
 	}
 
