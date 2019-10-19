@@ -32,11 +32,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GraphicID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -67,6 +70,9 @@ public class ItemChargePluginTest
 	private static final String CHARGE_ONE_CHRONICLE = "You add a single charge to your book. It now has one charge.";
 	private static final String CHARGE_FIVE_CHRONICLE = "You add 5 charges to your book. It now has 6 charges.";
 	private static final String USED_LAST_CHRONICLE_CHARGE = "<col=ef1020>Your book has run out of charges.</col>";
+
+	private static final String CHECK_XERICS_TALISMAN_CHARGES = "The talisman has 2 charges.";
+	private static final String CHECK_XERICS_TALISMAN_SINGLE_CHARGE = "The talisman has one charge.";
 
 	@Mock
 	@Bind
@@ -153,6 +159,7 @@ public class ItemChargePluginTest
 		verify(config).ringOfForging(eq(140));
 		reset(config);
 
+		//Chronicle tests
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHARGE_ONE_CHRONICLE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).chronicle(eq(1));
@@ -170,6 +177,31 @@ public class ItemChargePluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_LAST_CHRONICLE_CHARGE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).chronicle(eq(0));
+		reset(config);
+
+		//Xeric talisman tests
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_XERICS_TALISMAN_CHARGES, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).xericTalisman(eq(2));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_XERICS_TALISMAN_SINGLE_CHARGE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).xericTalisman(eq(1));
+		reset(config);
+	}
+
+	@Test
+	public void testOnGraphicChanged()
+	{
+		Player player = mock(Player.class);
+		when(player.getGraphic()).thenReturn(GraphicID.XERIC_TELEPORT);
+		when(client.getLocalPlayer()).thenReturn(player);
+		GraphicChanged graphicChanged = new GraphicChanged();
+		graphicChanged.setActor(player);
+		when(config.xericTalisman()).thenReturn(5);
+		itemChargePlugin.onGraphicChanged(graphicChanged);
+		verify(config).xericTalisman(eq(4));
 		reset(config);
 	}
 }
