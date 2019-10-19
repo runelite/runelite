@@ -64,6 +64,10 @@ public class ItemChargePluginTest
 	private static final String USED_RING_OF_FORGING = "You retrieve a bar of iron.";
 	private static final String BREAK_RING_OF_FORGING = "<col=7f007f>Your Ring of Forging has melted.</col>";
 
+	private static final String CHARGE_ONE_CHRONICLE = "You add a single charge to your book. It now has one charge.";
+	private static final String CHARGE_FIVE_CHRONICLE = "You add 5 charges to your book. It now has 6 charges.";
+	private static final String USED_LAST_CHRONICLE_CHARGE = "<col=ef1020>Your book has run out of charges.</col>";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -147,6 +151,25 @@ public class ItemChargePluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).ringOfForging(eq(140));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHARGE_ONE_CHRONICLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHARGE_ONE_CHRONICLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHARGE_FIVE_CHRONICLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(6));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHARGE_ONE_CHRONICLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_LAST_CHRONICLE_CHARGE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(0));
 		reset(config);
 	}
 }
