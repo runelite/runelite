@@ -27,7 +27,9 @@
 package net.runelite.client.plugins.clanchat;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.SetMultimap;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -35,11 +37,11 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
@@ -133,7 +135,7 @@ public class ClanChatPlugin extends Plugin
 	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
-	private final Map<Integer, EnumSet<WorldType>> worldTypeMap = new HashMap<>();
+	private final SetMultimap<Integer, WorldType> worldTypeMap = HashMultimap.create();
 
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)
@@ -150,7 +152,7 @@ public class ClanChatPlugin extends Plugin
 			final WorldResult worldResult = new WorldClient(RuneLiteAPI.CLIENT).lookupWorlds();
 			for (World w : worldResult.getWorlds())
 			{
-				worldTypeMap.put(w.getId(), w.getTypes());
+				worldTypeMap.putAll(w.getId(), w.getTypes());
 			}
 		}
 		catch (IOException ex)
@@ -417,7 +419,7 @@ public class ClanChatPlugin extends Plugin
 			}
 			else
 			{
-				final EnumSet<WorldType> worldTypes = worldTypeMap.get(world);
+				final Set<WorldType> worldTypes = worldTypeMap.get(world);
 				if (worldTypes != null)
 				{
 					worldInfo = getWorldPrefix(worldTypes);
@@ -678,7 +680,7 @@ public class ClanChatPlugin extends Plugin
 		infoBoxManager.addInfoBox(clanMemberCounter);
 	}
 
-	private String getWorldPrefix(final EnumSet<WorldType> worldTypes)
+	private String getWorldPrefix(final Set<WorldType> worldTypes)
 	{
 		if (worldTypes.contains(WorldType.DEADMAN_TOURNAMENT))
 		{
@@ -706,7 +708,7 @@ public class ClanChatPlugin extends Plugin
 			return config.forceRS3Messages();
 		}
 
-		final EnumSet<WorldType> worldTypes = worldTypeMap.get(worldNumber);
+		final Set<WorldType> worldTypes = worldTypeMap.get(worldNumber);
 		if (worldTypes != null)
 		{
 			if (worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN) || worldTypes.contains(WorldType.DEADMAN_TOURNAMENT))
