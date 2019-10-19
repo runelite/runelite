@@ -32,6 +32,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -71,6 +72,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
+import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
@@ -129,6 +131,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private boolean shiftPressed = false;
 
 	@Provides
@@ -140,10 +145,64 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Override
 	public void startUp()
 	{
+		cleanConfig();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+	}
+
+	@Deprecated
+	private void cleanConfig()
+	{
+		removeInvalidTags("tagtabs");
+
+		List<String> tags = configManager.getConfigurationKeys(CONFIG_GROUP + ".item_");
+		tags.forEach(s ->
+		{
+			String[] split = s.split("\\.", 2);
+			removeInvalidTags(split[1]);
+		});
+
+		List<String> icons = configManager.getConfigurationKeys(CONFIG_GROUP + ".icon_");
+		icons.forEach(s ->
+		{
+			String[] split = s.split("\\.", 2);
+			String replaced = split[1].replaceAll("[<>/]", "");
+			if (!split[1].equals(replaced))
+			{
+				String value = configManager.getConfiguration(CONFIG_GROUP, split[1]);
+				configManager.unsetConfiguration(CONFIG_GROUP, split[1]);
+				if (replaced.length() > "icon_".length())
+				{
+					configManager.setConfiguration(CONFIG_GROUP, replaced, value);
+				}
+			}
+		});
+	}
+
+	@Deprecated
+	private void removeInvalidTags(final String key)
+	{
+		final String value = configManager.getConfiguration(CONFIG_GROUP, key);
+		if (value == null)
+		{
+			return;
+		}
+
+		String replaced = value.replaceAll("[<>/]", "");
+		if (!value.equals(replaced))
+		{
+			replaced = Text.toCSV(Text.fromCSV(replaced));
+			if (replaced.isEmpty())
+			{
+				configManager.unsetConfiguration(CONFIG_GROUP, key);
+			}
+			else
+			{
+				configManager.setConfiguration(CONFIG_GROUP, key, replaced);
+			}
+		}
 	}
 
 	@Override
@@ -278,6 +337,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			String initialValue = Text.toCSV(tags);
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+				.addCharValidator(FILTERED_CHARS)
 				.value(initialValue)
 				.onDone((newValue) ->
 					clientThread.invoke(() ->

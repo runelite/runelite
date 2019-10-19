@@ -77,7 +77,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
@@ -456,11 +456,11 @@ public class GrandExchangePlugin extends Plugin
 
 		if (config.showExact())
 		{
-			titleBuilder.append(StackFormatter.formatNumber(total));
+			titleBuilder.append(QuantityFormatter.formatNumber(total));
 		}
 		else
 		{
-			titleBuilder.append(StackFormatter.quantityToStackSize(total));
+			titleBuilder.append(QuantityFormatter.quantityToStackSize(total));
 		}
 
 		titleBuilder.append(')');
@@ -497,7 +497,7 @@ public class GrandExchangePlugin extends Plugin
 			// If we have item buy limit, append it
 			if (itemLimit != null)
 			{
-				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
+				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemLimit);
 				geText.setText(text);
 			}
 		}
@@ -521,7 +521,7 @@ public class GrandExchangePlugin extends Plugin
 			try
 			{
 				final OSBGrandExchangeResult result = CLIENT.lookupItem(itemId);
-				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
+				final String text = geText.getText() + OSB_GE_TEXT + QuantityFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
 			catch (IOException e)

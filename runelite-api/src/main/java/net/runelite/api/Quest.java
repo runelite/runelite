@@ -176,6 +176,7 @@ public enum Quest
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus"),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower"),
 	SONG_OF_THE_ELVES(603, "Song of the Elves"),
+	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
