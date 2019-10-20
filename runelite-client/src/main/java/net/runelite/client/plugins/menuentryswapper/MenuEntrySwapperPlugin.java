@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
@@ -66,6 +67,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
+@Slf4j
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
@@ -582,6 +584,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			Integer customOption = getSwapConfig(eventId);
 
+			if (option.contains("teleport"))
+			{
+				log.debug("Found shift teleport menu swap");
+			}
+
 			if (customOption != null && customOption == -1)
 			{
 				swap("use", option, target, index);
@@ -603,6 +610,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, index);
+		}
+		else if (config.swapCastleWars() && option.equals("take-from"))
+		{
+			swap("take-5", option, target, index);
 		}
 	}
 
