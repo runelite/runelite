@@ -332,4 +332,15 @@ public interface ImplingsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 28,
+		keyName = "shownotification",
+		name = "Show notification when implings are seen ",
+		description = "Configures whether or not shown impling being displayed causes a notification"
+	)
+	default boolean showNotification()
+	{
+		return false;
+	}
 }

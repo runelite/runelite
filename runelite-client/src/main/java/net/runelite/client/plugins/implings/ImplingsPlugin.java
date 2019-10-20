@@ -37,6 +37,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -64,6 +65,9 @@ public class ImplingsPlugin extends Plugin
 
 	@Inject
 	private ImplingsConfig config;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
@@ -94,6 +98,11 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
+			if (config.showNotification() && showImplingType(impling.getImplingType()))
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+
 			implings.add(npc);
 		}
 	}
