@@ -487,7 +487,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 26
+		position = 27
 	)
 	default boolean showInfoboxes()
 	{
