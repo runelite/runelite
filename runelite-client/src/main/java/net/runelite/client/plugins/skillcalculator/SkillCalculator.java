@@ -28,8 +28,6 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -77,6 +75,7 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 	private int numExpandedActionSlots = 0;
+	private UIActionSlot lastExpandedSlot = null;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -317,26 +316,6 @@ class SkillCalculator extends JPanel
 
 				calculateLevelFromInputActions();
 			});
-
-			slot.getUiActionsInput().getTextField().addFocusListener(new FocusListener()
-			{
-				@Override
-				public void focusGained(FocusEvent e)
-				{
-
-				}
-
-				@Override
-				public void focusLost(FocusEvent e)
-				{
-					if (slot.getNumInputActions() == 0)
-					{
-						retractSlot(slot);
-					}
-
-					calculateLevelFromInputActions();
-				}
-			});
 		}
 
 		// Refresh the rendering of this panel.
@@ -508,6 +487,12 @@ class SkillCalculator extends JPanel
 	private void expandSlot(UIActionSlot slot)
 	{
 		numExpandedActionSlots++;
+
+		if (lastExpandedSlot != null && lastExpandedSlot.getNumInputActions() == 0)
+		{
+			retractSlot(lastExpandedSlot);
+		}
+		lastExpandedSlot = slot;
 
 		slot.expand();
 		calculateSlot(slot);
