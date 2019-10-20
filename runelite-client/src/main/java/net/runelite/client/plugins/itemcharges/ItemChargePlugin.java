@@ -956,6 +956,7 @@ public class ItemChargePlugin extends Plugin
 		this.showXericTalismanCharges = config.showXericTalismanCharges();
 		this.showrecoil = config.showrecoil();
 		this.chronicle = config.chronicle();
+		this.showBasketCharges = config.showBasketCharges();
 		this.showSackCharges = config.showSackCharges();
 	}
 }
