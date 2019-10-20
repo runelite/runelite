@@ -50,6 +50,8 @@ class UICalculatorInputArea extends JPanel
 	private final JPanel uiPanelNewLevel;
 	private final JPanel uiPanelNewXP;
 
+	private boolean newPanelsVisible = false;
+
 	UICalculatorInputArea()
 	{
 		setLayout(new GridLayout(2, 2, 7, 7));
@@ -189,17 +191,27 @@ class UICalculatorInputArea extends JPanel
 
 	void addNewFields()
 	{
-		setLayout(new GridLayout(3, 2, 7, 7));
+		if (!newPanelsVisible)
+		{
+			setLayout(new GridLayout(3, 2, 7, 7));
 
-		add(uiPanelNewLevel);
-		add(uiPanelNewXP);
+			add(uiPanelNewLevel);
+			add(uiPanelNewXP);
+
+			newPanelsVisible = true;
+		}
 	}
 
 	void removeNewFields()
 	{
-		remove(uiPanelNewLevel);
-		remove(uiPanelNewXP);
+		if (newPanelsVisible)
+		{
+			remove(uiPanelNewLevel);
+			remove(uiPanelNewXP);
 
-		setLayout(new GridLayout(2, 2, 7, 7));
+			setLayout(new GridLayout(2, 2, 7, 7));
+
+			newPanelsVisible = false;
+		}
 	}
 }

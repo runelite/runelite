@@ -488,9 +488,17 @@ class SkillCalculator extends JPanel
 	{
 		numExpandedActionSlots++;
 
-		if (lastExpandedSlot != null && lastExpandedSlot.getNumInputActions() == 0)
+		if (lastExpandedSlot != null)
 		{
-			retractSlot(lastExpandedSlot);
+			if (lastExpandedSlot.getNumInputActions() == 0)
+			{
+				retractSlot(lastExpandedSlot);
+			}
+			else
+			{
+				addNewFields();
+				calculateLevelFromInputActions();
+			}
 		}
 		lastExpandedSlot = slot;
 
