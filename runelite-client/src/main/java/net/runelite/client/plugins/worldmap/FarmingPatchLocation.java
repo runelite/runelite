@@ -35,6 +35,7 @@ enum FarmingPatchLocation
 		new WorldPoint(3793, 2836, 0),
 		new WorldPoint(1269, 3730, 0)
 	),
+	ALLOTMENT_FLOWER("Allotment/Flower", new WorldPoint(3289, 6100, 0)),
 	ALLOTMENT_HERB_FLOWER("Allotment/Herb/Flower",
 		new WorldPoint(1809, 3490, 0),
 		new WorldPoint(3598, 3524, 0),
@@ -42,7 +43,6 @@ enum FarmingPatchLocation
 		new WorldPoint(2810, 3462, 0),
 		new WorldPoint(2663, 3375, 0)
 	),
-	ALLOTMENT_FLOWER("Allotment/Flower", new WorldPoint(3289, 6100, 0)),
 	ANIMA_HERB("Anima/Herb", new WorldPoint(1235, 3724, 0)),
 	BELLADONNA("Belladonna", new WorldPoint(3084, 3356, 0)),
 	BUSH("Bush",
