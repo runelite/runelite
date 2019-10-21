@@ -63,12 +63,7 @@ public class NpcSceneOverlay extends Overlay
 	// a dark background
 	private static final Color TEXT_COLOR = Color.WHITE;
 
-	private static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.US);
 
-	static
-	{
-		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
-	}
 
 	private final Client client;
 	private final NpcIndicatorsPlugin plugin;
@@ -128,11 +123,8 @@ public class NpcSceneOverlay extends Overlay
 			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
-		final Instant now = Instant.now();
-		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
-		final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
-		final double timeLeft = Math.max(0.0, baseTick - sinceLast);
-		final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
+
+		final String timeLeftStr = plugin.formatTime(plugin.getTimeLeftForNpc(npc));
 
 		final int textWidth = graphics.getFontMetrics().stringWidth(timeLeftStr);
 		final int textHeight = graphics.getFontMetrics().getAscent();
