@@ -105,6 +105,30 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.ringOfForging();
 		}
+		else if (itemId == ItemID.XERICS_TALISMAN)
+		{
+			if (!config.showXericTalismanCharges())
+			{
+				return;
+			}
+			charges = config.xericTalisman();
+		}
+		else if (itemId == ItemID.SOUL_BEARER)
+		{
+			if (!config.showSoulBearerCharges())
+			{
+				return;
+			}
+			charges = config.soulBearer();
+		}
+		else if (itemId == ItemID.CHRONICLE)
+		{
+			if (!config.showChronicleCharges())
+			{
+				return;
+			}
+			charges = config.chronicle();
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);

@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GraphicID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -43,12 +44,16 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -56,6 +61,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -80,6 +86,34 @@ public class ItemChargePlugin extends Plugin
 		"You can smelt ([0-9+]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
 	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
+	private static final Pattern XERIC_CHECK_CHARGE_PATTERN = Pattern.compile(
+		"talisman has (\\d+|one) charges?");
+	private static final Pattern XERIC_RECHARGEWIDGET_PATTERN = Pattern.compile(
+		"Your talisman now has (\\d+|one) charges?\\.");
+	private static final Pattern XERIC_OUT_OF_CHARGES = Pattern.compile(
+		"Your talisman has run out of charges");
+	private static final Pattern XERIC_UNCHARGE_PATTERN = Pattern.compile(
+		"lizard fangs? from your talisman\\.");
+	private static final Pattern SOULBEARER_RECHARGE_PATTERN = Pattern.compile(
+		"You add (\\d+|a) charges? to your soul bearer.It now has (\\d+) charges\\.");
+	private static final Pattern SOULBEARER_RECHARGE_PATTERN2 = Pattern.compile(
+		"Your soul bearer now has one charge\\.");
+	private static final Pattern SOULBEARER_CHECK_CHARGE_PATTERN = Pattern.compile(
+		"soul bearer has (\\d+|one) charges?\\.");
+	private static final Pattern SOULBEARER_UNCHARGE_PATTERN = Pattern.compile(
+		"You remove the runes from the soul bearer\\.");
+	private static final Pattern SOULBEARER_BANKHEADS_PATTERN = Pattern.compile(
+		"Your soul bearer carries the ensouled heads? to your ?bank\\. It has (\\d+|one) charges? left\\.");
+	private static final Pattern SOULBEARER_OUT_OF_CHARGES = Pattern.compile(
+		"Your soul bearer carries the ensouled heads? to (.+)\\. It has run out of charges\\.");
+	private static final Pattern CHRONICLE_CHECK_CHARGE_PATTERN = Pattern.compile(
+		"Your book has (\\d+) charges left\\.");
+	private static final Pattern CHRONICLE_ADD_CHARGE_PATTERN = Pattern.compile(
+		"You add (\\d+|a single) charges? to your book. It now has (\\d+|one) charges?\\.");
+	private static final Pattern CHRONICLE_LAST_CHARGE_PATTERN = Pattern.compile(
+		"You have one charge left in your book\\.");
+	private static final Pattern CHRONICLE_OUT_OF_CHARGES_PATTERN = Pattern.compile(
+		"Your book has run out of charges\\.");
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -108,6 +142,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeConfig config;
+
+	@Inject
+	private ClientThread clientThread;
 
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
@@ -187,6 +224,13 @@ public class ItemChargePlugin extends Plugin
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
 		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
+		Matcher xericRechargeMatcher = XERIC_CHECK_CHARGE_PATTERN.matcher(message);
+		Matcher xericOutOfChargesMatcher = XERIC_OUT_OF_CHARGES.matcher(message);
+		Matcher soulBearerCheckMatcher = SOULBEARER_CHECK_CHARGE_PATTERN.matcher(message);
+		Matcher chronicleCheckMatcher = CHRONICLE_CHECK_CHARGE_PATTERN.matcher(message);
+		Matcher chronicleRechargeMatcher = CHRONICLE_ADD_CHARGE_PATTERN.matcher(message);
+		Matcher chronicleLastChargeMatcher = CHRONICLE_LAST_CHARGE_PATTERN.matcher(message);
+		Matcher chronicleOutOfChargesMatcher = CHRONICLE_OUT_OF_CHARGES_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -274,6 +318,41 @@ public class ItemChargePlugin extends Plugin
 				}
 
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+			}
+			else if (xericRechargeMatcher.find())
+			{
+				int xericCharges = xericRechargeMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(xericRechargeMatcher.group(1)));
+				updateXericCharges(xericCharges);
+			}
+			else if (xericOutOfChargesMatcher.find())
+			{
+				int xericCharges = 0;
+				updateXericCharges(xericCharges);
+			}
+			else if (soulBearerCheckMatcher.find())
+			{
+				int soulBearerCharges = soulBearerCheckMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(soulBearerCheckMatcher.group(1)));
+				updateSoulBearerCharges(soulBearerCharges);
+			}
+			else if (chronicleCheckMatcher.find())
+			{
+				int chronicleCharges = chronicleCheckMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(chronicleCheckMatcher.group(1)));
+				updateChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleRechargeMatcher.find())
+			{
+				int chronicleCharges = chronicleRechargeMatcher.group(2).equals("one") ? 1 : (Integer.parseInt(chronicleRechargeMatcher.group(2)));
+				updateChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleLastChargeMatcher.find())
+			{
+				int chronicleCharges = 1;
+				updateChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleOutOfChargesMatcher.find())
+			{
+				int chronicleCharges = 0;
+				updateChronicleCharges(chronicleCharges);
 			}
 		}
 	}
@@ -411,6 +490,98 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, itemContainer.getItems());
+		}
+	}
+	private void updateXericCharges(final int xericCharges)
+	{
+		config.xericTalisman(xericCharges);
+	}
+
+	private void updateSoulBearerCharges(final int soulBearerCharges)
+	{
+		config.soulBearer(soulBearerCharges);
+	}
+
+	private void updateChronicleCharges(final int chronicleCharges)
+	{
+		config.chronicle(chronicleCharges);
+	}
+
+	@Subscribe
+	public void onGraphicChanged(GraphicChanged event)
+	{
+		if (event.getActor() == client.getLocalPlayer())
+		{
+			if (client.getLocalPlayer().getGraphic() == GraphicID.XERIC_TELEPORT)
+			{
+				int xericCharges = Math.max(config.xericTalisman() - 1, 0);
+				updateXericCharges(xericCharges);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == WidgetID.DIALOG_SPRITE2_GROUP_ID || event.getGroupId() == WidgetID.DIALOG_SPRITE_GROUP_ID)
+		{
+			clientThread.invokeLater(() ->
+			{
+				Widget dialogSprite = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+				Widget dialogSprite2 = client.getWidget(WidgetInfo.DIALOG2_SPRITE_TEXT);
+
+				//Widget dialog which has only one sprite (used for recharging)
+				if (dialogSprite != null)
+				{
+					//Removing comma because Soul bearer uses 1,000 instead of 1000
+					String widgetText = Text.removeTags(dialogSprite.getText()).replace(",", "");
+					Matcher xericRechargeMatcher = XERIC_RECHARGEWIDGET_PATTERN.matcher(widgetText);
+					Matcher soulBearerRechargeMatcher = SOULBEARER_RECHARGE_PATTERN.matcher(widgetText);
+					Matcher soulBearerRecharge2Matcher = SOULBEARER_RECHARGE_PATTERN2.matcher(widgetText);
+
+					if (xericRechargeMatcher.find())
+					{
+						int xericCharges = xericRechargeMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(xericRechargeMatcher.group(1)));
+						updateXericCharges(xericCharges);
+					}
+					else if (soulBearerRechargeMatcher.find())
+					{
+						int soulbearerCharges = soulBearerRechargeMatcher.group(2).equals("one") ? 1 : (Integer.parseInt(soulBearerRechargeMatcher.group(2)));
+						updateSoulBearerCharges(soulbearerCharges);
+					}
+					else if (soulBearerRecharge2Matcher.find())
+					{
+						int soulbearerCharges = 1;
+						updateSoulBearerCharges(soulbearerCharges);
+					}
+				}
+
+				//Widget dialog which has two sprites (used for uncharging, banking)
+				if (dialogSprite2 != null)
+				{
+					String widgetText = Text.removeTags(dialogSprite2.getText());
+					Matcher xericUnchargeMatcher = XERIC_UNCHARGE_PATTERN.matcher(widgetText);
+					Matcher soulBearerUnchargeMatcher = SOULBEARER_UNCHARGE_PATTERN.matcher(widgetText);
+					Matcher soulBearerBankHeadsMatcher = SOULBEARER_BANKHEADS_PATTERN.matcher(widgetText);
+					Matcher soulBearerOutOfCharges = SOULBEARER_OUT_OF_CHARGES.matcher(widgetText);
+
+					if (xericUnchargeMatcher.find())
+					{
+						int xericCharges = 0;
+						updateXericCharges(xericCharges);
+					}
+					else if (soulBearerUnchargeMatcher.find() || soulBearerOutOfCharges.find())
+					{
+						int soulbearerCharges = 0;
+						updateSoulBearerCharges(soulbearerCharges);
+					}
+					else if (soulBearerBankHeadsMatcher.find())
+					{
+						int soulbearerCharges = soulBearerBankHeadsMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(soulBearerBankHeadsMatcher.group(1)));
+						updateSoulBearerCharges(soulbearerCharges);
+					}
+				}
+			});
 		}
 	}
 

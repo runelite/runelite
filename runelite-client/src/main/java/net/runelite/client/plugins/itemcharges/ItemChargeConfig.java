@@ -337,10 +337,97 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showXericTalismanCharges",
+		name = "Show Xeric's Talisman Charges",
+		description = "Configures if Xeric's Talisman item charge is shown",
+		position = 22
+	)
+	default boolean showXericTalismanCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int xericTalisman()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = ""
+	)
+	void xericTalisman(int xericTalisman);
+
+	@ConfigItem(
+		keyName = "showSoulBearerCharges",
+		name = "Show Soul Bearer Charges",
+		description = "Configures if Soul Bearer item charge is shown",
+		position = 23
+	)
+	default boolean showSoulBearerCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int soulBearer()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = ""
+	)
+	void soulBearer(int soulBearer);
+
+	@ConfigItem(
+		keyName = "showChronicleCharges",
+		name = "Show Chronicle Charges",
+		description = "Configures if Chronicle item charge is shown",
+		position = 24
+	)
+	default boolean showChronicleCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int chronicle()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = ""
+	)
+	void chronicle(int chronicle);
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 22
+		position = 25
 	)
 	default boolean showInfoboxes()
 	{
