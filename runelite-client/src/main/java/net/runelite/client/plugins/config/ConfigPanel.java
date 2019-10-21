@@ -140,7 +140,7 @@ public class ConfigPanel extends PluginPanel
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
-	private static final String openosrs_PLUGIN = "OpenOSRS";
+	private static final String OPENOSRS_PLUGIN = "OpenOSRS";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -288,8 +288,8 @@ public class ConfigPanel extends PluginPanel
 		// set OpenOSRS config on top, as it should always have been
 		final PluginListItem openosrs = new PluginListItem(this, configManager, OpenOSRSConfig,
 			configManager.getConfigDescriptor(OpenOSRSConfig),
-			openosrs_PLUGIN, "OpenOSRS client settings", PluginType.IMPORTANT, "client");
-		openosrs.setPinned(pinnedPlugins.contains(openosrs_PLUGIN));
+			OPENOSRS_PLUGIN, "OpenOSRS client settings", PluginType.IMPORTANT, "client");
+		openosrs.setPinned(pinnedPlugins.contains(OPENOSRS_PLUGIN));
 		openosrs.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(openosrs);
 
@@ -1410,8 +1410,6 @@ public class ConfigPanel extends PluginPanel
 				return openOSRSConfig.skillingColor();
 			case UTILITY:
 				return openOSRSConfig.utilityColor();
-			case IMPORTANT:
-				return Color.WHITE;
 		}
 
 		return null;
