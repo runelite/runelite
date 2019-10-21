@@ -146,13 +146,13 @@ public class PluginListItem extends JPanel
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, ConfigManager configManager, Config config, ConfigDescriptor configDescriptor,
-				   String name, String description, PluginType pluginType, String... tags)
+				String name, String description, PluginType pluginType, String... tags)
 	{
 		this(configPanel, configManager, null, config, configDescriptor, name, description, pluginType, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, ConfigManager configManager, @Nullable Plugin plugin, @Nullable Config config,
-						   @Nullable ConfigDescriptor configDescriptor, String name, String description, PluginType pluginType, String... tags)
+						@Nullable ConfigDescriptor configDescriptor, String name, String description, PluginType pluginType, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
