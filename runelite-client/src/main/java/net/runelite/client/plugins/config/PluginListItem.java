@@ -60,7 +60,7 @@ public class PluginListItem extends JPanel
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon ON_SWITCHER;
-	private static final ImageIcon OFF_SWITCHER;
+	public static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
@@ -93,6 +93,7 @@ public class PluginListItem extends JPanel
 	private final IconButton configButton = new IconButton(CONFIG_ICON, CONFIG_ICON_HOVER);
 	private final IconButton toggleButton = new IconButton(OFF_SWITCHER);
 
+	@Getter
 	private boolean isPluginEnabled = false;
 
 	@Getter
@@ -214,7 +215,7 @@ public class PluginListItem extends JPanel
 		buttonPanel.add(toggleButton);
 	}
 
-	private void attachToggleButtonListener(IconButton button)
+	void attachToggleButtonListener(IconButton button)
 	{
 		// no need for a listener if there is no plugin to enable / disable
 		if (plugin == null)
@@ -237,15 +238,6 @@ public class PluginListItem extends JPanel
 			setPluginEnabled(!isPluginEnabled);
 			updateToggleButton(button);
 		});
-	}
-
-	IconButton createToggleButton()
-	{
-		IconButton button = new IconButton(OFF_SWITCHER);
-		button.setPreferredSize(new Dimension(25, 0));
-		updateToggleButton(button);
-		attachToggleButtonListener(button);
-		return button;
 	}
 
 	void setPluginEnabled(boolean enabled)
@@ -282,7 +274,7 @@ public class PluginListItem extends JPanel
 		isHidden = hidden;
 	}
 
-	private void updateToggleButton(IconButton button)
+	void updateToggleButton(IconButton button)
 	{
 		button.setIcon(isPluginEnabled ? ON_SWITCHER : OFF_SWITCHER);
 		button.setToolTipText(isPluginEnabled ? "Disable plugin" : "Enable plugin");

@@ -479,6 +479,13 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
+		IconButton toggleButton = new IconButton(PluginListItem.OFF_SWITCHER);
+		toggleButton.setPreferredSize(new Dimension(25, 0));
+		listItem.updateToggleButton(toggleButton);
+		listItem.attachToggleButtonListener(toggleButton);
+
+		topPanel.add(toggleButton, BorderLayout.EAST);
+
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
 		final Map<String, JPanel> titleSectionWidgets = new HashMap<>();
 
