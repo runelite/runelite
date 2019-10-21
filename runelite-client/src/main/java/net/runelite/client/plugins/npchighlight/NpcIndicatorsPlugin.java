@@ -231,6 +231,10 @@ public class NpcIndicatorsPlugin extends Plugin
 	private boolean highlightMenuNames;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showRespawnTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean getNotifyOnRespawn;
+	@Getter(AccessLevel.PACKAGE)
+	private int getNotifyOnRespawnDelay;
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -619,12 +623,12 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void checkNotifyNpcs()
 	{
-		if (!config.getNotifyOnRespawn())
+		if (!this.getNotifyOnRespawn)
 		{
 			return;
 		}
 
-		final double notifyDelay = ((double)config.getNotifyOnRespawnDelay()) / 1000;
+		final double notifyDelay = ((double)this.getNotifyOnRespawnDelay) / 1000;
 		final String notifyDelayStr = notifyDelay > 0
 				? " is less than " + formatTime(notifyDelay) + " seconds from respawn"
 				: " respawned.";
@@ -736,5 +740,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		this.drawMinimapNames = config.drawMinimapNames();
 		this.highlightMenuNames = config.highlightMenuNames();
 		this.showRespawnTimer = config.showRespawnTimer();
+		this.getNotifyOnRespawn = config.getNotifyOnRespawn();
+		this.getNotifyOnRespawnDelay = config.getNotifyOnRespawnDelay();
 	}
 }
