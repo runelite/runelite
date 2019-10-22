@@ -349,7 +349,7 @@ public class WikiPlugin extends Plugin
 			{
 				// we don't support this widget
 				// remove the last SPELL_CAST_ON_WIDGET; we can't blindly remove the top action because some other
-				// plugin might have added something on this same event, and we probably shouldn't remove that instead;
+				// plugin might have added something on this same event, and we probably shouldn't remove that instead
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
