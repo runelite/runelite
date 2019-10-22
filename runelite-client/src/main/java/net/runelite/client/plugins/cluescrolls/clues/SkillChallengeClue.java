@@ -32,11 +32,17 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectID.BROKEN_LAMP_22977;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.TileObject;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -50,7 +56,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
+public class SkillChallengeClue extends ClueScroll implements NpcClueScroll implements ObjectClueScroll
 {
 	@AllArgsConstructor
 	@Getter
@@ -138,7 +144,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		new SkillChallengeClue("Smith a mithril 2h sword.", item(ItemID.HAMMER), xOfItem(ItemID.MITHRIL_BAR, 3)),
 		new SkillChallengeClue("Catch a raw shark.", ANY_HARPOON),
 		new SkillChallengeClue("Chop a yew tree.", ANY_AXE),
-		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", item(ItemID.LIGHT_ORB)),
+		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", BROKEN_LAMP_22977, item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", item(ItemID.PURE_ESSENCE)),
@@ -187,6 +193,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 	private final ItemRequirement[] itemRequirements;
 	private final SingleItemRequirement returnItem;
 	private final boolean requireEquip;
+	private final int objectId;
 	@Setter
 	private boolean challengeCompleted;
 
@@ -210,19 +217,25 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 	}
 
 	// Non-cryptic Sherlock Tasks
+	private SkillChallengeClue(String challenge, int objectId, ItemRequirement ... itemRequirements)
+	{
+		this(challenge, challenge.toLowerCase(), objectId, itemRequirements);
+	}
+
+	// Non-cryptic Sherlock Tasks
 	private SkillChallengeClue(String challenge, boolean requireEquip, ItemRequirement ... itemRequirements)
 	{
-		this(challenge, challenge.toLowerCase(), requireEquip, itemRequirements);
+		this(challenge, challenge.toLowerCase(), requireEquip, -1, itemRequirements);
 	}
 
 	// Sherlock Tasks
 	private SkillChallengeClue(String challenge, String rawChallenge, ItemRequirement ... itemRequirements)
 	{
-		this(challenge, rawChallenge, false, itemRequirements);
+		this(challenge, rawChallenge, false, -1, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, int objectId, ItemRequirement ... itemRequirements)
 	{
 		this.type = ChallengeType.SHERLOCK;
 		this.challenge = challenge;
@@ -230,6 +243,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		this.itemRequirements = itemRequirements;
 		this.challengeCompleted = false;
 		this.requireEquip = requireEquip;
+		this.objectId = objectId;
 		this.returnText = "<str>" + rawChallenge + "</str>";
 
 		this.returnItem = null;
@@ -294,6 +308,23 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
+
+		// Mark game object
+		if (objectId != -1)
+		{
+			net.runelite.api.Point mousePosition = plugin.getClient().getMouseCanvasPosition();
+
+			if (plugin.getObjectsToMark() != null)
+			{
+				for (TileObject gameObject : plugin.getObjectsToMark())
+				{
+					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
+							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
+
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
+				}
+			}
+		}
 	}
 
 	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement ... requirements)
@@ -351,6 +382,12 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
 	}
 
 	@Override
