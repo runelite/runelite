@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
@@ -128,6 +128,9 @@ class SkillCalculator extends JPanel
 
 		// Clear the search bar
 		searchBar.setText(null);
+
+		// Clear the combined action slots
+		clearCombinedSlots();
 
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();
