@@ -45,6 +45,8 @@ public class WidgetID
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int PLAYER_TRADE_SCREEN_GROUP_ID = 335;
+	public static final int PLAYER_TRADE_INVENTORY_GROUP_ID = 336;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
 	public static final int IGNORE_LIST_GROUP_ID = 432;
 	public static final int RAIDING_PARTY_GROUP_ID = 500;
