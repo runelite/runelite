@@ -30,18 +30,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URLClassLoader;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchEvent.Kind;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
@@ -50,106 +42,33 @@ import net.runelite.client.config.OpenOSRSConfig;
 
 @Singleton
 @Slf4j
-public class PluginWatcher extends Thread
+public class ExternalPluginLoader
 {
 	private static final File BASE = RuneLite.PLUGIN_DIR;
 
 	private final OpenOSRSConfig OpenOSRSConfig;
 	private final PluginManager pluginManager;
-	private final WatchService watchService;
-	private final WatchKey watchKey;
 
 	@Inject
 	private ConfigManager configManager;
 
 	@Inject
-	public PluginWatcher(OpenOSRSConfig OpenOSRSConfig, PluginManager pluginManager) throws IOException
+	public ExternalPluginLoader(OpenOSRSConfig OpenOSRSConfig, PluginManager pluginManager)
 	{
 		this.OpenOSRSConfig = OpenOSRSConfig;
 		this.pluginManager = pluginManager;
 
-		setName("Plugin Watcher");
-		setDaemon(true);
-
-		watchService = FileSystems.getDefault().newWatchService();
 		BASE.mkdirs();
-		Path dir = BASE.toPath();
-		watchKey = dir.register(watchService, ENTRY_MODIFY, ENTRY_DELETE);
 	}
 
-	public void cancel()
+	public void scanAndLoad()
 	{
-		watchKey.cancel();
-	}
-
-	@Override
-	public void run()
-	{
-		if (OpenOSRSConfig.enablePlugins())
+		if (!OpenOSRSConfig.enablePlugins())
 		{
-			scan();
+			return;
 		}
 
-		for (; ; )
-		{
-			try
-			{
-				WatchKey key = watchService.take();
-				Thread.sleep(50);
-
-				if (!OpenOSRSConfig.enablePlugins())
-				{
-					key.reset();
-					continue;
-				}
-
-				for (WatchEvent<?> event : key.pollEvents())
-				{
-					Kind<?> kind = event.kind();
-					Path path = (Path) event.context();
-					File file = new File(BASE, path.toFile().getName());
-
-					log.debug("Event {} file {}", kind, file);
-
-					if (kind == ENTRY_MODIFY)
-					{
-						Plugin existing = findPluginForFile(file);
-						if (existing != null)
-						{
-							log.info("Reloading plugin {}", file);
-							unload(existing);
-						}
-						else
-						{
-							log.info("Loading plugin {}", file);
-						}
-
-						load(file);
-					}
-					else if (kind == ENTRY_DELETE)
-					{
-						Plugin existing = findPluginForFile(file);
-						if (existing != null)
-						{
-							log.info("Unloading plugin {}", file);
-
-							unload(existing);
-						}
-					}
-				}
-				key.reset();
-
-			}
-			catch (InterruptedException ex)
-			{
-				log.warn("error polling for plugins", ex);
-			}
-		}
-	}
-
-	private void scan()
-	{
-		for (File file : BASE.listFiles())
+		for (File file : Objects.requireNonNull(BASE.listFiles()))
 		{
 			if (!file.getName().endsWith(".jar"))
 			{
@@ -158,18 +77,6 @@ public class PluginWatcher extends Thread
 			log.info("Loading plugin from {}", file);
 			load(file);
 		}
-	}
-
-	private Plugin findPluginForFile(File file)
-	{
-		for (Plugin plugin : pluginManager.getPlugins())
-		{
-			if (plugin.file != null && plugin.file.equals(file))
-			{
-				return plugin;
-			}
-		}
-		return null;
 	}
 
 	private void load(File pluginFile)
@@ -240,22 +147,6 @@ public class PluginWatcher extends Thread
 
 		// Plugin is now running
 		pluginManager.add(plugin);
-	}
-
-	private void unload(Plugin plugin)
-	{
-		try
-		{
-			pluginManager.stopPlugin(plugin);
-		}
-		catch (PluginInstantiationException ex)
-		{
-			log.warn("unable to stop plugin", ex);
-		}
-
-		pluginManager.remove(plugin); // remove it regardless
-
-		close(plugin.loader);
 	}
 
 	private void close(URLClassLoader classLoader)

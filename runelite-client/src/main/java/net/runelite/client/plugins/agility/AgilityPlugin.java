@@ -541,7 +541,10 @@ public class AgilityPlugin extends Plugin
 			changed |= checkAndModify(entry);
 		}
 
-		event.setModified(changed);
+		if (changed)
+		{
+			event.setModified();
+		}
 	}
 
 	private boolean checkAndModify(MenuEntry old)

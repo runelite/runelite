@@ -27,14 +27,28 @@ package net.runelite.client.plugins.suppliestracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigTitleSection;
+import net.runelite.client.config.Title;
 
 @ConfigGroup("suppliestracker")
 public interface SuppliesTrackerConfig extends Config
 {
+	@ConfigTitleSection(
+		keyName = "blowpipeTitle",
+		name = "Blowpipe",
+		description = "",
+		position = 1
+	)
+	default Title blowpipeTitle()
+	{
+		return new Title();
+	}
+
 	@ConfigItem(
 		keyName = "blowpipeAmmo",
-		name = "Ammo used in your blowpipe",
-		description = "What type of dart are you using in your toxic blowpipe"
+		name = "Ammo",
+		description = "What type of dart are you using in your toxic blowpipe",
+		titleSection = "blowpipeTitle"
 	)
 	default BlowpipeDartType blowpipeAmmo()
 	{

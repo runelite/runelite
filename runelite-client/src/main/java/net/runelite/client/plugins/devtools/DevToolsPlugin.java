@@ -407,7 +407,7 @@ public class DevToolsPlugin extends Plugin
 			}
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
-			entry.setModified(true);
+			entry.setModified();
 		}
 	}
 

@@ -51,7 +51,6 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PVP_BOUNTY_HUNTER_INFO, OverlayPosition.TOP_RIGHT)
-		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT)

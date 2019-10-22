@@ -46,7 +46,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Singleton
 class SuppliesBox extends JPanel
@@ -166,8 +166,8 @@ class SuppliesBox extends JPanel
 	{
 		buildItems();
 
-		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		priceLabel.setToolTipText(StackFormatter.formatNumber(totalPrice) + " gp");
+		priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
+		priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
 		final long supplies = getTotalSupplies();
 		if (supplies > 0)
@@ -341,7 +341,7 @@ class SuppliesBox extends JPanel
 		ItemDefinition item = this.itemManager.getItemDefinition(itemId);
 		final String name = item.getName();
 		final long price = item.getPrice();
-		return name + " x " + qty + " (" + StackFormatter.quantityToStackSize(price * qty) + ") ";
+		return name + " x " + qty + " (" + QuantityFormatter.quantityToStackSize(price * qty) + ") ";
 	}
 
 }

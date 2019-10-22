@@ -24,91 +24,70 @@
  */
 package net.runelite.api;
 
+/**
+ * Information about a specific {@link NpcID}
+ */
 public interface NPCDefinition
 {
 	/**
 	 * Gets the name of the NPC.
-	 *
-	 * @return the name
 	 */
 	String getName();
 
 	/**
 	 * Gets the model IDs that compose this NPC.
-	 *
-	 * @return the NPCs model IDs
 	 */
 	int[] getModels();
 
 	/**
-	 * Gets an array of possible right-click menu actions that can be
-	 * performed on the NPC.
-	 *
-	 * @return the menu actions
+	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
+	 * {@link MenuAction#NPC_FIRST_OPTION}, Index 2 to
+	 * {@link MenuAction#NPC_SECOND_OPTION} and so on.
 	 */
 	String[] getActions();
 
-	/**
-	 * Gets whether the NPC can be clicked.
-	 *
-	 * @return true if the NPC can be clicked, false otherwise
-	 */
 	boolean isClickable();
 
 	/**
 	 * Gets whether the NPC is visible on the mini-map.
-	 *
-	 * @return the mini-map visible state
 	 */
 	boolean isMinimapVisible();
 
-	/**
-	 * Gets whether the NPC is visible.
-	 *
-	 * @return the visible state
-	 */
 	boolean isVisible();
 
 	/**
 	 * Gets the ID of the NPC.
 	 *
-	 * @return the ID of the NPC
 	 * @see NpcID
 	 */
 	int getId();
 
 	/**
-	 * Gets the combat level of the NPC.
-	 *
 	 * @return the combat level, -1 if none
 	 */
 	int getCombatLevel();
 
 	/**
-	 * Gets the configuration data for the NPC.
-	 *
-	 * @return the configuration data
+	 * Get the {@link NpcID}s of NPCs this can transform into, depending
+	 * on a {@link Varbits} or {@link VarPlayer}
 	 */
 	int[] getConfigs();
 
 	/**
-	 * Transforms this NPC into a new state, which may have a different ID.
+	 * Get the NPC composition the player's state says this NPC should
+	 * transmogrify into.
 	 *
-	 * @return the transformed composition
+	 * @throws NullPointerException if {@link #getConfigs()} is null
 	 */
 	NPCDefinition transform();
 
 	/**
-	 * Gets the size of the NPC.
-	 *
-	 * @return the NPCs size
+	 * How many tiles wide this NPC is
 	 */
 	int getSize();
 
 	/**
 	 * Gets the displayed overhead icon of the NPC.
-	 *
-	 * @return the overhead icon
 	 */
 	HeadIcon getOverheadIcon();
 }

@@ -202,7 +202,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 			newEntries[i].setOpcode(MenuOpcode.RUNELITE.getId());
 
 			event.setMenuEntries(newEntries);
-			event.setModified(true);
+			event.setModified();
 
 			return;
 		}

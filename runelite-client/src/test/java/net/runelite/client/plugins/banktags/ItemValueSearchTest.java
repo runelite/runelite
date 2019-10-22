@@ -28,6 +28,7 @@ package net.runelite.client.plugins.banktags;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
@@ -104,6 +105,10 @@ public class ItemValueSearchTest
 	@Mock
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
+
+	@Mock
+	@Bind
+	private ScheduledExecutorService scheduledExecutorService;
 
 	@Before
 	public void before()

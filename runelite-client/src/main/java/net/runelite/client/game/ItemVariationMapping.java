@@ -54,7 +54,7 @@ public class ItemVariationMapping
 
 	static void load() throws IOException
 	{
-		try (JsonReader reader = new JsonReader(new InputStreamReader(ItemVariationMapping.class.getResourceAsStream("/item_variations.json"), StandardCharsets.UTF_8)))
+		try (JsonReader reader = new JsonReader(new InputStreamReader(ItemVariationMapping.class.getResourceAsStream("/item_variations.min.json"), StandardCharsets.UTF_8)))
 		{
 			ImmutableMap.Builder<Integer, Integer> builder = ImmutableMap.builderWithExpectedSize(5039);
 			reader.beginObject();

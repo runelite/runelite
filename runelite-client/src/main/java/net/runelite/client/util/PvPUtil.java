@@ -21,7 +21,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
-import static net.runelite.client.util.StackFormatter.quantityToRSDecimalStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -106,7 +105,7 @@ public class PvPUtil
 			}
 			wealth += value;
 		}
-		return Integer.parseInt(quantityToRSDecimalStack(priceMap.keySet().stream().mapToInt(Integer::intValue).sum()));
+		return Integer.parseInt(QuantityFormatter.quantityToRSDecimalStack(priceMap.keySet().stream().mapToInt(Integer::intValue).sum()));
 
 	}
 }

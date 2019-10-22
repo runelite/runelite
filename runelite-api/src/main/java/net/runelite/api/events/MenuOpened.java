@@ -24,6 +24,8 @@
  */
 package net.runelite.api.events;
 
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.MenuEntry;
 import lombok.Data;
 
@@ -38,6 +40,7 @@ public class MenuOpened implements Event
 	 * in menuEntries is changed, so the changes can be
 	 * propagated through to the client.
 	 */
+	@Setter(AccessLevel.NONE)
 	private boolean modified;
 
 	/**
@@ -61,5 +64,10 @@ public class MenuOpened implements Event
 		}
 
 		return null;
+	}
+
+	public void setModified()
+	{
+		this.modified = true;
 	}
 }

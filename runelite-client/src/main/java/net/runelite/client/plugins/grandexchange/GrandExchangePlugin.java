@@ -83,7 +83,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.api.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeClient;
@@ -448,7 +448,7 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.SHOP_INVENTORY_GROUP_ID:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setOpcode(MenuOpcode.RUNELITE.getId());
-				menuEntry.setModified(true);
+				menuEntry.setModified();
 		}
 	}
 
@@ -504,11 +504,11 @@ public class GrandExchangePlugin extends Plugin
 
 		if (config.showExact())
 		{
-			titleBuilder.append(StackFormatter.formatNumber(total));
+			titleBuilder.append(QuantityFormatter.formatNumber(total));
 		}
 		else
 		{
-			titleBuilder.append(StackFormatter.quantityToStackSize(total));
+			titleBuilder.append(QuantityFormatter.quantityToStackSize(total));
 		}
 
 		titleBuilder.append(')');
@@ -573,7 +573,7 @@ public class GrandExchangePlugin extends Plugin
 			// If we have item buy limit, append it
 			if (itemLimit != null)
 			{
-				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
+				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemLimit);
 				geText.setText(text);
 			}
 		}
@@ -600,7 +600,7 @@ public class GrandExchangePlugin extends Plugin
 				.subscribe(
 					(osbresult) ->
 					{
-						final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(osbresult.getOverall_average());
+						final String text = geText.getText() + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbresult.getOverall_average());
 						if (geText.getText().contains(OSB_GE_TEXT))
 						{
 							// If there are multiple tasks queued and one of them have already added the price

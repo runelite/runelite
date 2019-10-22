@@ -43,7 +43,7 @@ import net.runelite.client.plugins.stonedtracker.data.UniqueItem;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Getter
 class UniqueItemPanel extends JPanel
@@ -108,15 +108,15 @@ class UniqueItemPanel extends JPanel
 		String s = "<html>" + item.getName();
 		if (qty > 0)
 		{
-			s += " x " + StackFormatter.formatNumber(qty);
+			s += " x " + QuantityFormatter.formatNumber(qty);
 		}
 		if (item.getPrice() > 0)
 		{
-			s += "<br/>Price: " + StackFormatter.quantityToStackSize(item.getPrice());
+			s += "<br/>Price: " + QuantityFormatter.quantityToStackSize(item.getPrice());
 			// Check for qty here as well as we should only show Total if the item has a value as well
 			if (qty > 0)
 			{
-				s += "<br/>Total: " + StackFormatter.quantityToStackSize(qty * item.getPrice()) + "</html";
+				s += "<br/>Total: " + QuantityFormatter.quantityToStackSize(qty * item.getPrice()) + "</html";
 			}
 		}
 		s += "</html>";

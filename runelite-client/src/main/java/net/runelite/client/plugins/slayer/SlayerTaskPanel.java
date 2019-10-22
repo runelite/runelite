@@ -22,7 +22,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Singleton
 public class SlayerTaskPanel extends PluginPanel
@@ -367,7 +367,7 @@ public class SlayerTaskPanel extends PluginPanel
 
 	private static String htmlLabel(String key, int value)
 	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		String valueStr = QuantityFormatter.quantityToRSDecimalStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR),
 			key, valueStr);
 	}

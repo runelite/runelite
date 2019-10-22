@@ -28,6 +28,7 @@ package net.runelite.client.plugins.bank;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
@@ -50,12 +51,17 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.SpriteID;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -66,7 +72,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Bank",
@@ -139,6 +145,7 @@ public class BankPlugin extends Plugin
 	private boolean forceRightClickFlag;
 	private boolean largePinNumbers;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
+	private String searchString;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -179,6 +186,8 @@ public class BankPlugin extends Plugin
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
 		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
+		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
+		searchString = "";
 	}
 
 	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
@@ -266,7 +275,34 @@ public class BankPlugin extends Plugin
 		updateSeedVaultTotal();
 	}
 
-	private void onItemContainerChanged(ItemContainerChanged event)
+	public void onVarClientStrChanged(VarClientStrChanged event)
+	{
+		String searchVar = client.getVar(VarClientStr.INPUT_TEXT);
+
+		if (!searchVar.equals(searchString))
+		{
+			Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+			if (searchButtonBackground != null && searchButtonBackground.hasListener())
+			{
+				searchButtonBackground.setOnTimerListener((Object[]) null);
+				searchButtonBackground.setHasListener(false);
+			}
+
+			clientThread.invokeLater(() -> bankSearch.layoutBank());
+			searchString = searchVar;
+		}
+
+		if (client.getVar(VarClientInt.INPUT_TYPE) != InputType.SEARCH.getType() && Strings.isNullOrEmpty(client.getVar(VarClientStr.INPUT_TEXT)))
+		{
+			Widget searchBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+			if (searchBackground != null)
+			{
+				searchBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+			}
+		}
+	}
+
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		int containerId = event.getContainerId();
 
@@ -297,11 +333,11 @@ public class BankPlugin extends Plugin
 
 			if (this.showExact)
 			{
-				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
+				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
 			}
 		}
 
@@ -316,11 +352,11 @@ public class BankPlugin extends Plugin
 
 			if (this.showExact)
 			{
-				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
+				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
 			}
 		}
 
@@ -479,7 +515,7 @@ public class BankPlugin extends Plugin
 			long compare;
 			try
 			{
-				compare = StackFormatter.stackSizeToQuantity(matcher.group("num"));
+				compare = QuantityFormatter.parseQuantity(matcher.group("num"));
 			}
 			catch (ParseException e)
 			{
@@ -508,8 +544,8 @@ public class BankPlugin extends Plugin
 			long compare1, compare2;
 			try
 			{
-				compare1 = StackFormatter.stackSizeToQuantity(num1);
-				compare2 = StackFormatter.stackSizeToQuantity(num2);
+				compare1 = QuantityFormatter.parseQuantity(num1);
+				compare2 = QuantityFormatter.parseQuantity(num2);
 			}
 			catch (ParseException e)
 			{
