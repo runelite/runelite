@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -67,6 +69,8 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
+	private final JButton resetButton = new JButton("Reset");
+	private final JPanel uiCardContainer = new JPanel(new CardLayout());
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -111,6 +115,10 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+
+		resetButton.setToolTipText("Clear all of the actions that have been entered");
+
+		resetButton.addActionListener(e -> clearInputActions());
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -136,14 +144,24 @@ class SkillCalculator extends JPanel
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();
 
-		// Add the combined action slot.
-		add(combinedActionSlot);
+		// Clear the card layout panel that shows combined actions or reset button
+		uiCardContainer.removeAll();
+
+		// Re add the combined action slot and the reset button to the panel
+		uiCardContainer.add(combinedActionSlot);
+		uiCardContainer.add(resetButton);
+
+		// Add the card layout panel
+		add(uiCardContainer);
 
 		// Add the search bar
 		add(searchBar);
 
 		// Reset the expanded slot counter.
 		numExpandedActionSlots = 0;
+
+		// We don't need the old value
+		lastExpandedSlot = null;
 
 		// Change fields back to being target level and xp only.
 		removeNewFields();
@@ -532,6 +550,10 @@ class SkillCalculator extends JPanel
 	private void addNewFields()
 	{
 		uiInput.addNewFields();
+
+		CardLayout layout = (CardLayout) uiCardContainer.getLayout();
+		layout.last(uiCardContainer);
+
 		revalidate();
 		repaint();
 	}
@@ -539,8 +561,20 @@ class SkillCalculator extends JPanel
 	private void removeNewFields()
 	{
 		uiInput.removeNewFields();
+
+		CardLayout layout = (CardLayout) uiCardContainer.getLayout();
+		layout.first(uiCardContainer);
+
 		revalidate();
 		repaint();
+	}
+
+	private void clearInputActions()
+	{
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			retractSlot(slot);
+		}
 	}
 
 }
