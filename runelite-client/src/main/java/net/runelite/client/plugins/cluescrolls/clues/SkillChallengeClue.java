@@ -56,7 +56,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class SkillChallengeClue extends ClueScroll implements NpcClueScroll implements ObjectClueScroll
+public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	@AllArgsConstructor
 	@Getter
