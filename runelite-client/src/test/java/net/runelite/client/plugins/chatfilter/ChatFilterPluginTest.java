@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChatFilterPluginTest
@@ -132,7 +132,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
-		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
+		when(client.isClanMember("Iron Mammal")).thenReturn(false);
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
@@ -148,7 +148,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromClanIsFiltered()
 	{
-		when(client.isClanMember("B0aty")).thenReturn(true);
+		when(client.isFriended("B0aty", false)).thenReturn(false);
 		when(chatFilterConfig.filterClan()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
