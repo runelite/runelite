@@ -118,7 +118,11 @@ public class RandomEventPlugin extends Plugin
 
 		// Check that the npc is interacting with the player and the player isn't interacting with the npc, so
 		// that the notification doesn't fire from talking to other user's randoms
-		if (target != player || player.getInteracting() == source || !(source instanceof NPC) || !EVENT_NPCS.contains(((NPC) source).getId()))
+		if (player == null
+			|| target != player
+			|| player.getInteracting() == source
+			|| !(source instanceof NPC)
+			|| !EVENT_NPCS.contains(((NPC) source).getId()))
 		{
 			return;
 		}
