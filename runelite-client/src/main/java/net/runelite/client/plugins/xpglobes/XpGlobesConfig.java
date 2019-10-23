@@ -147,7 +147,7 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@Range (
-			min = 20
+		min = 20
 	)
 	@ConfigItem(
 		keyName = "Orb size",

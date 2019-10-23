@@ -55,7 +55,6 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.ImageUtil;
 
-
 public class XpGlobesOverlay extends Overlay
 {
 	private static final int MINIMUM_STEP = 10;
@@ -226,10 +225,10 @@ public class XpGlobesOverlay extends Overlay
 		BufferedImage resized = ImageUtil.resizeImage(skillImage, config.xpOrbSize() / 2, config.xpOrbSize() / 2);
 
 		graphics.drawImage(
-				resized,
-				x + (config.xpOrbSize() / 2) - (resized.getWidth() / 2),
-				y + (config.xpOrbSize() / 2) - (resized.getHeight() / 2),
-				null
+			resized,
+			x + (config.xpOrbSize() / 2) - (resized.getWidth() / 2),
+			y + (config.xpOrbSize() / 2) - (resized.getHeight() / 2),
+			null
 		);
 	}
 
