@@ -53,6 +53,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.ImageUtil;
+
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -221,11 +223,13 @@ public class XpGlobesOverlay extends Overlay
 			return;
 		}
 
+		BufferedImage resized = ImageUtil.resizeImage(skillImage, config.xpOrbSize() / 2, config.xpOrbSize() / 2);
+
 		graphics.drawImage(
-			skillImage,
-			x + (config.xpOrbSize() / 2) - (skillImage.getWidth() / 2),
-			y + (config.xpOrbSize() / 2) - (skillImage.getHeight() / 2),
-			null
+				resized,
+				x + (config.xpOrbSize() / 2) - (resized.getWidth() / 2),
+				y + (config.xpOrbSize() / 2) - (resized.getHeight() / 2),
+				null
 		);
 	}
 

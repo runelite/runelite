@@ -146,6 +146,9 @@ public interface XpGlobesConfig extends Config
 		return 2;
 	}
 
+	@Range (
+			min = 20
+	)
 	@ConfigItem(
 		keyName = "Orb size",
 		name = "Size of orbs",
