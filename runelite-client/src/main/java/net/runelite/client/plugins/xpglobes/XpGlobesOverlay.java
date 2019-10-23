@@ -32,17 +32,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
-
-import javafx.scene.transform.Affine;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
@@ -57,7 +53,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.util.ImageUtil;
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -226,13 +221,11 @@ public class XpGlobesOverlay extends Overlay
 			return;
 		}
 
-		BufferedImage resized = ImageUtil.resizeImage(skillImage, config.xpOrbSize() / 2, config.xpOrbSize() / 2);
-
 		graphics.drawImage(
-				resized,
-				x + (config.xpOrbSize() / 2) - (resized.getWidth() / 2),
-				y + (config.xpOrbSize() / 2) - (resized.getHeight() / 2),
-				null
+			skillImage,
+			x + (config.xpOrbSize() / 2) - (skillImage.getWidth() / 2),
+			y + (config.xpOrbSize() / 2) - (skillImage.getHeight() / 2),
+			null
 		);
 	}
 

@@ -25,8 +25,10 @@
 package net.runelite.client.plugins.xpglobes;
 
 import java.awt.Color;
-
-import net.runelite.client.config.*;
+import net.runelite.client.config.Alpha;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("xpglobes")
 public interface XpGlobesConfig extends Config
@@ -144,9 +146,6 @@ public interface XpGlobesConfig extends Config
 		return 2;
 	}
 
-	@Range(
-			min = 20
-	)
 	@ConfigItem(
 		keyName = "Orb size",
 		name = "Size of orbs",
