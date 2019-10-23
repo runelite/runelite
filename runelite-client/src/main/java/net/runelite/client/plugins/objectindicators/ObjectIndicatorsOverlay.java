@@ -26,7 +26,9 @@ package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.Shape;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -60,8 +62,10 @@ class ObjectIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (TileObject object : plugin.getObjects())
+		for (Map.Entry<TileObject, Color> entry : plugin.getObjects().entrySet())
 		{
+			TileObject object = entry.getKey();
+			Color color = entry.getValue();
 			if (object.getPlane() != client.getPlane())
 			{
 				continue;
@@ -95,12 +99,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (polygon != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
+				OverlayUtil.renderPolygon(graphics, polygon, color);
 			}
 
 			if (polygon2 != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon2, config.markerColor());
+				OverlayUtil.renderPolygon(graphics, polygon2, color);
 			}
 		}
 
