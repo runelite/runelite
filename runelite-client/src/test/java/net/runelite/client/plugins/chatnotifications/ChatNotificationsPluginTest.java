@@ -34,10 +34,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.util.Text;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.config.OpenOSRSConfig;
-import net.runelite.api.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,10 +66,6 @@ public class ChatNotificationsPluginTest
 	@Bind
 	private Notifier notifier;
 
-	@Mock
-	@Bind
-	private OpenOSRSConfig OpenOSRSConfig;
-
 	@Inject
 	private ChatNotificationsPlugin chatNotificationsPlugin;
 
@@ -96,6 +91,44 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+	}
+
+	@Test
+	public void testLtGt()
+	{
+		when(config.highlightWordsString()).thenReturn("<test>");
+
+		String message = "test <lt>test<gt> test";
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn(message);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("test <colHIGHLIGHT><lt>test<gt><colNORMAL> test");
+	}
+
+	@Test
+	public void testFullStop()
+	{
+		when(config.highlightWordsString()).thenReturn("test");
+
+		String message = "foo test. bar";
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn(message);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("foo <colHIGHLIGHT>test<colNORMAL>. bar");
 	}
 
 	@Test
