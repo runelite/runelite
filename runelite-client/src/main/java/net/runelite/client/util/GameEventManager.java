@@ -129,7 +129,7 @@ public class GameEventManager
 	
 	private void fireEventForWallObjectOnTile(EventBus eventBus, Tile tile)
 	{
-		 Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
+		Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
 		{
 			final WallObjectSpawned objectSpawned = new WallObjectSpawned();
 			objectSpawned.setTile(tile);
@@ -225,7 +225,8 @@ public class GameEventManager
 		});
 	}
 	
-	private boolean isLoggedIn() {
+	private boolean isLoggedIn()
+	{
 		return client.getGameState() == GameState.LOGGED_IN;
 	}
 }
