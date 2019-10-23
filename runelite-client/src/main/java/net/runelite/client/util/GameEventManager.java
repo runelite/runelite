@@ -41,14 +41,7 @@ import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.PlayerSpawned;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
@@ -95,6 +88,108 @@ public class GameEventManager
 		}
 	}
 
+	
+	private void simulateItemContainerChanges(EventBus eventBus, InventoryID[] inventories)
+	{
+		for (final InventoryID inventory : inventories)
+		{
+			final ItemContainer itemContainer = client.getItemContainer(inventory);
+
+			if (itemContainer != null)
+			{
+				eventBus.post(new ItemContainerChanged(inventory.getId(), itemContainer));
+			}
+		}
+	}
+	
+	private void simulateNpcSpawns(EventBus eventBus, NPC[] npcs)
+	{
+		for (NPC npc : npcs)
+		{
+			if (npc != null)
+			{
+				final NpcSpawned npcSpawned = new NpcSpawned(npc);
+				eventBus.post(npcSpawned);
+			}
+		}
+	}
+	
+	private void simulatePlayerSpawns(EventBus eventBus, Player[] players)
+	{
+		for (Player player : players)
+		{
+			if (player != null)
+			{
+				final PlayerSpawned playerSpawned = new PlayerSpawned(player);
+				eventBus.post(playerSpawned);
+			}
+		}
+	}
+	
+	private void simulateWallObjectSpawns(EventBus eventBus, Tile tile)
+	{
+		 Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
+		{
+			final WallObjectSpawned objectSpawned = new WallObjectSpawned();
+			objectSpawned.setTile(tile);
+			objectSpawned.setWallObject(object);
+			eventBus.post(objectSpawned);
+		});
+	}
+	
+	private void simulateDecorativeObjectSpawns(EventBus eventBus, Tile tile)
+	{
+		Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
+		{
+			final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
+			objectSpawned.setTile(tile);
+			objectSpawned.setDecorativeObject(object);
+			eventBus.post(objectSpawned);
+		});
+	}
+	
+	private void simulateGroundObjectSpawns(EventBus eventBus, Tile tile) 
+	{
+		Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
+		{
+			final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
+			objectSpawned.setTile(tile);
+			objectSpawned.setGroundObject(object);
+			eventBus.post(objectSpawned);
+		});
+	}
+	
+	private void simulateGameObjectSpawns(EventBus eventBus, Tile tile)
+	{
+		Arrays.stream(tile.getGameObjects())
+		.filter(Objects::nonNull)
+		.forEach(object ->
+		{
+			final GameObjectSpawned objectSpawned = new GameObjectSpawned();
+			objectSpawned.setTile(tile);
+			objectSpawned.setGameObject(object);
+			eventBus.post(objectSpawned);
+		});
+	}
+	
+	private void simulateTileItemSpawns(EventBus eventBus, Tile tile)
+	{
+		Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
+		{
+			Node current = itemLayer.getBottom();
+
+			while (current instanceof TileItem)
+			{
+				final TileItem item = (TileItem) current;
+
+				current = current.getNext();
+
+				final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
+				eventBus.post(itemSpawned);
+			}
+		});
+		
+	}
 	/**
 	 * Simulate game events for EventBus subscriber
 	 *
@@ -112,87 +207,22 @@ public class GameEventManager
 
 			eventBus.register(subscriber);
 
-			for (final InventoryID inventory : InventoryID.values())
+			simulateItemContainerChanges(eventBus, InventoryID.values());
+			simulateNpcSpawns(eventBus, client.getCachedNPCs());
+			simulatePlayerSpawns(eventBus, client.getCachedPlayers());
+
+			forEachTile(tile ->
 			{
-				final ItemContainer itemContainer = client.getItemContainer(inventory);
-
-				if (itemContainer != null)
-				{
-					eventBus.post(new ItemContainerChanged(inventory.getId(), itemContainer));
-				}
-			}
-
-			for (NPC npc : client.getCachedNPCs())
-			{
-				if (npc != null)
-				{
-					final NpcSpawned npcSpawned = new NpcSpawned(npc);
-					eventBus.post(npcSpawned);
-				}
-			}
-
-			for (Player player : client.getCachedPlayers())
-			{
-				if (player != null)
-				{
-					final PlayerSpawned playerSpawned = new PlayerSpawned(player);
-					eventBus.post(playerSpawned);
-				}
-			}
-
-			forEachTile((tile) ->
-			{
-				Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
-				{
-					final WallObjectSpawned objectSpawned = new WallObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setWallObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
-				{
-					final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setDecorativeObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
-				{
-					final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setGroundObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Arrays.stream(tile.getGameObjects())
-					.filter(Objects::nonNull)
-					.forEach(object ->
-					{
-						final GameObjectSpawned objectSpawned = new GameObjectSpawned();
-						objectSpawned.setTile(tile);
-						objectSpawned.setGameObject(object);
-						eventBus.post(objectSpawned);
-					});
-
-				Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
-				{
-					Node current = itemLayer.getBottom();
-
-					while (current instanceof TileItem)
-					{
-						final TileItem item = (TileItem) current;
-
-						current = current.getNext();
-
-						final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
-						eventBus.post(itemSpawned);
-					}
-				});
+				simulateWallObjectSpawns(eventBus, tile);
+				simulateDecorativeObjectSpawns(eventBus, tile);
+				simulateGroundObjectSpawns(eventBus, tile);
+				simulateGameObjectSpawns(eventBus, tile);
+				simulateTileItemSpawns(eventBus, tile);
 			});
 
 			eventBus.unregister(subscriber);
 		});
 	}
+
+
 }
