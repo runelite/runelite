@@ -44,6 +44,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.Plugin;
 
 @Singleton
 public class GameEventManager
@@ -89,7 +90,7 @@ public class GameEventManager
 	}
 
 	
-	private void simulateItemContainerChanges(EventBus eventBus, InventoryID[] inventories)
+	private void fireEventForEachInventoryUpdate(EventBus eventBus, InventoryID[] inventories)
 	{
 		for (final InventoryID inventory : inventories)
 		{
@@ -102,7 +103,7 @@ public class GameEventManager
 		}
 	}
 	
-	private void simulateNpcSpawns(EventBus eventBus, NPC[] npcs)
+	private void fireEventForEachNpcSpawn(EventBus eventBus, NPC[] npcs)
 	{
 		for (NPC npc : npcs)
 		{
@@ -114,7 +115,7 @@ public class GameEventManager
 		}
 	}
 	
-	private void simulatePlayerSpawns(EventBus eventBus, Player[] players)
+	private void fireEventForEachPlayerSpawn(EventBus eventBus, Player[] players)
 	{
 		for (Player player : players)
 		{
@@ -126,7 +127,7 @@ public class GameEventManager
 		}
 	}
 	
-	private void simulateWallObjectSpawns(EventBus eventBus, Tile tile)
+	private void fireEventForWallObjectOnTile(EventBus eventBus, Tile tile)
 	{
 		 Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
 		{
@@ -137,7 +138,7 @@ public class GameEventManager
 		});
 	}
 	
-	private void simulateDecorativeObjectSpawns(EventBus eventBus, Tile tile)
+	private void fireEventForDecorativeObjectOnTile(EventBus eventBus, Tile tile)
 	{
 		Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
 		{
@@ -148,7 +149,7 @@ public class GameEventManager
 		});
 	}
 	
-	private void simulateGroundObjectSpawns(EventBus eventBus, Tile tile) 
+	private void fireEventForEachGroundObjectOnTile(EventBus eventBus, Tile tile) 
 	{
 		Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
 		{
@@ -159,7 +160,7 @@ public class GameEventManager
 		});
 	}
 	
-	private void simulateGameObjectSpawns(EventBus eventBus, Tile tile)
+	private void fireEventForEachGameObjectOnTile(EventBus eventBus, Tile tile)
 	{
 		Arrays.stream(tile.getGameObjects())
 		.filter(Objects::nonNull)
@@ -172,7 +173,7 @@ public class GameEventManager
 		});
 	}
 	
-	private void simulateTileItemSpawns(EventBus eventBus, Tile tile)
+	private void fireEventForEachTileItemSpawn(EventBus eventBus, Tile tile)
 	{
 		Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
 		{
@@ -193,11 +194,11 @@ public class GameEventManager
 	/**
 	 * Simulate game events for EventBus subscriber
 	 *
-	 * @param subscriber EventBus subscriber
+	 * @param plugin EventBus subscriber
 	 */
-	public void simulateGameEvents(Object subscriber)
+	public void registerAllGameEvents(Plugin plugin)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (!isLoggedIn())
 		{
 			return;
 		}
@@ -205,24 +206,26 @@ public class GameEventManager
 		clientThread.invoke(() ->
 		{
 
-			eventBus.register(subscriber);
+			eventBus.register(plugin);
 
-			simulateItemContainerChanges(eventBus, InventoryID.values());
-			simulateNpcSpawns(eventBus, client.getCachedNPCs());
-			simulatePlayerSpawns(eventBus, client.getCachedPlayers());
+			fireEventForEachInventoryUpdate(eventBus, InventoryID.values());
+			fireEventForEachNpcSpawn(eventBus, client.getCachedNPCs());
+			fireEventForEachPlayerSpawn(eventBus, client.getCachedPlayers());
 
 			forEachTile(tile ->
 			{
-				simulateWallObjectSpawns(eventBus, tile);
-				simulateDecorativeObjectSpawns(eventBus, tile);
-				simulateGroundObjectSpawns(eventBus, tile);
-				simulateGameObjectSpawns(eventBus, tile);
-				simulateTileItemSpawns(eventBus, tile);
+				fireEventForWallObjectOnTile(eventBus, tile);
+				fireEventForDecorativeObjectOnTile(eventBus, tile);
+				fireEventForEachGroundObjectOnTile(eventBus, tile);
+				fireEventForEachGameObjectOnTile(eventBus, tile);
+				fireEventForEachTileItemSpawn(eventBus, tile);
 			});
 
-			eventBus.unregister(subscriber);
+			eventBus.unregister(plugin);
 		});
 	}
-
-
+	
+	private boolean isLoggedIn() {
+		return client.getGameState() == GameState.LOGGED_IN;
+	}
 }
