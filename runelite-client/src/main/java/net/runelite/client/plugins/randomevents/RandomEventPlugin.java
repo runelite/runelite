@@ -28,10 +28,9 @@ package net.runelite.client.plugins.randomevents;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.MenuOpcode;
@@ -39,10 +38,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -54,6 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	description = "Notify when random events appear and remove talk/dismiss options on events that aren't yours.",
 	enabledByDefault = false
 )
+@Slf4j
 public class RandomEventPlugin extends Plugin
 {
 	private static final Set<Integer> EVENT_NPCS = ImmutableSet.of(
@@ -86,10 +85,8 @@ public class RandomEventPlugin extends Plugin
 	);
 	private static final int RANDOM_EVENT_TIMEOUT = 150;
 
-	private Map<NPC, Integer> spawnedNpcs = new HashMap<>();
 	private NPC currentRandomEvent;
-	// event npcs teleport to you to stay in range, we need to throttle spawns
-	private int lastEventTick = -RANDOM_EVENT_TIMEOUT;
+	private int lastNotificationTick = -RANDOM_EVENT_TIMEOUT; // to avoid double notifications
 
 	@Inject
 	private Client client;
@@ -132,73 +129,54 @@ public class RandomEventPlugin extends Plugin
 	{
 		eventBus.unregister(this);
 
-		lastEventTick = 0;
+		lastNotificationTick = 0;
 		currentRandomEvent = null;
-		spawnedNpcs.clear();
 	}
 
 	private void addSubscriptions()
 	{
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-	}
-
-
-	private void onNpcSpawned(NpcSpawned event)
-	{
-		NPC npc = event.getNpc();
-
-		if (!EVENT_NPCS.contains(npc.getId()))
-		{
-			return;
-		}
-
-		// only occasionally do event npcs spawn with non-null interacting
-		if (npc.getInteracting() == client.getLocalPlayer())
-		{
-			if (client.getTickCount() - lastEventTick > RANDOM_EVENT_TIMEOUT)
-			{
-				currentRandomEvent = npc;
-				lastEventTick = client.getTickCount();
-			}
-		}
-		else
-		{
-			spawnedNpcs.put(npc, client.getTickCount());
-		}
 	}
 
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		Actor source = event.getSource();
 		Actor target = event.getTarget();
+		Player player = client.getLocalPlayer();
 
-		if (spawnedNpcs.containsKey(source))
+		// Check that the npc is interacting with the player and the player isn't interacting with the npc, so
+		// that the notification doesn't fire from talking to other user's randoms
+		if (player == null
+			|| target != player
+			|| player.getInteracting() == source
+			|| !(source instanceof NPC)
+			|| !EVENT_NPCS.contains(((NPC) source).getId()))
 		{
-			Player player = client.getLocalPlayer();
-			if (player == target && client.getTickCount() - lastEventTick > RANDOM_EVENT_TIMEOUT)
+			return;
+		}
+
+		log.debug("Random event spawn: {}", source.getName());
+
+		currentRandomEvent = (NPC) source;
+
+		if (client.getTickCount() - lastNotificationTick > RANDOM_EVENT_TIMEOUT)
+		{
+			lastNotificationTick = client.getTickCount();
+
+			if (shouldNotify(currentRandomEvent.getId()))
 			{
-				currentRandomEvent = (NPC) source;
-				if (shouldNotify(currentRandomEvent.getId()))
-				{
-					notifier.notify("Random event spawned: " + currentRandomEvent.getName());
-				}
+				notifier.notify("Random event spawned: " + currentRandomEvent.getName());
 			}
 		}
 	}
 
-	private void onGameTick(GameTick event)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		if (!spawnedNpcs.isEmpty())
-		{
-			// allow 2 ticks for interacting to get set
-			spawnedNpcs.entrySet().removeIf(entry -> client.getTickCount() - entry.getValue() >= 2);
-		}
+		NPC npc = npcDespawned.getNpc();
 
-		if (client.getTickCount() - lastEventTick > RANDOM_EVENT_TIMEOUT)
+		if (npc == currentRandomEvent)
 		{
 			currentRandomEvent = null;
 		}

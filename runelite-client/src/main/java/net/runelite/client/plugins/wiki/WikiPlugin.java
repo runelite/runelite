@@ -361,7 +361,7 @@ public class WikiPlugin extends Plugin
 		}
 
 		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID && event.getOption().startsWith("View"))
-			|| (WidgetInfo.TO_GROUP(widgetID) == WidgetID.DIARY_GROUP_ID && event.getOption().startsWith("Open")))
+			|| (WidgetInfo.TO_GROUP(widgetID) == WidgetID.ACHIEVEMENT_DIARY_GROUP_ID && event.getOption().startsWith("Open")))
 		{
 			client.insertMenuItem(
 				MENUOP_WIKI,
