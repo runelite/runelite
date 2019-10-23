@@ -6,6 +6,7 @@
 	"Zombie_13": 22,
 	"Zombie_18": 24,
 	"Zombie_24": 30,
+	"Zombie_44": 40,
 	"Summoned Zombie_13": 22,
 	"Skeleton_22": 29,
 	"Skeleton_21": 24,
@@ -1160,6 +1161,5 @@
 	"Alchemical Hydra_426": 1100,
 	"Undead Druid_105": 140,
 	"Temple Spider_75": 70,
-	"Sarachnis_318": 400,
-	"Zombie_44": 40
+	"Sarachnis_318": 400
 }
