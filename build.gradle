@@ -57,7 +57,7 @@ ext {
     jna = '5.4.0'
     jogamp = '2.3.2'
     jopt = '5.0.4'
-    jooq = '3.12.1'
+    jooq = '3.12.2'
     junit = '4.12'
     jupiter = '5.6.0-M1'
     logback = '1.2.3'
