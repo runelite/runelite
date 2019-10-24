@@ -30,6 +30,7 @@ import net.runelite.mapping.Import;
 public interface RSActor extends RSEntity, Actor
 {
 	@Import("targetIndex")
+	@Override
 	int getRSInteracting();
 
 	// Overhead text

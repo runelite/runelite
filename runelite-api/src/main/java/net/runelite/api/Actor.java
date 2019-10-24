@@ -64,8 +64,11 @@ public interface Actor extends Entity, Locatable
 	 * </ul>
 	 *
 	 * @return the actor, null if no interaction is occurring
+	 *
+	 * (getRSInteracting returns the npc/player index, useful for menus)
 	 */
 	Actor getInteracting();
+	int getRSInteracting();
 
 	/**
 	 * Gets the health ratio of the actor.
