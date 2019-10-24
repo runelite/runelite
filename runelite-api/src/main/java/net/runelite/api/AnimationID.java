@@ -292,5 +292,4 @@ public final class AnimationID
 	public static final int RANGED_DRAGON_KNIFE = 8194;
 	public static final int RANGED_DRAGON_KNIFE_POISONED = 8195; // tested w/ d knife p++
 	public static final int RANGED_DRAGON_KNIFE_SPEC = 8292;
-
 }

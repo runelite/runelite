@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.lmsperformancetracker;
 
+import com.google.common.base.Enums;
+import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
+import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.HeadIcon;
 import org.apache.commons.lang3.ArrayUtils;
@@ -32,16 +36,6 @@ import static net.runelite.api.AnimationID.*;
 
 public enum AnimationAttackStyle
 {
-	// None: Common non-attack animations seen during combat. This enum value says they aren't attacking.
-	// It doesn't have to be populated, but it may as well be with common non-attack animations, to skip
-	// checking all the attack animations in most cases.
-	None(null,
-		IDLE,
-		CONSUMING,
-		COMBAT_SHIELD_BLOCK,
-		COMBAT_MAGES_BOOK_BLOCK,
-		COMBAT_DEFENDER_BLOCK
-	),
 	// Melee attack animations
 	Melee(HeadIcon.MELEE,
 		MELEE_DAGGER_SLASH,
@@ -119,9 +113,28 @@ public enum AnimationAttackStyle
 		RANGED_DRAGON_KNIFE_SPEC
 	);
 
+	// create a static map of all the animation IDs to retrieve a style given an id more efficiently.
+	private static final Map<Integer, AnimationAttackStyle> STYLES;
+
 	@Getter
 	private final HeadIcon protection;
 	private final int[] animationIds;
+
+	static
+	{
+		ImmutableMap.Builder<Integer, AnimationAttackStyle> builder = new ImmutableMap.Builder<>();
+
+		for (AnimationAttackStyle style : values())
+		{
+			for (int animationId : style.animationIds)
+			{
+				builder.put(animationId, style);
+			}
+		}
+
+		STYLES = builder.build();
+	}
+
 
 	AnimationAttackStyle(HeadIcon protection, int... animationIds)
 	{
@@ -129,28 +142,9 @@ public enum AnimationAttackStyle
 		this.animationIds = animationIds;
 	}
 
-	// Returns the AnimationAttackStyle for a given animationId
+	// Returns the AnimationAttackStyle for a given animationId. Null if not attacking.
 	public static AnimationAttackStyle styleForAnimation(int animationId)
 	{
-		// check for common non-attack animationIds before checking known attack ones,
-		// since it is more likely that they aren't attacking, so avoid starting by
-		// checking large arrays of attack animationIds.
-		if (ArrayUtils.contains(None.animationIds, animationId))
-		{
-			return None;
-		}
-		else if (ArrayUtils.contains(Melee.animationIds, animationId))
-		{
-			return Melee;
-		}
-		else if (ArrayUtils.contains(Magic.animationIds, animationId))
-		{
-			return Magic;
-		}
-		else if (ArrayUtils.contains(Ranged.animationIds, animationId))
-		{
-			return Ranged;
-		}
-		return None;
+		return STYLES.get(animationId);
 	}
 }

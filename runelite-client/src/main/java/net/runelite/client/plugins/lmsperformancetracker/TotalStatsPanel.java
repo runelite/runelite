@@ -40,13 +40,14 @@ public class TotalStatsPanel extends JPanel
 	private JLabel statsLabel;
 	private JLabel killsLabel;
 	private JLabel deathsLabel;
-	private FightPerformance totalStats;
+	//private FightPerformance totalStats;
+	private Fighter totalStats;
 	private int numKills = 0;
 	private int numDeaths = 0;
 
 	TotalStatsPanel()
 	{
-		totalStats = new FightPerformance("Player", "");
+		totalStats = new Fighter("Player"); //new FightPerformance("Player", "");
 
 		setLayout(new GridLayout(3, 1));
 		setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -68,9 +69,9 @@ public class TotalStatsPanel extends JPanel
 		statsPanel.add(leftLabel, BorderLayout.WEST);
 
 		statsLabel = new JLabel();
-		statsLabel.setToolTipText(totalStats.getPlayerSuccessCount() + " successful off-pray attacks/" +
-			totalStats.getPlayerAttackCount() + " total attacks");
-		statsLabel.setText(totalStats.getPlayerStatsString());
+		statsLabel.setToolTipText(totalStats.getSuccessCount() + " successful off-pray attacks/" +
+			totalStats.getAttackCount() + " total attacks");
+		statsLabel.setText(totalStats.getStatsString());
 		statsLabel.setForeground(Color.WHITE);
 		statsPanel.add(statsLabel, BorderLayout.EAST);
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -97,22 +98,22 @@ public class TotalStatsPanel extends JPanel
 
 	public void addFight(FightPerformance fight)
 	{
-		if (fight.isPlayerDied())
+		if (fight.getPlayer().isDead())
 		{
 			numDeaths++;
 		}
-		if (fight.isOpponentDied())
+		if (fight.getOpponent().isDead())
 		{
 			numKills++;
 		}
-		totalStats.addAttacks(fight.getPlayerSuccessCount(), fight.getPlayerAttackCount());
+		totalStats.addAttacks(fight.getPlayer().getSuccessCount(), fight.getPlayer().getAttackCount());
 		SwingUtilities.invokeLater(() ->
 		{
-			statsLabel.setText(totalStats.getPlayerStatsString());
+			statsLabel.setText(totalStats.getStatsString());
 			killsLabel.setText(numKills + " Kill" + (numKills != 1 ? "s" : ""));
 			deathsLabel.setText(numDeaths + " Death"  + (numDeaths != 1 ? "s" : ""));
-			statsLabel.setToolTipText(totalStats.getPlayerSuccessCount() + " successful off-pray attacks/" +
-				totalStats.getPlayerAttackCount() + " total attacks");
+			statsLabel.setToolTipText(totalStats.getSuccessCount() + " successful off-pray attacks/" +
+				totalStats.getAttackCount() + " total attacks");
 		});
 	}
 
@@ -120,10 +121,10 @@ public class TotalStatsPanel extends JPanel
 	{
 		numDeaths = 0;
 		numKills = 0;
-		totalStats = new FightPerformance("Player", "");
+		totalStats = new Fighter("Player");
 		SwingUtilities.invokeLater(() ->
 		{
-			statsLabel.setText(totalStats.getPlayerStatsString());
+			statsLabel.setText(totalStats.getStatsString());
 			killsLabel.setText(numKills + " Kills");
 			deathsLabel.setText(numDeaths + " Deaths");
 		});

@@ -52,8 +52,6 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
 
-import static net.runelite.client.plugins.lmsperformancetracker.AnimationAttackStyle.None;
-
 @PluginDescriptor(
 	name = "LMS Performance Tracker",
 	description = "Tracks your LMS performance by counting how many attacks you & your opponent hit off-pray (ex. used range or melee vs pray mage).",
@@ -78,6 +76,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 	@Inject
 	private LmsPerformanceTrackerConfig config;
+
 	@Inject
 	private Client client;
 
@@ -109,11 +108,11 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		panel = injector.getInstance(LmsPerformanceTrackerPanel.class);
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull_white.png");
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons_small/last man standing.png");
 		navButton = NavigationButton.builder()
 			.tooltip("LMS Fight History")
 			.icon(icon)
-			.priority(3)
+			.priority(6)
 			.panel(panel)
 			.build();
 
@@ -250,12 +249,12 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		// if either player died, end the fight.
 		if (hasOpponent() && currentOpponent.getAnimation() == AnimationID.DEATH)
 		{
-			currentFight.opponentDied();
+			currentFight.getOpponent().died();
 			stopCurrentFight();
 		}
 		if (hasOpponent() && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
 		{
-			currentFight.playerDied();
+			currentFight.getPlayer().died();
 			stopCurrentFight();
 		}
 		// If there was no fight actions in the last (NEW_FIGHT_DELAY) seconds, set opponent to
@@ -280,7 +279,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
 		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
 		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
-		if (animationStyle == None || animationStyle == null) // if the animationStyle is null, set attacking bool to false.
+		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
 		{
 			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
 			playerAttacking = !forPlayer && playerAttacking;
@@ -300,12 +299,41 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		}
 	}
 
+
+	// OLD GOOD WORKING VERSION
+//	private void checkAnimation(boolean forPlayer)
+//	{
+//		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
+//		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
+//		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
+//		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
+//		{
+//			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
+//			playerAttacking = !forPlayer && playerAttacking;
+//			opponentAttacking = forPlayer && opponentAttacking;
+//			return;
+//		}
+//
+//		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
+//		if (forPlayer ? !playerAttacking : !opponentAttacking)
+//		{
+//			lastFightTime = Instant.now();
+//			currentFight.addAttack(player.getName(), opponent.getOverheadIcon() != animationStyle.getProtection());
+//
+//			// similar shorthand as above, but = true.
+//			playerAttacking = forPlayer || playerAttacking;
+//			opponentAttacking = !forPlayer || opponentAttacking;
+//		}
+//	}
+
+
+
 	private void stopCurrentFight()
 	{
 		// add fight to fight history if not null
 		if (currentFight != null && currentFight.fightStarted())
 		{
-			currentFight.fightEnded();
+			currentFight.endFight();
 			panel.addFight(currentFight);
 		}
 		playerAttacking = false;
@@ -314,10 +342,8 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		currentOpponent = null;
 	}
 
-	/**
-	 * Is player at the Last Man Standing minigame
-	 * (Thanks to loottracker plugin)
-	 */
+	// returns true if player is at the Last Man Standing minigame
+	// (Thanks to loottracker plugin)
 	protected boolean isAtLMS()
 	{
 		final int[] mapRegions = client.getMapRegions();

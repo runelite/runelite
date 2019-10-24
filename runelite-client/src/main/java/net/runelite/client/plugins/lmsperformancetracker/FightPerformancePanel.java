@@ -69,19 +69,19 @@ class FightPerformancePanel extends JPanel
 		playerStatsPanel.setBackground(background);
 
 		JLabel playerStatsName = new JLabel();
-		if (fight.isPlayerDied())
+		if (fight.getPlayer().isDead())
 		{
 			playerStatsName.setIcon(icon);
 		}
-		playerStatsName.setText(fight.getPlayerName());
+		playerStatsName.setText(fight.getPlayer().getName());
 		playerStatsName.setForeground(Color.WHITE);
 		playerStatsPanel.add(playerStatsName, BorderLayout.WEST);
 
 		JLabel playerStats = new JLabel();
-		playerStats.setToolTipText(fight.getPlayerSuccessCount() + " successful off-pray attacks/" +
-			fight.getPlayerAttackCount() + " total attacks" +
+		playerStats.setToolTipText(fight.getPlayer().getSuccessCount() + " successful off-pray attacks/" +
+			fight.getPlayer().getAttackCount() + " total attacks" +
 			(fight.playerWinning() ? " (green due to higher success ratio)" : ""));
-		playerStats.setText(fight.getPlayerStatsString());
+		playerStats.setText(fight.getPlayer().getStatsString());
 		playerStats.setForeground(fight.playerWinning() ? Color.GREEN : Color.WHITE);
 		playerStatsPanel.add(playerStats, BorderLayout.EAST);
 
@@ -92,19 +92,19 @@ class FightPerformancePanel extends JPanel
 		opponentStatsPanel.setBackground(background);
 
 		JLabel opponentStatsName = new JLabel();
-		if (fight.isOpponentDied())
+		if (fight.getOpponent().isDead())
 		{
 			opponentStatsName.setIcon(icon);
 		}
-		opponentStatsName.setText(fight.getOpponentName());
+		opponentStatsName.setText(fight.getOpponent().getName());
 		opponentStatsName.setForeground(Color.WHITE);
 		opponentStatsPanel.add(opponentStatsName, BorderLayout.WEST);
 
 		JLabel opponentStats = new JLabel();
-		opponentStats.setToolTipText(fight.getOpponentSuccessCount() + " successful off-pray attacks/" +
-			fight.getOpponentAttackCount() + " total attacks" +
+		opponentStats.setToolTipText(fight.getOpponent().getSuccessCount() + " successful off-pray attacks/" +
+			fight.getOpponent().getAttackCount() + " total attacks" +
 			(fight.opponentWinning() ? " (green due to higher success ratio)" : ""));
-		opponentStats.setText(fight.getOpponentStatsString());
+		opponentStats.setText(fight.getOpponent().getStatsString());
 		opponentStats.setForeground(fight.opponentWinning() ? Color.GREEN : Color.WHITE);
 		opponentStatsPanel.add(opponentStats, BorderLayout.EAST);
 

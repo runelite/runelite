@@ -78,20 +78,18 @@ public class LmsPerformanceTrackerOverlay extends Overlay
 				.build());
 		}
 
-		// First line: Player's stats (you: success rate counters + % value)
-		// Would have preferred to have usernames but they are too long.
-		String playerName = plugin.getCurrentFight().getPlayerName();
+		// First line: Player's stats (left: RSN right: success %)
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(playerName.substring(0, Math.min(7, playerName.length())))//.left("You:")
+			.left(plugin.getCurrentFight().getPlayer().getName())
 			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
-			.right(currentFight.getPlayerStatsString())
+			.right(String.valueOf(Math.round(currentFight.getPlayer().getSuccessRate())) + "%")
 			.build());
-		// Second line: Opponent's stats (foe: success rate counters + % value)
-		String oppName = plugin.getCurrentFight().getOpponentName();
+
+		// Second line: Same as first line but opponent's stats.
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(oppName.substring(0, Math.min(7, oppName.length())))//.left("Foe:")
+			.left(plugin.getCurrentFight().getOpponent().getName())
 			.leftColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
-			.right(currentFight.getOpponentStatsString())
+			.right(String.valueOf(Math.round(currentFight.getOpponent().getSuccessRate())) + "%")
 			.build());
 
 		return panelComponent.render(graphics);

@@ -34,127 +34,33 @@ import lombok.Getter;
 @Getter
 public class FightPerformance
 {
-	private String playerName;
-	private int playerAttackCount;
-	private int playerSuccessCount;
-	private double playerSuccessRate; // success rate in percentage
-	private boolean playerDied;
+	private Fighter player;
 
-	private String opponentName;
-	private int opponentAttackCount;
-	private int opponentSuccessCount;
-	private double opponentSuccessRate; // success rate in percentage
-	private boolean opponentDied;
+	private Fighter opponent;
 
 	private Instant timeFightEnded; // date/time when the fight ends.
-
-	// get a testing instance, used for debugging purposes.
-	static FightPerformance getTestInstance(boolean random)
-	{
-		if (random)
-		{
-			int attacks = (int) (Math.random() * 35.0 + 20.0);
-			int successful = (int) (attacks / 3.0 + ((Math.random() * (attacks / 2))));
-			int oAttacks = (int) (Math.random() * 35.0 + 20.0);
-			int oSuccessful = (int) (oAttacks / 3.0 + ((Math.random() * (oAttacks / 2))));
-
-			return new FightPerformance(
-				"qwerty" + (int) (Math.random() * 99.0),
-				"asdf" + (int) (Math.random() * 99.0),
-				attacks,
-				successful,
-				oAttacks,
-				oSuccessful
-			);
-		}
-		else
-		{
-			return new FightPerformance("qwerty123", "0123456789@#", 55, 32, 57, 43);
-		}
-	}
 
 	// proper constructor which initializes a fight using only Player names, starting stats at 0.
 	FightPerformance(String playerName, String opponentName)
 	{
-		this.playerName = playerName;
-		this.opponentName = opponentName;
-		playerAttackCount = 0;
-		playerSuccessCount = 0;
-		playerSuccessRate = 0;
-		playerDied = false;
-		opponentAttackCount = 0;
-		opponentSuccessCount = 0;
-		opponentSuccessRate = 0;
-		opponentDied = false;
-	}
-
-	// used in getTestInstance, used for debugging purposes.
-	private FightPerformance(String playerName, String opponentName, int playerAttackCount, int playerSuccessCount, int opponentAttackCount, int opponentSuccessCount)
-	{
-		this.playerName = playerName;
-		this.opponentName = opponentName;
-		this.playerAttackCount = playerAttackCount;
-		this.playerSuccessCount = playerSuccessCount;
-		this.playerSuccessRate = (double) this.playerSuccessCount / (double) this.playerAttackCount * 100.0;
-		this.playerDied = false;
-		this.opponentAttackCount = opponentAttackCount;
-		this.opponentSuccessCount = opponentSuccessCount;
-		this.opponentSuccessRate = (double) this.opponentSuccessCount / (double) this.opponentAttackCount * 100.0;
-		this.opponentDied = false;
-		this.timeFightEnded = Instant.now();
+		player = new Fighter(playerName);
+		opponent = new Fighter(opponentName);
 	}
 
 	public void addAttack(String playerName, boolean success)
 	{
-		if (playerName.equals(this.playerName))
+		if (playerName.equals(player.getName()))
 		{
-			playerAttackCount++;
-			if (success)
-			{
-				playerSuccessCount++;
-			}
-			playerSuccessRate = (double) playerSuccessCount / (double) playerAttackCount * 100.0;
+			player.addAttack(success);
 		}
-		else if (playerName.equals(opponentName))
+		else if (playerName.equals(opponent.getName()))
 		{
-			opponentAttackCount++;
-			if (success)
-			{
-				opponentSuccessCount++;
-			}
-			opponentSuccessRate = (double) opponentSuccessCount / (double) opponentAttackCount * 100.0;
+			opponent.addAttack(success);
 		}
 	}
-
-	public void playerDied()
-	{
-		playerDied = true;
-	}
-
-	public void opponentDied()
-	{
-		opponentDied = true;
-	}
-
-	public void fightEnded()
+	public void endFight()
 	{
 		timeFightEnded = Instant.now();
-	}
-
-	// Return a simple string to display the current player's success rate.
-	// ex. "42/59 (71%)". The name is not included as it will be in a separate view.
-	// Would round to 1 decimal space, but the overlay size is restrictive.
-	public String getPlayerStatsString()
-	{
-		// The success rate is the percentage of successful attacks.
-		return playerSuccessCount + "/" + playerAttackCount + " (" + Math.round(playerSuccessRate) + "%)";
-	}
-
-	// Return a simple string to display the current opponent's success rate.
-	public String getOpponentStatsString()
-	{
-		// The success rate is the percentage of successful attacks.
-		return opponentSuccessCount + "/" + opponentAttackCount + " (" + Math.round(opponentSuccessRate) + "%)";
 	}
 
 	// returns true if player success rate > opponent success rate.
@@ -164,24 +70,17 @@ public class FightPerformance
 	// is not uncommon, which could cause a situation opposite of the one described above.
 	public boolean playerWinning()
 	{
-		return playerSuccessRate > opponentSuccessRate;
+		return player.getSuccessRate() > opponent.getSuccessRate();
 	}
 
 	// returns true if opponent success rate > player success rate.
 	public boolean opponentWinning()
 	{
-		return opponentSuccessRate > playerSuccessRate;
-	}
-
-	public void addAttacks(int success, int total)
-	{
-		playerSuccessCount += success;
-		playerAttackCount += total;
-		playerSuccessRate = (double) playerSuccessCount / (double) playerAttackCount * 100.0;
+		return opponent.getSuccessRate() > player.getSuccessRate();
 	}
 
 	public boolean fightStarted()
 	{
-		return playerAttackCount > 0;
+		return player.getAttackCount() > 0;
 	}
 }
