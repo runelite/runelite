@@ -118,7 +118,7 @@ public class LootRecordWriter
 				{
 					totalBrackets++;
 				}
-				else if (line.contains("}"))
+				if (line.contains("}"))
 				{
 					totalBrackets--;
 				}

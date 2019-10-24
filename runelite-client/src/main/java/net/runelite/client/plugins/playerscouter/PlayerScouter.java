@@ -63,7 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
-import net.runelite.client.game.PvPValueBrokenItem;
+import net.runelite.client.game.ItemReclaimCost;
 import net.runelite.client.game.WorldLocation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -370,10 +370,10 @@ public class PlayerScouter extends Plugin
 				continue;
 			}
 
-			if (PvPValueBrokenItem.breaksOnDeath(id))
+			if (ItemReclaimCost.breaksOnDeath(id))
 			{
-				prices.put(id, itemManager.getBrokenValue(id));
-				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getBrokenValue(id));
+				prices.put(id, itemManager.getRepairValue(id));
+				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getRepairValue(id));
 				continue;
 			}
 

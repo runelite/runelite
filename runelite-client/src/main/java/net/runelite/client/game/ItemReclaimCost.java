@@ -22,28 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemskeptondeath;
+package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.api.ItemID;
 
 /**
  * Some non tradeable items are kept on death inside low level wilderness (1-20) but are turned into a broken variant.
- *
+ * <p>
  * The non-broken variant will be shown inside the interface.
  */
 @AllArgsConstructor
-enum BrokenOnDeathItem
+@Getter
+public enum ItemReclaimCost
 {
 	// Capes
 	FIRE_CAPE(ItemID.FIRE_CAPE, 50000),
-	FIRE_MAX_CAPE(ItemID.FIRE_MAX_CAPE, 50000),
+	FIRE_MAX_CAPE(ItemID.FIRE_MAX_CAPE, 99000),
 	INFERNAL_CAPE(ItemID.INFERNAL_CAPE, 50000),
-	INFERNAL_MAX_CAPE(ItemID.INFERNAL_MAX_CAPE, 50000),
+	INFERNAL_MAX_CAPE(ItemID.INFERNAL_MAX_CAPE, 99000),
 	AVAS_ASSEMBLER(ItemID.AVAS_ASSEMBLER, 75000),
-	ASSEMBLER_MAX_CAPE(ItemID.ASSEMBLER_MAX_CAPE, 75000),
+	ASSEMBLER_MAX_CAPE(ItemID.ASSEMBLER_MAX_CAPE, 99000),
+	IMBUED_GUTHIX_CAPE(ItemID.IMBUED_GUTHIX_CAPE, 75000),
+	IMBUED_GUTHIX_MAX_CAPE(ItemID.GUTHIX_MAX_CAPE, 99000),
+	IMBUED_SARADOMIN_CAPE(ItemID.IMBUED_SARADOMIN_CAPE, 75000),
+	IMBUED_SARADOMIN_MAX_CAPE(ItemID.SARADOMIN_MAX_CAPE, 99000),
+	IMBUED_ZAMORAK_CAPE(ItemID.IMBUED_ZAMORAK_CAPE, 75000),
+	IMBUED_ZAMORAK_MAX_CAPE(ItemID.ZAMORAK_MAX_CAPE, 99000),
 
 	// Defenders
 	BRONZE_DEFENDER(ItemID.BRONZE_DEFENDER, 1000),
@@ -88,26 +96,37 @@ enum BrokenOnDeathItem
 	GOLD_DECORATIVE_LEGS(ItemID.DECORATIVE_ARMOUR_4510, 5000),
 	GOLD_DECORATIVE_SKIRT(ItemID.DECORATIVE_ARMOUR_11895, 5000),
 	GOLD_DECORATIVE_SHIELD(ItemID.DECORATIVE_SHIELD_4512, 5000),
-	GOLD_DECORATIVE_SWORD(ItemID.DECORATIVE_SWORD_4508, 5000);
+	GOLD_DECORATIVE_SWORD(ItemID.DECORATIVE_SWORD_4508, 5000),
 
-	private final int itemID;
-	private final int repairPrice;
+	// Granite Maul
+	GRANITE_MAUL(ItemID.GRANITE_MAUL_24225, 375000),
+	GRANITE_MAUL_OR(ItemID.GRANITE_MAUL_24227, 375000);
 
-	private static final ImmutableMap<Integer, Integer> REPAIR_MAP;
+	private static final ImmutableMap<Integer, ItemReclaimCost> idMap;
 
 	static
 	{
-		final ImmutableMap.Builder<Integer, Integer> map = new ImmutableMap.Builder<>();
-		for (final BrokenOnDeathItem p : values())
+		ImmutableMap.Builder<Integer, ItemReclaimCost> builder = ImmutableMap.builder();
+
+		for (ItemReclaimCost items : values())
 		{
-			map.put(p.itemID, p.repairPrice);
+			builder.put(items.itemID, items);
 		}
-		REPAIR_MAP = map.build();
+
+		idMap = builder.build();
 	}
 
+	private final int itemID;
+	private final int value;
+
 	@Nullable
-	static Integer getRepairPrice(int itemId)
+	public static ItemReclaimCost of(int itemId)
 	{
-		return REPAIR_MAP.get(itemId);
+		return idMap.get(itemId);
+	}
+
+	public static boolean breaksOnDeath(int itemId)
+	{
+		return idMap.containsKey(itemId);
 	}
 }
