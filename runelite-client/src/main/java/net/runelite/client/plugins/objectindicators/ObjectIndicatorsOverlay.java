@@ -106,8 +106,9 @@ class ObjectIndicatorsOverlay extends Overlay
 			{
 				OverlayUtil.renderPolygon(graphics, polygon2, color);
 			}
+			Color objectColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 255);
+			OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), objectColor, objectColor, objectColor);
 		}
-
 		return null;
 	}
 }
