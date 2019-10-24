@@ -167,13 +167,13 @@ public class class3 implements Enumerated {
 					var5 += var4.y * 128 - var2;
 				}
 
-				if (var5 - 64 <= var4.field1061 && Client.field868 != 0 && var0 == var4.plane) {
+				if (var5 - 64 <= var4.field1061 && Client.areaSoundEffectVolume != 0 && var0 == var4.plane) {
 					var5 -= 64;
 					if (var5 < 0) {
 						var5 = 0;
 					}
 
-					int var6 = (var4.field1061 - var5) * Client.field868 / var4.field1061;
+					int var6 = (var4.field1061 - var5) * Client.areaSoundEffectVolume / var4.field1061;
 					if (var4.stream1 == null) {
 						if (var4.soundEffectId >= 0) {
 							SoundEffect var7 = SoundEffect.readSoundEffect(GrandExchangeOfferAgeComparator.archive4, var4.soundEffectId, 0);

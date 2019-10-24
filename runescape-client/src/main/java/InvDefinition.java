@@ -437,7 +437,7 @@ public class InvDefinition extends DualNode {
 			if (var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
 				int var12 = var14.cs1Instructions[0][1];
 				Varps.Varps_main[var12] = 1 - Varps.Varps_main[var12];
-				NetSocket.method3472(var12);
+				NetSocket.changeGameOptions(var12);
 			}
 		} else if (opcode == 29) {
 			PacketBufferNode var8 = InterfaceParent.getPacketBufferNode(ClientPacket.field2261, Client.packetWriter.isaacCipher);
@@ -448,7 +448,7 @@ public class InvDefinition extends DualNode {
 				int var12 = var14.cs1Instructions[0][1];
 				if (Varps.Varps_main[var12] != var14.cs1ComparisonValues[0]) {
 					Varps.Varps_main[var12] = var14.cs1ComparisonValues[0];
-					NetSocket.method3472(var12);
+					NetSocket.changeGameOptions(var12);
 				}
 			}
 		} else if (opcode == 30) {

@@ -378,7 +378,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		signature = "(II)V",
 		garbageValue = "-1514465632"
 	)
-	static final void method3472(int var0) {
+	@Export("changeGameOptions")
+	static final void changeGameOptions(int var0) {
 		class325.method6190();
 
 		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
@@ -436,8 +437,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 					var3 = 0;
 				}
 
-				if (var3 != Client.field761) {
-					if (Client.field761 == 0 && Client.field666 != -1) {
+				if (var3 != Client.musicVolume) {
+					if (Client.musicVolume == 0 && Client.field666 != -1) {
 						class83.method2068(class225.archive6, Client.field666, 0, var3, false);
 						Client.field759 = false;
 					} else if (var3 == 0) {
@@ -449,7 +450,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 						class49.midiPcmStream.method3760(var3);
 					}
 
-					Client.field761 = var3;
+					Client.musicVolume = var3;
 				}
 			}
 
@@ -489,23 +490,23 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
 			if (var4 == 10) {
 				if (var2 == 0) {
-					Client.field868 = 127;
+					Client.areaSoundEffectVolume = 127;
 				}
 
 				if (var2 == 1) {
-					Client.field868 = 96;
+					Client.areaSoundEffectVolume = 96;
 				}
 
 				if (var2 == 2) {
-					Client.field868 = 64;
+					Client.areaSoundEffectVolume = 64;
 				}
 
 				if (var2 == 3) {
-					Client.field868 = 32;
+					Client.areaSoundEffectVolume = 32;
 				}
 
 				if (var2 == 4) {
-					Client.field868 = 0;
+					Client.areaSoundEffectVolume = 0;
 				}
 			}
 

@@ -213,7 +213,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = 892519291
 	)
-	static int field868;
+	@Export("areaSoundEffectVolume")
+	static int areaSoundEffectVolume;
 	@ObfuscatedName("no")
 	static int[] field820;
 	@ObfuscatedName("nb")
@@ -363,7 +364,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = -114703177
 	)
-	static int field761;
+	@Export("musicVolume")
+	static int musicVolume;
 	@ObfuscatedName("pu")
 	@Export("mapIconYs")
 	static int[] mapIconYs;
@@ -1508,11 +1510,11 @@ public final class Client extends GameShell implements Usernamed {
 		destinationX = 0;
 		destinationY = 0;
 		minimapState = 0;
-		field761 = 255;
+		musicVolume = 255;
 		field666 = -1;
 		field759 = false;
 		soundEffectVolume = 127;
-		field868 = 127;
+		areaSoundEffectVolume = 127;
 		soundEffectCount = 0;
 		soundEffectIds = new int[50];
 		queuedSoundEffectLoops = new int[50];
@@ -4282,7 +4284,7 @@ public final class Client extends GameShell implements Usernamed {
 						Varps.Varps_main[var5] = var16;
 					}
 
-					NetSocket.method3472(var5);
+					NetSocket.changeGameOptions(var5);
 					field782[++field823 - 1 & 31] = var5;
 					var1.serverPacket = null;
 					return true;
@@ -4738,7 +4740,7 @@ public final class Client extends GameShell implements Usernamed {
 						Varps.Varps_main[var16] = var40;
 					}
 
-					NetSocket.method3472(var16);
+					NetSocket.changeGameOptions(var16);
 					field782[++field823 - 1 & 31] = var16;
 					var1.serverPacket = null;
 					return true;
@@ -4795,7 +4797,7 @@ public final class Client extends GameShell implements Usernamed {
 					for (var16 = 0; var16 < Varps.Varps_main.length; ++var16) {
 						if (Varps.Varps_temp[var16] != Varps.Varps_main[var16]) {
 							Varps.Varps_main[var16] = Varps.Varps_temp[var16];
-							NetSocket.method3472(var16);
+							NetSocket.changeGameOptions(var16);
 							field782[++field823 - 1 & 31] = var16;
 						}
 					}

@@ -113,7 +113,7 @@ public class HealthBarUpdate extends Node {
 							var8 = 0;
 						}
 
-						var2 = (var3 - var8) * Client.field868 / var3;
+						var2 = (var3 - var8) * Client.areaSoundEffectVolume / var3;
 					} else {
 						var2 = Client.soundEffectVolume;
 					}
@@ -151,8 +151,8 @@ public class HealthBarUpdate extends Node {
 			}
 
 			if (!var12) {
-				if (Client.field761 != 0 && Client.field666 != -1) {
-					class83.method2068(class225.archive6, Client.field666, 0, Client.field761, false);
+				if (Client.musicVolume != 0 && Client.field666 != -1) {
+					class83.method2068(class225.archive6, Client.field666, 0, Client.musicVolume, false);
 				}
 
 				Client.field759 = false;

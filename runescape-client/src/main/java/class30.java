@@ -122,7 +122,7 @@ public class class30 {
 	)
 	@Export("addSequenceSoundEffect")
 	static void addSequenceSoundEffect(SequenceDefinition var0, int var1, int var2, int var3) {
-		if (Client.soundEffectCount < 50 && Client.field868 != 0) {
+		if (Client.soundEffectCount < 50 && Client.areaSoundEffectVolume != 0) {
 			if (var0.soundEffects != null && var1 < var0.soundEffects.length) {
 				int var4 = var0.soundEffects[var1];
 				if (var4 != 0) {

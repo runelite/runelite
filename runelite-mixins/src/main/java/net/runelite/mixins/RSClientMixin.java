@@ -50,6 +50,7 @@ import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_FIFTH_OPTION;
@@ -59,7 +60,6 @@ import static net.runelite.api.MenuOpcode.PLAYER_SECOND_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_THIRD_OPTION;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
@@ -98,6 +98,7 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.hooks.Callbacks;
@@ -1760,7 +1761,6 @@ public abstract class RSClientMixin implements RSClient
 		return modulus;
 	}
 
-
 	@Inject
 	@Override
 	public void setModulus(BigInteger modulus)
@@ -1782,5 +1782,12 @@ public abstract class RSClientMixin implements RSClient
 		{
 			client.promptCredentials(true);
 		}
+	}
+
+	@Inject
+	@MethodHook("changeGameOptions")
+	public static void changeGameOptions(int var0)
+	{
+		client.getCallbacks().post(VolumeChanged.class, VolumeChanged.INSTANCE);
 	}
 }

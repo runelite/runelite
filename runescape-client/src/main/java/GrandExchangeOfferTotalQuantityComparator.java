@@ -308,7 +308,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 					var9 = var1.method5511();
 					if (var38 >= 0 && var4 >= 0 && var38 < 104 && var4 < 104) {
 						var10 = var6 + 1;
-						if (class223.localPlayer.pathX[0] >= var38 - var10 && class223.localPlayer.pathX[0] <= var10 + var38 && class223.localPlayer.pathY[0] >= var4 - var10 && class223.localPlayer.pathY[0] <= var10 + var4 && Client.field868 != 0 && var7 > 0 && Client.soundEffectCount < 50) {
+						if (class223.localPlayer.pathX[0] >= var38 - var10 && class223.localPlayer.pathX[0] <= var10 + var38 && class223.localPlayer.pathY[0] >= var4 - var10 && class223.localPlayer.pathY[0] <= var10 + var4 && Client.areaSoundEffectVolume != 0 && var7 > 0 && Client.soundEffectCount < 50) {
 							Client.soundEffectIds[Client.soundEffectCount] = var8;
 							Client.queuedSoundEffectLoops[Client.soundEffectCount] = var7;
 							Client.queuedSoundEffectDelays[Client.soundEffectCount] = var9;

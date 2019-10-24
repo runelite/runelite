@@ -320,7 +320,7 @@ public final class KeyHandler implements KeyListener, FocusListener {
 						} else if (var29 == ScriptOpcodes.SET_VARP) {
 							var11 = var6[var17];
 							Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-							NetSocket.method3472(var11);
+							NetSocket.changeGameOptions(var11);
 						} else if (var29 == ScriptOpcodes.SCONST) {
 							Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var3.stringOperands[var17];
 						} else if (var29 == ScriptOpcodes.JUMP) {

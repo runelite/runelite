@@ -704,8 +704,8 @@ public class ClientPacket implements class181 {
 	)
 	@Export("playSoundJingle")
 	static void playSoundJingle(int var0, int var1) {
-		if (Client.field761 != 0 && var0 != -1) {
-			class83.method2068(ClanMate.archive11, var0, 0, Client.field761, false);
+		if (Client.musicVolume != 0 && var0 != -1) {
+			class83.method2068(ClanMate.archive11, var0, 0, Client.musicVolume, false);
 			Client.field759 = true;
 		}
 
