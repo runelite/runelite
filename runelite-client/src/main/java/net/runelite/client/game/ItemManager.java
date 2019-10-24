@@ -326,12 +326,21 @@ public class ItemManager
 		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_MULTIPLIER);
 	}
 
-	public int getBrokenValue(int itemId)
+	public int getRepairValue(int itemId)
 	{
-		PvPValueBrokenItem b = PvPValueBrokenItem.of(itemId);
+		return getRepairValue(itemId, false);
+	}
+
+	public int getRepairValue(int itemId, boolean fullValue)
+	{
+		final ItemReclaimCost b = ItemReclaimCost.of(itemId);
 
 		if (b != null)
 		{
+			if (fullValue || b.getItemID() == GRANITE_MAUL_24225 || b.getItemID() == GRANITE_MAUL_24227)
+			{
+				return b.getValue();
+			}
 			return (int) (b.getValue() * (75.0f / 100.0f));
 		}
 
