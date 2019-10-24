@@ -388,7 +388,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 			}
 		}
 
-		int var4 = AbstractWorldMapData.method288(var0).type;
+		int var4 = AbstractWorldMapData.VarpDefinition_get(var0).type;
 		if (var4 != 0) {
 			int var2 = Varps.Varps_main[var0];
 			if (var4 == 1) {

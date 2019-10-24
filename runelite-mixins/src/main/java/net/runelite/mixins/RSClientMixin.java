@@ -1784,10 +1784,21 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@Inject
-	@MethodHook("changeGameOptions")
+	@Copy("changeGameOptions")
+	public static void rs$changeGameOptions(int var0)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("changeGameOptions")
 	public static void changeGameOptions(int var0)
 	{
-		client.getCallbacks().post(VolumeChanged.class, VolumeChanged.INSTANCE);
+		rs$changeGameOptions(var0);
+
+		int type = client.getVarpDefinition(var0).getType();
+		if (type == 3 || type == 4 || type == 10)
+		{
+			client.getCallbacks().post(VolumeChanged.class, VolumeChanged.INSTANCE);
+		}
 	}
 }

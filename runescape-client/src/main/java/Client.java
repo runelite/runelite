@@ -2680,7 +2680,7 @@ public final class Client extends GameShell implements Usernamed {
 						Tiles.friendSystem.clear();
 
 						for (var33 = 0; var33 < VarpDefinition.VarpDefinition_fileCount; ++var33) {
-							VarpDefinition var28 = AbstractWorldMapData.method288(var33);
+							VarpDefinition var28 = AbstractWorldMapData.VarpDefinition_get(var33);
 							if (var28 != null) {
 								Varps.Varps_temp[var33] = 0;
 								Varps.Varps_main[var33] = 0;
@@ -4870,7 +4870,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2099 == var1.serverPacket) {
 					for (var16 = 0; var16 < VarpDefinition.VarpDefinition_fileCount; ++var16) {
-						VarpDefinition var54 = AbstractWorldMapData.method288(var16);
+						VarpDefinition var54 = AbstractWorldMapData.VarpDefinition_get(var16);
 						if (var54 != null) {
 							Varps.Varps_temp[var16] = 0;
 							Varps.Varps_main[var16] = 0;

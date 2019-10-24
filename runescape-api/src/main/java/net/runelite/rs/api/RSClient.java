@@ -1117,4 +1117,7 @@ public interface RSClient extends RSGameShell, Client
 	 */
 	@Import("Login_promptCredentials")
 	void promptCredentials(boolean clearPass);
+
+	@Import("VarpDefinition_get")
+	RSVarpDefinition getVarpDefinition(int id);
 }
