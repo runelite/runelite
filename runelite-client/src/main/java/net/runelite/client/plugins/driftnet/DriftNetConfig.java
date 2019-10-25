@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Abiyaz C <chowdh2@cooper.edu>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +23,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache;
+package net.runelite.client.plugins.driftnet;
 
-public enum ConfigType
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup("fishing")
+public interface DriftNetConfig extends Config
 {
-	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	SEQUENCE(12),
-	SPOTANIM(13),
-
-
-
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	STRUCT(34),
-	AREA(35);
-
-	private final int id;
-
-	ConfigType(int id)
+	@ConfigItem(
+		position = 1,
+		keyName = "netStatus",
+		name = "Net status infobox",
+		description = "Configures whether to display an infobox showing the current status of each net."
+	) default boolean infoBox()
 	{
-		this.id = id;
+		return true;
 	}
 
-	public int getId()
+	@ConfigItem(
+			position = 1,
+			keyName = "netStatusOverlay",
+			name = "Net overlay",
+			description = "Configures whether to display an overlay on each drift net."
+	) default boolean  netOverlay()
 	{
-		return id;
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightFish",
+		name = "Highlight tagged fish",
+		description = "Configures whether to highlight tagged fish."
+	)
+	default boolean highlightFish()
+	{
+		return true;
+	}
+
+
+	@ConfigItem(
+			position = 3,
+			keyName = "highlightDuration",
+			name = "Highlight duration",
+			description = "If highlight fish is enabled, this configures how long the tagged fish should be highlighted."
+	)
+	default int highlightDuration()
+	{
+		return 10;
 	}
 }
