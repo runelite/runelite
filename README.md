@@ -54,3 +54,7 @@ OpenOSRS is licensed under the BSD 2-clause license. See the license header in t
 ## Contribute and Develop
 
 We've set up a separate document for our [contribution guidelines](https://github.com/open-osrs/runelite/blob/master/.github/CONTRIBUTING.md).
+
+## Supported By
+
+OpenOSRS uses profiling tools provided by [![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/)
