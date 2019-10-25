@@ -37,17 +37,19 @@ public interface DriftNetConfig extends Config
 		keyName = "netStatus",
 		name = "Net status infobox",
 		description = "Configures whether to display an infobox showing the current status of each net."
-	) default boolean infoBox()
+	)
+	default boolean infoBox()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "netStatusOverlay",
-			name = "Net overlay",
-			description = "Configures whether to display an overlay on each drift net."
-	) default boolean  netOverlay()
+		position = 1,
+		keyName = "netStatusOverlay",
+		name = "Net overlay",
+		description = "Configures whether to display an overlay on each drift net."
+	)
+	default boolean netOverlay()
 	{
 		return true;
 	}
@@ -65,10 +67,10 @@ public interface DriftNetConfig extends Config
 
 
 	@ConfigItem(
-			position = 3,
-			keyName = "highlightDuration",
-			name = "Highlight duration",
-			description = "If highlight fish is enabled, this configures how long the tagged fish should be highlighted."
+		position = 3,
+		keyName = "highlightDuration",
+		name = "Highlight duration",
+		description = "If highlight fish is enabled, this configures how long the tagged fish should be highlighted."
 	)
 	default int highlightDuration()
 	{

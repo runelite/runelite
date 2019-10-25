@@ -31,14 +31,15 @@ import net.runelite.api.GameObject;
 
 @Setter
 @Getter
-class DriftNet {
-    private DriftNetStatus netStatus = DriftNetStatus.UNSET;
-    private GameObject driftNet = null;
+class DriftNet
+{
+	private DriftNetStatus netStatus = DriftNetStatus.UNSET;
+	private GameObject driftNet = null;
 
-    public enum DriftNetStatus
-    {
-        UNSET,
-        SET,
-        FULL
-    }
+	public enum DriftNetStatus
+	{
+		UNSET,
+		SET,
+		FULL
+	}
 }
