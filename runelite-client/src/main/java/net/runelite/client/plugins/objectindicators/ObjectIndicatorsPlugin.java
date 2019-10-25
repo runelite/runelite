@@ -30,22 +30,25 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
+
 import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.event.KeyEvent;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.REGION_SIZE;
+
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -95,8 +98,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private final Gson GSON = new GsonBuilder().enableComplexMapKeySerialization().create();
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Color> objects = new HashMap<>();
-
-	private final Map<Integer, Map<ObjectPoint, Color>> points = new HashMap<>();
+	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
 
 	private boolean hotKeyPressed;
 
@@ -339,7 +341,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
 				{
 					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.put(object, color);
+					objects.put(object, objectPoint.getColor());
 					break;
 				}
 			}
@@ -428,7 +430,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			regionId,
 			worldPoint.getX() & (REGION_SIZE - 1),
 			worldPoint.getY() & (REGION_SIZE - 1),
-			client.getPlane());
+			client.getPlane(),
+			provideConfig(configManager).markerColor());
 
 		Map<ObjectPoint, Color> objectPoints = points.computeIfAbsent(regionId, k -> new HashMap<ObjectPoint, Color>());
 
@@ -440,8 +443,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 		else
 		{
-			objectPoints.putIfAbsent(point, provideConfig(configManager).markerColor());
-			objects.put(object, objectPoints.getOrDefault(point, provideConfig(configManager).markerColor()));
+			objectPoints.add(point);
+			objects.put(object, point.getColor());
 			log.debug("Marking object: {}", point);
 		}
 
@@ -474,13 +477,21 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		{
 		}.getType());
 
-
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks
 		// in most cases due to the specific object being identified being ambiguous, so remove
 		// them
-		return points.entrySet().stream()
-				.filter(point -> !point.getKey().getName().equals("null"))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		// .map() necessary for added color to points
+		return points.stream()
+			.filter(point -> !point.getName().equals("null"))
+			.map(point ->
+			{
+				if (Objects.isNull(point.getColor()))
+				{
+					point.setColor(provideConfig(configManager).markerColor());
+				}
+				return point;
+			})
+			.collect(Collectors.toSet());
 	}
 
 	private ObjectComposition getObjectComposition(int id)

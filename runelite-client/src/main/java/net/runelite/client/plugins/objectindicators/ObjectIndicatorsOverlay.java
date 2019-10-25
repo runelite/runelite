@@ -71,43 +71,49 @@ class ObjectIndicatorsOverlay extends Overlay
 				continue;
 			}
 
-			final Shape polygon;
-			Shape polygon2 = null;
-
-			if (object instanceof GameObject)
+			if (config.clickBox())
 			{
-				polygon = ((GameObject) object).getConvexHull();
-			}
-			else if (object instanceof WallObject)
-			{
-				polygon = ((WallObject) object).getConvexHull();
-				polygon2 = ((WallObject) object).getConvexHull2();
-			}
-			else if (object instanceof DecorativeObject)
-			{
-				polygon = ((DecorativeObject) object).getConvexHull();
-				polygon2 = ((DecorativeObject) object).getConvexHull2();
-			}
-			else if (object instanceof GroundObject)
-			{
-				polygon = ((GroundObject) object).getConvexHull();
+				OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), color, color, color);
 			}
 			else
 			{
-				polygon = object.getCanvasTilePoly();
-			}
+				final Shape polygon;
+				Shape polygon2 = null;
 
-			if (polygon != null)
-			{
-				OverlayUtil.renderPolygon(graphics, polygon, color);
-			}
+				if (object instanceof GameObject)
+				{
+					polygon = ((GameObject) object).getConvexHull();
+				}
+				else if (object instanceof WallObject)
+				{
+					polygon = ((WallObject) object).getConvexHull();
+					polygon2 = ((WallObject) object).getConvexHull2();
+				}
+				else if (object instanceof DecorativeObject)
+				{
+					polygon = ((DecorativeObject) object).getConvexHull();
+					polygon2 = ((DecorativeObject) object).getConvexHull2();
+				}
+				else if (object instanceof GroundObject)
+				{
+					polygon = ((GroundObject) object).getConvexHull();
+				}
+				else
+				{
+					polygon = object.getCanvasTilePoly();
+				}
 
-			if (polygon2 != null)
-			{
-				OverlayUtil.renderPolygon(graphics, polygon2, color);
+				if (polygon != null )
+				{
+					OverlayUtil.renderPolygon(graphics, polygon, color);
+				}
+
+				if (polygon2 != null)
+				{
+					OverlayUtil.renderPolygon(graphics, polygon2, color);
+				}
+
 			}
-			Color objectColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 255);
-			OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), objectColor, objectColor, objectColor);
 		}
 		return null;
 	}
