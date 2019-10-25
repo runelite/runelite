@@ -29,32 +29,19 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+
+import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import net.runelite.api.*;
+
 import static net.runelite.api.Constants.REGION_SIZE;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.GroundObject;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.ObjectComposition;
-import net.runelite.api.Scene;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.WallObject;
+
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -92,7 +79,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
-	private final List<TileObject> objects = new ArrayList<>();
+	private final Map<TileObject, Color> objects = new HashMap<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
 	private boolean hotKeyPressed;
 
@@ -100,6 +87,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private Client client;
 
 	@Inject
+	@Getter(AccessLevel.PACKAGE)
 	private ConfigManager configManager;
 
 	@Inject
@@ -268,7 +256,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(objects.contains(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
+		menuEntry.setOption(objects.containsKey(findTileObject(tile, event.getIdentifier())) ? UNMARK : MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -332,7 +320,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
 				{
 					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.add(object);
+					objects.put(object, objectPoint.getColor());
 					break;
 				}
 			}
@@ -421,7 +409,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			regionId,
 			worldPoint.getX() & (REGION_SIZE - 1),
 			worldPoint.getY() & (REGION_SIZE - 1),
-			client.getPlane());
+			client.getPlane(),
+			provideConfig(configManager).markerColor());
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
@@ -434,7 +423,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		else
 		{
 			objectPoints.add(point);
-			objects.add(object);
+			objects.put(object, point.getColor());
 			log.debug("Marking object: {}", point);
 		}
 
@@ -466,11 +455,21 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
+
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks
 		// in most cases due to the specific object being identified being ambiguous, so remove
 		// them
+		// .map() necessary t
 		return points.stream()
 			.filter(point -> !point.getName().equals("null"))
+			.map(point ->
+			{
+				if (Objects.isNull(point.getColor()))
+				{
+					point.setColor(provideConfig(configManager).markerColor());
+				}
+				return point;
+			})
 			.collect(Collectors.toSet());
 	}
 

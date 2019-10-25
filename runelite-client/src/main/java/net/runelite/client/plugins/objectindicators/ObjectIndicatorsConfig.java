@@ -44,4 +44,16 @@ public interface ObjectIndicatorsConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+			keyName = "clickBox",
+			name = "Use Click box for Outline",
+			description = "instead of outline, fill the whole click box with the color",
+			position = 2
+	)
+	default boolean clickBox()
+	{
+		return false;
+	}
+
 }
