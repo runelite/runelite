@@ -91,6 +91,8 @@ public class MenuManager
 	private MenuEntry leftClickEntry = null;
 	private MenuEntry firstEntry = null;
 
+	private int playerAttackIdx = -1;
+
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
 	{
@@ -500,6 +502,29 @@ public class MenuManager
 		return index;
 	}
 
+	public int getPlayerAttackOpcode()
+	{
+		final String[] playerMenuOptions = client.getPlayerOptions();
+
+		if (playerAttackIdx != -1 && playerMenuOptions[playerAttackIdx].equals("Attack"))
+		{
+			return client.getPlayerMenuTypes()[playerAttackIdx];
+		}
+
+		playerAttackIdx = -1;
+
+		for (int i = IDX_LOWER; i < IDX_UPPER; i++)
+		{
+			if ("Attack".equals(playerMenuOptions[i]))
+			{
+				playerAttackIdx = i;
+				break;
+			}
+		}
+
+		return playerAttackIdx >= 0 ? client.getPlayerMenuTypes()[playerAttackIdx] : -1;
+	}
+
 	/**
 	 * Adds to the set of menu entries which when present, will remove all entries except for this one
 	 */
@@ -522,7 +547,7 @@ public class MenuManager
 
 		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
 
-		priorityEntries.removeIf(entry::equals);
+		priorityEntries.remove(entry);
 	}
 
 
@@ -562,7 +587,7 @@ public class MenuManager
 
 	public void removePriorityEntry(AbstractComparableEntry entry)
 	{
-		priorityEntries.removeIf(entry::equals);
+		priorityEntries.remove(entry);
 	}
 
 	public void removePriorityEntry(String option)
@@ -571,7 +596,7 @@ public class MenuManager
 
 		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
 
-		priorityEntries.removeIf(entry::equals);
+		priorityEntries.remove(entry);
 	}
 
 	public void removePriorityEntry(String option, boolean strictOption)
@@ -581,7 +606,17 @@ public class MenuManager
 		AbstractComparableEntry entry =
 			newBaseComparableEntry(option, "", -1, -1, false, strictOption);
 
-		priorityEntries.removeIf(entry::equals);
+		priorityEntries.remove(entry);
+	}
+
+	public void addPriorityEntries(Collection<AbstractComparableEntry> entries)
+	{
+		priorityEntries.addAll(entries);
+	}
+
+	public void removePriorityEntries(Collection<AbstractComparableEntry> entries)
+	{
+		priorityEntries.removeAll(entries);
 	}
 
 	/**

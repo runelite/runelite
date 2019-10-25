@@ -208,6 +208,10 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSPlayer getLocalPlayer();
 
+	@Import("localPlayerIndex")
+	@Override
+	int getLocalPlayerIndex();
+
 	@Import("npcCount")
 	int getNpcIndexesCount();
 
