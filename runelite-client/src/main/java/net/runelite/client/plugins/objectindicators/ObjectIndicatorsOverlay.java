@@ -112,6 +112,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				{
 					OverlayUtil.renderPolygon(graphics, polygon2, color);
 				}
+
 			}
 		}
 		return null;
