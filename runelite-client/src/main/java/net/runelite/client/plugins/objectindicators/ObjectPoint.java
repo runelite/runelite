@@ -25,10 +25,15 @@
 
 package net.runelite.client.plugins.objectindicators;
 
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.AllArgsConstructor;
+import java.awt.Color;
 
-@Value
+@Getter
+@EqualsAndHashCode(exclude = { "color" })
 @AllArgsConstructor
 class ObjectPoint
 {
@@ -37,4 +42,5 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
+	@Setter(AccessLevel.PACKAGE) private Color color;
 }

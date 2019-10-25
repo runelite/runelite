@@ -55,15 +55,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
@@ -710,7 +710,6 @@ public class SlayerPluginTest
 	public void infoboxNotAddedOnLogin()
 	{
 		when(slayerConfig.taskName()).thenReturn(Task.BLOODVELD.getName());
-		when(slayerConfig.showInfobox()).thenReturn(true);
 
 		GameStateChanged loggingIn = new GameStateChanged();
 		loggingIn.setGameState(GameState.LOGGING_IN);
