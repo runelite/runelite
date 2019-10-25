@@ -27,7 +27,6 @@ package net.runelite.client.plugins.objectindicators;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 
@@ -95,7 +94,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
 
-	private final Gson GSON = new GsonBuilder().enableComplexMapKeySerialization().create();
+	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Color> objects = new HashMap<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
@@ -119,7 +118,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	@Provides
-	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
+	private ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ObjectIndicatorsConfig.class);
 	}
@@ -248,7 +247,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			for (int regionId : client.getMapRegions())
 			{
 				// load points for region
-				final Map<ObjectPoint, Color> regionPoints = loadPoints(regionId);
+				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
 				if (regionPoints != null)
 				{
 					points.put(regionId, regionPoints);
@@ -323,17 +322,15 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private void checkObjectPoints(TileObject object)
 	{
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
-		final Map<ObjectPoint, Color> objectPoints = points.get(worldPoint.getRegionID());
+		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
 		{
 			return;
 		}
 
-		for (Map.Entry<ObjectPoint, Color> entry : objectPoints.entrySet())
+		for (ObjectPoint objectPoint : objectPoints)
 		{
-			ObjectPoint objectPoint = entry.getKey();
-			Color color = entry.getValue();
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
 					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
@@ -433,9 +430,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			client.getPlane(),
 			provideConfig(configManager).markerColor());
 
-		Map<ObjectPoint, Color> objectPoints = points.computeIfAbsent(regionId, k -> new HashMap<ObjectPoint, Color>());
+		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
-		if (objectPoints.containsKey(point))
+		if (objectPoints.contains(point))
 		{
 			objectPoints.remove(point);
 			objects.remove(object);
@@ -451,7 +448,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		savePoints(regionId, objectPoints);
 	}
 
-	private void savePoints(final int id, final Map<ObjectPoint, Color> points)
+	private void savePoints(final int id, final Set<ObjectPoint> points)
 	{
 		if (points.isEmpty())
 		{
@@ -464,7 +461,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	private Map<ObjectPoint, Color> loadPoints(final int id)
+	private Set<ObjectPoint> loadPoints(final int id)
 	{
 		final String json = configManager.getConfiguration(CONFIG_GROUP, "region_" + id);
 
@@ -473,7 +470,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return null;
 		}
 
-		Map<ObjectPoint, Color> points = GSON.fromJson(json, new TypeToken<Map<ObjectPoint, Color>>()
+		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
 
