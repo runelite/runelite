@@ -78,7 +78,6 @@ public class DriftNetPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception
     {
-        System.out.println("Started DriftNetPlugin");
         overlayManager.add(driftNetOverlay);
         overlayManager.add(infoBoxOverlay);
     }
@@ -118,7 +117,6 @@ public class DriftNetPlugin extends Plugin {
         }
         if (net != null) {
             if (event.getOption() != null) {
-                //System.out.println("ID: " + event.getIdentifier() + " " + "Option: " + event.getOption());
                 if (event.getTarget().toLowerCase().contains("(full)")) {
                     net.setNetStatus(DriftNet.DriftNetStatus.FULL);
                 } else if (event.getOption().toLowerCase().contains("set")) {
@@ -128,7 +126,6 @@ public class DriftNetPlugin extends Plugin {
                 }
             }
         }
-        //System.out.println("Menu entry added;" + event.getOption() + " " + event.getTarget()+ event.getIdentifier() + " " + event.getType());
     }
 
     @Subscribe
@@ -186,13 +183,8 @@ public class DriftNetPlugin extends Plugin {
         {
             return;
         }
-        //System.out.println(event.getMessage());
         if (event.getMessage().toLowerCase().contains("prod at")){
-            if (!fishes.containsKey(interacting)){
-                System.out.println("Error");
-            }else{
-                fishes.put(interacting,System.currentTimeMillis());
-            }
+        	fishes.put(interacting,System.currentTimeMillis());
         }
     }
 
