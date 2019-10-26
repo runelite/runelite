@@ -273,6 +273,7 @@ public final class AnimationID
 	// INFERNO animations
 	public static final int JAL_NIB = 7574;
 	public static final int JAL_MEJRAH = 7578;
+	public static final int JAL_MEJRAH_STAND = 7577;
 	public static final int JAL_AK_RANGE_ATTACK = 7581;
 	public static final int JAL_AK_MELEE_ATTACK = 7582;
 	public static final int JAL_AK_MAGIC_ATTACK = 7583;
