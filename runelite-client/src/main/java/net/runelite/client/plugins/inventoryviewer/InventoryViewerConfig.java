@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +24,20 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
-import javax.inject.Inject;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
-	enabledByDefault = false
-)
-public class InventoryViewerPlugin extends Plugin
+@ConfigGroup("inventoryviewer")
+public interface InventoryViewerConfig extends Config
 {
-	@Inject
-	private InventoryViewerOverlay overlay;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Provides
-	InventoryViewerConfig provideConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "groupItems",
+		name = "Group items",
+		description = "Whether or not to group the items together"
+	)
+	default boolean groupItems()
 	{
-		return configManager.getConfig(InventoryViewerConfig.class);
-	}
-
-	@Override
-	public void startUp()
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		overlayManager.remove(overlay);
+		return false;
 	}
 }

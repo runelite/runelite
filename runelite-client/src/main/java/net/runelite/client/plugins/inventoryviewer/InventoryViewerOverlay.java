@@ -28,14 +28,21 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
@@ -50,11 +57,14 @@ class InventoryViewerOverlay extends Overlay
 
 	private final Client client;
 	private final ItemManager itemManager;
+	private final InventoryViewerConfig config;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
+	private ImageComponent inventoryIconSprite;
+
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ItemManager itemManager, SpriteManager spriteManager, InventoryViewerConfig config)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
@@ -62,6 +72,19 @@ class InventoryViewerOverlay extends Overlay
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
+		this.config = config;
+
+		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, sprite ->
+		{
+			final BufferedImage img = new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+			final int centeredY = Constants.ITEM_SPRITE_HEIGHT / 2 - sprite.getHeight() / 2;
+
+			final Graphics2D g = img.createGraphics();
+			g.drawImage(sprite, 0, centeredY, null);
+			g.dispose();
+
+			inventoryIconSprite = new ImageComponent(img);
+		});
 	}
 
 	@Override
@@ -77,6 +100,31 @@ class InventoryViewerOverlay extends Overlay
 		panelComponent.getChildren().clear();
 
 		final Item[] items = itemContainer.getItems();
+
+		if (config.groupItems())
+		{
+			// Store in a LinkedHashMap to preserve inventory ordering
+			final Map<Integer, Integer> totals = Arrays.stream(items)
+				.filter(p -> p.getId() != -1)
+				.collect(groupingBy(Item::getId, LinkedHashMap::new, summingInt(Item::getQuantity)));
+
+			for (Map.Entry<Integer, Integer> cursor : totals.entrySet())
+			{
+				final BufferedImage image = itemManager.getImage(cursor.getKey(), cursor.getValue(), true);
+				if (image != null)
+				{
+					panelComponent.getChildren().add(new ImageComponent(image));
+				}
+			}
+
+			// Add a placeholder if the inventory is empty, so the overlay can still be easily seen
+			if (totals.entrySet().size() == 0)
+			{
+				panelComponent.getChildren().add(inventoryIconSprite);
+			}
+
+			return panelComponent.render(graphics);
+		}
 
 		for (int i = 0; i < INVENTORY_SIZE; i++)
 		{
