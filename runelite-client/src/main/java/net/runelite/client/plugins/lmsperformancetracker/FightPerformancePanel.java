@@ -21,7 +21,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	*/
+ */
 package net.runelite.client.plugins.lmsperformancetracker;
 
 import java.awt.BorderLayout;
@@ -49,7 +49,7 @@ class FightPerformancePanel extends JPanel
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 
-		String tooltipText = "Ended at " + DATE_FORMAT.format(Date.from(fight.getTimeFightEnded()));
+		String tooltipText = "Ended at " + DATE_FORMAT.format(Date.from(fight.getLastFightTime()));
 		setToolTipText(tooltipText);
 
 		Color background = getBackground();

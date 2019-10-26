@@ -24,13 +24,10 @@
  */
 package net.runelite.client.plugins.lmsperformancetracker;
 
-import com.google.common.base.Enums;
 import com.google.common.collect.ImmutableMap;
-import java.util.Arrays;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.HeadIcon;
-import org.apache.commons.lang3.ArrayUtils;
 
 import static net.runelite.api.AnimationID.*;
 
@@ -134,7 +131,6 @@ public enum AnimationAttackStyle
 
 		STYLES = builder.build();
 	}
-
 
 	AnimationAttackStyle(HeadIcon protection, int... animationIds)
 	{

@@ -26,16 +26,17 @@ package net.runelite.client.plugins.lmsperformancetracker;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import javax.inject.Inject;
-
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
@@ -53,15 +54,15 @@ public class LmsPerformanceTrackerOverlay extends Overlay
 		this.config = config;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.LOW);
-		panelComponent.setWrapping(4);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "LMS Performance overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "LMS Performance Tracker"));
+		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		FightPerformance currentFight = plugin.getCurrentFight();
-		if (currentFight == null || !config.showCurrentFightOverlay() ||
+		if (currentFight == null || !config.showFightOverlay() ||
 			(config.restrictToLms() && !plugin.isAtLMS()))
 		{
 			return null;
@@ -78,19 +79,46 @@ public class LmsPerformanceTrackerOverlay extends Overlay
 				.build());
 		}
 
-		// First line: Player's stats (left: RSN right: success %)
+		// First line: Player's stats
+		// Using simple overlay = left: RSN, right: success%
+		// Not using simple overlay = left: 5 chars of RSN, right: stats string (successCount / totalCount success%)
+		String playerName = plugin.getCurrentFight().getPlayer().getName();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(plugin.getCurrentFight().getPlayer().getName())
-			.leftColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
-			.right(String.valueOf(Math.round(currentFight.getPlayer().getSuccessRate())) + "%")
+			.left(config.useSimpleOverlay() ?
+				playerName :
+				playerName.substring(0, Math.min(5, playerName.length())))
+			.right(config.useSimpleOverlay() ?
+				String.valueOf(Math.round(currentFight.getPlayer().getSuccessRate())) + "%" :
+				plugin.getCurrentFight().getPlayer().getStatsString())
+			.rightColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
 			.build());
 
 		// Second line: Same as first line but opponent's stats.
+		String opponentName = plugin.getCurrentFight().getOpponent().getName();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(plugin.getCurrentFight().getOpponent().getName())
-			.leftColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
-			.right(String.valueOf(Math.round(currentFight.getOpponent().getSuccessRate())) + "%")
+			.left(config.useSimpleOverlay() ?
+				opponentName :
+				opponentName.substring(0, Math.min(5, opponentName.length())))
+			.right(config.useSimpleOverlay() ?
+				String.valueOf(Math.round(currentFight.getOpponent().getSuccessRate())) + "%" :
+				plugin.getCurrentFight().getOpponent().getStatsString())
+			.rightColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
 			.build());
+
+		// Fix potential text overlap due to long RSN if displaying full RSN.
+		if (config.useSimpleOverlay())
+		{
+			FontMetrics metrics = graphics.getFontMetrics();
+			panelComponent.setPreferredSize(new Dimension(
+				Math.max(ComponentConstants.STANDARD_WIDTH,
+					Math.max(metrics.stringWidth(playerName), metrics.stringWidth(opponentName))
+						+ metrics.stringWidth("100%") + 12),
+				0));
+		}
+		else
+		{
+			panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
+		}
 
 		return panelComponent.render(graphics);
 	}

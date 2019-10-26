@@ -32,7 +32,6 @@ import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
@@ -47,16 +46,13 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ArrayUtils;
-
 import javax.inject.Inject;
 import java.time.Duration;
-import java.time.Instant;
 
 @PluginDescriptor(
 	name = "LMS Performance Tracker",
-	description = "Tracks your LMS performance by counting how many attacks you & your opponent hit off-pray (ex. used range or melee vs pray mage).",
-	tags = {"pvp", "last man standing", "hybrid", "tribrid", "nh", "no honour", "pking"},
-	enabledByDefault = true
+	description = "Tracks your LMS performance by counting how many attacks you & your opponent hit off-pray (ex. used range or melee vs mage pray).",
+	tags = {"pvp", "last man standing", "hybrid", "tribrid", "nh", "no honour", "pking"}
 )
 public class LmsPerformanceTrackerPlugin extends Plugin
 {
@@ -89,12 +85,6 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	@Inject
 	private LmsPerformanceTrackerOverlay overlay;
 
-	// the last time someone in the fight attacked, or when the fight was initiated.
-	private Instant lastFightTime;
-	private Player currentOpponent;
-	private boolean playerAttacking;
-	private boolean opponentAttacking;
-
 	@Getter
 	private FightPerformance currentFight;
 
@@ -122,9 +112,6 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 			clientToolbar.addNavigation(navButton);
 		}
 
-		lastFightTime = Instant.MIN;
-		playerAttacking = false;
-		opponentAttacking = false;
 		overlayManager.add(overlay);
 	}
 
@@ -161,8 +148,8 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 	// Keep track of a player's new target using this event.
 	// It's worth noting that if you aren't in a fight, all player interactions including
-	// trading & following will trigger a new fight and a new opponent. Due to this, set the
-	// lastFightTime in the past to only be 3 seconds after the time NEW_FIGHT_DELAY would trigger
+	// trading & following will trigger a new fight and a new opponent. Due to this, set the lastFightTime
+	// (in FightPerformance) in the past to only be 5 seconds after the time NEW_FIGHT_DELAY would trigger
 	// and unset the opponent, in case the player follows a different player before actually starting
 	// a fight or getting attacked. In other words, remain skeptical of the validity of this event.
 	@Subscribe
@@ -175,10 +162,9 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 		stopFightIfOver();
 
-		// if the event source is null, the client player already has a valid opponent,
-		// or the event source & target aren't players, skip any processing.
-		if (event.getSource() == null ||
-			(hasOpponent() && (currentFight == null || currentFight.fightStarted())) ||
+		// if the client player already has a valid opponent,
+		// or the event source/target aren't players, skip any processing.
+		if ((hasOpponent() && currentFight.fightStarted()) ||
 			!(event.getSource() instanceof Player) || !(event.getTarget() instanceof Player))
 		{
 			return;
@@ -200,9 +186,12 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 			return;
 		}
 
-		currentOpponent = (Player) opponent;
-		currentFight = new FightPerformance(client.getLocalPlayer().getName(), currentOpponent.getName());
-		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 3);
+		// start a new fight with the new found opponent, if a new one.
+		if (!hasOpponent() ||
+			(hasOpponent() && !opponent.getName().equals(currentFight.getOpponent().getName())))
+		{
+			currentFight = new FightPerformance(client.getLocalPlayer(), (Player)opponent);
+		}
 	}
 
 	@Subscribe
@@ -233,113 +222,40 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 		if (hasOpponent())
 		{
-			// if there is an opponent, check both players' animations for attacks.
-			// If they attacked, will also add the attack to the current fight stats,
-			// taking into account the opponent's overhead prayer.
-			checkAnimation(true);
-			checkAnimation(false);
+			{
+				// if there is an opponent, check both players' animations for attacks.
+				// If they attacked, will also add the attack to the current fight stats,
+				// taking into account the opponent's overhead prayer.
+				currentFight.checkForAttackAnimations();
+			}
+
 		}
 	}
 
-	// Will set the currentOpponent to null if the player should no longer have a target:
-	// if either player hasn't fought in NEW_FIGHT_DELAY, or either player died.
-	// Will also add the currentFight to fightHistory if the fight ended.
-	private void stopFightIfOver()
-	{
-		// if either player died, end the fight.
-		if (hasOpponent() && currentOpponent.getAnimation() == AnimationID.DEATH)
-		{
-			currentFight.getOpponent().died();
-			stopCurrentFight();
-		}
-		if (hasOpponent() && client.getLocalPlayer().getAnimation() == AnimationID.DEATH)
-		{
-			currentFight.getPlayer().died();
-			stopCurrentFight();
-		}
-		// If there was no fight actions in the last (NEW_FIGHT_DELAY) seconds, set opponent to
-		// null, which will get set next time the player targets a Player.
-		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
-		{
-			stopCurrentFight();
-		}
-	}
+
 
 	// Returns true if the player has an opponent.
 	private boolean hasOpponent()
 	{
-		return currentOpponent != null;
+		return currentFight != null;
 	}
 
-	// check player's animation, and if they are doing an attack animation, add an attack
-	// to the current fight stats. Check opponent's overhead to see if the attack was "successful".
-	// forPlayer bool: when true, checking animations for the local player. False will check the opponent.
-	private void checkAnimation(boolean forPlayer)
+	private void stopFightIfOver()
 	{
-		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
-		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
-		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
-		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
+		if (hasOpponent() && currentFight.isFightOver())
 		{
-			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
-			playerAttacking = !forPlayer && playerAttacking;
-			opponentAttacking = forPlayer && opponentAttacking;
-			return;
-		}
-
-		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
-		if (forPlayer ? !playerAttacking : !opponentAttacking)
-		{
-			lastFightTime = Instant.now();
-			currentFight.addAttack(player.getName(), opponent.getOverheadIcon() != animationStyle.getProtection());
-
-			// similar shorthand as above, but = true.
-			playerAttacking = forPlayer || playerAttacking;
-			opponentAttacking = !forPlayer || opponentAttacking;
+			stopFight();
 		}
 	}
 
-
-	// OLD GOOD WORKING VERSION
-//	private void checkAnimation(boolean forPlayer)
-//	{
-//		Player player = forPlayer ? client.getLocalPlayer() : currentOpponent;
-//		Player opponent = forPlayer ? currentOpponent : client.getLocalPlayer();
-//		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
-//		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
-//		{
-//			// shorthand for: if (forPlayer) { pAttacking = false } else { oAttacking = false }
-//			playerAttacking = !forPlayer && playerAttacking;
-//			opponentAttacking = forPlayer && opponentAttacking;
-//			return;
-//		}
-//
-//		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
-//		if (forPlayer ? !playerAttacking : !opponentAttacking)
-//		{
-//			lastFightTime = Instant.now();
-//			currentFight.addAttack(player.getName(), opponent.getOverheadIcon() != animationStyle.getProtection());
-//
-//			// similar shorthand as above, but = true.
-//			playerAttacking = forPlayer || playerAttacking;
-//			opponentAttacking = !forPlayer || opponentAttacking;
-//		}
-//	}
-
-
-
-	private void stopCurrentFight()
+	private void stopFight()
 	{
-		// add fight to fight history if not null
-		if (currentFight != null && currentFight.fightStarted())
+		// add fight to fight history if it actually started
+		if (currentFight.fightStarted())
 		{
-			currentFight.endFight();
 			panel.addFight(currentFight);
 		}
-		playerAttacking = false;
-		opponentAttacking = false;
 		currentFight = null;
-		currentOpponent = null;
 	}
 
 	// returns true if player is at the Last Man Standing minigame

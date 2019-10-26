@@ -1,12 +1,36 @@
+/*
+ * Copyright (c) 2019, Matsyir <https://github.com/Matsyir>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.lmsperformancetracker;
 
 import lombok.Getter;
 import net.runelite.api.Player;
 
 @Getter
-//public abstract class Fighter implements Player
 public class Fighter
 {
+	private Player player;
 	private String name; // username
 	private int attackCount; // total number of attacks
 	private int successCount; // total number of successful attacks
@@ -14,19 +38,20 @@ public class Fighter
 	private boolean dead; // will be true if the fighter died in the fight
 	private boolean currentlyAttacking; // will be true if the player is currently doing an attack animation
 
-//	static Fighter createFromPlayer(Player player)
-//	{
-//		Fighter fighter = (Fighter)player;
-//		fighter.attackCount = 0;
-//		fighter.successCount = 0;
-//		fighter.successRate = 0;
-//		fighter.dead = false;
-//		fighter.currentlyAttacking = false;
-//		return fighter;
-//	}
+	public Fighter(Player player)
+	{
+		this.player = player;
+		name = player.getName();
+		attackCount = 0;
+		successCount = 0;
+		successRate = 0;
+		dead = false;
+		currentlyAttacking = false;
+	}
 
 	public Fighter(String name)
 	{
+		player = null;
 		this.name = name;
 		attackCount = 0;
 		successCount = 0;
@@ -60,6 +85,29 @@ public class Fighter
 	public void died()
 	{
 		dead = true;
+	}
+
+	// check the Fighter's current animation, add an attack if applicable, and
+	// compare attack style used with an opponent's overhead style to determine 'success'
+	// returns true if the player started attacking on this check.
+	public boolean checkForAttackAnimation(Player opponent)
+	{
+		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
+		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
+		{
+			currentlyAttacking = false;
+			return false;
+		}
+
+		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
+		if (!currentlyAttacking)
+		{
+			addAttack(opponent.getOverheadIcon() != animationStyle.getProtection());
+			currentlyAttacking = true;
+			return true;
+		}
+
+		return false;
 	}
 
 	// Return a simple string to display the current player's success rate.

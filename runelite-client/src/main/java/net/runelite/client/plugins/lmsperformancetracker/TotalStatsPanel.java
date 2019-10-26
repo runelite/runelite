@@ -40,14 +40,13 @@ public class TotalStatsPanel extends JPanel
 	private JLabel statsLabel;
 	private JLabel killsLabel;
 	private JLabel deathsLabel;
-	//private FightPerformance totalStats;
 	private Fighter totalStats;
 	private int numKills = 0;
 	private int numDeaths = 0;
 
 	TotalStatsPanel()
 	{
-		totalStats = new Fighter("Player"); //new FightPerformance("Player", "");
+		totalStats = new Fighter("Player");
 
 		setLayout(new GridLayout(3, 1));
 		setBorder(new EmptyBorder(8, 8, 8, 8));
