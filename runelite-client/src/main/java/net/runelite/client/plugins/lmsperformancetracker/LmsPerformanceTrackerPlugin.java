@@ -33,6 +33,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -47,7 +48,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import javax.inject.Inject;
-import java.time.Duration;
 
 @PluginDescriptor(
 	name = "LMS Performance Tracker",
@@ -56,10 +56,6 @@ import java.time.Duration;
 )
 public class LmsPerformanceTrackerPlugin extends Plugin
 {
-	// Delay to assume a fight is over. May seem long, but sometimes people barrage &
-	// stand under for a while to eat. Fights will automatically end when either player dies.
-	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
-
 	// Last man standing map regions, including lobby
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13617, 13658, 13659, 13660, 13914, 13915, 13916);
 
@@ -106,7 +102,9 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		if (config.saveFightHistory() && (!config.restrictToLms() || isAtLMS()))
+		// add the panel's nav button depending on config
+		if (config.saveFightHistory() &&
+			(!config.restrictToLms() || (client.getGameState() == GameState.LOGGED_IN && isAtLMS())))
 		{
 			navButtonShown = true;
 			clientToolbar.addNavigation(navButton);
@@ -149,7 +147,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	// Keep track of a player's new target using this event.
 	// It's worth noting that if you aren't in a fight, all player interactions including
 	// trading & following will trigger a new fight and a new opponent. Due to this, set the lastFightTime
-	// (in FightPerformance) in the past to only be 5 seconds after the time NEW_FIGHT_DELAY would trigger
+	// (in FightPerformance) in the past to only be 5 seconds before the time NEW_FIGHT_DELAY would trigger
 	// and unset the opponent, in case the player follows a different player before actually starting
 	// a fight or getting attacked. In other words, remain skeptical of the validity of this event.
 	@Subscribe
@@ -197,24 +195,25 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (isAtLMS())
+		// hide or show panel depending if config is restricted to LMS and if player is at LMS
+		if (config.restrictToLms())
 		{
-			if (!navButtonShown && config.saveFightHistory())
+			if (isAtLMS())
 			{
-				clientToolbar.addNavigation(navButton);
-				navButtonShown = true;
+				if (!navButtonShown && config.saveFightHistory())
+				{
+					clientToolbar.addNavigation(navButton);
+					navButtonShown = true;
+				}
 			}
-		}
-		else
-		{
-			if (config.restrictToLms())
+			else
 			{
 				if (navButtonShown)
 				{
 					clientToolbar.removeNavigation(navButton);
 					navButtonShown = false;
 				}
-				return;
+				return; // skip all processing if not at LMS and restricted to LMS
 			}
 		}
 
@@ -231,8 +230,6 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 		}
 	}
-
-
 
 	// Returns true if the player has an opponent.
 	private boolean hasOpponent()

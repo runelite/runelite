@@ -34,7 +34,7 @@ public interface LmsPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "restrictToLms",
 		name = "Restrict to LMS",
-		description = "Restricts use within the LMS area. WARNING: can be inaccurate outside LMS, as each weapon's combat style has to be manually specified.",
+		description = "Restricts use within the LMS area. WARNING: can be inaccurate outside LMS, as every attack animation's combat style must be manually mapped.",
 		position = 0
 	)
 	default boolean restrictToLms()
@@ -67,7 +67,7 @@ public interface LmsPerformanceTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "useSimpleOverlay",
 		name = "Use Simple Overlay",
-		description = "The overlay will only display percentage as stats rather than the fraction & percentage.",
+		description = "The overlay will only display percentage as stats rather than fraction & percentage.",
 		position = 3
 	)
 	default boolean useSimpleOverlay()

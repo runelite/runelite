@@ -38,6 +38,7 @@ public class Fighter
 	private boolean dead; // will be true if the fighter died in the fight
 	private boolean currentlyAttacking; // will be true if the player is currently doing an attack animation
 
+	// fighter that is bound to a player and gets updated during a fight
 	public Fighter(Player player)
 	{
 		this.player = player;
@@ -49,6 +50,8 @@ public class Fighter
 		currentlyAttacking = false;
 	}
 
+	// create a basic Fighter to only hold stats, for the TotalStatsPanel,
+	// but not actually updated during a fight.
 	public Fighter(String name)
 	{
 		player = null;
@@ -112,7 +115,6 @@ public class Fighter
 
 	// Return a simple string to display the current player's success rate.
 	// ex. "42/59 (71%)". The name is not included as it will be in a separate view.
-	// Would round to 1 decimal space, but the overlay size is restrictive.
 	public String getStatsString()
 	{
 		return successCount + "/" + attackCount + " (" + Math.round(successRate) + "%)";

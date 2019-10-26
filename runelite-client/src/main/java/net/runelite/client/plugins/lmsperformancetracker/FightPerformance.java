@@ -45,14 +45,17 @@ public class FightPerformance
 
 	private Fighter player;
 	private Fighter opponent;
-	private Instant lastFightTime; // Instant of the last fight time & when the fight ends
+	private Instant lastFightTime; // Instant of the last fight time & when the fight ended
 
 	// constructor which initializes a fight from the 2 Players, starting stats at 0.
 	FightPerformance(Player player, Player opponent)
 	{
 		this.player = new Fighter(player);
 		this.opponent = new Fighter(opponent);
-		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 3);
+
+		// this is initialized soon before the NEW_FIGHT_DELAY time because the event we
+		// determine the opponent from is not fully reliable.
+		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 5);
 	}
 
 	public void checkForAttackAnimations()
@@ -98,8 +101,7 @@ public class FightPerformance
 			player.died();
 			isOver = true;
 		}
-		// If there was no fight actions in the last (NEW_FIGHT_DELAY) seconds, set opponent to
-		// null, which will get set next time the player targets a Player.
+		// If there was no fight actions in the last NEW_FIGHT_DELAY seconds
 		if (Duration.between(lastFightTime, Instant.now()).compareTo(NEW_FIGHT_DELAY) > 0)
 		{
 			isOver = true;
