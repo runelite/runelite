@@ -1,6 +1,8 @@
 package net.runelite.client.util;
 
 import java.awt.Polygon;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldType;
@@ -15,6 +17,17 @@ public class MiscUtils
 
 	private static final Polygon abovePoly = new Polygon(abovePointsX, abovePointsY, abovePointsX.length);
 	private static final Polygon belowPoly = new Polygon(belowPointsX, belowPointsY, belowPointsX.length);
+
+	private static final ChronoUnit[] ORDERED_CHRONOS = new ChronoUnit[]
+		{
+			ChronoUnit.YEARS,
+			ChronoUnit.MONTHS,
+			ChronoUnit.WEEKS,
+			ChronoUnit.DAYS,
+			ChronoUnit.HOURS,
+			ChronoUnit.MINUTES,
+			ChronoUnit.SECONDS
+		};
 
 	//test replacement so private for now
 	private static boolean inWildy(WorldPoint point)
@@ -85,5 +98,76 @@ public class MiscUtils
 		return inWildy(localPlayer.getWorldLocation());
 
 		//return getWildernessLevelFrom(client, localPlayer.getWorldLocation()) > 0;
+	}
+
+	public static String formatTimeAgo(Duration dur)
+	{
+		long dA = 0, dB = 0, rm;
+		ChronoUnit cA = null, cB = null;
+		for (int i = 0; i < ORDERED_CHRONOS.length; i++)
+		{
+			cA = ORDERED_CHRONOS[i];
+			dA = dur.getSeconds() / cA.getDuration().getSeconds();
+			rm = dur.getSeconds() % cA.getDuration().getSeconds();
+			if (dA <= 0)
+			{
+				cA = null;
+				continue;
+			}
+
+			if (i + 1 < ORDERED_CHRONOS.length)
+			{
+				cB = ORDERED_CHRONOS[i + 1];
+				dB = rm / cB.getDuration().getSeconds();
+
+				if (dB <= 0)
+				{
+					cB = null;
+				}
+			}
+
+			break;
+		}
+
+		if (cA == null)
+		{
+			return "just now.";
+		}
+
+		String str = formatUnit(cA, dA);
+
+		if (cB != null)
+		{
+			str += " and " + formatUnit(cB, dB);
+		}
+
+		return str + " ago.";
+	}
+
+	private static String formatUnit(ChronoUnit chrono, long val)
+	{
+		boolean multiple = val != 1;
+		String str;
+		if (multiple)
+		{
+			str = val + " ";
+		}
+		else
+		{
+			str = "a" + (chrono == ChronoUnit.HOURS ? "n " : " ");
+		}
+		str += chrono.name().toLowerCase();
+		if (!multiple)
+		{
+			if (str.charAt(str.length() - 1) == 's')
+			{
+				str = str.substring(0, str.length() - 1);
+			}
+		}
+		else if (str.charAt(str.length() - 1) != 's')
+		{
+			str += "s";
+		}
+		return str;
 	}
 }
