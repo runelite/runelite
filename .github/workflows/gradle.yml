@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Update Gradle Wrapper
@@ -28,17 +28,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-    - name: Update Gradle dependencies
-      run: ./gradlew useLatestVersions --console=plain
-    - name: Create Gradle dependencies update Pull Request
-      uses: Owain94/create-pull-request@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
-        PULL_REQUEST_BRANCH: GRADLE-DEPENDENCY-UPDATE
-        PULL_REQUEST_TITLE: 'project: Update gradle dependencies'
-        PULL_REQUEST_BODY: This is an auto-generated PR with an updated gradle dependencies versions
-        COMMIT_MESSAGE: 'project: Update gradle dependencies'
-        PULL_REQUEST_LABELS: automated pull request, gradle
+      - uses: actions/checkout@v1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Update Gradle dependencies
+        run: ./gradlew useLatestVersions --console=plain
+      - name: Create Gradle dependencies update Pull Request
+        uses: Owain94/create-pull-request@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.OpenOSRS }}
+          PULL_REQUEST_BRANCH: GRADLE-DEPENDENCY-UPDATE
+          PULL_REQUEST_TITLE: 'project: Update gradle dependencies'
+          PULL_REQUEST_BODY: This is an auto-generated PR with an updated gradle dependencies versions
+          COMMIT_MESSAGE: 'project: Update gradle dependencies'
+          PULL_REQUEST_LABELS: automated pull request, gradle
