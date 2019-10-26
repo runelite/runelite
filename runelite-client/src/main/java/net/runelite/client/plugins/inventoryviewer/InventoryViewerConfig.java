@@ -40,4 +40,14 @@ public interface InventoryViewerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showFreeSlots",
+		name = "Show Free Slots",
+		description = "Whether to show a label with the free slots in the inventory"
+	)
+	default boolean showFreeSlots()
+	{
+		return false;
+	}
 }

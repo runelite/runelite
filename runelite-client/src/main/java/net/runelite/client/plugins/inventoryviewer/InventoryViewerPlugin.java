@@ -26,7 +26,10 @@ package net.runelite.client.plugins.inventoryviewer;
 
 import javax.inject.Inject;
 import com.google.inject.Provides;
+import net.runelite.api.InventoryID;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -61,5 +64,16 @@ public class InventoryViewerPlugin extends Plugin
 	public void shutDown()
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		{
+			return;
+		}
+		overlay.setGroupedItems(null);
+		overlay.setRemainingSpaces(-1);
 	}
 }

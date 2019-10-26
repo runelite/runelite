@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,7 @@ package net.runelite.client.plugins.inventoryviewer;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -34,6 +36,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
@@ -45,13 +49,18 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class InventoryViewerOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
+	private static final int INVENTORY_WIDTH = 4;
+	private static final Point SPRITE_PADDING = new Point(6, 4);
+	private static final int WRAPPER_MINIMUM_WIDTH = Constants.ITEM_SPRITE_WIDTH + SPRITE_PADDING.x * 2;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
 		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
@@ -59,7 +68,15 @@ class InventoryViewerOverlay extends Overlay
 	private final ItemManager itemManager;
 	private final InventoryViewerConfig config;
 
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final PanelComponent wrapperComponent = new PanelComponent();
+	private final PanelComponent inventoryComponent = new PanelComponent();
+	private final TitleComponent freeSlotsComponent = TitleComponent.builder().build();
+
+	@Setter(AccessLevel.PACKAGE)
+	private Map<Integer, Integer> groupedItems = null;
+
+	@Setter(AccessLevel.PACKAGE)
+	private int remainingSpaces = -1;
 
 	private ImageComponent inventoryIconSprite;
 
@@ -67,9 +84,24 @@ class InventoryViewerOverlay extends Overlay
 	private InventoryViewerOverlay(Client client, ItemManager itemManager, SpriteManager spriteManager, InventoryViewerConfig config)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setWrapping(4);
-		panelComponent.setGap(new Point(6, 4));
-		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+		inventoryComponent.setWrapping(INVENTORY_WIDTH);
+		inventoryComponent.setGap(SPRITE_PADDING);
+		inventoryComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+		inventoryComponent.setBackgroundColor(null);
+		inventoryComponent.setBorder(new Rectangle(
+			ComponentConstants.STANDARD_BORDER,
+			0,
+			0,
+			ComponentConstants.STANDARD_BORDER));
+
+		wrapperComponent.setOrientation(ComponentOrientation.VERTICAL);
+		wrapperComponent.setWrapping(2);
+		wrapperComponent.setBorder(new Rectangle(
+			ComponentConstants.STANDARD_BORDER,
+			ComponentConstants.STANDARD_BORDER,
+			ComponentConstants.STANDARD_BORDER,
+			ComponentConstants.STANDARD_BORDER));
+
 		this.itemManager = itemManager;
 		this.client = client;
 		this.config = config;
@@ -92,61 +124,100 @@ class InventoryViewerOverlay extends Overlay
 	{
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
+		final Item[] items;
 		if (itemContainer == null)
 		{
-			return null;
+			items = new Item[0];
+		}
+		else
+		{
+			items = itemContainer.getItems();
 		}
 
-		panelComponent.getChildren().clear();
-
-		final Item[] items = itemContainer.getItems();
+		inventoryComponent.getChildren().clear();
+		wrapperComponent.getChildren().clear();
+		int wrapperWidth;
 
 		if (config.groupItems())
 		{
-			// Store in a LinkedHashMap to preserve inventory ordering
-			final Map<Integer, Integer> totals = Arrays.stream(items)
-				.filter(p -> p.getId() != -1)
-				.collect(groupingBy(Item::getId, LinkedHashMap::new, summingInt(Item::getQuantity)));
+			if (groupedItems == null)
+			{
+				// Store in a LinkedHashMap to preserve inventory ordering
+				groupedItems = Arrays.stream(items)
+					.filter(p -> p.getId() != -1)
+					.collect(groupingBy(Item::getId, LinkedHashMap::new, summingInt(Item::getQuantity)));
+			}
 
-			for (Map.Entry<Integer, Integer> cursor : totals.entrySet())
+			for (Map.Entry<Integer, Integer> cursor : groupedItems.entrySet())
 			{
 				final BufferedImage image = itemManager.getImage(cursor.getKey(), cursor.getValue(), true);
 				if (image != null)
 				{
-					panelComponent.getChildren().add(new ImageComponent(image));
+					inventoryComponent.getChildren().add(new ImageComponent(image));
 				}
 			}
 
 			// Add a placeholder if the inventory is empty, so the overlay can still be easily seen
-			if (totals.entrySet().size() == 0)
+			if (groupedItems.entrySet().size() == 0)
 			{
-				panelComponent.getChildren().add(inventoryIconSprite);
+				inventoryComponent.getChildren().add(inventoryIconSprite);
+				wrapperWidth = WRAPPER_MINIMUM_WIDTH;
 			}
-
-			return panelComponent.render(graphics);
-		}
-
-		for (int i = 0; i < INVENTORY_SIZE; i++)
-		{
-			if (i < items.length)
+			else
 			{
-				final Item item = items[i];
-				if (item.getQuantity() > 0)
+				final int widthItems = Math.min(INVENTORY_WIDTH, groupedItems.entrySet().size());
+				wrapperWidth = widthItems * Constants.ITEM_SPRITE_WIDTH + (widthItems + 1) * SPRITE_PADDING.x;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < INVENTORY_SIZE; i++)
+			{
+				if (i < items.length)
 				{
-					final BufferedImage image = getImage(item);
-					if (image != null)
+					final Item item = items[i];
+					if (item.getQuantity() > 0)
 					{
-						panelComponent.getChildren().add(new ImageComponent(image));
-						continue;
+						final BufferedImage image = getImage(item);
+						if (image != null)
+						{
+							inventoryComponent.getChildren().add(new ImageComponent(image));
+							continue;
+						}
 					}
 				}
-			}
 
-			// put a placeholder image so each item is aligned properly and the panel is not resized
-			panelComponent.getChildren().add(PLACEHOLDER_IMAGE);
+				// put a placeholder image so each item is aligned properly and the panel is not resized
+				inventoryComponent.getChildren().add(PLACEHOLDER_IMAGE);
+			}
+			
+			wrapperWidth = INVENTORY_WIDTH * Constants.ITEM_SPRITE_WIDTH + (INVENTORY_WIDTH - 1) * SPRITE_PADDING.x;
 		}
 
-		return panelComponent.render(graphics);
+		// If the inventoryComponent is empty, the overlay NPEs during rendering
+		if (!inventoryComponent.getChildren().isEmpty())
+		{
+			wrapperComponent.getChildren().add(inventoryComponent);
+		}
+
+		if (config.showFreeSlots())
+		{
+			if (remainingSpaces == -1)
+			{
+				remainingSpaces = INVENTORY_SIZE - (int) Arrays.stream(items)
+					.filter(p -> p.getId() != -1)
+					.count();
+			}
+
+			// Set the width of the wrapper so the free slots component will have the correct alignment
+			wrapperComponent.setPreferredSize(new Dimension(Math.max(wrapperWidth, WRAPPER_MINIMUM_WIDTH), 0));
+
+			freeSlotsComponent.setText(remainingSpaces + " free");
+			wrapperComponent.getChildren().add(freeSlotsComponent);
+
+		}
+
+		return wrapperComponent.render(graphics);
 	}
 
 	private BufferedImage getImage(Item item)
