@@ -246,8 +246,8 @@ public class DriftNetPlugin extends Plugin
 		for (NPC fish : fishes.keySet())
 		{
 			if (fish != null
-			&&	client.getLocalPlayer().getWorldLocation().getPlane() == fish.getWorldLocation().getPlane()
-			&&	supNorm(client.getLocalPlayer().getWorldLocation(),fish.getWorldLocation()) < 25)
+				&& client.getLocalPlayer().getWorldLocation().getPlane() == fish.getWorldLocation().getPlane()
+				&& supNorm(client.getLocalPlayer().getWorldLocation(), fish.getWorldLocation()) < 25)
 			{
 				return true;
 			}
