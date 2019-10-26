@@ -55,39 +55,42 @@ public class InfoBoxOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent.getChildren().clear();
-		if (config.infoBox())
+		if (!config.infoBox() || !plugin.isInDriftNetArea())
 		{
-			DriftNet[] nets = {plugin.northNet, plugin.southNet};
-			for (int i = 0; i < nets.length; i++)
-			{
-				DriftNet net = nets[i];
-				String text1 = (i == 0) ? "North Net:" : "South Net:";
-				String text2 = "";
-				switch (net.getNetStatus())
-				{
-					case FULL:
-						text2 = "FULL";
-						break;
-					case SET:
-						text2 = "SET";
-						break;
-					case UNSET:
-						text2 = "UNSET";
-						break;
-					default:
-						break;
-				}
-				Color color = DriftNetOverlay.getColor(net);
-				if (color != null)
-				{
-					panelComponent.getChildren().add(LineComponent.builder().rightColor(color).preferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH - 15, 0))
-						.left(text1)
-						.right(text2)
-						.build());
-				}
-			}
-			panelComponent.render(graphics);
+			return null;
 		}
+		DriftNet[] nets = {plugin.northNet, plugin.southNet};
+		for (int i = 0; i < nets.length; i++)
+		{
+			DriftNet net = nets[i];
+			String text1 = (i == 0) ? "North Net:" : "South Net:";
+			String text2 = "";
+			switch (net.getNetStatus())
+			{
+				case FULL:
+					text2 = "FULL";
+					break;
+				case SET:
+					text2 = "SET";
+					break;
+				case UNSET:
+					text2 = "UNSET";
+					break;
+				default:
+					break;
+			}
+			Color color = DriftNetOverlay.getColor(net);
+			if (color != null)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.rightColor(color)
+					.preferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH - 15, 0))
+					.left(text1)
+					.right(text2)
+					.build());
+			}
+		}
+		panelComponent.render(graphics);
 		return null;
 	}
 }

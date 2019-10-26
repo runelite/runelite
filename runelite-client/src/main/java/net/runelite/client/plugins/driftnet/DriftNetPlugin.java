@@ -26,9 +26,24 @@
 package net.runelite.client.plugins.driftnet;
 
 import com.google.inject.Provides;
+import static java.lang.Math.abs;
 import lombok.Getter;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -43,7 +58,6 @@ import java.util.HashSet;
 	description = "Provides various overlays to assist with underwater driftnet fishing.",
 	tags = {"overlay", "fishing"}
 )
-
 public class DriftNetPlugin extends Plugin
 {
 	private final int NORTH_NET_ID = 31433;
@@ -90,6 +104,18 @@ public class DriftNetPlugin extends Plugin
 		overlayManager.remove(infoBoxOverlay);
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			northNet = new DriftNet();
+			southNet = new DriftNet();
+			interacting = null;
+			fishes.clear();
+		}
+	}
+
 	@Provides
 	DriftNetConfig provideConfig(ConfigManager configManager)
 	{
@@ -100,7 +126,6 @@ public class DriftNetPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		//ObjectComposition objectComposition = client.getObjectDefinition(gameObject.getId());
 		if (event.getGameObject().getId() == SOUTH_NET_ID)
 		{
 			southNet.setDriftNet(gameObject);
@@ -123,22 +148,19 @@ public class DriftNetPlugin extends Plugin
 		{
 			net = northNet;
 		}
-		if (net != null)
+		if (net != null && event.getOption() != null)
 		{
-			if (event.getOption() != null)
+			if (event.getTarget().toLowerCase().contains("(full)"))
 			{
-				if (event.getTarget().toLowerCase().contains("(full)"))
-				{
-					net.setNetStatus(DriftNet.DriftNetStatus.FULL);
-				}
-				else if (event.getOption().toLowerCase().contains("set"))
-				{
-					net.setNetStatus(DriftNet.DriftNetStatus.UNSET);
-				}
-				else
-				{
-					net.setNetStatus(DriftNet.DriftNetStatus.SET);
-				}
+				net.setNetStatus(DriftNet.DriftNetStatus.FULL);
+			}
+			else if (event.getOption().toLowerCase().contains("set"))
+			{
+				net.setNetStatus(DriftNet.DriftNetStatus.UNSET);
+			}
+			else
+			{
+				net.setNetStatus(DriftNet.DriftNetStatus.SET);
 			}
 		}
 	}
@@ -179,17 +201,12 @@ public class DriftNetPlugin extends Plugin
 	@Subscribe
 	public void onInteractingChanged(InteractingChanged event)
 	{
-		if (event.getSource() == client.getLocalPlayer())
+		if (event.getSource() == client.getLocalPlayer()
+			&& event.getTarget() instanceof NPC
+			&& ((NPC) event.getTarget()).getId() == NpcID.FISH_SHOAL)
 		{
-			if (event.getTarget() instanceof NPC)
-			{
-				if (((NPC) event.getTarget()).getId() == NpcID.FISH_SHOAL)
-				{
-					interacting = (NPC) event.getTarget();
-				}
-			}
+			interacting = (NPC) event.getTarget();
 		}
-
 	}
 
 	@Subscribe
@@ -197,12 +214,10 @@ public class DriftNetPlugin extends Plugin
 	{
 		for (NPC fish : fishes.keySet())
 		{
-			if (fishes.get(fish) > 0)
+			if (fishes.get(fish) > 0
+				&& System.currentTimeMillis() - fishes.get(fish) > 1000 * config.highlightDuration())
 			{
-				if (System.currentTimeMillis() - fishes.get(fish) > 1000 * config.highlightDuration())
-				{
-					fishes.put(fish, -1L);
-				}
+				fishes.put(fish, -1L);
 			}
 		}
 	}
@@ -218,6 +233,24 @@ public class DriftNetPlugin extends Plugin
 		{
 			fishes.put(interacting, System.currentTimeMillis());
 		}
+	}
+
+	private int supNorm(WorldPoint w1, WorldPoint w2)
+	{
+		int x = abs(w1.getX() - w2.getX());
+		int y = abs(w1.getY() - w2.getY());
+		return Math.max(x, y);
+	}
+
+	boolean isInDriftNetArea()
+	{
+		if ((northNet.getDriftNet() != null && southNet.getDriftNet() != null)
+			&& (northNet.getDriftNet().getWorldLocation().getPlane() == client.getLocalPlayer().getWorldLocation().getPlane())
+			&& (supNorm(northNet.getDriftNet().getWorldLocation(), client.getLocalPlayer().getWorldLocation()) < 25))
+		{
+			return true;
+		}
+		return false;
 	}
 
 }
