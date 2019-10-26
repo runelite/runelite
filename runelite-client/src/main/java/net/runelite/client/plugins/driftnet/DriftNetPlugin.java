@@ -243,11 +243,14 @@ public class DriftNetPlugin extends Plugin
 
 	boolean isInDriftNetArea()
 	{
-		if ((northNet.getDriftNet() != null && southNet.getDriftNet() != null)
-			&& (northNet.getDriftNet().getWorldLocation().getPlane() == client.getLocalPlayer().getWorldLocation().getPlane())
-			&& (supNorm(northNet.getDriftNet().getWorldLocation(), client.getLocalPlayer().getWorldLocation()) < 25))
+		for (NPC fish : fishes.keySet())
 		{
-			return true;
+			if (fish != null
+			&&	client.getLocalPlayer().getWorldLocation().getPlane() == fish.getWorldLocation().getPlane()
+			&&	supNorm(client.getLocalPlayer().getWorldLocation(),fish.getWorldLocation()) < 25)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
