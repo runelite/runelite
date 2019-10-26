@@ -56,11 +56,14 @@ public class DriftNetOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.netOverlay() && plugin.isInDriftNetArea())
+		if (!plugin.isInDriftNetArea()){
+			return null;
+		}
+		if (config.netOverlay())
 		{
 			renderNet(graphics);
 		}
-		if (config.highlightFish() && plugin.isInDriftNetArea())
+		if (config.highlightFish())
 		{
 			renderFishes(graphics);
 		}
