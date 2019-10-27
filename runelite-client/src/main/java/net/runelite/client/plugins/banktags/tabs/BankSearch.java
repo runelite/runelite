@@ -34,6 +34,7 @@ import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class BankSearch
 {
@@ -78,6 +79,33 @@ public class BankSearch
 			client.setVar(VarClientStr.INPUT_TEXT, search);
 
 			client.runScript(scriptArgs);
+		});
+	}
+
+	public void initSearch()
+	{
+		clientThread.invoke(() ->
+		{
+			Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			if (bankContainer == null || bankContainer.isHidden())
+			{
+				return;
+			}
+
+			Object[] bankBuildArgs = bankContainer.getOnInvTransmitListener();
+
+			if (bankBuildArgs == null)
+			{
+				return;
+			}
+
+			// the search toggle script requires 1 as its first argument
+			Object[] searchToggleArgs = ArrayUtils.insert(1, bankBuildArgs, 1);
+			searchToggleArgs[0] = ScriptID.BANKMAIN_SEARCH_TOGGLE;
+
+			// reset search to clear tab tags and also allow us to initiate a new search while searching
+			reset(true);
+			client.runScript(searchToggleArgs);
 		});
 	}
 

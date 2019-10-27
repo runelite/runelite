@@ -31,6 +31,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +59,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
@@ -68,7 +71,7 @@ import net.runelite.client.util.QuantityFormatter;
 	description = "Modifications to the banking interface",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
 )
-public class BankPlugin extends Plugin
+public class BankPlugin extends Plugin implements KeyListener
 {
 	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
 		Varbits.BANK_TAB_ONE_COUNT,
@@ -113,6 +116,9 @@ public class BankPlugin extends Plugin
 	@Inject
 	private ContainerCalculation seedVaultCalculation;
 
+	@Inject
+	private KeyManager keyManager;
+
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 
@@ -123,8 +129,15 @@ public class BankPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		keyManager.registerKeyListener(this);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		keyManager.unregisterKeyListener(this);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
@@ -429,5 +442,31 @@ public class BankPlugin extends Plugin
 			}
 		}
 		return set;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_F)
+		{
+			Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			if (bankContainer == null || bankContainer.isHidden())
+			{
+				return;
+			}
+
+			bankSearch.initSearch();
+			e.consume();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
 	}
 }
