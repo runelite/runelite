@@ -51,6 +51,7 @@ import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,11 +67,12 @@ public class ConfigService
 
 	@Autowired
 	public ConfigService(
-		MongoClient mongoClient
+		MongoClient mongoClient,
+		@Value("${mongo.database}") String databaseName
 	)
 	{
 
-		MongoDatabase database = mongoClient.getDatabase("config");
+		MongoDatabase database = mongoClient.getDatabase(databaseName);
 		MongoCollection<Document> collection = database.getCollection("config");
 		this.mongoCollection = collection;
 
