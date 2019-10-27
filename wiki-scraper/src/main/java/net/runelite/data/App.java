@@ -45,7 +45,28 @@ public class App
 
 	private final static MediaWiki wiki = new MediaWiki("https://oldschool.runescape.wiki");
 
-	public static Store cacheStore() throws IOException
+	public static void main(String[] args) throws IOException
+	{
+		if (args.length < 2)
+		{
+			System.exit(-1);
+		}
+
+		switch (args[0])
+		{
+			case "npcStats":
+				npcStats(new File(args[1]));
+				break;
+			case "itemStats":
+				itemStats(new File(args[1]));
+				break;
+			case "itemLimits":
+				itemLimits(new File(args[1]));
+				break;
+		}
+	}
+
+	private static Store cacheStore() throws IOException
 	{
 		Path path = Paths.get(System.getProperty("user.home"), "jagexcache" + File.separator + "oldschool" + File.separator + "LIVE");
 		final File jagexcache = new File(String.valueOf(path));
@@ -65,17 +86,17 @@ public class App
 		return cacheStore;
 	}
 
-	public static void npcStats(File path) throws IOException
+	private static void npcStats(File path) throws IOException
 	{
 		NpcStatsDumper.dump(cacheStore(), wiki, path);
 	}
 
-	public static void itemStats(File path) throws IOException
+	private static void itemStats(File path) throws IOException
 	{
 		ItemStatsDumper.dump(cacheStore(), wiki, path);
 	}
 
-	public static void itemLimits(File path) throws IOException
+	private static void itemLimits(File path) throws IOException
 	{
 		ItemLimitsDumper.dump(cacheStore(), wiki, path);
 	}
