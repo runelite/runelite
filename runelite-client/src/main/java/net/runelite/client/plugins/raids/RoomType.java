@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,37 +25,56 @@
  */
 package net.runelite.client.plugins.raids;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
-enum RaidRoom
+enum RoomType
 {
-	START("Start", RoomType.START),
-	END("End", RoomType.END),
-	SCAVENGERS("Scavengers", RoomType.SCAVENGERS),
-	FARMING("Farming", RoomType.FARMING),
-	EMPTY("Empty", RoomType.EMPTY),
-
-	TEKTON("Tekton", RoomType.COMBAT),
-	MUTTADILES("Muttadiles", RoomType.COMBAT),
-	GUARDIANS("Guardians", RoomType.COMBAT),
-	VESPULA("Vespula", RoomType.COMBAT),
-	SHAMANS("Shamans", RoomType.COMBAT),
-	VASA("Vasa", RoomType.COMBAT),
-	VANGUARDS("Vanguards", RoomType.COMBAT),
-	MYSTICS("Mystics", RoomType.COMBAT),
-	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
-
-	CRABS("Crabs", RoomType.PUZZLE),
-	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
-	TIGHTROPE("Tightrope", RoomType.PUZZLE),
-	THIEVING("Thieving", RoomType.PUZZLE),
-	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
-
-	static final int ROOM_MAX_SIZE = 32;
+	START("Start", '#'),
+	END("End", '¤'),
+	SCAVENGERS("Scavengers", 'S'),
+	FARMING("Farming", 'F'),
+	EMPTY("Empty", ' '),
+	COMBAT("Combat", 'C'),
+	PUZZLE("Puzzle", 'P');
 
 	private final String name;
-	private final RoomType type;
+	private final char code;
+
+	RaidRoom getUnsolvedRoom()
+	{
+		switch (this)
+		{
+			case START:
+				return RaidRoom.START;
+			case END:
+				return RaidRoom.END;
+			case SCAVENGERS:
+				return RaidRoom.SCAVENGERS;
+			case FARMING:
+				return RaidRoom.FARMING;
+			case COMBAT:
+				return RaidRoom.UNKNOWN_COMBAT;
+			case PUZZLE:
+				return RaidRoom.UNKNOWN_PUZZLE;
+			case EMPTY:
+			default:
+				return RaidRoom.EMPTY;
+		}
+	}
+
+	static RoomType fromCode(char code)
+	{
+		for (RoomType type : values())
+		{
+			if (type.getCode() == code)
+			{
+				return type;
+			}
+		}
+
+		return EMPTY;
+	}
 }
