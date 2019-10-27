@@ -32,6 +32,7 @@ redis:
 
 mongo:
   jndiName: java:comp/env/mongodb/runelite
+  database: runelite
 
 # Twitter client for feed
 runelite:

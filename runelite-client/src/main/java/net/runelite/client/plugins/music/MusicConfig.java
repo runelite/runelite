@@ -32,6 +32,16 @@ import net.runelite.client.config.ConfigItem;
 public interface MusicConfig extends Config
 {
 	@ConfigItem(
+		keyName = "muteOtherAreaSounds",
+		name = "Mute others' area sounds",
+		description = "Mute area sounds caused from other players"
+	)
+	default boolean muteOtherAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "musicVolume",
 		name = "",
 		description = "",
@@ -60,6 +70,7 @@ public interface MusicConfig extends Config
 	{
 		return 0;
 	}
+
 	@ConfigItem(
 		keyName = "soundEffectVolume",
 		name = "",
