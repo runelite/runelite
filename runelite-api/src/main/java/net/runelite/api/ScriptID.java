@@ -299,4 +299,18 @@ public final class ScriptID
 
 	@ScriptArguments()
 	public static final int BANKMAIN_SEARCHING = 514;
+
+	/**
+	 * Toggles the bank search
+	 *
+	 * <ul>
+	 * <li>int 1 (must be 1 or script immediately returns)</li>
+	 * </ul>
+	 *
+	 * Also takes 17 widget IDs corresponding to various bank widgets.
+	 * These can be retrieved from the onInvTransmitListener of BANK_ITEM_CONTAINER. Note that this array also
+	 * contains the script ID for the bank layout script in the first index
+	 */
+	@ScriptArguments(integer = 18)
+	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
 }
