@@ -33,7 +33,7 @@ import lombok.AllArgsConstructor;
 import java.awt.Color;
 
 @Getter
-@EqualsAndHashCode(exclude = { "color" })
+@EqualsAndHashCode(exclude = {"color"})
 @AllArgsConstructor
 class ObjectPoint
 {
@@ -42,5 +42,6 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
-	@Setter(AccessLevel.PACKAGE) private Color color;
+	@Setter(AccessLevel.PACKAGE)
+	private Color color;
 }

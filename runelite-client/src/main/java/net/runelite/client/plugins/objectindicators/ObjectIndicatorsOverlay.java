@@ -42,6 +42,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
+
 class ObjectIndicatorsOverlay extends Overlay
 {
 	private final Client client;
@@ -71,49 +72,42 @@ class ObjectIndicatorsOverlay extends Overlay
 				continue;
 			}
 
-			if (config.clickBox())
+			final Shape polygon;
+			Shape polygon2 = null;
+
+			if (object instanceof GameObject)
 			{
-				OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), color, color, color);
+				polygon = ((GameObject) object).getConvexHull();
+			}
+			else if (object instanceof WallObject)
+			{
+				polygon = ((WallObject) object).getConvexHull();
+				polygon2 = ((WallObject) object).getConvexHull2();
+			}
+			else if (object instanceof DecorativeObject)
+			{
+				polygon = ((DecorativeObject) object).getConvexHull();
+				polygon2 = ((DecorativeObject) object).getConvexHull2();
+			}
+			else if (object instanceof GroundObject)
+			{
+				polygon = ((GroundObject) object).getConvexHull();
 			}
 			else
 			{
-				final Shape polygon;
-				Shape polygon2 = null;
-
-				if (object instanceof GameObject)
-				{
-					polygon = ((GameObject) object).getConvexHull();
-				}
-				else if (object instanceof WallObject)
-				{
-					polygon = ((WallObject) object).getConvexHull();
-					polygon2 = ((WallObject) object).getConvexHull2();
-				}
-				else if (object instanceof DecorativeObject)
-				{
-					polygon = ((DecorativeObject) object).getConvexHull();
-					polygon2 = ((DecorativeObject) object).getConvexHull2();
-				}
-				else if (object instanceof GroundObject)
-				{
-					polygon = ((GroundObject) object).getConvexHull();
-				}
-				else
-				{
-					polygon = object.getCanvasTilePoly();
-				}
-
-				if (polygon != null )
-				{
-					OverlayUtil.renderPolygon(graphics, polygon, color);
-				}
-
-				if (polygon2 != null)
-				{
-					OverlayUtil.renderPolygon(graphics, polygon2, color);
-				}
-
+				polygon = object.getCanvasTilePoly();
 			}
+
+			if (polygon != null)
+			{
+				OverlayUtil.renderPolygon(graphics, polygon, color);
+			}
+
+			if (polygon2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics, polygon2, color);
+			}
+
 		}
 		return null;
 	}

@@ -29,10 +29,8 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,10 +42,8 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.REGION_SIZE;
-
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -105,8 +101,10 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private Client client;
 
 	@Inject
-	@Getter(AccessLevel.PACKAGE)
 	private ConfigManager configManager;
+
+	@Inject
+	private ObjectIndicatorsConfig config;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -332,7 +330,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
 				// Transform object to get the name which matches against what we've stored
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
@@ -428,7 +426,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			worldPoint.getX() & (REGION_SIZE - 1),
 			worldPoint.getY() & (REGION_SIZE - 1),
 			client.getPlane(),
-			provideConfig(configManager).markerColor());
+			config.markerColor());
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
@@ -484,7 +482,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			{
 				if (Objects.isNull(point.getColor()))
 				{
-					point.setColor(provideConfig(configManager).markerColor());
+					point.setColor(config.markerColor());
 				}
 				return point;
 			})
