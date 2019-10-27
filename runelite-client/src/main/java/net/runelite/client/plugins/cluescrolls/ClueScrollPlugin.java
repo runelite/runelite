@@ -850,4 +850,8 @@ public class ClueScrollPlugin extends Plugin
 		}
 		return worldPoint;
 	}
+
+	public boolean hasFairyRingOverlay() {
+		return this.config.displayFairyRing();
+	}
 }
