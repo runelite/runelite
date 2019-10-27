@@ -458,6 +458,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("enchant", option, target, index);
 			}
+
+			if (config.swapStartMinigame())
+			{
+				swap("start-minigame", option, target, index);
+			}
+		}
+		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
+		{
+			swap("quick-leave", option, target, index);
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
