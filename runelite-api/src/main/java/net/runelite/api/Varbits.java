@@ -279,7 +279,7 @@ public enum Varbits
 	TITHE_FARM_SACK_AMOUNT(4900),
 	TITHE_FARM_SACK_ICON(5370),
 	TITHE_FARM_POINTS(4893),
-	
+
 	/**
 	 * Blast Mine
 	 */
@@ -387,7 +387,7 @@ public enum Varbits
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
- 	*/
+	*/
 	DAILY_BONEMEAL_STATE(4543),
 
 	DAILY_DYNAMITE_COLLECTED(7939),
@@ -447,7 +447,7 @@ public enum Varbits
 	 * The varbit that stores the oxygen percentage for player
 	 */
 	OXYGEN_LEVEL(5811),
-	
+
 	/**
 	 * Corp beast damage
 	 */
@@ -507,7 +507,13 @@ public enum Varbits
 	EXPLORER_RING_ALCHS(4554),
 	EXPLORER_RING_RUNENERGY(4553),
 
-	WINTERTODT_TIMER(7980);
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * Zeah Dense Runestones
+	 */
+	DENSE_RUNESTONE_NORTH_DEPLETED(4927),
+	DENSE_RUNESTONE_SOUTH_DEPLETED(4928);
 
 	/**
 	 * The raw varbit ID.
