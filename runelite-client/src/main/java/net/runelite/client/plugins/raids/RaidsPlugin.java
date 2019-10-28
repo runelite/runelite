@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
@@ -53,11 +57,13 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -67,9 +73,12 @@ import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import static net.runelite.client.util.Text.sanitize;
 import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.chat.ChatClient;
+import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
@@ -87,6 +96,7 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final String LAYOUT_COMMAND = "!layout";
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -120,6 +130,15 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private WSClient ws;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ChatClient chatClient;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -159,11 +178,13 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
 		overlayManager.remove(overlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
@@ -582,5 +603,88 @@ public class RaidsPlugin extends Plugin
 			default:
 				return RaidRoom.EMPTY;
 		}
+	}
+
+	private void lookupRaid(ChatMessage chatMessage, String s)
+	{
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(chatMessage.getName());
+		}
+
+		LayoutRoom[] layout;
+		try
+		{
+			layout = chatClient.getLayout(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup layout", ex);
+			return;
+		}
+
+		if (layout == null || layout.length == 0)
+		{
+			return;
+		}
+
+		String layoutMessage = Joiner.on(", ").join(Arrays.stream(layout)
+			.map(l -> RaidRoom.valueOf(l.name()))
+			.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
+			.map(RaidRoom::getName)
+			.toArray());
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(layoutMessage)
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean submitRaid(ChatInput chatInput, String s)
+	{
+		if (raid == null)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+		RaidRoom[] rooms = raid.getRooms();
+
+		LayoutRoom[] layoutRooms = Arrays.stream(rooms)
+			.map(room -> LayoutRoom.valueOf(room.name()))
+			.toArray(LayoutRoom[]::new);
+
+		scheduledExecutorService.execute(() ->
+		{
+			try
+			{
+				chatClient.submitLayout(playerName, layoutRooms);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit layout", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 }
