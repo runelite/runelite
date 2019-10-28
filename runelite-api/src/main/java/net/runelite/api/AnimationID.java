@@ -98,6 +98,15 @@ public final class AnimationID
 	public static final int FISHING_DRAGON_HARPOON = 7401;
 	public static final int FISHING_INFERNAL_HARPOON = 7402;
 	public static final int FISHING_CRYSTAL_HARPOON = 8336;
+	public static final int CRYSTALLINE_RAT_DEATH = 8334;
+	public static final int CRYSTALLINE_BAT_DEATH = 4917;
+	public static final int CRYSTALLINE_WOLF_DEATH = 8335;
+	public static final int CRYSTALLINE_SPIDER_DEATH = 8338;
+	public static final int CRYSTALLINE_UNICORN_DEATH = 6377;
+	public static final int CRYSTALLINE_DRAGON_DEATH = 92;
+	public static final int CRYSTALLINE_BEAR_DEATH = 4929;
+	public static final int CRYSTALLINE_DARK_BEAST_DEATH = 2733;
+	public static final int CORRUPTED_SCORPION_DEATH = 6256;
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
