@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+description = "RuneLite Mixins"
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+dependencies {
+    compileOnly(Libraries.guava)
+    compileOnly(Libraries.javaxInject)
+    compileOnly(Libraries.slf4jApi)
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+    implementation(project(":runescape-api"))
+}
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
-
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(arrayOf("-source", "7", "-Xlint:-unchecked"))
 }

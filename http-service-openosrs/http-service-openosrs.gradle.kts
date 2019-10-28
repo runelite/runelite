@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+plugins {
+    war
+}
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+description = "Web Service OpenOSRS"
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+dependencies {
+    annotationProcessor(Libraries.lombok)
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
+    api(project(":cache"))
+    api(project(":http-api"))
+    api(project(":http-service"))
 
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+    implementation(Libraries.gson)
+    implementation(Libraries.guava)
+    implementation(Libraries.okhttp3)
+    implementation(Libraries.springbootJdbc)
+    implementation(Libraries.springbootDevtools)
+    implementation(Libraries.springbootStarterWeb)
+    implementation(Libraries.sql2o)
+    implementation(Libraries.jedis) {
+        exclude(module = "commons-pool2")
+    }
+
+    providedCompile(Libraries.mariadbJdbc)
+    providedCompile(Libraries.lombok)
+    providedCompile(Libraries.springbootStarterTomcat)
 }

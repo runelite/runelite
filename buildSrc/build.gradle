@@ -1,7 +1,0 @@
-repositories {
-    maven { url "https://raw.githubusercontent.com/open-osrs/hosting/master" }
-}
-dependencies {
-    compile localGroovy()
-    implementation group: 'net.runelite', name: 'fernflower', version: '07082019'
-}

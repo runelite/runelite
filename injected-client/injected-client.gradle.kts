@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 ThatGamerBlue
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+description = "Injected Client"
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+tasks {
+    compileJava {
+        dependsOn(":injector-plugin:assemble")
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+        outputs.upToDateWhen { false }
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
+        doLast {
+            copy {
+                val f = file ("build/classes/java/main")
+                f.deleteRecursively()
+                f.mkdirs()
+                from(project.extra["injectedClassesPath"])
+                into("build/classes/java/main")
+            }
+        }
+    }
 
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+    classes {
+        val f = file("build/classes/java/main/Placeholder.class")
+        f.delete()
+    }
+
+    // this is just here to show how the fernflower plugin could be used
+    //build {
+    //    dependsOn(project.tasks.getByName("decompile"))
+    //}
 }

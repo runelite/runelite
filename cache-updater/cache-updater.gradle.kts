@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+description = "Cache Updater"
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+dependencies {
+    annotationProcessor(Libraries.lombok)
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+    compileOnly(Libraries.lombok)
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
-
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+    implementation(Libraries.minio)
+    implementation(Libraries.mysqlConnectorJava)
+    implementation(Libraries.springbootDevtools)
+    implementation(Libraries.springbootStarter)
+    implementation(Libraries.springbootStarterJdbc)
+    implementation(Libraries.sql2o)
+    implementation(project(":cache-client"))
 }

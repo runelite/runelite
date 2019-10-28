@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 ThatGamerBlue
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-description = 'Injected Client'
 
-compileJava {
-    dependsOn ':injector-plugin:assemble'
+description = "Protocol API"
+
+dependencies {
+    annotationProcessor(Libraries.lombok)
+
+    compileOnly(Libraries.lombok)
+
+    implementation(Libraries.guava)
+    implementation(Libraries.slf4jApi)
+    implementation(project(":runelite-api"))
+
+    testImplementation(Libraries.junit)
 }
-
-compileJava.outputs.upToDateWhen { false }
-
-compileJava.doLast() {
-    copy {
-        File f = file("build/classes/java/main")
-        f.deleteDir()
-        f.mkdirs()
-        from ("${injectedClassesPath}")
-        into ("build/classes/java/main")
-    }
-}
-
-classes.doLast() {
-    File f = file("build/classes/java/main/Placeholder.class")
-    f.delete()
-}
-
-// tasks.build.dependsOn(tasks.decompile)
-// this is just here to show how this could be used

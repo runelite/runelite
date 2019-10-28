@@ -13,6 +13,11 @@ public interface ItemDefinition
 	String getName();
 
 	/**
+	 * Sets the items name.
+	 */
+	void setName(String name);
+
+	/**
 	 * Gets the items ID.
 	 *
 	 * @return the items ID
@@ -86,6 +91,7 @@ public interface ItemDefinition
 	 * Returns whether or not the item can be sold on the grand exchange.
 	 */
 	boolean isTradeable();
+	void setTradeable(boolean yes);
 
 	/**
 	 * Gets an array of possible right-click menu actions the item
@@ -114,4 +120,11 @@ public interface ItemDefinition
 	 * default value.
 	 */
 	void resetShiftClickActionIndex();
+
+	/**
+	 * With this you can make certain (ground) items look like different ones.
+	 *
+	 * @param id The itemID of the item with desired model
+	 */
+	void setModelOverride(int id);
 }

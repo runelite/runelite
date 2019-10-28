@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+import org.apache.tools.ant.filters.ReplaceTokens
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+plugins {
+    id(Plugins.jarTest.first) version Plugins.jarTest.second
+}
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+description = "Cache"
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
+dependencies {
+    annotationProcessor(Libraries.lombok)
 
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+    api(project(":http-api"))
+
+    compileOnly(Libraries.lombok)
+
+    implementation(Libraries.gson)
+    implementation(Libraries.guava)
+    implementation(Libraries.commonsCli)
+    implementation(Libraries.nettyBuffer)
+    implementation(Libraries.antlr)
+    implementation(Libraries.apacheCommonsCompress)
+    implementation(Libraries.slf4jApi)
+
+    testImplementation(Libraries.junit)
+    testImplementation(group = "net.runelite.rs", name = "cache", version = "${ProjectVersions.cacheversion}")
+    testImplementation(Libraries.slf4jSimple)
+}
+
+tasks {
+    "processTestResources"(ProcessResources::class) {
+        val tokens = mapOf(
+                "rs.version" to ProjectVersions.rsversion.toString(),
+                "cache.version" to ProjectVersions.cacheversion.toString()
+        )
+
+        inputs.properties(tokens)
+
+        from("src/test/resources") {
+            include("cache.properties")
+
+            filter<ReplaceTokens>("tokens" to tokens)
+        }
+    }
 }

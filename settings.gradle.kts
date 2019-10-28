@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+rootProject.name = "OpenOSRS"
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+include(":http-api")
+include(":cache")
+include(":runelite-api")
+include(":protocol-api")
+include(":protocol")
+include(":cache-client")
+include(":cache-updater")
+include(":runescape-api")
+include(":runescape-client")
+include(":deobfuscator")
+include(":runelite-script-assembler-plugin")
+include(":runelite-client")
+include(":runelite-mixins")
+include(":injector-plugin")
+include(":injected-client")
+include(":runelite-plugin-archetype")
+include(":http-service")
+include(":http-service-openosrs")
+include(":wiki-scraper")
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+for (project in rootProject.children) {
+    project.apply {
+        projectDir = file("$name")
+        buildFileName = "$name.gradle.kts"
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
-
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+        require(projectDir.isDirectory) { "Project '${project.path} must have a $projectDir directory" }
+        require(buildFile.isFile) { "Project '${project.path} must have a $buildFile build script" }
+    }
 }
+

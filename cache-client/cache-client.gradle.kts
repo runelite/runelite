@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+description = "Cache Client"
 
-/**
- * Represents the entire 3D scene
- */
-public interface Scene
-{
-	/**
-	 * Gets the tiles in the scene
-	 *
-	 * @return the tiles in [plane][x][y]
-	 */
-	Tile[][][] getTiles();
+dependencies {
+    api(project(":cache"))
+    api(project(":protocol"))
 
-	/**
-	 * Adds an item to the scene
-	 */
-	void addItem(int id, int quantity, WorldPoint point);
+    implementation(Libraries.guava)
+    implementation(Libraries.nettyAll)
+    implementation(Libraries.slf4jApi)
 
-	/**
-	 * Removes an item from the scene
-	 */
-	void removeItem(int id, int quantity, WorldPoint point);
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.slf4jSimple)
+    testImplementation(project(path = ":cache", configuration = "testArchives"))
+}
 
-	int getDrawDistance();
-	void setDrawDistance(int drawDistance);
+tasks {
+    register<JavaExec>("download") {
+        dependsOn("copyVanilla")
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.cache.client.CacheClient"
+        args(listOf(ProjectVersions.rsversion))
+    }
 }
