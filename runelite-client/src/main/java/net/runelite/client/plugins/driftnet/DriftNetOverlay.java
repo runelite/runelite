@@ -28,13 +28,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Map;
 import net.runelite.api.Actor;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.geometry.SimplePolygon;
 import net.runelite.client.ui.overlay.Overlay;
 import javax.inject.Inject;
-import java.util.Map;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
