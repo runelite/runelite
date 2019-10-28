@@ -70,9 +70,6 @@ public class ZeahRunecraftPlugin extends Plugin
 	@Inject
 	private ZeahRunecraftOverlay piniOverlay;
 
-	@Inject
-	private ZeahRunecraftConfig config;
-
 	@Provides
 	ZeahRunecraftConfig getConfig(final ConfigManager configManager)
 	{

@@ -97,7 +97,8 @@ class ZeahRunecraftOverlay extends Overlay
 		if (isDepleted)
 		{
 			highlightColor = Color.RED;
-		} else if (isMining)
+		}
+		else if (isMining)
 		{
 			highlightColor = Color.ORANGE;
 		}
