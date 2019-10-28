@@ -601,8 +601,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			for (final String object : removedObjects)
 			{
 				if (target.equals(object)
-					|| hasArrow && target.endsWith(object)
-					|| targetLength > object.length() && target.startsWith(object))
+					|| hasArrow && target.endsWith(object))
 				{
 					client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 					return;
