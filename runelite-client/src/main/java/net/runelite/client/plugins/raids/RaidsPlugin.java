@@ -29,9 +29,10 @@ import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -407,39 +408,13 @@ public class RaidsPlugin extends Plugin
 
 	int getRotationMatches()
 	{
-		String rotation = raid.getRotationString().toLowerCase();
-		List<String> bosses = Text.fromCSV(rotation);
+		RaidRoom[] combatRooms = raid.getCombatRooms();
+		String rotation = Arrays.stream(combatRooms)
+			.map(RaidRoom::getName)
+			.map(String::toLowerCase)
+			.collect(Collectors.joining(","));
 
-		if (rotationWhitelist.contains(rotation))
-		{
-			return bosses.size();
-		}
-
-		for (String whitelisted : rotationWhitelist)
-		{
-			int matches = 0;
-			List<String> whitelistedBosses = Text.fromCSV(whitelisted);
-
-			for (int i = 0; i < whitelistedBosses.size(); i++)
-			{
-				if (i < bosses.size() && whitelistedBosses.get(i).equals(bosses.get(i)))
-				{
-					matches++;
-				}
-				else
-				{
-					matches = 0;
-					break;
-				}
-			}
-
-			if (matches >= 2)
-			{
-				return matches;
-			}
-		}
-
-		return 0;
+		return rotationWhitelist.contains(rotation) ? combatRooms.length : 0;
 	}
 
 	private Point findLobbyBase()
