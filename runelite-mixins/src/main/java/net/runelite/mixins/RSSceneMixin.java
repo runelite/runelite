@@ -29,6 +29,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.TileModel;
 import net.runelite.api.TilePaint;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
@@ -38,6 +39,8 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSBoundaryObject;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSFloorDecoration;
+import net.runelite.rs.api.RSNodeDeque;
+import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSTileItemPile;
 import net.runelite.rs.api.RSScene;
 import net.runelite.rs.api.RSTile;
@@ -715,5 +718,73 @@ public abstract class RSSceneMixin implements RSScene
 	{
 		client.setSelectedSceneTileX(targetX);
 		client.setSelectedSceneTileY(targetY);
+	}
+
+	@Override
+	@Inject
+	public void addItem(int id, int quantity, WorldPoint point)
+	{
+		final int sceneX = point.getX() - client.getBaseX();
+		final int sceneY = point.getY() - client.getBaseY();
+		final int plane = point.getPlane();
+
+		if (sceneX < 0 || sceneY < 0 || sceneX >= 104 || sceneY >= 104)
+		{
+			return;
+		}
+
+		RSTileItem item = client.newTileItem();
+		item.setId(id);
+		item.setQuantity(quantity);
+		RSNodeDeque[][][] groundItems = client.getGroundItemDeque();
+
+		if (groundItems[plane][sceneX][sceneY] == null)
+		{
+			groundItems[plane][sceneX][sceneY] = client.newNodeDeque();
+		}
+
+		groundItems[plane][sceneX][sceneY].addFirst(item);
+
+		if (plane == client.getPlane())
+		{
+			client.updateItemPile(sceneX, sceneY);
+		}
+	}
+
+	@Override
+	@Inject
+	public void removeItem(int id, int quantity, WorldPoint point)
+	{
+		final int sceneX = point.getX() - client.getBaseX();
+		final int sceneY = point.getY() - client.getBaseY();
+		final int plane = point.getPlane();
+
+		if (sceneX < 0 || sceneY < 0 || sceneX >= 104 || sceneY >= 104)
+		{
+			return;
+		}
+
+		RSNodeDeque items = client.getGroundItemDeque()[plane][sceneX][sceneY];
+
+		if (items == null)
+		{
+			return;
+		}
+
+		for (RSTileItem item = (RSTileItem) items.last(); item != null; item = (RSTileItem) items.previous())
+		{
+			if (item.getId() == id && quantity == 1)
+			{
+				item.unlink();
+				break;
+			}
+		}
+
+		if (items.last() == null)
+		{
+			client.getGroundItemDeque()[plane][sceneX][sceneY] = null;
+		}
+
+		client.updateItemPile(sceneX, sceneY);
 	}
 }

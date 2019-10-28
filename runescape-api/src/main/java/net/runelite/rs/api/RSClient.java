@@ -208,6 +208,10 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSPlayer getLocalPlayer();
 
+	@Import("localPlayerIndex")
+	@Override
+	int getLocalPlayerIndex();
+
 	@Import("npcCount")
 	int getNpcIndexesCount();
 
@@ -1120,4 +1124,13 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("VarpDefinition_get")
 	RSVarpDefinition getVarpDefinition(int id);
+
+	@Construct
+	RSTileItem newTileItem();
+
+	@Construct
+	RSNodeDeque newNodeDeque();
+
+	@Import("updateItemPile")
+	void updateItemPile(int localX, int localY);
 }

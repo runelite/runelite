@@ -341,9 +341,12 @@ public interface Client extends GameShell
 	 * Gets the logged in player instance.
 	 *
 	 * @return the logged in player
+	 *
+	 * (getLocalPlayerIndex returns the local index, useful for menus/interacting)
 	 */
 	@Nullable
 	Player getLocalPlayer();
+	int getLocalPlayerIndex();
 
 	/**
 	 * Gets the item composition corresponding to an items ID.

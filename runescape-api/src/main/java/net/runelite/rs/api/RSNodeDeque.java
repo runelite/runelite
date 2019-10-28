@@ -9,4 +9,13 @@ public interface RSNodeDeque
 
 	@Import("sentinel")
 	RSNode getHead();
+
+	@Import("last")
+	RSNode last();
+
+	@Import("previous")
+	RSNode previous();
+
+	@Import("addFirst")
+	void addFirst(RSNode val);
 }

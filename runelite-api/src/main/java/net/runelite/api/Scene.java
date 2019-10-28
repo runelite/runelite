@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.coords.WorldPoint;
+
 /**
  * Represents the entire 3D scene
  */
@@ -35,6 +37,16 @@ public interface Scene
 	 * @return the tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
+
+	/**
+	 * Adds an item to the scene
+	 */
+	void addItem(int id, int quantity, WorldPoint point);
+
+	/**
+	 * Removes an item from the scene
+	 */
+	void removeItem(int id, int quantity, WorldPoint point);
 
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);
