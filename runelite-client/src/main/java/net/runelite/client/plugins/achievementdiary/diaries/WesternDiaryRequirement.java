@@ -78,7 +78,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Make a Chocolate Bomb at the Grand Tree.",
 			new SkillRequirement(Skill.COOKING, 42));
 		add("Complete a delivery for the Gnome Restaurant.",
-			new SkillRequirement(Skill.COOKING, 42));
+			new SkillRequirement(Skill.COOKING, 29));
 		add("Turn your small crystal seed into a Crystal saw.",
 			new QuestRequirement(Quest.THE_EYES_OF_GLOUPHRIE));
 		add("Mine some Gold ore underneath the Grand Tree.",
