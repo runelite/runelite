@@ -126,6 +126,10 @@ public class ExaminePlugin extends Plugin
 				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
 				break;
 			}
+			case EXAMINE_ITEM_GROUND:
+				type = ExamineType.ITEM;
+				id = event.getId();
+				break;
 			case EXAMINE_ITEM_BANK_EQ:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
@@ -252,67 +256,48 @@ public class ExaminePlugin extends Plugin
 		int widgetChild = TO_CHILD(widgetId);
 		Widget widget = client.getWidget(widgetGroup, widgetChild);
 
-		if (widget == null)
-		{
-			return null;
-		}
+		if (widget != null) {
 
-		if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
-		{
-			Widget widgetItem = widget.getChild(1);
-			if (widgetItem != null)
-			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget widgetItem = widget.getChild(2);
-			if (widgetItem != null)
-			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget widgetItem = widget.getChild(actionParam);
-			if (widgetItem != null)
-			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
-			|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup
-			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
-			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{1, widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
-		{
-			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup) {
+				Widget widgetItem = widget.getChild(1);
+				if (widgetItem != null) {
+					return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				}
+			} else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup) {
+				Widget widgetItem = widget.getChild(2);
+				if (widgetItem != null) {
+					return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				}
+			} else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup) {
+				Widget widgetItem = widget.getChild(actionParam);
+				if (widgetItem != null) {
+					return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				}
+			} else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
+					|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup
+					|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
+					|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup) {
+				Widget[] children = widget.getDynamicChildren();
+				if (actionParam < children.length) {
+					Widget widgetItem = children[actionParam];
+					return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				}
+			} else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup) {
+				Widget[] children = widget.getDynamicChildren();
+				if (actionParam < children.length) {
+					Widget widgetItem = children[actionParam];
+					return new int[]{1, widgetItem.getItemId()};
+				}
+			} else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup) {
+				Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
+				if (actionParam < children.length) {
+					Widget widgetItem = children[actionParam];
+					return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				}
 			}
 		}
 
