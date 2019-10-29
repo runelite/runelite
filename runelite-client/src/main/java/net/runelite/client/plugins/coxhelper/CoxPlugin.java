@@ -223,7 +223,7 @@ public class CoxPlugin extends Plugin
 					{
 						final String fixedPlayerName = Text.sanitize(rawPlayerName);
 
-						if (fixedPlayerName.equals(tpMatcher.group(1)))
+						if (fixedPlayerName.equals(Text.sanitize(tpMatcher.group(1))))
 						{
 							victims.add(new Victim(player, Victim.Type.TELEPORT));
 						}

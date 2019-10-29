@@ -321,4 +321,16 @@ public interface GauntletConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "displayResources",
+		name = "Show raw resources gathered",
+		description = "Displays how much of each resource you have gathered.",
+		titleSection = "resources"
+	)
+	default boolean displayGatheredResources()
+	{
+		return false;
+	}
 }

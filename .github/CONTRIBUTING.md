@@ -54,7 +54,7 @@ Before you submit your pull request consider the following guidelines:
 * After cloning, set a new remote [upstream](https://help.github.com/articles/configuring-a-remote-for-a-fork/) (this helps to keep your fork up to date)
     
     ```shell
-    git remote add upstream https://github.com/runelite-extended/runelite.git
+    git remote add upstream https://github.com/open-osrs/runelite.git
     ```
 
 * Make your changes in a new git branch:

@@ -27,6 +27,8 @@
 package net.runelite.client.plugins.openosrs;
 
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,6 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -45,6 +46,8 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
+import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
@@ -57,6 +60,8 @@ import net.runelite.client.util.HotkeyListener;
 public class OpenOSRSPlugin extends Plugin
 {
 	private final openosrsKeyListener keyListener = new openosrsKeyListener();
+	private final List<String> colorOptions = Arrays.asList("externalColor", "pvmColor", "pvpColor", "skillingColor", "utilityColor");
+
 	@Inject
 	private OpenOSRSConfig config;
 
@@ -71,9 +76,6 @@ public class OpenOSRSPlugin extends Plugin
 
 	@Inject
 	private EventBus eventbus;
-
-	@Inject
-	private ConfigManager configManager;
 
 	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
@@ -94,7 +96,6 @@ public class OpenOSRSPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		migrateConfigs();
 		addSubscriptions();
 
 		entered = -1;
@@ -121,6 +122,16 @@ public class OpenOSRSPlugin extends Plugin
 		if (!event.getGroup().equals("openosrs"))
 		{
 			return;
+		}
+
+		if (colorOptions.stream().anyMatch(option -> option.equals(event.getKey())))
+		{
+			updatePlugins();
+		}
+
+		if (event.getKey().equals("pluginSortMode"))
+		{
+			ConfigPanel.sortPluginList(config, null);
 		}
 
 		this.keybind = config.detachHotkey();
@@ -254,35 +265,17 @@ public class OpenOSRSPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Migrates configs from runenergy and regenmeter to this plugin and deletes the old config values.
-	 * This method should be removed after a reasonable amount of time.
-	 */
-	@Deprecated
-	private void migrateConfigs()
+	private void updatePlugins()
 	{
-		migrateConfig("runeliteplus", "enableOpacity");
-		migrateConfig("runeliteplus", "opacityPercentage");
-		migrateConfig("runeliteplus", "keyboardPin");
-		migrateConfig("runeliteplus", "enablePlugins");
-		migrateConfig("runeliteplus", "detachHotkey");
-	}
-
-	/**
-	 * Wrapper for migrating individual config options
-	 * This method should be removed after a reasonable amount of time.
-	 *
-	 * @param group old group name
-	 * @param key   key name to migrate
-	 */
-	@Deprecated
-	private void migrateConfig(String group, String key)
-	{
-		String value = configManager.getConfiguration(group, key);
-		if (value != null)
+		ConfigPanel.pluginList.forEach(listItem ->
 		{
-			configManager.setConfiguration("openosrs", key, value);
-			configManager.unsetConfiguration(group, key);
-		}
+			if (listItem.getPluginType() == PluginType.GENERAL_USE || listItem.getPluginType() == PluginType.IMPORTANT)
+			{
+				return;
+			}
+
+			listItem.setColor(ConfigPanel.getColorByCategory(config, listItem.getPluginType()));
+			listItem.setHidden(ConfigPanel.getHiddenByCategory(config, listItem.getPluginType()));
+		});
 	}
 }

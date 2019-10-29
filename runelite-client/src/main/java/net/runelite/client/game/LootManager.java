@@ -61,9 +61,27 @@ import net.runelite.client.events.PlayerLootReceived;
 @Slf4j
 public class LootManager
 {
-	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
-	);
+	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.<Integer, Integer>builder()
+		.put(NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH)
+		.put(NpcID.CRYSTALLINE_BAT, AnimationID.CRYSTALLINE_BAT_DEATH)
+		.put(NpcID.CRYSTALLINE_RAT, AnimationID.CRYSTALLINE_RAT_DEATH)
+		.put(NpcID.CRYSTALLINE_SPIDER, AnimationID.CRYSTALLINE_SPIDER_DEATH)
+		.put(NpcID.CRYSTALLINE_WOLF, AnimationID.CRYSTALLINE_WOLF_DEATH)
+		.put(NpcID.CRYSTALLINE_UNICORN, AnimationID.CRYSTALLINE_UNICORN_DEATH)
+		.put(NpcID.CRYSTALLINE_SCORPION, AnimationID.CORRUPTED_SCORPION_DEATH)
+		.put(NpcID.CRYSTALLINE_DRAGON, AnimationID.CRYSTALLINE_DRAGON_DEATH)
+		.put(NpcID.CRYSTALLINE_DARK_BEAST, AnimationID.CRYSTALLINE_DARK_BEAST_DEATH)
+		.put(NpcID.CRYSTALLINE_BEAR, AnimationID.CRYSTALLINE_BEAR_DEATH)
+		.put(NpcID.CORRUPTED_BAT, AnimationID.CRYSTALLINE_BAT_DEATH)
+		.put(NpcID.CORRUPTED_RAT, AnimationID.CRYSTALLINE_RAT_DEATH)
+		.put(NpcID.CORRUPTED_SPIDER, AnimationID.CRYSTALLINE_SPIDER_DEATH)
+		.put(NpcID.CORRUPTED_WOLF, AnimationID.CRYSTALLINE_WOLF_DEATH)
+		.put(NpcID.CORRUPTED_UNICORN, AnimationID.CRYSTALLINE_UNICORN_DEATH)
+		.put(NpcID.CORRUPTED_SCORPION, AnimationID.CORRUPTED_SCORPION_DEATH)
+		.put(NpcID.CORRUPTED_DRAGON, AnimationID.CRYSTALLINE_DRAGON_DEATH)
+		.put(NpcID.CORRUPTED_DARK_BEAST, AnimationID.CRYSTALLINE_DARK_BEAST_DEATH)
+		.put(NpcID.CORRUPTED_BEAR, AnimationID.CRYSTALLINE_BEAR_DEATH)
+		.build();
 
 	private final EventBus eventBus;
 	private final Client client;
@@ -167,6 +185,7 @@ public class LootManager
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
+		log.debug("storing items in {}", packed);
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
 		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
