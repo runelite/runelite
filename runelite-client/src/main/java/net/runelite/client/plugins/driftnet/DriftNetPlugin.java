@@ -33,6 +33,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
@@ -43,6 +44,7 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -133,6 +135,15 @@ public class DriftNetPlugin extends Plugin
 		{
 			northNet.setDriftNet(gameObject);
 		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		System.out.println("North Net: " + client.getVar(Varbits.NORTH_NET));
+		System.out.println("South Net: " + client.getVar(Varbits.SOUTH_NET));
+		System.out.println("North Net Fish: " + client.getVar(Varbits.NORTH_NET_FISH));
+		System.out.println("South Net Fish: " + client.getVar(Varbits.SOUTH_NET_FISH));
 	}
 
 	@Subscribe

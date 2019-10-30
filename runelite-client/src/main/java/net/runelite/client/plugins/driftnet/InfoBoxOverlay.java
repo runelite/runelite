@@ -47,7 +47,7 @@ public class InfoBoxOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.TOP_CENTER);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
@@ -89,7 +89,6 @@ public class InfoBoxOverlay extends Overlay
 					.build());
 			}
 		}
-		panelComponent.render(graphics);
-		return null;
+		return panelComponent.render(graphics);
 	}
 }

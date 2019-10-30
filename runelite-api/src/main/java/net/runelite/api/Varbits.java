@@ -447,6 +447,14 @@ public enum Varbits
 	 * The varbit that stores the oxygen percentage for player
 	 */
 	OXYGEN_LEVEL(5811),
+
+	/**
+	 * The varbits that store information about the drift nets
+	 */
+	NORTH_NET(5812),
+	SOUTH_NET(5814),
+	NORTH_NET_FISH(5813),
+	SOUTH_NET_FISH(5815),
 	
 	/**
 	 * Corp beast damage
