@@ -52,4 +52,15 @@ public interface MouseHighlightConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "rightclickoptionTooltip",
+		name = "Right Click Option Tooltips",
+		description = "Whether or not tooltips are shown for options that right-click only."
+	)
+	default boolean isRightClickTooltipEnabled()
+	{
+		return true;
+	}
 }
