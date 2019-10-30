@@ -38,7 +38,7 @@ import net.runelite.api.coords.WorldPoint;
  * <p>
  * These puzzles are established by having some way to test the distance from the solution via "warmth", where being
  * colder means one is farther away from the target, and being warmer means one is closer to it, with the goal being to
- * reach the most warm value to discover the solution point. Hot-cold puzzles in Old School Runescape are implemented
+ * reach the most warm value to discover the solution point. Hot-cold puzzles in Old School RuneScape are implemented
  * with specific set of solution points, so this solver will filter from a provided set of possible solutions as new
  * signals of temperatures and temperature changes are provided.
  */
