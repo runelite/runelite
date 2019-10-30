@@ -95,7 +95,7 @@ public class DeobAnnotations
 		{
 			return null;
 		}
-		
+
 		return (Number) an.getElement().getValue();
 	}
 

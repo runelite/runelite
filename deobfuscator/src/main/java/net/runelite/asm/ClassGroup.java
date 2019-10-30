@@ -27,13 +27,16 @@ package net.runelite.asm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.signature.Signature;
 import static net.runelite.deob.DeobAnnotations.*;
+import org.jetbrains.annotations.NotNull;
 
-public class ClassGroup
+public class ClassGroup implements Iterable<ClassFile>
 {
 	private final List<ClassFile> classes = new ArrayList<>(); // to keep order
 	private final Map<String, ClassFile> classMap = new HashMap<>();
@@ -155,5 +158,18 @@ public class ClassGroup
 		}
 
 		return findClass(name);
+	}
+
+	@NotNull
+	@Override
+	public Iterator<ClassFile> iterator()
+	{
+		return this.classes.iterator();
+	}
+
+	@Override
+	public void forEach(Consumer<? super ClassFile> action)
+	{
+		this.classes.forEach(action);
 	}
 }

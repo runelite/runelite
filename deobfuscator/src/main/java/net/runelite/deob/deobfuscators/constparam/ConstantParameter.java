@@ -37,6 +37,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.attributes.annotation.SimpleElement;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -113,7 +114,6 @@ public class ConstantParameter implements Deobfuscator
 
 		List<StackContext> pops = invokeCtx.getPops();
 
-		outer:
 		// object is popped first, then param 1, 2, 3, etc. double and long take two slots.
 		for (int lvtOffset = offset, parameterIndex = 0;
 			parameterIndex < method.getDescriptor().size();
@@ -451,9 +451,7 @@ public class ConstantParameter implements Deobfuscator
 			}
 
 			// Add garbage value
-			Element element = new Element(obfuscatedSignature);
-			element.setName("garbageValue");
-			element.setValue(value.toString());
+			Element element = new SimpleElement("garbageValue", value.toString());
 			obfuscatedSignature.addElement(element);
 		}
 	}
@@ -464,12 +462,12 @@ public class ConstantParameter implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);
-		execution.addExecutionVisitor(i -> findParameters(i));
+		execution.addExecutionVisitor(this::findParameters);
 		execution.populateInitialMethods();
 		execution.run();
 
 		execution = new Execution(group);
-		execution.addMethodContextVisitor(mc -> findDeadParameters(mc));
+		execution.addMethodContextVisitor(this::findDeadParameters);
 		execution.populateInitialMethods();
 		execution.run();
 

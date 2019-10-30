@@ -34,13 +34,9 @@ import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.util.NameMappings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AnnotationRenamer
 {
-	private static final Logger logger = LoggerFactory.getLogger(AnnotationRenamer.class);
-
 	private ClassGroup group;
 
 	public AnnotationRenamer(ClassGroup group)

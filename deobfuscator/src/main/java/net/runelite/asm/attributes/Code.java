@@ -41,11 +41,11 @@ public class Code
 	private int maxStack;
 	private Instructions instructions;
 	private final Exceptions exceptions;
-	
+
 	public Code(Method method)
 	{
 		this.method = method;
-		
+
 		exceptions = new Exceptions(this);
 		instructions = new Instructions(this);
 	}
@@ -59,12 +59,12 @@ public class Code
 	{
 		return maxStack;
 	}
-	
+
 	public void setMaxStack(int maxStack)
 	{
 		this.maxStack = maxStack;
 	}
-	
+
 	private int getMaxLocalsFromSig()
 	{
 		Method m = getMethod();
@@ -77,12 +77,11 @@ public class Code
 
 	/**
 	 * calculates the size of the lvt required for this method
-	 * @return
 	 */
 	public int getMaxLocals()
 	{
 		int max = -1;
-		
+
 		for (Instruction ins : instructions.getInstructions())
 		{
 			if (ins instanceof LVTInstruction)
@@ -96,19 +95,19 @@ public class Code
 				}
 			}
 		}
-		
+
 		int fromSig = getMaxLocalsFromSig();
 		if (fromSig > max)
 			max = fromSig;
-		
+
 		return max;
 	}
-	
+
 	public Exceptions getExceptions()
 	{
 		return exceptions;
 	}
-	
+
 	public Instructions getInstructions()
 	{
 		return instructions;
