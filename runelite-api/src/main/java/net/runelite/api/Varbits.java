@@ -31,7 +31,7 @@ import lombok.Getter;
  * Server controlled "content-developer" integers.
  *
  * @see VarPlayer
- *
+ * <p>
  * These differ from a {@link VarPlayer} in that VarBits can be
  * less than 32 bits. One or more VarBits can be assigned to a
  * backing VarPlayer, each with a static range of bits that it is
@@ -241,12 +241,12 @@ public enum Varbits
 
 	/**
 	 * Blast Furnace Bar Dispenser
-	 *
+	 * <p>
 	 * These are the expected values:
-	 *	0 = No bars being processed
-	 *	1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
-	 *	2 = Bars are cooling down
-	 *	3 = Bars can be collected
+	 * 0 = No bars being processed
+	 * 1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
+	 * 2 = Bars are cooling down
+	 * 3 = Bars can be collected
 	 */
 	BAR_DISPENSER(936),
 
@@ -258,11 +258,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
-	 *
+	 * <p>
 	 * EXPERIENCE_TRACKER_POSITION expected values:
-	 *   0 = Right
-	 *   1 = Middle
-	 *   2 = Left
+	 * 0 = Right
+	 * 1 = Middle
+	 * 2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -279,7 +279,7 @@ public enum Varbits
 	TITHE_FARM_SACK_AMOUNT(4900),
 	TITHE_FARM_SACK_ICON(5370),
 	TITHE_FARM_POINTS(4893),
-	
+
 	/**
 	 * Blast Mine
 	 */
@@ -387,7 +387,7 @@ public enum Varbits
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
- 	*/
+	 */
 	DAILY_BONEMEAL_STATE(4543),
 
 	DAILY_DYNAMITE_COLLECTED(7939),
@@ -455,7 +455,7 @@ public enum Varbits
 	SOUTH_NET(5814),
 	NORTH_NET_FISH(5813),
 	SOUTH_NET_FISH(5815),
-	
+
 	/**
 	 * Corp beast damage
 	 */

@@ -34,6 +34,7 @@ class DriftNet
 {
 	private DriftNetStatus netStatus = DriftNetStatus.UNSET;
 	private GameObject driftNet = null;
+	private int numFish = 0;
 
 	public enum DriftNetStatus
 	{

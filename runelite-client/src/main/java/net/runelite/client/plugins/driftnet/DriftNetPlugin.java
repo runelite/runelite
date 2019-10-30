@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.driftnet;
 
+import com.google.errorprone.annotations.Var;
 import com.google.inject.Provides;
 import static java.lang.Math.abs;
 import lombok.Getter;
@@ -140,39 +141,34 @@ public class DriftNetPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
+		//setting the net state
+		DriftNet[] nets = {northNet, southNet};
+		Varbits[] net_varbits = {Varbits.NORTH_NET, Varbits.SOUTH_NET};
+		Varbits[] fish_caught_varbits = {Varbits.NORTH_NET_FISH, Varbits.SOUTH_NET_FISH};
+		for (int i = 0; i < nets.length; i++)
+		{
+			switch (client.getVar(net_varbits[i]))
+			{
+				case 0:
+					nets[i].setNetStatus(DriftNet.DriftNetStatus.UNSET);
+					break;
+				case 1:
+				case 2:
+					nets[i].setNetStatus(DriftNet.DriftNetStatus.SET);
+					break;
+				case 3:
+					nets[i].setNetStatus(DriftNet.DriftNetStatus.FULL);
+					break;
+			}
+			if (nets[i].getNetStatus() != DriftNet.DriftNetStatus.UNSET)
+			{
+				nets[i].setNumFish(client.getVar(fish_caught_varbits[i]));
+			}
+		}
 		System.out.println("North Net: " + client.getVar(Varbits.NORTH_NET));
 		System.out.println("South Net: " + client.getVar(Varbits.SOUTH_NET));
 		System.out.println("North Net Fish: " + client.getVar(Varbits.NORTH_NET_FISH));
 		System.out.println("South Net Fish: " + client.getVar(Varbits.SOUTH_NET_FISH));
-	}
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		DriftNet net = null;
-		if (event.getIdentifier() == SOUTH_NET_ID)
-		{
-			net = southNet;
-		}
-		else if (event.getIdentifier() == NORTH_NET_ID)
-		{
-			net = northNet;
-		}
-		if (net != null && event.getOption() != null)
-		{
-			if (event.getTarget().toLowerCase().contains("(full)"))
-			{
-				net.setNetStatus(DriftNet.DriftNetStatus.FULL);
-			}
-			else if (event.getOption().toLowerCase().contains("set"))
-			{
-				net.setNetStatus(DriftNet.DriftNetStatus.UNSET);
-			}
-			else
-			{
-				net.setNetStatus(DriftNet.DriftNetStatus.SET);
-			}
-		}
 	}
 
 	@Subscribe

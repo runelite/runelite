@@ -70,7 +70,7 @@ public class InfoBoxOverlay extends Overlay
 					text2 = "FULL";
 					break;
 				case SET:
-					text2 = "SET";
+					text2 = (net.getNumFish() + "/10");
 					break;
 				case UNSET:
 					text2 = "UNSET";
