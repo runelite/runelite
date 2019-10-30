@@ -38,13 +38,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -138,6 +141,7 @@ public class MusicPlugin extends Plugin
 		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
 		eventBus.subscribe(VolumeChanged.class, this, this::onVolumeChanged);
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(AreaSoundEffectPlayed.class, this, this::onAreaSoundEffectPlayed);
 	}
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
@@ -216,6 +220,7 @@ public class MusicPlugin extends Plugin
 
 	private void onVolumeChanged(VolumeChanged volumeChanged)
 	{
+		log.info(volumeChanged.getType().toString());
 		applyMusicVolumeConfig();
 	}
 
@@ -229,8 +234,6 @@ public class MusicPlugin extends Plugin
 
 	private void applyMusicVolumeConfig()
 	{
-		log.info("applyMusicVolumeConfig");
-
 		int musicVolume = musicConfig.getMusicVolume();
 		if (musicVolume > 0)
 		{
@@ -544,6 +547,17 @@ public class MusicPlugin extends Plugin
 			case "optionsAllSounds":
 				// We have to override this script because it gets invoked periodically from the server
 				client.getIntStack()[client.getIntStackSize() - 1] = -1;
+		}
+	}
+
+	private void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
+	{
+		Actor source = areaSoundEffectPlayed.getSource();
+		if (source != client.getLocalPlayer()
+			&& source instanceof Player
+			&& musicConfig.muteOtherAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
 		}
 	}
 }

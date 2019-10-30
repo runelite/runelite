@@ -1798,7 +1798,8 @@ public abstract class RSClientMixin implements RSClient
 		int type = client.getVarpDefinition(var0).getType();
 		if (type == 3 || type == 4 || type == 10)
 		{
-			client.getCallbacks().post(VolumeChanged.class, VolumeChanged.INSTANCE);
+			VolumeChanged volumeChanged = new VolumeChanged(null);
+			client.getCallbacks().post(VolumeChanged.class, volumeChanged);
 		}
 	}
 }
