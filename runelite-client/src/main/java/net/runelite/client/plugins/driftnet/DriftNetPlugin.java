@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.driftnet;
 
-import com.google.errorprone.annotations.Var;
 import com.google.inject.Provides;
 import static java.lang.Math.abs;
 import lombok.Getter;
@@ -42,7 +41,6 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -85,12 +83,8 @@ public class DriftNetPlugin extends Plugin
 	@Inject
 	private InfoBoxOverlay infoBoxOverlay;
 
-
 	@Inject
 	private Client client;
-
-	@Getter
-	private HashSet<NPC> bosses = new HashSet<>();
 
 	@Override
 	protected void startUp() throws Exception
@@ -261,5 +255,4 @@ public class DriftNetPlugin extends Plugin
 		}
 		return false;
 	}
-
 }

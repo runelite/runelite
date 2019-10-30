@@ -52,7 +52,6 @@ public class DriftNetOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -94,19 +93,15 @@ public class DriftNetOverlay extends Overlay
 		return color;
 	}
 
-
 	private void renderNet(Graphics2D graphics)
 	{
 		DriftNet[] nets = {plugin.southNet, plugin.northNet};
 		for (DriftNet net : nets)
 		{
 			Color color = getColor(net);
-			if (color != null)
+			if (color != null && net.getDriftNet() != null)
 			{
-				if (net.getDriftNet() != null)
-				{
-					renderObject(graphics, color, net.getDriftNet());
-				}
+				renderObject(graphics, color, net.getDriftNet());
 			}
 		}
 	}
@@ -134,7 +129,6 @@ public class DriftNetOverlay extends Overlay
 		drawPolygon(graphics, objectClickbox, color);
 	}
 
-
 	private void renderActor(Graphics2D graphics, Color color, Actor actor)
 	{
 		SimplePolygon objectClickbox = (SimplePolygon) actor.getConvexHull();
@@ -152,5 +146,4 @@ public class DriftNetOverlay extends Overlay
 			graphics.fill(polygon);
 		}
 	}
-
 }

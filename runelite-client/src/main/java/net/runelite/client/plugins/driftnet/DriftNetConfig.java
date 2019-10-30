@@ -28,12 +28,12 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("fishing")
+@ConfigGroup("driftnetfishing")
 public interface DriftNetConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "netStatus",
+		keyName = "infoBox",
 		name = "Net status infobox",
 		description = "Configures whether to display an infobox showing the current status of each net."
 	)
@@ -44,7 +44,7 @@ public interface DriftNetConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "netStatusOverlay",
+		keyName = "netOverlay",
 		name = "Net overlay",
 		description = "Configures whether to display an overlay on each drift net."
 	)
@@ -63,8 +63,7 @@ public interface DriftNetConfig extends Config
 	{
 		return true;
 	}
-
-
+	
 	@ConfigItem(
 		position = 3,
 		keyName = "highlightDuration",
