@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,69 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.music;
+package net.runelite.client.plugins.loottracker;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("music")
-public interface MusicConfig extends Config
+public enum LootTrackerPriceType
 {
-	@ConfigItem(
-		keyName = "musicVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int getMusicVolume()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "musicVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setMusicVolume(int vol);
-
-	@ConfigItem(
-		keyName = "soundEffectVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int getSoundEffectVolume()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "soundEffectVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setSoundEffectVolume(int val);
-
-	@ConfigItem(
-		keyName = "areaSoundEffectVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int getAreaSoundEffectVolume()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "areaSoundEffectVolume",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setAreaSoundEffectVolume(int vol);
+	GRAND_EXCHANGE,
+	HIGH_ALCHEMY
 }

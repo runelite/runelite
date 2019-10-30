@@ -66,6 +66,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -1213,15 +1214,18 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemDefinition itemDefinition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemDefinition.getNote() != -1 ? itemDefinition.getLinkedNoteId() : itemId;
-		final long price;
+		final long gePrice ;
+		final long haPrice ;
 		// If it's a death we want to get a coin value for untradeables lost
 		if (!itemDefinition.isTradeable() && quantity < 0)
 		{
-			price = (long) itemDefinition.getPrice() * (long) quantity;
+			gePrice  = (long) itemDefinition.getPrice() * (long) quantity;
+			haPrice = (long) Math.round(itemDefinition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER) * (long) quantity;
 		}
 		else
 		{
-			price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+			gePrice  = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+			haPrice = (long) Math.round(itemManager.getItemPrice(realItemId) * Constants.HIGH_ALCHEMY_MULTIPLIER) * (long) quantity;
 		}
 		final boolean ignored = ignoredItems.contains(itemDefinition.getName());
 
@@ -1229,7 +1233,8 @@ public class LootTrackerPlugin extends Plugin
 			itemId,
 			itemDefinition.getName(),
 			quantity,
-			price,
+			gePrice,
+			haPrice,
 			ignored);
 	}
 
