@@ -51,7 +51,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 import java.util.HashMap;
-import java.util.HashSet;
 
 @PluginDescriptor(
 	name = "DriftNet Helper",

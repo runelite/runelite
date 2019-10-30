@@ -63,7 +63,7 @@ public interface DriftNetConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		position = 3,
 		keyName = "highlightDuration",
