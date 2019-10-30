@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-group = "us.runelitepl.rs"
+group = "com.openosrs.rs"
 description = "RuneScape API"
 
 dependencies {
