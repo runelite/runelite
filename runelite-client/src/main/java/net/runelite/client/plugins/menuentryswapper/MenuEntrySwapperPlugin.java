@@ -371,11 +371,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && shouldSwapPickpocket(target))
-			{
-				swap("pickpocket", option, target, index);
-			}
-
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
 				swap("teleport", option, target, index);
@@ -645,11 +640,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("cast", option, target, index);
 		}
-	}
-
-	private static boolean shouldSwapPickpocket(String target)
-	{
-		return !target.startsWith("villager") && !target.startsWith("bandit") && !target.startsWith("menaphite thug");
 	}
 
 	@Subscribe
