@@ -263,7 +263,7 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		class197.musicTrackArchive = var1;
 		class188.musicTrackGroupId = var6;
 		class49.musicTrackFileId = var7;
-		TileItem.field1223 = var4;
+		TileItem.musicTrackVolume = var4;
 		WorldMapSectionType.musicTrackBoolean = var5;
 		MusicPatchNode2.field2382 = var0;
 	}

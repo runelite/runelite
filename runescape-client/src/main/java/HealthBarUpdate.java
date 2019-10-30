@@ -151,8 +151,8 @@ public class HealthBarUpdate extends Node {
 			}
 
 			if (!var12) {
-				if (Client.musicVolume != 0 && Client.field666 != -1) {
-					class83.method2068(class225.archive6, Client.field666, 0, Client.musicVolume, false);
+				if (Client.musicVolume != 0 && Client.currentTrackGroupId != -1) {
+					class83.playMusicTrack(class225.archive6, Client.currentTrackGroupId, 0, Client.musicVolume, false);
 				}
 
 				Client.field759 = false;

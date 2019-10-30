@@ -438,16 +438,16 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 				}
 
 				if (var3 != Client.musicVolume) {
-					if (Client.musicVolume == 0 && Client.field666 != -1) {
-						class83.method2068(class225.archive6, Client.field666, 0, var3, false);
+					if (Client.musicVolume == 0 && Client.currentTrackGroupId != -1) {
+						class83.playMusicTrack(class225.archive6, Client.currentTrackGroupId, 0, var3, false);
 						Client.field759 = false;
 					} else if (var3 == 0) {
 						VertexNormal.method2960();
 						Client.field759 = false;
 					} else if (class197.field2386 != 0) {
-						TileItem.field1223 = var3;
+						TileItem.musicTrackVolume = var3;
 					} else {
-						class49.midiPcmStream.method3760(var3);
+						class49.midiPcmStream.setPcmStreamVolume(var3);
 					}
 
 					Client.musicVolume = var3;

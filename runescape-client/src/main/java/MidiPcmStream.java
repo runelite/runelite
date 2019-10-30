@@ -131,7 +131,8 @@ public class MidiPcmStream extends PcmStream {
 		signature = "(II)V",
 		garbageValue = "-1812413582"
 	)
-	public synchronized void method3760(int var1) {
+	@Export("setPcmStreamVolume")
+	public synchronized void setPcmStreamVolume(int var1) {
 		this.field2393 = var1;
 	}
 

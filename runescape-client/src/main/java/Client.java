@@ -202,7 +202,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = -910754411
 	)
-	static int field666;
+	@Export("currentTrackGroupId")
+	static int currentTrackGroupId;
 	@ObfuscatedName("mo")
 	@ObfuscatedGetter(
 		intValue = -1946560921
@@ -1511,7 +1512,7 @@ public final class Client extends GameShell implements Usernamed {
 		destinationY = 0;
 		minimapState = 0;
 		musicVolume = 255;
-		field666 = -1;
+		currentTrackGroupId = -1;
 		field759 = false;
 		soundEffectVolume = 127;
 		areaSoundEffectVolume = 127;
@@ -1653,7 +1654,7 @@ public final class Client extends GameShell implements Usernamed {
 						var5 = 0;
 					}
 
-					class49.midiPcmStream.method3760(var5);
+					class49.midiPcmStream.setPcmStreamVolume(var5);
 				} else {
 					class49.midiPcmStream.clear();
 					class49.midiPcmStream.removeAll();
@@ -1765,7 +1766,7 @@ public final class Client extends GameShell implements Usernamed {
 
 					if (class49.midiPcmStream.loadMusicTrack(class197.musicTrack, class197.musicPatchesArchive, FriendLoginUpdate.soundCache, 22050)) {
 						class49.midiPcmStream.clearAll();
-						class49.midiPcmStream.method3760(TileItem.field1223);
+						class49.midiPcmStream.setPcmStreamVolume(TileItem.musicTrackVolume);
 						class49.midiPcmStream.setMusicTrack(class197.musicTrack, WorldMapSectionType.musicTrackBoolean);
 						class197.field2386 = 0;
 						class197.musicTrack = null;

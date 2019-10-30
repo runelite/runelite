@@ -1784,6 +1784,24 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
+	@Inject
+	@Override
+	public void setMusicVolume(int volume)
+	{
+		if (volume > 0 && client.getMusicVolume() <= 0 && client.getcurrentTrackGroupId() != -1)
+		{
+			client.playMusicTrack(client.getMusicTracks(), client.getcurrentTrackGroupId(), 0, volume, false);
+		}
+
+		client.setClientMusicVolume(volume);
+		client.setMusicTrackVolume(volume);
+		if (client.getMidiPcmStream() != null)
+		{
+			client.getMidiPcmStream().setPcmStreamVolume(volume);
+		}
+	}
+
+
 	@Copy("changeGameOptions")
 	public static void rs$changeGameOptions(int var0)
 	{
@@ -1798,7 +1816,7 @@ public abstract class RSClientMixin implements RSClient
 		int type = client.getVarpDefinition(var0).getType();
 		if (type == 3 || type == 4 || type == 10)
 		{
-			VolumeChanged volumeChanged = new VolumeChanged(null);
+			VolumeChanged volumeChanged = new VolumeChanged(type == 3 ? VolumeChanged.Type.MUSIC : type == 4 ? VolumeChanged.Type.EFFECTS : VolumeChanged.Type.AREA);
 			client.getCallbacks().post(VolumeChanged.class, volumeChanged);
 		}
 	}

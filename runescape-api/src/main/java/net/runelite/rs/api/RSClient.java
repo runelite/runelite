@@ -449,6 +449,9 @@ public interface RSClient extends RSGameShell, Client
 	@Import("SpriteBuffer_spritePalette")
 	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
+	@Import("archive6")
+	RSAbstractArchive getMusicTracks();
+
 	@Import("archive8")
 	@Override
 	RSAbstractArchive getIndexSprites();
@@ -1047,8 +1050,7 @@ public interface RSClient extends RSGameShell, Client
 	int getMusicVolume();
 
 	@Import("musicVolume")
-	@Override
-	void setMusicVolume(int volume);
+	void setClientMusicVolume(int volume);
 
 	@Import("areaSoundEffectVolume")
 	@Override
@@ -1066,8 +1068,20 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	void setSoundEffectVolume(int volume);
 
+	@Import("musicTrackVolume")
+	void setMusicTrackVolume(int volume);
+
 	@Import("viewportWalking")
 	void setViewportWalking(boolean viewportWalking);
+
+	@Import("playMusicTrack")
+	void playMusicTrack(RSAbstractArchive var0, int var1, int var2, int var3, boolean var4);
+
+	@Import("midiPcmStream")
+	RSMidiPcmStream getMidiPcmStream();
+
+	@Import("currentTrackGroupId")
+	int getcurrentTrackGroupId();
 
 	@Import("crossSprites")
 	@Override

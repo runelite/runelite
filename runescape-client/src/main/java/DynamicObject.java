@@ -213,10 +213,10 @@ public class DynamicObject extends Entity {
 		class197.musicTrackArchive = null;
 		class188.musicTrackGroupId = -1;
 		class49.musicTrackFileId = -1;
-		TileItem.field1223 = 0;
+		TileItem.musicTrackVolume = 0;
 		WorldMapSectionType.musicTrackBoolean = false;
 		MusicPatchNode2.field2382 = 2;
-		Client.field666 = -1;
+		Client.currentTrackGroupId = -1;
 		Client.field759 = false;
 		ClientPacket.method3581();
 		MouseRecorder.updateGameState(10);
