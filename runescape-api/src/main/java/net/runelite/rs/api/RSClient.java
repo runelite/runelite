@@ -454,11 +454,11 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("archive8")
 	@Override
-	RSAbstractArchive getIndexSprites();
+	RSArchive getIndexSprites();
 
 	@Import("archive12")
 	@Override
-	RSAbstractArchive getIndexScripts();
+	RSArchive getIndexScripts();
 
 	@Import("widgetClickMasks")
 	@Override
@@ -1040,7 +1040,7 @@ public interface RSClient extends RSGameShell, Client
 	RSPcmStreamMixer getSoundEffectAudioQueue();
 
 	@Import("archive4")
-	RSAbstractArchive getIndexCache4();
+	RSArchive getIndexCache4();
 
 	@Import("decimator")
 	RSDecimator getSoundEffectResampler();
