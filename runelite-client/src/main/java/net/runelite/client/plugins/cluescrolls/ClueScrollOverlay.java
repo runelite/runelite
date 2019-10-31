@@ -103,9 +103,10 @@ public class ClueScrollOverlay extends Overlay
 			{
 				if (client.getVar(varbit) == 1)
 				{
-					break;
+					return panelComponent.render(graphics);
 				}
 			}
+
 			panelComponent.getChildren().add(LineComponent.builder().left("").build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.ORANGE).build());
 		}
