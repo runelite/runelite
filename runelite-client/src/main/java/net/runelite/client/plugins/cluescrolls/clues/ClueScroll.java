@@ -37,6 +37,10 @@ public abstract class ClueScroll
 	@Getter(AccessLevel.PUBLIC)
 	private boolean requiresSpade;
 
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private boolean requiresLight;
+
 	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
 
 	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);

@@ -32,9 +32,11 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.VariableItemRequirement;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -43,9 +45,16 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+import static net.runelite.api.ItemID.*;
+
 public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
+	private static final int[] LIGHT_SOURCES = new int[]{LIT_CANDLE,CANDLE_LANTERN_4531, FIREMAKING_CAPE,
+			FIREMAKING_CAPET, BRUMA_TORCH, KANDARIN_HEADGEAR_1, KANDARIN_HEADGEAR_2, KANDARIN_HEADGEAR_3,
+			KANDARIN_HEADGEAR_4, MINING_HELMET_5014, BULLSEYE_LANTERN_4550, OIL_LANTERN_4539, OIL_LAMP_4524,
+			LIT_BLACK_CANDLE, SAPPHIRE_LANTERN_4702, EMERALD_LANTERN_20722, OIL_LAMP_4524, LIT_TORCH};
+	private static final ItemRequirement HAS_LIGHT = new VariableItemRequirement("LightSource", LIGHT_SOURCES);
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
@@ -82,6 +91,15 @@ public class ClueScrollOverlay extends Overlay
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
+			}
+		}
+
+		if (clue.isRequiresLight() && plugin.getInventoryItems() != null)
+		{
+			if(!HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems()))
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("").build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.RED).build());
 			}
 		}
 
