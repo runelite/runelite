@@ -1795,8 +1795,6 @@ public interface Client extends GameShell
 	 */
 	void removeFriend(String name);
 
-	BigInteger getModulus();
-
 	void setModulus(BigInteger modulus);
 
 	/**
