@@ -38,7 +38,6 @@ include(":deobfuscator")
 include(":runelite-script-assembler-plugin")
 include(":runelite-client")
 include(":runelite-mixins")
-include(":injector-plugin")
 include(":injected-client")
 include(":runelite-plugin-archetype")
 include(":http-service")
@@ -47,7 +46,7 @@ include(":wiki-scraper")
 
 for (project in rootProject.children) {
     project.apply {
-        projectDir = file("$name")
+        projectDir = file(name)
         buildFileName = "$name.gradle.kts"
 
         require(projectDir.isDirectory) { "Project '${project.path} must have a $projectDir directory" }

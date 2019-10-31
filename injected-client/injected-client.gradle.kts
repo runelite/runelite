@@ -28,31 +28,44 @@ apply<FernflowerPlugin>()
 
 description = "Injected Client"
 
+plugins {
+    id("com.openosrs.injector")
+}
 
+configurations {
+    create("vanilla")
+    create("injected-client")
+}
+
+dependencies {
+    "vanilla"(Libraries.vanilla)
+}
+
+injector {
+    mixins.set(tasks.getByPath(":runelite-mixins:jar").outputs.files.singleFile)
+    rsapi.set(tasks.getByPath(":runescape-api:jar").outputs.files.singleFile)
+    rsclient.set(tasks.getByPath(":runescape-client:jar").outputs.files.singleFile)
+    vanilla.set(project.file(configurations["vanilla"].asPath))
+}
+
+artifacts {
+    add("runtime", tasks.inject.get().output) {
+        builtBy(tasks.inject)
+    }
+}
+
+// keep the sourcesets etc but remove useless tasks
 tasks {
-    compileJava {
-        dependsOn(":injector-plugin:assemble")
-
-        outputs.upToDateWhen { false }
-
-        doLast {
-            copy {
-                val f = file ("build/classes/java/main")
-                f.deleteRecursively()
-                f.mkdirs()
-                from(project.extra["injectedClassesPath"])
-                into("build/classes/java/main")
-            }
-        }
-    }
-
     classes {
-        val f = file("build/classes/java/main/Placeholder.class")
-        f.delete()
+        enabled = false
     }
-
-    // this is just here to show how the fernflower plugin could be used
-    //build {
-    //    dependsOn(project.tasks.getByName("decompile"))
-    //}
+    compileJava {
+        enabled = false
+    }
+    jar {
+        enabled = false
+    }
+    processResources {
+        enabled = false
+    }
 }

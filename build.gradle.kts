@@ -29,10 +29,12 @@ import org.ajoberstar.grgit.Grgit
 buildscript {
     repositories {
         maven(url = "https://plugins.gradle.org/m2/")
+        mavenLocal()
     }
     dependencies {
         classpath(Plugins.grgitPlugin)
         classpath(Plugins.versionsPlugin)
+        classpath(Plugins.injectorPlugin)
     }
 }
 
@@ -57,7 +59,9 @@ fun isNonStable(version: String): Boolean {
 }
 
 allprojects {
+    apply<JavaLibraryPlugin>()
     apply<MavenPlugin>()
+    apply<MavenPublishPlugin>()
 
     group = "com.openosrs"
     version = ProjectVersions.rlVersion
@@ -66,16 +70,23 @@ allprojects {
     project.extra["gitCommitShort"] = localGitCommitShort
 
     project.extra["rootPath"] = rootDir.toString().replace("\\", "/")
-    project.extra["injectedClassesPath"] = "${rootDir}/injector-plugin/out/injected-client/"
 }
 
 subprojects {
-    apply<JavaLibraryPlugin>()
-    apply<MavenPlugin>()
-    apply<MavenPublishPlugin>()
     apply(plugin = Plugins.testLogger.first)
 
-    if (this.name != "rs-client") apply(plugin = "checkstyle")
+    if (this.name != "runescape-client") {
+        apply(plugin = "checkstyle")
+        configure<CheckstyleExtension> {
+            sourceSets = setOf(project.sourceSets.main.get())
+            configFile = file("${rootDir}/checkstyle/checkstyle.xml")
+            configProperties = mapOf("suppressionFile" to file("${rootDir}/checkstyle/suppressions.xml"))
+            maxWarnings = 0
+            toolVersion = "6.4.1"
+            isShowViolations = true
+            isIgnoreFailures = false
+        }
+    }
 
     repositories {
         mavenLocal()
@@ -88,16 +99,6 @@ subprojects {
         if (System.getenv("NEXUS-URL") != null) {
             maven(url = System.getenv("NEXUS-URL"))
         }
-    }
-
-    configure<CheckstyleExtension> {
-        sourceSets = setOf(project.sourceSets.main.get())
-        configFile = file("${rootDir}/checkstyle/checkstyle.xml")
-        configProperties = mapOf("suppressionFile" to file("${rootDir}/checkstyle/suppressions.xml"))
-        maxWarnings = 0
-        toolVersion = "6.4.1"
-        isShowViolations = true
-        isIgnoreFailures = false
     }
 
     configure<PublishingExtension> {
