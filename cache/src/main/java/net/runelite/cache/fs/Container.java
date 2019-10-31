@@ -166,6 +166,7 @@ public class Container
 				{
 					revision = stream.readUnsignedShort();
 					assert revision != -1;
+					//the argument is short 
 				}
 
 				stream = new InputStream(decryptedData);
