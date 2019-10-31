@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, David <https://github.com/drahenshaw>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,11 +33,10 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.VariableItemRequirement;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -44,17 +44,13 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
 import static net.runelite.api.ItemID.*;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
 
 public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
-	private static final int[] LIGHT_SOURCES = new int[]{LIT_CANDLE,CANDLE_LANTERN_4531, FIREMAKING_CAPE,
-			FIREMAKING_CAPET, BRUMA_TORCH, KANDARIN_HEADGEAR_1, KANDARIN_HEADGEAR_2, KANDARIN_HEADGEAR_3,
-			KANDARIN_HEADGEAR_4, MINING_HELMET_5014, BULLSEYE_LANTERN_4550, OIL_LANTERN_4539, OIL_LAMP_4524,
-			LIT_BLACK_CANDLE, SAPPHIRE_LANTERN_4702, EMERALD_LANTERN_20722, OIL_LAMP_4524, LIT_TORCH};
-	private static final ItemRequirement HAS_LIGHT = new VariableItemRequirement("LightSource", LIGHT_SOURCES);
+	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source", item(LIT_CANDLE), item(CANDLE_LANTERN_4531), item(MAX_CAPE), item(FIREMAKING_CAPE), item(FIREMAKING_CAPET), item(BRUMA_TORCH), item(KANDARIN_HEADGEAR_1), item(KANDARIN_HEADGEAR_2), item(KANDARIN_HEADGEAR_3), item(KANDARIN_HEADGEAR_4), item(MINING_HELMET_5014), item(BULLSEYE_LANTERN_4550), item(OIL_LANTERN_4539), item(OIL_LAMP_4524), item(LIT_BLACK_CANDLE), item(SAPPHIRE_LANTERN_4702), item(EMERALD_LANTERN_20722), item(OIL_LAMP_4524), item(LIT_TORCH));
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
@@ -94,12 +90,30 @@ public class ClueScrollOverlay extends Overlay
 			}
 		}
 
-		if (clue.isRequiresLight() && plugin.getInventoryItems() != null)
+		if (clue.isRequiresLight())
 		{
-			if(!HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems()))
+			boolean missingLight = true;
+
+			if (plugin.getInventoryItems() != null)
+			{
+				if (HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()))
+				{
+					missingLight = false;
+				}
+			}
+
+			if (plugin.getEquippedItems() != null && !missingLight)
+			{
+				if (HAS_LIGHT.fulfilledBy(plugin.getEquippedItems()))
+				{
+					missingLight = false;
+				}
+			}
+
+			if (missingLight)
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.RED).build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.ORANGE).build());
 			}
 		}
 
