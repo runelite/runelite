@@ -203,16 +203,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapPickpocket",
-		name = "Pickpocket",
-		description = "Swap Talk-to with Pickpocket"
-	)
-	default boolean swapPickpocket()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
@@ -310,5 +300,35 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapEnchant()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapTeleportSpell",
+		name = "Shift-click teleport spells",
+		description = "Swap teleport spells that have a second destination on shift"
+	)
+	default boolean swapTeleportSpell()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapStartMinigame",
+		name = "Pyramid Plunder Start-minigame",
+		description = "Swap Talk-to with Start-minigame at the Guardian Mummy"
+	)
+	default boolean swapStartMinigame()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapQuickleave",
+		name = "Quick-Leave",
+		description = "Swap Leave Tomb with Quick-Leave at Pyramid Plunder"
+	)
+	default boolean swapQuickLeave()
+	{
+		return false;
 	}
 }

@@ -386,6 +386,7 @@ public class FishingPlugin extends Plugin
 		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
 			log.debug("Trawler session ended");
+			trawlerStartTime = null;
 			return;
 		}
 

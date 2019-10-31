@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContainerCalculationTest
@@ -77,8 +77,6 @@ public class ContainerCalculationTest
 		).toArray(new Item[0]);
 
 		ItemComposition whipComp = mock(ItemComposition.class);
-		when(whipComp.getId())
-			.thenReturn(ItemID.ABYSSAL_WHIP);
 		when(whipComp.getPrice())
 			.thenReturn(7); // 7 * .6 = 4, 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
