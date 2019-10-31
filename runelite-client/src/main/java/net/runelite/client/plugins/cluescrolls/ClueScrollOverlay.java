@@ -59,14 +59,13 @@ public class ClueScrollOverlay extends Overlay
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 	private final ClueScrollPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
 	private Client client;
 
 	@Inject
-	private ClueScrollOverlay(ClueScrollPlugin plugin)
+	private ClueScrollOverlay(Client client, ClueScrollPlugin plugin)
 	{
 		super(plugin);
+		this.client = client;
 		this.plugin = plugin;
 		setPriority(OverlayPriority.LOW);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay"));
