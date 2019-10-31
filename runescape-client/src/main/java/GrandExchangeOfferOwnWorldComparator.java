@@ -832,7 +832,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 
 											if (var2 != 1007) {
 												if (var2 == 1011 || var2 == 1008 || var2 == 1010 || var2 == 1009 || var2 == 1012) {
-													Login.worldMap.menuAction(var2, var3, new Coord(var0), new Coord(var1));
+													Login.worldMap.worldMapMenuAction(var2, var3, new Coord(var0), new Coord(var1));
 												}
 												break label795;
 											}

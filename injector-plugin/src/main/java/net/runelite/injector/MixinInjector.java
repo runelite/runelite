@@ -525,7 +525,7 @@ public class MixinInjector
 				String deobMethodName = (String) replaceAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method);
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 				if (deobMethod == null)
 				{
@@ -739,16 +739,14 @@ public class MixinInjector
 		}
 	}
 
-	private Method findDeobMethod(ClassFile deobCf, String deobMethodName, Method mixinMethod)
+	private Method findDeobMethod(ClassFile deobCf, String deobMethodName, Signature descriptor)
 		throws InjectionException
 	{
-		final Signature descriptor = mixinMethod.getDescriptor();
-		final List<Method> matchingMethods = new ArrayList<>();
-		final boolean stat = mixinMethod.isStatic();
+		List<Method> matchingMethods = new ArrayList<>();
 
 		for (Method m : deobCf.getMethods())
 		{
-			if (!deobMethodName.equals(m.getName()) || m.isStatic() != stat)
+			if (!deobMethodName.equals(m.getName()))
 			{
 				continue;
 			}
@@ -968,7 +966,7 @@ public class MixinInjector
 					String hookName = methodHook.getElement().getString();
 					boolean end = methodHook.getElements().size() == 2 && methodHook.getElements().get(1).getValue().equals(true);
 					ClassFile deobCf = inject.toDeobClass(cf);
-					Method targetMethod = findDeobMethod(deobCf, hookName, method);
+					Method targetMethod = findDeobMethod(deobCf, hookName, method.getDescriptor());
 
 					if (targetMethod == null)
 					{
