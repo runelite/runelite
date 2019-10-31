@@ -63,7 +63,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getCameraZ2();
 
-	@Import("plane")
+	@Import("Client_plane")
 	@Override
 	int getPlane();
 
@@ -904,7 +904,7 @@ public interface RSClient extends RSGameShell, Client
 	@Import("Scene_cameraYTile")
 	void setScreenCenterZ(int screenCenterZ); // <-- This is correct!
 
-	@Import("Scene_plane")
+	@Import("Client_plane")
 	void setScenePlane(int scenePlane);
 
 	@Import("Scene_cameraXTileMin")

@@ -4,58 +4,73 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("dy")
 @Implements("TileItemPile")
 public final class TileItemPile {
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "Ler;"
-	)
-	@Export("first")
-	Entity first;
-	@ObfuscatedName("n")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -149113077
+		intValue = 960185027
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 905063527
+		intValue = 518288239
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1956463223
+		intValue = 1518597633
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("r")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Ler;"
+		signature = "Lep;"
+	)
+	@Export("first")
+	Entity first;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lep;"
 	)
 	@Export("second")
 	Entity second;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Ler;"
+		signature = "Lep;"
 	)
 	@Export("third")
 	Entity third;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		longValue = 3581588196263566823L
+		longValue = 1765844833924880689L
 	)
 	@Export("tag")
 	long tag;
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 814116925
+		intValue = -483031039
 	)
 	@Export("height")
 	int height;
 
 	TileItemPile() {
+	}
+
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "(Lhq;Lhq;Lhq;Lhq;I)V",
+		garbageValue = "320810810"
+	)
+	@Export("Widget_setArchives")
+	public static void Widget_setArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
+		Coord.Widget_archive = var0;
+		StructDefinition.Widget_modelsArchive = var1;
+		Widget.Widget_spritesArchive = var2;
+		Widget.Widget_fontsArchive = var3;
+		Widget.Widget_interfaceComponents = new Widget[Coord.Widget_archive.getGroupCount()][];
+		class215.Widget_loadedInterfaces = new boolean[Coord.Widget_archive.getGroupCount()];
 	}
 }

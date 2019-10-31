@@ -1,47 +1,45 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("de")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("bd")
-	@ObfuscatedSignature(
-		signature = "Lhs;"
-	)
-	static ServerBuild field1726;
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 511779629
-	)
-	@Export("magnitude")
-	int magnitude;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = 162355823
+		intValue = 300716537
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 669484941
+		intValue = -888954877
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1691554905
+		intValue = -284116179
 	)
 	@Export("z")
 	int z;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -1281469655
+	)
+	@Export("magnitude")
+	int magnitude;
 
 	VertexNormal() {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ldp;)V"
+		signature = "(Lde;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x;
@@ -50,85 +48,191 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-		garbageValue = "-1499927610"
+		signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
+		garbageValue = "43195180"
 	)
-	public static String method2961(CharSequence var0) {
-		long var3 = 0L;
-		int var5 = var0.length();
+	@Export("getCacheDir")
+	static File getCacheDir(String var0, String var1, int var2) {
+		String var3 = var2 == 0 ? "" : "" + var2;
+		SecureRandomCallable.JagexCache_locationFile = new File(class30.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
+		String var4 = null;
+		String var5 = null;
+		boolean var6 = false;
+		Buffer var8;
+		int var11;
+		File var27;
+		if (SecureRandomCallable.JagexCache_locationFile.exists()) {
+			try {
+				AccessFile var7 = new AccessFile(SecureRandomCallable.JagexCache_locationFile, "rw", 10000L);
 
-		for (int var6 = 0; var6 < var5; ++var6) {
-			var3 *= 37L;
-			char var7 = var0.charAt(var6);
-			if (var7 >= 'A' && var7 <= 'Z') {
-				var3 += (long)(var7 + 1 - 65);
-			} else if (var7 >= 'a' && var7 <= 'z') {
-				var3 += (long)(var7 + 1 - 97);
-			} else if (var7 >= '0' && var7 <= '9') {
-				var3 += (long)(var7 + 27 - 48);
+				int var9;
+				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
+					var9 = var7.read(var8.array, var8.offset, var8.array.length - var8.offset);
+					if (var9 == -1) {
+						throw new IOException();
+					}
+				}
+
+				var8.offset = 0;
+				var9 = var8.readUnsignedByte();
+				if (var9 < 1 || var9 > 3) {
+					throw new IOException("" + var9);
+				}
+
+				int var10 = 0;
+				if (var9 > 1) {
+					var10 = var8.readUnsignedByte();
+				}
+
+				if (var9 <= 2) {
+					var4 = var8.readStringCp1252NullCircumfixed();
+					if (var10 == 1) {
+						var5 = var8.readStringCp1252NullCircumfixed();
+					}
+				} else {
+					var4 = var8.readCESU8();
+					if (var10 == 1) {
+						var5 = var8.readCESU8();
+					}
+				}
+
+				var7.close();
+			} catch (IOException var25) {
+				var25.printStackTrace();
 			}
 
-			if (var3 >= 177917621779460413L) {
-				break;
+			if (var4 != null) {
+				var27 = new File(var4);
+				if (!var27.exists()) {
+					var4 = null;
+				}
+			}
+
+			if (var4 != null) {
+				var27 = new File(var4, "test.dat");
+
+				boolean var28;
+				try {
+					RandomAccessFile var15 = new RandomAccessFile(var27, "rw");
+					var11 = var15.read();
+					var15.seek(0L);
+					var15.write(var11);
+					var15.seek(0L);
+					var15.close();
+					var27.delete();
+					var28 = true;
+				} catch (Exception var23) {
+					var28 = false;
+				}
+
+				if (!var28) {
+					var4 = null;
+				}
 			}
 		}
 
-		while (var3 % 37L == 0L && 0L != var3) {
-			var3 /= 37L;
+		if (var4 == null && var2 == 0) {
+			label155:
+			for (int var16 = 0; var16 < class312.field3803.length; ++var16) {
+				for (int var17 = 0; var17 < BoundaryObject.field1859.length; ++var17) {
+					File var18 = new File(BoundaryObject.field1859[var17] + class312.field3803[var16] + File.separatorChar + var0 + File.separatorChar);
+					if (var18.exists()) {
+						File var19 = new File(var18, "test.dat");
+
+						boolean var29;
+						try {
+							RandomAccessFile var12 = new RandomAccessFile(var19, "rw");
+							int var13 = var12.read();
+							var12.seek(0L);
+							var12.write(var13);
+							var12.seek(0L);
+							var12.close();
+							var19.delete();
+							var29 = true;
+						} catch (Exception var22) {
+							var29 = false;
+						}
+
+						if (var29) {
+							var4 = var18.toString();
+							var6 = true;
+							break label155;
+						}
+					}
+				}
+			}
 		}
 
-		String var8 = World.base37DecodeLong(var3);
-		if (var8 == null) {
-			var8 = "";
+		if (var4 == null) {
+			var4 = class30.userHomeDirectory + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
+			var6 = true;
 		}
 
-		return var8;
-	}
+		File var26;
+		if (var5 != null) {
+			var26 = new File(var5);
+			var27 = new File(var4);
 
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1992175982"
-	)
-	public static void method2960() {
-		class49.midiPcmStream.clear();
-		class197.field2386 = 1;
-		class197.musicTrackArchive = null;
-	}
+			try {
+				File[] var33 = var26.listFiles();
+				File[] var31 = var33;
 
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "11"
-	)
-	public static void method2959() {
-		synchronized(MouseHandler.MouseHandler_instance) {
-			MouseHandler.MouseHandler_currentButton = MouseHandler.MouseHandler_currentButtonVolatile;
-			MouseHandler.MouseHandler_x = MouseHandler.MouseHandler_xVolatile;
-			MouseHandler.MouseHandler_y = MouseHandler.MouseHandler_yVolatile;
-			MouseHandler.MouseHandler_millis = MouseHandler.MouseHandler_lastMovedVolatile;
-			MouseHandler.MouseHandler_lastButton = MouseHandler.MouseHandler_lastButtonVolatile;
-			MouseHandler.MouseHandler_lastPressedX = MouseHandler.MouseHandler_lastPressedXVolatile;
-			MouseHandler.MouseHandler_lastPressedY = MouseHandler.MouseHandler_lastPressedYVolatile;
-			MouseHandler.MouseHandler_lastPressedTimeMillis = MouseHandler.MouseHandler_lastPressedTimeMillisVolatile;
-			MouseHandler.MouseHandler_lastButtonVolatile = 0;
+				for (var11 = 0; var11 < var31.length; ++var11) {
+					File var30 = var31[var11];
+					File var20 = new File(var27, var30.getName());
+					boolean var14 = var30.renameTo(var20);
+					if (!var14) {
+						throw new IOException();
+					}
+				}
+			} catch (Exception var24) {
+				var24.printStackTrace();
+			}
+
+			var6 = true;
 		}
+
+		if (var6) {
+			var26 = new File(var4);
+			var8 = null;
+
+			try {
+				AccessFile var34 = new AccessFile(SecureRandomCallable.JagexCache_locationFile, "rw", 10000L);
+				Buffer var32 = new Buffer(500);
+				var32.writeByte(3);
+				var32.writeByte(var8 != null ? 1 : 0);
+				var32.writeCESU8(var26.getPath());
+				if (var8 != null) {
+					var32.writeCESU8("");
+				}
+
+				var34.write(var32.array, 0, var32.offset);
+				var34.close();
+			} catch (IOException var21) {
+				var21.printStackTrace();
+			}
+		}
+
+		return new File(var4);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIS)Z",
-		garbageValue = "18259"
+		signature = "(Lhq;II)Llw;",
+		garbageValue = "-1257586004"
 	)
-	static boolean method2962(AbstractArchive var0, int var1, int var2) {
-		byte[] var3 = var0.takeFile(var1, var2);
+	public static IndexedSprite method3121(AbstractArchive var0, int var1) {
+		byte[] var3 = var0.takeFileFlat(var1);
+		boolean var2;
 		if (var3 == null) {
-			return false;
+			var2 = false;
 		} else {
-			Tiles.SpriteBuffer_decode(var3);
-			return true;
+			Message.SpriteBuffer_decode(var3);
+			var2 = true;
 		}
+
+		return !var2 ? null : class51.method975();
 	}
 }

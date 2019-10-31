@@ -1,90 +1,81 @@
 import java.applet.Applet;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("at")
+@ObfuscatedName("as")
 public class class51 {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@Export("applet")
-	public static Applet applet;
-	@ObfuscatedName("n")
-	public static String field406;
-	@ObfuscatedName("m")
+	static Applet applet;
+	@ObfuscatedName("t")
+	static String field416;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Llf;"
+		signature = "Llw;"
 	)
-	@Export("rightTitleSprite")
-	static Sprite rightTitleSprite;
-	@ObfuscatedName("i")
+	static IndexedSprite field412;
+	@ObfuscatedName("fv")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Lks;"
 	)
-	@Export("World_request")
-	static UrlRequest World_request;
-	@ObfuscatedName("kc")
-	@ObfuscatedGetter(
-		intValue = -1418069311
-	)
-	@Export("menuY")
-	static int menuY;
+	@Export("fontPlain11")
+	static Font fontPlain11;
 
 	static {
 		applet = null;
-		field406 = "";
+		field416 = "";
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "-150727859"
+		signature = "(I)[Lhy;",
+		garbageValue = "1830105975"
 	)
-	static int method921(int var0, Script var1, boolean var2) {
-		Widget var3 = Canvas.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-		if (var0 == ScriptOpcodes.IF_GETX) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.x;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETY) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.y;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETWIDTH) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.width;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETHEIGHT) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.height;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETHIDE) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETLAYER) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.parentId;
-			return 1;
-		} else {
-			return 2;
-		}
+	@Export("PlayerType_values")
+	public static PlayerType[] PlayerType_values() {
+		return new PlayerType[]{PlayerType.PlayerType_hardcoreIronman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_ironman, PlayerType.PlayerType_normal};
 	}
 
-	@ObfuscatedName("jo")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1129572121"
+		signature = "(I)Llw;",
+		garbageValue = "2066459689"
 	)
-	static final void method922() {
-		PacketBufferNode var0 = InterfaceParent.getPacketBufferNode(ClientPacket.field2241, Client.packetWriter.isaacCipher);
-		Client.packetWriter.addNode(var0);
+	static IndexedSprite method975() {
+		IndexedSprite var0 = new IndexedSprite();
+		var0.width = class325.SpriteBuffer_spriteWidth;
+		var0.height = class325.SpriteBuffer_spriteHeight;
+		var0.xOffset = SecureRandomFuture.SpriteBuffer_xOffsets[0];
+		var0.yOffset = HealthBar.SpriteBuffer_yOffsets[0];
+		var0.subWidth = SecureRandomCallable.SpriteBuffer_spriteWidths[0];
+		var0.subHeight = AttackOption.SpriteBuffer_spriteHeights[0];
+		var0.palette = class325.SpriteBuffer_spritePalette;
+		var0.pixels = class325.SpriteBuffer_pixels[0];
+		WorldMapData_1.method787();
+		return var0;
+	}
 
-		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
-			if (var1.type == 0 || var1.type == 3) {
-				FontName.closeInterface(var1, true);
-			}
+	@ObfuscatedName("ic")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "1215512172"
+	)
+	@Export("selectSpell")
+	static void selectSpell(int var0, int var1, int var2, int var3) {
+		Widget var4 = ArchiveLoader.getWidgetChild(var0, var1);
+		if (var4 != null && var4.onTargetEnter != null) {
+			ScriptEvent var5 = new ScriptEvent();
+			var5.widget = var4;
+			var5.args = var4.onTargetEnter;
+			GrandExchangeOfferAgeComparator.runScriptEvent(var5);
 		}
 
-		if (Client.meslayerContinueWidget != null) {
-			WorldMapSectionType.invalidateWidget(Client.meslayerContinueWidget);
-			Client.meslayerContinueWidget = null;
-		}
-
+		Client.field788 = var3;
+		Client.isSpellSelected = true;
+		Clock.selectedSpellWidget = var0;
+		Client.selectedSpellChildIndex = var1;
+		class81.selectedSpellFlags = var2;
+		GrandExchangeOfferAgeComparator.invalidateWidget(var4);
 	}
 }

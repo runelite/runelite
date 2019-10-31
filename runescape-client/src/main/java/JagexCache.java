@@ -8,42 +8,44 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fh")
 @Implements("JagexCache")
 public class JagexCache {
-	@ObfuscatedName("u")
-	@Export("JagexCache_locationFile")
-	static File JagexCache_locationFile;
-	@ObfuscatedName("p")
+	@ObfuscatedName("v")
+	@Export("cacheDir")
+	static File cacheDir;
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 34524443
+		intValue = 642051021
 	)
 	@Export("idxCount")
-	public static int idxCount;
-	@ObfuscatedName("y")
+	static int idxCount;
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -424456649
+		intValue = 1587061671
 	)
-	@Export("ItemDefinition_fileCount")
-	public static int ItemDefinition_fileCount;
-	@ObfuscatedName("b")
+	static int field2030;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lmm;"
+		signature = "Lmz;"
 	)
 	@Export("JagexCache_randomDat")
 	public static BufferedFile JagexCache_randomDat;
-	@ObfuscatedName("o")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "Lmm;"
+		signature = "Lmz;"
 	)
 	@Export("JagexCache_dat2File")
 	public static BufferedFile JagexCache_dat2File;
-	@ObfuscatedName("a")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lmm;"
+		signature = "Lmz;"
 	)
 	@Export("JagexCache_idx255File")
 	public static BufferedFile JagexCache_idx255File;
-	@ObfuscatedName("j")
-	@Export("userHomeDirectory")
-	public static String userHomeDirectory;
+	@ObfuscatedName("br")
+	@ObfuscatedSignature(
+		signature = "[Llw;"
+	)
+	@Export("worldSelectFlagSprites")
+	static IndexedSprite[] worldSelectFlagSprites;
 
 	static {
 		JagexCache_randomDat = null;
@@ -51,26 +53,16 @@ public class JagexCache {
 		JagexCache_idx255File = null;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("gy")
 	@ObfuscatedSignature(
-		signature = "(IB)Lir;",
-		garbageValue = "62"
+		signature = "(I)V",
+		garbageValue = "1986411014"
 	)
-	@Export("StructDefinition_getStructDefinition")
-	public static StructDefinition StructDefinition_getStructDefinition(int var0) {
-		StructDefinition var1 = (StructDefinition)StructDefinition.StructDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = StructDefinition.StructDefinition_archive.takeFile(34, var0);
-			var1 = new StructDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			StructDefinition.StructDefinition_cached.put(var1, (long)var0);
-			return var1;
+	static void method3624() {
+		if (Login.worldMap != null) {
+			Login.worldMap.method6437(Player.Client_plane, UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7), HealthBar.baseY * 64 + (class215.localPlayer.y >> 7), false);
+			Login.worldMap.loadCache();
 		}
+
 	}
 }

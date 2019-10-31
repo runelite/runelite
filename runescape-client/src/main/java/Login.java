@@ -4,136 +4,158 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("ci")
 @Implements("Login")
 public class Login {
+	@ObfuscatedName("se")
+	@ObfuscatedSignature(
+		signature = "Llo;"
+	)
+	@Export("worldMap")
+	static WorldMap worldMap;
+	@ObfuscatedName("t")
+	static boolean field1188;
 	@ObfuscatedName("n")
-	static boolean field1160;
-	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1085278935
+		intValue = 1763315451
 	)
 	@Export("xPadding")
 	static int xPadding;
-	@ObfuscatedName("u")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "[Llp;"
+		signature = "Llx;"
 	)
-	@Export("runesSprite")
-	static IndexedSprite[] runesSprite;
-	@ObfuscatedName("a")
-	@ObfuscatedSignature(
-		signature = "Llp;"
-	)
-	static IndexedSprite field1163;
+	@Export("leftTitleSprite")
+	static Sprite leftTitleSprite;
 	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		signature = "Llw;"
+	)
+	@Export("options_buttons_2Sprite")
+	static IndexedSprite options_buttons_2Sprite;
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "Lbv;"
+	)
+	@Export("loginScreenRunesAnimation")
+	static LoginScreenAnimation loginScreenRunesAnimation;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1106370935
+		intValue = -2059277113
 	)
 	@Export("loginBoxX")
 	static int loginBoxX;
 	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1258124087
+		intValue = 1978997765
 	)
 	@Export("Login_loadingPercent")
 	static int Login_loadingPercent;
-	@ObfuscatedName("j")
+	@ObfuscatedName("g")
 	@Export("Login_loadingText")
 	static String Login_loadingText;
-	@ObfuscatedName("aa")
+	@ObfuscatedName("aq")
 	@ObfuscatedGetter(
-		intValue = 1751945439
+		intValue = 1768123277
 	)
-	static int field1174;
-	@ObfuscatedName("ab")
+	static int field1156;
+	@ObfuscatedName("ak")
 	@ObfuscatedGetter(
-		intValue = -1223310887
+		intValue = -1622828931
 	)
-	static int field1171;
-	@ObfuscatedName("al")
+	static int field1166;
+	@ObfuscatedName("ax")
 	@ObfuscatedGetter(
-		intValue = -857433701
+		intValue = -750997095
 	)
 	@Export("loginIndex")
 	static int loginIndex;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("al")
 	@Export("Login_response0")
 	static String Login_response0;
-	@ObfuscatedName("an")
+	@ObfuscatedName("ap")
 	@Export("Login_response1")
 	static String Login_response1;
-	@ObfuscatedName("ai")
+	@ObfuscatedName("aj")
 	@Export("Login_response2")
 	static String Login_response2;
-	@ObfuscatedName("ak")
+	@ObfuscatedName("ae")
 	@Export("Login_response3")
 	static String Login_response3;
-	@ObfuscatedName("aq")
+	@ObfuscatedName("au")
 	@Export("Login_username")
 	static String Login_username;
-	@ObfuscatedName("am")
+	@ObfuscatedName("ah")
 	@Export("Login_password")
 	static String Login_password;
-	@ObfuscatedName("au")
-	static boolean field1176;
-	@ObfuscatedName("af")
-	static boolean field1192;
-	@ObfuscatedName("bh")
-	static boolean field1183;
-	@ObfuscatedName("bd")
+	@ObfuscatedName("ao")
 	@ObfuscatedGetter(
-		intValue = -1323916819
+		intValue = -557990001
+	)
+	static int field1174;
+	@ObfuscatedName("ac")
+	static boolean field1159;
+	@ObfuscatedName("at")
+	static boolean field1175;
+	@ObfuscatedName("bg")
+	static boolean field1177;
+	@ObfuscatedName("bc")
+	@ObfuscatedGetter(
+		intValue = -255503835
 	)
 	@Export("currentLoginField")
 	static int currentLoginField;
-	@ObfuscatedName("bs")
+	@ObfuscatedName("bh")
 	@Export("worldSelectOpen")
 	static boolean worldSelectOpen;
-	@ObfuscatedName("bi")
+	@ObfuscatedName("bj")
 	@ObfuscatedGetter(
-		intValue = 1218721579
+		intValue = -236759579
 	)
 	@Export("hoveredWorldIndex")
 	static int hoveredWorldIndex;
-	@ObfuscatedName("bb")
+	@ObfuscatedName("bm")
 	@ObfuscatedGetter(
-		intValue = 838409867
+		intValue = -1991064971
 	)
 	@Export("worldSelectPage")
 	static int worldSelectPage;
-	@ObfuscatedName("bt")
+	@ObfuscatedName("bn")
 	@ObfuscatedGetter(
-		intValue = -94881399
+		intValue = -1550903987
 	)
 	@Export("worldSelectPagesCount")
 	static int worldSelectPagesCount;
-	@ObfuscatedName("by")
+	@ObfuscatedName("bo")
 	@ObfuscatedGetter(
-		longValue = 5865138585351193781L
+		longValue = -6046220397950701943L
 	)
-	static long field1181;
-	@ObfuscatedName("bq")
+	static long field1185;
+	@ObfuscatedName("bk")
 	@ObfuscatedGetter(
-		longValue = 4842998671579245891L
+		longValue = -7219619967505319403L
 	)
-	static long field1177;
-	@ObfuscatedName("dn")
+	static long field1186;
+	@ObfuscatedName("gz")
 	@ObfuscatedSignature(
-		signature = "Lfv;"
+		signature = "[Llx;"
 	)
-	@Export("js5SocketTask")
-	static Task js5SocketTask;
+	@Export("headIconPrayerSprites")
+	static Sprite[] headIconPrayerSprites;
+	@ObfuscatedName("jq")
+	@ObfuscatedSignature(
+		signature = "Lhi;"
+	)
+	static Widget field1165;
 
 	static {
 		xPadding = 0;
 		loginBoxX = xPadding + 202;
 		Login_loadingPercent = 10;
 		Login_loadingText = "";
-		field1174 = -1;
-		field1171 = 1;
+		field1156 = -1;
+		field1166 = 1;
 		loginIndex = 0;
 		Login_response0 = "";
 		Login_response1 = "";
@@ -141,9 +163,9 @@ public class Login {
 		Login_response3 = "";
 		Login_username = "";
 		Login_password = "";
-		field1176 = false;
-		field1192 = false;
-		field1183 = true;
+		field1159 = false;
+		field1175 = false;
+		field1177 = true;
 		currentLoginField = 0;
 		worldSelectOpen = false;
 		hoveredWorldIndex = -1;
@@ -151,97 +173,25 @@ public class Login {
 		worldSelectPagesCount = 0;
 		new DecimalFormat("##0.00");
 		new class162();
-		field1181 = -1L;
-		field1177 = -1L;
+		field1185 = -1L;
+		field1186 = -1L;
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "432150558"
+		signature = "(I)V",
+		garbageValue = "-1795095420"
 	)
-	static int method2115(int var0, Script var1, boolean var2) {
-		int var3 = -1;
-		Widget var4;
-		if (var0 >= 2000) {
-			var0 -= 1000;
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			var4 = Canvas.getWidget(var3);
-		} else {
-			var4 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
-		}
-
-		if (var0 == ScriptOpcodes.CC_SETPOSITION) {
-			Interpreter.Interpreter_intStackSize -= 4;
-			var4.rawX = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
-			var4.rawY = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1];
-			var4.xAlignment = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 2];
-			var4.yAlignment = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 3];
-			WorldMapSectionType.invalidateWidget(var4);
-			ViewportMouse.client.alignWidget(var4);
-			if (var3 != -1 && var4.type == 0) {
-				GameShell.revalidateWidgetScroll(UserComparator5.Widget_interfaceComponents[var3 >> 16], var4, false);
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETSIZE) {
-			Interpreter.Interpreter_intStackSize -= 4;
-			var4.rawWidth = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize];
-			var4.rawHeight = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1];
-			var4.widthAlignment = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 2];
-			var4.heightAlignment = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 3];
-			WorldMapSectionType.invalidateWidget(var4);
-			ViewportMouse.client.alignWidget(var4);
-			if (var3 != -1 && var4.type == 0) {
-				GameShell.revalidateWidgetScroll(UserComparator5.Widget_interfaceComponents[var3 >> 16], var4, false);
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETHIDE) {
-			boolean var5 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-			if (var5 != var4.isHidden) {
-				var4.isHidden = var5;
-				WorldMapSectionType.invalidateWidget(var4);
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETNOCLICKTHROUGH) {
-			var4.noClickThrough = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_SETNOSCROLLTHROUGH) {
-			var4.noScrollThrough = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-			return 1;
-		} else {
-			return 2;
-		}
+	public static void method2258() {
+		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear();
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-161600604"
+		signature = "(I)Z",
+		garbageValue = "-722020095"
 	)
-	static final int method2100(int var0, int var1) {
-		int var2 = class160.method3416(var0 - 1, var1 - 1) + class160.method3416(var0 + 1, var1 - 1) + class160.method3416(var0 - 1, 1 + var1) + class160.method3416(1 + var0, var1 + 1);
-		int var3 = class160.method3416(var0 - 1, var1) + class160.method3416(var0 + 1, var1) + class160.method3416(var0, var1 - 1) + class160.method3416(var0, var1 + 1);
-		int var4 = class160.method3416(var0, var1);
-		return var2 / 16 + var3 / 8 + var4 / 4;
-	}
-
-	@ObfuscatedName("ge")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "8"
-	)
-	static void method2114() {
-		int var0 = Players.Players_count;
-		int[] var1 = Players.Players_indices;
-
-		for (int var2 = 0; var2 < var0; ++var2) {
-			if (var1[var2] != Client.combatTargetPlayerIndex && var1[var2] != Client.localPlayerIndex) {
-				Players.addPlayerToScene(Client.players[var1[var2]], true);
-			}
-		}
-
+	public static boolean method2256() {
+		return class197.field2377 != 0 ? true : class197.midiPcmStream.isReady();
 	}
 }

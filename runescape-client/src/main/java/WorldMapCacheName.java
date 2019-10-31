@@ -1,117 +1,183 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ao")
+@ObfuscatedName("ab")
 @Implements("WorldMapCacheName")
 public class WorldMapCacheName {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lao;"
+		signature = "Lab;"
 	)
-	public static final WorldMapCacheName field284;
-	@ObfuscatedName("n")
+	public static final WorldMapCacheName field288;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lao;"
+		signature = "Lab;"
 	)
 	public static final WorldMapCacheName field289;
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "Lab;"
+	)
+	public static final WorldMapCacheName field290;
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Lab;"
+	)
+	static final WorldMapCacheName field298;
 	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lao;"
+		signature = "Lab;"
 	)
-	public static final WorldMapCacheName field283;
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lao;"
-	)
-	static final WorldMapCacheName field285;
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "Lao;"
-	)
-	public static final WorldMapCacheName field287;
-	@ObfuscatedName("ay")
-	@ObfuscatedGetter(
-		intValue = 1366497929
-	)
-	static int field286;
-	@ObfuscatedName("p")
+	public static final WorldMapCacheName field292;
+	@ObfuscatedName("gu")
+	@Export("regionLandArchiveIds")
+	static int[] regionLandArchiveIds;
+	@ObfuscatedName("l")
 	@Export("name")
 	public final String name;
 
 	static {
-		field284 = new WorldMapCacheName("details");
+		field288 = new WorldMapCacheName("details");
 		field289 = new WorldMapCacheName("compositemap");
-		field283 = new WorldMapCacheName("compositetexture");
-		field285 = new WorldMapCacheName("area");
-		field287 = new WorldMapCacheName("labels");
+		field290 = new WorldMapCacheName("compositetexture");
+		field298 = new WorldMapCacheName("area");
+		field292 = new WorldMapCacheName("labels");
 	}
 
 	WorldMapCacheName(String var1) {
 		this.name = var1;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1512894139"
+		signature = "(IIIII)V",
+		garbageValue = "-1535608049"
 	)
-	static final void method644() {
-		EnumDefinition.method4508("Your ignore list is full. Max of 100 for free users, and 400 for members");
+	@Export("itemContainerSetItem")
+	static void itemContainerSetItem(int var0, int var1, int var2, int var3) {
+		ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var4 == null) {
+			var4 = new ItemContainer();
+			ItemContainer.itemContainers.put(var4, (long)var0);
+		}
+
+		if (var4.ids.length <= var1) {
+			int[] var5 = new int[var1 + 1];
+			int[] var6 = new int[var1 + 1];
+
+			int var7;
+			for (var7 = 0; var7 < var4.ids.length; ++var7) {
+				var5[var7] = var4.ids[var7];
+				var6[var7] = var4.quantities[var7];
+			}
+
+			for (var7 = var4.ids.length; var7 < var1; ++var7) {
+				var5[var7] = -1;
+				var6[var7] = 0;
+			}
+
+			var4.ids = var5;
+			var4.quantities = var6;
+		}
+
+		var4.ids[var1] = var2;
+		var4.quantities[var1] = var3;
 	}
 
-	@ObfuscatedName("ht")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "2059241635"
+		signature = "(I)V",
+		garbageValue = "-887333641"
 	)
-	@Export("updateItemPile")
-	static final void updateItemPile(int var0, int var1) {
-		NodeDeque var2 = Client.groundItems[WorldMapRectangle.plane][var0][var1];
-		if (var2 == null) {
-			PacketWriter.scene.removeGroundItemPile(WorldMapRectangle.plane, var0, var1);
+	public static void method682() {
+		KitDefinition.KitDefinition_cached.clear();
+	}
+
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "(Lhi;IB)V",
+		garbageValue = "-113"
+	)
+	@Export("Widget_setKeyIgnoreHeld")
+	static final void Widget_setKeyIgnoreHeld(Widget var0, int var1) {
+		if (var0.field2623 == null) {
+			throw new RuntimeException();
 		} else {
-			long var3 = -99999999L;
-			TileItem var5 = null;
-
-			TileItem var6;
-			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-				ItemDefinition var7 = Occluder.ItemDefinition_get(var6.id);
-				long var8 = (long)var7.price;
-				if (var7.isStackable == 1) {
-					var8 *= (long)(var6.quantity + 1);
-				}
-
-				if (var8 > var3) {
-					var3 = var8;
-					var5 = var6;
-				}
+			if (var0.field2627 == null) {
+				var0.field2627 = new int[var0.field2623.length];
 			}
 
-			if (var5 == null) {
-				PacketWriter.scene.removeGroundItemPile(WorldMapRectangle.plane, var0, var1);
-			} else {
-				var2.addLast(var5);
-				TileItem var12 = null;
-				TileItem var11 = null;
-
-				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-					if (var5.id != var6.id) {
-						if (var12 == null) {
-							var12 = var6;
-						}
-
-						if (var6.id != var12.id && var11 == null) {
-							var11 = var6;
-						}
-					}
-				}
-
-				long var9 = class267.calculateTag(var0, var1, 3, false, 0);
-				PacketWriter.scene.newGroundItemPile(WorldMapRectangle.plane, var0, var1, MusicPatchPcmStream.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, WorldMapRectangle.plane), var5, var9, var12, var11);
-			}
+			var0.field2627[var1] = Integer.MAX_VALUE;
 		}
+	}
+
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-1095915325"
+	)
+	static final int method686(int var0, int var1) {
+		if (var0 == -1) {
+			return 12345678;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
+
+			return (var0 & 65408) + var1;
+		}
+	}
+
+	@ObfuscatedName("hb")
+	@ObfuscatedSignature(
+		signature = "(IIIB)V",
+		garbageValue = "6"
+	)
+	@Export("worldToScreen")
+	static final void worldToScreen(int var0, int var1, int var2) {
+		if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+			int var3 = GraphicsObject.getTileHeight(var0, var1, Player.Client_plane) - var2;
+			var0 -= UrlRequester.cameraX;
+			var3 -= class16.cameraY;
+			var1 -= GrandExchangeOfferAgeComparator.cameraZ;
+			int var4 = Rasterizer3D.Rasterizer3D_sine[class247.cameraPitch];
+			int var5 = Rasterizer3D.Rasterizer3D_cosine[class247.cameraPitch];
+			int var6 = Rasterizer3D.Rasterizer3D_sine[WorldMapData_1.cameraYaw];
+			int var7 = Rasterizer3D.Rasterizer3D_cosine[WorldMapData_1.cameraYaw];
+			int var8 = var6 * var1 + var0 * var7 >> 16;
+			var1 = var7 * var1 - var0 * var6 >> 16;
+			var0 = var8;
+			var8 = var3 * var5 - var4 * var1 >> 16;
+			var1 = var4 * var3 + var5 * var1 >> 16;
+			if (var1 >= 50) {
+				Client.viewportTempX = var0 * Client.viewportZoom / var1 + Client.viewportWidth / 2;
+				Client.viewportTempY = Client.viewportHeight / 2 + var8 * Client.viewportZoom / var1;
+			} else {
+				Client.viewportTempX = -1;
+				Client.viewportTempY = -1;
+			}
+
+		} else {
+			Client.viewportTempX = -1;
+			Client.viewportTempY = -1;
+		}
+	}
+
+	@ObfuscatedName("ig")
+	@ObfuscatedSignature(
+		signature = "(IIS)Lfc;",
+		garbageValue = "-31136"
+	)
+	static RouteStrategy method685(int var0, int var1) {
+		Client.field904.approxDestinationX = var0;
+		Client.field904.approxDestinationY = var1;
+		Client.field904.approxDestinationSizeX = 1;
+		Client.field904.approxDestinationSizeY = 1;
+		return Client.field904;
 	}
 }
