@@ -177,7 +177,7 @@ final class class4 implements class0 {
 						} else if (var29 == ScriptOpcodes.SET_VARP) {
 							var11 = var6[var17];
 							Varps.Varps_main[var11] = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-							WorldMapDecoration.method389(var11);
+							WorldMapDecoration.changeGameOptions(var11);
 						} else if (var29 == ScriptOpcodes.SCONST) {
 							Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = var3.stringOperands[var17];
 						} else if (var29 == ScriptOpcodes.JUMP) {

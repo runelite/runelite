@@ -213,10 +213,10 @@ public abstract class AbstractWorldMapIcon {
 			class197.midiPcmStream.clear();
 			class197.field2377 = 1;
 			class247.musicTrackArchive = null;
-		} else if (var0 != -1 && var0 != Client.field865 && Client.field864 != 0 && !Client.field855) {
-			WorldMapIcon_0.method253(2, class216.archive6, var0, 0, Client.field864, false);
+		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field855) {
+			WorldMapIcon_0.method253(2, class216.archive6, var0, 0, Client.musicVolume, false);
 		}
 
-		Client.field865 = var0;
+		Client.currentTrackGroupId = var0;
 	}
 }

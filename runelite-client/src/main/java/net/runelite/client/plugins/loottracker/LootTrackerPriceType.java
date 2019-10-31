@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.loottracker;
 
-/*
- * Convert a vertex to screen space
- */
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
-
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
-
-  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
-
-  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
-
-  float x = rotatedX * zoom / var12 + centerX;
-  float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
-
-  return vec3(x, y, z);
+public enum LootTrackerPriceType
+{
+	GRAND_EXCHANGE,
+	HIGH_ALCHEMY
 }

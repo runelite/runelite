@@ -27,7 +27,9 @@ package net.runelite.client.plugins.gpu;
 import com.jogamp.opengl.GL4;
 import java.io.InputStream;
 import java.util.Scanner;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class GLUtil
 {
 	private static final int ERR_LEN = 1024;
@@ -197,6 +199,7 @@ class GLUtil
 		else
 		{
 			String err = glGetShaderInfoLog(gl, shader);
+			log.info(String.valueOf(program));
 			throw new ShaderException(err);
 		}
 	}

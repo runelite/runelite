@@ -41,6 +41,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.SpriteID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -72,6 +73,7 @@ public class RaidsOverlay extends Overlay
 	private static final int SMALL_ICON_SIZE = 21;
 	private static final int TITLE_COMPONENT_HEIGHT = 20;
 	private static final int LINE_COMPONENT_HEIGHT = 16;
+	static final String BROADCAST_ACTION = "Broadcast layout";
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final ItemManager itemManager;
 	private final SpriteManager spriteManager;
@@ -101,6 +103,7 @@ public class RaidsOverlay extends Overlay
 		this.itemManager = itemManager;
 		this.spriteManager = spriteManager;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
 	}
 
 	@Override

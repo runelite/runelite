@@ -487,6 +487,24 @@
       "xp": 10.6
     },
     {
+      "level": 78,
+      "icon": 21952,
+      "name": "Magic Stock",
+      "xp": 70
+    },
+    {
+      "level": 78,
+      "icon": 21921,
+      "name": "Dragon Crossbow (U)",
+      "xp": 135
+    },
+    {
+      "level": 78,
+      "icon": 21902,
+      "name": "Dragon Crossbow",
+      "xp": 70
+    },
+    {
       "level": 80,
       "icon": 861,
       "name": "Magic Shortbow",

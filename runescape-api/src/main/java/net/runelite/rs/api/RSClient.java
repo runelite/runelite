@@ -449,6 +449,9 @@ public interface RSClient extends RSGameShell, Client
 	@Import("SpriteBuffer_spritePalette")
 	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
+	@Import("archive6")
+	RSAbstractArchive getMusicTracks();
+
 	@Import("archive8")
 	@Override
 	RSAbstractArchive getIndexSprites();
@@ -1042,17 +1045,47 @@ public interface RSClient extends RSGameShell, Client
 	@Import("decimator")
 	RSDecimator getSoundEffectResampler();
 
+	@Import("musicVolume")
+	@Override
+	int getMusicVolume();
+
+	@Import("musicVolume")
+	void setClientMusicVolume(int volume);
+
+	@Import("areaSoundEffectVolume")
+	@Override
+	int getAreaSoundEffectVolume();
+
+	@Import("areaSoundEffectVolume")
+	@Override
+	void setAreaSoundEffectVolume(int volume);
+
 	@Import("soundEffectVolume")
+	@Override
 	int getSoundEffectVolume();
+
+	@Import("soundEffectVolume")
+	@Override
+	void setSoundEffectVolume(int volume);
+
+	@Import("musicTrackVolume")
+	void setMusicTrackVolume(int volume);
 
 	@Import("viewportWalking")
 	void setViewportWalking(boolean viewportWalking);
 
+	@Import("playMusicTrack")
+	void playMusicTrack(RSAbstractArchive var0, int var1, int var2, int var3, boolean var4);
+
+	@Import("midiPcmStream")
+	RSMidiPcmStream getMidiPcmStream();
+
+	@Import("currentTrackGroupId")
+	int getCurrentTrackGroupId();
+
 	@Import("crossSprites")
 	@Override
 	RSSprite[] getCrossSprites();
-
-	BigInteger getModulus();
 
 	void setModulus(BigInteger modulus);
 
@@ -1100,6 +1133,9 @@ public interface RSClient extends RSGameShell, Client
 	 */
 	@Import("Login_promptCredentials")
 	void promptCredentials(boolean clearPass);
+
+	@Import("VarpDefinition_get")
+	RSVarpDefinition getVarpDefinition(int id);
 
 	@Construct
 	RSTileItem newTileItem();

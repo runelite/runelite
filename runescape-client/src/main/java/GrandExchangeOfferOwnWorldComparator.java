@@ -475,7 +475,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 								if (var14.cs1Instructions != null && var14.cs1Instructions[0][0] == 5) {
 									var10 = var14.cs1Instructions[0][1];
 									Varps.Varps_main[var10] = 1 - Varps.Varps_main[var10];
-									WorldMapDecoration.method389(var10);
+									WorldMapDecoration.changeGameOptions(var10);
 								}
 							} else if (var2 == 29) {
 								var8 = SoundSystem.getPacketBufferNode(ClientPacket.field2252, Client.packetWriter.isaacCipher);
@@ -486,7 +486,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 									var10 = var14.cs1Instructions[0][1];
 									if (Varps.Varps_main[var10] != var14.cs1ComparisonValues[0]) {
 										Varps.Varps_main[var10] = var14.cs1ComparisonValues[0];
-										WorldMapDecoration.method389(var10);
+										WorldMapDecoration.changeGameOptions(var10);
 									}
 								}
 							} else if (var2 == 30) {

@@ -329,7 +329,8 @@ public class Varcs {
 		signature = "(II)Liu;",
 		garbageValue = "-1999284157"
 	)
-	public static VarpDefinition method2352(int var0) {
+	@Export("VarpDefinition_get")
+	public static VarpDefinition VarpDefinition_get(int var0) {
 		VarpDefinition var1 = (VarpDefinition)VarpDefinition.VarpDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;

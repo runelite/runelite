@@ -42,8 +42,8 @@ public class WorldMapEvent {
 	)
 	@Export("playSoundJingle")
 	static void playSoundJingle(int var0, int var1) {
-		if (Client.field864 != 0 && var0 != -1) {
-			MusicPatchNode2.method3830(Decimator.archive11, var0, 0, Client.field864, false);
+		if (Client.musicVolume != 0 && var0 != -1) {
+			MusicPatchNode2.playMusicTrack(Decimator.archive11, var0, 0, Client.musicVolume, false);
 			Client.field855 = true;
 		}
 

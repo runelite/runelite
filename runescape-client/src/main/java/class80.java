@@ -126,7 +126,7 @@ public class class80 {
 		class247.musicTrackArchive = null;
 		class189.musicTrackGroupId = -1;
 		class197.musicTrackFileId = -1;
-		class197.field2379 = 0;
+		class197.musicTrackVolume = 0;
 		ScriptFrame.musicTrackBoolean = false;
 		class197.field2384 = var0;
 	}

@@ -25,13 +25,9 @@
 package net.runelite.http.api;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
-import net.runelite.http.api.util.TypeAdapters;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,12 +56,9 @@ public class RuneLiteAPI
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new GsonBuilder()
-		.setPrettyPrinting()
-		.registerTypeAdapter(ItemStats.class, TypeAdapters.ITEMSTATS)
-		.registerTypeAdapter(ItemEquipmentStats.class, TypeAdapters.EQUIPMENTSTATS)
-		.registerTypeAdapter(ItemPrice.class, TypeAdapters.ITEMPRICE)
-		.create();
+	public static final Gson GSON = new Gson();
+	public static final MediaType JSON = MediaType.parse("application/json");
+	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
 	private static final String WSBASE = "https://api.runelite.net/ws";
@@ -76,8 +69,6 @@ public class RuneLiteAPI
 	private static final String MAVEN_METADATA = "http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
 
 	private static final Properties properties = new Properties();
-	private static String userAgent;
-
 	private static String version;
 	private static String upstreamVersion;
 	private static int rsVersion;

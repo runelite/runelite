@@ -237,7 +237,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = -1636781949
 	)
-	static int field868;
+	@Export("areaSoundEffectVolume")
+	static int areaSoundEffectVolume;
 	@ObfuscatedName("sl")
 	@ObfuscatedGetter(
 		intValue = 1393467707
@@ -354,7 +355,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = 398456721
 	)
-	static int field865;
+	@Export("currentTrackGroupId")
+	static int currentTrackGroupId;
 	@ObfuscatedName("pq")
 	@ObfuscatedGetter(
 		intValue = -87647027
@@ -372,7 +374,8 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = -1999845863
 	)
-	static int field864;
+	@Export("musicVolume")
+	static int musicVolume;
 	@ObfuscatedName("qq")
 	@Export("soundLocations")
 	static int[] soundLocations;
@@ -1493,11 +1496,11 @@ public final class Client extends GameShell implements Usernamed {
 		destinationX = 0;
 		destinationY = 0;
 		minimapState = 0;
-		field864 = 255;
-		field865 = -1;
+		musicVolume = 255;
+		currentTrackGroupId = -1;
 		field855 = false;
 		soundEffectVolume = 127;
-		field868 = 127;
+		areaSoundEffectVolume = 127;
 		soundEffectCount = 0;
 		soundEffectIds = new int[50];
 		queuedSoundEffectLoops = new int[50];
@@ -1611,7 +1614,7 @@ public final class Client extends GameShell implements Usernamed {
 								var45 = 0;
 							}
 
-							class197.midiPcmStream.method3942(var45);
+							class197.midiPcmStream.setPcmStreamVolume(var45);
 						} else {
 							class197.midiPcmStream.clear();
 							class197.midiPcmStream.removeAll();
@@ -2653,7 +2656,7 @@ public final class Client extends GameShell implements Usernamed {
 
 					if (class197.midiPcmStream.loadMusicTrack(class197.musicTrack, class197.musicPatchesArchive, ByteArrayPool.soundCache, 22050)) {
 						class197.midiPcmStream.clearAll();
-						class197.midiPcmStream.method3942(class197.field2379);
+						class197.midiPcmStream.setPcmStreamVolume(class197.musicTrackVolume);
 						class197.midiPcmStream.setMusicTrack(class197.musicTrack, ScriptFrame.musicTrackBoolean);
 						class197.field2377 = 0;
 						class197.musicTrack = null;
@@ -4084,7 +4087,7 @@ public final class Client extends GameShell implements Usernamed {
 											var9 = 0;
 										}
 
-										var3 = (var4 - var9) * field868 / var4;
+										var3 = (var4 - var9) * areaSoundEffectVolume / var4;
 									} else {
 										var3 = soundEffectVolume;
 									}
@@ -4114,8 +4117,8 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (field855 && !Login.method2256()) {
-							if (field864 != 0 && field865 != -1) {
-								MusicPatchNode2.method3830(class216.archive6, field865, 0, field864, false);
+							if (musicVolume != 0 && currentTrackGroupId != -1) {
+								MusicPatchNode2.playMusicTrack(class216.archive6, currentTrackGroupId, 0, musicVolume, false);
 							}
 
 							field855 = false;
@@ -4717,13 +4720,13 @@ public final class Client extends GameShell implements Usernamed {
 					var6 += var5.y * 128 - var3;
 				}
 
-				if (var6 - 64 <= var5.field1052 && field868 != 0 && var1 == var5.plane) {
+				if (var6 - 64 <= var5.field1052 && areaSoundEffectVolume != 0 && var1 == var5.plane) {
 					var6 -= 64;
 					if (var6 < 0) {
 						var6 = 0;
 					}
 
-					int var7 = (var5.field1052 - var6) * field868 / var5.field1052;
+					int var7 = (var5.field1052 - var6) * areaSoundEffectVolume / var5.field1052;
 					Object var10000;
 					if (var5.stream1 == null) {
 						if (var5.soundEffectId >= 0) {
@@ -5630,7 +5633,7 @@ public final class Client extends GameShell implements Usernamed {
 
 				if (ServerPacket.field2103 == var1.serverPacket) {
 					for (var16 = 0; var16 < VarpDefinition.VarpDefinition_fileCount; ++var16) {
-						VarpDefinition var51 = Varcs.method2352(var16);
+						VarpDefinition var51 = Varcs.VarpDefinition_get(var16);
 						if (var51 != null) {
 							Varps.Varps_temp[var16] = 0;
 							Varps.Varps_main[var16] = 0;
@@ -5657,7 +5660,7 @@ public final class Client extends GameShell implements Usernamed {
 						Varps.Varps_main[var16] = var41;
 					}
 
-					WorldMapDecoration.method389(var16);
+					WorldMapDecoration.changeGameOptions(var16);
 					field817[++field679 - 1 & 31] = var16;
 					var1.serverPacket = null;
 					return true;
@@ -5681,7 +5684,7 @@ public final class Client extends GameShell implements Usernamed {
 					for (var16 = 0; var16 < Varps.Varps_main.length; ++var16) {
 						if (Varps.Varps_main[var16] != Varps.Varps_temp[var16]) {
 							Varps.Varps_main[var16] = Varps.Varps_temp[var16];
-							WorldMapDecoration.method389(var16);
+							WorldMapDecoration.changeGameOptions(var16);
 							field817[++field679 - 1 & 31] = var16;
 						}
 					}
@@ -6003,7 +6006,7 @@ public final class Client extends GameShell implements Usernamed {
 						Varps.Varps_main[var5] = var16;
 					}
 
-					WorldMapDecoration.method389(var5);
+					WorldMapDecoration.changeGameOptions(var5);
 					field817[++field679 - 1 & 31] = var5;
 					var1.serverPacket = null;
 					return true;

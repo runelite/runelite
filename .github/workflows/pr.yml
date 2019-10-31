@@ -1,19 +1,11 @@
-name: OpenOSRS - CI (PR)
+name: OpenOSRS - CI (push)
 
-on: pull_request
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  pr-lint:
-    name: PR title
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: PR title lint
-        if: github.event_name == 'pull_request'
-        uses: seferov/pr-lint-action@master
-        with:
-          title-regex: '^([\w-/]+): \w+'
-
   build:
     runs-on: ubuntu-latest
     name: Build
@@ -64,27 +56,3 @@ jobs:
         run: ./gradlew assemble --console=plain
       - name: Checking code conventions
         run: ./gradlew checkstyleMain --console=plain
-
-  approve:
-    name: Approve
-    needs: [build, test, checkstyle]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Approve pull request
-        if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
-        uses: hmarr/auto-approve-action@v2.0.0
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-  automerge:
-    name: Automerge
-    needs: approve
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: automerge
-        uses: pascalgn/automerge-action@f84dd310ea4a19890c70a4ff11ab282a872fb94b
-        env:
-          AUTOMERGE: "automated pull request"
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

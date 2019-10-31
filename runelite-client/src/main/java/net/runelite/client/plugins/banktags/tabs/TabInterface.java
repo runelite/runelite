@@ -599,9 +599,11 @@ public class TabInterface
 			chatboxPanelManager.close();
 		}
 
-		if (event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if ((event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+				|| event.getIdentifier() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
 			&& event.getMenuOpcode() == MenuOpcode.EXAMINE_ITEM_BANK_EQ
-			&& event.getOption().equalsIgnoreCase("withdraw-x"))
+			&& (event.getOption().equalsIgnoreCase("withdraw-x")
+				|| event.getOption().equalsIgnoreCase("deposit-x")))
 		{
 			waitSearchTick = true;
 			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);

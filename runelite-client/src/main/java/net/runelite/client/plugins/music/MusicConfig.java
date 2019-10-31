@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.music;
 
-/*
- * Convert a vertex to screen space
- */
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
+@ConfigGroup("music")
+public interface MusicConfig extends Config
+{
+	@ConfigItem(
+		keyName = "musicVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int getMusicVolume()
+	{
+		return 0;
+	}
 
-  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
+	@ConfigItem(
+		keyName = "musicVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setMusicVolume(int vol);
 
-  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
+	@ConfigItem(
+		keyName = "soundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int getSoundEffectVolume()
+	{
+		return 0;
+	}
 
-  float x = rotatedX * zoom / var12 + centerX;
-  float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
+	@ConfigItem(
+		keyName = "soundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setSoundEffectVolume(int val);
 
-  return vec3(x, y, z);
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int getAreaSoundEffectVolume()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setAreaSoundEffectVolume(int vol);
 }

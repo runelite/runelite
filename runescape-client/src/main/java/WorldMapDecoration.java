@@ -140,7 +140,8 @@ public class WorldMapDecoration {
 		signature = "(IB)V",
 		garbageValue = "-115"
 	)
-	static final void method389(int var0) {
+	@Export("changeGameOptions")
+	static final void changeGameOptions(int var0) {
 		BoundaryObject.method3393();
 
 		for (ObjectSound var1 = (ObjectSound)ObjectSound.objectSounds.last(); var1 != null; var1 = (ObjectSound)ObjectSound.objectSounds.previous()) {
@@ -149,7 +150,7 @@ public class WorldMapDecoration {
 			}
 		}
 
-		int var4 = Varcs.method2352(var0).type;
+		int var4 = Varcs.VarpDefinition_get(var0).type;
 		if (var4 != 0) {
 			int var2 = Varps.Varps_main[var0];
 			if (var4 == 1) {
@@ -198,20 +199,20 @@ public class WorldMapDecoration {
 					var3 = 0;
 				}
 
-				if (var3 != Client.field864) {
-					if (Client.field864 == 0 && Client.field865 != -1) {
-						MusicPatchNode2.method3830(class216.archive6, Client.field865, 0, var3, false);
+				if (var3 != Client.musicVolume) {
+					if (Client.musicVolume == 0 && Client.currentTrackGroupId != -1) {
+						MusicPatchNode2.playMusicTrack(class216.archive6, Client.currentTrackGroupId, 0, var3, false);
 						Client.field855 = false;
 					} else if (var3 == 0) {
 						ReflectionCheck.method2438();
 						Client.field855 = false;
 					} else if (class197.field2377 != 0) {
-						class197.field2379 = var3;
+						class197.musicTrackVolume = var3;
 					} else {
-						class197.midiPcmStream.method3942(var3);
+						class197.midiPcmStream.setPcmStreamVolume(var3);
 					}
 
-					Client.field864 = var3;
+					Client.musicVolume = var3;
 				}
 			}
 
@@ -251,23 +252,23 @@ public class WorldMapDecoration {
 
 			if (var4 == 10) {
 				if (var2 == 0) {
-					Client.field868 = 127;
+					Client.areaSoundEffectVolume = 127;
 				}
 
 				if (var2 == 1) {
-					Client.field868 = 96;
+					Client.areaSoundEffectVolume = 96;
 				}
 
 				if (var2 == 2) {
-					Client.field868 = 64;
+					Client.areaSoundEffectVolume = 64;
 				}
 
 				if (var2 == 3) {
-					Client.field868 = 32;
+					Client.areaSoundEffectVolume = 32;
 				}
 
 				if (var2 == 4) {
-					Client.field868 = 0;
+					Client.areaSoundEffectVolume = 0;
 				}
 			}
 

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.fishing;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -157,6 +158,12 @@ public class FishingPlugin extends Plugin
 	private boolean showMinnowOverlay;
 	private boolean trawlerNotification;
 	private boolean trawlerTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private Color overlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color minnowsOverlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color aerialOverlayColor;
 
 	@Override
 	protected void startUp() throws Exception
@@ -404,6 +411,7 @@ public class FishingPlugin extends Plugin
 		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
 			log.debug("Trawler session ended");
+			trawlerStartTime = null;
 			return;
 		}
 
@@ -477,5 +485,8 @@ public class FishingPlugin extends Plugin
 		this.showMinnowOverlay = config.showMinnowOverlay();
 		this.trawlerNotification = config.trawlerNotification();
 		this.trawlerTimer = config.trawlerTimer();
+		this.overlayColor = config.getOverlayColor();
+		this.minnowsOverlayColor = config.getMinnowsOverlayColor();
+		this.aerialOverlayColor = config.getAerialOverlayColor();
 	}
 }
