@@ -30,9 +30,14 @@ package net.runelite.client.plugins.cluescrolls;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.List;
 import javax.inject.Inject;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+
+import com.google.common.collect.ImmutableList;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -51,11 +56,13 @@ public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source", item(LIT_CANDLE), item(CANDLE_LANTERN_4531), item(MAX_CAPE), item(FIREMAKING_CAPE), item(FIREMAKING_CAPET), item(BRUMA_TORCH), item(KANDARIN_HEADGEAR_1), item(KANDARIN_HEADGEAR_2), item(KANDARIN_HEADGEAR_3), item(KANDARIN_HEADGEAR_4), item(MINING_HELMET_5014), item(BULLSEYE_LANTERN_4550), item(OIL_LANTERN_4539), item(OIL_LAMP_4524), item(LIT_BLACK_CANDLE), item(SAPPHIRE_LANTERN_4702), item(EMERALD_LANTERN_20722), item(OIL_LAMP_4524), item(LIT_TORCH));
-
+	private static final List<Varbits>  BRAZIER_VARBITS = ImmutableList.of(Varbits.BRAZIER_6532, Varbits.BRAZIER_6533, Varbits.BRAZIER_6544);
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
-
 	private final ClueScrollPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private ClueScrollOverlay(ClueScrollPlugin plugin)
@@ -90,31 +97,17 @@ public class ClueScrollOverlay extends Overlay
 			}
 		}
 
-		if (clue.isRequiresLight())
+		if (clue.isRequiresLight() && ((plugin.getInventoryItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || (plugin.getEquippedItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems())))))
 		{
-			boolean missingLight = true;
-
-			if (plugin.getInventoryItems() != null)
+			for (Varbits varbit: BRAZIER_VARBITS)
 			{
-				if (HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()))
+				if (client.getVar(varbit) == 1)
 				{
-					missingLight = false;
+					break;
 				}
 			}
-
-			if (plugin.getEquippedItems() != null && !missingLight)
-			{
-				if (HAS_LIGHT.fulfilledBy(plugin.getEquippedItems()))
-				{
-					missingLight = false;
-				}
-			}
-
-			if (missingLight)
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.ORANGE).build());
-			}
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.ORANGE).build());
 		}
 
 		return panelComponent.render(graphics);

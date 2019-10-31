@@ -298,6 +298,13 @@ public enum Varbits
 	RAID_PARTY_SIZE(5424),
 
 	/**
+	 * Braziers
+	 */
+	BRAZIER_6532(6532),
+	BRAZIER_6533(6533),
+	BRAZIER_6544(6544),
+
+	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
 	THEATRE_OF_BLOOD(6440),
