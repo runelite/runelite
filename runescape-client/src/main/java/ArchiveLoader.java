@@ -132,7 +132,7 @@ public class ArchiveLoader {
 		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
 		var2.pathY[0] = var6 - HealthBar.baseY * 64;
 		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
-		Player.Scene_plane = var2.plane = var4;
+		Player.Client_plane = var2.plane = var4;
 		if (Players.field1229[var1] != null) {
 			var2.read(Players.field1229[var1]);
 		}

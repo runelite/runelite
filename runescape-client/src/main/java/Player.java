@@ -11,8 +11,8 @@ public final class Player extends Actor {
 	@ObfuscatedGetter(
 		intValue = 302709599
 	)
-	@Export("Scene_plane")
-	static int Scene_plane;
+	@Export("Client_plane")
+	static int Client_plane;
 	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "Lju;"
@@ -458,7 +458,7 @@ public final class Player extends Actor {
 					int var6 = super.pathY[0];
 					int var7 = this.transformedSize();
 					if (var5 >= var7 && var5 < 104 - var7 && var6 >= var7 && var6 < 104 - var7 && var1 >= var7 && var1 < 104 - var7 && var2 >= var7 && var2 < 104 - var7) {
-						int var8 = Message.method1311(var5, var6, this.transformedSize(), WorldMapCacheName.method685(var1, var2), Client.collisionMaps[this.Scene_plane], true, Client.field890, Client.field906);
+						int var8 = Message.method1311(var5, var6, this.transformedSize(), WorldMapCacheName.method685(var1, var2), Client.collisionMaps[this.Client_plane], true, Client.field890, Client.field906);
 						if (var8 >= 1) {
 							for (int var9 = 0; var9 < var8 - 1; ++var9) {
 								var4.method1352(Client.field890[var9], Client.field906[var9], (byte)2);
@@ -544,9 +544,9 @@ public final class Player extends Actor {
 				long var4 = class160.calculateTag(0, 0, 0, false, var0.index);
 				if (var0.model0 != null && Client.cycle >= var0.animationCycleStart && Client.cycle < var0.animationCycleEnd) {
 					var0.isUnanimated = false;
-					var0.tileHeight = GraphicsObject.getTileHeight(var0.x, var0.y, Scene_plane);
+					var0.tileHeight = GraphicsObject.getTileHeight(var0.x, var0.y, Client_plane);
 					var0.playerCycle = Client.cycle;
-					WorldMapArea.scene.addNullableObject(Scene_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field595, var0.field611, var0.field612, var0.field604);
+					WorldMapArea.scene.addNullableObject(Client_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field595, var0.field611, var0.field612, var0.field604);
 				} else {
 					if ((var0.x & 127) == 64 && (var0.y & 127) == 64) {
 						if (Client.tileLastDrawnActor[var2][var3] == Client.viewportDrawCount) {
@@ -556,9 +556,9 @@ public final class Player extends Actor {
 						Client.tileLastDrawnActor[var2][var3] = Client.viewportDrawCount;
 					}
 
-					var0.tileHeight = GraphicsObject.getTileHeight(var0.x, var0.y, Scene_plane);
+					var0.tileHeight = GraphicsObject.getTileHeight(var0.x, var0.y, Client_plane);
 					var0.playerCycle = Client.cycle;
-					WorldMapArea.scene.drawEntity(Scene_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
+					WorldMapArea.scene.drawEntity(Client_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
 				}
 			}
 		}

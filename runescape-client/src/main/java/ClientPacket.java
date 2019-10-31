@@ -820,7 +820,7 @@ public class ClientPacket implements class181 {
 
 					var4.plane = (byte)(var7 + var4.plane & 3);
 					if (Client.localPlayerIndex == var1) {
-						Player.Scene_plane = var4.Scene_plane;
+						Player.Client_plane = var4.Client_plane;
 					}
 
 				} else {
@@ -846,7 +846,7 @@ public class ClientPacket implements class181 {
 
 					var4.plane = (byte)(var7 + var4.plane & 3);
 					if (Client.localPlayerIndex == var1) {
-						Player.Scene_plane = var4.plane;
+						Player.Client_plane = var4.plane;
 					}
 
 				}

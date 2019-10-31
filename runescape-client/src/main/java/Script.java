@@ -88,7 +88,7 @@ public class Script extends DualNode {
 	static final void method2383() {
 		int var0 = class14.field88 * 128 + 64;
 		int var1 = class42.field360 * 128 + 64;
-		int var2 = GraphicsObject.getTileHeight(var0, var1, Player.Scene_plane) - WorldMapLabel.field231;
+		int var2 = GraphicsObject.getTileHeight(var0, var1, Player.Client_plane) - WorldMapLabel.field231;
 		if (UrlRequester.cameraX < var0) {
 			UrlRequester.cameraX = (var0 - UrlRequester.cameraX) * Interpreter.field1068 / 1000 + UrlRequester.cameraX + WorldMapAreaData.field323;
 			if (UrlRequester.cameraX > var0) {
@@ -133,7 +133,7 @@ public class Script extends DualNode {
 
 		var0 = AbstractUserComparator.field3583 * 16384 + 64;
 		var1 = class49.field401 * 128 + 64;
-		var2 = GraphicsObject.getTileHeight(var0, var1, Player.Scene_plane) - ViewportMouse.field1713;
+		var2 = GraphicsObject.getTileHeight(var0, var1, Player.Client_plane) - ViewportMouse.field1713;
 		int var3 = var0 - UrlRequester.cameraX;
 		int var4 = var2 - class16.cameraY;
 		int var5 = var1 - GrandExchangeOfferAgeComparator.cameraZ;

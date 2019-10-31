@@ -383,9 +383,9 @@ final class class4 implements class0 {
 	)
 	@Export("updateItemPile")
 	static final void updateItemPile(int var0, int var1) {
-		NodeDeque var2 = Client.groundItems[Player.Scene_plane][var0][var1];
+		NodeDeque var2 = Client.groundItems[Player.Client_plane][var0][var1];
 		if (var2 == null) {
-			WorldMapArea.scene.removeGroundItemPile(Player.Scene_plane, var0, var1);
+			WorldMapArea.scene.removeGroundItemPile(Player.Client_plane, var0, var1);
 		} else {
 			long var3 = -99999999L;
 			TileItem var5 = null;
@@ -405,7 +405,7 @@ final class class4 implements class0 {
 			}
 
 			if (var5 == null) {
-				WorldMapArea.scene.removeGroundItemPile(Player.Scene_plane, var0, var1);
+				WorldMapArea.scene.removeGroundItemPile(Player.Client_plane, var0, var1);
 			} else {
 				var2.addLast(var5);
 				TileItem var12 = null;
@@ -424,7 +424,7 @@ final class class4 implements class0 {
 				}
 
 				long var9 = class160.calculateTag(var0, var1, 3, false, 0);
-				WorldMapArea.scene.newGroundItemPile(Player.Scene_plane, var0, var1, GraphicsObject.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Player.Scene_plane), var5, var9, var12, var11);
+				WorldMapArea.scene.newGroundItemPile(Player.Client_plane, var0, var1, GraphicsObject.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Player.Client_plane), var5, var9, var12, var11);
 			}
 		}
 	}
@@ -646,7 +646,7 @@ final class class4 implements class0 {
 				int var12;
 				for (var8 = 0; var8 < 104; ++var8) {
 					for (var9 = 0; var9 < 104; ++var9) {
-						NodeDeque var15 = Client.groundItems[Player.Scene_plane][var8][var9];
+						NodeDeque var15 = Client.groundItems[Player.Client_plane][var8][var9];
 						if (var15 != null) {
 							var11 = var8 * 4 + 2 - class215.localPlayer.x / 32;
 							var12 = var9 * 4 + 2 - class215.localPlayer.y / 32;

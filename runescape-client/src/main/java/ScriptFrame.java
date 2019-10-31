@@ -289,9 +289,9 @@ public class ScriptFrame {
 		garbageValue = "256"
 	)
 	static final void method1219() {
-		if (Player.Scene_plane != Client.field856) {
-			Client.field856 = Player.Scene_plane;
-			int var0 = Player.Scene_plane;
+		if (Player.Client_plane != Client.field856) {
+			Client.field856 = Player.Client_plane;
+			int var0 = Player.Client_plane;
 			int[] var1 = FloorDecoration.sceneMinimapSprite.pixels;
 			int var2 = var1.length;
 
@@ -339,7 +339,7 @@ public class ScriptFrame {
 
 			for (var5 = 0; var5 < 104; ++var5) {
 				for (var6 = 0; var6 < 104; ++var6) {
-					long var7 = WorldMapArea.scene.getFloorDecorationTag(Player.Scene_plane, var5, var6);
+					long var7 = WorldMapArea.scene.getFloorDecorationTag(Player.Client_plane, var5, var6);
 					if (0L != var7) {
 						int var9 = UserComparator8.Entity_unpackID(var7);
 						int var10 = WorldMapDecorationType.getObjectDefinition(var9).mapIconId;

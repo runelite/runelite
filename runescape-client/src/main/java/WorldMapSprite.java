@@ -146,52 +146,52 @@ public final class WorldMapSprite {
 			var37 = Client.field692[var7];
 			if (var4 >= 0 && var5 >= 0 && var4 < 103 && var5 < 103) {
 				if (var37 == 0) {
-					BoundaryObject var10 = WorldMapArea.scene.method3225(Player.Scene_plane, var4, var5);
+					BoundaryObject var10 = WorldMapArea.scene.method3225(Player.Client_plane, var4, var5);
 					if (var10 != null) {
 						var11 = UserComparator8.Entity_unpackID(var10.tag);
 						if (var7 == 2) {
-							var10.entity1 = new DynamicObject(var11, 2, var8 + 4, Player.Scene_plane, var4, var5, var2, false, var10.entity1);
-							var10.entity2 = new DynamicObject(var11, 2, var8 + 1 & 3, Player.Scene_plane, var4, var5, var2, false, var10.entity2);
+							var10.entity1 = new DynamicObject(var11, 2, var8 + 4, Player.Client_plane, var4, var5, var2, false, var10.entity1);
+							var10.entity2 = new DynamicObject(var11, 2, var8 + 1 & 3, Player.Client_plane, var4, var5, var2, false, var10.entity2);
 						} else {
-							var10.entity1 = new DynamicObject(var11, var7, var8, Player.Scene_plane, var4, var5, var2, false, var10.entity1);
+							var10.entity1 = new DynamicObject(var11, var7, var8, Player.Client_plane, var4, var5, var2, false, var10.entity1);
 						}
 					}
 				}
 
 				if (var37 == 1) {
-					WallDecoration var38 = WorldMapArea.scene.method3339(Player.Scene_plane, var4, var5);
+					WallDecoration var38 = WorldMapArea.scene.method3339(Player.Client_plane, var4, var5);
 					if (var38 != null) {
 						var11 = UserComparator8.Entity_unpackID(var38.tag);
 						if (var7 != 4 && var7 != 5) {
 							if (var7 == 6) {
-								var38.entity1 = new DynamicObject(var11, 4, var8 + 4, Player.Scene_plane, var4, var5, var2, false, var38.entity1);
+								var38.entity1 = new DynamicObject(var11, 4, var8 + 4, Player.Client_plane, var4, var5, var2, false, var38.entity1);
 							} else if (var7 == 7) {
-								var38.entity1 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, Player.Scene_plane, var4, var5, var2, false, var38.entity1);
+								var38.entity1 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, Player.Client_plane, var4, var5, var2, false, var38.entity1);
 							} else if (var7 == 8) {
-								var38.entity1 = new DynamicObject(var11, 4, var8 + 4, Player.Scene_plane, var4, var5, var2, false, var38.entity1);
-								var38.entity2 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, Player.Scene_plane, var4, var5, var2, false, var38.entity2);
+								var38.entity1 = new DynamicObject(var11, 4, var8 + 4, Player.Client_plane, var4, var5, var2, false, var38.entity1);
+								var38.entity2 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, Player.Client_plane, var4, var5, var2, false, var38.entity2);
 							}
 						} else {
-							var38.entity1 = new DynamicObject(var11, 4, var8, Player.Scene_plane, var4, var5, var2, false, var38.entity1);
+							var38.entity1 = new DynamicObject(var11, 4, var8, Player.Client_plane, var4, var5, var2, false, var38.entity1);
 						}
 					}
 				}
 
 				if (var37 == 2) {
-					GameObject var39 = WorldMapArea.scene.method3227(Player.Scene_plane, var4, var5);
+					GameObject var39 = WorldMapArea.scene.method3227(Player.Client_plane, var4, var5);
 					if (var7 == 11) {
 						var7 = 10;
 					}
 
 					if (var39 != null) {
-						var39.entity = new DynamicObject(UserComparator8.Entity_unpackID(var39.tag), var7, var8, Player.Scene_plane, var4, var5, var2, false, var39.entity);
+						var39.entity = new DynamicObject(UserComparator8.Entity_unpackID(var39.tag), var7, var8, Player.Client_plane, var4, var5, var2, false, var39.entity);
 					}
 				}
 
 				if (var37 == 3) {
-					FloorDecoration var40 = WorldMapArea.scene.getFloorDecoration(Player.Scene_plane, var4, var5);
+					FloorDecoration var40 = WorldMapArea.scene.getFloorDecoration(Player.Client_plane, var4, var5);
 					if (var40 != null) {
-						var40.entity = new DynamicObject(UserComparator8.Entity_unpackID(var40.tag), 22, var8, Player.Scene_plane, var4, var5, var2, false, var40.entity);
+						var40.entity = new DynamicObject(UserComparator8.Entity_unpackID(var40.tag), 22, var8, Player.Client_plane, var4, var5, var2, false, var40.entity);
 					}
 				}
 			}
@@ -206,7 +206,7 @@ public final class WorldMapSprite {
 			if (var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
 				var6 = var6 * 128 + 64;
 				var7 = var7 * 128 + 64;
-				GraphicsObject var44 = new GraphicsObject(var4, Player.Scene_plane, var6, var7, GraphicsObject.getTileHeight(var6, var7, Player.Scene_plane) - var2, var3, Client.cycle);
+				GraphicsObject var44 = new GraphicsObject(var4, Player.Client_plane, var6, var7, GraphicsObject.getTileHeight(var6, var7, Player.Client_plane) - var2, var3, Client.cycle);
 				Client.graphicsObjects.addFirst(var44);
 			}
 
@@ -235,8 +235,8 @@ public final class WorldMapSprite {
 					var8 = var8 * 128 + 64;
 					var11 = var11 * 128 + 64;
 					var12 = var12 * 128 + 64;
-					Projectile var15 = new Projectile(var5, Player.Scene_plane, var7, var8, GraphicsObject.getTileHeight(var7, var8, Player.Scene_plane) - var4, var32 + Client.cycle, var43 + Client.cycle, var13, var3, var2, var37);
-					var15.setDestination(var11, var12, GraphicsObject.getTileHeight(var11, var12, Player.Scene_plane) - var37, var32 + Client.cycle);
+					Projectile var15 = new Projectile(var5, Player.Client_plane, var7, var8, GraphicsObject.getTileHeight(var7, var8, Player.Client_plane) - var4, var32 + Client.cycle, var43 + Client.cycle, var13, var3, var2, var37);
+					var15.setDestination(var11, var12, GraphicsObject.getTileHeight(var11, var12, Player.Client_plane) - var37, var32 + Client.cycle);
 					Client.projectiles.addFirst(var15);
 				}
 
@@ -252,11 +252,11 @@ public final class WorldMapSprite {
 						var33 = new TileItem();
 						var33.id = var3;
 						var33.quantity = var2;
-						if (Client.groundItems[Player.Scene_plane][var5][var6] == null) {
-							Client.groundItems[Player.Scene_plane][var5][var6] = new NodeDeque();
+						if (Client.groundItems[Player.Client_plane][var5][var6] == null) {
+							Client.groundItems[Player.Client_plane][var5][var6] = new NodeDeque();
 						}
 
-						Client.groundItems[Player.Scene_plane][var5][var6].addFirst(var33);
+						Client.groundItems[Player.Client_plane][var5][var6].addFirst(var33);
 						class4.updateItemPile(var5, var6);
 					}
 
@@ -300,13 +300,13 @@ public final class WorldMapSprite {
 							int var22 = var11 + (var19 + 1 >> 1);
 							int var23 = var12 + (var20 >> 1);
 							int var24 = var12 + (var20 + 1 >> 1);
-							int[][] var25 = Tiles.Tiles_heights[Player.Scene_plane];
+							int[][] var25 = Tiles.Tiles_heights[Player.Client_plane];
 							int var26 = var25[var22][var24] + var25[var21][var24] + var25[var22][var23] + var25[var21][var23] >> 2;
 							int var27 = (var11 << 7) + (var19 << 6);
 							int var28 = (var12 << 7) + (var20 << 6);
 							Model var29 = var18.getModel(var5, var6, var25, var27, var26, var28);
 							if (var29 != null) {
-								GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Scene_plane, var11, var12, var7, -1, 0, 0, var2 + 1, var8 + 1);
+								GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Client_plane, var11, var12, var7, -1, 0, 0, var2 + 1, var8 + 1);
 								var17.animationCycleStart = var2 + Client.cycle;
 								var17.animationCycleEnd = var8 + Client.cycle;
 								var17.model0 = var29;
@@ -343,7 +343,7 @@ public final class WorldMapSprite {
 						var7 = (var6 >> 4 & 7) + SpriteMask.field2501;
 						var8 = (var6 & 7) + GrandExchangeOffer.field61;
 						if (var7 >= 0 && var8 >= 0 && var7 < 104 && var8 < 104) {
-							GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Scene_plane, var7, var8, var5, -1, var3, var4, 0, -1);
+							GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Client_plane, var7, var8, var5, -1, var3, var4, 0, -1);
 						}
 
 					} else if (class185.field2296 == var0) {
@@ -356,7 +356,7 @@ public final class WorldMapSprite {
 						var8 = var6 & 3;
 						var37 = Client.field692[var7];
 						if (var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
-							GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Scene_plane, var3, var4, var37, var5, var7, var8, 0, -1);
+							GrandExchangeOfferWorldComparator.updatePendingSpawn(Player.Client_plane, var3, var4, var37, var5, var7, var8, 0, -1);
 						}
 
 					} else if (class185.field2297 == var0) {
@@ -367,7 +367,7 @@ public final class WorldMapSprite {
 						var6 = (var4 & 7) + GrandExchangeOffer.field61;
 						var7 = var1.method5647();
 						if (var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
-							NodeDeque var31 = Client.groundItems[Player.Scene_plane][var5][var6];
+							NodeDeque var31 = Client.groundItems[Player.Client_plane][var5][var6];
 							if (var31 != null) {
 								for (TileItem var35 = (TileItem)var31.last(); var35 != null; var35 = (TileItem)var31.previous()) {
 									if ((var2 & 32767) == var35.id && var7 == var35.quantity) {
@@ -409,7 +409,7 @@ public final class WorldMapSprite {
 						var4 = (var3 >> 4 & 7) + SpriteMask.field2501;
 						var5 = (var3 & 7) + GrandExchangeOffer.field61;
 						if (var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
-							NodeDeque var36 = Client.groundItems[Player.Scene_plane][var4][var5];
+							NodeDeque var36 = Client.groundItems[Player.Client_plane][var4][var5];
 							if (var36 != null) {
 								for (var33 = (TileItem)var36.last(); var33 != null; var33 = (TileItem)var36.previous()) {
 									if ((var2 & 32767) == var33.id) {
@@ -419,7 +419,7 @@ public final class WorldMapSprite {
 								}
 
 								if (var36.last() == null) {
-									Client.groundItems[Player.Scene_plane][var4][var5] = null;
+									Client.groundItems[Player.Client_plane][var4][var5] = null;
 								}
 
 								class4.updateItemPile(var4, var5);

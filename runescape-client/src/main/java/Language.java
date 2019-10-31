@@ -169,7 +169,7 @@ public class Language implements Enumerated {
 	)
 	static void method3810(int var0, Coord var1, boolean var2) {
 		WorldMapArea var3 = UserComparator4.getWorldMap().getMapArea(var0);
-		int var4 = class215.localPlayer.Scene_plane;
+		int var4 = class215.localPlayer.Client_plane;
 		int var5 = UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7);
 		int var6 = HealthBar.baseY * 64 + (class215.localPlayer.y >> 7);
 		Coord var7 = new Coord(var4, var5, var6);

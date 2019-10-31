@@ -423,7 +423,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 					if (Client.isMenuOpen) {
 						WorldMapArea.scene.setViewportWalking();
 					} else {
-						WorldMapArea.scene.menuOpen(Player.Scene_plane, var0, var1, true);
+						WorldMapArea.scene.menuOpen(Player.Client_plane, var0, var1, true);
 					}
 				} else {
 					PacketBufferNode var11;

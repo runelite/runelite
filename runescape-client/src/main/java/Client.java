@@ -2536,12 +2536,12 @@ public final class Client extends GameShell implements Usernamed {
 
 								GrandExchangeOfferNameComparator.method172(true);
 								var48 = Tiles.Tiles_minPlane;
-								if (var48 > Player.Scene_plane) {
-									var48 = Player.Scene_plane;
+								if (var48 > Player.Client_plane) {
+									var48 = Player.Client_plane;
 								}
 
-								if (var48 < Player.Scene_plane - 1) {
-									var48 = Player.Scene_plane - 1;
+								if (var48 < Player.Client_plane - 1) {
+									var48 = Player.Client_plane - 1;
 								}
 
 								if (isLowDetail) {
@@ -4181,14 +4181,14 @@ public final class Client extends GameShell implements Usernamed {
 						}
 
 						if (PendingSpawn.method1854() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81] && mouseWheelRotation != 0) {
-							var3 = class215.localPlayer.Scene_plane - mouseWheelRotation;
+							var3 = class215.localPlayer.Client_plane - mouseWheelRotation;
 							if (var3 < 0) {
 								var3 = 0;
 							} else if (var3 > 3) {
 								var3 = 3;
 							}
 
-							if (var3 != class215.localPlayer.Scene_plane) {
+							if (var3 != class215.localPlayer.Client_plane) {
 								var4 = class215.localPlayer.pathX[0] + UserComparator8.baseX * 64;
 								var5 = class215.localPlayer.pathY[0] + HealthBar.baseY * 64;
 								var18 = SoundSystem.getPacketBufferNode(ClientPacket.field2228, packetWriter.isaacCipher);
@@ -4360,12 +4360,12 @@ public final class Client extends GameShell implements Usernamed {
 
 																var5 = IgnoreList.oculusOrbFocalPointX >> 7;
 																var6 = AbstractArchive.oculusOrbFocalPointY >> 7;
-																var7 = GraphicsObject.getTileHeight(IgnoreList.oculusOrbFocalPointX, AbstractArchive.oculusOrbFocalPointY, Player.Scene_plane);
+																var7 = GraphicsObject.getTileHeight(IgnoreList.oculusOrbFocalPointX, AbstractArchive.oculusOrbFocalPointY, Player.Client_plane);
 																var8 = 0;
 																if (var5 > 3 && var6 > 3 && var5 < 100 && var6 < 100) {
 																	for (var9 = var5 - 4; var9 <= var5 + 4; ++var9) {
 																		for (var10 = var6 - 4; var10 <= var6 + 4; ++var10) {
-																			var11 = Player.Scene_plane;
+																			var11 = Player.Client_plane;
 																			if (var11 < 3 && (Tiles.Tiles_renderFlags[1][var9][var10] & 2) == 2) {
 																				++var11;
 																			}
@@ -4393,7 +4393,7 @@ public final class Client extends GameShell implements Usernamed {
 																	field717 += (var9 - field717) / 80;
 																}
 
-																Tiles.field497 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Scene_plane) - camFollowHeight;
+																Tiles.field497 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Client_plane) - camFollowHeight;
 															} else if (oculusOrbState == 1) {
 																FontName.method5443();
 																short var35 = -1;
@@ -4697,7 +4697,7 @@ public final class Client extends GameShell implements Usernamed {
 			}
 		}
 
-		var1 = Player.Scene_plane;
+		var1 = Player.Client_plane;
 		var2 = class215.localPlayer.x;
 		var3 = class215.localPlayer.y;
 		int var4 = field693;
@@ -5263,15 +5263,15 @@ public final class Client extends GameShell implements Usernamed {
 
 					for (var16 = SpriteMask.field2501; var16 < SpriteMask.field2501 + 8; ++var16) {
 						for (var5 = GrandExchangeOffer.field61; var5 < GrandExchangeOffer.field61 + 8; ++var5) {
-							if (groundItems[Player.Scene_plane][var16][var5] != null) {
-								groundItems[Player.Scene_plane][var16][var5] = null;
+							if (groundItems[Player.Client_plane][var16][var5] != null) {
+								groundItems[Player.Client_plane][var16][var5] = null;
 								class4.updateItemPile(var16, var5);
 							}
 						}
 					}
 
 					for (PendingSpawn var38 = (PendingSpawn)pendingSpawns.last(); var38 != null; var38 = (PendingSpawn)pendingSpawns.previous()) {
-						if (var38.x >= SpriteMask.field2501 && var38.x < SpriteMask.field2501 + 8 && var38.y >= GrandExchangeOffer.field61 && var38.y < GrandExchangeOffer.field61 + 8 && var38.plane == Player.Scene_plane) {
+						if (var38.x >= SpriteMask.field2501 && var38.x < SpriteMask.field2501 + 8 && var38.y >= GrandExchangeOffer.field61 && var38.y < GrandExchangeOffer.field61 + 8 && var38.plane == Player.Client_plane) {
 							var38.hitpoints = 0;
 						}
 					}
@@ -5602,7 +5602,7 @@ public final class Client extends GameShell implements Usernamed {
 					if (SecureRandomCallable.field510 >= 100) {
 						var16 = AbstractUserComparator.field3583 * 16384 + 64;
 						var5 = class49.field401 * 128 + 64;
-						var6 = GraphicsObject.getTileHeight(var16, var5, Player.Scene_plane) - ViewportMouse.field1713;
+						var6 = GraphicsObject.getTileHeight(var16, var5, Player.Client_plane) - ViewportMouse.field1713;
 						var7 = var16 - UrlRequester.cameraX;
 						var8 = var6 - class16.cameraY;
 						var19 = var5 - GrandExchangeOfferAgeComparator.cameraZ;
@@ -5951,7 +5951,7 @@ public final class Client extends GameShell implements Usernamed {
 					if (Interpreter.field1068 >= 100) {
 						UrlRequester.cameraX = class14.field88 * 128 + 64;
 						GrandExchangeOfferAgeComparator.cameraZ = class42.field360 * 128 + 64;
-						class16.cameraY = GraphicsObject.getTileHeight(UrlRequester.cameraX, GrandExchangeOfferAgeComparator.cameraZ, Player.Scene_plane) - WorldMapLabel.field231;
+						class16.cameraY = GraphicsObject.getTileHeight(UrlRequester.cameraX, GrandExchangeOfferAgeComparator.cameraZ, Player.Client_plane) - WorldMapLabel.field231;
 					}
 
 					var1.serverPacket = null;
@@ -6292,7 +6292,7 @@ public final class Client extends GameShell implements Usernamed {
 	@Export("openMenu")
 	final void openMenu(int var1, int var2) {
 		Decimator.calculateMenuBounds(var1, var2);
-		WorldMapArea.scene.menuOpen(Player.Scene_plane, var1, var2, false);
+		WorldMapArea.scene.menuOpen(Player.Client_plane, var1, var2, false);
 		isMenuOpen = true;
 	}
 

@@ -126,7 +126,7 @@ final class GrandExchangeOfferNameComparator implements Comparator {
 		class247.cameraPitch = var3;
 		WorldMapData_1.cameraYaw = var4;
 		if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (IgnoreList.oculusOrbFocalPointX >> 7 != class215.localPlayer.x >> 7 || AbstractArchive.oculusOrbFocalPointY >> 7 != class215.localPlayer.y >> 7)) {
-			var12 = class215.localPlayer.Scene_plane;
+			var12 = class215.localPlayer.Client_plane;
 			var13 = UserComparator8.baseX * 64 + (IgnoreList.oculusOrbFocalPointX >> 7);
 			var14 = HealthBar.baseY * 64 + (AbstractArchive.oculusOrbFocalPointY >> 7);
 			PacketBufferNode var15 = SoundSystem.getPacketBufferNode(ClientPacket.field2228, Client.packetWriter.isaacCipher);
@@ -190,7 +190,7 @@ final class GrandExchangeOfferNameComparator implements Comparator {
 				var14 = var14;
 				int var26 = Username.ViewportMouse_unpackX(var8);
 				int var16 = ScriptEvent.method1272(var8);
-				if (var26 == 2 && WorldMapArea.scene.getObjectFlags(Player.Scene_plane, var24, var14, var9) >= 0) {
+				if (var26 == 2 && WorldMapArea.scene.getObjectFlags(Player.Client_plane, var24, var14, var9) >= 0) {
 					ObjectDefinition var17 = WorldMapDecorationType.getObjectDefinition(var16);
 					if (var17.transforms != null) {
 						var17 = var17.transform();
@@ -307,7 +307,7 @@ final class GrandExchangeOfferNameComparator implements Comparator {
 				}
 
 				if (var26 == 3) {
-					NodeDeque var33 = Client.groundItems[Player.Scene_plane][var24][var14];
+					NodeDeque var33 = Client.groundItems[Player.Client_plane][var24][var14];
 					if (var33 != null) {
 						for (TileItem var37 = (TileItem)var33.first(); var37 != null; var37 = (TileItem)var33.next()) {
 							ItemDefinition var35 = class222.ItemDefinition_get(var37.id);

@@ -47,7 +47,7 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 	@Export("addPendingSpawnToScene")
 	static final void addPendingSpawnToScene(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-			if (Client.isLowDetail && var0 != Player.Scene_plane) {
+			if (Client.isLowDetail && var0 != Player.Client_plane) {
 				return;
 			}
 

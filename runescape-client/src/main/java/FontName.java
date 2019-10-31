@@ -148,7 +148,7 @@ public class FontName {
 	)
 	static final void method5442() {
 		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
-			if (var0.plane == Player.Scene_plane && !var0.isFinished) {
+			if (var0.plane == Player.Client_plane && !var0.isFinished) {
 				if (Client.cycle >= var0.cycleStart) {
 					var0.advance(Client.field693);
 					if (var0.isFinished) {
@@ -178,7 +178,7 @@ public class FontName {
 			}
 
 			IgnoreList.oculusOrbFocalPointX = class215.localPlayer.x;
-			int var2 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Scene_plane) - Client.camFollowHeight;
+			int var2 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Client_plane) - Client.camFollowHeight;
 			if (var2 < Tiles.field497) {
 				Tiles.field497 = var2;
 			}

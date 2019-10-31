@@ -227,7 +227,7 @@ public class DevicePcmPlayerProvider implements class99 {
 			} else {
 				int var5;
 				if (var0 == ScriptOpcodes.COORD) {
-					var3 = Player.Scene_plane;
+					var3 = Player.Client_plane;
 					var4 = UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7);
 					var5 = HealthBar.baseY * 64 + (class215.localPlayer.y >> 7);
 					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);

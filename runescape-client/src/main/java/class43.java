@@ -92,7 +92,7 @@ public final class class43 {
 	static int method877(int var0, Script var1, boolean var2) {
 		int var3;
 		if (var0 == 6600) {
-			var3 = Player.Scene_plane;
+			var3 = Player.Client_plane;
 			int var9 = UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7);
 			int var5 = HealthBar.baseY * 64 + (class215.localPlayer.y >> 7);
 			UserComparator4.getWorldMap().method6437(var3, var9, var5, true);

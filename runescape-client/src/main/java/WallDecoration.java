@@ -185,7 +185,7 @@ public final class WallDecoration {
 		int var14;
 		if (!Client.isCameraLocked) {
 			if (ScriptEvent.clientPreferences.roofsHidden) {
-				var5 = Player.Scene_plane;
+				var5 = Player.Client_plane;
 			} else {
 				label525: {
 					var6 = 3;
@@ -201,17 +201,17 @@ public final class WallDecoration {
 						var9 = UrlRequester.cameraX >> 7;
 						var10 = GrandExchangeOfferAgeComparator.cameraZ >> 7;
 						if (var9 < 0 || var10 < 0 || var9 >= 104 || var10 >= 104) {
-							var5 = Player.Scene_plane;
+							var5 = Player.Client_plane;
 							break label525;
 						}
 
 						if (var7 < 0 || var8 < 0 || var7 >= 104 || var8 >= 104) {
-							var5 = Player.Scene_plane;
+							var5 = Player.Client_plane;
 							break label525;
 						}
 
-						if ((Tiles.Tiles_renderFlags[Player.Scene_plane][var9][var10] & 4) != 0) {
-							var6 = Player.Scene_plane;
+						if ((Tiles.Tiles_renderFlags[Player.Client_plane][var9][var10] & 4) != 0) {
+							var6 = Player.Client_plane;
 						}
 
 						if (var7 > var9) {
@@ -237,8 +237,8 @@ public final class WallDecoration {
 									--var9;
 								}
 
-								if ((Tiles.Tiles_renderFlags[Player.Scene_plane][var9][var10] & 4) != 0) {
-									var6 = Player.Scene_plane;
+								if ((Tiles.Tiles_renderFlags[Player.Client_plane][var9][var10] & 4) != 0) {
+									var6 = Player.Client_plane;
 								}
 
 								var14 += var13;
@@ -250,8 +250,8 @@ public final class WallDecoration {
 										--var10;
 									}
 
-									if ((Tiles.Tiles_renderFlags[Player.Scene_plane][var9][var10] & 4) != 0) {
-										var6 = Player.Scene_plane;
+									if ((Tiles.Tiles_renderFlags[Player.Client_plane][var9][var10] & 4) != 0) {
+										var6 = Player.Client_plane;
 									}
 								}
 							}
@@ -266,8 +266,8 @@ public final class WallDecoration {
 									--var10;
 								}
 
-								if ((Tiles.Tiles_renderFlags[Player.Scene_plane][var9][var10] & 4) != 0) {
-									var6 = Player.Scene_plane;
+								if ((Tiles.Tiles_renderFlags[Player.Client_plane][var9][var10] & 4) != 0) {
+									var6 = Player.Client_plane;
 								}
 
 								var14 += var13;
@@ -279,8 +279,8 @@ public final class WallDecoration {
 										--var9;
 									}
 
-									if ((Tiles.Tiles_renderFlags[Player.Scene_plane][var9][var10] & 4) != 0) {
-										var6 = Player.Scene_plane;
+									if ((Tiles.Tiles_renderFlags[Player.Client_plane][var9][var10] & 4) != 0) {
+										var6 = Player.Client_plane;
 									}
 								}
 							}
@@ -288,13 +288,13 @@ public final class WallDecoration {
 					}
 
 					if (class215.localPlayer.x >= 0 && class215.localPlayer.y >= 0 && class215.localPlayer.x < 13312 && class215.localPlayer.y < 13312) {
-						if ((Tiles.Tiles_renderFlags[Player.Scene_plane][class215.localPlayer.x >> 7][class215.localPlayer.y >> 7] & 4) != 0) {
-							var6 = Player.Scene_plane;
+						if ((Tiles.Tiles_renderFlags[Player.Client_plane][class215.localPlayer.x >> 7][class215.localPlayer.y >> 7] & 4) != 0) {
+							var6 = Player.Client_plane;
 						}
 
 						var5 = var6;
 					} else {
-						var5 = Player.Scene_plane;
+						var5 = Player.Client_plane;
 					}
 				}
 			}
@@ -302,11 +302,11 @@ public final class WallDecoration {
 			var4 = var5;
 		} else {
 			if (ScriptEvent.clientPreferences.roofsHidden) {
-				var5 = Player.Scene_plane;
+				var5 = Player.Client_plane;
 			} else {
-				var6 = GraphicsObject.getTileHeight(UrlRequester.cameraX, GrandExchangeOfferAgeComparator.cameraZ, Player.Scene_plane);
-				if (var6 - class16.cameraY < 800 && (Tiles.Tiles_renderFlags[Player.Scene_plane][UrlRequester.cameraX >> 7][GrandExchangeOfferAgeComparator.cameraZ >> 7] & 4) != 0) {
-					var5 = Player.Scene_plane;
+				var6 = GraphicsObject.getTileHeight(UrlRequester.cameraX, GrandExchangeOfferAgeComparator.cameraZ, Player.Client_plane);
+				if (var6 - class16.cameraY < 800 && (Tiles.Tiles_renderFlags[Player.Client_plane][UrlRequester.cameraX >> 7][GrandExchangeOfferAgeComparator.cameraZ >> 7] & 4) != 0) {
+					var5 = Player.Client_plane;
 				} else {
 					var5 = 3;
 				}

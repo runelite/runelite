@@ -60,7 +60,7 @@ public class JagexCache {
 	)
 	static void method3624() {
 		if (Login.worldMap != null) {
-			Login.worldMap.method6437(Player.Scene_plane, UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7), HealthBar.baseY * 64 + (class215.localPlayer.y >> 7), false);
+			Login.worldMap.method6437(Player.Client_plane, UserComparator8.baseX * 64 + (class215.localPlayer.x >> 7), HealthBar.baseY * 64 + (class215.localPlayer.y >> 7), false);
 			Login.worldMap.loadCache();
 		}
 

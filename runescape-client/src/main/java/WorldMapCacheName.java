@@ -141,7 +141,7 @@ public class WorldMapCacheName {
 	@Export("worldToScreen")
 	static final void worldToScreen(int var0, int var1, int var2) {
 		if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-			int var3 = GraphicsObject.getTileHeight(var0, var1, Player.Scene_plane) - var2;
+			int var3 = GraphicsObject.getTileHeight(var0, var1, Player.Client_plane) - var2;
 			var0 -= UrlRequester.cameraX;
 			var3 -= class16.cameraY;
 			var1 -= GrandExchangeOfferAgeComparator.cameraZ;

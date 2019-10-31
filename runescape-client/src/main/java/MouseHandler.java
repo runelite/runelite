@@ -349,7 +349,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 	)
 	static final void method1172() {
 		for (Projectile var0 = (Projectile)Client.projectiles.last(); var0 != null; var0 = (Projectile)Client.projectiles.previous()) {
-			if (var0.plane == Player.Scene_plane && Client.cycle <= var0.cycleEnd) {
+			if (var0.plane == Player.Client_plane && Client.cycle <= var0.cycleEnd) {
 				if (Client.cycle >= var0.cycleStart) {
 					if (var0.targetIndex > 0) {
 						NPC var1 = Client.npcs[var0.targetIndex - 1];
@@ -373,7 +373,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
 					}
 
 					var0.advance(Client.field693);
-					WorldMapArea.scene.drawEntity(Player.Scene_plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
+					WorldMapArea.scene.drawEntity(Player.Client_plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.yaw, -1L, false);
 				}
 			} else {
 				var0.remove();

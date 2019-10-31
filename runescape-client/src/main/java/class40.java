@@ -944,7 +944,7 @@ public class class40 {
 
 					long var5 = class160.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
 					var2.playerCycle = Client.cycle;
-					WorldMapArea.scene.drawEntity(Player.Scene_plane, var2.x, var2.y, GraphicsObject.getTileHeight(var2.field927 * 64 - 64 + var2.x, var2.field927 * 64 - 64 + var2.y, Player.Scene_plane), var2.field927 * 64 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
+					WorldMapArea.scene.drawEntity(Player.Client_plane, var2.x, var2.y, GraphicsObject.getTileHeight(var2.field927 * 64 - 64 + var2.x, var2.field927 * 64 - 64 + var2.y, Player.Client_plane), var2.field927 * 64 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
 				}
 			}
 		}
