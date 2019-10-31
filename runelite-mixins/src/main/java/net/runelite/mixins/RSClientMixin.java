@@ -1752,20 +1752,13 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	BigInteger modulus = new BigInteger("8ffe6122bc1531a9d3909c2cefb420d9099dcda7494cf98fcd054d7eac1f32c03cc1cff0955965d35dfb6bd322c5e9201941edfa6f26cfff45524daf4c6b09c8a121f3b0262443ca7164bbad436420e7fd23d9d2b74f228f68f961563e337b95772bf046cf05bb699549141325085c55e5d44ea15e3c7f17dd6c03d521f963f7", 16);
-
-	@Inject
-	@Override
-	public BigInteger getModulus()
-	{
-		return modulus;
-	}
+	private static BigInteger modulus;
 
 	@Inject
 	@Override
 	public void setModulus(BigInteger modulus)
 	{
-		this.modulus = modulus;
+		RSClientMixin.modulus = modulus;
 	}
 
 	@Copy("forceDisconnect")

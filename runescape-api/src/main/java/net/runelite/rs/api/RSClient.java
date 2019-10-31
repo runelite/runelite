@@ -1087,8 +1087,6 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	RSSprite[] getCrossSprites();
 
-	BigInteger getModulus();
-
 	void setModulus(BigInteger modulus);
 
 	@Import("ItemDefinition_fileCount")
