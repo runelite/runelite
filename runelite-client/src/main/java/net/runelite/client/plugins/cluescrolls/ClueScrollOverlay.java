@@ -34,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-
 import com.google.common.collect.ImmutableList;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -56,7 +55,7 @@ public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source", item(LIT_CANDLE), item(CANDLE_LANTERN_4531), item(MAX_CAPE), item(FIREMAKING_CAPE), item(FIREMAKING_CAPET), item(BRUMA_TORCH), item(KANDARIN_HEADGEAR_1), item(KANDARIN_HEADGEAR_2), item(KANDARIN_HEADGEAR_3), item(KANDARIN_HEADGEAR_4), item(MINING_HELMET_5014), item(BULLSEYE_LANTERN_4550), item(OIL_LANTERN_4539), item(OIL_LAMP_4524), item(LIT_BLACK_CANDLE), item(SAPPHIRE_LANTERN_4702), item(EMERALD_LANTERN_20722), item(OIL_LAMP_4524), item(LIT_TORCH));
-	private static final List<Varbits>  BRAZIER_VARBITS = ImmutableList.of(Varbits.BRAZIER_6532, Varbits.BRAZIER_6533, Varbits.BRAZIER_6544);
+	private static final List<Varbits>  BRAZIER_VARBITS = ImmutableList.of(Varbits.BRAZIER_GIANT_MOLE, Varbits.BRAZIER_LUMBRIDGE_SWAMP, Varbits.BRAZIER_MOSLE_HARMLESS);
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 	private final ClueScrollPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();

@@ -298,11 +298,11 @@ public enum Varbits
 	RAID_PARTY_SIZE(5424),
 
 	/**
-	 * Braziers
+	 * Making Friends with My Arm Braziers
 	 */
-	BRAZIER_6532(6532),
-	BRAZIER_6533(6533),
-	BRAZIER_6544(6544),
+	BRAZIER_GIANT_MOLE(6532),
+	BRAZIER_LUMBRIDGE_SWAMP(6533),
+	BRAZIER_MOSLE_HARMLESS(6544),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
