@@ -148,12 +148,24 @@ public class NpcSceneOverlay extends Overlay
 		switch (config.renderStyle())
 		{
 			case SOUTH_WEST_TILE:
-				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
-				Polygon tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
+			{
+				int size = 1;
+				NPCComposition composition = actor.getTransformedComposition();
+				if (composition != null)
+				{
+					size = composition.getSize();
+				}
 
-				renderPoly(graphics, color, tilePoly1);
+				LocalPoint localPoint = actor.getLocalLocation();
+
+				int x = localPoint.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+				int y = localPoint.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+
+				Polygon tilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
+
+				renderPoly(graphics, color, tilePoly);
 				break;
-
+			}
 			case TILE:
 				int size = 1;
 				NPCComposition composition = actor.getTransformedComposition();
