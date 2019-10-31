@@ -98,7 +98,7 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			if (config.showNotification() && showImplingType(impling.getImplingType()))
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
 				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
 			}
@@ -115,11 +115,11 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null && !implings.contains(npc))
 		{
-			if (config.showNotification() && showImplingType(impling.getImplingType()))
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
 				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
 			}
-			
+
 			implings.add(npc);
 		}
 	}
@@ -153,10 +153,11 @@ public class ImplingsPlugin extends Plugin
 			return false;
 		}
 
-		return showImplingType(impling.getImplingType());
+		ImplingsConfig.ImplingMode impMode = showImplingType(impling.getImplingType());
+		return impMode == ImplingsConfig.ImplingMode.HIGHLIGHT || impMode == ImplingsConfig.ImplingMode.NOTIFY;
 	}
 
-	boolean showImplingType(ImplingType implingType)
+	ImplingsConfig.ImplingMode showImplingType(ImplingType implingType)
 	{
 		switch (implingType)
 		{
@@ -185,7 +186,7 @@ public class ImplingsPlugin extends Plugin
 			case LUCKY:
 				return config.showLucky();
 			default:
-				return false;
+				return ImplingsConfig.ImplingMode.NONE;
 		}
 	}
 
