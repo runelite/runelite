@@ -411,13 +411,21 @@ public class MusicPlugin extends Plugin
 			{
 				{
 					Widget handle = slider.getHandle();
-					Widget[] siblings = handle.getParent().getChildren();
-					if (siblings.length < handle.getIndex() || siblings[handle.getIndex()] != handle)
+					Widget parent = handle.getParent();
+					if (parent == null)
 					{
 						continue;
 					}
-					siblings[slider.getTrack().getIndex()] = null;
-					siblings[handle.getIndex()] = null;
+					else
+					{
+						Widget[] siblings = parent.getChildren();
+						if (siblings == null || handle.getIndex() >= siblings.length || siblings[handle.getIndex()] != handle)
+						{
+							continue;
+						}
+						siblings[slider.getTrack().getIndex()] = null;
+						siblings[handle.getIndex()] = null;
+					}
 				}
 
 				Object[] init = icon.getOnLoadListener();
@@ -444,10 +452,18 @@ public class MusicPlugin extends Plugin
 			Widget handle = slider.getHandle();
 			if (handle != null)
 			{
-				Widget[] siblings = handle.getParent().getChildren();
-				if (siblings.length < handle.getIndex() || siblings[handle.getIndex()] != handle)
+				Widget parent = handle.getParent();
+				if (parent == null)
 				{
 					handle = null;
+				}
+				else
+				{
+					Widget[] siblings = parent.getChildren();
+					if (siblings == null || handle.getIndex() >= siblings.length || siblings[handle.getIndex()] != handle)
+					{
+						handle = null;
+					}
 				}
 			}
 			if (handle == null)
