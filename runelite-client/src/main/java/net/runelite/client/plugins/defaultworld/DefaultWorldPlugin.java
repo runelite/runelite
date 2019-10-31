@@ -131,7 +131,7 @@ public class DefaultWorldPlugin extends Plugin
 				rsWorld.setId(world.getId());
 				rsWorld.setPlayerCount(world.getPlayers());
 				rsWorld.setLocation(world.getLocation());
-				rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
+				rsWorld.setTypes(WorldUtil.httpToRuneliteWorldTypes(world.getTypes()));
 
 				client.changeWorld(rsWorld);
 				log.debug("Applied new world {}", correctedWorld);

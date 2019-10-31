@@ -25,7 +25,6 @@
 package net.runelite.client.util;
 
 import java.util.EnumSet;
-import net.runelite.api.WorldType;
 
 /**
  * Utility class for RuneScape worlds
@@ -38,13 +37,31 @@ public class WorldUtil
 	 * @param apiTypes http-api world types
 	 * @return runelite-api world types
 	 */
-	public static EnumSet<WorldType> toWorldTypes(final EnumSet<net.runelite.http.api.worlds.WorldType> apiTypes)
+	public static EnumSet<net.runelite.api.WorldType> httpToRuneliteWorldTypes(final EnumSet<net.runelite.http.api.worlds.WorldType> apiTypes)
 	{
 		final EnumSet<net.runelite.api.WorldType> types = EnumSet.noneOf(net.runelite.api.WorldType.class);
 
 		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
 		{
 			types.add(net.runelite.api.WorldType.valueOf(apiType.name()));
+		}
+
+		return types;
+	}
+
+	/**
+	 * Converts runelite-api world types to http-api world types
+	 * TODO: Find a better way to handle these to not have duplicate interfaces
+	 * @param apiTypes runelite-api world types
+	 * @return http-api world types
+	 */
+	public static EnumSet<net.runelite.http.api.worlds.WorldType> runeliteToHttpWorldTypes(final EnumSet<net.runelite.api.WorldType> apiTypes)
+	{
+		final EnumSet<net.runelite.http.api.worlds.WorldType> types = EnumSet.noneOf(net.runelite.http.api.worlds.WorldType.class);
+
+		for (net.runelite.api.WorldType apiType : apiTypes)
+		{
+			types.add(net.runelite.http.api.worlds.WorldType.valueOf(apiType.name()));
 		}
 
 		return types;

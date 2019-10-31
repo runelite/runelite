@@ -660,7 +660,7 @@ public class WorldHopperPlugin extends Plugin
 		rsWorld.setId(world.getId());
 		rsWorld.setPlayerCount(world.getPlayers());
 		rsWorld.setLocation(world.getLocation());
-		rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
+		rsWorld.setTypes(WorldUtil.httpToRuneliteWorldTypes(world.getTypes()));
 
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
