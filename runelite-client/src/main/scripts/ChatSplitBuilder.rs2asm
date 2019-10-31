@@ -377,12 +377,17 @@ LABEL327:
    jump                   LABEL372
 LABEL330:
    iload                  7
+   iload                  12                 ; Load the id of the messageNode
+   sconst                 ""                 ; Push a container for the timestamp
+   sconst                 "addTimestamp"     ; Push event name
+   runelite_callback                         ; Invoke callback
+   pop_int                                   ; Pop the id of the messageNode
    sconst                 "From "
    sload                  1
    sconst                 ":"
    sconst                 "privateChatSplitFrom"
    runelite_callback     
-   join_string            3
+   join_string            4                  ; Add the timestamp to the message
    sload                  0
    iload                  9
    iload                  10
@@ -401,12 +406,17 @@ LABEL330:
    jump                   LABEL407
 LABEL351:
    iload                  7
+   iload                  12                 ; Load the id of the messageNode
+   sconst                 ""                 ; Push container for the timestamp
+   sconst                 "addTimestamp"     ; Push event name
+   runelite_callback                         ; Invoke callback
+   pop_int                                   ; Pop the id of the messageNode
    sconst                 "To "
    sload                  1
    sconst                 ":"
    sconst                 "privateChatSplitTo"
    runelite_callback     
-   join_string            3
+   join_string            4                  ; Add the timestamp to the message
    sload                  0
    iload                  9
    iload                  10
@@ -425,7 +435,13 @@ LABEL351:
    jump                   LABEL407
 LABEL372:
    iload                  7
-   sload                  0
+   iload                  12                 ; Load the id of the messageNode
+   sconst                 ""                 ; Push a container for the timestamp
+   sconst                 "addTimestamp"     ; Push event name
+   runelite_callback                         ; Invoke callback
+   pop_int                                   ; Pop the id of the messageNode
+   sload                  0                  ; Load the log in/out message
+   join_string            2                  ; Add the timestamp to the message
    iload                  9
    iload                  10
    iconst                 10682368

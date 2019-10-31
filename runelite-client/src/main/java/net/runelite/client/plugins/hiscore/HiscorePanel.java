@@ -97,7 +97,7 @@ import net.runelite.http.api.hiscore.Skill;
 @Slf4j
 public class HiscorePanel extends PluginPanel
 {
-	/* The maximum allowed username length in runescape accounts */
+	/* The maximum allowed username length in RuneScape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
 
 	/**
@@ -345,7 +345,7 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		/* Runescape usernames can't be longer than 12 characters long */
+		/* RuneScape usernames can't be longer than 12 characters long */
 		if (lookup.length() > MAX_USERNAME_LENGTH)
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);

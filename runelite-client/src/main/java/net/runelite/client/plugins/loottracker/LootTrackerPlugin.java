@@ -54,6 +54,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
@@ -640,14 +641,16 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final long price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+		final long gePrice = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+		final long haPrice = (long) Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER) * (long) quantity;
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 		return new LootTrackerItem(
 			itemId,
 			itemComposition.getName(),
 			quantity,
-			price,
+			gePrice,
+			haPrice,
 			ignored);
 	}
 
