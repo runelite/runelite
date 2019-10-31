@@ -36,7 +36,6 @@ import com.jogamp.opengl.GLDrawableFactory;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -828,14 +827,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			gl.glEnable(gl.GL_MULTISAMPLE);
 
-			final Dimension stretchedDimensions = client.getStretchedDimensions();
-
-			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
-			final int stretchedCanvasHeight = client.isStretchedEnabled() ? stretchedDimensions.height : canvasHeight;
-
 			// Re-create fbo
-			if (lastStretchedCanvasWidth != stretchedCanvasWidth
-				|| lastStretchedCanvasHeight != stretchedCanvasHeight
+			if (lastStretchedCanvasWidth != canvasWidth
+				|| lastStretchedCanvasHeight != canvasHeight
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
 				shutdownSceneFbo();
@@ -843,10 +837,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
 				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
 
-				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
+				initSceneFbo(canvasWidth, canvasHeight, samples);
 
-				lastStretchedCanvasWidth = stretchedCanvasWidth;
-				lastStretchedCanvasHeight = stretchedCanvasHeight;
+				lastStretchedCanvasWidth = canvasWidth;
+				lastStretchedCanvasHeight = canvasHeight;
 			}
 
 			gl.glBindFramebuffer(gl.GL_DRAW_FRAMEBUFFER, fboSceneHandle);
@@ -999,31 +993,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			final Texture[] textures = textureProvider.getTextures();
 			int renderHeightOff = client.getViewportYOffset();
 			int renderWidthOff = client.getViewportXOffset();
-			int renderCanvasHeight = canvasHeight;
-			int renderViewportHeight = viewportHeight;
-			int renderViewportWidth = viewportWidth;
 
-			if (client.isStretchedEnabled())
-			{
-				Dimension dim = client.getStretchedDimensions();
-				renderCanvasHeight = dim.height;
-
-				double scaleFactorY = dim.getHeight() / canvasHeight;
-				double scaleFactorX = dim.getWidth()  / canvasWidth;
-
-				// Pad the viewport a little because having ints for our viewport dimensions can introduce off-by-one errors.
-				final int padding = 1;
-
-				// Ceil the sizes because even if the size is 599.1 we want to treat it as size 600 (i.e. render to the x=599 pixel).
-				renderViewportHeight = (int) Math.ceil(scaleFactorY * (renderViewportHeight)) + padding * 2;
-				renderViewportWidth  = (int) Math.ceil(scaleFactorX * (renderViewportWidth )) + padding * 2;
-
-				// Floor the offsets because even if the offset is 4.9, we want to render to the x=4 pixel anyway.
-				renderHeightOff      = (int) Math.floor(scaleFactorY * (renderHeightOff)) - padding;
-				renderWidthOff       = (int) Math.floor(scaleFactorX * (renderWidthOff )) - padding;
-			}
-
-			glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
+			glDpiAwareViewport(renderWidthOff, canvasHeight - viewportHeight - renderHeightOff, viewportWidth, viewportHeight);
 
 			gl.glUseProgram(glProgram);
 
@@ -1153,29 +1124,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
-		if (client.isStretchedEnabled())
-		{
-			Dimension dim = client.getStretchedDimensions();
-			glDpiAwareViewport(0, 0, dim.width, dim.height);
-		}
-		else
-		{
-			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
-		}
+		glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 
 		// Use the texture bound in the first pass
 		gl.glUseProgram(glUiProgram);
 		gl.glUniform1i(uniTex, 0);
-
-		// Set the sampling function used when stretching the UI.
-		// This is probably better done with sampler objects instead of texture parameters, but this is easier and likely more portable.
-		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
-		if (client.isStretchedEnabled())
-		{
-			final int function = client.isStretchedFast() ? gl.GL_NEAREST : gl.GL_LINEAR;
-			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, function);
-			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, function);
-		}
 
 		// Texture on UI
 		gl.glBindVertexArray(vaoUiHandle);
@@ -1200,13 +1153,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		int width  = client.getCanvasWidth();
 		int height = client.getCanvasHeight();
-
-		if (client.isStretchedEnabled())
-		{
-			Dimension dim = client.getStretchedDimensions();
-			width  = dim.width;
-			height = dim.height;
-		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
 			.order(ByteOrder.nativeOrder());

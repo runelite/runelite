@@ -25,13 +25,10 @@
 package net.runelite.client.callback;
 
 import com.google.inject.Injector;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -347,48 +344,7 @@ public class Hooks implements Callbacks
 		}
 
 		// Stretch the game image if the user has that enabled
-		Image image = mainBufferProvider.getImage();
-		final Image finalImage;
-		if (client.isStretchedEnabled())
-		{
-			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
-			Dimension stretchedDimensions = client.getStretchedDimensions();
-
-			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
-				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
-			{
-				/*
-					Reuse the resulting image instance to avoid creating an extreme amount of objects
-				 */
-				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
-
-				if (stretchedGraphics != null)
-				{
-					stretchedGraphics.dispose();
-				}
-				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
-
-				lastStretchedDimensions = stretchedDimensions;
-
-				/*
-					Fill Canvas before drawing stretched image to prevent artifacts.
-				*/
-				graphics.setColor(Color.BLACK);
-				graphics.fillRect(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
-			}
-
-			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				client.isStretchedFast()
-					? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
-
-			finalImage = stretchedImage;
-		}
-		else
-		{
-			finalImage = image;
-		}
+		final Image finalImage = mainBufferProvider.getImage();
 
 		// Draw the image onto the game canvas
 		graphics.drawImage(finalImage, 0, 0, client.getCanvas());
