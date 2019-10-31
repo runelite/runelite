@@ -34,4 +34,11 @@ public class AreaSoundEffectPlayed implements Event
 	private int sceneY;
 	private int range;
 	private int delay;
+
+	private boolean consumed;
+
+	public void consume()
+	{
+		consumed = true;
+	}
 }

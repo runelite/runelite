@@ -1,0 +1,58 @@
+name: OpenOSRS - CI (push)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assembling
+        run: ./gradlew assemble --console=plain
+      - name: Building
+        run: ./gradlew build --stacktrace -x test -x checkstyleMain --console=plain
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assembling
+        run: ./gradlew assemble --console=plain
+      - name: Testing
+        run: ./gradlew test --stacktrace --console=plain
+
+  checkstyle:
+    name: Checkstyle
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Assembling
+        run: ./gradlew assemble --console=plain
+      - name: Checking code conventions
+        run: ./gradlew checkstyleMain --console=plain

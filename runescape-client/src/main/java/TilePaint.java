@@ -4,45 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("eg")
 @Implements("TilePaint")
 public final class TilePaint {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 968490533
+		intValue = -1607728329
 	)
 	@Export("swColor")
 	int swColor;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -721233201
+		intValue = -293038201
 	)
 	@Export("seColor")
 	int seColor;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1592287523
+		intValue = -1492739509
 	)
 	@Export("neColor")
 	int neColor;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -100726041
+		intValue = 276503717
 	)
 	@Export("nwColor")
 	int nwColor;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 2026223793
+		intValue = -1272946255
 	)
 	@Export("texture")
 	int texture;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@Export("isFlat")
 	boolean isFlat;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1661774659
+		intValue = 609514679
 	)
 	@Export("rgb")
 	int rgb;
@@ -58,57 +58,33 @@ public final class TilePaint {
 		this.isFlat = var7;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkl;II)Ljava/lang/String;",
-		garbageValue = "-964205547"
+		signature = "([BIIII[Lfm;I)V",
+		garbageValue = "1145128419"
 	)
-	static String method3042(Buffer var0, int var1) {
-		try {
-			int var2 = var0.readUShortSmart();
-			if (var2 > var1) {
-				var2 = var1;
+	static final void method3200(byte[] var0, int var1, int var2, int var3, int var4, CollisionMap[] var5) {
+		int var7;
+		int var8;
+		for (int var6 = 0; var6 < 4; ++var6) {
+			for (var7 = 0; var7 < 64; ++var7) {
+				for (var8 = 0; var8 < 64; ++var8) {
+					if (var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
+						int[] var10000 = var5[var6].flags[var7 + var1];
+						var10000[var8 + var2] &= -16777217;
+					}
+				}
 			}
-
-			byte[] var3 = new byte[var2];
-			var0.offset += class210.huffman.decompress(var0.array, var0.offset, var3, 0, var2);
-			String var4 = ArchiveLoader.decodeStringCp1252(var3, 0, var2);
-			return var4;
-		} catch (Exception var6) {
-			return "Cabbage";
-		}
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "800355488"
-	)
-	@Export("parseInt")
-	public static int parseInt(CharSequence var0) {
-		return SoundCache.parseIntCustomRadix(var0, 10, true);
-	}
-
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-2065502658"
-	)
-	@Export("Login_promptCredentials")
-	static void Login_promptCredentials(boolean var0) {
-		Login.Login_response1 = "";
-		Login.Login_response2 = "Enter your username/email & password.";
-		Login.Login_response3 = "";
-		Login.loginIndex = 2;
-		if (var0) {
-			Login.Login_password = "";
 		}
 
-		InterfaceParent.method1197();
-		if (Client.Login_isUsernameRemembered && Login.Login_username != null && Login.Login_username.length() > 0) {
-			Login.currentLoginField = 1;
-		} else {
-			Login.currentLoginField = 0;
+		Buffer var10 = new Buffer(var0);
+
+		for (var7 = 0; var7 < 4; ++var7) {
+			for (var8 = 0; var8 < 64; ++var8) {
+				for (int var9 = 0; var9 < 64; ++var9) {
+					class312.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
+				}
+			}
 		}
 
 	}

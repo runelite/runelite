@@ -4,116 +4,115 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("f")
 @Implements("AbstractWorldMapData")
 public abstract class AbstractWorldMapData {
-	@ObfuscatedName("iz")
-	@ObfuscatedGetter(
-		intValue = 742897815
+	@ObfuscatedName("ae")
+	@ObfuscatedSignature(
+		signature = "Llu;"
 	)
-	@Export("selectedItemId")
-	static int selectedItemId;
-	@ObfuscatedName("z")
+	@Export("rasterProvider")
+	public static AbstractRasterProvider rasterProvider;
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 461674944
+		intValue = 1032040448
 	)
 	@Export("regionXLow")
 	int regionXLow;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 278884352
+		intValue = 2012131328
 	)
 	@Export("regionYLow")
 	int regionYLow;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -317022193
+		intValue = 1049638377
 	)
 	@Export("regionX")
 	int regionX;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 796055175
+		intValue = 548799015
 	)
 	@Export("regionY")
 	int regionY;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 804294653
+		intValue = 974666319
 	)
 	@Export("minPlane")
 	int minPlane;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 593055761
+		intValue = 1744389767
 	)
 	@Export("planes")
 	int planes;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -1864196889
+		intValue = -1592799997
 	)
 	@Export("groupId")
 	int groupId;
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -644572197
+		intValue = -1573333695
 	)
 	@Export("fileId")
 	int fileId;
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@Export("floorUnderlayIds")
 	short[][][] floorUnderlayIds;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@Export("floorOverlayIds")
 	short[][][] floorOverlayIds;
-	@ObfuscatedName("c")
-	byte[][][] field164;
-	@ObfuscatedName("b")
-	byte[][][] field152;
-	@ObfuscatedName("o")
+	@ObfuscatedName("m")
+	byte[][][] field161;
+	@ObfuscatedName("p")
+	byte[][][] field157;
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "[[[[Lk;"
+		signature = "[[[[Ly;"
 	)
 	@Export("decorations")
 	WorldMapDecoration[][][][] decorations;
-	@ObfuscatedName("a")
-	boolean field165;
-	@ObfuscatedName("e")
-	boolean field166;
+	@ObfuscatedName("k")
+	boolean field159;
+	@ObfuscatedName("x")
+	boolean field151;
 
 	AbstractWorldMapData() {
 		this.groupId = -1;
 		this.fileId = -1;
 		new LinkedList();
-		this.field165 = false;
-		this.field166 = false;
+		this.field159 = false;
+		this.field151 = false;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkl;I)V",
-		garbageValue = "1549979331"
+		signature = "(Lkc;I)V",
+		garbageValue = "1045041620"
 	)
 	@Export("readGeography")
 	abstract void readGeography(Buffer var1);
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1858482709"
+		garbageValue = "-992891082"
 	)
 	@Export("isFullyLoaded")
 	boolean isFullyLoaded() {
-		return this.field165 && this.field166;
+		return this.field159 && this.field151;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Lhp;I)V",
-		garbageValue = "-1207518623"
+		signature = "(Lhq;I)V",
+		garbageValue = "126023316"
 	)
 	@Export("loadGeography")
 	void loadGeography(AbstractArchive var1) {
@@ -121,53 +120,53 @@ public abstract class AbstractWorldMapData {
 			byte[] var2 = var1.takeFile(this.groupId, this.fileId);
 			if (var2 != null) {
 				this.readGeography(new Buffer(var2));
-				this.field165 = true;
-				this.field166 = true;
+				this.field159 = true;
+				this.field151 = true;
 			}
 
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1757437769"
+		signature = "(B)V",
+		garbageValue = "124"
 	)
 	@Export("reset")
 	void reset() {
 		this.floorUnderlayIds = null;
 		this.floorOverlayIds = null;
-		this.field164 = null;
-		this.field152 = null;
+		this.field161 = null;
+		this.field157 = null;
 		this.decorations = null;
-		this.field165 = false;
-		this.field166 = false;
+		this.field159 = false;
+		this.field151 = false;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(IILkl;B)V",
-		garbageValue = "10"
+		signature = "(IILkc;I)V",
+		garbageValue = "-2099963410"
 	)
 	@Export("readTile")
 	void readTile(int var1, int var2, Buffer var3) {
 		int var4 = var3.readUnsignedByte();
 		if (var4 != 0) {
 			if ((var4 & 1) != 0) {
-				this.method262(var1, var2, var3, var4);
+				this.method320(var1, var2, var3, var4);
 			} else {
-				this.method268(var1, var2, var3, var4);
+				this.method302(var1, var2, var3, var4);
 			}
 
 		}
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "(IILkl;II)V",
-		garbageValue = "2059676399"
+		signature = "(IILkc;IB)V",
+		garbageValue = "-1"
 	)
-	void method262(int var1, int var2, Buffer var3, int var4) {
+	void method320(int var1, int var2, Buffer var3, int var4) {
 		boolean var5 = (var4 & 2) != 0;
 		if (var5) {
 			this.floorOverlayIds[0][var1][var2] = (short)var3.readUnsignedByte();
@@ -176,12 +175,12 @@ public abstract class AbstractWorldMapData {
 		this.floorUnderlayIds[0][var1][var2] = (short)var3.readUnsignedByte();
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IILkl;IB)V",
-		garbageValue = "-56"
+		signature = "(IILkc;IB)V",
+		garbageValue = "0"
 	)
-	void method268(int var1, int var2, Buffer var3, int var4) {
+	void method302(int var1, int var2, Buffer var3, int var4) {
 		int var5 = ((var4 & 24) >> 3) + 1;
 		boolean var6 = (var4 & 2) != 0;
 		boolean var7 = (var4 & 4) != 0;
@@ -197,8 +196,8 @@ public abstract class AbstractWorldMapData {
 				if (var10 != 0) {
 					this.floorOverlayIds[var9][var1][var2] = (short)var10;
 					var11 = var3.readUnsignedByte();
-					this.field164[var9][var1][var2] = (byte)(var11 >> 2);
-					this.field152[var9][var1][var2] = (byte)(var11 & 3);
+					this.field161[var9][var1][var2] = (byte)(var11 >> 2);
+					this.field157[var9][var1][var2] = (byte)(var11 & 3);
 				}
 			}
 		}
@@ -210,7 +209,7 @@ public abstract class AbstractWorldMapData {
 					WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
 					for (var11 = 0; var11 < var9; ++var11) {
-						int var12 = var3.method5453();
+						int var12 = var3.method5638();
 						int var13 = var3.readUnsignedByte();
 						var14[var11] = new WorldMapDecoration(var12, var13 >> 2, var13 & 3);
 					}
@@ -220,232 +219,160 @@ public abstract class AbstractWorldMapData {
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-929324026"
+		signature = "(B)I",
+		garbageValue = "80"
 	)
 	@Export("getRegionX")
 	int getRegionX() {
 		return this.regionX;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-2009466013"
+		signature = "(B)I",
+		garbageValue = "84"
 	)
 	@Export("getRegionY")
 	int getRegionY() {
 		return this.regionY;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(IB)Liq;",
-		garbageValue = "1"
+		signature = "(Ljava/lang/CharSequence;I)Z",
+		garbageValue = "403966383"
 	)
-	public static VarpDefinition method288(int var0) {
-		VarpDefinition var1 = (VarpDefinition)VarpDefinition.VarpDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = VarpDefinition.VarpDefinition_archive.takeFile(16, var0);
-			var1 = new VarpDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+	@Export("isNumber")
+	public static boolean isNumber(CharSequence var0) {
+		boolean var2 = false;
+		boolean var3 = false;
+		int var4 = 0;
+		int var5 = var0.length();
+		int var6 = 0;
+
+		boolean var1;
+		while (true) {
+			if (var6 >= var5) {
+				var1 = var3;
+				break;
 			}
 
-			VarpDefinition.VarpDefinition_cached.put(var1, (long)var0);
-			return var1;
-		}
-	}
+			label81: {
+				char var7 = var0.charAt(var6);
+				if (var6 == 0) {
+					if (var7 == '-') {
+						var2 = true;
+						break label81;
+					}
 
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "(IIIZIZI)V",
-		garbageValue = "-1516072397"
-	)
-	@Export("doWorldSorting")
-	static void doWorldSorting(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-		if (var0 < var1) {
-			int var6 = (var0 + var1) / 2;
-			int var7 = var0;
-			World var8 = World.World_worlds[var6];
-			World.World_worlds[var6] = World.World_worlds[var1];
-			World.World_worlds[var1] = var8;
-
-			for (int var9 = var0; var9 < var1; ++var9) {
-				if (ArchiveLoader.method1174(World.World_worlds[var9], var8, var2, var3, var4, var5) <= 0) {
-					World var10 = World.World_worlds[var9];
-					World.World_worlds[var9] = World.World_worlds[var7];
-					World.World_worlds[var7++] = var10;
+					if (var7 == '+') {
+						break label81;
+					}
 				}
-			}
 
-			World.World_worlds[var1] = World.World_worlds[var7];
-			World.World_worlds[var7] = var8;
-			doWorldSorting(var0, var7 - 1, var2, var3, var4, var5);
-			doWorldSorting(var7 + 1, var1, var2, var3, var4, var5);
-		}
-
-	}
-
-	@ObfuscatedName("ar")
-	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "-1561238800"
-	)
-	static int method289(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERTYPE) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].type();
-			return 1;
-		} else if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERITEM) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].id;
-			return 1;
-		} else if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERPRICE) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].unitPrice;
-			return 1;
-		} else if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERCOUNT) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].totalQuantity;
-			return 1;
-		} else if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERCOMPLETEDCOUNT) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].currentQuantity;
-			return 1;
-		} else if (var0 == ScriptOpcodes.STOCKMARKET_GETOFFERCOMPLETEDGOLD) {
-			var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.grandExchangeOffers[var3].currentPrice;
-			return 1;
-		} else {
-			int var12;
-			if (var0 == ScriptOpcodes.STOCKMARKET_ISOFFEREMPTY) {
-				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				var12 = Client.grandExchangeOffers[var3].status();
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var12 == 0 ? 1 : 0;
-				return 1;
-			} else if (var0 == ScriptOpcodes.STOCKMARKET_ISOFFERSTABLE) {
-				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				var12 = Client.grandExchangeOffers[var3].status();
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var12 == 2 ? 1 : 0;
-				return 1;
-			} else if (var0 == ScriptOpcodes.STOCKMARKET_ISOFFERFINISHED) {
-				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				var12 = Client.grandExchangeOffers[var3].status();
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var12 == 5 ? 1 : 0;
-				return 1;
-			} else if (var0 == ScriptOpcodes.STOCKMARKET_ISOFFERADDING) {
-				var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-				var12 = Client.grandExchangeOffers[var3].status();
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var12 == 1 ? 1 : 0;
-				return 1;
-			} else {
-				boolean var13;
-				if (var0 == ScriptOpcodes.TRADINGPOST_SORTBY_NAME) {
-					var13 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-					if (TileItem.grandExchangeEvents != null) {
-						TileItem.grandExchangeEvents.sort(GrandExchangeEvents.GrandExchangeEvents_nameComparator, var13);
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.TRADINGPOST_SORTBY_PRICE) {
-					var13 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-					if (TileItem.grandExchangeEvents != null) {
-						TileItem.grandExchangeEvents.sort(GrandExchangeEvents.GrandExchangeEvents_priceComparator, var13);
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.TRADINGPOST_SORTFILTERBY_WORLD) {
-					Interpreter.Interpreter_intStackSize -= 2;
-					var13 = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize] == 1;
-					boolean var4 = Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1] == 1;
-					if (TileItem.grandExchangeEvents != null) {
-						Client.GrandExchangeEvents_worldComparator.filterWorlds = var4;
-						TileItem.grandExchangeEvents.sort(Client.GrandExchangeEvents_worldComparator, var13);
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.TRADINGPOST_SORTBY_AGE) {
-					var13 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-					if (TileItem.grandExchangeEvents != null) {
-						TileItem.grandExchangeEvents.sort(GrandExchangeEvents.GrandExchangeEvents_ageComparator, var13);
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.TRADINGPOST_SORTBY_COUNT) {
-					var13 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1;
-					if (TileItem.grandExchangeEvents != null) {
-						TileItem.grandExchangeEvents.sort(GrandExchangeEvents.GrandExchangeEvents_quantityComparator, var13);
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.TRADINGPOST_GETTOTALOFFERS) {
-					Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = TileItem.grandExchangeEvents == null ? 0 : TileItem.grandExchangeEvents.events.size();
-					return 1;
+				int var9;
+				if (var7 >= '0' && var7 <= '9') {
+					var9 = var7 - '0';
+				} else if (var7 >= 'A' && var7 <= 'Z') {
+					var9 = var7 - '7';
 				} else {
-					GrandExchangeEvent var11;
-					if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERWORLD) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var11.world;
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERNAME) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.getOfferName();
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERPREVIOUSNAME) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var11.getPreviousOfferName();
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERAGE) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						long var5 = class30.currentTimeMillis() - class81.field1135 - var11.age;
-						int var7 = (int)(var5 / 3600000L);
-						int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
-						int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * 60000)) / 1000L);
-						String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
-						Interpreter.Interpreter_stringStack[++Interpreter.Interpreter_stringStackSize - 1] = var10;
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERCOUNT) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.totalQuantity;
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERPRICE) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.unitPrice;
-						return 1;
-					} else if (var0 == ScriptOpcodes.TRADINGPOST_GETOFFERITEM) {
-						var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-						var11 = (GrandExchangeEvent)TileItem.grandExchangeEvents.events.get(var3);
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var11.grandExchangeOffer.id;
-						return 1;
-					} else {
-						return 2;
+					if (var7 < 'a' || var7 > 'z') {
+						var1 = false;
+						break;
 					}
+
+					var9 = var7 - 'W';
+				}
+
+				if (var9 >= 10) {
+					var1 = false;
+					break;
+				}
+
+				if (var2) {
+					var9 = -var9;
+				}
+
+				int var8 = var4 * 10 + var9;
+				if (var4 != var8 / 10) {
+					var1 = false;
+					break;
+				}
+
+				var4 = var8;
+				var3 = true;
+			}
+
+			++var6;
+		}
+
+		return var1;
+	}
+
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(II)Z",
+		garbageValue = "693586906"
+	)
+	public static boolean method327(int var0) {
+		return (var0 >> 21 & 1) != 0;
+	}
+
+	@ObfuscatedName("hp")
+	@ObfuscatedSignature(
+		signature = "(ZLkf;I)V",
+		garbageValue = "1158282077"
+	)
+	@Export("updateNpcs")
+	static final void updateNpcs(boolean var0, PacketBuffer var1) {
+		Client.field752 = 0;
+		Client.field676 = 0;
+		class30.method606();
+		WorldMapManager.method710(var0, var1);
+		class160.method3586(var1);
+
+		int var2;
+		for (var2 = 0; var2 < Client.field752; ++var2) {
+			int var3 = Client.field870[var2];
+			if (Client.npcs[var3].npcCycle != Client.cycle) {
+				Client.npcs[var3].definition = null;
+				Client.npcs[var3] = null;
+			}
+		}
+
+		if (var1.offset != Client.packetWriter.serverPacketLength) {
+			throw new RuntimeException(var1.offset + "," + Client.packetWriter.serverPacketLength);
+		} else {
+			for (var2 = 0; var2 < Client.npcCount; ++var2) {
+				if (Client.npcs[Client.npcIndices[var2]] == null) {
+					throw new RuntimeException(var2 + "," + Client.npcCount);
 				}
 			}
+
 		}
 	}
 
-	@ObfuscatedName("ii")
+	@ObfuscatedName("kw")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIB)V",
-		garbageValue = "35"
+		signature = "(III)V",
+		garbageValue = "2048365157"
 	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (WorldMapData_0.loadInterface(var0)) {
-			MusicPatchNode.updateInterface(UserComparator5.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+	static void method325(int var0, int var1) {
+		MenuAction var2 = StudioGame.tempMenuAction;
+		GrandExchangeOfferOwnWorldComparator.menuAction(var2.argument1, var2.argument2, var2.opcode, var2.argument0, var2.action, var2.action, var0, var1);
+		StudioGame.tempMenuAction = null;
+	}
+
+	@ObfuscatedName("kx")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "871169152"
+	)
+	static final void method326(int var0) {
+		if (TextureProvider.loadInterface(var0)) {
+			HealthBarDefinition.drawModelComponents(Widget.Widget_interfaceComponents[var0], -1);
 		}
 	}
 }

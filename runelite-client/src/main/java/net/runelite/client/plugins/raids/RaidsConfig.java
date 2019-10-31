@@ -203,7 +203,7 @@ public interface RaidsConfig extends Config
 	)
 	default boolean displayLayoutMessage()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigTitleSection(

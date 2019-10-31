@@ -5,76 +5,73 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("ck")
 @Implements("ReflectionCheck")
 public class ReflectionCheck extends Node {
-	@ObfuscatedName("sf")
-	@ObfuscatedGetter(
-		intValue = 1327402685
-	)
-	@Export("foundItemIndex")
-	static int foundItemIndex;
-	@ObfuscatedName("gp")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "[Llf;"
+		signature = "Lhi;"
 	)
-	@Export("headIconHintSprites")
-	static Sprite[] headIconHintSprites;
-	@ObfuscatedName("z")
+	static Widget field1310;
+	@ObfuscatedName("dc")
+	@ObfuscatedSignature(
+		signature = "Lij;"
+	)
+	@Export("archive19")
+	static Archive archive19;
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 85422493
+		intValue = 1464057187
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 198207431
+		intValue = -828282983
 	)
 	@Export("size")
 	int size;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("operations")
 	int[] operations;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@Export("creationErrors")
 	int[] creationErrors;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@Export("fields")
 	Field[] fields;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@Export("intReplaceValues")
 	int[] intReplaceValues;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@Export("methods")
 	Method[] methods;
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@Export("arguments")
 	byte[][][] arguments;
 
 	ReflectionCheck() {
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "-884073904"
+		signature = "(B)V",
+		garbageValue = "-2"
 	)
-	static int method2271(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
-			Interpreter.Interpreter_intStackSize -= 3;
-			Message.queueSoundEffect(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize], Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 2]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
-			MusicPatchNode2.playSong(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
-			Interpreter.Interpreter_intStackSize -= 2;
-			ClientPacket.playSoundJingle(Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize], Interpreter.Interpreter_intStack[Interpreter.Interpreter_intStackSize + 1]);
-			return 1;
-		} else {
-			return 2;
-		}
+	public static void method2438() {
+		class197.midiPcmStream.clear();
+		class197.field2377 = 1;
+		class247.musicTrackArchive = null;
+	}
+
+	@ObfuscatedName("jv")
+	@ObfuscatedSignature(
+		signature = "(ZI)V",
+		garbageValue = "-1720039753"
+	)
+	@Export("setTapToDrop")
+	static void setTapToDrop(boolean var0) {
+		Client.tapToDrop = var0;
 	}
 }

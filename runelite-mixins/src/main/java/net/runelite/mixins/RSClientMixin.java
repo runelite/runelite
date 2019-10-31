@@ -50,6 +50,7 @@ import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_FIFTH_OPTION;
@@ -59,7 +60,6 @@ import static net.runelite.api.MenuOpcode.PLAYER_SECOND_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuOpcode.PLAYER_THIRD_OPTION;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
@@ -98,6 +98,7 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.events.WidgetPressed;
 import net.runelite.api.hooks.Callbacks;
@@ -1751,21 +1752,13 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	BigInteger modulus = new BigInteger("a8cda33f9c45f0b9d1675c38ec69da6be4143320190060c229bb35ed91677a4447e09e77031e824aed13bfab51ba180bbda7e279a128f3eb016e9b0dd752a948431798626fc36ac10e036d945f2752d0d874c65a86d3e001a17bf9d63d8bc263b07be4ebc613d01781023a07de698e75248b582e682f1751395f61b9ec1bcbb3", 16);
-
-	@Inject
-	@Override
-	public BigInteger getModulus()
-	{
-		return modulus;
-	}
-
+	private static BigInteger modulus;
 
 	@Inject
 	@Override
 	public void setModulus(BigInteger modulus)
 	{
-		this.modulus = modulus;
+		RSClientMixin.modulus = modulus;
 	}
 
 	@Copy("forceDisconnect")
@@ -1781,6 +1774,43 @@ public abstract class RSClientMixin implements RSClient
 		if (hideDisconnect && reason == 1)
 		{
 			client.promptCredentials(true);
+		}
+	}
+
+	@Inject
+	@Override
+	public void setMusicVolume(int volume)
+	{
+		if (volume > 0 && client.getMusicVolume() <= 0 && client.getCurrentTrackGroupId() != -1)
+		{
+			client.playMusicTrack(client.getMusicTracks(), client.getCurrentTrackGroupId(), 0, volume, false);
+		}
+
+		client.setClientMusicVolume(volume);
+		client.setMusicTrackVolume(volume);
+		if (client.getMidiPcmStream() != null)
+		{
+			client.getMidiPcmStream().setPcmStreamVolume(volume);
+		}
+	}
+
+
+	@Copy("changeGameOptions")
+	public static void rs$changeGameOptions(int var0)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("changeGameOptions")
+	public static void changeGameOptions(int var0)
+	{
+		rs$changeGameOptions(var0);
+
+		int type = client.getVarpDefinition(var0).getType();
+		if (type == 3 || type == 4 || type == 10)
+		{
+			VolumeChanged volumeChanged = new VolumeChanged(type == 3 ? VolumeChanged.Type.MUSIC : type == 4 ? VolumeChanged.Type.EFFECTS : VolumeChanged.Type.AREA);
+			client.getCallbacks().post(VolumeChanged.class, volumeChanged);
 		}
 	}
 }

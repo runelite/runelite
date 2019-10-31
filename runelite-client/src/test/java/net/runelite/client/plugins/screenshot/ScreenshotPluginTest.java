@@ -40,7 +40,6 @@ import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
-import static net.runelite.api.widgets.WidgetInfo.PACK;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -169,8 +168,6 @@ public class ScreenshotPluginTest
 	@Test
 	public void testHitpointsLevel99()
 	{
-		Widget widget = mock(Widget.class);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
@@ -192,8 +189,6 @@ public class ScreenshotPluginTest
 	@Test
 	public void testFiremakingLevel9()
 	{
-		Widget widget = mock(Widget.class);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
@@ -215,8 +210,6 @@ public class ScreenshotPluginTest
 	@Test
 	public void testAttackLevel70()
 	{
-		Widget widget = mock(Widget.class);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
@@ -238,8 +231,6 @@ public class ScreenshotPluginTest
 	@Test
 	public void testHunterLevel2()
 	{
-		Widget widget = mock(Widget.class);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 

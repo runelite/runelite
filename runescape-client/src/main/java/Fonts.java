@@ -4,27 +4,27 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kr")
+@ObfuscatedName("ko")
 @Implements("Fonts")
 public class Fonts {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhq;"
 	)
 	@Export("spritesArchive")
 	AbstractArchive spritesArchive;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhq;"
 	)
 	@Export("fontsArchive")
 	AbstractArchive fontsArchive;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("map")
 	HashMap map;
 
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;)V"
+		signature = "(Lhq;Lhq;)V"
 	)
 	public Fonts(AbstractArchive var1, AbstractArchive var2) {
 		this.spritesArchive = var1;
@@ -32,10 +32,10 @@ public class Fonts {
 		this.map = new HashMap();
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "([Lko;I)Ljava/util/HashMap;",
-		garbageValue = "-1165155916"
+		signature = "([Lkq;B)Ljava/util/HashMap;",
+		garbageValue = "-73"
 	)
 	@Export("createMap")
 	public HashMap createMap(FontName[] var1) {
@@ -52,7 +52,7 @@ public class Fonts {
 				String var9 = var5.name;
 				int var10 = var7.getGroupId(var9);
 				int var11 = var7.getFileId(var10, "");
-				Font var6 = ClanMate.method4976(var7, var8, var10, var11);
+				Font var6 = class269.method5114(var7, var8, var10, var11);
 				if (var6 != null) {
 					this.map.put(var5, var6);
 					var2.put(var5, var6);
@@ -61,23 +61,5 @@ public class Fonts {
 		}
 
 		return var2;
-	}
-
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "(II)Lkc;",
-		garbageValue = "202775938"
-	)
-	public static PrivateChatMode method5273(int var0) {
-		PrivateChatMode[] var1 = BZip2State.ChatMode_values();
-
-		for (int var2 = 0; var2 < var1.length; ++var2) {
-			PrivateChatMode var3 = var1[var2];
-			if (var0 == var3.field3793) {
-				return var3;
-			}
-		}
-
-		return null;
 	}
 }

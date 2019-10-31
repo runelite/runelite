@@ -1,59 +1,51 @@
-import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cr")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lcn;"
+		signature = "Lcr;"
 	)
 	@Export("AttackOption_dependsOnCombatLevels")
 	AttackOption_dependsOnCombatLevels(0),
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lcn;"
+		signature = "Lcr;"
 	)
 	@Export("AttackOption_alwaysRightClick")
 	AttackOption_alwaysRightClick(1),
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lcn;"
+		signature = "Lcr;"
 	)
 	@Export("AttackOption_leftClickWhereAvailable")
 	AttackOption_leftClickWhereAvailable(2),
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lcn;"
+		signature = "Lcr;"
 	)
 	@Export("AttackOption_hidden")
 	AttackOption_hidden(3);
 
-	@ObfuscatedName("dw")
+	@ObfuscatedName("c")
+	@Export("SpriteBuffer_spriteHeights")
+	public static int[] SpriteBuffer_spriteHeights;
+	@ObfuscatedName("h")
+	public static boolean field1151;
+	@ObfuscatedName("fp")
 	@ObfuscatedSignature(
-		signature = "Lie;"
+		signature = "Lfw;"
 	)
-	@Export("archive9")
-	static Archive archive9;
-	@ObfuscatedName("gr")
-	@ObfuscatedSignature(
-		signature = "Llf;"
-	)
-	@Export("compass")
-	static Sprite compass;
-	@ObfuscatedName("lc")
+	@Export("socketTask")
+	static Task socketTask;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 629841565
-	)
-	@Export("selectedSpellWidget")
-	static int selectedSpellWidget;
-	@ObfuscatedName("r")
-	@ObfuscatedGetter(
-		intValue = -1814915457
+		intValue = -871271379
 	)
 	@Export("id")
 	final int id;
@@ -62,107 +54,124 @@ public enum AttackOption implements Enumerated {
 		this.id = var3;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(S)I",
-		garbageValue = "221"
+		signature = "(I)I",
+		garbageValue = "-1993081102"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/security/SecureRandom;",
-		garbageValue = "639446581"
+		signature = "(Lhq;B)V",
+		garbageValue = "17"
 	)
-	static SecureRandom method2081() {
-		SecureRandom var0 = new SecureRandom();
-		var0.nextInt();
-		return var0;
+	public static void method2221(AbstractArchive var0) {
+		VarbitDefinition.VarbitDefinition_archive = var0;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-379415067"
+		signature = "(Lhq;Lhq;ZIS)V",
+		garbageValue = "-32666"
 	)
-	@Export("updatePlayer")
-	static final void updatePlayer(PacketBuffer var0) {
-		var0.importIndex();
-		int var1 = Client.localPlayerIndex;
-		Player var2 = class223.localPlayer = Client.players[var1] = new Player();
-		var2.index = var1;
-		int var3 = var0.readBits(30);
-		byte var4 = (byte)(var3 >> 28);
-		int var5 = var3 >> 14 & 16383;
-		int var6 = var3 & 16383;
-		var2.pathX[0] = var5 - class223.baseX * 64;
-		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
-		var2.pathY[0] = var6 - class286.baseY * 64;
-		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
-		WorldMapRectangle.plane = var2.plane = var4;
-		if (Players.field1236[var1] != null) {
-			var2.read(Players.field1236[var1]);
-		}
-
-		Players.Players_count = 0;
-		Players.Players_indices[++Players.Players_count - 1] = var1;
-		Players.field1244[var1] = 0;
-		Players.Players_emptyIdxCount = 0;
-
-		for (int var7 = 1; var7 < 2048; ++var7) {
-			if (var1 != var7) {
-				int var8 = var0.readBits(18);
-				int var9 = var8 >> 16;
-				int var10 = var8 >> 8 & 597;
-				int var11 = var8 & 597;
-				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
-				Players.Players_orientations[var7] = 0;
-				Players.Players_targetIndices[var7] = -1;
-				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
-				Players.field1244[var7] = 0;
-			}
-		}
-
-		var0.exportIndex();
-	}
-
-	@ObfuscatedName("ed")
-	@ObfuscatedSignature(
-		signature = "(IZZZI)Lie;",
-		garbageValue = "1568056482"
-	)
-	@Export("newArchive")
-	static Archive newArchive(int var0, boolean var1, boolean var2, boolean var3) {
-		ArchiveDisk var4 = null;
-		if (JagexCache.JagexCache_dat2File != null) {
-			var4 = new ArchiveDisk(var0, JagexCache.JagexCache_dat2File, class189.JagexCache_idxFiles[var0], 1000000);
-		}
-
-		return new Archive(var4, WorldMapData_0.masterDisk, var0, var1, var2, var3);
-	}
-
-	@ObfuscatedName("hj")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
-		garbageValue = "844579626"
-	)
-	@Export("insertMenuItem")
-	static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-		if (!Client.isMenuOpen) {
-			if (Client.menuOptionsCount < 500) {
-				Client.menuActions[Client.menuOptionsCount] = var0;
-				Client.menuTargets[Client.menuOptionsCount] = var1;
-				Client.menuOpcodes[Client.menuOptionsCount] = var2;
-				Client.menuIdentifiers[Client.menuOptionsCount] = var3;
-				Client.menuArguments1[Client.menuOptionsCount] = var4;
-				Client.menuArguments2[Client.menuOptionsCount] = var5;
-				Client.menuShiftClick[Client.menuOptionsCount] = var6;
-				++Client.menuOptionsCount;
+	static void method2218(AbstractArchive var0, AbstractArchive var1, boolean var2, int var3) {
+		if (Login.field1188) {
+			if (var3 == 4) {
+				Login.loginIndex = 4;
 			}
 
+		} else {
+			Login.loginIndex = var3;
+			Rasterizer2D.Rasterizer2D_clear();
+			byte[] var4 = var0.takeFileByNames("title.jpg", "");
+			Login.leftTitleSprite = WorldMapSection1.convertJpgToSprite(var4);
+			FontName.rightTitleSprite = Login.leftTitleSprite.mirrorHorizontally();
+			if ((Client.worldProperties & 536870912) != 0) {
+				Tiles.logoSprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "logo_deadman_mode", "");
+			} else if ((Client.worldProperties & 1073741824) != 0) {
+				Tiles.logoSprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "logo_seasonal_mode", "");
+			} else {
+				Tiles.logoSprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "logo", "");
+			}
+
+			NPC.titleboxSprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "titlebox", "");
+			UserComparator9.titlebuttonSprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "titlebutton", "");
+			class208.runesSprite = PlayerAppearance.method4160(var1, "runes", "");
+			Decimator.title_muteSprite = PlayerAppearance.method4160(var1, "title_mute", "");
+			UserComparator8.options_buttons_0Sprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,0", "");
+			class51.field412 = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,4", "");
+			Login.options_buttons_2Sprite = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,2", "");
+			class4.field23 = ClientPacket.SpriteBuffer_getIndexedSpriteByName(var1, "options_radio_buttons,6", "");
+			Login.field1174 = UserComparator8.options_buttons_0Sprite.subWidth;
+			Language.field2328 = UserComparator8.options_buttons_0Sprite.subHeight;
+			Login.loginScreenRunesAnimation = new LoginScreenAnimation(class208.runesSprite);
+			if (var2) {
+				Login.Login_username = "";
+				Login.Login_password = "";
+			}
+
+			Huffman.field2491 = 0;
+			class268.otp = "";
+			Login.field1177 = true;
+			Login.worldSelectOpen = false;
+			if (!ScriptEvent.clientPreferences.titleMusicDisabled) {
+				Archive var5 = class216.archive6;
+				int var6 = var5.getGroupId("scape main");
+				int var7 = var5.getFileId(var6, "");
+				WorldMapIcon_0.method253(2, var5, var6, var7, 255, false);
+			} else {
+				class80.method2194(2);
+			}
+
+			UrlRequester.method3428(false);
+			Login.field1188 = true;
+			Login.xPadding = (class286.canvasWidth - 765) / 2;
+			Login.loginBoxX = Login.xPadding + 202;
+			class192.loginBoxCenter = Login.loginBoxX + 180;
+			Login.leftTitleSprite.drawAt(Login.xPadding, 0);
+			FontName.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
+			Tiles.logoSprite.drawAt(Login.xPadding + 382 - Tiles.logoSprite.subWidth / 2, 18);
+		}
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(II)I",
+		garbageValue = "2026213000"
+	)
+	@Export("Messages_getHistorySize")
+	static int Messages_getHistorySize(int var0) {
+		ChatChannel var1 = (ChatChannel)Messages.Messages_channels.get(var0);
+		return var1 == null ? 0 : var1.size();
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1182575987"
+	)
+	static void method2215() {
+		if (class43.loadWorlds()) {
+			Login.worldSelectOpen = true;
+			Login.worldSelectPage = 0;
+			Login.worldSelectPagesCount = 0;
+		}
+
+	}
+
+	@ObfuscatedName("jj")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "2104552058"
+	)
+	@Export("runIntfCloseListeners")
+	static final void runIntfCloseListeners(int var0, int var1) {
+		if (TextureProvider.loadInterface(var0)) {
+			DirectByteArrayCopier.runComponentCloseListeners(Widget.Widget_interfaceComponents[var0], var1);
 		}
 	}
 }

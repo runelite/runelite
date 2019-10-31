@@ -4,42 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("eq")
 @Implements("FaceNormal")
 public class FaceNormal {
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "Lkn;"
-	)
-	@Export("ItemDefinition_fontPlain11")
-	static Font ItemDefinition_fontPlain11;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Lkl;"
-	)
-	@Export("NetCache_responseArchiveBuffer")
-	static Buffer NetCache_responseArchiveBuffer;
-	@ObfuscatedName("ds")
-	@ObfuscatedSignature(
-		signature = "Lie;"
-	)
-	@Export("archive2")
-	static Archive archive2;
-	@ObfuscatedName("n")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 149051353
+		intValue = -749416207
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1494841217
+		intValue = 1897816947
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 2026615431
+		intValue = 1642061929
 	)
 	@Export("z")
 	int z;
@@ -47,82 +29,66 @@ public class FaceNormal {
 	FaceNormal() {
 	}
 
-	@ObfuscatedName("iy")
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
-		signature = "([Lho;IIIZI)V",
-		garbageValue = "2028417948"
+		signature = "(II)V",
+		garbageValue = "-973017204"
 	)
-	@Export("resizeInterface")
-	static void resizeInterface(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-		for (int var5 = 0; var5 < var0.length; ++var5) {
-			Widget var6 = var0[var5];
-			if (var6 != null && var6.parentId == var1) {
-				TileItem.alignWidgetSize(var6, var2, var3, var4);
-				class30.alignWidgetPosition(var6, var2, var3);
-				if (var6.scrollX > var6.scrollWidth - var6.width) {
-					var6.scrollX = var6.scrollWidth - var6.width;
+	@Export("runWidgetOnLoadListener")
+	static void runWidgetOnLoadListener(int var0) {
+		if (var0 != -1) {
+			if (TextureProvider.loadInterface(var0)) {
+				Widget[] var1 = Widget.Widget_interfaceComponents[var0];
+
+				for (int var2 = 0; var2 < var1.length; ++var2) {
+					Widget var3 = var1[var2];
+					if (var3.onLoad != null) {
+						ScriptEvent var4 = new ScriptEvent();
+						var4.widget = var3;
+						var4.args = var3.onLoad;
+						class4.runScript(var4, 5000000);
+					}
 				}
 
-				if (var6.scrollX < 0) {
-					var6.scrollX = 0;
-				}
-
-				if (var6.scrollY > var6.scrollHeight - var6.height) {
-					var6.scrollY = var6.scrollHeight - var6.height;
-				}
-
-				if (var6.scrollY < 0) {
-					var6.scrollY = 0;
-				}
-
-				if (var6.type == 0) {
-					GameShell.revalidateWidgetScroll(var0, var6, var4);
-				}
 			}
 		}
-
 	}
 
-	@ObfuscatedName("ki")
+	@ObfuscatedName("hl")
 	@ObfuscatedSignature(
-		signature = "(Lho;II)Ljava/lang/String;",
-		garbageValue = "-1147965976"
+		signature = "(Lbn;I)V",
+		garbageValue = "-935329851"
 	)
-	static String method3228(Widget var0, int var1) {
-		int var3 = class2.getWidgetClickMask(var0);
-		boolean var2 = (var3 >> var1 + 1 & 1) != 0;
-		if (!var2 && var0.onOp == null) {
-			return null;
-		} else {
-			return var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0 ? var0.actions[var1] : null;
-		}
-	}
-
-	@ObfuscatedName("kr")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-		garbageValue = "17"
-	)
-	static String method3229(String var0, boolean var1) {
-		String var2 = var1 ? "https://" : "http://";
-		if (Client.gameBuild == 1) {
-			var0 = var0 + "-wtrc";
-		} else if (Client.gameBuild == 2) {
-			var0 = var0 + "-wtqa";
-		} else if (Client.gameBuild == 3) {
-			var0 = var0 + "-wtwip";
-		} else if (Client.gameBuild == 5) {
-			var0 = var0 + "-wti";
-		} else if (Client.gameBuild == 4) {
-			var0 = "local";
+	static final void method3396(PendingSpawn var0) {
+		long var1 = 0L;
+		int var3 = -1;
+		int var4 = 0;
+		int var5 = 0;
+		if (var0.type == 0) {
+			var1 = WorldMapArea.scene.getBoundaryObjectTag(var0.plane, var0.x, var0.y);
 		}
 
-		String var3 = "";
-		if (class197.field2390 != null) {
-			var3 = "/p=" + class197.field2390;
+		if (var0.type == 1) {
+			var1 = WorldMapArea.scene.getWallDecorationTag(var0.plane, var0.x, var0.y);
 		}
 
-		String var4 = "runescape.com";
-		return var2 + var0 + "." + var4 + "/l=" + WorldMapLabelSize.clientLanguage + "/a=" + WorldMapArea.field218 + var3 + "/";
+		if (var0.type == 2) {
+			var1 = WorldMapArea.scene.getGameObjectTag(var0.plane, var0.x, var0.y);
+		}
+
+		if (var0.type == 3) {
+			var1 = WorldMapArea.scene.getFloorDecorationTag(var0.plane, var0.x, var0.y);
+		}
+
+		if (var1 != 0L) {
+			int var6 = WorldMapArea.scene.getObjectFlags(var0.plane, var0.x, var0.y, var1);
+			var3 = UserComparator8.Entity_unpackID(var1);
+			var4 = var6 & 31;
+			var5 = var6 >> 6 & 3;
+		}
+
+		var0.objectId = var3;
+		var0.field914 = var4;
+		var0.field913 = var5;
 	}
 }

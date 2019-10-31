@@ -1,20 +1,14 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ej")
 @Implements("UserComparator10")
 public class UserComparator10 extends AbstractUserComparator {
-	@ObfuscatedName("r")
-	@ObfuscatedGetter(
-		intValue = 406517207
-	)
-	static int field1956;
-	@ObfuscatedName("o")
-	static boolean field1957;
-	@ObfuscatedName("z")
+	@ObfuscatedName("i")
+	static int[][] field1964;
+	@ObfuscatedName("a")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -22,10 +16,10 @@ public class UserComparator10 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Ljl;Ljl;I)I",
-		garbageValue = "-1576408369"
+		signature = "(Ljx;Ljx;I)I",
+		garbageValue = "251102733"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -40,25 +34,39 @@ public class UserComparator10 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(II)Lia;",
-		garbageValue = "12340961"
+		signature = "(Lkc;Llr;B)Llr;",
+		garbageValue = "0"
 	)
-	@Export("getEnum")
-	public static EnumDefinition getEnum(int var0) {
-		EnumDefinition var1 = (EnumDefinition)EnumDefinition.EnumDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
-			var1 = new EnumDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+	@Export("readStringIntParameters")
+	static final IterableNodeHashTable readStringIntParameters(Buffer var0, IterableNodeHashTable var1) {
+		int var2 = var0.readUnsignedByte();
+		int var3;
+		if (var1 == null) {
+			int var4 = var2 - 1;
+			var4 |= var4 >>> 1;
+			var4 |= var4 >>> 2;
+			var4 |= var4 >>> 4;
+			var4 |= var4 >>> 8;
+			var4 |= var4 >>> 16;
+			var3 = var4 + 1;
+			var1 = new IterableNodeHashTable(var3);
+		}
+
+		for (var3 = 0; var3 < var2; ++var3) {
+			boolean var7 = var0.readUnsignedByte() == 1;
+			int var5 = var0.readMedium();
+			Object var6;
+			if (var7) {
+				var6 = new ObjectNode(var0.readStringCp1252NullTerminated());
+			} else {
+				var6 = new IntegerNode(var0.readInt());
 			}
 
-			EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
-			return var1;
+			var1.put((Node)var6, (long)var5);
 		}
+
+		return var1;
 	}
 }

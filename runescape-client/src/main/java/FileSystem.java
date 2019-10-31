@@ -4,16 +4,16 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fv")
 @Implements("FileSystem")
 public class FileSystem {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@Export("FileSystem_hasPermissions")
-	public static boolean FileSystem_hasPermissions;
-	@ObfuscatedName("n")
+	static boolean FileSystem_hasPermissions;
+	@ObfuscatedName("t")
 	@Export("FileSystem_cacheDir")
-	public static File FileSystem_cacheDir;
-	@ObfuscatedName("v")
+	static File FileSystem_cacheDir;
+	@ObfuscatedName("n")
 	@Export("FileSystem_cacheFiles")
 	static Hashtable FileSystem_cacheFiles;
 

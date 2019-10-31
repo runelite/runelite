@@ -1,18 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hx")
 @Implements("Huffman")
 public class Huffman {
-	@ObfuscatedName("z")
+	@ObfuscatedName("as")
+	@ObfuscatedGetter(
+		intValue = 821038913
+	)
+	static int field2491;
+	@ObfuscatedName("a")
 	@Export("masks")
 	int[] masks;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@Export("bits")
 	byte[] bits;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("keys")
 	int[] keys;
 
@@ -41,7 +47,7 @@ public class Huffman {
 
 					for (var10 = var6 - 1; var10 >= 1; --var10) {
 						var11 = var3[var10];
-						if (var8 != var11) {
+						if (var11 != var8) {
 							break;
 						}
 
@@ -99,10 +105,10 @@ public class Huffman {
 
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "([BII[BII)I",
-		garbageValue = "2067037926"
+		signature = "([BII[BIB)I",
+		garbageValue = "14"
 	)
 	@Export("compress")
 	int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -120,7 +126,7 @@ public class Huffman {
 			int var11 = var7 >> 3;
 			int var12 = var7 & 7;
 			var6 &= -var12 >> 31;
-			int var13 = (var12 + var10 - 1 >> 3) + var11;
+			int var13 = (var10 + var12 - 1 >> 3) + var11;
 			var12 += 24;
 			var4[var11] = (byte)(var6 |= var9 >>> var12);
 			if (var11 < var13) {
@@ -150,10 +156,10 @@ public class Huffman {
 		return (var7 + 7 >> 3) - var5;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "([BI[BIII)I",
-		garbageValue = "98933619"
+		signature = "([BI[BIIB)I",
+		garbageValue = "-1"
 	)
 	@Export("decompress")
 	int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -291,6 +297,28 @@ public class Huffman {
 			}
 
 			return var7 + 1 - var2;
+		}
+	}
+
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "([I[II)V",
+		garbageValue = "1107408934"
+	)
+	public static void method4104(int[] var0, int[] var1) {
+		if (var0 != null && var1 != null) {
+			ByteArrayPool.ByteArrayPool_alternativeSizes = var0;
+			class222.ByteArrayPool_altSizeArrayCounts = new int[var0.length];
+			HorizontalAlignment.ByteArrayPool_arrays = new byte[var0.length][][];
+
+			for (int var2 = 0; var2 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var2) {
+				HorizontalAlignment.ByteArrayPool_arrays[var2] = new byte[var1[var2]][];
+			}
+
+		} else {
+			ByteArrayPool.ByteArrayPool_alternativeSizes = null;
+			class222.ByteArrayPool_altSizeArrayCounts = null;
+			HorizontalAlignment.ByteArrayPool_arrays = null;
 		}
 	}
 }

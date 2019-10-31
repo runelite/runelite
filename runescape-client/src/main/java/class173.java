@@ -3,31 +3,27 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fx")
 public class class173 {
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("directions")
 	static int[][] directions;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@Export("distances")
 	static int[][] distances;
-	@ObfuscatedName("p")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 764450151
+		intValue = 1388693747
 	)
-	static int field2075;
-	@ObfuscatedName("m")
+	static int field2070;
+	@ObfuscatedName("o")
 	@Export("bufferX")
 	static int[] bufferX;
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@Export("bufferY")
 	static int[] bufferY;
-	@ObfuscatedName("fu")
-	@ObfuscatedSignature(
-		signature = "Lkn;"
-	)
-	@Export("fontBold12")
-	static Font fontBold12;
+	@ObfuscatedName("ed")
+	static int[] field2074;
 
 	static {
 		directions = new int[128][128];
@@ -36,26 +32,21 @@ public class class173 {
 		bufferY = new int[4096];
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "1868348372"
+		signature = "(CI)C",
+		garbageValue = "-1784750626"
 	)
-	public static int method3556(CharSequence var0) {
-		int var1 = var0.length();
-		int var2 = 0;
+	static char method3720(char var0) {
+		return var0 != 181 && var0 != 402 ? Character.toTitleCase(var0) : var0;
+	}
 
-		for (int var3 = 0; var3 < var1; ++var3) {
-			char var4 = var0.charAt(var3);
-			if (var4 <= 127) {
-				++var2;
-			} else if (var4 <= 2047) {
-				var2 += 2;
-			} else {
-				var2 += 3;
-			}
-		}
-
-		return var2;
+	@ObfuscatedName("jr")
+	@ObfuscatedSignature(
+		signature = "(IB)Ljava/lang/String;",
+		garbageValue = "0"
+	)
+	static final String method3728(int var0) {
+		return var0 < 999999999 ? Integer.toString(var0) : "*";
 	}
 }

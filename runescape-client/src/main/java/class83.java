@@ -1,49 +1,86 @@
-import java.awt.Component;
 import java.math.BigInteger;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cn")
 public class class83 {
-	@ObfuscatedName("z")
-	static final BigInteger field1148;
-	@ObfuscatedName("n")
-	static final BigInteger field1149;
-	@ObfuscatedName("aj")
+	@ObfuscatedName("a")
+	static final BigInteger field1144;
+	@ObfuscatedName("t")
+	static final BigInteger field1145;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1818915939
+		intValue = 543275717
 	)
-	static int field1145;
+	static int field1146;
 
 	static {
-		field1148 = new BigInteger("10001", 16);
-		field1149 = new BigInteger("a8cda33f9c45f0b9d1675c38ec69da6be4143320190060c229bb35ed91677a4447e09e77031e824aed13bfab51ba180bbda7e279a128f3eb016e9b0dd752a948431798626fc36ac10e036d945f2752d0d874c65a86d3e001a17bf9d63d8bc263b07be4ebc613d01781023a07de698e75248b582e682f1751395f61b9ec1bcbb3", 16);
+		field1144 = new BigInteger("10001", 16);
+		field1145 = new BigInteger("8ffe6122bc1531a9d3909c2cefb420d9099dcda7494cf98fcd054d7eac1f32c03cc1cff0955965d35dfb6bd322c5e9201941edfa6f26cfff45524daf4c6b09c8a121f3b0262443ca7164bbad436420e7fd23d9d2b74f228f68f961563e337b95772bf046cf05bb699549141325085c55e5d44ea15e3c7f17dd6c03d521f963f7", 16);
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Ljava/awt/Component;I)V",
-		garbageValue = "2076208439"
+		signature = "(Lhq;III)[Llx;",
+		garbageValue = "676628248"
 	)
-	static void method2069(Component var0) {
-		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
-		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
-		KeyHandler.field373 = -1;
+	@Export("SpriteBuffer_getSpriteArray")
+	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
+		if (!class32.method618(var0, var1, var2)) {
+			return null;
+		} else {
+			Sprite[] var4 = new Sprite[class325.SpriteBuffer_spriteCount];
+
+			for (int var5 = 0; var5 < class325.SpriteBuffer_spriteCount; ++var5) {
+				Sprite var6 = var4[var5] = new Sprite();
+				var6.width = class325.SpriteBuffer_spriteWidth;
+				var6.height = class325.SpriteBuffer_spriteHeight;
+				var6.xOffset = SecureRandomFuture.SpriteBuffer_xOffsets[var5];
+				var6.yOffset = HealthBar.SpriteBuffer_yOffsets[var5];
+				var6.subWidth = SecureRandomCallable.SpriteBuffer_spriteWidths[var5];
+				var6.subHeight = AttackOption.SpriteBuffer_spriteHeights[var5];
+				int var7 = var6.subHeight * var6.subWidth;
+				byte[] var8 = class325.SpriteBuffer_pixels[var5];
+				var6.pixels = new int[var7];
+
+				for (int var9 = 0; var9 < var7; ++var9) {
+					var6.pixels[var9] = class325.SpriteBuffer_spritePalette[var8[var9] & 255];
+				}
+			}
+
+			WorldMapData_1.method787();
+			return var4;
+		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lhp;IIIZI)V",
-		garbageValue = "-476776598"
+		signature = "(IB)I",
+		garbageValue = "13"
 	)
-	public static void method2068(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
-		class197.field2386 = 1;
-		class197.musicTrackArchive = var0;
-		class188.musicTrackGroupId = var1;
-		class49.musicTrackFileId = var2;
-		TileItem.field1223 = var3;
-		WorldMapSectionType.musicTrackBoolean = var4;
-		MusicPatchNode2.field2382 = 10000;
+	@Export("Messages_getNextChatID")
+	static int Messages_getNextChatID(int var0) {
+		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
+		if (var1 == null) {
+			return -1;
+		} else {
+			return var1.previousDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.previousDual).count;
+		}
+	}
+
+	@ObfuscatedName("if")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "1903758255"
+	)
+	static final void method2212(int var0, int var1, int var2, int var3) {
+		for (int var4 = 0; var4 < Client.rootWidgetCount; ++var4) {
+			if (Client.rootWidgetXs[var4] + Client.rootWidgetWidths[var4] > var0 && Client.rootWidgetXs[var4] < var0 + var2 && Client.rootWidgetYs[var4] + Client.rootWidgetHeights[var4] > var1 && Client.rootWidgetYs[var4] < var3 + var1) {
+				Client.field842[var4] = true;
+			}
+		}
+
 	}
 }

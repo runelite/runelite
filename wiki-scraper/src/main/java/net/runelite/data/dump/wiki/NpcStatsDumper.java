@@ -260,7 +260,7 @@ public class NpcStatsDumper
 
 	private static boolean isAttackableNpc(final NpcDefinition n)
 	{
-		for (final String s : n.getOptions())
+		for (final String s : n.getActions())
 		{
 			if ("attack".equalsIgnoreCase(s))
 			{
