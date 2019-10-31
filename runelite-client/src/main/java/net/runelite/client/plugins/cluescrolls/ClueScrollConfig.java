@@ -40,14 +40,4 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "displayFairyRing",
-		name = "Display fairy ring",
-		description = "Configures whether or not to display the closest fairy ring for emote clue hints"
-	)
-	default boolean displayFairyRing()
-	{
-		return true;
-	}
 }
