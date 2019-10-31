@@ -7,34 +7,35 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("in")
 @Implements("HorizontalAlignment")
 public enum HorizontalAlignment implements Enumerated {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "Lin;"
 	)
-	field3444(1, 0),
-	@ObfuscatedName("n")
+	field3449(0, 0),
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "Lin;"
 	)
 	@Export("HorizontalAlignment_centered")
-	HorizontalAlignment_centered(2, 1),
-	@ObfuscatedName("v")
+	HorizontalAlignment_centered(1, 1),
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "Lin;"
 	)
-	field3442(0, 2);
+	field3447(2, 2);
 
+	@ObfuscatedName("i")
+	@Export("ByteArrayPool_arrays")
+	static byte[][][] ByteArrayPool_arrays;
 	@ObfuscatedName("q")
-	public static short[] field3447;
-	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 87636045
+		intValue = 1143014811
 	)
 	@Export("value")
 	public final int value;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1916297519
+		intValue = -510132141
 	)
 	@Export("id")
 	final int id;
@@ -44,10 +45,10 @@ public enum HorizontalAlignment implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(S)I",
-		garbageValue = "221"
+		signature = "(I)I",
+		garbageValue = "-1993081102"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {

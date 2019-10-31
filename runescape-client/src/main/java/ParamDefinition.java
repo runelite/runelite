@@ -4,45 +4,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("iy")
 @Implements("ParamDefinition")
 public class ParamDefinition extends DualNode {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhq;"
 	)
 	@Export("ParamDefinition_archive")
 	public static AbstractArchive ParamDefinition_archive;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lem;"
+		signature = "Leb;"
 	)
 	@Export("ParamDefinition_cached")
-	static EvictingDualNodeHashTable ParamDefinition_cached;
-	@ObfuscatedName("o")
+	public static EvictingDualNodeHashTable ParamDefinition_cached;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1829462559
+		intValue = -508885991
 	)
-	static int field3287;
-	@ObfuscatedName("lv")
-	@ObfuscatedSignature(
-		signature = "Lcs;"
-	)
-	@Export("tempMenuAction")
-	static MenuAction tempMenuAction;
-	@ObfuscatedName("v")
+	@Export("PcmPlayer_count")
+	public static int PcmPlayer_count;
+	@ObfuscatedName("n")
 	@Export("type")
 	char type;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -76739099
+		intValue = -1697387683
 	)
 	@Export("defaultInt")
 	public int defaultInt;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@Export("defaultStr")
 	public String defaultStr;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@Export("autoDisable")
 	boolean autoDisable;
 
@@ -54,19 +49,19 @@ public class ParamDefinition extends DualNode {
 		this.autoDisable = true;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-127"
+		signature = "(I)V",
+		garbageValue = "-767348576"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkl;I)V",
-		garbageValue = "271304326"
+		signature = "(Lkc;I)V",
+		garbageValue = "95444095"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -80,15 +75,15 @@ public class ParamDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(Lkl;II)V",
-		garbageValue = "854773770"
+		signature = "(Lkc;II)V",
+		garbageValue = "130264768"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 1) {
-			this.type = WorldMapEvent.method802(var1.readByte());
+			this.type = Ignored.method5284(var1.readByte());
 		} else if (var2 == 2) {
 			this.defaultInt = var1.readInt();
 		} else if (var2 == 4) {
@@ -99,41 +94,13 @@ public class ParamDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-70"
+		signature = "(I)Z",
+		garbageValue = "1179619328"
 	)
 	@Export("isString")
 	public boolean isString() {
 		return this.type == 's';
-	}
-
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(Lba;B)V",
-		garbageValue = "-104"
-	)
-	@Export("runScriptEvent")
-	public static void runScriptEvent(ScriptEvent var0) {
-		KeyHandler.runScript(var0, 500000);
-	}
-
-	@ObfuscatedName("hg")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-786706549"
-	)
-	static final boolean method4480(int var0) {
-		if (var0 < 0) {
-			return false;
-		} else {
-			int var1 = Client.menuOpcodes[var0];
-			if (var1 >= 2000) {
-				var1 -= 2000;
-			}
-
-			return var1 == 1007;
-		}
 	}
 }

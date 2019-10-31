@@ -4,95 +4,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ex")
 @Implements("GameObject")
 public final class GameObject {
-	@ObfuscatedName("gh")
-	@ObfuscatedSignature(
-		signature = "[Llf;"
-	)
-	@Export("mapMarkerSprites")
-	static Sprite[] mapMarkerSprites;
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "Ler;"
-	)
-	@Export("entity")
-	public Entity entity;
-	@ObfuscatedName("n")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 23072497
+		intValue = -1950933673
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1467218039
+		intValue = -1570818829
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1096373851
+		intValue = -1477915037
 	)
 	@Export("centerX")
 	int centerX;
-	@ObfuscatedName("r")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -921514335
+		intValue = 1448814329
 	)
 	@Export("centerY")
 	int centerY;
-	@ObfuscatedName("p")
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lep;"
+	)
+	@Export("entity")
+	public Entity entity;
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1901316909
+		intValue = -1886669661
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -714921437
+		intValue = -564679873
 	)
 	@Export("startX")
 	int startX;
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1336647537
+		intValue = -441030449
 	)
 	@Export("endX")
 	int endX;
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1244242871
+		intValue = -187063391
 	)
 	@Export("startY")
 	int startY;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1759509999
+		intValue = -1484089673
 	)
 	@Export("endY")
 	int endY;
-	@ObfuscatedName("c")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -1933245697
+		intValue = -875771859
 	)
-	int field1914;
-	@ObfuscatedName("b")
+	int field1912;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 505349389
+		intValue = -1503559581
 	)
 	@Export("lastDrawn")
 	int lastDrawn;
-	@ObfuscatedName("o")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		longValue = 2276908467403178719L
+		longValue = -3849133574729992117L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("a")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 8294449
+		intValue = 823124257
 	)
 	@Export("flags")
 	int flags;
@@ -100,5 +94,50 @@ public final class GameObject {
 	GameObject() {
 		this.tag = 0L;
 		this.flags = 0;
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(Lhi;I[B[BB)V",
+		garbageValue = "-22"
+	)
+	@Export("Widget_setKey")
+	static final void Widget_setKey(Widget var0, int var1, byte[] var2, byte[] var3) {
+		if (var0.field2623 == null) {
+			if (var2 == null) {
+				return;
+			}
+
+			var0.field2623 = new byte[11][];
+			var0.field2624 = new byte[11][];
+			var0.field2628 = new int[11];
+			var0.field2626 = new int[11];
+		}
+
+		var0.field2623[var1] = var2;
+		if (var2 != null) {
+			var0.field2606 = true;
+		} else {
+			var0.field2606 = false;
+
+			for (int var4 = 0; var4 < var0.field2623.length; ++var4) {
+				if (var0.field2623[var4] != null) {
+					var0.field2606 = true;
+					break;
+				}
+			}
+		}
+
+		var0.field2624[var1] = var3;
+	}
+
+	@ObfuscatedName("ii")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIB)V",
+		garbageValue = "-59"
+	)
+	@Export("insertMenuItemNoShift")
+	public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
+		ArchiveDiskAction.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
 	}
 }

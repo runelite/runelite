@@ -3,48 +3,92 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jq")
+@ObfuscatedName("ju")
 @Implements("Username")
 public class Username implements Comparable {
-	@ObfuscatedName("z")
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "[Lbk;"
+	)
+	@Export("World_worlds")
+	static World[] World_worlds;
+	@ObfuscatedName("a")
 	@Export("name")
 	String name;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@Export("cleanName")
 	String cleanName;
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lli;)V"
+		signature = "(Ljava/lang/String;Lln;)V"
 	)
 	public Username(String var1, LoginType var2) {
 		this.name = var1;
-		this.cleanName = ScriptEvent.method1198(var1, var2);
+		String var4;
+		if (var1 == null) {
+			var4 = null;
+		} else {
+			int var5 = 0;
+
+			int var6;
+			for (var6 = var1.length(); var5 < var6 && class13.method200(var1.charAt(var5)); ++var5) {
+			}
+
+			while (var6 > var5 && class13.method200(var1.charAt(var6 - 1))) {
+				--var6;
+			}
+
+			int var7 = var6 - var5;
+			if (var7 >= 1 && var7 <= WorldMapDecoration.method388(var2)) {
+				StringBuilder var8 = new StringBuilder(var7);
+
+				for (int var9 = var5; var9 < var6; ++var9) {
+					char var10 = var1.charAt(var9);
+					if (WallDecoration.method3420(var10)) {
+						char var11 = Buddy.method5286(var10);
+						if (var11 != 0) {
+							var8.append(var11);
+						}
+					}
+				}
+
+				if (var8.length() == 0) {
+					var4 = null;
+				} else {
+					var4 = var8.toString();
+				}
+			} else {
+				var4 = null;
+			}
+		}
+
+		this.cleanName = var4;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1788579750"
+		garbageValue = "-1911798816"
 	)
 	@Export("getName")
 	public String getName() {
 		return this.name;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "415071897"
+		signature = "(B)Z",
+		garbageValue = "121"
 	)
 	@Export("hasCleanName")
 	public boolean hasCleanName() {
 		return this.cleanName != null;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Ljq;I)I",
-		garbageValue = "432116697"
+		signature = "(Lju;S)I",
+		garbageValue = "-11004"
 	)
 	@Export("compareToTyped")
 	public int compareToTyped(Username var1) {
@@ -82,12 +126,40 @@ public class Username implements Comparable {
 		return this.compareToTyped((Username)var1);
 	}
 
-	@ObfuscatedName("ai")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "([BII)I",
-		garbageValue = "-42849866"
+		signature = "(II)I",
+		garbageValue = "-300654930"
 	)
-	public static int method5147(byte[] var0, int var1) {
-		return LoginScreenAnimation.method1848(var0, 0, var1);
+	@Export("ViewportMouse_unpackX")
+	public static int ViewportMouse_unpackX(int var0) {
+		long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
+		int var1 = (int)(var2 >>> 14 & 3L);
+		return var1;
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)Llx;",
+		garbageValue = "-2059953793"
+	)
+	static Sprite method5338() {
+		Sprite var0 = new Sprite();
+		var0.width = class325.SpriteBuffer_spriteWidth;
+		var0.height = class325.SpriteBuffer_spriteHeight;
+		var0.xOffset = SecureRandomFuture.SpriteBuffer_xOffsets[0];
+		var0.yOffset = HealthBar.SpriteBuffer_yOffsets[0];
+		var0.subWidth = SecureRandomCallable.SpriteBuffer_spriteWidths[0];
+		var0.subHeight = AttackOption.SpriteBuffer_spriteHeights[0];
+		int var1 = var0.subHeight * var0.subWidth;
+		byte[] var2 = class325.SpriteBuffer_pixels[0];
+		var0.pixels = new int[var1];
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var0.pixels[var3] = class325.SpriteBuffer_spritePalette[var2[var3] & 255];
+		}
+
+		WorldMapData_1.method787();
+		return var0;
 	}
 }

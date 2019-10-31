@@ -3,28 +3,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("is")
+@ObfuscatedName("iz")
 @Implements("VarcInt")
 public class VarcInt extends DualNode {
-	@ObfuscatedName("z")
+	@ObfuscatedName("ns")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "[Lhi;"
+	)
+	static Widget[] field3218;
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "Lhq;"
 	)
 	@Export("VarcInt_archive")
 	public static AbstractArchive VarcInt_archive;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lem;"
+		signature = "Leb;"
 	)
 	@Export("VarcInt_cached")
-	public static EvictingDualNodeHashTable VarcInt_cached;
-	@ObfuscatedName("dp")
+	static EvictingDualNodeHashTable VarcInt_cached;
+	@ObfuscatedName("gi")
 	@ObfuscatedSignature(
-		signature = "Lie;"
+		signature = "[Llw;"
 	)
-	@Export("archive18")
-	static Archive archive18;
-	@ObfuscatedName("v")
+	@Export("modIconSprites")
+	static IndexedSprite[] modIconSprites;
+	@ObfuscatedName("n")
 	@Export("persist")
 	public boolean persist;
 
@@ -32,34 +37,46 @@ public class VarcInt extends DualNode {
 		VarcInt_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	public VarcInt() {
+	VarcInt() {
 		this.persist = false;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkl;B)V",
-		garbageValue = "32"
+		signature = "(Lkc;I)V",
+		garbageValue = "-542237401"
 	)
-	public void method4372(Buffer var1) {
+	void method4549(Buffer var1) {
 		while (true) {
 			int var2 = var1.readUnsignedByte();
 			if (var2 == 0) {
 				return;
 			}
 
-			this.method4375(var1, var2);
+			this.method4550(var1, var2);
 		}
 	}
 
 	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Lkl;II)V",
-		garbageValue = "-773678840"
+		signature = "(Lkc;II)V",
+		garbageValue = "-1028868558"
 	)
-	void method4375(Buffer var1, int var2) {
+	void method4550(Buffer var1, int var2) {
 		if (var2 == 2) {
 			this.persist = true;
+		}
+
+	}
+
+	@ObfuscatedName("gc")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1686094781"
+	)
+	static void method4548() {
+		if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
+			Player.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
 		}
 
 	}

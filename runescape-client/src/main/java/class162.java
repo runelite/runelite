@@ -2,33 +2,41 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fy")
 public class class162 implements class161 {
-	@ObfuscatedName("m")
-	@Export("ItemDefinition_inMembersWorld")
-	static boolean ItemDefinition_inMembersWorld;
-	@ObfuscatedName("s")
-	public static String field1990;
-	@ObfuscatedName("ao")
-	@ObfuscatedSignature(
-		signature = "Lll;"
-	)
-	static Bounds field1988;
+	@ObfuscatedName("u")
+	@Export("BZip2Decompressor_block")
+	static int[] BZip2Decompressor_block;
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1376590669"
+		signature = "(IB)Liy;",
+		garbageValue = "113"
 	)
-	@Export("clearItemContainer")
-	static void clearItemContainer(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+	@Export("getParamDefinition")
+	public static ParamDefinition getParamDefinition(int var0) {
+		ParamDefinition var1 = (ParamDefinition)ParamDefinition.ParamDefinition_cached.get((long)var0);
 		if (var1 != null) {
-			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
-				var1.ids[var2] = -1;
-				var1.quantities[var2] = 0;
+			return var1;
+		} else {
+			byte[] var2 = ParamDefinition.ParamDefinition_archive.takeFile(11, var0);
+			var1 = new ParamDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
+			var1.postDecode();
+			ParamDefinition.ParamDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(IB)Z",
+		garbageValue = "47"
+	)
+	public static boolean method3588(int var0) {
+		return (var0 >> 28 & 1) != 0;
 	}
 }

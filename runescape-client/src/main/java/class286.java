@@ -2,12 +2,12 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("kq")
+@ObfuscatedName("kv")
 public class class286 {
-	@ObfuscatedName("fn")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -2101282847
+		intValue = 678872033
 	)
-	@Export("baseY")
-	static int baseY;
+	@Export("canvasWidth")
+	public static int canvasWidth;
 }

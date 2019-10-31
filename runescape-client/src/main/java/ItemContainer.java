@@ -1,28 +1,21 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bu")
 @Implements("ItemContainer")
 public class ItemContainer extends Node {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Llq;"
+		signature = "Llh;"
 	)
 	@Export("itemContainers")
 	static NodeHashTable itemContainers;
-	@ObfuscatedName("mu")
-	@ObfuscatedGetter(
-		intValue = -1316536921
-	)
-	@Export("selectedSpellFlags")
-	static int selectedSpellFlags;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@Export("ids")
 	int[] ids;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("quantities")
 	int[] quantities;
 
@@ -35,55 +28,49 @@ public class ItemContainer extends Node {
 		this.quantities = new int[]{0};
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;Lhp;I)V",
-		garbageValue = "376678600"
+		signature = "(B)V",
+		garbageValue = "4"
 	)
-	public static void method1190(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
-		SequenceDefinition.SequenceDefinition_archive = var0;
-		SequenceDefinition.SequenceDefinition_animationsArchive = var1;
-		class188.SequenceDefinition_skeletonsArchive = var2;
-	}
+	static void method1250() {
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+			if (ArchiveDiskActionHandler.field3132 == 0) {
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.setDaemon(true);
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.start();
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.setPriority(5);
+			}
 
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(I)Lfz;",
-		garbageValue = "1488138254"
-	)
-	@Export("newClock")
-	public static Clock newClock() {
-		try {
-			return new NanoClock();
-		} catch (Throwable var1) {
-			return new MilliClock();
+			ArchiveDiskActionHandler.field3132 = 600;
 		}
 	}
 
-	@ObfuscatedName("io")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIII)V",
-		garbageValue = "-57501603"
+		signature = "([BIII)Ljava/lang/String;",
+		garbageValue = "2029003644"
 	)
-	@Export("drawWidgets")
-	static final void drawWidgets(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-		if (WorldMapData_0.loadInterface(var0)) {
-			GrandExchangeOffer.field61 = null;
-			ScriptEvent.drawInterface(UserComparator5.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-			if (GrandExchangeOffer.field61 != null) {
-				ScriptEvent.drawInterface(GrandExchangeOffer.field61, -1412584499, var1, var2, var3, var4, class227.field3061, Occluder.field1889, var7);
-				GrandExchangeOffer.field61 = null;
-			}
+	public static String method1252(byte[] var0, int var1, int var2) {
+		StringBuilder var3 = new StringBuilder();
 
-		} else {
-			if (var7 != -1) {
-				Client.field841[var7] = true;
-			} else {
-				for (int var8 = 0; var8 < 100; ++var8) {
-					Client.field841[var8] = true;
+		for (int var4 = var1; var4 < var2 + var1; var4 += 3) {
+			int var5 = var0[var4] & 255;
+			var3.append(class289.field3636[var5 >>> 2]);
+			if (var4 < var2 - 1) {
+				int var6 = var0[var4 + 1] & 255;
+				var3.append(class289.field3636[(var5 & 3) << 4 | var6 >>> 4]);
+				if (var4 < var2 - 2) {
+					int var7 = var0[var4 + 2] & 255;
+					var3.append(class289.field3636[(var6 & 15) << 2 | var7 >>> 6]).append(class289.field3636[var7 & 63]);
+				} else {
+					var3.append(class289.field3636[(var6 & 15) << 2]).append("=");
 				}
+			} else {
+				var3.append(class289.field3636[(var5 & 3) << 4]).append("==");
 			}
-
 		}
+
+		return var3.toString();
 	}
 }

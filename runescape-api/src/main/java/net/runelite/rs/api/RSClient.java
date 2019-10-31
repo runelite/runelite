@@ -63,7 +63,7 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getCameraZ2();
 
-	@Import("plane")
+	@Import("Scene_plane")
 	@Override
 	int getPlane();
 

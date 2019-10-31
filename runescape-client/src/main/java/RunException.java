@@ -3,36 +3,26 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("mf")
 @Implements("RunException")
 public class RunException extends RuntimeException {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@Export("RunException_applet")
 	public static Applet RunException_applet;
 	@ObfuscatedName("n")
 	@Export("localPlayerName")
 	public static String localPlayerName;
-	@ObfuscatedName("v")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -1228960845
+		intValue = 2085181929
 	)
 	@Export("RunException_revision")
 	public static int RunException_revision;
-	@ObfuscatedName("q")
-	@Export("SpriteBuffer_spriteHeights")
-	public static int[] SpriteBuffer_spriteHeights;
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "Ldn;"
-	)
-	@Export("soundSystem")
-	static SoundSystem soundSystem;
-	@ObfuscatedName("r")
+	@ObfuscatedName("l")
 	@Export("message")
 	String message;
-	@ObfuscatedName("p")
+	@ObfuscatedName("c")
 	@Export("throwable")
 	Throwable throwable;
 

@@ -1,14 +1,25 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ez")
 @Implements("UserComparator8")
 public class UserComparator8 extends AbstractUserComparator {
-	@ObfuscatedName("z")
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "Llw;"
+	)
+	@Export("options_buttons_0Sprite")
+	static IndexedSprite options_buttons_0Sprite;
+	@ObfuscatedName("fa")
+	@ObfuscatedGetter(
+		intValue = 1075800505
+	)
+	@Export("baseX")
+	static int baseX;
+	@ObfuscatedName("a")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -16,10 +27,10 @@ public class UserComparator8 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Ljl;Ljl;I)I",
-		garbageValue = "-2001610603"
+		signature = "(Ljx;Ljx;I)I",
+		garbageValue = "-2099102147"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -38,79 +49,19 @@ public class UserComparator8 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/io/File;",
-		garbageValue = "-1561719392"
-	)
-	@Export("getFile")
-	public static File getFile(String var0) {
-		if (!FileSystem.FileSystem_hasPermissions) {
-			throw new RuntimeException("");
-		} else {
-			File var1 = (File)FileSystem.FileSystem_cacheFiles.get(var0);
-			if (var1 != null) {
-				return var1;
-			} else {
-				File var2 = new File(FileSystem.FileSystem_cacheDir, var0);
-				RandomAccessFile var3 = null;
-
-				try {
-					File var4 = new File(var2.getParent());
-					if (!var4.exists()) {
-						throw new RuntimeException("");
-					} else {
-						var3 = new RandomAccessFile(var2, "rw");
-						int var5 = var3.read();
-						var3.seek(0L);
-						var3.write(var5);
-						var3.seek(0L);
-						var3.close();
-						FileSystem.FileSystem_cacheFiles.put(var0, var2);
-						return var2;
-					}
-				} catch (Exception var8) {
-					try {
-						if (var3 != null) {
-							var3.close();
-							var3 = null;
-						}
-					} catch (Exception var7) {
-					}
-
-					throw new RuntimeException();
-				}
-			}
-		}
+	@ObfuscatedName("c")
+	@Export("Entity_unpackID")
+	public static int Entity_unpackID(long var0) {
+		return (int)(var0 >>> 17 & 4294967295L);
 	}
 
-	@ObfuscatedName("fn")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "11"
+		signature = "(CI)Z",
+		garbageValue = "-1252421563"
 	)
-	@Export("setWindowedMode")
-	static void setWindowedMode(int var0) {
-		Client.field754 = 0L;
-		if (var0 >= 2) {
-			Client.isResizable = true;
-		} else {
-			Client.isResizable = false;
-		}
-
-		if (class247.getWindowedMode() == 1) {
-			ViewportMouse.client.setMaxCanvasSize(765, 503);
-		} else {
-			ViewportMouse.client.setMaxCanvasSize(7680, 2160);
-		}
-
-		if (Client.gameState >= 25) {
-			PacketBufferNode var1 = InterfaceParent.getPacketBufferNode(ClientPacket.field2256, Client.packetWriter.isaacCipher);
-			var1.packetBuffer.writeByte(class247.getWindowedMode());
-			var1.packetBuffer.writeShort(FloorDecoration.canvasWidth);
-			var1.packetBuffer.writeShort(WallDecoration.canvasHeight);
-			Client.packetWriter.addNode(var1);
-		}
-
+	@Export("isAlphaNumeric")
+	public static boolean isAlphaNumeric(char var0) {
+		return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
 	}
 }

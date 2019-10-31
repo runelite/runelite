@@ -1,121 +1,79 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cd")
 @Implements("MenuAction")
 public class MenuAction {
-	@ObfuscatedName("y")
-	@ObfuscatedGetter(
-		intValue = 237272937
+	@ObfuscatedName("qj")
+	@ObfuscatedSignature(
+		signature = "Ldq;"
 	)
-	@Export("PcmPlayer_count")
-	public static int PcmPlayer_count;
-	@ObfuscatedName("z")
+	@Export("pcmPlayer1")
+	static PcmPlayer pcmPlayer1;
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 1746809863
-	)
-	@Export("opcode")
-	int opcode;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = -950426859
+		intValue = -1613868885
 	)
 	@Export("argument1")
 	int argument1;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
+	@Export("action")
+	String action;
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -290789191
+		intValue = -872703787
 	)
 	@Export("argument2")
 	int argument2;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1009688897
+		intValue = 553279575
+	)
+	@Export("opcode")
+	int opcode;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = -1804422619
 	)
 	@Export("argument0")
 	int argument0;
-	@ObfuscatedName("r")
-	@Export("action")
-	String action;
 
 	MenuAction() {
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lky;ZS)V",
-		garbageValue = "-32250"
+		signature = "(II)Lim;",
+		garbageValue = "-2086805733"
 	)
-	public static void method2067(AbstractSocket var0, boolean var1) {
-		if (NetCache.NetCache_socket != null) {
-			try {
-				NetCache.NetCache_socket.close();
-			} catch (Exception var6) {
+	@Export("SpotAnimationDefinition_get")
+	public static SpotAnimationDefinition SpotAnimationDefinition_get(int var0) {
+		SpotAnimationDefinition var1 = (SpotAnimationDefinition)SpotAnimationDefinition.SpotAnimationDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_archive.takeFile(13, var0);
+			var1 = new SpotAnimationDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			NetCache.NetCache_socket = null;
-		}
-
-		NetCache.NetCache_socket = var0;
-		DirectByteArrayCopier.method3924(var1);
-		NetCache.NetCache_responseHeaderBuffer.offset = 0;
-		WorldMapEvent.NetCache_currentResponse = null;
-		FaceNormal.NetCache_responseArchiveBuffer = null;
-		NetCache.field3140 = 0;
-
-		while (true) {
-			NetFileRequest var2 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
-			if (var2 == null) {
-				while (true) {
-					var2 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-					if (var2 == null) {
-						if (NetCache.field3156 != 0) {
-							try {
-								Buffer var7 = new Buffer(4);
-								var7.writeByte(4);
-								var7.writeByte(NetCache.field3156);
-								var7.writeShort(0);
-								NetCache.NetCache_socket.write(var7.array, 0, 4);
-							} catch (IOException var5) {
-								try {
-									NetCache.NetCache_socket.close();
-								} catch (Exception var4) {
-								}
-
-								++NetCache.NetCache_ioExceptions;
-								NetCache.NetCache_socket = null;
-							}
-						}
-
-						NetCache.NetCache_loadTime = 0;
-						NetCache.field3142 = class30.currentTimeMillis();
-						return;
-					}
-
-					NetCache.NetCache_pendingWritesQueue.addLast(var2);
-					NetCache.NetCache_pendingWrites.put(var2, var2.key);
-					++NetCache.NetCache_pendingWritesCount;
-					--NetCache.NetCache_pendingResponsesCount;
-				}
-			}
-
-			NetCache.NetCache_pendingPriorityWrites.put(var2, var2.key);
-			++NetCache.NetCache_pendingPriorityWritesCount;
-			--NetCache.NetCache_pendingPriorityResponsesCount;
+			SpotAnimationDefinition.SpotAnimationDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1201643852"
+		signature = "(Lhq;III)Llx;",
+		garbageValue = "1380862020"
 	)
-	public static final void method2066() {
-		ViewportMouse.ViewportMouse_isInViewport = false;
-		ViewportMouse.ViewportMouse_entityCount = 0;
+	@Export("SpriteBuffer_getSprite")
+	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
+		return !class32.method618(var0, var1, var2) ? null : Username.method5338();
 	}
 }
