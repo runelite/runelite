@@ -115,6 +115,11 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null && !implings.contains(npc))
 		{
+			if (config.showNotification() && showImplingType(impling.getImplingType()))
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+			
 			implings.add(npc);
 		}
 	}
