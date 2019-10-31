@@ -75,6 +75,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
 	static final String CONFIG_KEY_QUEST_START_TOOLTIPS = "questStartTooltips";
+	static final String CONFIG_KEY_QUEST_ICONS = "questIcons";
 	static final String CONFIG_KEY_MINIGAME_TOOLTIP = "minigameTooltip";
 	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
@@ -307,7 +308,7 @@ public class WorldMapPlugin extends Plugin
 	{
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 
-		if (!config.questStartTooltips())
+		if (!config.questStartTooltips() && !config.questIcons())
 		{
 			return;
 		}
@@ -329,6 +330,9 @@ public class WorldMapPlugin extends Plugin
 
 	private QuestStartPoint createQuestStartPoint(QuestStartLocation data)
 	{
+		BufferedImage defaultIcon = BLANK_ICON;
+		String defaultTooltip = "Quest start";
+
 		Quest[] quests = data.getQuests();
 
 		// Get first uncompleted quest. Else, return the last quest.
@@ -341,13 +345,15 @@ public class WorldMapPlugin extends Plugin
 				break;
 			}
 		}
+
 		if (quest == null)
 		{
 			quest = quests[quests.length - 1];
 		}
 
-		BufferedImage icon = BLANK_ICON;
+		BufferedImage icon = null;
 		String tooltip = "";
+
 		if (quest != null)
 		{
 			tooltip = quest.getName();
@@ -368,6 +374,18 @@ public class WorldMapPlugin extends Plugin
 			}
 		}
 
-		return new QuestStartPoint(data.getLocation(), icon, tooltip);
+		if (config.questStartTooltips() && config.questIcons())
+		{
+			return new QuestStartPoint(data.getLocation(), icon, tooltip);
+		}
+		else if (!config.questIcons())
+		{
+			return new QuestStartPoint(data.getLocation(), defaultIcon, tooltip);
+		}
+		else
+		{
+			return new QuestStartPoint(data.getLocation(), icon, defaultTooltip);
+		}
+
 	}
 }
