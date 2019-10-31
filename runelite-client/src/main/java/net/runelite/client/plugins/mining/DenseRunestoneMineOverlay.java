@@ -23,12 +23,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zeahrunecraft;
+package net.runelite.client.plugins.mining;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -41,17 +42,16 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class ZeahRunecraftOverlay extends Overlay
+class DenseRunestoneMineOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE_TO_DRAW_STONES = 2500;
+	private static final int MAX_DISTANCE_TO_DRAW_STONES = 2000;
 
 	private final Client client;
-	private final ZeahRunecraftPlugin plugin;
-	private final ZeahRunecraftConfig config;
+	private final MiningPlugin plugin;
+	private final MiningConfig config;
 
 	@Inject
-	private ZeahRunecraftOverlay(final Client client, final ZeahRunecraftPlugin plugin,
-			final ZeahRunecraftConfig config)
+	private DenseRunestoneMineOverlay(final Client client, final MiningPlugin plugin, final MiningConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -77,12 +77,17 @@ class ZeahRunecraftOverlay extends Overlay
 				{
 					Shape clickbox = runestoneGameObject.getClickbox();
 
-					Color highlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(), plugin.isMining());
-					Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
-							highlightColor.getBlue(), 50);
+					Optional<Color> optionalHighlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(),
+							plugin.isMining());
+					if (optionalHighlightColor.isPresent())
+					{
+						Color highlightColor = optionalHighlightColor.get();
+						Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
+								highlightColor.getBlue(), 50);
 
-					OverlayUtil.renderHoverableArea(graphics, clickbox, mousePosition, translucentHighlightColor,
-							highlightColor, highlightColor.darker());
+						OverlayUtil.renderHoverableArea(graphics, clickbox, mousePosition, translucentHighlightColor,
+								highlightColor, highlightColor.darker());
+					}
 				}
 
 			});
@@ -91,18 +96,8 @@ class ZeahRunecraftOverlay extends Overlay
 		return null;
 	}
 
-	private Color getDenseRunestoneHighlightColor(final boolean isDepleted, final boolean isMining)
+	private Optional<Color> getDenseRunestoneHighlightColor(final boolean isDepleted, final boolean isMining)
 	{
-		Color highlightColor = Color.GREEN;
-		if (isDepleted)
-		{
-			highlightColor = Color.RED;
-		}
-		else if (isMining)
-		{
-			highlightColor = Color.ORANGE;
-		}
-
-		return highlightColor;
+		return !isDepleted && !isMining ? Optional.of(Color.GREEN) : Optional.empty();
 	}
 }

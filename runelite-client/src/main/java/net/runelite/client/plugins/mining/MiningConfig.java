@@ -23,14 +23,14 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zeahrunecraft;
+package net.runelite.client.plugins.mining;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("zeahrunecraft")
-public interface ZeahRunecraftConfig extends Config
+@ConfigGroup("mining")
+public interface MiningConfig extends Config
 {
 	@ConfigItem(
 			keyName = "showDenseRunestoneStatus",

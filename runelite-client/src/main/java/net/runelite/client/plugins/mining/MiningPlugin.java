@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Pinibot <https://github.com/Pinibot>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +25,21 @@
  */
 package net.runelite.client.plugins.mining;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
+import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHIPPING;
+import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_CRYSTAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_OR;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_UPGRADED;
+import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
+import static net.runelite.api.NullObjectID.NULL_8981;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
@@ -42,12 +49,35 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import com.google.inject.Provides;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,12 +87,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Mining",
 	description = "Show ore respawn timers",
 	tags = {"overlay", "skilling", "timers"},
-	enabledByDefault = false
-)
+	enabledByDefault = false)
 public class MiningPlugin extends Plugin
 {
-	private static final int ROCK_DISTANCE = 14;
-
 	@Inject
 	private Client client;
 
@@ -72,21 +99,39 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningOverlay overlay;
 
+	@Inject
+	private DenseRunestoneMineOverlay denseRunestoneMineOverlay;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<DenseRunestone> runestones = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean mining = false;
 	private boolean recentlyLoggedIn;
 
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(denseRunestoneMineOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(denseRunestoneMineOverlay);
 		respawns.clear();
+		runestones.clear();
+	}
+
+	@Provides
+	MiningConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MiningConfig.class);
 	}
 
 	@Subscribe
@@ -97,6 +142,7 @@ public class MiningPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				respawns.clear();
+				runestones.clear();
 				break;
 			case LOGGED_IN:
 				// After login rocks that are depleted will be changed,
@@ -114,6 +160,28 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		GameObject object = event.getGameObject();
+
+		Rock rock = Rock.getRock(object.getId());
+		if (rock != null)
+		{
+			if (rock == Rock.DENSE_RUNESTONE)
+			{
+				Varbits depletionVarbit = object.getId() == NULL_8981 ? Varbits.DENSE_RUNESTONE_NORTH_DEPLETED
+					: Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED;
+				boolean isDepleted = client.getVar(depletionVarbit) == 1;
+
+				// Add the newly spawned Dense Runestone to the list
+				DenseRunestone denseRunestone = new DenseRunestone(isDepleted, object, depletionVarbit);
+				runestones.add(denseRunestone);
+			}
+		}
+
+	}
+
+	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
@@ -127,8 +195,11 @@ public class MiningPlugin extends Plugin
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-			respawns.add(rockRespawn);
+			if (rock == Rock.DENSE_RUNESTONE)
+			{
+				runestones.removeIf(r -> r.getGameObject().getId() == object.getId());
+			}
+			addRockToRespawns(rock, object, region);
 		}
 	}
 
@@ -148,8 +219,7 @@ public class MiningPlugin extends Plugin
 			case EMPTY_WALL:
 			{
 				Rock rock = Rock.AMETHYST;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-				respawns.add(rockRespawn);
+				addRockToRespawns(rock, object, region);
 				break;
 			}
 			case DEPLETED_VEIN_26665: // Depleted motherlode vein
@@ -158,8 +228,7 @@ public class MiningPlugin extends Plugin
 			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			{
 				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-				respawns.add(rockRespawn);
+				addRockToRespawns(rock, object, region);
 				break;
 			}
 			case ORE_VEIN_26661: // Motherlode vein
@@ -173,5 +242,78 @@ public class MiningPlugin extends Plugin
 				break;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		Player local = client.getLocalPlayer();
+
+		if (event.getActor() != local)
+		{
+			return;
+		}
+
+		int playerAnimationId = local.getAnimation();
+
+		switch (playerAnimationId)
+		{
+			case MINING_BRONZE_PICKAXE:
+			case MINING_IRON_PICKAXE:
+			case MINING_STEEL_PICKAXE:
+			case MINING_BLACK_PICKAXE:
+			case MINING_MITHRIL_PICKAXE:
+			case MINING_ADAMANT_PICKAXE:
+			case MINING_RUNE_PICKAXE:
+			case MINING_DRAGON_PICKAXE:
+			case MINING_DRAGON_PICKAXE_UPGRADED:
+			case MINING_DRAGON_PICKAXE_OR:
+			case MINING_INFERNAL_PICKAXE:
+			case MINING_3A_PICKAXE:
+			case MINING_CRYSTAL_PICKAXE:
+			case DENSE_ESSENCE_CHIPPING:
+				mining = true;
+				break;
+			default:
+				mining = false;
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		checkRunestoneDepletion();
+	}
+
+	private void checkRunestoneDepletion()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
+		{
+			return;
+		}
+
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		runestones.forEach(r ->
+		{
+			r.setDepleted(client.getVar(r.getDepletionVarbit()) == 1);
+			if (r.isDepleted())
+			{
+				Rock rock = Rock.getRock(r.getGameObject().getId());
+				addRockToRespawns(rock, r.getGameObject(), region);
+			}
+			else
+			{
+				final WorldPoint point = r.getGameObject().getWorldLocation();
+				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+			}
+		});
+	}
+
+	private boolean addRockToRespawns(Rock rock, TileObject object, int region)
+	{
+		RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(),
+			(int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+		return respawns.add(rockRespawn);
 	}
 }

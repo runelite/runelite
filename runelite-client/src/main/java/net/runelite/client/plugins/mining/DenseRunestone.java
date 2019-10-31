@@ -23,35 +23,77 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zeahrunecraft;
-
-import java.util.Optional;
+package net.runelite.client.plugins.mining;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.GameObject;
 import net.runelite.api.Varbits;
 
 @AllArgsConstructor
-@Getter
-public enum DenseRunestoneInfo
+public class DenseRunestone
 {
-	NORTH(8981, Varbits.DENSE_RUNESTONE_NORTH_DEPLETED),
-	SOUTH(10796, Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED);
+	@Getter
+	@Setter
+	private boolean depleted;
 
-	private final int gameObjectId;
+	@Getter
+	private final GameObject gameObject;
+
+	@Getter
 	private final Varbits depletionVarbit;
 
-	public static Optional<DenseRunestoneInfo> findDenseRunestoneInfo(final int gameObjectId)
+	@Override
+	public int hashCode()
 	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (depleted ? 1231 : 1237);
+		result = prime * result + ((depletionVarbit == null) ? 0 : depletionVarbit.hashCode());
+		result = prime * result + ((gameObject == null) ? 0 : gameObject.getId());
+		return result;
+	}
 
-		for (DenseRunestoneInfo runestoneInfo : DenseRunestoneInfo.values())
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
 		{
-			if (runestoneInfo.getGameObjectId() == gameObjectId)
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		DenseRunestone other = (DenseRunestone) obj;
+		if (depletionVarbit != other.depletionVarbit)
+		{
+			return false;
+		}
+		if (gameObject == null)
+		{
+			if (other.gameObject != null)
 			{
-				return Optional.of(runestoneInfo);
+				return false;
 			}
 		}
-
-		return Optional.empty();
+		else
+		{
+			if (other.gameObject == null)
+			{
+				return false;
+			}
+			else if (gameObject.getId() != other.gameObject.getId())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
+
 }

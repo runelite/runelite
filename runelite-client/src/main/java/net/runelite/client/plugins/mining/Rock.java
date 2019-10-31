@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Pinibot <https://github.com/Pinibot>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,73 +25,109 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableMap;
+import static net.runelite.api.NullObjectID.NULL_10796;
+import static net.runelite.api.NullObjectID.NULL_8981;
+import static net.runelite.api.ObjectID.ASH_PILE;
+import static net.runelite.api.ObjectID.ROCKS_10943;
+import static net.runelite.api.ObjectID.ROCKS_11161;
+import static net.runelite.api.ObjectID.ROCKS_11360;
+import static net.runelite.api.ObjectID.ROCKS_11361;
+import static net.runelite.api.ObjectID.ROCKS_11364;
+import static net.runelite.api.ObjectID.ROCKS_11365;
+import static net.runelite.api.ObjectID.ROCKS_11366;
+import static net.runelite.api.ObjectID.ROCKS_11367;
+import static net.runelite.api.ObjectID.ROCKS_11368;
+import static net.runelite.api.ObjectID.ROCKS_11369;
+import static net.runelite.api.ObjectID.ROCKS_11370;
+import static net.runelite.api.ObjectID.ROCKS_11371;
+import static net.runelite.api.ObjectID.ROCKS_11372;
+import static net.runelite.api.ObjectID.ROCKS_11373;
+import static net.runelite.api.ObjectID.ROCKS_11374;
+import static net.runelite.api.ObjectID.ROCKS_11375;
+import static net.runelite.api.ObjectID.ROCKS_11376;
+import static net.runelite.api.ObjectID.ROCKS_11377;
+import static net.runelite.api.ObjectID.ROCKS_11380;
+import static net.runelite.api.ObjectID.ROCKS_11381;
+import static net.runelite.api.ObjectID.ROCKS_11386;
+import static net.runelite.api.ObjectID.ROCKS_11387;
+import static net.runelite.api.ObjectID.ROCKS_36203;
+import static net.runelite.api.ObjectID.ROCKS_36204;
+import static net.runelite.api.ObjectID.ROCKS_36205;
+import static net.runelite.api.ObjectID.ROCKS_36206;
+import static net.runelite.api.ObjectID.ROCKS_36207;
+import static net.runelite.api.ObjectID.ROCKS_36208;
+import static net.runelite.api.ObjectID.ROCKS_36209;
+
 import java.time.Duration;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.*;
 
 enum Rock
 {
 	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
 	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
 	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
+	{
+		@Override
+		Duration getRespawnTime(int region)
 		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMillis(2400) : super.respawnTime;
-			}
-		},
+			return region == MINING_GUILD ? Duration.ofMillis(2400) : super.respawnTime;
+		}
+	},
 	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
+	{
+		@Override
+		Duration getRespawnTime(int region)
 		{
-			@Override
-			Duration getRespawnTime(int region)
+			switch (region)
 			{
-				switch (region)
-				{
-					case MINING_GUILD:
-						return Duration.ofMillis(14400);
-					case MISCELLANIA:
-						return Duration.ofMillis(6600);
-					default:
-						return super.respawnTime;
-				}
+				case MINING_GUILD:
+					return Duration.ofMillis(14400);
+				case MISCELLANIA:
+					return Duration.ofMillis(6600);
+				default:
+					return super.respawnTime;
 			}
-		},
+		}
+	},
 	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
 	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
 	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
 	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
 	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
+	{
+		@Override
+		Duration getRespawnTime(int region)
 		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMinutes(1) : super.respawnTime;
-			}
-		},
+			return region == MINING_GUILD ? Duration.ofMinutes(1) : super.respawnTime;
+		}
+	},
 	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
+	{
+		@Override
+		Duration getRespawnTime(int region)
 		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.ofMinutes(2) : super.respawnTime;
-			}
-		},
+			return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.ofMinutes(2)
+				: super.respawnTime;
+		}
+	},
 	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
+	{
+		@Override
+		Duration getRespawnTime(int region)
 		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMinutes(6) : super.respawnTime;
-			}
-		},
+			return region == MINING_GUILD ? Duration.ofMinutes(6) : super.respawnTime;
+		}
+	},
 	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
 	AMETHYST(Duration.ofSeconds(75), 120),
 	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
-	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
+	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381),
+	DENSE_RUNESTONE(Duration.ofSeconds(18), 0, NULL_8981, NULL_10796);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;
