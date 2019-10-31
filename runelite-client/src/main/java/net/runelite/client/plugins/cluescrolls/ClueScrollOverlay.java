@@ -38,6 +38,7 @@ import com.google.common.collect.ImmutableList;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
@@ -97,11 +98,17 @@ public class ClueScrollOverlay extends Overlay
 
 		if (clue.isRequiresLight() && ((plugin.getInventoryItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || (plugin.getEquippedItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems())))))
 		{
-			for (Varbits varbit: BRAZIER_VARBITS)
+			if (clue instanceof EmoteClue)
 			{
-				if (client.getVar(varbit) == 1)
+				if (((EmoteClue) clue).getLocationName().equals("Lumbridge swamp caves"))
 				{
-					return panelComponent.render(graphics);
+					for (Varbits varbit: BRAZIER_VARBITS)
+					{
+						if (client.getVar(varbit) == 1)
+						{
+							return panelComponent.render(graphics);
+						}
+					}
 				}
 			}
 
