@@ -392,7 +392,7 @@ public final class WorldMapSprite {
 							var37 = var1.method5646();
 							if (var7 >= 0 && var8 >= 0 && var7 < 104 && var8 < 104) {
 								var32 = var4 + 1;
-								if (class215.localPlayer.pathX[0] >= var7 - var32 && class215.localPlayer.pathX[0] <= var7 + var32 && class215.localPlayer.pathY[0] >= var8 - var32 && class215.localPlayer.pathY[0] <= var8 + var32 && Client.field868 != 0 && var5 > 0 && Client.soundEffectCount < 50) {
+								if (class215.localPlayer.pathX[0] >= var7 - var32 && class215.localPlayer.pathX[0] <= var7 + var32 && class215.localPlayer.pathY[0] >= var8 - var32 && class215.localPlayer.pathY[0] <= var8 + var32 && Client.areaSoundEffectVolume != 0 && var5 > 0 && Client.soundEffectCount < 50) {
 									Client.soundEffectIds[Client.soundEffectCount] = var37;
 									Client.queuedSoundEffectLoops[Client.soundEffectCount] = var5;
 									Client.queuedSoundEffectDelays[Client.soundEffectCount] = var2;

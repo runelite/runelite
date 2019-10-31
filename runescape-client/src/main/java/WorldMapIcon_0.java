@@ -173,7 +173,7 @@ public class WorldMapIcon_0 extends AbstractWorldMapIcon {
 		class247.musicTrackArchive = var1;
 		class189.musicTrackGroupId = var2;
 		class197.musicTrackFileId = var3;
-		class197.field2379 = var4;
+		class197.musicTrackVolume = var4;
 		ScriptFrame.musicTrackBoolean = var5;
 		class197.field2384 = var0;
 	}

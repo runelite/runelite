@@ -31,4 +31,11 @@ public class SoundEffectPlayed implements Event
 {
 	private int soundId;
 	private int delay;
+
+	private boolean consumed;
+
+	public void consume()
+	{
+		consumed = true;
+	}
 }

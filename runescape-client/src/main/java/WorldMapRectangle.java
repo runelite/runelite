@@ -62,7 +62,7 @@ public final class WorldMapRectangle {
 	public static void method330(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
 		int var5 = var0.getGroupId(var1);
 		int var6 = var0.getFileId(var5, var2);
-		MusicPatchNode2.method3830(var0, var5, var6, var3, var4);
+		MusicPatchNode2.playMusicTrack(var0, var5, var6, var3, var4);
 	}
 
 	@ObfuscatedName("v")

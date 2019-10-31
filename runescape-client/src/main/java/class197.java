@@ -44,7 +44,8 @@ public class class197 {
 	@ObfuscatedGetter(
 		intValue = -1006961815
 	)
-	public static int field2379;
+	@Export("musicTrackVolume")
+	public static int musicTrackVolume;
 	@ObfuscatedName("d")
 	@ObfuscatedGetter(
 		intValue = -1415687209

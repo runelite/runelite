@@ -169,7 +169,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 		PacketWriter.friendSystem.clear();
 
 		for (var0 = 0; var0 < VarpDefinition.VarpDefinition_fileCount; ++var0) {
-			VarpDefinition var3 = Varcs.method2352(var0);
+			VarpDefinition var3 = Varcs.VarpDefinition_get(var0);
 			if (var3 != null) {
 				Varps.Varps_temp[var0] = 0;
 				Varps.Varps_main[var0] = 0;

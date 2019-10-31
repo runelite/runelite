@@ -507,7 +507,7 @@ final class class1 implements class0 {
 
 		System.gc();
 		class80.method2194(2);
-		Client.field865 = -1;
+		Client.currentTrackGroupId = -1;
 		Client.field855 = false;
 		GameShell.method1141();
 		Tile.updateGameState(10);

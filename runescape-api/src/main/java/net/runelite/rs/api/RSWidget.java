@@ -496,4 +496,20 @@ public interface RSWidget extends Widget
 
 	@Import("getSprite")
 	RSSprite getSprite(boolean b);
+
+	@Import("onRelease")
+	@Override
+	void setOnReleaseListener(Object[] o);
+
+	@Import("varTransmitTriggers")
+	@Override
+	void setVarTransmitTrigger(int[] i);
+
+	@Import("onHold")
+	@Override
+	void setOnHoldListener(Object[] o);
+
+	@Import("onClick")
+	@Override
+	void setOnClickListener(Object[] o);
 }
