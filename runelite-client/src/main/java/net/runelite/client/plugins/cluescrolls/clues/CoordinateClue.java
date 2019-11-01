@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -205,12 +206,23 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	 */
 	@Nullable
 	private final WorldPoint mirrorLocation;
+	private final Varbits hasFirePit;
 
 	public CoordinateClue(String text, WorldPoint location, WorldPoint mirrorLocation)
 	{
 		this.text = text;
 		this.location = location;
 		this.mirrorLocation = mirrorLocation;
+		this.hasFirePit = null;
+		setRequiresSpade(true);
+	}
+
+	public CoordinateClue(String text, WorldPoint location, WorldPoint mirrorLocation, Varbits varbit)
+	{
+		this.text = text;
+		this.location = location;
+		this.mirrorLocation = mirrorLocation;
+		this.hasFirePit = varbit;
 		setRequiresSpade(true);
 	}
 
