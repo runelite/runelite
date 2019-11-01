@@ -35,7 +35,9 @@ import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -58,6 +60,9 @@ public class ClueScrollOverlay extends Overlay
 	private final ClueScrollPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 	private Client client;
+
+	private static final WorldPoint MOSLE_HARMLESS_WEST = new WorldPoint(3811, 3060, 0);
+	private static final WorldPoint MOSLE_HARMLESS_EAST = new WorldPoint(3830, 3060, 0);
 
 	@Inject
 	private ClueScrollOverlay(Client client, ClueScrollPlugin plugin)
@@ -96,6 +101,11 @@ public class ClueScrollOverlay extends Overlay
 		if (clue.isRequiresLight() && ((plugin.getInventoryItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || (plugin.getEquippedItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems())))))
 		{
 			if (clue instanceof EmoteClue && ((EmoteClue) clue).getLocationName().equals("Lumbridge swamp caves") && client.getVar(Varbits.BRAZIER_LUMBRIDGE_SWAMP) == 1)
+			{
+				return panelComponent.render(graphics);
+			}
+
+			if (clue instanceof CoordinateClue && (((CoordinateClue) clue).getLocation() == MOSLE_HARMLESS_WEST || ((CoordinateClue) clue).getLocation() == MOSLE_HARMLESS_EAST) && client.getVar(Varbits.BRAZIER_MOSLE_HARMLESS) == 1)
 			{
 				return panelComponent.render(graphics);
 			}
