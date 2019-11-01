@@ -52,8 +52,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 		if (r.getInstruction() instanceof GetFieldInstruction)
 		{
 			GetFieldInstruction gf = (GetFieldInstruction) r.getInstruction();
-			Field f = gf.getMyField();
-			return f;
+			return gf.getMyField();
 		}
 
 		return null;
@@ -89,7 +88,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 
 			Field f1 = gf1.getMyField(),
 				f2 = gf2.getMyField();
-			
+
 			assert MappingExecutorUtil.isMaybeEqual(f1, f2);
 
 			if (f1 != null && f2 != null)
