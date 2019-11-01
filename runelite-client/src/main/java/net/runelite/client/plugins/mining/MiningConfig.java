@@ -33,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface MiningConfig extends Config
 {
 	@ConfigItem(
-			keyName = "showDenseRunestoneStatus",
-			name = "Show Dense Runestone Status",
-			description = "Configures whether Dense runestones will be highlighted to show if they're depleted or not.",
-			position = 1)
+		keyName = "showDenseRunestoneStatus",
+		name = "Show Dense Runestone Status",
+		description = "Configures whether Dense runestones will be highlighted to show if they're depleted or not.",
+		position = 1)
 	default boolean showDenseRunestoneStatus()
 	{
 		return true;

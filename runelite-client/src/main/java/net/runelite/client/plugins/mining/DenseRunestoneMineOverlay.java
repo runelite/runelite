@@ -78,15 +78,15 @@ class DenseRunestoneMineOverlay extends Overlay
 					Shape clickbox = runestoneGameObject.getClickbox();
 
 					Optional<Color> optionalHighlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(),
-							plugin.isMining());
+						plugin.isMining());
 					if (optionalHighlightColor.isPresent())
 					{
 						Color highlightColor = optionalHighlightColor.get();
 						Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
-								highlightColor.getBlue(), 50);
+							highlightColor.getBlue(), 50);
 
 						OverlayUtil.renderHoverableArea(graphics, clickbox, mousePosition, translucentHighlightColor,
-								highlightColor, highlightColor.darker());
+							highlightColor, highlightColor.darker());
 					}
 				}
 
