@@ -451,7 +451,6 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				takeScreenshot(fileName);
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
