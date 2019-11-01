@@ -30,9 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.Optional;
-
 import javax.inject.Inject;
-
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Point;
@@ -64,34 +62,36 @@ class DenseRunestoneMineOverlay extends Overlay
 	@Override
 	public Dimension render(final Graphics2D graphics)
 	{
-		if (config.showDenseRunestoneStatus())
+		if (!config.showDenseRunestoneStatus())
 		{
-			LocalPoint playerLocation = this.client.getLocalPlayer().getLocalLocation();
-			Point mousePosition = this.client.getMouseCanvasPosition();
-
-			this.plugin.getRunestones().forEach((runestone) ->
-			{
-				GameObject runestoneGameObject = runestone.getGameObject();
-
-				if (runestoneGameObject.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE_TO_DRAW_STONES)
-				{
-					Shape clickbox = runestoneGameObject.getClickbox();
-
-					Optional<Color> optionalHighlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(),
-						plugin.isMining());
-					if (optionalHighlightColor.isPresent())
-					{
-						Color highlightColor = optionalHighlightColor.get();
-						Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
-							highlightColor.getBlue(), 50);
-
-						OverlayUtil.renderHoverableArea(graphics, clickbox, mousePosition, translucentHighlightColor,
-							highlightColor, highlightColor.darker());
-					}
-				}
-
-			});
+			return null;
 		}
+
+		LocalPoint playerLocation = this.client.getLocalPlayer().getLocalLocation();
+		Point mousePosition = this.client.getMouseCanvasPosition();
+
+		this.plugin.getRunestones().forEach((runestone) ->
+		{
+			GameObject runestoneGameObject = runestone.getGameObject();
+
+			if (runestoneGameObject.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE_TO_DRAW_STONES)
+			{
+				Shape clickbox = runestoneGameObject.getClickbox();
+
+				Optional<Color> optionalHighlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(),
+					plugin.isMining());
+				if (optionalHighlightColor.isPresent())
+				{
+					Color highlightColor = optionalHighlightColor.get();
+					Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
+						highlightColor.getBlue(), 50);
+
+					OverlayUtil.renderHoverableArea(graphics, clickbox, mousePosition, translucentHighlightColor,
+						highlightColor, highlightColor.darker());
+				}
+			}
+
+		});
 
 		return null;
 	}

@@ -25,6 +25,11 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
+import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Getter;
 import static net.runelite.api.NullObjectID.NULL_10796;
 import static net.runelite.api.NullObjectID.NULL_8981;
 import static net.runelite.api.ObjectID.ASH_PILE;
@@ -57,14 +62,6 @@ import static net.runelite.api.ObjectID.ROCKS_36206;
 import static net.runelite.api.ObjectID.ROCKS_36207;
 import static net.runelite.api.ObjectID.ROCKS_36208;
 import static net.runelite.api.ObjectID.ROCKS_36209;
-
-import java.time.Duration;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-
-import lombok.AccessLevel;
-import lombok.Getter;
 
 enum Rock
 {

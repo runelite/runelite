@@ -26,12 +26,14 @@
 package net.runelite.client.plugins.mining;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameObject;
 import net.runelite.api.Varbits;
 
 @AllArgsConstructor
+@EqualsAndHashCode
 public class DenseRunestone
 {
 	@Getter
@@ -43,57 +45,4 @@ public class DenseRunestone
 
 	@Getter
 	private final Varbits depletionVarbit;
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (depleted ? 1231 : 1237);
-		result = prime * result + ((depletionVarbit == null) ? 0 : depletionVarbit.hashCode());
-		result = prime * result + ((gameObject == null) ? 0 : gameObject.getId());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		DenseRunestone other = (DenseRunestone) obj;
-		if (depletionVarbit != other.depletionVarbit)
-		{
-			return false;
-		}
-		if (gameObject == null)
-		{
-			if (other.gameObject != null)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if (other.gameObject == null)
-			{
-				return false;
-			}
-			else if (gameObject.getId() != other.gameObject.getId())
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
 }

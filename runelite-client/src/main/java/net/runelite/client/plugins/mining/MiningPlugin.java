@@ -25,6 +25,15 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.inject.Provides;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHIPPING;
 import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
@@ -39,6 +48,9 @@ import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import static net.runelite.api.NullObjectID.NULL_8981;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
@@ -49,22 +61,6 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Inject;
-
-import com.google.inject.Provides;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
