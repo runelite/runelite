@@ -101,7 +101,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2512, 3467, 0), new CoordinateClueInfo("Baxtorian Falls (Bring rope)."))
 		.put(new WorldPoint(2381, 3468, 0), new CoordinateClueInfo("West of Tree Gnome Stronghold, north of the pen with terrorbirds."))
 		.put(new WorldPoint(3005, 3475, 0), new CoordinateClueInfo("Ice Mountain, west of Edgeville."))
-		.put(new WorldPoint(3005, 3475, 0), new CoordinateClueInfo("Ice Mountain, west of Edgeville."))
 		.put(new WorldPoint(2585, 3505, 0), new CoordinateClueInfo("By the shore line north of the Coal Trucks."))
 		.put(new WorldPoint(3443, 3515, 0), new CoordinateClueInfo("South of Slayer Tower."))
 		.put(new WorldPoint(2416, 3516, 0), new CoordinateClueInfo("Tree Gnome Stronghold, west of Grand Tree, near swamp."))
@@ -244,7 +243,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		this.text = text;
 		this.location = location;
 		this.mirrorLocation = mirrorLocation;
-		this.hasFirePit = CLUES.get(location).lightSource;
+		this.hasFirePit = (CLUES.get(location) != null ? CLUES.get(location).lightSource : null);
 		setRequiresSpade(true);
 	}
 	@Override
@@ -265,8 +264,8 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
 
-		String solution = CLUES.get(location).directions;
-
+		String solution = (CLUES.get(location) != null ? CLUES.get(location).directions : null);
+		
 		if (solution != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
