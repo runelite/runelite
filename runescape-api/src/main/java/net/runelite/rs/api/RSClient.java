@@ -907,7 +907,7 @@ public interface RSClient extends RSGameShell, Client
 	@Import("Scene_cameraYTile")
 	void setScreenCenterZ(int screenCenterZ); // <-- This is correct!
 
-	@Import("Client_plane")
+	@Import("Scene_plane")
 	void setScenePlane(int scenePlane);
 
 	@Import("Scene_cameraXTileMin")
