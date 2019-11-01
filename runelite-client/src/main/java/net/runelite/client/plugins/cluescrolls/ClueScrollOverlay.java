@@ -30,11 +30,9 @@ package net.runelite.client.plugins.cluescrolls;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.List;
 import javax.inject.Inject;
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import com.google.common.collect.ImmutableList;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
@@ -56,7 +54,6 @@ public class ClueScrollOverlay extends Overlay
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source", item(LIT_CANDLE), item(CANDLE_LANTERN_4531), item(MAX_CAPE), item(FIREMAKING_CAPE), item(FIREMAKING_CAPET), item(BRUMA_TORCH), item(KANDARIN_HEADGEAR_1), item(KANDARIN_HEADGEAR_2), item(KANDARIN_HEADGEAR_3), item(KANDARIN_HEADGEAR_4), item(MINING_HELMET_5014), item(BULLSEYE_LANTERN_4550), item(OIL_LANTERN_4539), item(OIL_LAMP_4524), item(LIT_BLACK_CANDLE), item(SAPPHIRE_LANTERN_4702), item(EMERALD_LANTERN_20722), item(OIL_LAMP_4524), item(LIT_TORCH));
-	private static final List<Varbits>  BRAZIER_VARBITS = ImmutableList.of(Varbits.BRAZIER_GIANT_MOLE, Varbits.BRAZIER_LUMBRIDGE_SWAMP, Varbits.BRAZIER_MOSLE_HARMLESS);
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 	private final ClueScrollPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -98,18 +95,9 @@ public class ClueScrollOverlay extends Overlay
 
 		if (clue.isRequiresLight() && ((plugin.getInventoryItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || (plugin.getEquippedItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems())))))
 		{
-			if (clue instanceof EmoteClue)
+			if (clue instanceof EmoteClue && ((EmoteClue) clue).getLocationName().equals("Lumbridge swamp caves") && client.getVar(Varbits.BRAZIER_LUMBRIDGE_SWAMP) == 1)
 			{
-				if (((EmoteClue) clue).getLocationName().equals("Lumbridge swamp caves"))
-				{
-					for (Varbits varbit: BRAZIER_VARBITS)
-					{
-						if (client.getVar(varbit) == 1)
-						{
-							return panelComponent.render(graphics);
-						}
-					}
-				}
+				return panelComponent.render(graphics);
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder().left("").build());
