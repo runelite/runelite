@@ -49,7 +49,7 @@ import static net.runelite.injector.InjectUtil.getFieldType;
 import net.runelite.injector.raw.ClearColorBuffer;
 import net.runelite.injector.raw.DrawAfterWidgets;
 import net.runelite.injector.raw.Occluder;
-import net.runelite.injector.raw.RasterizerHook;
+import net.runelite.injector.raw.RasterizerAlpha;
 import net.runelite.injector.raw.RenderDraw;
 import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
@@ -57,8 +57,6 @@ import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.runelite.injector.raw.HidePlayerAttacks;
-
-// import net.runelite.injector.raw.DrawMenu;
 
 public class Inject
 {
@@ -207,7 +205,7 @@ public class Inject
 		// Has to be done before mixins
 		// well, can be done after really
 		// but why do that when you can do it before
-		new RasterizerHook(this).inject();
+		new RasterizerAlpha(this).inject();
 
 		// requires interfaces to be injected
 		mixinInjector.inject();
