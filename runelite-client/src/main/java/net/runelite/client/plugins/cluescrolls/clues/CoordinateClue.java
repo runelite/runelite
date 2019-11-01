@@ -244,6 +244,11 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		this.location = location;
 		this.mirrorLocation = mirrorLocation;
 		this.hasFirePit = (CLUES.get(location) != null ? CLUES.get(location).lightSource : null);
+		if (this.hasFirePit != null)
+		{
+			setRequiresLight(true);
+			setHasFirePit(this.hasFirePit);
+		}
 		setRequiresSpade(true);
 	}
 	@Override
@@ -265,7 +270,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
 
 		String solution = (CLUES.get(location) != null ? CLUES.get(location).directions : null);
-		
+
 		if (solution != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()

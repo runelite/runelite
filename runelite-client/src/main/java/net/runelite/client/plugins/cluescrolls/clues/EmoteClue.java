@@ -190,6 +190,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private EmoteClue(String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
+		this.setRequiresLight(false);
 	}
 
 	private EmoteClue(String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
@@ -202,6 +203,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this.secondEmote = secondEmote;
 		this.itemRequirements = itemRequirements;
 		this.hasFirePit = null;
+		setHasFirePit(null);
 	}
 
 	public EmoteClue(String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, Varbits bit, @Nonnull ItemRequirement... itemRequirements)
@@ -213,7 +215,18 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this.firstEmote = firstEmote;
 		this.secondEmote = secondEmote;
 		this.itemRequirements = itemRequirements;
-		this.hasFirePit = bit;
+		if (bit != null)
+		{
+			this.hasFirePit = bit;
+			setRequiresLight(true);
+			setHasFirePit(this.hasFirePit);
+		}
+		else
+		{
+			this.hasFirePit = null;
+			setRequiresLight(false);
+			setHasFirePit(null);
+		}
 	}
 
 	@Override
