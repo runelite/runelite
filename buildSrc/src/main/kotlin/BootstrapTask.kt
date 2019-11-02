@@ -96,6 +96,11 @@ open class BootstrapTask : DefaultTask() {
                 "artifacts" to getArtifacts()
         ).toString()
 
-        project.file("${project.buildDir}/bootstrap/bootstrap-${type}.json").writeText(json)
+        val bootstrapDir = File("${project.buildDir}/bootstrap")
+        bootstrapDir.mkdirs()
+
+        File(bootstrapDir, "bootstrap-${type}.json").printWriter().use { out ->
+            out.println(json)
+        }
     }
 }
