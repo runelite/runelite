@@ -37,7 +37,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
