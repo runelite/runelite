@@ -118,4 +118,12 @@ public interface AttackStylesConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "messageWarnedStyles",
+			name = "Chat message for warned styles",
+			description = "Display warning in chat when switching weapons results in using a warned style",
+			position = 9
+	)
+	default boolean messageWarnedStyles() { return false; }
 }
