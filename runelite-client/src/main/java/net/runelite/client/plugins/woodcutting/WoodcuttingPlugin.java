@@ -183,8 +183,8 @@ public class WoodcuttingPlugin extends Plugin
 
 				session.setLastLogCut();
 
-				typeOfLogCut(event);
-				gpEarned = gpEarned + itemManager.getItemPrice(treeTypeID);
+				typeOfLogCut(event.getMessage());
+				gpEarned += itemManager.getItemPrice(treeTypeID);
 			}
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && this.showNestNotification)
@@ -194,41 +194,41 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 
-	private void typeOfLogCut(ChatMessage event)
+	private void typeOfLogCut(String message)
 	{
-		if (event.getMessage().contains("mushrooms."))
+		if (message.contains("mushrooms."))
 		{
 			return; //TO DO Add valuation for scullicep mushroom cutting.
 		}
-		else if (event.getMessage().contains("oak"))
+		else if (message.contains("oak"))
 		{
 			treeTypeID = ItemID.OAK_LOGS;
 		}
-		else if (event.getMessage().contains("willow"))
+		else if (message.contains("willow"))
 		{
 			treeTypeID = ItemID.WILLOW_LOGS;
 		}
-		else if (event.getMessage().contains("yew"))
+		else if (message.contains("yew"))
 		{
 			treeTypeID = ItemID.YEW_LOGS;
 		}
-		else if (event.getMessage().contains("redwood"))
+		else if (message.contains("redwood"))
 		{
 			treeTypeID = ItemID.REDWOOD_LOGS;
 		}
-		else if (event.getMessage().contains("magic"))
+		else if (message.contains("magic"))
 		{
 			treeTypeID = ItemID.MAGIC_LOGS;
 		}
-		else if (event.getMessage().contains("teak"))
+		else if (message.contains("teak"))
 		{
 			treeTypeID = ItemID.TEAK_LOGS;
 		}
-		else if (event.getMessage().contains("mahogany"))
+		else if (message.contains("mahogany"))
 		{
 			treeTypeID = ItemID.MAHOGANY_LOGS;
 		}
-		else if (event.getMessage().contains("maple"))
+		else if (message.contains("maple"))
 		{
 			treeTypeID = ItemID.MAPLE_LOGS;
 		}
