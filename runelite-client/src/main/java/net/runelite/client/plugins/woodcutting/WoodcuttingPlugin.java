@@ -37,6 +37,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -49,6 +51,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,6 +86,9 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingConfig config;
 
 	@Inject
+	private ItemManager itemManager;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -100,6 +106,12 @@ public class WoodcuttingPlugin extends Plugin
 	private boolean showWoodcuttingStats;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showRedwoodTrees;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGPEarned;
+
+	private int treeTypeID;
+	@Getter(AccessLevel.PACKAGE)
+	private int gpEarned;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -167,15 +179,63 @@ public class WoodcuttingPlugin extends Plugin
 				if (session == null)
 				{
 					session = new WoodcuttingSession();
+					gpEarned = 0;
 				}
 
 				session.setLastLogCut();
+
+				typeOfLogCut(event);
+				gpEarned = gpEarned + itemManager.getItemPrice(treeTypeID);
 			}
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && this.showNestNotification)
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+		}
+	}
+
+	private void typeOfLogCut(ChatMessage event)
+	{
+		if (event.getMessage().contains("mushrooms."))
+		{
+			return; //TO DO Add valuation for scullicep mushroom cutting.
+		}
+		else if (event.getMessage().contains("oak"))
+		{
+			treeTypeID = ItemID.OAK_LOGS;
+		}
+		else if (event.getMessage().contains("willow"))
+		{
+			treeTypeID = ItemID.WILLOW_LOGS;
+		}
+		else if (event.getMessage().contains("yew"))
+		{
+			treeTypeID = ItemID.YEW_LOGS;
+		}
+		else if (event.getMessage().contains("redwood"))
+		{
+			treeTypeID = ItemID.REDWOOD_LOGS;
+		}
+		else if (event.getMessage().contains("magic"))
+		{
+			treeTypeID = ItemID.MAGIC_LOGS;
+		}
+		else if (event.getMessage().contains("teak"))
+		{
+			treeTypeID = ItemID.TEAK_LOGS;
+		}
+		else if (event.getMessage().contains("mahogany"))
+		{
+			treeTypeID = ItemID.MAHOGANY_LOGS;
+		}
+		else if (event.getMessage().contains("maple"))
+		{
+			treeTypeID = ItemID.MAPLE_LOGS;
+		}
+		else
+		{
+			treeTypeID = ItemID.LOGS;
 		}
 	}
 
@@ -241,5 +301,6 @@ public class WoodcuttingPlugin extends Plugin
 		this.showNestNotification = config.showNestNotification();
 		this.showWoodcuttingStats = config.showWoodcuttingStats();
 		this.showRedwoodTrees = config.showRedwoodTrees();
+		this.showGPEarned = config.showGPEarned();
 	}
 }
