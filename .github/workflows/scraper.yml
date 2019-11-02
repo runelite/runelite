@@ -25,7 +25,7 @@ jobs:
       - name: Building scraper
         run: ./gradlew :wiki-scraper:build --console=plain
       - name: Downloading jagex cache
-        run: ./gradlew :cache-client:update --console=plain
+        run: ./gradlew :cache-client:download --console=plain
       - name: Scraping NPC stats
         run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
       - name: Create NPC stats Pull Request
