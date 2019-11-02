@@ -74,7 +74,6 @@ subprojects {
     apply<MavenPlugin>()
     apply<MavenPublishPlugin>()
     apply(plugin = Plugins.testLogger.first)
-    apply<FernflowerPlugin>()
 
     if (this.name != "rs-client") apply(plugin = "checkstyle")
 

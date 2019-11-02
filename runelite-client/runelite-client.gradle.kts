@@ -38,6 +38,9 @@ plugins {
     java
 }
 
+
+apply<BootstrapPlugin>()
+
 description = "RuneLite Client"
 
 dependencies {
@@ -110,11 +113,6 @@ fun formatDate(date: Date?) = with(date ?: Date()) {
 }
 
 tasks {
-    register<DependencyReportTask>("dependencyReportFile") {
-        outputFile = file("dependencies.txt")
-        setConfiguration("runtimeClasspath")
-    }
-
     build {
         finalizedBy("shadowJar")
     }
@@ -144,8 +142,6 @@ tasks {
     }
 
     shadowJar {
-        dependsOn("dependencyReportFile")
-
         archiveClassifier.set("shaded")
 
         exclude("net/runelite/injector/**")
