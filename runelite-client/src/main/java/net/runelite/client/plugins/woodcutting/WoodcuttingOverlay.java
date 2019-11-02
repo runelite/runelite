@@ -105,7 +105,7 @@ class WoodcuttingOverlay extends Overlay
 
 			if (plugin.isShowGPEarned())
 			{
-				tableComponent.addRow("GP earned", Integer.toString((plugin.getGpEarned())));
+				tableComponent.addRow("GP earned:", Integer.toString((plugin.getGpEarned())));
 			}
 
 			if (actions > 2)
