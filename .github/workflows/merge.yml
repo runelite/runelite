@@ -1,0 +1,20 @@
+name: OpenOSRS - Auto merge
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  automerge:
+    name: Auto merge
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: automerge
+        uses: pascalgn/automerge-action@f84dd310ea4a19890c70a4ff11ab282a872fb94b
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_FORKS: false
+          LABELS: automated-pull-request
+          AUTOMERGE: automated-pull-request

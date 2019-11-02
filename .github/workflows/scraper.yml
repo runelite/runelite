@@ -36,4 +36,4 @@ jobs:
           PULL_REQUEST_TITLE: 'Client: Update NPC stats'
           PULL_REQUEST_BODY: This is an auto-generated PR with changes from the OSRS wiki
           COMMIT_MESSAGE: 'Client: Update NPC stats'
-          PULL_REQUEST_LABELS: automated pull request, NPC stats
+          PULL_REQUEST_LABELS: automated-pull-request, NPC stats

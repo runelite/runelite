@@ -75,15 +75,4 @@ jobs:
         if: github.event_name == 'pull_request' && github.actor == 'OpenOSRS'
         uses: hmarr/auto-approve-action@v2.0.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-  merge:
-    name: Merge
-    needs: approve
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - uses: maxkomarychev/merge-pal-action@v0.1.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.Owain }}
