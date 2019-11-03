@@ -83,9 +83,12 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Mining",
 	description = "Show ore respawn timers",
 	tags = {"overlay", "skilling", "timers"},
-	enabledByDefault = false)
+	enabledByDefault = false
+)
 public class MiningPlugin extends Plugin
 {
+	private static final int DENSE_RUNESTONE_MINE_REGION_ID = 6972;
+
 	@Inject
 	private Client client;
 
@@ -104,9 +107,13 @@ public class MiningPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DenseRunestone> runestones = new HashSet<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean mining = false;
 	private boolean recentlyLoggedIn;
+	private List<Integer> miningAnimations = new ArrayList<>();
+
+	public MiningPlugin()
+	{
+		populateMiningAnimations();
+	}
 
 	@Override
 	protected void startUp()
@@ -240,40 +247,14 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+
+	protected boolean isMining()
 	{
 		Player local = client.getLocalPlayer();
 
-		if (event.getActor() != local)
-		{
-			return;
-		}
-
+		// Check to see if the player is currently mining
 		int playerAnimationId = local.getAnimation();
-
-		switch (playerAnimationId)
-		{
-			case MINING_BRONZE_PICKAXE:
-			case MINING_IRON_PICKAXE:
-			case MINING_STEEL_PICKAXE:
-			case MINING_BLACK_PICKAXE:
-			case MINING_MITHRIL_PICKAXE:
-			case MINING_ADAMANT_PICKAXE:
-			case MINING_RUNE_PICKAXE:
-			case MINING_DRAGON_PICKAXE:
-			case MINING_DRAGON_PICKAXE_UPGRADED:
-			case MINING_DRAGON_PICKAXE_OR:
-			case MINING_INFERNAL_PICKAXE:
-			case MINING_3A_PICKAXE:
-			case MINING_CRYSTAL_PICKAXE:
-			case DENSE_ESSENCE_CHIPPING:
-				mining = true;
-				break;
-			default:
-				mining = false;
-				break;
-		}
+		return miningAnimations.contains(playerAnimationId);
 	}
 
 	@Subscribe
@@ -284,26 +265,31 @@ public class MiningPlugin extends Plugin
 
 	private void checkRunestoneDepletion()
 	{
+		// Return early if we've just logged in
 		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
 		{
 			return;
 		}
 
+		// Check to see if the player is in the same region as the dense runestones
 		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
-		runestones.forEach(r ->
+		if (region == DENSE_RUNESTONE_MINE_REGION_ID)
 		{
-			r.setDepleted(client.getVar(r.getDepletionVarbit()) == 1);
-			if (r.isDepleted())
+			runestones.forEach(r ->
 			{
-				Rock rock = Rock.getRock(r.getGameObject().getId());
-				addRockToRespawns(rock, r.getGameObject(), region);
-			}
-			else
-			{
-				final WorldPoint point = r.getGameObject().getWorldLocation();
-				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
-			}
-		});
+				r.setDepleted(client.getVar(r.getDepletionVarbit()) == 1);
+				if (r.isDepleted())
+				{
+					Rock rock = Rock.getRock(r.getGameObject().getId());
+					addRockToRespawns(rock, r.getGameObject(), region);
+				}
+				else
+				{
+					final WorldPoint point = r.getGameObject().getWorldLocation();
+					respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+				}
+			});
+		}
 	}
 
 	private boolean addRockToRespawns(Rock rock, TileObject object, int region)
@@ -311,5 +297,24 @@ public class MiningPlugin extends Plugin
 		RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(),
 			(int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 		return respawns.add(rockRespawn);
+	}
+
+	private void populateMiningAnimations()
+	{
+		this.miningAnimations.add(MINING_BRONZE_PICKAXE);
+		this.miningAnimations.add(MINING_IRON_PICKAXE);
+		this.miningAnimations.add(MINING_STEEL_PICKAXE);
+		this.miningAnimations.add(MINING_BLACK_PICKAXE);
+		this.miningAnimations.add(MINING_MITHRIL_PICKAXE);
+		this.miningAnimations.add(MINING_ADAMANT_PICKAXE);
+		this.miningAnimations.add(MINING_BRONZE_PICKAXE);
+		this.miningAnimations.add(MINING_RUNE_PICKAXE);
+		this.miningAnimations.add(MINING_DRAGON_PICKAXE);
+		this.miningAnimations.add(MINING_DRAGON_PICKAXE_UPGRADED);
+		this.miningAnimations.add(MINING_DRAGON_PICKAXE_OR);
+		this.miningAnimations.add(MINING_INFERNAL_PICKAXE);
+		this.miningAnimations.add(MINING_3A_PICKAXE);
+		this.miningAnimations.add(MINING_CRYSTAL_PICKAXE);
+		this.miningAnimations.add(DENSE_ESSENCE_CHIPPING);
 	}
 }
