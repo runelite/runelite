@@ -54,6 +54,7 @@ import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.LevelUpManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
@@ -148,6 +149,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<LootManager> lootManager;
+
+	@Inject
+	private Provider<LevelUpManager> levelUpManager;
 
 	@Inject
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
@@ -325,6 +329,7 @@ public class RuneLite
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
 			eventBus.register(lootManager.get());
+			eventBus.register(levelUpManager.get());
 			eventBus.register(chatboxPanelManager.get());
 			eventBus.register(hooks.get());
 
