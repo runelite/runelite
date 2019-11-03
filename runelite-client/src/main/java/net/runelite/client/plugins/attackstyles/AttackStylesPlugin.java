@@ -336,7 +336,7 @@ public class AttackStylesPlugin extends Plugin
 							.build();
 
 						chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.GAMEMESSAGE)
+							.type(ChatMessageType.CONSOLE)
 							.runeLiteFormattedMessage(message)
 							.build());
 					}
