@@ -29,6 +29,7 @@ import org.ajoberstar.grgit.Grgit
 buildscript {
     repositories {
         maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
         mavenLocal()
     }
     dependencies {
