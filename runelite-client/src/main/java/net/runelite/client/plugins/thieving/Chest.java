@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, whs
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,62 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.execution;
+package net.runelite.client.plugins.thieving;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import java.util.Collection;
-import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.Instruction;
+import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
+import java.util.Map;
+import lombok.Getter;
+import net.runelite.api.ObjectID;
 
-public class MethodContext
+enum Chest
 {
-	private Execution execution;
-	private Method method;
-	private Multimap<InstructionContext, Instruction> visited = HashMultimap.create();
-	public Multimap<Instruction, InstructionContext> contexts = HashMultimap.create();
+	TEN_COIN(Duration.ofMillis(6000), ObjectID.CHEST_11735),
+	FIFTY_COIN(Duration.ofMillis(46000), ObjectID.CHEST_11737),
+	NATURE_RUNE(Duration.ofMillis(10000), ObjectID.CHEST_11736),
+	STEEL_ARROWTIPS(Duration.ofMillis(77000), ObjectID.CHEST_11742),
+	AVERAGE_CHEST(Duration.ofMillis(90000), ObjectID.CHEST_22697),
+	BLOOD_RUNE(Duration.ofMillis(120000), ObjectID.CHEST_11738),
+	ARDOUGNE_CASTLE(Duration.ofMillis(400000), ObjectID.CHEST_11739), // FIXME: Please time
+	RICH_CHEST(Duration.ofMillis(300000), ObjectID.CHEST_22681), // FIXME: Please time
+	ROGUE_CASTLE(Duration.ofMillis(10000), ObjectID.CHEST_26757); // FIXME: Please time
 
-	public MethodContext(Execution execution, Method method)
-	{
-		this.execution = execution;
-		this.method = method;
-	}
+	private static final Map<Integer, Chest> CHESTS;
 
-	public Execution getExecution()
+	static
 	{
-		return execution;
-	}
-
-	public Method getMethod()
-	{
-		return method;
-	}
-
-	protected boolean hasJumped(InstructionContext from, Instruction to)
-	{
-		Collection<Instruction> i = visited.get(from);
-		if (i != null && i.contains(to))
+		ImmutableMap.Builder<Integer, Chest> builder = new ImmutableMap.Builder<>();
+		for (Chest chest : values())
 		{
-			return true;
+			for (int id : chest.ids)
+			{
+				builder.put(id, chest);
+			}
 		}
-
-		visited.put(from, to);
-		return false;
+		CHESTS = builder.build();
 	}
 
-	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+	@Getter
+	private final Duration respawnTime;
+	private final int[] ids;
+
+	Chest(Duration respawnTime, int... ids)
 	{
-		return contexts.get(i);
+		this.respawnTime = respawnTime;
+		this.ids = ids;
 	}
 
-	public Collection<InstructionContext> getInstructionContexts()
+	static Chest of(int id)
 	{
-		return contexts.values();
-	}
-
-	public void reset()
-	{
-		contexts.clear();
-		visited.clear();
+		return CHESTS.get(id);
 	}
 }

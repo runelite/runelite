@@ -1,0 +1,15 @@
+name: OpenOSRS - First interaction
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: 'Thank you for opening your first issue! Please make sure to join our [Discord](https://discord.gg/openosrs).'

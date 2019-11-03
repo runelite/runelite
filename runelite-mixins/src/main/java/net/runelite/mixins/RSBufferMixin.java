@@ -26,7 +26,6 @@ package net.runelite.mixins;
 
 import java.math.BigInteger;
 import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;

@@ -24,7 +24,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+apply<FernflowerPlugin>()
+
 description = "Injected Client"
+
 
 tasks {
     compileJava {

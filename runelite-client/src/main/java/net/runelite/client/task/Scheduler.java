@@ -62,7 +62,7 @@ public class Scheduler
 
 	public void registerObject(Object obj)
 	{
-		for (Method method : obj.getClass().getMethods())
+		for (Method method : obj.getClass().getDeclaredMethods())
 		{
 			Schedule schedule = method.getAnnotation(Schedule.class);
 			if (schedule == null)

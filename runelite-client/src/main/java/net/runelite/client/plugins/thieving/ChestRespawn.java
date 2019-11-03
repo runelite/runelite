@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2019, whs
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.thieving;
 
-plugins {
-    `kotlin-dsl`
-}
+import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.coords.WorldPoint;
 
-repositories {
-    mavenCentral()
-    maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
-}
+@RequiredArgsConstructor
+@Getter(AccessLevel.PACKAGE)
+class ChestRespawn
+{
+	private final Chest chest;
+	private final WorldPoint worldPoint;
+	private final Instant endTime;
+	private final int world;
 
-dependencies {
-    implementation(gradleApi())
-    implementation(group = "net.runelite", name = "fernflower", version = "07082019")
-    implementation(group = "org.json", name = "json", version = "20190722")
-}
+	private long respawnTime = -1;
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
+	long getRespawnTime()
+	{
+		if (respawnTime != -1)
+		{
+			return respawnTime;
+		}
+
+		respawnTime = chest.getRespawnTime().toMillis();
+		return respawnTime;
+	}
 }

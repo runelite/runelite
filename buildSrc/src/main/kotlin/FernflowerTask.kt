@@ -26,12 +26,10 @@ open class FernflowerTask: DefaultTask() {
 
     @InputFile
     @PathSensitive(PathSensitivity.ABSOLUTE)
-    var getInputJar = project.file(inputJar ?: project.buildDir.toString() + "/libs/" + project.name + '-'
-    + project.version + ".jar")
+    var getInputJar = project.file(inputJar ?: "${project.buildDir}/libs/${project.name}-${project.version}.jar")
 
     @OutputDirectory
-    @PathSensitive(PathSensitivity.ABSOLUTE)
-    var getOutputDir = project.file(outputDir ?: project.buildDir.toString() + "/decompiled-sources")
+    var getOutputDir = project.file(outputDir ?: "${project.buildDir}/decompiled-sources")
 
 
     @TaskAction
