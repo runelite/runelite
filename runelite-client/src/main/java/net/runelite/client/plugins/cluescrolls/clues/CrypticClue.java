@@ -311,7 +311,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the eastern bookcase in Father Urhney's house.", BOOKCASE_9523, new WorldPoint(3149, 3177, 0), "Father Urhney's house is found in the western end of the Lumbridge Swamp."),
 		new CrypticClue("Talk to Morgan in his house at Draynor Village.", "Morgan", new WorldPoint(3098, 3268, 0), "Morgan can be found in the house with the quest start map icon."),
 		new CrypticClue("Talk to Charles at Port Piscarilius.", "Charles", new WorldPoint(1821, 3690, 0), "Charles is found by Veos' ship in Port Piscarilius."),
-		new CrypticClue("Search the crate in Rommiks crafting shop in Rimmington.", CRATE_9534, new WorldPoint(2947, 3208, 0), "The crates in Rommik's Crafty Supplies in Rimmington."),
+		new CrypticClue("Search the crate in Rommiks crafting shop in Rimmington.", CRATE_9533, new WorldPoint(2946, 3207, 0), "The crates in Rommik's Crafty Supplies in Rimmington."),
 		new CrypticClue("Talk to Ali the Leaflet Dropper north of the Al Kharid mine.", "Ali the Leaflet Dropper", new WorldPoint(3283, 3329, 0), "Ali the Leaflet Dropper can be found roaming north of the Al Kharid mine."),
 		new CrypticClue("Talk to the cook in the Blue Moon Inn in Varrock.", "Cook", new WorldPoint(3230, 3401, 0), "The Blue Moon Inn can be found by the southern entrance to Varrock."),
 		new CrypticClue("Search the single crate in Horvik's smithy in Varrock.", CRATE_5106, new WorldPoint(3228, 3433, 0), "Horvik's Smithy is found north-east of of Varrock Square."),
