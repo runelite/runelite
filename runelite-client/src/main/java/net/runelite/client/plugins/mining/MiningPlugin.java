@@ -34,20 +34,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHIPPING;
-import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_CRYSTAL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_OR;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_UPGRADED;
-import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -61,12 +47,10 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import net.runelite.api.Player;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -108,12 +92,6 @@ public class MiningPlugin extends Plugin
 	private final Set<DenseRunestone> runestones = new HashSet<>();
 
 	private boolean recentlyLoggedIn;
-	private List<Integer> miningAnimations = new ArrayList<>();
-
-	public MiningPlugin()
-	{
-		populateMiningAnimations();
-	}
 
 	@Override
 	protected void startUp()
@@ -247,16 +225,6 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-
-	protected boolean isMining()
-	{
-		Player local = client.getLocalPlayer();
-
-		// Check to see if the player is currently mining
-		int playerAnimationId = local.getAnimation();
-		return miningAnimations.contains(playerAnimationId);
-	}
-
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
@@ -297,24 +265,5 @@ public class MiningPlugin extends Plugin
 		RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(),
 			(int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 		return respawns.add(rockRespawn);
-	}
-
-	private void populateMiningAnimations()
-	{
-		this.miningAnimations.add(MINING_BRONZE_PICKAXE);
-		this.miningAnimations.add(MINING_IRON_PICKAXE);
-		this.miningAnimations.add(MINING_STEEL_PICKAXE);
-		this.miningAnimations.add(MINING_BLACK_PICKAXE);
-		this.miningAnimations.add(MINING_MITHRIL_PICKAXE);
-		this.miningAnimations.add(MINING_ADAMANT_PICKAXE);
-		this.miningAnimations.add(MINING_BRONZE_PICKAXE);
-		this.miningAnimations.add(MINING_RUNE_PICKAXE);
-		this.miningAnimations.add(MINING_DRAGON_PICKAXE);
-		this.miningAnimations.add(MINING_DRAGON_PICKAXE_UPGRADED);
-		this.miningAnimations.add(MINING_DRAGON_PICKAXE_OR);
-		this.miningAnimations.add(MINING_INFERNAL_PICKAXE);
-		this.miningAnimations.add(MINING_3A_PICKAXE);
-		this.miningAnimations.add(MINING_CRYSTAL_PICKAXE);
-		this.miningAnimations.add(DENSE_ESSENCE_CHIPPING);
 	}
 }

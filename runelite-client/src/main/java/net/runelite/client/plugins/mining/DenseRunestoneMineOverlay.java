@@ -25,14 +25,29 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.util.Optional;
 import javax.inject.Inject;
+import static net.runelite.api.AnimationID.DENSE_ESSENCE_CHIPPING;
+import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_CRYSTAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_OR;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_UPGRADED;
+import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -43,6 +58,23 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class DenseRunestoneMineOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE_TO_DRAW_STONES = 2000;
+	private static final ImmutableList<Integer> miningAnimations = ImmutableList.of(
+		MINING_BRONZE_PICKAXE,
+		MINING_IRON_PICKAXE,
+		MINING_STEEL_PICKAXE,
+		MINING_BLACK_PICKAXE,
+		MINING_MITHRIL_PICKAXE,
+		MINING_ADAMANT_PICKAXE,
+		MINING_BRONZE_PICKAXE,
+		MINING_RUNE_PICKAXE,
+		MINING_DRAGON_PICKAXE,
+		MINING_DRAGON_PICKAXE_UPGRADED,
+		MINING_DRAGON_PICKAXE_OR,
+		MINING_INFERNAL_PICKAXE,
+		MINING_3A_PICKAXE,
+		MINING_CRYSTAL_PICKAXE,
+		DENSE_ESSENCE_CHIPPING
+	);
 
 	private final Client client;
 	private final MiningPlugin plugin;
@@ -78,8 +110,7 @@ class DenseRunestoneMineOverlay extends Overlay
 			{
 				Shape clickbox = runestoneGameObject.getClickbox();
 
-				Color highlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(),
-					plugin.isMining());
+				Color highlightColor = getDenseRunestoneHighlightColor(runestone.isDepleted(), isMining());
 				if (highlightColor != null)
 				{
 					Color translucentHighlightColor = new Color(highlightColor.getRed(), highlightColor.getGreen(),
@@ -93,6 +124,15 @@ class DenseRunestoneMineOverlay extends Overlay
 		});
 
 		return null;
+	}
+
+	private boolean isMining()
+	{
+		Player local = client.getLocalPlayer();
+
+		// Check to see if the player is currently mining
+		int playerAnimationId = local.getAnimation();
+		return miningAnimations.contains(playerAnimationId);
 	}
 
 	private Color getDenseRunestoneHighlightColor(final boolean isDepleted, final boolean isMining)
