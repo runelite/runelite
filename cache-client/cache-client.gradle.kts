@@ -40,7 +40,7 @@ dependencies {
 
 tasks {
     register<JavaExec>("download") {
-        dependsOn("copyVanilla")
+        dependsOn(":cache-client:build")
 
         classpath = project.sourceSets.main.get().runtimeClasspath
         main = "net.runelite.cache.client.CacheClient"
