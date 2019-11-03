@@ -59,11 +59,11 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -84,11 +84,11 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.api.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -165,6 +165,8 @@ public class GrandExchangePlugin extends Plugin
 	private Widget grandExchangeOfferQuantityHeading;
 	private Map<Integer, Integer> itemGELimits;
 
+	private int osbItem;
+	private OSBGrandExchangeResult osbGrandExchangeResult;
 	private GrandExchangeClient grandExchangeClient;
 
 	private boolean quickLookup;
@@ -241,6 +243,9 @@ public class GrandExchangePlugin extends Plugin
 		{
 			grandExchangeClient = new GrandExchangeClient(accountSession.getUuid());
 		}
+
+		osbItem = -1;
+		osbGrandExchangeResult = null;
 	}
 
 	@Override
@@ -261,7 +266,6 @@ public class GrandExchangePlugin extends Plugin
 	private void addSubscriptions()
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
 		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
@@ -480,6 +484,11 @@ public class GrandExchangePlugin extends Plugin
 
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
+		if (event.getEventName().equals("geBuilt"))
+		{
+			rebuildGeText();
+		}
+
 		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
 		{
 			return;
@@ -519,7 +528,7 @@ public class GrandExchangePlugin extends Plugin
 		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
 
-	private void onGameTick(GameTick event)
+	private void rebuildGeText()
 	{
 		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
 		{
@@ -527,7 +536,6 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		final Widget geText = grandExchangeText;
-		final String geTextString = geText.getText();
 		final Widget geQuantityHeading = grandExchangeOfferQuantityHeading;
 		final int offerType = client.getVar(Varbits.GE_OFFER_CREATION_TYPE);
 		final int itemId = grandExchangeItem.getItemId();
@@ -566,47 +574,55 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 
-		if (this.enableGELimits && itemGELimits != null && !geTextString.contains(BUY_LIMIT_GE_TEXT))
+		String[] lines = geText.getText().split("<br>");
+		String text = lines[0]; // remove any limit or OSB ge values
+
+		if (this.enableGELimits && itemGELimits != null)
 		{
 			final Integer itemLimit = itemGELimits.get(itemId);
 
 			// If we have item buy limit, append it
 			if (itemLimit != null)
 			{
-				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemLimit);
-				geText.setText(text);
+				text += BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemLimit);
 			}
 		}
 
-		if (!this.enableOsbPrices || geTextString.contains(OSB_GE_TEXT))
+		geText.setText(text);
+
+		if (!this.enableOsbPrices)
 		{
-			// OSB prices are disabled or price was already looked up, so no need to set it again
 			return;
 		}
 
+		// If we already have the result, use it
+		if (osbGrandExchangeResult != null && osbGrandExchangeResult.getItem_id() == itemId && osbGrandExchangeResult.getOverall_average() > 0)
+		{
+			geText.setText(text + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbGrandExchangeResult.getOverall_average()));
+		}
+
+		if (osbItem == itemId)
+		{
+			// avoid starting duplicate lookups
+			return;
+		}
+
+		osbItem = itemId;
+
 		log.debug("Looking up OSB item price {}", itemId);
 
+		final String start = text;
 		executorService.submit(() ->
 		{
-			if (geText.getText().contains(OSB_GE_TEXT))
-			{
-				// If there are multiple tasks queued and one of them have already added the price
-				return;
-			}
-
 			CLIENT.lookupItem(itemId)
 				.subscribeOn(Schedulers.io())
 				.observeOn(Schedulers.from(clientThread))
 				.subscribe(
 					(osbresult) ->
 					{
-						final String text = geText.getText() + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbresult.getOverall_average());
-						if (geText.getText().contains(OSB_GE_TEXT))
-						{
-							// If there are multiple tasks queued and one of them have already added the price
-							return;
-						}
-						geText.setText(text);
+						osbGrandExchangeResult = osbresult;
+						// Update the text on the widget too
+						geText.setText(start + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbresult.getOverall_average()));
 					},
 					(e) -> log.debug("Error getting price of item {}", itemId, e)
 				);

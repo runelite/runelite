@@ -558,16 +558,9 @@ public class ChatMessageManager
 
 	public void process()
 	{
-		if (!queuedMessages.isEmpty())
+		for (QueuedMessage msg; (msg = queuedMessages.poll()) != null; )
 		{
-			try
-			{
-				queuedMessages.forEach(this::add);
-			}
-			finally
-			{
-				queuedMessages.clear();
-			}
+			add(msg);
 		}
 	}
 
