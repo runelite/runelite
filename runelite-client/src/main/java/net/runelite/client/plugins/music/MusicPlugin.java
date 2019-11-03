@@ -40,6 +40,7 @@ import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
@@ -557,9 +558,24 @@ public class MusicPlugin extends Plugin
 	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
-		if (source != client.getLocalPlayer()
+		if (source == client.getLocalPlayer()
+			&& musicConfig.muteOwnAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source != client.getLocalPlayer()
 			&& source instanceof Player
 			&& musicConfig.muteOtherAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source instanceof NPC
+			&& musicConfig.muteNpcAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source == null
+			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
 		}
