@@ -143,23 +143,18 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject object = event.getGameObject();
+		final GameObject object = event.getGameObject();
 
-		Rock rock = Rock.getRock(object.getId());
-		if (rock != null)
+		final Rock rock = Rock.getRock(object.getId());
+		if (rock == Rock.DENSE_RUNESTONE)
 		{
-			if (rock == Rock.DENSE_RUNESTONE)
-			{
-				Varbits depletionVarbit = object.getId() == NULL_8981 ? Varbits.DENSE_RUNESTONE_NORTH_DEPLETED
-					: Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED;
-				boolean isDepleted = client.getVar(depletionVarbit) == 1;
+			final Varbits depletionVarbit = object.getId() == NULL_8981 ? Varbits.DENSE_RUNESTONE_NORTH_DEPLETED
+				: Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED;
+			final boolean isDepleted = client.getVar(depletionVarbit) == 1;
 
-				// Add the newly spawned Dense Runestone to the list
-				DenseRunestone denseRunestone = new DenseRunestone(isDepleted, object, depletionVarbit);
-				runestones.add(denseRunestone);
-			}
+			// Add the newly spawned Dense Runestone to the list
+			runestones.add(new DenseRunestone(isDepleted, object, depletionVarbit));
 		}
-
 	}
 
 	@Subscribe
@@ -172,16 +167,12 @@ public class MiningPlugin extends Plugin
 
 		final GameObject object = event.getGameObject();
 		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
-
-		Rock rock = Rock.getRock(object.getId());
-		if (rock != null)
+		final Rock rock = Rock.getRock(object.getId());
+		if (rock == Rock.DENSE_RUNESTONE)
 		{
-			if (rock == Rock.DENSE_RUNESTONE)
-			{
-				runestones.removeIf(r -> r.getGameObject().getId() == object.getId());
-			}
-			addRockToRespawns(rock, object, region);
+			runestones.removeIf(r -> r.getGameObject().getId() == object.getId());
 		}
+		addRockToRespawns(rock, object, region);
 	}
 
 	@Subscribe
@@ -248,7 +239,7 @@ public class MiningPlugin extends Plugin
 				r.setDepleted(client.getVar(r.getDepletionVarbit()) == 1);
 				if (r.isDepleted())
 				{
-					Rock rock = Rock.getRock(r.getGameObject().getId());
+					final Rock rock = Rock.getRock(r.getGameObject().getId());
 					addRockToRespawns(rock, r.getGameObject(), region);
 				}
 				else
@@ -262,7 +253,7 @@ public class MiningPlugin extends Plugin
 
 	private boolean addRockToRespawns(Rock rock, TileObject object, int region)
 	{
-		RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(),
+		final RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(),
 			(int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 		return respawns.add(rockRespawn);
 	}
