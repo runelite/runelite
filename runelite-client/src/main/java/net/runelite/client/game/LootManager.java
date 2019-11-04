@@ -185,7 +185,6 @@ public class LootManager
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		log.debug("storing items in {}", packed);
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
 		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
