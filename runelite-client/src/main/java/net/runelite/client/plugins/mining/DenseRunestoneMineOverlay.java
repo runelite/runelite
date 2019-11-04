@@ -58,7 +58,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class DenseRunestoneMineOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE_TO_DRAW_STONES = 2000;
-	private static final ImmutableList<Integer> miningAnimations = ImmutableList.of(
+	private static final ImmutableList<Integer> MINING_ANIMATIONS = ImmutableList.of(
 		MINING_BRONZE_PICKAXE,
 		MINING_IRON_PICKAXE,
 		MINING_STEEL_PICKAXE,
@@ -132,7 +132,7 @@ class DenseRunestoneMineOverlay extends Overlay
 
 		// Check to see if the player is currently mining
 		int playerAnimationId = local.getAnimation();
-		return miningAnimations.contains(playerAnimationId);
+		return MINING_ANIMATIONS.contains(playerAnimationId);
 	}
 
 	private Color getDenseRunestoneHighlightColor(final boolean isDepleted, final boolean isMining)
