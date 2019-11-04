@@ -172,7 +172,7 @@ public class MiningPlugin extends Plugin
 		{
 			runestones.removeIf(r -> r.getGameObject().getId() == object.getId());
 		}
-		if(rock != null)
+		if (rock != null)
 		{
 			addRockToRespawns(rock, object, region);
 		}
