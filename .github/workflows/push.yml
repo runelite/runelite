@@ -56,3 +56,12 @@ jobs:
         run: ./gradlew assemble --console=plain
       - name: Checking code conventions
         run: ./gradlew checkstyleMain --console=plain
+
+  update_draft_release:
+    name: Draft release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: toolmantim/release-drafter@v5.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

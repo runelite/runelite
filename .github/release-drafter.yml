@@ -1,8 +1,9 @@
 version-template: '$MAJOR.$MINOR.$PATCH.0'
-name-template: 'v$NEXT_PATCH_VERSION 🌈'
+name-template: 'v$NEXT_PATCH_VERSION'
 tag-template: 'v$NEXT_PATCH_VERSION'
 exclude-labels:
   - 'skip-changelog'
+  - 'automated-pull-request'
 categories:
   - title: '🚀 Features'
     labels:
@@ -15,7 +16,7 @@ categories:
       - 'bug'
   - title: '🧰 Maintenance'
     label: 'chore'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-template: '* $TITLE (#$NUMBER) @$AUTHOR'
 template: |
   Thanks to: $CONTRIBUTORS
 
