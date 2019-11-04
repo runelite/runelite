@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Value;
 import net.runelite.api.Skill;
 
 /**
- * An event where the experience level of a {@link Skill} has been modified.
+ * An event where the experience, level, or boosted level of a {@link Skill} has been modified.
  */
-@Data
-public class ExperienceChanged
+@Value
+public class StatChanged
 {
-	/**
-	 * The modified skill.
-	 */
-	private Skill skill;
+	private final Skill skill;
+	private final int xp;
+	private final int level;
+	private final int boostedLevel;
 }
