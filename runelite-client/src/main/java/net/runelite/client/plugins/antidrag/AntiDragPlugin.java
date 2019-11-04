@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2018, Pinibot <https://github.com/Pinibot>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,17 +32,17 @@ import net.runelite.api.Client;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
-	name = "Shift Anti Drag",
+	name = "Anti Drag",
 	description = "Prevent dragging an item for a specified delay",
 	tags = {"antidrag", "delay", "inventory", "items"}
 )
-public class AntiDragPlugin extends Plugin implements KeyListener
+public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
 
@@ -63,39 +64,34 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-		keyManager.registerKeyListener(this);
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
-		keyManager.unregisterKeyListener(this);
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		@Override
+		public void hotkeyPressed()
 		{
 			client.setInventoryDragDelay(config.dragDelay());
 		}
-	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		@Override
+		public void keyReleased(KeyEvent e)
 		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+			super.keyReleased(e);
+			if (config.hotkey().matches(e))
+			{
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+			}
 		}
-	}
+	};
 
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)

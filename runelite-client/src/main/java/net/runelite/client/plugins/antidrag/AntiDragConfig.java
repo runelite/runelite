@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2019, Pinibot <https://github.com/Pinibot>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,10 +25,13 @@
  */
 package net.runelite.client.plugins.antidrag;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ModifierlessKeybind;
 
 @ConfigGroup("antiDrag")
 public interface AntiDragConfig extends Config
@@ -41,5 +45,16 @@ public interface AntiDragConfig extends Config
 	default int dragDelay()
 	{
 		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Hotkey",
+		description = "Configures the key required to be held to prevent dragging.",
+		position = 2
+	)
+	default ModifierlessKeybind hotkey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK);
 	}
 }
