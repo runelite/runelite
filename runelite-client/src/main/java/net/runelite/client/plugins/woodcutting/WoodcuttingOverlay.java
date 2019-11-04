@@ -42,6 +42,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+
 @Singleton
 class WoodcuttingOverlay extends Overlay
 {
@@ -49,6 +50,7 @@ class WoodcuttingOverlay extends Overlay
 	private final WoodcuttingPlugin plugin;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent panelComponent = new PanelComponent();
+
 
 	@Inject
 	private WoodcuttingOverlay(final Client client, final WoodcuttingPlugin plugin, final XpTrackerService xpTrackerService)
@@ -101,6 +103,11 @@ class WoodcuttingOverlay extends Overlay
 		{
 			tableComponent.addRow("Logs cut:", Integer.toString(actions));
 
+			if (plugin.isShowGPEarned())
+			{
+				tableComponent.addRow("GP earned:", Integer.toString((plugin.getGpEarned())));
+			}
+
 			if (actions > 2)
 			{
 				tableComponent.addRow("Logs/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)));
@@ -111,5 +118,6 @@ class WoodcuttingOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
+
 
 }
