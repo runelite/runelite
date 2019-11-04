@@ -101,6 +101,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.api.util.Text;
@@ -170,6 +171,9 @@ public class ScreenshotPlugin extends Plugin
 	private ScreenshotOverlay screenshotOverlay;
 
 	@Inject
+	OverlayRenderer overlayRenderer;
+
+	@Inject
 	private Notifier notifier;
 
 	@Inject
@@ -231,6 +235,7 @@ public class ScreenshotPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean screenshotUntradeableDrop;
 	private Keybind hotkey;
+	private boolean hideOverlays;
 
 	@Provides
 	ScreenshotConfig getConfig(ConfigManager configManager)
@@ -624,6 +629,7 @@ public class ScreenshotPlugin extends Plugin
 	 */
 	private void takeScreenshot(String fileName)
 	{
+		overlayRenderer.setShouldRender(true);
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// Prevent the screenshot from being captured
@@ -637,6 +643,8 @@ public class ScreenshotPlugin extends Plugin
 			executor.submit(() -> takeScreenshot(fileName, img, null));
 		};
 
+
+		overlayRenderer.setShouldRender(false);
 		if (this.displayDate)
 		{
 			screenshotOverlay.queueForTimestamp(imageCallback);
@@ -645,6 +653,8 @@ public class ScreenshotPlugin extends Plugin
 		{
 			drawManager.requestNextFrameListener(imageCallback);
 		}
+
+
 	}
 
 	/**
@@ -781,6 +791,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			log.warn("error writing screenshot", ex);
 		}
+		overlayRenderer.setShouldRender(true);
 	}
 
 	/**
@@ -905,5 +916,6 @@ public class ScreenshotPlugin extends Plugin
 		this.screenshotValuableDrop = config.screenshotValuableDrop();
 		this.screenshotUntradeableDrop = config.screenshotUntradeableDrop();
 		this.hotkey = config.hotkey();
+		this.hideOverlays = config.hideOverlays();
 	}
 }
