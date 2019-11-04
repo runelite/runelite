@@ -70,7 +70,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Music",
-	description = "Adds search and filter for the music list, and additional volume control"
+	description = "Adds search and filter for the music list, and additional volume control",
+	tags = {"sound", "volume"}
 )
 public class MusicPlugin extends Plugin
 {
