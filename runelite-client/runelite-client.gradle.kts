@@ -143,7 +143,5 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("shaded")
-
-        exclude("net/runelite/injector/**")
     }
 }

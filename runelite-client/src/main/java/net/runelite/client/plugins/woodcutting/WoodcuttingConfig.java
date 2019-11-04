@@ -74,4 +74,15 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showGPEarned",
+		name = "Show GP earned",
+		description = "Configures whether to show amount of gp earned by chopping trees"
+	)
+	default boolean showGPEarned()
+	{
+		return false;
+	}
 }
