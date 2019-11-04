@@ -39,6 +39,9 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.client.game.ItemManager;
@@ -86,7 +89,29 @@ class SkillCalculator extends JPanel
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				onSearch();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				onSearch();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				onSearch();
+			}
+		});
+		
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addKeyListener(e -> onSearch());
 
