@@ -4136,7 +4136,7 @@ public final class Client extends GameShell implements Usernamed {
 							var15 = npcIndices[var1];
 							NPC var25 = npcs[var15];
 							if (var25 != null) {
-								HitSplatDefinition.calculateActorPosition(var25, var25.definition.size);
+								HitSplatDefinition.updateActorSequence(var25, var25.definition.size);
 							}
 						}
 
