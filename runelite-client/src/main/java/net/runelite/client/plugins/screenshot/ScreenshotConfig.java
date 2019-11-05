@@ -187,10 +187,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "folders",
+		name = "Separate screenshot folders",
+		description = "Configures whether or not screenshots are sorted in to folders based on type.",
+		position = 14
+	)
+	default boolean folders()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 14
+		position = 15
 	)
 	default Keybind hotkey()
 	{

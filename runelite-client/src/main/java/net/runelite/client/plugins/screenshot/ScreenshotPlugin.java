@@ -193,7 +193,7 @@ public class ScreenshotPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			takeScreenshot(format(new Date()));
+			takeScreenshot(format(new Date()), "Manual");
 		}
 	};
 
@@ -216,7 +216,7 @@ public class ScreenshotPlugin extends Plugin
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date())))
+			.onClick(() -> takeScreenshot(format(new Date()), "Manual"))
 			.popup(ImmutableMap
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
@@ -257,24 +257,28 @@ public class ScreenshotPlugin extends Plugin
 		shouldTakeScreenshot = false;
 
 		String fileName = null;
+		String type = null;
 		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
 		{
+			type = "Levels";
 			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
 		}
 		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
+			type = "Levels";
 			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
+			type = "Quests";
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
 		}
 
 		if (fileName != null)
 		{
-			takeScreenshot(fileName);
+			takeScreenshot(fileName, type);
 		}
 	}
 
@@ -283,7 +287,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeath())
 		{
-			takeScreenshot("Death " + format(new Date()));
+			takeScreenshot("Death " + format(new Date()), "Deaths");
 		}
 	}
 
@@ -295,7 +299,7 @@ public class ScreenshotPlugin extends Plugin
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name + " " + format(new Date());
-			takeScreenshot(fileName);
+			takeScreenshot(fileName, "PVP Kills");
 		}
 	}
 
@@ -363,7 +367,7 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + format(new Date());
-			takeScreenshot(fileName);
+			takeScreenshot(fileName, "Pets");
 		}
 
 		if (config.screenshotBossKills() )
@@ -374,7 +378,7 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Loot");
 			}
 		}
 
@@ -385,7 +389,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String valuableDropName = m.group(1);
 				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Loot");
 			}
 		}
 
@@ -396,7 +400,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String untradeableDropName = m.group(1);
 				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Loot");
 			}
 		}
 
@@ -408,7 +412,7 @@ public class ScreenshotPlugin extends Plugin
 				String result = m.group(1);
 				String count = m.group(2);
 				String fileName = "Duel " + result + " (" + count + ")";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Duels");
 			}
 		}
 	}
@@ -418,6 +422,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		String fileName;
 		int groupId = event.getGroupId();
+		String type;
 
 		switch (groupId)
 		{
@@ -450,11 +455,13 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case KINGDOM_GROUP_ID:
 			{
+				type = "Loot";
 				fileName = "Kingdom " + LocalDate.now();
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
+				type = "Raids";
 				if (chambersOfXericNumber != null)
 				{
 					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
@@ -479,6 +486,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
+				type = "Raids";
 				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
 				theatreOfBloodNumber = null;
 				break;
@@ -490,6 +498,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
+				type = "Loot";
 				fileName = "Barrows(" + barrowsNumber + ")";
 				barrowsNumber = null;
 				break;
@@ -509,6 +518,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
+				type = "Clues";
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
 				clueType = null;
 				clueNumber = null;
@@ -518,7 +528,7 @@ public class ScreenshotPlugin extends Plugin
 				return;
 		}
 
-		takeScreenshot(fileName);
+		takeScreenshot(fileName, type);
 	}
 
 	/**
@@ -554,7 +564,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	private void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName, String type)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -566,7 +576,7 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> takeScreenshot(fileName, img));
+			executor.submit(() -> takeScreenshot(fileName, img, type));
 		};
 
 		if (config.displayDate())
@@ -579,7 +589,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void takeScreenshot(String fileName, Image image)
+	private void takeScreenshot(String fileName, Image image, String type)
 	{
 		BufferedImage screenshot = config.includeFrame()
 			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
@@ -625,6 +635,12 @@ public class ScreenshotPlugin extends Plugin
 			{
 				playerDir += "-Deadman";
 			}
+
+			if (config.folders())
+			{
+				playerDir += "\\" + type;
+			}
+
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
 		}
 		else
