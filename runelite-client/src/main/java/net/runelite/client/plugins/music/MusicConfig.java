@@ -87,4 +87,14 @@ public interface MusicConfig extends Config
 		hidden = true
 	)
 	void setAreaSoundEffectVolume(int vol);
+
+	@ConfigItem(
+		keyName = "muteOtherAreaSounds",
+		name = "Mute others' area sounds",
+		description = "Mute area sounds caused from other players"
+	)
+	default boolean muteOtherAreaSounds()
+	{
+		return false;
+	}
 }

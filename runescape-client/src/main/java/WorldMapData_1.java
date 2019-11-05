@@ -267,7 +267,7 @@ public class WorldMapData_1 extends AbstractWorldMapData {
 		for (int var2 = 0; var2 < var0; ++var2) {
 			Player var3 = Client.players[var1[var2]];
 			if (var3 != null) {
-				HitSplatDefinition.calculateActorPosition(var3, 1);
+				HitSplatDefinition.updateActorSequence(var3, 1);
 			}
 		}
 
