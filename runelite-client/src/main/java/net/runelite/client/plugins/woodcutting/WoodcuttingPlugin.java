@@ -133,7 +133,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			if ((event.getMessage().startsWith("You get some") && (event.getMessage().endsWith("logs.") || event.getMessage().endsWith("mushrooms."))) || event.getMessage().equals("You get an arctic pine log."))
+			if (event.getMessage().matches("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)"))
 			{
 				if (session == null)
 				{
