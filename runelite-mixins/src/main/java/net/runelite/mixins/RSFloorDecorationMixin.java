@@ -1,6 +1,5 @@
 package net.runelite.mixins;
 
-import java.awt.Polygon;
 import java.awt.Shape;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
@@ -60,7 +59,7 @@ public abstract class RSFloorDecorationMixin implements RSFloorDecoration
 
 	@Inject
 	@Override
-	public Polygon getConvexHull()
+	public Shape getConvexHull()
 	{
 		RSModel model = getModel();
 
@@ -70,6 +69,7 @@ public abstract class RSFloorDecorationMixin implements RSFloorDecoration
 		}
 
 		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+
 		return model.getConvexHull(getX(), getY(), 0, tileHeight);
 	}
 
