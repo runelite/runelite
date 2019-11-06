@@ -513,6 +513,25 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
+		// Fix for house pool
+		switch (event.getMenuOpcode())
+		{
+			case ITEM_FIRST_OPTION:
+			case ITEM_SECOND_OPTION:
+			case ITEM_THIRD_OPTION:
+			case ITEM_FOURTH_OPTION:
+			case ITEM_FIFTH_OPTION:
+			case EXAMINE_ITEM_BANK_EQ:
+			case WIDGET_FIRST_OPTION:
+			case WIDGET_SECOND_OPTION:
+			case WIDGET_THIRD_OPTION:
+			case WIDGET_FOURTH_OPTION:
+			case WIDGET_FIFTH_OPTION:
+			case WIDGET_DEFAULT:
+				break;
+			default:
+				return;
+		}
 		// Uses stacks to push/pop for tick eating
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
