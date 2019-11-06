@@ -61,6 +61,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
 {
+	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
+
 	@Inject
 	private Notifier notifier;
 
@@ -87,8 +89,6 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
-
-	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
