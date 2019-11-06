@@ -6,6 +6,7 @@
 	"Zombie_13": 22,
 	"Zombie_18": 24,
 	"Zombie_24": 30,
+	"Zombie_44": 40,
 	"Summoned Zombie_13": 22,
 	"Skeleton_22": 29,
 	"Skeleton_21": 24,
@@ -1160,5 +1161,11 @@
 	"Alchemical Hydra_426": 1100,
 	"Undead Druid_105": 140,
 	"Temple Spider_75": 70,
-	"Sarachnis_318": 400
+	"Sarachnis_318": 400,
+	"Basilisk Youngling_57" : 60,
+	"Monstrous Basilisk_135" : 170,
+	"Typhor_194" : 280,
+	"The Jormungand_363" : 600,
+	"Basilisk Knight_204" : 300,
+	"Basilisk Sentinel_358" : 520
 }

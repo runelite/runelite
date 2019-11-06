@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -67,6 +68,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
+	@Getter
+	private Round currentRound;
+
 	@Inject
 	private Client client;
 
@@ -80,7 +84,10 @@ public class BarbarianAssaultPlugin extends Plugin
 	private BarbarianAssaultConfig config;
 
 	@Inject
-	private BarbarianAssaultOverlay overlay;
+	private TimerOverlay timerOverlay;
+
+	@Inject
+	private HealerOverlay healerOverlay;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -91,7 +98,8 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(timerOverlay);
+		overlayManager.add(healerOverlay);
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 24);
 
@@ -101,7 +109,8 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(timerOverlay);
+		overlayManager.remove(healerOverlay);
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
@@ -126,22 +135,22 @@ public class BarbarianAssaultPlugin extends Plugin
 			}
 			case WidgetID.BA_ATTACKER_GROUP_ID:
 			{
-				setOverlayRound(Role.ATTACKER);
+				setRound(Role.ATTACKER);
 				break;
 			}
 			case WidgetID.BA_DEFENDER_GROUP_ID:
 			{
-				setOverlayRound(Role.DEFENDER);
+				setRound(Role.DEFENDER);
 				break;
 			}
 			case WidgetID.BA_HEALER_GROUP_ID:
 			{
-				setOverlayRound(Role.HEALER);
+				setRound(Role.HEALER);
 				break;
 			}
 			case WidgetID.BA_COLLECTOR_GROUP_ID:
 			{
-				setOverlayRound(Role.COLLECTOR);
+				setRound(Role.COLLECTOR);
 				break;
 			}
 		}
@@ -176,7 +185,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			if (inGameBit == 1)
 			{
-				overlay.setCurrentRound(null);
+				currentRound = null;
 
 				// Use an instance check to determine if this is exiting a game or a tutorial
 				// After exiting tutorials there is a small delay before changing IN_GAME_BA back to
@@ -191,17 +200,15 @@ public class BarbarianAssaultPlugin extends Plugin
 		inGameBit = inGame;
 	}
 
-	private void setOverlayRound(Role role)
+	private void setRound(Role role)
 	{
-		// Prevent changing roles when a role is already set, as widgets can be
+		// Prevent changing rounds when a round is already set, as widgets can be
 		// loaded multiple times in game from eg. opening and closing the horn
 		// of glory.
-		if (overlay.getCurrentRound() != null)
+		if (currentRound == null)
 		{
-			return;
+			currentRound = new Round(role);
 		}
-
-		overlay.setCurrentRound(new Round(role));
 	}
 
 	private void announceTime(String preText, String time)

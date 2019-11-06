@@ -76,7 +76,9 @@ class FishingSpotMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+			Color color = npc.getGraphic() == GraphicID.FLYING_FISH
+				? config.getMinnowsOverlayColor()
+				: config.getOverlayColor();
 
 			net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 			if (minimapLocation != null)

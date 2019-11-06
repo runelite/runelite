@@ -55,11 +55,11 @@ import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -519,14 +519,14 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		if (event.getSkill() != SLAYER)
+		if (statChanged.getSkill() != SLAYER)
 		{
 			return;
 		}
 
-		int slayerExp = client.getSkillExperience(SLAYER);
+		int slayerExp = statChanged.getXp();
 
 		if (slayerExp <= cachedXp)
 		{

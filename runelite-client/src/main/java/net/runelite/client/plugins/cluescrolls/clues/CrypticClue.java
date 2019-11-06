@@ -61,7 +61,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in a bank in Varrock.", CRATE_5107, new WorldPoint(3187, 9825, 0), "Search in the basement of the West Varrock bank."),
 		new CrypticClue("Falo the bard wants to see you.", "Falo the Bard", new WorldPoint(2689, 3550, 0), "Speak to Falo the Bard located between Seer's Village and Rellekka. Southwest of fairy ring CJR."),
 		new CrypticClue("Search a bookcase in the Wizards tower.", BOOKCASE_12539, new WorldPoint(3113, 3159, 0), "The bookcase located on the ground floor."),
-		new CrypticClue("Come have a cip with this great soot covered denizen.", "Miner Magnus", new WorldPoint(2527, 3891, 0), "Talk to Miner Magnus east of the fairy ring CIP. Answer: 8"),
+		new CrypticClue("Come have a cip with this great soot covered denizen.", "Miner Magnus", new WorldPoint(2527, 3891, 0), "Talk to Miner Magnus east of the fairy ring CIP. Answer: 8", "How many coal rocks are around here?"),
 		new CrypticClue("Citric cellar.", "Heckel Funch", new WorldPoint(2490, 3488, 0), "Speak to Heckel Funch on the first floor in the Grand Tree."),
 		new CrypticClue("I burn between heroes and legends.", "Candle maker", new WorldPoint(2799, 3438, 0), "Speak to the Candle maker in Catherby."),
 		new CrypticClue("Speak to Sarah at Falador farm.", "Sarah", new WorldPoint(3038, 3292, 0), "Talk to Sarah at Falador farm, north of Port Sarim."),
@@ -110,7 +110,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig between some ominous stones in Falador.", new WorldPoint(3040, 3399, 0), "Three standing stones inside a walled area. East of the northern Falador gate."),
 		new CrypticClue("Speak to Rusty north of Falador.", "Rusty", new WorldPoint(2979, 3435, 0), "Rusty can be found northeast of Falador on the way to the Mind altar."),
 		new CrypticClue("Search a wardrobe in Draynor.", WARDROBE_5622, new WorldPoint(3087, 3261, 0), "Go to Aggie's house and search the wardrobe in northern wall."),
-		new CrypticClue("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.", NULL_1293, new WorldPoint(2544, 3170, 0), "Spirit Tree in Tree Gnome Village. Answer: 13112221"),
+		new CrypticClue("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.", NULL_1293, new WorldPoint(2544, 3170, 0), "Spirit Tree in Tree Gnome Village. Answer: 13112221", "What is the next number in the sequence? 1, 11, 21, 1211, 111221, 312211"),
 		new CrypticClue("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.", "Kamfreena", new WorldPoint(2845, 3539, 0), "Speak to Kamfreena on the top floor of the Warriors' Guild."),
 		new CrypticClue("In a town where wizards are known to gather, search upstairs in a large house to the north.", "Man", 375, new WorldPoint(2593, 3108, 1), "Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key."),
 		new CrypticClue("Probably filled with wizards socks.", "Wizard", DRAWERS_350, new WorldPoint(3116, 9562, 0), "Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS"),
@@ -138,7 +138,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("46 is my number. My body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave.", new WorldPoint(3170, 3885, 0), "Sapphire respawn in the Spider's Nest, lvl 46 Wilderness. Dig under the sapphire spawn."),
 		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain."),
 		new CrypticClue("Talk to a party-goer in Falador.", "Lucy", new WorldPoint(3046, 3382, 0), "Lucy is the bartender on the first floor of the party room."),
-		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to Brother Kojo in the Clock Tower. Answer: 22"),
+		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to Brother Kojo in the Clock Tower. Answer: 22", "On a clock, how many times a day do the minute hand and the hour hand overlap?"),
 		new CrypticClue("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.", BOXES, new WorldPoint(2523, 3493, 1), "Almera's House north of Baxtorian Falls, search boxes on the first floor."),
 		new CrypticClue("Search the Coffin in Edgeville.", COFFIN, new WorldPoint(3091, 3477, 0), "Search the coffin located by the Wilderness teleport lever."),
 		new CrypticClue("When no weapons are at hand, then is the time to reflect. In Saradomin's name, redemption draws closer...", DRAWERS_350, new WorldPoint(2818, 3351, 0), "On Entrana, search the southern drawer in the house with the cooking range."),
@@ -211,7 +211,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Great demons, dragons and spiders protect this blue rock, beneath which, you may find what you seek.", new WorldPoint(3045, 10265, 0), "Dig by the runite rock in the Lava Maze Dungeon"),
 		new CrypticClue("My giant guardians below the market streets would be fans of rock and roll, if only they could grab hold of it. Dig near my green bubbles!", new WorldPoint(3161, 9904, 0), "Dig near the cauldron by Moss Giants under Varrock Sewers"),
 		new CrypticClue("Varrock is where I reside, not the land of the dead, but I am so old, I should be there instead. Let's hope your reward is as good as it says, just 1 gold one and you can have it read.", "Gypsy Aris", new WorldPoint(3203, 3424, 0), "Talk to Gypsy Aris, West of varrock main square."),
-		new CrypticClue("Speak to a referee.", "Gnome ball referee", new WorldPoint(2386, 3487, 0), "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096"),
+		new CrypticClue("Speak to a referee.", "Gnome ball referee", new WorldPoint(2386, 3487, 0), "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096", "What is 57 x 89 + 23?"),
 		new CrypticClue("This crate holds a better reward than a broken arrow.", CRATE_356, new WorldPoint(2671, 3437, 0), "Inside the Ranging Guild. Search the crate behind the northern most building."),
 		new CrypticClue("Search the drawers in the house next to the Port Sarim mage shop.", DRAWERS, new WorldPoint(3024, 3259, 0), "House east of Betty's. Contains a cooking sink."),
 		new CrypticClue("With a name like that, you'd expect a little more than just a few scimitars.", "Daga", new WorldPoint(2759, 2775, 0), "Speak to Daga on Ape Atoll."),
@@ -300,7 +300,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the open crate found in the Hosidius kitchens.", CRATE_27533, new WorldPoint(1683, 3616, 0), "The kitchens are north-west of the town in Hosidius."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
-		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),
+		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859", "What is 19 to the power of 3?"),
 		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp. "),
 		new CrypticClue("Always walking around the castle grounds and somehow knows everyone's age.", "Hans", new WorldPoint(3221, 3218, 0), "Talk to Hans walking around Lumbridge Castle."),
 		new CrypticClue("In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.", "Cook", new WorldPoint(3208, 3213, 0), "Talk to the Cook in Lumbridge Castle."),
@@ -311,7 +311,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the eastern bookcase in Father Urhney's house.", BOOKCASE_9523, new WorldPoint(3149, 3177, 0), "Father Urhney's house is found in the western end of the Lumbridge Swamp."),
 		new CrypticClue("Talk to Morgan in his house at Draynor Village.", "Morgan", new WorldPoint(3098, 3268, 0), "Morgan can be found in the house with the quest start map icon."),
 		new CrypticClue("Talk to Charles at Port Piscarilius.", "Charles", new WorldPoint(1821, 3690, 0), "Charles is found by Veos' ship in Port Piscarilius."),
-		new CrypticClue("Search the crate in Rommiks crafting shop in Rimmington.", CRATE_9534, new WorldPoint(2947, 3208, 0), "The crates in Rommik's Crafty Supplies in Rimmington."),
+		new CrypticClue("Search the crate in Rommiks crafting shop in Rimmington.", CRATE_9533, new WorldPoint(2946, 3207, 0), "The crates in Rommik's Crafty Supplies in Rimmington."),
 		new CrypticClue("Talk to Ali the Leaflet Dropper north of the Al Kharid mine.", "Ali the Leaflet Dropper", new WorldPoint(3283, 3329, 0), "Ali the Leaflet Dropper can be found roaming north of the Al Kharid mine."),
 		new CrypticClue("Talk to the cook in the Blue Moon Inn in Varrock.", "Cook", new WorldPoint(3230, 3401, 0), "The Blue Moon Inn can be found by the southern entrance to Varrock."),
 		new CrypticClue("Search the single crate in Horvik's smithy in Varrock.", CRATE_5106, new WorldPoint(3228, 3433, 0), "Horvik's Smithy is found north-east of of Varrock Square."),
@@ -331,6 +331,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final int objectId;
 	private final WorldPoint location;
 	private final String solution;
+	private final String questionText;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
 	{
@@ -339,21 +340,37 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution)
 	{
-		this(text, null, objectId, location, solution);
+		this(text, null, objectId, location, solution, "");
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
-		this(text, npc, -1, location, solution);
+		this(text, npc, -1, location, solution, "");
+	}
+
+	private CrypticClue(String text, int objectId, WorldPoint location, String solution, String questionText)
+	{
+		this(text, null, objectId, location, solution, questionText);
+	}
+
+	private CrypticClue(String text, String npc, WorldPoint location, String solution, String questionText)
+	{
+		this(text, npc, -1, location, solution, questionText);
 	}
 
 	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution)
+	{
+		this(text, npc, objectId, location, solution, "");
+	}
+
+	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, String questionText)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId;
 		this.location = location;
 		this.solution = solution;
+		this.questionText = questionText;
 		setRequiresSpade(getLocation() != null && getNpc() == null && objectId == -1);
 	}
 
@@ -442,7 +459,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	{
 		for (CrypticClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text))
+			if (clue.text.equalsIgnoreCase(text) || clue.questionText.equalsIgnoreCase(text))
 			{
 				return clue;
 			}
