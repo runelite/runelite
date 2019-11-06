@@ -39,10 +39,10 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -174,7 +174,7 @@ public class BoostsPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
@@ -211,9 +211,9 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	private void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = boostedLevelChanged.getSkill();
+		Skill skill = statChanged.getSkill();
 
 		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
 		{

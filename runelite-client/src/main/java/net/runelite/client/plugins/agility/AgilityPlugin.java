@@ -50,12 +50,10 @@ import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
-import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -67,6 +65,7 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -201,8 +200,7 @@ public class AgilityPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
-		eventBus.subscribe(BoostedLevelChanged.class, this, this::onBoostedLevelChanged);
+		eventBus.subscribe(StatChanged .class, this, this::onStatChanged);
 		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
 		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
@@ -295,9 +293,16 @@ public class AgilityPlugin extends Plugin
 		this.showAgilityArenaTimer = config.showAgilityArenaTimer();
 	}
 
-	private void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		if (event.getSkill() != AGILITY || !this.showLapCount)
+		if (statChanged.getSkill() != AGILITY)
+		{
+			return;
+		}
+
+		agilityLevel = statChanged.getBoostedLevel();
+
+		if (!this.showLapCount)
 		{
 			return;
 		}
@@ -327,15 +332,6 @@ public class AgilityPlugin extends Plugin
 			// New course found, reset lap count and set new course
 			session.resetLapCount();
 			session.incrementLapCount(client);
-		}
-	}
-
-	private void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
-	{
-		Skill skill = boostedLevelChanged.getSkill();
-		if (skill == AGILITY)
-		{
-			agilityLevel = client.getBoostedSkillLevel(skill);
 		}
 	}
 
