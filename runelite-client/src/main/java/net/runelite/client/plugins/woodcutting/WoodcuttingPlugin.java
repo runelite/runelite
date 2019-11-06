@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
