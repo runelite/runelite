@@ -87,6 +87,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
+
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
 	{
@@ -133,7 +135,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			if (event.getMessage().matches("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\."))
+			if (WOOD_CUT_PATTERN.matcher(event.getMessage()).matches())
 			{
 				if (session == null)
 				{
