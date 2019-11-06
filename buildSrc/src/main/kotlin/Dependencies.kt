@@ -38,7 +38,7 @@ object ProjectVersions {
 object Plugins {
     val grgitPlugin = "org.ajoberstar:grgit:2.3.0"
     val versionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
-    val injectorPlugin = "com.openosrs:injector-plugin:1.0.1"
+    val injectorPlugin = "com.openosrs:injector-plugin:1.0.2"
     val testLogger = Pair("com.adarshr.test-logger", "2.0.0")
     val versions = Pair("com.github.ben-manes.versions", "0.27.0")
     val buildScan = Pair("com.gradle.build-scan", "3.0")
