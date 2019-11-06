@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.demonicgorilla;
+package net.runelite.client.plugins.menuentryswapper;
 
 import lombok.Getter;
-import net.runelite.api.Player;
+import lombok.RequiredArgsConstructor;
 
-public class PendingGorillaAttack
+@Getter
+@RequiredArgsConstructor
+public enum HouseAdvertisementMode
 {
-	@Getter
-	private DemonicGorilla attacker;
+	VIEW("View"),
+	ADD_HOUSE("Add-House"),
+	VISIT_LAST("Visit-Last");
 
-	@Getter
-	private DemonicGorilla.AttackStyle attackStyle;
+	private final String name;
 
-	@Getter
-	private Player target;
-
-	@Getter
-	private int finishesOnTick;
-
-	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
-								Player target, int finishesOnTick)
+	@Override
+	public String toString()
 	{
-		this.attacker = attacker;
-		this.attackStyle = attackStyle;
-		this.target = target;
-		this.finishesOnTick = finishesOnTick;
+		return name;
 	}
 }

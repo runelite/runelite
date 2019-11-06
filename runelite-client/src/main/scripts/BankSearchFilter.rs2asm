@@ -1,7 +1,7 @@
 .id                 279
 .int_stack_count    1
 .string_stack_count 0
-.int_var_count      1
+.int_var_count      2 ; +1 for storage of search filter result
 .string_var_count   2
    sconst                 ""
    sstore                 0
@@ -30,16 +30,7 @@ LABEL19:
    oc_name               
    lowercase             
    sstore                 0
-LABEL1337:; check if the bank tags plugin is active
-   iconst                 1                  ; true
-   iconst                 0                  ; load active boolean
-   sconst                 "bankTagsActive"   ; push event name
-   runelite_callback     ; invoke callback
-   if_icmpeq              LABEL1338          ; if the plugin is active then jump to the label that decides if the
-                                             ; item should be shown
-   jump                   LABEL23            ; if the plugin is not active then jump to the normal label
-LABEL1338:; let the bank tag plugin decide if the item should be shown
-   iconst                 0                  ; load return value
+   iconst                 -1                 ; load return value
    iload                  0                  ; load item id
    sload                  0                  ; load item name
    sload                  1                  ; load search string
@@ -48,7 +39,13 @@ LABEL1338:; let the bank tag plugin decide if the item should be shown
    pop_int               ; pop item id
    pop_string            ; pop search string
    pop_string            ; pop item name
-   return                ; return value
+   istore                 1 ; store return value for the below comparisons
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL32 ; return 0
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL30 ; return 1
 LABEL23:
    sload                  0
    sload                  1

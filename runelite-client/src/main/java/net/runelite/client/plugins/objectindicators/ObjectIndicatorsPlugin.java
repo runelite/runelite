@@ -37,29 +37,38 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.GroundObject;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -74,6 +83,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"overlay", "objects", "mark", "marker"},
 	enabledByDefault = false
 )
+@Slf4j
 public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
@@ -158,6 +168,28 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		checkObjectPoints(event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		WallObject previous = event.getPrevious();
+		WallObject wallObject = event.getWallObject();
+
+		objects.remove(previous);
+		checkObjectPoints(wallObject);
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		objects.remove(event.getWallObject());
+	}
+
+	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject eventObject = event.getGameObject();
@@ -181,6 +213,20 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		objects.remove(event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned groundObjectSpawned)
+	{
+		final GroundObject groundObject = groundObjectSpawned.getGroundObject();
+		checkObjectPoints(groundObject);
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned groundObjectDespawned)
+	{
+		GroundObject groundObject = groundObjectDespawned.getGroundObject();
+		objects.remove(groundObject);
 	}
 
 	@Subscribe
@@ -253,9 +299,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+		// object.getId() is always the base object id, getObjectComposition transforms it to
+		// the correct object we see
+		ObjectComposition objectDefinition = getObjectComposition(object.getId());
 		String name = objectDefinition.getName();
-		if (Strings.isNullOrEmpty(name))
+		// Name is probably never "null" - however prevent adding it if it is, as it will
+		// become ambiguous as objects with no name are assigned name "null"
+		if (Strings.isNullOrEmpty(name) || name.equals("null"))
 		{
 			return;
 		}
@@ -278,8 +328,10 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
 					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
-				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
+				// Transform object to get the name which matches against what we've stored
+				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
 				{
+					log.debug("Marking object {} due to matching {}", object, objectPoint);
 					objects.add(object);
 					break;
 				}
@@ -296,40 +348,63 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		final GameObject[] tileGameObjects = tile.getGameObjects();
 		final DecorativeObject tileDecorativeObject = tile.getDecorativeObject();
+		final WallObject tileWallObject = tile.getWallObject();
+		final GroundObject groundObject = tile.getGroundObject();
 
-		if (tileDecorativeObject != null && tileDecorativeObject.getId() == id)
+		if (objectIdEquals(tileWallObject, id))
+		{
+			return tileWallObject;
+		}
+
+		if (objectIdEquals(tileDecorativeObject, id))
 		{
 			return tileDecorativeObject;
 		}
 
+		if (objectIdEquals(groundObject, id))
+		{
+			return groundObject;
+		}
+
 		for (GameObject object : tileGameObjects)
 		{
-			if (object == null)
-			{
-				continue;
-			}
-
-			if (object.getId() == id)
+			if (objectIdEquals(object, id))
 			{
 				return object;
-			}
-
-			// Check impostors
-			final ObjectComposition comp = client.getObjectDefinition(object.getId());
-
-			if (comp.getImpostorIds() != null)
-			{
-				for (int impostorId : comp.getImpostorIds())
-				{
-					if (impostorId == id)
-					{
-						return object;
-					}
-				}
 			}
 		}
 
 		return null;
+	}
+
+	private boolean objectIdEquals(TileObject tileObject, int id)
+	{
+		if (tileObject == null)
+		{
+			return false;
+		}
+
+		if (tileObject.getId() == id)
+		{
+			return true;
+		}
+
+		// Menu action EXAMINE_OBJECT sends the transformed object id, not the base id, unlike
+		// all of the GAME_OBJECT_OPTION actions, so check the id against the impostor ids
+		final ObjectComposition comp = client.getObjectDefinition(tileObject.getId());
+
+		if (comp.getImpostorIds() != null)
+		{
+			for (int impostorId : comp.getImpostorIds())
+			{
+				if (impostorId == id)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private void markObject(String name, final TileObject object)
@@ -354,11 +429,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		{
 			objectPoints.remove(point);
 			objects.remove(object);
+			log.debug("Unmarking object: {}", point);
 		}
 		else
 		{
 			objectPoints.add(point);
 			objects.add(object);
+			log.debug("Marking object: {}", point);
 		}
 
 		savePoints(regionId, objectPoints);
@@ -386,8 +463,20 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return null;
 		}
 
-		return GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
+		// Prior to multiloc support the plugin would mark objects named "null", which breaks
+		// in most cases due to the specific object being identified being ambiguous, so remove
+		// them
+		return points.stream()
+			.filter(point -> !point.getName().equals("null"))
+			.collect(Collectors.toSet());
+	}
+
+	private ObjectComposition getObjectComposition(int id)
+	{
+		ObjectComposition objectComposition = client.getObjectDefinition(id);
+		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
 	}
 }

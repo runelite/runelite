@@ -233,14 +233,6 @@ public class ClueScrollPlugin extends Plugin
 				((SkillChallengeClue) clue).setChallengeCompleted(true);
 			}
 		}
-
-		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
-			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
-		{
-			return;
-		}
-
-		resetClue(true);
 	}
 
 	@Subscribe
@@ -408,6 +400,15 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
+		// Reset clue when receiving a new beginner or master clue
+		// These clues use a single item ID, so we cannot detect step changes based on the item ID changing
+		final Widget chatDialogClueItem = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+		if (chatDialogClueItem != null
+			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
+		{
+			resetClue(true);
+		}
+
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
 		updateClue(findClueScroll());
@@ -503,17 +504,6 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// (This|The) anagram reveals who to speak to next:
-		if (text.contains("anagram reveals who to speak to next:"))
-		{
-			return AnagramClue.forText(text);
-		}
-
-		if (text.startsWith("the cipher reveals who to speak to next:"))
-		{
-			return CipherClue.forText(text);
-		}
-
 		if (text.startsWith("i'd like to hear some music."))
 		{
 			return MusicClue.forText(clueScrollText.getText());
@@ -522,6 +512,18 @@ public class ClueScrollPlugin extends Plugin
 		if (text.contains("degrees") && text.contains("minutes"))
 		{
 			return coordinatesToWorldPoint(text);
+		}
+
+		final AnagramClue anagramClue = AnagramClue.forText(text);
+		if (anagramClue != null)
+		{
+			return anagramClue;
+		}
+
+		final CipherClue cipherClue = CipherClue.forText(text);
+		if (cipherClue != null)
+		{
+			return cipherClue;
 		}
 
 		final CrypticClue crypticClue = CrypticClue.forText(text);

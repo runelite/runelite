@@ -24,8 +24,8 @@
  */
 package net.runelite.client.chat;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -43,7 +43,7 @@ import net.runelite.client.events.PrivateMessageInput;
 @Singleton
 public class ChatCommandManager implements ChatboxInputListener
 {
-	private final Map<String, ChatCommand> commands = new HashMap<>();
+	private final Map<String, ChatCommand> commands = new ConcurrentHashMap<>();
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;

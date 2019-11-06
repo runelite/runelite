@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.reorderprayers;
+package net.runelite.client.plugins.loottracker;
 
-import net.runelite.api.Prayer;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(ReorderPrayersPlugin.CONFIG_GROUP_KEY)
-public interface ReorderPrayersConfig extends Config
+public enum LootTrackerPriceType
 {
-
-	@ConfigItem(
-		keyName = ReorderPrayersPlugin.CONFIG_UNLOCK_REORDERING_KEY,
-		name = "Unlock Prayer Reordering",
-		description = "Configures whether or not you can reorder the prayers",
-		position = 1
-	)
-	default boolean unlockPrayerReordering()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = ReorderPrayersPlugin.CONFIG_UNLOCK_REORDERING_KEY,
-		name = "",
-		description = ""
-	)
-	void unlockPrayerReordering(boolean unlock);
-
-	@ConfigItem(
-		keyName = ReorderPrayersPlugin.CONFIG_PRAYER_ORDER_KEY,
-		name = "Prayer Order",
-		description = "Configures the order of the prayers",
-		hidden = true,
-		position = 2
-	)
-	default String prayerOrder()
-	{
-		return ReorderPrayersPlugin.prayerOrderToString(Prayer.values());
-	}
-
-	@ConfigItem(
-		keyName = ReorderPrayersPlugin.CONFIG_PRAYER_ORDER_KEY,
-		name = "",
-		description = ""
-	)
-	void prayerOrder(String prayerOrder);
-
+	GRAND_EXCHANGE,
+	HIGH_ALCHEMY
 }

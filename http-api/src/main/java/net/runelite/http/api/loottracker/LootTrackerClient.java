@@ -36,10 +36,10 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import static net.runelite.http.api.RuneLiteAPI.JSON;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -48,7 +48,6 @@ import okhttp3.Response;
 @AllArgsConstructor
 public class LootTrackerClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final UUID uuid;

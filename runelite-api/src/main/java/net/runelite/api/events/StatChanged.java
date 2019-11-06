@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2017-2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cerberus;
+package net.runelite.api.events;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
-import java.util.Optional;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
+import lombok.Value;
 import net.runelite.api.Skill;
 
-@Getter
-@RequiredArgsConstructor
-public enum CerberusGhost
+/**
+ * An event where the experience, level, or boosted level of a {@link Skill} has been modified.
+ */
+@Value
+public class StatChanged
 {
-	RANGE(NpcID.SUMMONED_SOUL, Skill.RANGED),
-	MAGE(NpcID.SUMMONED_SOUL_5868, Skill.MAGIC),
-	MELEE(NpcID.SUMMONED_SOUL_5869, Skill.ATTACK);
-
-	private final int npcId;
-	private final Skill type;
-
-	private static final Map<Integer, CerberusGhost> MAP;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, CerberusGhost> builder = new ImmutableMap.Builder<>();
-
-		for (final CerberusGhost ghost : values())
-		{
-			builder.put(ghost.getNpcId(), ghost);
-		}
-
-		MAP = builder.build();
-	}
-
-	/**
-	 * Try to identify if NPC is ghost
-	 * @param npc npc
-	 * @return optional ghost
-	 */
-	public static Optional<CerberusGhost> fromNPC(final NPC npc)
-	{
-		return npc == null ? Optional.empty() : Optional.ofNullable(MAP.get(npc.getId()));
-	}
+	private final Skill skill;
+	private final int xp;
+	private final int level;
+	private final int boostedLevel;
 }

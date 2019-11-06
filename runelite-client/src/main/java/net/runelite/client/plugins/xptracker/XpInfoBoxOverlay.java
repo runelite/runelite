@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
@@ -122,7 +122,7 @@ class XpInfoBoxOverlay extends Overlay
 
 		final LineComponent xpLine = LineComponent.builder()
 			.left(leftStr + ":")
-			.right(StackFormatter.quantityToRSDecimalStack(rightNum, true))
+			.right(QuantityFormatter.quantityToRSDecimalStack(rightNum, true))
 			.build();
 
 		final String bottemLeftStr;
@@ -143,7 +143,7 @@ class XpInfoBoxOverlay extends Overlay
 
 		final LineComponent xpLineBottom = LineComponent.builder()
 				.left(bottemLeftStr + ":")
-				.right(StackFormatter.quantityToRSDecimalStack(bottomRightNum, true))
+				.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
 				.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
