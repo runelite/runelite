@@ -182,17 +182,11 @@ public class DeathIndicatorPlugin extends Plugin
 		worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 
 		clientThread.invokeLater(this::clearBones);
-		saveBones();
 	}
 
 	private void initBones()
 	{
 		bones.init(client, configManager);
-	}
-
-	private void saveBones()
-	{
-		bones.save(configManager);
 	}
 
 	private void clearBones()
@@ -236,12 +230,16 @@ public class DeathIndicatorPlugin extends Plugin
 
 	private void onPlayerDeath(PlayerDeath death)
 	{
-		Player p = death.getPlayer();
+		newBoneFor(death.getPlayer());
+	}
+
+	private void newBoneFor(Player player)
+	{
 		Bone b = new Bone();
 
-		b.setName(Text.sanitize(p.getName()));
+		b.setName(Text.sanitize(player.getName()));
 		b.setTime(Instant.now());
-		b.setLoc(p.getWorldLocation());
+		b.setLoc(player.getWorldLocation());
 
 		while (!bones.add(b))
 		{
@@ -249,6 +247,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 
 		b.addToScene(client.getScene());
+		bones.save(configManager, b.getLoc().getRegionID());
 	}
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
@@ -309,7 +308,13 @@ public class DeathIndicatorPlugin extends Plugin
 			return;
 		}
 
-		lastDeath = client.getLocalPlayer().getWorldLocation();
+		Player lp = client.getLocalPlayer();
+		if (config.permaBones())
+		{
+			newBoneFor(lp);
+		}
+
+		lastDeath = lp.getWorldLocation();
 		lastDeathWorld = client.getWorld();
 		lastDeathTime = Instant.now();
 	}
@@ -400,7 +405,6 @@ public class DeathIndicatorPlugin extends Plugin
 					if (client.getGameState() == GameState.LOGGED_IN)
 					{
 						clientThread.invokeLater(this::clearBones);
-						saveBones();
 					}
 				}
 				return;
@@ -438,7 +442,6 @@ public class DeathIndicatorPlugin extends Plugin
 		{
 			case LOADING:
 				clearBones();
-				saveBones();
 				break;
 			case LOGGED_IN:
 				if (config.permaBones())
