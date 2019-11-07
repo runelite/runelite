@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
@@ -45,6 +46,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.util.Text;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -63,7 +65,6 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.PvPUtil;
-import net.runelite.api.util.Text;
 import net.runelite.client.util.QuantityFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -504,23 +505,26 @@ public class PvpToolsPlugin extends Plugin
 		{
 			return;
 		}
-		if (client.getItemContainer(InventoryID.EQUIPMENT) == null)
+
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final Player player = client.getLocalPlayer();
+
+		if (equipment == null || equipment.getItems() == null ||
+			inventory == null || inventory.getItems() == null ||
+			player == null)
 		{
 			return;
 		}
-		if (client.getItemContainer(InventoryID.INVENTORY).getItems() == null)
-		{
-			return;
-		}
-		Item[] items = ArrayUtils.addAll(Objects.requireNonNull(client.getItemContainer(InventoryID.EQUIPMENT)).getItems(),
-			Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems());
-		TreeMap<Integer, Item> priceMap = new TreeMap<>(Comparator.comparingInt(Integer::intValue));
+
+		final Item[] items = ArrayUtils.addAll(equipment.getItems(), inventory.getItems());
+		final TreeMap<Integer, Item> priceMap = new TreeMap<>(Comparator.comparingInt(Integer::intValue));
 		int wealth = 0;
 		for (Item i : items)
 		{
 			int value = (itemManager.getItemPrice(i.getId()) * i.getQuantity());
-
 			final ItemDefinition itemComposition = itemManager.getItemDefinition(i.getId());
+
 			if (!itemComposition.isTradeable() && value == 0)
 			{
 				value = itemComposition.getPrice() * i.getQuantity();
@@ -536,15 +540,16 @@ public class PvpToolsPlugin extends Plugin
 			}
 			wealth += value;
 		}
+
 		panel.totalRiskLabel.setText(htmlLabel("Total risk: ", QuantityFormatter.quantityToRSDecimalStack(wealth)));
 		panel.totalRiskLabel.repaint();
 
 		int itemLimit = 0;
-		if (client.getLocalPlayer().getSkullIcon() != null && client.getLocalPlayer().getSkullIcon() == SkullIcon.SKULL)
+		if (player.getSkullIcon() != null && player.getSkullIcon() == SkullIcon.SKULL)
 		{
 			itemLimit = 1;
 		}
-		if (client.getLocalPlayer().getSkullIcon() == null)
+		if (player.getSkullIcon() == null)
 		{
 			itemLimit = 4;
 		}
@@ -585,6 +590,7 @@ public class PvpToolsPlugin extends Plugin
 
 	/**
 	 * Given an AttackMode, hides the appropriate attack options.
+	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
 	public void hideAttackOptions(AttackMode mode)
@@ -608,6 +614,7 @@ public class PvpToolsPlugin extends Plugin
 
 	/**
 	 * Given an AttackMode, hides the appropriate cast options.
+	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
 	public void hideCastOptions(AttackMode mode)
