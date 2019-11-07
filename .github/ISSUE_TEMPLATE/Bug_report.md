@@ -4,7 +4,7 @@ about: Create a report to help us improve
 
 ---
 
-Please check if your issue is not a duplicate by [searching existing issues](https://github.com/runelite/runelite/search?type=Issues)
+Please check if your issue is not a duplicate by [searching existing issues](https://github.com/open-osrs/runelite/search?type=Issues)
 
 **Describe the bug**
 A clear and concise description of what the bug is.
