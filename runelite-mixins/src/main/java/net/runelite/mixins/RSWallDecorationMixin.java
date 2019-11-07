@@ -1,11 +1,10 @@
 package net.runelite.mixins;
 
-import java.awt.Polygon;
 import java.awt.Shape;
-import java.awt.geom.Area;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.geometry.Shapes;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -89,9 +88,8 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 	@Override
 	public Shape getClickbox()
 	{
-		Area clickbox = new Area();
-
 		LocalPoint lp = getLocalLocation();
+
 		Shape clickboxA = Perspective.getClickbox(client, getModel1(), 0,
 			new LocalPoint(lp.getX() + getXOffset(), lp.getY() + getYOffset()));
 		Shape clickboxB = Perspective.getClickbox(client, getModel2(), 0, lp);
@@ -99,6 +97,11 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 		if (clickboxA == null && clickboxB == null)
 		{
 			return null;
+		}
+
+		if (clickboxA != null && clickboxB != null)
+		{
+			return new Shapes(new Shape[]{clickboxA, clickboxB});
 		}
 
 		if (clickboxA != null)
@@ -111,7 +114,7 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 
 	@Inject
 	@Override
-	public Polygon getConvexHull()
+	public Shape getConvexHull()
 	{
 		RSModel model = getModel1();
 
@@ -121,12 +124,13 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 		}
 
 		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+
 		return model.getConvexHull(getX() + getXOffset(), getY() + getYOffset(), 0, tileHeight);
 	}
 
 	@Inject
 	@Override
-	public Polygon getConvexHull2()
+	public Shape getConvexHull2()
 	{
 		RSModel model = getModel2();
 
@@ -136,6 +140,7 @@ public abstract class RSWallDecorationMixin implements RSWallDecoration
 		}
 
 		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+
 		return model.getConvexHull(getX(), getY(), 0, tileHeight);
 	}
 }

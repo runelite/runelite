@@ -247,6 +247,11 @@ public class MenuManager
 
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (client.isSpellSelected())
+		{
+			return;
+		}
+
 		for (AbstractComparableEntry e : hiddenEntries)
 		{
 			if (e.matches(event))
