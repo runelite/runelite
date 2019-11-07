@@ -191,7 +191,7 @@ public class BabyHydraPlugin extends Plugin
 	{
 		Actor monster = event.getActor();
 		Actor local = client.getLocalPlayer();
-		if (!(monster instanceof NPC))
+		if (!(monster instanceof NPC) || local == null)
 		{
 			return;
 		}
@@ -212,7 +212,7 @@ public class BabyHydraPlugin extends Plugin
 			return;
 		}
 
-		if (hydra.getInteracting().equals(local))
+		if (hydra.getInteracting() != null && hydra.getInteracting() == local)
 		{
 			this.hydra = hydra;
 		}
