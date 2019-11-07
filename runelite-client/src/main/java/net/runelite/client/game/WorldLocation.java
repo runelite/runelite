@@ -9,11 +9,10 @@
 
 package net.runelite.client.game;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.coords.WorldArea;
@@ -193,6 +192,20 @@ public enum WorldLocation
 	private final WorldArea worldArea;
 	@Getter
 	private final Location location;
+	@Getter
+	private static final Map<WorldArea, String> LOCATION_MAP;
+
+	static
+	{
+		ImmutableMap.Builder<WorldArea, String> builder = ImmutableMap.builder();
+
+		for (WorldLocation value : values())
+		{
+			builder.put(value.getWorldArea(), value.getName());
+		}
+
+		LOCATION_MAP = builder.build();
+	}
 
 	/**
 	 * Creates a location used to get the name of a location by a WorldPoint
@@ -210,6 +223,7 @@ public enum WorldLocation
 
 	/**
 	 * Returns all locations that aren't in the wild
+	 *
 	 * @return - A Collection of non-wilderness WorldLocations
 	 */
 	public static Collection<WorldLocation> getNonWildernessLocations()
@@ -220,6 +234,7 @@ public enum WorldLocation
 
 	/**
 	 * Returns only the WorldLocations that are in the wilderness
+	 *
 	 * @return - A Collection of WorldLocations in the wilderness
 	 */
 	public static Collection<WorldLocation> getWildernessLocations()
@@ -228,63 +243,70 @@ public enum WorldLocation
 			PvPUtil.getWildernessLevelFrom(loc.worldArea.toWorldPoint()) > 0).collect(Collectors.toList());
 	}
 
-	public static Map<WorldArea, String> getLocationMap()
-	{
-		Map<WorldArea, String> hashMap = new HashMap<>();
-		Arrays.stream(values()).forEach(worldLocation ->
-			hashMap.put(worldLocation.getWorldArea(), worldLocation.getName()));
-		return hashMap;
-	}
-
 	/**
 	 * Returns the WorldLocation that a WorldPoint is in, or the closest WorldLocation to the point
+	 *
 	 * @param worldPoint - the WorldPoint to find the WorldLocation of
 	 * @return - Containing location or closest location if it isn't in any
 	 */
 	public static String location(WorldPoint worldPoint)
 	{
-		final Map<WorldArea, String> locationMap = getLocationMap();
 		int dist = 10000;
 		String s = "";
 		WorldArea closestArea = null;
-		for (Map.Entry<WorldArea, String> entry : locationMap.entrySet())
+
+		for (Map.Entry<WorldArea, String> entry : LOCATION_MAP.entrySet())
 		{
-			WorldArea worldArea = entry.getKey();
+			final WorldArea worldArea = entry.getKey();
 
 			if (worldArea.toWorldPointList().contains(worldPoint))
 			{
 				s = entry.getValue();
 				return s;
 			}
-			int distTo = worldArea.distanceTo(worldPoint);
+
+			final int distTo = worldArea.distanceTo(worldPoint);
+
 			if (distTo < dist)
 			{
 				dist = distTo;
 				closestArea = worldArea;
 			}
 		}
-		if (worldPoint.getY() > (Objects.requireNonNull(closestArea).toWorldPoint().getY() + closestArea.getHeight()))
+
+		if (closestArea == null)
+		{
+			return s;
+		}
+
+		if (worldPoint.getY() > closestArea.toWorldPoint().getY() + closestArea.getHeight())
 		{
 			s = s + "N";
 		}
+
 		if (worldPoint.getY() < closestArea.toWorldPoint().getY())
 		{
 			s = s + "S";
 		}
+
 		if (worldPoint.getX() < closestArea.toWorldPoint().getX())
 		{
 			s = s + "W";
 		}
+
 		if (worldPoint.getX() > (closestArea.toWorldPoint().getX() + closestArea.getWidth()))
 		{
 			s = s + "E";
 		}
+
 		s = s + " of ";
-		s = s + locationMap.get(closestArea);
+		s = s + LOCATION_MAP.get(closestArea);
+
 		if (s.startsWith(" of "))
 		{
 			s = s.substring(3);
 		}
+
 		return s;
 	}
 
