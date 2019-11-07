@@ -180,14 +180,14 @@ public class PlayerIndicatorsOverlay extends Overlay
 								textLocation.getY() - height),
 							ImageUtil.resizeImage(agilityIcon, height, height));
 					}
-					else if (level >= plugin.getAgilitySecondThreshold())
+					if (level >= plugin.getAgilitySecondThreshold())
 					{
 						OverlayUtil.renderImageLocation(graphics,
 							new Point(textLocation.getX() + agilityIcon.getWidth() + width,
 								textLocation.getY() - height),
 							ImageUtil.resizeImage(agilityIcon, height, height));
 					}
-					else if (level < plugin.getAgilityFirstThreshold())
+					if (level < plugin.getAgilityFirstThreshold())
 					{
 						OverlayUtil.renderImageLocation(graphics,
 							new Point(textLocation.getX() + 5 + width,

@@ -3,7 +3,7 @@
 
 
 # OpenOSRS 
-[![Build Status](https://github.com/open-osrs/runelite/workflows/OpenOSRS%20-%20CI/badge.svg)](https://github.com/open-osrs/runelite/actions)
+[![Build Status](https://github.com/open-osrs/runelite/workflows/OpenOSRS%20-%20CI%20(push)/badge.svg)](https://github.com/open-osrs/runelite/actions?query=workflow%3A%22OpenOSRS+-+CI+%28push%29%22)
 [![HitCount](http://hits.dwyl.io/open-osrs/runelite.svg)](http://hits.dwyl.io/open-osrs/runelite)  
 [OpenOSRS](https://openosrs.com)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
 

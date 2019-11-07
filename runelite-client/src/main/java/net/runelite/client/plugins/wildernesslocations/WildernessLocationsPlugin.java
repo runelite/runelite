@@ -12,18 +12,17 @@ package net.runelite.client.plugins.wildernesslocations;
 
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -33,13 +32,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.WorldLocation;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
-import net.runelite.client.game.WorldLocation;
 
 @Slf4j
 @PluginDescriptor(
@@ -86,7 +85,6 @@ public class WildernessLocationsPlugin extends Plugin
 	private String oldChat = "";
 	private int currentCooldown = 0;
 	private WorldPoint worldPoint = null;
-	private static final Map<WorldArea, String> wildLocs = WorldLocation.getLocationMap();
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
@@ -173,11 +171,13 @@ public class WildernessLocationsPlugin extends Plugin
 		{
 			currentCooldown--;
 		}
-		renderLocation = (client.getVar(Varbits.IN_WILDERNESS) == 1
-			|| (this.pvpWorld && WorldType.isAllPvpWorld(client.getWorldType())));
+
+		renderLocation = (client.getVar(Varbits.IN_WILDERNESS) == 1 || (this.pvpWorld && WorldType.isAllPvpWorld(client.getWorldType())));
+
 		if (renderLocation)
 		{
-			if (client.getLocalPlayer().getWorldLocation() != worldPoint)
+			final Player player = client.getLocalPlayer();
+			if (player != null && player.getWorldLocation() != worldPoint)
 			{
 				locationString = WorldLocation.location(client.getLocalPlayer().getWorldLocation());
 				worldPoint = client.getLocalPlayer().getWorldLocation();

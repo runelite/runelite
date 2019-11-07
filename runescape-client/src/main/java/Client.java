@@ -216,7 +216,8 @@ public final class Client extends GameShell implements Usernamed {
 	@Export("meslayerContinueWidget")
 	static Widget meslayerContinueWidget;
 	@ObfuscatedName("no")
-	static int[] field816;
+	@Export("changedItemContainers")
+	static int[] changedItemContainers;
 	@ObfuscatedName("sm")
 	@ObfuscatedGetter(
 		intValue = 857681821
@@ -1451,7 +1452,7 @@ public final class Client extends GameShell implements Usernamed {
 		cycleCntr = 1;
 		field817 = new int[32];
 		field679 = 0;
-		field816 = new int[32];
+		changedItemContainers = new int[32];
 		field820 = 0;
 		changedSkills = new int[32];
 		changedSkillsCount = 0;
@@ -4136,7 +4137,7 @@ public final class Client extends GameShell implements Usernamed {
 							var15 = npcIndices[var1];
 							NPC var25 = npcs[var15];
 							if (var25 != null) {
-								HitSplatDefinition.calculateActorPosition(var25, var25.definition.size);
+								HitSplatDefinition.updateActorSequence(var25, var25.definition.size);
 							}
 						}
 
@@ -5071,7 +5072,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					BoundaryObject.method3393();
-					field816[++field820 - 1 & 31] = var5 & 32767;
+					changedItemContainers[++field820 - 1 & 31] = var5 & 32767;
 					var1.serverPacket = null;
 					return true;
 				}
@@ -5079,7 +5080,7 @@ public final class Client extends GameShell implements Usernamed {
 				if (ServerPacket.field2136 == var1.serverPacket) {
 					var16 = var3.method5646();
 					WorldMapIcon_0.method252(var16);
-					field816[++field820 - 1 & 31] = var16 & 32767;
+					changedItemContainers[++field820 - 1 & 31] = var16 & 32767;
 					var1.serverPacket = null;
 					return true;
 				}
@@ -5590,7 +5591,7 @@ public final class Client extends GameShell implements Usernamed {
 					}
 
 					BoundaryObject.method3393();
-					field816[++field820 - 1 & 31] = var5 & 32767;
+					changedItemContainers[++field820 - 1 & 31] = var5 & 32767;
 					var1.serverPacket = null;
 					return true;
 				}

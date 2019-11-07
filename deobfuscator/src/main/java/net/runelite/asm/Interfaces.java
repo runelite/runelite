@@ -25,12 +25,14 @@
 package net.runelite.asm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.asm.pool.Class;
 import net.runelite.deob.DeobAnnotations;
+import org.jetbrains.annotations.NotNull;
 
-public class Interfaces
+public class Interfaces implements Iterable<Class>
 {
 	private final ClassFile classFile;
 
@@ -106,5 +108,11 @@ public class Interfaces
 		}
 
 		return names;
+	}
+
+	@NotNull
+	public Iterator<Class> iterator()
+	{
+		return this.interfaces.iterator();
 	}
 }

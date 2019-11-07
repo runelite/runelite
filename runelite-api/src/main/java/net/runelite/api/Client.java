@@ -1839,6 +1839,11 @@ public interface Client extends GameShell
 	int getItemCount();
 
 	/**
+	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
+	 */
+	void setAllWidgetsAreOpTargetable(boolean value);
+
+	/**
 	 * Adds a MenuEntry to the current menu.
 	 */
 	void insertMenuItem(String action, String target, int opcode, int identifier, int argument1, int argument2, boolean forceLeftClick);

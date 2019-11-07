@@ -66,7 +66,6 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
@@ -74,6 +73,7 @@ import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -368,7 +368,7 @@ public class SlayerPlugin extends Plugin
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
 		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
 	}
 
@@ -730,14 +730,14 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		if (event.getSkill() != SLAYER)
+		if (statChanged.getSkill() != SLAYER)
 		{
 			return;
 		}
 
-		int slayerExp = client.getSkillExperience(SLAYER);
+		int slayerExp = statChanged.getXp();
 
 		if (slayerExp <= cachedXp)
 		{

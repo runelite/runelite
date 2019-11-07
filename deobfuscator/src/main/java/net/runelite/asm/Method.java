@@ -36,7 +36,6 @@ import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
-import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
@@ -47,7 +46,7 @@ import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SYNCHRONIZED;
 
-public class Method
+public class Method implements Annotated, Named
 {
 	public static final int ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
 
@@ -92,8 +91,7 @@ public class Method
 
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
-			annotation.accept(av);
+			annotation.accept(visitor.visitAnnotation(annotation.getType().toString(), true));
 		}
 
 		if (code != null)

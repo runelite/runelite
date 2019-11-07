@@ -446,7 +446,7 @@ public interface RSWidget extends Widget
 
 	@Import("getFont")
 	@Override
-	RSAbstractFont getFont();
+	RSFont getFont();
 
 	@Import("fill")
 	@Override

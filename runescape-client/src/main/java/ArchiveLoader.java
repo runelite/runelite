@@ -723,7 +723,7 @@ public class ArchiveLoader {
 									if (var9.invTransmitTriggers != null && Client.field820 - var9.field2567 <= 32) {
 										label862:
 										for (var35 = var9.field2567; var35 < Client.field820; ++var35) {
-											var23 = Client.field816[var35 & 31];
+											var23 = Client.changedItemContainers[var35 & 31];
 
 											for (var36 = 0; var36 < var9.invTransmitTriggers.length; ++var36) {
 												if (var23 == var9.invTransmitTriggers[var36]) {

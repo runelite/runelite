@@ -49,6 +49,7 @@ import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
@@ -77,13 +78,11 @@ import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.DraggingWidgetChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.Menu;
@@ -96,6 +95,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.VolumeChanged;
@@ -112,6 +112,7 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetType;
@@ -217,6 +218,9 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean hideClanmateCastOptions = false;
 
 	@Inject
+	private static boolean allWidgetsAreOpTargetable = false;
+
+	@Inject
 	private static Set<String> unhiddenCasts = new HashSet<String>();
 
 	@Inject
@@ -259,6 +263,13 @@ public abstract class RSClientMixin implements RSClient
 	public void setHideClanmateCastOptions(boolean yes)
 	{
 		hideClanmateCastOptions = yes;
+	}
+
+	@Inject
+	@Override
+	public void setAllWidgetsAreOpTargetable(boolean yes)
+	{
+		allWidgetsAreOpTargetable = yes;
 	}
 
 	@Inject
@@ -1039,15 +1050,19 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void experiencedChanged(int idx)
 	{
-		ExperienceChanged experienceChanged = new ExperienceChanged();
 		Skill[] possibleSkills = Skill.values();
 
 		// We subtract one here because 'Overall' isn't considered a skill that's updated.
 		if (idx < possibleSkills.length - 1)
 		{
 			Skill updatedSkill = possibleSkills[idx];
-			experienceChanged.setSkill(updatedSkill);
-			client.getCallbacks().post(ExperienceChanged.class, experienceChanged);
+			StatChanged statChanged = new StatChanged(
+				updatedSkill,
+				client.getSkillExperience(updatedSkill),
+				client.getRealSkillLevel(updatedSkill),
+				client.getBoostedSkillLevel(updatedSkill)
+			);
+			client.getCallbacks().post(StatChanged.class, statChanged);
 		}
 	}
 
@@ -1060,9 +1075,13 @@ public abstract class RSClientMixin implements RSClient
 		if (idx >= 0 && idx < skills.length - 1)
 		{
 			Skill updatedSkill = skills[idx];
-			BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
-			boostedLevelChanged.setSkill(updatedSkill);
-			client.getCallbacks().post(BoostedLevelChanged.class, boostedLevelChanged);
+			StatChanged statChanged = new StatChanged(
+				updatedSkill,
+				client.getSkillExperience(updatedSkill),
+				client.getRealSkillLevel(updatedSkill),
+				client.getBoostedSkillLevel(updatedSkill)
+			);
+			client.getCallbacks().post(StatChanged.class, statChanged);
 		}
 	}
 
@@ -1812,5 +1831,29 @@ public abstract class RSClientMixin implements RSClient
 			VolumeChanged volumeChanged = new VolumeChanged(type == 3 ? VolumeChanged.Type.MUSIC : type == 4 ? VolumeChanged.Type.EFFECTS : VolumeChanged.Type.AREA);
 			client.getCallbacks().post(VolumeChanged.class, volumeChanged);
 		}
+	}
+
+	@Replace("getWidgetClickMask")
+	public static int getWidgetClickMask(Widget widget)
+	{
+		IntegerNode integerNode = (IntegerNode) client.getWidgetFlags().get(((long) widget.getId() << 32) + (long) widget.getIndex());
+
+		int widgetClickMask;
+
+		if (integerNode == null)
+		{
+			widgetClickMask = widget.getClickMask();
+		}
+		else
+		{
+			widgetClickMask = integerNode.getValue();
+		}
+
+		if (allWidgetsAreOpTargetable)
+		{
+			widgetClickMask |= WidgetConfig.WIDGET_USE_TARGET;
+		}
+
+		return widgetClickMask;
 	}
 }

@@ -5,7 +5,7 @@ import net.runelite.mapping.Import;
 
 public interface RSWorldMapElement extends RSDualNode, MapElementConfig
 {
-	@Import("getSprite")
+	@Import("getSpriteBool")
 	@Override
 	RSSprite getMapIcon(boolean var1);
 }

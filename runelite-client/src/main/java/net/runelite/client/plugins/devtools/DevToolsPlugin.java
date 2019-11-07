@@ -42,11 +42,10 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AreaSoundEffectPlayed;
-import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.SoundEffectPlayed;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
@@ -301,9 +300,13 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setSkill(skill);
-				eventBus.post(ExperienceChanged.class, experienceChanged);
+				StatChanged statChanged = new StatChanged(
+					skill,
+					totalXp,
+					level,
+					level
+				);
+				eventBus.post(StatChanged.class, statChanged);
 				break;
 			}
 			case "setstat":
@@ -320,13 +323,13 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setSkill(skill);
-				eventBus.post(ExperienceChanged.class, experienceChanged);
-
-				BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
-				boostedLevelChanged.setSkill(skill);
-				eventBus.post(BoostedLevelChanged.class, boostedLevelChanged);
+				StatChanged statChanged = new StatChanged(
+					skill,
+					xp,
+					level,
+					level
+				);
+				eventBus.post(StatChanged.class, statChanged);
 				break;
 			}
 			case "anim":

@@ -47,8 +47,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
@@ -175,7 +175,7 @@ public class DiscordPlugin extends Plugin
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 		eventBus.subscribe(DiscordReady.class, this, this::onDiscordReady);
 		eventBus.subscribe(DiscordJoinRequest.class, this, this::onDiscordJoinRequest);
@@ -222,17 +222,18 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
-	private void onExperienceChanged(ExperienceChanged event)
+	private void onStatChanged(StatChanged statChanged)
 	{
-		final int exp = client.getSkillExperience(event.getSkill());
-		final Integer previous = skillExp.put(event.getSkill(), exp);
+		final Skill skill = statChanged.getSkill();
+		final int exp = statChanged.getXp();
+		final Integer previous = skillExp.put(skill, exp);
 
 		if (previous == null || previous >= exp)
 		{
 			return;
 		}
 
-		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(event.getSkill());
+		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(skill);
 
 		if (discordGameEventType != null && this.showSkillingActivity)
 		{

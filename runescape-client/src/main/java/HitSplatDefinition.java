@@ -415,8 +415,8 @@ public class HitSplatDefinition extends DualNode {
 		signature = "(Lbz;IB)V",
 		garbageValue = "-26"
 	)
-	@Export("calculateActorPosition")
-	static final void calculateActorPosition(Actor var0, int var1) {
+	@Export("updateActorSequence")
+	static final void updateActorSequence(Actor var0, int var1) {
 		int var2;
 		if (var0.field925 > Client.cycle) {
 			WorldMapDecoration.method386(var0);
