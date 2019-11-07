@@ -681,6 +681,11 @@ public class ClueScrollPlugin extends Plugin
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 		objectsToMark.clear();
 
+		if (tile == null || tile.getGameObjects() == null)
+		{
+			return;
+		}
+
 		for (GameObject object : tile.getGameObjects())
 		{
 			if (object == null)
