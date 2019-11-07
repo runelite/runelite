@@ -207,4 +207,9 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Weapons
+	public static final int LOW_LEVEL_MAGIC_ATTACK = 1162;
+	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
+	public static final int BLOWPIPE_ATTACK = 5061;
 }
