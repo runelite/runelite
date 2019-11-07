@@ -399,7 +399,8 @@ public class WikiPlugin extends Plugin
 			);
 		}
 
-		if (widgetID == WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId())
+		if (widgetID == WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId()
+			&& event.getOption().contains("Open"))
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
 			if (w.getActions() == null)
@@ -426,7 +427,8 @@ public class WikiPlugin extends Plugin
 			);
 		}
 
-		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
+		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId()
+			&& event.getOption().contains("View"))
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
 			if (w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
@@ -446,7 +448,7 @@ public class WikiPlugin extends Plugin
 				MENUOP_WIKI,
 				action.replace("View ", "").replace("Guide ", ""),
 				MenuOpcode.RUNELITE.getId(),
-				event.getIdentifier(),
+				0,
 				widgetIndex,
 				widgetID,
 				false
