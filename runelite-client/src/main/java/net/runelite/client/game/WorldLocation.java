@@ -12,7 +12,6 @@ package net.runelite.client.game;
 import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -242,14 +241,6 @@ public enum WorldLocation
 	{
 		return Arrays.stream(WorldLocation.values()).filter(loc ->
 			PvPUtil.getWildernessLevelFrom(loc.worldArea.toWorldPoint()) > 0).collect(Collectors.toList());
-	}
-
-	public static Map<WorldArea, String> getLOCATION_MAP()
-	{
-		Map<WorldArea, String> hashMap = new HashMap<>();
-		Arrays.stream(values()).forEach(worldLocation ->
-			hashMap.put(worldLocation.getWorldArea(), worldLocation.getName()));
-		return hashMap;
 	}
 
 	/**
