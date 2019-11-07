@@ -70,15 +70,19 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.AdventureLogSubmission;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.adventurelog.datatypes.SlayerTaskData;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.adventurelog.LogType;
 import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
@@ -169,6 +173,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private ChatClient chatClient;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
@@ -456,6 +463,17 @@ public class SlayerPlugin extends Plugin
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
+			if (taskName != null && !taskName.equals(""))
+			{
+				String location = (taskLocation != null && !taskLocation.equals("")) ? taskLocation : null;
+				SlayerTaskData slayerTaskData = new SlayerTaskData(
+					taskName,
+					initialAmount,
+					location
+				);
+				eventBus.post(new AdventureLogSubmission(LogType.SLAYER_TASK, slayerTaskData));
+			}
+
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
 
 			List<String> matches = new ArrayList<>();

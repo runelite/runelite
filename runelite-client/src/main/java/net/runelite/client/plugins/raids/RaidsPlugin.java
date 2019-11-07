@@ -55,6 +55,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
@@ -62,6 +63,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -139,6 +141,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -274,6 +279,15 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		//handle logic
+
+//		RaidData raidRecord = new RaidData();
+//		eventBus.post(new AdventureLogSubmission(LogType.RAID, raidRecord));
 	}
 
 	@Subscribe

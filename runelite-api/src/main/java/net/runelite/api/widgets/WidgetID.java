@@ -147,6 +147,7 @@ public class WidgetID
 	public static final int SEED_VAULT_GROUP_ID = 631;
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int OPTIONS_GROUP_ID = 261;
+	public static final int DIALOG_TEXT_GROUP_ID = 229;
 
 	static class WorldMap
 	{
@@ -586,6 +587,7 @@ public class WidgetID
 		static final int TO_CALL = 9;
 		static final int ROLE_SPRITE = 10;
 		static final int ROLE = 11;
+		static final int QUEEN_TEXT = 55;
 		static final int REWARD_TEXT = 57;
 	}
 
@@ -861,5 +863,10 @@ public class WidgetID
 	static class Skills
 	{
 		static final int CONTAINER = 0;
+	}
+
+	static class DialogText
+	{
+		static final int TEXT = 1;
 	}
 }

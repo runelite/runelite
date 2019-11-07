@@ -73,6 +73,7 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
@@ -83,11 +84,15 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.adventurelog.AdventureLogConstants;
+import net.runelite.client.events.AdventureLogSubmission;
+import net.runelite.client.plugins.adventurelog.datatypes.RareDropData;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.adventurelog.LogType;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -158,6 +163,9 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private EventBus eventBus;
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
@@ -330,14 +338,8 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
+		addQueuedRecord(lootRecord);
 	}
 
 	@Subscribe
@@ -356,14 +358,8 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
+		addQueuedRecord(lootRecord);
 	}
 
 	@Subscribe
@@ -436,14 +432,8 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
 
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items), Instant.now());
+		addQueuedRecord(lootRecord);
 	}
 
 	@Subscribe
@@ -602,14 +592,8 @@ public class LootTrackerPlugin extends Plugin
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries));
 
-			if (config.saveLoot())
-			{
-				LootRecord lootRecord = new LootRecord(chestType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-				synchronized (queuedLoots)
-				{
-					queuedLoots.add(lootRecord);
-				}
-			}
+			LootRecord lootRecord = new LootRecord(chestType, LootRecordType.EVENT, toGameItems(items), Instant.now());
+			addQueuedRecord(lootRecord);
 
 			inventorySnapshot = null;
 		}
@@ -699,5 +683,32 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	private void addQueuedRecord(LootRecord lootRecord)
+	{
+		if (config.saveLoot())
+		{
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
+		}
+
+		for (GameItem gameItem : lootRecord.getDrops())
+		{
+			if (AdventureLogConstants.RARE_DROPS.contains(gameItem.getId()))
+			{
+				RareDropData dropData = new RareDropData(
+					lootRecord.getEventId(),
+					gameItem.getId(),
+					(gameItem.getQty() == 1) ? null : gameItem.getQty()
+				);
+				AdventureLogSubmission adventureLogSubmission = new AdventureLogSubmission(
+					LogType.RARE_DROPS, dropData
+				);
+				eventBus.post(adventureLogSubmission);
+			}
+		}
 	}
 }
