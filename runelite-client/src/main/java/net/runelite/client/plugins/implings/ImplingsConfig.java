@@ -35,15 +35,22 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("implings")
 public interface ImplingsConfig extends Config
 {
+	enum ImplingMode
+	{
+		NONE,
+		HIGHLIGHT,
+		NOTIFY
+	}
+
 	@ConfigItem(
 		position = 1,
 		keyName = "showbaby",
 		name = "Show Baby implings",
 		description = "Configures whether or not Baby impling tags are displayed"
 	)
-	default boolean showBaby()
+	default ImplingMode showBaby()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -63,9 +70,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Young implings",
 		description = "Configures whether or not Young impling tags are displayed"
 	)
-	default boolean showYoung()
+	default ImplingMode showYoung()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -85,9 +92,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Gourmet implings",
 		description = "Configures whether or not Gourmet impling tags are displayed"
 	)
-	default boolean showGourmet()
+	default ImplingMode showGourmet()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -107,9 +114,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Earth implings",
 		description = "Configures whether or not Earth impling tags are displayed"
 	)
-	default boolean showEarth()
+	default ImplingMode showEarth()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -129,9 +136,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Essence implings",
 		description = "Configures whether or not Essence impling tags are displayed"
 	)
-	default boolean showEssence()
+	default ImplingMode showEssence()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -151,9 +158,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Eclectic implings",
 		description = "Configures whether or not Eclectic impling tags are displayed"
 	)
-	default boolean showEclectic()
+	default ImplingMode showEclectic()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -173,9 +180,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Nature implings",
 		description = "Configures whether or not Nature impling tags are displayed"
 	)
-	default boolean showNature()
+	default ImplingMode showNature()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -195,9 +202,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Magpie implings",
 		description = "Configures whether or not Magpie impling tags are displayed"
 	)
-	default boolean showMagpie()
+	default ImplingMode showMagpie()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -217,9 +224,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Ninja implings",
 		description = "Configures whether or not Ninja impling tags are displayed"
 	)
-	default boolean showNinja()
+	default ImplingMode showNinja()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -239,9 +246,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Crystal implings",
 		description = "Configures whether or not Crystal impling tags are displayed"
 	)
-	default boolean showCrystal()
+	default ImplingMode showCrystal()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
 	@ConfigItem(
@@ -261,9 +268,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Dragon implings",
 		description = "Configures whether or not Dragon impling tags are displayed"
 	)
-	default boolean showDragon()
+	default ImplingMode showDragon()
 	{
-		return true;
+		return ImplingMode.HIGHLIGHT;
 	}
 
 	@ConfigItem(
@@ -283,9 +290,9 @@ public interface ImplingsConfig extends Config
 		name = "Show Lucky implings",
 		description = "Configures whether or not Lucky impling tags are displayed"
 	)
-	default boolean showLucky()
+	default ImplingMode showLucky()
 	{
-		return true;
+		return ImplingMode.HIGHLIGHT;
 	}
 
 	@ConfigItem(
