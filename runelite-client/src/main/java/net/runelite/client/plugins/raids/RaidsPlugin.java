@@ -287,7 +287,7 @@ public class RaidsPlugin extends Plugin
 		//handle logic
 
 //		RaidData raidRecord = new RaidData();
-//		eventBus.post(new AdventureLogSubmission(LogType.RAID, raidRecord));
+//		eventBus.post(new AdventureLogSubmission(raidRecord));
 	}
 
 	@Subscribe

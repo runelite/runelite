@@ -43,7 +43,7 @@ import okhttp3.Response;
 @AllArgsConstructor
 public class AdventureLogClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final MediaType JSON = RuneLiteAPI.JSON;
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final UUID uuid;

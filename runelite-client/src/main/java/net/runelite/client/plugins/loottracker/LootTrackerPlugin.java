@@ -75,6 +75,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.AdventureLogSubmission;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.SessionClose;
@@ -85,14 +86,12 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.adventurelog.AdventureLogConstants;
-import net.runelite.client.events.AdventureLogSubmission;
 import net.runelite.client.plugins.adventurelog.datatypes.RareDropData;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.adventurelog.LogType;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -704,9 +703,7 @@ public class LootTrackerPlugin extends Plugin
 					gameItem.getId(),
 					(gameItem.getQty() == 1) ? null : gameItem.getQty()
 				);
-				AdventureLogSubmission adventureLogSubmission = new AdventureLogSubmission(
-					LogType.RARE_DROPS, dropData
-				);
+				AdventureLogSubmission adventureLogSubmission = new AdventureLogSubmission(dropData);
 				eventBus.post(adventureLogSubmission);
 			}
 		}

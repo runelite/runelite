@@ -82,7 +82,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.adventurelog.LogType;
 import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
@@ -471,7 +470,7 @@ public class SlayerPlugin extends Plugin
 					initialAmount,
 					location
 				);
-				eventBus.post(new AdventureLogSubmission(LogType.SLAYER_TASK, slayerTaskData));
+				eventBus.post(new AdventureLogSubmission(slayerTaskData));
 			}
 
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);

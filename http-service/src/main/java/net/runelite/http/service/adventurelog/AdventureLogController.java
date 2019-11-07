@@ -69,7 +69,7 @@ public class AdventureLogController
 		HttpServletRequest request,
 		HttpServletResponse response,
 		@RequestParam String username,
-		@RequestBody Object values
+		@RequestBody List<Object> values
 	) throws IOException
 	{
 		SessionEntry session = authFilter.handle(request, response);

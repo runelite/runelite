@@ -42,11 +42,15 @@ import net.runelite.client.events.LevelUp;
 @Singleton
 public class LevelUpManager
 {
-	@Inject
-	private EventBus eventBus;
+	private final EventBus eventBus;
+	private final Client client;
 
 	@Inject
-	private Client client;
+	private LevelUpManager(EventBus eventBus, Client client)
+	{
+		this.eventBus = eventBus;
+		this.client = client;
+	}
 
 	private final Map<Skill, Integer> previousXpMap = new EnumMap<>(Skill.class);
 

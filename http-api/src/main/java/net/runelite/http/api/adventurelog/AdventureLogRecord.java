@@ -25,17 +25,22 @@
 package net.runelite.http.api.adventurelog;
 
 import java.util.EnumSet;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.runelite.http.api.worlds.WorldType;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class AdventureLogRecord
 {
-	private LogType logType;
+	private String logType;
 	private LogData logData;
 	private EnumSet<WorldType> worldTypes;
+
+	public AdventureLogRecord(LogData logData, EnumSet<WorldType> worldTypes)
+	{
+		this.logType = logData.getClass().getSimpleName();
+		this.logData = logData;
+		this.worldTypes = worldTypes;
+	}
 }

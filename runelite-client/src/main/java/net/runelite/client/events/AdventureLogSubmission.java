@@ -27,12 +27,10 @@ package net.runelite.client.events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.runelite.http.api.adventurelog.LogData;
-import net.runelite.http.api.adventurelog.LogType;
 
 @Data
 @AllArgsConstructor
 public class AdventureLogSubmission
 {
-	LogType logType;
 	LogData data;
 }

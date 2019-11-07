@@ -27,11 +27,13 @@ package net.runelite.http.service.adventurelog;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.LinkedTreeMap;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -61,6 +63,7 @@ public class AdventureLogService
 
 	private static final int MAX_DEPTH = 8;
 	private static final int MAX_VALUE_LENGTH = 256;
+	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final MongoCollection<Document> mongoCollection;
 
@@ -95,7 +98,7 @@ public class AdventureLogService
 	public boolean addLog(
 		int userId,
 		String username,
-		@Nullable Object values)
+		@Nullable List<Object> values)
 	{
 		if (!validateJson(values))
 		{
@@ -109,15 +112,13 @@ public class AdventureLogService
 		long time = System.currentTimeMillis() / 1000;
 
 		List<Object> newEvents = new ArrayList<>();
-
-		for (Object object : (List<Object>) values)
+		
+		for (Object object : values)
 		{
-			Map<String, Object> newEvent = (Map<String, Object>) object;
-			newEvent.put("time", time);
-			newEvents.add(newEvent);
+			((LinkedTreeMap<String, Object>) object).put("time", time);
 		}
 
-		newEvents = Lists.reverse(newEvents);
+		values = Lists.reverse(values);
 
 		if (cursor.hasNext())
 		{
@@ -127,11 +128,11 @@ public class AdventureLogService
 
 			if (batchSize < BATCH_SIZE)
 			{
-				batchSize += newEvents.size();
-				newEvents = Lists.newArrayList(Iterables.concat(newEvents, events));
+				batchSize += values.size();
+				values = Lists.newArrayList(Iterables.concat(values, events));
 				document.put("lastModTime", time);
 				document.put("batchSize", batchSize);
-				document.put("events", newEvents);
+				document.put("events", values);
 				mongoCollection.replaceOne(eq("_id", document.get("_id")), document);
 				return true;
 			}
@@ -140,9 +141,9 @@ public class AdventureLogService
 		Document document = new Document();
 		document.put("_userId", userId);
 		document.put("lastModTime", time);
-		document.put("batchSize", newEvents.size());
+		document.put("batchSize", values.size());
 		document.put("username", username);
-		document.put("events", newEvents);
+		document.put("events", values);
 		mongoCollection.insertOne(document);
 		return true;
 

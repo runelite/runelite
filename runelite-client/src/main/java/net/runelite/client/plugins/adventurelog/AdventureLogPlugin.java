@@ -30,7 +30,6 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
-import com.google.inject.Provides;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
@@ -81,7 +80,6 @@ import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.adventurelog.AdventureLogClient;
 import net.runelite.http.api.adventurelog.AdventureLogRecord;
-import net.runelite.http.api.adventurelog.LogType;
 import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
@@ -134,12 +132,6 @@ public class AdventureLogPlugin extends Plugin
 	private Instant timeSinceLastBossKill;
 	private final List<AdventureLogRecord> queuedLogs = new ArrayList<>();
 
-	@Provides
-	AdventureLogConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AdventureLogConfig.class);
-	}
-
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -188,7 +180,7 @@ public class AdventureLogPlugin extends Plugin
 	@Subscribe
 	public void onAdventureLogSubmission(AdventureLogSubmission event)
 	{
-		if (event.getLogType() == LogType.BOSS_KILLS)
+		if (event.getData() instanceof BossKillData)
 		{
 			if (currentBossData == null)
 			{
@@ -224,7 +216,6 @@ public class AdventureLogPlugin extends Plugin
 			}
 
 			AdventureLogRecord record = new AdventureLogRecord(
-				event.getLogType(),
 				event.getData(),
 				trimWorldType(WorldUtil.runeliteToHttpWorldTypes(client.getWorldType()))
 			);
@@ -270,7 +261,7 @@ public class AdventureLogPlugin extends Plugin
 					clueDifficulty,
 					client.getItemContainer(InventoryID.BARROWS_REWARD).getItems()
 				);
-				eventBus.post(new AdventureLogSubmission(LogType.CLUE, clueData));
+				eventBus.post(new AdventureLogSubmission(clueData));
 				break;
 			case (WidgetID.DIALOG_SPRITE_GROUP_ID):
 				shouldCheckCastleWarsWidget = true;
@@ -331,7 +322,7 @@ public class AdventureLogPlugin extends Plugin
 				kc,
 				1
 			);
-			eventBus.post(new AdventureLogSubmission(LogType.BOSS_KILLS, bossKillData));
+			eventBus.post(new AdventureLogSubmission(bossKillData));
 		}
 	}
 
@@ -353,7 +344,7 @@ public class AdventureLogPlugin extends Plugin
 		PetData petData = new PetData(
 			petItemId
 		);
-		eventBus.post(new AdventureLogSubmission(LogType.PET, petData));
+		eventBus.post(new AdventureLogSubmission(petData));
 
 	}
 
@@ -379,7 +370,7 @@ public class AdventureLogPlugin extends Plugin
 				PetData petData = new PetData(
 					pet.getId()
 				);
-				eventBus.post(new AdventureLogSubmission(LogType.PET, petData));
+				eventBus.post(new AdventureLogSubmission(petData));
 			}
 		}
 
@@ -394,7 +385,7 @@ public class AdventureLogPlugin extends Plugin
 			event.getSkill(),
 			event.getLevel()
 		);
-		eventBus.post(new AdventureLogSubmission(LogType.LEVEL_UP, levelUpData));
+		eventBus.post(new AdventureLogSubmission(levelUpData));
 	}
 
 	@Schedule(
@@ -430,7 +421,6 @@ public class AdventureLogPlugin extends Plugin
 		}
 
 		AdventureLogRecord record = new AdventureLogRecord(
-			LogType.BOSS_KILLS,
 			currentBossData,
 			bossWorldTypes
 		);
@@ -525,7 +515,7 @@ public class AdventureLogPlugin extends Plugin
 				"Barbarian Assault",
 				null
 			);
-			eventBus.post(new AdventureLogSubmission(LogType.MINIGAME, minigameData));
+			eventBus.post(new AdventureLogSubmission(minigameData));
 		}
 	}
 
@@ -552,7 +542,7 @@ public class AdventureLogPlugin extends Plugin
 					difficulty,
 					region
 				);
-				eventBus.post(new AdventureLogSubmission(LogType.DIARY_COMPLETION, diaryCompletionData));
+				eventBus.post(new AdventureLogSubmission(diaryCompletionData));
 			}
 		}
 
@@ -574,7 +564,7 @@ public class AdventureLogPlugin extends Plugin
 			String text = widget.getText();
 			String questName = text.substring(19, text.length() - 1);
 			QuestCompletionData questCompletionData = new QuestCompletionData(questName);
-			eventBus.post(new AdventureLogSubmission(LogType.QUEST_COMPLETION, questCompletionData));
+			eventBus.post(new AdventureLogSubmission(questCompletionData));
 		}
 	}
 
@@ -621,7 +611,7 @@ public class AdventureLogPlugin extends Plugin
 				"Castle wars",
 				result
 			);
-			eventBus.post(new AdventureLogSubmission(LogType.MINIGAME, minigameData));
+			eventBus.post(new AdventureLogSubmission(minigameData));
 		}
 	}
 
@@ -678,7 +668,7 @@ public class AdventureLogPlugin extends Plugin
 					"Pest Control (" + difficulty + ")",
 					null
 				);
-				eventBus.post(new AdventureLogSubmission(LogType.MINIGAME, minigameData));
+				eventBus.post(new AdventureLogSubmission(minigameData));
 			}
 
 		}
