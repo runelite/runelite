@@ -753,9 +753,9 @@ public class MenuManager
 		for (String target : fromTarget)
 		{
 			final String s = Text.standardize(target);
-			swaps.keySet().removeIf(e -> e.getTarget().equals(s));
-			priorityEntries.removeIf(e -> e.getTarget().equals(s));
-			hiddenEntries.removeIf(e -> e.getTarget().equals(s));
+			swaps.keySet().removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
+			priorityEntries.removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
+			hiddenEntries.removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
 		}
 	}
 
