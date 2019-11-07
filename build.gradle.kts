@@ -129,6 +129,13 @@ subprojects {
         withType<JavaCompile> {
             options.encoding = "UTF-8"
         }
+
+        withType<AbstractArchiveTask> {
+            isPreserveFileTimestamps = false
+            isReproducibleFileOrder = true
+            dirMode = 755
+            fileMode = 644
+        }
     }
 }
 
