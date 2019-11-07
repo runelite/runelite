@@ -598,7 +598,7 @@ class LootTrackerPanel extends PluginPanel
 
 			if (this.plugin.client.getGameState().equals(GameState.LOGGED_IN))
 			{
-				if (!(this.plugin.client.getLocalPlayer().getName().equals(records.get(i).getLocalUsername())))
+				if (this.plugin.client.getLocalPlayer() == null || !(this.plugin.client.getLocalPlayer().getName().equals(records.get(i).getLocalUsername())))
 				{
 					continue;
 				}
