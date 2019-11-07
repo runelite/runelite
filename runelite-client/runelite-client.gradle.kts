@@ -71,6 +71,7 @@ dependencies {
     implementation(Libraries.jooq)
     implementation(Libraries.jooqCodegen)
     implementation(Libraries.jooqMeta)
+    implementation(Libraries.sentry)
     implementation(Libraries.slf4jApi)
     implementation(project(":http-api"))
     implementation(project(":runelite-api"))

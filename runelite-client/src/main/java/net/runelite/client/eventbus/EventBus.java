@@ -6,6 +6,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.sentry.Sentry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -54,15 +55,7 @@ public class EventBus implements EventBusInterface
 			.cast(eventClass) // Cast it for easier usage
 			.subscribe(action, error ->
 			{
-				if (error instanceof RuntimeException)
-				{
-					log.error("Runtime Exception in eventbus", error);
-					System.exit(0);
-				}
-				else
-				{
-					log.error("Exception in eventbus", error);
-				}
+				Sentry.capture(error);
 			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
@@ -84,15 +77,7 @@ public class EventBus implements EventBusInterface
 			.doFinally(() -> unregister(lifecycle))
 			.subscribe(action, error ->
 			{
-				if (error instanceof RuntimeException)
-				{
-					log.error("Runtime Exception in eventbus", error);
-					System.exit(0);
-				}
-				else
-				{
-					log.error("Exception in eventbus", error);
-				}
+				Sentry.capture(error);
 			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
