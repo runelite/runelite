@@ -76,7 +76,7 @@ public class ImplingsOverlay extends Overlay
 		for (NPC imp : implings)
 		{
 			Color color = plugin.npcToColor(imp);
-			if (plugin.showNpc(imp) || color == null)
+			if (!plugin.showNpc(imp) || color == null)
 			{
 				continue;
 			}
