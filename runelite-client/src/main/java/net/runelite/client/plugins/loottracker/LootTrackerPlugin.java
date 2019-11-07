@@ -758,9 +758,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-
-		final int killCount = killCountMap.getOrDefault(eventType.toUpperCase(), -1);
-
+		
 		SwingUtilities.invokeLater(() -> panel.add(eventType, client.getLocalPlayer().getName(), -1, entries));
 		LootRecord lootRecord = new LootRecord(eventType, client.getLocalPlayer().getName(), LootRecordType.EVENT,
 			toGameItems(items), Instant.now());
@@ -777,7 +775,7 @@ public class LootTrackerPlugin extends Plugin
 			saveLocalLootRecord(lootRecord);
 		}
 
-		LTRecord record = new LTRecord(-1, eventType, -1, killCount, convertToLTItemEntries(items));
+		LTRecord record = new LTRecord(-1, eventType, -1, eventType == null ? -1 : killCountMap.getOrDefault(eventType.toUpperCase(), -1), convertToLTItemEntries(items));
 		writer.addLootTrackerRecord(record);
 	}
 
