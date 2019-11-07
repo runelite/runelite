@@ -84,7 +84,7 @@ enum Impling
 
 	LUCKY(ImplingType.LUCKY, NpcID.LUCKY_IMPLING),
 	LUCKY_2(ImplingType.LUCKY, NpcID.LUCKY_IMPLING_7302);
-	
+
 	private ImplingType implingType;
 	private final int npcId;
 
