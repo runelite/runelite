@@ -1,0 +1,232 @@
+/*
+ * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.http.service.adventurelog;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.descending;
+import com.mongodb.lang.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import net.runelite.http.api.RuneLiteAPI;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdventureLogService
+{
+	// amount of events per document, this does not guarantee this size but it will be around this
+	private static final int BATCH_SIZE = 10;
+
+	// amount of days before deleting a document after it has last been updated
+	private static final int DOCUMENT_LIFESPAN = 180;
+
+	private static final int MAX_DEPTH = 8;
+	private static final int MAX_VALUE_LENGTH = 256;
+
+	private final MongoCollection<Document> mongoCollection;
+
+	@Autowired
+	public AdventureLogService(
+		MongoClient mongoClient,
+		@Value("${mongo.database}") String databaseName
+	)
+	{
+		MongoDatabase database = mongoClient.getDatabase(databaseName);
+		MongoCollection<Document> collection = database.getCollection("adventurelog");
+		this.mongoCollection = collection;
+	}
+
+	public List<Object> getLogs(int userId, String username)
+	{
+		List<Object> events = new ArrayList<>();
+		MongoCursor<Document> cursor =  mongoCollection
+			.find(and(eq("_userId", userId), eq("username", username)))
+			.sort(descending("lastModTime")).iterator();
+
+		while (cursor.hasNext())
+		{
+			Document document = cursor.next();
+			List<Object> documentEvents = (List<Object>) document.get("events");
+			events.addAll(documentEvents);
+		}
+
+		return events;
+	}
+
+	public boolean addLog(
+		int userId,
+		String username,
+		@Nullable Object values)
+	{
+		if (!validateJson(values))
+		{
+			return false;
+		}
+
+		MongoCursor<Document> cursor =  mongoCollection
+			.find(and(eq("_userId", userId), eq("username", username)))
+			.sort(descending("lastModTime")).limit(1).iterator();
+
+		long time = System.currentTimeMillis() / 1000;
+
+		List<Object> newEvents = new ArrayList<>();
+
+		for (Object object : (List<Object>) values)
+		{
+			Map<String, Object> newEvent = (Map<String, Object>) object;
+			newEvent.put("time", time);
+			newEvents.add(newEvent);
+		}
+
+		newEvents = Lists.reverse(newEvents);
+
+		if (cursor.hasNext())
+		{
+			Document document = cursor.next();
+			List<Object> events = (List<Object>) document.get("events");
+			int batchSize = events.size();
+
+			if (batchSize < BATCH_SIZE)
+			{
+				batchSize += newEvents.size();
+				newEvents = Lists.newArrayList(Iterables.concat(newEvents, events));
+				document.put("lastModTime", time);
+				document.put("batchSize", batchSize);
+				document.put("events", newEvents);
+				mongoCollection.replaceOne(eq("_id", document.get("_id")), document);
+				return true;
+			}
+		}
+
+		Document document = new Document();
+		document.put("_userId", userId);
+		document.put("lastModTime", time);
+		document.put("batchSize", newEvents.size());
+		document.put("username", username);
+		document.put("events", newEvents);
+		mongoCollection.insertOne(document);
+		return true;
+
+	}
+
+	@Scheduled(fixedDelay = 15 * 60 * 1000)
+	public void expire()
+	{
+		MongoCursor<Document> cursor =  mongoCollection.find().iterator();
+
+		long timeCutoff = System.currentTimeMillis() / 1000 - (DOCUMENT_LIFESPAN * 24 * 3600);
+
+		while (cursor.hasNext())
+		{
+			Document document = cursor.next();
+			long time = (Long) document.get("lastModTime");
+			if (time < timeCutoff)
+			{
+				mongoCollection.deleteOne(document);
+			}
+		}
+	}
+
+	@VisibleForTesting
+	static boolean validateJson(Object value)
+	{
+		try
+		{
+			// I couldn't figure out a better way to do this than a second json parse
+			JsonElement jsonElement = RuneLiteAPI.GSON.toJsonTree(value);
+			return validateObject(jsonElement, 1);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			// Should never happen because the json is generated by gson and there is no user inputted strings
+			return false;
+		}
+	}
+
+	private static boolean validateObject(JsonElement jsonElement, int depth)
+	{
+		if (depth >= MAX_DEPTH)
+		{
+			return false;
+		}
+
+		if (jsonElement.isJsonObject())
+		{
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet())
+			{
+				JsonElement element = entry.getValue();
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
+		}
+		else if (jsonElement.isJsonArray())
+		{
+			JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+			for (int i = 0; i < jsonArray.size(); ++i)
+			{
+				JsonElement element = jsonArray.get(i);
+
+				if (!validateObject(element, depth + 1))
+				{
+					return false;
+				}
+			}
+		}
+		else if (jsonElement.isJsonPrimitive())
+		{
+			JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+			String value = jsonPrimitive.getAsString();
+			if (value.length() >= MAX_VALUE_LENGTH)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+}
