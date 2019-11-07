@@ -32,6 +32,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
+import io.sentry.Sentry;
+import io.sentry.SentryClient;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -243,6 +245,10 @@ public class RuneLite
 				});
 			}
 		}
+
+
+		SentryClient client = Sentry.init("https://fa31d674e44247fa93966c69a903770f@sentry.io/1811856");
+		client.setRelease(RuneLiteProperties.getPlusVersion());
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 		Completable.fromAction(clientLoader::get)
