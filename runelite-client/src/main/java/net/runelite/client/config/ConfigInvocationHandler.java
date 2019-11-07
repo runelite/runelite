@@ -24,63 +24,56 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class ConfigInvocationHandler implements InvocationHandler
 {
+	// Special object to represent null values in the cache
+	private static final Object NULL = new Object();
+
 	private final ConfigManager manager;
+	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
+		.maximumSize(128)
+		.build();
 
-	// Caches for annotation values
-	private static final Map<Class<?>, String> groupValueCache = new HashMap<>();
-	private static final Map<Method, String> methodKeyNameCache = new HashMap<>();
-
-	public ConfigInvocationHandler(ConfigManager manager)
+	ConfigInvocationHandler(ConfigManager manager)
 	{
 		this.manager = manager;
-	}
-
-	private static String groupValueFromProxy(Class<?> proxyClass)
-	{
-		Class<?> iface = proxyClass.getInterfaces()[0];
-		ConfigGroup group = iface.getAnnotation(ConfigGroup.class);
-
-		return group == null ? null : group.value();
-	}
-
-	private static String keyNameFromMethod(Method method)
-	{
-		ConfigItem item = method.getAnnotation(ConfigItem.class);
-
-		return item == null ? null : item.keyName();
 	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
 	{
-		String itemKeyName, groupValue;
-		try
+		// Use cached configuration value if available
+		if (args == null)
 		{
-			groupValue = groupValueCache.computeIfAbsent(proxy.getClass(), ConfigInvocationHandler::groupValueFromProxy);
+			Object cachedValue = cache.getIfPresent(method);
+			if (cachedValue != null)
+			{
+				return cachedValue == NULL ? null : cachedValue;
+			}
 		}
-		catch (NullPointerException e)
+
+		Class<?> iface = proxy.getClass().getInterfaces()[0];
+
+		ConfigGroup group = iface.getAnnotation(ConfigGroup.class);
+		ConfigItem item = method.getAnnotation(ConfigItem.class);
+
+		if (group == null)
 		{
 			log.warn("Configuration proxy class {} has no @ConfigGroup!", proxy.getClass());
 			return null;
 		}
 
-		try
-		{
-			itemKeyName = methodKeyNameCache.computeIfAbsent(method, ConfigInvocationHandler::keyNameFromMethod);
-		}
-		catch (NullPointerException e)
+		if (item == null)
 		{
 			log.warn("Configuration method {} has no @ConfigItem!", method);
 			return null;
@@ -88,48 +81,46 @@ class ConfigInvocationHandler implements InvocationHandler
 
 		if (args == null)
 		{
+			log.trace("cache miss (size: {}, group: {}, key: {})", cache.size(), group.value(), item.keyName());
+
 			// Getting configuration item
-			return manager.getConfigObjectFromCacheOrElse(groupValue, itemKeyName, (value) ->
+			String value = manager.getConfiguration(group.value(), item.keyName());
+
+			if (value == null)
 			{
-				try
+				if (method.isDefault())
 				{
-					value = manager.getConfiguration(value);
-					if (value == null)
-					{
-						if (method.isDefault())
-						{
-							return callDefaultMethod(proxy, method, null);
-						}
-						return null;
-					}
-
-					// Convert value to return type
-					Class<?> returnType = method.getReturnType();
-
-					try
-					{
-						return ConfigManager.stringToObject(value, returnType);
-					}
-					catch (Exception e)
-					{
-						log.warn("Unable to unmarshal {}.{} ", groupValue, itemKeyName, e);
-						if (method.isDefault())
-						{
-							Object defaultValue = callDefaultMethod(proxy, method, null);
-
-							manager.setConfiguration(groupValue, itemKeyName, defaultValue);
-
-							return defaultValue;
-						}
-						return null;
-					}
+					Object defaultValue = callDefaultMethod(proxy, method, null);
+					cache.put(method, defaultValue == null ? NULL : defaultValue);
+					return defaultValue;
 				}
-				catch (Throwable throwable)
+
+				cache.put(method, NULL);
+				return null;
+			}
+
+			// Convert value to return type
+			Class<?> returnType = method.getReturnType();
+
+			try
+			{
+				Object objectValue = ConfigManager.stringToObject(value, returnType);
+				cache.put(method, objectValue == null ? NULL : objectValue);
+				return objectValue;
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to unmarshal {}.{} ", group.value(), item.keyName(), e);
+				if (method.isDefault())
 				{
-					log.error("Unable to resolve configuration value {}.{}", groupValue, itemKeyName, throwable);
-					return null;
+					Object defaultValue = callDefaultMethod(proxy, method, null);
+
+					manager.setConfiguration(group.value(), item.keyName(), defaultValue);
+
+					return defaultValue;
 				}
-			});
+				return null;
+			}
 		}
 		else
 		{
@@ -137,13 +128,13 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			if (args.length != 1)
 			{
-				throw new RuntimeException("Invalid number of arguments to configuration method");
+				throw new RuntimeException("Invalid number of arguents to configuration method");
 			}
 
 			Object newValue = args[0];
 
 			Class<?> type = method.getParameterTypes()[0];
-			Object oldValue = manager.getConfiguration(groupValue, itemKeyName, type);
+			Object oldValue = manager.getConfiguration(group.value(), item.keyName(), type);
 
 			if (Objects.equals(oldValue, newValue))
 			{
@@ -158,19 +149,19 @@ class ConfigInvocationHandler implements InvocationHandler
 				if (Objects.equals(newValue, defaultValue))
 				{
 					// Just unset if it goes back to the default
-					manager.unsetConfiguration(groupValue, itemKeyName);
+					manager.unsetConfiguration(group.value(), item.keyName());
 					return null;
 				}
 			}
 
 			if (newValue == null)
 			{
-				manager.unsetConfiguration(groupValue, itemKeyName);
+				manager.unsetConfiguration(group.value(), item.keyName());
 			}
 			else
 			{
 				String newValueStr = ConfigManager.objectToString(newValue);
-				manager.setConfiguration(groupValue, itemKeyName, newValueStr);
+				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;
 		}
@@ -187,5 +178,11 @@ class ConfigInvocationHandler implements InvocationHandler
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);
+	}
+
+	void invalidate()
+	{
+		log.trace("cache invalidate");
+		cache.invalidateAll();
 	}
 }
