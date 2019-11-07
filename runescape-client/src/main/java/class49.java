@@ -3,56 +3,85 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("au")
+@ObfuscatedName("ac")
 public class class49 {
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lgb;"
-	)
-	@Export("midiPcmStream")
-	public static MidiPcmStream midiPcmStream;
-	@ObfuscatedName("m")
+	@ObfuscatedName("rv")
 	@ObfuscatedGetter(
-		intValue = -649185671
+		intValue = 1570979840
 	)
-	@Export("musicTrackFileId")
-	public static int musicTrackFileId;
+	static int field401;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -331085425
+	)
+	@Export("clientTickTimeIdx")
+	static int clientTickTimeIdx;
+	@ObfuscatedName("ev")
+	@ObfuscatedGetter(
+		intValue = -2015230611
+	)
+	static int field399;
 
 	static {
 		ImageIO.setUseCache(false);
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "(IZIZB)V",
-		garbageValue = "-64"
+		signature = "(ILcj;ZI)I",
+		garbageValue = "-17701588"
 	)
-	@Export("sortWorldList")
-	static void sortWorldList(int var0, boolean var1, int var2, boolean var3) {
-		if (World.World_worlds != null) {
-			AbstractWorldMapData.doWorldSorting(0, World.World_worlds.length - 1, var0, var1, var2, var3);
-		}
-
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "([BI)Lkn;",
-		garbageValue = "-1770627772"
-	)
-	static Font method893(byte[] var0) {
-		if (var0 == null) {
-			return null;
+	static int method938(int var0, Script var1, boolean var2) {
+		Widget var3 = PacketBufferNode.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
+		if (var0 == ScriptOpcodes.IF_GETSCROLLX) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLY) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTEXT) {
+			Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = var3.text;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLWIDTH) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollWidth;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETSCROLLHEIGHT) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.scrollHeight;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELZOOM) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.modelZoom;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_X) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.modelAngleX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Z) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.modelAngleZ;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELANGLE_Y) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.modelAngleY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTRANSTOP) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.transparencyTop;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETTRANSBOT) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.transparencyBot;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETCOLOUR) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.color;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETFILLCOLOUR) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.color2;
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETFILLMODE) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.fillMode.rsOrdinal();
+			return 1;
+		} else if (var0 == ScriptOpcodes.IF_GETMODELTRANSPARENT) {
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
+			return 1;
 		} else {
-			Font var1 = new Font(var0, class325.SpriteBuffer_xOffsets, MusicPatchPcmStream.SpriteBuffer_yOffsets, class325.SpriteBuffer_spriteWidths, RunException.SpriteBuffer_spriteHeights, class325.SpriteBuffer_spritePalette, PacketBufferNode.SpriteBuffer_pixels);
-			class325.SpriteBuffer_xOffsets = null;
-			MusicPatchPcmStream.SpriteBuffer_yOffsets = null;
-			class325.SpriteBuffer_spriteWidths = null;
-			RunException.SpriteBuffer_spriteHeights = null;
-			class325.SpriteBuffer_spritePalette = null;
-			PacketBufferNode.SpriteBuffer_pixels = null;
-			return var1;
+			return 2;
 		}
 	}
 }

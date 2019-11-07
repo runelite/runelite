@@ -85,7 +85,7 @@ public class CacheClient implements AutoCloseable
 	private CompletableFuture<HandshakeResponseType> handshakeFuture;
 	private final Queue<PendingFileRequest> requests = new ArrayDeque<>();
 
-	public static void getCache(int clientRevision)
+	public static void main(String[] args)
 	{
 		Path path = Paths.get(System.getProperty("user.home"), "jagexcache" + File.separator + "oldschool" + File.separator + "LIVE");
 		final File jagexcache = new File(String.valueOf(path));
@@ -95,7 +95,7 @@ public class CacheClient implements AutoCloseable
 		try (Store store = new Store(jagexcache))
 		{
 			store.load();
-			CacheClient c = new CacheClient(store, clientRevision);
+			CacheClient c = new CacheClient(store, Integer.parseInt(args[0]));
 			c.connect();
 			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
 			handshake.get();

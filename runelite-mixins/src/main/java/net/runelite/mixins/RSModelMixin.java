@@ -24,12 +24,11 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -140,7 +139,7 @@ public abstract class RSModelMixin implements RSModel
 		int[] trianglesZ = getTrianglesZ();
 
 		List<Vertex> vertices = getVertices();
-		List<Triangle> triangles = new ArrayList<Triangle>(getTrianglesCount());
+		List<Triangle> triangles = new ArrayList<>(getTrianglesCount());
 
 		for (int i = 0; i < getTrianglesCount(); ++i)
 		{
@@ -321,49 +320,14 @@ public abstract class RSModelMixin implements RSModel
 
 	@Override
 	@Inject
-	public Polygon getConvexHull(int localX, int localY, int orientation, int tileHeight)
+	public Shape getConvexHull(int localX, int localY, int orientation, int tileHeight)
 	{
-		assert client.isClientThread();
+		int[] x2d = new int[this.getVerticesCount()];
+		int[] y2d = new int[this.getVerticesCount()];
 
-		List<Vertex> vertices = getVertices();
+		Perspective.modelToCanvas(client, this.getVerticesCount(), localX, localY, tileHeight, orientation, this.getVerticesX(), this.getVerticesZ(), this.getVerticesY(), x2d, y2d);
 
-		// rotate vertices
-		for (int i = 0; i < vertices.size(); ++i)
-		{
-			Vertex v = vertices.get(i);
-			vertices.set(i, v.rotate(orientation));
-		}
-
-		List<Point> points = new ArrayList<Point>();
-
-		for (Vertex v : vertices)
-		{
-			// Compute canvas location of vertex
-			Point p = Perspective.localToCanvas(client,
-				localX - v.getX(),
-				localY - v.getZ(),
-				tileHeight + v.getY());
-			if (p != null)
-			{
-				points.add(p);
-			}
-		}
-
-		// Run Jarvis march algorithm
-		points = Jarvis.convexHull(points);
-		if (points == null)
-		{
-			return null;
-		}
-
-		// Convert to a polygon
-		Polygon p = new Polygon();
-		for (Point point : points)
-		{
-			p.addPoint(point.getX(), point.getY());
-		}
-
-		return p;
+		return Jarvis.convexHull(x2d, y2d);
 	}
 
 	@Inject

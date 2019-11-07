@@ -1,235 +1,184 @@
-import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("eh")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("ns")
-	@ObfuscatedGetter(
-		intValue = 1790718175
+	@ObfuscatedName("dt")
+	@ObfuscatedSignature(
+		signature = "Lij;"
 	)
-	static int field1889;
-	@ObfuscatedName("z")
+	@Export("archive12")
+	static Archive archive12;
+	@ObfuscatedName("iz")
 	@ObfuscatedGetter(
-		intValue = 1195661333
+		intValue = 1014742579
+	)
+	@Export("selectedItemId")
+	static int selectedItemId;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = 2096461427
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1045185805
+		intValue = 658025365
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1813082719
+		intValue = -423718345
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 2061838755
+		intValue = 1740624753
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1843610955
+		intValue = 954528249
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -629573769
+		intValue = 1732339879
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1170068749
+		intValue = 1301635755
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1998915961
+		intValue = -258867493
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 88556865
+		intValue = 1337393049
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1146642601
+		intValue = 1306653599
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("c")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -486759885
+		intValue = 1760102387
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("b")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1230823835
+		intValue = 1764224557
 	)
-	int field1882;
-	@ObfuscatedName("o")
+	int field1869;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -1799381643
-	)
-	int field1884;
-	@ObfuscatedName("a")
-	@ObfuscatedGetter(
-		intValue = -269756741
-	)
-	int field1871;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 1633183437
-	)
-	int field1885;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = 265274287
-	)
-	int field1886;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = -1265477601
-	)
-	int field1879;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -163200097
+		intValue = -1705634243
 	)
 	int field1887;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -682629895
+	)
+	int field1880;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1219807155
+	)
+	int field1883;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = 168844503
+	)
+	int field1884;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -1533789259
+	)
+	int field1882;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 1431077503
+	)
+	int field1885;
 
 	Occluder() {
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("ir")
 	@ObfuscatedSignature(
-		signature = "(II)Lit;",
-		garbageValue = "1430884212"
+		signature = "(II)Z",
+		garbageValue = "-1093183807"
 	)
-	@Export("ItemDefinition_get")
-	public static ItemDefinition ItemDefinition_get(int var0) {
-		ItemDefinition var1 = (ItemDefinition)ItemDefinition.ItemDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
+	static final boolean method3415(int var0) {
+		if (var0 < 0) {
+			return false;
 		} else {
-			byte[] var2 = ItemDefinition.ItemDefinition_archive.takeFile(10, var0);
-			var1 = new ItemDefinition();
-			var1.id = var0;
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+			int var1 = Client.menuOpcodes[var0];
+			if (var1 >= 2000) {
+				var1 -= 2000;
 			}
 
-			var1.post();
-			if (var1.noteTemplate != -1) {
-				var1.genCert(ItemDefinition_get(var1.noteTemplate), ItemDefinition_get(var1.note));
-			}
-
-			if (var1.notedId != -1) {
-				var1.genBought(ItemDefinition_get(var1.notedId), ItemDefinition_get(var1.unnotedId));
-			}
-
-			if (var1.placeholderTemplate != -1) {
-				var1.genPlaceholder(ItemDefinition_get(var1.placeholderTemplate), ItemDefinition_get(var1.placeholder));
-			}
-
-			if (!class162.ItemDefinition_inMembersWorld && var1.isMembersOnly) {
-				var1.name = "Members object";
-				var1.isTradable = false;
-				var1.groundActions = null;
-				var1.inventoryActions = null;
-				var1.shiftClickIndex = -1;
-				var1.team = 0;
-				if (var1.params != null) {
-					boolean var3 = false;
-
-					for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-						ParamDefinition var5 = WallDecoration.getParamDefinition((int)var4.key);
-						if (var5.autoDisable) {
-							var4.remove();
-						} else {
-							var3 = true;
-						}
-					}
-
-					if (!var3) {
-						var1.params = null;
-					}
-				}
-			}
-
-			ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
-			return var1;
+			return var1 == 1007;
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("ih")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-37"
+		garbageValue = "0"
 	)
-	public static void method3252() {
-		try {
-			JagexCache.JagexCache_dat2File.close();
+	static final void method3416() {
+		boolean var0 = false;
 
-			for (int var0 = 0; var0 < JagexCache.idxCount; ++var0) {
-				class189.JagexCache_idxFiles[var0].close();
+		while (!var0) {
+			var0 = true;
+
+			for (int var1 = 0; var1 < Client.menuOptionsCount - 1; ++var1) {
+				if (Client.menuOpcodes[var1] < 1000 && Client.menuOpcodes[var1 + 1] > 1000) {
+					String var2 = Client.menuTargets[var1];
+					Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+					Client.menuTargets[var1 + 1] = var2;
+					String var3 = Client.menuActions[var1];
+					Client.menuActions[var1] = Client.menuActions[var1 + 1];
+					Client.menuActions[var1 + 1] = var3;
+					int var4 = Client.menuOpcodes[var1];
+					Client.menuOpcodes[var1] = Client.menuOpcodes[var1 + 1];
+					Client.menuOpcodes[var1 + 1] = var4;
+					var4 = Client.menuArguments1[var1];
+					Client.menuArguments1[var1] = Client.menuArguments1[var1 + 1];
+					Client.menuArguments1[var1 + 1] = var4;
+					var4 = Client.menuArguments2[var1];
+					Client.menuArguments2[var1] = Client.menuArguments2[var1 + 1];
+					Client.menuArguments2[var1 + 1] = var4;
+					var4 = Client.menuIdentifiers[var1];
+					Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+					Client.menuIdentifiers[var1 + 1] = var4;
+					boolean var5 = Client.menuShiftClick[var1];
+					Client.menuShiftClick[var1] = Client.menuShiftClick[var1 + 1];
+					Client.menuShiftClick[var1 + 1] = var5;
+					var0 = false;
+				}
 			}
-
-			JagexCache.JagexCache_idx255File.close();
-			JagexCache.JagexCache_randomDat.close();
-		} catch (Exception var2) {
-		}
-
-	}
-
-	@ObfuscatedName("ku")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "-1221499190"
-	)
-	static void method3251(String var0) {
-		class197.field2390 = var0;
-
-		try {
-			String var1 = ViewportMouse.client.getParameter(Integer.toString(18));
-			String var2 = ViewportMouse.client.getParameter(Integer.toString(13));
-			String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-			if (var0.length() == 0) {
-				var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-			} else {
-				String var4 = var3 + "; Expires=";
-				long var6 = class30.currentTimeMillis() + 94608000000L;
-				Calendar.Calendar_calendar.setTime(new Date(var6));
-				int var8 = Calendar.Calendar_calendar.get(7);
-				int var9 = Calendar.Calendar_calendar.get(5);
-				int var10 = Calendar.Calendar_calendar.get(2);
-				int var11 = Calendar.Calendar_calendar.get(1);
-				int var12 = Calendar.Calendar_calendar.get(11);
-				int var13 = Calendar.Calendar_calendar.get(12);
-				int var14 = Calendar.Calendar_calendar.get(13);
-				String var5 = Calendar.DAYS_OF_THE_WEEK[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + Calendar.MONTH_NAMES_ENGLISH_GERMAN[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
-				var3 = var4 + var5 + "; Max-Age=" + 94608000L;
-			}
-
-			class47.method880(ViewportMouse.client, "document.cookie=\"" + var3 + "\"");
-		} catch (Throwable var15) {
 		}
 
 	}

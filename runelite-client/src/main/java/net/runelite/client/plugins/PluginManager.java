@@ -99,7 +99,7 @@ public class PluginManager
 		.getAnnotation(ConfigGroup.class).value();
 
 	@Inject
-	PluginWatcher pluginWatcher;
+	ExternalPluginLoader externalPluginLoader;
 
 	@Setter
 	boolean isOutdated;
@@ -126,11 +126,6 @@ public class PluginManager
 			eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
 			eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
 		}
-	}
-
-	public void watch()
-	{
-		pluginWatcher.start();
 	}
 
 	private void onSessionOpen(SessionOpen event)
@@ -208,6 +203,11 @@ public class PluginManager
 		{
 			configManager.setDefaultConfiguration(config, false);
 		}
+	}
+
+	public void loadExternalPlugins()
+	{
+		externalPluginLoader.scanAndLoad();
 	}
 
 	public void loadCorePlugins() throws IOException

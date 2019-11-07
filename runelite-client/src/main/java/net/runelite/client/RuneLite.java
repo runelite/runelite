@@ -59,6 +59,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
+import net.runelite.client.game.XpDropManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.menus.MenuManager;
@@ -150,6 +151,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<LootManager> lootManager;
+
+	@Inject
+	private Provider<XpDropManager> xpDropManager;
 
 	@Inject
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
@@ -323,19 +327,18 @@ public class RuneLite
 		}
 
 		// Load user configuration
-
 		RuneLiteSplashScreen.stage(.57, "Loading user config");
 		configManager.load();
 
 		// Load the session, including saved configuration
-		sessionManager.loadSession();
 		RuneLiteSplashScreen.stage(.58, "Loading session data");
-
-		// Begin watching for new plugins
-		pluginManager.watch();
+		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
+
+		// Load external plugins
+		pluginManager.loadExternalPlugins();
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -369,6 +372,7 @@ public class RuneLite
 			chatMessageManager.get();
 			commandManager.get();
 			lootManager.get();
+			xpDropManager.get();
 			chatboxPanelManager.get();
 
 			eventBus.subscribe(GameStateChanged.class, this, hooks::onGameStateChanged);

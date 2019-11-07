@@ -63,7 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
-import net.runelite.client.game.PvPValueBrokenItem;
+import net.runelite.client.game.ItemReclaimCost;
 import net.runelite.client.game.WorldLocation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -370,10 +370,10 @@ public class PlayerScouter extends Plugin
 				continue;
 			}
 
-			if (PvPValueBrokenItem.breaksOnDeath(id))
+			if (ItemReclaimCost.breaksOnDeath(id))
 			{
-				prices.put(id, itemManager.getBrokenValue(id));
-				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getBrokenValue(id));
+				prices.put(id, itemManager.getRepairValue(id));
+				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getRepairValue(id));
 				continue;
 			}
 
@@ -586,7 +586,6 @@ public class PlayerScouter extends Plugin
 
 		message(name, icon, image, fieldList, color);
 		player.setScouted(true);
-		fieldList.clear();
 	}
 
 	private void message(String name, String iconUrl, ThumbnailEmbed thumbnail, List<FieldEmbed> fields, String color)
@@ -602,25 +601,24 @@ public class PlayerScouter extends Plugin
 
 		final Date currentTime = new Date(System.currentTimeMillis());
 
-		DiscordEmbed discordEmbed = DiscordEmbed.builder()
-			.author(AuthorEmbed.builder()
+		DiscordEmbed discordEmbed = new DiscordEmbed(
+			AuthorEmbed.builder()
 				.icon_url(iconUrl)
 				.name(name)
-				.build())
-			.thumbnail(thumbnail)
-			.description(" ")
-			.fields(fields)
-			.footer(FooterEmbed.builder()
+				.build(),
+			thumbnail,
+			" ",
+			FooterEmbed.builder()
 				.icon_url("https://raw.githubusercontent.com/runelite/runelite/master/runelite-client/src/main/resources/net/runelite/client/plugins/hiscore/ultimate_ironman.png")
 				.text("Gabon Scouter | Time: " + SDF.format(currentTime))
-				.build())
-			.color(color)
-			.build();
+				.build(),
+			color,
+			fields
+		);
 
-		DiscordMessage discordMessage = new DiscordMessage("Gabon Scouter", " ", "https://i.imgur.com/2A6dr7q.png");
-		discordMessage.getEmbeds().add(discordEmbed);
+		DiscordMessage discordMessage = discordEmbed.toDiscordMessage("Gabon Scouter", " ", "https://i.imgur.com/2A6dr7q.png");
+
 		DISCORD_CLIENT.message(this.webhook, discordMessage);
-		fields.clear();
 	}
 
 	private String location(PlayerContainer player)

@@ -34,6 +34,7 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.attributes.annotation.SimpleElement;
 
 public class AnnotationCopier
 {
@@ -97,15 +98,12 @@ public class AnnotationCopier
 		{
 			if (!isType(a.getType()))
 				continue;
-			
-			Annotation a2 = new Annotation(an2);
-			a2.setType(a.getType());
+
+			Annotation a2 = new Annotation(a.getType());
 
 			for (Element element : a.getElements())
 			{
-				Element element2 = new Element(a2);
-				element2.setName(element.getName());
-				element2.setValue(element.getValue());
+				Element element2 = new SimpleElement(element.getName(), element.getValue());
 				a2.addElement(element2);
 			}
 

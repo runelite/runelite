@@ -1,39 +1,25 @@
 import java.util.HashMap;
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("go")
 public class class195 {
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Llp;"
-	)
-	@Export("options_buttons_0Sprite")
-	static IndexedSprite options_buttons_0Sprite;
+	@ObfuscatedName("d")
+	public static short[][] field2359;
 
 	static {
 		new HashMap();
 	}
 
-	@ObfuscatedName("jz")
+	@ObfuscatedName("ll")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1399038807"
+		signature = "(Lhi;I)I",
+		garbageValue = "-906497174"
 	)
-	@Export("FriendSystem_invalidateIgnoreds")
-	static final void FriendSystem_invalidateIgnoreds() {
-		Iterator var0 = Messages.Messages_hashTable.iterator();
-
-		while (var0.hasNext()) {
-			Message var1 = (Message)var0.next();
-			var1.clearIsFromIgnored();
-		}
-
-		if (Varps.clanChat != null) {
-			Varps.clanChat.invalidateIgnoreds();
-		}
-
+	@Export("getWidgetClickMask")
+	static int getWidgetClickMask(Widget var0) {
+		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get(((long)var0.id << 32) + (long)var0.childIndex);
+		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

@@ -58,7 +58,7 @@ public class ClientSessionManager
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.MINUTES, asynchronous = true)
-	private void ping()
+	public void ping()
 	{
 		if (sessionId == null)
 		{

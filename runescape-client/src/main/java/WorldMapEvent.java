@@ -4,42 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("au")
 @Implements("WorldMapEvent")
 public class WorldMapEvent {
 	@ObfuscatedName("a")
-	@ObfuscatedSignature(
-		signature = "Lhc;"
-	)
-	@Export("NetCache_currentResponse")
-	static NetFileRequest NetCache_currentResponse;
-	@ObfuscatedName("ek")
-	@ObfuscatedSignature(
-		signature = "Lie;"
-	)
-	@Export("archive20")
-	static Archive archive20;
-	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -133473401
+		intValue = 945320021
 	)
 	@Export("mapElement")
 	public int mapElement;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhf;"
 	)
 	@Export("coord1")
 	public Coord coord1;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhf;"
 	)
 	@Export("coord2")
 	public Coord coord2;
 
 	@ObfuscatedSignature(
-		signature = "(ILhb;Lhb;)V"
+		signature = "(ILhf;Lhf;)V"
 	)
 	public WorldMapEvent(int var1, Coord var2, Coord var3) {
 		this.mapElement = var1;
@@ -47,78 +35,17 @@ public class WorldMapEvent {
 		this.coord2 = var3;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("ga")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "1393398598"
+		signature = "(IIB)V",
+		garbageValue = "87"
 	)
-	static int method801(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
-			return 0;
-		} else if (var1 == -1) {
-			return 0;
-		} else {
-			int var3 = 0;
-
-			for (int var4 = 0; var4 < var2.quantities.length; ++var4) {
-				if (var2.ids[var4] == var1) {
-					var3 += var2.quantities[var4];
-				}
-			}
-
-			return var3;
+	@Export("playSoundJingle")
+	static void playSoundJingle(int var0, int var1) {
+		if (Client.musicVolume != 0 && var0 != -1) {
+			MusicPatchNode2.playMusicTrack(Decimator.archive11, var0, 0, Client.musicVolume, false);
+			Client.field855 = true;
 		}
-	}
 
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(BI)C",
-		garbageValue = "1512501229"
-	)
-	public static char method802(byte var0) {
-		int var1 = var0 & 255;
-		if (var1 == 0) {
-			throw new IllegalArgumentException("" + Integer.toString(var1, 16));
-		} else {
-			if (var1 >= 128 && var1 < 160) {
-				char var2 = class287.cp1252AsciiExtension[var1 - 128];
-				if (var2 == 0) {
-					var2 = '?';
-				}
-
-				var1 = var2;
-			}
-
-			return (char)var1;
-		}
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "782060885"
-	)
-	static final int method800(int var0, int var1) {
-		if (var0 == -2) {
-			return 12345678;
-		} else if (var0 == -1) {
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return var1;
-		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
-		}
 	}
 }

@@ -512,17 +512,6 @@ public class ClueScrollPlugin extends Plugin
 			return clue;
 		}
 
-		// (This|The) anagram reveals who to speak to next:
-		if (text.contains("anagram reveals who to speak to next:"))
-		{
-			return AnagramClue.forText(text);
-		}
-
-		if (text.startsWith("the cipher reveals who to speak to next:"))
-		{
-			return CipherClue.forText(text);
-		}
-
 		if (text.startsWith("i'd like to hear some music."))
 		{
 			return MusicClue.forText(clueScrollText.getText());
@@ -531,6 +520,18 @@ public class ClueScrollPlugin extends Plugin
 		if (text.contains("degrees") && text.contains("minutes"))
 		{
 			return coordinatesToWorldPoint(text);
+		}
+
+		final AnagramClue anagramClue = AnagramClue.forText(text);
+		if (anagramClue != null)
+		{
+			return anagramClue;
+		}
+
+		final CipherClue cipherClue = CipherClue.forText(text);
+		if (cipherClue != null)
+		{
+			return cipherClue;
 		}
 
 		final CrypticClue crypticClue = CrypticClue.forText(text);

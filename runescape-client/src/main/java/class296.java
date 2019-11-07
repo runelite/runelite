@@ -1,20 +1,35 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kb")
+@ObfuscatedName("ka")
 public final class class296 {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		longValue = 3603656264460916993L
+		longValue = 2084337511336446697L
 	)
-	static long field3688;
-	@ObfuscatedName("n")
+	static long field3684;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		longValue = 3509104245048020795L
+		longValue = 1232556563702335995L
 	)
-	static long field3689;
-	@ObfuscatedName("gn")
-	@Export("xteaKeys")
-	static int[][] xteaKeys;
+	static long field3683;
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		signature = "(IIB)Z",
+		garbageValue = "1"
+	)
+	static final boolean method5547(int var0, int var1) {
+		ObjectDefinition var2 = WorldMapDecorationType.getObjectDefinition(var0);
+		if (var1 == 11) {
+			var1 = 10;
+		}
+
+		if (var1 >= 5 && var1 <= 8) {
+			var1 = 4;
+		}
+
+		return var2.method4737(var1);
+	}
 }

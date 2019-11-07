@@ -316,7 +316,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 						graphics.setColor(previous);
 					}
 
-					if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
+					if (menuEntries == null && !client.isMenuOpen() && !client.isSpellSelected() && bounds.contains(mouse))
 					{
 						menuEntries = createRightClickMenuEntries(overlay);
 					}
@@ -502,6 +502,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		graphics.translate(point.x, point.y);
+		overlay.getBounds().setLocation(point);
 
 		final Dimension overlayDimension;
 		try
@@ -515,7 +516,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
-		overlay.setBounds(new Rectangle(point, dimension));
+		overlay.getBounds().setSize(dimension);
 	}
 
 	private boolean shouldInvalidateBounds()

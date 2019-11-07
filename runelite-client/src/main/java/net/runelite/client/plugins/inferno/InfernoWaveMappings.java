@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2019, Kyleeld <https://github.com/kyleeld>
- * Copyright (c) 2019, openosrs <https://openosrs.com>
+ * Copyright (c) 2019, RuneLitePlus <https://runelitepl.us>
  *
  * All rights reserved.
  *
@@ -28,18 +28,21 @@ package net.runelite.client.plugins.inferno;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.client.plugins.inferno.displaymodes.InfernoNamingDisplayMode;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class InfernoWaveMappings
 {
 	@Getter(AccessLevel.PACKAGE)
-	private static final ImmutableMap<Integer, int[]> waveMapping;
-
+	private static final Map<Integer, int[]> waveMapping;
 	@Getter(AccessLevel.PACKAGE)
-	private static final ImmutableMap<Integer, String> npcNameMapping;
+	private static final Map<Integer, String> npcNameMappingComplex;
+	@Getter(AccessLevel.PACKAGE)
+	private static final Map<Integer, String> npcNameMappingSimple;
 
 	static
 	{
@@ -108,30 +111,43 @@ class InfernoWaveMappings
 		waveMapBuilder.put(61, new int[]{32, 32, 32, 85, 165, 240, 370, 490});
 		waveMapBuilder.put(62, new int[]{32, 32, 32, 85, 85, 165, 240, 370, 490});
 		waveMapBuilder.put(63, new int[]{32, 32, 32, 165, 165, 240, 370, 490});
-		waveMapBuilder.put(64, new int[]{32, 32, 32, 85, 240, 240, 370, 490});
-		waveMapBuilder.put(65, new int[]{32, 32, 32, 85, 370, 370, 490});
-		waveMapBuilder.put(66, new int[]{32, 32, 32, 85, 490, 490});
+		waveMapBuilder.put(64, new int[]{32, 32, 32, 240, 240, 370, 490});
+		waveMapBuilder.put(65, new int[]{32, 32, 32, 370, 370, 490});
+		waveMapBuilder.put(66, new int[]{32, 32, 32, 490, 490});
 		waveMapBuilder.put(67, new int[]{900});
 		waveMapBuilder.put(68, new int[]{900, 900, 900});
 		waveMapBuilder.put(69, new int[]{1400});
 
 		waveMapping = waveMapBuilder.build();
 
-		ImmutableMap.Builder<Integer, String> nameMapBuilder = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, String> nameMapBuilderSimple = new ImmutableMap.Builder<>();
 
-		nameMapBuilder.put(32, "Jal-Nib - Level 32");
-		nameMapBuilder.put(85, "Jal-MejRah - Level 85");
-		nameMapBuilder.put(165, "Jal-Ak - Level 165");
-		nameMapBuilder.put(240, "Jal-ImKot - Level 240");
-		nameMapBuilder.put(370, "Jal-Xil - Level 370");
-		nameMapBuilder.put(490, "Jal-Zek - Level 490");
-		nameMapBuilder.put(900, "JalTok-Jad - Level 900");
-		nameMapBuilder.put(1400, "TzKal-Zuk - Level 1400");
+		nameMapBuilderSimple.put(32, "Nibbler");
+		nameMapBuilderSimple.put(85, "Bat");
+		nameMapBuilderSimple.put(165, "Blob");
+		nameMapBuilderSimple.put(240, "Meleer");
+		nameMapBuilderSimple.put(370, "Ranger");
+		nameMapBuilderSimple.put(490, "Mage");
+		nameMapBuilderSimple.put(900, "Jad");
+		nameMapBuilderSimple.put(1400, "Zuk");
 
-		npcNameMapping = nameMapBuilder.build();
+		npcNameMappingSimple = nameMapBuilderSimple.build();
+
+		ImmutableMap.Builder<Integer, String> nameMapBuilderComplex = new ImmutableMap.Builder<>();
+
+		nameMapBuilderComplex.put(32, "Jal-Nib");
+		nameMapBuilderComplex.put(85, "Jal-MejRah");
+		nameMapBuilderComplex.put(165, "Jal-Ak");
+		nameMapBuilderComplex.put(240, "Jal-ImKot");
+		nameMapBuilderComplex.put(370, "Jal-Xil");
+		nameMapBuilderComplex.put(490, "Jal-Zek");
+		nameMapBuilderComplex.put(900, "JalTok-Jad");
+		nameMapBuilderComplex.put(1400, "TzKal-Zuk");
+
+		npcNameMappingComplex = nameMapBuilderComplex.build();
 	}
 
-	static void addWaveComponent(PanelComponent panelComponent, String header, int wave, Color titleColor, Color color)
+	static void addWaveComponent(InfernoPlugin plugin, PanelComponent panelComponent, String header, int wave, Color titleColor, Color color)
 	{
 		int[] monsters = waveMapping.get(wave);
 
@@ -160,7 +176,23 @@ class InfernoWaveMappings
 
 			TitleComponent.TitleComponentBuilder builder = TitleComponent.builder();
 
-			builder.text(count + "x " + npcNameMapping.get(monsterType));
+			String npcNameText = "";
+
+			if (plugin.getNpcNaming() == InfernoNamingDisplayMode.SIMPLE)
+			{
+				npcNameText += npcNameMappingSimple.get(monsterType);
+			}
+			else
+			{
+				npcNameText += npcNameMappingComplex.get(monsterType);
+			}
+
+			if (plugin.isNpcLevels())
+			{
+				npcNameText += " (" + monsterType + ")";
+			}
+
+			builder.text(count + "x " + npcNameText);
 			builder.color(color);
 
 			panelComponent.getChildren().add(builder.build());

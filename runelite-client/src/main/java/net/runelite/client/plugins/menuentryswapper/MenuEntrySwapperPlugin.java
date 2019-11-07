@@ -578,7 +578,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		event.setMenuEntries(menu_entries.toArray(new MenuEntry[0]));
-		event.setModified(true);
+		event.setModified();
 	}
 
 	public void onMenuEntryAdded(MenuEntryAdded event)
@@ -601,8 +601,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			for (final String object : removedObjects)
 			{
 				if (target.equals(object)
-					|| hasArrow && target.endsWith(object)
-					|| targetLength > object.length() && target.startsWith(object))
+					|| hasArrow && target.endsWith(object))
 				{
 					client.setMenuOptionCount(client.getMenuOptionCount() - 1);
 					return;

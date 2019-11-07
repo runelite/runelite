@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.EnumSet;
+import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -202,7 +203,7 @@ public class IdleNotifierPluginTest
 	@Test
 	public void checkCombatReset()
 	{
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(GameTick.INSTANCE);
 		plugin.onInteractingChanged(new InteractingChanged(player, randomEvent));
@@ -216,7 +217,7 @@ public class IdleNotifierPluginTest
 	public void checkCombatLogout()
 	{
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onGameTick(GameTick.INSTANCE);
 
 		// Logout

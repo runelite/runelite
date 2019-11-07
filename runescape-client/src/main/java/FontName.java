@@ -2,57 +2,54 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("ko")
+@ObfuscatedName("kq")
 @Implements("FontName")
 public class FontName {
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_plain11")
 	public static final FontName FontName_plain11;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_plain12")
 	public static final FontName FontName_plain12;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_bold12")
 	public static final FontName FontName_bold12;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana11")
 	public static final FontName FontName_verdana11;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana13")
 	public static final FontName FontName_verdana13;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "Lko;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana15")
 	public static final FontName FontName_verdana15;
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "Llp;"
-	)
-	@Export("logoSprite")
-	static IndexedSprite logoSprite;
 	@ObfuscatedName("o")
-	@Export("Tiles_hueMultiplier")
-	static int[] Tiles_hueMultiplier;
-	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "Llx;"
+	)
+	@Export("rightTitleSprite")
+	static Sprite rightTitleSprite;
+	@ObfuscatedName("c")
 	@Export("name")
 	String name;
 
@@ -69,82 +66,125 @@ public class FontName {
 		this.name = var1;
 	}
 
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(B)[Lko;",
-		garbageValue = "-88"
-	)
-	public static FontName[] method5272() {
-		return new FontName[]{FontName_verdana13, FontName_bold12, FontName_verdana11, FontName_plain12, FontName_verdana15, FontName_plain11};
-	}
-
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "14"
+		signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
+		garbageValue = "703814886"
 	)
-	static void method5266() {
-		ItemContainer.itemContainers = new NodeHashTable(32);
-	}
-
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "(ILcu;ZI)I",
-		garbageValue = "-1537038267"
-	)
-	static int method5271(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? GrandExchangeOfferAgeComparator.field76 : KitDefinition.field3252;
-		if (var0 == ScriptOpcodes.CC_GETX) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.x;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETY) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.y;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.width;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.height;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.parentId;
-			return 1;
+	@Export("loadClassFromDescriptor")
+	static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
+		if (var0.equals("B")) {
+			return Byte.TYPE;
+		} else if (var0.equals("I")) {
+			return Integer.TYPE;
+		} else if (var0.equals("S")) {
+			return Short.TYPE;
+		} else if (var0.equals("J")) {
+			return Long.TYPE;
+		} else if (var0.equals("Z")) {
+			return Boolean.TYPE;
+		} else if (var0.equals("F")) {
+			return Float.TYPE;
+		} else if (var0.equals("D")) {
+			return Double.TYPE;
+		} else if (var0.equals("C")) {
+			return Character.TYPE;
 		} else {
-			return 2;
+			return var0.equals("void") ? Void.TYPE : Reflection.findClass(var0);
 		}
 	}
 
-	@ObfuscatedName("jr")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lbk;ZI)V",
-		garbageValue = "2027801614"
+		signature = "(II)V",
+		garbageValue = "348293638"
 	)
-	@Export("closeInterface")
-	static final void closeInterface(InterfaceParent var0, boolean var1) {
-		int var2 = var0.group;
-		int var3 = (int)var0.key;
-		var0.remove();
-		if (var1) {
-			InterfaceParent.method1192(var2);
+	@Export("clearItemContainer")
+	static void clearItemContainer(int var0) {
+		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var1 != null) {
+			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
+				var1.ids[var2] = -1;
+				var1.quantities[var2] = 0;
+			}
+
+		}
+	}
+
+	@ObfuscatedName("gh")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-837375180"
+	)
+	@Export("setWindowedMode")
+	static void setWindowedMode(int var0) {
+		Client.field736 = 0L;
+		if (var0 >= 2) {
+			Client.isResizable = true;
+		} else {
+			Client.isResizable = false;
 		}
 
-		for (IntegerNode var4 = (IntegerNode)Client.widgetClickMasks.first(); var4 != null; var4 = (IntegerNode)Client.widgetClickMasks.next()) {
-			if ((long)var2 == (var4.key >> 48 & 65535L)) {
-				var4.remove();
+		if (WallDecoration.getWindowedMode() == 1) {
+			WorldMapID.client.setMaxCanvasSize(765, 503);
+		} else {
+			WorldMapID.client.setMaxCanvasSize(7680, 2160);
+		}
+
+		if (Client.gameState >= 25) {
+			PacketBufferNode var1 = SoundSystem.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
+			var1.packetBuffer.writeByte(WallDecoration.getWindowedMode());
+			var1.packetBuffer.writeShort(class286.canvasWidth);
+			var1.packetBuffer.writeShort(FloorUnderlayDefinition.canvasHeight);
+			Client.packetWriter.addNode(var1);
+		}
+
+	}
+
+	@ObfuscatedName("hw")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1528266884"
+	)
+	static final void method5442() {
+		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
+			if (var0.plane == Player.Client_plane && !var0.isFinished) {
+				if (Client.cycle >= var0.cycleStart) {
+					var0.advance(Client.field693);
+					if (var0.isFinished) {
+						var0.remove();
+					} else {
+						WorldMapArea.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
+					}
+				}
+			} else {
+				var0.remove();
 			}
 		}
 
-		Widget var5 = Canvas.getWidget(var3);
-		if (var5 != null) {
-			WorldMapSectionType.invalidateWidget(var5);
-		}
+	}
 
-		SecureRandomFuture.method2138();
-		if (Client.rootInterface != -1) {
-			class40.runIntfCloseListeners(Client.rootInterface, 1);
+	@ObfuscatedName("lp")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1324423171"
+	)
+	static void method5443() {
+		if (Client.field645 && class215.localPlayer != null) {
+			int var0 = class215.localPlayer.pathX[0];
+			int var1 = class215.localPlayer.pathY[0];
+			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
+				return;
+			}
+
+			IgnoreList.oculusOrbFocalPointX = class215.localPlayer.x;
+			int var2 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Client_plane) - Client.camFollowHeight;
+			if (var2 < Tiles.field497) {
+				Tiles.field497 = var2;
+			}
+
+			AbstractArchive.oculusOrbFocalPointY = class215.localPlayer.y;
+			Client.field645 = false;
 		}
 
 	}

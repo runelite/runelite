@@ -3,10 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("ey")
 @Implements("UserComparator9")
 public class UserComparator9 extends AbstractUserComparator {
-	@ObfuscatedName("z")
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		signature = "Llw;"
+	)
+	@Export("titlebuttonSprite")
+	static IndexedSprite titlebuttonSprite;
+	@ObfuscatedName("a")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -14,10 +20,10 @@ public class UserComparator9 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Ljl;Ljl;B)I",
-		garbageValue = "35"
+		signature = "(Ljx;Ljx;B)I",
+		garbageValue = "-80"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -32,35 +38,47 @@ public class UserComparator9 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(IB)Liu;",
-		garbageValue = "46"
+		signature = "(II)I",
+		garbageValue = "-728098315"
 	)
-	@Export("FloorUnderlayDefinition_get")
-	public static FloorUnderlayDefinition FloorUnderlayDefinition_get(int var0) {
-		FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.FloorUnderlayDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
+	@Export("getVarbit")
+	public static int getVarbit(int var0) {
+		VarbitDefinition var2 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+		VarbitDefinition var1;
+		if (var2 != null) {
+			var1 = var2;
 		} else {
-			byte[] var2 = FloorUnderlayDefinition.FloorUnderlayDefinition_archive.takeFile(1, var0);
-			var1 = new FloorUnderlayDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2), var0);
+			byte[] var7 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
+			var2 = new VarbitDefinition();
+			if (var7 != null) {
+				var2.decode(new Buffer(var7));
 			}
 
-			var1.postDecode();
-			FloorUnderlayDefinition.FloorUnderlayDefinition_cached.put(var1, (long)var0);
-			return var1;
+			VarbitDefinition.VarbitDefinition_cached.put(var2, (long)var0);
+			var1 = var2;
 		}
+
+		int var3 = var1.baseVar;
+		int var4 = var1.startBit;
+		int var5 = var1.endBit;
+		int var6 = Varps.Varps_masks[var5 - var4];
+		return Varps.Varps_main[var3] >> var4 & var6;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("lc")
 	@ObfuscatedSignature(
-		signature = "(IS)I",
-		garbageValue = "-18305"
+		signature = "(Ljava/lang/String;S)V",
+		garbageValue = "11607"
 	)
-	public static int method3359(int var0) {
-		return var0 >> 17 & 7;
+	@Export("clanKickUser")
+	static final void clanKickUser(String var0) {
+		if (class4.clanChat != null) {
+			PacketBufferNode var1 = SoundSystem.getPacketBufferNode(ClientPacket.field2195, Client.packetWriter.isaacCipher);
+			var1.packetBuffer.writeByte(UserComparator6.stringCp1252NullTerminatedByteSize(var0));
+			var1.packetBuffer.writeStringCp1252NullTerminated(var0);
+			Client.packetWriter.addNode(var1);
+		}
 	}
 }

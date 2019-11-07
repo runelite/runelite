@@ -135,6 +135,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromFriendIsFiltered()
 	{
 		chatFilterPlugin.setFilterFriends(true);
+		when(client.isClanMember("Iron Mammal")).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
 
@@ -149,8 +150,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromClanIsFiltered()
 	{
-		lenient().when(client.isClanMember("B0aty")).thenReturn(true);
-		chatFilterPlugin.setFilterClan(true);
+		when(client.isFriended("B0aty", false)).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
 

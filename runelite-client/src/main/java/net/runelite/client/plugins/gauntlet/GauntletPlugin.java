@@ -43,6 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.HeadIcon;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.NpcID;
@@ -50,6 +51,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
+import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
@@ -58,6 +60,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileSpawned;
@@ -65,6 +68,8 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,7 +78,10 @@ import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.LIGHTNING;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.MAGIC;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.PRAYER;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.RANGE;
+import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Gauntlet",
@@ -104,7 +112,8 @@ public class GauntletPlugin extends Plugin
 		ObjectID.PHREN_ROOTS_36066, ObjectID.FISHING_SPOT_36068, ObjectID.FISHING_SPOT_35971, ObjectID.GRYM_ROOT, ObjectID.GRYM_ROOT_36070,
 		ObjectID.LINUM_TIRINUM, ObjectID.LINUM_TIRINUM_36072
 	);
-
+	private static final int GATHERING_HERB = 0;
+	private static final int GATHERING_CLOTH = 1;
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
@@ -138,6 +147,10 @@ public class GauntletPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	@Nullable
 	private Hunllef hunllef;
+	@Inject
+	private InfoBoxManager infoBoxManager;
+	@Inject
+	private ItemManager itemManager;
 	private boolean attackVisualOutline;
 	private boolean completeStartup = false;
 	private boolean displayTimerChat;
@@ -160,11 +173,24 @@ public class GauntletPlugin extends Plugin
 	private final Map<String, Integer> items = new HashMap<>();
 	private final Set<Missiles> projectiles = new HashSet<>();
 	private final Set<Resources> resources = new HashSet<>();
+
 	private GauntletConfig.CounterDisplay countAttacks;
 	private int resourceIconSize;
 	private Set<Tornado> tornadoes = new HashSet<>();
 	private int projectileIconSize;
-
+	private boolean displayResources;
+	private Counter oreCounter;
+	private Counter woodCounter;
+	private Counter clothCounter;
+	private Counter fishCounter;
+	private Counter herbCounter;
+	private int oresGathered;
+	private int woodGathered;
+	private int clothGathered;
+	private int fishGathered;
+	private int herbGathered;
+	private int currentFarmingAction = -1;
+	private boolean countersVisible = false;
 
 	@Provides
 	GauntletConfig getConfig(ConfigManager configManager)
@@ -177,6 +203,7 @@ public class GauntletPlugin extends Plugin
 	{
 		addSubscriptions();
 		updateConfig();
+		initializeCounters();
 		overlayManager.add(overlay);
 		overlayManager.add(infoboxoverlay);
 		overlayManager.add(GauntletCounter);
@@ -200,6 +227,47 @@ public class GauntletPlugin extends Plugin
 		}
 	}
 
+	private void addCounters()
+	{
+		if (!countersVisible)
+		{
+			infoBoxManager.addInfoBox(oreCounter);
+			infoBoxManager.addInfoBox(woodCounter);
+			infoBoxManager.addInfoBox(clothCounter);
+			infoBoxManager.addInfoBox(fishCounter);
+			infoBoxManager.addInfoBox(herbCounter);
+			countersVisible = true;
+		}
+	}
+
+	private void initializeCounters()
+	{
+		resetGatheringCounters();
+		oreCounter = new Counter(itemManager.getImage(ItemID.CORRUPTED_ORE), this, 0);
+		woodCounter = new Counter(itemManager.getImage(ItemID.PHREN_BARK_23878), this, 0);
+		clothCounter = new Counter(itemManager.getImage(ItemID.LINUM_TIRINUM_23876), this, 0);
+		fishCounter = new Counter(itemManager.getImage(ItemID.RAW_PADDLEFISH), this, 0);
+		herbCounter = new Counter(itemManager.getImage(ItemID.GRYM_LEAF_23875), this, 0);
+	}
+
+	private void resetGatheringCounters()
+	{
+		oresGathered = 0;
+		fishGathered = 0;
+		woodGathered = 0;
+		clothGathered = 0;
+		herbGathered = 0;
+	}
+
+	private void updateCounters()
+	{
+		oreCounter.setCount(oresGathered);
+		woodCounter.setCount(woodGathered);
+		clothCounter.setCount(clothGathered);
+		fishCounter.setCount(fishGathered);
+		herbCounter.setCount(herbGathered);
+	}
+
 	@Override
 	protected void shutDown()
 	{
@@ -213,10 +281,22 @@ public class GauntletPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(infoboxoverlay);
 		overlayManager.remove(GauntletCounter);
+		removeCounters();
+		resetGatheringCounters();
 		resources.clear();
 		projectiles.clear();
 		tornadoes.clear();
 		setHunllef(null);
+	}
+
+	private void removeCounters()
+	{
+		infoBoxManager.removeInfoBox(oreCounter);
+		infoBoxManager.removeInfoBox(woodCounter);
+		infoBoxManager.removeInfoBox(clothCounter);
+		infoBoxManager.removeInfoBox(fishCounter);
+		infoBoxManager.removeInfoBox(herbCounter);
+		countersVisible = false;
 	}
 
 	private void addSubscriptions()
@@ -231,6 +311,56 @@ public class GauntletPlugin extends Plugin
 		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
 		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
+		eventBus.subscribe(XpDropEvent.class, this, this::onXpDropEvent);
+		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
+		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+	}
+
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (menuOptionClicked.getTarget().toUpperCase().contains("LINUM"))
+		{
+			currentFarmingAction = GATHERING_CLOTH;
+		}
+		if (menuOptionClicked.getTarget().toUpperCase().contains("GRYM"))
+		{
+			currentFarmingAction = GATHERING_HERB;
+		}
+	}
+
+	private void onNpcLootReceived(NpcLootReceived npcLootReceived)
+	{
+		fishGathered += (int) npcLootReceived.getItems().stream().filter(item -> item.getId() == ItemID.RAW_PADDLEFISH).count();
+		herbGathered += (int) npcLootReceived.getItems().stream().filter(item -> item.getId() == ItemID.GRYM_LEAF || item.getId() == ItemID.GRYM_LEAF_23875).count();
+		updateCounters();
+	}
+
+	private void onXpDropEvent(XpDropEvent experienceChanged)
+	{
+		if (experienceChanged.getSkill().compareTo(Skill.MINING) == 0)
+		{
+			oresGathered++;
+		}
+		if (experienceChanged.getSkill().compareTo(Skill.WOODCUTTING) == 0)
+		{
+			woodGathered++;
+		}
+		if (experienceChanged.getSkill().compareTo(Skill.FARMING) == 0)
+		{
+			if (currentFarmingAction == GATHERING_HERB)
+			{
+				herbGathered++;
+			}
+			else if (currentFarmingAction == GATHERING_CLOTH)
+			{
+				clothGathered++;
+			}
+		}
+		if (experienceChanged.getSkill().compareTo(Skill.FISHING) == 0)
+		{
+			fishGathered++;
+		}
+		updateCounters();
 	}
 
 	private void onAnimationChanged(AnimationChanged event)
@@ -325,6 +455,18 @@ public class GauntletPlugin extends Plugin
 				timerVisible = false;
 			}
 		}
+
+		if (event.getKey().equals("displayResources"))
+		{
+			if (this.displayResources && this.startedGauntlet())
+			{
+				addCounters();
+			}
+			else
+			{
+				removeCounters();
+			}
+		}
 	}
 
 	private void onGameObjectDespawned(GameObjectDespawned event)
@@ -379,6 +521,7 @@ public class GauntletPlugin extends Plugin
 		if (HUNLLEF_NPC_IDS.contains(npc.getId()))
 		{
 			setHunllef(null);
+			resetGatheringCounters();
 		}
 		else if (TORNADO_NPC_IDS.contains(npc.getId()))
 		{
@@ -436,6 +579,14 @@ public class GauntletPlugin extends Plugin
 		{
 			timer.checkStates(true);
 		}
+		if (startedGauntlet() && displayResources)
+		{
+			addCounters();
+		}
+		else
+		{
+			removeCounters();
+		}
 	}
 
 	boolean fightingBoss()
@@ -468,5 +619,6 @@ public class GauntletPlugin extends Plugin
 		this.displayTimerChat = config.displayTimerChat();
 		this.attackVisualOutline = config.attackVisualOutline();
 		this.highlightPrayerInfobox = config.highlightPrayerInfobox();
+		this.displayResources = config.displayGatheredResources();
 	}
 }

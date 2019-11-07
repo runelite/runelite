@@ -24,7 +24,7 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
+import java.awt.Shape;
 import net.runelite.api.AnimationID;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
@@ -178,7 +178,7 @@ public abstract class RSNPCMixin implements RSNPC
 
 	@Inject
 	@Override
-	public Polygon getConvexHull()
+	public Shape getConvexHull()
 	{
 		RSModel model = getModel();
 		if (model == null)
@@ -192,6 +192,7 @@ public abstract class RSNPCMixin implements RSNPC
 			size * Perspective.LOCAL_HALF_TILE_SIZE - Perspective.LOCAL_HALF_TILE_SIZE + getY());
 
 		int tileHeight = Perspective.getTileHeight(client, tileHeightPoint, client.getPlane());
+
 		return model.getConvexHull(getX(), getY(), getOrientation(), tileHeight);
 	}
 }

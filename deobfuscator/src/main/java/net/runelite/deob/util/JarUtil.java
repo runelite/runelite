@@ -25,9 +25,11 @@
 package net.runelite.deob.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -65,6 +67,41 @@ public class JarUtil
 
 				InputStream is = jar.getInputStream(entry);
 
+				ClassReader reader = new ClassReader(is);
+				ClassFileVisitor cv = new ClassFileVisitor();
+
+				reader.accept(cv, ClassReader.SKIP_FRAMES);
+
+				group.addClass(cv.getClassFile());
+			}
+		}
+
+		group.initialize();
+
+		return group;
+	}
+
+	public static ClassFile loadClass(byte[] bytes)
+	{
+		ClassReader reader = new ClassReader(bytes);
+		ClassFileVisitor cv = new ClassFileVisitor();
+		reader.accept(cv, ClassReader.SKIP_FRAMES);
+		return cv.getClassFile();
+	}
+
+	public static ClassGroup loadClasses(Collection<File> files) throws IOException
+	{
+		final ClassGroup group = new ClassGroup();
+
+		for (File file : files)
+		{
+			if (!file.getName().endsWith(".class"))
+			{
+				continue;
+			}
+
+			try (InputStream is = new FileInputStream(file))
+			{
 				ClassReader reader = new ClassReader(is);
 				ClassFileVisitor cv = new ClassFileVisitor();
 

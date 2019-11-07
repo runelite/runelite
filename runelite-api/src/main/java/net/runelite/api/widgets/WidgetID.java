@@ -46,6 +46,8 @@ public class WidgetID
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int PLAYER_TRADE_SCREEN_GROUP_ID = 335;
+	public static final int PLAYER_TRADE_INVENTORY_GROUP_ID = 336;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
 	public static final int IGNORE_LIST_GROUP_ID = 432;
 	public static final int RAIDING_PARTY_GROUP_ID = 500;
@@ -53,7 +55,7 @@ public class WidgetID
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
-	public static final int DIARY_GROUP_ID = 259;
+	public static final int ACHIEVEMENT_DIARY_GROUP_ID = 259;
 	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int PEST_CONTROL_EXCHANGE_WINDOW_GROUP_ID = 243;
@@ -127,6 +129,7 @@ public class WidgetID
 	public static final int PERFORMERS_FOR_THE_THEATRE_GROUPS_GROUP_ID = 364;
 	public static final int PERFORMERS_FOR_THE_THEATRE_PLAYERS_GROUP_ID = 50;
 	public static final int FISHING_TRAWLER_GROUP_ID = 366;
+	public static final int FISHING_TRAWLER_REWARD_GROUP_ID = 367;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
 	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
@@ -157,6 +160,7 @@ public class WidgetID
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int JEWELLERY_BOX_GROUP_ID = 590;
+	public static final int OPTIONS_GROUP_ID = 261;
 
 	static class WorldMap
 	{
@@ -987,10 +991,10 @@ public class WidgetID
 		static final int SKULL = 56;  // OUTDATED?
 		static final int ATTACK_RANGE = 59;  // OUTDATED?
 		static final int BOUNTY_HUNTER_INFO = 6;
-		static final int KILLDEATH_RATIO = 33;
-		static final int SKULL_CONTAINER = 53;
-		static final int SAFE_ZONE = 55;
-		static final int WILDERNESS_LEVEL = 57; // this can also be the Deadman Mode "Protection" text
+		static final int KILLDEATH_RATIO = 34;
+		static final int SKULL_CONTAINER = 54;
+		static final int SAFE_ZONE = 56;
+		static final int WILDERNESS_LEVEL = 59; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
@@ -1164,5 +1168,22 @@ public class WidgetID
 		static final int SKIL_NECK = 5;
 		static final int RING_OFGP = 6;
 		static final int AMUL_GLOR = 7; // yes
+	}
+
+	static class Options
+	{
+		static final int MUSIC_SLIDER = 44;
+		static final int SOUND_EFFECT_SLIDER = 50;
+		static final int AREA_SOUND_SLIDER = 56;
+	}
+
+	static class AchievementDiary
+	{
+		static final int CONTAINER = 2;
+	}
+
+	static class Skills
+	{
+		static final int CONTAINER = 0;
 	}
 }

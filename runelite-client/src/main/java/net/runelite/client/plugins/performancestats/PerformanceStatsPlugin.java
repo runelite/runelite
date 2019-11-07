@@ -42,11 +42,11 @@ import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -165,7 +165,7 @@ public class PerformanceStatsPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(ExperienceChanged.class, this, this::onExperienceChanged);
+		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
@@ -207,7 +207,7 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	private void onExperienceChanged(ExperienceChanged c)
+	private void onStatChanged(StatChanged c)
 	{
 		if (isPaused() || hopping)
 		{

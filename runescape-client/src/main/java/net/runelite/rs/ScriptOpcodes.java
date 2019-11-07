@@ -428,6 +428,7 @@ public class ScriptOpcodes {
 	public static final int DOCHEAT = 5020;
 	public static final int CHAT_SETMESSAGEFILTER = 5021;
 	public static final int CHAT_GETMESSAGEFILTER = 5022;
+	public static final int DEBUGMES = 5023;
 	public static final int GETWINDOWMODE = 5306;
 	public static final int SETWINDOWMODE = 5307;
 	public static final int GETDEFAULTWINDOWMODE = 5308;

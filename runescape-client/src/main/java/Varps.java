@@ -1,24 +1,17 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hl")
+@ObfuscatedName("hj")
 @Implements("Varps")
 public class Varps {
-	@ObfuscatedName("pb")
-	@ObfuscatedSignature(
-		signature = "Ljk;"
-	)
-	@Export("clanChat")
-	static ClanChat clanChat;
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@Export("Varps_masks")
 	static int[] Varps_masks;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@Export("Varps_temp")
 	public static int[] Varps_temp;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("Varps_main")
 	public static int[] Varps_main;
 

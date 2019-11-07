@@ -311,7 +311,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), this.getHighlightColor);
 			event.setTarget(target);
-			event.setModified(true);
+			event.setModified();
 		}
 		else if (hotKeyPressed && type == MenuOpcode.EXAMINE_NPC.getId())
 		{
