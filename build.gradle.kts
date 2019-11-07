@@ -133,8 +133,8 @@ subprojects {
         withType<AbstractArchiveTask> {
             isPreserveFileTimestamps = false
             isReproducibleFileOrder = true
-            dirMode = 755
-            fileMode = 644
+            dirMode = 493
+            fileMode = 420
         }
     }
 }
