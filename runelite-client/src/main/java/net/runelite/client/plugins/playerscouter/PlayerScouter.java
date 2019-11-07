@@ -182,7 +182,7 @@ public class PlayerScouter extends Plugin
 
 		resetBlacklist();
 
-		if (!checkWildy() || playerContainer.isEmpty())
+		if (!checkWildy() || playerContainer.isEmpty() || this.webhook == null)
 		{
 			return;
 		}
