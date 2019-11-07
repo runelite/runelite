@@ -42,6 +42,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDefinitionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -87,29 +88,32 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
-	private boolean showBaby;
+	@Inject
+	private Notifier notifier;
+
+	private ImplingsConfig.ImplingMode showBaby;
 	private Color getBabyColor;
-	private boolean showYoung;
+	private ImplingsConfig.ImplingMode showYoung;
 	private Color getYoungColor;
-	private boolean showGourmet;
+	private ImplingsConfig.ImplingMode showGourmet;
 	private Color getGourmetColor;
-	private boolean showEarth;
+	private ImplingsConfig.ImplingMode showEarth;
 	private Color getEarthColor;
-	private boolean showEssence;
+	private ImplingsConfig.ImplingMode showEssence;
 	private Color getEssenceColor;
-	private boolean showEclectic;
+	private ImplingsConfig.ImplingMode showEclectic;
 	private Color getEclecticColor;
-	private boolean showNature;
+	private ImplingsConfig.ImplingMode showNature;
 	private Color getNatureColor;
-	private boolean showMagpie;
+	private ImplingsConfig.ImplingMode showMagpie;
 	private Color getMagpieColor;
-	private boolean showNinja;
+	private ImplingsConfig.ImplingMode showNinja;
 	private Color getNinjaColor;
-	private boolean showCrystal;
+	private ImplingsConfig.ImplingMode showCrystal;
 	private Color getCrystalColor;
-	private boolean showDragon;
+	private ImplingsConfig.ImplingMode showDragon;
 	private Color getDragonColor;
-	private boolean showLucky;
+	private ImplingsConfig.ImplingMode showLucky;
 	private Color getLuckyColor;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showSpawn;
@@ -193,6 +197,11 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+
 			implings.add(npc);
 		}
 	}
@@ -204,6 +213,11 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null && !implings.contains(npc))
 		{
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+
 			implings.add(npc);
 		}
 	}
@@ -237,10 +251,11 @@ public class ImplingsPlugin extends Plugin
 			return true;
 		}
 
-		return !showImplingType(impling.getImplingType());
+		ImplingsConfig.ImplingMode impMode = showImplingType(impling.getImplingType());
+		return impMode == ImplingsConfig.ImplingMode.HIGHLIGHT || impMode == ImplingsConfig.ImplingMode.NOTIFY;
 	}
 
-	boolean showImplingType(ImplingType implingType)
+	ImplingsConfig.ImplingMode showImplingType(ImplingType implingType)
 	{
 		switch (implingType)
 		{
@@ -269,7 +284,7 @@ public class ImplingsPlugin extends Plugin
 			case LUCKY:
 				return this.showLucky;
 			default:
-				return false;
+				return ImplingsConfig.ImplingMode.NONE;
 		}
 	}
 
