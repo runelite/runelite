@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Zakru, <https://github.com/Zakru>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +24,6 @@
  */
 package net.runelite.client.plugins.screenmarkers;
 
-import java.awt.Color;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,13 +31,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScreenMarker
+public class ScreenMarkerGroup
 {
 	private long id;
 	private String name;
-	private int borderThickness;
-	private Color color;
-	private Color fill;
 	private boolean visible;
-	private long group;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

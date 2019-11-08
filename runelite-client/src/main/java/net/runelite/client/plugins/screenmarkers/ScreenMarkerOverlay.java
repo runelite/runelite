@@ -40,6 +40,8 @@ public class ScreenMarkerOverlay extends Overlay
 	private final ScreenMarker marker;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
+	transient private ScreenMarkerPlugin plugin;
+
 	ScreenMarkerOverlay(ScreenMarker marker)
 	{
 		this.marker = marker;
@@ -47,6 +49,11 @@ public class ScreenMarkerOverlay extends Overlay
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
+	}
+
+	public void setPlugin(ScreenMarkerPlugin plugin)
+	{
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -58,7 +65,17 @@ public class ScreenMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!marker.isVisible())
+		ScreenMarkerGroup thisGroup = null;
+		for (ScreenMarkerGroup g : plugin.getScreenMarkerGroups())
+		{
+			if (g.getId() == marker.getGroup())
+			{
+				thisGroup = g;
+				break;
+			}
+		}
+
+		if (!marker.isVisible() || (thisGroup != null && !thisGroup.isVisible()))
 		{
 			return null;
 		}
