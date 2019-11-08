@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemReclaimCost;
 import static net.runelite.client.plugins.itemskeptondeath.ItemsKeptOnDeathPlugin.DeathItems;
@@ -59,6 +60,10 @@ public class ItemsKeptOnDeathPluginTest
 	@Mock
 	@Bind
 	private ItemManager itemManager;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	private ItemsKeptOnDeathPlugin plugin;

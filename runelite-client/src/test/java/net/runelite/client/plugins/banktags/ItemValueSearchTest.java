@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -109,6 +110,10 @@ public class ItemValueSearchTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Before
 	public void before()

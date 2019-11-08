@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -49,6 +50,10 @@ public class CerberusPluginTest
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	CerberusPlugin cerberusPlugin;
