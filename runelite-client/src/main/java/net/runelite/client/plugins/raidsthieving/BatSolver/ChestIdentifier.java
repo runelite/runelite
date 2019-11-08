@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.raidsthieving.BatSolver;
 
+import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Point;
 import net.runelite.client.plugins.raidsthieving.ThievingChest;
-import java.util.HashMap;
 
 public class ChestIdentifier
 {
@@ -251,7 +251,7 @@ public class ChestIdentifier
 
 	public void indentifyChest(ThievingChest chest)
 	{
-		int id = chestIds.get(chest.getInstancePoint());
+		int id = chestIds.getOrDefault(chest.getInstancePoint(), -1);
 		chest.setChestId(id);
 	}
 
