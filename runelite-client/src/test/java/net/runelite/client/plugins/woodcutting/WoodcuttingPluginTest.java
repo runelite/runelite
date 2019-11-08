@@ -154,7 +154,7 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	public void testDurationExpired()
+	public void testDurationExpired() throws Exception
 	{
 		when(woodcuttingConfig.statTimeout()).thenReturn(1);
 		WoodcuttingSession woodcuttingSession;
@@ -170,6 +170,7 @@ public class WoodcuttingPluginTest
 		assertNotNull(woodcuttingSession.getLastLogCut());
 
 		when(woodcuttingConfig.statTimeout()).thenReturn(0);
+		Thread.sleep(15);
 		woodcuttingPlugin.onGameTick(new GameTick());
 		woodcuttingSession = woodcuttingPlugin.getSession();
 		assertNull(woodcuttingSession);
