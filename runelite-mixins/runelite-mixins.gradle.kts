@@ -33,6 +33,8 @@ dependencies {
     implementation(project(":runescape-api"))
 }
 
-tasks.withType<JavaCompile> {
-    options.compilerArgs.addAll(arrayOf("-source", "7", "-Xlint:-unchecked"))
+tasks {
+    withType<JavaCompile> {
+        options.compilerArgs.addAll(arrayOf("-source", "7", "-Xlint:-unchecked"))
+    }
 }

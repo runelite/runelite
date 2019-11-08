@@ -27,6 +27,7 @@ package net.runelite.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import javax.annotation.Nullable;
 
 public class RuneLiteProperties
 {
@@ -40,7 +41,7 @@ public class RuneLiteProperties
 	private static final String GITHUB_LINK = "runelite.github.link";
 	private static final String WIKI_LINK = "runelite.wiki.link";
 	private static final String PATREON_LINK = "runelite.patreon.link";
-	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
+	private static final String LAUNCHER_VERSION_PROPERTY = "launcher.version";
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
@@ -128,5 +129,12 @@ public class RuneLiteProperties
 	public static String getDNSChangeLink()
 	{
 		return properties.getProperty(DNS_CHANGE_LINK);
+	}
+
+	@Nullable
+	public static String getLauncherVersion()
+	{
+		String launcherVersion = properties.getProperty(LAUNCHER_VERSION_PROPERTY);
+		return launcherVersion.equals("-1") ? null : launcherVersion;
 	}
 }
