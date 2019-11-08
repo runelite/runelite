@@ -210,7 +210,7 @@ public class VorkathPlugin extends Plugin
 
 	private void onProjectileSpawned(ProjectileSpawned event)
 	{
-		if (!isAtVorkath())
+		if (!isAtVorkath() || vorkath == null)
 		{
 			return;
 		}
@@ -410,6 +410,11 @@ public class VorkathPlugin extends Plugin
 	private void calculateAcidFreePath()
 	{
 		acidFreePath.clear();
+
+		if (vorkath == null)
+		{
+			return;
+		}
 
 		final int[][][] directions = {
 			{
