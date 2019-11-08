@@ -46,6 +46,7 @@ public class WidgetID
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int PLAYER_TRADE_CONFIRM_GROUP_ID = 334;
 	public static final int PLAYER_TRADE_SCREEN_GROUP_ID = 335;
 	public static final int PLAYER_TRADE_INVENTORY_GROUP_ID = 336;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
@@ -154,7 +155,6 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
-	public static final int TRADING_SCREEN = 335;
 	public static final int SEED_VAULT_GROUP_ID = 631;
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int LMS_GROUP_ID = 333;
@@ -1089,7 +1089,7 @@ public class WidgetID
 
 	public static class TradeScreen
 	{
-		public static final int SECOND_GROUP_ID = 334;
+		public static final int FIRST_TRADING_WITH = 31;
 		public static final int SECOND_TRADING_WITH = 30;
 		public static final int SECOND_MY_OFFER = 23;
 		public static final int SECOND_THEIR_OFFER = 24;

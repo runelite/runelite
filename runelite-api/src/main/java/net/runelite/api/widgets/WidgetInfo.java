@@ -782,7 +782,9 @@ public enum WidgetInfo
 
 	ACHIEVEMENT_DIARY_CONTAINER(WidgetID.ACHIEVEMENT_DIARY_GROUP_ID, WidgetID.AchievementDiary.CONTAINER),
 
-	SKILLS_CONTAINER(WidgetID.SKILLS_GROUP_ID, WidgetID.Skills.CONTAINER);
+	SKILLS_CONTAINER(WidgetID.SKILLS_GROUP_ID, WidgetID.Skills.CONTAINER),
+
+	TRADING_WITH(WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID, WidgetID.TradeScreen.FIRST_TRADING_WITH);
 
 	private final int groupId;
 	private final int childId;

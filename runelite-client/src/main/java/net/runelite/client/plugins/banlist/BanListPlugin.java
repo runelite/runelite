@@ -26,13 +26,9 @@
  */
 package net.runelite.client.plugins.banlist;
 
-import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,14 +37,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.TRADING_SCREEN;
+import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -66,6 +61,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
 	name = "Ban List",
@@ -83,16 +79,22 @@ public class BanListPlugin extends Plugin
 	private final Set<String> wdrToxicSet = new HashSet<>();
 	private final Set<String> runeWatchSet = new HashSet<>();
 	private final Set<String> manualBans = new HashSet<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private BanListConfig config;
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
 	@Inject
 	private EventBus eventBus;
+
 	private String tobNames = "";
 	private boolean enableWDRScam;
 	private boolean enableWDRToxic;
@@ -111,12 +113,9 @@ public class BanListPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-		List<String> bannedPlayers = Splitter
-			.on(",")
-			.trimResults()
-			.omitEmptyStrings()
-			.splitToList(config.getBannedPlayers());
-		manualBans.addAll(bannedPlayers);
+
+		manualBans.addAll(Text.fromCSV(Text.standardize(config.getBannedPlayers())));
+
 		fetchFromWebsites();
 	}
 
@@ -144,19 +143,11 @@ public class BanListPlugin extends Plugin
 	{
 		if (event.getGroup().equals("banlist") && event.getKey().equals("bannedPlayers"))
 		{
-			List<String> bannedPlayers = Splitter
-				.on(",")
-				.trimResults()
-				.omitEmptyStrings()
-				.splitToList(config.getBannedPlayers());
+			manualBans.clear();
 
-			for (String bannedPlayer : bannedPlayers)
-			{
-				if (!manualBans.contains(bannedPlayer))
-				{
-					manualBans.add(Text.standardize(bannedPlayer));
-				}
-			}
+			String newValue = event.getNewValue();
+
+			manualBans.addAll(Text.fromCSV(Text.standardize(newValue)));
 		}
 	}
 
@@ -224,11 +215,12 @@ public class BanListPlugin extends Plugin
 	 */
 	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (this.highlightInTrade && widgetLoaded.getGroupId() == TRADING_SCREEN)
+		if (this.highlightInTrade && widgetLoaded.getGroupId() == PLAYER_TRADE_SCREEN_GROUP_ID)
 		{ //if trading window was loaded
 			clientThread.invokeLater(() ->
 			{
-				Widget tradingWith = client.getWidget(335, 31);
+				Widget tradingWith = client.getWidget(WidgetInfo.TRADING_WITH);
+
 				String name = tradingWith.getText().replaceAll("Trading With: ", "").toLowerCase();
 				if (checkScamList(name) != null)
 				{
@@ -244,13 +236,12 @@ public class BanListPlugin extends Plugin
 
 	private void onGameTick(GameTick event)
 	{
-
-		if (client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY) == null)
+		final Widget raidingParty = client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY);
+		if (raidingParty == null)
 		{
 			return;
 		}
 
-		Widget raidingParty = client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY);
 		String allNames = raidingParty.getText();
 
 		if (allNames.equalsIgnoreCase(tobNames))
@@ -262,19 +253,20 @@ public class BanListPlugin extends Plugin
 
 		String[] split = allNames.split("<br>");
 
-		for (int i = 0; i < 5; i++)
+		for (String name : split)
 		{
-			String name = split[i];
-			if (!name.equalsIgnoreCase("-"))
+			if (!name.equals("-"))
 			{
-				ListType scamList = checkScamList(Text.standardize(name));
+				String stdName = Text.standardize(name);
+
+				ListType scamList = checkScamList(stdName);
 
 				if (scamList != null)
 				{
 					sendWarning(name, scamList);
 				}
 
-				ListType toxicList = checkToxicList(Text.standardize(name));
+				ListType toxicList = checkToxicList(stdName);
 
 				if (toxicList != null)
 				{
@@ -284,29 +276,22 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
-
-	boolean inTobParty()
-	{
-		return client.getVar(Varbits.THEATRE_OF_BLOOD) == 1;
-	}
-
-
 	/**
 	 * Compares player name to everything in the ban lists
 	 */
 	private ListType checkScamList(String nameToBeChecked)
 	{
-		if (wdrScamSet.size() > 0 && this.enableWDRScam && wdrScamSet.contains(nameToBeChecked))
+		if (this.enableWDRScam && wdrScamSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSSCAM_LIST;
 		}
 
-		if (runeWatchSet.size() > 0 && this.enableRuneWatch && runeWatchSet.contains(nameToBeChecked))
+		if (this.enableRuneWatch && runeWatchSet.contains(nameToBeChecked))
 		{
 			return ListType.RUNEWATCH_LIST;
 		}
 
-		if (manualBans.size() > 0 && manualBans.contains(nameToBeChecked))
+		if (manualBans.contains(nameToBeChecked))
 		{
 			return ListType.MANUAL_LIST;
 		}
@@ -316,8 +301,7 @@ public class BanListPlugin extends Plugin
 
 	private ListType checkToxicList(String nameToBeChecked)
 	{
-
-		if (wdrToxicSet.size() > 0 && this.enableWDRToxic && wdrToxicSet.contains(nameToBeChecked))
+		if (this.enableWDRToxic && wdrToxicSet.contains(nameToBeChecked))
 		{
 			return ListType.WEDORAIDSTOXIC_LIST;
 		}
@@ -393,29 +377,7 @@ public class BanListPlugin extends Plugin
 		Request request = new Request.Builder()
 			.url("https://wdrdev.github.io/index")
 			.build();
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.debug("error retrieving names from wdr");
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException
-			{
-				String text = response.body().string();
-				text = text.substring(text.indexOf("<p>") + 3, text.indexOf("</p>"));
-				text = text.replace("/", ",");
-				text = text.replace(", $", "");
-
-				ArrayList<String> wdrList = new ArrayList<>(Arrays.asList(text.split(",")));
-				ArrayList<String> wdrList2 = new ArrayList<>();
-				wdrList.forEach((name) -> wdrList2.add(Text.standardize(name).toLowerCase()));
-
-				wdrScamSet.addAll(wdrList2);
-			}
-		});
+		fetchAndParseWdr(request, wdrScamSet);
 
 
 		Request secondRequest = new Request.Builder()
@@ -424,13 +386,13 @@ public class BanListPlugin extends Plugin
 		RuneLiteAPI.CLIENT.newCall(secondRequest).enqueue(new Callback()
 		{
 			@Override
-			public void onFailure(Call call, IOException e)
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
 				log.debug("error retrieving names from runewatch");
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 			{
 				String text = response.body().string();
 				String mytext = text.substring(text.indexOf("lcp_instance_0"), text.indexOf("strong>Evidence Quality Suggestion"));
@@ -450,27 +412,28 @@ public class BanListPlugin extends Plugin
 		Request thirdRequest = new Request.Builder()
 			.url("https://wdrdev.github.io/toxic")
 			.build();
-		RuneLiteAPI.CLIENT.newCall(thirdRequest).enqueue(new Callback()
+		fetchAndParseWdr(thirdRequest, wdrToxicSet);
+	}
+
+	private void fetchAndParseWdr(Request req, Set<String> tgtSet)
+	{
+		RuneLiteAPI.CLIENT.newCall(req).enqueue(new Callback()
 		{
 			@Override
-			public void onFailure(Call call, IOException e)
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
 				log.debug("error retrieving names from wdr");
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 			{
 				String text = response.body().string();
 				text = text.substring(text.indexOf("<p>") + 3, text.indexOf("</p>"));
 				text = text.replace("/", ",");
 				text = text.replace(", $", "");
 
-				ArrayList<String> wdrToxicList = new ArrayList<>(Arrays.asList(text.split(",")));
-				ArrayList<String> wdrToxicList2 = new ArrayList<>();
-				wdrToxicList.forEach((name) -> wdrToxicList2.add(Text.standardize(name).toLowerCase()));
-
-				wdrToxicSet.addAll(wdrToxicList2);
+				Text.fromCSV(text).forEach(str -> tgtSet.add(Text.standardize(str)));
 			}
 		});
 	}
@@ -485,16 +448,15 @@ public class BanListPlugin extends Plugin
 			Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT_LIST);
 			for (Widget widgetChild : widget.getDynamicChildren())
 			{
-				ListType scamList = checkScamList(widgetChild.getText().toLowerCase());
-				ListType toxicList = checkToxicList(widgetChild.getText().toLowerCase());
+				String text = widgetChild.getText(), lc = text.toLowerCase();
 
-				if (scamList != null)
+				if (checkScamList(lc) != null)
 				{
-					widgetChild.setText("<col=ff0000>" + widgetChild.getText() + "</col>");
+					widgetChild.setText("<col=ff0000>" + text + "</col>");
 				}
-				else if (toxicList != null)
+				else if (checkToxicList(lc) != null)
 				{
-					widgetChild.setText("<col=ff6400>" + widgetChild.getText() + "</col>");
+					widgetChild.setText("<col=ff6400>" + text + "</col>");
 				}
 			}
 		});
