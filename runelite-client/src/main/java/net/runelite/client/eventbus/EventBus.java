@@ -53,10 +53,7 @@ public class EventBus implements EventBusInterface
 		Disposable disposable = getSubject(eventClass)
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
-			.subscribe(action, error ->
-			{
-				Sentry.capture(error);
-			});
+			.subscribe(action, Sentry::capture);
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);
@@ -75,10 +72,7 @@ public class EventBus implements EventBusInterface
 			.cast(eventClass) // Cast it for easier usage
 			.take(takeUntil)
 			.doFinally(() -> unregister(lifecycle))
-			.subscribe(action, error ->
-			{
-				Sentry.capture(error);
-			});
+			.subscribe(action, Sentry::capture);
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);
