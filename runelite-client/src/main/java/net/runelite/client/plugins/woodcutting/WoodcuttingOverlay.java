@@ -92,7 +92,7 @@ class WoodcuttingOverlay extends Overlay
 				.build());
 		}
 
-		int actions = session.getAmountCut();
+		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
 		if (actions > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()

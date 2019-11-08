@@ -25,11 +25,14 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -49,16 +52,21 @@ import javax.inject.Inject;
 @RunWith(MockitoJUnitRunner.class)
 public class WoodcuttingPluginTest
 {
-	private static final String[] WOODCUTTING_MESSAGES = {
-		"You get some logs.",
-		"You get some oak logs.",
-		"You get some willow logs.",
-		"You get some maple logs.",
-		"You get some yew logs.",
-		"You get some magic logs.",
-		"You get an arctic log.",
-		"You get some mushrooms."
-	};
+	private static final Map<String, Boolean> ALL_MESSAGES;
+
+	static
+	{
+		ImmutableMap.Builder<String, Boolean> map = ImmutableMap.builder();
+		map.put("You get some fake messages.", Boolean.FALSE);
+		map.put("You get some oak logs.", Boolean.TRUE);
+		map.put("Fake message that ends with logs.", Boolean.FALSE);
+		map.put("You get an arctic log.", Boolean.TRUE);
+		map.put("You get some logs.", Boolean.TRUE);
+		map.put("You get some maple logs.", Boolean.TRUE);
+		map.put("You get an awful headache.", Boolean.FALSE);
+
+		ALL_MESSAGES = map.build();
+	}
 
 	private static final String BIRDS_NEST_MESSAGE = "A bird's nest falls out of the tree.";
 
@@ -106,15 +114,26 @@ public class WoodcuttingPluginTest
 	@Test
 	public void testOnChatMessage()
 	{
-		for (final String MESSAGE : WOODCUTTING_MESSAGES)
-		{
-			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", MESSAGE, "", 0);
-			woodcuttingPlugin.onChatMessage(chatMessage);
-		}
+		WoodcuttingSession woodcuttingSession;
 
-		WoodcuttingSession woodcuttingSession = woodcuttingPlugin.getSession();
-		assertNotNull(woodcuttingSession);
-		assertEquals(WOODCUTTING_MESSAGES.length, woodcuttingSession.getAmountCut());
+		for (String message : ALL_MESSAGES.keySet())
+		{
+			// reset the plugin
+			woodcuttingPlugin = new WoodcuttingPlugin();
+			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", message, "", 0);
+			woodcuttingPlugin.onChatMessage(chatMessage);
+			woodcuttingSession = woodcuttingPlugin.getSession();
+
+			if (ALL_MESSAGES.get(message))
+			{
+				assertNotNull(woodcuttingSession);
+				assertNotNull(woodcuttingSession.getLastLogCut());
+			}
+			else
+			{
+				assertNull(woodcuttingSession);
+			}
+		}
 	}
 
 	@Test
@@ -129,5 +148,28 @@ public class WoodcuttingPluginTest
 		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
 		woodcuttingPlugin.onChatMessage(chatMessageEvent);
 		verifyNoMoreInteractions(notifier);
+	}
+
+	@Test
+	public void testDurationExpired()
+	{
+		when(woodcuttingConfig.statTimeout()).thenReturn(1);
+		WoodcuttingSession woodcuttingSession;
+
+		woodcuttingPlugin.onGameTick(new GameTick());
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some oak logs.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		woodcuttingSession = woodcuttingPlugin.getSession();
+		woodcuttingPlugin.onGameTick(new GameTick());
+
+		assertNotNull(woodcuttingSession);
+		assertNotNull(woodcuttingSession.getLastLogCut());
+
+		when(woodcuttingConfig.statTimeout()).thenReturn(0);
+		woodcuttingPlugin.onGameTick(new GameTick());
+		woodcuttingSession = woodcuttingPlugin.getSession();
+
+		assertNull(woodcuttingSession);
 	}
 }
