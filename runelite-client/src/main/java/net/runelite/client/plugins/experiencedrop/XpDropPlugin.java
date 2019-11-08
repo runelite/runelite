@@ -378,8 +378,6 @@ public class XpDropPlugin extends Plugin
 				final int exp = intStack[intStackSize - 1];
 				calculateDamageDealt(exp);
 			}
-
-			client.setIntStackSize(intStackSize - 2);
 		}
 		else if (eventName.equals("hpXpGained"))
 		{
