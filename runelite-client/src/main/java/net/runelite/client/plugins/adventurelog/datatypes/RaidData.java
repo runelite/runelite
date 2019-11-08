@@ -28,13 +28,13 @@ import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.runelite.http.api.adventurelog.LogData;
+import net.runelite.client.events.AdventureLogSubmission;
 import net.runelite.http.api.loottracker.GameItem;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RaidData extends LogData
+public class RaidData extends AdventureLogSubmission
 {
 	private int kc;
 	private boolean CM;

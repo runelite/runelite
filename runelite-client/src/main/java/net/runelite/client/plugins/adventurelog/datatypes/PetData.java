@@ -27,12 +27,12 @@ package net.runelite.client.plugins.adventurelog.datatypes;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.runelite.http.api.adventurelog.LogData;
+import net.runelite.client.events.AdventureLogSubmission;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PetData extends LogData
+public class PetData extends AdventureLogSubmission
 {
 	private int id;
 }

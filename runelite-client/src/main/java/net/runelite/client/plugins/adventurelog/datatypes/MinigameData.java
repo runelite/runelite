@@ -27,13 +27,13 @@ package net.runelite.client.plugins.adventurelog.datatypes;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.runelite.client.events.AdventureLogSubmission;
 import net.runelite.client.plugins.adventurelog.MinigameResults;
-import net.runelite.http.api.adventurelog.LogData;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MinigameData extends LogData
+public class MinigameData extends AdventureLogSubmission
 {
 	private String minigame;
 	private MinigameResults result; // Can be null for minigames that don't have win/lose

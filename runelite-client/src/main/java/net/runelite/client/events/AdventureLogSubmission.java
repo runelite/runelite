@@ -24,13 +24,6 @@
  */
 package net.runelite.client.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import net.runelite.http.api.adventurelog.LogData;
-
-@Data
-@AllArgsConstructor
 public class AdventureLogSubmission
 {
-	LogData data;
 }

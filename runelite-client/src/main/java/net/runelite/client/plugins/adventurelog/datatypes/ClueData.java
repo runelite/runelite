@@ -28,12 +28,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.runelite.api.Item;
-import net.runelite.http.api.adventurelog.LogData;
+import net.runelite.client.events.AdventureLogSubmission;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClueData extends LogData
+public class ClueData extends AdventureLogSubmission
 {
 	private String difficulty;
 	private Item[] drops;

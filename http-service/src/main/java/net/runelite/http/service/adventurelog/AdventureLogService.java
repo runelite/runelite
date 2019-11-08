@@ -110,8 +110,6 @@ public class AdventureLogService
 			.sort(descending("lastModTime")).limit(1).iterator();
 
 		long time = System.currentTimeMillis() / 1000;
-
-		List<Object> newEvents = new ArrayList<>();
 		
 		for (Object object : values)
 		{

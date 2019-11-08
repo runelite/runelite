@@ -27,12 +27,12 @@ package net.runelite.client.plugins.adventurelog.datatypes;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.runelite.http.api.adventurelog.LogData;
+import net.runelite.client.events.AdventureLogSubmission;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiaryCompletionData extends LogData
+public class DiaryCompletionData extends AdventureLogSubmission
 {
 	private String difficulty;
 	private String region;

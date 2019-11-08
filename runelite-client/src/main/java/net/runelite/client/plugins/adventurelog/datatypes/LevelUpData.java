@@ -28,12 +28,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.runelite.api.Skill;
-import net.runelite.http.api.adventurelog.LogData;
+import net.runelite.client.events.AdventureLogSubmission;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LevelUpData extends LogData
+public class LevelUpData extends AdventureLogSubmission
 {
 	private Skill skill;
 	private int level;
