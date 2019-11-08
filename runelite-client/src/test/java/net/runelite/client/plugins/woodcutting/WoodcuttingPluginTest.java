@@ -57,13 +57,13 @@ public class WoodcuttingPluginTest
 	static
 	{
 		ImmutableMap.Builder<String, Boolean> map = ImmutableMap.builder();
-		map.put("You get some fake messages.", Boolean.FALSE);
+		map.put("You swing your axe at the tree.", Boolean.FALSE);
 		map.put("You get some oak logs.", Boolean.TRUE);
-		map.put("Fake message that ends with logs.", Boolean.FALSE);
+		map.put("Logs cut from a willow tree.", Boolean.FALSE);
 		map.put("You get an arctic log.", Boolean.TRUE);
 		map.put("You get some logs.", Boolean.TRUE);
 		map.put("You get some maple logs.", Boolean.TRUE);
-		map.put("You get an awful headache.", Boolean.FALSE);
+		map.put("You get some mushrooms.", Boolean.TRUE);
 
 		ALL_MESSAGES = map.build();
 	}
@@ -169,7 +169,6 @@ public class WoodcuttingPluginTest
 		when(woodcuttingConfig.statTimeout()).thenReturn(0);
 		woodcuttingPlugin.onGameTick(new GameTick());
 		woodcuttingSession = woodcuttingPlugin.getSession();
-
 		assertNull(woodcuttingSession);
 	}
 }
