@@ -30,11 +30,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.http.api.chat.Duels;
+import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -207,5 +209,24 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return duels;
+	}
+
+	@PostMapping("/layout")
+	public void submitLayout(@RequestParam String name, @RequestBody LayoutRoom[] rooms)
+	{
+		chatService.setLayout(name, rooms);
+	}
+
+	@GetMapping("/layout")
+	public LayoutRoom[] getLayout(@RequestParam String name)
+	{
+		LayoutRoom[] layout = chatService.getLayout(name);
+
+		if (layout == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return layout;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.http.api.chat;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-@Getter
-enum RaidRoom
+public enum LayoutRoom
 {
-	START("Start", RoomType.START),
-	END("End", RoomType.END),
-	SCAVENGERS("Scavengers", RoomType.SCAVENGERS),
-	FARMING("Farming", RoomType.FARMING),
-	EMPTY("Empty", RoomType.EMPTY),
+	START,
+	END,
+	SCAVENGERS,
+	FARMING,
+	EMPTY,
 
-	TEKTON("Tekton", RoomType.COMBAT),
-	MUTTADILES("Muttadiles", RoomType.COMBAT),
-	GUARDIANS("Guardians", RoomType.COMBAT),
-	VESPULA("Vespula", RoomType.COMBAT),
-	SHAMANS("Shamans", RoomType.COMBAT),
-	VASA("Vasa", RoomType.COMBAT),
-	VANGUARDS("Vanguards", RoomType.COMBAT),
-	MYSTICS("Mystics", RoomType.COMBAT),
-	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
+	TEKTON,
+	MUTTADILES,
+	GUARDIANS,
+	VESPULA,
+	SHAMANS,
+	VASA,
+	VANGUARDS,
+	MYSTICS,
+	UNKNOWN_COMBAT,
 
-	CRABS("Crabs", RoomType.PUZZLE),
-	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
-	TIGHTROPE("Tightrope", RoomType.PUZZLE),
-	THIEVING("Thieving", RoomType.PUZZLE),
-	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
-
-	static final int ROOM_MAX_SIZE = 32;
-
-	private final String name;
-	private final RoomType type;
+	CRABS,
+	ICE_DEMON,
+	TIGHTROPE,
+	THIEVING,
+	UNKNOWN_PUZZLE;
 }
