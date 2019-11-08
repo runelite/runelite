@@ -192,7 +192,7 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void finishCreation(boolean aborted)
 	{
-		if (!aborted)
+		if (!aborted && currentMarker != null)
 		{
 			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
