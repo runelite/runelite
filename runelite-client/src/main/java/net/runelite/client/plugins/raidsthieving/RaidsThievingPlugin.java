@@ -176,7 +176,7 @@ public class RaidsThievingPlugin extends Plugin
 		if (obj.getId() == ObjectID.CHEST_29744 || obj.getId() == ObjectID.CHEST_29745)
 		{
 			ThievingChest chest = chests.get(obj.getWorldLocation());
-			if (solver != null && chest.getChestId() != -1)
+			if (solver != null && chest != null && chest.getChestId() != -1)
 			{
 				chest.setEverOpened(true);
 				solver.addGrubsChest(chest.getChestId());
