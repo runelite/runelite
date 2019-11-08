@@ -30,7 +30,6 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
