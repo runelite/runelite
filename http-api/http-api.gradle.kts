@@ -47,7 +47,7 @@ dependencies {
 }
 
 tasks {
-    "processResources"(ProcessResources::class) {
+    processResources {
         val tokens = mapOf(
                 "projectver" to ProjectVersions.rlVersion,
                 "rsver" to ProjectVersions.rsversion.toString(),

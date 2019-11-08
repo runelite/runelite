@@ -38,6 +38,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
@@ -87,6 +88,10 @@ public class ItemChargePluginTest
 	@Mock
 	@Bind
 	private ItemChargeConfig config;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	private ItemChargePlugin itemChargePlugin;

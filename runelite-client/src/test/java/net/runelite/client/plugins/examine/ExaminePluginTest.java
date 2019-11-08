@@ -38,6 +38,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.http.api.examine.ExamineClient;
 import org.junit.Before;
@@ -77,6 +78,10 @@ public class ExaminePluginTest
 	@Mock
 	@Bind
 	ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Before
 	public void before()

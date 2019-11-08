@@ -37,6 +37,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -62,6 +63,10 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	AttackStylesConfig attackConfig;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;

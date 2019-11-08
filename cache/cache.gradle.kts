@@ -52,7 +52,7 @@ dependencies {
 }
 
 tasks {
-    "processTestResources"(ProcessResources::class) {
+    processTestResources {
         val tokens = mapOf(
                 "rs.version" to ProjectVersions.rsversion.toString(),
                 "cache.version" to ProjectVersions.cacheversion.toString()

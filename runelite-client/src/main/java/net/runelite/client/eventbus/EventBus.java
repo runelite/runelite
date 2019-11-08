@@ -10,9 +10,12 @@ import io.sentry.Sentry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.Event;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.OpenOSRSConfig;
 
 @Slf4j
 @Singleton
@@ -21,6 +24,9 @@ public class EventBus implements EventBusInterface
 	private Map<Object, Object> subscriptionList = new HashMap<>();
 	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
 	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
+
+	@Inject
+	private OpenOSRSConfig openOSRSConfig;
 
 	@NonNull
 	private <T> Relay<Object> getSubject(Class<T> eventClass)
@@ -53,7 +59,15 @@ public class EventBus implements EventBusInterface
 		Disposable disposable = getSubject(eventClass)
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
-			.subscribe(action, Sentry::capture);
+			.subscribe(action, error ->
+			{
+				log.error("Exception in eventbus", error);
+
+				if (RuneLiteProperties.getLauncherVersion() != null && openOSRSConfig.shareLogs())
+				{
+					Sentry.capture(error);
+				}
+			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);
@@ -72,7 +86,15 @@ public class EventBus implements EventBusInterface
 			.cast(eventClass) // Cast it for easier usage
 			.take(takeUntil)
 			.doFinally(() -> unregister(lifecycle))
-			.subscribe(action, Sentry::capture);
+			.subscribe(action, error ->
+			{
+				log.error("Exception in eventbus", error);
+
+				if (RuneLiteProperties.getLauncherVersion() != null && openOSRSConfig.shareLogs())
+				{
+					Sentry.capture(error);
+				}
+			});
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);

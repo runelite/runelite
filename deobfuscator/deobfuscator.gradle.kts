@@ -59,7 +59,7 @@ tasks {
             "rs.client" to deobjars.find { it.name.startsWith("runescape-client") }.toString().replace("\\", "/")
     )
 
-    "processResources"(ProcessResources::class) {
+    processResources  {
         inputs.properties(tokens)
 
         from("src/main/resources") {
@@ -69,7 +69,7 @@ tasks {
         }
     }
 
-    "processTestResources"(ProcessResources::class) {
+    processTestResources {
         inputs.properties(tokens)
 
         from("src/test/resources") {
