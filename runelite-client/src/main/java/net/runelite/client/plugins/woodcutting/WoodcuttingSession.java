@@ -24,14 +24,21 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 import java.time.Instant;
 
 public class WoodcuttingSession
 {
+	@Getter(AccessLevel.PACKAGE)
+	private int amountCut;
+
 	private Instant lastLogCut;
 
 	public void setLastLogCut()
 	{
+		amountCut++;
 		lastLogCut = Instant.now();
 	}
 
