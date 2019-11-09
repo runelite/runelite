@@ -130,6 +130,8 @@ public class AdventureLogPlugin extends Plugin
 	private BossKillData currentBossData;
 	private EnumSet<WorldType> bossWorldTypes;
 	private Instant timeSinceLastBossKill;
+	private GameState previousGameState;
+	private boolean isFirstTick;
 	private final List<AdventureLogRecord> queuedLogs = new ArrayList<>();
 
 	@Override
@@ -226,11 +228,17 @@ public class AdventureLogPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN
-			&& hashedUsername == null)
+		if (event.getGameState() == GameState.LOADING)
 		{
-			previousPetsInInv = getPetsInInv();
-			hashUsername();
+			return;
+		}
+
+		// first LOGGED_IN gamestate the player logs in
+		if (event.getGameState() == GameState.LOGGED_IN
+			&& (previousGameState == GameState.LOGIN_SCREEN
+			|| previousGameState == GameState.LOGIN_SCREEN_AUTHENTICATOR))
+		{
+			isFirstTick = true;
 		}
 		else if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -238,6 +246,8 @@ public class AdventureLogPlugin extends Plugin
 			submitLogs();
 			hashedUsername = null;
 		}
+
+		previousGameState = event.getGameState();
 	}
 
 	@Subscribe
@@ -399,6 +409,19 @@ public class AdventureLogPlugin extends Plugin
 		submitLogs();
 	}
 
+	private void checkFirstTick()
+	{
+		if (!isFirstTick)
+		{
+			return;
+		}
+
+		isFirstTick = false;
+
+		previousPetsInInv = getPetsInInv();
+		hashUsername();
+	}
+
 	private void submitLogs()
 	{
 		synchronized (queuedLogs)
@@ -464,7 +487,7 @@ public class AdventureLogPlugin extends Plugin
 		HashFunction hf = Hashing.sha512();
 		HashCode hc = hf.newHasher().putString(client.getUsername(), Charset.defaultCharset()).hash();
 		hashedUsername = hc.toString();
-		configManager.setConfiguration("hash", client.getLocalPlayer().getName(), hashedUsername);
+		configManager.setConfiguration("displayname", hashedUsername, client.getLocalPlayer().getName());
 	}
 
 	private void reset()
