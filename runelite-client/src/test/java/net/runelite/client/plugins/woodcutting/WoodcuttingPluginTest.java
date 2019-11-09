@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -150,28 +149,5 @@ public class WoodcuttingPluginTest
 		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
 		woodcuttingPlugin.onChatMessage(chatMessageEvent);
 		verifyNoMoreInteractions(notifier);
-	}
-
-	@Test
-	public void testDurationExpired() throws Exception
-	{
-		when(woodcuttingConfig.statTimeout()).thenReturn(1);
-		WoodcuttingSession woodcuttingSession;
-
-		woodcuttingPlugin.onGameTick(new GameTick());
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some oak logs.", "", 0);
-		woodcuttingPlugin.onChatMessage(chatMessage);
-
-		woodcuttingSession = woodcuttingPlugin.getSession();
-		woodcuttingPlugin.onGameTick(new GameTick());
-
-		assertNotNull(woodcuttingSession);
-		assertNotNull(woodcuttingSession.getLastLogCut());
-
-		when(woodcuttingConfig.statTimeout()).thenReturn(0);
-		Thread.sleep(15);
-		woodcuttingPlugin.onGameTick(new GameTick());
-		woodcuttingSession = woodcuttingPlugin.getSession();
-		assertNull(woodcuttingSession);
 	}
 }
