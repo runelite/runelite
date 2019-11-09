@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.client.events;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import net.runelite.api.events.Event;
 
-@RequiredArgsConstructor
-@Getter
-enum RaidRoom
+/**
+ * An event where a configuration entry has been modified.
+ */
+@Data
+public class ConfigChanged implements Event
 {
-	START("Start", RoomType.START),
-	END("End", RoomType.END),
-	SCAVENGERS("Scavengers", RoomType.SCAVENGERS),
-	FARMING("Farming", RoomType.FARMING),
-	EMPTY("Empty", RoomType.EMPTY),
-
-	TEKTON("Tekton", RoomType.COMBAT),
-	MUTTADILES("Muttadiles", RoomType.COMBAT),
-	GUARDIANS("Guardians", RoomType.COMBAT),
-	VESPULA("Vespula", RoomType.COMBAT),
-	SHAMANS("Shamans", RoomType.COMBAT),
-	VASA("Vasa", RoomType.COMBAT),
-	VANGUARDS("Vanguards", RoomType.COMBAT),
-	MYSTICS("Mystics", RoomType.COMBAT),
-	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
-
-	CRABS("Crabs", RoomType.PUZZLE),
-	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
-	TIGHTROPE("Tightrope", RoomType.PUZZLE),
-	THIEVING("Thieving", RoomType.PUZZLE),
-	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
-
-	static final int ROOM_MAX_SIZE = 32;
-
-	private final String name;
-	private final RoomType type;
+	/**
+	 * The parent group for the key.
+	 * <p>
+	 * Typically set to the name of a plugin to prevent potential collisions
+	 * between other key values that may have the same name.
+	 */
+	private String group;
+	/**
+	 * The configuration key that has been modified.
+	 */
+	private String key;
+	/**
+	 * The previous value of the entry.
+	 */
+	private String oldValue;
+	/**
+	 * The new value of the entry, null if the entry has been unset.
+	 */
+	private String newValue;
 }

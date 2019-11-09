@@ -30,5 +30,6 @@
 	<suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]ScriptVarType[\./]" checks="[a-zA-Z0-9]*"/>
+	<suppress files="[\\/]RoomType[\./]" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]LayoutSolver[\./]" checks="[a-zA-Z0-9]*"/>
 </suppressions>
