@@ -471,7 +471,9 @@ public class SuppliesTrackerPlugin extends Plugin
 						thrownAmount = mainHandItem.getQuantity();
 						throwingAmmoLoaded = true;
 					}
-				}else{
+				}
+				else
+				{
 					throwingAmmoLoaded = false;
 				}
 			}
