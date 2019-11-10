@@ -27,12 +27,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import java.util.Date
 import java.text.SimpleDateFormat
 
-buildscript {
-    dependencies {
-        classpath(gradleApi())
-    }
-}
-
 plugins {
     id(Plugins.shadow.first) version Plugins.shadow.second
     java
@@ -119,8 +113,10 @@ tasks {
     }
 
     processResources {
+        finalizedBy("filterResources")
+    }
 
-
+    register<Copy>("filterResources") {
         val tokens = mapOf(
                 "project.version" to ProjectVersions.rlVersion,
                 "rs.version" to ProjectVersions.rsversion.toString(),
@@ -133,13 +129,14 @@ tasks {
 
         from("src/main/resources") {
             include("open.osrs.properties")
-
-            filter<ReplaceTokens>("tokens" to tokens)
         }
+        into("${buildDir}/resources/main")
+
+        filter(ReplaceTokens::class, "tokens" to tokens)
+        filteringCharset = "UTF-8"
     }
 
     jar {
-
         manifest {
             attributes(mutableMapOf("Main-Class" to "net.runelite.client.RuneLite"))
         }
@@ -147,5 +144,17 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("shaded")
+    }
+
+    withType<BootstrapTask> {
+        group = "openosrs"
+    }
+
+
+    register<JavaExec>("RuneLite.main()") {
+        group = "openosrs"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.client.RuneLite"
     }
 }

@@ -49,7 +49,7 @@ injector {
 }
 
 artifacts {
-    add("runtime", tasks.inject.get().output) {
+    add("runtimeOnly", tasks.inject.get().output) {
         builtBy(tasks.inject)
     }
 }

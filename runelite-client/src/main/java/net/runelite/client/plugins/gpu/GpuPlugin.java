@@ -1194,7 +1194,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDrawable.swapBuffers();
 		}
 		catch (GLException ignored)
-		{ }
+		{
+			// Ignore
+		}
 
 		drawManager.processDrawComplete(this::screenshot);
 	}

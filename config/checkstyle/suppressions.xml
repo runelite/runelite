@@ -24,11 +24,10 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <!DOCTYPE suppressions PUBLIC
-	"-//Checkstyle//DTD SuppressionFilter Configuration 1.1//EN"
-	"https://checkstyle.org/dtds/suppressions_1_1.dtd">
+	"-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+	"https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
 	<suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
-	<suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]ScriptVarType[\./]" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]RoomType[\./]" checks="[a-zA-Z0-9]*"/>
 	<suppress files="[\\/]LayoutSolver[\./]" checks="[a-zA-Z0-9]*"/>
