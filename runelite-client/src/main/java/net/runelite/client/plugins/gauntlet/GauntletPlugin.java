@@ -378,7 +378,7 @@ public class GauntletPlugin extends Plugin
 			final Player player = (Player) actor;
 			final int anim = player.getAnimation();
 
-			if (!player.getName().equals(client.getLocalPlayer().getName()) || anim == -1 || !PLAYER_ANIMATIONS.contains(anim))
+			if (player.getName() == null || client.getLocalPlayer() == null || !player.getName().equals(client.getLocalPlayer().getName()) || anim == -1 || !PLAYER_ANIMATIONS.contains(anim))
 			{
 				return;
 			}
