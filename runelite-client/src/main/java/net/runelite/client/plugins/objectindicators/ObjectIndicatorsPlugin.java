@@ -346,6 +346,12 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private void checkObjectPoints(TileObject object)
 	{
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+
+		if (worldPoint == null)
+		{
+			return;
+		}
+
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
@@ -445,6 +451,10 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		if (worldPoint == null)
+		{
+			return;
+		}
 		final int regionId = worldPoint.getRegionID();
 		final ObjectPoint point = new ObjectPoint(
 			name,

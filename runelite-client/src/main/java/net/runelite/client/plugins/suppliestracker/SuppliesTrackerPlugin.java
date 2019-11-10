@@ -472,6 +472,10 @@ public class SuppliesTrackerPlugin extends Plugin
 						throwingAmmoLoaded = true;
 					}
 				}
+				else
+				{
+					throwingAmmoLoaded = false;
+				}
 			}
 			//Ammo tracking
 			if (itemContainer.getItems().length > EQUIPMENT_AMMO_SLOT)

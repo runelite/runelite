@@ -336,6 +336,10 @@ public class GroundMarkerPlugin extends Plugin
 				return;
 			}
 			final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+			if (loc == null)
+			{
+				return;
+			}
 			final int regionId = loc.getRegionID();
 
 			for (int i = this.amount.toInt(); i > 0; i--)
@@ -418,6 +422,11 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
+
+		if (worldPoint == null)
+		{
+			return;
+		}
 
 		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), group);

@@ -186,7 +186,7 @@ public class MetronomePlugin extends Plugin
 
 		if ((++tickCounter + this.tickOffset) % this.tickCount == 0)
 		{
-			if (++tockCounter % this.tockNumber == 0 & this.enableTock)
+			if ((this.enableTock && this.tockNumber > 0) && ++tockCounter % this.tockNumber == 0)
 			{
 				if (tockClip == null)
 				{

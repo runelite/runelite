@@ -196,8 +196,19 @@ public class DamageCounterPlugin extends Plugin
 	//adding up the damage for the print message checks every tick(aka attack tick)
 	private void DamageCounting()
 	{
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
+
+		if (interacting.getName() == null)
+		{
+			return;
+		}
+
 		if (client.getGameState() == GameState.LOGGED_IN && interacting instanceof NPC)
 		{
 			String interactingName = interacting.getName();
@@ -229,8 +240,20 @@ public class DamageCounterPlugin extends Plugin
 	private void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = npc.getNpc();
-		double Percent = calculatePercent(WorldPoint.fromLocalInstance(client,
-			client.getLocalPlayer().getLocalLocation()).getRegionID());
+		if (client.getLocalPlayer() == null || actor.getName() == null)
+		{
+			return;
+		}
+
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		final int playerRegionID = worldPoint == null ? 0 : worldPoint.getRegionID();
+
+		if (playerRegionID == 0)
+		{
+			return;
+		}
+
+		double Percent = calculatePercent(playerRegionID);
 		if (actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375 && status)
 		{
 			DamagePrint(actor, Percent);
@@ -298,28 +321,28 @@ public class DamageCounterPlugin extends Plugin
 	{
 		int playerCount = getPlayers();
 		String MessageDamage;
-		if (playerCount >= 2 && playerCount <= 5) 
+		if (playerCount >= 2 && playerCount <= 5)
 		{
-			if (percent >= (2.0 / playerCount) * 100) 
+			if (percent >= (2.0 / playerCount) * 100)
 			{
 				MessageDamage = "[Exceptional performance] Damage dealt to " + actor.getName() + ": "
-						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
-			} 
-			else if (percent >= (1.0 / playerCount) * 100) 
+					+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+			}
+			else if (percent >= (1.0 / playerCount) * 100)
 			{
 				MessageDamage = "[Above-average performance] Damage dealt to " + actor.getName() + ": "
-						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
-			} 
-			else 
+					+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+			}
+			else
 			{
 				MessageDamage = "[Under performance] Damage dealt to " + actor.getName() + ": "
-						+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+					+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
 			}
 		}
-		else 
+		else
 		{
 			MessageDamage = "Damage dealt to " + actor.getName() + ": "
-					+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
+				+ DAMAGEFORMAT.format(DamageCount) + " (" + String.format("%.2f", percent) + "%)";
 		}
 
 		sendChatMessage(MessageDamage);
@@ -330,22 +353,26 @@ public class DamageCounterPlugin extends Plugin
 	public int getPlayers()
 	{
 		List<Player> players = client.getPlayers();
-		int numPlayers = players.size();
 
-		return numPlayers;
+		return players.size();
 	}
 
 	//whenever you have died in tob you will get a death message with damage
 	// made sure the message works at ToB area or else it will message every where
 	private void onLocalPlayerDeath(LocalPlayerDeath death)
 	{
-		String DeathMessage = "You have died! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
-			BossName + "!";
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
+		String DeathMessage = "You have died! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " + BossName + "!";
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
 		for (int value : ToB_Region)
 		{
-			if (WorldPoint.fromLocalInstance(client,
-				client.getLocalPlayer().getLocalLocation()).getRegionID() == value)
+			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+			final int playerRegionID = worldPoint == null ? 0 : worldPoint.getRegionID();
+			if (playerRegionID == value)
 			{
 				sendChatMessage(DeathMessage);
 				sendChatMessage(MessageTaken);
