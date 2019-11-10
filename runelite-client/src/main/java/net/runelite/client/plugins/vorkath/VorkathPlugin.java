@@ -519,8 +519,14 @@ public class VorkathPlugin extends Plugin
 
 		updateWooxWalkBar();
 
+		if (client.getLocalPlayer() == null || vorkath.getVorkath() == null)
+		{
+			return;
+		}
+
 		final WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
 		final WorldPoint vorkLoc = vorkath.getVorkath().getWorldLocation();
+
 		final int maxX = vorkLoc.getX() + 14;
 		final int minX = vorkLoc.getX() - 8;
 		final int baseX = playerLoc.getX();

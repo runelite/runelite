@@ -25,13 +25,14 @@
  */
 package net.runelite.api.coords;
 
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nullable;
 import lombok.Value;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
 
 /**
@@ -97,8 +98,8 @@ public class WorldPoint
 	 * Checks whether a tile is located in the current scene.
 	 *
 	 * @param client the client
-	 * @param x the tiles x coordinate
-	 * @param y the tiles y coordinate
+	 * @param x      the tiles x coordinate
+	 * @param y      the tiles y coordinate
 	 * @return true if the tile is in the scene, false otherwise
 	 */
 	public static boolean isInScene(Client client, int x, int y)
@@ -127,7 +128,7 @@ public class WorldPoint
 	 * Gets the coordinate of the tile that contains the passed local point.
 	 *
 	 * @param client the client
-	 * @param local the local coordinate
+	 * @param local  the local coordinate
 	 * @return the tile coordinate containing the local point
 	 */
 	public static WorldPoint fromLocal(Client client, LocalPoint local)
@@ -139,9 +140,9 @@ public class WorldPoint
 	 * Gets the coordinate of the tile that contains the passed local point.
 	 *
 	 * @param client the client
-	 * @param x the local x-axis coordinate
-	 * @param y the local x-axis coordinate
-	 * @param plane the plane
+	 * @param x      the local x-axis coordinate
+	 * @param y      the local x-axis coordinate
+	 * @param plane  the plane
 	 * @return the tile coordinate containing the local point
 	 */
 	public static WorldPoint fromLocal(Client client, int x, int y, int plane)
@@ -157,10 +158,11 @@ public class WorldPoint
 	 * Gets the coordinate of the tile that contains the passed local point,
 	 * accounting for instances.
 	 *
-	 * @param client the client
+	 * @param client     the client
 	 * @param localPoint the local coordinate
 	 * @return the tile coordinate containing the local point
 	 */
+	@Nullable
 	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint)
 	{
 		if (client.isInInstancedRegion())
@@ -172,6 +174,11 @@ public class WorldPoint
 			// get chunk from scene
 			int chunkX = sceneX / CHUNK_SIZE;
 			int chunkY = sceneY / CHUNK_SIZE;
+
+			if (chunkX >= 13 || chunkY >= 13)
+			{
+				return null;
+			}
 
 			// get the template chunk for the chunk
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
@@ -198,6 +205,7 @@ public class WorldPoint
 	/**
 	 * Get occurrences of a tile on the scene, accounting for instances. There may be
 	 * more than one if the same template chunk occurs more than once on the scene.
+	 *
 	 * @param client
 	 * @param worldPoint
 	 * @return
@@ -238,7 +246,7 @@ public class WorldPoint
 	/**
 	 * Rotate the coordinates in the chunk according to chunk rotation
 	 *
-	 * @param point point
+	 * @param point    point
 	 * @param rotation rotation
 	 * @return world point
 	 */
@@ -363,6 +371,7 @@ public class WorldPoint
 
 	/**
 	 * Checks if user in within certain zone specified by upper and lower bound
+	 *
 	 * @param lowerBound
 	 * @param upperBound
 	 * @param userLocation

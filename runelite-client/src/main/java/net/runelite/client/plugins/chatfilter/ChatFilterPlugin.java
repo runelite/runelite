@@ -28,9 +28,9 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -45,11 +45,11 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.api.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -68,7 +68,7 @@ public class ChatFilterPlugin extends Plugin
 	private static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
 
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
-	private final List<Pattern> filteredPatterns = new ArrayList<>();
+	private final List<Pattern> filteredPatterns = new CopyOnWriteArrayList<>();
 
 	@Inject
 	private Client client;
