@@ -44,18 +44,25 @@ import net.runelite.api.Point;
 import static net.runelite.api.ScriptID.MAGIC_SPELLBOOK_REDRAW;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.util.Text;
 import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.*;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTERED_BOUNDS;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTERED_SPELLS_PARENT;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTER_BUTTON;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTER_BUTTONS_PARENT;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTER_BUTTON_PARENT;
+import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTER_SECTION_PARENT;
+import static net.runelite.api.widgets.WidgetInfo.SPELL_TOOLTIP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
@@ -64,7 +71,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static net.runelite.client.util.MiscUtils.clamp;
-import net.runelite.api.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -387,6 +393,12 @@ public class SpellbookPlugin extends Plugin
 				break;
 			case "resizeSpell":
 				final int size = this.size;
+
+				if (size == 0)
+				{
+					return;
+				}
+
 				final int columns = clamp(FULL_WIDTH / size, 2, 3);
 
 				iStack[iStackSize - 2] = size;
@@ -726,6 +738,11 @@ public class SpellbookPlugin extends Plugin
 		for (final String str : unfiltereds)
 		{
 			boolean b;
+
+			if (str.length() == 0)
+			{
+				continue;
+			}
 
 			if (str.charAt(0) == '\"')
 			{

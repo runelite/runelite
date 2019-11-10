@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":runelite-api"))
     implementation(project(":runescape-api"))
 
-    runtime(Libraries.slf4jSimple)
+    runtimeOnly(Libraries.slf4jSimple)
 
     testImplementation(deobjars)
     testImplementation(Libraries.junit)
@@ -59,23 +59,35 @@ tasks {
             "rs.client" to deobjars.find { it.name.startsWith("runescape-client") }.toString().replace("\\", "/")
     )
 
-    "processResources"(ProcessResources::class) {
+    processResources  {
+        finalizedBy("filterResources")
+    }
+
+    register<Copy>("filterResources") {
         inputs.properties(tokens)
 
         from("src/main/resources") {
             include("deob.properties")
-
-            filter<ReplaceTokens>("tokens" to tokens)
         }
+        into("${buildDir}/resources/main")
+
+        filter(ReplaceTokens::class, "tokens" to tokens)
+        filteringCharset = "UTF-8"
     }
 
-    "processTestResources"(ProcessResources::class) {
+    processTestResources {
+        finalizedBy("filterTestResources")
+    }
+
+    register<Copy>("filterTestResources") {
         inputs.properties(tokens)
 
         from("src/test/resources") {
             include("deob-test.properties")
-
-            filter<ReplaceTokens>("tokens" to tokens)
         }
+        into("${buildDir}/resources/test")
+
+        filter(ReplaceTokens::class, "tokens" to tokens)
+        filteringCharset = "UTF-8"
     }
 }

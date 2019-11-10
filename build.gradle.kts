@@ -28,9 +28,8 @@ import org.ajoberstar.grgit.Grgit
 
 buildscript {
     repositories {
-        maven(url = "https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
         maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
-        mavenLocal()
     }
     dependencies {
         classpath(Plugins.grgitPlugin)
@@ -42,10 +41,10 @@ buildscript {
 plugins {
     id(Plugins.testLogger.first) version Plugins.testLogger.second apply false
     id(Plugins.versions.first) version Plugins.versions.second
-    id(Plugins.buildScan.first) version Plugins.buildScan.second
     id(Plugins.latestVersion.first) version Plugins.latestVersion.second
     id(Plugins.grgit.first) version Plugins.grgit.second
 
+    checkstyle
     application
 }
 
@@ -60,45 +59,37 @@ fun isNonStable(version: String): Boolean {
 }
 
 allprojects {
-    apply<JavaLibraryPlugin>()
-    apply<MavenPlugin>()
-    apply<MavenPublishPlugin>()
-
     group = "com.openosrs"
     version = ProjectVersions.rlVersion
+}
+
+subprojects {
+    repositories {
+        //mavenLocal()
+        jcenter()
+        maven(url = "https://mvnrepository.com/artifact")
+        maven(url = "https://repo.runelite.net")
+        maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
+        maven(url = "https://jitpack.io")
+    }
+
+    apply<JavaLibraryPlugin>()
+    apply<MavenPublishPlugin>()
+    apply(plugin = Plugins.testLogger.first)
 
     project.extra["gitCommit"] = localGitCommit
     project.extra["gitCommitShort"] = localGitCommitShort
 
     project.extra["rootPath"] = rootDir.toString().replace("\\", "/")
-}
-
-subprojects {
-    apply(plugin = Plugins.testLogger.first)
 
     if (this.name != "runescape-client") {
         apply(plugin = "checkstyle")
-        configure<CheckstyleExtension> {
-            sourceSets = setOf(project.sourceSets.main.get())
-            configFile = file("${rootDir}/checkstyle/checkstyle.xml")
-            configProperties = mapOf("suppressionFile" to file("${rootDir}/checkstyle/suppressions.xml"))
+
+        checkstyle {
             maxWarnings = 0
-            toolVersion = "6.4.1"
+            toolVersion = "8.25"
             isShowViolations = true
             isIgnoreFailures = false
-        }
-    }
-
-    repositories {
-        mavenLocal()
-
-        maven(url = "http://repo1.maven.org/maven2")
-        maven(url = "http://repo.runelite.net")
-        maven(url = "http://repo.maven.apache.org/maven2")
-        maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
-
-        if (System.getenv("NEXUS-URL") != null) {
-            maven(url = System.getenv("NEXUS-URL"))
         }
     }
 
@@ -120,6 +111,7 @@ subprojects {
         }
     }
 
+
     tasks {
         java {
             sourceCompatibility = JavaVersion.VERSION_1_8
@@ -136,6 +128,13 @@ subprojects {
             dirMode = 493
             fileMode = 420
         }
+
+        withType<Checkstyle> {
+            group = "verification"
+
+            exclude("**/ScriptVarType.java")
+            exclude("**/LayoutSolver.java")
+        }
     }
 }
 
@@ -145,6 +144,8 @@ application {
 
 tasks {
     named<JavaExec>("run") {
+        group = "openosrs"
+
         classpath = project(":runelite-client").sourceSets.main.get().runtimeClasspath
     }
 

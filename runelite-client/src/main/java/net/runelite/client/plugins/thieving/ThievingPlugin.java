@@ -40,12 +40,12 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -177,9 +177,8 @@ public class ThievingPlugin extends Plugin
 
 			session.updateLastThevingAction();
 			session.hasSucceeded();
-
 		}
-		else if (message.startsWith("You fail to pickpocket") || message.startsWith("You fail to pick-pocket") || message.startsWith("You fail to steal"))
+		else if (message.startsWith("You fail to pick") || message.startsWith("You fail to steal"))
 		{
 			if (session == null)
 			{

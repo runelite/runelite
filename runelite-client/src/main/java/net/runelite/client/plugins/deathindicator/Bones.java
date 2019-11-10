@@ -128,7 +128,7 @@ public class Bones
 
 	public boolean add(Bone bone)
 	{
-		if (this.map == null)
+		if (this.map == null || bone == null)
 		{
 			return false;
 		}

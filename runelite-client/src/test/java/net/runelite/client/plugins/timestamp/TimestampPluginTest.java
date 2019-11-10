@@ -30,7 +30,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.TimeZone;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.config.OpenOSRSConfig;
+import net.runelite.client.events.ConfigChanged;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +50,10 @@ public class TimestampPluginTest
 	@Mock
 	@Bind
 	TimestampConfig config;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	TimestampPlugin plugin;

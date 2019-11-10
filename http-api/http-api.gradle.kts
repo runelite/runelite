@@ -47,7 +47,11 @@ dependencies {
 }
 
 tasks {
-    "processResources"(ProcessResources::class) {
+    processResources {
+        finalizedBy("filterResources")
+    }
+
+    register<Copy>("filterResources") {
         val tokens = mapOf(
                 "projectver" to ProjectVersions.rlVersion,
                 "rsver" to ProjectVersions.rsversion.toString(),
@@ -58,8 +62,10 @@ tasks {
 
         from("src/main/resources") {
             include("runelite.properties")
-
-            filter<ReplaceTokens>("tokens" to tokens)
         }
+        into("${buildDir}/resources/main")
+
+        filter(ReplaceTokens::class, "tokens" to tokens)
+        filteringCharset = "UTF-8"
     }
 }

@@ -63,7 +63,7 @@ public class ImplingMinimapOverlay extends Overlay
 		{
 			Point impLocation = imp.getMinimapLocation();
 			Color color = plugin.npcToColor(imp);
-			if (plugin.showNpc(imp) || impLocation == null || color == null)
+			if (!plugin.showNpc(imp) || impLocation == null || color == null)
 			{
 				continue;
 			}

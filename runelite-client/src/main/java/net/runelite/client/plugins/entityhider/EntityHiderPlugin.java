@@ -27,23 +27,22 @@
 package net.runelite.client.plugins.entityhider;
 
 import com.google.inject.Provides;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Entity Hider",
@@ -91,13 +90,18 @@ public class EntityHiderPlugin extends Plugin
 		{
 			updateConfig();
 
+			if (event.getOldValue() == null || event.getNewValue() == null)
+			{
+				return;
+			}
+
 			if (event.getKey().equals("hideNPCsNames"))
 			{
 				List<String> oldList = Text.fromCSV(event.getOldValue());
 				List<String> newList = Text.fromCSV(event.getNewValue());
 
-				ArrayList<String> removed = oldList.stream().filter(s -> !newList.contains(s)).collect(Collectors.toCollection(ArrayList::new));
-				ArrayList<String> added = newList.stream().filter(s -> !oldList.contains(s)).collect(Collectors.toCollection(ArrayList::new));
+				List<String> removed = oldList.stream().filter(s -> !newList.contains(s)).collect(Collectors.toCollection(ArrayList::new));
+				List<String> added = newList.stream().filter(s -> !oldList.contains(s)).collect(Collectors.toCollection(ArrayList::new));
 
 				removed.forEach(client::removeHiddenNpcName);
 				added.forEach(client::addHiddenNpcName);
@@ -189,7 +193,8 @@ public class EntityHiderPlugin extends Plugin
 			return true;
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID();
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		final int playerRegionID = worldPoint == null ? 0 : worldPoint.getRegionID();
 
 		// 9520 = Castle Wars
 		return playerRegionID != 9520;

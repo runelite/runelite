@@ -43,7 +43,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -53,6 +52,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.plugins.Plugin;
@@ -378,8 +378,6 @@ public class XpDropPlugin extends Plugin
 				final int exp = intStack[intStackSize - 1];
 				calculateDamageDealt(exp);
 			}
-
-			client.setIntStackSize(intStackSize - 2);
 		}
 		else if (eventName.equals("hpXpGained"))
 		{

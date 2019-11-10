@@ -27,12 +27,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import java.util.Date
 import java.text.SimpleDateFormat
 
-buildscript {
-    dependencies {
-        classpath(gradleApi())
-    }
-}
-
 plugins {
     id(Plugins.shadow.first) version Plugins.shadow.second
     java
@@ -47,8 +41,8 @@ dependencies {
     annotationProcessor(Libraries.lombok)
 
     compileOnly(Libraries.javax)
-    compileOnly(Libraries.orangeExtensions)
     compileOnly(Libraries.lombok)
+    compileOnly(Libraries.orangeExtensions)
 
     implementation(Libraries.logback)
     implementation(Libraries.gson)
@@ -64,36 +58,30 @@ dependencies {
     implementation(Libraries.substance)
     implementation(Libraries.jopt)
     implementation(Libraries.apacheCommonsText)
-    implementation(Libraries.httpcore)
-    implementation(Libraries.httpmime)
     implementation(Libraries.plexus)
-    implementation(Libraries.javassist)
     implementation(Libraries.annotations)
     implementation(Libraries.jogampGluegen)
     implementation(Libraries.jogampJogl)
     implementation(Libraries.jooq)
     implementation(Libraries.jooqCodegen)
     implementation(Libraries.jooqMeta)
-    implementation(Libraries.asmTree)
+    implementation(Libraries.sentry)
     implementation(Libraries.slf4jApi)
-    implementation(Libraries.jclCore)
     implementation(project(":http-api"))
     implementation(project(":runelite-api"))
-    implementation(Libraries.jbsdiff) {
-        exclude(module = "xz")
-    }
     implementation(Libraries.naturalMouse)
-    runtime(Libraries.trident)
-    runtime(Libraries.jogampGluegenLinuxAmd64)
-    runtime(Libraries.jogampGluegenLinuxI586)
-    runtime(Libraries.jogampGluegenWindowsAmd64)
-    runtime(Libraries.jogampGluegenWindowsI586)
-    runtime(Libraries.jogampJoglLinuxAmd64)
-    runtime(Libraries.jogampJoglLinuxI586)
-    runtime(Libraries.jogampJoglWindowsAmd64)
-    runtime(Libraries.jogampJoglWindowsI586)
-    runtime(project(":injected-client"))
-    runtime(project(":runescape-api"))
+
+    runtimeOnly(Libraries.trident)
+    runtimeOnly(Libraries.jogampGluegenLinuxAmd64)
+    runtimeOnly(Libraries.jogampGluegenLinuxI586)
+    runtimeOnly(Libraries.jogampGluegenWindowsAmd64)
+    runtimeOnly(Libraries.jogampGluegenWindowsI586)
+    runtimeOnly(Libraries.jogampJoglLinuxAmd64)
+    runtimeOnly(Libraries.jogampJoglLinuxI586)
+    runtimeOnly(Libraries.jogampJoglWindowsAmd64)
+    runtimeOnly(Libraries.jogampJoglWindowsI586)
+    runtimeOnly(project(":injected-client"))
+    runtimeOnly(project(":runescape-api"))
 
     testAnnotationProcessor(Libraries.lombok)
 
@@ -112,27 +100,40 @@ fun formatDate(date: Date?) = with(date ?: Date()) {
     SimpleDateFormat("MM-dd-yyyy").format(this)
 }
 
+fun launcherVersion(): String {
+    if (project.hasProperty("releaseBuild")) {
+        return ProjectVersions.launcherVersion
+    }
+    return "-1"
+}
+
 tasks {
     build {
         finalizedBy("shadowJar")
     }
 
-    "processResources"(ProcessResources::class) {
+    processResources {
+        finalizedBy("filterResources")
+    }
+
+    register<Copy>("filterResources") {
         val tokens = mapOf(
                 "project.version" to ProjectVersions.rlVersion,
                 "rs.version" to ProjectVersions.rsversion.toString(),
                 "open.osrs.version" to ProjectVersions.openosrsVersion,
                 "open.osrs.builddate" to formatDate(Date()),
-                "launcher.version" to ProjectVersions.launcherVersion
+                "launcher.version" to launcherVersion()
         )
 
         inputs.properties(tokens)
 
         from("src/main/resources") {
             include("open.osrs.properties")
-
-            filter<ReplaceTokens>("tokens" to tokens)
         }
+        into("${buildDir}/resources/main")
+
+        filter(ReplaceTokens::class, "tokens" to tokens)
+        filteringCharset = "UTF-8"
     }
 
     jar {
@@ -143,5 +144,17 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("shaded")
+    }
+
+    withType<BootstrapTask> {
+        group = "openosrs"
+    }
+
+
+    register<JavaExec>("RuneLite.main()") {
+        group = "openosrs"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.client.RuneLite"
     }
 }

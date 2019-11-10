@@ -51,6 +51,29 @@ public interface OpenOSRSConfig extends Config
 	}
 
 	@ConfigTitleSection(
+		keyName = "logTitle",
+		name = "Error data",
+		description = "",
+		position = 1
+	)
+	default Title logTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "shareLogs",
+		name = "Anonymous error data",
+		description = "Share anonymous error data with the OpenOSRS developers",
+		titleSection = "logTitle"
+	)
+	default boolean shareLogs()
+	{
+		return true;
+	}
+
+	@ConfigTitleSection(
 		keyName = "pluginsTitle",
 		name = "Plugins",
 		description = "",

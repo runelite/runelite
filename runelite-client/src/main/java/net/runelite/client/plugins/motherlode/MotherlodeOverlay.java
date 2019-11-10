@@ -31,7 +31,9 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -45,6 +47,8 @@ class MotherlodeOverlay extends Overlay
 	private final MotherlodeSession motherlodeSession;
 	private final PanelComponent panelComponent = new PanelComponent();
 
+	static final String MINING_RESET = "Reset";
+
 	@Inject
 	MotherlodeOverlay(final MotherlodePlugin plugin, final MotherlodeSession motherlodeSession)
 	{
@@ -52,6 +56,7 @@ class MotherlodeOverlay extends Overlay
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, MINING_RESET, "Motherlode mine overlay"));
 	}
 
 	@Override

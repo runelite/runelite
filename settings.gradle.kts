@@ -25,6 +25,10 @@
 
 rootProject.name = "OpenOSRS"
 
+plugins {
+    id("com.gradle.enterprise").version("3.0")
+}
+
 include(":http-api")
 include(":cache")
 include(":runelite-api")

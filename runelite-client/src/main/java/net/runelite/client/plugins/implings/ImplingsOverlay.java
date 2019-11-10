@@ -76,7 +76,7 @@ public class ImplingsOverlay extends Overlay
 		for (NPC imp : implings)
 		{
 			Color color = plugin.npcToColor(imp);
-			if (plugin.showNpc(imp) || color == null)
+			if (!plugin.showNpc(imp) || color == null)
 			{
 				continue;
 			}
@@ -89,7 +89,7 @@ public class ImplingsOverlay extends Overlay
 		{
 			for (ImplingSpawn spawn : ImplingSpawn.values())
 			{
-				if (!plugin.showImplingType(spawn.getType()))
+				if (plugin.showImplingType(spawn.getType()) == ImplingsConfig.ImplingMode.NONE)
 				{
 					continue;
 				}

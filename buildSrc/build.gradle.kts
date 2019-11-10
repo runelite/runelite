@@ -28,7 +28,7 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
 }
 

@@ -55,7 +55,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -68,9 +67,11 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -78,7 +79,6 @@ import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.LIGHTNING;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.MAGIC;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.PRAYER;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.RANGE;
-import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -216,7 +216,8 @@ public class GauntletPlugin extends Plugin
 		if (client.getGameState() != GameState.STARTING && client.getGameState() != GameState.UNKNOWN)
 		{
 			completeStartup = false;
-			clientThread.invoke(() -> {
+			clientThread.invoke(() ->
+			{
 				timer.initStates();
 				completeStartup = true;
 			});
@@ -378,7 +379,7 @@ public class GauntletPlugin extends Plugin
 			final Player player = (Player) actor;
 			final int anim = player.getAnimation();
 
-			if (!player.getName().equals(client.getLocalPlayer().getName()) || anim == -1 || !PLAYER_ANIMATIONS.contains(anim))
+			if (player.getName() == null || client.getLocalPlayer() == null || !player.getName().equals(client.getLocalPlayer().getName()) || anim == -1 || !PLAYER_ANIMATIONS.contains(anim))
 			{
 				return;
 			}
