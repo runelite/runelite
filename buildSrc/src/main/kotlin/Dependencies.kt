@@ -44,7 +44,7 @@ object Plugins {
     val latestVersion = Pair("se.patrikerdes.use-latest-versions", "0.2.13")
     val grgit = Pair("org.ajoberstar.grgit", "4.0.0-rc.1")
     val jarTest = Pair("com.github.hauner.jarTest", "1.0.1")
-    val shadow = Pair("com.github.johnrengelman.shadow", "5.1.0")
+    val shadow = Pair("com.github.johnrengelman.shadow", "5.2.0")
 }
 
 object Libraries {
