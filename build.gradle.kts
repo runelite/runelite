@@ -122,6 +122,13 @@ subprojects {
             options.encoding = "UTF-8"
         }
 
+        withType<AbstractArchiveTask> {
+            isPreserveFileTimestamps = false
+            isReproducibleFileOrder = true
+            dirMode = 493
+            fileMode = 420
+        }
+
         withType<Checkstyle> {
             group = "verification"
 
