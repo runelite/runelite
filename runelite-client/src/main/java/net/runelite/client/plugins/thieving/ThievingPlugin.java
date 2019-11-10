@@ -177,9 +177,8 @@ public class ThievingPlugin extends Plugin
 
 			session.updateLastThevingAction();
 			session.hasSucceeded();
-
 		}
-		else if (message.startsWith("You fail to pickpocket") || message.startsWith("You fail to pick-pocket") || message.startsWith("You fail to steal"))
+		else if (message.startsWith("You fail to pick") || message.startsWith("You fail to steal"))
 		{
 			if (session == null)
 			{

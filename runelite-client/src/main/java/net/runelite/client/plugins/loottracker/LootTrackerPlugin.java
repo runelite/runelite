@@ -170,6 +170,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final String GAUNTLET_EVENT = "The Gauntlet";
 	private static final int GAUNTLET_LOBBY_REGION = 12127;
 
+	private static final String MASTER_FARMER_EVENT = "Master farmer";
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
@@ -939,6 +941,12 @@ public class LootTrackerPlugin extends Plugin
 			int killCount = Integer.parseInt(boss.group(2));
 			killCountMap.put(bossName.toUpperCase(), killCount);
 		}
+
+		if (chatMessage.equals("You pick the Master Farmer's pocket."))
+		{
+			eventType = MASTER_FARMER_EVENT;
+			takeInventorySnapshot();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1001,7 +1009,8 @@ public class LootTrackerPlugin extends Plugin
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| GAUNTLET_EVENT.equals(eventType)
-			|| WINTERTODT_EVENT.equals(eventType))
+			|| WINTERTODT_EVENT.equals(eventType)
+			|| MASTER_FARMER_EVENT.equals(eventType))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
