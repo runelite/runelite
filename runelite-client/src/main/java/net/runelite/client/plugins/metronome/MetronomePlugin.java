@@ -26,24 +26,24 @@
 package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
+import java.io.File;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.SoundEffectVolume;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.io.File;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.SoundEffectVolume;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -186,7 +186,7 @@ public class MetronomePlugin extends Plugin
 
 		if ((++tickCounter + this.tickOffset) % this.tickCount == 0)
 		{
-			if (++tockCounter % this.tockNumber == 0 & this.enableTock)
+			if ((this.enableTock && this.tockNumber > 0) && ++tockCounter % this.tockNumber == 0)
 			{
 				if (tockClip == null)
 				{

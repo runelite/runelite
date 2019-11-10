@@ -82,6 +82,7 @@ public enum BossTab
 	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, "Other"),
 	SARACHNIS("Sarachnis", ItemID.SRARACHA, "Other"),
 	THE_GAUNTLET("The Gauntlet", ItemID.YOUNGLLEF, "Other"),
+	ZALCANO("Zalcano", ItemID.SMOLCANO, "Other"),
 
 	// Skilling
 	WINTERTODT("Wintertodt", ItemID.PHOENIX, "Skilling"),

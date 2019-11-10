@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +23,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.raids;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-/**
- * An event where a configuration entry has been modified.
- */
-@Data
-public class ConfigChanged implements Event
+@AllArgsConstructor
+@Getter
+enum RoomType
 {
-	/**
-	 * The parent group for the key.
-	 * <p>
-	 * Typically set to the name of a plugin to prevent potential collisions
-	 * between other key values that may have the same name.
-	 */
-	private String group;
-	/**
-	 * The configuration key that has been modified.
-	 */
-	private String key;
-	/**
-	 * The previous value of the entry.
-	 */
-	private String oldValue;
-	/**
-	 * The new value of the entry, null if the entry has been unset.
-	 */
-	private String newValue;
+	START("Start", '#'),
+	END("End", '¤'),
+	SCAVENGERS("Scavengers", 'S'),
+	FARMING("Farming", 'F'),
+	EMPTY("Empty", ' '),
+	COMBAT("Combat", 'C'),
+	PUZZLE("Puzzle", 'P');
+
+	private final String name;
+	private final char code;
+
+	RaidRoom getUnsolvedRoom()
+	{
+		switch (this)
+		{
+			case START:
+				return RaidRoom.START;
+			case END:
+				return RaidRoom.END;
+			case SCAVENGERS:
+				return RaidRoom.SCAVENGERS;
+			case FARMING:
+				return RaidRoom.FARMING;
+			case COMBAT:
+				return RaidRoom.UNKNOWN_COMBAT;
+			case PUZZLE:
+				return RaidRoom.UNKNOWN_PUZZLE;
+			case EMPTY:
+			default:
+				return RaidRoom.EMPTY;
+		}
+	}
+
+	static RoomType fromCode(char code)
+	{
+		for (RoomType type : values())
+		{
+			if (type.getCode() == code)
+			{
+				return type;
+			}
+		}
+
+		return EMPTY;
+	}
 }

@@ -47,24 +47,24 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.api.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -336,6 +336,10 @@ public class GroundMarkerPlugin extends Plugin
 				return;
 			}
 			final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+			if (loc == null)
+			{
+				return;
+			}
 			final int regionId = loc.getRegionID();
 
 			for (int i = this.amount.toInt(); i > 0; i--)
@@ -418,6 +422,11 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
+
+		if (worldPoint == null)
+		{
+			return;
+		}
 
 		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), group);
