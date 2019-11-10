@@ -27,7 +27,6 @@ package net.runelite.http.service.adventurelog;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -40,30 +39,34 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import static com.mongodb.client.model.Sorts.descending;
 import com.mongodb.lang.Nullable;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.RuneLiteAPI;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdventureLogService
 {
 	// amount of events per document, this does not guarantee this size but it will be around this
-	private static final int BATCH_SIZE = 10;
+	private static final int BATCH_SIZE = 100;
 
 	// amount of days before deleting a document after it has last been updated
-	private static final int DOCUMENT_LIFESPAN = 180;
+	private static final int DOCUMENT_LIFESPAN = 90;
 
 	private static final int MAX_DEPTH = 8;
 	private static final int MAX_VALUE_LENGTH = 256;
-	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final MongoCollection<Document> mongoCollection;
 
@@ -75,6 +78,7 @@ public class AdventureLogService
 	{
 		MongoDatabase database = mongoClient.getDatabase(databaseName);
 		MongoCollection<Document> collection = database.getCollection("adventurelog");
+		collection.createIndex(Indexes.descending("expireAt"), new IndexOptions().expireAfter(0L, TimeUnit.SECONDS));
 		this.mongoCollection = collection;
 	}
 
@@ -130,6 +134,7 @@ public class AdventureLogService
 				values = Lists.newArrayList(Iterables.concat(values, events));
 				document.put("lastModTime", time);
 				document.put("batchSize", batchSize);
+				document.put("expireAt", Date.from(Instant.now().plus(DOCUMENT_LIFESPAN, ChronoUnit.DAYS)));
 				document.put("events", values);
 				mongoCollection.replaceOne(eq("_id", document.get("_id")), document);
 				return true;
@@ -141,28 +146,11 @@ public class AdventureLogService
 		document.put("lastModTime", time);
 		document.put("batchSize", values.size());
 		document.put("username", username);
+		document.put("expireAt", Date.from(Instant.now().plus(DOCUMENT_LIFESPAN, ChronoUnit.DAYS)));
 		document.put("events", values);
 		mongoCollection.insertOne(document);
 		return true;
 
-	}
-
-	@Scheduled(fixedDelay = 15 * 60 * 1000)
-	public void expire()
-	{
-		MongoCursor<Document> cursor =  mongoCollection.find().iterator();
-
-		long timeCutoff = System.currentTimeMillis() / 1000 - (DOCUMENT_LIFESPAN * 24 * 3600);
-
-		while (cursor.hasNext())
-		{
-			Document document = cursor.next();
-			long time = (Long) document.get("lastModTime");
-			if (time < timeCutoff)
-			{
-				mongoCollection.deleteOne(document);
-			}
-		}
 	}
 
 	@VisibleForTesting
@@ -227,5 +215,18 @@ public class AdventureLogService
 		}
 
 		return true;
+	}
+
+	private void changeExpireTime(int days)
+	{
+		MongoCursor<Document> cursor =  mongoCollection.find().iterator();
+
+		while (cursor.hasNext())
+		{
+			Document document = cursor.next();
+			long lastModTime = document.getLong("lastModTime");
+			Date newExpireDate = Date.from(Instant.ofEpochSecond(lastModTime).plus(days, ChronoUnit.DAYS));
+			document.put("expireAt", newExpireDate);
+		}
 	}
 }
