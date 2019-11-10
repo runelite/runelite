@@ -149,4 +149,12 @@ tasks {
     withType<BootstrapTask> {
         group = "openosrs"
     }
+
+
+    register<JavaExec>("RuneLite.main()") {
+        group = "openosrs"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.client.RuneLite"
+    }
 }
