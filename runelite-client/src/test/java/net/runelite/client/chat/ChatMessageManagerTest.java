@@ -35,7 +35,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.OpenOSRSConfig;
-import net.runelite.client.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

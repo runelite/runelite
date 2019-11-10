@@ -99,7 +99,8 @@ class NotesPanel extends PluginPanel
 	private void buildAddTab()
 	{
 		addTab = new MaterialTab(addIcon, tabGroup, new JPanel());
-		addTab.setOnSelectEvent(() -> {
+		addTab.setOnSelectEvent(() ->
+		{
 			notesManager.addPage();
 			return false;
 		});
@@ -178,7 +179,8 @@ class NotesPanel extends PluginPanel
 		final JMenuItem deleteMenuItem = new JMenuItem();
 		deleteMenuItem.setText(String.format("Delete note %s", name));
 
-		deleteMenuItem.addActionListener(e -> {
+		deleteMenuItem.addActionListener(e ->
+		{
 			if (JOptionPane.showConfirmDialog(getRootFrame(), String.format("Delete note page %s?", name), "Notes", YES_NO_OPTION) != YES_OPTION)
 			{
 				return;

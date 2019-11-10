@@ -23,11 +23,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-repositories {
-    mavenCentral()
-    maven(url = "https://jitpack.io")
-}
-
 description = "RuneLite Wiki scraper"
 
 dependencies {
@@ -50,18 +45,24 @@ dependencies {
 
 tasks {
     register<JavaExec>("npcStatsScrape") {
+        group = "openosrs"
+
         classpath = project.sourceSets.main.get().runtimeClasspath
         main = "net.runelite.data.App"
         args(listOf("npcStats", rootProject.file("./runelite-client/src/main/resources/").absolutePath))
     }
 
     register<JavaExec>("itemStatsScrape") {
+        group = "openosrs"
+
         classpath = project.sourceSets.main.get().runtimeClasspath
         main = "net.runelite.data.App"
         args(listOf("itemStats", rootProject.file("./runelite-client/src/main/resources/").absolutePath))
     }
 
     register<JavaExec>("itemLimitsScrape") {
+        group = "openosrs"
+
         classpath = project.sourceSets.main.get().runtimeClasspath
         main = "net.runelite.data.App"
         args(listOf("itemLimits", rootProject.file("./runelite-client/src/main/resources/").absolutePath))
