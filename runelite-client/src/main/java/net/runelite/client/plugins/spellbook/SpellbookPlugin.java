@@ -387,6 +387,12 @@ public class SpellbookPlugin extends Plugin
 				break;
 			case "resizeSpell":
 				final int size = this.size;
+
+				if (size == 0)
+				{
+					return;
+				}
+
 				final int columns = clamp(FULL_WIDTH / size, 2, 3);
 
 				iStack[iStackSize - 2] = size;
@@ -726,6 +732,11 @@ public class SpellbookPlugin extends Plugin
 		for (final String str : unfiltereds)
 		{
 			boolean b;
+
+			if (str.length() == 0)
+			{
+				continue;
+			}
 
 			if (str.charAt(0) == '\"')
 			{
