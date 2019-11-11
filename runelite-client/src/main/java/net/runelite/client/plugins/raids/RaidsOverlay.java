@@ -125,37 +125,41 @@ public class RaidsOverlay extends Overlay
 			{
 				case COMBAT:
 					bossCount++;
-					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
 							|| config.enableRotationWhitelist() && bossCount > bossMatches)
 					{
 						color = Color.RED;
 					}
 
+					String name = room == RaidRoom.UNKNOWN_COMBAT ? "Unknown" : room.getName();
+
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
-						.right(room.getBoss().getName())
+						.right(name)
 						.rightColor(color)
 						.build());
 
 					break;
 
 				case PUZZLE:
-					if (plugin.getRoomWhitelist().contains(room.getPuzzle().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.RED;
 					}
 
+					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
+
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
-						.right(room.getPuzzle().getName())
+						.right(name)
 						.rightColor(color)
 						.build());
 					break;

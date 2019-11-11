@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.http.api.chat;
 
-import lombok.Data;
-
-/**
- * An event where a configuration entry has been modified.
- */
-@Data
-public class ConfigChanged
+public enum LayoutRoom
 {
-	/**
-	 * The parent group for the key.
-	 * <p>
-	 * Typically set to the name of a plugin to prevent potential collisions
-	 * between other key values that may have the same name.
-	 */
-	private String group;
-	/**
-	 * The configuration key that has been modified.
-	 */
-	private String key;
-	/**
-	 * The previous value of the entry.
-	 */
-	private String oldValue;
-	/**
-	 * The new value of the entry, null if the entry has been unset.
-	 */
-	private String newValue;
+	START,
+	END,
+	SCAVENGERS,
+	FARMING,
+	EMPTY,
+
+	TEKTON,
+	MUTTADILES,
+	GUARDIANS,
+	VESPULA,
+	SHAMANS,
+	VASA,
+	VANGUARDS,
+	MYSTICS,
+	UNKNOWN_COMBAT,
+
+	CRABS,
+	ICE_DEMON,
+	TIGHTROPE,
+	THIEVING,
+	UNKNOWN_PUZZLE;
 }

@@ -22,58 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids.solver;
+package net.runelite.client.plugins.raids;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import net.runelite.client.plugins.raids.RaidRoom;
-import net.runelite.client.plugins.raids.RaidRoom.Boss;
+import java.util.List;
+import static net.runelite.client.plugins.raids.RaidRoom.GUARDIANS;
+import static net.runelite.client.plugins.raids.RaidRoom.MUTTADILES;
+import static net.runelite.client.plugins.raids.RaidRoom.MYSTICS;
+import static net.runelite.client.plugins.raids.RaidRoom.SHAMANS;
+import static net.runelite.client.plugins.raids.RaidRoom.TEKTON;
+import static net.runelite.client.plugins.raids.RaidRoom.UNKNOWN_COMBAT;
+import static net.runelite.client.plugins.raids.RaidRoom.VANGUARDS;
+import static net.runelite.client.plugins.raids.RaidRoom.VASA;
+import static net.runelite.client.plugins.raids.RaidRoom.VESPULA;
 
-public class RotationSolver
+class RotationSolver
 {
-	private static class Rotation<E> extends ArrayList<E>
-	{
-		Rotation(Collection<? extends E> bosses)
+	private static final List[] ROTATIONS =
 		{
-			super(bosses);
-		}
+			Arrays.asList(TEKTON, VASA, GUARDIANS, MYSTICS, SHAMANS, MUTTADILES, VANGUARDS, VESPULA),
+			Arrays.asList(TEKTON, MUTTADILES, GUARDIANS, VESPULA, SHAMANS, VASA, VANGUARDS, MYSTICS),
+			Arrays.asList(VESPULA, VANGUARDS, MUTTADILES, SHAMANS, MYSTICS, GUARDIANS, VASA, TEKTON),
+			Arrays.asList(MYSTICS, VANGUARDS, VASA, SHAMANS, VESPULA, GUARDIANS, MUTTADILES, TEKTON)
+		};
 
-		@Override
-		public E get(int index)
-		{
-			if (index < 0)
-			{
-				index = index + size();
-			}
-
-			return super.get(index % size());
-		}
-	}
-
-	private static final Rotation[] ROTATIONS =
-	{
-			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.VASA, Boss.GUARDIANS, Boss.MYSTICS, Boss.SHAMANS, Boss.MUTTADILES, Boss.VANGUARDS, Boss.VESPULA)),
-			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.MUTTADILES, Boss.GUARDIANS, Boss.VESPULA, Boss.SHAMANS, Boss.VASA, Boss.VANGUARDS, Boss.MYSTICS)),
-			new Rotation<>(Arrays.asList(Boss.VESPULA, Boss.VANGUARDS, Boss.MUTTADILES, Boss.SHAMANS, Boss.MYSTICS, Boss.GUARDIANS, Boss.VASA, Boss.TEKTON)),
-			new Rotation<>(Arrays.asList(Boss.MYSTICS, Boss.VANGUARDS, Boss.VASA, Boss.SHAMANS, Boss.VESPULA, Boss.GUARDIANS, Boss.MUTTADILES, Boss.TEKTON))
-	};
-
-	public static boolean solve(RaidRoom[] rooms)
+	static boolean solve(RaidRoom[] rooms)
 	{
 		if (rooms == null)
 		{
 			return false;
 		}
 
-		Rotation<Boss> match = null;
+		List<RaidRoom> match = null;
 		Integer start = null;
 		Integer index = null;
 		int known = 0;
 
 		for (int i = 0; i < rooms.length; i++)
 		{
-			if (rooms[i] == null || rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
+			if (rooms[i] == null || rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT)
 			{
 				continue;
 			}
@@ -96,21 +83,21 @@ public class RotationSolver
 			return true;
 		}
 
-		for (Rotation rotation : ROTATIONS)
+		for (List rotation : ROTATIONS)
 		{
 			COMPARE:
 			for (int i = 0; i < rotation.size(); i++)
 			{
-				if (rooms[start].getBoss() == rotation.get(i))
+				if (rooms[start] == rotation.get(i))
 				{
 					for (int j = start + 1; j < rooms.length; j++)
 					{
-						if (rooms[j].getBoss() == null || rooms[j].getBoss() == Boss.UNKNOWN)
+						if (rooms[j].getType() != RoomType.COMBAT || rooms[j] == UNKNOWN_COMBAT)
 						{
 							continue;
 						}
 
-						if (rooms[j].getBoss() != rotation.get(i + j - start))
+						if (rooms[j] != rotation.get((i + j - start) % rotation.size()))
 						{
 							break COMPARE;
 						}
@@ -139,9 +126,9 @@ public class RotationSolver
 				continue;
 			}
 
-			if (rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
+			if (rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT)
 			{
-				rooms[i].setBoss(match.get(index + i));
+				rooms[i] = match.get((index + i) % match.size());
 			}
 		}
 
