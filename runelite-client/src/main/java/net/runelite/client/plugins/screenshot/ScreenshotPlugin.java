@@ -281,9 +281,14 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onPlayerDeath(PlayerDeath playerDeath)
 	{
-		if (playerDeath.getPlayer() == client.getLocalPlayer() && config.screenshotPlayerDeath())
+		Player player = playerDeath.getPlayer();
+		if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot("Death " + format(new Date()));
+		}
+		else if ((player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+		{
+			takeScreenshot("Death " + player.getName() + " " + format(new Date()));
 		}
 	}
 
