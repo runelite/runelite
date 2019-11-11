@@ -134,6 +134,7 @@ subprojects {
 
             exclude("**/ScriptVarType.java")
             exclude("**/LayoutSolver.java")
+            exclude("**/RoomType.java")
         }
     }
 }
