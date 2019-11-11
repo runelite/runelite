@@ -29,6 +29,7 @@ package net.runelite.client.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -220,6 +221,11 @@ public class IconTextField extends JPanel
 	public void addKeyListener(KeyListener keyListener)
 	{
 		textField.addKeyListener(keyListener);
+	}
+
+	public void addClearListener(Consumer<ActionEvent> actionEventConsumer)
+	{
+		clearButton.addActionListener(actionEventConsumer::accept);
 	}
 
 	public void addKeyListener(Consumer<KeyEvent> keyEventConsumer)

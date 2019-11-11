@@ -65,7 +65,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -279,9 +279,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	public void onPlayerDeath(PlayerDeath playerDeath)
 	{
-		if (config.screenshotPlayerDeath())
+		if (playerDeath.getPlayer() == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot("Death " + format(new Date()));
 		}

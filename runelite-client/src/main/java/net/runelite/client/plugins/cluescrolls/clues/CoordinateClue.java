@@ -127,7 +127,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3058, 3884, 0), "Wilderness. Near runite ore north of Lava Maze.")
 		.put(new WorldPoint(3290, 3889, 0), "Wilderness. Demonic Ruins.")
 		.put(new WorldPoint(3770, 3897, 0), "Small Island north of Fossil Island.")
-		.put(new WorldPoint(2505, 3899, 0), "Small Island north-east of Miscellania (AJS).")
+		.put(new WorldPoint(2505, 3899, 0), "Small Island north-west of Miscellania (AJS).")
 		.put(new WorldPoint(3285, 3942, 0), "Wilderness. Rogues' Castle.")
 		.put(new WorldPoint(3159, 3959, 0), "Wilderness. North of Deserted Keep, west of Resource Area.")
 		.put(new WorldPoint(3039, 3960, 0), "Wilderness. Pirates' Hideout.")
@@ -168,7 +168,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3051, 3736, 0), "East of the Wilderness Obelisk in 28 Wilderness.")
 		.put(new WorldPoint(2316, 3814, 0), "West of Neitiznot, near the bridge.")
 		.put(new WorldPoint(2872, 3937, 0), "Weiss.")
-		.put(new WorldPoint(2835, 2998, 0), "Northeast corner of the Island of Stone.")
+		.put(new WorldPoint(2484, 4016, 0), "Northeast corner of the Island of Stone.")
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), "South of Elf Camp.")
 		.put(new WorldPoint(2155, 3100, 0), "South of Port Tyras (BJS).")
