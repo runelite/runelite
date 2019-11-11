@@ -33,6 +33,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -43,6 +46,13 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -61,6 +71,23 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
+	@Getter
+	@RequiredArgsConstructor
+	public enum NativeCustomOff
+	{
+		NATIVE("Native"),
+		CUSTOM("Custom"),
+		OFF("Off");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -130,9 +157,13 @@ public class Notifier
 			sendNotification(appName, message, type);
 		}
 
-		if (runeLiteConfig.enableNotificationSound())
+		switch (runeLiteConfig.notificationSound())
 		{
-			Toolkit.getDefaultToolkit().beep();
+			case NATIVE:
+				Toolkit.getDefaultToolkit().beep();
+				break;
+			case CUSTOM:
+				executorService.submit(this::playCustomSound);
 		}
 
 		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
@@ -368,5 +399,49 @@ public class Notifier
 			default:
 				return "normal";
 		}
+	}
+
+	private void playCustomSound()
+	{
+		Clip clip = null;
+
+		// Try to load the user sound from ~/.runelite/notification.wav
+		File file = new File(RuneLite.RUNELITE_DIR, "notification.wav");
+		if (file.exists())
+		{
+			try
+			{
+				InputStream fileStream = new BufferedInputStream(new FileInputStream(file));
+				try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+				{
+					clip = AudioSystem.getClip();
+					clip.open(sound);
+				}
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				clip = null;
+				log.warn("Unable to play notification sound", e);
+			}
+		}
+
+		if (clip == null)
+		{
+			// Otherwise load from the classpath
+			InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
+			try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+			{
+				clip = AudioSystem.getClip();
+				clip.open(sound);
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				log.warn("Unable to play builtin notification sound", e);
+
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+		}
+		clip.start();
 	}
 }
