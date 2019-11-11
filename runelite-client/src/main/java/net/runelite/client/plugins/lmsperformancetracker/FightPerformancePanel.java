@@ -69,19 +69,19 @@ class FightPerformancePanel extends JPanel
 		playerStatsPanel.setBackground(background);
 
 		JLabel playerStatsName = new JLabel();
-		if (fight.getPlayer().isDead())
+		if (fight.getCompetitor().isDead())
 		{
 			playerStatsName.setIcon(icon);
 		}
-		playerStatsName.setText(fight.getPlayer().getName());
+		playerStatsName.setText(fight.getCompetitor().getName());
 		playerStatsName.setForeground(Color.WHITE);
 		playerStatsPanel.add(playerStatsName, BorderLayout.WEST);
 
 		JLabel playerStats = new JLabel();
-		playerStats.setToolTipText(fight.getPlayer().getSuccessCount() + " successful off-pray attacks/" +
-			fight.getPlayer().getAttackCount() + " total attacks" +
+		playerStats.setToolTipText(fight.getCompetitor().getSuccessCount() + " successful off-pray attacks/" +
+			fight.getCompetitor().getAttackCount() + " total attacks" +
 			(fight.playerWinning() ? " (green due to higher success ratio)" : ""));
-		playerStats.setText(fight.getPlayer().getStatsString());
+		playerStats.setText(fight.getCompetitor().getStats());
 		playerStats.setForeground(fight.playerWinning() ? Color.GREEN : Color.WHITE);
 		playerStatsPanel.add(playerStats, BorderLayout.EAST);
 
@@ -104,7 +104,7 @@ class FightPerformancePanel extends JPanel
 		opponentStats.setToolTipText(fight.getOpponent().getSuccessCount() + " successful off-pray attacks/" +
 			fight.getOpponent().getAttackCount() + " total attacks" +
 			(fight.opponentWinning() ? " (green due to higher success ratio)" : ""));
-		opponentStats.setText(fight.getOpponent().getStatsString());
+		opponentStats.setText(fight.getOpponent().getStats());
 		opponentStats.setForeground(fight.opponentWinning() ? Color.GREEN : Color.WHITE);
 		opponentStatsPanel.add(opponentStats, BorderLayout.EAST);
 

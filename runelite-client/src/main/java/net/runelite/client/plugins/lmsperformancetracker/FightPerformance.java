@@ -34,23 +34,23 @@ import net.runelite.api.Player;
 // is dealt by not attacking with the style of the opponent's overhead. For example,
 // attacking with range or melee against someone using protect from magic is a successful
 // attack. Using melee against someone using protect from melee is not successful.
-// This is not a guaranteed way of determining the better player, since someone casting
+// This is not a guaranteed way of determining the better competitor, since someone casting
 // barrage in full tank gear can count as a successful attack. It's a good general idea, though.
 @Getter
 public class FightPerformance
 {
 	// Delay to assume a fight is over. May seem long, but sometimes people barrage &
-	// stand under for a while to eat. Fights will automatically end when either player dies.
+	// stand under for a while to eat. Fights will automatically end when either competitor dies.
 	private static final Duration NEW_FIGHT_DELAY = Duration.ofSeconds(21);
 
-	private Fighter player;
+	private Fighter competitor;
 	private Fighter opponent;
-	private Instant lastFightTime; // Instant of the last fight time & when the fight ended
+	private Instant lastFightTime;
 
 	// constructor which initializes a fight from the 2 Players, starting stats at 0.
-	FightPerformance(Player player, Player opponent)
+	FightPerformance(Player competitor, Player opponent)
 	{
-		this.player = new Fighter(player);
+		this.competitor = new Fighter(competitor);
 		this.opponent = new Fighter(opponent);
 
 		// this is initialized soon before the NEW_FIGHT_DELAY time because the event we
@@ -58,47 +58,47 @@ public class FightPerformance
 		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 5);
 	}
 
-	public void checkForAttackAnimations()
+	void checkForAttackAnimations()
 	{
 		// use single | so it doesn't short circuit and check both Fighters regardless.
-		if (player.checkForAttackAnimation(opponent.getPlayer()) |
-			opponent.checkForAttackAnimation(player.getPlayer()))
+		if (competitor.checkForAttackAnimation(opponent.getPlayer()) |
+			opponent.checkForAttackAnimation(competitor.getPlayer()))
 		{
 			lastFightTime = Instant.now();
 		}
 	}
 
-	// returns true if player success rate > opponent success rate.
+	// returns true if competitor success rate > opponent success rate.
 	// could be "wrong" about winning in some cases, if someone is eating a lot and not actually attacking
 	// much, they could have a higher success rate than the person clearly winning. Although it is hard to
 	// judge by comparing attack counts since someone using fast weapons against slow weapons
 	// could cause a situation opposite of the one described above.
-	public boolean playerWinning()
+	boolean playerWinning()
 	{
-		return player.getSuccessRate() > opponent.getSuccessRate();
+		return competitor.calculateSuccessPercentage() > opponent.calculateSuccessPercentage();
 	}
 
-	// returns true if opponent success rate > player success rate.
-	public boolean opponentWinning()
+	// returns true if opponent success rate > competitor success rate.
+	boolean opponentWinning()
 	{
-		return opponent.getSuccessRate() > player.getSuccessRate();
+		return opponent.calculateSuccessPercentage() > competitor.calculateSuccessPercentage();
 	}
 
 	// Will return true and stop the fight if the fight should be over.
-	// if either player hasn't fought in NEW_FIGHT_DELAY, or either player died.
+	// if either competitor hasn't fought in NEW_FIGHT_DELAY, or either competitor died.
 	// Will also add the currentFight to fightHistory if the fight ended.
-	public boolean isFightOver()
+	boolean isFightOver()
 	{
 		boolean isOver = false;
-		// if either player died, end the fight.
+		// if either competitor died, end the fight.
 		if (opponent.getPlayer().getAnimation() == AnimationID.DEATH)
 		{
 			opponent.died();
 			isOver = true;
 		}
-		if (player.getPlayer().getAnimation() == AnimationID.DEATH)
+		if (competitor.getPlayer().getAnimation() == AnimationID.DEATH)
 		{
-			player.died();
+			competitor.died();
 			isOver = true;
 		}
 		// If there was no fight actions in the last NEW_FIGHT_DELAY seconds
@@ -115,10 +115,10 @@ public class FightPerformance
 		return isOver;
 	}
 
-	// only count the fight as started if the player attacked, not the enemy because
-	// the person the player clicked on might be attacking someone else
-	public boolean fightStarted()
+	// only count the fight as started if the competitor attacked, not the enemy because
+	// the person the competitor clicked on might be attacking someone else
+	boolean fightStarted()
 	{
-		return player.getAttackCount() > 0;
+		return competitor.getAttackCount() > 0;
 	}
 }

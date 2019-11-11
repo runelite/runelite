@@ -35,11 +35,12 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -162,8 +163,9 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 		// if the client player already has a valid opponent,
 		// or the event source/target aren't players, skip any processing.
-		if ((hasOpponent() && currentFight.fightStarted()) ||
-			!(event.getSource() instanceof Player) || !(event.getTarget() instanceof Player))
+		if ((hasOpponent() && currentFight.fightStarted())
+			|| !(event.getSource() instanceof Player)
+			|| !(event.getTarget() instanceof Player))
 		{
 			return;
 		}
@@ -193,8 +195,13 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
 		// hide or show panel depending if config is restricted to LMS and if player is at LMS
 		if (config.restrictToLms())
 		{
@@ -213,10 +220,13 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 					clientToolbar.removeNavigation(navButton);
 					navButtonShown = false;
 				}
-				return; // skip all processing if not at LMS and restricted to LMS
 			}
 		}
+	}
 
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
 		stopFightIfOver();
 
 		if (hasOpponent())
@@ -255,9 +265,7 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 		currentFight = null;
 	}
 
-	// returns true if player is at the Last Man Standing minigame
-	// (Thanks to loottracker plugin)
-	protected boolean isAtLMS()
+	boolean isAtLMS()
 	{
 		final int[] mapRegions = client.getMapRegions();
 

@@ -28,64 +28,57 @@ import lombok.Getter;
 import net.runelite.api.Player;
 
 @Getter
-public class Fighter
+class Fighter
 {
 	private Player player;
 	private String name; // username
 	private int attackCount; // total number of attacks
 	private int successCount; // total number of successful attacks
-	private double successRate; // success rate in percentage (0-100)
 	private boolean dead; // will be true if the fighter died in the fight
 	private boolean currentlyAttacking; // will be true if the player is currently doing an attack animation
 
 	// fighter that is bound to a player and gets updated during a fight
-	public Fighter(Player player)
+	Fighter(Player player)
 	{
 		this.player = player;
 		name = player.getName();
 		attackCount = 0;
 		successCount = 0;
-		successRate = 0;
 		dead = false;
 		currentlyAttacking = false;
 	}
 
 	// create a basic Fighter to only hold stats, for the TotalStatsPanel,
 	// but not actually updated during a fight.
-	public Fighter(String name)
+	Fighter(String name)
 	{
 		player = null;
 		this.name = name;
 		attackCount = 0;
 		successCount = 0;
-		successRate = 0;
 		dead = false;
 		currentlyAttacking = false;
 	}
 
 	// add an attack to the counters depending if it is successful or not.
 	// also update the success rate with the new counts.
-	public void addAttack(boolean success)
+	private void addAttack(boolean successful)
 	{
 		attackCount++;
-		if (success)
+		if (successful)
 		{
 			successCount++;
 		}
-
-		updateSuccessRate();
 	}
 
 	// this is to be used from the TotalStatsPanel which saves a total of multiple fights.
-	public void addAttacks(int success, int total)
+	void addAttacks(int success, int total)
 	{
 		successCount += success;
 		attackCount += total;
-
-		updateSuccessRate();
 	}
 
-	public void died()
+	void died()
 	{
 		dead = true;
 	}
@@ -93,7 +86,7 @@ public class Fighter
 	// check the Fighter's current animation, add an attack if applicable, and
 	// compare attack style used with an opponent's overhead style to determine 'success'
 	// returns true if the player started attacking on this check.
-	public boolean checkForAttackAnimation(Player opponent)
+	boolean checkForAttackAnimation(Player opponent)
 	{
 		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
 		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
@@ -115,13 +108,13 @@ public class Fighter
 
 	// Return a simple string to display the current player's success rate.
 	// ex. "42/59 (71%)". The name is not included as it will be in a separate view.
-	public String getStatsString()
+	String getStats()
 	{
-		return successCount + "/" + attackCount + " (" + Math.round(successRate) + "%)";
+		return successCount + "/" + attackCount + " (" + Math.round(calculateSuccessPercentage()) + "%)";
 	}
 
-	private void updateSuccessRate()
+	double calculateSuccessPercentage()
 	{
-		successRate = (double) successCount / (double) attackCount * 100.0;
+		return (double) successCount / attackCount * 100.0;
 	}
 }

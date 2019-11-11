@@ -82,14 +82,14 @@ public class LmsPerformanceTrackerOverlay extends Overlay
 		// First line: Player's stats
 		// Using simple overlay = left: RSN, right: success%
 		// Not using simple overlay = left: 5 chars of RSN, right: stats string (successCount / totalCount success%)
-		String playerName = plugin.getCurrentFight().getPlayer().getName();
+		String playerName = plugin.getCurrentFight().getCompetitor().getName();
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(config.useSimpleOverlay() ?
 				playerName :
 				playerName.substring(0, Math.min(5, playerName.length())))
 			.right(config.useSimpleOverlay() ?
-				String.valueOf(Math.round(currentFight.getPlayer().getSuccessRate())) + "%" :
-				plugin.getCurrentFight().getPlayer().getStatsString())
+				String.valueOf(Math.round(currentFight.getCompetitor().calculateSuccessPercentage())) + "%" :
+				plugin.getCurrentFight().getCompetitor().getStats())
 			.rightColor(plugin.getCurrentFight().playerWinning() ? Color.GREEN : Color.WHITE)
 			.build());
 
@@ -100,8 +100,8 @@ public class LmsPerformanceTrackerOverlay extends Overlay
 				opponentName :
 				opponentName.substring(0, Math.min(5, opponentName.length())))
 			.right(config.useSimpleOverlay() ?
-				String.valueOf(Math.round(currentFight.getOpponent().getSuccessRate())) + "%" :
-				plugin.getCurrentFight().getOpponent().getStatsString())
+				String.valueOf(Math.round(currentFight.getOpponent().calculateSuccessPercentage())) + "%" :
+				plugin.getCurrentFight().getOpponent().getStats())
 			.rightColor(plugin.getCurrentFight().opponentWinning() ? Color.GREEN : Color.WHITE)
 			.build());
 

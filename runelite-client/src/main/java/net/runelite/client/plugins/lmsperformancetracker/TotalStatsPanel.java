@@ -70,7 +70,7 @@ public class TotalStatsPanel extends JPanel
 		statsLabel = new JLabel();
 		statsLabel.setToolTipText(totalStats.getSuccessCount() + " successful off-pray attacks/" +
 			totalStats.getAttackCount() + " total attacks");
-		statsLabel.setText(totalStats.getStatsString());
+		statsLabel.setText(totalStats.getStats());
 		statsLabel.setForeground(Color.WHITE);
 		statsPanel.add(statsLabel, BorderLayout.EAST);
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -97,7 +97,7 @@ public class TotalStatsPanel extends JPanel
 
 	public void addFight(FightPerformance fight)
 	{
-		if (fight.getPlayer().isDead())
+		if (fight.getCompetitor().isDead())
 		{
 			numDeaths++;
 		}
@@ -105,10 +105,10 @@ public class TotalStatsPanel extends JPanel
 		{
 			numKills++;
 		}
-		totalStats.addAttacks(fight.getPlayer().getSuccessCount(), fight.getPlayer().getAttackCount());
+		totalStats.addAttacks(fight.getCompetitor().getSuccessCount(), fight.getCompetitor().getAttackCount());
 		SwingUtilities.invokeLater(() ->
 		{
-			statsLabel.setText(totalStats.getStatsString());
+			statsLabel.setText(totalStats.getStats());
 			killsLabel.setText(numKills + " Kill" + (numKills != 1 ? "s" : ""));
 			deathsLabel.setText(numDeaths + " Death"  + (numDeaths != 1 ? "s" : ""));
 			statsLabel.setToolTipText(totalStats.getSuccessCount() + " successful off-pray attacks/" +
@@ -123,7 +123,7 @@ public class TotalStatsPanel extends JPanel
 		totalStats = new Fighter("Player");
 		SwingUtilities.invokeLater(() ->
 		{
-			statsLabel.setText(totalStats.getStatsString());
+			statsLabel.setText(totalStats.getStats());
 			killsLabel.setText(numKills + " Kills");
 			deathsLabel.setText(numDeaths + " Deaths");
 		});
