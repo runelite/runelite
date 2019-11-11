@@ -74,7 +74,7 @@ public class RuneLiteModule extends AbstractModule
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(RuneLite.RUNELITE_DIR, "cache" + File.separator + "okhttp"), MAX_OKHTTP_CACHE_SIZE))
+			.cache(new Cache(new File(RuneLite.CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
 			.build());
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
