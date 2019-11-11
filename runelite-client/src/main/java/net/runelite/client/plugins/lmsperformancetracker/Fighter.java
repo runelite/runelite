@@ -35,7 +35,6 @@ class Fighter
 	private int attackCount; // total number of attacks
 	private int successCount; // total number of successful attacks
 	private boolean dead; // will be true if the fighter died in the fight
-	private boolean currentlyAttacking; // will be true if the player is currently doing an attack animation
 
 	// fighter that is bound to a player and gets updated during a fight
 	Fighter(Player player)
@@ -45,7 +44,6 @@ class Fighter
 		attackCount = 0;
 		successCount = 0;
 		dead = false;
-		currentlyAttacking = false;
 	}
 
 	// create a basic Fighter to only hold stats, for the TotalStatsPanel,
@@ -57,12 +55,11 @@ class Fighter
 		attackCount = 0;
 		successCount = 0;
 		dead = false;
-		currentlyAttacking = false;
 	}
 
 	// add an attack to the counters depending if it is successful or not.
 	// also update the success rate with the new counts.
-	private void addAttack(boolean successful)
+	void addAttack(boolean successful)
 	{
 		attackCount++;
 		if (successful)
@@ -83,27 +80,9 @@ class Fighter
 		dead = true;
 	}
 
-	// check the Fighter's current animation, add an attack if applicable, and
-	// compare attack style used with an opponent's overhead style to determine 'success'
-	// returns true if the player started attacking on this check.
-	boolean checkForAttackAnimation(Player opponent)
+	AnimationAttackStyle getAnimationAttackStyle()
 	{
-		AnimationAttackStyle animationStyle = AnimationAttackStyle.styleForAnimation(player.getAnimation());
-		if (animationStyle == null) // if the animationStyle is null, set attacking bool to false.
-		{
-			currentlyAttacking = false;
-			return false;
-		}
-
-		// Only apply new attack if not currently attacking (to avoid duplicate attacks with 1 long animation)
-		if (!currentlyAttacking)
-		{
-			addAttack(opponent.getOverheadIcon() != animationStyle.getProtection());
-			currentlyAttacking = true;
-			return true;
-		}
-
-		return false;
+		return AnimationAttackStyle.styleForAnimation(player.getAnimation());
 	}
 
 	// Return a simple string to display the current player's success rate.

@@ -58,13 +58,28 @@ public class FightPerformance
 		lastFightTime = Instant.now().minusSeconds(NEW_FIGHT_DELAY.getSeconds() - 5);
 	}
 
-	void checkForAttackAnimations()
+	// If the given playerName is in this fight, check the Fighter's current animation,
+	// add an attack if attacking, and compare attack style used with the opponent's overhead
+	// to determine if successful.
+	void checkForAttackAnimations(String playerName)
 	{
-		// use single | so it doesn't short circuit and check both Fighters regardless.
-		if (competitor.checkForAttackAnimation(opponent.getPlayer()) |
-			opponent.checkForAttackAnimation(competitor.getPlayer()))
+		if (playerName.equals(competitor.getName()))
 		{
-			lastFightTime = Instant.now();
+			AnimationAttackStyle attackStyle = competitor.getAnimationAttackStyle();
+			if (attackStyle != null)
+			{
+				competitor.addAttack(opponent.getPlayer().getOverheadIcon() != attackStyle.getProtection());
+				lastFightTime = Instant.now();
+			}
+		}
+		else if (playerName.equals(opponent.getName()))
+		{
+			AnimationAttackStyle attackStyle = opponent.getAnimationAttackStyle();
+			if (attackStyle != null)
+			{
+				opponent.addAttack(competitor.getPlayer().getOverheadIcon() != attackStyle.getProtection());
+				lastFightTime = Instant.now();
+			}
 		}
 	}
 

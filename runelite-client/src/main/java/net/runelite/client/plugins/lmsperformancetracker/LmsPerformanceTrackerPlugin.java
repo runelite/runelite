@@ -35,8 +35,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -225,19 +225,13 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	public void onAnimationChanged(AnimationChanged event)
 	{
 		stopFightIfOver();
 
-		if (hasOpponent())
+		if (hasOpponent() && event.getActor() != null)
 		{
-			{
-				// if there is an opponent, check both players' animations for attacks.
-				// If they attacked, will also add the attack to the current fight stats,
-				// taking into account the opponent's overhead prayer.
-				currentFight.checkForAttackAnimations();
-			}
-
+			currentFight.checkForAttackAnimations(event.getActor().getName());
 		}
 	}
 
@@ -251,18 +245,13 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 	{
 		if (hasOpponent() && currentFight.isFightOver())
 		{
-			stopFight();
+			// add fight to fight history if it actually started
+			if (currentFight.fightStarted())
+			{
+				panel.addFight(currentFight);
+			}
+			currentFight = null;
 		}
-	}
-
-	private void stopFight()
-	{
-		// add fight to fight history if it actually started
-		if (currentFight.fightStarted())
-		{
-			panel.addFight(currentFight);
-		}
-		currentFight = null;
 	}
 
 	boolean isAtLMS()
@@ -279,5 +268,4 @@ public class LmsPerformanceTrackerPlugin extends Plugin
 
 		return false;
 	}
-
 }
