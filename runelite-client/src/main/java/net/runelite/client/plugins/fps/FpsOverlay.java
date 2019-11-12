@@ -77,8 +77,8 @@ public class FpsOverlay extends Overlay
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return config.enableFps()
+			|| (config.enableFpsUnfocused() && !isFocused);
 	}
 
 	private Color getFpsValueColor()

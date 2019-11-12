@@ -67,7 +67,15 @@ public class FpsDrawListener implements Runnable
 	void reloadConfig()
 	{
 		lastMillis = System.currentTimeMillis();
-		targetDelay = 1000 / Math.max(1, config.maxFps());
+
+		if (config.enableFpsUnfocused() && !isFocused)
+		{
+			targetDelay = 1000 / Math.max(1, config.maxFpsUnfocused());
+		}
+		else
+		{
+			targetDelay = 1000 / Math.max(1, config.maxFps());
+		}
 		sleepDelay = targetDelay;
 
 		for (int i = 0; i < SAMPLE_SIZE; i++)
@@ -79,18 +87,18 @@ public class FpsDrawListener implements Runnable
 	void onFocusChanged(FocusChanged event)
 	{
 		this.isFocused = event.isFocused();
+		reloadConfig();  //load new delay
 	}
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return config.enableFps()
+			|| (config.enableFpsUnfocused() && !isFocused);
 	}
 
 	@Override
 	public void run()
 	{
-
 		if (!isEnforced())
 		{
 			return;
