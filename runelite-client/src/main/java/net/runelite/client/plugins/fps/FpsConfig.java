@@ -40,7 +40,7 @@ public interface FpsConfig extends Config
 	)
 	default boolean enableFps()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
