@@ -57,7 +57,7 @@ class MotherlodeRocksOverlay extends Overlay
 	private final MotherlodeConfig config;
 	private final SkillIconManager iconManager;
 
-	private BufferedImage miningIcon;
+	private final BufferedImage miningIcon;
 
 	@Inject
 	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
@@ -108,7 +108,10 @@ class MotherlodeRocksOverlay extends Overlay
 
 		Player local = client.getLocalPlayer();
 
-		renderTiles(graphics, local);
+		if (local != null)
+		{
+			renderTiles(graphics, local);
+		}
 
 		return null;
 	}
@@ -152,8 +155,8 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderVein(Graphics2D graphics, WallObject vein)
 	{
-		miningIcon = getScaledMiningIcon();
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
+
 		if (canvasLoc != null)
 		{
 			graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
