@@ -745,7 +745,7 @@ public class XpTrackerPlugin extends Plugin
 			pauseSkill(skill, pause);
 		}
 	}
-	
+
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("xpTracker"))
