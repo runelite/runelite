@@ -735,13 +735,13 @@ public class GroundItemsPlugin extends Plugin
 				{
 					final MenuEntry aEntry = a.getEntry();
 					final int aId = aEntry.getIdentifier();
-					final boolean aHidden = isItemIdHidden(aId);
 					final int aQuantity = getCollapsedItemQuantity(aId, aEntry.getTarget());
+					final boolean aHidden = isItemIdHidden(aId, aQuantity);
 
 					final MenuEntry bEntry = b.getEntry();
 					final int bId = bEntry.getIdentifier();
-					final boolean bHidden = isItemIdHidden(bId);
 					final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
+					final boolean bHidden = isItemIdHidden(bId, bQuantity);
 
 					// only put items below walk if the config is set for it
 					if (this.rightClickHidden)
@@ -964,6 +964,7 @@ public class GroundItemsPlugin extends Plugin
 				current = current.getNext();
 			}
 
+
 			final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 			final int itemPrice = itemManager.getItemPrice(realItemId);
@@ -1126,12 +1127,12 @@ public class GroundItemsPlugin extends Plugin
 		return itemManager.getItemPrice(realItemId);
 	}
 
-	private boolean isItemIdHidden(int itemId)
+	private boolean isItemIdHidden(int itemId, int quantity)
 	{
 		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = itemManager.getAlchValue(realItemId);
-		final int gePrice = itemManager.getItemPrice(realItemId);
+		final int alchPrice = itemManager.getAlchValue(realItemId) * quantity;
+		final int gePrice = itemManager.getItemPrice(realItemId) * quantity;
 
 		return getHidden(itemComposition.getName(), gePrice, alchPrice, itemComposition.isTradeable()) != null;
 	}
