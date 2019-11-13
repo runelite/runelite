@@ -102,7 +102,8 @@ class MotherlodeRocksOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		// Only render if the user is in MLM and wants to render veins or rockfalls
-		if ((config.showVeins() || config.showRockFalls()) && plugin.isInMlm()) {
+		if ((config.showVeins() || config.showRockFalls()) && plugin.isInMlm())
+		{
 			Player local = client.getLocalPlayer();
 
 			if (local != null)
@@ -158,7 +159,9 @@ class MotherlodeRocksOverlay extends Overlay
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
 
 		if (canvasLoc != null)
+		{
 			graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
+		}
 	}
 
 	private void renderRock(Graphics2D graphics, GameObject rock)
@@ -166,6 +169,8 @@ class MotherlodeRocksOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
 
 		if (poly != null)
+		{
 			OverlayUtil.renderPolygon(graphics, poly, Color.red);
+		}
 	}
 }
