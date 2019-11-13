@@ -32,8 +32,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
@@ -60,6 +62,7 @@ class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private static final int TITLE_PADDING = 5;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd HH:mm");
 
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
@@ -101,6 +104,7 @@ class LootTrackerBox extends JPanel
 		logTitle.setLayout(new BoxLayout(logTitle, BoxLayout.X_AXIS));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+		buildTitleToolTip();
 
 		titleLabel.setText(Text.removeTags(id));
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -201,6 +205,8 @@ class LootTrackerBox extends JPanel
 		{
 			subTitleLabel.setText("x " + kills);
 		}
+
+		buildTitleToolTip();
 
 		validate();
 		repaint();
@@ -324,7 +330,7 @@ class LootTrackerBox extends JPanel
 			{
 				final LootTrackerItem item = items.get(i);
 				final JLabel imageLabel = new JLabel();
-				imageLabel.setToolTipText(buildToolTip(item));
+				imageLabel.setToolTipText(buildItemToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -368,7 +374,21 @@ class LootTrackerBox extends JPanel
 		itemContainer.repaint();
 	}
 
-	private static String buildToolTip(LootTrackerItem item)
+	private void buildTitleToolTip(){
+		if (records.size() == 1)
+		{
+			final Date stamp = new Date(records.get(0).timestamp);
+			logTitle.setToolTipText(DATE_FORMAT.format(stamp));
+		}
+		else if(records.size() > 1)
+		{
+			final Date firstStamp = new Date(records.get(0).timestamp);
+			final Date lastStamp = new Date(records.get(records.size() - 1).timestamp);
+			logTitle.setToolTipText(DATE_FORMAT.format(firstStamp) + " — " + DATE_FORMAT.format(lastStamp));
+		}
+	}
+
+	private static String buildItemToolTip(LootTrackerItem item)
 	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();

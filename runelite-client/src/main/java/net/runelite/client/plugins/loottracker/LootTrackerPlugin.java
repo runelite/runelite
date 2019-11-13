@@ -678,7 +678,7 @@ public class LootTrackerPlugin extends Plugin
 					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
 				).toArray(LootTrackerItem[]::new);
 
-				return new LootTrackerRecord(record.getEventId(), "", drops);
+				return new LootTrackerRecord(record.getEventId(), "", drops, -1);
 			})
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
