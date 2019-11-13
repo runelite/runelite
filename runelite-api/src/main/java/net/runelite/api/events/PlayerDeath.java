@@ -24,9 +24,14 @@
  */
 package net.runelite.api.events;
 
+import lombok.Value;
+import net.runelite.api.Player;
+
 /**
- * An event when the local player dies.
+ * An event fired when a player dies.
  */
-public class LocalPlayerDeath
+@Value
+public class PlayerDeath
 {
+	private final Player player;
 }

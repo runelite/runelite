@@ -32,11 +32,45 @@ import net.runelite.client.config.ConfigItem;
 public interface MusicConfig extends Config
 {
 	@ConfigItem(
+		keyName = "muteOwnAreaSounds",
+		name = "Mute player area sounds",
+		description = "Mute area sounds caused by yourself",
+		position = 0
+	)
+	default boolean muteOwnAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "muteOtherAreaSounds",
-		name = "Mute others' area sounds",
-		description = "Mute area sounds caused from other players"
+		name = "Mute other players' area sounds",
+		description = "Mute area sounds caused by other players",
+		position = 1
 	)
 	default boolean muteOtherAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaNPCSounds",
+		name = "Mute NPCs' area sounds",
+		description = "Mute area sounds caused by NPCs",
+		position = 2
+	)
+	default boolean muteNpcAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaEnvironmentSounds",
+		name = "Mute environment area sounds",
+		description = "Mute area sounds caused by neither NPCs nor players",
+		position = 3
+	)
+	default boolean muteEnvironmentAreaSounds()
 	{
 		return false;
 	}
