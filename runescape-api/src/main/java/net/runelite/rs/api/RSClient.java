@@ -25,7 +25,6 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.rs.api;
 
 import java.math.BigInteger;
@@ -397,9 +396,6 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("menuAction")
 	void sendMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
-
-	@Import("tempMenuAction")
-	RSMenuAction getTempMenuAction();
 
 	@Import("SpriteBuffer_decode")
 	void decodeSprite(byte[] data);

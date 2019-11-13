@@ -52,6 +52,7 @@ import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -89,7 +90,6 @@ public class MenuManager
 	private final Map<AbstractComparableEntry, AbstractComparableEntry> swaps = new HashMap<>();
 
 	private MenuEntry leftClickEntry = null;
-	private MenuEntry firstEntry = null;
 
 	private int playerAttackIdx = -1;
 
@@ -102,11 +102,15 @@ public class MenuManager
 
 		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
 		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
 		eventBus.subscribe(PlayerMenuOptionsChanged.class, this, this::onPlayerMenuOptionsChanged);
 		eventBus.subscribe(NpcActionChanged.class, this, this::onNpcActionChanged);
 		eventBus.subscribe(WidgetPressed.class, this, this::onWidgetPressed);
 		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
+
+		// Make sure last tick's entry gets cleared
+		eventBus.subscribe(ClientTick.class, this, tick -> leftClickEntry = null);
+		// Rebuild left click menu for top left entry
+		eventBus.subscribe(BeforeRender.class, this, br -> rebuildLeftClickMenu());
 	}
 
 	/**
@@ -153,7 +157,7 @@ public class MenuManager
 		// Need to reorder the list to normal, then rebuild with swaps
 		MenuEntry[] oldEntries = event.getMenuEntries();
 
-		firstEntry = null;
+		leftClickEntry = null;
 
 		List<MenuEntry> newEntries = Lists.newArrayList(oldEntries);
 
@@ -281,25 +285,20 @@ public class MenuManager
 		}
 	}
 
-	private void onBeforeRender(BeforeRender event)
+	private void rebuildLeftClickMenu()
 	{
-		rebuildLeftClickMenu();
-	}
-
-	private MenuEntry rebuildLeftClickMenu()
-	{
+		leftClickEntry = null;
 		if (client.isMenuOpen())
 		{
-			return null;
+			return;
 		}
 
 		int menuOptionCount = client.getMenuOptionCount();
 		if (menuOptionCount <= 2)
 		{
-			return null;
+			return;
 		}
 
-		firstEntry = null;
 		MenuEntry[] entries = new MenuEntry[menuOptionCount + priorityEntries.size()];
 		System.arraycopy(client.getMenuEntries(), 0, entries, 0, menuOptionCount);
 
@@ -308,21 +307,19 @@ public class MenuManager
 			indexPriorityEntries(entries, menuOptionCount);
 		}
 
-		if (firstEntry == null && !swaps.isEmpty())
+		if (leftClickEntry == null && !swaps.isEmpty())
 		{
 			indexSwapEntries(entries, menuOptionCount);
 		}
 
 
-		if (firstEntry == null)
+		if (leftClickEntry == null)
 		{
 			// stop being null smh
-			firstEntry = entries[menuOptionCount - 1];
+			leftClickEntry = entries[menuOptionCount - 1];
 		}
 
 		client.setMenuEntries(entries);
-
-		return firstEntry;
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -426,16 +423,18 @@ public class MenuManager
 
 	private void onWidgetPressed(WidgetPressed event)
 	{
-		leftClickEntry = rebuildLeftClickMenu();
+		rebuildLeftClickMenu();
+		client.setTempMenuEntry(leftClickEntry);
 	}
 
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!client.isMenuOpen() && event.isAuthentic())
+		// option and target will be the same if this one came from "tempMenuAction"
+		if (!client.isMenuOpen() && !event.getOption().equals(event.getTarget()) && event.isAuthentic())
 		{
-			if (event.getMouseButton() != 0)
+			if (!event.equals(leftClickEntry))
 			{
-				leftClickEntry = rebuildLeftClickMenu();
+				rebuildLeftClickMenu();
 			}
 
 			if (leftClickEntry != null)
@@ -879,7 +878,7 @@ public class MenuManager
 			entries[menuOptionCount + i] = prios[i].entry;
 		}
 
-		firstEntry = entries[menuOptionCount + i - 1];
+		leftClickEntry = entries[menuOptionCount + i - 1];
 
 	}
 
@@ -922,7 +921,7 @@ public class MenuManager
 
 				entries[i] = first;
 				entries[menuOptionCount - 1] = entry;
-				firstEntry = entry;
+				leftClickEntry = entry;
 				return;
 			}
 		}

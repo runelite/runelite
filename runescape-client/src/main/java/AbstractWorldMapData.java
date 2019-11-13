@@ -361,7 +361,7 @@ public abstract class AbstractWorldMapData {
 	)
 	static void method325(int var0, int var1) {
 		MenuAction var2 = StudioGame.tempMenuAction;
-		GrandExchangeOfferOwnWorldComparator.menuAction(var2.argument1, var2.argument2, var2.opcode, var2.argument0, var2.action, var2.action, var0, var1);
+		GrandExchangeOfferOwnWorldComparator.menuAction(var2.param0, var2.param1, var2.opcode, var2.identifier, var2.action, var2.action, var0, var1);
 		StudioGame.tempMenuAction = null;
 	}
 

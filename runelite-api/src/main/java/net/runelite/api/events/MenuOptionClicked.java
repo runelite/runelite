@@ -25,7 +25,6 @@
 package net.runelite.api.events;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.MenuEntry;
@@ -42,7 +41,6 @@ import net.runelite.api.MenuEntry;
  * it seems that this event still triggers with the "Cancel" action.
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
 public class MenuOptionClicked extends MenuEntry implements Event
 {
 	public MenuOptionClicked(String option, String target, int identifier, int opcode, int param0, int param1, boolean forceLeftClick)

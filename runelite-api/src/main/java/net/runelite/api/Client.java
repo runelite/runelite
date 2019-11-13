@@ -1905,4 +1905,10 @@ public interface Client extends GameShell
 	 * the "You have been disconnected." message anymore.
 	 */
 	void setHideDisconnect(boolean dontShow);
+
+	/**
+	 * Sets the fields in the temporary menu entry that's saved in the client
+	 * when a inventory item is clicked and dragged.
+	 */
+	void setTempMenuEntry(MenuEntry entry);
 }

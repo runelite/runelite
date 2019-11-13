@@ -17,8 +17,8 @@ public class MenuAction {
 	@ObfuscatedGetter(
 		intValue = -1613868885
 	)
-	@Export("argument1")
-	int argument1;
+	@Export("param0")
+	int param0;
 	@ObfuscatedName("t")
 	@Export("action")
 	String action;
@@ -26,8 +26,8 @@ public class MenuAction {
 	@ObfuscatedGetter(
 		intValue = -872703787
 	)
-	@Export("argument2")
-	int argument2;
+	@Export("param1")
+	int param1;
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
 		intValue = 553279575
@@ -38,8 +38,8 @@ public class MenuAction {
 	@ObfuscatedGetter(
 		intValue = -1804422619
 	)
-	@Export("argument0")
-	int argument0;
+	@Export("identifier")
+	int identifier;
 
 	MenuAction() {
 	}

@@ -203,10 +203,10 @@ public class Script extends DualNode {
 	)
 	static void method2384(int var0) {
 		StudioGame.tempMenuAction = new MenuAction();
-		StudioGame.tempMenuAction.argument1 = Client.menuArguments1[var0];
-		StudioGame.tempMenuAction.argument2 = Client.menuArguments2[var0];
+		StudioGame.tempMenuAction.param0 = Client.menuArguments1[var0];
+		StudioGame.tempMenuAction.param1 = Client.menuArguments2[var0];
 		StudioGame.tempMenuAction.opcode = Client.menuOpcodes[var0];
-		StudioGame.tempMenuAction.argument0 = Client.menuIdentifiers[var0];
+		StudioGame.tempMenuAction.identifier = Client.menuIdentifiers[var0];
 		StudioGame.tempMenuAction.action = Client.menuActions[var0];
 	}
 }
