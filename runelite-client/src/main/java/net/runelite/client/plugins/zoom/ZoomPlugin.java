@@ -31,7 +31,7 @@ import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
