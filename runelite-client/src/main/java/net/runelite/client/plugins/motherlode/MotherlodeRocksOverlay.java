@@ -26,7 +26,11 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 
@@ -44,38 +48,45 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class MotherlodeRocksOverlay extends Overlay {
-    private static final int MAX_DISTANCE = 2350;
+class MotherlodeRocksOverlay extends Overlay
+{
+	private static final int MAX_DISTANCE = 2350;
 
-    private final Client client;
-    private final MotherlodePlugin plugin;
-    private final MotherlodeConfig config;
-    private final SkillIconManager iconManager;
+	private final Client client;
+	private final MotherlodePlugin plugin;
+	private final MotherlodeConfig config;
+	private final SkillIconManager iconManager;
 
-    private BufferedImage miningIcon;
+	private final BufferedImage miningIcon;
 
-    @Inject
-    MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager) {
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_SCENE);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-        this.iconManager = iconManager;
+	@Inject
+	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+		this.iconManager = iconManager;
 
-        miningIcon = getScaledMiningIcon();
-    }
+		miningIcon = getScaledMiningIcon();
+	}
 
-	private BufferedImage getScaledMiningIcon() {
+	private BufferedImage getScaledMiningIcon()
+	{
 		BufferedImage miningIcon = iconManager.getSkillImage(Skill.MINING);
 
-		int newW = (int)(miningIcon.getWidth() * (config.oreScaling() / 100.0f));
-		int newH = (int)(miningIcon.getHeight() * (config.oreScaling() / 100.0f));
+		int newW = (int) (miningIcon.getWidth() * (config.oreScaling() / 100.0f));
+		int newH = (int) (miningIcon.getHeight() * (config.oreScaling() / 100.0f));
 
 		if (newW <= 0)
+		{
 			newW = miningIcon.getWidth();
+		}
 		if (newH <= 0)
+		{
 			newH = miningIcon.getHeight();
+		}
 
 		Image tmp = miningIcon.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
 		BufferedImage bImg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
@@ -87,58 +98,78 @@ class MotherlodeRocksOverlay extends Overlay {
 		return bImg;
 	}
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm()) {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
+		{
+			return null;
+		}
 
-        Player local = client.getLocalPlayer();
+		Player local = client.getLocalPlayer();
 
-        renderTiles(graphics, local);
+		if (local != null)
+		{
+			renderTiles(graphics, local);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    private void renderTiles(Graphics2D graphics, Player local) {
-        LocalPoint localLocation = local.getLocalLocation();
+	private void renderTiles(Graphics2D graphics, Player local)
+	{
+		LocalPoint localLocation = local.getLocalLocation();
 
-        if (config.showVeins()) {
-            for (WallObject vein : plugin.getVeins()) {
-                LocalPoint location = vein.getLocalLocation();
-                if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
-                    // Only draw veins on the same level
-                    if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
-                        renderVein(graphics, vein);
-                }
-            }
-        }
+		if (config.showVeins())
+		{
+			for (WallObject vein : plugin.getVeins())
+			{
+				LocalPoint location = vein.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				{
+					// Only draw veins on the same level
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
+					{
+						renderVein(graphics, vein);
+					}
+				}
+			}
+		}
 
-        if (config.showRockFalls()) {
-            for (GameObject rock : plugin.getRocks()) {
-                LocalPoint location = rock.getLocalLocation();
-                if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
-                    if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
-                        renderRock(graphics, rock);
-                }
-            }
-        }
+		if (config.showRockFalls())
+		{
+			for (GameObject rock : plugin.getRocks())
+			{
+				LocalPoint location = rock.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				{
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
+					{
+						renderRock(graphics, rock);
+					}
+				}
+			}
+		}
 
-    }
+	}
 
-    private void renderVein(Graphics2D graphics, WallObject vein) {
-		miningIcon = getScaledMiningIcon();
+	private void renderVein(Graphics2D graphics, WallObject vein)
+	{
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
-        if (canvasLoc != null) {
-            graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
-        }
-    }
 
-    private void renderRock(Graphics2D graphics, GameObject rock) {
-        Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+		if (canvasLoc != null)
+		{
+			graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
+		}
+	}
 
-        if (poly != null) {
-            OverlayUtil.renderPolygon(graphics, poly, Color.red);
-        }
-    }
+	private void renderRock(Graphics2D graphics, GameObject rock)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, Color.red);
+		}
+	}
 }
