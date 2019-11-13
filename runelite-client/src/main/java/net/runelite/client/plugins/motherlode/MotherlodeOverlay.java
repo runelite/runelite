@@ -119,6 +119,8 @@ class MotherlodeOverlay extends Overlay
 			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
 			.build());
 
+
+
 		return panelComponent.render(graphics);
 	}
 }
