@@ -62,8 +62,10 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -111,6 +113,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
 	private static final String HERBIBOAR_EVENT = "Herbiboar";
 
+	// Motherlode loot handling
+	private static final int MOTHERLODE_EVENT = 26688;
+
 	// Hespori loot handling
 	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
 	private static final String HESPORI_EVENT = "Hespori";
@@ -132,8 +137,9 @@ public class LootTrackerPlugin extends Plugin
 		13151, "Elven Crystal Chest"
 	);
 
-	// Last man standing map regions
+	// Map Regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
+	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -447,6 +453,17 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		// Check if there is loot to collect in MLM
+		if (event.getId() == MOTHERLODE_EVENT && client.getVar(Varbits.SACK_NUMBER) > 0)
+		{
+			eventType = "Motherlode Mine";
+			takeInventorySnapshot();
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
@@ -528,7 +545,8 @@ public class LootTrackerPlugin extends Plugin
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
-			|| GAUNTLET_EVENT.equals(eventType))
+			|| GAUNTLET_EVENT.equals(eventType)
+			|| isInMLM())
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
@@ -569,7 +587,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		log.debug("Submitting {} loot records", copy.size());
+		log.info("Submitting {} loot records", copy.size());
 
 		lootTrackerClient.submit(copy);
 	}
@@ -581,7 +599,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			inventorySnapshot = HashMultiset.create();
 			Arrays.stream(itemContainer.getItems())
-					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 
@@ -699,5 +717,30 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if player is inside the Motherlode Mine
+	 */
+	private boolean isInMLM()
+	{
+		GameState gameState = client.getGameState();
+		if (gameState != GameState.LOGGED_IN
+			&& gameState != GameState.LOADING)
+		{
+			return false;
+		}
+
+		int[] currentMapRegions = client.getMapRegions();
+
+		for (int region : currentMapRegions)
+		{
+			if (!MOTHERLODE_MAP_REGIONS.contains(region))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
