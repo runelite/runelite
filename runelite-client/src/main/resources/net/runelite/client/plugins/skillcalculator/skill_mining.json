@@ -133,6 +133,12 @@
       "xp": 5
     },
     {
+      "level": 30,
+      "icon": 12011,
+      "name": "Pay-dirt",
+      "xp": 61
+    },
+    {
       "level": 70,
       "icon": 449,
       "name": "Adamantite Ore",
