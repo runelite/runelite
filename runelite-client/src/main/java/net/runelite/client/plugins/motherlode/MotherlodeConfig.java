@@ -123,9 +123,12 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "oreScaling",
-			name = "Icon Scale (%)",
-			description = "Sets the size of the mining icon based on input"
+		keyName = "oreScaling",
+		name = "Icon Scale (%)",
+		description = "Sets the size of the mining icon based on input"
 	)
-	default int oreScaling() { return 135; }
+	default int oreScaling()
+	{
+		return 135;
+	}
 }
