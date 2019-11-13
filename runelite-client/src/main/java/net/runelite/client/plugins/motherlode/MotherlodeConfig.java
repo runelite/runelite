@@ -129,6 +129,6 @@ public interface MotherlodeConfig extends Config
 	)
 	default int oreScaling()
 	{
-		return 135;
+		return 100;
 	}
 }
