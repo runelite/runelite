@@ -204,7 +204,7 @@ public class DamageCounterPlugin extends Plugin
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
 
-		if (interacting.getName() == null)
+		if (interacting == null || interacting.getName() == null)
 		{
 			return;
 		}
