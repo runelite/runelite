@@ -98,6 +98,25 @@ public class Raid
 		return combatRooms.toArray(new RaidRoom[0]);
 	}
 
+	void setCombatRooms(RaidRoom[] combatRooms)
+	{
+		int index = 0;
+
+		for (Room room : layout.getRooms())
+		{
+			if (room == null)
+			{
+				continue;
+			}
+
+			if (rooms[room.getPosition()].getType() == RoomType.COMBAT)
+			{
+				rooms[room.getPosition()] = combatRooms[index];
+				index++;
+			}
+		}
+	}
+
 	public String toCode()
 	{
 		StringBuilder builder = new StringBuilder();
