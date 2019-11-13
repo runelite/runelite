@@ -101,16 +101,14 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
-		{
-			return null;
-		}
+		// Only render if the user is in MLM and wants to render veins or rockfalls
+		if ((config.showVeins() || config.showRockFalls()) && plugin.isInMlm()) {
+			Player local = client.getLocalPlayer();
 
-		Player local = client.getLocalPlayer();
-
-		if (local != null)
-		{
-			renderTiles(graphics, local);
+			if (local != null)
+			{
+				renderTiles(graphics, local);
+			}
 		}
 
 		return null;
@@ -122,9 +120,10 @@ class MotherlodeRocksOverlay extends Overlay
 
 		if (config.showVeins())
 		{
-			for (WallObject vein : plugin.getVeins())
+			plugin.getVeins().forEach(vein ->
 			{
 				LocalPoint location = vein.getLocalLocation();
+
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
 					// Only draw veins on the same level
@@ -133,24 +132,25 @@ class MotherlodeRocksOverlay extends Overlay
 						renderVein(graphics, vein);
 					}
 				}
-			}
+			});
 		}
 
 		if (config.showRockFalls())
 		{
-			for (GameObject rock : plugin.getRocks())
+			plugin.getRocks().forEach(rock ->
 			{
 				LocalPoint location = rock.getLocalLocation();
+
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
+					// Only draw rockfalls on the same level
 					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
 					{
 						renderRock(graphics, rock);
 					}
 				}
-			}
+			});
 		}
-
 	}
 
 	private void renderVein(Graphics2D graphics, WallObject vein)
@@ -158,9 +158,7 @@ class MotherlodeRocksOverlay extends Overlay
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
 
 		if (canvasLoc != null)
-		{
 			graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
-		}
 	}
 
 	private void renderRock(Graphics2D graphics, GameObject rock)
@@ -168,8 +166,6 @@ class MotherlodeRocksOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
 
 		if (poly != null)
-		{
 			OverlayUtil.renderPolygon(graphics, poly, Color.red);
-		}
 	}
 }
