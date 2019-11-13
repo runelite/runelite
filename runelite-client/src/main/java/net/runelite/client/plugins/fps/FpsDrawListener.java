@@ -76,6 +76,7 @@ public class FpsDrawListener implements Runnable
 		{
 			targetDelay = 1000 / Math.max(1, config.maxFps());
 		}
+		
 		sleepDelay = targetDelay;
 
 		for (int i = 0; i < SAMPLE_SIZE; i++)
@@ -87,7 +88,7 @@ public class FpsDrawListener implements Runnable
 	void onFocusChanged(FocusChanged event)
 	{
 		this.isFocused = event.isFocused();
-		reloadConfig();  // load new delay
+		reloadConfig(); // load new delay
 	}
 
 	private boolean isEnforced()
