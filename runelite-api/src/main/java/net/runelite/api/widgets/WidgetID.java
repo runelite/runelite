@@ -375,8 +375,8 @@ public class WidgetID
 	{
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
-		static final int MULTICOMBAT_INDICATOR = 20;
-		static final int BANK_PIN = 21;
+		static final int MULTICOMBAT_INDICATOR = 21;
+		static final int BANK_PIN = 22;
 		static final int CLAN_CHAT_TAB = 32;
 		static final int FRIENDS_TAB = 34;
 		static final int IGNORES_TAB = 33;
@@ -415,7 +415,7 @@ public class WidgetID
 	{
 		static final int ITEMS_KEPT_ON_DEATH = 13;
 		static final int BANK_PIN = 13;
-		static final int MULTICOMBAT_INDICATOR = 16;
+		static final int MULTICOMBAT_INDICATOR = 17;
 		static final int CLAN_CHAT_TAB = 36;
 		static final int FRIENDS_TAB = 38;
 		static final int IGNORES_TAB = 37;
