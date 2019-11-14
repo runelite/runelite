@@ -37,6 +37,9 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -44,7 +47,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -62,6 +68,14 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	AttackStylesConfig attackConfig;
+
+	@Mock
+	@Bind
+	ChatColorConfig chatColorConfig;
+
+	@Mock
+	@Bind
+	ChatMessageManager chatMessageManager;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
@@ -167,6 +181,32 @@ public class AttackStylesPluginTest
 			WidgetInfo.COMBAT_STYLE_ONE));
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
 			WidgetInfo.COMBAT_STYLE_THREE));
+	}
+
+	/*
+	 * Verify that a chat message is displayed when changing weapons results in switch to unwanted attack style.
+	 */
+	@Test
+	public void testWarningMessageOnWeaponSwitch()
+	{
+		ConfigChanged warnForAttackEvent = new ConfigChanged();
+		warnForAttackEvent.setGroup("attackIndicator");
+		warnForAttackEvent.setKey("warnForAttack");
+		warnForAttackEvent.setNewValue("true");
+		attackPlugin.onConfigChanged(warnForAttackEvent);
+
+		when(attackConfig.messageWarnedStyles()).thenReturn(true);
+
+		// Verify there is a warned skill
+		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
+		assertTrue(warnedSkills.contains(Skill.ATTACK));
+
+		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
+		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+
+		attackPlugin.onVarbitChanged(new VarbitChanged());
+		verify(chatMessageManager, times(1)).queue(any(QueuedMessage.class));
+
 	}
 
 	private boolean isAtkHidden()
