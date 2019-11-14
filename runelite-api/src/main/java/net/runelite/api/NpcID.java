@@ -308,7 +308,8 @@ public final class NpcID
 	public static final int FROG = 312;
 	public static final int REACHER_313 = 313;
 	public static final int DR_JEKYLL_314 = 314;
-	public static final int PAUL = 317;
+	public static final int LEAGUES_TUTOR = 315;
+	public static final int LEAGUES_TUTOR_316 = 316;
 	public static final int DARK_CORE = 318;
 	public static final int CORPOREAL_BEAST = 319;
 	public static final int DARK_ENERGY_CORE = 320;
@@ -7160,6 +7161,7 @@ public final class NpcID
 	public static final int REVENANT_DARK_BEAST = 7938;
 	public static final int REVENANT_KNIGHT = 7939;
 	public static final int REVENANT_DRAGON = 7940;
+	public static final int PAUL = 7941;
 	public static final int EMBLEM_TRADER_7943 = 7943;
 	public static final int FISHING_SPOT_7946 = 7946;
 	public static final int FISHING_SPOT_7947 = 7947;
