@@ -376,29 +376,30 @@ class LootTrackerBox extends JPanel
 		itemContainer.repaint();
 	}
 
-	private List<LootTrackerRecord> getFilteredRecords(){
+	private List<LootTrackerRecord> getFilteredRecords()
+	{
 		Stream<LootTrackerRecord> filteredStream = records.stream()
-				.filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored));
+			.filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored));
 		return filteredStream.collect(Collectors.toList());
 	}
 
-	private void buildTitleToolTip(){
-
+	private void buildTitleToolTip()
+	{
 		List<LootTrackerRecord> activeRecords = hideIgnoredItems
-				? getFilteredRecords()
-				: records;
+			? getFilteredRecords()
+			: records;
 
 		long kills = activeRecords.size();
 		if (kills == 1)
 		{
-			Date stamp = new Date(activeRecords.get(0).timestamp);
-			logTitle.setToolTipText(DATE_FORMAT.format(stamp));
+			Date time = Date.from(activeRecords.get(0).getTime());
+			logTitle.setToolTipText(DATE_FORMAT.format(time));
 		}
-		else if(kills > 1)
+		else if (kills > 1)
 		{
-			Date firstStamp = new Date(activeRecords.get(0).timestamp);
-			Date lastStamp = new Date(activeRecords.get(activeRecords.size() - 1).timestamp);
-			String toolTip = DATE_FORMAT.format(firstStamp) + " — " + DATE_FORMAT.format(lastStamp);
+			Date firstTime = Date.from(activeRecords.get(0).getTime());
+			Date lastTime = Date.from(activeRecords.get(activeRecords.size() - 1).getTime());
+			String toolTip = DATE_FORMAT.format(firstTime) + " — " + DATE_FORMAT.format(lastTime);
 			logTitle.setToolTipText(toolTip);
 		}
 	}

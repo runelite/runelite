@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import java.time.Instant;
 import lombok.Value;
 
 @Value
@@ -32,10 +33,11 @@ class LootTrackerRecord
 	private final String title;
 	private final String subTitle;
 	private final LootTrackerItem[] items;
-	public final long timestamp;
+	private final Instant time;
 
 	/**
 	 * Checks if this record matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
