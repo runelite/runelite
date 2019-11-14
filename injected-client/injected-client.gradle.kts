@@ -32,34 +32,46 @@ plugins {
     id("com.openosrs.injector")
 }
 
+val vanillaDep by configurations.creating
+val rsapiDep by configurations.creating
+val rsclientDep by configurations.creating
+val mixinsDep by configurations.creating
+val combined by configurations.creating {
+    extendsFrom(rsapiDep, rsclientDep, mixinsDep, vanillaDep)
+    isCanBeResolved = true
+    isCanBeConsumed = false
+}
+
 configurations {
-    create("vanilla")
-    create("injected-client")
+    all {
+        isTransitive = false
+    }
 }
 
 dependencies {
-    "vanilla"(Libraries.vanilla)
+    vanillaDep(Libraries.vanilla)
+    rsapiDep(project(":runescape-api"))
+    rsclientDep(project(":runescape-client"))
+    mixinsDep(project(":runelite-mixins"))
 }
 
 injector {
-    mixins.set(tasks.getByPath(":runelite-mixins:jar").outputs.files.singleFile)
-    rsapi.set(tasks.getByPath(":runescape-api:jar").outputs.files.singleFile)
-    rsclient.set(tasks.getByPath(":runescape-client:jar").outputs.files.singleFile)
-    vanilla.set(project.file(configurations["vanilla"].asPath))
+    mixins.set(mixinsDep.singleFile)
+    rsapi.set(rsapiDep.singleFile)
+    rsclient.set(rsclientDep.singleFile)
+    vanilla.set(vanillaDep.singleFile)
 }
 
-artifacts {
-    add("runtimeOnly", tasks.inject.get().output) {
-        builtBy(tasks.inject)
+sourceSets {
+    main {
+        output.dir(tasks.inject.get().output.get().asFile.parentFile, "builtBy" to tasks.inject)
     }
 }
 
 // keep the sourcesets etc but remove useless tasks
 tasks {
-    build {
-        dependsOn(":runelite-mixins:build")
-        dependsOn(":runescape-api:build")
-        dependsOn(":runescape-client:build")
+    inject {
+        dependsOn(configurations["combined"])
     }
     classes {
         enabled = false
