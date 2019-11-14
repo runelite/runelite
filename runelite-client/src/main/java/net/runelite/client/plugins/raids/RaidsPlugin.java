@@ -32,6 +32,7 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +54,6 @@ import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -64,6 +64,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -665,9 +666,9 @@ public class RaidsPlugin extends Plugin
 		}
 
 		final String playerName = client.getLocalPlayer().getName();
-		RaidRoom[] rooms = raid.getRooms();
+		List<RaidRoom> orderedRooms = raid.getOrderedRooms();
 
-		LayoutRoom[] layoutRooms = Arrays.stream(rooms)
+		LayoutRoom[] layoutRooms = orderedRooms.stream()
 			.map(room -> LayoutRoom.valueOf(room.name()))
 			.toArray(LayoutRoom[]::new);
 

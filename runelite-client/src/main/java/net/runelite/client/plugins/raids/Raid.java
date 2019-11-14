@@ -136,10 +136,13 @@ public class Raid
 		return builder.toString();
 	}
 
-	public String toRoomString()
+	/**
+	 * Get the raid rooms in the order they are in the raid
+	 * @return
+	 */
+	List<RaidRoom> getOrderedRooms()
 	{
-		final StringBuilder sb = new StringBuilder();
-
+		List<RaidRoom> orderedRooms = new ArrayList<>();
 		for (Room r : getLayout().getRooms())
 		{
 			final int position = r.getPosition();
@@ -150,6 +153,18 @@ public class Raid
 				continue;
 			}
 
+			orderedRooms.add(room);
+		}
+
+		return orderedRooms;
+	}
+
+	String toRoomString()
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		for (RaidRoom room : getOrderedRooms())
+		{
 			switch (room.getType())
 			{
 				case PUZZLE:
