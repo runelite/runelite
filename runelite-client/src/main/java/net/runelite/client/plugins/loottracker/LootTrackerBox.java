@@ -38,6 +38,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -374,17 +376,30 @@ class LootTrackerBox extends JPanel
 		itemContainer.repaint();
 	}
 
+	private List<LootTrackerRecord> getFilteredRecords(){
+		Stream<LootTrackerRecord> filteredStream = records.stream()
+				.filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored));
+		return filteredStream.collect(Collectors.toList());
+	}
+
 	private void buildTitleToolTip(){
-		if (records.size() == 1)
+
+		List<LootTrackerRecord> activeRecords = hideIgnoredItems
+				? getFilteredRecords()
+				: records;
+
+		long kills = activeRecords.size();
+		if (kills == 1)
 		{
-			final Date stamp = new Date(records.get(0).timestamp);
+			Date stamp = new Date(activeRecords.get(0).timestamp);
 			logTitle.setToolTipText(DATE_FORMAT.format(stamp));
 		}
-		else if(records.size() > 1)
+		else if(kills > 1)
 		{
-			final Date firstStamp = new Date(records.get(0).timestamp);
-			final Date lastStamp = new Date(records.get(records.size() - 1).timestamp);
-			logTitle.setToolTipText(DATE_FORMAT.format(firstStamp) + " — " + DATE_FORMAT.format(lastStamp));
+			Date firstStamp = new Date(activeRecords.get(0).timestamp);
+			Date lastStamp = new Date(activeRecords.get(activeRecords.size() - 1).timestamp);
+			String toolTip = DATE_FORMAT.format(firstStamp) + " — " + DATE_FORMAT.format(lastStamp);
+			logTitle.setToolTipText(toolTip);
 		}
 	}
 
