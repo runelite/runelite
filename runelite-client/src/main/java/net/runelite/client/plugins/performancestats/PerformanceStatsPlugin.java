@@ -41,10 +41,10 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.util.Text;
 import net.runelite.client.chat.ChatColorType;
@@ -166,13 +166,13 @@ public class PerformanceStatsPlugin extends Plugin
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
 		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
 		eventBus.subscribe(Performance.class, this, this::onPerformance);
 		eventBus.subscribe(UserSync.class, this, this::onUserSync);
 		eventBus.subscribe(UserPart.class, this, this::onUserPart);
 		eventBus.subscribe(PartyChanged.class, this, this::onPartyChanged);
+		eventBus.subscribe(FakeXpDrop.class, this, this::onFakeXpDrop);
 	}
 
 	private void onGameStateChanged(GameStateChanged event)
@@ -242,25 +242,9 @@ public class PerformanceStatsPlugin extends Plugin
 		}
 	}
 
-	private void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onFakeXpDrop(FakeXpDrop fakeXpDrop)
 	{
-		// Handles Fake XP drops (Ironman in PvP, DMM Cap, 200m xp, etc)
-		if (isPaused())
-		{
-			return;
-		}
-
-		if (!"fakeXpDrop".equals(e.getEventName()))
-		{
-			return;
-		}
-
-		final int[] intStack = client.getIntStack();
-		final int intStackSize = client.getIntStackSize();
-
-		final int skillId = intStack[intStackSize - 2];
-		final Skill skill = Skill.values()[skillId];
-		if (skill.equals(Skill.HITPOINTS))
+		if (fakeXpDrop.getSkill().equals(Skill.HITPOINTS))
 		{
 			// Auto enables when player would have received hp exp
 			if (!isEnabled())
@@ -268,7 +252,7 @@ public class PerformanceStatsPlugin extends Plugin
 				enable();
 			}
 
-			final int exp = intStack[intStackSize - 1];
+			final int exp = fakeXpDrop.getXp();
 			performance.addDamageDealt(calculateDamageDealt(exp), client.getTickCount());
 		}
 	}

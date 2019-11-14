@@ -48,7 +48,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -197,7 +196,7 @@ public class DeathIndicatorPlugin extends Plugin
 	private void addSubscriptions()
 	{
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		if (config.permaBones())
@@ -209,7 +208,6 @@ public class DeathIndicatorPlugin extends Plugin
 	private void addBoneSubs()
 	{
 		eventBus.subscribe(ItemDespawned.class, BONES, this::onItemDespawn);
-		eventBus.subscribe(PlayerDeath.class, BONES, this::onPlayerDeath);
 		eventBus.subscribe(MenuEntryAdded.class, BONES, this::onMenuEntryAdded);
 		eventBus.subscribe(MenuOptionClicked.class, BONES, this::onMenuOptionClicked);
 		eventBus.subscribe(MenuOpened.class, BONES, this::onMenuOpened);
@@ -230,7 +228,26 @@ public class DeathIndicatorPlugin extends Plugin
 
 	private void onPlayerDeath(PlayerDeath death)
 	{
-		newBoneFor(death.getPlayer());
+		if (client.isInInstancedRegion() || death.getPlayer().getWorldLocation().getRegionID() == 13362)
+		{
+			return;
+		}
+
+		if (death.getPlayer() != client.getLocalPlayer())
+		{
+			newBoneFor(death.getPlayer());
+			return;
+		}
+
+		Player lp = client.getLocalPlayer();
+		if (config.permaBones())
+		{
+			newBoneFor(lp);
+		}
+
+		lastDeath = lp.getWorldLocation();
+		lastDeathWorld = client.getWorld();
+		lastDeathTime = Instant.now();
 	}
 
 	private void newBoneFor(Player player)
@@ -299,24 +316,6 @@ public class DeathIndicatorPlugin extends Plugin
 			client.addChatMessage(ChatMessageType.ITEM_EXAMINE, "", b.getExamine(), "");
 			event.consume();
 		}
-	}
-
-	private void onLocalPlayerDeath(LocalPlayerDeath death)
-	{
-		if (client.isInInstancedRegion())
-		{
-			return;
-		}
-
-		Player lp = client.getLocalPlayer();
-		if (config.permaBones())
-		{
-			newBoneFor(lp);
-		}
-
-		lastDeath = lp.getWorldLocation();
-		lastDeathWorld = client.getWorld();
-		lastDeathTime = Instant.now();
 	}
 
 	private void onGameTick(GameTick event)

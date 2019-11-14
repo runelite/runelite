@@ -108,6 +108,7 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> executor.execute(() -> priceLookup(false)));
+		searchBar.addClearListener(e -> updateSearch());
 
 		searchItemsPanel.setLayout(new GridBagLayout());
 		searchItemsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -154,7 +155,7 @@ class GrandExchangeSearchPanel extends JPanel
 		executor.execute(() -> priceLookup(true));
 	}
 
-	private void priceLookup(boolean exactMatch)
+	private boolean updateSearch()
 	{
 		String lookup = searchBar.getText();
 
@@ -162,7 +163,7 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			searchItemsPanel.removeAll();
 			SwingUtilities.invokeLater(searchItemsPanel::updateUI);
-			return;
+			return false;
 		}
 
 		// Input is not empty, add searching label
@@ -170,8 +171,17 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING);
+		return true;
+	}
 
-		List<ItemPrice> result = itemManager.search(lookup);
+	private void priceLookup(boolean exactMatch)
+	{
+		if (!updateSearch())
+		{
+			return;
+		}
+
+		List<ItemPrice> result = itemManager.search(searchBar.getText());
 		if (result.isEmpty())
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);
@@ -182,7 +192,7 @@ class GrandExchangeSearchPanel extends JPanel
 		}
 
 		// move to client thread to lookup item composition
-		clientThread.invokeLater(() -> processResult(result, lookup, exactMatch));
+		clientThread.invokeLater(() -> processResult(result, searchBar.getText(), exactMatch));
 	}
 
 	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)

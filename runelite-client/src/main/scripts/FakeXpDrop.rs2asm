@@ -3,8 +3,8 @@
 .string_stack_count 0
 .int_var_count      2
 .string_var_count   0
-   iload                  0
-   iload                  1
+   iload                  0 ; stat
+   iload                  1 ; xp
    sconst                 "fakeXpDrop"
    runelite_callback
    pop_int
@@ -13,8 +13,8 @@
    iconst                 83
    iconst                 681
    get_varc_int           207
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL9
    jump                   LABEL16
@@ -23,7 +23,7 @@ LABEL9:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           207
    jump                   LABEL216
 LABEL16:
@@ -31,8 +31,8 @@ LABEL16:
    iconst                 83
    iconst                 681
    get_varc_int           208
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL25
    jump                   LABEL32
@@ -41,7 +41,7 @@ LABEL25:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           208
    jump                   LABEL216
 LABEL32:
@@ -49,8 +49,8 @@ LABEL32:
    iconst                 83
    iconst                 681
    get_varc_int           209
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL41
    jump                   LABEL48
@@ -59,7 +59,7 @@ LABEL41:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           209
    jump                   LABEL216
 LABEL48:
@@ -67,8 +67,8 @@ LABEL48:
    iconst                 83
    iconst                 681
    get_varc_int           210
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL57
    jump                   LABEL64
@@ -77,7 +77,7 @@ LABEL57:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           210
    jump                   LABEL216
 LABEL64:
@@ -85,8 +85,8 @@ LABEL64:
    iconst                 83
    iconst                 681
    get_varc_int           211
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL73
    jump                   LABEL80
@@ -95,7 +95,7 @@ LABEL73:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           211
    jump                   LABEL216
 LABEL80:
@@ -103,8 +103,8 @@ LABEL80:
    iconst                 83
    iconst                 681
    get_varc_int           212
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL89
    jump                   LABEL96
@@ -113,7 +113,7 @@ LABEL89:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           212
    jump                   LABEL216
 LABEL96:
@@ -121,8 +121,8 @@ LABEL96:
    iconst                 83
    iconst                 681
    get_varc_int           213
-   coordx
-   enum
+   coordx                
+   enum                  
    iload                  0
    if_icmpeq              LABEL105
    jump                   LABEL112
@@ -131,7 +131,7 @@ LABEL105:
    iconst                 0
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           213
    jump                   LABEL216
 LABEL112:
@@ -145,10 +145,10 @@ LABEL116:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           207
    jump                   LABEL216
 LABEL127:
@@ -162,10 +162,10 @@ LABEL131:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           208
    jump                   LABEL216
 LABEL142:
@@ -179,10 +179,10 @@ LABEL146:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           209
    jump                   LABEL216
 LABEL157:
@@ -196,10 +196,10 @@ LABEL161:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           210
    jump                   LABEL216
 LABEL172:
@@ -213,10 +213,10 @@ LABEL176:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           211
    jump                   LABEL216
 LABEL187:
@@ -230,10 +230,10 @@ LABEL191:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           212
    jump                   LABEL216
 LABEL202:
@@ -247,10 +247,10 @@ LABEL206:
    iconst                 105
    iconst                 81
    iload                  0
-   enum
+   enum                  
    iconst                 0
    iload                  1
-   movecoord
+   movecoord             
    set_varc_int           213
 LABEL216:
-   return
+   return                

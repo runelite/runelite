@@ -41,7 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -116,7 +116,7 @@ public class DamageCounterPlugin extends Plugin
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 	}
 
 
@@ -359,9 +359,9 @@ public class DamageCounterPlugin extends Plugin
 
 	//whenever you have died in tob you will get a death message with damage
 	// made sure the message works at ToB area or else it will message every where
-	private void onLocalPlayerDeath(LocalPlayerDeath death)
+	private void onPlayerDeath(PlayerDeath death)
 	{
-		if (client.getLocalPlayer() == null)
+		if (client.getLocalPlayer() == null || death.getPlayer() != client.getLocalPlayer())
 		{
 			return;
 		}

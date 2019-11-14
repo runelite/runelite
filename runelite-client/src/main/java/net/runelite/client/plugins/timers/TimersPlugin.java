@@ -59,7 +59,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.SpotAnimationChanged;
@@ -220,7 +220,7 @@ public class TimersPlugin extends Plugin
 		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
 		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
 	}
 
@@ -937,9 +937,12 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onPlayerDeath(PlayerDeath playerDeath)
 	{
-		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
+		if (playerDeath.getPlayer() == client.getLocalPlayer())
+		{
+			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
+		}
 	}
 
 	private void onStatChanged(StatChanged event)
