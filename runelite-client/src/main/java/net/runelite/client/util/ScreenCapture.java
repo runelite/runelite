@@ -23,6 +23,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+
+import net.runelite.client.plugins.screenshot.TransferableBufferedImage;
+import net.runelite.client.plugins.screenshot.UploadStyle;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.http.api.RuneLiteAPI;
@@ -60,9 +63,9 @@ public class ScreenCapture
 	 * @param notify Send a notification to the system tray when the image is captured.
 	 * @param subDirectory Subdirectory of the default screenshot directory to save the image in.
 	 */
-	public void takeScreenshot(BufferedImage screenshot, boolean notify, String subDirectory)
+	public void takeScreenshot(BufferedImage screenshot, boolean notify, UploadStyle upload, String subDirectory)
 	{
-		takeScreenshot(screenshot, null, notify, true, subDirectory);
+		takeScreenshot(screenshot, null, notify, upload, subDirectory);
 	}
 
 	/**
@@ -74,7 +77,7 @@ public class ScreenCapture
 	 * @param notify Send a notification to the system tray when the image is captured.
 	 * @param upload Upload the image to a hosting service.
 	 */
-	public void takeScreenshot(BufferedImage screenshot, String name, boolean notify, boolean upload)
+	public void takeScreenshot(BufferedImage screenshot, String name, boolean notify, UploadStyle upload)
 	{
 		takeScreenshot(screenshot, name, notify, upload, null);
 	}
@@ -89,7 +92,7 @@ public class ScreenCapture
 	 * @param notify Send a notification to the system tray when the image is captured.
 	 * @param upload Upload the image to a hosting service.
 	 */
-	public void takeScreenshot(BufferedImage screenshot, String name, boolean notify, boolean upload, String subDirectory)
+	public void takeScreenshot(BufferedImage screenshot, String name, boolean notify, UploadStyle upload, String subDirectory)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -130,14 +133,43 @@ public class ScreenCapture
 		{
 			try
 			{
-				File screenshotFile = new File(writeDirectory, fileName + ".png");
+				if (upload == UploadStyle.IMGUR || upload == UploadStyle.NEITHER)
+				{
+					File screenshotFile = new File(writeDirectory, fileName + ".png");
 
-				ImageIO.write(screenshot, "PNG", screenshotFile);
+					// To make sure that screenshots don't get overwritten, check if file exists,
+					// and if it does create file with same name and suffix.
+					int i = 1;
+					while (screenshotFile.exists())
+					{
+						screenshotFile = new File(writeDirectory, fileName + String.format("(%d)", i++) + ".png");
+					}
+					ImageIO.write(screenshot, "PNG", screenshotFile);
 
-				if (upload)
-					uploadScreenshot(screenshotFile, notify);
-				else if (notify)
-					notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+					if (upload == UploadStyle.IMGUR)
+					{
+						uploadScreenshot(screenshotFile, notify);
+						if (notify)
+						{
+							notifier.notify("A screenshot was saved to " + screenshotFile + " & uploaded to imgur.", TrayIcon.MessageType.INFO);
+						}
+					}
+					else if (notify)
+					{
+						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+					}
+
+				}
+				else if (upload == UploadStyle.CLIPBOARD)
+				{
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+					clipboard.setContents(transferableBufferedImage, null);
+					if (notify)
+					{
+						notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+					}
+				}
 			}
 			catch (IOException ex)
 			{

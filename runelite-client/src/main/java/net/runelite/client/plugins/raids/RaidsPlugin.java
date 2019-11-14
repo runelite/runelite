@@ -90,7 +90,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
-import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -521,7 +520,7 @@ public class RaidsPlugin extends Plugin
 			String key = everything.substring(0, split);
 			if (key.length() < 1)
 				continue;
-			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
+			List<String> itemNames = Text.fromCSV(everything.substring(split));
 
 			map.computeIfAbsent(key, k -> new ArrayList<>());
 
@@ -823,7 +822,7 @@ public class RaidsPlugin extends Plugin
 		g.fillRect(0, 0, overlaySize.width, overlaySize.height);
 
 		overlay.render(g);
-		screenCapture.takeScreenshot(bim, config.enableTrayNotification(), "Chambers");
+		screenCapture.takeScreenshot(bim, config.enableTrayNotification(), config.uploadScreenshot(), "Chambers");
 		g.dispose();
 
 		overlay.setSharable(false);

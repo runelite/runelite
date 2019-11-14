@@ -31,6 +31,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.plugins.screenshot.UploadStyle;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -333,7 +334,18 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 27,
+			position = 27,
+			keyName = "hideUnknownPuzzle",
+			name = "Hide Unknown puzzle raids",
+			description = "Completely hides raids with Unknown puzzle"
+	)
+	default boolean hideUnknownPuzzle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 28,
 		keyName = "layoutMessage",
 		name = "Send raid layout message when entering raid",
 		description = "Sends game message with raid layout on entering new raid"
@@ -344,6 +356,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 29,
 		position = 12,
 		keyName = "showLootValue",
 		name = "Show Loot Value",
@@ -363,5 +376,16 @@ public interface RaidsConfig extends Config
 	default boolean displayFloorBreak()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			position = 30,
+			keyName = "uploadScreenshot",
+			name = "Upload",
+			description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard"
+	)
+	default UploadStyle uploadScreenshot()
+	{
+		return UploadStyle.CLIPBOARD;
 	}
 }

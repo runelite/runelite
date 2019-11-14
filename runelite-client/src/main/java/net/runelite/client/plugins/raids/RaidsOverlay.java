@@ -152,8 +152,8 @@ public class RaidsOverlay extends Overlay
 		boolean thieving = false;
 		boolean vanguards = false;
 		boolean unknownCombat = false;
+		boolean unknownPuzzle = false;
 		String puzzles = "";
-		String roomName = "";
 		if (config.enhanceScouterTitle() || config.scavsBeforeIce() || sharable)
 		{
 			for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
@@ -170,20 +170,18 @@ public class RaidsOverlay extends Overlay
 				{
 					case COMBAT:
 						combatCount++;
-						roomName = room.getBoss().getName();
-						switch (RaidRoom.Boss.fromString(roomName))
+						switch (room)
 						{
 							case VANGUARDS:
 								vanguards = true;
 								break;
-							case UNKNOWN:
+							case UNKNOWN_COMBAT:
 								unknownCombat = true;
 								break;
 						}
 						break;
 					case PUZZLE:
-						roomName = room.getPuzzle().getName();
-						switch (RaidRoom.Puzzle.fromString(roomName))
+						switch (room)
 						{
 							case CRABS:
 								crabs = true;
@@ -198,6 +196,9 @@ public class RaidsOverlay extends Overlay
 							case TIGHTROPE:
 								tightrope = true;
 								break;
+							case UNKNOWN_PUZZLE:
+								unknownPuzzle = true;
+								break;
 						}
 						break;
 					case SCAVENGERS:
@@ -209,7 +210,7 @@ public class RaidsOverlay extends Overlay
 			if (tightrope)
 				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
 
-			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
+			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat) || (config.hideUnknownPuzzle() && unknownPuzzle))
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
 						.text("Bad Raid!")
@@ -285,7 +286,7 @@ public class RaidsOverlay extends Overlay
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
 						|| config.enableRotationWhitelist() && bossCount > bossMatches)
 					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
 							|| config.enableRotationWhitelist() && !plugin.getRotationMatches())
@@ -293,7 +294,7 @@ public class RaidsOverlay extends Overlay
 						color = Color.RED;
 					}
 
-					String bossName = room.getBoss().getName();
+					String bossName = room.getName();
 					String bossNameLC = bossName.toLowerCase();
 					if (config.showRecommendedItems())
 					{
@@ -310,7 +311,7 @@ public class RaidsOverlay extends Overlay
 					break;
 
 				case PUZZLE:
-					String puzzleName = room.getPuzzle().getName();
+					String puzzleName = room.getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
 						imageIds.addAll(plugin.getRecommendedItemsList().get(puzzleNameLC));
@@ -327,11 +328,11 @@ public class RaidsOverlay extends Overlay
 						color = config.tightropeColor();
 					}
 
-					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
+					String name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : puzzleName;
 
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(config.showRecommendedItems() ? "" : room.getType().getName())
-						.right(puzzleName)
+						.right(name)
 						.rightColor(color)
 						.build());
 					break;
