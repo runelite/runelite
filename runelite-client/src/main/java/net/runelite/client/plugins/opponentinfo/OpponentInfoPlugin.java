@@ -117,6 +117,10 @@ public class OpponentInfoPlugin extends Plugin
 		{
 			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
 		}
+		else if (worldType.contains(WorldType.LEAGUE))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.LEAGUE;
+		}
 		else
 		{
 			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
