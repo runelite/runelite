@@ -1,61 +1,60 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("he")
 @Implements("PlayerAppearance")
 public class PlayerAppearance {
-	@ObfuscatedName("m")
-	public static short[][] field2519;
-	@ObfuscatedName("y")
-	public static short[] field2525;
 	@ObfuscatedName("c")
+	public static short[] field2519;
+	@ObfuscatedName("o")
+	public static short[][] field2520;
+	@ObfuscatedName("m")
 	@Export("equipmentIndices")
 	static final int[] equipmentIndices;
-	@ObfuscatedName("b")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lem;"
+		signature = "Leb;"
 	)
 	@Export("PlayerAppearance_cachedModels")
 	static EvictingDualNodeHashTable PlayerAppearance_cachedModels;
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@Export("equipment")
 	int[] equipment;
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@Export("bodyColors")
 	int[] bodyColors;
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@Export("isFemale")
 	public boolean isFemale;
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 297413953
+		intValue = -1447721329
 	)
 	@Export("npcTransformId")
 	public int npcTransformId;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		longValue = 720398240330286877L
+		longValue = 3547676045736653443L
 	)
-	long field2526;
-	@ObfuscatedName("p")
+	long field2517;
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		longValue = -4457276035074261541L
+		longValue = 826558689471794127L
 	)
-	long field2522;
+	long field2518;
 
 	static {
 		equipmentIndices = new int[]{8, 11, 4, 6, 9, 7, 10};
 		PlayerAppearance_cachedModels = new EvictingDualNodeHashTable(260);
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "([I[IZII)V",
-		garbageValue = "16711680"
+		garbageValue = "2098683582"
 	)
 	@Export("update")
 	public void update(int[] var1, int[] var2, boolean var3, int var4) {
@@ -63,9 +62,9 @@ public class PlayerAppearance {
 			var1 = new int[12];
 
 			for (int var5 = 0; var5 < 7; ++var5) {
-				for (int var6 = 0; var6 < DevicePcmPlayerProvider.KitDefinition_fileCount; ++var6) {
-					KitDefinition var7 = class216.KitDefinition_get(var6);
-					if (var7 != null && !var7.nonSelectable && var5 + (var3 ? 7 : 0) == var7.bodypartID) {
+				for (int var6 = 0; var6 < KitDefinition.KitDefinition_fileCount; ++var6) {
+					KitDefinition var7 = BufferedSource.KitDefinition_get(var6);
+					if (var7 != null && !var7.nonSelectable && var7.bodypartID == (var3 ? 7 : 0) + var5) {
 						var1[equipmentIndices[var5]] = var6 + 256;
 						break;
 					}
@@ -80,10 +79,10 @@ public class PlayerAppearance {
 		this.setHash();
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(IZI)V",
-		garbageValue = "-317022193"
+		garbageValue = "429844211"
 	)
 	@Export("changeAppearance")
 	public void changeAppearance(int var1, boolean var2) {
@@ -97,17 +96,17 @@ public class PlayerAppearance {
 					if (!var2) {
 						--var3;
 						if (var3 < 0) {
-							var3 = DevicePcmPlayerProvider.KitDefinition_fileCount - 1;
+							var3 = KitDefinition.KitDefinition_fileCount - 1;
 						}
 					} else {
 						++var3;
-						if (var3 >= DevicePcmPlayerProvider.KitDefinition_fileCount) {
+						if (var3 >= KitDefinition.KitDefinition_fileCount) {
 							var3 = 0;
 						}
 					}
 
-					var4 = class216.KitDefinition_get(var3);
-				} while(var4 == null || var4.nonSelectable || var4.bodypartID != var1 + (this.isFemale ? 7 : 0));
+					var4 = BufferedSource.KitDefinition_get(var3);
+				} while(var4 == null || var4.nonSelectable || var1 + (this.isFemale ? 7 : 0) != var4.bodypartID);
 
 				this.equipment[equipmentIndices[var1]] = var3 + 256;
 				this.setHash();
@@ -115,37 +114,50 @@ public class PlayerAppearance {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(IZI)V",
-		garbageValue = "-278552632"
+		signature = "(IZB)V",
+		garbageValue = "1"
 	)
-	public void method3977(int var1, boolean var2) {
+	public void method4156(int var1, boolean var2) {
 		int var3 = this.bodyColors[var1];
+		boolean var4;
 		if (!var2) {
 			do {
 				--var3;
 				if (var3 < 0) {
-					var3 = field2519[var1].length - 1;
+					var3 = field2520[var1].length - 1;
 				}
-			} while(!NetCache.method4296(var1, var3));
+
+				if (var1 == 4 && var3 >= 8) {
+					var4 = false;
+				} else {
+					var4 = true;
+				}
+			} while(!var4);
 		} else {
 			do {
 				++var3;
-				if (var3 >= field2519[var1].length) {
+				if (var3 >= field2520[var1].length) {
 					var3 = 0;
 				}
-			} while(!NetCache.method4296(var1, var3));
+
+				if (var1 == 4 && var3 >= 8) {
+					var4 = false;
+				} else {
+					var4 = true;
+				}
+			} while(!var4);
 		}
 
 		this.bodyColors[var1] = var3;
 		this.setHash();
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		signature = "(ZI)V",
-		garbageValue = "-1564425789"
+		garbageValue = "864833529"
 	)
 	@Export("changeSex")
 	public void changeSex(boolean var1) {
@@ -154,10 +166,10 @@ public class PlayerAppearance {
 		}
 	}
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lkl;I)V",
-		garbageValue = "-1319583567"
+		signature = "(Lkc;I)V",
+		garbageValue = "65280"
 	)
 	@Export("write")
 	public void write(Buffer var1) {
@@ -179,62 +191,62 @@ public class PlayerAppearance {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1673165778"
+		garbageValue = "1536337357"
 	)
 	@Export("setHash")
 	void setHash() {
-		long var1 = this.field2526;
+		long var1 = this.field2517;
 		int var3 = this.equipment[5];
 		int var4 = this.equipment[9];
 		this.equipment[5] = var4;
 		this.equipment[9] = var3;
-		this.field2526 = 0L;
+		this.field2517 = 0L;
 
 		int var5;
 		for (var5 = 0; var5 < 12; ++var5) {
-			this.field2526 <<= 4;
+			this.field2517 <<= 4;
 			if (this.equipment[var5] >= 256) {
-				this.field2526 += (long)(this.equipment[var5] - 256);
+				this.field2517 += (long)(this.equipment[var5] - 256);
 			}
 		}
 
 		if (this.equipment[0] >= 256) {
-			this.field2526 += (long)(this.equipment[0] - 256 >> 4);
+			this.field2517 += (long)(this.equipment[0] - 256 >> 4);
 		}
 
 		if (this.equipment[1] >= 256) {
-			this.field2526 += (long)(this.equipment[1] - 256 >> 8);
+			this.field2517 += (long)(this.equipment[1] - 256 >> 8);
 		}
 
 		for (var5 = 0; var5 < 5; ++var5) {
-			this.field2526 <<= 3;
-			this.field2526 += (long)this.bodyColors[var5];
+			this.field2517 <<= 3;
+			this.field2517 += (long)this.bodyColors[var5];
 		}
 
-		this.field2526 <<= 1;
-		this.field2526 += (long)(this.isFemale ? 1 : 0);
+		this.field2517 <<= 1;
+		this.field2517 += (long)(this.isFemale ? 1 : 0);
 		this.equipment[5] = var3;
 		this.equipment[9] = var4;
-		if (var1 != 0L && this.field2526 != var1) {
+		if (var1 != 0L && var1 != this.field2517) {
 			PlayerAppearance_cachedModels.remove(var1);
 		}
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lix;ILix;IB)Ldh;",
-		garbageValue = "2"
+		signature = "(Liv;ILiv;II)Ldv;",
+		garbageValue = "-1006380079"
 	)
 	@Export("getModel")
 	public Model getModel(SequenceDefinition var1, int var2, SequenceDefinition var3, int var4) {
 		if (this.npcTransformId != -1) {
-			return PacketBufferNode.getNpcDefinition(this.npcTransformId).getModel(var1, var2, var3, var4);
+			return SecureRandomCallable.getNpcDefinition(this.npcTransformId).getModel(var1, var2, var3, var4);
 		} else {
-			long var5 = this.field2526;
+			long var5 = this.field2517;
 			int[] var7 = this.equipment;
 			if (var1 != null && (var1.shield >= 0 || var1.weapon >= 0)) {
 				var7 = new int[12];
@@ -261,18 +273,18 @@ public class PlayerAppearance {
 				int var11;
 				for (int var10 = 0; var10 < 12; ++var10) {
 					var11 = var7[var10];
-					if (var11 >= 256 && var11 < 512 && !class216.KitDefinition_get(var11 - 256).ready()) {
+					if (var11 >= 256 && var11 < 512 && !BufferedSource.KitDefinition_get(var11 - 256).ready()) {
 						var9 = true;
 					}
 
-					if (var11 >= 512 && !Occluder.ItemDefinition_get(var11 - 512).hasNoValidModel(this.isFemale)) {
+					if (var11 >= 512 && !class222.ItemDefinition_get(var11 - 512).hasNoValidModel(this.isFemale)) {
 						var9 = true;
 					}
 				}
 
 				if (var9) {
-					if (-1L != this.field2522) {
-						var8 = (Model)PlayerAppearance_cachedModels.get(this.field2522);
+					if (-1L != this.field2518) {
+						var8 = (Model)PlayerAppearance_cachedModels.get(this.field2518);
 					}
 
 					if (var8 == null) {
@@ -289,14 +301,14 @@ public class PlayerAppearance {
 						var13 = var7[var12];
 						ModelData var14;
 						if (var13 >= 256 && var13 < 512) {
-							var14 = class216.KitDefinition_get(var13 - 256).getModelData();
+							var14 = BufferedSource.KitDefinition_get(var13 - 256).getModelData();
 							if (var14 != null) {
 								var16[var11++] = var14;
 							}
 						}
 
 						if (var13 >= 512) {
-							var14 = Occluder.ItemDefinition_get(var13 - 512).method4605(this.isFemale);
+							var14 = class222.ItemDefinition_get(var13 - 512).method4790(this.isFemale);
 							if (var14 != null) {
 								var16[var11++] = var14;
 							}
@@ -306,18 +318,18 @@ public class PlayerAppearance {
 					ModelData var18 = new ModelData(var16, var11);
 
 					for (var13 = 0; var13 < 5; ++var13) {
-						if (this.bodyColors[var13] < field2519[var13].length) {
-							var18.recolor(HorizontalAlignment.field3447[var13], field2519[var13][this.bodyColors[var13]]);
+						if (this.bodyColors[var13] < field2520[var13].length) {
+							var18.recolor(field2519[var13], field2520[var13][this.bodyColors[var13]]);
 						}
 
-						if (this.bodyColors[var13] < DevicePcmPlayerProvider.field390[var13].length) {
-							var18.recolor(field2525[var13], DevicePcmPlayerProvider.field390[var13][this.bodyColors[var13]]);
+						if (this.bodyColors[var13] < class195.field2359[var13].length) {
+							var18.recolor(class326.field3881[var13], class195.field2359[var13][this.bodyColors[var13]]);
 						}
 					}
 
 					var8 = var18.toModel(64, 850, -30, -50, -30);
 					PlayerAppearance_cachedModels.put(var8, var5);
-					this.field2522 = var5;
+					this.field2518 = var5;
 				}
 			}
 
@@ -338,26 +350,26 @@ public class PlayerAppearance {
 		}
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(B)Ldw;",
-		garbageValue = "65"
+		signature = "(B)Ldu;",
+		garbageValue = "-58"
 	)
 	@Export("getModelData")
 	ModelData getModelData() {
 		if (this.npcTransformId != -1) {
-			return PacketBufferNode.getNpcDefinition(this.npcTransformId).getModelData();
+			return SecureRandomCallable.getNpcDefinition(this.npcTransformId).getModelData();
 		} else {
 			boolean var1 = false;
 
 			int var3;
 			for (int var2 = 0; var2 < 12; ++var2) {
 				var3 = this.equipment[var2];
-				if (var3 >= 256 && var3 < 512 && !class216.KitDefinition_get(var3 - 256).method4423()) {
+				if (var3 >= 256 && var3 < 512 && !BufferedSource.KitDefinition_get(var3 - 256).method4602()) {
 					var1 = true;
 				}
 
-				if (var3 >= 512 && !Occluder.ItemDefinition_get(var3 - 512).method4623(this.isFemale)) {
+				if (var3 >= 512 && !class222.ItemDefinition_get(var3 - 512).method4791(this.isFemale)) {
 					var1 = true;
 				}
 			}
@@ -373,14 +385,14 @@ public class PlayerAppearance {
 					var5 = this.equipment[var4];
 					ModelData var6;
 					if (var5 >= 256 && var5 < 512) {
-						var6 = class216.KitDefinition_get(var5 - 256).getKitDefinitionModels();
+						var6 = BufferedSource.KitDefinition_get(var5 - 256).getKitDefinitionModels();
 						if (var6 != null) {
 							var7[var3++] = var6;
 						}
 					}
 
 					if (var5 >= 512) {
-						var6 = Occluder.ItemDefinition_get(var5 - 512).method4607(this.isFemale);
+						var6 = class222.ItemDefinition_get(var5 - 512).method4792(this.isFemale);
 						if (var6 != null) {
 							var7[var3++] = var6;
 						}
@@ -390,12 +402,12 @@ public class PlayerAppearance {
 				ModelData var8 = new ModelData(var7, var3);
 
 				for (var5 = 0; var5 < 5; ++var5) {
-					if (this.bodyColors[var5] < field2519[var5].length) {
-						var8.recolor(HorizontalAlignment.field3447[var5], field2519[var5][this.bodyColors[var5]]);
+					if (this.bodyColors[var5] < field2520[var5].length) {
+						var8.recolor(field2519[var5], field2520[var5][this.bodyColors[var5]]);
 					}
 
-					if (this.bodyColors[var5] < DevicePcmPlayerProvider.field390[var5].length) {
-						var8.recolor(field2525[var5], DevicePcmPlayerProvider.field390[var5][this.bodyColors[var5]]);
+					if (this.bodyColors[var5] < class195.field2359[var5].length) {
+						var8.recolor(class326.field3881[var5], class195.field2359[var5][this.bodyColors[var5]]);
 					}
 				}
 
@@ -404,285 +416,122 @@ public class PlayerAppearance {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-2085645902"
+		garbageValue = "2091261693"
 	)
 	@Export("getChatHeadId")
 	public int getChatHeadId() {
-		return this.npcTransformId == -1 ? (this.equipment[0] << 15) + this.equipment[1] + (this.equipment[11] << 5) + (this.equipment[8] << 10) + (this.bodyColors[0] << 25) + (this.bodyColors[4] << 20) : 305419896 + PacketBufferNode.getNpcDefinition(this.npcTransformId).id;
+		return this.npcTransformId == -1 ? (this.equipment[0] << 15) + this.equipment[1] + (this.equipment[11] << 5) + (this.equipment[8] << 10) + (this.bodyColors[0] << 25) + (this.bodyColors[4] << 20) : 305419896 + SecureRandomCallable.getNpcDefinition(this.npcTransformId).id;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-1021250910"
+		signature = "(I)J",
+		garbageValue = "100440409"
 	)
-	public static boolean method4010() {
-		long var0 = class30.currentTimeMillis();
-		int var2 = (int)(var0 - NetCache.field3142);
-		NetCache.field3142 = var0;
-		if (var2 > 200) {
-			var2 = 200;
+	@Export("currentTimeMillis")
+	public static final synchronized long currentTimeMillis() {
+		long var0 = System.currentTimeMillis();
+		if (var0 < class296.field3684) {
+			class296.field3683 += class296.field3684 - var0;
 		}
 
-		NetCache.NetCache_loadTime += var2;
-		if (NetCache.NetCache_pendingResponsesCount == 0 && NetCache.NetCache_pendingPriorityResponsesCount == 0 && NetCache.NetCache_pendingWritesCount == 0 && NetCache.NetCache_pendingPriorityWritesCount == 0) {
-			return true;
-		} else if (NetCache.NetCache_socket == null) {
-			return false;
+		class296.field3684 = var0;
+		return var0 + class296.field3683;
+	}
+
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "(II)Z",
+		garbageValue = "-994897132"
+	)
+	@Export("isWorldMapEvent")
+	public static boolean isWorldMapEvent(int var0) {
+		return var0 == 10 || var0 == 11 || var0 == 12 || var0 == 13 || var0 == 14 || var0 == 15 || var0 == 16 || var0 == 17;
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(Lhq;Ljava/lang/String;Ljava/lang/String;I)[Llw;",
+		garbageValue = "-1961704142"
+	)
+	public static IndexedSprite[] method4160(AbstractArchive var0, String var1, String var2) {
+		int var3 = var0.getGroupId(var1);
+		int var4 = var0.getFileId(var3, var2);
+		IndexedSprite[] var5;
+		if (!class32.method618(var0, var3, var4)) {
+			var5 = null;
 		} else {
-			try {
-				if (NetCache.NetCache_loadTime > 30000) {
-					throw new IOException();
-				} else {
-					NetFileRequest var3;
-					Buffer var4;
-					while (NetCache.NetCache_pendingPriorityResponsesCount < 200 && NetCache.NetCache_pendingPriorityWritesCount > 0) {
-						var3 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.first();
-						var4 = new Buffer(4);
-						var4.writeByte(1);
-						var4.writeMedium((int)var3.key);
-						NetCache.NetCache_socket.write(var4.array, 0, 4);
-						NetCache.NetCache_pendingPriorityResponses.put(var3, var3.key);
-						--NetCache.NetCache_pendingPriorityWritesCount;
-						++NetCache.NetCache_pendingPriorityResponsesCount;
-					}
+			IndexedSprite[] var7 = new IndexedSprite[class325.SpriteBuffer_spriteCount];
 
-					while (NetCache.NetCache_pendingResponsesCount < 200 && NetCache.NetCache_pendingWritesCount > 0) {
-						var3 = (NetFileRequest)NetCache.NetCache_pendingWritesQueue.removeLast();
-						var4 = new Buffer(4);
-						var4.writeByte(0);
-						var4.writeMedium((int)var3.key);
-						NetCache.NetCache_socket.write(var4.array, 0, 4);
-						var3.removeDual();
-						NetCache.NetCache_pendingResponses.put(var3, var3.key);
-						--NetCache.NetCache_pendingWritesCount;
-						++NetCache.NetCache_pendingResponsesCount;
-					}
+			for (int var8 = 0; var8 < class325.SpriteBuffer_spriteCount; ++var8) {
+				IndexedSprite var9 = var7[var8] = new IndexedSprite();
+				var9.width = class325.SpriteBuffer_spriteWidth;
+				var9.height = class325.SpriteBuffer_spriteHeight;
+				var9.xOffset = SecureRandomFuture.SpriteBuffer_xOffsets[var8];
+				var9.yOffset = HealthBar.SpriteBuffer_yOffsets[var8];
+				var9.subWidth = SecureRandomCallable.SpriteBuffer_spriteWidths[var8];
+				var9.subHeight = AttackOption.SpriteBuffer_spriteHeights[var8];
+				var9.palette = class325.SpriteBuffer_spritePalette;
+				var9.pixels = class325.SpriteBuffer_pixels[var8];
+			}
 
-					for (int var15 = 0; var15 < 100; ++var15) {
-						int var16 = NetCache.NetCache_socket.available();
-						if (var16 < 0) {
-							throw new IOException();
-						}
+			WorldMapData_1.method787();
+			var5 = var7;
+		}
 
-						if (var16 == 0) {
-							break;
-						}
+		return var5;
+	}
 
-						NetCache.NetCache_loadTime = 0;
-						byte var5 = 0;
-						if (WorldMapEvent.NetCache_currentResponse == null) {
-							var5 = 8;
-						} else if (NetCache.field3140 == 0) {
-							var5 = 1;
-						}
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(IB)V",
+		garbageValue = "103"
+	)
+	public static void method4191(int var0) {
+		if (var0 != -1) {
+			if (class215.Widget_loadedInterfaces[var0]) {
+				Coord.Widget_archive.clearFilesGroup(var0);
+				if (Widget.Widget_interfaceComponents[var0] != null) {
+					boolean var1 = true;
 
-						int var6;
-						int var7;
-						int var8;
-						int var10;
-						byte[] var10000;
-						int var10001;
-						Buffer var22;
-						if (var5 > 0) {
-							var6 = var5 - NetCache.NetCache_responseHeaderBuffer.offset;
-							if (var6 > var16) {
-								var6 = var16;
-							}
-
-							NetCache.NetCache_socket.read(NetCache.NetCache_responseHeaderBuffer.array, NetCache.NetCache_responseHeaderBuffer.offset, var6);
-							if (NetCache.field3156 != 0) {
-								for (var7 = 0; var7 < var6; ++var7) {
-									var10000 = NetCache.NetCache_responseHeaderBuffer.array;
-									var10001 = NetCache.NetCache_responseHeaderBuffer.offset + var7;
-									var10000[var10001] ^= NetCache.field3156;
-								}
-							}
-
-							var22 = NetCache.NetCache_responseHeaderBuffer;
-							var22.offset += var6;
-							if (NetCache.NetCache_responseHeaderBuffer.offset < var5) {
-								break;
-							}
-
-							if (WorldMapEvent.NetCache_currentResponse == null) {
-								NetCache.NetCache_responseHeaderBuffer.offset = 0;
-								var7 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
-								var8 = NetCache.NetCache_responseHeaderBuffer.readUnsignedShort();
-								int var9 = NetCache.NetCache_responseHeaderBuffer.readUnsignedByte();
-								var10 = NetCache.NetCache_responseHeaderBuffer.readInt();
-								long var11 = (long)(var8 + (var7 << 16));
-								NetFileRequest var13 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var11);
-								UserComparator10.field1957 = true;
-								if (var13 == null) {
-									var13 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var11);
-									UserComparator10.field1957 = false;
-								}
-
-								if (var13 == null) {
-									throw new IOException();
-								}
-
-								int var14 = var9 == 0 ? 5 : 9;
-								WorldMapEvent.NetCache_currentResponse = var13;
-								FaceNormal.NetCache_responseArchiveBuffer = new Buffer(var10 + var14 + WorldMapEvent.NetCache_currentResponse.padding);
-								FaceNormal.NetCache_responseArchiveBuffer.writeByte(var9);
-								FaceNormal.NetCache_responseArchiveBuffer.writeInt(var10);
-								NetCache.field3140 = 8;
-								NetCache.NetCache_responseHeaderBuffer.offset = 0;
-							} else if (NetCache.field3140 == 0) {
-								if (NetCache.NetCache_responseHeaderBuffer.array[0] == -1) {
-									NetCache.field3140 = 1;
-									NetCache.NetCache_responseHeaderBuffer.offset = 0;
-								} else {
-									WorldMapEvent.NetCache_currentResponse = null;
-								}
-							}
-						} else {
-							var6 = FaceNormal.NetCache_responseArchiveBuffer.array.length - WorldMapEvent.NetCache_currentResponse.padding;
-							var7 = 512 - NetCache.field3140;
-							if (var7 > var6 - FaceNormal.NetCache_responseArchiveBuffer.offset) {
-								var7 = var6 - FaceNormal.NetCache_responseArchiveBuffer.offset;
-							}
-
-							if (var7 > var16) {
-								var7 = var16;
-							}
-
-							NetCache.NetCache_socket.read(FaceNormal.NetCache_responseArchiveBuffer.array, FaceNormal.NetCache_responseArchiveBuffer.offset, var7);
-							if (NetCache.field3156 != 0) {
-								for (var8 = 0; var8 < var7; ++var8) {
-									var10000 = FaceNormal.NetCache_responseArchiveBuffer.array;
-									var10001 = var8 + FaceNormal.NetCache_responseArchiveBuffer.offset;
-									var10000[var10001] ^= NetCache.field3156;
-								}
-							}
-
-							var22 = FaceNormal.NetCache_responseArchiveBuffer;
-							var22.offset += var7;
-							NetCache.field3140 += var7;
-							if (var6 == FaceNormal.NetCache_responseArchiveBuffer.offset) {
-								if (16711935L == WorldMapEvent.NetCache_currentResponse.key) {
-									AbstractWorldMapIcon.NetCache_reference = FaceNormal.NetCache_responseArchiveBuffer;
-
-									for (var8 = 0; var8 < 256; ++var8) {
-										Archive var17 = NetCache.NetCache_archives[var8];
-										if (var17 != null) {
-											AbstractWorldMapIcon.NetCache_reference.offset = var8 * 8 + 5;
-											var10 = AbstractWorldMapIcon.NetCache_reference.readInt();
-											int var18 = AbstractWorldMapIcon.NetCache_reference.readInt();
-											var17.loadIndex(var10, var18);
-										}
-									}
-								} else {
-									NetCache.NetCache_crc.reset();
-									NetCache.NetCache_crc.update(FaceNormal.NetCache_responseArchiveBuffer.array, 0, var6);
-									var8 = (int)NetCache.NetCache_crc.getValue();
-									if (var8 != WorldMapEvent.NetCache_currentResponse.crc) {
-										try {
-											NetCache.NetCache_socket.close();
-										} catch (Exception var20) {
-										}
-
-										++NetCache.NetCache_crcMismatches;
-										NetCache.NetCache_socket = null;
-										NetCache.field3156 = (byte)((int)(Math.random() * 255.0D + 1.0D));
-										return false;
-									}
-
-									NetCache.NetCache_crcMismatches = 0;
-									NetCache.NetCache_ioExceptions = 0;
-									WorldMapEvent.NetCache_currentResponse.archive.write((int)(WorldMapEvent.NetCache_currentResponse.key & 65535L), FaceNormal.NetCache_responseArchiveBuffer.array, (WorldMapEvent.NetCache_currentResponse.key & 16711680L) == 16711680L, UserComparator10.field1957);
-								}
-
-								WorldMapEvent.NetCache_currentResponse.remove();
-								if (UserComparator10.field1957) {
-									--NetCache.NetCache_pendingPriorityResponsesCount;
-								} else {
-									--NetCache.NetCache_pendingResponsesCount;
-								}
-
-								NetCache.field3140 = 0;
-								WorldMapEvent.NetCache_currentResponse = null;
-								FaceNormal.NetCache_responseArchiveBuffer = null;
+					for (int var2 = 0; var2 < Widget.Widget_interfaceComponents[var0].length; ++var2) {
+						if (Widget.Widget_interfaceComponents[var0][var2] != null) {
+							if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
+								Widget.Widget_interfaceComponents[var0][var2] = null;
 							} else {
-								if (NetCache.field3140 != 512) {
-									break;
-								}
-
-								NetCache.field3140 = 0;
+								var1 = false;
 							}
 						}
 					}
 
-					return true;
-				}
-			} catch (IOException var21) {
-				try {
-					NetCache.NetCache_socket.close();
-				} catch (Exception var19) {
-				}
+					if (var1) {
+						Widget.Widget_interfaceComponents[var0] = null;
+					}
 
-				++NetCache.NetCache_ioExceptions;
-				NetCache.NetCache_socket = null;
-				return false;
+					class215.Widget_loadedInterfaces[var0] = false;
+				}
 			}
 		}
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("ae")
 	@ObfuscatedSignature(
-		signature = "(B)[Lin;",
-		garbageValue = "101"
+		signature = "(Ldj;B)V",
+		garbageValue = "11"
 	)
-	static HorizontalAlignment[] method4012() {
-		return new HorizontalAlignment[]{HorizontalAlignment.field3442, HorizontalAlignment.field3444, HorizontalAlignment.HorizontalAlignment_centered};
-	}
-
-	@ObfuscatedName("ai")
-	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "1781991052"
-	)
-	static int method3978(int var0) {
-		return (int)Math.pow(2.0D, (double)(7.0F + (float)var0 / 256.0F));
-	}
-
-	@ObfuscatedName("go")
-	@ObfuscatedSignature(
-		signature = "(IIII)V",
-		garbageValue = "1898502945"
-	)
-	@Export("worldToScreen")
-	static final void worldToScreen(int var0, int var1, int var2) {
-		if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-			int var3 = MusicPatchPcmStream.getTileHeight(var0, var1, WorldMapRectangle.plane) - var2;
-			var0 -= GrandExchangeOfferOwnWorldComparator.cameraX;
-			var3 -= Varcs.cameraY;
-			var1 -= WorldMapIcon_1.cameraZ;
-			int var4 = Rasterizer3D.Rasterizer3D_sine[IgnoreList.cameraPitch];
-			int var5 = Rasterizer3D.Rasterizer3D_cosine[IgnoreList.cameraPitch];
-			int var6 = Rasterizer3D.Rasterizer3D_sine[WorldMapSection2.cameraYaw];
-			int var7 = Rasterizer3D.Rasterizer3D_cosine[WorldMapSection2.cameraYaw];
-			int var8 = var6 * var1 + var0 * var7 >> 16;
-			var1 = var7 * var1 - var0 * var6 >> 16;
-			var0 = var8;
-			var8 = var3 * var5 - var4 * var1 >> 16;
-			var1 = var5 * var1 + var4 * var3 >> 16;
-			if (var1 >= 50) {
-				Client.viewportTempX = var0 * Client.viewportZoom / var1 + Client.viewportWidth / 2;
-				Client.viewportTempY = Client.viewportHeight / 2 + var8 * Client.viewportZoom / var1;
-			} else {
-				Client.viewportTempX = -1;
-				Client.viewportTempY = -1;
-			}
-
-		} else {
-			Client.viewportTempX = -1;
-			Client.viewportTempY = -1;
+	@Export("PcmStream_disable")
+	static final void PcmStream_disable(PcmStream var0) {
+		var0.active = false;
+		if (var0.sound != null) {
+			var0.sound.position = 0;
 		}
+
+		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
+			PcmStream_disable(var1);
+		}
+
 	}
 }

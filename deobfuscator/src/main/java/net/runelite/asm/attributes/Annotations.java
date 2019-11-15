@@ -26,13 +26,16 @@
 package net.runelite.asm.attributes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.attributes.annotation.SimpleElement;
+import org.jetbrains.annotations.NotNull;
 
-public class Annotations
+public class Annotations implements Iterable<Annotation>
 {
 	private final List<Annotation> annotations = new ArrayList<>();
 
@@ -40,7 +43,7 @@ public class Annotations
 	{
 		return annotations;
 	}
-	
+
 	public void addAnnotation(Annotation annotation)
 	{
 		annotations.add(annotation);
@@ -55,7 +58,7 @@ public class Annotations
 	{
 		annotations.clear();
 	}
-	
+
 	public Annotation find(Type type)
 	{
 		for (Annotation a : annotations)
@@ -68,18 +71,22 @@ public class Annotations
 	{
 		return annotations.size();
 	}
-	
+
 	public Annotation addAnnotation(Type type, String name, Object value)
 	{
-		Annotation annotation = new Annotation(this);
-		annotation.setType(type);
+		Annotation annotation = new Annotation(type);
 		addAnnotation(annotation);
-		
-		Element element = new Element(annotation);
-		element.setName(name);
-		element.setValue(value);
+
+		Element element = new SimpleElement(name, value);
 		annotation.addElement(element);
 
 		return annotation;
+	}
+
+	@NotNull
+	@Override
+	public Iterator<Annotation> iterator()
+	{
+		return this.annotations.iterator();
 	}
 }

@@ -35,6 +35,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -44,7 +45,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BankPluginTest
@@ -60,6 +61,10 @@ public class BankPluginTest
 	@Mock
 	@Bind
 	private BankConfig bankConfig;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	private BankPlugin bankPlugin;

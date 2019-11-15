@@ -286,6 +286,7 @@ public final class NpcID
 	public static final int DWARF = 290;
 	public static final int CHAOS_DWARF = 291;
 	public static final int DWARF_292 = 292;
+	public static final int ADVENTURER_JON = 293;
 	public static final int DWARF_294 = 294;
 	public static final int DWARF_295 = 295;
 	public static final int DWARF_296 = 296;
@@ -307,7 +308,8 @@ public final class NpcID
 	public static final int FROG = 312;
 	public static final int REACHER_313 = 313;
 	public static final int DR_JEKYLL_314 = 314;
-	public static final int PAUL = 317;
+	public static final int LEAGUES_TUTOR = 315;
+	public static final int LEAGUES_TUTOR_316 = 316;
 	public static final int DARK_CORE = 318;
 	public static final int CORPOREAL_BEAST = 319;
 	public static final int DARK_ENERGY_CORE = 320;
@@ -7159,6 +7161,7 @@ public final class NpcID
 	public static final int REVENANT_DARK_BEAST = 7938;
 	public static final int REVENANT_KNIGHT = 7939;
 	public static final int REVENANT_DRAGON = 7940;
+	public static final int PAUL = 7941;
 	public static final int EMBLEM_TRADER_7943 = 7943;
 	public static final int FISHING_SPOT_7946 = 7946;
 	public static final int FISHING_SPOT_7947 = 7947;
@@ -8263,7 +8266,7 @@ public final class NpcID
 	public static final int ED_9200 = 9200;
 	public static final int CRAB_9201 = 9201;
 	public static final int TIDE = 9202;
-	public static final int ADVENTURER_JON = 9244;
+	public static final int ADVENTURER_JON_9244 = 9244;
 	public static final int ARIANWYN_HARD = 9246;
 	public static final int ESSYLLT_HARD = 9247;
 	public static final int ARIANWYN_9248 = 9248;

@@ -35,7 +35,9 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemReclaimCost;
 import static net.runelite.client.plugins.itemskeptondeath.ItemsKeptOnDeathPlugin.DeathItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -58,6 +60,10 @@ public class ItemsKeptOnDeathPluginTest
 	@Mock
 	@Bind
 	private ItemManager itemManager;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	private ItemsKeptOnDeathPlugin plugin;
@@ -637,8 +643,8 @@ public class ItemsKeptOnDeathPluginTest
 	{
 		final Item defender = mItem(ItemID.AVERNIC_DEFENDER, 1, "Avernic defender", false, 0);
 		final int defenderOffset = FixedPriceItem.AVERNIC_DEFENDER.getOffset();
-		final Integer defenderBrokenPrice = BrokenOnDeathItem.getRepairPrice(ItemID.AVERNIC_DEFENDER);
-		final int defenderExpectedPrice = (defenderBrokenPrice == null ? 0 : defenderBrokenPrice) + defenderOffset;
+		final ItemReclaimCost defenderBrokenPrice = ItemReclaimCost.of(ItemID.AVERNIC_DEFENDER);
+		final int defenderExpectedPrice = (defenderBrokenPrice == null ? 0 : defenderBrokenPrice.getValue()) + defenderOffset;
 		assertEquals(defenderExpectedPrice, plugin.getDeathPrice(defender));
 
 		final Item[] inv = new Item[]

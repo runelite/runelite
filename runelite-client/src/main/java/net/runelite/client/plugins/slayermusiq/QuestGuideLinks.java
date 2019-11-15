@@ -114,7 +114,7 @@ class QuestGuideLinks
 		new Link("My Arm's Big Adventure", "https://www.youtube.com/watch?v=xa1KWOewgYA"),
 		new Link("Enlightened Journey", "https://www.youtube.com/watch?v=XAPthC8d7k0"),
 		new Link("Eagles' Peak", "https://www.youtube.com/watch?v=KDxIrrwXp7U"),
-		new Link("Animal Magnetism", "https://www.youtube.com/watch?v=kUyjXA7TaFU"),
+		new Link("Animal Magnetism", "https://www.youtube.com/watch?v=_JldgJTnc7I"),
 		new Link("Contact!", "https://www.youtube.com/watch?v=czn-yWABBWs"),
 		new Link("Cold War", "https://www.youtube.com/watch?v=0m1KpP-qKWI"),
 		new Link("The Fremennik Isles", "https://www.youtube.com/watch?v=EvxhiOWmraY"),

@@ -4,30 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hf")
 @Implements("Coord")
 public class Coord {
-	@ObfuscatedName("n")
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Lhq;"
+	)
+	@Export("Widget_archive")
+	static AbstractArchive Widget_archive;
+	@ObfuscatedName("dv")
+	@ObfuscatedSignature(
+		signature = "Lij;"
+	)
+	@Export("archive15")
+	static Archive archive15;
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 562826067
+		intValue = 440805047
 	)
 	@Export("plane")
 	public int plane;
-	@ObfuscatedName("v")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 2054727359
+		intValue = 649013739
 	)
 	@Export("x")
 	public int x;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1032758603
+		intValue = 1217821847
 	)
 	@Export("y")
 	public int y;
 
 	@ObfuscatedSignature(
-		signature = "(Lhb;)V"
+		signature = "(Lhf;)V"
 	)
 	public Coord(Coord var1) {
 		this.plane = var1.plane;
@@ -52,20 +64,20 @@ public class Coord {
 
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-444536660"
+		garbageValue = "-1545441296"
 	)
 	@Export("packed")
 	public int packed() {
 		return this.plane << 28 | this.x << 14 | this.y;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lhb;I)Z",
-		garbageValue = "-1914028694"
+		signature = "(Lhf;I)Z",
+		garbageValue = "472807046"
 	)
 	@Export("equalsCoord")
 	boolean equalsCoord(Coord var1) {
@@ -78,10 +90,10 @@ public class Coord {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-986705762"
+		garbageValue = "-1765692684"
 	)
 	@Export("toString")
 	String toString(String var1) {
@@ -104,35 +116,53 @@ public class Coord {
 		return this.toString(",");
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-2118719705"
+		signature = "(IB)Lih;",
+		garbageValue = "-87"
 	)
-	@Export("closeWorldSelect")
-	static void closeWorldSelect() {
-		Login.worldSelectOpen = false;
-		WorldMapID.leftTitleSprite.drawAt(Login.xPadding, 0);
-		class51.rightTitleSprite.drawAt(Login.xPadding + 382, 0);
-		FontName.logoSprite.drawAt(Login.xPadding + 382 - FontName.logoSprite.subWidth / 2, 18);
+	@Export("getEnum")
+	public static EnumDefinition getEnum(int var0) {
+		EnumDefinition var1 = (EnumDefinition)EnumDefinition.EnumDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = EnumDefinition.EnumDefinition_archive.takeFile(8, var0);
+			var1 = new EnumDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
+
+			EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
 	}
 
-	@ObfuscatedName("jm")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "22280"
+		signature = "(I)V",
+		garbageValue = "-1708484762"
 	)
-	@Export("FriendSystem_invalidateFriends")
-	static final void FriendSystem_invalidateFriends() {
-		for (int var0 = 0; var0 < Players.Players_count; ++var0) {
-			Player var1 = Client.players[Players.Players_indices[var0]];
-			var1.clearIsFriend();
+	static void method4144() {
+		if (Login.field1188) {
+			NPC.titleboxSprite = null;
+			UserComparator9.titlebuttonSprite = null;
+			class208.runesSprite = null;
+			Login.leftTitleSprite = null;
+			FontName.rightTitleSprite = null;
+			Tiles.logoSprite = null;
+			Decimator.title_muteSprite = null;
+			UserComparator8.options_buttons_0Sprite = null;
+			Login.options_buttons_2Sprite = null;
+			GrandExchangeEvent.worldSelectBackSprites = null;
+			JagexCache.worldSelectFlagSprites = null;
+			StudioGame.worldSelectArrows = null;
+			Interpreter.worldSelectStars = null;
+			Message.field587 = null;
+			Login.loginScreenRunesAnimation.method1955();
+			class80.method2194(2);
+			UrlRequester.method3428(true);
+			Login.field1188 = false;
 		}
-
-		KeyHandler.method873();
-		if (Varps.clanChat != null) {
-			Varps.clanChat.clearFriends();
-		}
-
 	}
 }

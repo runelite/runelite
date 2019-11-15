@@ -4,22 +4,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("do")
 @Implements("Decimator")
 public class Decimator {
-	@ObfuscatedName("u")
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "[Llw;"
+	)
+	@Export("title_muteSprite")
+	static IndexedSprite[] title_muteSprite;
+	@ObfuscatedName("dx")
+	@ObfuscatedSignature(
+		signature = "Lij;"
+	)
+	@Export("archive11")
+	static Archive archive11;
+	@ObfuscatedName("ei")
 	@ObfuscatedGetter(
-		intValue = -222965331
+		intValue = -1888445625
+	)
+	@Export("port2")
+	static int port2;
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = -885023939
 	)
 	@Export("inputRate")
 	int inputRate;
-	@ObfuscatedName("r")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 747601715
+		intValue = 929482819
 	)
 	@Export("outputRate")
 	int outputRate;
-	@ObfuscatedName("p")
+	@ObfuscatedName("l")
 	@Export("table")
 	int[][] table;
 
@@ -47,7 +65,7 @@ public class Decimator {
 			for (int var7 = 0; var7 < var1; ++var7) {
 				int[] var8 = this.table[var7];
 				double var9 = (double)var7 / (double)var1 + 6.0D;
-				int var11 = (int)Math.floor(var9 - 7.0D + 1.0D);
+				int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
 				if (var11 < 0) {
 					var11 = 0;
 				}
@@ -58,24 +76,24 @@ public class Decimator {
 				}
 
 				for (double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-					double var15 = 3.141592653589793D * ((double)var11 - var9);
+					double var15 = ((double)var11 - var9) * 3.141592653589793D;
 					double var17 = var13;
 					if (var15 < -1.0E-4D || var15 > 1.0E-4D) {
 						var17 = var13 * (Math.sin(var15) / var15);
 					}
 
-					var17 *= 0.54D + 0.46D * Math.cos(((double)var11 - var9) * 0.2243994752564138D);
-					var8[var11] = (int)Math.floor(65536.0D * var17 + 0.5D);
+					var17 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var11 - var9));
+					var8[var11] = (int)Math.floor(0.5D + 65536.0D * var17);
 				}
 			}
 
 		}
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "([BI)[B",
-		garbageValue = "906746870"
+		garbageValue = "73782280"
 	)
 	@Export("resample")
 	byte[] resample(byte[] var1) {
@@ -92,7 +110,7 @@ public class Decimator {
 
 				int var9;
 				for (var9 = 0; var9 < 14; ++var9) {
-					var3[var4 + var9] += var7 * var8[var9];
+					var3[var4 + var9] += var8[var9] * var7;
 				}
 
 				var5 += this.outputRate;
@@ -118,10 +136,10 @@ public class Decimator {
 		return var1;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "1984702959"
+		signature = "(IB)I",
+		garbageValue = "30"
 	)
 	@Export("scaleRate")
 	int scaleRate(int var1) {
@@ -132,104 +150,102 @@ public class Decimator {
 		return var1;
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-1527580857"
+		signature = "(IB)I",
+		garbageValue = "13"
 	)
 	@Export("scalePosition")
 	int scalePosition(int var1) {
 		if (this.table != null) {
-			var1 = (int)((long)var1 * (long)this.outputRate / (long)this.inputRate) + 6;
+			var1 = (int)((long)this.outputRate * (long)var1 / (long)this.inputRate) + 6;
 		}
 
 		return var1;
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(II)Lij;",
-		garbageValue = "-1096040565"
+		signature = "(II)Liz;",
+		garbageValue = "1437628659"
 	)
-	@Export("WorldMapElement_get")
-	public static WorldMapElement WorldMapElement_get(int var0) {
-		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
-	}
-
-	@ObfuscatedName("ei")
-	@ObfuscatedSignature(
-		signature = "(I)Lla;",
-		garbageValue = "-695758013"
-	)
-	@Export("getWorldMap")
-	static WorldMap getWorldMap() {
-		return Tiles.worldMap;
-	}
-
-	@ObfuscatedName("hz")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "851552801"
-	)
-	static final void method2500() {
-		PacketBuffer var0 = Client.packetWriter.packetBuffer;
-		var0.importIndex();
-		int var1 = var0.readBits(8);
-		int var2;
-		if (var1 < Client.npcCount) {
-			for (var2 = var1; var2 < Client.npcCount; ++var2) {
-				Client.field758[++Client.field640 - 1] = Client.npcIndices[var2];
-			}
-		}
-
-		if (var1 > Client.npcCount) {
-			throw new RuntimeException("");
+	public static VarcInt method2694(int var0) {
+		VarcInt var1 = (VarcInt)VarcInt.VarcInt_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			Client.npcCount = 0;
-
-			for (var2 = 0; var2 < var1; ++var2) {
-				int var3 = Client.npcIndices[var2];
-				NPC var4 = Client.npcs[var3];
-				int var5 = var0.readBits(1);
-				if (var5 == 0) {
-					Client.npcIndices[++Client.npcCount - 1] = var3;
-					var4.npcCycle = Client.cycle;
-				} else {
-					int var6 = var0.readBits(2);
-					if (var6 == 0) {
-						Client.npcIndices[++Client.npcCount - 1] = var3;
-						var4.npcCycle = Client.cycle;
-						Client.field681[++Client.field633 - 1] = var3;
-					} else {
-						int var7;
-						int var8;
-						if (var6 == 1) {
-							Client.npcIndices[++Client.npcCount - 1] = var3;
-							var4.npcCycle = Client.cycle;
-							var7 = var0.readBits(3);
-							var4.method2048(var7, (byte)1);
-							var8 = var0.readBits(1);
-							if (var8 == 1) {
-								Client.field681[++Client.field633 - 1] = var3;
-							}
-						} else if (var6 == 2) {
-							Client.npcIndices[++Client.npcCount - 1] = var3;
-							var4.npcCycle = Client.cycle;
-							var7 = var0.readBits(3);
-							var4.method2048(var7, (byte)2);
-							var8 = var0.readBits(3);
-							var4.method2048(var8, (byte)2);
-							int var9 = var0.readBits(1);
-							if (var9 == 1) {
-								Client.field681[++Client.field633 - 1] = var3;
-							}
-						} else if (var6 == 3) {
-							Client.field758[++Client.field640 - 1] = var3;
-						}
-					}
-				}
+			byte[] var2 = VarcInt.VarcInt_archive.takeFile(19, var0);
+			var1 = new VarcInt();
+			if (var2 != null) {
+				var1.method4549(new Buffer(var2));
 			}
 
+			VarcInt.VarcInt_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Object;ZI)[B",
+		garbageValue = "1813906686"
+	)
+	@Export("serialize")
+	public static byte[] serialize(Object var0, boolean var1) {
+		if (var0 == null) {
+			return null;
+		} else if (var0 instanceof byte[]) {
+			byte[] var3 = (byte[])((byte[])var0);
+			return var1 ? Message.method1312(var3) : var3;
+		} else if (var0 instanceof AbstractByteArrayCopier) {
+			AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
+			return var2.get();
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@ObfuscatedName("im")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "-962309215"
+	)
+	@Export("calculateMenuBounds")
+	static void calculateMenuBounds(int var0, int var1) {
+		int var2 = class43.fontBold12.stringWidth("Choose Option");
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
+			var4 = class43.fontBold12.stringWidth(class65.method1316(var3));
+			if (var4 > var2) {
+				var2 = var4;
+			}
+		}
+
+		var2 += 8;
+		var3 = Client.menuOptionsCount * 15 + 22;
+		var4 = var0 - var2 / 2;
+		if (var2 + var4 > class286.canvasWidth) {
+			var4 = class286.canvasWidth - var2;
+		}
+
+		if (var4 < 0) {
+			var4 = 0;
+		}
+
+		int var5 = var1;
+		if (var1 + var3 > FloorUnderlayDefinition.canvasHeight) {
+			var5 = FloorUnderlayDefinition.canvasHeight - var3;
+		}
+
+		if (var5 < 0) {
+			var5 = 0;
+		}
+
+		MusicPatchNode.menuX = var4;
+		TextureProvider.menuY = var5;
+		KeyHandler.menuWidth = var2;
+		WorldMapData_1.menuHeight = Client.menuOptionsCount * 15 + 22;
 	}
 }

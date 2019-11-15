@@ -55,17 +55,18 @@ import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -82,7 +83,6 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
-import net.runelite.api.util.Text;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.client.util.ping.Ping;
@@ -206,7 +206,7 @@ public class WorldHopperPlugin extends Plugin
 	{
 		updateConfig();
 		addSubscriptions();
-		
+
 		firstRun = true;
 		currentPing = -1;
 
@@ -287,7 +287,7 @@ public class WorldHopperPlugin extends Plugin
 		if (event.getGroup().equals(WorldHopperConfig.GROUP))
 		{
 			updateConfig();
-			
+
 			switch (event.getKey())
 			{
 				case "showSidebar":
@@ -828,7 +828,7 @@ public class WorldHopperPlugin extends Plugin
 
 		log.debug("Done pinging worlds in {}", stopwatch.elapsed());
 	}
-	
+
 	private void updateConfig()
 	{
 		this.previousKey = config.previousKey();

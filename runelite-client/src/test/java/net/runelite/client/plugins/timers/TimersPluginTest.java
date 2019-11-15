@@ -33,6 +33,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -51,7 +52,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class TimersPluginTest
 {
 	private static final String DMM_HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 1 minute, 15 seconds.</col>";
-	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 5 minutes, 0 seconds.</col>";
+	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 5 minutes.</col>";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>";
 
 	@Inject
@@ -76,6 +77,10 @@ public class TimersPluginTest
 	@Mock
 	@Bind
 	private InfoBoxManager infoBoxManager;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Before
 	public void before()

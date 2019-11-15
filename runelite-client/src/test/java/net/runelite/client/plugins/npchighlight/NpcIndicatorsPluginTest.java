@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.OpenOSRSConfig;
 import static org.junit.Assert.assertEquals;
 
 import net.runelite.client.Notifier;
@@ -55,6 +56,10 @@ public class NpcIndicatorsPluginTest
 	@Mock
 	@Bind
 	private NpcIndicatorsConfig npcIndicatorsConfig;
+
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Mock
 	@Bind

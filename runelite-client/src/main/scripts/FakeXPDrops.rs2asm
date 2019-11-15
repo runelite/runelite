@@ -5,8 +5,8 @@
 .string_var_count   0
    iload                  0
    iload                  1
-   sconst				  "fakeXpDrop"
-   runelite_callback	  ;
+   sconst                 "fakeXpDrop"
+   runelite_callback
    pop_int
    pop_int
    iconst                 105

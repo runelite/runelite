@@ -1,39 +1,26 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("em")
 @Implements("Frames")
 public class Frames extends DualNode {
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = -779358423
-	)
-	@Export("SpriteBuffer_spriteHeight")
-	public static int SpriteBuffer_spriteHeight;
-	@ObfuscatedName("ba")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "[Llp;"
+		signature = "Lkc;"
 	)
-	@Export("worldSelectStars")
-	static IndexedSprite[] worldSelectStars;
-	@ObfuscatedName("jg")
+	@Export("NetCache_responseArchiveBuffer")
+	public static Buffer NetCache_responseArchiveBuffer;
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lho;"
-	)
-	@Export("dragInventoryWidget")
-	static Widget dragInventoryWidget;
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "[Lda;"
+		signature = "[Ldw;"
 	)
 	@Export("frames")
 	Animation[] frames;
 
 	@ObfuscatedSignature(
-		signature = "(Lhp;Lhp;IZ)V",
+		signature = "(Lhq;Lhq;IZ)V",
 		garbageValue = "0"
 	)
 	public Frames(AbstractArchive var1, AbstractArchive var2, int var3, boolean var4) {
@@ -65,13 +52,59 @@ public class Frames extends DualNode {
 
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-546780661"
+		garbageValue = "1903935769"
 	)
 	@Export("hasAlphaTransform")
 	public boolean hasAlphaTransform(int var1) {
 		return this.frames[var1].hasAlphaTransform;
+	}
+
+	@ObfuscatedName("fc")
+	@ObfuscatedSignature(
+		signature = "(IB)V",
+		garbageValue = "3"
+	)
+	@Export("forceDisconnect")
+	static final void forceDisconnect(int var0) {
+		class1.logOut();
+		switch(var0) {
+		case 1:
+			Login.loginIndex = 24;
+			GrandExchangeOffer.setLoginResponseString("", "You were disconnected from the server.", "");
+			break;
+		case 2:
+			Players.method2298();
+		}
+
+	}
+
+	@ObfuscatedName("gb")
+	@ObfuscatedSignature(
+		signature = "(S)V",
+		garbageValue = "-13007"
+	)
+	static void method3397() {
+		if (class215.localPlayer.x >> 7 == Client.destinationX && class215.localPlayer.y >> 7 == Client.destinationY) {
+			Client.destinationX = 0;
+		}
+
+	}
+
+	@ObfuscatedName("jp")
+	@ObfuscatedSignature(
+		signature = "(II)Z",
+		garbageValue = "-244259971"
+	)
+	static boolean method3400(int var0) {
+		for (int var1 = 0; var1 < Client.field866; ++var1) {
+			if (Client.field854[var1] == var0) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

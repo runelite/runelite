@@ -60,7 +60,7 @@ import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -389,6 +389,11 @@ public class ClueScrollPlugin extends Plugin
 
 			for (WorldPoint location : locations)
 			{
+				if (location == null)
+				{
+					continue;
+				}
+
 				// Only set the location hint arrow if we do not already have more accurate location
 				if (location.isInScene(client)
 					&& this.displayHintArrows
@@ -512,17 +517,6 @@ public class ClueScrollPlugin extends Plugin
 			return clue;
 		}
 
-		// (This|The) anagram reveals who to speak to next:
-		if (text.contains("anagram reveals who to speak to next:"))
-		{
-			return AnagramClue.forText(text);
-		}
-
-		if (text.startsWith("the cipher reveals who to speak to next:"))
-		{
-			return CipherClue.forText(text);
-		}
-
 		if (text.startsWith("i'd like to hear some music."))
 		{
 			return MusicClue.forText(clueScrollText.getText());
@@ -531,6 +525,18 @@ public class ClueScrollPlugin extends Plugin
 		if (text.contains("degrees") && text.contains("minutes"))
 		{
 			return coordinatesToWorldPoint(text);
+		}
+
+		final AnagramClue anagramClue = AnagramClue.forText(text);
+		if (anagramClue != null)
+		{
+			return anagramClue;
+		}
+
+		final CipherClue cipherClue = CipherClue.forText(text);
+		if (cipherClue != null)
+		{
+			return cipherClue;
 		}
 
 		final CrypticClue crypticClue = CrypticClue.forText(text);
@@ -679,6 +685,11 @@ public class ClueScrollPlugin extends Plugin
 		final Tile[][][] tiles = scene.getTiles();
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 		objectsToMark.clear();
+
+		if (tile == null || tile.getGameObjects() == null)
+		{
+			return;
+		}
 
 		for (GameObject object : tile.getGameObjects())
 		{

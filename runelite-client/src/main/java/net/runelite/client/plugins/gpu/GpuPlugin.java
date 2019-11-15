@@ -56,22 +56,22 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.Entity;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
-import net.runelite.api.Entity;
 import net.runelite.api.Scene;
-import net.runelite.api.TileModel;
-import net.runelite.api.TilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.TileModel;
+import net.runelite.api.TilePaint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -1194,7 +1194,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDrawable.swapBuffers();
 		}
 		catch (GLException ignored)
-		{ }
+		{
+			// Ignore
+		}
 
 		drawManager.processDrawComplete(this::screenshot);
 	}

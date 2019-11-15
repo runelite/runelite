@@ -44,15 +44,16 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.util.Text;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -61,7 +62,6 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.api.util.Text;
 
 @PluginDescriptor(
 	name = "Equipment Inspector",

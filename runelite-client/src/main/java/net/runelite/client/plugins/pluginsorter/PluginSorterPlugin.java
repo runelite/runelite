@@ -24,168 +24,64 @@
  */
 package net.runelite.client.plugins.pluginsorter;
 
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Provides;
-import java.awt.Color;
-import java.util.Comparator;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.config.ConfigPanel;
-import net.runelite.client.plugins.config.PluginListItem;
 
 @PluginDescriptor(
 	name = "Plugin Organizer",
-	description = "Hides and colors 3rd party plugins for better control",
-	tags = {"plugins", "organizer"},
-	type = PluginType.PLUGIN_ORGANIZER
+	hidden = true
 )
 @Singleton
 public class PluginSorterPlugin extends Plugin
 {
 	@Inject
-	private PluginSorterConfig config;
+	private ConfigManager configManager;
 
-	@Inject
-	private EventBus eventBus;
-
-	private PluginSorterConfig.SortStyle pluginSortMode;
-	private Color externalColor;
-	private Color pvmColor;
-	private Color pvpColor;
-	private Color skillingColor;
-	private Color utilityColor;
-
-	private final ImmutableList<PluginType> definedOrder = ImmutableList.of(PluginType.IMPORTANT, PluginType.EXTERNAL, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.GENERAL_USE, PluginType.PLUGIN_ORGANIZER);
-	private final Comparator<PluginListItem> pluginTypeComparator = Comparator.comparing(plugin ->
+	/**
+	 * Migrates configs from plugin organizer to the OpenOSRS global plugin and deletes the old config values.
+	 * This method should be removed after a reasonable amount of time.
+	 */
+	@Deprecated
+	private void migrateConfigs()
 	{
-		PluginType type = PluginType.GENERAL_USE;
-		Plugin sortPlugin = plugin.getPlugin();
-		if (sortPlugin != null)
-		{
-			type = sortPlugin.getClass().getAnnotation(PluginDescriptor.class).type();
-		}
-		else if (plugin.configDescriptor.getGroup().value().equals("openosrs") || plugin.configDescriptor.getGroup().value().equals("runelite"))
-		{
-			type = PluginType.IMPORTANT;
-		}
+		migrateConfig("pluginsorter", "pluginSortMode");
+		migrateConfig("pluginsorter", "hidePlugins");
+		migrateConfig("pluginsorter", "hideExternalPlugins");
+		migrateConfig("pluginsorter", "hidePvmPlugins");
+		migrateConfig("pluginsorter", "hideSkillingPlugins");
+		migrateConfig("pluginsorter", "hidePvpPlugins");
+		migrateConfig("pluginsorter", "hideUtilityPlugins");
+		migrateConfig("pluginsorter", "externalColor");
+		migrateConfig("pluginsorter", "pvmColor");
+		migrateConfig("pluginsorter", "pvpColor");
+		migrateConfig("pluginsorter", "skillingColor");
+		migrateConfig("pluginsorter", "utilityColor");
+	}
 
-		return definedOrder.indexOf(type);
-	});
-
-	@Provides
-	PluginSorterConfig provideConfig(ConfigManager configManager)
+	/**
+	 * Wrapper for migrating individual config options
+	 * This method should be removed after a reasonable amount of time.
+	 *
+	 * @param group old group name
+	 * @param key   key name to migrate
+	 */
+	@Deprecated
+	private void migrateConfig(String group, String key)
 	{
-		return configManager.getConfig(PluginSorterConfig.class);
+		String value = configManager.getConfiguration(group, key);
+		if (value != null)
+		{
+			configManager.setConfiguration("openosrs", key, value);
+			configManager.unsetConfiguration(group, key);
+		}
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		updateConfig();
-		addSubscriptions();
-
-		updatePlugins();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
-	}
-
-	private void onPluginChanged(PluginChanged pluginChanged)
-	{
-		validatePlugins();
-	}
-
-	private void validatePlugins()
-	{
-		updatePlugins();
-	}
-
-	private void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (!configChanged.getGroup().equals("pluginsorter"))
-		{
-			return;
-		}
-
-		updateConfig();
-		updatePlugins();
-	}
-
-	private void updatePlugins()
-	{
-		boolean hidePlugins = config.hidePlugins();
-		boolean hidePvmPlugins = config.hidePvmPlugins();
-		boolean hidePvpPlugins = config.hidePvpPlugins();
-		boolean hideSkillingPlugins = config.hideSkillingPlugins();
-		boolean hideUtilityPlugins = config.hideUtilityPlugins();
-		boolean hideExternalPlugins = config.hideExternalPlugins();
-
-		for (PluginListItem pli : ConfigPanel.pluginList)
-		{
-			if (pli.getPlugin() != null)
-			{
-				switch (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type())
-				{
-					case EXTERNAL:
-						pli.nameLabel.setForeground(this.externalColor);
-						pli.setHidden(hidePlugins || hideExternalPlugins);
-						break;
-					case PVM:
-						pli.nameLabel.setForeground(this.pvmColor);
-						pli.setHidden(hidePlugins || hidePvmPlugins);
-						break;
-					case PVP:
-						pli.nameLabel.setForeground(this.pvpColor);
-						pli.setHidden(hidePlugins || hidePvpPlugins);
-						break;
-					case SKILLING:
-						pli.nameLabel.setForeground(this.skillingColor);
-						pli.setHidden(hidePlugins || hideSkillingPlugins);
-						break;
-					case UTILITY:
-						pli.nameLabel.setForeground(this.utilityColor);
-						pli.setHidden(hidePlugins || hideUtilityPlugins);
-						break;
-					default:
-						pli.nameLabel.setForeground(Color.WHITE);
-						break;
-				}
-			}
-		}
-
-		if (this.pluginSortMode == PluginSorterConfig.SortStyle.CATEGORY)
-		{
-			ConfigPanel.pluginList.sort(pluginTypeComparator.thenComparing(PluginListItem::getName));
-		}
-		else
-		{
-			ConfigPanel.pluginList.sort(Comparator.comparing(PluginListItem::getName));
-		}
-	}
-
-	private void updateConfig()
-	{
-		this.pluginSortMode = config.pluginSortMode();
-		this.externalColor = config.externalColor();
-		this.pvmColor = config.pvmColor();
-		this.pvpColor = config.pvpColor();
-		this.skillingColor = config.skillingColor();
-		this.utilityColor = config.utilityColor();
+		migrateConfigs();
 	}
 }

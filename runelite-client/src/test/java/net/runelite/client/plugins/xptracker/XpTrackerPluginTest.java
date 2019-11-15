@@ -27,16 +27,15 @@ package net.runelite.client.plugins.xptracker;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.EnumSet;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.WorldType;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ClientToolbar;
@@ -80,6 +79,10 @@ public class XpTrackerPluginTest
 	@Bind
 	private OverlayManager overlayManager;
 
+	@Mock
+	@Bind
+	private OpenOSRSConfig openOSRSConfig;
+
 	@Before
 	public void before()
 	{
@@ -103,10 +106,13 @@ public class XpTrackerPluginTest
 		xpTrackerPlugin.onGameTick(GameTick.INSTANCE);
 
 		// Gain attack xp
-		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(100);
-		ExperienceChanged experienceChanged = new ExperienceChanged();
-		experienceChanged.setSkill(Skill.ATTACK);
-		xpTrackerPlugin.onExperienceChanged(experienceChanged);
+		StatChanged statChanged = new StatChanged(
+			Skill.ATTACK,
+			100,
+			2,
+			2
+		);
+		xpTrackerPlugin.onStatChanged(statChanged);
 
 		// Offline gain
 		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(42000);

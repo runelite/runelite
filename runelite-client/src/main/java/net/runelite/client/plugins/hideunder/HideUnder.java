@@ -175,6 +175,11 @@ public class HideUnder extends Plugin
 
 		client.setLocalPlayerHidden(false);
 
+		if (localPlayerWp == null)
+		{
+			return;
+		}
+
 		for (PlayerContainer player : playerContainer)
 		{
 			if (player.getTimer() > 0)
@@ -194,7 +199,7 @@ public class HideUnder extends Plugin
 			if (client.getVar(Varbits.LMS_IN_GAME) == 1)
 			{
 				final WorldPoint playerWp = WorldPoint.fromLocalInstance(client, player.getPlayer().getLocalLocation());
-				if (localPlayerWp.distanceTo(playerWp) == 0)
+				if (playerWp != null && localPlayerWp.distanceTo(playerWp) == 0)
 				{
 					client.setLocalPlayerHidden(true);
 				}
@@ -217,7 +222,8 @@ public class HideUnder extends Plugin
 			return true;
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID();
+		final WorldPoint playerWp = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation());
+		final int playerRegionID = playerWp == null ? 0 : playerWp.getRegionID();
 
 		// 9520 = Castle Wars
 		return playerRegionID != 9520;

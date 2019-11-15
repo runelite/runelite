@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -42,13 +43,17 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 
+
 @Singleton
 class WoodcuttingOverlay extends Overlay
 {
+	static final String WOODCUTTING_RESET = "Reset";
+
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent panelComponent = new PanelComponent();
+
 
 	@Inject
 	private WoodcuttingOverlay(final Client client, final WoodcuttingPlugin plugin, final XpTrackerService xpTrackerService)
@@ -59,6 +64,7 @@ class WoodcuttingOverlay extends Overlay
 		this.plugin = plugin;
 		this.xpTrackerService = xpTrackerService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay"));
 	}
 
 	@Override
@@ -101,6 +107,11 @@ class WoodcuttingOverlay extends Overlay
 		{
 			tableComponent.addRow("Logs cut:", Integer.toString(actions));
 
+			if (plugin.isShowGPEarned())
+			{
+				tableComponent.addRow("GP earned:", Integer.toString((plugin.getGpEarned())));
+			}
+
 			if (actions > 2)
 			{
 				tableComponent.addRow("Logs/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)));
@@ -111,5 +122,6 @@ class WoodcuttingOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
+
 
 }

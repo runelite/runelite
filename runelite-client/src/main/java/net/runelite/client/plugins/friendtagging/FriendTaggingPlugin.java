@@ -25,11 +25,12 @@ import net.runelite.api.Friend;
 import net.runelite.api.Ignore;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.Nameable;
+import net.runelite.api.events.FriendRemoved;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NameableNameChanged;
-import net.runelite.api.events.FriendRemoved;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -40,7 +41,6 @@ import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.api.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Slf4j

@@ -220,4 +220,23 @@ public interface LootTrackerConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "priceType",
+		name = "Price Type",
+		description = "What type of price to use for calculating value."
+	)
+	default LootTrackerPriceType priceType()
+	{
+		return LootTrackerPriceType.GRAND_EXCHANGE;
+	}
+
+	@ConfigItem(
+		keyName = "showPriceType",
+		name = "Show Price Type",
+		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+	)
+	default boolean showPriceType()
+	{
+		return false;
+	}
 }

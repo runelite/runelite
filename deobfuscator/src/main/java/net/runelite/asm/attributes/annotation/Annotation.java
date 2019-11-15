@@ -26,30 +26,26 @@
 package net.runelite.asm.attributes.annotation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
 import net.runelite.asm.Type;
-import net.runelite.asm.attributes.Annotations;
+import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.AnnotationVisitor;
 
-public class Annotation
+public class Annotation extends Element<List<Element>> implements Iterable<Element>
 {
-	private final Annotations annotations;
-	private Type type;
-	private final List<Element> elements = new ArrayList<>();
+	private final Type type;
 
-	public Annotation(Annotations annotations)
+	public Annotation(Type type)
 	{
-		this.annotations = annotations;
+		this.value = new ArrayList<>();
+		this.type = type;
 	}
 
-	public Annotations getAnnotations()
+	public Annotation(String name, Type type)
 	{
-		return annotations;
-	}
-
-	public void setType(Type type)
-	{
+		this.value = new ArrayList<>();
+		this.name = name;
 		this.type = type;
 	}
 
@@ -60,23 +56,44 @@ public class Annotation
 
 	public List<Element> getElements()
 	{
-		return elements;
+		return value;
 	}
-	
+
 	public Element getElement()
 	{
-		return elements.get(0);
+		return value.get(0);
 	}
-	
+
 	public void addElement(Element element)
 	{
-		elements.add(element);
+		value.add(element);
 	}
-	
+
+	@Override
+	public final void setValue(List<Element> value)
+	{
+		throw new UnsupportedOperationException();
+	}
+
 	public void accept(AnnotationVisitor visitor)
 	{
-		for (Element element : elements)
-			visitor.visit(element.getName(), element.getValue());
+		if (visitor == null)
+		{
+			return;
+		}
+
+		for (Element element : this)
+		{
+			accept(visitor, element.name, element.value);
+		}
+
 		visitor.visitEnd();
+	}
+
+	@NotNull
+	@Override
+	public Iterator<Element> iterator()
+	{
+		return this.value.iterator();
 	}
 }

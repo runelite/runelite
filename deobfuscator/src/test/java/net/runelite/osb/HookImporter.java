@@ -276,8 +276,7 @@ public class HookImporter
 			{
 				for (Element e : a.getElements())
 				{
-					String str = (String) e.getValue();
-					return str;
+					return (String) e.getValue();
 				}
 			}
 		}
@@ -288,7 +287,7 @@ public class HookImporter
 	private Signature getObfuscatedMethodSignature(Method method)
 	{
 		String sig = getAnnotation(method.getAnnotations(), OBFUSCATED_SIGNATURE);
-		if (sig.isEmpty() == false)
+		if (!sig.isEmpty())
 		{
 			return toObSignature(new Signature(sig)); // if it is annoted, use that
 		}

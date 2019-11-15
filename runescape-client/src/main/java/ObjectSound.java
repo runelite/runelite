@@ -4,102 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bg")
+@ObfuscatedName("bf")
 @Implements("ObjectSound")
 public final class ObjectSound extends Node {
-	@ObfuscatedName("pk")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Llf;"
-	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "Ljv;"
+		signature = "Ljb;"
 	)
 	@Export("objectSounds")
 	static NodeDeque objectSounds;
-	@ObfuscatedName("hs")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1030939799
-	)
-	@Export("oculusOrbFocalPointX")
-	static int oculusOrbFocalPointX;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 1622269101
-	)
-	int field1059;
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = 1770378821
+		intValue = 1227010727
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("u")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -331149697
+		intValue = -286465655
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("r")
-	@ObfuscatedSignature(
-		signature = "Liz;"
-	)
-	@Export("obj")
-	ObjectDefinition obj;
-	@ObfuscatedName("p")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 514830237
+		intValue = -1852994176
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("q")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -394210361
+		intValue = 451765888
 	)
 	int field1060;
-	@ObfuscatedName("m")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1094960613
+		intValue = -1453778816
 	)
-	int field1061;
-	@ObfuscatedName("y")
+	int field1053;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 287004655
+		intValue = -186868357
+	)
+	int field1052;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = 1676549815
 	)
 	@Export("soundEffectId")
 	int soundEffectId;
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Ldu;"
+		signature = "Lds;"
 	)
 	@Export("stream1")
 	RawPcmStream stream1;
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 985540703
+		intValue = 180162911
 	)
-	int field1064;
-	@ObfuscatedName("b")
+	int field1057;
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -91764577
+		intValue = -648009507
 	)
-	int field1070;
-	@ObfuscatedName("o")
+	int field1058;
+	@ObfuscatedName("p")
 	@Export("soundEffectIds")
 	int[] soundEffectIds;
-	@ObfuscatedName("a")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 1113854033
+		intValue = 423706127
 	)
-	int field1067;
-	@ObfuscatedName("e")
+	int field1054;
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Ldu;"
+		signature = "Lds;"
 	)
 	@Export("stream2")
 	RawPcmStream stream2;
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "Lix;"
+	)
+	@Export("obj")
+	ObjectDefinition obj;
 
 	static {
 		objectSounds = new NodeDeque();
@@ -108,10 +96,10 @@ public final class ObjectSound extends Node {
 	ObjectSound() {
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-28"
+		garbageValue = "-23"
 	)
 	@Export("set")
 	void set() {
@@ -119,22 +107,37 @@ public final class ObjectSound extends Node {
 		ObjectDefinition var2 = this.obj.transform();
 		if (var2 != null) {
 			this.soundEffectId = var2.ambientSoundId;
-			this.field1061 = var2.int4 * 128;
-			this.field1064 = var2.int5;
-			this.field1070 = var2.int6;
+			this.field1052 = var2.int4 * 128;
+			this.field1057 = var2.int5;
+			this.field1058 = var2.int6;
 			this.soundEffectIds = var2.soundEffectIds;
 		} else {
 			this.soundEffectId = -1;
-			this.field1061 = 0;
-			this.field1064 = 0;
-			this.field1070 = 0;
+			this.field1052 = 0;
+			this.field1057 = 0;
+			this.field1058 = 0;
 			this.soundEffectIds = null;
 		}
 
 		if (var1 != this.soundEffectId && this.stream1 != null) {
-			WorldMapLabelSize.pcmStreamMixer.removeSubStream(this.stream1);
+			FloorUnderlayDefinition.pcmStreamMixer.removeSubStream(this.stream1);
 			this.stream1 = null;
 		}
 
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(Lhi;IIII)V",
+		garbageValue = "1790951666"
+	)
+	@Export("Widget_setKeyRate")
+	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
+		if (var0.field2628 == null) {
+			throw new RuntimeException();
+		} else {
+			var0.field2628[var1] = var2;
+			var0.field2626[var1] = var3;
+		}
 	}
 }

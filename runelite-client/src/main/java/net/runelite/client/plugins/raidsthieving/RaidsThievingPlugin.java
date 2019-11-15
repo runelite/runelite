@@ -26,6 +26,10 @@ package net.runelite.client.plugins.raidsthieving;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,13 +42,13 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -52,10 +56,6 @@ import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ChestIdentifier;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import javax.inject.Inject;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 @PluginDescriptor(
 	name = "Raids Bat Finder",
@@ -176,7 +176,7 @@ public class RaidsThievingPlugin extends Plugin
 		if (obj.getId() == ObjectID.CHEST_29744 || obj.getId() == ObjectID.CHEST_29745)
 		{
 			ThievingChest chest = chests.get(obj.getWorldLocation());
-			if (solver != null && chest.getChestId() != -1)
+			if (solver != null && chest != null && chest.getChestId() != -1)
 			{
 				chest.setEverOpened(true);
 				solver.addGrubsChest(chest.getChestId());

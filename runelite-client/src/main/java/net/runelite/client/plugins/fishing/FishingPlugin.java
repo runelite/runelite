@@ -27,6 +27,7 @@ package net.runelite.client.plugins.fishing;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -46,11 +47,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
@@ -65,11 +66,14 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
@@ -157,6 +161,12 @@ public class FishingPlugin extends Plugin
 	private boolean showMinnowOverlay;
 	private boolean trawlerNotification;
 	private boolean trawlerTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private Color overlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color minnowsOverlayColor;
+	@Getter(AccessLevel.PACKAGE)
+	private Color aerialOverlayColor;
 
 	@Override
 	protected void startUp() throws Exception
@@ -198,6 +208,18 @@ public class FishingPlugin extends Plugin
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+	}
+
+	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(FishingOverlay.FISHING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session.setLastFishCaught(null);
+		}
 	}
 
 	private void onConfigChanged(ConfigChanged event)
@@ -404,6 +426,7 @@ public class FishingPlugin extends Plugin
 		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
 			log.debug("Trawler session ended");
+			trawlerStartTime = null;
 			return;
 		}
 
@@ -477,5 +500,8 @@ public class FishingPlugin extends Plugin
 		this.showMinnowOverlay = config.showMinnowOverlay();
 		this.trawlerNotification = config.trawlerNotification();
 		this.trawlerTimer = config.trawlerTimer();
+		this.overlayColor = config.getOverlayColor();
+		this.minnowsOverlayColor = config.getMinnowsOverlayColor();
+		this.aerialOverlayColor = config.getAerialOverlayColor();
 	}
 }

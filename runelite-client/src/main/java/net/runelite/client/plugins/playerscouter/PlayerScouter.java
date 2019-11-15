@@ -53,7 +53,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerDespawned;
@@ -61,9 +60,10 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
-import net.runelite.client.game.PvPValueBrokenItem;
+import net.runelite.client.game.ItemReclaimCost;
 import net.runelite.client.game.WorldLocation;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -93,7 +93,7 @@ public class PlayerScouter extends Plugin
 {
 	private static final HiscoreClient HISCORE_CLIENT = new HiscoreClient();
 	private static final DiscordClient DISCORD_CLIENT = new DiscordClient();
-	private static final Map<WorldArea, String> WILD_LOCS = WorldLocation.getLocationMap();
+	private static final Map<WorldArea, String> WILD_LOCS = WorldLocation.getLOCATION_MAP();
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd h:mm a z");
 	private static final String ICON_URL = "https://www.osrsbox.com/osrsbox-db/items-icons/"; // Add item id + ".png"
 	@Inject
@@ -182,7 +182,7 @@ public class PlayerScouter extends Plugin
 
 		resetBlacklist();
 
-		if (!checkWildy() || playerContainer.isEmpty())
+		if (!checkWildy() || playerContainer.isEmpty() || this.webhook == null)
 		{
 			return;
 		}
@@ -370,10 +370,10 @@ public class PlayerScouter extends Plugin
 				continue;
 			}
 
-			if (PvPValueBrokenItem.breaksOnDeath(id))
+			if (ItemReclaimCost.breaksOnDeath(id))
 			{
-				prices.put(id, itemManager.getBrokenValue(id));
-				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getBrokenValue(id));
+				prices.put(id, itemManager.getRepairValue(id));
+				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getRepairValue(id));
 				continue;
 			}
 

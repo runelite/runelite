@@ -26,10 +26,10 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.Provides;
 import java.text.NumberFormat;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,6 @@ import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
@@ -49,6 +48,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

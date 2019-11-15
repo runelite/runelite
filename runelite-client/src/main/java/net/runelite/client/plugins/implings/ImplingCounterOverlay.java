@@ -40,7 +40,7 @@ public class ImplingCounterOverlay extends Overlay
 
 		for (Map.Entry<ImplingType, Integer> entry : plugin.getImplingCounterMap().entrySet())
 		{
-			if (plugin.showImplingType(entry.getKey()) && entry.getValue() != 0)
+			if (plugin.showImplingType(entry.getKey()) != ImplingsConfig.ImplingMode.NONE && entry.getValue() != 0)
 			{
 				tableComponent.addRow(entry.getKey().getName(), entry.getValue().toString());
 			}

@@ -341,9 +341,12 @@ public interface Client extends GameShell
 	 * Gets the logged in player instance.
 	 *
 	 * @return the logged in player
+	 *
+	 * (getLocalPlayerIndex returns the local index, useful for menus/interacting)
 	 */
 	@Nullable
 	Player getLocalPlayer();
+	int getLocalPlayerIndex();
 
 	/**
 	 * Gets the item composition corresponding to an items ID.
@@ -951,6 +954,42 @@ public interface Client extends GameShell
 	 * @return all graphics objects
 	 */
 	List<GraphicsObject> getGraphicsObjects();
+
+	/**
+	 * Gets the music volume
+	 * @return volume 0-255 inclusive
+	 */
+	int getMusicVolume();
+
+	/**
+	 * Sets the music volume
+	 * @param volume 0-255 inclusive
+	 */
+	void setMusicVolume(int volume);
+
+	/**
+	 * Gets the sound effect volume
+	 * @return volume 0-127 inclusive
+	 */
+	int getSoundEffectVolume();
+
+	/**
+	 * Sets the sound effect volume
+	 * @param volume 0-127 inclusive
+	 */
+	void setSoundEffectVolume(int volume);
+
+	/**
+	 * Gets the area sound effect volume
+	 * @return volume 0-127 inclusive
+	 */
+	int getAreaSoundEffectVolume();
+
+	/**
+	 * Sets the area sound effect volume
+	 * @param volume 0-127 inclusive
+	 */
+	void setAreaSoundEffectVolume(int volume);
 
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,
@@ -1738,14 +1777,14 @@ public interface Client extends GameShell
 	/**
 	 * @param param0       This is SceneX for gameObject, index for items, and 0 for npc.
 	 * @param param1       This is SceneY for gameObject, static for items, and 0 for npc.
-	 * @param type         Menu entry Action opcode.
+	 * @param opcode         Menu entry Action opcode.
 	 * @param id           Targets ID
 	 * @param menuEntry    Do these actually matter?
 	 * @param targetString Do these actually matter?
 	 * @param canvasX      Canvas X Point
 	 * @param canvasY      Canvas Y Point
 	 */
-	void invokeMenuAction(int param0, int param1, int type, int id, String menuEntry, String targetString, int canvasX, int canvasY);
+	void invokeMenuAction(int param0, int param1, int opcode, int id, String menuEntry, String targetString, int canvasX, int canvasY);
 
 	MouseRecorder getMouseRecorder();
 
@@ -1792,14 +1831,17 @@ public interface Client extends GameShell
 	 */
 	void removeFriend(String name);
 
-	BigInteger getModulus();
-
 	void setModulus(BigInteger modulus);
 
 	/**
 	 * Returns the max item index + 1 from cache
 	 */
 	int getItemCount();
+
+	/**
+	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
+	 */
+	void setAllWidgetsAreOpTargetable(boolean value);
 
 	/**
 	 * Adds a MenuEntry to the current menu.
@@ -1863,4 +1905,10 @@ public interface Client extends GameShell
 	 * the "You have been disconnected." message anymore.
 	 */
 	void setHideDisconnect(boolean dontShow);
+
+	/**
+	 * Sets the fields in the temporary menu entry that's saved in the client
+	 * when a inventory item is clicked and dragged.
+	 */
+	void setTempMenuEntry(MenuEntry entry);
 }

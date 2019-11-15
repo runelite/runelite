@@ -55,16 +55,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
-import static net.runelite.api.ObjectID.ORE_VEIN_26661;
-import static net.runelite.api.ObjectID.ORE_VEIN_26662;
-import static net.runelite.api.ObjectID.ORE_VEIN_26663;
-import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import static net.runelite.api.ObjectID.ROCKFALL;
-import static net.runelite.api.ObjectID.ROCKFALL_26680;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
@@ -74,13 +65,12 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -88,6 +78,7 @@ import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -95,11 +86,13 @@ import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.api.util.Text;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -280,6 +273,18 @@ public class MotherlodePlugin extends Plugin
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
+		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
+	}
+
+	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(MotherlodeOverlay.MINING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session.resetRecent();
+		}
 	}
 
 	void onVarbitChanged(VarbitChanged event)

@@ -63,7 +63,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -75,6 +74,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -550,21 +550,27 @@ public class RaidsPlugin extends Plugin
 	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		OverlayMenuEntry entry = event.getEntry();
-		if (entry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY &&
-			entry.getTarget().equals("Raids party overlay"))
+		if (entry.getMenuOpcode() == MenuOpcode.RUNELITE_OVERLAY)
 		{
-			switch (entry.getOption())
+			if (entry.getTarget().equals("Raids party overlay"))
 			{
-				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
-					startingPartyMembers.clear();
-					updatePartyMembers(true);
-					missingPartyMembers.clear();
-					break;
-				case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
-					updatePartyMembers(true);
-					break;
-				default:
-					break;
+				switch (entry.getOption())
+				{
+					case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+						startingPartyMembers.clear();
+						updatePartyMembers(true);
+						missingPartyMembers.clear();
+						break;
+					case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
+						updatePartyMembers(true);
+						break;
+					default:
+						break;
+				}
+			}
+			else if (entry.getOption().equals(RaidsOverlay.BROADCAST_ACTION) && event.getOverlay() == overlay)
+			{
+				sendRaidLayoutMessage();
 			}
 		}
 	}
@@ -670,7 +676,10 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				setOverlayStatus(true);
-				sendRaidLayoutMessage();
+				if (this.displayLayoutMessage)
+				{
+					sendRaidLayoutMessage();
+				}
 				Matcher puzzleMatch = PUZZLES.matcher(raid.getFullRotationString());
 				final List<String> puzzles = new ArrayList<>();
 				while (puzzleMatch.find())
@@ -709,20 +718,15 @@ public class RaidsPlugin extends Plugin
 
 	private void sendRaidLayoutMessage()
 	{
-		if (!this.displayLayoutMessage)
-		{
-			return;
-		}
-
 		final String layout = getRaid().getLayout().toCodeString();
 		final String rooms = getRaid().toRoomString();
 		final String raidData = "[" + layout + "]: " + rooms;
 		layoutMessage = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(raidData)
-				.build();
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(raidData)
+			.build();
 
 		final PartyMember localMember = party.getLocalMember();
 		if (party.getMembers().isEmpty() || localMember == null)

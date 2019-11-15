@@ -37,7 +37,7 @@ public enum CannonSpots
 	FIRE_GIANTS(new WorldPoint(2393, 9782, 0), new WorldPoint(2412, 9776, 0), new WorldPoint(2401, 9780, 0)),
 	ABERRANT_SPECTRES(new WorldPoint(2456, 9791, 0)),
 	HELLHOUNDS(new WorldPoint(2431, 9776, 0), new WorldPoint(2413, 9786, 0), new WorldPoint(2783, 9686, 0), new WorldPoint(3198, 10071, 0)),
-	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0)),
+	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0), new WorldPoint(1421, 10089, 1)),
 	ELVES(new WorldPoint(2044, 4635, 0), new WorldPoint(3278, 6098, 0)),
 	SUQAHS(new WorldPoint(2114, 3943, 0)),
 	TROLLS(new WorldPoint(2401, 3856, 0)),

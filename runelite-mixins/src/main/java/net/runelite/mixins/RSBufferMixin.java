@@ -26,7 +26,6 @@ package net.runelite.mixins;
 
 import java.math.BigInteger;
 import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -39,17 +38,20 @@ public abstract class RSBufferMixin implements RSBuffer
 	@Shadow("client")
 	private static RSClient client;
 
-	@Inject
-	private static BigInteger exponent = new BigInteger("10001", 16);
+	@Shadow("modulus")
+	private static BigInteger modulus;
 
 	@Copy("encryptRsa")
-	public void rs$encryptRsa(BigInteger var1, BigInteger var2)
-	{
-	}
+	abstract void rs$encryptRsa(BigInteger var1, BigInteger var2);
 
 	@Replace("encryptRsa")
-	public void rl$encryptRsa(BigInteger var1, BigInteger var2)
+	public void rl$encryptRsa(BigInteger exp, BigInteger mod)
 	{
-		rs$encryptRsa(exponent, client.getModulus());
+		if (modulus != null)
+		{
+			mod = modulus;
+		}
+
+		rs$encryptRsa(exp, mod);
 	}
 }

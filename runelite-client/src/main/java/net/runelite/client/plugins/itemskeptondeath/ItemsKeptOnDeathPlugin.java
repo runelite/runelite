@@ -26,7 +26,9 @@
 package net.runelite.client.plugins.itemskeptondeath;
 
 import com.google.common.annotations.VisibleForTesting;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -44,8 +46,8 @@ import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SkullIcon;
@@ -60,8 +62,10 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
+import net.runelite.client.game.ItemReclaimCost;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
@@ -354,7 +358,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
 				&& !isTradeable(itemManager.getItemDefinition(id)) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || BrokenOnDeathItem.getRepairPrice(i.getId()) != null))
+				&& (wildyLevel <= 0 || ItemReclaimCost.of(id) != null))
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}
@@ -460,10 +464,10 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 		}
 
 		// Jagex uses the repair price when determining which items are kept on death.
-		final Integer repairPrice = BrokenOnDeathItem.getRepairPrice(canonicalizedItemId);
+		final ItemReclaimCost repairPrice = ItemReclaimCost.of(canonicalizedItemId);
 		if (repairPrice != null)
 		{
-			exchangePrice = repairPrice;
+			exchangePrice = repairPrice.getValue();
 		}
 
 		if (exchangePrice == 0)
@@ -573,20 +577,51 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 		textWidget.revalidate();
 
 		// Update Items lost total value
-		long total = 0;
+		long theyGet = 0;
+		long youLose = 0;
+
 		for (final Widget w : lostItems)
 		{
-			int cid = itemManager.canonicalize(w.getItemId());
+			final int cid = itemManager.canonicalize(w.getItemId());
+			final TrueItemValue trueItemValue = TrueItemValue.map(cid);
+			final Collection<Integer> mapping = ItemMapping.map(cid);
+			final int breakValue = itemManager.getRepairValue(cid);
+
+			if (breakValue != 0)
+			{
+				youLose -= breakValue;
+				theyGet += breakValue;
+			}
+
+			if (trueItemValue != null)
+			{
+				int truePrice = 0;
+
+				for (int id : trueItemValue.getDeconstructedItem())
+				{
+					if (mapping.contains(id))
+					{
+						continue;
+					}
+					truePrice += itemManager.getItemPrice(id);
+				}
+
+				youLose += truePrice;
+			}
+
 			int price = itemManager.getItemPrice(cid);
-			if (price == 0)
+
+			if (price == 0 && breakValue == 0)
 			{
 				// Default to alch price
 				price = (int) (itemManager.getItemDefinition(cid).getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 			}
-			total += (long) price * w.getItemQuantity();
+
+			theyGet += (long) price * w.getItemQuantity();
 		}
 		final Widget lostValue = client.getWidget(WidgetInfo.ITEMS_LOST_VALUE);
-		lostValue.setText(QuantityFormatter.quantityToStackSize(total) + " gp");
+		lostValue.setText("They get: " + QuantityFormatter.quantityToStackSize(theyGet) +
+			"<br>You lose: " + ColorUtil.prependColorTag("(" + QuantityFormatter.quantityToStackSize(theyGet + youLose) + ")", Color.red));
 
 		// Update Max items kept
 		final Widget max = client.getWidget(WidgetInfo.ITEMS_KEPT_MAX);
