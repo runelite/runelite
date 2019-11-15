@@ -27,13 +27,17 @@ package net.runelite.client.plugins.woodcutting;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
+import static net.runelite.api.NullObjectID.NULL_34633;
+import static net.runelite.api.NullObjectID.NULL_34635;
+import static net.runelite.api.NullObjectID.NULL_34637;
+import static net.runelite.api.NullObjectID.NULL_34639;
 import static net.runelite.api.ObjectID.REDWOOD;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
 
 @Getter
 enum Tree
 {
-	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670, NULL_34633, NULL_34635, NULL_34637, NULL_34639);
 
 	private final int[] treeIds;
 
