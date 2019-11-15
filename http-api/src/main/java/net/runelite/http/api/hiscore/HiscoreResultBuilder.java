@@ -77,9 +77,9 @@ public class HiscoreResultBuilder
 		hiscoreResult.setRunecraft(skills.get(21));
 		hiscoreResult.setHunter(skills.get(22));
 		hiscoreResult.setConstruction(skills.get(23));
-		hiscoreResult.setBountyHunterHunter(skills.get(24));
-		hiscoreResult.setBountyHunterRogue(skills.get(25));
-		hiscoreResult.setLastManStanding(skills.get(26));
+		hiscoreResult.setLeaguePoints(skills.get(24));
+		hiscoreResult.setBountyHunterHunter(skills.get(25));
+		hiscoreResult.setBountyHunterRogue(skills.get(26));
 		hiscoreResult.setClueScrollAll(skills.get(27));
 		hiscoreResult.setClueScrollBeginner(skills.get(28));
 		hiscoreResult.setClueScrollEasy(skills.get(29));
@@ -87,6 +87,7 @@ public class HiscoreResultBuilder
 		hiscoreResult.setClueScrollHard(skills.get(31));
 		hiscoreResult.setClueScrollElite(skills.get(32));
 		hiscoreResult.setClueScrollMaster(skills.get(33));
+		hiscoreResult.setLastManStanding(skills.get(34));
 		return hiscoreResult;
 	}
 }

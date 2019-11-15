@@ -50,6 +50,7 @@ public enum HiscoreSkill
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
 	CONSTRUCTION("Construction"),
+	LEAGUE_POINTS("League Points"),
 	BOUNTY_HUNTER_HUNTER("Bounty Hunter - Hunter"),
 	BOUNTY_HUNTER_ROGUE("Bounty Hunter - Rogue"),
 	LAST_MAN_STANDING("Last Man Standing"),

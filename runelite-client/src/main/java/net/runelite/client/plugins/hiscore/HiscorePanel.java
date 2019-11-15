@@ -81,6 +81,7 @@ import static net.runelite.http.api.hiscore.HiscoreSkill.HERBLORE;
 import static net.runelite.http.api.hiscore.HiscoreSkill.HITPOINTS;
 import static net.runelite.http.api.hiscore.HiscoreSkill.HUNTER;
 import static net.runelite.http.api.hiscore.HiscoreSkill.LAST_MAN_STANDING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.LEAGUE_POINTS;
 import static net.runelite.http.api.hiscore.HiscoreSkill.MAGIC;
 import static net.runelite.http.api.hiscore.HiscoreSkill.MINING;
 import static net.runelite.http.api.hiscore.HiscoreSkill.OVERALL;
@@ -276,6 +277,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL));
+		minigamePanel.add(makeSkillPanel(LEAGUE_POINTS));
 		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER));
@@ -474,10 +476,12 @@ public class HiscorePanel extends PluginPanel
 			case 2:
 				return HiscoreSkill.CLUE_SCROLL_ALL;
 			case 3:
-				return HiscoreSkill.LAST_MAN_STANDING;
+				return HiscoreSkill.LEAGUE_POINTS;
 			case 4:
-				return HiscoreSkill.BOUNTY_HUNTER_ROGUE;
+				return HiscoreSkill.LAST_MAN_STANDING;
 			case 5:
+				return HiscoreSkill.BOUNTY_HUNTER_ROGUE;
+			case 6:
 				return HiscoreSkill.BOUNTY_HUNTER_HUNTER;
 		}
 
@@ -559,6 +563,12 @@ public class HiscorePanel extends PluginPanel
 				case LAST_MAN_STANDING:
 				{
 					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case LEAGUE_POINTS:
+				{
+					String rank = (result.getLeaguePoints().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLeaguePoints().getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
@@ -647,13 +657,9 @@ public class HiscorePanel extends PluginPanel
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			if (wTypes.contains(WorldType.LEAGUE))
 			{
-				return HiscoreEndpoint.DEADMAN_TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.LEAGUE))
-			{
-				return HiscoreEndpoint.SEASONAL_DEADMAN;
+				return HiscoreEndpoint.LEAGUE;
 			}
 			else if (wTypes.contains(WorldType.DEADMAN))
 			{

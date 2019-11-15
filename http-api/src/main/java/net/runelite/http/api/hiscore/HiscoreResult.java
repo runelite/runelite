@@ -64,6 +64,7 @@ public class HiscoreResult
 	private Skill clueScrollElite;
 	private Skill clueScrollMaster;
 	private Skill lastManStanding;
+	private Skill leaguePoints;
 
 	public Skill getSkill(HiscoreSkill skill)
 	{
@@ -137,6 +138,8 @@ public class HiscoreResult
 				return getClueScrollMaster();
 			case LAST_MAN_STANDING:
 				return getLastManStanding();
+			case LEAGUE_POINTS:
+				return getLeaguePoints();
 		}
 
 		throw new IllegalArgumentException("Invalid hiscore item");

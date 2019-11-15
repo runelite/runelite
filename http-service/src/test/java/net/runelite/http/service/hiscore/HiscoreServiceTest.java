@@ -69,7 +69,8 @@ public class HiscoreServiceTest
 			+ "1337,911\n"
 			+ "42,14113\n"
 			+ "1,777\n"
-			+ "254,92\n";
+			+ "254,92\n"
+			+ "-1,-1\n";
 
 	private final MockWebServer server = new MockWebServer();
 
