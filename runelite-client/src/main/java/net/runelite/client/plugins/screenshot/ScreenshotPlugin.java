@@ -621,6 +621,10 @@ public class ScreenshotPlugin extends Plugin
 			{
 				playerDir += "-Deadman";
 			}
+			else if (worldTypes.contains(WorldType.LEAGUE))
+			{
+				playerDir += "-League";
+			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
 		}
 		else
