@@ -651,10 +651,6 @@ public class HiscorePanel extends PluginPanel
 			{
 				return HiscoreEndpoint.DEADMAN_TOURNAMENT;
 			}
-			else if (wTypes.contains(WorldType.SEASONAL_DEADMAN))
-			{
-				return HiscoreEndpoint.SEASONAL_DEADMAN;
-			}
 			else if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
