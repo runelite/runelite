@@ -38,7 +38,7 @@ public interface FpsConfig extends Config
 			"whether window is in focus or not",
 		position = 1
 	)
-	default boolean enableFps()
+	default boolean limitFps()
 	{
 		return false;
 	}
@@ -57,13 +57,10 @@ public interface FpsConfig extends Config
 	@ConfigItem(
 		keyName = "limitFpsUnfocused",
 		name = "Limit FPS unfocused",
-		description = "FPS limit while window is out of focus<br>" +
-			"e.g. RuneLite is minimized or in the background<br>" +
-			"useful for when unfocused FPS limit needs to be different<br>" +
-			"from global FPS limit",
+		description = "FPS limit while window is out of focus",
 		position = 3
 	)
-	default boolean enableFpsUnfocused()
+	default boolean limitFpsUnfocused()
 	{
 		return false;
 	}

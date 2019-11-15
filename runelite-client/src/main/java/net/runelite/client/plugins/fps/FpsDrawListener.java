@@ -68,14 +68,11 @@ public class FpsDrawListener implements Runnable
 	{
 		lastMillis = System.currentTimeMillis();
 
-		if (config.enableFpsUnfocused() && !isFocused)
-		{
-			targetDelay = 1000 / Math.max(1, config.maxFpsUnfocused());
-		}
-		else
-		{
-			targetDelay = 1000 / Math.max(1, config.maxFps());
-		}
+		int fps = config.limitFpsUnfocused() && !isFocused
+			? config.maxFpsUnfocused()
+			: config.maxFps();
+
+		targetDelay = 1000 / Math.max(1, fps);
 		
 		sleepDelay = targetDelay;
 
@@ -93,8 +90,8 @@ public class FpsDrawListener implements Runnable
 
 	private boolean isEnforced()
 	{
-		return config.enableFps()
-			|| (config.enableFpsUnfocused() && !isFocused);
+		return config.limitFps()
+			|| (config.limitFpsUnfocused() && !isFocused);
 	}
 
 	@Override
