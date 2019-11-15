@@ -33,5 +33,6 @@ public enum WorldType
 	HIGH_RISK,
 	LAST_MAN_STANDING,
 	TOURNAMENT,
-	DEADMAN;
+	DEADMAN,
+	LEAGUE;
 }

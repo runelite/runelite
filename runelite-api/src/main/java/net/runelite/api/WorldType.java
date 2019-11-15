@@ -63,7 +63,11 @@ public enum WorldType
 	/**
 	 * Deadman world type.
 	 */
-	DEADMAN(1 << 29);
+	DEADMAN(1 << 29),
+	/**
+	 * League world type
+	 */
+	LEAGUE(1 << 30);
 
 	private final int mask;
 
