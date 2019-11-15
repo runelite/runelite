@@ -27,14 +27,14 @@
     {
       "level": 5,
       "icon": 50,
-      "name": "Shortbow (U)",
+      "name": "Shortbow (half)",
       "xp": 5
     },
     {
       "level": 5,
       "icon": 841,
-      "name": "Shortbow",
-      "xp": 5
+      "name": "Shortbow (full)",
+      "xp": 10
     },
     {
       "level": 9,
@@ -51,7 +51,7 @@
     {
       "level": 9,
       "icon": 9454,
-      "name": "Bronze Crossbow (U)",
+      "name": "Bronze Crossbow (half)",
       "xp": 12
     },
     {
@@ -61,6 +61,12 @@
       "xp": 6
     },
     {
+      "level": 9,
+      "icon": 9174,
+      "name": "Bronze Crossbow (full)",
+      "xp": 24
+    },
+    {
       "level": 10,
       "icon": 806,
       "name": "Bronze Dart",
@@ -68,15 +74,15 @@
     },
     {
       "level": 10,
-      "icon": 839,
-      "name": "Longbow",
+      "icon": 48,
+      "name": "Longbow (half)",
       "xp": 10
     },
     {
       "level": 10,
-      "icon": 48,
-      "name": "Longbow (U)",
-      "xp": 10
+      "icon": 839,
+      "name": "Longbow (full)",
+      "xp": 20
     },
     {
       "level": 11,
@@ -93,14 +99,14 @@
     {
       "level": 20,
       "icon": 54,
-      "name": "Oak Shortbow (U)",
+      "name": "Oak Shortbow (half)",
       "xp": 16.5
     },
     {
       "level": 20,
       "icon": 843,
-      "name": "Oak Shortbow",
-      "xp": 16.5
+      "name": "Oak Shortbow (full)",
+      "xp": 33
     },
     {
       "level": 22,
@@ -117,7 +123,7 @@
     {
       "level": 24,
       "icon": 9456,
-      "name": "Blurite Crossbow (U)",
+      "name": "Blurite Crossbow (half)",
       "xp": 32
     },
     {
@@ -127,16 +133,22 @@
       "xp": 16
     },
     {
+      "level": 24,
+      "icon": 9176,
+      "name": "Blurite Crossbow (full)",
+      "xp": 64
+    },
+    {
       "level": 25,
       "icon": 56,
-      "name": "Oak Longbow (U)",
+      "name": "Oak Longbow (half)",
       "xp": 25
     },
     {
       "level": 25,
       "icon": 845,
-      "name": "Oak Longbow",
-      "xp": 25
+      "name": "Oak Longbow (full)",
+      "xp": 50
     },
     {
       "level": 27,
@@ -159,14 +171,14 @@
     {
       "level": 35,
       "icon": 60,
-      "name": "Willow Shortbow (U)",
+      "name": "Willow Shortbow (half)",
       "xp": 33.3
     },
     {
       "level": 35,
       "icon": 849,
-      "name": "Willow Shortbow",
-      "xp": 33.3
+      "name": "Willow Shortbow (full)",
+      "xp": 66.6
     },
     {
       "level": 37,
@@ -189,7 +201,7 @@
     {
       "level": 39,
       "icon": 9457,
-      "name": "Iron Crossbow (U)",
+      "name": "Iron Crossbow (half)",
       "xp": 44
     },
     {
@@ -199,16 +211,22 @@
       "xp": 22
     },
     {
+      "level": 39,
+      "icon": 9177,
+      "name": "Iron Crossbow (full)",
+      "xp": 88
+    },
+    {
       "level": 40,
       "icon": 58,
-      "name": "Willow Longbow (U)",
+      "name": "Willow Longbow (half)",
       "xp": 41.5
     },
     {
       "level": 40,
       "icon": 847,
-      "name": "Willow Longbow",
-      "xp": 41.5
+      "name": "Willow Longbow (full)",
+      "xp": 83
     },
     {
       "level": 41,
@@ -255,7 +273,7 @@
     {
       "level": 46,
       "icon": 9459,
-      "name": "Steel Crossbow (U)",
+      "name": "Steel Crossbow (half)",
       "xp": 54
     },
     {
@@ -265,16 +283,22 @@
       "xp": 27
     },
     {
+      "level": 46,
+      "icon": 9179,
+      "name": "Steel Crossbow (full)",
+      "xp": 108
+    },
+    {
       "level": 50,
       "icon": 64,
-      "name": "Maple Shortbow (U)",
+      "name": "Maple Shortbow (half)",
       "xp": 50
     },
     {
       "level": 50,
       "icon": 853,
-      "name": "Maple Shortbow",
-      "xp": 50
+      "name": "Maple Shortbow (full)",
+      "xp": 100
     },
     {
       "level": 51,
@@ -302,9 +326,9 @@
     },
     {
       "level": 54,
-      "icon": 9181,
-      "name": "Mith Crossbow",
-      "xp": 32
+      "icon": 9142,
+      "name": "Mithril Bolts",
+      "xp": 5
     },
     {
       "level": 54,
@@ -314,33 +338,39 @@
     },
     {
       "level": 54,
-      "icon": 9142,
-      "name": "Mithril Bolts",
-      "xp": 5
+      "icon": 9461,
+      "name": "Mithril Crossbow (half)",
+      "xp": 64
     },
     {
       "level": 54,
-      "icon": 9461,
-      "name": "Mithril Crossbow (U)",
-      "xp": 64
+      "icon": 9181,
+      "name": "Mith Crossbow",
+      "xp": 32
+    },
+    {
+      "level": 54,
+      "icon": 9181,
+      "name": "Mith Crossbow (full)",
+      "xp": 128
     },
     {
       "level": 55,
       "icon": 62,
-      "name": "Maple Longbow (U)",
+      "name": "Maple Longbow (half)",
       "xp": 58.5
+    },
+    {
+      "level": 55,
+      "icon": 851,
+      "name": "Maple Longbow (full)",
+      "xp": 116
     },
     {
       "level": 55,
       "icon": 11875,
       "name": "Broad Bolts",
       "xp": 3
-    },
-    {
-      "level": 55,
-      "icon": 851,
-      "name": "Maple Longbow",
-      "xp": 58
     },
     {
       "level": 56,
@@ -381,7 +411,7 @@
     {
       "level": 61,
       "icon": 9463,
-      "name": "Adamant Crossbow (U)",
+      "name": "Adamant Crossbow (half)",
       "xp": 82
     },
     {
@@ -389,6 +419,12 @@
       "icon": 9183,
       "name": "Adamant Crossbow",
       "xp": 41
+    },
+    {
+      "level": 61,
+      "icon": 9183,
+      "name": "Adamant Crossbow (full)",
+      "xp": 164
     },
     {
       "level": 63,
@@ -404,15 +440,15 @@
     },
     {
       "level": 65,
-      "icon": 857,
-      "name": "Yew Shortbow",
+      "icon": 68,
+      "name": "Yew Shortbow (half)",
       "xp": 67.5
     },
     {
       "level": 65,
-      "icon": 68,
-      "name": "Yew Shortbow (U)",
-      "xp": 67.5
+      "icon": 857,
+      "name": "Yew Shortbow (full)",
+      "xp": 135
     },
     {
       "level": 67,
@@ -422,8 +458,20 @@
     },
     {
       "level": 69,
+      "icon": 9144,
+      "name": "Runite Bolts",
+      "xp": 10
+    },
+    {
+      "level": 69,
+      "icon": 9452,
+      "name": "Yew Stock",
+      "xp": 50
+    },
+    {
+      "level": 69,
       "icon": 9465,
-      "name": "Runite Crossbow (U)",
+      "name": "Runite Crossbow (half)",
       "xp": 100
     },
     {
@@ -434,27 +482,21 @@
     },
     {
       "level": 69,
-      "icon": 9452,
-      "name": "Yew Stock",
-      "xp": 50
-    },
-    {
-      "level": 69,
-      "icon": 9144,
-      "name": "Runite Bolts",
-      "xp": 10
-    },
-    {
-      "level": 70,
-      "icon": 855,
-      "name": "Yew Longbow",
-      "xp": 75
+      "icon": 9185,
+      "name": "Rune Crossbow (full)",
+      "xp": 200
     },
     {
       "level": 70,
       "icon": 66,
-      "name": "Yew Longbow (U)",
+      "name": "Yew Longbow (half)",
       "xp": 75
+    },
+    {
+      "level": 70,
+      "icon": 855,
+      "name": "Yew Longbow (full)",
+      "xp": 150
     },
     {
       "level": 71,
@@ -495,7 +537,7 @@
     {
       "level": 78,
       "icon": 21921,
-      "name": "Dragon Crossbow (U)",
+      "name": "Dragon Crossbow (half)",
       "xp": 135
     },
     {
@@ -505,16 +547,22 @@
       "xp": 70
     },
     {
-      "level": 80,
-      "icon": 861,
-      "name": "Magic Shortbow",
-      "xp": 83.3
+      "level": 78,
+      "icon": 21902,
+      "name": "Dragon Crossbow (full)",
+      "xp": 275
     },
     {
       "level": 80,
       "icon": 72,
-      "name": "Magic Shortbow (U)",
+      "name": "Magic Shortbow (half)",
       "xp": 83.3
+    },
+    {
+      "level": 80,
+      "icon": 861,
+      "name": "Magic Shortbow (full)",
+      "xp": 166.6
     },
     {
       "level": 81,
@@ -542,15 +590,15 @@
     },
     {
       "level": 85,
-      "icon": 859,
-      "name": "Magic Longbow",
+      "icon": 70,
+      "name": "Magic Longbow (half)",
       "xp": 91.5
     },
     {
       "level": 85,
-      "icon": 70,
-      "name": "Magic Longbow (U)",
-      "xp": 91.5
+      "icon": 859,
+      "name": "Magic Longbow (full)",
+      "xp": 183
     },
     {
       "level": 87,
