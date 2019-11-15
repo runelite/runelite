@@ -82,7 +82,6 @@ public enum WorldType
 
 	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
 		DEADMAN,
-		DEADMAN_TOURNAMENT,
 		PVP
 	);
 
