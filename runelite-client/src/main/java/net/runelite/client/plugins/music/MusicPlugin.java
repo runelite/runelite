@@ -558,14 +558,15 @@ public class MusicPlugin extends Plugin
 	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
+		int soundID = areaSoundEffectPlayed.getSoundId();
 		if (source == client.getLocalPlayer()
 			&& musicConfig.muteOwnAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source != client.getLocalPlayer()
-			&& source instanceof Player
-			&& musicConfig.muteOtherAreaSounds())
+			&& (source instanceof Player || soundID == 200)    //200 is the teleport sound effect ID. this exception
+			&& musicConfig.muteOtherAreaSounds())              //exists because teleport's source actor is always null.
 		{
 			areaSoundEffectPlayed.consume();
 		}
@@ -575,6 +576,7 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source == null
+			&& soundID != 200
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
