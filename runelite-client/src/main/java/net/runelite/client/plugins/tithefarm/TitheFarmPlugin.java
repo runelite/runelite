@@ -93,7 +93,7 @@ public class TitheFarmPlugin extends Plugin
 		overlayManager.remove(titheFarmOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("tithefarmplugin"))

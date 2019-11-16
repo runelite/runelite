@@ -120,7 +120,7 @@ public class XpGlobesPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onStatChanged(StatChanged statChanged)
 	{
 		Skill skill = statChanged.getSkill();

@@ -186,7 +186,7 @@ public class XpTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-@Subscribe
+	@Subscribe
 	void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();

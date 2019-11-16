@@ -96,7 +96,7 @@ public class MouseHighlightPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

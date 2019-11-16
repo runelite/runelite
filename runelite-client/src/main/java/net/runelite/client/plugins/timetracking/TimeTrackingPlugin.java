@@ -143,7 +143,7 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged e)
 	{
 		if (!e.getGroup().equals(CONFIG_GROUP))

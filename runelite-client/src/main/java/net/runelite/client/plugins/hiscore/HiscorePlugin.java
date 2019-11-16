@@ -149,7 +149,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 

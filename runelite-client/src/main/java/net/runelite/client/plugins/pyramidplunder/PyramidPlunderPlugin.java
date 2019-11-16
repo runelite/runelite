@@ -157,7 +157,7 @@ public class PyramidPlunderPlugin extends Plugin
 		reset();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"pyramidplunder".equals(event.getGroup()))

@@ -122,7 +122,7 @@ public class SkillCalculatorPlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("skillCalculator") && event.getKey().equals("enabledBankedXp"))

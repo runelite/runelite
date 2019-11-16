@@ -299,7 +299,7 @@ public class GauntletPlugin extends Plugin
 		countersVisible = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if (menuOptionClicked.getTarget().toUpperCase().contains("LINUM"))

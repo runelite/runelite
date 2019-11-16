@@ -105,7 +105,7 @@ public class InterfaceStylesPlugin extends Plugin
 		});
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged config)
 	{
 		if (config.getGroup().equals("interfaceStyles"))

@@ -167,7 +167,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 		overlayManager.remove(overlayPrayerTab);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		if ((animationChanged.getActor() instanceof Player) && (animationChanged.getActor().getInteracting() instanceof Player) && (animationChanged.getActor().getInteracting() == client.getLocalPlayer()))

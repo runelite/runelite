@@ -182,7 +182,7 @@ public class CoxPlugin extends Plugin
 		overlayManager.remove(coxInfoBox);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("Cox"))

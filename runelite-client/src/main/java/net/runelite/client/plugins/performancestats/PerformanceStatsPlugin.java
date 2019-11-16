@@ -154,7 +154,7 @@ public class PerformanceStatsPlugin extends Plugin
 		reset();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

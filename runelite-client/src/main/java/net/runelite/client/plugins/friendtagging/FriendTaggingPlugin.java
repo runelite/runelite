@@ -102,7 +102,7 @@ public class FriendTaggingPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(ignoreTabResizableOption);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());

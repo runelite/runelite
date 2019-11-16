@@ -249,7 +249,7 @@ public class MotherlodePlugin extends Plugin
 		});
 	}
 
-@Subscribe
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();

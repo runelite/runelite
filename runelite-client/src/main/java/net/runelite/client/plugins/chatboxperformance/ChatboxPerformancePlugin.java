@@ -91,7 +91,7 @@ public class ChatboxPerformancePlugin extends Plugin
 		}
 		}
 
-@Subscribe
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		if (!"chatboxBackgroundBuilt".equals(ev.getEventName()))

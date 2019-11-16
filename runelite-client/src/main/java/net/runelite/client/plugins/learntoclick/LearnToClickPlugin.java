@@ -75,7 +75,7 @@ public class LearnToClickPlugin extends Plugin
 		hideOrbWidgets(false);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("learntoclick"))

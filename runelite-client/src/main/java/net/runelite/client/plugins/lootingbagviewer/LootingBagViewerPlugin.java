@@ -112,7 +112,7 @@ public class LootingBagViewerPlugin extends Plugin
 		overlayManager.remove(widgetOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getKey().equals("renderViewer"))

@@ -158,7 +158,7 @@ public class KourendLibraryPlugin extends Plugin
 		playerBooks = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged ev)
 	{
 		if (!KourendLibraryConfig.GROUP_KEY.equals(ev.getGroup()))

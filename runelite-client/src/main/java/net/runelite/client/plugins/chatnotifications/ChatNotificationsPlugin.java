@@ -109,7 +109,7 @@ public class ChatNotificationsPlugin extends Plugin
 		this.privateMessageHashes.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -270,7 +270,6 @@ public class ChatNotificationsPlugin extends Plugin
 		return (message.getName() + message.getMessage()).hashCode();
 	}
 
-	@Subscribe
 	private void sendNotification(ChatMessage message)
 	{
 		String name = Text.removeTags(message.getName());

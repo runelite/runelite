@@ -84,7 +84,7 @@ public class SpawnTimerPlugin extends Plugin
 		overlayManager.remove(SpawnTimerOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameTick(GameTick g)
 	{
 		currentTick++;

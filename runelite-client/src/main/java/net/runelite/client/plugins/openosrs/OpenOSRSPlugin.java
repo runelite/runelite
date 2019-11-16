@@ -140,7 +140,7 @@ public class OpenOSRSPlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		if (!config.keyboardPin())

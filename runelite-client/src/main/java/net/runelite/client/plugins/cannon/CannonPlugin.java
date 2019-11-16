@@ -150,7 +150,7 @@ public class CannonPlugin extends Plugin
 		spotPoints.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))

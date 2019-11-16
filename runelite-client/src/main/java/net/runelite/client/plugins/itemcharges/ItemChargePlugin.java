@@ -259,7 +259,7 @@ public class ItemChargePlugin extends Plugin
 		lastCheckTick = -1;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("itemCharge"))

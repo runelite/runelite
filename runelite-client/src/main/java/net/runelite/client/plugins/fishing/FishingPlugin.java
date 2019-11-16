@@ -190,7 +190,7 @@ public class FishingPlugin extends Plugin
 		trawlerStartTime = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();

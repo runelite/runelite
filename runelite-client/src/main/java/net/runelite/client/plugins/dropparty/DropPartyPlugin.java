@@ -105,7 +105,7 @@ public class DropPartyPlugin extends Plugin
 		reset();
 		}
 
-@Subscribe
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		shuffleList();

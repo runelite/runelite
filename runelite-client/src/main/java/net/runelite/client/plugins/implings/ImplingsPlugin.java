@@ -150,7 +150,7 @@ public class ImplingsPlugin extends Plugin
 		overlayManager.remove(implingCounterOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		implingCounterMap.clear();

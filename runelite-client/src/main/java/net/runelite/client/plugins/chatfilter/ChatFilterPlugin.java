@@ -109,7 +109,7 @@ public class ChatFilterPlugin extends Plugin
 		client.refreshChat();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"chatFilterCheck".equals(event.getEventName()))

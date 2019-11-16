@@ -105,7 +105,7 @@ public class InstanceMapPlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		overlay.onGameStateChange(event);

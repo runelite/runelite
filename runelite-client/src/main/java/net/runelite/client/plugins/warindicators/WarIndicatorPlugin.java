@@ -112,7 +112,7 @@ public class WarIndicatorPlugin extends Plugin
 		overlayManager.remove(warIndicatorMiniMapOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded onMenuEntryAdded)
 	{
 		int type = onMenuEntryAdded.getOpcode();

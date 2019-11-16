@@ -126,7 +126,7 @@ public class NightmareZonePlugin extends Plugin
 		resetPointsPerHour();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("nightmareZone"))

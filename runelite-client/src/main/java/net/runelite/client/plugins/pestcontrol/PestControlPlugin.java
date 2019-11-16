@@ -194,7 +194,7 @@ public class PestControlPlugin extends Plugin
 		unloadPlugin();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configEvent)
 	{
 		if (configEvent.getGroup().equals("pestcontrol"))

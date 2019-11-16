@@ -150,7 +150,7 @@ public class TheatrePlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (verzikHandler != null)

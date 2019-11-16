@@ -70,7 +70,7 @@ public class ShortcutPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, event.getGameObject().getLocalLocation());

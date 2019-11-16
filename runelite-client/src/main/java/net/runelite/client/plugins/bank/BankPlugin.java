@@ -174,7 +174,7 @@ public class BankPlugin extends Plugin
 		itemQuantities = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
 	{
 		if (!forceRightClickFlag)

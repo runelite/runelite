@@ -114,7 +114,7 @@ public class BlastMinePlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();

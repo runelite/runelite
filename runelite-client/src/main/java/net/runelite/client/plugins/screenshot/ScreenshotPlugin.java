@@ -280,7 +280,7 @@ public class ScreenshotPlugin extends Plugin
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN

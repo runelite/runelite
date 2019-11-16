@@ -116,7 +116,7 @@ public class FreezeTimersPlugin extends Plugin
 		return configManager.getConfig(FreezeTimersConfig.class);
 	}
 
-@Subscribe
+	@Subscribe
 	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		final int oldGraphic = prayerTracker.getSpotanimLastTick(graphicChanged.getActor());

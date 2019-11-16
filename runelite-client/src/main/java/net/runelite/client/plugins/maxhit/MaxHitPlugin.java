@@ -55,17 +55,7 @@ public class MaxHitPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
-
-@Subscribe
+	@Subscribe
 	private void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		this.updateMaxHitWidget();

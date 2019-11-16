@@ -89,7 +89,7 @@ public class TearsOfGuthixPlugin extends Plugin
 		playerLowestSkill = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

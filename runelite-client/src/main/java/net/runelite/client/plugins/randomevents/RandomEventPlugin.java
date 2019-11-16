@@ -127,7 +127,7 @@ public class RandomEventPlugin extends Plugin
 		currentRandomEvent = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		Actor source = event.getSource();

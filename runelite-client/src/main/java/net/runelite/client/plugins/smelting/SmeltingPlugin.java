@@ -91,7 +91,7 @@ public class SmeltingPlugin extends Plugin
 		session = null;
 	}
 
-@Subscribe
+	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();

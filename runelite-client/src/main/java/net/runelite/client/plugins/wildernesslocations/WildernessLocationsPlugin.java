@@ -133,7 +133,7 @@ public class WildernessLocationsPlugin extends Plugin
 		this.worldMapOverlay = this.worldMapNames || this.outlineLocations;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wildernesslocations"))

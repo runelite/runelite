@@ -281,7 +281,7 @@ public class PvpToolsPlugin extends Plugin
 		loaded = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!"pvptools".equals(configChanged.getGroup()))

@@ -360,7 +360,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())

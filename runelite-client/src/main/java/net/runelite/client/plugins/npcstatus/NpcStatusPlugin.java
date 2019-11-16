@@ -113,7 +113,7 @@ public class NpcStatusPlugin extends Plugin
 		memorizedNPCs.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		final NPC npc = npcSpawned.getNpc();

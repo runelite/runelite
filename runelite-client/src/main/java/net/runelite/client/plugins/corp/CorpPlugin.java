@@ -131,7 +131,7 @@ public class CorpPlugin extends Plugin
 		players.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)

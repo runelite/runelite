@@ -116,7 +116,7 @@ public class TickTimersPlugin extends Plugin
 		validRegion = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)

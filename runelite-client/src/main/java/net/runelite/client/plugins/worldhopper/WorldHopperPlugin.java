@@ -264,7 +264,7 @@ public class WorldHopperPlugin extends Plugin
 		hopperExecutorService = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (event.getGroup().equals(WorldHopperConfig.GROUP))

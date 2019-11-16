@@ -104,7 +104,7 @@ public class RemindersPlugin extends Plugin
 		loginTime = null;
 	}
 
-@Subscribe
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		final GameState state = event.getGameState();

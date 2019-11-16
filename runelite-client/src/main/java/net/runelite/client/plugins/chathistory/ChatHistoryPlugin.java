@@ -114,7 +114,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onChatMessage(ChatMessage chatMessage)
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source

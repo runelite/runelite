@@ -179,7 +179,7 @@ public class WorldMapPlugin extends Plugin
 		woodcuttingLevel = 0;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_KEY))

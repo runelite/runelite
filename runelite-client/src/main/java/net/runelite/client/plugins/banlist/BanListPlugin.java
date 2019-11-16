@@ -125,7 +125,7 @@ public class BanListPlugin extends Plugin
 		manualBans.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("banlist") && event.getKey().equals("bannedPlayers"))

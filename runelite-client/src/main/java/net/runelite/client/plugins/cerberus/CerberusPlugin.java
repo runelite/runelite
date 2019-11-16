@@ -72,7 +72,7 @@ public class CerberusPlugin extends Plugin
 		ghosts.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();

@@ -143,7 +143,7 @@ public class EquipmentInspectorPlugin extends Plugin
 		pluginToolbar.removeNavigation(navButton);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(INSPECT_EQUIPMENT))

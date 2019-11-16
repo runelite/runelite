@@ -85,7 +85,7 @@ public class PrivateServerPlugin extends Plugin
 		client.setModulus(null);
 		}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("privateserver"))

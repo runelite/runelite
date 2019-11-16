@@ -200,7 +200,7 @@ public class TimersPlugin extends Plugin
 		imbuedHeartClicked = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);

@@ -132,7 +132,7 @@ public class XpDropPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onXpDropEvent(XpDropEvent event)
 	{
 		previousExpGained = event.getExp();

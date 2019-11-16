@@ -507,7 +507,7 @@ public class GroundItemsPlugin extends Plugin
 		collectedGroundItems.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		for (GroundItem item : collectedGroundItems.values())

@@ -154,7 +154,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		resultCache.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (!this.highlightCallerTargets || event.getSource() == null || callers.isEmpty() || !isCaller(event.getSource()))

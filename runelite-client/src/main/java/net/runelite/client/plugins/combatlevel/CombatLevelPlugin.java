@@ -126,7 +126,7 @@ public class CombatLevelPlugin extends Plugin
 		shutDownAttackLevelRange();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)

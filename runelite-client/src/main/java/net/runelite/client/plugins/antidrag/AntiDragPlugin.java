@@ -110,7 +110,7 @@ public class AntiDragPlugin extends Plugin
 		clientUI.resetCursor();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("antiDrag"))

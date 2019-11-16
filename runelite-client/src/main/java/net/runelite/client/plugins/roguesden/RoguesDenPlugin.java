@@ -101,7 +101,7 @@ public class RoguesDenPlugin extends Plugin
 		hasGem = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))

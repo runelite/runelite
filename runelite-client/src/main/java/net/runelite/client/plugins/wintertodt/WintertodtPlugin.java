@@ -136,7 +136,7 @@ public class WintertodtPlugin extends Plugin
 		reset();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wintertodt"))

@@ -136,7 +136,7 @@ public class WikiPlugin extends Plugin
 		});
 	}
 
-@Subscribe
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
 		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)

@@ -164,7 +164,7 @@ public class ClanChatPlugin extends Plugin
 		resetClanChats();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("clanchat"))
@@ -538,7 +538,6 @@ public class ClanChatPlugin extends Plugin
 		return clanMembers.size();
 	}
 
-	@Subscribe
 	private void insertClanRankIcon(final ChatMessage message)
 	{
 		final ClanMemberRank rank = clanManager.getRank(message.getName());

@@ -121,7 +121,7 @@ public class RaidsThievingPlugin extends Plugin
 
 		}
 
-@Subscribe
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject obj = event.getGameObject();

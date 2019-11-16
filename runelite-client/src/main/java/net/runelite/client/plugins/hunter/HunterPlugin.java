@@ -118,7 +118,7 @@ public class HunterPlugin extends Plugin
 		traps.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();

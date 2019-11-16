@@ -78,7 +78,7 @@ public class EmojiPlugin extends Plugin
 	{
 		}
 
-@Subscribe
+	@Subscribe
 	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)

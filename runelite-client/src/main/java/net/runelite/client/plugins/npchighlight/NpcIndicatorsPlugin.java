@@ -242,7 +242,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||

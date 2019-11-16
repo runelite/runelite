@@ -135,7 +135,7 @@ public class PrayerPlugin extends Plugin
 		removeIndicators();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("prayer"))

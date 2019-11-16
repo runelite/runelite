@@ -118,7 +118,7 @@ public class ThievingPlugin extends Plugin
 		session = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

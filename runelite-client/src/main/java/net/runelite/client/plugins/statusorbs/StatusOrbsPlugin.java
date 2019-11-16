@@ -171,7 +171,7 @@ public class StatusOrbsPlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("statusorbs"))

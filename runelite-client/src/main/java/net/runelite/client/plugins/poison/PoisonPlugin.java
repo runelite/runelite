@@ -181,7 +181,7 @@ public class PoisonPlugin extends Plugin
 		clientThread.invoke(this::resetHealthIcon);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		final int poisonValue = client.getVar(VarPlayer.POISON);

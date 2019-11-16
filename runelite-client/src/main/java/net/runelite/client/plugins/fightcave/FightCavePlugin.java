@@ -187,7 +187,7 @@ public class FightCavePlugin extends Plugin
 		currentWave = -1;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("fightcave"))

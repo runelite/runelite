@@ -127,7 +127,7 @@ public class ConfigPlugin extends Plugin
 		});
 	}
 
-@Subscribe
+	@Subscribe
 	private void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(configPanel::refreshPluginList);

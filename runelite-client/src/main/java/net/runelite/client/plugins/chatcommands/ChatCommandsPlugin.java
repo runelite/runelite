@@ -436,7 +436,6 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	@Subscribe
 	private void killCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.killcount())
@@ -524,7 +523,6 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	@Subscribe
 	private void duelArenaLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.duels())
@@ -582,7 +580,6 @@ public class ChatCommandsPlugin extends Plugin
 		client.refreshChat();
 	}
 
-	@Subscribe
 	private void questPointsLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.qp())
@@ -651,7 +648,6 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	@Subscribe
 	private void gambleCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.gc())
@@ -723,7 +719,6 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 
-	@Subscribe
 	private void personalBestLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.pb())
@@ -820,7 +815,6 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param chatMessage The chat message containing the command.
 	 * @param message     The chat message
 	 */
-	@Subscribe
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.price())
@@ -892,7 +886,6 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param chatMessage The chat message containing the command.
 	 * @param message     The chat message
 	 */
-	@Subscribe
 	private void playerSkillLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
@@ -967,7 +960,6 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void combatLevelLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
@@ -1053,7 +1045,6 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
 	private void clueLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.clue())

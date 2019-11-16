@@ -211,7 +211,7 @@ public class ClueScrollPlugin extends Plugin
 		resetClue(true);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)

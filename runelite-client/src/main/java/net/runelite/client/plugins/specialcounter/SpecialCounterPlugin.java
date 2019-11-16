@@ -106,7 +106,7 @@ public class SpecialCounterPlugin extends Plugin
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

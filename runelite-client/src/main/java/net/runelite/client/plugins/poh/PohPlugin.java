@@ -157,7 +157,7 @@ public class PohPlugin extends Plugin
 		incenseBurners.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("poh"))

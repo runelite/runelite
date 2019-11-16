@@ -47,7 +47,7 @@ public class LootAssistPlugin extends Plugin
 		overlayManager.remove(lootAssistOverlay);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		lootPiles.clear();

@@ -110,7 +110,7 @@ public class KingdomPlugin extends Plugin
 		removeKingdomInfobox();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		updateKingdomVarbits();

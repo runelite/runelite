@@ -257,7 +257,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeClient = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();

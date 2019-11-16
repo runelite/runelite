@@ -112,7 +112,7 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGING_IN)

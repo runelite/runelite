@@ -101,7 +101,7 @@ public class LizardmenShamanPlugin extends Plugin
 		spawns.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (this.notifyOnSpawn && /* event.getType() == ChatMessageType.GAMEMESSAGE && */event.getMessage().contains(MESSAGE))

@@ -96,7 +96,7 @@ public class MusicIndicatorPlugin extends Plugin
 		musicTrackVarpValues.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

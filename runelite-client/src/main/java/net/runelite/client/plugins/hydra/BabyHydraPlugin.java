@@ -119,7 +119,7 @@ public class BabyHydraPlugin extends Plugin
 		hydraattacks.clear();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("hydra"))

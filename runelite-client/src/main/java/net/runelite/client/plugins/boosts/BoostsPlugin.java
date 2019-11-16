@@ -166,7 +166,7 @@ public class BoostsPlugin extends Plugin
 		isChangedDown = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

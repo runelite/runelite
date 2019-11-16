@@ -352,7 +352,7 @@ public class SlayerPlugin extends Plugin
 		cachedXp = -1;
 	}
 
-@Provides
+	@Provides
 	SlayerConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(SlayerConfig.class);
@@ -1130,7 +1130,6 @@ public class SlayerPlugin extends Plugin
 		counter = null;
 	}
 
-	@Subscribe
 	void taskLookup(ChatMessage chatMessage, String message)
 	{
 		if (!this.taskCommand)
@@ -1206,7 +1205,6 @@ public class SlayerPlugin extends Plugin
 		client.refreshChat();
 	}
 
-	@Subscribe
 	private void pointsLookup(ChatMessage chatMessage, String message)
 	{
 		if (!this.pointsCommand)

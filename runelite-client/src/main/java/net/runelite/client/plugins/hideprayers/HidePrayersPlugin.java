@@ -179,7 +179,7 @@ public class HidePrayersPlugin extends Plugin
 		restorePrayers();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

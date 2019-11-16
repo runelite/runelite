@@ -74,7 +74,7 @@ public class EntityHiderPlugin extends Plugin
 		Text.fromCSV(config.hideNPCsOnDeath()).forEach(client::addHiddenNpcDeath);
 	}
 
-@Subscribe
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("entityhider"))

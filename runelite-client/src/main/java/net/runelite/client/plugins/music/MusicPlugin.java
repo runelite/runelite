@@ -128,7 +128,7 @@ public class MusicPlugin extends Plugin
 		return configManager.getConfig(MusicConfig.class);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)

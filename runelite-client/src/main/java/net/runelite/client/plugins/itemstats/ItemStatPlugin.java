@@ -150,7 +150,7 @@ public class ItemStatPlugin extends Plugin
 		clientThread.invokeLater(this::resetGEInventory);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getKey().equals("geStats"))

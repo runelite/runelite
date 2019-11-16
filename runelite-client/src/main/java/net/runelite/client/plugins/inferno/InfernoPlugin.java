@@ -273,7 +273,7 @@ public class InfernoPlugin extends Plugin
 		showNpcDeaths();
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"inferno".equals(event.getGroup()))

@@ -216,7 +216,7 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();

@@ -113,7 +113,7 @@ public class CookingPlugin extends Plugin
 		session = null;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();

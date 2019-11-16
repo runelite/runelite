@@ -165,7 +165,7 @@ public class DiscordPlugin extends Plugin
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

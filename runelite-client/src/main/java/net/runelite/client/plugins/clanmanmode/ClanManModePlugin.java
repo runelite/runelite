@@ -120,7 +120,7 @@ public class ClanManModePlugin extends Plugin
 		inwildy = 0;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"clanmanmode".equals(event.getGroup()))

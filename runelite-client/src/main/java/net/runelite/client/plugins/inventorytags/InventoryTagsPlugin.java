@@ -162,7 +162,7 @@ public class InventoryTagsPlugin extends Plugin
 		editorMode = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onWidgetMenuOptionClicked(final WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB

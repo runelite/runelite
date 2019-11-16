@@ -492,7 +492,7 @@ public class LootTrackerPlugin extends Plugin
 		chestLooted = false;
 	}
 
-@Subscribe
+	@Subscribe
 	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (client.getLocalPlayer() == null)
