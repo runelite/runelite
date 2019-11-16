@@ -301,10 +301,7 @@ public class InventorySetupPlugin extends Plugin
 		{
 			// TODO add last resort?, serialize exception just make empty map
 			final Gson gson = new Gson();
-			Type type = new TypeToken<HashMap<String, InventorySetup>>()
-			{
-
-			}.getType();
+			Type type = new TypeToken<HashMap<String, InventorySetup>>() {}.getType();
 			inventorySetups.clear();
 			inventorySetups.putAll(gson.fromJson(json, type));
 		}
@@ -371,7 +368,7 @@ public class InventorySetupPlugin extends Plugin
 		{
 			return;
 		}
-		
+
 		final String setupName = panel.getSelectedInventorySetup();
 		if (!setupName.isEmpty())
 		{

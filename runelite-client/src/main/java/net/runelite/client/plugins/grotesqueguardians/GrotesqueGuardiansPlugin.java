@@ -24,20 +24,19 @@
  */
 package net.runelite.client.plugins.grotesqueguardians;
 
+import java.util.ArrayList;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import static net.runelite.api.NpcID.DUSK_7888;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import java.util.ArrayList;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.NPC;
-import javax.annotation.Nullable;
-import net.runelite.api.Client;
-
-import static net.runelite.api.NpcID.DUSK_7888;
 
 
 @PluginDescriptor(

@@ -32,7 +32,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

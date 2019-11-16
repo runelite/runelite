@@ -25,7 +25,6 @@
 package net.runelite.deob.deobfuscators.packethandler;
 
 import java.util.Objects;
-
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.InstructionContext;

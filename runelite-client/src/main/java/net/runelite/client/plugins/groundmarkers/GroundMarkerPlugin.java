@@ -140,9 +140,7 @@ public class GroundMarkerPlugin extends Plugin
 		return GSON.fromJson(json, new GroundMarkerListTypeToken().getType());
 	}
 
-	private static class GroundMarkerListTypeToken extends TypeToken<List<GroundMarkerPoint>>
-	{
-	}
+	private static class GroundMarkerListTypeToken extends TypeToken<List<GroundMarkerPoint>> {}
 
 	private GroundMarkerConfig.amount amount;
 	@Getter(AccessLevel.PACKAGE)

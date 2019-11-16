@@ -26,14 +26,13 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableList;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import net.runelite.api.NPC;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 
 
 @Data

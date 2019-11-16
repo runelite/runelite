@@ -70,9 +70,7 @@ public class HookImporter
 		Assert.assertNotNull(is);
 
 		Gson gson = new Gson();
-		java.lang.reflect.Type type = new TypeToken<Map<String, ClassHook>>()
-		{
-		}.getType();
+		java.lang.reflect.Type type = new TypeToken<Map<String, ClassHook>>() {}.getType();
 		hooks = gson.fromJson(new InputStreamReader(is), type);
 
 		group = JarUtil.loadJar(IN);

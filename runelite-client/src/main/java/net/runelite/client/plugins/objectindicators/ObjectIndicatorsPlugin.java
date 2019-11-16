@@ -503,9 +503,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return null;
 		}
 
-		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
-		{
-		}.getType());
+		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>() {}.getType());
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks
 		// in most cases due to the specific object being identified being ambiguous, so remove
 		// them

@@ -25,10 +25,9 @@
 
 package net.runelite.asm.execution;
 
-import net.runelite.asm.Type;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.Type;
 
 public class VariableContext
 {
@@ -46,13 +45,13 @@ public class VariableContext
 		type = ctx.getType();
 		value = ctx.getValue();
 	}
-	
+
 	public VariableContext(Type type) // for entrypoints
 	{
 		this.type = type;
 		value = Value.UNKNOWN;
 	}
-	
+
 	public VariableContext(InstructionContext i, VariableContext other)
 	{
 		ic = i;
@@ -60,24 +59,24 @@ public class VariableContext
 		type = other.type;
 		value = other.value;
 	}
-	
+
 	public VariableContext(InstructionContext i, Type type, Value value)
 	{
 		ic = i;
 		this.type = type;
 		this.value = value;
 	}
-	
+
 	public StackContext getStackContext()
 	{
 		return ctx;
 	}
-	
+
 	public InstructionContext getInstructionWhichStored()
 	{
 		return ic;
 	}
-	
+
 	public Type getType()
 	{
 		return type;
@@ -87,7 +86,7 @@ public class VariableContext
 	{
 		return value;
 	}
-	
+
 	public void addRead(InstructionContext ctx)
 	{
 		if (!read.contains(ctx))
@@ -103,7 +102,7 @@ public class VariableContext
 	{
 		return isParameter;
 	}
-	
+
 	public VariableContext markParameter()
 	{
 		isParameter = true;
