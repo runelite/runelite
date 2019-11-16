@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -53,9 +53,6 @@ public class ItemPricesPlugin extends Plugin
 
 	@Inject
 	private ItemPricesConfig config;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showGEPrice;
@@ -80,18 +77,16 @@ public class ItemPricesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("itemprices"))

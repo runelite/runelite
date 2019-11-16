@@ -30,17 +30,16 @@ import com.google.common.collect.Table;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -51,7 +50,8 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
@@ -90,9 +90,6 @@ public class AttackStylesPlugin extends Plugin
 	@Inject
 	private AttackStylesOverlay overlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -114,7 +111,6 @@ public class AttackStylesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 
@@ -142,24 +138,13 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-	}
-
-	@Nullable
+@Nullable
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
@@ -170,6 +155,7 @@ public class AttackStylesPlugin extends Plugin
 		return warnedSkillSelected;
 	}
 
+	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
@@ -180,6 +166,7 @@ public class AttackStylesPlugin extends Plugin
 		processWidgets();
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() != COMBAT_GROUP_ID)
@@ -207,6 +194,7 @@ public class AttackStylesPlugin extends Plugin
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), this.hideAutoRetaliate);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -215,6 +203,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onVarbitChanged(VarbitChanged event)
 	{
 		int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
@@ -240,6 +229,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("attackIndicator"))

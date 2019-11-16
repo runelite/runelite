@@ -51,7 +51,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -98,9 +98,6 @@ public class StatusOrbsPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter
 	private double hitpointsPercentage;
@@ -153,7 +150,6 @@ public class StatusOrbsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		if (this.dynamicHpHeart && client.getGameState().equals(GameState.LOGGED_IN))
@@ -165,8 +161,6 @@ public class StatusOrbsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
@@ -177,14 +171,7 @@ public class StatusOrbsPlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("statusorbs"))
@@ -212,6 +199,7 @@ public class StatusOrbsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged e)
 	{
 		if (this.dynamicHpHeart)
@@ -227,6 +215,7 @@ public class StatusOrbsPlugin extends Plugin
 		wasRapidHeal = isRapidHeal;
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged ev)
 	{
 		if (ev.getGameState() == GameState.HOPPING || ev.getGameState() == GameState.LOGIN_SCREEN)
@@ -237,6 +226,7 @@ public class StatusOrbsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)

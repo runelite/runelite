@@ -31,7 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -74,9 +74,6 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private FpsConfig fpsConfig;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private FpsLimitMode limitMode;
 
@@ -89,6 +86,7 @@ public class FpsPlugin extends Plugin
 		return configManager.getConfig(FpsConfig.class);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
@@ -100,6 +98,7 @@ public class FpsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		drawListener.onFocusChanged(event);
@@ -109,7 +108,6 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 
 		limitMode = fpsConfig.limitMode();
 		drawFps = fpsConfig.drawFps();
@@ -121,15 +119,8 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-	}
 }

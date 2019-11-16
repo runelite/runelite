@@ -51,6 +51,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -122,9 +123,6 @@ public class HydraPlugin extends Plugin
 	{
 		initConfig();
 
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-
 		inHydraInstance = checkArea();
 		lastAttackTick = -1;
 		poisonProjectiles.clear();
@@ -133,7 +131,6 @@ public class HydraPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		eventBus.unregister("fight");
 		eventBus.unregister("npcSpawned");
 
@@ -165,6 +162,7 @@ public class HydraPlugin extends Plugin
 		eventBus.subscribe(ChatMessage.class, "fight", this::onChatMessage);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("betterHydra"))
@@ -207,6 +205,7 @@ public class HydraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged state)
 	{
 		if (state.getGameState() != GameState.LOGGED_IN)

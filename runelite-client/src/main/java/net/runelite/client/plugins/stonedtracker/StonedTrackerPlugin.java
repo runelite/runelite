@@ -48,6 +48,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -123,6 +124,7 @@ public class StonedTrackerPlugin extends Plugin
 		SwingUtilities.invokeLater(() -> panel.showSelectionView());
 	}
 
+	@Subscribe
 	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (event.getGroup().equals("stonedtracker"))
@@ -134,7 +136,6 @@ public class StonedTrackerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		panel = new LootTrackerPanel(itemManager, this);
 
@@ -172,7 +173,6 @@ public class StonedTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -180,11 +180,11 @@ public class StonedTrackerPlugin extends Plugin
 	{
 		this.eventBus.subscribe(LTRecordStored.class, this, this::onLTRecordStored);
 		this.eventBus.subscribe(LTNameChange.class, this, this::onLTNameChange);
-		this.eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		this.eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
 		this.eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() != WidgetID.DIALOG_SPRITE_GROUP_ID)
@@ -199,6 +199,7 @@ public class StonedTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick t)
 	{
 		if (unsiredReclaiming)

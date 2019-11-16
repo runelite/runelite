@@ -39,6 +39,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.AbstractComparableEntry;
@@ -175,8 +176,6 @@ public class ShiftWalkerPlugin extends Plugin
 	{
 		this.shiftWalk = config.shiftWalk();
 		this.shiftLoot = config.shiftLoot();
-
-		addSubscriptions();
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			keyManager.registerKeyListener(shift);
@@ -186,17 +185,10 @@ public class ShiftWalkerPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
 		keyManager.unregisterKeyListener(shift);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
@@ -207,6 +199,7 @@ public class ShiftWalkerPlugin extends Plugin
 		keyManager.registerKeyListener(shift);
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
@@ -215,6 +208,7 @@ public class ShiftWalkerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("shiftwalkhere"))

@@ -30,6 +30,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -67,6 +68,7 @@ public class LowMemoryPlugin extends Plugin
 		clientThread.invoke(() -> client.changeMemoryMode(false));
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		// When the client starts it initializes the texture size based on the memory mode setting.

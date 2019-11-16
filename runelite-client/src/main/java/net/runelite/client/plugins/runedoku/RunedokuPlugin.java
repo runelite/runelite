@@ -32,7 +32,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,9 +59,6 @@ public class RunedokuPlugin extends Plugin
 
 	@Inject
 	private RunedokuConfig config;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Color mindRuneColor;
@@ -95,19 +92,16 @@ public class RunedokuPlugin extends Plugin
 	{
 		updateConfig();
 
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		overlayManager.add(runedokuOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(runedokuOverlay);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("runedoku"))

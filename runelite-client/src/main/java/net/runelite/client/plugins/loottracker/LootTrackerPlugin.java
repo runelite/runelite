@@ -79,7 +79,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.LocalPlayerDeath;
@@ -103,7 +102,8 @@ import static net.runelite.client.database.data.Tables.LOOTTRACKEREVENTS;
 import static net.runelite.client.database.data.Tables.LOOTTRACKERLINK;
 import static net.runelite.client.database.data.Tables.LOOTTRACKERLOOT;
 import static net.runelite.client.database.data.Tables.USER;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.SessionClose;
@@ -224,8 +224,6 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 	@Inject
-	private EventBus eventBus;
-	@Inject
 	private LootRecordWriter writer;
 	@Inject
 	private DatabaseManager databaseManager;
@@ -299,6 +297,7 @@ public class LootTrackerPlugin extends Plugin
 		return configManager.getConfig(LootTrackerConfig.class);
 	}
 
+	@Subscribe
 	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
@@ -312,12 +311,14 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onSessionClose(SessionClose sessionClose)
 	{
 		submitLoot();
 		lootTrackerClient = null;
 	}
 
+	@Subscribe
 	private void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType()))
@@ -327,6 +328,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("loottracker"))
@@ -355,7 +357,6 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredNPCs = Text.fromCSV(config.getIgnoredNPCs());
@@ -483,7 +484,6 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		submitLoot();
 
 		clientToolbar.removeNavigation(navButton);
@@ -492,22 +492,7 @@ public class LootTrackerPlugin extends Plugin
 		chestLooted = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
-		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
-		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
-		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-	}
-
+@Subscribe
 	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (client.getLocalPlayer() == null)
@@ -552,6 +537,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
 		if (client.getLocalPlayer() == null)
@@ -620,6 +606,7 @@ public class LootTrackerPlugin extends Plugin
 		writer.addLootTrackerRecord(record);
 	}
 
+	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (event.getPlayer().equals(client.getLocalPlayer()))
@@ -628,6 +615,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (client.getLocalPlayer() == null)
@@ -680,6 +668,7 @@ public class LootTrackerPlugin extends Plugin
 		writer.addLootTrackerRecord(record);
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (client.getLocalPlayer() == null)
@@ -804,6 +793,7 @@ public class LootTrackerPlugin extends Plugin
 		writer.addLootTrackerRecord(record);
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (client.getLocalPlayer() == null)
@@ -950,6 +940,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@SuppressWarnings("unchecked")
+	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (client.getLocalPlayer() == null)
@@ -1022,6 +1013,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getParam1() != WidgetInfo.INVENTORY.getId())
@@ -1451,7 +1443,9 @@ public class LootTrackerPlugin extends Plugin
 		try
 		{
 			Collection<LootRecord> lootRecords = new ArrayList<>(RuneLiteAPI.GSON.fromJson(new FileReader(LOOT_RECORDS_FILE),
-				new TypeToken<ArrayList<LootRecord>>() {}.getType()));
+				new TypeToken<ArrayList<LootRecord>>()
+				{
+				}.getType()));
 
 			DSLContext dslContext = databaseManager.getDsl();
 

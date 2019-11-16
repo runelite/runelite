@@ -98,13 +98,14 @@ public enum InventoryID
 
 	public static InventoryID getValue(int value)
 	{
-		for (InventoryID e: InventoryID.values())
+		for (InventoryID e : InventoryID.values())
 		{
 			if (e.id == value)
 			{
 				return e;
 			}
 		}
-		return null;
+
+		throw new IllegalArgumentException("No InventoryID with id " + value + " exists");
 	}
 }

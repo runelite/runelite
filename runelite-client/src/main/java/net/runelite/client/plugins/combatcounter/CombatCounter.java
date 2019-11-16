@@ -56,6 +56,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -63,15 +64,15 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Tick Counter",
-		description = "Count the amount of perfect combat ticks performed by each player.",
-		tags = {"combat", "counter", "tick"},
-		type = PluginType.UTILITY,
-		enabledByDefault = false
+	name = "Tick Counter",
+	description = "Count the amount of perfect combat ticks performed by each player.",
+	tags = {"combat", "counter", "tick"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 @Singleton
 @Slf4j
-public class CombatCounter extends Plugin 
+public class CombatCounter extends Plugin
 {
 
 	@Inject
@@ -266,7 +267,6 @@ public class CombatCounter extends Plugin
 
 	private void addSubscriptions()
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
@@ -422,7 +422,7 @@ public class CombatCounter extends Plugin
 		{
 			boolean prevInstance = instanced;
 			instanced = client.isInInstancedRegion();
-			if (!prevInstance && instanced) 
+			if (!prevInstance && instanced)
 			{
 				this.counter.clear();
 				this.blowpipe.clear();
@@ -654,6 +654,7 @@ public class CombatCounter extends Plugin
 		return 2 + (int) Math.floor((3d + distance) / 6d);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("combatcounter"))

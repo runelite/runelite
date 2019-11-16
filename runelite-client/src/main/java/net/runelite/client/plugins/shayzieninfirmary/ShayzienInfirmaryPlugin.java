@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -61,15 +61,11 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ShayzienInfirmaryOverlay overlay;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 
 		loadPlugin();
 	}
@@ -77,8 +73,6 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		unloadPlugin();
 	}
 
@@ -92,6 +86,7 @@ public class ShayzienInfirmaryPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (isNotAtInfirmary())

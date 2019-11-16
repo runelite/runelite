@@ -24,17 +24,15 @@
  */
 package net.runelite.client.plugins.account;
 
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientToolbar;
 
 @PluginDescriptor(
 	name = "Account",
@@ -49,33 +47,7 @@ public class AccountPlugin extends Plugin
 	@Inject
 	private SessionManager sessionManager;
 
-	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
-	private EventBus eventBus;
-
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		addSubscriptions();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
-	}
-
+	@Subscribe
 	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession session = sessionManager.getAccountSession();

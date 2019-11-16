@@ -35,13 +35,13 @@ import net.runelite.api.GameState;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -125,9 +125,6 @@ public class WorldMapPlugin extends Plugin
 	private WorldMapPointManager worldMapPointManager;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ScheduledExecutorService executor;
 
 	private int agilityLevel = 0;
@@ -161,7 +158,6 @@ public class WorldMapPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
@@ -171,8 +167,6 @@ public class WorldMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
@@ -185,13 +179,7 @@ public class WorldMapPlugin extends Plugin
 		woodcuttingLevel = 0;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-	}
-
+@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_KEY))
@@ -203,6 +191,7 @@ public class WorldMapPlugin extends Plugin
 		updateShownIcons();
 	}
 
+	@Subscribe
 	private void onStatChanged(StatChanged statChanged)
 	{
 		switch (statChanged.getSkill())
@@ -230,6 +219,7 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.WORLD_MAP_GROUP_ID)
@@ -341,7 +331,7 @@ public class WorldMapPlugin extends Plugin
 					}
 				}).map(TeleportPoint::new)
 				.forEach(worldMapPointManager::add)
-			);
+		);
 	}
 
 	private void updateQuestStartPointIcons()
