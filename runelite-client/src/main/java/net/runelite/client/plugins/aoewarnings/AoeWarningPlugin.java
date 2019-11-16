@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
-
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;

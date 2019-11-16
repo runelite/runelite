@@ -24,6 +24,7 @@
  */
 package net.runelite.deob;
 
+import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
@@ -32,8 +33,6 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Signature;
-
-import java.util.List;
 
 public class DeobAnnotations
 {

@@ -28,7 +28,6 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
-
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;

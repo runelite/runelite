@@ -24,34 +24,13 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import static net.runelite.api.ItemID.AIR_RUNE;
-import static net.runelite.api.ItemID.ASTRAL_RUNE;
-import static net.runelite.api.ItemID.BLOOD_RUNE;
-import static net.runelite.api.ItemID.BODY_RUNE;
-import static net.runelite.api.ItemID.CHAOS_RUNE;
-import static net.runelite.api.ItemID.COSMIC_RUNE;
-import static net.runelite.api.ItemID.DEATH_RUNE;
-import static net.runelite.api.ItemID.DUST_RUNE;
-import static net.runelite.api.ItemID.EARTH_RUNE;
-import static net.runelite.api.ItemID.FIRE_RUNE;
-import static net.runelite.api.ItemID.LAVA_RUNE;
-import static net.runelite.api.ItemID.LAW_RUNE;
-import static net.runelite.api.ItemID.MIND_RUNE;
-import static net.runelite.api.ItemID.MIST_RUNE;
-import static net.runelite.api.ItemID.MUD_RUNE;
-import static net.runelite.api.ItemID.NATURE_RUNE;
-import static net.runelite.api.ItemID.SMOKE_RUNE;
-import static net.runelite.api.ItemID.SOUL_RUNE;
-import static net.runelite.api.ItemID.STEAM_RUNE;
-import static net.runelite.api.ItemID.WATER_RUNE;
-import static net.runelite.api.ItemID.WRATH_RUNE;
+import static net.runelite.api.ItemID.*;
 
 public enum Runes
 {

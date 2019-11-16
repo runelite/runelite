@@ -11,7 +11,6 @@
 
 package net.runelite.client.plugins.loottracker;
 
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.time.Duration;

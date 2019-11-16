@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.bosstimetracker;
 
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-
-import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 public class BossTimeTracker extends InfoBox
 {

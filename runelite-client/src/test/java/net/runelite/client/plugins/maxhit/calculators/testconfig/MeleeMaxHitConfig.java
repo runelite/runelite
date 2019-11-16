@@ -36,7 +36,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.attackstyles.WeaponType;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

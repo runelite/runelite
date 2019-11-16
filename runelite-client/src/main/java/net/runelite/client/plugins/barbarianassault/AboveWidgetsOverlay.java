@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Point;

@@ -24,13 +24,12 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 class Timer
 {
