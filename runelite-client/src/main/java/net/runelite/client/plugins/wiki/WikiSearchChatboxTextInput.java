@@ -136,9 +136,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 						try
 						{
 							JsonArray jar = new JsonParser().parse(body).getAsJsonArray();
-							List<String> apredictions = gson.fromJson(jar.get(1), new TypeToken<List<String>>()
-							{
-							}.getType());
+							List<String> apredictions = gson.fromJson(jar.get(1), new TypeToken<List<String>>() {}.getType());
 
 							if (apredictions.size() > MAX_NUM_PREDICTIONS)
 							{

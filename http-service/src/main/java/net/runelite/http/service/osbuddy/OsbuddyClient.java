@@ -58,9 +58,7 @@ public class OsbuddyClient
 				throw new IOException("Error retrieving summary from OSBuddy: " + responseOk.message());
 			}
 
-			Type type = new TypeToken<Map<Integer, OsbuddySummaryItem>>()
-			{
-			}.getType();
+			Type type = new TypeToken<Map<Integer, OsbuddySummaryItem>>() {}.getType();
 
 			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), type);
 		}

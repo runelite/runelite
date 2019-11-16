@@ -27,6 +27,4 @@ package net.runelite.http.api.ws.messages.party;
 import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.WebsocketMessage;
 
-public class Part extends WebsocketMessage implements Event
-{
-}
+public class Part extends WebsocketMessage implements Event {}

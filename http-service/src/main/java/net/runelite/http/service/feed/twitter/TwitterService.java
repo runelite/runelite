@@ -110,9 +110,7 @@ public class TwitterService
 			}
 
 			InputStream in = response.body().byteStream();
-			Type listType = new TypeToken<List<TwitterStatusesResponseItem>>()
-			{
-			}.getType();
+			Type listType = new TypeToken<List<TwitterStatusesResponseItem>>() {}.getType();
 			List<TwitterStatusesResponseItem> statusesResponse = RuneLiteAPI.GSON
 				.fromJson(new InputStreamReader(in), listType);
 

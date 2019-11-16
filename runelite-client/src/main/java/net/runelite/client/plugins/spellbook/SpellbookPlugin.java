@@ -486,9 +486,7 @@ public class SpellbookPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		final Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>() 
-		{
-		}
+		final Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>()  {}
 		.getType());
 		// CHECKSTYLE:ON
 

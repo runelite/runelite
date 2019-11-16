@@ -1451,9 +1451,7 @@ public class LootTrackerPlugin extends Plugin
 		try
 		{
 			Collection<LootRecord> lootRecords = new ArrayList<>(RuneLiteAPI.GSON.fromJson(new FileReader(LOOT_RECORDS_FILE),
-				new TypeToken<ArrayList<LootRecord>>()
-				{
-				}.getType()));
+				new TypeToken<ArrayList<LootRecord>>() {}.getType()));
 
 			DSLContext dslContext = databaseManager.getDsl();
 

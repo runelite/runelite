@@ -153,9 +153,7 @@ public class ClockManager
 		if (!Strings.isNullOrEmpty(timersJson))
 		{
 			final Gson gson = new Gson();
-			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>()
-			{
-			}.getType());
+			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>() {}.getType());
 
 			this.timers.clear();
 			this.timers.addAll(timers);
@@ -170,9 +168,7 @@ public class ClockManager
 		if (!Strings.isNullOrEmpty(stopwatchesJson))
 		{
 			final Gson gson = new Gson();
-			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>()
-			{
-			}.getType());
+			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>() {}.getType());
 
 			this.stopwatches.clear();
 			this.stopwatches.addAll(stopwatches);

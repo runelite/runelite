@@ -115,9 +115,7 @@ public class AnimationClient
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<AnimationKey>>()
-			{
-			}.getType());
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<AnimationKey>>() {}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)

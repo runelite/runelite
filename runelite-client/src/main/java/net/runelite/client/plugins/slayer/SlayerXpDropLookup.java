@@ -44,9 +44,7 @@ class SlayerXpDropLookup
 		try (final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json"))
 		{
 			Gson gson = new Gson();
-			xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
-			{
-			}.getType());
+			xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>() {}.getType());
 		}
 	}
 

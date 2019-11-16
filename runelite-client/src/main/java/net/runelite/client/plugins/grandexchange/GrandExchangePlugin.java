@@ -108,9 +108,7 @@ public class GrandExchangePlugin extends Plugin
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
-	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
-	{
-	};
+	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>() {};
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
