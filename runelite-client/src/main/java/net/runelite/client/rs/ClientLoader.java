@@ -387,7 +387,7 @@ public class ClientLoader implements Supplier<Applet>
 
 	private Applet loadClient(URL url) throws ClassNotFoundException, IllegalAccessException, InstantiationException
 	{
-		URLClassLoader rsClassLoader = new URLClassLoader(new URL[]{url});
+		URLClassLoader rsClassLoader = new URLClassLoader(new URL[]{url}, ClientLoader.class.getClassLoader());
 
 		String initialClass = config.getInitialClass();
 		Class<?> clientClass = rsClassLoader.loadClass(initialClass);
