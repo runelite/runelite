@@ -725,7 +725,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE = 727;
 	public static final int EMOTE_SCARED = 728;
 	public static final int EMOTE_SLAP_HEAD = 729;
-	public static final int EMOTE_STOMP = 730;
+	public static final int EMOTE_STAMP = 730;
 	public static final int EMOTE_FLAP = 731;
 	public static final int EMOTE_IDEA = 732;
 	public static final int EMOTE_ZOMBIE_WALK = 733;
@@ -745,7 +745,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE_LOCKED = 747;
 	public static final int EMOTE_SCARED_LOCKED = 748;
 	public static final int EMOTE_SLAP_HEAD_LOCKED = 749;
-	public static final int EMOTE_STOMP_LOCKED = 750;
+	public static final int EMOTE_STAMP_LOCKED = 750;
 	public static final int EMOTE_FLAP_LOCKED = 751;
 	public static final int EMOTE_IDEA_LOCKED = 752;
 	public static final int EMOTE_ZOMBIE_WALK_LOCKED = 753;
@@ -1564,6 +1564,29 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
+	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
+	/* Unmapped: 1627~1701 */
+	public static final int BUTTON_FRIENDS = 1702;
+	public static final int BUTTON_IGNORES = 1703;
+	/* Unmapped: 1704~1707 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
+	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
+	/* Unmapped: 1712~2175 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_30PX = 2176;
+	public static final int HEALTHBAR_DEFAULT_BACK_30PX = 2177;
+	public static final int HEALTHBAR_DEFAULT_FRONT_50PX = 2178;
+	public static final int HEALTHBAR_DEFAULT_BACK_50PX = 2179;
+	public static final int HEALTHBAR_DEFAULT_FRONT_60PX = 2180;
+	public static final int HEALTHBAR_DEFAULT_BACK_60PX = 2181;
+	public static final int HEALTHBAR_DEFAULT_FRONT_80PX = 2182;
+	public static final int HEALTHBAR_DEFAULT_BACK_80PX = 2183;
+	public static final int HEALTHBAR_DEFAULT_FRONT_100PX = 2184;
+	public static final int HEALTHBAR_DEFAULT_BACK_100PX = 2185;
+	public static final int HEALTHBAR_DEFAULT_FRONT_120PX = 2186;
+	public static final int HEALTHBAR_DEFAULT_BACK_120PX = 2187;
+	public static final int HEALTHBAR_DEFAULT_FRONT_140PX = 2188;
+	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
+	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
+	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
 }

@@ -35,6 +35,7 @@ enum FarmingPatchLocation
 		new WorldPoint(3793, 2836, 0),
 		new WorldPoint(1269, 3730, 0)
 	),
+	ALLOTMENT_FLOWER("Allotment/Flower", new WorldPoint(3289, 6100, 0)),
 	ALLOTMENT_HERB_FLOWER("Allotment/Herb/Flower",
 		new WorldPoint(1809, 3490, 0),
 		new WorldPoint(3598, 3524, 0),
@@ -58,6 +59,9 @@ enum FarmingPatchLocation
 	CALQUAT("Calquat", new WorldPoint(2793, 3099, 0)),
 	CELASTRUS_FRUIT_TREE("Celastrus/Fruit Tree",
 		new WorldPoint(1242, 3755, 0)
+	),
+	CRYSTAL_TREE("Crystal Tree",
+		new WorldPoint(3292, 6120, 0)
 	),
 	FRUIT_TREE("Fruit Tree",
 		new WorldPoint(2487, 3181, 0),

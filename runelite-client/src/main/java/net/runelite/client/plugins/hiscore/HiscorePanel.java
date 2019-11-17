@@ -59,7 +59,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -81,6 +81,7 @@ import static net.runelite.http.api.hiscore.HiscoreSkill.HERBLORE;
 import static net.runelite.http.api.hiscore.HiscoreSkill.HITPOINTS;
 import static net.runelite.http.api.hiscore.HiscoreSkill.HUNTER;
 import static net.runelite.http.api.hiscore.HiscoreSkill.LAST_MAN_STANDING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.LEAGUE_POINTS;
 import static net.runelite.http.api.hiscore.HiscoreSkill.MAGIC;
 import static net.runelite.http.api.hiscore.HiscoreSkill.MINING;
 import static net.runelite.http.api.hiscore.HiscoreSkill.OVERALL;
@@ -97,7 +98,7 @@ import net.runelite.http.api.hiscore.Skill;
 @Slf4j
 public class HiscorePanel extends PluginPanel
 {
-	/* The maximum allowed username length in runescape accounts */
+	/* The maximum allowed username length in RuneScape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
 
 	/**
@@ -276,6 +277,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL));
+		minigamePanel.add(makeSkillPanel(LEAGUE_POINTS));
 		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER));
@@ -345,7 +347,7 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		/* Runescape usernames can't be longer than 12 characters long */
+		/* RuneScape usernames can't be longer than 12 characters long */
 		if (lookup.length() > MAX_USERNAME_LENGTH)
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);
@@ -470,15 +472,17 @@ public class HiscorePanel extends PluginPanel
 			case 0:
 				return null;
 			case 1:
-				return HiscoreSkill.OVERALL;
+				return OVERALL;
 			case 2:
-				return HiscoreSkill.CLUE_SCROLL_ALL;
+				return CLUE_SCROLL_ALL;
 			case 3:
-				return HiscoreSkill.LAST_MAN_STANDING;
+				return LEAGUE_POINTS;
 			case 4:
-				return HiscoreSkill.BOUNTY_HUNTER_ROGUE;
+				return LAST_MAN_STANDING;
 			case 5:
-				return HiscoreSkill.BOUNTY_HUNTER_HUNTER;
+				return BOUNTY_HUNTER_ROGUE;
+			case 6:
+				return BOUNTY_HUNTER_HUNTER;
 		}
 
 		return null;
@@ -512,8 +516,8 @@ public class HiscorePanel extends PluginPanel
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
 			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
-			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
-			content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + QuantityFormatter.formatNumber(combatLevel) + "</p>";
+			content += "<p><span style = 'color:white'>Experience:</span> " + QuantityFormatter.formatNumber(combatExperience) + "</p>";
 		}
 		else
 		{
@@ -521,20 +525,20 @@ public class HiscorePanel extends PluginPanel
 			{
 				case CLUE_SCROLL_ALL:
 				{
-					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-					String beginnerRank = (result.getClueScrollBeginner().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollBeginner().getRank());
-					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
-					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
-					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
-					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
-					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
-					String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
-					String beginner = (result.getClueScrollBeginner().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollBeginner().getLevel()));
-					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
-					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
-					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
-					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
-					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollAll().getRank());
+					String beginnerRank = (result.getClueScrollBeginner().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollBeginner().getRank());
+					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollEasy().getRank());
+					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollMedium().getRank());
+					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollHard().getRank());
+					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollElite().getRank());
+					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getRank());
+					String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollAll().getLevel()));
+					String beginner = (result.getClueScrollBeginner().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollBeginner().getLevel()));
+					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
+					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
+					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollHard().getLevel()));
+					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollElite().getLevel()));
+					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
 					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
 					content += "<p><span style = 'color:white'>Beginner:</span> " + beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank + "</p>";
 					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
@@ -546,27 +550,33 @@ public class HiscorePanel extends PluginPanel
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
+					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getBountyHunterRogue().getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
+					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getBountyHunterHunter().getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
+					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case LEAGUE_POINTS:
+				{
+					String rank = (result.getLeaguePoints().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLeaguePoints().getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case OVERALL:
 				{
 					Skill requestedSkill = result.getSkill(skill);
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getExperience());
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
@@ -577,8 +587,8 @@ public class HiscorePanel extends PluginPanel
 					Skill requestedSkill = result.getSkill(skill);
 					final long experience = requestedSkill.getExperience();
 
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (experience == -1L) ? "Unranked" : StackFormatter.formatNumber(experience);
+					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (experience == -1L) ? "Unranked" : QuantityFormatter.formatNumber(experience);
 					String remainingXp;
 					if (experience == -1L)
 					{
@@ -587,7 +597,7 @@ public class HiscorePanel extends PluginPanel
 					else
 					{
 						int currentLevel = Experience.getLevelForXp((int) experience);
-						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - experience) : "0";
+						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? QuantityFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - experience) : "0";
 					}
 
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
@@ -647,17 +657,13 @@ public class HiscorePanel extends PluginPanel
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
-			{
-				return HiscoreEndpoint.DEADMAN_TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.SEASONAL_DEADMAN))
-			{
-				return HiscoreEndpoint.SEASONAL_DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
+			if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
+			}
+			else if (wTypes.contains(WorldType.LEAGUE))
+			{
+				return HiscoreEndpoint.LEAGUE;
 			}
 		}
 		return HiscoreEndpoint.NORMAL;

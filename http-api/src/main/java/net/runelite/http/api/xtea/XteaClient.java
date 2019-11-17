@@ -31,10 +31,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import net.runelite.http.api.RuneLiteAPI;
+import static net.runelite.http.api.RuneLiteAPI.JSON;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -43,8 +43,6 @@ import org.slf4j.LoggerFactory;
 
 public class XteaClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
-
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
 	public void submit(XteaRequest xteaRequest)

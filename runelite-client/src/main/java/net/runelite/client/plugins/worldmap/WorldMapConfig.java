@@ -166,8 +166,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
-		name = "Show quest names",
-		description = "Indicates the names of quests and highlights incomplete ones",
+		name = "Show quest names and status",
+		description = "Indicates the names of quests and shows completion status",
 		position = 13
 	)
 	default boolean questStartTooltips()
@@ -215,6 +215,17 @@ public interface WorldMapConfig extends Config
 		position = 17
 	)
 	default boolean transportationTeleportTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_RUNECRAFTING_ALTAR_ICON,
+		name = "Show runecrafting altar locations",
+		description = "Show the icons of runecrafting altars",
+		position = 18
+	)
+	default boolean runecraftingAltarIcon()
 	{
 		return true;
 	}

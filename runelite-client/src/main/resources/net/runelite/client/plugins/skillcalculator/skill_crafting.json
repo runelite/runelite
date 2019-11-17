@@ -218,6 +218,12 @@
       "xp": 54
     },
     {
+      "level": 26,
+      "icon": 6209,
+      "name": "Drift Net",
+      "xp": 55
+    },
+    {
       "level": 27,
       "icon": 1605,
       "name": "Emerald",
@@ -308,6 +314,12 @@
       "xp": 70
     },
     {
+      "level": 35,
+      "icon": 6235,
+      "name": "Broodoo shield",
+      "xp": 100
+    },
+    {
       "level": 36,
       "icon": 5376,
       "name": "Basket",
@@ -368,10 +380,28 @@
       "xp": 80
     },
     {
+      "level": 45,
+      "icon": 6328,
+      "name": "Snakeskin boots",
+      "xp": 30
+    },
+    {
       "level": 46,
       "icon": 567,
       "name": "Unpowered Orb",
       "xp": 52.5
+    },
+    {
+      "level": 47,
+      "icon": 6330,
+      "name": "Snakeskin vambraces",
+      "xp": 35
+    },
+    {
+      "level": 48,
+      "icon": 6326,
+      "name": "Snakeskin bandana",
+      "xp": 45
     },
     {
       "level": 49,
@@ -384,6 +414,18 @@
       "icon": 1679,
       "name": "Ruby Amulet (U)",
       "xp": 85
+    },
+    {
+      "level": 51,
+      "icon": 6324,
+      "name": "Snakeskin chaps",
+      "xp": 50
+    },
+    {
+      "level": 53,
+      "icon": 6322,
+      "name": "Snakeskin body",
+      "xp": 55
     },
     {
       "level": 54,

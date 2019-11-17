@@ -28,6 +28,9 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -53,20 +56,39 @@ public class ItemController
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 	private static final int MAX_BATCH_LOOKUP = 1024;
 
+	private static class MemoizedPrices
+	{
+		final ItemPrice[] prices;
+		final String hash;
+
+		MemoizedPrices(ItemPrice[] prices)
+		{
+			this.prices = prices;
+
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (ItemPrice itemPrice : prices)
+			{
+				hasher.putInt(itemPrice.getId()).putInt(itemPrice.getPrice());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
+		}
+	}
+
 	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
 		.build();
 
 	private final ItemService itemService;
 
-	private final Supplier<ItemPrice[]> memorizedPrices;
+	private final Supplier<MemoizedPrices> memoizedPrices;
 
 	@Autowired
 	public ItemController(ItemService itemService)
 	{
 		this.itemService = itemService;
 
-		memorizedPrices = Suppliers.memoizeWithExpiration(() -> itemService.fetchPrices().stream()
+		memoizedPrices = Suppliers.memoizeWithExpiration(() -> new MemoizedPrices(itemService.fetchPrices().stream()
 			.map(priceEntry ->
 			{
 				ItemPrice itemPrice = new ItemPrice();
@@ -76,7 +98,7 @@ public class ItemController
 				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;
 			})
-			.toArray(ItemPrice[]::new), 30, TimeUnit.MINUTES);
+			.toArray(ItemPrice[]::new)), 30, TimeUnit.MINUTES);
 	}
 
 	@GetMapping("/{itemId}")
@@ -220,8 +242,10 @@ public class ItemController
 	@GetMapping("/prices")
 	public ResponseEntity<ItemPrice[]> prices()
 	{
+		MemoizedPrices memorizedPrices = this.memoizedPrices.get();
 		return ResponseEntity.ok()
+			.eTag(memorizedPrices.hash)
 			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(memorizedPrices.get());
+			.body(memorizedPrices.prices);
 	}
 }

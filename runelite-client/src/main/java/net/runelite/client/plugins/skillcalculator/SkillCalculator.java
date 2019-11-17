@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
@@ -88,6 +88,7 @@ class SkillCalculator extends JPanel
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.addClearListener(e -> onSearch());
 		searchBar.addKeyListener(e -> onSearch());
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
@@ -128,6 +129,9 @@ class SkillCalculator extends JPanel
 
 		// Clear the search bar
 		searchBar.setText(null);
+
+		// Clear the combined action slots
+		clearCombinedSlots();
 
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();

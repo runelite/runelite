@@ -97,4 +97,21 @@ public class Constants
 	 * All game-play actions operate within multiples of this duration.
 	 */
 	public static final int GAME_TICK_LENGTH = 600;
+
+	/**
+	 * Width of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_WIDTH = 36;
+
+	/**
+	 * Height of a standard item sprite
+	 */
+	public static final int ITEM_SPRITE_HEIGHT = 32;
+
+	/**
+	 * High alchemy = shop price * HIGH_ALCHEMY_MULTIPLIER
+	 *
+	 * @see ItemComposition#getPrice
+	 */
+	public static final float HIGH_ALCHEMY_MULTIPLIER = .6f;
 }

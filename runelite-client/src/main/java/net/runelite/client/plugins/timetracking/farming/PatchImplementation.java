@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -223,7 +224,7 @@ public enum PatchImplementation
 				}
 				if (value >= 63 && value <= 69)
 				{
-					// snape grass seedling,Snape grass plant[Inspect,Guide] 33674,33675,33676,33677,33678,33679,33680
+					// Snape grass seedling,Snape grass plant[Inspect,Guide] 33674,33675,33676,33677,33678,33679,33680
 					return new PatchState(Produce.SNAPE_GRASS, CropState.GROWING, value - 63);
 				}
 				if (value >= 70 && value <= 73)
@@ -2390,7 +2391,7 @@ public enum PatchImplementation
 				}
 				if (value >= 46 && value <= 51)
 				{
-					// Diseased Poato cactus[Cure,Inspect,Guide] 33749,33750,33751,33752,33753,33754
+					// Diseased Potato cactus[Cure,Inspect,Guide] 33749,33750,33751,33752,33753,33754
 					return new PatchState(Produce.POTATO_CACTUS, CropState.DISEASED, value - 45);
 				}
 				if (value >= 52 && value <= 57)
@@ -2574,8 +2575,37 @@ public enum PatchImplementation
 				}
 				return null;
 			}
+		},
+	CRYSTAL_TREE(Tab.FRUIT_TREE, "Crystal Tree")
+		{
+			@Override
+			PatchState forVarbitValue(int value)
+			{
+				if (value >= 0 && value <= 3)
+				{
+					// Crystal tree patch[Rake,Inspect,Guide] 34910,34909,34908,34907
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+				}
+				if (value >= 8 && value <= 13)
+				{
+					// Crystal tree[Inspect,Guide] 34911,34912,34913,34914,34915,34916
+					return new PatchState(Produce.CRYSTAL_TREE, CropState.GROWING, value - 8);
+				}
+				if (value == 14)
+				{
+					// Crystal tree[Check-health,Inspect,Guide] 34917
+					return new PatchState(Produce.CRYSTAL_TREE, CropState.GROWING, Produce.CRYSTAL_TREE.getStages() - 1);
+				}
+				if (value == 15)
+				{
+					// Crystal tree[Chop-down,Inspect,Guide] 34918
+					return new PatchState(Produce.CRYSTAL_TREE, CropState.HARVESTABLE, 0);
+				}
+				return null;
+			}
 		};
 
+	@Nullable
 	abstract PatchState forVarbitValue(int value);
 
 	private final Tab tab;

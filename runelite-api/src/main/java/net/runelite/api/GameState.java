@@ -24,9 +24,12 @@
  */
 package net.runelite.api;
 
+import lombok.Getter;
+
 /**
  * An enumeration of game states the client is in.
  */
+@Getter
 public enum GameState
 {
 	/**
@@ -41,6 +44,10 @@ public enum GameState
 	 * The client is at the login screen.
 	 */
 	LOGIN_SCREEN(10),
+	/**
+	 * The client is at the login screen entering authenticator code.
+	 */
+	LOGIN_SCREEN_AUTHENTICATOR(11),
 	/**
 	 * There is a player logging in.
 	 */

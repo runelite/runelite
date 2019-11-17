@@ -43,10 +43,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
@@ -101,6 +100,9 @@ public class DevToolsPlugin extends Plugin
 	private WorldMapRegionOverlay mapRegionOverlay;
 
 	@Inject
+	private SoundEffectOverlay soundEffectOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	private DevToolsButton players;
@@ -119,13 +121,14 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton validMovement;
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
-	private DevToolsButton worldMapLocation ;
+	private DevToolsButton worldMapLocation;
 	private DevToolsButton tileLocation;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
+	private DevToolsButton soundEffects;
 	private NavigationButton navButton;
 
 	@Provides
@@ -166,6 +169,7 @@ public class DevToolsPlugin extends Plugin
 		detachedCamera = new DevToolsButton("Detached Camera");
 		widgetInspector = new DevToolsButton("Widget Inspector");
 		varInspector = new DevToolsButton("Var Inspector");
+		soundEffects = new DevToolsButton("Sound Effects");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -173,6 +177,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
+		overlayManager.add(soundEffectOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
@@ -186,17 +191,21 @@ public class DevToolsPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		eventBus.register(soundEffectOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		eventBus.unregister(soundEffectOverlay);
 		overlayManager.remove(overlay);
 		overlayManager.remove(locationOverlay);
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
+		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -275,9 +284,13 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setSkill(skill);
-				eventBus.post(experienceChanged);
+				StatChanged statChanged = new StatChanged(
+					skill,
+					totalXp,
+					level,
+					level
+				);
+				eventBus.post(statChanged);
 				break;
 			}
 			case "setstat":
@@ -294,13 +307,13 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setSkill(skill);
-				eventBus.post(experienceChanged);
-
-				BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
-				boostedLevelChanged.setSkill(skill);
-				eventBus.post(boostedLevelChanged);
+				StatChanged statChanged = new StatChanged(
+					skill,
+					xp,
+					level,
+					level
+				);
+				eventBus.post(statChanged);
 				break;
 			}
 			case "anim":
@@ -334,6 +347,17 @@ public class DevToolsPlugin extends Plugin
 				Player player = client.getLocalPlayer();
 				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
 				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "sound":
+			{
+				int id = Integer.parseInt(args[0]);
+				client.playSoundEffect(id);
+				break;
+			}
+			case "msg":
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", String.join(" ", args), "");
 				break;
 			}
 		}

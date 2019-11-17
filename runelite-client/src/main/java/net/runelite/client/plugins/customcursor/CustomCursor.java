@@ -33,6 +33,7 @@ public enum CustomCursor
 	RS3_GOLD("RS3 Gold", "cursor-rs3-gold.png"),
 	RS3_SILVER("RS3 Silver", "cursor-rs3-silver.png"),
 	DRAGON_DAGGER("Dragon Dagger", "cursor-dragon-dagger.png"),
+	DRAGON_DAGGER_POISON("Dragon Dagger (p)", "cursor-dragon-dagger-p.png"),
 	TROUT("Trout", "cursor-trout.png"),
 	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png");
 

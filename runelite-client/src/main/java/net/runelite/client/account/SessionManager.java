@@ -94,7 +94,7 @@ public class SessionManager
 
 		// Check if session is still valid
 		AccountClient accountClient = new AccountClient(session.getUuid());
-		if (!accountClient.sesssionCheck())
+		if (!accountClient.sessionCheck())
 		{
 			log.debug("Loaded session {} is invalid", session.getUuid());
 			return;

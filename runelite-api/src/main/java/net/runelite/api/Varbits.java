@@ -28,7 +28,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local client variables.
+ * Server controlled "content-developer" integers.
+ *
+ * @see VarPlayer
+ *
+ * These differ from a {@link VarPlayer} in that VarBits can be
+ * less than 32 bits. One or more VarBits can be assigned to a
+ * backing VarPlayer, each with a static range of bits that it is
+ * allowed to access. This allows a more compact representation
+ * of small values, like booleans
  */
 @AllArgsConstructor
 @Getter
@@ -217,6 +225,7 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness
@@ -374,6 +383,7 @@ public enum Varbits
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
 	DAILY_FLAX_STATE(4559),
+	DAILY_ARROWS_STATE(4563),
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
@@ -487,7 +497,17 @@ public enum Varbits
 	/**
 	 * The active tab within the quest interface
 	 */
-	QUEST_TAB(8168);
+	QUEST_TAB(8168),
+
+	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553),
+
+	WINTERTODT_TIMER(7980);
 
 	/**
 	 * The raw varbit ID.
