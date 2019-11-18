@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, David <Dava96@github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,16 +26,23 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Instant;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class WoodcuttingTreesOverlay extends Overlay
 {
@@ -57,15 +65,22 @@ class WoodcuttingTreesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		renderAxes(graphics);
+		renderTimers(graphics);
+		return null;
+	}
+
+	private void renderAxes(Graphics2D graphics)
+	{
 		if (plugin.getSession() == null || !config.showRedwoodTrees())
 		{
-			return null;
+			return;
 		}
 
 		Axe axe = plugin.getAxe();
 		if (axe == null)
 		{
-			return null;
+			return;
 		}
 
 		for (GameObject treeObject : plugin.getTreeObjects())
@@ -75,7 +90,34 @@ class WoodcuttingTreesOverlay extends Overlay
 				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}
+	}
 
-		return null;
+	private void renderTimers(Graphics2D graphics)
+	{
+		List<TreeRespawn> respawns = plugin.getRespawns();
+		if (respawns.isEmpty() || !config.showRespawnTimers())
+		{
+			return;
+		}
+
+		Instant now = Instant.now();
+		for (TreeRespawn treeRespawn : respawns)
+		{
+			LocalPoint loc = treeRespawn.getLocation();
+
+			float percent = (now.toEpochMilli() - treeRespawn.getStartTime().toEpochMilli()) / (float) treeRespawn.getRespawnTime();
+			Point point = Perspective.localToCanvas(client, loc, client.getPlane());
+			if (point == null || percent > 1.0f)
+			{
+				continue;
+			}
+
+			ProgressPieComponent ppc = new ProgressPieComponent();
+			ppc.setBorderColor(Color.ORANGE);
+			ppc.setFill(Color.YELLOW);
+			ppc.setPosition(point);
+			ppc.setProgress(percent);
+			ppc.render(graphics);
+		}
 	}
 }
