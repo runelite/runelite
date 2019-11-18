@@ -54,6 +54,7 @@ public class HiscoreResult
 	private Skill runecraft;
 	private Skill hunter;
 	private Skill construction;
+	private Skill leaguePoints;
 	private Skill bountyHunterHunter;
 	private Skill bountyHunterRogue;
 	private Skill clueScrollAll;
@@ -115,6 +116,8 @@ public class HiscoreResult
 				return getHunter();
 			case CONSTRUCTION:
 				return getConstruction();
+			case LEAGUE_POINTS:
+				return getLeaguePoints();
 			case OVERALL:
 				return getOverall();
 			case BOUNTY_HUNTER_HUNTER:

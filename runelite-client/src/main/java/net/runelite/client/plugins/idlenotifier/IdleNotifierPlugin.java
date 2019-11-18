@@ -950,7 +950,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		SkullIcon currentTickSkull = local.getSkullIcon();
 		EnumSet worldTypes = client.getWorldType();
-		if (!(worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN)))
+		if (!(worldTypes.contains(WorldType.DEADMAN)))
 		{
 			if (!isFirstTick)
 			{
