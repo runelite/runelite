@@ -108,7 +108,7 @@ public class AttackStylesPlugin extends Plugin
 	private boolean warnForRanged;
 	private boolean warnForMagic;
 	private boolean hideAutoRetaliate;
-	private boolean removeWarnedStyles;
+	boolean removeWarnedStyles;
 
 	@Override
 	protected void startUp() throws Exception
@@ -170,7 +170,7 @@ public class AttackStylesPlugin extends Plugin
 		return warnedSkillSelected;
 	}
 
-	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
 		{
