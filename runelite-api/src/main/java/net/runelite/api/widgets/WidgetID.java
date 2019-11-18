@@ -147,6 +147,7 @@ public class WidgetID
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int OPTIONS_GROUP_ID = 261;
 	public static final int GWD_KC_GROUP_ID = 406;
+	public static final int THEATRE_OF_BLOOD_PARTY_GROUP_ID = 28;
 
 	static class WorldMap
 	{
@@ -608,6 +609,11 @@ public class WidgetID
 	static class Raids
 	{
 		static final int POINTS_INFOBOX = 6;
+	}
+
+	static class TheatreOfBloodParty
+	{
+		static final int CONTAINER = 10;
 	}
 
 	static class ExperienceDrop
