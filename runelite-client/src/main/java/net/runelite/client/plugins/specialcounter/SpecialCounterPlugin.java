@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -40,14 +42,13 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -58,13 +59,13 @@ import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 import org.apache.commons.lang3.ArrayUtils;
 
+
 @PluginDescriptor(
 	name = "Special Attack Counter",
 	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
-
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -77,6 +78,12 @@ public class SpecialCounterPlugin extends Plugin
 	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
+
+	private static final Varbits[] TOB_PARTY_ORBS_VARBITS = new Varbits[]{
+		Varbits.THEATRE_OF_BLOOD_ORB_1, Varbits.THEATRE_OF_BLOOD_ORB_2,
+		Varbits.THEATRE_OF_BLOOD_ORB_3, Varbits.THEATRE_OF_BLOOD_ORB_4,
+		Varbits.THEATRE_OF_BLOOD_ORB_5
+	};
 
 	@Inject
 	private Client client;
@@ -234,68 +241,35 @@ public class SpecialCounterPlugin extends Plugin
 		modifier = 1d;
 		interactedNpcIds.add(npcId);
 
-		if (client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_PARTY) != null)
-		{
-			Boss boss = Boss.getBoss(npcId);
-			if (boss != null)
-			{
-				int teamSize = 0;
-				Widget x = client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_PARTY);
-				for (Widget y : x.getStaticChildren())
-				{
-					if (!y.isHidden())
-					{
-						teamSize++;
-					}
-				}
-				if (boss == Boss.SOTETSEG_5_MAN)
-				{
-					if (teamSize > 0 && teamSize <= 3)
-					{
-						boss = Boss.SOTETSEG_3_MAN;
-					}
-					else if (teamSize == 4)
-					{
-						boss = Boss.SOTETSEG_4_MAN;
-					}
-
-				}
-				if (boss == Boss.NYLOCAS_VASILIAS_5_MAN)
-				{
-					if (teamSize > 0 && teamSize <= 3)
-					{
-						boss = Boss.NYLOCAS_VASILIAS_3_MAN;
-					}
-					else if (teamSize == 4)
-					{
-						boss = Boss.NYLOCAS_VASILIAS_4_MAN;
-					}
-
-				}
-				if (boss == Boss.PESTILENT_BLOAT_5_MAN)
-				{
-					if (teamSize > 0 && teamSize <= 3)
-					{
-						boss = Boss.PESTILENT_BLOAT_3_MAN;
-					}
-					else if (teamSize == 4)
-					{
-						boss = Boss.PESTILENT_BLOAT_4_MAN;
-					}
-
-				}
-				modifier = boss.getModifier();
-				interactedNpcIds.addAll(boss.getIds());
-			}
-			return;
-		}
 		// Add alternate forms of bosses
-		final Boss boss = Boss.getBoss(npcId);
+		final Boss boss = Boss.findBoss(npcId);
 		if (boss != null)
 		{
 			modifier = boss.getModifier();
-			interactedNpcIds.addAll(boss.getIds());
+			if (boss.isTob())
+			{
+				int partySize = getTobPartySize();
+				modifier = boss.getModifier(partySize);
+			}
+			interactedNpcIds.addAll(Sets.newHashSet(Arrays.stream(boss.getIds()).boxed().toArray(Integer[]::new)));
 		}
+	}
+
+	private int getTobPartySize()
+	{
+		int partySize = 0;
+		for (Varbits varbit : TOB_PARTY_ORBS_VARBITS)
+		{
+			if (client.getVar(varbit) != 0)
+			{
+				partySize++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		return partySize;
 	}
 
 	@Subscribe
