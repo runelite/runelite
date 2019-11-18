@@ -24,16 +24,17 @@
  */
 package net.runelite.client.plugins.raids.solver;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Room
 {
 	@Getter
-	private final int position;
+	private int position;
 
 	@Getter
-	private final char symbol;
+	private char symbol;
 
 	@Getter
 	@Setter
@@ -43,7 +44,8 @@ public class Room
 	@Setter
 	private Room previous;
 
-	Room(int position, char symbol)
+	@VisibleForTesting
+	public Room(int position, char symbol)
 	{
 		this.position = position;
 		this.symbol = symbol;

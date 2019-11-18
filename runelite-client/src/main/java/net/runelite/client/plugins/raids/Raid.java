@@ -26,15 +26,19 @@ package net.runelite.client.plugins.raids;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
 public class Raid
 {
+	@Setter(AccessLevel.PACKAGE)
 	@Getter
-	private final RaidRoom[] rooms = new RaidRoom[16];
+	private RaidRoom[] rooms = new RaidRoom[16];
 
+	@Setter(AccessLevel.PACKAGE)
 	@Getter
 	private Layout layout;
 

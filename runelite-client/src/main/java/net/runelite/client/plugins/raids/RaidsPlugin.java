@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -40,7 +41,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -155,6 +158,7 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private final Set<String> layoutWhitelist = new HashSet<String>();
 
+	@Setter(AccessLevel.PACKAGE)
 	@Getter
 	private Raid raid;
 
@@ -401,7 +405,8 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateLists()
+	@VisibleForTesting
+	void updateLists()
 	{
 		updateList(roomWhitelist, config.whitelistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
