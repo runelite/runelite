@@ -30,9 +30,11 @@ import com.google.inject.Provides;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,7 +98,7 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 	private static final String LAYOUT_COMMAND = "!layout";
 
 	@Inject
@@ -142,16 +144,16 @@ public class RaidsPlugin extends Plugin
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Getter
-	private final ArrayList<String> roomWhitelist = new ArrayList<>();
+	private final Set<String> roomWhitelist = new HashSet<String>();
 
 	@Getter
-	private final ArrayList<String> roomBlacklist = new ArrayList<>();
+	private final Set<String> roomBlacklist = new HashSet<String>();
 
 	@Getter
-	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
+	private final Set<String> rotationWhitelist = new HashSet<String>();
 
 	@Getter
-	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private final Set<String> layoutWhitelist = new HashSet<String>();
 
 	@Getter
 	private Raid raid;
@@ -407,7 +409,7 @@ public class RaidsPlugin extends Plugin
 		updateList(layoutWhitelist, config.whitelistedLayouts());
 	}
 
-	private void updateList(ArrayList<String> list, String input)
+	private void updateList(Collection<String> list, String input)
 	{
 		list.clear();
 
@@ -416,12 +418,7 @@ public class RaidsPlugin extends Plugin
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
 			{
-				String rotation = m.group(1).toLowerCase();
-
-				if (!list.contains(rotation))
-				{
-					list.add(rotation);
-				}
+				list.add(m.group(1).toLowerCase().replaceAll("\\s|\"", ""));
 			}
 		}
 		else
@@ -430,7 +427,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	int getRotationMatches()
+	boolean getRotationMatches()
 	{
 		RaidRoom[] combatRooms = raid.getCombatRooms();
 		String rotation = Arrays.stream(combatRooms)
@@ -438,7 +435,7 @@ public class RaidsPlugin extends Plugin
 			.map(String::toLowerCase)
 			.collect(Collectors.joining(","));
 
-		return rotationWhitelist.contains(rotation) ? combatRooms.length : 0;
+		return rotationWhitelist.contains(rotation);
 	}
 
 	private Point findLobbyBase()
