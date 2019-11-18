@@ -66,6 +66,7 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -94,6 +95,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
+	private final Map<TileObject, ObjectComposition> multilocCompositions = new HashMap<>();
 	private boolean hotKeyPressed;
 
 	@Inject
@@ -230,6 +232,24 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		// Only update if the event changed the object's composition
+		multilocCompositions.entrySet().stream().forEach(e ->
+		{
+			TileObject object = e.getKey();
+			ObjectComposition oldComp = e.getValue();
+			ObjectComposition newComp = client.getObjectDefinition(object.getId()).getImpostor();
+
+			if (oldComp != newComp)
+			{
+				objects.remove(object);
+				checkObjectPoints(object);
+			}
+		});
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
@@ -252,6 +272,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
 			objects.clear();
+			multilocCompositions.clear();
 		}
 	}
 
@@ -301,7 +322,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		// object.getId() is always the base object id, getObjectComposition transforms it to
 		// the correct object we see
-		ObjectComposition objectDefinition = getObjectComposition(object.getId());
+		ObjectComposition objectDefinition = getObjectComposition(object);
 		String name = objectDefinition.getName();
 		// Name is probably never "null" - however prevent adding it if it is, as it will
 		// become ambiguous as objects with no name are assigned name "null"
@@ -329,7 +350,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
 				// Transform object to get the name which matches against what we've stored
-				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
+				if (objectPoint.getName().equals(getObjectComposition(object).getName()))
 				{
 					log.debug("Marking object {} due to matching {}", object, objectPoint);
 					objects.add(object);
@@ -474,9 +495,15 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			.collect(Collectors.toSet());
 	}
 
-	private ObjectComposition getObjectComposition(int id)
+	private ObjectComposition getObjectComposition(TileObject obj)
 	{
-		ObjectComposition objectComposition = client.getObjectDefinition(id);
-		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
+		ObjectComposition objectComposition = client.getObjectDefinition(obj.getId());
+		if (objectComposition.getImpostorIds() != null)
+		{
+			ObjectComposition current = objectComposition.getImpostor();
+			multilocCompositions.put(obj, current);
+			return current;
+		}
+		return objectComposition;
 	}
 }
