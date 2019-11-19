@@ -36,12 +36,15 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
@@ -51,6 +54,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -63,6 +67,7 @@ public class SpecialCounterPlugin extends Plugin
 	private int currentWorld = -1;
 	private int specialPercentage = -1;
 	private int specialHitpointsExperience = -1;
+	private int specialHitpointsGained = -1;
 	private boolean specialUsed;
 	private double modifier = 1d;
 
@@ -136,6 +141,25 @@ public class SpecialCounterPlugin extends Plugin
 
 		specialUsed = true;
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
+		specialHitpointsGained = -1;
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged statChanged)
+	{
+		if (specialUsed && statChanged.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = statChanged.getXp() - specialHitpointsExperience;
+		}
+	}
+
+	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (specialUsed && fakeXpDrop.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = fakeXpDrop.getXp();
+		}
 	}
 
 	@Subscribe
@@ -147,13 +171,11 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		int interactingId = checkInteracting();
-
-		if (interactingId > -1 && specialHitpointsExperience != -1 && specialUsed)
+		if (interactingId > -1 && specialUsed)
 		{
+			int deltaExperience = specialHitpointsGained;
+
 			specialUsed = false;
-			int hpXp = client.getSkillExperience(Skill.HITPOINTS);
-			int deltaExperience = hpXp - specialHitpointsExperience;
-			specialHitpointsExperience = -1;
 
 			if (deltaExperience > 0)
 			{
@@ -181,7 +203,16 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (interacting instanceof NPC)
 		{
-			int interactingId = ((NPC) interacting).getId();
+			NPC npc = (NPC) interacting;
+			NPCComposition composition = npc.getComposition();
+			int interactingId = npc.getId();
+
+			if (!ArrayUtils.contains(composition.getActions(), "Attack"))
+			{
+				// Skip over non attackable npcs so that eg. talking to bankers doesn't reset
+				// the counters.
+				return -1;
+			}
 
 			if (!interactedNpcIds.contains(interactingId))
 			{

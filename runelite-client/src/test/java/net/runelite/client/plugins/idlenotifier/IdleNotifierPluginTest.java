@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -36,6 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -45,15 +47,15 @@ import net.runelite.client.Notifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IdleNotifierPluginTest
@@ -193,13 +195,11 @@ public class IdleNotifierPluginTest
 	@Test
 	public void checkCombatReset()
 	{
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(new GameTick());
-		when(player.getInteracting()).thenReturn(randomEvent);
 		plugin.onInteractingChanged(new InteractingChanged(player, randomEvent));
 		plugin.onGameTick(new GameTick());
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
@@ -209,7 +209,7 @@ public class IdleNotifierPluginTest
 	public void checkCombatLogout()
 	{
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onGameTick(new GameTick());
 
 		// Logout
@@ -224,7 +224,6 @@ public class IdleNotifierPluginTest
 		plugin.onGameStateChanged(gameStateChanged);
 
 		// Tick
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
@@ -264,12 +263,27 @@ public class IdleNotifierPluginTest
 	{
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
 		plugin.onGameTick(new GameTick()); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(Matchers.eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+	}
+
+	@Test
+	public void testMovementIdle()
+	{
+		when(config.movementIdle()).thenReturn(true);
+
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		plugin.onGameTick(new GameTick());
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(1, 0, 0));
+		plugin.onGameTick(new GameTick());
+		// No movement here
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has stopped moving!"));
 	}
 }

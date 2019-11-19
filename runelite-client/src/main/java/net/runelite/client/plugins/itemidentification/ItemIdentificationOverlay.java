@@ -30,7 +30,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import static net.runelite.api.widgets.WidgetID.GUIDE_PRICE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KEPT_ON_DEATH_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -38,20 +42,22 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 class ItemIdentificationOverlay extends WidgetItemOverlay
 {
 	private final ItemIdentificationConfig config;
+	private final ItemManager itemManager;
 
 	@Inject
-	ItemIdentificationOverlay(ItemIdentificationConfig config)
+	ItemIdentificationOverlay(ItemIdentificationConfig config, ItemManager itemManager)
 	{
 		this.config = config;
+		this.itemManager = itemManager;
 		showOnInventory();
 		showOnBank();
-		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID);
+		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		ItemIdentification iden = ItemIdentification.get(itemId);
+		ItemIdentification iden = findItemIdentification(itemId);
 		if (iden == null)
 		{
 			return;
@@ -77,17 +83,28 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case ORE:
+				if (!config.showOres())
+				{
+					return;
+				}
+				break;
+			case GEM:
+				if (!config.showGems())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 		renderText(graphics, itemWidget.getCanvasBounds(), iden);
-
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
 	{
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x, bounds.y + bounds.height));
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + bounds.height - 1));
 		textComponent.setColor(config.textColor());
 		switch (config.identificationType())
 		{
@@ -99,5 +116,11 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 				break;
 		}
 		textComponent.render(graphics);
+	}
+
+	private ItemIdentification findItemIdentification(final int itemID)
+	{
+		final int realItemId = itemManager.canonicalize(itemID);
+		return ItemIdentification.get(realItemId);
 	}
 }

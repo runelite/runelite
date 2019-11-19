@@ -31,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.WorldUtil;
@@ -55,7 +55,9 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private DefaultWorldConfig config;
 
-	private final WorldClient worldClient = new WorldClient();
+	@Inject
+	private WorldClient worldClient;
+
 	private int worldCache;
 	private boolean worldChangeRequired;
 
@@ -89,6 +91,11 @@ public class DefaultWorldPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			config.lastWorld(client.getWorld());
+		}
+
 		applyWorld();
 	}
 
@@ -112,6 +119,13 @@ public class DefaultWorldPlugin extends Plugin
 		try
 		{
 			final WorldResult worldResult = worldClient.lookupWorlds();
+
+			if (worldResult == null)
+			{
+				log.warn("Failed to lookup worlds.");
+				return;
+			}
+
 			final World world = worldResult.findWorld(correctedWorld);
 
 			if (world != null)
@@ -146,7 +160,7 @@ public class DefaultWorldPlugin extends Plugin
 			log.debug("Stored old world {}", worldCache);
 		}
 
-		final int newWorld = config.getWorld();
+		final int newWorld = !config.useLastWorld() ? config.getWorld() : config.lastWorld();
 		changeWorld(newWorld);
 	}
 }

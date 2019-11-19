@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
@@ -122,17 +122,33 @@ class XpInfoBoxOverlay extends Overlay
 
 		final LineComponent xpLine = LineComponent.builder()
 			.left(leftStr + ":")
-			.right(StackFormatter.quantityToRSDecimalStack(rightNum, true))
+			.right(QuantityFormatter.quantityToRSDecimalStack(rightNum, true))
 			.build();
 
-		final LineComponent xpHour = LineComponent.builder()
-				.left("XP/Hour:")
-				.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpPerHour(), true))
+		final String bottemLeftStr;
+		final int bottomRightNum;
+
+		switch (config.onScreenDisplayModeBottom())
+		{
+			case ACTIONS_HOUR:
+				bottemLeftStr = snapshot.getActionType().getLabel() + "/Hour";
+				bottomRightNum = snapshot.getActionsPerHour();
+				break;
+			case XP_HOUR:
+			default:
+				bottemLeftStr = "XP/Hour";
+				bottomRightNum = snapshot.getXpPerHour();
+				break;
+		}
+
+		final LineComponent xpLineBottom = LineComponent.builder()
+				.left(bottemLeftStr + ":")
+				.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
 				.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
 				.first(xpLine)
-				.second(xpHour)
+				.second(xpLineBottom)
 				.orientation(ComponentOrientation.VERTICAL)
 				.build();
 

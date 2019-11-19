@@ -360,25 +360,36 @@ public interface GroundItemsConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
+  @ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Show despawn timers",
+		description = "Shows despawn timers for items you've dropped and received as loot",
+		position = 28
+	)
+	default boolean groundItemTimers()
+	{
+		return false;
+	}
+  
+  @ConfigItem(
 		keyName = "profitValueColor",
 		name = "Profitable high alch items color",
 		description = "Configures the color for profitable high alch items",
-		position = 28
+		position = 29
 	)
 	default Color profitValueColor()
 	{
 		return Color.decode("#ffff00");
 	}
-
-	@ConfigItem(
+  
+  @ConfigItem(
 		keyName = "highlightProfitableOverValue",
 		name = "High Alch Profit > Value",
 		description = "Highlights ground items with a high alch profit greater than value. (0 = Disabled)",
-		position = 29
+		position = 30
 	)
 	default int getHighlightProfitOverValue()
 	{
 		return 0;
-	}
+  }
 }

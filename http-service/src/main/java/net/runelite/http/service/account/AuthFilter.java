@@ -24,14 +24,18 @@
  */
 package net.runelite.http.service.account;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalNotification;
 import java.io.IOException;
-import net.runelite.http.service.account.beans.SessionEntry;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -42,6 +46,12 @@ import org.sql2o.Sql2o;
 public class AuthFilter
 {
 	private final Sql2o sql2o;
+
+	private final Cache<UUID, SessionEntry> sessionCache = CacheBuilder.newBuilder()
+		.maximumSize(10000L)
+		.expireAfterAccess(30, TimeUnit.MINUTES)
+		.removalListener(this::removalListener)
+		.build();
 
 	@Autowired
 	public AuthFilter(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -59,30 +69,48 @@ public class AuthFilter
 		}
 
 		UUID uuid = UUID.fromString(runeliteAuth);
+		SessionEntry sessionEntry = sessionCache.getIfPresent(uuid);
+		if (sessionEntry != null)
+		{
+			return sessionEntry;
+		}
 
 		try (Connection con = sql2o.open())
 		{
-			SessionEntry sessionEntry = con.createQuery("select user, uuid, created from sessions where uuid = :uuid")
+			sessionEntry = con.createQuery("select user, uuid, created, last_used as lastUsed from sessions where uuid = :uuid")
 				.addParameter("uuid", uuid.toString())
 				.executeAndFetchFirst(SessionEntry.class);
+		}
 
-			if (sessionEntry == null)
-			{
-				response.sendError(401, "Access denied");
-				return null;
-			}
+		if (sessionEntry == null)
+		{
+			response.sendError(401, "Access denied");
+			return null;
+		}
 
-			Instant now = Instant.now();
+		sessionCache.put(uuid, sessionEntry);
 
+		return sessionEntry;
+	}
+
+	private void removalListener(RemovalNotification<UUID, SessionEntry> notification)
+	{
+		UUID uuid = notification.getKey();
+		Instant now = Instant.now();
+
+		try (Connection con = sql2o.open())
+		{
 			con.createQuery("update sessions set last_used = :last_used where uuid = :uuid")
 				.addParameter("last_used", Timestamp.from(now))
 				.addParameter("uuid", uuid.toString())
 				.executeUpdate();
-
-			sessionEntry.setLastUsed(now);
-
-			return sessionEntry;
 		}
+	}
+
+	public void invalidate(UUID uuid)
+	{
+		// If we ever run multiple services, may need to publish something here to invalidate...
+		sessionCache.invalidate(uuid);
 	}
 
 }

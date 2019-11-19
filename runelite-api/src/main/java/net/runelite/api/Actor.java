@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
@@ -50,6 +51,7 @@ public interface Actor extends Renderable
 	 *
 	 * @return the name
 	 */
+	@Nullable
 	String getName();
 
 	/**
@@ -154,13 +156,6 @@ public interface Actor extends Renderable
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**
-	 * Gets the height of the actors model.
-	 *
-	 * @return the height
-	 */
-	int getModelHeight();
-
-	/**
 	 * Gets the canvas area of the current tile the actor is standing on.
 	 *
 	 * @return the current tile canvas area
@@ -224,7 +219,7 @@ public interface Actor extends Renderable
 	 * @return the convex hull
 	 * @see net.runelite.api.model.Jarvis
 	 */
-	Polygon getConvexHull();
+	Shape getConvexHull();
 
 	/**
 	 * Gets the world area that the actor occupies.

@@ -35,12 +35,16 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.SEED_VAULT_ITEM_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
@@ -52,7 +56,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.examine.ExamineClient;
 
 /**
@@ -68,7 +73,6 @@ import net.runelite.http.api.examine.ExamineClient;
 @Slf4j
 public class ExaminePlugin extends Plugin
 {
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");
 
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
@@ -91,7 +95,6 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -101,7 +104,7 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals("Examine"))
+		if (!Text.removeTags(event.getMenuOption()).equals("Examine"))
 		{
 			return;
 		}
@@ -120,9 +123,13 @@ public class ExaminePlugin extends Plugin
 				int widgetChild = TO_CHILD(widgetId);
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
 				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
-				quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
 				break;
 			}
+			case EXAMINE_ITEM_GROUND:
+				type = ExamineType.ITEM;
+				id = event.getId();
+				break;
 			case EXAMINE_ITEM_BANK_EQ:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
@@ -201,6 +208,12 @@ public class ExaminePlugin extends Plugin
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
+
+			if (itemId == ItemID.COINS_995)
+			{
+				return;
+			}
+
 			itemComposition = itemManager.getItemComposition(itemId);
 
 			if (itemComposition != null)
@@ -273,7 +286,13 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
+			|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup
+			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
+			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup)
 		{
 			Widget[] children = widget.getDynamicChildren();
 			if (actionParam < children.length)
@@ -291,18 +310,9 @@ public class ExaminePlugin extends Plugin
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
+			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
@@ -319,7 +329,7 @@ public class ExaminePlugin extends Plugin
 		quantity = Math.max(1, quantity);
 		int itemCompositionPrice = itemComposition.getPrice();
 		final int gePrice = itemManager.getItemPrice(id);
-		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
+		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (gePrice > 0 || alchPrice > 0)
 		{
@@ -331,7 +341,7 @@ public class ExaminePlugin extends Plugin
 			if (quantity > 1)
 			{
 				message
-					.append(StackFormatter.formatNumber(quantity))
+					.append(QuantityFormatter.formatNumber(quantity))
 					.append(" x ");
 			}
 
@@ -346,7 +356,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice * quantity));
+					.append(QuantityFormatter.formatNumber(gePrice * quantity));
 
 				if (quantity > 1)
 				{
@@ -354,7 +364,7 @@ public class ExaminePlugin extends Plugin
 						.append(ChatColorType.NORMAL)
 						.append(" (")
 						.append(ChatColorType.HIGHLIGHT)
-						.append(StackFormatter.formatNumber(gePrice))
+						.append(QuantityFormatter.formatNumber(gePrice))
 						.append(ChatColorType.NORMAL)
 						.append("ea)");
 				}
@@ -366,7 +376,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice * quantity));
+					.append(QuantityFormatter.formatNumber(alchPrice * quantity));
 
 				if (quantity > 1)
 				{
@@ -374,7 +384,7 @@ public class ExaminePlugin extends Plugin
 						.append(ChatColorType.NORMAL)
 						.append(" (")
 						.append(ChatColorType.HIGHLIGHT)
-						.append(StackFormatter.formatNumber(alchPrice))
+						.append(QuantityFormatter.formatNumber(alchPrice))
 						.append(ChatColorType.NORMAL)
 						.append("ea)");
 				}

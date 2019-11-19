@@ -136,7 +136,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 			totalWidth = Math.max(totalWidth, width);
 			totalHeight = Math.max(totalHeight, height);
 
-			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
+			if (wrapping > 0 && i < children.size() - 1 && (i + 1) % wrapping == 0)
 			{
 				switch (orientation)
 				{

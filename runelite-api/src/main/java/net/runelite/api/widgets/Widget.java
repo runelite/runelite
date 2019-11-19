@@ -553,7 +553,7 @@ public interface Widget
 	void setOnMouseOverListener(Object... args);
 
 	/**
-	 * Sets a script to be ran every frame when the mouse is in the widget bounds
+	 * Sets a script to be ran every client tick when the mouse is in the widget bounds
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
@@ -567,7 +567,7 @@ public interface Widget
 	void setOnMouseLeaveListener(Object... args);
 
 	/**
-	 * Sets a script to be ran every frame
+	 * Sets a script to be ran every client tick
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
@@ -621,6 +621,8 @@ public interface Widget
 	 * Array of widget load listeners
 	 */
 	Object[] getOnLoadListener();
+
+	Object[] getOnInvTransmitListener();
 
 	/**
 	 * Returns the archive id of the font used
@@ -821,4 +823,31 @@ public interface Widget
 	 * Can widgets under this widgets be scrolled in this widgets bounding box
 	 */
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	/**
+	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 */
+	void setVarTransmitTrigger(int ...trigger);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnClickListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the every client tick the mouse is held ontop of this widget,
+	 * except the first client tick.
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnHoldListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is not held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnReleaseListener(Object ...args);
 }

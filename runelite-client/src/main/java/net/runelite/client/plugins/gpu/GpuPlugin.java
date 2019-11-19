@@ -207,6 +207,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int centerX;
 	private int centerY;
+	private int yaw;
+	private int pitch;
 
 	// Uniforms
 	private int uniUseFog;
@@ -233,15 +235,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				bufferId = uvBufferId = uniformBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
 
+				canvas = client.getCanvas();
+
+				if (!canvas.isDisplayable())
+				{
+					return false;
+				}
+
+				canvas.setIgnoreRepaint(true);
+
 				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
 
 				modelBufferUnordered = new GpuIntBuffer();
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
-
-				canvas = client.getCanvas();
-				canvas.setIgnoreRepaint(true);
 
 				if (log.isDebugEnabled())
 				{
@@ -338,7 +346,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				shutDown();
 			}
-
+			return true;
 		});
 	}
 
@@ -643,7 +651,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_DYNAMIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
@@ -719,6 +727,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		centerX = client.getCenterX();
 		centerY = client.getCenterY();
+		yaw = client.getCameraYaw();
+		pitch = client.getCameraPitch();
 
 		final Scene scene = client.getScene();
 		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
@@ -911,8 +921,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
 		uniformBuffer.clear();
 		uniformBuffer
-			.put(client.getCameraYaw())
-			.put(client.getCameraPitch())
+			.put(yaw)
+			.put(pitch)
 			.put(centerX)
 			.put(centerY)
 			.put(client.getScale())
@@ -1314,10 +1324,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						int var21 = (pitchCos * modelHeight >> 16) + var19;
 						int var22 = (var18 - var21) * zoom;
-						if (var22 / var14 < Rasterizer3D_clipMidY2)
-						{
-							return true;
-						}
+						return var22 / var14 < Rasterizer3D_clipMidY2;
 					}
 				}
 			}

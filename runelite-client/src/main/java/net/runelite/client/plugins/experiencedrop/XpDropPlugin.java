@@ -35,8 +35,8 @@ import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -230,10 +230,10 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		final Skill skill = event.getSkill();
-		final int xp = client.getSkillExperience(skill);
+		final Skill skill = statChanged.getSkill();
+		final int xp = statChanged.getXp();
 
 		lastSkill = skill;
 

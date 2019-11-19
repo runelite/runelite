@@ -532,7 +532,7 @@ public class MapImageDumper
 			{
 				// this is a wall
 				int hash = (localY << 7) + localX + (location.getId() << 14) + 0x4000_0000;
-				if (object.getAnInt2088() == 0)
+				if (object.getWallOrDoor() == 0)
 				{
 					hash -= Integer.MIN_VALUE;
 				}
@@ -645,7 +645,7 @@ public class MapImageDumper
 				}
 
 				int hash = (localY << 7) + localX + (location.getId() << 14) + 0x4000_0000;
-				if (object.getAnInt2088() == 0)
+				if (object.getWallOrDoor() == 0)
 				{
 					hash -= Integer.MIN_VALUE;
 				}

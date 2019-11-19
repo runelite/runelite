@@ -189,7 +189,10 @@ public class ItemStatOverlay extends Overlay
 	private String buildStatBonusString(ItemStats s)
 	{
 		final StringBuilder b = new StringBuilder();
-		b.append(getChangeString("Weight", s.getWeight(), true, false));
+		if (config.showWeight())
+		{
+			b.append(getChangeString("Weight", s.getWeight(), true, false));
+		}
 
 		ItemStats other = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
