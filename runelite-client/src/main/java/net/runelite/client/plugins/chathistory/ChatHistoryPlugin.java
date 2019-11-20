@@ -111,7 +111,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		ChatMessageType chatMessageType = chatMessage.getType();
+		if (chatMessageType == ChatMessageType.WELCOME && chatMessage.getMessage().equals(WELCOME_MESSAGE))
 		{
 			if (!config.retainChatHistory())
 			{
@@ -128,7 +129,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		switch (chatMessage.getType())
+		switch (chatMessageType)
 		{
 			case PRIVATECHATOUT:
 			case PRIVATECHAT:
@@ -150,7 +151,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case FRIENDSCHAT:
 			case CONSOLE:
 				final QueuedMessage queuedMessage = QueuedMessage.builder()
-					.type(chatMessage.getType())
+					.type(chatMessageType)
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
 					.value(nbsp(chatMessage.getMessage()))
