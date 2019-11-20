@@ -50,6 +50,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
@@ -58,7 +59,7 @@ import net.runelite.client.util.Text;
 )
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
-	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
@@ -112,7 +113,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
 		ChatMessageType chatMessageType = chatMessage.getType();
-		if (chatMessageType == ChatMessageType.WELCOME && chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		if (chatMessageType == ChatMessageType.WELCOME && StringUtils.startsWithIgnoreCase(chatMessage.getMessage(), WELCOME_MESSAGE))
 		{
 			if (!config.retainChatHistory())
 			{
