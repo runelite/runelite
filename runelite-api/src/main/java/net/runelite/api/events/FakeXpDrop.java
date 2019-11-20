@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Matthew Steglinski <https://github.com/sainttx>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,12 @@
  */
 package net.runelite.api.events;
 
-/**
- * An event when the local player dies.
- */
-public class LocalPlayerDeath implements Event
-{
-	public static final LocalPlayerDeath INSTANCE = new LocalPlayerDeath();
+import lombok.Value;
+import net.runelite.api.Skill;
 
-	private LocalPlayerDeath()
-	{
-		// noop
-	}
+@Value
+public class FakeXpDrop implements Event
+{
+	private final Skill skill;
+	private final int xp;
 }

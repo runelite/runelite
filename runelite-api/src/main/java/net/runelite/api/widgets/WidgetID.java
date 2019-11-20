@@ -161,6 +161,7 @@ public class WidgetID
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int JEWELLERY_BOX_GROUP_ID = 590;
 	public static final int OPTIONS_GROUP_ID = 261;
+	public static final int GWD_KC_GROUP_ID = 406;
 
 	static class WorldMap
 	{
@@ -658,6 +659,11 @@ public class WidgetID
 		static final int REWARD_TEXT = 57;
 	}
 
+	static class GWD
+	{
+		static final int CONTAINER = 7;
+	}
+
 	static class LevelUp
 	{
 		static final int SKILL = 1;
@@ -827,161 +833,180 @@ public class WidgetID
 		static final int FILTERED_SPELLS_PARENT = 1;
 		static final int FILTERED_SPELLS_BOUNDS = 3;
 
+		static final int FILTER_SECTION_PARENT = 182;
+		static final int FILTER_BUTTONS_PARENT = 185;
+		static final int FILTER_BUTTON_PARENT = 186;
+		static final int FILTER_BUTTON = 188;
+		static final int TOOLTIP = 189;
+
 		// NORMAL SPELLS
-		static final int LUMBRIDGE_HOME_TELEPORT = 4;
-		static final int WIND_STRIKE = 5;
-		static final int CONFUSE = 6;
-		static final int ENCHANT_CROSSBOW_BOLT = 7;
-		static final int WATER_STRIKE = 8;
-		static final int LVL_1_ENCHANT = 9;
-		static final int EARTH_STRIKE = 10;
-		static final int WEAKEN = 11;
-		static final int FIRE_STRIKE = 12;
-		static final int BONES_TO_BANANAS = 13;
-		static final int WIND_BOLT = 14;
-		static final int CURSE = 15;
-		static final int BIND = 16;
-		static final int LOW_LEVEL_ALCHEMY = 17;
-		static final int WATER_BOLT = 18;
-		static final int VARROCK_TELEPORT = 19;
-		static final int LVL_2_ENCHANT = 20;
-		static final int EARTH_BOLT = 21;
-		static final int LUMBRIDGE_TELEPORT = 22;
-		static final int TELEKINETIC_GRAB = 23;
-		static final int FIRE_BOLT = 24;
-		static final int FALADOR_TELEPORT = 25;
-		static final int CRUMBLE_UNDEAD = 26;
-		static final int TELEPORT_TO_HOUSE = 27;
-		static final int WIND_BLAST = 28;
-		static final int SUPERHEAT_ITEM = 29;
-		static final int CAMELOT_TELEPORT = 30;
-		static final int WATER_BLAST = 31;
-		static final int LVL_3_ENCHANT = 32;
-		static final int IBAN_BLAST = 33;
-		static final int SNARE = 34;
-		static final int MAGIC_DART = 35;
-		static final int ARDOUGNE_TELEPORT = 36;
-		static final int EARTH_BLAST = 37;
-		static final int HIGH_LEVEL_ALCHEMY = 38;
-		static final int CHARGE_WATER_ORB = 39;
-		static final int LVL_4_ENCHANT = 40;
-		static final int WATCHTOWER_TELEPORT = 41;
-		static final int FIRE_BLAST = 42;
-		static final int CHARGE_EARTH_ORB = 43;
-		static final int BONES_TO_PEACHES = 44;
-		static final int SARADOMIN_STRIKE = 45;
-		static final int CLAWS_OF_GUTHIX = 46;
-		static final int FLAMES_OF_ZAMORAK = 47;
-		static final int TROLLHEIM_TELEPORT = 48;
-		static final int WIND_WAVE = 49;
-		static final int CHARGE_FIRE_ORB = 50;
-		static final int TELEPORT_TO_APE_ATOLL = 51;
-		static final int WATER_WAVE = 52;
-		static final int CHARGE_AIR_ORB = 53;
-		static final int VULNERABILITY = 54;
-		static final int LVL_5_ENCHANT = 55;
-		static final int TELEPORT_TO_KOUREND = 56;
-		static final int EARTH_WAVE = 57;
-		static final int ENFEEBLE = 58;
-		static final int TELEOTHER_LUMBRIDGE = 59;
-		static final int FIRE_WAVE = 60;
-		static final int ENTANGLE = 61;
-		static final int STUN = 62;
-		static final int CHARGE = 63;
-		static final int WIND_SURGE = 64;
-		static final int TELEOTHER_FALADOR = 65;
-		static final int WATER_SURGE = 66;
-		static final int TELE_BLOCK = 67;
-		static final int BOUNTY_TARGET_TELEPORT = 68;
-		static final int LVL_6_ENCHANT = 69;
-		static final int TELEOTHER_CAMELOT = 70;
-		static final int EARTH_SURGE = 71;
-		static final int LVL_7_ENCHANT = 72;
-		static final int FIRE_SURGE = 73;
+		static final int LUMBRIDGE_HOME_TELEPORT = 5;
+		static final int WIND_STRIKE = 6;
+		static final int CONFUSE = 7;
+		static final int ENCHANT_CROSSBOW_BOLT = 8;
+		static final int WATER_STRIKE = 9;
+		static final int LVL_1_ENCHANT = 10;
+		static final int EARTH_STRIKE = 11;
+		static final int WEAKEN = 12;
+		static final int FIRE_STRIKE = 13;
+		static final int BONES_TO_BANANAS = 14;
+		static final int WIND_BOLT = 15;
+		static final int CURSE = 16;
+		static final int BIND = 17;
+		static final int LOW_LEVEL_ALCHEMY = 18;
+		static final int WATER_BOLT = 19;
+		static final int VARROCK_TELEPORT = 20;
+		static final int LVL_2_ENCHANT = 21;
+		static final int EARTH_BOLT = 22;
+		static final int LUMBRIDGE_TELEPORT = 23;
+		static final int TELEKINETIC_GRAB = 24;
+		static final int FIRE_BOLT = 25;
+		static final int FALADOR_TELEPORT = 26;
+		static final int CRUMBLE_UNDEAD = 27;
+		static final int TELEPORT_TO_HOUSE = 28;
+		static final int WIND_BLAST = 29;
+		static final int SUPERHEAT_ITEM = 30;
+		static final int CAMELOT_TELEPORT = 31;
+		static final int WATER_BLAST = 32;
+		static final int LVL_3_ENCHANT = 33;
+		static final int IBAN_BLAST = 34;
+		static final int SNARE = 35;
+		static final int MAGIC_DART = 36;
+		static final int ARDOUGNE_TELEPORT = 37;
+		static final int EARTH_BLAST = 38;
+		static final int HIGH_LEVEL_ALCHEMY = 39;
+		static final int CHARGE_WATER_ORB = 40;
+		static final int LVL_4_ENCHANT = 41;
+		static final int WATCHTOWER_TELEPORT = 42;
+		static final int FIRE_BLAST = 43;
+		static final int CHARGE_EARTH_ORB = 44;
+		static final int BONES_TO_PEACHES = 45;
+		static final int SARADOMIN_STRIKE = 46;
+		static final int CLAWS_OF_GUTHIX = 47;
+		static final int FLAMES_OF_ZAMORAK = 48;
+		static final int TROLLHEIM_TELEPORT = 49;
+		static final int WIND_WAVE = 50;
+		static final int CHARGE_FIRE_ORB = 51;
+		static final int TELEPORT_TO_APE_ATOLL = 52;
+		static final int WATER_WAVE = 53;
+		static final int CHARGE_AIR_ORB = 54;
+		static final int VULNERABILITY = 55;
+		static final int LVL_5_ENCHANT = 56;
+		static final int TELEPORT_TO_KOUREND = 57;
+		static final int EARTH_WAVE = 58;
+		static final int ENFEEBLE = 59;
+		static final int TELEOTHER_LUMBRIDGE = 60;
+		static final int FIRE_WAVE = 61;
+		static final int ENTANGLE = 62;
+		static final int STUN = 63;
+		static final int CHARGE = 64;
+		static final int WIND_SURGE = 65;
+		static final int TELEOTHER_FALADOR = 66;
+		static final int WATER_SURGE = 67;
+		static final int TELE_BLOCK = 68;
+		static final int BOUNTY_TARGET_TELEPORT = 69;
+		static final int LVL_6_ENCHANT = 70;
+		static final int TELEOTHER_CAMELOT = 71;
+		static final int EARTH_SURGE = 72;
+		static final int LVL_7_ENCHANT = 73;
+		static final int FIRE_SURGE = 74;
 
 		// ANCIENT SPELLS
-		static final int ICE_RUSH = 74;
-		static final int ICE_BLITZ = 75;
-		static final int ICE_BURST = 76;
-		static final int ICE_BARRAGE = 77;
-		static final int BLOOD_RUSH = 78;
-		static final int BLOOD_BLITZ = 79;
-		static final int BLOOD_BURST = 80;
-		static final int BLOOD_BARRAGE = 81;
-		static final int SMOKE_RUSH = 82;
-		static final int SMOKE_BLITZ = 83;
-		static final int SMOKE_BURST = 84;
-		static final int SMOKE_BARRAGE = 85;
-		static final int SHADOW_RUSH = 86;
-		static final int SHADOW_BLITZ = 87;
-		static final int SHADOW_BURST = 88;
-		static final int SHADOW_BARRAGE = 89;
-		static final int PADDEWWA_TELEPORT = 90;
-		static final int SENNTISTEN_TELEPORT = 91;
-		static final int KHARYRLL_TELEPORT = 92;
-		static final int LASSAR_TELEPORT = 93;
-		static final int DAREEYAK_TELEPORT = 94;
-		static final int CARRALLANGER_TELEPORT = 95;
-		static final int ANNAKARL_TELEPORT = 96;
-		static final int GHORROCK_TELEPORT = 97;
-		static final int EDGEVILLE_HOME_TELEPORT = 98;
-		static final int TOOLTIP = 188;
-
+		static final int ICE_RUSH = 75;
+		static final int ICE_BLITZ = 76;
+		static final int ICE_BURST = 77;
+		static final int ICE_BARRAGE = 78;
+		static final int BLOOD_RUSH = 79;
+		static final int BLOOD_BLITZ = 80;
+		static final int BLOOD_BURST = 81;
+		static final int BLOOD_BARRAGE = 82;
+		static final int SMOKE_RUSH = 83;
+		static final int SMOKE_BLITZ = 84;
+		static final int SMOKE_BURST = 85;
+		static final int SMOKE_BARRAGE = 86;
+		static final int SHADOW_RUSH = 87;
+		static final int SHADOW_BLITZ = 88;
+		static final int SHADOW_BURST = 89;
+		static final int SHADOW_BARRAGE = 90;
+		static final int PADDEWWA_TELEPORT = 91;
+		static final int SENNTISTEN_TELEPORT = 92;
+		static final int KHARYRLL_TELEPORT = 93;
+		static final int LASSAR_TELEPORT = 94;
+		static final int DAREEYAK_TELEPORT = 95;
+		static final int CARRALLANGER_TELEPORT = 96;
+		static final int ANNAKARL_TELEPORT = 97;
+		static final int GHORROCK_TELEPORT = 98;
+		static final int EDGEVILLE_HOME_TELEPORT = 99;
 
 		// LUNAR SPELLS
-		static final int LUNAR_HOME_TELEPORT = 99;
-		static final int BAKE_PIE = 100;
-		static final int CURE_PLANT = 101;
-		static final int MONSTER_EXAMINE = 102;
-		static final int NPC_CONTACT = 103;
-		static final int CURE_OTHER = 104;
-		static final int HUMIDIFY = 105;
-		static final int MOONCLAN_TELEPORT = 106;
-		static final int TELE_GROUP_MOONCLAN = 107;
-		static final int CURE_ME = 108;
-		static final int HUNTER_KIT = 109;
-		static final int WATERBIRTH_TELEPORT = 110;
-		static final int TELE_GROUP_WATERBIRTH = 111;
-		static final int CURE_GROUP = 112;
-		static final int STAT_SPY = 113;
-		static final int BARBARIAN_TELEPORT = 114;
-		static final int TELE_GROUP_BARBARIAN = 115;
-		static final int SUPERGLASS_MAKE = 116;
-		static final int TAN_LEATHER = 117;
-		static final int KHAZARD_TELEPORT = 118;
-		static final int TELE_GROUP_KHAZARD = 119;
-		static final int DREAM = 120;
-		static final int STRING_JEWELLERY = 121;
-		static final int STAT_RESTORE_POT_SHARE = 122;
-		static final int MAGIC_IMBUE = 123;
-		static final int FERTILE_SOIL = 124;
-		static final int BOOST_POTION_SHARE = 125;
-		static final int FISHING_GUILD_TELEPORT = 126;
-		static final int TELE_GROUP_FISHING_GUILD = 127;
-		static final int PLANK_MAKE = 128;
-		static final int CATHERBY_TELEPORT = 129;
-		static final int TELE_GROUP_CATHERBY = 130;
-		static final int RECHARGE_DRAGONSTONE = 131;
-		static final int ICE_PLATEAU_TELEPORT = 132;
-		static final int TELE_GROUP_ICE_PLATEAU = 133;
-		static final int ENERGY_TRANSFER = 134;
-		static final int HEAL_OTHER = 135;
-		static final int VENGEANCE_OTHER = 136;
-		static final int VENGEANCE = 137;
-		static final int HEAL_GROUP = 138;
-		static final int SPELLBOOK_SWAP = 139;
-		static final int GEOMANCY = 140;
-		static final int SPIN_FLAX = 141;
-		static final int OURANIA_TELEPORT = 142;
+		static final int LUNAR_HOME_TELEPORT = 100;
+		static final int BAKE_PIE = 101;
+		static final int CURE_PLANT = 102;
+		static final int MONSTER_EXAMINE = 103;
+		static final int NPC_CONTACT = 104;
+		static final int CURE_OTHER = 105;
+		static final int HUMIDIFY = 106;
+		static final int MOONCLAN_TELEPORT = 107;
+		static final int TELE_GROUP_MOONCLAN = 108;
+		static final int CURE_ME = 109;
+		static final int HUNTER_KIT = 110;
+		static final int WATERBIRTH_TELEPORT = 111;
+		static final int TELE_GROUP_WATERBIRTH = 112;
+		static final int CURE_GROUP = 113;
+		static final int STAT_SPY = 114;
+		static final int BARBARIAN_TELEPORT = 115;
+		static final int TELE_GROUP_BARBARIAN = 116;
+		static final int SUPERGLASS_MAKE = 117;
+		static final int TAN_LEATHER = 118;
+		static final int KHAZARD_TELEPORT = 119;
+		static final int TELE_GROUP_KHAZARD = 120;
+		static final int DREAM = 121;
+		static final int STRING_JEWELLERY = 122;
+		static final int STAT_RESTORE_POT_SHARE = 123;
+		static final int MAGIC_IMBUE = 124;
+		static final int FERTILE_SOIL = 125;
+		static final int BOOST_POTION_SHARE = 126;
+		static final int FISHING_GUILD_TELEPORT = 127;
+		static final int TELE_GROUP_FISHING_GUILD = 128;
+		static final int PLANK_MAKE = 129;
+		static final int CATHERBY_TELEPORT = 130;
+		static final int TELE_GROUP_CATHERBY = 131;
+		static final int RECHARGE_DRAGONSTONE = 132;
+		static final int ICE_PLATEAU_TELEPORT = 133;
+		static final int TELE_GROUP_ICE_PLATEAU = 134;
+		static final int ENERGY_TRANSFER = 135;
+		static final int HEAL_OTHER = 136;
+		static final int VENGEANCE_OTHER = 137;
+		static final int VENGEANCE = 138;
+		static final int HEAL_GROUP = 139;
+		static final int SPELLBOOK_SWAP = 140;
+		static final int GEOMANCY = 141;
+		static final int SPIN_FLAX = 142;
+		static final int OURANIA_TELEPORT = 143;
 
 		// ARCEUUS SPELLS
-		static final int ARCEUUS_HOME_TELEPORT = 143;
-		static final int BATTLEFRONT_TELEPORT = 178;
+		static final int ARCEUUS_HOME_TELEPORT = 144;
+		static final int BATTLEFRONT_TELEPORT = 179;
+	}
 
-		static final int FILTER_SECTION_PARENT = 181;
-		static final int FILTER_BUTTONS_PARENT = 184;
-		static final int FILTER_BUTTON_PARENT = 185;
-		static final int FILTER_BUTTON = 187;
+	static class StandardSpellBook
+	{
+		static final int LUMBRIDGE_HOME_TELEPORT = 5;
+	}
+
+	static class AncientSpellBook
+	{
+		static final int EDGEVILLE_HOME_TELEPORT = 99;
+	}
+
+	static class LunarSpellBook
+	{
+		static final int LUNAR_HOME_TELEPORT = 100;
+	}
+
+	static class ArceuusSpellBook
+	{
+		static final int ARCEUUS_HOME_TELEPORT = 144;
 	}
 
 	static class Pvp

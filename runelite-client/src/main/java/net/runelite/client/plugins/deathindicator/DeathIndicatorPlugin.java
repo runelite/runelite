@@ -47,7 +47,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -81,6 +80,7 @@ public class DeathIndicatorPlugin extends Plugin
 	static final int HIJACKED_ITEMID = 0x69696969;
 
 	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		6457, // Kourend
 		12850, // Lumbridge
 		11828, // Falador
 		12342, // Edgeville
@@ -201,7 +201,6 @@ public class DeathIndicatorPlugin extends Plugin
 	private void addBoneSubs()
 	{
 		eventBus.subscribe(ItemDespawned.class, BONES, this::onItemDespawn);
-		eventBus.subscribe(PlayerDeath.class, BONES, this::onPlayerDeath);
 		eventBus.subscribe(MenuEntryAdded.class, BONES, this::onMenuEntryAdded);
 		eventBus.subscribe(MenuOptionClicked.class, BONES, this::onMenuOptionClicked);
 		eventBus.subscribe(MenuOpened.class, BONES, this::onMenuOpened);
@@ -220,9 +219,29 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDeath(PlayerDeath death)
 	{
-		newBoneFor(death.getPlayer());
+		if (client.isInInstancedRegion() || death.getPlayer().getWorldLocation().getRegionID() == 13362)
+		{
+			return;
+		}
+
+		if (death.getPlayer() != client.getLocalPlayer())
+		{
+			newBoneFor(death.getPlayer());
+			return;
+		}
+
+		Player lp = client.getLocalPlayer();
+		if (config.permaBones())
+		{
+			newBoneFor(lp);
+		}
+
+		lastDeath = lp.getWorldLocation();
+		lastDeathWorld = client.getWorld();
+		lastDeathTime = Instant.now();
 	}
 
 	private void newBoneFor(Player player)
@@ -291,25 +310,6 @@ public class DeathIndicatorPlugin extends Plugin
 			client.addChatMessage(ChatMessageType.ITEM_EXAMINE, "", b.getExamine(), "");
 			event.consume();
 		}
-	}
-
-	@Subscribe
-	private void onLocalPlayerDeath(LocalPlayerDeath death)
-	{
-		if (client.isInInstancedRegion())
-		{
-			return;
-		}
-
-		Player lp = client.getLocalPlayer();
-		if (config.permaBones())
-		{
-			newBoneFor(lp);
-		}
-
-		lastDeath = lp.getWorldLocation();
-		lastDeathWorld = client.getWorld();
-		lastDeathTime = Instant.now();
 	}
 
 	@Subscribe

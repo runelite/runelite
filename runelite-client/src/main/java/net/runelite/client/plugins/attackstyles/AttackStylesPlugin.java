@@ -105,7 +105,7 @@ public class AttackStylesPlugin extends Plugin
 	private boolean warnForRanged;
 	private boolean warnForMagic;
 	private boolean hideAutoRetaliate;
-	private boolean removeWarnedStyles;
+	boolean removeWarnedStyles;
 
 	@Override
 	protected void startUp() throws Exception
@@ -144,7 +144,7 @@ public class AttackStylesPlugin extends Plugin
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
 
-@Nullable
+	@Nullable
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
@@ -156,7 +156,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
 		{
