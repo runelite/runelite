@@ -30,7 +30,7 @@ import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-public class Raid
+class Raid
 {
 	@Getter
 	private final RaidRoom[] rooms = new RaidRoom[16];
@@ -38,7 +38,7 @@ public class Raid
 	@Getter
 	private Layout layout;
 
-	public void updateLayout(Layout layout)
+	void updateLayout(Layout layout)
 	{
 		if (layout == null)
 		{
