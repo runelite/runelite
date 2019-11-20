@@ -28,6 +28,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
+import net.runelite.api.ObjectID;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -43,12 +44,10 @@ import java.util.Set;
 @PluginDescriptor(
 	name = "Tower of Life",
 	description = "Show icons for the altars in Tower of Life",
-	tags = {"overlay", "minigame", "tower"}
+	tags = {"overlay", "minigame", "tower", "life", "creature", "creation"}
 )
 public class TowerOfLifePlugin extends Plugin
 {
-	private static final int TOWER_OF_LIFE_ALTAR_ID = 21893;
-
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -74,7 +73,7 @@ public class TowerOfLifePlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		if (gameObject.getId() == TOWER_OF_LIFE_ALTAR_ID)
+		if (gameObject.getId() == ObjectID.SYMBOL_OF_LIFE)
 		{
 			towerOfLifeAltars.add(gameObject);
 		}
@@ -84,7 +83,7 @@ public class TowerOfLifePlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		if (gameObject.getId() == TOWER_OF_LIFE_ALTAR_ID)
+		if (gameObject.getId() == ObjectID.SYMBOL_OF_LIFE)
 		{
 			towerOfLifeAltars.remove(gameObject);
 		}
