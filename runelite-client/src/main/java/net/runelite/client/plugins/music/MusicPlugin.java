@@ -25,10 +25,12 @@
  */
 package net.runelite.client.plugins.music;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -96,6 +98,10 @@ public class MusicPlugin extends Plugin
 	private Collection<Widget> tracks;
 
 	private MusicState currentMusicFilter = MusicState.ALL;
+
+	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.TELEPORT_VWOOP
+	);
 
 	@Override
 	protected void startUp()
@@ -565,8 +571,8 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source != client.getLocalPlayer()
-			&& (source instanceof Player || soundID == 200)    //200 is the teleport sound effect ID. this exception
-			&& musicConfig.muteOtherAreaSounds())              //exists because teleport's source actor is always null.
+			&& (source instanceof Player || SOURCELESS_PLAYER_SOUNDS.contains(soundID))
+			&& musicConfig.muteOtherAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
 		}
@@ -576,7 +582,7 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source == null
-			&& soundID != 200
+			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundID)
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
