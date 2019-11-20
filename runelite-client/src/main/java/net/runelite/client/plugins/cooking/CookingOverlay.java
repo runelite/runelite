@@ -29,12 +29,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
-import java.time.Duration;
 import java.time.Instant;
+import java.time.Duration;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -50,6 +51,7 @@ class CookingOverlay extends Overlay
 {
 	private static final int COOK_TIMEOUT = 3;
 	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
+	static final String COOKING_RESET = "Reset";
 
 	private final Client client;
 	private final CookingPlugin plugin;
@@ -67,12 +69,13 @@ class CookingOverlay extends Overlay
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		CookingSession session = plugin.getCookingSession();
+		CookingSession session = plugin.getSession();
 		if (session == null)
 		{
 			return null;

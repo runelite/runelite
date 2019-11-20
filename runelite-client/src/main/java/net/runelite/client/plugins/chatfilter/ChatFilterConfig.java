@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Magic fTail
+ * Copyright (c) 2019, osrs-music-map <osrs-music-map@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,5 +63,38 @@ public interface ChatFilterConfig extends Config
 	default String filteredRegex()
 	{
 		return "";
+	}
+
+	@ConfigItem(
+		keyName = "filterFriends",
+		name = "Filter Friends",
+		description = "Filter your friends' messages",
+		position = 4
+	)
+	default boolean filterFriends()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "filterClan",
+		name = "Filter Clan Chat Members",
+		description = "Filter your clan chat members' messages",
+		position = 5
+	)
+	default boolean filterClan()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "filterLogin",
+		name = "Filter Logged In/Out Messages",
+		description = "Filter your private chat to remove logged in/out messages",
+		position = 6
+	)
+	default boolean filterLogin()
+	{
+		return false;
 	}
 }

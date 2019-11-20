@@ -36,7 +36,7 @@ import net.runelite.api.events.FocusChanged;
  * For low powered computers, the RS client is often throttled by the hardware or OS and draws at 25-30 fps.
  * The nano timer is not used in this scenario.
  * Instead to catch up the RS client runs several cycles before drawing, thus maintaining 50 cycles / second.
- *
+ * <p>
  * Enforcing FPS in the draw code does not impact the client engine's ability to run including its audio,
  * even when forced to 1 FPS with this plugin.
  */
@@ -67,7 +67,13 @@ public class FpsDrawListener implements Runnable
 	void reloadConfig()
 	{
 		lastMillis = System.currentTimeMillis();
-		targetDelay = 1000 / Math.max(1, config.maxFps());
+
+		int fps = config.limitFpsUnfocused() && !isFocused
+			? config.maxFpsUnfocused()
+			: config.maxFps();
+
+		targetDelay = 1000 / Math.max(1, fps);
+		
 		sleepDelay = targetDelay;
 
 		for (int i = 0; i < SAMPLE_SIZE; i++)
@@ -79,18 +85,18 @@ public class FpsDrawListener implements Runnable
 	void onFocusChanged(FocusChanged event)
 	{
 		this.isFocused = event.isFocused();
+		reloadConfig(); // load new delay
 	}
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return config.limitFps()
+			|| (config.limitFpsUnfocused() && !isFocused);
 	}
 
 	@Override
 	public void run()
 	{
-
 		if (!isEnforced())
 		{
 			return;

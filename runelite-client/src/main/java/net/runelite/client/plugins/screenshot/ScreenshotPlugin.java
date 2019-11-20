@@ -64,9 +64,8 @@ import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -235,6 +234,8 @@ public class ScreenshotPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
+
+		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
@@ -243,16 +244,6 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN
-			&& reportButton == null)
-		{
-			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
-		}
 	}
 
 	@Subscribe
@@ -288,9 +279,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	public void onPlayerDeath(PlayerDeath playerDeath)
 	{
-		if (config.screenshotPlayerDeath())
+		if (playerDeath.getPlayer() == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot("Death " + format(new Date()));
 		}
@@ -460,7 +451,6 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				takeScreenshot(fileName);
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
@@ -625,15 +615,15 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			final EnumSet<WorldType> worldTypes = client.getWorldType();
-			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
-			final boolean isDmmWorld = dmm || sdmm || dmmt;
 
 			String playerDir = client.getLocalPlayer().getName();
-			if (isDmmWorld)
+			if (worldTypes.contains(WorldType.DEADMAN))
 			{
 				playerDir += "-Deadman";
+			}
+			else if (worldTypes.contains(WorldType.LEAGUE))
+			{
+				playerDir += "-League";
 			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
 		}
@@ -648,11 +638,31 @@ public class ScreenshotPlugin extends Plugin
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
 
-			ImageIO.write(screenshot, "PNG", screenshotFile);
+			// To make sure that screenshots don't get overwritten, check if file exists,
+			// and if it does create file with same name and suffix.
+			int i = 1;
+			while (screenshotFile.exists())
+			{
+				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+			}
 
-			if (config.uploadScreenshot())
+			ImageIO.write(screenshot, "PNG", screenshotFile);
+			UploadStyle uploadStyle = config.uploadScreenshot();
+
+			if (uploadStyle == UploadStyle.IMGUR)
 			{
 				uploadScreenshot(screenshotFile);
+			}
+			else if (uploadStyle == UploadStyle.CLIPBOARD)
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+				clipboard.setContents(transferableBufferedImage, null);
+
+				if (config.notifyWhenTaken())
+				{
+					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+				}
 			}
 			else if (config.notifyWhenTaken())
 			{

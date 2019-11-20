@@ -32,20 +32,21 @@ import net.runelite.client.config.ConfigItem;
 public interface FpsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "limitMode",
-		name = "Limit Mode",
-		description = "Stay at or under the target frames per second even when in this mode",
+		keyName = "limitFps",
+		name = "Limit Global FPS",
+		description = "Global FPS limit in effect regardless of<br>" +
+			"whether window is in focus or not",
 		position = 1
 	)
-	default FpsLimitMode limitMode()
+	default boolean limitFps()
 	{
-		return FpsLimitMode.NEVER;
+		return false;
 	}
 
 	@ConfigItem(
 		keyName = "maxFps",
-		name = "FPS target",
-		description = "Desired max frames per second",
+		name = "Global FPS target",
+		description = "Desired max global frames per second",
 		position = 2
 	)
 	default int maxFps()
@@ -54,10 +55,32 @@ public interface FpsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "limitFpsUnfocused",
+		name = "Limit FPS unfocused",
+		description = "FPS limit while window is out of focus",
+		position = 3
+	)
+	default boolean limitFpsUnfocused()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "maxFpsUnfocused",
+		name = "Unfocused FPS target",
+		description = "Desired max frames per second for unfocused",
+		position = 4
+	)
+	default int maxFpsUnfocused()
+	{
+		return 50;
+	}
+
+	@ConfigItem(
 		keyName = "drawFps",
 		name = "Draw FPS indicator",
 		description = "Show a number in the corner for the current FPS",
-		position = 3
+		position = 5
 	)
 	default boolean drawFps()
 	{

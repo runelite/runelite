@@ -99,7 +99,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapContract()
 	{
-		return true; 
+		return true;
 	}
 
 	@ConfigItem(
@@ -122,7 +122,7 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(		
+	@ConfigItem(
 		keyName = "swapDarkMage",
 		name = "Repairs",
 		description = "Swap Talk-to with Repairs for Dark Mage"
@@ -163,6 +163,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHardWoodGrove",
+		name = "Hardwood Grove",
+		description = "Swap Quick-Pay(100) and Send-Parcel at Hardwood Grove"
+	)
+	default boolean swapHardWoodGrove()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
@@ -183,13 +193,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapPickpocket",
-		name = "Pickpocket on H.A.M.",
-		description = "Swap Talk-to with Pickpocket on H.A.M members"
+		keyName = "swapHouseAdvertisement",
+		name = "House Advertisement",
+		description = "Swap View with Add-House or Visit-Last on House Advertisement board"
 	)
-	default boolean swapPickpocket()
+	default HouseAdvertisementMode swapHouseAdvertisement()
 	{
-		return true;
+		return HouseAdvertisementMode.VIEW;
 	}
 
 	@ConfigItem(
@@ -280,5 +290,45 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapTravel()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapEnchant",
+		name = "Enchant",
+		description = "Swap Talk-to with Enchant for Eluned"
+	)
+	default boolean swapEnchant()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapTeleportSpell",
+		name = "Shift-click teleport spells",
+		description = "Swap teleport spells that have a second destination on shift"
+	)
+	default boolean swapTeleportSpell()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapStartMinigame",
+		name = "Pyramid Plunder Start-minigame",
+		description = "Swap Talk-to with Start-minigame at the Guardian Mummy"
+	)
+	default boolean swapStartMinigame()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapQuickleave",
+		name = "Quick-Leave",
+		description = "Swap Leave Tomb with Quick-Leave at Pyramid Plunder"
+	)
+	default boolean swapQuickLeave()
+	{
+		return false;
 	}
 }

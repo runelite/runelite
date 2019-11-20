@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +38,8 @@ import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -84,6 +87,24 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.bindingNecklace();
 		}
+		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
+		{
+			if (!config.showExplorerRingCharges())
+			{
+				return;
+			}
+
+			charges = config.explorerRing();
+		}
+		else if (itemId == ItemID.RING_OF_FORGING)
+		{
+			if (!config.showRingOfForgingCount())
+			{
+				return;
+			}
+
+			charges = config.ringOfForging();
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
@@ -99,6 +120,8 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				|| (type == WATERCAN && !config.showWateringCanCharges())
 				|| (type == WATERSKIN && !config.showWaterskinCharges())
 				|| (type == BELLOWS && !config.showBellowCharges())
+				|| (type == FRUIT_BASKET && !config.showBasketCharges())
+				|| (type == SACK && !config.showSackCharges())
 				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
 			{
 				return;
@@ -109,7 +132,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
 		textComponent.setColor(itemChargePlugin.getColor(charges));
 		textComponent.render(graphics);
@@ -119,6 +142,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
+			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount();
 	}
 }

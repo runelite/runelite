@@ -24,9 +24,9 @@
  */
 package net.runelite.api.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Point;
+import net.runelite.api.geometry.SimplePolygon;
 
 /**
  * Provides utility methods for computing the convex hull of a list of
@@ -41,92 +41,147 @@ public class Jarvis
 	/**
 	 * Computes and returns the convex hull of the passed points.
 	 * <p>
-	 * The size of the list must be at least 4, otherwise this method will
+	 * The size of the list must be at least 3, otherwise this method will
 	 * return null.
 	 *
 	 * @param points list of points
 	 * @return list containing the points part of the convex hull
 	 */
+	@Deprecated
 	public static List<Point> convexHull(List<Point> points)
 	{
-		if (points.size() < 3)
+		int[] xs = new int[points.size()];
+		int[] ys = new int[xs.length];
+		for (int i = 0; i < xs.length; i++)
+		{
+			Point p = points.get(i);
+			xs[i] = p.getX();
+			ys[i] = p.getY();
+		}
+
+		SimplePolygon poly = convexHull(xs, ys);
+		if (poly == null)
 		{
 			return null;
 		}
 
-		List<Point> ch = new ArrayList<>();
+		return poly.toRuneLitePointList();
+	}
+
+	/**
+	 * Computes and returns the convex hull of the passed points.
+	 * <p>
+	 * The size of the list must be at least 3, otherwise this method will
+	 * return null.
+	 *
+	 * @return a shape the points part of the convex hull
+	 */
+	public static SimplePolygon convexHull(int[] xs, int[] ys)
+	{
+		int length = xs.length;
+
+		// remove any invalid entries
+		{
+			int i = 0, offset = 0;
+			for (; i < length; i++)
+			{
+				if (xs[i] == Integer.MIN_VALUE)
+				{
+					offset++;
+					i++;
+					break;
+				}
+			}
+			for (; i < length; i++)
+			{
+				if (xs[i] == Integer.MIN_VALUE)
+				{
+					offset++;
+					continue;
+				}
+				xs[i - offset] = xs[i];
+				ys[i - offset] = ys[i];
+			}
+			length -= offset;
+		}
+
+		if (length < 3)
+		{
+			return null;
+		}
 
 		// find the left most point
-		Point left = findLeftMost(points);
+		int left = findLeftMost(xs, ys, length);
 
 		// current point we are on
-		Point current = left;
+		int current = left;
+
+		SimplePolygon out = new SimplePolygon(new int[16], new int[16], 0);
 
 		do
 		{
-			ch.add(current);
-			assert ch.size() <= points.size() : "hull has more points than graph";
-			if (ch.size() > points.size())
+			int cx = xs[current];
+			int cy = ys[current];
+			out.pushRight(cx, cy);
+
+			if (out.size() > length)
 			{
-				// Just to make sure we never somehow get stuck in this loop
 				return null;
 			}
 
 			// the next point - all points are to the right of the
 			// line between current and next
-			Point next = null;
+			int next = 0;
+			int nx = xs[next];
+			int ny = ys[next];
 
-			for (Point p : points)
+			for (int i = 1; i < length; i++)
 			{
-				if (next == null)
+				long cp = crossProduct(cx, cy, xs[i], ys[i], nx, ny);
+				if (cp > 0 || (cp == 0 && square(cx - xs[i]) + square(cy - ys[i]) > square(cx - nx) + square(cy - ny)))
 				{
-					next = p;
-					continue;
+					next = i;
+					nx = xs[next];
+					ny = ys[next];
 				}
-
-				long cp = crossProduct(current, p, next);
-				if (cp > 0 || (cp == 0 && current.distanceTo(p) > current.distanceTo(next)))
-				{
-					next = p;
-				}
-			}
-
-			// Points can be null if they are behind or very close to the camera.
-			if (next == null)
-			{
-				return null;
 			}
 
 			current = next;
 		}
 		while (current != left);
 
-		return ch;
+		return out;
 	}
 
-	private static Point findLeftMost(List<Point> points)
+	private static int square(int x)
 	{
-		Point left = null;
+		return x * x;
+	}
 
-		for (Point p : points)
+	private static int findLeftMost(int[] xs, int[] ys, int length)
+	{
+		int idx = 0;
+		int x = xs[idx];
+		int y = ys[idx];
+
+		for (int i = 1; i < length; i++)
 		{
-			if (left == null || p.getX() < left.getX())
+			int ix = xs[i];
+			if (ix < x || ix == x && ys[i] < y)
 			{
-				left = p;
-			}
-			else if (p.getX() == left.getX() && p.getY() < left.getY())
-			{
-				left = p;
+				idx = i;
+				x = xs[idx];
+				y = ys[idx];
 			}
 		}
 
-		return left;
+		return idx;
 	}
 
-	private static long crossProduct(Point p, Point q, Point r)
+	private static long crossProduct(int px, int py, int qx, int qy, int rx, int ry)
 	{
-		long val = (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
-			- (long)(q.getX() - p.getX()) * (r.getY() - q.getY());
+		long val = (long) (qy - py) * (rx - qx)
+			- (long) (qx - px) * (ry - qy);
 		return val;
 	}
 }

@@ -44,7 +44,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		keyName = "showAntipoison",
 		name = "Antipoison/Venom timers",
-		description = "Configures whether timers for Antipoision, Antidoe, Antivenom are is displayed"
+		description = "Configures whether timers for Antipoison, Antidote and Antivenom are displayed"
 	)
 	default boolean showAntiPoison()
 	{
@@ -87,6 +87,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether prayer enhance timer is displayed"
 	)
 	default boolean showPrayerEnhance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed"
+	)
+	default boolean showDivine()
 	{
 		return true;
 	}
@@ -197,6 +207,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether Abyssal Sire stun timer is displayed"
 	)
 	default boolean showAbyssalSireStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDfsSpecial",
+		name = "Dragonfire Shield special timer",
+		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
+	)
+	default boolean showDFSSpecial()
 	{
 		return true;
 	}

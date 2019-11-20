@@ -24,14 +24,19 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +44,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
@@ -47,24 +54,33 @@ import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
-import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import static net.runelite.client.util.Text.sanitize;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.chat.ChatClient;
+import net.runelite.http.api.chat.LayoutRoom;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -79,9 +95,9 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final String LAYOUT_COMMAND = "!layout";
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -109,6 +125,21 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
+	private WSClient ws;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ChatClient chatClient;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -148,11 +179,13 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
 		overlayManager.remove(overlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
@@ -193,7 +226,8 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+				timer = new RaidsTimer(this, Instant.now());
+				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -243,6 +277,17 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onOverlayMenuClicked(final OverlayMenuClicked event)
+	{
+		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+			event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION) &&
+			event.getOverlay() == overlay)
+		{
+			sendRaidLayoutMessage();
+		}
+	}
+
 	private void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -276,9 +321,15 @@ public class RaidsPlugin extends Plugin
 				}
 
 				raid.updateLayout(layout);
-				RotationSolver.solve(raid.getCombatRooms());
+				RaidRoom[] rooms = raid.getCombatRooms();
+				RotationSolver.solve(rooms);
+				raid.setCombatRooms(rooms);
 				overlay.setScoutOverlayShown(true);
-				sendRaidLayoutMessage();
+
+				if (config.layoutMessage())
+				{
+					sendRaidLayoutMessage();
+				}
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -295,24 +346,32 @@ public class RaidsPlugin extends Plugin
 
 	private void sendRaidLayoutMessage()
 	{
-		if (!config.layoutMessage())
-		{
-			return;
-		}
-
 		final String layout = getRaid().getLayout().toCodeString();
 		final String rooms = getRaid().toRoomString();
 		final String raidData = "[" + layout + "]: " + rooms;
 
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(raidData)
-				.build())
-			.build());
+		final String layoutMessage = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(raidData)
+			.build();
+
+		final PartyMember localMember = party.getLocalMember();
+
+		if (party.getMembers().isEmpty() || localMember == null)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(layoutMessage)
+				.build());
+		}
+		else
+		{
+			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
+			message.setMemberId(localMember.getMemberId());
+			ws.send(message);
+		}
 	}
 
 	private void updateInfoBoxState()
@@ -367,45 +426,19 @@ public class RaidsPlugin extends Plugin
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			list.addAll(Text.fromCSV(input.toLowerCase()));
 		}
 	}
 
 	int getRotationMatches()
 	{
-		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		RaidRoom[] combatRooms = raid.getCombatRooms();
+		String rotation = Arrays.stream(combatRooms)
+			.map(RaidRoom::getName)
+			.map(String::toLowerCase)
+			.collect(Collectors.joining(","));
 
-		if (rotationWhitelist.contains(rotation))
-		{
-			return bosses.length;
-		}
-
-		for (String whitelisted : rotationWhitelist)
-		{
-			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
-
-			for (int i = 0; i < whitelistedBosses.length; i++)
-			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
-				{
-					matches++;
-				}
-				else
-				{
-					matches = 0;
-					break;
-				}
-			}
-
-			if (matches >= 2)
-			{
-				return matches;
-			}
-		}
-
-		return 0;
+		return rotationWhitelist.contains(rotation) ? combatRooms.length : 0;
 	}
 
 	private Point findLobbyBase()
@@ -509,97 +542,152 @@ public class RaidsPlugin extends Plugin
 
 	private RaidRoom determineRoom(Tile base)
 	{
-		RaidRoom room = new RaidRoom(base, RaidRoom.Type.EMPTY);
 		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getSceneLocation().getX()) / 8][base.getSceneLocation().getY() / 8];
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)
 		{
-			return room;
+			return RaidRoom.EMPTY;
 		}
 
 		switch (template)
 		{
 			case RAIDS_LOBBY:
 			case RAIDS_START:
-				room.setType(RaidRoom.Type.START);
-				break;
+				return RaidRoom.START;
 
 			case RAIDS_END:
-				room.setType(RaidRoom.Type.END);
-				break;
+				return RaidRoom.END;
 
 			case RAIDS_SCAVENGERS:
 			case RAIDS_SCAVENGERS2:
-				room.setType(RaidRoom.Type.SCAVENGERS);
-				break;
+				return RaidRoom.SCAVENGERS;
 
 			case RAIDS_SHAMANS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.SHAMANS);
-				break;
+				return RaidRoom.SHAMANS;
 
 			case RAIDS_VASA:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VASA);
-				break;
+				return RaidRoom.VASA;
 
 			case RAIDS_VANGUARDS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VANGUARDS);
-				break;
+				return RaidRoom.VANGUARDS;
 
 			case RAIDS_ICE_DEMON:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.ICE_DEMON);
-				break;
+				return RaidRoom.ICE_DEMON;
 
 			case RAIDS_THIEVING:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.THIEVING);
-				break;
+				return RaidRoom.THIEVING;
 
 			case RAIDS_FARMING:
 			case RAIDS_FARMING2:
-				room.setType(RaidRoom.Type.FARMING);
-				break;
+				return RaidRoom.FARMING;
 
 			case RAIDS_MUTTADILES:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.MUTTADILES);
-				break;
+				return RaidRoom.MUTTADILES;
 
 			case RAIDS_MYSTICS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.MYSTICS);
-				break;
+				return RaidRoom.MYSTICS;
 
 			case RAIDS_TEKTON:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.TEKTON);
-				break;
+				return RaidRoom.TEKTON;
 
 			case RAIDS_TIGHTROPE:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.TIGHTROPE);
-				break;
+				return RaidRoom.TIGHTROPE;
 
 			case RAIDS_GUARDIANS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.GUARDIANS);
-				break;
+				return RaidRoom.GUARDIANS;
 
 			case RAIDS_CRABS:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.CRABS);
-				break;
+				return RaidRoom.CRABS;
 
 			case RAIDS_VESPULA:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VESPULA);
-				break;
+				return RaidRoom.VESPULA;
+
+			default:
+				return RaidRoom.EMPTY;
+		}
+	}
+
+	private void lookupRaid(ChatMessage chatMessage, String s)
+	{
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(chatMessage.getName());
 		}
 
-		return room;
+		LayoutRoom[] layout;
+		try
+		{
+			layout = chatClient.getLayout(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup layout", ex);
+			return;
+		}
+
+		if (layout == null || layout.length == 0)
+		{
+			return;
+		}
+
+		String layoutMessage = Joiner.on(", ").join(Arrays.stream(layout)
+			.map(l -> RaidRoom.valueOf(l.name()))
+			.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
+			.map(RaidRoom::getName)
+			.toArray());
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(layoutMessage)
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean submitRaid(ChatInput chatInput, String s)
+	{
+		if (raid == null)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+		List<RaidRoom> orderedRooms = raid.getOrderedRooms();
+
+		LayoutRoom[] layoutRooms = orderedRooms.stream()
+			.map(room -> LayoutRoom.valueOf(room.name()))
+			.toArray(LayoutRoom[]::new);
+
+		scheduledExecutorService.execute(() ->
+		{
+			try
+			{
+				chatClient.submitLayout(playerName, layoutRooms);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit layout", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 }

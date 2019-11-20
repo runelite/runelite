@@ -38,7 +38,9 @@ class LootTrackerItem
 	@Getter
 	private final int quantity;
 	@Getter
-	private final long price;
+	private final long gePrice;
+	@Getter
+	private final long haPrice;
 	@Getter
 	@Setter
 	private boolean ignored;

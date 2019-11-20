@@ -61,7 +61,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
@@ -167,6 +167,7 @@ public class ConfigManager
 			return;
 		}
 
+		handler.invalidate();
 		properties.clear();
 
 		for (ConfigEntry entry : configuration.getConfig())
@@ -275,6 +276,7 @@ public class ConfigManager
 
 	private synchronized void loadFromFile()
 	{
+		handler.invalidate();
 		properties.clear();
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
@@ -391,6 +393,7 @@ public class ConfigManager
 		}
 
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{
@@ -421,6 +424,7 @@ public class ConfigManager
 		}
 
 		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+		handler.invalidate();
 
 		synchronized (pendingChanges)
 		{
@@ -503,7 +507,9 @@ public class ConfigManager
 
 			if (!override)
 			{
-				String current = getConfiguration(group.value(), item.keyName());
+				// This checks if it is set and is also unmarshallable to the correct type; so
+				// we will overwrite invalid config values with the default
+				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -523,7 +529,10 @@ public class ConfigManager
 
 			String current = getConfiguration(group.value(), item.keyName());
 			String valueString = objectToString(defaultValue);
-			if (Objects.equals(current, valueString))
+			// null and the empty string are treated identically in sendConfig and treated as an unset
+			// If a config value defaults to "" and the current value is null, it will cause an extra
+			// unset to be sent, so treat them as equal
+			if (Objects.equals(current, valueString) || (Strings.isNullOrEmpty(current) && Strings.isNullOrEmpty(valueString)))
 			{
 				continue; // already set to the default value
 			}

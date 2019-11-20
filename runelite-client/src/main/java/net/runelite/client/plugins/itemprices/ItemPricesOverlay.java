@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -44,16 +45,14 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 class ItemPricesOverlay extends Overlay
 {
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
+	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
 
 	private final Client client;
 	private final ItemPricesConfig config;
@@ -96,6 +95,11 @@ class ItemPricesOverlay extends Overlay
 		// Tooltip action type handling
 		switch (action)
 		{
+			case ITEM_USE_ON_WIDGET:
+				if (!config.showWhileAlching() || !menuEntry.getOption().equals("Cast") || !menuEntry.getTarget().contains("High Level Alchemy"))
+				{
+					break;
+				}
 			case WIDGET_DEFAULT:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
@@ -106,6 +110,11 @@ class ItemPricesOverlay extends Overlay
 				// Item tooltip values
 				switch (groupId)
 				{
+					case WidgetID.EXPLORERS_RING_ALCH_GROUP_ID:
+						if (!config.showWhileAlching())
+						{
+							return null;
+						}
 					case WidgetID.INVENTORY_GROUP_ID:
 						if (config.hideInventory())
 						{
@@ -139,7 +148,7 @@ class ItemPricesOverlay extends Overlay
 		ItemContainer container = null;
 
 		// Inventory item
-		if (widgetId == INVENTORY_ITEM_WIDGETID || widgetId == BANK_INVENTORY_ITEM_WIDGETID)
+		if (widgetId == INVENTORY_ITEM_WIDGETID || widgetId == BANK_INVENTORY_ITEM_WIDGETID || widgetId == EXPLORERS_RING_ITEM_WIDGETID)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
 		}
@@ -174,11 +183,11 @@ class ItemPricesOverlay extends Overlay
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
 		{
-			return StackFormatter.formatNumber(qty) + " gp";
+			return QuantityFormatter.formatNumber(qty) + " gp";
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return StackFormatter.formatNumber(qty * 1000) + " gp";
+			return QuantityFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
 		ItemComposition itemDef = itemManager.getItemComposition(id);
@@ -197,6 +206,7 @@ class ItemPricesOverlay extends Overlay
 		int gePrice = 0;
 		int haPrice = 0;
 		int haProfit = 0;
+		final int itemHaPrice = Math.round(itemDef.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (config.showGEPrice())
 		{
@@ -204,11 +214,11 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (config.showHAValue())
 		{
-			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
+			haPrice = itemHaPrice;
 		}
-		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
+		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
 		{
-			haProfit = calculateHAProfit(haPrice, gePrice);
+			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
 
 		if (gePrice > 0 || haPrice > 0)
@@ -224,12 +234,12 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(StackFormatter.quantityToStackSize(gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(gePrice))
+					.append(QuantityFormatter.quantityToStackSize(gePrice))
 					.append(" ea)");
 			}
 		}
@@ -241,12 +251,12 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(StackFormatter.quantityToStackSize(haValue * qty))
+				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(haValue))
+					.append(QuantityFormatter.quantityToStackSize(haValue))
 					.append(" ea)");
 			}
 		}
