@@ -564,7 +564,7 @@ public class MusicPlugin extends Plugin
 	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
-		int soundID = areaSoundEffectPlayed.getSoundId();
+		int soundId = areaSoundEffectPlayed.getSoundId();
 		if (source == client.getLocalPlayer()
 			&& musicConfig.muteOwnAreaSounds())
 		{
