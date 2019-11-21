@@ -41,7 +41,7 @@ public abstract class RSSpriteMixin implements RSSprite
 	private static RSClient client;
 
 	@Shadow("hdMinimapEnabled")
-	private boolean hdMinimapEnabled;
+	private static boolean hdMinimapEnabled;
 
 	@Inject
 	@Override
