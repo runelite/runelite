@@ -802,17 +802,17 @@ public abstract class RSSceneMixin implements RSScene
 		if (shape != 0 && shape != 1)
 		{
 			Tile tile = getTiles()[z][x][y];
-			TileModel tileModel = tile.getTileModel();
+			TileModel sceneTileModel = tile.getTileModel();
 
-			tileModel.setUnderlaySwColor(underlaySwColor);
-			tileModel.setUnderlayNwColor(underlayNwColor);
-			tileModel.setUnderlayNeColor(underlayNeColor);
-			tileModel.setUnderlaySeColor(underlaySeColor);
+			sceneTileModel.setUnderlaySwColor(underlaySwColor);
+			sceneTileModel.setUnderlayNwColor(underlayNwColor);
+			sceneTileModel.setUnderlayNeColor(underlayNeColor);
+			sceneTileModel.setUnderlaySeColor(underlaySeColor);
 
-			tileModel.setOverlaySwColor(overlaySwColor);
-			tileModel.setOverlayNwColor(overlayNwColor);
-			tileModel.setOverlayNeColor(overlayNeColor);
-			tileModel.setOverlaySeColor(overlaySeColor);
+			sceneTileModel.setOverlaySwColor(overlaySwColor);
+			sceneTileModel.setOverlayNwColor(overlayNwColor);
+			sceneTileModel.setOverlayNeColor(overlayNeColor);
+			sceneTileModel.setOverlaySeColor(overlaySeColor);
 		}
 	}
 
@@ -830,23 +830,23 @@ public abstract class RSSceneMixin implements RSScene
 		Tile tile = getTiles()[z][x][y];
 		if (tile != null)
 		{
-			TilePaint tilePaint = tile.getTilePaint();
-			if (tilePaint != null)
+			TilePaint sceneTilePaint = tile.getTilePaint();
+			if (sceneTilePaint != null)
 			{
-				int rgb = tilePaint.getRBG();
-				if (tilePaint.getSwColor() != INVALID_HSL_COLOR)
+				int rgb = sceneTilePaint.getRBG();
+				if (sceneTilePaint.getSwColor() != INVALID_HSL_COLOR)
 				{
 					// hue and saturation
-					int hs = tilePaint.getSwColor() & ~0x7F;
-					int seLightness = tilePaint.getSeColor() & 0x7F;
-					int neLightness = tilePaint.getNeColor() & 0x7F;
-					int southDeltaLightness = (tilePaint.getSwColor() & 0x7F) - seLightness;
-					int northDeltaLightness = (tilePaint.getNwColor() & 0x7F) - neLightness;
+					int hs = sceneTilePaint.getSwColor() & ~0x7F;
+					int seLightness = sceneTilePaint.getSeColor() & 0x7F;
+					int neLightness = sceneTilePaint.getNeColor() & 0x7F;
+					int southDeltaLightness = (sceneTilePaint.getSwColor() & 0x7F) - seLightness;
+					int northDeltaLightness = (sceneTilePaint.getNwColor() & 0x7F) - neLightness;
 					seLightness <<= 2;
 					neLightness <<= 2;
 					for (int i = 0; i < 4; i++)
 					{
-						if (tilePaint.getTexture() == -1)
+						if (sceneTilePaint.getTexture() == -1)
 						{
 							pixels[pixelOffset] = colorPalette[hs | seLightness >> 2];
 							pixels[pixelOffset + 1] = colorPalette[hs | seLightness * 3 + neLightness >> 4];
@@ -884,31 +884,31 @@ public abstract class RSSceneMixin implements RSScene
 			}
 			else
 			{
-				TileModel tileModel = tile.getTileModel();
-				if (tileModel != null)
+				TileModel sceneTileModel = tile.getTileModel();
+				if (sceneTileModel != null)
 				{
-					int shape = tileModel.getShape();
-					int rotation = tileModel.getRotation();
-					int overlayRgb = tileModel.getModelOverlay();
-					int underlayRgb = tileModel.getModelUnderlay();
+					int shape = sceneTileModel.getShape();
+					int rotation = sceneTileModel.getRotation();
+					int overlayRgb = sceneTileModel.getModelOverlay();
+					int underlayRgb = sceneTileModel.getModelUnderlay();
 					int[] points = getTileShape2D()[shape];
 					int[] indices = getTileRotation2D()[rotation];
 
 					int shapeOffset = 0;
 
-					if (tileModel.getOverlaySwColor() != INVALID_HSL_COLOR)
+					if (sceneTileModel.getOverlaySwColor() != INVALID_HSL_COLOR)
 					{
 						// hue and saturation
-						int hs = tileModel.getOverlaySwColor() & ~0x7F;
-						int seLightness = tileModel.getOverlaySeColor() & 0x7F;
-						int neLightness = tileModel.getOverlayNeColor() & 0x7F;
-						int southDeltaLightness = (tileModel.getOverlaySwColor() & 0x7F) - seLightness;
-						int northDeltaLightness = (tileModel.getOverlayNwColor() & 0x7F) - neLightness;
+						int hs = sceneTileModel.getOverlaySwColor() & ~0x7F;
+						int seLightness = sceneTileModel.getOverlaySeColor() & 0x7F;
+						int neLightness = sceneTileModel.getOverlayNeColor() & 0x7F;
+						int southDeltaLightness = (sceneTileModel.getOverlaySwColor() & 0x7F) - seLightness;
+						int northDeltaLightness = (sceneTileModel.getOverlayNwColor() & 0x7F) - neLightness;
 						seLightness <<= 2;
 						neLightness <<= 2;
 						for (int i = 0; i < 4; i++)
 						{
-							if (tileModel.getTriangleTextureId() == null)
+							if (sceneTileModel.getTriangleTextureId() == null)
 							{
 								if (points[indices[shapeOffset++]] != 0)
 								{
@@ -962,15 +962,15 @@ public abstract class RSSceneMixin implements RSScene
 
 							pixelOffset += width;
 						}
-						if (underlayRgb != 0 && tileModel.getUnderlaySwColor() != INVALID_HSL_COLOR)
+						if (underlayRgb != 0 && sceneTileModel.getUnderlaySwColor() != INVALID_HSL_COLOR)
 						{
 							pixelOffset -= width << 2;
 							shapeOffset -= 16;
-							hs = tileModel.getUnderlaySwColor() & ~0x7F;
-							seLightness = tileModel.getUnderlaySeColor() & 0x7F;
-							neLightness = tileModel.getUnderlayNeColor() & 0x7F;
-							southDeltaLightness = (tileModel.getUnderlaySwColor() & 0x7F) - seLightness;
-							northDeltaLightness = (tileModel.getUnderlayNwColor() & 0x7F) - neLightness;
+							hs = sceneTileModel.getUnderlaySwColor() & ~0x7F;
+							seLightness = sceneTileModel.getUnderlaySeColor() & 0x7F;
+							neLightness = sceneTileModel.getUnderlayNeColor() & 0x7F;
+							southDeltaLightness = (sceneTileModel.getUnderlaySwColor() & 0x7F) - seLightness;
+							northDeltaLightness = (sceneTileModel.getUnderlayNwColor() & 0x7F) - neLightness;
 							seLightness <<= 2;
 							neLightness <<= 2;
 							for (int i = 0; i < 4; i++)

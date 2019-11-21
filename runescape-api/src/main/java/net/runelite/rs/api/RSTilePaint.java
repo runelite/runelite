@@ -13,11 +13,11 @@ public interface RSTilePaint extends TilePaint
 	@Override
 	int getSwColor();
 
-	@Import("seColor")
+	@Import("nwColor")
 	@Override
 	int getSeColor();
 
-	@Import("nwColor")
+	@Import("seColor")
 	@Override
 	int getNwColor();
 
