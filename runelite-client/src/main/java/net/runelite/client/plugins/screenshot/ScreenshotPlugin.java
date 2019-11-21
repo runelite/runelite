@@ -70,7 +70,6 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.util.Text;
@@ -291,7 +290,6 @@ public class ScreenshotPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
 		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
@@ -338,16 +336,13 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onPlayerDeath(PlayerDeath event)
 	{
-		if (this.screenshotPlayerDeath && client.getLocalPlayer().getName() != null)
+		if (event.getPlayer() == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot(client.getLocalPlayer().getName() + " dead " + format(new Date()), "Deaths");
 		}
-	}
 
-	private void onPlayerDeath(PlayerDeath event)
-	{
 		int tob = client.getVar(Varbits.THEATRE_OF_BLOOD);
 		if (this.screenshotFriendDeath && event.getPlayer().getName() != null
 			&& (event.getPlayer().isFriend() || event.getPlayer().isClanMember()
@@ -714,15 +709,15 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			final EnumSet<WorldType> worldTypes = client.getWorldType();
-			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
-			final boolean isDmmWorld = dmm || sdmm || dmmt;
 
 			String playerDir = client.getLocalPlayer().getName();
-			if (isDmmWorld)
+			if (worldTypes.contains(WorldType.DEADMAN))
 			{
 				playerDir += "-Deadman";
+			}
+			else if (worldTypes.contains(WorldType.LEAGUE))
+			{
+				playerDir += "-League";
 			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
 		}

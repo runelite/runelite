@@ -258,9 +258,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		final Gson gson = new Gson();
-		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
-		{
-		}.getType());
+		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>() {}.getType());
 
 		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
 	}

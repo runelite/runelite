@@ -1,7 +1,6 @@
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
@@ -9,12 +8,9 @@ import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.get
 import java.io.File
 import java.security.MessageDigest
+import javax.inject.Inject
 
-open class BootstrapTask : DefaultTask() {
-
-    @Input
-    @Optional
-    var type: String? = "stable"
+open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultTask() {
 
     @InputFile
     @PathSensitive(PathSensitivity.ABSOLUTE)
@@ -42,10 +38,11 @@ open class BootstrapTask : DefaultTask() {
         project.configurations["runtimeClasspath"].resolvedConfiguration.resolvedArtifacts.forEach {
             val module = it.moduleVersion.id.toString()
 
-            val name = module.split(":")[1]
-            val group = module.split(":")[0]
-            val version = module.split(":")[2]
-            var path = ""
+            val splat = module.split(":")
+            val name = splat[1]
+            val group = splat[0]
+            val version = splat[2]
+            lateinit var path: String
 
             if (it.file.name.contains(ProjectVersions.rlVersion)) {
                 path = "https://github.com/open-osrs/hosting/raw/master/${type}/${it.file.name}"
@@ -84,7 +81,7 @@ open class BootstrapTask : DefaultTask() {
     }
 
     @TaskAction
-    fun boostrap() {
+    fun bootstrap() {
         val json = JsonBuilder(
                 "projectVersion" to ProjectVersions.openosrsVersion,
                 "minimumLauncherVersion" to ProjectVersions.launcherVersion,

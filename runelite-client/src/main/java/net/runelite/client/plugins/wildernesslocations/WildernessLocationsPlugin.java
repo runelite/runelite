@@ -9,7 +9,6 @@
 
 package net.runelite.client.plugins.wildernesslocations;
 
-
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;

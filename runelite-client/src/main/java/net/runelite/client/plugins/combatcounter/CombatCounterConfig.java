@@ -1,11 +1,10 @@
 package net.runelite.client.plugins.combatcounter;
 
+import java.awt.Color;
 import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-
-import java.awt.*;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
 
@@ -57,7 +56,7 @@ public interface CombatCounterConfig extends Config
 	{
 		return new Title();
 	}
-	
+
 	@Alpha
 	@ConfigItem(
 		keyName = "selfColor",
@@ -70,7 +69,7 @@ public interface CombatCounterConfig extends Config
 	{
 		return Color.green;
 	}
-	
+
 	@Alpha
 	@ConfigItem(
 		keyName = "totalColor",
@@ -83,7 +82,7 @@ public interface CombatCounterConfig extends Config
 	{
 		return Color.RED;
 	}
-	
+
 	@Alpha
 	@ConfigItem(
 		keyName = "otherColor",
@@ -96,7 +95,7 @@ public interface CombatCounterConfig extends Config
 	{
 		return Color.white;
 	}
-	
+
 	@Alpha
 	@ConfigItem(
 		keyName = "bgColor",
@@ -109,7 +108,7 @@ public interface CombatCounterConfig extends Config
 	{
 		return new Color(70, 61, 50, 156);
 	}
-	
+
 	@Alpha
 	@ConfigItem(
 		keyName = "titleColor",

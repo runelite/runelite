@@ -79,10 +79,10 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WidgetLoaded;
@@ -318,9 +318,9 @@ public class LootTrackerPlugin extends Plugin
 		lootTrackerClient = null;
 	}
 
-	private void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onPlayerDeath(PlayerDeath event)
 	{
-		if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType()))
+		if ((client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType())) && event.getPlayer() == client.getLocalPlayer())
 		{
 			deathInventorySnapshot();
 			pvpDeath = true;
@@ -497,7 +497,7 @@ public class LootTrackerPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
 		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(NpcLootReceived.class, this, this::onNpcLootReceived);
 		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
@@ -1451,9 +1451,7 @@ public class LootTrackerPlugin extends Plugin
 		try
 		{
 			Collection<LootRecord> lootRecords = new ArrayList<>(RuneLiteAPI.GSON.fromJson(new FileReader(LOOT_RECORDS_FILE),
-				new TypeToken<ArrayList<LootRecord>>()
-				{
-				}.getType()));
+				new TypeToken<ArrayList<LootRecord>>() {}.getType()));
 
 			DSLContext dslContext = databaseManager.getDsl();
 

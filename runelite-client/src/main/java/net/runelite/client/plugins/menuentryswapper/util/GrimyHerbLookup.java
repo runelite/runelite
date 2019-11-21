@@ -17,9 +17,7 @@ public class GrimyHerbLookup
 	{
 		final InputStream herbFile = GrimyHerbLookup.class.getResourceAsStream("/herbs.json");
 		Gson gson = new Gson();
-		mapping = gson.fromJson(new InputStreamReader(herbFile), new TypeToken<Map<String, HerbInfo>>()
-		{
-		}.getType());
+		mapping = gson.fromJson(new InputStreamReader(herbFile), new TypeToken<Map<String, HerbInfo>>() {}.getType());
 	}
 
 	public int getCleanLevel(int itemId)

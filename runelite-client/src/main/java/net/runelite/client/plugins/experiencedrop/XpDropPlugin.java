@@ -43,6 +43,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -145,6 +146,7 @@ public class XpDropPlugin extends Plugin
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 		eventBus.subscribe(XpDropEvent.class, this, this::onXpDropEvent);
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
+		eventBus.subscribe(FakeXpDrop.class, this, this::onFakeXpDrop);
 	}
 
 	private void onXpDropEvent(XpDropEvent event)
@@ -351,6 +353,14 @@ public class XpDropPlugin extends Plugin
 		client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
 	}
 
+	private void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (fakeXpDrop.getSkill() == Skill.HITPOINTS)
+		{
+			calculateDamageDealt(fakeXpDrop.getXp());
+		}
+	}
+
 	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		if (this.showdamagedrops == XpDropConfig.DamageMode.NONE)
@@ -363,21 +373,6 @@ public class XpDropPlugin extends Plugin
 		if (eventName.equals("newXpDrop"))
 		{
 			damage = 0;
-		}
-		// Handles Fake XP drops (Ironman, DMM Cap, 200m xp, etc)
-		else if (eventName.equals("fakeXpDrop"))
-		{
-			final int[] intStack = client.getIntStack();
-			final int intStackSize = client.getIntStackSize();
-
-			final int skillId = intStack[intStackSize - 2];
-			final Skill skill = Skill.values()[skillId];
-
-			if (skill.equals(Skill.HITPOINTS))
-			{
-				final int exp = intStack[intStackSize - 1];
-				calculateDamageDealt(exp);
-			}
 		}
 		else if (eventName.equals("hpXpGained"))
 		{

@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableList;
+import java.awt.Color;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -34,8 +35,6 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageBuilder;
-
-import java.awt.Color;
 
 @Data
 public class Wave

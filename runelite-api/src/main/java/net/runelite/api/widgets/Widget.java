@@ -26,7 +26,6 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
-
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 import net.runelite.api.Sprite;

@@ -279,7 +279,7 @@ public class MultiIndicatorsPlugin extends Plugin
 	private void findLinesInScene()
 	{
 		inDeadman = client.getWorldType().stream().anyMatch(x ->
-			x == WorldType.DEADMAN || x == WorldType.SEASONAL_DEADMAN);
+			x == WorldType.DEADMAN);
 		inPvp = client.getWorldType().stream().anyMatch(x ->
 			x == WorldType.PVP || x == WorldType.HIGH_RISK);
 

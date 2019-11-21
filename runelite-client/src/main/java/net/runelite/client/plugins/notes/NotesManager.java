@@ -62,9 +62,7 @@ public class NotesManager
 		if (!Strings.isNullOrEmpty(configJson))
 		{
 			final Gson gson = new Gson();
-			notes = gson.fromJson(configJson, new TypeToken<ArrayList<String>>()
-			{
-			}.getType());
+			notes = gson.fromJson(configJson, new TypeToken<ArrayList<String>>() {}.getType());
 		}
 
 		if (notes == null)

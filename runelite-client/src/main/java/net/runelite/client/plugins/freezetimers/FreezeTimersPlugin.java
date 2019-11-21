@@ -40,8 +40,8 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -125,7 +125,7 @@ public class FreezeTimersPlugin extends Plugin
 		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
+		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 	}
@@ -207,7 +207,7 @@ public class FreezeTimersPlugin extends Plugin
 		}
 	}
 
-	private void onLocalPlayerDeath(LocalPlayerDeath event)
+	private void onPlayerDeath(PlayerDeath event)
 	{
 		final Player localPlayer = client.getLocalPlayer();
 		final long currentTime = System.currentTimeMillis();
