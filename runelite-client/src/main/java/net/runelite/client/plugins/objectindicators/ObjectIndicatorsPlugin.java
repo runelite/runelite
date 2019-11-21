@@ -43,7 +43,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -325,8 +324,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		for (ObjectPoint objectPoint : objectPoints)
 		{
-			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+			if (worldPoint.getRegionX() == objectPoint.getRegionX()
+					&& worldPoint.getRegionY() == objectPoint.getRegionY())
 			{
 				// Transform object to get the name which matches against what we've stored
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
@@ -419,8 +418,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final ObjectPoint point = new ObjectPoint(
 			name,
 			regionId,
-			worldPoint.getX() & (REGION_SIZE - 1),
-			worldPoint.getY() & (REGION_SIZE - 1),
+			worldPoint.getRegionX(),
+			worldPoint.getRegionY(),
 			client.getPlane());
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
