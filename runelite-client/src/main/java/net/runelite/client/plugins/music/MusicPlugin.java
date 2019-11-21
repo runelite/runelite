@@ -571,7 +571,7 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source != client.getLocalPlayer()
-			&& (source instanceof Player || SOURCELESS_PLAYER_SOUNDS.contains(soundID))
+			&& (source instanceof Player || (source == null && SOURCELESS_PLAYER_SOUNDS.contains(soundId)))
 			&& musicConfig.muteOtherAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
@@ -582,7 +582,7 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source == null
-			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundID)
+			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundId)
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
