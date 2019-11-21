@@ -70,8 +70,11 @@ public class AttackStylesPlugin extends Plugin
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
+	@Getter
+	@Nullable
 	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
+	@Getter(AccessLevel.PACKAGE)
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
@@ -108,6 +111,7 @@ public class AttackStylesPlugin extends Plugin
 	private boolean warnForRanged;
 	private boolean warnForMagic;
 	private boolean hideAutoRetaliate;
+	@VisibleForTesting
 	boolean removeWarnedStyles;
 
 	@Override
@@ -159,17 +163,7 @@ public class AttackStylesPlugin extends Plugin
 		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
-	@Nullable
-	public AttackStyle getAttackStyle()
-	{
-		return attackStyle;
-	}
-
-	boolean isWarnedSkillSelected()
-	{
-		return warnedSkillSelected;
-	}
-
+	@VisibleForTesting
 	void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
@@ -215,6 +209,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	@VisibleForTesting
 	void onVarbitChanged(VarbitChanged event)
 	{
 		int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
@@ -240,6 +235,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	@VisibleForTesting
 	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("attackIndicator"))
