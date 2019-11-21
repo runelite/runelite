@@ -416,6 +416,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final ObjectPoint point = new ObjectPoint(
+			object.getId(),
 			name,
 			regionId,
 			worldPoint.getRegionX(),
@@ -424,10 +425,18 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
-		if (objectPoints.contains(point))
+		if (objects.remove(object))
 		{
-			objectPoints.remove(point);
-			objects.remove(object);
+			// Use object id instead of name to match the object point with this object due to the object name being
+			// able to change because of multilocs.
+			if (!objectPoints.removeIf(op -> (op.getId() == -1 || op.getId() == object.getId())
+				&& op.getRegionX() == worldPoint.getRegionX()
+				&& op.getRegionY() == worldPoint.getRegionY()
+				&& op.getZ() == worldPoint.getPlane()))
+			{
+				log.warn("unable to find object point for unmarked object {}", object.getId());
+			}
+
 			log.debug("Unmarking object: {}", point);
 		}
 		else
