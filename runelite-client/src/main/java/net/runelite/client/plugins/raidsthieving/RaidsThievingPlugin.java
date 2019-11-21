@@ -47,7 +47,7 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -79,8 +79,6 @@ public class RaidsThievingPlugin extends Plugin
 	private Notifier notifier;
 	@Inject
 	private RaidsThievingConfig config;
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<WorldPoint, ThievingChest> chests = new HashMap<>();
@@ -110,7 +108,6 @@ public class RaidsThievingPlugin extends Plugin
 	{
 		reset();
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 	}
@@ -122,17 +119,9 @@ public class RaidsThievingPlugin extends Plugin
 		lastActionTime = Instant.ofEpochMilli(0);
 		chests.clear();
 
-		eventBus.unregister(this);
-	}
+		}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GraphicsObjectCreated.class, this, this::onGraphicsObjectCreated);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-	}
-
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject obj = event.getGameObject();
@@ -197,6 +186,7 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		GraphicsObject obj = event.getGraphicsObject();
@@ -213,6 +203,7 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
@@ -224,6 +215,7 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("raidsthievingplugin"))

@@ -51,7 +51,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -92,9 +92,6 @@ public class BanListPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private String tobNames = "";
 	private boolean enableWDRScam;
 	private boolean enableWDRToxic;
@@ -112,7 +109,6 @@ public class BanListPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		manualBans.addAll(Text.fromCSV(Text.standardize(config.getBannedPlayers())));
 
@@ -123,22 +119,13 @@ public class BanListPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 
-		eventBus.unregister(this);
 		wdrScamSet.clear();
 		wdrToxicSet.clear();
 		runeWatchSet.clear();
 		manualBans.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
-		eventBus.subscribe(ClanMemberJoined.class, this, this::onClanMemberJoined);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("banlist") && event.getKey().equals("bannedPlayers"))
@@ -163,6 +150,7 @@ public class BanListPlugin extends Plugin
 	/**
 	 * Event to keep making sure player names are highlighted red in clan chat, since the red name goes away frequently
 	 */
+	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
@@ -183,6 +171,7 @@ public class BanListPlugin extends Plugin
 		});
 	}
 
+	@Subscribe
 	private void onClanMemberJoined(ClanMemberJoined event)
 	{
 		ClanMember member = event.getMember();
@@ -213,6 +202,7 @@ public class BanListPlugin extends Plugin
 	/**
 	 * If a trade window is opened and the person trading us is on the list, modify "trading with"
 	 */
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (this.highlightInTrade && widgetLoaded.getGroupId() == PLAYER_TRADE_SCREEN_GROUP_ID)
@@ -234,6 +224,7 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		final Widget raidingParty = client.getWidget(WidgetInfo.THEATRE_OF_BLOOD_RAIDING_PARTY);

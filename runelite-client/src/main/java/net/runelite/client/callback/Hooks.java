@@ -159,13 +159,13 @@ public class Hooks implements Callbacks
 	}
 
 	@Override
-	public <T> void post(Class<T> eventClass, Event event)
+	public <T extends Event, E extends T> void post(Class<T> eventClass, E event)
 	{
 		eventBus.post(eventClass, event);
 	}
 
 	@Override
-	public <T> void postDeferred(Class<T> eventClass, Event event)
+	public <T extends Event, E extends T> void postDeferred(Class<T> eventClass, E event)
 	{
 		deferredEventBus.post(eventClass, event);
 	}

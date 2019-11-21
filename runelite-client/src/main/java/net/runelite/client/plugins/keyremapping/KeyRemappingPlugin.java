@@ -44,7 +44,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ModifierlessKeybind;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -79,9 +79,6 @@ public class KeyRemappingPlugin extends Plugin
 
 	@Inject
 	private KeyRemappingListener inputListener;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -131,7 +128,6 @@ public class KeyRemappingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
@@ -150,8 +146,6 @@ public class KeyRemappingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
@@ -163,13 +157,7 @@ public class KeyRemappingPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
-	@Provides
+@Provides
 	KeyRemappingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(KeyRemappingConfig.class);
@@ -209,6 +197,7 @@ public class KeyRemappingPlugin extends Plugin
 		return w == null || w.isSelfHidden();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("keyremapping"))
@@ -229,6 +218,7 @@ public class KeyRemappingPlugin extends Plugin
 		);
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())

@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
@@ -52,23 +51,8 @@ public class XteaPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		//todo re-enable when we have our server back up.
-		/*eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);*/
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		//todo re-enable when we have our server back up.
-		/*eventBus.unregister(this);*/
-	}
-
+	// todo re-enable when we have our server back up.
+	// @Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)

@@ -9,7 +9,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -31,15 +31,11 @@ public class LootAssistPlugin extends Plugin
 	@Inject
 	private LootAssistOverlay lootAssistOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	static final ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 
 		overlayManager.add(lootAssistOverlay);
 	}
@@ -47,23 +43,17 @@ public class LootAssistPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		lootPiles.clear();
 		overlayManager.remove(lootAssistOverlay);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		lootPiles.clear();
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();

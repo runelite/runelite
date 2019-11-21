@@ -53,7 +53,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
@@ -105,9 +105,6 @@ public class InventorySetupPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ConfigManager configManager;
 
 	private InventorySetupPluginPanel panel;
@@ -134,7 +131,6 @@ public class InventorySetupPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfigOptions();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 
@@ -261,6 +257,7 @@ public class InventorySetupPlugin extends Plugin
 		return configManager.getConfig(InventorySetupConfig.class);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
@@ -301,7 +298,9 @@ public class InventorySetupPlugin extends Plugin
 		{
 			// TODO add last resort?, serialize exception just make empty map
 			final Gson gson = new Gson();
-			Type type = new TypeToken<HashMap<String, InventorySetup>>() {}.getType();
+			Type type = new TypeToken<HashMap<String, InventorySetup>>()
+			{
+			}.getType();
 			inventorySetups.clear();
 			inventorySetups.putAll(gson.fromJson(json, type));
 		}
@@ -313,6 +312,7 @@ public class InventorySetupPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 
@@ -346,6 +346,7 @@ public class InventorySetupPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -413,11 +414,6 @@ public class InventorySetupPlugin extends Plugin
 		return newContainer;
 	}
 
-	public final InventorySetupConfig getConfig()
-	{
-		return config;
-	}
-
 	public boolean getHighlightDifference()
 	{
 		return highlightDifference;
@@ -426,19 +422,11 @@ public class InventorySetupPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
-	final int[] getCurrentInventorySetupIds()
+final int[] getCurrentInventorySetupIds()
 	{
 		InventorySetup setup = inventorySetups.get(panel.getSelectedInventorySetup());
 		if (setup == null)

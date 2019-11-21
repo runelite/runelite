@@ -34,8 +34,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -56,38 +55,13 @@ public class MaxHitPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		addSubscriptions();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-	}
-
+	@Subscribe
 	private void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		this.updateMaxHitWidget();
 	}
 
-	private void onConfigChanged(final ConfigChanged event)
-	{
-		this.updateMaxHitWidget();
-	}
-
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		this.updateMaxHitWidget();

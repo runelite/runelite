@@ -51,6 +51,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import static net.runelite.api.util.Text.sanitize;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
@@ -61,14 +62,13 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import static net.runelite.api.util.Text.sanitize;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -148,13 +148,9 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		keyManager.registerKeyListener(chatKeyboardListener);
 
@@ -173,8 +169,6 @@ public class ChatCommandsPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		lastBossKill = null;
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
@@ -191,15 +185,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-	}
-
-	@Provides
+@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
@@ -231,6 +217,7 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
@@ -364,6 +351,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (!logKills)
@@ -400,6 +388,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		// don't load kc if in an instance, if the player is in another players poh
@@ -412,6 +401,7 @@ public class ChatCommandsPlugin extends Plugin
 		logKills = true;
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		hiscoreEndpoint = getLocalHiscoreEndpointType();

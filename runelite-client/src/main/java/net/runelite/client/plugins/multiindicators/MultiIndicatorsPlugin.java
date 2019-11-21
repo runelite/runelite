@@ -49,7 +49,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,9 +83,6 @@ public class MultiIndicatorsPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private GeneralPath[] multicombatPathToDisplay;
@@ -133,7 +130,6 @@ public class MultiIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
@@ -152,21 +148,13 @@ public class MultiIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 
 		uninitializePaths();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
-	private void initializePaths()
+private void initializePaths()
 	{
 		multicombatPathToDisplay = new GeneralPath[Constants.MAX_Z];
 		pvpPathToDisplay = new GeneralPath[Constants.MAX_Z];
@@ -372,6 +360,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		return false;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("multiindicators"))
@@ -391,6 +380,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

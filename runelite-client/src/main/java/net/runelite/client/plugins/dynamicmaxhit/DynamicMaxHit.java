@@ -55,6 +55,7 @@ import net.runelite.api.kit.KitType;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
@@ -163,9 +164,9 @@ public class DynamicMaxHit extends Plugin
 		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
 		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
 		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("dynamicMaxHit"))

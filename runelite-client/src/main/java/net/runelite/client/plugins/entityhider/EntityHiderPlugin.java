@@ -36,11 +36,11 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -59,9 +59,6 @@ public class EntityHiderPlugin extends Plugin
 	@Inject
 	private EntityHiderConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Provides
 	EntityHiderConfig provideConfig(ConfigManager configManager)
 	{
@@ -72,18 +69,12 @@ public class EntityHiderPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		Text.fromCSV(config.hideNPCsNames()).forEach(client::addHiddenNpcName);
 		Text.fromCSV(config.hideNPCsOnDeath()).forEach(client::addHiddenNpcDeath);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("entityhider"))
@@ -121,6 +112,7 @@ public class EntityHiderPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -158,8 +150,6 @@ public class EntityHiderPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		client.setIsHidingEntities(false);
 
 		client.setPlayersHidden(false);

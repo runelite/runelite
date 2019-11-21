@@ -341,11 +341,12 @@ public interface Client extends GameShell
 	 * Gets the logged in player instance.
 	 *
 	 * @return the logged in player
-	 *
+	 * <p>
 	 * (getLocalPlayerIndex returns the local index, useful for menus/interacting)
 	 */
 	@Nullable
 	Player getLocalPlayer();
+
 	int getLocalPlayerIndex();
 
 	/**
@@ -957,36 +958,42 @@ public interface Client extends GameShell
 
 	/**
 	 * Gets the music volume
+	 *
 	 * @return volume 0-255 inclusive
 	 */
 	int getMusicVolume();
 
 	/**
 	 * Sets the music volume
+	 *
 	 * @param volume 0-255 inclusive
 	 */
 	void setMusicVolume(int volume);
 
 	/**
 	 * Gets the sound effect volume
+	 *
 	 * @return volume 0-127 inclusive
 	 */
 	int getSoundEffectVolume();
 
 	/**
 	 * Sets the sound effect volume
+	 *
 	 * @param volume 0-127 inclusive
 	 */
 	void setSoundEffectVolume(int volume);
 
 	/**
 	 * Gets the area sound effect volume
+	 *
 	 * @return volume 0-127 inclusive
 	 */
 	int getAreaSoundEffectVolume();
 
 	/**
 	 * Sets the area sound effect volume
+	 *
 	 * @param volume 0-127 inclusive
 	 */
 	void setAreaSoundEffectVolume(int volume);
@@ -1777,7 +1784,7 @@ public interface Client extends GameShell
 	/**
 	 * @param param0       This is SceneX for gameObject, index for items, and 0 for npc.
 	 * @param param1       This is SceneY for gameObject, static for items, and 0 for npc.
-	 * @param opcode         Menu entry Action opcode.
+	 * @param opcode       Menu entry Action opcode.
 	 * @param id           Targets ID
 	 * @param menuEntry    Do these actually matter?
 	 * @param targetString Do these actually matter?
@@ -1865,26 +1872,25 @@ public interface Client extends GameShell
 	/**
 	 * Scales values from pixels onto canvas
 	 *
-	 * @see net.runelite.client.util.ImageUtil#resizeSprite(Client, Sprite, int, int)
-	 *
-	 * @param canvas the array we're writing to
-	 * @param pixels pixels to draw
-	 * @param color should be 0
-	 * @param pixelX x index
-	 * @param pixelY y index
-	 * @param canvasIdx index in canvas (canvas[canvasIdx])
+	 * @param canvas       the array we're writing to
+	 * @param pixels       pixels to draw
+	 * @param color        should be 0
+	 * @param pixelX       x index
+	 * @param pixelY       y index
+	 * @param canvasIdx    index in canvas (canvas[canvasIdx])
 	 * @param canvasOffset x offset
-	 * @param newWidth new width
-	 * @param newHeight new height
-	 * @param pixelWidth pretty much horizontal scale
-	 * @param pixelHeight pretty much vertical scale
-	 * @param oldWidth old width
+	 * @param newWidth     new width
+	 * @param newHeight    new height
+	 * @param pixelWidth   pretty much horizontal scale
+	 * @param pixelHeight  pretty much vertical scale
+	 * @param oldWidth     old width
+	 * @see net.runelite.client.util.ImageUtil#resizeSprite(Client, Sprite, int, int)
 	 */
 	void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY, int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth);
 
 	/**
 	 * Get the MenuEntry at client.getMenuOptionCount() - 1
-	 *
+	 * <p>
 	 * This is useful so you don't have to use getMenuEntries,
 	 * which will create a big array, when you only want to change
 	 * the left click one.
@@ -1893,7 +1899,7 @@ public interface Client extends GameShell
 
 	/**
 	 * Set the MenuEntry at client.getMenuOptionCount() - 1
-	 *
+	 * <p>
 	 * This is useful so you don't have to use setMenuEntries,
 	 * which will arraycopy a big array to several smaller arrays lol,
 	 * when you only want to change the left click one.

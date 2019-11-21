@@ -36,7 +36,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,9 +57,6 @@ public class CustomCursorPlugin extends Plugin
 	@Inject
 	private CustomCursorConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	private Clip skillSpecsRage;
 	private int volume = 35;
 
@@ -72,7 +69,6 @@ public class CustomCursorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 		updateCursor();
 
 		try (AudioInputStream ais = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("specs-rage.wav")))
@@ -93,11 +89,10 @@ public class CustomCursorPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientUI.resetCursor();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))

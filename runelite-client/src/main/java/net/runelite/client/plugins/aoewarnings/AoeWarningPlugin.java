@@ -54,7 +54,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -84,8 +84,6 @@ public class AoeWarningPlugin extends Plugin
 	private BombOverlay bombOverlay;
 	@Inject
 	private Client client;
-	@Inject
-	private EventBus eventbus;
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> lightningTrail = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
@@ -167,7 +165,6 @@ public class AoeWarningPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 		overlayManager.add(coreOverlay);
 		overlayManager.add(bombOverlay);
 		reset();
@@ -179,20 +176,9 @@ public class AoeWarningPlugin extends Plugin
 		overlayManager.remove(coreOverlay);
 		overlayManager.remove(bombOverlay);
 		reset();
-		eventbus.unregister(this);
-	}
+		}
 
-	private void addSubscriptions()
-	{
-		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventbus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
-		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventbus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventbus.subscribe(GameTick.class, this, this::onGameTick);
-		eventbus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("aoe"))
@@ -203,6 +189,7 @@ public class AoeWarningPlugin extends Plugin
 		updateConfig();
 	}
 
+	@Subscribe
 	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		final Projectile projectile = event.getProjectile();
@@ -231,6 +218,7 @@ public class AoeWarningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (projectiles.isEmpty())
@@ -249,6 +237,7 @@ public class AoeWarningPlugin extends Plugin
 		});
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
@@ -283,6 +272,7 @@ public class AoeWarningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
@@ -304,6 +294,7 @@ public class AoeWarningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -313,6 +304,7 @@ public class AoeWarningPlugin extends Plugin
 		reset();
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		lightningTrail.clear();

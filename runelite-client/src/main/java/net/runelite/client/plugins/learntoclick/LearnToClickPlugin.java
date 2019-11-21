@@ -23,7 +23,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -50,9 +50,6 @@ public class LearnToClickPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
 	private boolean shouldBlockCompass;
 	private boolean shouldRightClickMap;
 	private boolean shouldRightClickXp;
@@ -69,26 +66,16 @@ public class LearnToClickPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		forceRightClickFlag = false;
 		hideOrbWidgets(false);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(MenuShouldLeftClick.class, this, this::onMenuShouldLeftClick);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("learntoclick"))
@@ -109,6 +96,7 @@ public class LearnToClickPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (!this.hideOrbs)
@@ -121,6 +109,7 @@ public class LearnToClickPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
 	{
 		if (!forceRightClickFlag)
@@ -142,6 +131,7 @@ public class LearnToClickPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((event.getOption().equals("Floating") && this.shouldRightClickMap) || (event.getOption().equals("Hide")
@@ -167,6 +157,7 @@ public class LearnToClickPlugin extends Plugin
 
 	/**
 	 * Toggles hiding the World map and special attack orb widgets
+	 *
 	 * @param hidden - hides the Widgets if true, un-hides them if false
 	 */
 	private void hideOrbWidgets(boolean hidden)

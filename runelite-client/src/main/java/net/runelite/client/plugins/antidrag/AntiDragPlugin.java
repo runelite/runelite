@@ -34,7 +34,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -72,13 +72,7 @@ public class AntiDragPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private KeyManager keyManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
@@ -96,8 +90,6 @@ public class AntiDragPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlay.setColor(config.color());
-
-		addSubscriptions();
 		updateConfig();
 		updateKeyListeners();
 
@@ -110,8 +102,6 @@ public class AntiDragPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(holdListener);
 		keyManager.unregisterKeyListener(toggleListener);
@@ -120,13 +110,7 @@ public class AntiDragPlugin extends Plugin
 		clientUI.resetCursor();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("antiDrag"))
@@ -158,6 +142,7 @@ public class AntiDragPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -179,6 +164,7 @@ public class AntiDragPlugin extends Plugin
 		this.selectedCursor = config.selectedCursor();
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused() && config.reqFocus() && !config.alwaysOn())

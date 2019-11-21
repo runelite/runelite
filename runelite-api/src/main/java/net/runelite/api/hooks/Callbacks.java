@@ -24,13 +24,13 @@
  */
 package net.runelite.api.hooks;
 
-import net.runelite.api.MainBufferProvider;
-import net.runelite.api.events.Event;
-import net.runelite.api.widgets.WidgetItem;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import net.runelite.api.MainBufferProvider;
+import net.runelite.api.events.Event;
+import net.runelite.api.widgets.WidgetItem;
 
 /**
  * Interface of callbacks the injected client uses to send events
@@ -42,14 +42,14 @@ public interface Callbacks
 	 *
 	 * @param event the event
 	 */
-	<T> void post(Class<T> eventClass, Event event);
+	<T extends Event, E extends T> void post(Class<T> eventClass, E event);
 
 	/**
 	 * Post a deferred event, which gets delayed until the next cycle.
 	 *
 	 * @param event the event
 	 */
-	<T> void postDeferred(Class<T> eventClass, Event event);
+	<T extends Event, E extends T> void postDeferred(Class<T> eventClass, E event);
 
 	/**
 	 * Called each client cycle.

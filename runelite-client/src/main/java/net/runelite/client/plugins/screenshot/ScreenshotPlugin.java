@@ -87,7 +87,7 @@ import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
@@ -192,9 +192,6 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
@@ -241,7 +238,6 @@ public class ScreenshotPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
@@ -278,24 +274,12 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
-		eventBus.subscribe(PlayerLootReceived.class, this, this::onPlayerLootReceived);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN
@@ -305,6 +289,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onGameTick(GameTick event)
 	{
 		if (!shouldTakeScreenshot)
@@ -336,6 +321,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDeath(PlayerDeath event)
 	{
 		if (event.getPlayer() == client.getLocalPlayer() && config.screenshotPlayerDeath())
@@ -352,6 +338,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (this.screenshotKills)
@@ -363,6 +350,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.TRADE)
@@ -429,7 +417,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (this.screenshotBossKills )
+		if (this.screenshotBossKills)
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -476,6 +464,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
@@ -614,7 +603,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName    Filename to use, without file extension.
+	 * @param fileName Filename to use, without file extension.
 	 */
 	private void takeScreenshot(String fileName)
 	{
@@ -645,7 +634,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName    Filename to use, without file extension.
+	 * @param fileName     Filename to use, without file extension.
 	 * @param subdirectory The subdirectory to save it in
 	 */
 	private void takeScreenshot(String fileName, String subdirectory)
@@ -673,6 +662,7 @@ public class ScreenshotPlugin extends Plugin
 			drawManager.requestNextFrameListener(imageCallback);
 		}
 	}
+
 	private void takeScreenshot(String fileName, Image image, @Nullable String subdirectory)
 	{
 		BufferedImage screenshot = this.includeFrame
@@ -871,6 +861,7 @@ public class ScreenshotPlugin extends Plugin
 		return theatreOfBloodNumber;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("screenshot"))

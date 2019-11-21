@@ -54,7 +54,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -102,33 +102,13 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		addSubscriptions();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		pending.clear();
 	}
 
+	@Subscribe
 	void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!event.getOption().equals("Examine"))
@@ -190,6 +170,7 @@ public class ExaminePlugin extends Plugin
 		pending.push(pendingExamine);
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage event)
 	{
 		ExamineType type;
@@ -292,7 +273,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
 			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
@@ -300,7 +281,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(2);
 			if (widgetItem != null)
 			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
@@ -309,7 +290,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(actionParam);
 			if (widgetItem != null)
 			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
@@ -324,7 +305,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
@@ -333,7 +314,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{1, widgetItem.getItemId()};
+				return new int[] {1, widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
@@ -342,7 +323,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
@@ -351,7 +332,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
@@ -360,7 +341,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup)
@@ -369,7 +350,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 

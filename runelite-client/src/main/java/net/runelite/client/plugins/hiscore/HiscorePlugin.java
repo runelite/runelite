@@ -44,13 +44,13 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -97,9 +97,6 @@ public class HiscorePlugin extends Plugin
 	@Inject
 	private HiscoreConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
 
@@ -115,7 +112,6 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 		updateConfig();
 
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
@@ -144,8 +140,6 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		hiscorePanel.removeInputKeyListener(autocompleter);
 		clientToolbar.removeNavigation(navButton);
 
@@ -155,14 +149,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(PlayerMenuOptionClicked.class, this, this::onPlayerMenuOptionClicked);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 
@@ -171,30 +158,31 @@ public class HiscorePlugin extends Plugin
 			return;
 		}
 		updateConfig();
-			if (client != null)
-			{
-				menuManager.get().removePlayerMenuItem(LOOKUP);
+		if (client != null)
+		{
+			menuManager.get().removePlayerMenuItem(LOOKUP);
 
-				if (this.playerOption)
-				{
-					menuManager.get().addPlayerMenuItem(LOOKUP);
-				}
-			}
-
-			if (event.getKey().equals("autocomplete"))
+			if (this.playerOption)
 			{
-				if (this.autocomplete)
-				{
-					hiscorePanel.addInputKeyListener(autocompleter);
-				}
-				else
-				{
-					hiscorePanel.removeInputKeyListener(autocompleter);
-				}
+				menuManager.get().addPlayerMenuItem(LOOKUP);
 			}
 		}
 
+		if (event.getKey().equals("autocomplete"))
+		{
+			if (this.autocomplete)
+			{
+				hiscorePanel.addInputKeyListener(autocompleter);
+			}
+			else
+			{
+				hiscorePanel.removeInputKeyListener(autocompleter);
+			}
+		}
+	}
 
+
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!this.menuOption)
@@ -229,6 +217,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(LOOKUP))
@@ -237,6 +226,7 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (!this.bountyLookup || !event.getType().equals(ChatMessageType.GAMEMESSAGE))

@@ -56,7 +56,6 @@ import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -72,7 +71,8 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
@@ -108,7 +108,9 @@ public class GrandExchangePlugin extends Plugin
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
-	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>() {};
+	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
+	{
+	};
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
@@ -154,9 +156,6 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
@@ -213,7 +212,6 @@ public class GrandExchangePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		itemGELimits = loadGELimits();
 		panel = injector.getInstance(GrandExchangePanel.class);
@@ -249,8 +247,6 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
@@ -261,20 +257,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeClient = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
-		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
-		eventBus.subscribe(GrandExchangeOfferChanged.class, this, this::onGrandExchangeOfferChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
+	@Subscribe
 	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
@@ -297,11 +280,13 @@ public class GrandExchangePlugin extends Plugin
 		this.enableAfford = config.enableAfford();
 	}
 
+	@Subscribe
 	private void onSessionClose(SessionClose sessionClose)
 	{
 		grandExchangeClient = null;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("grandexchange"))
@@ -323,6 +308,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
 	{
 		final int slot = offerEvent.getSlot();
@@ -400,6 +386,7 @@ public class GrandExchangePlugin extends Plugin
 		return savedOffer.getState() != grandExchangeOffer.getState();
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (!this.enableNotifications || event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -415,6 +402,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
@@ -423,6 +411,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded menuEntry)
 	{
 		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
@@ -454,6 +443,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
@@ -462,6 +452,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		switch (event.getGroupId())
@@ -480,6 +471,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (event.getEventName().equals("geBuilt"))
@@ -542,7 +534,6 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-
 
 
 		if (this.enableAfford && offerType == OFFER_TYPE_BUY)

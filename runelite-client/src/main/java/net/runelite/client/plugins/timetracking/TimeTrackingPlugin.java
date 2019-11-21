@@ -36,13 +36,13 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -88,9 +88,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executorService;
 
-	@Inject
-	private EventBus eventBus;
-
 	private ScheduledFuture panelUpdateFuture;
 
 	private TimeTrackingPanel panel;
@@ -109,7 +106,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 
 		clockManager.loadTimers();
 		clockManager.loadStopwatches();
@@ -135,8 +131,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		lastTickLocation = null;
 		lastTickPostLogin = false;
 
@@ -149,13 +143,7 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(UsernameChanged.class, this, this::onUsernameChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged e)
 	{
 		if (!e.getGroup().equals(CONFIG_GROUP))
@@ -173,6 +161,7 @@ public class TimeTrackingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick t)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -212,6 +201,7 @@ public class TimeTrackingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onUsernameChanged(UsernameChanged e)
 	{
 		farmingTracker.loadCompletionTimes();

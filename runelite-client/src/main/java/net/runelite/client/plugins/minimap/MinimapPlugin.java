@@ -37,7 +37,7 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,9 +57,6 @@ public class MinimapPlugin extends Plugin
 
 	@Inject
 	private MinimapConfig config;
-
-	@Inject
-	private EventBus eventBus;
 
 	private Sprite[] originalDotSprites;
 
@@ -81,7 +78,6 @@ public class MinimapPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		updateMinimapWidgetVisibility(this.hideMinimap);
 		storeOriginalDots();
@@ -91,19 +87,11 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
@@ -113,6 +101,7 @@ public class MinimapPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("minimap"))
@@ -131,6 +120,7 @@ public class MinimapPlugin extends Plugin
 		replaceMapDots();
 	}
 
+	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		updateMinimapWidgetVisibility(this.hideMinimap);

@@ -38,11 +38,11 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -91,9 +91,6 @@ public class PrayerPlugin extends Plugin
 	private PrayerConfig config;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ItemManager itemManager;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -123,7 +120,6 @@ public class PrayerPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(flickOverlay);
 		overlayManager.add(doseOverlay);
@@ -133,21 +129,13 @@ public class PrayerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(flickOverlay);
 		overlayManager.remove(doseOverlay);
 		overlayManager.remove(barOverlay);
 		removeIndicators();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("prayer"))
@@ -164,6 +152,7 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
@@ -189,6 +178,7 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		prayersActive = isAnyPrayerActive();

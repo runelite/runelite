@@ -46,7 +46,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
@@ -80,9 +80,6 @@ public class NpcStatusPlugin extends Plugin
 	@Inject
 	private NpcStatusOverlay npcStatusOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<MemorizedNPC> memorizedNPCs = new HashSet<>();
 
@@ -104,7 +101,6 @@ public class NpcStatusPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addSubscriptions();
 
 		this.getRange = config.getRange();
 		overlayManager.add(npcStatusOverlay);
@@ -113,23 +109,11 @@ public class NpcStatusPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(npcStatusOverlay);
 		memorizedNPCs.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		final NPC npc = npcSpawned.getNpc();
@@ -147,12 +131,14 @@ public class NpcStatusPlugin extends Plugin
 		memorizedNPCs.add(new MemorizedNPC(npc, AttackSpeed, npc.getWorldArea()));
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 		memorizedNPCs.removeIf(c -> c.getNpc() == npc);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
@@ -162,6 +148,7 @@ public class NpcStatusPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (event.getActor().getInteracting() != client.getLocalPlayer())
@@ -195,6 +182,7 @@ public class NpcStatusPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		if ((event.getActor().getSpotAnimation() == GraphicID.SPLASH) && event.getActor() instanceof NPC)
@@ -285,12 +273,14 @@ public class NpcStatusPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		checkStatus();
 		lastPlayerLocation = client.getLocalPlayer().getWorldArea();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("npcstatus"))

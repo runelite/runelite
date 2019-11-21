@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -56,16 +56,12 @@ public class VetionPlugin extends Plugin
 	@Inject
 	private VetionOverlay overlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter
 	private Map<Actor, Instant> vetions;
 
 	@Override
 	protected void startUp()
 	{
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
 
 		vetions = new HashMap<>();
 		overlayManager.add(overlay);
@@ -78,6 +74,7 @@ public class VetionPlugin extends Plugin
 		vetions = null;
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (event.getActor().getAnimation() == AnimationID.VETION_EARTHQUAKE)

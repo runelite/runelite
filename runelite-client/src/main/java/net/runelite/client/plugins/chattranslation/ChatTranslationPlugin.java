@@ -26,6 +26,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -84,8 +85,6 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		translator.setInLang(config.publicTargetLanguage());
 		translator.setOutLang(config.playerTargetLanguage());
 
@@ -115,7 +114,6 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
 		eventBus.unregister(OPTION);
 		eventBus.unregister(PUBLIC);
 		menuManager.removePlayerMenuItem(TRANSLATE);
@@ -123,6 +121,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		playerNames.clear();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("chattranslation"))
@@ -227,6 +226,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 		config.playerNames(Text.toCSV(playerNames));
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)

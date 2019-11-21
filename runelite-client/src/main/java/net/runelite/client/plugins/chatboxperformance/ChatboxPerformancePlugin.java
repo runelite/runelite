@@ -38,7 +38,7 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,13 +56,9 @@ public class ChatboxPerformancePlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ChatboxPerformanceConfig config;
 
-	private boolean transparentChatBox;
-
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("chatboxperformance"))
@@ -80,7 +76,6 @@ public class ChatboxPerformancePlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
@@ -94,21 +89,9 @@ public class ChatboxPerformancePlugin extends Plugin
 		{
 			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 		}
-		eventBus.unregister(this);
-	}
+		}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-
-	}
-
-	private void updateConfig()
-	{
-		this.transparentChatBox = config.transparentChatBox();
-	}
-
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		if (!"chatboxBackgroundBuilt".equals(ev.getEventName()))

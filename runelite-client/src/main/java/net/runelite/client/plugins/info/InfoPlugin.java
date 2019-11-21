@@ -27,7 +27,6 @@ package net.runelite.client.plugins.info;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -44,9 +43,6 @@ public class InfoPlugin extends Plugin
 {
 	@Inject
 	private ClientToolbar clientToolbar;
-
-	@Inject
-	private EventBus eventbus;
 
 	private NavigationButton navButton;
 
@@ -72,8 +68,6 @@ public class InfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventbus.unregister(this);
-
 		clientToolbar.removeNavigation(navButton);
 	}
 }

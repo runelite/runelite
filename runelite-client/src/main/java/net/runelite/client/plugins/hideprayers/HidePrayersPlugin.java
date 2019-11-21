@@ -46,7 +46,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -72,45 +72,42 @@ import net.runelite.client.plugins.hideprayers.util.Zulrah;
 public class HidePrayersPlugin extends Plugin
 {
 	private static final List<WidgetInfo> PRAYER_WIDGET_INFO_LIST = ImmutableList.of(
-			WidgetInfo.PRAYER_THICK_SKIN, //0
-			WidgetInfo.PRAYER_BURST_OF_STRENGTH, //1
-			WidgetInfo.PRAYER_CLARITY_OF_THOUGHT, //2
-			WidgetInfo.PRAYER_SHARP_EYE, //3
-			WidgetInfo.PRAYER_MYSTIC_WILL, //4
-			WidgetInfo.PRAYER_ROCK_SKIN, //5
-			WidgetInfo.PRAYER_SUPERHUMAN_STRENGTH, //6
-			WidgetInfo.PRAYER_IMPROVED_REFLEXES, //7
-			WidgetInfo.PRAYER_RAPID_RESTORE, //8
-			WidgetInfo.PRAYER_RAPID_HEAL, //9
-			WidgetInfo.PRAYER_PROTECT_ITEM, //10
-			WidgetInfo.PRAYER_HAWK_EYE, //11
-			WidgetInfo.PRAYER_MYSTIC_LORE, //12
-			WidgetInfo.PRAYER_STEEL_SKIN, //13
-			WidgetInfo.PRAYER_ULTIMATE_STRENGTH, //14
-			WidgetInfo.PRAYER_INCREDIBLE_REFLEXES, //15
-			WidgetInfo.PRAYER_PROTECT_FROM_MAGIC, //16
-			WidgetInfo.PRAYER_PROTECT_FROM_MISSILES, //17
-			WidgetInfo.PRAYER_PROTECT_FROM_MELEE, //18
-			WidgetInfo.PRAYER_EAGLE_EYE, //19
-			WidgetInfo.PRAYER_MYSTIC_MIGHT, //20
-			WidgetInfo.PRAYER_RETRIBUTION, //21
-			WidgetInfo.PRAYER_REDEMPTION, //22
-			WidgetInfo.PRAYER_SMITE, //23
-			WidgetInfo.PRAYER_PRESERVE, //24
-			WidgetInfo.PRAYER_CHIVALRY, //25
-			WidgetInfo.PRAYER_PIETY,  //26
-			WidgetInfo.PRAYER_RIGOUR, //27
-			WidgetInfo.PRAYER_AUGURY //28
-		);
+		WidgetInfo.PRAYER_THICK_SKIN, //0
+		WidgetInfo.PRAYER_BURST_OF_STRENGTH, //1
+		WidgetInfo.PRAYER_CLARITY_OF_THOUGHT, //2
+		WidgetInfo.PRAYER_SHARP_EYE, //3
+		WidgetInfo.PRAYER_MYSTIC_WILL, //4
+		WidgetInfo.PRAYER_ROCK_SKIN, //5
+		WidgetInfo.PRAYER_SUPERHUMAN_STRENGTH, //6
+		WidgetInfo.PRAYER_IMPROVED_REFLEXES, //7
+		WidgetInfo.PRAYER_RAPID_RESTORE, //8
+		WidgetInfo.PRAYER_RAPID_HEAL, //9
+		WidgetInfo.PRAYER_PROTECT_ITEM, //10
+		WidgetInfo.PRAYER_HAWK_EYE, //11
+		WidgetInfo.PRAYER_MYSTIC_LORE, //12
+		WidgetInfo.PRAYER_STEEL_SKIN, //13
+		WidgetInfo.PRAYER_ULTIMATE_STRENGTH, //14
+		WidgetInfo.PRAYER_INCREDIBLE_REFLEXES, //15
+		WidgetInfo.PRAYER_PROTECT_FROM_MAGIC, //16
+		WidgetInfo.PRAYER_PROTECT_FROM_MISSILES, //17
+		WidgetInfo.PRAYER_PROTECT_FROM_MELEE, //18
+		WidgetInfo.PRAYER_EAGLE_EYE, //19
+		WidgetInfo.PRAYER_MYSTIC_MIGHT, //20
+		WidgetInfo.PRAYER_RETRIBUTION, //21
+		WidgetInfo.PRAYER_REDEMPTION, //22
+		WidgetInfo.PRAYER_SMITE, //23
+		WidgetInfo.PRAYER_PRESERVE, //24
+		WidgetInfo.PRAYER_CHIVALRY, //25
+		WidgetInfo.PRAYER_PIETY,  //26
+		WidgetInfo.PRAYER_RIGOUR, //27
+		WidgetInfo.PRAYER_AUGURY //28
+	);
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private HidePrayersConfig config;
-
-	@Inject
-	private EventBus eventBus;
 
 	private boolean showindividualprayers;
 	private boolean ShowTHICK_SKIN;
@@ -172,7 +169,6 @@ public class HidePrayersPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		hidePrayers();
 	}
@@ -180,18 +176,10 @@ public class HidePrayersPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		restorePrayers();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -201,6 +189,7 @@ public class HidePrayersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hideprayers"))
@@ -210,6 +199,7 @@ public class HidePrayersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.PRAYER_GROUP_ID || event.getGroupId() == WidgetID.QUICK_PRAYERS_GROUP_ID)
@@ -306,7 +296,7 @@ public class HidePrayersPlugin extends Plugin
 				return;
 			}
 
-			if ( !this.showindividualprayers
+			if (!this.showindividualprayers
 				&& !this.getarmadylprayers
 				&& !this.getbarrowsprayers
 				&& !this.getbandosprayers
@@ -325,35 +315,35 @@ public class HidePrayersPlugin extends Plugin
 
 			if (this.showindividualprayers)
 			{
-				prayerWidgets.get(0).setHidden(!this.ShowTHICK_SKIN);	// Thick Skin
-				prayerWidgets.get(1).setHidden(!this.ShowBURST_OF_STRENGTH);	// Burst of Strength
-				prayerWidgets.get(2).setHidden(!this.ShowCLARITY_OF_THOUGHT);	// Clarity of Thought
-				prayerWidgets.get(3).setHidden(!this.ShowSHARP_EYE);	// Sharp Eye
-				prayerWidgets.get(4).setHidden(!this.ShowMYSTIC_WILL);	// Mystic Will
-				prayerWidgets.get(5).setHidden(!this.ShowROCK_SKIN);	// Rock Skin
-				prayerWidgets.get(6).setHidden(!this.ShowSUPERHUMAN_STRENGTH);	// Super Human Strength
-				prayerWidgets.get(7).setHidden(!this.ShowIMPROVED_REFLEXES);	// Improved_Reflexes
-				prayerWidgets.get(8).setHidden(!this.ShowRapidRestore);	// Rapid Restore
-				prayerWidgets.get(9).setHidden(!this.ShowRapidHeal);	// Rapid Heal
-				prayerWidgets.get(10).setHidden(!this.ShowProtectItem);	// Protect Item
-				prayerWidgets.get(11).setHidden(!this.ShowHAWK_EYE);	// Hawk Eye
-				prayerWidgets.get(12).setHidden(!this.ShowMYSTIC_LORE);	// Mystic Lore
-				prayerWidgets.get(13).setHidden(!this.ShowSteelSkin);	// Steel Skin
-				prayerWidgets.get(14).setHidden(!this.ShowUltimateStrength);	// Ultimate Strength
-				prayerWidgets.get(15).setHidden(!this.ShowIncredibleReflex);	// Incredible Reflexes
-				prayerWidgets.get(16).setHidden(!this.ShowPTFMagic);	// Protect from Magic
-				prayerWidgets.get(17).setHidden(!this.ShowPTFRange);	// Protect from Range
-				prayerWidgets.get(18).setHidden(!this.ShowPTFMelee);	// Protect from Melee
-				prayerWidgets.get(19).setHidden(!this.ShowEagle);	// eagle eye
-				prayerWidgets.get(20).setHidden(!this.ShowMystic);	// Mystic Might
-				prayerWidgets.get(21).setHidden(!this.ShowRETRIBUTION);	// Retribution
-				prayerWidgets.get(22).setHidden(!this.ShowRedemption);	// Redemption
-				prayerWidgets.get(23).setHidden(!this.ShowSmite);	// Smite
-				prayerWidgets.get(24).setHidden(!this.ShowPreserve);	// Preserve
-				prayerWidgets.get(25).setHidden(!this.ShowChivalry);	// Chivalry
-				prayerWidgets.get(26).setHidden(!this.ShowPiety);	// Piety
-				prayerWidgets.get(27).setHidden(!this.ShowRigour);	// Rigour
-				prayerWidgets.get(28).setHidden(!this.ShowAugury);	// Augury
+				prayerWidgets.get(0).setHidden(!this.ShowTHICK_SKIN);   // Thick Skin
+				prayerWidgets.get(1).setHidden(!this.ShowBURST_OF_STRENGTH);   // Burst of Strength
+				prayerWidgets.get(2).setHidden(!this.ShowCLARITY_OF_THOUGHT);   // Clarity of Thought
+				prayerWidgets.get(3).setHidden(!this.ShowSHARP_EYE);   // Sharp Eye
+				prayerWidgets.get(4).setHidden(!this.ShowMYSTIC_WILL);   // Mystic Will
+				prayerWidgets.get(5).setHidden(!this.ShowROCK_SKIN);   // Rock Skin
+				prayerWidgets.get(6).setHidden(!this.ShowSUPERHUMAN_STRENGTH);   // Super Human Strength
+				prayerWidgets.get(7).setHidden(!this.ShowIMPROVED_REFLEXES);   // Improved_Reflexes
+				prayerWidgets.get(8).setHidden(!this.ShowRapidRestore);   // Rapid Restore
+				prayerWidgets.get(9).setHidden(!this.ShowRapidHeal);   // Rapid Heal
+				prayerWidgets.get(10).setHidden(!this.ShowProtectItem);   // Protect Item
+				prayerWidgets.get(11).setHidden(!this.ShowHAWK_EYE);   // Hawk Eye
+				prayerWidgets.get(12).setHidden(!this.ShowMYSTIC_LORE);   // Mystic Lore
+				prayerWidgets.get(13).setHidden(!this.ShowSteelSkin);   // Steel Skin
+				prayerWidgets.get(14).setHidden(!this.ShowUltimateStrength);   // Ultimate Strength
+				prayerWidgets.get(15).setHidden(!this.ShowIncredibleReflex);   // Incredible Reflexes
+				prayerWidgets.get(16).setHidden(!this.ShowPTFMagic);   // Protect from Magic
+				prayerWidgets.get(17).setHidden(!this.ShowPTFRange);   // Protect from Range
+				prayerWidgets.get(18).setHidden(!this.ShowPTFMelee);   // Protect from Melee
+				prayerWidgets.get(19).setHidden(!this.ShowEagle);   // eagle eye
+				prayerWidgets.get(20).setHidden(!this.ShowMystic);   // Mystic Might
+				prayerWidgets.get(21).setHidden(!this.ShowRETRIBUTION);   // Retribution
+				prayerWidgets.get(22).setHidden(!this.ShowRedemption);   // Redemption
+				prayerWidgets.get(23).setHidden(!this.ShowSmite);   // Smite
+				prayerWidgets.get(24).setHidden(!this.ShowPreserve);   // Preserve
+				prayerWidgets.get(25).setHidden(!this.ShowChivalry);   // Chivalry
+				prayerWidgets.get(26).setHidden(!this.ShowPiety);   // Piety
+				prayerWidgets.get(27).setHidden(!this.ShowRigour);   // Rigour
+				prayerWidgets.get(28).setHidden(!this.ShowAugury);   // Augury
 			}
 
 			else if (this.getarmadylprayers)
@@ -518,7 +508,7 @@ public class HidePrayersPlugin extends Plugin
 						break;
 				}
 			}
-			
+
 			else if (this.getzamorakprayers)
 			{
 				switch (this.zamorak)

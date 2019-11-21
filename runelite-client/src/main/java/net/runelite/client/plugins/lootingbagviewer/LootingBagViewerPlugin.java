@@ -39,7 +39,7 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -47,11 +47,11 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "PvP Looting Bag Viewer",
-		description = "Add an overlay showing the contents of your looting bag",
-		tags = {"alternate", "items", "overlay", "second"},
-		type = PluginType.PVP,
-		enabledByDefault = false
+	name = "PvP Looting Bag Viewer",
+	description = "Add an overlay showing the contents of your looting bag",
+	tags = {"alternate", "items", "overlay", "second"},
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 /**
  * TODO: Remember current looting bag value when client restarts
@@ -80,9 +80,6 @@ public class LootingBagViewerPlugin extends Plugin
 	@Inject
 	private LootingBagViewerConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int valueToShow = -1;
@@ -96,7 +93,6 @@ public class LootingBagViewerPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		if (config.renderViewer())
 		{
@@ -112,18 +108,11 @@ public class LootingBagViewerPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(widgetOverlay);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getKey().equals("renderViewer"))
@@ -154,6 +143,7 @@ public class LootingBagViewerPlugin extends Plugin
 	/**
 	 * @param widgetHiddenChanged
 	 */
+	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
 		Widget widget = widgetHiddenChanged.getWidget();
@@ -166,17 +156,17 @@ public class LootingBagViewerPlugin extends Plugin
 
 				if (!Strings.isNullOrEmpty(value.getText()))
 				{
-					if (value.getText().equals("Value: -")) 
+					if (value.getText().equals("Value: -"))
 					{
 						setValueToShow(-1);
-					} 
-					else 
+					}
+					else
 					{
 						String str = value.getText();
 						str = str.replace("Bag value: ", "")
-								.replace("Value: ", "")
-								.replace(" coins", "")
-								.replace(",", "");
+							.replace("Value: ", "")
+							.replace(" coins", "")
+							.replace(",", "");
 
 						int val = Integer.parseInt(str);
 						setValueToShow(Math.round(val) / 1000);
@@ -186,4 +176,4 @@ public class LootingBagViewerPlugin extends Plugin
 		}
 	}
 
-} 
+}

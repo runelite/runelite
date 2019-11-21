@@ -61,7 +61,7 @@ public class ExternalPluginLoader
 		BASE.mkdirs();
 	}
 
-	public void scanAndLoad()
+	void scanAndLoad()
 	{
 		if (!OpenOSRSConfig.enablePlugins())
 		{
@@ -111,7 +111,7 @@ public class ExternalPluginLoader
 			return;
 		}
 
-		if (loadedPlugins.size() != 1)
+		if (loadedPlugins.size() > 1)
 		{
 			close(loader);
 			log.warn("You can not have more than one plugin per jar");
@@ -119,8 +119,6 @@ public class ExternalPluginLoader
 		}
 
 		Plugin plugin = loadedPlugins.get(0);
-		plugin.file = pluginFile;
-		plugin.loader = loader;
 
 		// Initialize default configuration
 		Injector injector = plugin.getInjector();

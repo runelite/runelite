@@ -65,7 +65,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
@@ -85,8 +84,9 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -223,9 +223,6 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private ChatClient chatClient;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> highlightedTargets = new HashSet<>();
 
@@ -300,7 +297,6 @@ public class SlayerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		weaknessOverlayAttached = false;
 
@@ -342,8 +338,6 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetClickboxOverlay);
 		overlayManager.remove(targetWeaknessOverlay);
@@ -358,26 +352,13 @@ public class SlayerPlugin extends Plugin
 		cachedXp = -1;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDefinitionChanged.class, this, this::onNpcDefinitionChanged);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
-		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
-	}
-
 	@Provides
 	SlayerConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(SlayerConfig.class);
 	}
 
+	@Subscribe
 	void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -420,6 +401,7 @@ public class SlayerPlugin extends Plugin
 		config.streak(streak);
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
@@ -429,6 +411,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDefinitionChanged(NpcDefinitionChanged event)
 	{
 		NPC npc = event.getNpc();
@@ -439,6 +422,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
@@ -450,6 +434,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (client.getVar(Varbits.SLAYER_REWARD_POINTS) == cachedPoints)
@@ -564,6 +549,7 @@ public class SlayerPlugin extends Plugin
 	private static final int FORCED_WAIT = 2;
 	private int forcedWait = -1;
 
+	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		loginTick = false;
@@ -645,6 +631,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
@@ -730,6 +717,7 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
 		if (statChanged.getSkill() != SLAYER)
@@ -787,6 +775,7 @@ public class SlayerPlugin extends Plugin
 		cachedXp = slayerExp;
 	}
 
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (client.getLocalPlayer() == null)
@@ -818,6 +807,7 @@ public class SlayerPlugin extends Plugin
 		return SUPERIOR_SLAYER_MONSTERS.contains(name.toLowerCase());
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("slayer"))

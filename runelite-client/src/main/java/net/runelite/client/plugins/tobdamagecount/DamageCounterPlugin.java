@@ -47,7 +47,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -106,27 +106,20 @@ public class DamageCounterPlugin extends Plugin
 	private Client client;
 	@Inject
 	private ChatMessageManager chatMessangerManager;
-	@Inject
-	private EventBus eventBus;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
 	}
 
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-	}
+		}
 
 	//every game tick it will go through methods
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -160,6 +153,7 @@ public class DamageCounterPlugin extends Plugin
 	}
 
 	//if you hop it will reset the counter
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -223,6 +217,7 @@ public class DamageCounterPlugin extends Plugin
 
 
 	//will add the damage that you have taken from the current boss fight
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied Hit)
 	{
 		if (Hit.getActor().equals(client.getLocalPlayer()))
@@ -237,6 +232,7 @@ public class DamageCounterPlugin extends Plugin
 	because every time she phases she "dies" so making sure the counter doesn't print out the damage for phase 1, 2,
 	and 3.
 	 */
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = npc.getNpc();
@@ -359,6 +355,7 @@ public class DamageCounterPlugin extends Plugin
 
 	//whenever you have died in tob you will get a death message with damage
 	// made sure the message works at ToB area or else it will message every where
+	@Subscribe
 	private void onPlayerDeath(PlayerDeath death)
 	{
 		if (client.getLocalPlayer() == null || death.getPlayer() != client.getLocalPlayer())

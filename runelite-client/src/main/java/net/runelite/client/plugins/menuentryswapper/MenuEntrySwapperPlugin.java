@@ -62,7 +62,6 @@ import static net.runelite.api.Varbits.WITHDRAW_X_AMOUNT;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.Menu;
@@ -79,6 +78,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.AbstractComparableEntry;
 import static net.runelite.client.menus.ComparableEntries.newBankComparableEntry;
@@ -317,7 +318,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		migrateConfig();
 		updateConfig();
-		addSubscriptions();
+		if (config.lastJewel())
+		{
+			eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
+		}
 		addSwaps();
 		loadConstructionItems();
 		loadCustomSwaps(config.customSwaps(), customSwaps);
@@ -341,8 +345,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		loadCustomSwaps("", customSwaps); // Removes all custom swaps
 		removeSwaps();
 		removeBuySellEntries();
@@ -358,21 +360,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-
-		if (config.lastJewel())
-		{
-			eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
-		}
-	}
-
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
@@ -382,6 +370,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"menuentryswapper".equals(event.getGroup()))
@@ -452,6 +441,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
@@ -466,6 +456,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		keyManager.registerKeyListener(hotkey);
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		buildingMode = client.getVar(BUILDING_MODE) == 1;
@@ -474,6 +465,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		setCastOptions(false);
 	}
 
+	@Subscribe
 	private void onMenuOpened(MenuOpened event)
 	{
 		Player localPlayer = client.getLocalPlayer();
@@ -581,6 +573,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		event.setModified();
 	}
 
+	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)

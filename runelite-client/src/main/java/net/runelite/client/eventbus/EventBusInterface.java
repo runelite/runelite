@@ -6,11 +6,11 @@ import net.runelite.api.events.Event;
 
 public interface EventBusInterface
 {
-	<T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action);
+	<T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action);
 
-	<T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil);
+	<T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil);
 
 	void unregister(@NonNull Object lifecycle);
 
-	<T> void post(Class<T> eventClass, @NonNull Event event);
+	<T extends Event> void post(Class<? extends T> eventClass, @NonNull T event);
 }

@@ -55,7 +55,6 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -71,7 +70,8 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -113,7 +113,6 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 =< Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
-	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
 	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "<col=4f006f>Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
@@ -153,9 +152,6 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private boolean showHomeMinigameTeleports;
 	private boolean showAntiPoison;
 	private boolean showAntiFire;
@@ -187,14 +183,11 @@ public class TimersPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
 		lastRaidVarb = -1;
 		lastPoint = null;
@@ -207,23 +200,7 @@ public class TimersPlugin extends Plugin
 		imbuedHeartClicked = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(WidgetHiddenChanged.class, this, this::onWidgetHiddenChanged);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(PlayerDeath.class, this, this::onPlayerDeath);
-		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
-	}
-
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
@@ -311,6 +288,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
@@ -321,6 +299,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("timers"))
@@ -427,6 +406,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (this.showStamina
@@ -497,6 +477,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -693,6 +674,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		loggedInRace = false;
@@ -748,6 +730,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		switch (gameStateChanged.getGameState())
@@ -762,6 +745,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
@@ -822,6 +806,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = player.getAnimation();
 	}
 
+	@Subscribe
 	private void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		Actor actor = event.getActor();
@@ -883,6 +868,7 @@ public class TimersPlugin extends Plugin
 	 *
 	 * @param itemContainerChanged
 	 */
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer container = itemContainerChanged.getItemContainer();
@@ -918,6 +904,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
@@ -935,6 +922,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDeath(PlayerDeath playerDeath)
 	{
 		if (playerDeath.getPlayer() == client.getLocalPlayer())
@@ -943,6 +931,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onStatChanged(StatChanged event)
 	{
 		Skill skill = event.getSkill();

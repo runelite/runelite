@@ -50,6 +50,7 @@ import net.runelite.api.events.MenuOpened;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
@@ -136,7 +137,7 @@ public class OpponentInfoPlugin extends Plugin
 		this.showHitpoints = config.showHitpointsMenu();
 
 		updateConfig();
-		addSubscriptions();
+		updateMenuSubs();
 
 		overlayManager.add(opponentInfoOverlay);
 		overlayManager.add(playerComparisonOverlay);
@@ -145,7 +146,6 @@ public class OpponentInfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
 		eventBus.unregister(MENU);
 
 		lastOpponent = null;
@@ -154,16 +154,7 @@ public class OpponentInfoPlugin extends Plugin
 		overlayManager.remove(playerComparisonOverlay);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		updateMenuSubs();
-	}
-
-	private void updateMenuSubs()
+private void updateMenuSubs()
 	{
 		if (showAttackers || showAttacking || showHitpoints)
 		{
@@ -176,6 +167,7 @@ public class OpponentInfoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
@@ -198,6 +190,7 @@ public class OpponentInfoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer())
@@ -216,6 +209,7 @@ public class OpponentInfoPlugin extends Plugin
 		lastOpponent = opponent;
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick gameTick)
 	{
 		if (lastOpponent != null
@@ -228,6 +222,7 @@ public class OpponentInfoPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("opponentinfo"))
@@ -413,9 +408,9 @@ public class OpponentInfoPlugin extends Plugin
 			final int start = hadAggro ? 1 + COLOR_TAG_LENGTH : COLOR_TAG_LENGTH;
 			target =
 				(hasAggro ? '*' : "") +
-				(isTarget ? attackingColTag :
-					player ? ColorUtil.colorStartTag(0xffffff) : ColorUtil.colorStartTag(0xffff00)) +
-				target.substring(start);
+					(isTarget ? attackingColTag :
+						player ? ColorUtil.colorStartTag(0xffffff) : ColorUtil.colorStartTag(0xffff00)) +
+					target.substring(start);
 		}
 		else if (aggroChanged)
 		{
@@ -474,7 +469,7 @@ public class OpponentInfoPlugin extends Plugin
 		}
 		else
 		{
-			result =  "(" + (100 * ratio) / health + "%)";
+			result = "(" + (100 * ratio) / health + "%)";
 		}
 
 		return withColorTag ? ColorUtil.colorStartTag(0xff0000) + result : result;

@@ -34,7 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -42,8 +41,9 @@ import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -72,16 +72,11 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	@Inject
 	private CommandManager commandManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private TwitchIRCClient twitchIRCClient;
 
 	@Override
 	protected void startUp()
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		connect();
 		commandManager.register(this);
 	}
@@ -89,8 +84,6 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		if (twitchIRCClient != null)
 		{
 			twitchIRCClient.close();
@@ -156,6 +149,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("twitch"))

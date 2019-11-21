@@ -53,7 +53,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -93,9 +93,6 @@ public class WintertodtPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
 
@@ -126,8 +123,6 @@ public class WintertodtPlugin extends Plugin
 		this.notifyCondition = config.notifyCondition();
 		this.damageNotificationColor = config.damageNotificationColor();
 
-		addSubscriptions();
-
 		reset();
 		overlayManager.add(overlay);
 	}
@@ -141,16 +136,7 @@ public class WintertodtPlugin extends Plugin
 		reset();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("wintertodt"))
@@ -180,6 +166,7 @@ public class WintertodtPlugin extends Plugin
 		return false;
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick gameTick)
 	{
 		if (!isInWintertodtRegion())
@@ -204,6 +191,7 @@ public class WintertodtPlugin extends Plugin
 		checkActionTimeout();
 	}
 
+	@Subscribe
 	void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
@@ -250,6 +238,7 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
@@ -393,6 +382,7 @@ public class WintertodtPlugin extends Plugin
 		notifier.notify(notification);
 	}
 
+	@Subscribe
 	private void onAnimationChanged(final AnimationChanged event)
 	{
 		if (!isInWintertodt)
@@ -442,6 +432,7 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();

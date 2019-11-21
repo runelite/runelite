@@ -33,7 +33,6 @@ import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.chat.ChatColorType;
@@ -41,7 +40,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,12 +58,6 @@ import net.runelite.client.task.Schedule;
 @Slf4j
 public class RemindersPlugin extends Plugin
 {
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Inject
 	private RemindersConfig config;
@@ -93,7 +86,6 @@ public class RemindersPlugin extends Plugin
 	private int personalReminderTime3;
 
 
-
 	@Provides
 	RemindersConfig provideConfig(ConfigManager configManager)
 	{
@@ -103,23 +95,16 @@ public class RemindersPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 		updateConfig();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
 		loginTime = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-	}
-
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		final GameState state = event.getGameState();
@@ -142,6 +127,7 @@ public class RemindersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("Reminders"))

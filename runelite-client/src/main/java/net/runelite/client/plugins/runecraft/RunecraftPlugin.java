@@ -45,7 +45,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -56,6 +55,8 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.BaseComparableEntry;
 import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 import net.runelite.client.menus.MenuManager;
@@ -147,7 +148,6 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(abyssMinimapOverlay);
 		overlayManager.add(runecraftOverlay);
@@ -157,7 +157,6 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
@@ -167,19 +166,7 @@ public class RunecraftPlugin extends Plugin
 		removeSwaps();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
-		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-	}
-
-	private void onGameTick(GameTick event)
+private void onGameTick(GameTick event)
 	{
 		final int before = pouchVar;
 		pouchVar = client.getVar(VarPlayer.POUCH_STATUS);
@@ -212,6 +199,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
@@ -259,6 +247,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("runecraft"))
@@ -275,6 +264,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -288,6 +278,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		final DecorativeObject decorativeObject = event.getDecorativeObject();
@@ -297,12 +288,14 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		final DecorativeObject decorativeObject = event.getDecorativeObject();
 		abyssObjects.remove(decorativeObject);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		final GameState gameState = event.getGameState();
@@ -324,6 +317,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
@@ -334,6 +328,7 @@ public class RunecraftPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();

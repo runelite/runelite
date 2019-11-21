@@ -29,7 +29,7 @@ public class EventBus implements EventBusInterface
 	private OpenOSRSConfig openOSRSConfig;
 
 	@NonNull
-	private <T> Relay<Object> getSubject(Class<T> eventClass)
+	private <T extends Event> Relay<Object> getSubject(Class<T> eventClass)
 	{
 		return subjectList.computeIfAbsent(eventClass, k -> PublishRelay.create().toSerialized());
 	}
@@ -49,7 +49,7 @@ public class EventBus implements EventBusInterface
 
 	@Override
 	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
-	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
+	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
 	{
 		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
 		{
@@ -74,7 +74,7 @@ public class EventBus implements EventBusInterface
 	}
 
 	@Override
-	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil)
+	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil)
 	{
 		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
 		{
@@ -113,7 +113,7 @@ public class EventBus implements EventBusInterface
 	}
 
 	@Override
-	public <T> void post(Class<T> eventClass, @NonNull Event event)
+	public <T extends Event> void post(Class<? extends T> eventClass, @NonNull T event)
 	{
 		getSubject(eventClass).accept(event);
 	}

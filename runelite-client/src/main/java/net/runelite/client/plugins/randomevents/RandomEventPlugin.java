@@ -42,7 +42,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -97,9 +97,6 @@ public class RandomEventPlugin extends Plugin
 	@Inject
 	private RandomEventConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	private boolean notifyAllEvents;
 	private boolean notifyDemon;
 	private boolean notifyForester;
@@ -121,25 +118,16 @@ public class RandomEventPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-
 		lastNotificationTick = 0;
 		currentRandomEvent = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-	}
-
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		Actor source = event.getSource();
@@ -172,6 +160,7 @@ public class RandomEventPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
@@ -182,6 +171,7 @@ public class RandomEventPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getOpcode() >= MenuOpcode.NPC_FIRST_OPTION.getId()
@@ -233,6 +223,7 @@ public class RandomEventPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"randomevents".equals(event.getGroup()))

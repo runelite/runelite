@@ -57,7 +57,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerDespawned;
@@ -71,7 +70,8 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -114,9 +114,6 @@ public class ClanChatPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private EventBus eventBus;
-
 	private List<String> chats = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
@@ -155,7 +152,6 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		chats = new ArrayList<>(Text.fromCSV(this.chatsData));
 	}
@@ -163,28 +159,12 @@ public class ClanChatPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clanMembers.clear();
 		removeClanCounter();
 		resetClanChats();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ClanMemberJoined.class, this, this::onClanMemberJoined);
-		eventBus.subscribe(ClanMemberLeft.class, this, this::onClanMemberLeft);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(VarClientStrChanged.class, this, this::onVarClientStrChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
-		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
-		eventBus.subscribe(ClanChanged.class, this, this::onClanChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("clanchat"))
@@ -207,6 +187,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onClanMemberJoined(ClanMemberJoined event)
 	{
 		final ClanMember member = event.getMember();
@@ -252,6 +233,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onClanMemberLeft(ClanMemberLeft event)
 	{
 		final ClanMember member = event.getMember();
@@ -295,6 +277,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick gameTick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -434,6 +417,7 @@ public class ClanChatPlugin extends Plugin
 		clanJoinMessages.addLast(clanJoinMessage);
 	}
 
+	@Subscribe
 	private void onVarClientStrChanged(VarClientStrChanged strChanged)
 	{
 		if (strChanged.getIndex() == VarClientStr.RECENT_CLAN_CHAT.getIndex() && this.recentChats)
@@ -442,6 +426,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
@@ -483,6 +468,7 @@ public class ClanChatPlugin extends Plugin
 		insertClanRankIcon(chatMessage);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged state)
 	{
 		GameState gameState = state.getGameState();
@@ -496,6 +482,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player local = client.getLocalPlayer();
@@ -508,6 +495,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDespawned(PlayerDespawned event)
 	{
 		if (clanMembers.remove(event.getPlayer()) && clanMembers.isEmpty())
@@ -516,6 +504,7 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onClanChanged(ClanChanged event)
 	{
 		if (event.isJoined())
@@ -531,6 +520,7 @@ public class ClanChatPlugin extends Plugin
 		activityBuffer.clear();
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		if (!scriptCallbackEvent.getEventName().equalsIgnoreCase("clanchatInput"))

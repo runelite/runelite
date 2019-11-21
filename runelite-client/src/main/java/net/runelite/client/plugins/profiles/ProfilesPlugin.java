@@ -32,7 +32,7 @@ import javax.inject.Singleton;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -58,9 +58,6 @@ public class ProfilesPlugin extends Plugin
 	private ProfilesConfig config;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ScheduledExecutorService executorService;
 
 	private ProfilesPanel panel;
@@ -78,11 +75,9 @@ public class ProfilesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 
 		if (this.switchToPanel)
 		{
-			eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		}
 
 		panel = injector.getInstance(ProfilesPanel.class);
@@ -104,11 +99,10 @@ public class ProfilesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (!this.switchToPanel)
@@ -124,6 +118,7 @@ public class ProfilesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{
 		if (event.getGroup().equals("profiles") && event.getKey().equals("rememberPassword"))

@@ -52,7 +52,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
@@ -68,7 +67,8 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -147,9 +147,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private SpriteManager spriteManager;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private ConfigManager configManager;
 
 	private boolean shiftPressed = false;
@@ -166,7 +163,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		cleanConfig();
 		keyManager.registerKeyListener(this);
@@ -231,8 +227,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
@@ -242,26 +236,14 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		itemQuantities.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(DraggingWidgetChanged.class, this, this::onDraggingWidgetChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-	}
-
-	private boolean isSearching()
+private boolean isSearching()
 	{
 		return client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType()
 			|| (client.getVar(VarClientInt.INPUT_TYPE) <= 0
 			&& client.getVar(VarClientStr.INPUT_TEXT) != null && client.getVar(VarClientStr.INPUT_TEXT).length() > 0);
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -371,6 +353,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -401,6 +384,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		tabInterface.handleAdd(event);
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -476,6 +460,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getContainerId() == InventoryID.BANK.getId())
@@ -491,6 +476,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("banktags") && configChanged.getKey().equals("useTabs"))
@@ -506,16 +492,19 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		tabInterface.update();
 	}
 
+	@Subscribe
 	private void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
 		tabInterface.handleDrag(event.isDraggingWidget(), shiftPressed);
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
@@ -524,6 +513,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())

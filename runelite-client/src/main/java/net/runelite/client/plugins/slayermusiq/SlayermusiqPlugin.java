@@ -64,7 +64,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -96,22 +96,17 @@ public class SlayermusiqPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
 	protected void startUp() throws Exception
 	{
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventBus.unregister(this);
-	}
+		}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetID = event.getParam1();
@@ -127,6 +122,7 @@ public class SlayermusiqPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
 		if (ev.getMenuOpcode() == MenuOpcode.RUNELITE && ev.getOption().equals(MENUOP_SLAYERMUSIQ))

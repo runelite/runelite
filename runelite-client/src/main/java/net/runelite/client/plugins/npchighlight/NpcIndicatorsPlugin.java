@@ -52,7 +52,6 @@ import net.runelite.api.MenuOpcode;
 import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -65,7 +64,8 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.util.Text;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -119,9 +119,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private EventBus eventbus;
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed = false;
@@ -218,7 +215,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(npcSceneOverlay);
 		overlayManager.add(npcMinimapOverlay);
@@ -234,8 +230,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		eventbus.unregister(this);
-
 		overlayManager.remove(npcSceneOverlay);
 		overlayManager.remove(npcMinimapOverlay);
 		deadNpcsToDisplay.clear();
@@ -248,20 +242,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventbus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventbus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-		eventbus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventbus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventbus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventbus.subscribe(NpcDefinitionChanged.class, this, this::onNpcDefinitionChanged);
-		eventbus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventbus.subscribe(GraphicsObjectCreated.class, this, this::onGraphicsObjectCreated);
-		eventbus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
@@ -275,6 +256,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("npcindicators"))
@@ -288,6 +270,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		rebuildAllNpcs();
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
@@ -296,6 +279,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int type = event.getOpcode();
@@ -328,6 +312,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuOpcode() != MenuOpcode.RUNELITE ||
@@ -364,6 +349,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		click.consume();
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
@@ -375,6 +361,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDefinitionChanged(NpcDefinitionChanged event)
 	{
 		NPC npc = event.getNpc();
@@ -391,6 +378,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
@@ -403,6 +391,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		highlightedNpcs.remove(npc);
 	}
 
+	@Subscribe
 	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		final GraphicsObject go = event.getGraphicsObject();
@@ -413,6 +402,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		removeOldHighlightedRespawns();

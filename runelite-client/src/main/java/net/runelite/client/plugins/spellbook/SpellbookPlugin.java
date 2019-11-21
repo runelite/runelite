@@ -55,7 +55,7 @@ import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK;
 import static net.runelite.api.widgets.WidgetInfo.SPELLBOOK_FILTERED_BOUNDS;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -117,9 +117,6 @@ public class SpellbookPlugin extends Plugin
 	@Inject
 	private SpellbookDragOverlay overlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter
 	private boolean dragging;
 
@@ -146,7 +143,6 @@ public class SpellbookPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 		updateConfig();
 		refreshMagicTabOption();
 	}
@@ -154,7 +150,6 @@ public class SpellbookPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		clearMagicTabMenus();
 		saveSpells();
 		config.canDrag(false);
@@ -162,16 +157,7 @@ public class SpellbookPlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(mouseListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarCIntChanged);
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
-	private void updateConfig()
+private void updateConfig()
 	{
 		loadFilter();
 		this.enableMobile = config.enableMobile();
@@ -180,6 +166,7 @@ public class SpellbookPlugin extends Plugin
 		this.size = config.size();
 	}
 
+	@Subscribe
 	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (!"spellbook".equals(event.getGroup()))
@@ -219,6 +206,7 @@ public class SpellbookPlugin extends Plugin
 		loadSpells();
 	}
 
+	@Subscribe
 	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -228,6 +216,7 @@ public class SpellbookPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarCIntChanged(final VarClientIntChanged event)
 	{
 		if (event.getIndex() != VarClientInt.INTERFACE_TAB.getIndex())
@@ -258,6 +247,7 @@ public class SpellbookPlugin extends Plugin
 		config.canDrag(false);
 	}
 
+	@Subscribe
 	private void onWidgetMenuOptionClicked(final WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() != WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB
@@ -329,6 +319,7 @@ public class SpellbookPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(final ScriptCallbackEvent event)
 	{
 		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0
