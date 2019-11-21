@@ -830,13 +830,7 @@ public class WidgetID
 
 	static class SpellBook
 	{
-		static final int FILTERED_SPELLS_PARENT = 1;
 		static final int FILTERED_SPELLS_BOUNDS = 3;
-
-		static final int FILTER_SECTION_PARENT = 182;
-		static final int FILTER_BUTTONS_PARENT = 185;
-		static final int FILTER_BUTTON_PARENT = 186;
-		static final int FILTER_BUTTON = 188;
 		static final int TOOLTIP = 189;
 
 		// NORMAL SPELLS
