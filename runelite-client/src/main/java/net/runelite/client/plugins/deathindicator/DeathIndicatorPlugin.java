@@ -229,24 +229,24 @@ public class DeathIndicatorPlugin extends Plugin
 
 	private void onPlayerDeath(PlayerDeath death)
 	{
-		if (client.isInInstancedRegion() || death.getPlayer().getWorldLocation().getRegionID() == 13362)
+		if (client.isInInstancedRegion())
 		{
 			return;
 		}
 
-		if (death.getPlayer() != client.getLocalPlayer())
+		final Player player = death.getPlayer();
+
+		if (config.permaBones() && player.getWorldLocation().getRegionID() != 13362)
 		{
-			newBoneFor(death.getPlayer());
+			newBoneFor(player);
+		}
+
+		if (player != client.getLocalPlayer())
+		{
 			return;
 		}
 
-		Player lp = client.getLocalPlayer();
-		if (config.permaBones())
-		{
-			newBoneFor(lp);
-		}
-
-		lastDeath = lp.getWorldLocation();
+		lastDeath = player.getWorldLocation();
 		lastDeathWorld = client.getWorld();
 		lastDeathTime = Instant.now();
 	}
