@@ -90,6 +90,7 @@ public class ChatKeyboardListener implements KeyListener
 				});
 			}
 		}
+		
 		if (e.getKeyCode() == chatCommandsConfig.clearChatBox().getKeyCode())
 		{
 			clientThread.invoke(() ->
