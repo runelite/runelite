@@ -54,50 +54,77 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
+		if (!e.isControlDown() || chatCommandsConfig.clearShortcuts() == EraseChatSettings.NEITHER)
 		{
 			return;
 		}
 
-		switch (e.getKeyCode())
+		switch (chatCommandsConfig.clearShortcuts())
 		{
-			case KeyEvent.VK_W:
-				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				if (input != null)
+			case SINGLE_WPRD:
+				switch (e.getKeyCode())
 				{
-					// remove trailing space
-					while (input.endsWith(" "))
-					{
-						input = input.substring(0, input.length() - 1);
-					}
-
-					// find next word
-					int idx = input.lastIndexOf(' ');
-					final String replacement;
-					if (idx != -1)
-					{
-						replacement = input.substring(0, idx);
-					}
-					else
-					{
-						replacement = "";
-					}
-
-					clientThread.invoke(() ->
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
-						client.runScript(ScriptID.CHAT_PROMPT_INIT);
-					});
+					case KeyEvent.VK_W:
+						clearEntireTextBox();
+						break;
+					case KeyEvent.VK_BACK_SPACE:
+						eraseSingleWord();
+						break;
 				}
 				break;
-			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invoke(() ->
+			case WHOLE_LINE:
+				switch (e.getKeyCode())
 				{
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-					client.runScript(ScriptID.CHAT_PROMPT_INIT);
-				});
+					case KeyEvent.VK_W:
+						eraseSingleWord();
+						break;
+					case KeyEvent.VK_BACK_SPACE:
+						clearEntireTextBox();
+						break;
+				}
 				break;
 		}
+
+	}
+
+	private void eraseSingleWord()
+	{
+		String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+		if (input != null)
+		{
+			// remove trailing space
+			while (input.endsWith(" "))
+			{
+				input = input.substring(0, input.length() - 1);
+			}
+
+			// find next word
+			int idx = input.lastIndexOf(' ');
+			final String replacement;
+			if (idx != -1)
+			{
+				replacement = input.substring(0, idx);
+			}
+			else
+			{
+				replacement = "";
+			}
+
+			clientThread.invoke(() ->
+			{
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+				client.runScript(ScriptID.CHAT_PROMPT_INIT);
+			});
+		}
+	}
+
+	private void clearEntireTextBox()
+	{
+		clientThread.invoke(() ->
+		{
+			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+			client.runScript(ScriptID.CHAT_PROMPT_INIT);
+		});
 	}
 
 	@Override

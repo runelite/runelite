@@ -123,10 +123,10 @@ public interface ChatCommandsConfig extends Config
 		position = 8,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+		description = "Switch between whole chat box erase and single word for ctrl + backspace, ctrl + w does opposite."
 	)
-	default boolean clearShortcuts()
+	default EraseChatSettings clearShortcuts()
 	{
-		return true;
+		return EraseChatSettings.WHOLE_LINE;
 	}
 }
