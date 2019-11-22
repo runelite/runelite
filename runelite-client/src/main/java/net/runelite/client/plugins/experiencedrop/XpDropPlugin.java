@@ -69,6 +69,7 @@ public class XpDropPlugin extends Plugin
 	private static final int XPDROP_PADDING = 2; // space between xp drop icons
 	private static final double HITPOINT_RATIO = 1.33; // Base rate of hp xp per point damage
 	private static final double DMM_MULTIPLIER_RATIO = 10;
+	private static final double TL_MULTIPLIER_RATIO = 5;
 	@Inject
 	private Client client;
 	@Inject
@@ -352,12 +353,18 @@ public class XpDropPlugin extends Plugin
 	private void calculateDamageDealt(int diff)
 	{
 		double damageDealt = diff / HITPOINT_RATIO;
-		// DeadMan mode has an XP modifier
+		
+		// DeadMan mode has an XP modifier of 10x
 		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
 			damageDealt = damageDealt / DMM_MULTIPLIER_RATIO;
 		}
-
+		// Twisted League mode has an XP modifier of 5x
+		if (client.getWorldType().contains(WorldType.LEAGUE))
+		{
+			damageDealt = damageDealt / TL_MULTIPLIER_RATIO;
+		}
+		
 		// Some NPCs have an XP modifier, account for it here.
 		Actor a = client.getLocalPlayer().getInteracting();
 		if (!(a instanceof NPC) && !(a instanceof Player))
