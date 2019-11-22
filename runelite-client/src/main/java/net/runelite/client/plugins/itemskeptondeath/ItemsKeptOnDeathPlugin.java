@@ -354,7 +354,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			// 4) In deep level wilderness: (>=21) only `LockedItem`s are kept
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
-				&& !isTradeable(itemManager.getItemComposition(id))
+				&& !isTradeable(itemManager.getItemDefinition(id))
 				&& (wildyLevel <= 0
 					|| LockedItem.getBaseIdFromLockedId(id) != null
 					|| (wildyLevel <= DEEP_WILDY && ItemReclaimCost.of(id) != null))
