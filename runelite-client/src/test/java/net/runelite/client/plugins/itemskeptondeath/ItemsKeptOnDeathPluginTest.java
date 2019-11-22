@@ -662,4 +662,29 @@ public class ItemsKeptOnDeathPluginTest
 		final List<ItemStack> kept = deathItems.getKeptItems();
 		assertTrue(kept.contains(new ItemStack(ItemID.AVERNIC_DEFENDER, 1)));
 	}
+
+	@Test
+	public void lockedItemTest()
+	{
+		// Base item data needs to exist for each locked item tested as the death price is pulled from the base item.
+		final Item defenderBase = mItem(ItemID.AVERNIC_DEFENDER, 1, "Avernic defender", false, 0);
+		final Item defenderLocked = mItem(ItemID.AVERNIC_DEFENDER_L, 1, "Avernic defender (l)", false, 0);
+
+		assertEquals(plugin.getDeathPrice(defenderBase), plugin.getDeathPrice(defenderLocked));
+
+		final Item[] inv = new Item[]
+			{
+				defenderLocked,
+				mItem(ItemID.DRAGON_CLAWS, 1, "Dragon Claws", true, 30042579)
+			};
+
+		plugin.isSkulled = true;
+		plugin.protectingItem = true;
+		plugin.wildyLevel = 21;
+
+		final DeathItems deathItems = plugin.calculateKeptLostItems(inv, new Item[0]);
+
+		final List<ItemStack> kept = deathItems.getKeptItems();
+		assertEquals(inv.length, kept.size());
+	}
 }
