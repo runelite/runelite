@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberManager;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -79,16 +80,16 @@ public class ClanManager
 			@Override
 			public ClanMemberRank load(@Nonnull String key)
 			{
-				final ClanMember[] clanMembersArr = client.getClanMembers();
-
-				if (clanMembersArr == null || clanMembersArr.length == 0)
+				final ClanMemberManager clanMemberManager = client.getClanMemberManager();
+				if (clanMemberManager == null)
 				{
 					return ClanMemberRank.UNRANKED;
 				}
 
-				return Arrays.stream(clanMembersArr)
+				final ClanMember[] clanMembers = clanMemberManager.getMembers();
+				return Arrays.stream(clanMembers)
 					.filter(Objects::nonNull)
-					.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
+					.filter(clanMember -> sanitize(clanMember.getName()).equals(sanitize(key)))
 					.map(ClanMember::getRank)
 					.findAny()
 					.orElse(ClanMemberRank.UNRANKED);
@@ -102,6 +103,12 @@ public class ClanManager
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+	}
+
+	public boolean isClanMember(String name)
+	{
+		ClanMemberManager clanMemberManager = client.getClanMemberManager();
+		return clanMemberManager != null && clanMemberManager.findByName(name) != null;
 	}
 
 	public ClanMemberRank getRank(String playerName)
