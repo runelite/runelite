@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,13 +85,8 @@ public class ClanManager
 					return ClanMemberRank.UNRANKED;
 				}
 
-				final ClanMember[] clanMembers = clanMemberManager.getMembers();
-				return Arrays.stream(clanMembers)
-					.filter(Objects::nonNull)
-					.filter(clanMember -> sanitize(clanMember.getName()).equals(sanitize(key)))
-					.map(ClanMember::getRank)
-					.findAny()
-					.orElse(ClanMemberRank.UNRANKED);
+				ClanMember clanMember = clanMemberManager.findByName(sanitize(key));
+				return clanMember != null ? clanMember.getRank() : ClanMemberRank.UNRANKED;
 			}
 		});
 
