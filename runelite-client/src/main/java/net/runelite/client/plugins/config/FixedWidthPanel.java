@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,16 @@
  */
 package net.runelite.client.plugins.config;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import net.runelite.client.ui.PluginPanel;
 
-class HotkeyButton extends JButton
+class FixedWidthPanel extends JPanel
 {
-	@Getter
-	private Keybind value;
-
-	public HotkeyButton(Keybind value, boolean modifierless)
+	@Override
+	public Dimension getPreferredSize()
 	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 	}
 
-	public void setValue(Keybind value)
-	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
-
-		this.value = value;
-		setText(value.toString());
-	}
 }

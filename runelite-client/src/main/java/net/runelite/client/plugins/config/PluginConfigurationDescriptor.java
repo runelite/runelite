@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,46 @@
  */
 package net.runelite.client.plugins.config;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
+import javax.annotation.Nullable;
+import javax.swing.JMenuItem;
+import lombok.Value;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.util.LinkBrowser;
 
-class HotkeyButton extends JButton
+@Value
+class PluginConfigurationDescriptor
 {
-	@Getter
-	private Keybind value;
+	private final String name;
+	private final String description;
+	private final String[] tags;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	// Can be null if its not an actual plugin (RuneLite / ChatColors)
+	@Nullable
+	private final Plugin plugin;
+
+	// Can be null if it has no more configuration than the on/off toggle
+	@Nullable
+	private final Config config;
+
+	@Nullable
+	private final ConfigDescriptor configDescriptor;
+
+	boolean hasConfigurables()
 	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		return configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
 	}
 
-	public void setValue(Keybind value)
+	/**
+	 * Creates a menu item for linking to a support page for the plugin
+	 *
+	 * @return A {@link JMenuItem} which opens the plugin's wiki page URL in the browser when clicked
+	 */
+	JMenuItem createSupportMenuItem()
 	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
-
-		this.value = value;
-		setText(value.toString());
+		final JMenuItem menuItem = new JMenuItem("Wiki");
+		menuItem.addActionListener(e -> LinkBrowser.browse("https://github.com/runelite/runelite/wiki/" + name.replace(' ', '-')));
+		return menuItem;
 	}
 }
