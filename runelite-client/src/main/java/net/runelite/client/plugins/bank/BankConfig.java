@@ -108,4 +108,13 @@ public interface BankConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "keyboardBankPin",
+			name = "Use keyboard to enter pin?",
+			description = "Enables bank pins to be entered with the keyboard or numpad",
+			position = 8
+	)
+	default boolean keyboardBankPin() { return false; }
+
 }

@@ -1,0 +1,494 @@
+.id                 653
+.int_stack_count    19
+.string_stack_count 0
+.int_var_count      22
+.string_var_count   0
+   iload                  0
+   sconst                 "bankpin"
+   runelite_callback
+   iconst                 3
+   if_icmpeq              LABEL4
+   jump                   LABEL20
+LABEL4:
+   sconst                 "Finally, the FOURTH digit."
+   iload                  18
+   if_settext            
+   sconst                 "*"
+   iload                  14
+   if_settext            
+   sconst                 "*"
+   iload                  15
+   if_settext            
+   sconst                 "*"
+   iload                  16
+   if_settext            
+   sconst                 "?"
+   iload                  17
+   if_settext            
+   jump                   LABEL128
+LABEL20:
+   iload                  0
+   iconst                 2
+   if_icmpeq              LABEL24
+   jump                   LABEL40
+LABEL24:
+   sconst                 "Time for the THIRD digit."
+   iload                  18
+   if_settext            
+   sconst                 "*"
+   iload                  14
+   if_settext            
+   sconst                 "*"
+   iload                  15
+   if_settext            
+   sconst                 "?"
+   iload                  16
+   if_settext            
+   sconst                 "?"
+   iload                  17
+   if_settext            
+   jump                   LABEL128
+LABEL40:
+   iload                  0
+   iconst                 1
+   if_icmpeq              LABEL44
+   jump                   LABEL60
+LABEL44:
+   sconst                 "Now click the SECOND digit."
+   iload                  18
+   if_settext            
+   sconst                 "*"
+   iload                  14
+   if_settext            
+   sconst                 "?"
+   iload                  15
+   if_settext            
+   sconst                 "?"
+   iload                  16
+   if_settext            
+   sconst                 "?"
+   iload                  17
+   if_settext            
+   jump                   LABEL128
+LABEL60:
+   iload                  0
+   iconst                 0
+   if_icmpeq              LABEL64
+   jump                   LABEL80
+LABEL64:
+   sconst                 "First click the FIRST digit."
+   iload                  18
+   if_settext            
+   sconst                 "?"
+   iload                  14
+   if_settext            
+   sconst                 "?"
+   iload                  15
+   if_settext            
+   sconst                 "?"
+   iload                  16
+   if_settext            
+   sconst                 "?"
+   iload                  17
+   if_settext            
+   jump                   LABEL128
+LABEL80:
+   sconst                 "Submitting..."
+   iload                  18
+   if_settext            
+   sconst                 "*"
+   iload                  14
+   if_settext            
+   sconst                 "*"
+   iload                  15
+   if_settext            
+   sconst                 "*"
+   iload                  16
+   if_settext            
+   sconst                 "*"
+   iload                  17
+   if_settext            
+   iload                  4
+   cc_deleteall          
+   iload                  5
+   cc_deleteall          
+   iload                  6
+   cc_deleteall          
+   iload                  7
+   cc_deleteall          
+   iload                  8
+   cc_deleteall          
+   iload                  9
+   cc_deleteall          
+   iload                  10
+   cc_deleteall          
+   iload                  11
+   cc_deleteall          
+   iload                  12
+   cc_deleteall          
+   iload                  13
+   cc_deleteall          
+   iconst                 -1
+   sconst                 ""
+   iload                  2
+   if_setonop            
+   iload                  2
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  3
+   if_setonop            
+   iload                  3
+   if_clearops           
+   return                
+LABEL128:
+   iconst                 10
+   define_array           73
+   iconst                 0
+   iload                  4
+   set_array_int         
+   iconst                 1
+   iload                  5
+   set_array_int         
+   iconst                 2
+   iload                  6
+   set_array_int         
+   iconst                 3
+   iload                  7
+   set_array_int         
+   iconst                 4
+   iload                  8
+   set_array_int         
+   iconst                 5
+   iload                  9
+   set_array_int         
+   iconst                 6
+   iload                  10
+   set_array_int         
+   iconst                 7
+   iload                  11
+   set_array_int         
+   iconst                 8
+   iload                  12
+   set_array_int         
+   iconst                 9
+   iload                  13
+   set_array_int         
+   iconst                 0
+   istore                 19
+   iconst                 -1
+   istore                 20
+   iconst                 20
+   istore                 21
+LABEL166:
+   iload                  21
+   iconst                 0
+   if_icmpgt              LABEL170
+   jump                   LABEL188
+LABEL170:
+   iload                  21
+   iconst                 1
+   sub                   
+   istore                 21
+   iconst                 9
+   random                
+   istore                 19
+   iconst                 9
+   get_array_int         
+   istore                 20
+   iconst                 9
+   iload                  19
+   get_array_int         
+   set_array_int         
+   iload                  19
+   iload                  20
+   set_array_int         
+   jump                   LABEL166
+LABEL188:
+   iconst                 0
+   get_array_int         
+   iconst                 0
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 1
+   get_array_int         
+   iconst                 1
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 2
+   get_array_int         
+   iconst                 2
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 3
+   get_array_int         
+   iconst                 3
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 4
+   get_array_int         
+   iconst                 4
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 5
+   get_array_int         
+   iconst                 5
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 6
+   get_array_int         
+   iconst                 6
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 7
+   get_array_int         
+   iconst                 7
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 8
+   get_array_int         
+   iconst                 8
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 9
+   get_array_int         
+   iconst                 9
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 679
+   iconst                 1
+   iload                  2
+   if_gettext            
+   iload                  2
+   if_setop              
+   iconst                 686
+   iconst                 12345
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   sconst                 "iIIIIIIIIIIIIIIIII"
+   iload                  2
+   if_setonop            
+   iconst                 1
+   iload                  3
+   if_gettext            
+   iload                  3
+   if_setop              
+   iconst                 686
+   iconst                 54321
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   sconst                 "iIIIIIIIIIIIIIIIII"
+   iload                  3
+   if_setonop
+   sconst                 "bankPinButtons" ; push event name
+   runelite_callback      ; invoke callback
+   return
