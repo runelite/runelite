@@ -124,7 +124,7 @@ public interface ChatCommandsConfig extends Config
 		position = 8,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
-		description = "Enable hot key to clear single word."
+		description = "Enable hot key to clear single word at a time"
 	)
 	default Keybind clearSingleWord()
 	{
