@@ -354,12 +354,11 @@ public class XpDropPlugin extends Plugin
 	{
 		double damageDealt = diff / HITPOINT_RATIO;
 		
-		// DeadMan mode has an XP modifier of 10x
+		// DeadMan mode has an XP modifier of 10x, Twisted League mode has an XP modifier of 5x
 		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
 			damageDealt = damageDealt / DMM_MULTIPLIER_RATIO;
 		}
-		// Twisted League mode has an XP modifier of 5x
 		if (client.getWorldType().contains(WorldType.LEAGUE))
 		{
 			damageDealt = damageDealt / TL_MULTIPLIER_RATIO;
