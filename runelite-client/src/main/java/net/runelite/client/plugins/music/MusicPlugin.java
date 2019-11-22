@@ -78,6 +78,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class MusicPlugin extends Plugin
 {
+	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.TELEPORT_VWOOP
+	);
+
 	@Inject
 	private Client client;
 
@@ -98,10 +102,6 @@ public class MusicPlugin extends Plugin
 	private Collection<Widget> tracks;
 
 	private MusicState currentMusicFilter = MusicState.ALL;
-
-	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
-		SoundEffectID.TELEPORT_VWOOP
-	);
 
 	@Override
 	protected void startUp()
