@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
@@ -54,77 +55,50 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || chatCommandsConfig.clearShortcuts() == EraseChatSettings.NEITHER)
+		if (!e.isControlDown() || chatCommandsConfig.clearChatBox() == Keybind.NOT_SET && chatCommandsConfig.clearSingleWord() == Keybind.NOT_SET)
 		{
 			return;
 		}
 
-		switch (chatCommandsConfig.clearShortcuts())
+		if (e.getKeyCode() == chatCommandsConfig.clearSingleWord().getKeyCode())
 		{
-			case SINGLE_WPRD:
-				switch (e.getKeyCode())
+			String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+			if (input != null)
+			{
+				// remove trailing space
+				while (input.endsWith(" "))
 				{
-					case KeyEvent.VK_W:
-						clearEntireTextBox();
-						break;
-					case KeyEvent.VK_BACK_SPACE:
-						eraseSingleWord();
-						break;
+					input = input.substring(0, input.length() - 1);
 				}
-				break;
-			case WHOLE_LINE:
-				switch (e.getKeyCode())
+
+				// find next word
+				int idx = input.lastIndexOf(' ');
+				final String replacement;
+				if (idx != -1)
 				{
-					case KeyEvent.VK_W:
-						eraseSingleWord();
-						break;
-					case KeyEvent.VK_BACK_SPACE:
-						clearEntireTextBox();
-						break;
+					replacement = input.substring(0, idx);
 				}
-				break;
+				else
+				{
+					replacement = "";
+				}
+
+				clientThread.invoke(() ->
+				{
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+					client.runScript(ScriptID.CHAT_PROMPT_INIT);
+				});
+			}
 		}
-
-	}
-
-	private void eraseSingleWord()
-	{
-		String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-		if (input != null)
+		if (e.getKeyCode() == chatCommandsConfig.clearChatBox().getKeyCode())
 		{
-			// remove trailing space
-			while (input.endsWith(" "))
-			{
-				input = input.substring(0, input.length() - 1);
-			}
-
-			// find next word
-			int idx = input.lastIndexOf(' ');
-			final String replacement;
-			if (idx != -1)
-			{
-				replacement = input.substring(0, idx);
-			}
-			else
-			{
-				replacement = "";
-			}
-
 			clientThread.invoke(() ->
 			{
-				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 				client.runScript(ScriptID.CHAT_PROMPT_INIT);
 			});
 		}
-	}
 
-	private void clearEntireTextBox()
-	{
-		clientThread.invoke(() ->
-		{
-			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-			client.runScript(ScriptID.CHAT_PROMPT_INIT);
-		});
 	}
 
 	@Override

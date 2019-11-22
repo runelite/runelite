@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
@@ -121,12 +123,23 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Switch between whole chat box erase and single word for ctrl + backspace, ctrl + w does opposite."
+		keyName = "clearSingleWord",
+		name = "Clear Single Word",
+		description = "Enable hot key to clear single word."
 	)
-	default EraseChatSettings clearShortcuts()
+	default Keybind clearSingleWord()
 	{
-		return EraseChatSettings.WHOLE_LINE;
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "clearEntireChatBox",
+		name = "Clear Chat Box",
+		description = "Enable hotkey to clear entire chat box"
+	)
+	default Keybind clearChatBox()
+	{
+		return Keybind.NOT_SET;
 	}
 }
