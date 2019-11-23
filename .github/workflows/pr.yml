@@ -1,6 +1,8 @@
 name: OpenOSRS - CI (PR)
 
-on: pull_request
+on:
+  pull_request:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
 
 jobs:
   pr-lint:
@@ -13,6 +15,8 @@ jobs:
         uses: seferov/pr-lint-action@master
         with:
           title-regex: '^([\w-/]+): \w+'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-close-message: 'Closing this pull request since the title does not match %pattern% pattern. Please fix the title and re-open the pull request.'
 
   build:
     runs-on: ubuntu-latest
