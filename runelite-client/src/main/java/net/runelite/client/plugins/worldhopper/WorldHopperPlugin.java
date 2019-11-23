@@ -514,14 +514,10 @@ public class WorldHopperPlugin extends Plugin
 		try
 		{
 			WorldResult worldResult = worldClient.lookupWorlds();
-
-			if (worldResult != null)
-			{
-				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-				this.worldResult = worldResult;
-				this.lastFetch = Instant.now();
-				updateList();
-			}
+			worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+			this.worldResult = worldResult;
+			this.lastFetch = Instant.now();
+			updateList();
 		}
 		catch (IOException ex)
 		{
