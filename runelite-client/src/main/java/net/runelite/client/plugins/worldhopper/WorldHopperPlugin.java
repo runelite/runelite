@@ -59,7 +59,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -74,6 +73,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -512,14 +512,10 @@ public class WorldHopperPlugin extends Plugin
 		try
 		{
 			WorldResult worldResult = worldClient.lookupWorlds();
-
-			if (worldResult != null)
-			{
-				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-				this.worldResult = worldResult;
-				this.lastFetch = Instant.now();
-				updateList();
-			}
+			worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+			this.worldResult = worldResult;
+			this.lastFetch = Instant.now();
+			updateList();
 		}
 		catch (IOException ex)
 		{
