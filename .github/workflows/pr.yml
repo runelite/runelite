@@ -12,11 +12,9 @@ jobs:
     steps:
       - name: PR title lint
         if: github.event_name == 'pull_request'
-        uses: seferov/pr-lint-action@master
+        uses: seferov/pr-lint-action@v1.0.3
         with:
           title-regex: '^([\w-/]+): \w+'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-close-message: 'Closing this pull request since the title does not match %pattern% pattern. Please fix the title and re-open the pull request.'
 
   build:
     runs-on: ubuntu-latest
