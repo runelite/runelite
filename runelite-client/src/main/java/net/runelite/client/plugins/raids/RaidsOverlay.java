@@ -261,11 +261,6 @@ public class RaidsOverlay extends Overlay
 		int bossCount = 0;
 		roomCount = 0;
 
-		if (config.enableRotationWhitelist())
-		{
-			bossMatches = plugin.getRotationMatches();
-		}
-
 		Set<Integer> imageIds = new HashSet<>();
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
@@ -286,8 +281,6 @@ public class RaidsOverlay extends Overlay
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
-						|| config.enableRotationWhitelist() && bossCount > bossMatches)
 					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
 							|| config.enableRotationWhitelist() && !plugin.getRotationMatches())
 					{

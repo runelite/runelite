@@ -587,10 +587,6 @@ public class ScreenshotPlugin extends Plugin
 
 		// Draw the game onto the screenshot
 		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-			else if (worldTypes.contains(WorldType.LEAGUE))
-			{
-				playerDir += "-League";
-			}
 		screenCapture.takeScreenshot(screenshot, fileName, config.notifyWhenTaken(), config.uploadScreenshot());
 	}
 

@@ -35,15 +35,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -122,6 +118,7 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
 	private static final int LINE_COMPONENT_HEIGHT = 16;
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 	private static final int MAX_LAYOUT_LEN = 300;
 
 	@Inject
@@ -196,10 +193,10 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private final Set<String> layoutWhitelist = new HashSet<String>();
 
-	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
 	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
 
+	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
 	private Raid raid;
 
@@ -496,6 +493,7 @@ public class RaidsPlugin extends Plugin
 		updateList(roomWhitelist, config.whitelistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
+		updateMap(recommendedItemsList, config.recommendedItems());
 
 		// Update rotation whitelist
 		rotationWhitelist.clear();
@@ -505,7 +503,6 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateList(Collection<String> list, String input)
 	private void updateMap(Map<String, List<Integer>> map, String input)
 	{
 		map.clear();
@@ -540,6 +537,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	private void updateList(Collection<String> list, String input)
 	{
 		list.clear();
 		for (String s : Text.fromCSV(input.toLowerCase()))
