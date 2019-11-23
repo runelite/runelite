@@ -57,6 +57,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
+import net.runelite.client.RuneLiteProperties;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
@@ -154,31 +155,54 @@ public class ClientLoader implements Supplier<Applet>
 
 	private void downloadConfig() throws IOException
 	{
-		String host = null;
-		for (int attempt = 0; ; attempt++)
+		HttpUrl url = HttpUrl.parse(RuneLiteProperties.getJavConfig());
+		IOException err = null;
+		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
 			try
 			{
-				config = ClientConfigLoader.fetch(host);
+				config = ClientConfigLoader.fetch(url);
 
 				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
 				{
 					throw new IOException("Invalid or missing jav_config");
 				}
 
-				break;
+				return;
 			}
 			catch (IOException e)
 			{
-				log.info("Failed to get jav_config from host \"{}\" ({})", host, e.getMessage());
-
-				if (attempt >= NUM_ATTEMPTS)
-				{
-					throw e;
-				}
-
-				host = hostSupplier.get();
+				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+				String host = hostSupplier.get();
+				url = url.newBuilder().host(host).build();
+				err = e;
 			}
+		}
+
+		log.info("Falling back to backup client config");
+
+		try
+		{
+			RSConfig backupConfig = ClientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
+
+			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+			{
+				throw new IOException("Invalid or missing jav_config");
+			}
+
+			if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()))
+			{
+				throw new IOException("Backup config does not have RuneLite gamepack url");
+			}
+
+			// Randomize the codebase
+			String codebase = hostSupplier.get();
+			backupConfig.setCodebase("http://" + codebase + "/");
+			config = backupConfig;
+		}
+		catch (IOException ex)
+		{
+			throw err; // use error from Jagex's servers
 		}
 	}
 
@@ -217,10 +241,18 @@ public class ClientLoader implements Supplier<Applet>
 			vanilla.position(0);
 
 			// Start downloading the vanilla client
-
-			String codebase = config.getCodeBase();
-			String initialJar = config.getInitialJar();
-			HttpUrl url = HttpUrl.parse(codebase + initialJar);
+			HttpUrl url;
+			if (config.getRuneLiteGamepack() != null)
+			{
+				// If we are using the backup config, use our own gamepack and ignore the codebase
+				url = HttpUrl.parse(config.getRuneLiteGamepack());
+			}
+			else
+			{
+				String codebase = config.getCodeBase();
+				String initialJar = config.getInitialJar();
+				url = HttpUrl.parse(codebase + initialJar);
+			}
 
 			for (int attempt = 0; ; attempt++)
 			{
