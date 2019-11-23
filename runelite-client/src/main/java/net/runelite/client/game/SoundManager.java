@@ -41,15 +41,15 @@ public class SoundManager
 					AudioInputStream in = AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResource(sound.getFilePath()));
 					AudioFormat outFormat = SoundManager.this.getOutFormat(in.getFormat());
 					DataLine.Info info = new DataLine.Info(SourceDataLine.class, outFormat);
-					SourceDataLine line = (SourceDataLine)AudioSystem.getLine(info);
+					SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 					if (line != null)
 					{
 						line.open(outFormat, 2200);
 						if (line.isControlSupported(FloatControl.Type.MASTER_GAIN))
 						{
 							int volume = SoundManager.this.runeliteConfig.volume();
-							FloatControl gainControl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
-							BooleanControl muteControl = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
+							FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+							BooleanControl muteControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
 							if (volume == 0)
 							{
 								muteControl.setValue(true);
@@ -57,7 +57,7 @@ public class SoundManager
 							else
 							{
 								muteControl.setValue(false);
-								gainControl.setValue((float)(Math.log((double)volume / 100.0) / Math.log(10.0) * 20.0));
+								gainControl.setValue((float) (Math.log((double) volume / 100.0) / Math.log(10.0) * 20.0));
 							}
 						}
 						line.start();

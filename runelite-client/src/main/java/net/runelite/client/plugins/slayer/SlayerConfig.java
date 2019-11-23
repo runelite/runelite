@@ -167,10 +167,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
-			keyName = "pointsCommand",
-			name = "Points Command",
-			description = "Configures whether the slayer points command is enabled<br> !points"
+		position = 14,
+		keyName = "pointsCommand",
+		name = "Points Command",
+		description = "Configures whether the slayer points command is enabled<br> !points"
 	)
 	default boolean pointsCommand()
 	{

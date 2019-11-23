@@ -77,7 +77,9 @@ public abstract class Plugin implements Module
 		for (Method method : this.getClass().getDeclaredMethods())
 		{
 			if (method.getAnnotation(Subscribe.class) == null)
+			{
 				continue;
+			}
 
 			assert method.getParameterCount() == 1 : "Methods annotated with @Subscribe should have only one parameter";
 

@@ -34,6 +34,7 @@ import lombok.Setter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.coords.WorldPoint;
+
 @Getter(AccessLevel.PACKAGE)
 class MemorizedNpc
 {

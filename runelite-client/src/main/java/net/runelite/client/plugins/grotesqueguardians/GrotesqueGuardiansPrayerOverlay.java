@@ -73,7 +73,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 			BufferedImage prayerImage;
 			prayerImage = getPrayerImage(attack);
 			imagePanelComponent.setBackgroundColor(client
-					.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
+				.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
 
 			NPC dusk = plugin.getDusk();
 			imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));

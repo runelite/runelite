@@ -75,7 +75,7 @@ class BarbarianAssaultMenu
 	void clearHiddenMenus()
 	{
 		// Clears menus from MenuManager and tracker
-		for (Iterator<AbstractComparableEntry> iterator = tracker.iterator(); iterator.hasNext();)
+		for (Iterator<AbstractComparableEntry> iterator = tracker.iterator(); iterator.hasNext(); )
 		{
 			menuManager.removeHiddenEntry(iterator.next());
 			iterator.remove();
@@ -118,7 +118,7 @@ class BarbarianAssaultMenu
 
 				case BLOCK_PENANCE_CAVE:
 					return ((role != Role.DEFENDER && role != null) && game.isRemoveUnusedMenus())
-							|| (role == Role.DEFENDER && game.isRemovePenanceCave());
+						|| (role == Role.DEFENDER && game.isRemovePenanceCave());
 
 				case DUNK_LAVA_CRATER:
 				case FIX:

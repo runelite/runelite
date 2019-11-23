@@ -89,7 +89,7 @@ public class ChatboxPerformancePlugin extends Plugin
 		{
 			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 		}
-		}
+	}
 
 	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)

@@ -155,7 +155,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -169,7 +169,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		partyDataMap.clear();
 		pendingTilePings.clear();
@@ -185,7 +185,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		sendAlert = false;
 	}
 
-@Provides
+	@Provides
 	public PartyConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PartyConfig.class);
@@ -243,6 +243,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 			if ("walk here".equalsIgnoreCase(menuEntry.getOption()))
 			{
 				isOnCanvas = true;
+				break;
 			}
 		}
 

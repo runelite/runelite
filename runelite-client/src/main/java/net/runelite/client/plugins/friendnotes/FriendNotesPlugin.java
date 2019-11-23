@@ -32,6 +32,7 @@ import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -83,22 +84,22 @@ public class FriendNotesPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private HoveredFriend hoveredFriend = null;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}
 
-/**
+	/**
 	 * Set a friend note, or unset by passing a null/empty note.
 	 */
 	private void setFriendNote(String displayName, String note)

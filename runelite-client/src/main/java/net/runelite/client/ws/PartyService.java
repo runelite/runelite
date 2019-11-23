@@ -34,13 +34,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import static net.runelite.api.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PartyChanged;
-import static net.runelite.api.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
 import net.runelite.http.api.ws.messages.party.PartyChatMessage;
@@ -188,7 +188,7 @@ public class PartyService
 		return null;
 	}
 
-	public PartyMember getMemberByName(final String name)
+	private PartyMember getMemberByName(final String name)
 	{
 		for (PartyMember member : members)
 		{

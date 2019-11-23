@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum FairyRingLocation
 {
 	AIR("AIR", new WorldPoint(2699, 3249, 0)),

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,11 +35,11 @@ public class StatsChanges
 	 *
 	 * @see Positivity
 	 */
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private Positivity positivity;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private StatChange[] statChanges;
 
 	public StatsChanges(int len)

@@ -25,15 +25,15 @@
 
 package net.runelite.client.plugins.tearsofguthix;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import javax.inject.Inject;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
 

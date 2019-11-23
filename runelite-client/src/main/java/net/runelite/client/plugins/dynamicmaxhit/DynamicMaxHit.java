@@ -114,8 +114,8 @@ public class DynamicMaxHit extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<String, Victim> victims = new HashMap<>();
 	private boolean antiFireActive;
-	private ExecutorService httpExecutor = Executors.newFixedThreadPool(100);
-	private Map<String, HiscoreResult> resultCache = new HashMap<>();
+	private final ExecutorService httpExecutor = Executors.newFixedThreadPool(100);
+	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
 	private boolean enablePrayer;
 	private boolean enablePotions;
 

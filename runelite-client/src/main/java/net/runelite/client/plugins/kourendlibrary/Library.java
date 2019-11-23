@@ -37,32 +37,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.kourendlibrary.Book.BYRNES_CORONATION_SPEECH;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13514;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13515;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13516;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13517;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13518;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13519;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13520;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13521;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13522;
-import static net.runelite.client.plugins.kourendlibrary.Book.DARK_MANUSCRIPT_13523;
-import static net.runelite.client.plugins.kourendlibrary.Book.EATHRAM_RADA_EXTRACT;
-import static net.runelite.client.plugins.kourendlibrary.Book.HOSIDIUS_LETTER;
-import static net.runelite.client.plugins.kourendlibrary.Book.IDEOLOGY_OF_DARKNESS;
-import static net.runelite.client.plugins.kourendlibrary.Book.KILLING_OF_A_KING;
-import static net.runelite.client.plugins.kourendlibrary.Book.RADAS_CENSUS;
-import static net.runelite.client.plugins.kourendlibrary.Book.RADAS_JOURNEY;
-import static net.runelite.client.plugins.kourendlibrary.Book.RICKTORS_DIARY_7;
-import static net.runelite.client.plugins.kourendlibrary.Book.SOUL_JOURNEY;
-import static net.runelite.client.plugins.kourendlibrary.Book.TRANSPORTATION_INCANTATIONS;
-import static net.runelite.client.plugins.kourendlibrary.Book.TRANSVERGENCE_THEORY;
-import static net.runelite.client.plugins.kourendlibrary.Book.TREACHERY_OF_ROYALTY;
-import static net.runelite.client.plugins.kourendlibrary.Book.TRISTESSAS_TRAGEDY;
-import static net.runelite.client.plugins.kourendlibrary.Book.TWILL_ACCORD;
-import static net.runelite.client.plugins.kourendlibrary.Book.VARLAMORE_ENVOY;
-import static net.runelite.client.plugins.kourendlibrary.Book.WINTERTODT_PARABLE;
+import static net.runelite.client.plugins.kourendlibrary.Book.*;
 
 /**
  * Library represents a instance of the Kourend/Arceuus House library.

@@ -26,11 +26,11 @@ package net.runelite.client.plugins.raidsthieving.BatSolver;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import lombok.AccessLevel;
-import lombok.Getter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 // Each Thieving room has 4 empty chests
 // User-reported data shows these 4 come in groups,

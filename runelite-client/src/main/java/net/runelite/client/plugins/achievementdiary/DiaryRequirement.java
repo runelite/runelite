@@ -27,9 +27,10 @@ package net.runelite.client.plugins.achievementdiary;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class DiaryRequirement
 {
 	private final String task;

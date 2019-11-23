@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -31,11 +32,11 @@ import net.runelite.client.plugins.itemstats.stats.Stat;
 
 public abstract class StatBoost extends SingleEffect
 {
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private Stat stat;
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PUBLIC)
 	private boolean boost;
 
 	protected StatBoost(Stat stat, boolean boost)

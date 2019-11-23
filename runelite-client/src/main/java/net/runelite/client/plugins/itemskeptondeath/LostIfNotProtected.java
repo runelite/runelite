@@ -38,7 +38,7 @@ final class LostIfNotProtected
 		ItemID.KERIS, ItemID.KERISP, ItemID.KERISP_10583, ItemID.KERISP_10584
 	);
 
-	public static boolean isLostIfNotProtected(int id)
+	static boolean isLostIfNotProtected(int id)
 	{
 		return ITEMS.contains(id);
 	}

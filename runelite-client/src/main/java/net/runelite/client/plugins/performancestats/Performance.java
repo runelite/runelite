@@ -91,7 +91,7 @@ class Performance extends PartyMemberMessage
 
 	double getDPS()
 	{
-		return Math.round( (this.damageDealt / this.getSecondsSpent()) * 100) / 100.00;
+		return Math.round((this.damageDealt / this.getSecondsSpent()) * 100) / 100.00;
 	}
 
 	String getHumanReadableSecondsSpent()

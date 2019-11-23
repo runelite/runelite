@@ -75,10 +75,13 @@ public class DropPartyPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private DropPartyOverlay coreOverlay;
+
 	@Inject
 	private Client client;
+
 	@Getter(AccessLevel.PACKAGE)
 	private int fontStyle;
 	@Getter(AccessLevel.PACKAGE)
@@ -103,7 +106,7 @@ public class DropPartyPlugin extends Plugin
 	{
 		overlayManager.remove(coreOverlay);
 		reset();
-		}
+	}
 
 	@Subscribe
 	private void onGameTick(GameTick event)

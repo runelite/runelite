@@ -46,9 +46,11 @@ public class LearnToClickPlugin extends Plugin
 
 	@Inject
 	private LearnToClickConfig config;
-	private boolean forceRightClickFlag;
+
 	@Inject
 	private Client client;
+
+	private boolean forceRightClickFlag;
 
 	private boolean shouldBlockCompass;
 	private boolean shouldRightClickMap;
@@ -63,13 +65,13 @@ public class LearnToClickPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		forceRightClickFlag = false;
 		hideOrbWidgets(false);

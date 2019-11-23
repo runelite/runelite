@@ -1,6 +1,8 @@
 name: OpenOSRS - CI (PR)
 
-on: pull_request
+on:
+  pull_request:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
 
 jobs:
   pr-lint:
@@ -10,7 +12,7 @@ jobs:
     steps:
       - name: PR title lint
         if: github.event_name == 'pull_request'
-        uses: seferov/pr-lint-action@master
+        uses: seferov/pr-lint-action@v1.0.3
         with:
           title-regex: '^([\w-/]+): \w+'
 

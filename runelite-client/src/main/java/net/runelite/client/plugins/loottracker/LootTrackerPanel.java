@@ -50,6 +50,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +118,6 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel groupedLootBtn = new JLabel();
 	private final JLabel resetIcon = new JLabel();
 	private final JLabel collapseBtn = new JLabel();
-	private JComboBox dateFilterComboBox = new JComboBox<>(new Vector<>(Arrays.asList(LootRecordDateFilter.values())));
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -170,8 +170,8 @@ class LootTrackerPanel extends PluginPanel
 		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private LootRecordSortType lootRecordSortType = LootRecordSortType.TIMESTAMP;
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
@@ -301,14 +301,14 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		JComboBox dateFilterComboBox = new JComboBox<>(new Vector<>(Arrays.asList(LootRecordDateFilter.values())));
 		dateFilterComboBox.setSelectedItem(this.dateFilter);
 		dateFilterComboBox.setToolTipText("Filter the displayed loot records by date");
 		dateFilterComboBox.setMaximumSize(new Dimension(15, 0));
 		dateFilterComboBox.setMaximumRowCount(3);
 		dateFilterComboBox.addItemListener(e ->
 			{
-				final LootRecordDateFilter dateFilterSelected = (LootRecordDateFilter) e.getItem();
-				dateFilter = dateFilterSelected;
+				dateFilter = (LootRecordDateFilter) e.getItem();
 				rebuild();
 			}
 		);
@@ -435,7 +435,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setVisible(true);
 	}
 
-	void updateCollapseText()
+	private void updateCollapseText()
 	{
 		if (isAllCollapsed())
 		{
@@ -452,7 +452,7 @@ class LootTrackerPanel extends PluginPanel
 	private boolean isAllCollapsed()
 	{
 		return boxes.stream()
-			.filter(i -> i.isCollapsed())
+			.filter(LootTrackerBox::isCollapsed)
 			.count() == boxes.size();
 	}
 
@@ -613,7 +613,6 @@ class LootTrackerPanel extends PluginPanel
 				if (records.get(i).getTimestamp().toEpochMilli() > dateFilter.getDuration().toMillis())
 				{
 					buildBox(records.get(i));
-					continue;
 				}
 			}
 			else

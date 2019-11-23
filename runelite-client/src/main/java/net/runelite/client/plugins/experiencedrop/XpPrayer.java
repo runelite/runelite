@@ -24,24 +24,10 @@
  */
 package net.runelite.client.plugins.experiencedrop;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Prayer;
-import static net.runelite.api.Prayer.AUGURY;
-import static net.runelite.api.Prayer.BURST_OF_STRENGTH;
-import static net.runelite.api.Prayer.CHIVALRY;
-import static net.runelite.api.Prayer.CLARITY_OF_THOUGHT;
-import static net.runelite.api.Prayer.EAGLE_EYE;
-import static net.runelite.api.Prayer.HAWK_EYE;
-import static net.runelite.api.Prayer.IMPROVED_REFLEXES;
-import static net.runelite.api.Prayer.INCREDIBLE_REFLEXES;
-import static net.runelite.api.Prayer.MYSTIC_LORE;
-import static net.runelite.api.Prayer.MYSTIC_MIGHT;
-import static net.runelite.api.Prayer.MYSTIC_WILL;
-import static net.runelite.api.Prayer.PIETY;
-import static net.runelite.api.Prayer.RIGOUR;
-import static net.runelite.api.Prayer.SHARP_EYE;
-import static net.runelite.api.Prayer.SUPERHUMAN_STRENGTH;
-import static net.runelite.api.Prayer.ULTIMATE_STRENGTH;
+import static net.runelite.api.Prayer.*;
 import static net.runelite.client.plugins.experiencedrop.PrayerType.MAGIC;
 import static net.runelite.client.plugins.experiencedrop.PrayerType.MELEE;
 import static net.runelite.client.plugins.experiencedrop.PrayerType.RANGE;
@@ -65,9 +51,9 @@ enum XpPrayer
 	XP_RIGOUR(RIGOUR, RANGE),
 	XP_AUGURY(AUGURY, MAGIC);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Prayer prayer;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final PrayerType type;
 
 	XpPrayer(Prayer prayer, PrayerType type)

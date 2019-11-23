@@ -3,6 +3,7 @@ package net.runelite.client.plugins.itemskeptondeath;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import static net.runelite.api.ItemID.ABYSSAL_TENTACLE;
@@ -14,7 +15,7 @@ import static net.runelite.api.ItemID.GRANITE_MAUL_24227;
 import static net.runelite.api.ItemID.KRAKEN_TENTACLE;
 import static net.runelite.api.ItemID.ORNATE_MAUL_HANDLE;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 public enum TrueItemValue
 {

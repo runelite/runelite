@@ -548,11 +548,10 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
-		switch (ev.getEventName())
+		// We have to override this script because it gets invoked periodically from the server
+		if ("optionsAllSounds".equals(ev.getEventName()))
 		{
-			case "optionsAllSounds":
-				// We have to override this script because it gets invoked periodically from the server
-				client.getIntStack()[client.getIntStackSize() - 1] = -1;
+			client.getIntStack()[client.getIntStackSize() - 1] = -1;
 		}
 	}
 

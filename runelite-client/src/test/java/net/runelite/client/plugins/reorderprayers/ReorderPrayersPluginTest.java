@@ -26,7 +26,7 @@ package net.runelite.client.plugins.reorderprayers;
 
 import net.runelite.api.Prayer;
 import static net.runelite.api.Prayer.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 public class ReorderPrayersPluginTest

@@ -125,7 +125,7 @@ public class KeyRemappingPlugin extends Plugin
 	private ModifierlessKeybind esc;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -144,7 +144,7 @@ public class KeyRemappingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientThread.invoke(() ->
 		{
@@ -157,7 +157,7 @@ public class KeyRemappingPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-@Provides
+	@Provides
 	KeyRemappingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(KeyRemappingConfig.class);

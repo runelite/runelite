@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.emote;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.SpriteID.*;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum Emote
 {
 	BULL_ROARER("Bull Roarer", -1),

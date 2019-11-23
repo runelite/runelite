@@ -26,11 +26,12 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import javax.swing.JButton;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 class DevToolsButton extends JButton
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean active;
 
 	DevToolsButton(String title)

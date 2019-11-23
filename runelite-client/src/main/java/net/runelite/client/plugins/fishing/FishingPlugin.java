@@ -166,7 +166,7 @@ public class FishingPlugin extends Plugin
 	private Color aerialOverlayColor;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -176,7 +176,7 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		spotOverlay.setHidden(true);
 		fishingSpotMinimapOverlay.setHidden(true);

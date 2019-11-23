@@ -110,7 +110,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -138,7 +138,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		hiscorePanel.removeInputKeyListener(autocompleter);
 		clientToolbar.removeNavigation(navButton);

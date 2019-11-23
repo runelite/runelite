@@ -97,7 +97,7 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -106,7 +106,7 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		infoBoxManager.removeIf(FermentTimer.class::isInstance);
 		overlayManager.remove(overlay);

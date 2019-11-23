@@ -37,12 +37,12 @@ import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.util.Text;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.api.util.Text;
 
 @Singleton
 class PrayAgainstPlayerOverlay extends Overlay

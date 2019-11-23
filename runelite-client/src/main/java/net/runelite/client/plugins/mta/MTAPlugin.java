@@ -52,17 +52,22 @@ public class MTAPlugin extends Plugin
 
 	@Inject
 	private AlchemyRoom alchemyRoom;
+
 	@Inject
 	private GraveyardRoom graveyardRoom;
+
 	@Inject
 	private TelekineticRoom telekineticRoom;
+
 	@Inject
 	private EnchantmentRoom enchantmentRoom;
 
 	@Inject
 	private EventBus eventBus;
+
 	@Inject
 	private MTASceneOverlay sceneOverlay;
+
 	@Inject
 	private MTAInventoryOverlay inventoryOverlay;
 

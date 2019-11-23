@@ -237,7 +237,7 @@ public class CombatCounter extends Plugin
 	);
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		addSubscriptions();
@@ -252,7 +252,7 @@ public class CombatCounter extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(this);
 

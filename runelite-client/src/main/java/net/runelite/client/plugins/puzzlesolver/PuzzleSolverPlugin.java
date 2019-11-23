@@ -99,7 +99,7 @@ public class PuzzleSolverPlugin extends Plugin
 	private boolean drawDots;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -107,12 +107,12 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}
 
-@Provides
+	@Provides
 	PuzzleSolverConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PuzzleSolverConfig.class);

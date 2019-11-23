@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum RareTreeLocation
 {
 	WILLOW("Willow tree", 30,

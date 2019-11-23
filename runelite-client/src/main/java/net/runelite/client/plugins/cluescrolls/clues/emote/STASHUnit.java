@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.emote;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum STASHUnit
 {
 	NEAR_A_SHED_IN_LUMBRIDGE_SWAMP(NullObjectID.NULL_28958, new WorldPoint(3201, 3171, 0)),

@@ -426,7 +426,7 @@ public class InventorySetupPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-final int[] getCurrentInventorySetupIds()
+	final int[] getCurrentInventorySetupIds()
 	{
 		InventorySetup setup = inventorySetups.get(panel.getSelectedInventorySetup());
 		if (setup == null)

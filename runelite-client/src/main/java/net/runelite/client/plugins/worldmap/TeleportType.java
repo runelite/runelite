@@ -25,9 +25,10 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum TeleportType
 {
 	NORMAL_MAGIC(""),

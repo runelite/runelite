@@ -28,6 +28,7 @@ package net.runelite.client.plugins.aoewarnings;
 
 import java.awt.Color;
 import java.awt.Font;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.config.Config;
@@ -40,7 +41,7 @@ import net.runelite.client.config.Title;
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@AllArgsConstructor
 	enum FontStyle
 	{

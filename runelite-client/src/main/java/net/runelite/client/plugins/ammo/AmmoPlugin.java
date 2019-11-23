@@ -64,7 +64,7 @@ public class AmmoPlugin extends Plugin
 	private AmmoCounter counterBox;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		clientThread.invokeLater(() ->
@@ -79,7 +79,7 @@ public class AmmoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;

@@ -28,5 +28,5 @@ enum LootType
 {
 	UNKNOWN,
 	PVP,
-	PVM;
+	PVM
 }

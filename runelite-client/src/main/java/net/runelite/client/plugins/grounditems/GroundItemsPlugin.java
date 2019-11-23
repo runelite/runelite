@@ -389,38 +389,53 @@ public class GroundItemsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> hiddenBoxBounds;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> highlightBoxBounds;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
+
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
+
 	@Inject
 	private GroundItemInputListener inputListener;
+
 	@Inject
 	private MouseManager mouseManager;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private GroundItemsConfig config;
+
 	@Inject
 	private GroundItemsOverlay overlay;
+
 	@Inject
 	private Notifier notifier;
+
 	private LoadingCache<String, Boolean> highlightedItems;
 	private Color defaultColor;
 	private Color highlightedColor;
@@ -493,7 +508,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		mouseManager.unregisterMouseListener(inputListener);

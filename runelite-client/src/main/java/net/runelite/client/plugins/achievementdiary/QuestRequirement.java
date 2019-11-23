@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Quest;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 public class QuestRequirement implements Requirement
 {

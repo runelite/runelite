@@ -52,12 +52,7 @@ public class BossTimersPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
 	}

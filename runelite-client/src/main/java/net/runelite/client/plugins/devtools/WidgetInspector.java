@@ -53,13 +53,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.SpriteID;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -70,6 +70,7 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
@@ -103,15 +104,15 @@ class WidgetInspector extends JFrame
 
 	private DefaultMutableTreeNode root;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Widget selectedWidget;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int selectedItem;
 
 	private Widget picker = null;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean pickerSelected = false;
 
 	@Inject
@@ -450,12 +451,9 @@ class WidgetInspector extends JFrame
 			Widget[] roots = client.getWidgetRoots();
 
 			parent = Stream.of(roots)
-				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
-				.sorted(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
+				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden()).max(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
 					.reversed()
-					.thenComparing(Widget::getId)
-					.reversed())
-				.findFirst().get();
+					.thenComparing(Widget::getId)).get();
 			x = 4;
 			y = 4;
 		}

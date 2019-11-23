@@ -28,6 +28,7 @@ package net.runelite.client.plugins.itemskeptondeath;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -35,7 +36,7 @@ import net.runelite.api.ItemID;
  * Some items have a fixed price that is added to its default value when calculating death prices.
  * These are typically imbued items, such as Berserker ring (i), to help it protect over the non-imbued variants.
  */
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum FixedPriceItem
 {
 	IMBUED_BLACK_MASK_I(ItemID.BLACK_MASK_I, 5000),

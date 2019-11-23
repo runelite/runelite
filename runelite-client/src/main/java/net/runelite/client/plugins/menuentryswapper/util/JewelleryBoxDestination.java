@@ -70,6 +70,7 @@ public enum JewelleryBoxDestination
 	final int childIndex;
 
 	private static final ImmutableMap<String, JewelleryBoxDestination> map;
+
 	static
 	{
 		final ImmutableMap.Builder<String, JewelleryBoxDestination> builder = ImmutableMap.builderWithExpectedSize(values().length);

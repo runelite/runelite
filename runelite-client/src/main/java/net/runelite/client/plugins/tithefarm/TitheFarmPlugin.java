@@ -79,7 +79,7 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -88,7 +88,7 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(titheFarmOverlay);
 	}
@@ -131,16 +131,12 @@ public class TitheFarmPlugin extends Plugin
 			log.debug("Added plant {}", newPlant);
 			plants.add(newPlant);
 		}
-		else if (oldPlant == null)
-		{
-			return;
-		}
 		else if (newPlant.getType() == TitheFarmPlantType.EMPTY)
 		{
 			log.debug("Removed plant {}", oldPlant);
 			plants.remove(oldPlant);
 		}
-		else if (oldPlant.getGameObject().getId() != newPlant.getGameObject().getId())
+		else if (oldPlant != null && oldPlant.getGameObject().getId() != newPlant.getGameObject().getId())
 		{
 			if (oldPlant.getState() != TitheFarmPlantState.WATERED && newPlant.getState() == TitheFarmPlantState.WATERED)
 			{

@@ -416,14 +416,14 @@ public class ImageUtil
 	}
 
 	/**
-	 * 	Recolors pixels of the given image with the given color based on a given recolor condition
-	 * 	predicate.
+	 * Recolors pixels of the given image with the given color based on a given recolor condition
+	 * predicate.
 	 *
 	 * @param image            The image which should have its non-transparent pixels recolored.
 	 * @param color            The color with which to recolor pixels.
 	 * @param recolorCondition The condition on which to recolor pixels with the given color.
-	 * @return                 The given image with all pixels fulfilling the recolor condition predicate
-	 *                         set to the given color.
+	 * @return The given image with all pixels fulfilling the recolor condition predicate
+	 * set to the given color.
 	 */
 	public static BufferedImage recolorImage(final BufferedImage image, final Color color, final Predicate<Color> recolorCondition)
 	{
@@ -672,7 +672,7 @@ public class ImageUtil
 			pixelX += pixelW * tmp;
 			canvasOffset += tmp;
 		}
-		
+
 		client.scaleSprite(canvas, pixels, 0, pixelX, pixelY, canvasIdx, canvasOffset, newW, newH, pixelW, pixelH, oldW);
 
 		return result;

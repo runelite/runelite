@@ -81,7 +81,7 @@ public class TelekineticRoom extends MTARoom
 	private Rectangle bounds;
 	private NPC guardian;
 	private Maze maze;
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	@Inject
 	private TelekineticRoom(MTAConfig config, Client client, EventBus eventBus)
@@ -114,7 +114,7 @@ public class TelekineticRoom extends MTARoom
 		telekineticWalls.clear();
 	}
 
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		final WallObject wall = event.getWallObject();
 		if (wall.getId() != TELEKINETIC_WALL)
@@ -125,7 +125,7 @@ public class TelekineticRoom extends MTARoom
 		telekineticWalls.add(wall);
 	}
 
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{

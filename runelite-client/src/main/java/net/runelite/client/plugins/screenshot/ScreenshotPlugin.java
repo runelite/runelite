@@ -111,6 +111,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @PluginDescriptor(
@@ -235,7 +236,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -272,7 +273,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
@@ -794,13 +795,13 @@ public class ScreenshotPlugin extends Plugin
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
 			@Override
-			public void onFailure(Call call, IOException ex)
+			public void onFailure(@NotNull Call call, @NotNull IOException ex)
 			{
 				log.warn("error uploading screenshot", ex);
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 			{
 				try (InputStream in = response.body().byteStream())
 				{

@@ -34,27 +34,7 @@ import net.runelite.client.plugins.itemstats.SimpleStatBoost;
 import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.StatsChanges;
 import net.runelite.client.plugins.itemstats.stats.Stat;
-import static net.runelite.client.plugins.itemstats.stats.Stats.AGILITY;
-import static net.runelite.client.plugins.itemstats.stats.Stats.ATTACK;
-import static net.runelite.client.plugins.itemstats.stats.Stats.CONSTRUCTION;
-import static net.runelite.client.plugins.itemstats.stats.Stats.COOKING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.CRAFTING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.DEFENCE;
-import static net.runelite.client.plugins.itemstats.stats.Stats.FARMING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.FIREMAKING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.FISHING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.FLETCHING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.HERBLORE;
-import static net.runelite.client.plugins.itemstats.stats.Stats.HUNTER;
-import static net.runelite.client.plugins.itemstats.stats.Stats.MAGIC;
-import static net.runelite.client.plugins.itemstats.stats.Stats.MINING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.RANGED;
-import static net.runelite.client.plugins.itemstats.stats.Stats.RUNECRAFT;
-import static net.runelite.client.plugins.itemstats.stats.Stats.SLAYER;
-import static net.runelite.client.plugins.itemstats.stats.Stats.SMITHING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
-import static net.runelite.client.plugins.itemstats.stats.Stats.THIEVING;
-import static net.runelite.client.plugins.itemstats.stats.Stats.WOODCUTTING;
+import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @RequiredArgsConstructor
 public class SuperRestore implements Effect

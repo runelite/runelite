@@ -80,29 +80,41 @@ public class VorkathPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private VorkathOverlay overlay;
+
 	@Inject
 	private AcidPathOverlay acidPathOverlay;
+
 	@Inject
 	private VorkathConfig config;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Vorkath vorkath;
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC zombifiedSpawn;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> acidSpots = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> acidFreePath = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint[] wooxWalkPath = new WorldPoint[2];
+
 	@Getter(AccessLevel.PACKAGE)
 	private long wooxWalkTimer = -1;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Rectangle wooxWalkBar;
 	private int lastAcidSpotsSize = 0;
+
 	// Config values
 	@Getter(AccessLevel.PACKAGE)
 	private boolean indicateAcidPools;

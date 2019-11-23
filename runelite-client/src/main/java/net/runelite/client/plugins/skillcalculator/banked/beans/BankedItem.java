@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class BankedItem
 {
 	private final CriticalItem item;

@@ -77,7 +77,7 @@ class SoundEffectOverlay extends Overlay
 	{
 		String text =
 			"Id: " + event.getSoundId() +
-			" - D: " + event.getDelay();
+				" - D: " + event.getDelay();
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)
@@ -110,10 +110,10 @@ class SoundEffectOverlay extends Overlay
 
 		String text =
 			"Id: " + event.getSoundId() +
-			" - S: " + (event.getSource() != null ? event.getSource().getName() : "<none>") +
-			" - L: " + event.getSceneX() + "," + event.getSceneY() +
-			" - R: " + event.getRange() +
-			" - D: " + event.getDelay();
+				" - S: " + (event.getSource() != null ? event.getSource().getName() : "<none>") +
+				" - L: " + event.getSceneX() + "," + event.getSceneY() +
+				" - R: " + event.getRange() +
+				" - D: " + event.getDelay();
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)

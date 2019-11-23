@@ -209,6 +209,7 @@ public class PluginManagerTest
 		class TestPlugin extends Plugin
 		{
 			private boolean thisShouldBeTrue = false;
+
 			@Subscribe
 			private void doSomething(TestEvent event)
 			{

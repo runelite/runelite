@@ -149,7 +149,7 @@ public class ConfigPanel extends PluginPanel
 	private final OpenOSRSConfig OpenOSRSConfig;
 	private final ChatColorConfig chatColorConfig;
 	private final ColorPickerManager colorPickerManager;
-	public static List<PluginListItem> pluginList = new ArrayList<>();
+	public static final List<PluginListItem> pluginList = new ArrayList<>();
 
 	private final IconTextField searchBar = new IconTextField();
 	private final JPanel topPanel;
@@ -1238,11 +1238,13 @@ public class ConfigPanel extends PluginPanel
 				cid.getItem().keyName(), EnumSet.class);
 			if (enumSet == null)
 			{
+				//noinspection unchecked
 				enumSet = EnumSet.noneOf(enumType);
 			}
 			enumSet.clear();
 
 			EnumSet finalEnumSet = enumSet;
+			//noinspection unchecked
 			jList.getSelectedValuesList().forEach(value ->
 				finalEnumSet.add(Enum.valueOf(cid.getItem().enumClass(), value.toString())));
 

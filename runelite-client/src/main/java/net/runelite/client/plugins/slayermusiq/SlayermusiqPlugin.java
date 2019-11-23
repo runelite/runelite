@@ -96,16 +96,6 @@ public class SlayermusiqPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
-
 	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{

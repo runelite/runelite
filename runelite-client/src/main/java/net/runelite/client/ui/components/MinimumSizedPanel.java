@@ -24,8 +24,8 @@
  */
 package net.runelite.client.ui.components;
 
-import javax.swing.JPanel;
 import java.awt.Dimension;
+import javax.swing.JPanel;
 
 public class MinimumSizedPanel extends JPanel
 {

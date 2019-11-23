@@ -27,12 +27,13 @@ package net.runelite.client.plugins.skillcalculator.banked.beans;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Skill;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum XpModifiers
 {
 	LIT_GILDER_ALTAR(Skill.PRAYER, "Lit Gilded Altar (350%)", 3.5f),

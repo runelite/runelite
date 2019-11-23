@@ -25,7 +25,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 
 @Singleton
-public class SlayerTaskPanel extends PluginPanel
+class SlayerTaskPanel extends PluginPanel
 {
 	private static final long MILLIS_PER_SECOND = 1000;
 	private static final long SECONDS_PER_MINUTE = 60;

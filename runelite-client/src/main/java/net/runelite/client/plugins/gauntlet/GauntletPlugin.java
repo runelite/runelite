@@ -115,43 +115,57 @@ public class GauntletPlugin extends Plugin
 	);
 	private static final int GATHERING_HERB = 0;
 	private static final int GATHERING_CLOTH = 1;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private ClientThread clientThread;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private GauntletOverlay overlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private GauntletInfoBoxOverlay infoboxoverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private GauntletConfig config;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private GauntletTimer timer;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private SkillIconManager skillIconManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private GauntletCounter GauntletCounter;
+
 	@Setter(AccessLevel.PACKAGE)
 	@Nullable
 	private Hunllef hunllef;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private ItemManager itemManager;
+
 	private boolean attackVisualOutline;
 	private boolean completeStartup = false;
 	private boolean displayTimerChat;

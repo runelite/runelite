@@ -26,6 +26,7 @@ package net.runelite.client.plugins.demonicgorilla;
 
 import java.util.Arrays;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
@@ -34,7 +35,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.coords.WorldArea;
 
-public class DemonicGorilla
+class DemonicGorilla
 {
 	static final int MAX_ATTACK_RANGE = 10; // Needs <= 10 tiles to reach target
 	static final int ATTACK_RATE = 5; // 5 ticks between each attack
@@ -45,7 +46,7 @@ public class DemonicGorilla
 	static final int PROJECTILE_MAGIC_DELAY = 12; // Requires an extra 12 tiles
 	static final int PROJECTILE_RANGED_DELAY = 9; // Requires an extra 9 tiles
 
-	public static final AttackStyle[] ALL_REGULAR_ATTACK_STYLES =
+	static final AttackStyle[] ALL_REGULAR_ATTACK_STYLES =
 		{
 			AttackStyle.MELEE,
 			AttackStyle.RANGED,
@@ -60,66 +61,66 @@ public class DemonicGorilla
 		BOULDER
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private NPC npc;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private List<AttackStyle> nextPosibleAttackStyles;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int attacksUntilSwitch;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int nextAttackTick;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int lastTickAnimation;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private WorldArea lastWorldArea;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean initiatedCombat;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Actor lastTickInteracting;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean takenDamageRecently;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int recentProjectileId;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean changedPrayerThisTick;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean changedAttackStyleThisTick;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean changedAttackStyleLastTick;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private HeadIcon lastTickOverheadIcon;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int disabledMeleeMovementForTicks;
 
-	public DemonicGorilla(NPC npc)
+	DemonicGorilla(NPC npc)
 	{
 		this.npc = npc;
 		this.nextPosibleAttackStyles = Arrays.asList(ALL_REGULAR_ATTACK_STYLES);
@@ -128,7 +129,7 @@ public class DemonicGorilla
 		this.recentProjectileId = -1;
 	}
 
-	public HeadIcon getOverheadIcon()
+	HeadIcon getOverheadIcon()
 	{
 		NPCDefinition composition = this.npc.getDefinition();
 		if (composition != null)

@@ -79,16 +79,6 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
-
 	@Subscribe
 	private void onWidgetLoaded(final WidgetLoaded event)
 	{

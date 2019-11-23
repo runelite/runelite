@@ -60,27 +60,36 @@ import org.apache.commons.lang3.ObjectUtils;
 @Singleton
 public class WhaleWatchersPlugin extends Plugin
 {
+	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
 	boolean protectItemOverlay = false;
 	int damageDone = 0;
 	int damageTaken = 0;
 	boolean inCombat = false;
-	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private WhaleWatchersConfig config;
+
 	@Inject
 	private WhaleWatchersOverlay overlay;
+
 	@Inject
 	private WhaleWatchersProtOverlay whaleWatchersProtOverlay;
+
 	@Inject
 	private WhaleWatchersSmiteableOverlay whaleWatchersSmiteableOverlay;
+
 	@Inject
 	private WhaleWatchersGloryOverlay whaleWatchersGloryOverlay;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private SoundManager soundManager;
+
 	private int tickCountdown = 0;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displaySmiteOverlay;
@@ -112,7 +121,7 @@ public class WhaleWatchersPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -123,7 +132,7 @@ public class WhaleWatchersPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(whaleWatchersProtOverlay);

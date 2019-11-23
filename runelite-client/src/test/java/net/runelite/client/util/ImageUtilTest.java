@@ -130,14 +130,14 @@ public class ImageUtilTest
 	@Test
 	public void grayscaleImage()
 	{
-		final BufferedImage[] grayscaleColors = new BufferedImage[] {
+		final BufferedImage[] grayscaleColors = new BufferedImage[]{
 			oneByOne(WHITE),
 			oneByOne(GRAY),
 			oneByOne(BLACK),
 			oneByOne(BLACK_HALF_TRANSPARENT),
 			oneByOne(BLACK_TRANSPARENT),
 		};
-		final BufferedImage[] nonGrayscaleColors = new BufferedImage[] {
+		final BufferedImage[] nonGrayscaleColors = new BufferedImage[]{
 			oneByOne(RED),
 			oneByOne(GREEN),
 			oneByOne(BLUE),
@@ -173,7 +173,7 @@ public class ImageUtilTest
 		assertEquals(12, stretched.getWidth());
 		assertEquals(34, stretched.getHeight());
 
-		final BufferedImage[] assertSameAfterResize = new BufferedImage[] {
+		final BufferedImage[] assertSameAfterResize = new BufferedImage[]{
 			oneByOne(WHITE),
 			oneByOne(GRAY),
 			oneByOne(BLACK),
@@ -327,7 +327,7 @@ public class ImageUtilTest
 	 *
 	 * @param expected The first {@link BufferedImage} to be compared.
 	 * @param actual   The second {@link BufferedImage} to be compared.
-	 * @return         A boolean indicating whether the given {@link BufferedImage}s are of the same image data.
+	 * @return A boolean indicating whether the given {@link BufferedImage}s are of the same image data.
 	 */
 	private boolean bufferedImagesEqual(final @Nonnull BufferedImage expected, final @Nonnull BufferedImage actual)
 	{
@@ -368,7 +368,7 @@ public class ImageUtilTest
 	 * Returns whether a {@link BufferedImage} contains only grayscale pixel data.
 	 *
 	 * @param image The image to be checked.
-	 * @return      A boolean indicating whether all of the given image's pixels are grayscale.
+	 * @return A boolean indicating whether all of the given image's pixels are grayscale.
 	 */
 	private boolean isGrayscale(final @Nonnull BufferedImage image)
 	{
@@ -394,7 +394,7 @@ public class ImageUtilTest
 	 * Creates a {@link BufferedImage} of a 1-by-1px image of the given color.
 	 *
 	 * @param color The color to use for the image's single pixel.
-	 * @return      A {@link BufferedImage} containing a single pixel of the given color.
+	 * @return A {@link BufferedImage} containing a single pixel of the given color.
 	 */
 	private BufferedImage oneByOne(final @Nonnull Color color)
 	{
@@ -406,8 +406,8 @@ public class ImageUtilTest
 	 * image.
 	 *
 	 * @param color The color to use for the centered pixel.
-	 * @return      A {@link BufferedImage} with completely transparent pixels and one pixel of the
-	 *              given color in the center.
+	 * @return A {@link BufferedImage} with completely transparent pixels and one pixel of the
+	 * given color in the center.
 	 */
 	private BufferedImage centeredPixel(final @Nonnull Color color)
 	{
@@ -422,7 +422,7 @@ public class ImageUtilTest
 	 * @param width  The desired width of the color image.
 	 * @param height The desired height of the color image.
 	 * @param color  The desired color of the image.
-	 * @return       A {@link BufferedImage} of given dimensions filled with the given color.
+	 * @return A {@link BufferedImage} of given dimensions filled with the given color.
 	 */
 	private BufferedImage solidColor(final int width, final int height, final @Nonnull Color color)
 	{

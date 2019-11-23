@@ -25,12 +25,13 @@ package net.runelite.client.plugins.dynamicmaxhit;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum Weapons
 {
 	ABYSSAL_DAGGER(ImmutableSet.of(ItemID.ABYSSAL_DAGGER, ItemID.ABYSSAL_DAGGER_P, ItemID.ABYSSAL_DAGGER_P_13269, ItemID.ABYSSAL_DAGGER_P_13271),

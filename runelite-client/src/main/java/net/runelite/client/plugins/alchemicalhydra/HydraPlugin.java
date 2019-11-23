@@ -70,6 +70,12 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class HydraPlugin extends Plugin
 {
+	private static final int[] HYDRA_REGIONS = {
+		5279, 5280,
+		5535, 5536
+	};
+	private static final int STUN_LENGTH = 7;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Map<LocalPoint, Projectile> poisonProjectiles = new HashMap<>();
 
@@ -87,13 +93,7 @@ public class HydraPlugin extends Plugin
 
 	private boolean inHydraInstance;
 	private int lastAttackTick;
-
-	private static final int[] HYDRA_REGIONS = {
-		5279, 5280,
-		5535, 5536
-	};
-	private static final int STUN_LENGTH = 7;
-
+	
 	@Inject
 	private Client client;
 

@@ -27,7 +27,10 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
-import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.BLUEGILL;
+import static net.runelite.api.ItemID.COMMON_TENCH;
+import static net.runelite.api.ItemID.GREATER_SIREN;
+import static net.runelite.api.ItemID.MOTTLED_EEL;
 
 public enum OutOfItemsMapping
 {
@@ -58,7 +61,7 @@ public enum OutOfItemsMapping
 	 * Some actions consume multiple different items. To properly handle these
 	 * cases for the out of items notification the different items must be
 	 * recognised as belonging to a single group.
-	 *
+	 * <p>
 	 * Map an item that is part of a group of items that are consumed by a single
 	 * action to the first item in that group.
 	 */

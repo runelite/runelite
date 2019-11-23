@@ -11,7 +11,6 @@ public interface ComparableEntries
 	 *
 	 * @param option has to equal entry option
 	 * @param target has to equal entry option
-	 *
 	 * @return a new BaseComparableEntry
 	 */
 	static BaseComparableEntry newBaseComparableEntry(String option, String target)
@@ -23,10 +22,9 @@ public interface ComparableEntries
 	 * BaseComparableEntries should only be used if there's
 	 * no better ComparableEntry available.
 	 *
-	 * @param option has to equal option
-	 * @param target equal or contains depending on strictTarget
+	 * @param option       has to equal option
+	 * @param target       equal or contains depending on strictTarget
 	 * @param strictTarget read up one line
-	 *
 	 * @return a new BaseComparableEntry
 	 */
 	static BaseComparableEntry newBaseComparableEntry(String option, String target, boolean strictTarget)
@@ -38,13 +36,12 @@ public interface ComparableEntries
 	 * BaseComparableEntries should only be used if there's
 	 * no better ComparableEntry available.
 	 *
-	 * @param option equal or contains depending on strictOption
-	 * @param target equal or contains depending on strictTarget
-	 * @param id has to be the same, or -1 to skip checking
-	 * @param type has to be the same, or -1 to skip checking
+	 * @param option       equal or contains depending on strictOption
+	 * @param target       equal or contains depending on strictTarget
+	 * @param id           has to be the same, or -1 to skip checking
+	 * @param type         has to be the same, or -1 to skip checking
 	 * @param strictOption strict option or nah
 	 * @param strictTarget strict target or nah
-	 *
 	 * @return a new BaseComparableEntry
 	 */
 	static BaseComparableEntry newBaseComparableEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
@@ -57,7 +54,7 @@ public interface ComparableEntries
 	 * in their name. It then checks the ItemDefinition
 	 * for each of them, to see if it's possible for
 	 * the item to have option as one of their options.
-	 *
+	 * <p>
 	 * This has to be ran on the clientthread!
 	 */
 	static ItemComparableEntry newInvItemComparableEntry(Client client, String option, String itemName)

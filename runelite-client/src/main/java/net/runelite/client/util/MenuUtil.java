@@ -38,7 +38,7 @@ import net.runelite.api.util.Text;
 @Slf4j
 public class MenuUtil
 {
-	public static void swap(Client client, MenuEntry entry1, MenuEntry entry2)
+	private static void swap(Client client, MenuEntry entry1, MenuEntry entry2)
 	{
 		List<MenuEntry> entries = Arrays.asList(client.getMenuEntries());
 
@@ -69,7 +69,7 @@ public class MenuUtil
 		}
 	}
 
-	public static void swap(Client client, String option1, String option2, String target1, String target2)
+	private static void swap(Client client, String option1, String option2, String target1, String target2)
 	{
 		MenuEntry entry1 = findOptionTarget(getMenuStream(client), Text.standardize(option1), Text.standardize(target1));
 		MenuEntry entry2 = findOptionTarget(getMenuStream(client), Text.standardize(option2), Text.standardize(target2));

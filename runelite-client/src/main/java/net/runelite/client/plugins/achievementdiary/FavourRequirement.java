@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Favour;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class FavourRequirement implements Requirement
 {
 	private final Favour house;

@@ -32,20 +32,7 @@ import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.LAST_PIECE_COLUMN;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.LAST_PIECE_ROW;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_DOWN_LEFT;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_DOWN_RIGHT;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_LEFT_DOWN;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_LEFT_UP;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_RIGHT_DOWN;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_RIGHT_UP;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_UP_LEFT;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.ROTATE_UP_RIGHT;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_ABOVE;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_BELOW;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_LEFT;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.SHUFFLE_UP_RIGHT;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSwapPattern.*;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 public class IDAStarMM extends IDAStar

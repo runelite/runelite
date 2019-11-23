@@ -72,30 +72,42 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class AoeWarningPlugin extends Plugin
 {
-	@Inject
-	public AoeWarningConfig config;
-	@Inject
-	private Notifier notifier;
-	@Inject
-	private OverlayManager overlayManager;
-	@Inject
-	private AoeWarningOverlay coreOverlay;
-	@Inject
-	private BombOverlay bombOverlay;
-	@Inject
-	private Client client;
-	@Getter(AccessLevel.PACKAGE)
-	private List<WorldPoint> lightningTrail = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
-	private List<GameObject> acidTrail = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
-	private List<GameObject> crystalSpike = new ArrayList<>();
-	@Getter(AccessLevel.PACKAGE)
-	private List<GameObject> wintertodtSnowFall = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<CrystalBomb> bombs = new HashSet<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<ProjectileContainer> projectiles = new HashSet<>();
+
+	@Inject
+	public AoeWarningConfig config;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private AoeWarningOverlay coreOverlay;
+
+	@Inject
+	private BombOverlay bombOverlay;
+
+	@Inject
+	private Client client;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<WorldPoint> lightningTrail = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<GameObject> acidTrail = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<GameObject> crystalSpike = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<GameObject> wintertodtSnowFall = new ArrayList<>();
+
 	// Config values
 	private boolean aoeNotifyAll;
 	@Getter(AccessLevel.PACKAGE)
@@ -176,7 +188,7 @@ public class AoeWarningPlugin extends Plugin
 		overlayManager.remove(coreOverlay);
 		overlayManager.remove(bombOverlay);
 		reset();
-		}
+	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)

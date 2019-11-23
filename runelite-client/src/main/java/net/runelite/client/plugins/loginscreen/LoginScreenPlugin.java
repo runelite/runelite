@@ -74,7 +74,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	private String username;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -85,7 +85,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		if (this.syncUsername)
 		{
@@ -97,7 +97,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 	}
 
-@Provides
+	@Provides
 	LoginScreenConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(LoginScreenConfig.class);

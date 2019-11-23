@@ -135,12 +135,6 @@ public class AgilityPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int agilityLevel;
 
-	@Provides
-	AgilityConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AgilityConfig.class);
-	}
-
 	// Config values
 	@Getter(AccessLevel.PACKAGE)
 	private boolean removeDistanceCap;
@@ -167,8 +161,14 @@ public class AgilityPlugin extends Plugin
 	private boolean notifyAgilityArena;
 	private boolean showAgilityArenaTimer;
 
+	@Provides
+	AgilityConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AgilityConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -183,7 +183,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(MENU_SUBS);
 
@@ -255,7 +255,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.removeDistanceCap = config.removeDistanceCap();
 		this.showLapCount = config.showLapCount();

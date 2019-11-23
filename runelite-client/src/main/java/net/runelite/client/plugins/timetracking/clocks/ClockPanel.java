@@ -40,6 +40,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.FlatTextField;
@@ -66,7 +67,7 @@ abstract class ClockPanel extends JPanel
 	private final IconButton startPauseButton;
 	private final FlatTextField displayInput;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Clock clock;
 
 	private final String clockType;

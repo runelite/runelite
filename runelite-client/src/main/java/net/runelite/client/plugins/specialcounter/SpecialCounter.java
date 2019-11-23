@@ -33,7 +33,7 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
-	private SpecialWeapon weapon;
+	private final SpecialWeapon weapon;
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, Integer> partySpecs = new HashMap<>();
 

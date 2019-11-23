@@ -55,6 +55,7 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 public class WikiSearchChatboxTextInput extends ChatboxTextInput
@@ -124,13 +125,13 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 				RuneLiteAPI.CLIENT.newCall(req).enqueue(new Callback()
 				{
 					@Override
-					public void onFailure(Call call, IOException e)
+					public void onFailure(@NotNull Call call, @NotNull IOException e)
 					{
 						log.warn("error searching wiki", e);
 					}
 
 					@Override
-					public void onResponse(Call call, Response response) throws IOException
+					public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 					{
 						String body = response.body().string();
 						try
