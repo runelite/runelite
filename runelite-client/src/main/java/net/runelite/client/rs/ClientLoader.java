@@ -69,7 +69,9 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			RuneLiteSplashScreen.stage(.2, "Fetching applet viewer config");
 
-			final RSConfig config = ClientConfigLoader.fetch().blockingGet();
+			final RSConfig config = ClientConfigLoader.fetch()
+				.retry(50)
+				.blockingGet();
 
 			switch (updateCheckMode)
 			{
