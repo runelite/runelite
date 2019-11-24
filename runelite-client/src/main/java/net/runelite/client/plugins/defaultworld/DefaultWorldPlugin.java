@@ -94,7 +94,7 @@ public class DefaultWorldPlugin extends Plugin
 		applyWorld();
 	}
 
-	@Subscribe
+	@Subscribe(takeUntil = 2)
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

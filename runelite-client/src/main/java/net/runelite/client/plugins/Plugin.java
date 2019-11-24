@@ -36,6 +36,7 @@ import lombok.Getter;
 import lombok.Value;
 import net.runelite.api.events.Event;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.EventScheduler;
 import net.runelite.client.eventbus.Subscribe;
 
 public abstract class Plugin implements Module
@@ -62,7 +63,7 @@ public abstract class Plugin implements Module
 	@SuppressWarnings("unchecked")
 	final void addAnnotatedSubscriptions(EventBus eventBus)
 	{
-		annotatedSubscriptions.forEach(sub -> eventBus.subscribe(sub.type, annotatedSubsLock, sub.method));
+		annotatedSubscriptions.forEach(sub -> eventBus.subscribe(sub.type, annotatedSubsLock, sub.method, sub.takeUntil, sub.subscribe, sub.observe));
 	}
 
 	final void removeAnnotatedSubscriptions(EventBus eventBus)
@@ -76,8 +77,11 @@ public abstract class Plugin implements Module
 
 		for (Method method : this.getClass().getDeclaredMethods())
 		{
-			if (method.getAnnotation(Subscribe.class) == null)
+			Subscribe annotation = method.getAnnotation(Subscribe.class);
+			if (annotation == null)
+			{
 				continue;
+			}
 
 			assert method.getParameterCount() == 1 : "Methods annotated with @Subscribe should have only one parameter";
 
@@ -88,7 +92,7 @@ public abstract class Plugin implements Module
 
 			method.setAccessible(true);
 
-			Subscription sub = new Subscription(type.asSubclass(Event.class), event -> method.invoke(this, event));
+			Subscription sub = new Subscription(type.asSubclass(Event.class), event -> method.invoke(this, event), annotation.takeUntil(), annotation.subscribe(), annotation.observe());
 
 			builder.add(sub);
 		}
@@ -101,5 +105,8 @@ public abstract class Plugin implements Module
 	{
 		private final Class type;
 		private final Consumer method;
+		private final int takeUntil;
+		private final EventScheduler subscribe;
+		private final EventScheduler observe;
 	}
 }
