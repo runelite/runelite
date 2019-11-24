@@ -131,7 +131,7 @@ class Library
 		else if (state != SolvedState.NO_DATA)
 		{
 			// We know all of the possible things in this shelf.
-			if (book != null)
+			if (book != null || bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
 			{
 				// Check to see if our guess is wrong
 				if (!bookcase.getPossibleBooks().contains(book))
