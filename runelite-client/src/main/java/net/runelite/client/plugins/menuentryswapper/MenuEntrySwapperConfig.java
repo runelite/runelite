@@ -331,4 +331,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "helpLibraryCustomer",
+			name = "Help Library Customer",
+			description = "Swap Talk with Help at Kourend Library"
+	)
+	default boolean swapLibraryCustomer()
+	{
+		return true;
+	}
 }

@@ -289,6 +289,8 @@ public class KourendLibraryPlugin extends Plugin
 
 	boolean doesPlayerContainBook(Book book)
 	{
+		if(book == null || playerBooks == null)
+			return false;
 		return playerBooks.contains(book);
 	}
 

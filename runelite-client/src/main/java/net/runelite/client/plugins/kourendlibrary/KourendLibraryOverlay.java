@@ -135,7 +135,8 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
-				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
+				Book b = library.getCustomerBook();
+				Color color = bookIsKnown ? (book == b ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
 				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book))
@@ -224,7 +225,8 @@ class KourendLibraryOverlay extends Overlay
 					boolean doesPlayerContainBook = b != null && plugin.doesPlayerContainBook(b);
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
-					OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
+					if(g != null && poly != null)
+						OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
 					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{

@@ -458,6 +458,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("start-minigame", option, target, index);
 			}
+
+			if (config.swapLibraryCustomer())
+			{
+				swap("help", option, target, index);
+			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
 		{
