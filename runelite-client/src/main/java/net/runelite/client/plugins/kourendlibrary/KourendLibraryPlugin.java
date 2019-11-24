@@ -89,6 +89,9 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryOverlay overlay;
 
 	@Inject
+	private KourendLibraryTutorialOverlay tutorialOverlay;
+
+	@Inject
 	private KourendLibraryConfig config;
 
 	@Inject
@@ -125,6 +128,7 @@ public class KourendLibraryPlugin extends Plugin
 			.build();
 
 		overlayManager.add(overlay);
+		overlayManager.add(tutorialOverlay);
 
 		updatePlayerBooks();
 
@@ -139,6 +143,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		overlay.setHidden(true);
 		overlayManager.remove(overlay);
+		overlayManager.remove(tutorialOverlay);
 		clientToolbar.removeNavigation(navButton);
 		buttonAttached = false;
 		lastBookcaseClick = null;

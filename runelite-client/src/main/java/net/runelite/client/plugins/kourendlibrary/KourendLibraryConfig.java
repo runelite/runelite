@@ -52,4 +52,14 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showTutorialOverlay",
+		name = "Show tutorial overlay",
+		description = "Whether to show an overlay to help understand how to use the plugin"
+	)
+	default boolean showTutorialOverlay()
+	{
+		return true;
+	}
 }
