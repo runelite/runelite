@@ -52,4 +52,24 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "hideDarkManuscripts",
+			name = "Hide Dark manuscripts",
+			description = "Don't show dark manuscript locations in the library"
+	)
+	default boolean hideDarkManuscripts()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideVarlamore",
+			name = "Hide Varlamore Envoy",
+			description = "Don't show the Varlamore Envoy locations in the library"
+	)
+	default boolean hideVarlamore()
+	{
+		return false;
+	}
 }

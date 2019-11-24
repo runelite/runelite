@@ -139,7 +139,7 @@ class KourendLibraryOverlay extends Overlay
 				Color color = bookIsKnown ? (book == b ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book))
+				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book) && !shouldHideVarlamore(book))
 				{
 					Polygon poly = getCanvasTilePoly(client, localBookcase);
 					if (poly != null)
@@ -152,7 +152,7 @@ class KourendLibraryOverlay extends Overlay
 				// If the book is singled out, render the text and the book's icon
 				if (bookIsKnown)
 				{
-					if (book != null && !shouldHideOverlayIfDuplicateBook(book))
+					if (book != null && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book) && !shouldHideVarlamore(book))
 					{
 						FontMetrics fm = g.getFontMetrics();
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
@@ -244,5 +244,19 @@ class KourendLibraryOverlay extends Overlay
 			&& book != null
 			&& !book.isDarkManuscript()
 			&& plugin.doesPlayerContainBook(book);
+	}
+
+	private boolean shouldHideDarkManuscripts(@Nullable Book book)
+	{
+		return config.hideDarkManuscripts()
+				&& book != null
+				&& book.isDarkManuscript();
+	}
+
+	private boolean shouldHideVarlamore(@Nullable Book book)
+	{
+		return config.hideVarlamore()
+				&& book != null
+				&& book.getShortName() == "Varlamore Envoy";
 	}
 }
