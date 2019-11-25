@@ -139,7 +139,7 @@ class KourendLibraryOverlay extends Overlay
 				Color color = bookIsKnown ? (book == b ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book) && !shouldHideVarlamore(book))
+				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book, caseLoc) && !shouldHideVarlamore(book))
 				{
 					Polygon poly = getCanvasTilePoly(client, localBookcase);
 					if (poly != null)
@@ -152,7 +152,7 @@ class KourendLibraryOverlay extends Overlay
 				// If the book is singled out, render the text and the book's icon
 				if (bookIsKnown)
 				{
-					if (book != null && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book) && !shouldHideVarlamore(book))
+					if (book != null && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book, caseLoc) && !shouldHideVarlamore(book))
 					{
 						FontMetrics fm = g.getFontMetrics();
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
@@ -246,11 +246,28 @@ class KourendLibraryOverlay extends Overlay
 			&& plugin.doesPlayerContainBook(book);
 	}
 
-	private boolean shouldHideDarkManuscripts(@Nullable Book book)
+	private boolean shouldHideDarkManuscripts(@Nullable Book book, WorldPoint location)
 	{
+		int x = location.getX();
+		int y = location.getY();
+		int plane = location.getPlane();
+		boolean north = y > 3815;
+		boolean west = x < 1625;
+
+		// Floor 1 has slightly different dimensions
+		if (plane == 0)
+		{
+			north = y > 3813;
+			west = x < 1627;
+		}
+
 		return config.hideDarkManuscripts()
 				&& book != null
-				&& book.isDarkManuscript();
+				&& book.isDarkManuscript()
+				&& (!library.isManuscriptDirections()
+				|| north != library.isManuscriptNorth()
+				||   west != library.isManuscriptWest()
+				||  plane != library.getManuscriptFloor());
 	}
 
 	private boolean shouldHideVarlamore(@Nullable Book book)

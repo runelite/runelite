@@ -56,7 +56,7 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 			keyName = "hideDarkManuscripts",
 			name = "Hide Dark manuscripts",
-			description = "Don't show dark manuscript locations in the library"
+			description = "Don't show dark manuscript locations in unconfirmed rooms"
 	)
 	default boolean hideDarkManuscripts()
 	{

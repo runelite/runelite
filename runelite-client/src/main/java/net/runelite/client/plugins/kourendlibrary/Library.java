@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
 
@@ -75,6 +76,22 @@ class Library
 
 	@Getter
 	private LibraryCustomer customer;
+
+	@Getter
+	@Setter
+	boolean manuscriptNorth;
+
+	@Getter
+	@Setter
+	boolean manuscriptWest;
+
+	@Getter
+	@Setter
+	int manuscriptFloor = 0;
+
+	@Getter
+	@Setter
+	boolean manuscriptDirections = false;
 
 	Library()
 	{

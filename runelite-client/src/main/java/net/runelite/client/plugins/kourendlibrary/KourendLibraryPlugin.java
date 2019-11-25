@@ -257,25 +257,43 @@ public class KourendLibraryPlugin extends Plugin
 			{
 				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 				String text = textw.getText();
-				Matcher m = BOOK_EXTRACTOR.matcher(text);
-				if (m.find())
+				//TODO see if there is a way to fix checking a normal book location
+				if (cust.getName() == "Biblia" && (text.startsWith("Try the ")))
 				{
-					String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
-					Book book = Book.byName(bookName);
-					if (book == null)
-					{
-						log.warn("Book '{}' is not recognised", bookName);
-						return;
-					}
-
-					overlay.setHidden(false);
-					library.setCustomer(cust, book);
+					panel.setManuscriptLocation(text.substring(8));
 					panel.update();
 				}
-				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
-				{
-					library.setCustomer(null, null);
+				else {
+					Matcher m = BOOK_EXTRACTOR.matcher(text);
+					if (m.find()) {
+						String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
+						Book book = Book.byName(bookName);
+						if (book == null) {
+							log.warn("Book '{}' is not recognised", bookName);
+							return;
+						}
+
+						overlay.setHidden(false);
+						library.setCustomer(cust, book);
+						panel.update();
+					} else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it.")) {
+						library.setCustomer(null, null);
+						panel.update();
+					}
+				}
+			}
+		}
+		else
+		{
+			Widget textw = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+			if (textw != null) {
+				String text = textw.getText();
+				if (text.equals("You've found a Dark Manuscript.")) {
+					library.mark(lastBookcaseAnimatedOn, null);
+					panel.setManuscriptLocation(null);
+
 					panel.update();
+					lastBookcaseAnimatedOn = null;
 				}
 			}
 		}

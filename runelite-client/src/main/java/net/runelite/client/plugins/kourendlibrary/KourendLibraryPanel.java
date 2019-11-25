@@ -44,6 +44,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
@@ -53,6 +55,10 @@ class KourendLibraryPanel extends PluginPanel
 {
 	private static final ImageIcon RESET_ICON;
 	private static final ImageIcon RESET_CLICK_ICON;
+
+	@Setter
+	String manuscriptLocation = null;
+
 
 	@Inject
 	private Library library;
@@ -78,6 +84,14 @@ class KourendLibraryPanel extends PluginPanel
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
+
+		//add dark manuscript
+		BookPanel dp = new BookPanel(Book.DARK_MANUSCRIPT_13514);
+		bookPanels.put(Book.DARK_MANUSCRIPT_13514, dp);
+		books.add(dp, c);
+		c.gridy++;
+
+		//add other books
 		Stream.of(Book.values())
 			.filter(b -> !b.isDarkManuscript())
 			.sorted(Comparator.comparing(Book::getShortName))
@@ -144,16 +158,73 @@ class KourendLibraryPanel extends PluginPanel
 
 			for (Map.Entry<Book, BookPanel> e : bookPanels.entrySet())
 			{
-				HashSet<String> locs = bookLocations.get(e.getKey());
-				if (locs == null || locs.size() > 3)
+				if (e.getKey().isDarkManuscript())
 				{
-					e.getValue().setLocation("Unknown");
+					if (manuscriptLocation == null)
+					{
+						e.getValue().setLocation("Unknown");
+						library.setManuscriptDirections(false);
+					}
+					else
+					{
+						e.getValue().setLocation("<html>" + getFormattedLocation(manuscriptLocation) + "</html>");
+					}
 				}
 				else
 				{
-					e.getValue().setLocation("<html>" + locs.stream().collect(Collectors.joining("<br>")) + "</html>");
+					HashSet<String> locs = bookLocations.get(e.getKey());
+					if (locs == null || locs.size() > 3)
+					{
+						e.getValue().setLocation("Unknown");
+					}
+					else
+					{
+						e.getValue().setLocation("<html>" + locs.stream().collect(Collectors.joining("<br>")) + "</html>");
+					}
 				}
 			}
 		});
+	}
+
+	private String getFormattedLocation(String input) {
+		StringBuilder b = new StringBuilder();
+		boolean north = input.contains("north");
+		boolean west = input.contains("west");
+
+		if (north && west) {
+			b.append("Northwest");
+			library.setManuscriptNorth(true);
+			library.setManuscriptWest(true);
+		} else if (north) {
+			b.append("Northeast");
+			library.setManuscriptNorth(true);
+			library.setManuscriptWest(false);
+		} else if (west) {
+			b.append("Southwest");
+			library.setManuscriptNorth(false);
+			library.setManuscriptWest(true);
+		} else {
+			b.append("Center");
+			library.setManuscriptNorth(false);
+			library.setManuscriptWest(false);
+		}
+
+		b.append(" ");
+
+		if (input.contains("bottom")) {
+			b.append("ground floor");
+			library.setManuscriptFloor(0);
+		}
+		if (input.contains("middle")) {
+			b.append("middle floor");
+			library.setManuscriptFloor(1);
+		}
+		if (input.contains("top")) {
+			b.append("top floor");
+			library.setManuscriptFloor(2);
+		}
+		library.setManuscriptDirections(true);
+
+		return b.toString();
 	}
 }
