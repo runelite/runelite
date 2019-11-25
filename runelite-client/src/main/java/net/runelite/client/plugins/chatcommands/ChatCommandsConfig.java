@@ -128,7 +128,7 @@ public interface ChatCommandsConfig extends Config
 	)
 	default Keybind clearSingleWord()
 	{
-		return new Keybind(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK));
+		return new Keybind(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK);
 	}
 
 	@ConfigItem(
@@ -139,6 +139,6 @@ public interface ChatCommandsConfig extends Config
 	)
 	default Keybind clearChatBox()
 	{
-		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK));
+		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
 }
