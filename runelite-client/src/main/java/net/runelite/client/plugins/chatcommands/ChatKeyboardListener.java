@@ -85,7 +85,7 @@ public class ChatKeyboardListener implements KeyListener
 				});
 			}
 		}
-		else if (chatCommandsConfig.clearChatBox() == Keybind.NOT_SET && e.getKeyCode() == chatCommandsConfig.clearChatBox().getKeyCode())
+		else if (chatCommandsConfig.clearChatBox() != Keybind.NOT_SET && e.getKeyCode() == chatCommandsConfig.clearChatBox().getKeyCode())
 		{
 			clientThread.invoke(() ->
 			{
