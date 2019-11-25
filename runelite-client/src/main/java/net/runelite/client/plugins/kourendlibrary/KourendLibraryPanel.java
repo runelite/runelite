@@ -85,12 +85,6 @@ class KourendLibraryPanel extends PluginPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
-		//add dark manuscript
-		BookPanel dp = new BookPanel(Book.DARK_MANUSCRIPT_13514);
-		bookPanels.put(Book.DARK_MANUSCRIPT_13514, dp);
-		books.add(dp, c);
-		c.gridy++;
-
 		//add other books
 		Stream.of(Book.values())
 			.filter(b -> !b.isDarkManuscript())
@@ -102,6 +96,12 @@ class KourendLibraryPanel extends PluginPanel
 				books.add(p, c);
 				c.gridy++;
 			});
+
+		//add dark manuscript
+		BookPanel dp = new BookPanel(Book.DARK_MANUSCRIPT_13514);
+		bookPanels.put(Book.DARK_MANUSCRIPT_13514, dp);
+		books.add(dp, c);
+		c.gridy++;
 
 		JButton reset = new JButton("Reset", RESET_ICON);
 		reset.addMouseListener(new MouseAdapter()

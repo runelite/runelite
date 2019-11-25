@@ -135,11 +135,10 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
-				Book b = library.getCustomerBook();
-				Color color = bookIsKnown ? (book == b ? Color.GREEN : Color.ORANGE) : Color.WHITE;
+				Color color = bookIsKnown ? (book == library.getCustomerBook() ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book, caseLoc) && !shouldHideVarlamore(book))
+				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideBook(book, caseLoc))
 				{
 					Polygon poly = getCanvasTilePoly(client, localBookcase);
 					if (poly != null)
@@ -152,7 +151,7 @@ class KourendLibraryOverlay extends Overlay
 				// If the book is singled out, render the text and the book's icon
 				if (bookIsKnown)
 				{
-					if (book != null && !shouldHideOverlayIfDuplicateBook(book) && !shouldHideDarkManuscripts(book, caseLoc) && !shouldHideVarlamore(book))
+					if (book != null && !shouldHideBook(book, caseLoc))
 					{
 						FontMetrics fm = g.getFontMetrics();
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
@@ -277,5 +276,10 @@ class KourendLibraryOverlay extends Overlay
 		return config.hideVarlamore()
 				&& book != null
 				&& book.getShortName() == "Varlamore Envoy";
+	}
+
+	private boolean shouldHideBook(@Nullable Book book, WorldPoint location)
+	{
+		return shouldHideOverlayIfDuplicateBook(book) || shouldHideDarkManuscripts(book, location) || shouldHideVarlamore(book);
 	}
 }
