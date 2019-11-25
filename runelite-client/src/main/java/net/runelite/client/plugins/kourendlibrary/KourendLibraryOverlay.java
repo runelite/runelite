@@ -225,8 +225,10 @@ class KourendLibraryOverlay extends Overlay
 					boolean doesPlayerContainBook = b != null && plugin.doesPlayerContainBook(b);
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
-					if(g != null && poly != null)
+					if (g != null && poly != null)
+					{
 						OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
+					}
 					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{
@@ -261,13 +263,13 @@ class KourendLibraryOverlay extends Overlay
 			west = x < 1627;
 		}
 
-		return config.hideDarkManuscripts()
+		return config.hideUnconfirmedManuscripts()
 				&& book != null
 				&& book.isDarkManuscript()
 				&& (!library.isManuscriptDirections()
 				|| north != library.isManuscriptNorth()
-				||   west != library.isManuscriptWest()
-				||  plane != library.getManuscriptFloor());
+				||  west != library.isManuscriptWest()
+				|| plane != library.getManuscriptFloor());
 	}
 
 	private boolean shouldHideVarlamore(@Nullable Book book)

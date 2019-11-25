@@ -186,24 +186,32 @@ class KourendLibraryPanel extends PluginPanel
 		});
 	}
 
-	private String getFormattedLocation(String input) {
+	private String getFormattedLocation(String input)
+	{
 		StringBuilder b = new StringBuilder();
 		boolean north = input.contains("north");
 		boolean west = input.contains("west");
 
-		if (north && west) {
+		if (north && west)
+		{
 			b.append("Northwest");
 			library.setManuscriptNorth(true);
 			library.setManuscriptWest(true);
-		} else if (north) {
+		}
+		else if (north)
+		{
 			b.append("Northeast");
 			library.setManuscriptNorth(true);
 			library.setManuscriptWest(false);
-		} else if (west) {
+		}
+		else if (west)
+		{
 			b.append("Southwest");
 			library.setManuscriptNorth(false);
 			library.setManuscriptWest(true);
-		} else {
+		}
+		else
+		{
 			b.append("Center");
 			library.setManuscriptNorth(false);
 			library.setManuscriptWest(false);
@@ -211,15 +219,18 @@ class KourendLibraryPanel extends PluginPanel
 
 		b.append(" ");
 
-		if (input.contains("bottom")) {
+		if (input.contains("bottom"))
+		{
 			b.append("ground floor");
 			library.setManuscriptFloor(0);
 		}
-		if (input.contains("middle")) {
+		if (input.contains("middle"))
+		{
 			b.append("middle floor");
 			library.setManuscriptFloor(1);
 		}
-		if (input.contains("top")) {
+		if (input.contains("top"))
+		{
 			b.append("top floor");
 			library.setManuscriptFloor(2);
 		}
