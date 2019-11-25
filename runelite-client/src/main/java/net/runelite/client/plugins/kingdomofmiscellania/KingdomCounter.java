@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2019, Sophie Buckley <https://github.com/sophiebuckley>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,11 +32,13 @@ import net.runelite.client.util.QuantityFormatter;
 public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
+	private final KingdomPluginConfiguration config;
 
-	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	KingdomCounter(BufferedImage image, KingdomPlugin plugin, KingdomPluginConfiguration config)
 	{
 		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -47,7 +50,10 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
+		int topUpAmount = config.maxCofferAmount() - plugin.getCoffer();
+
 		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
+			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer()) + "</br>"
+			+ "Top up: " + topUpAmount;
 	}
 }
