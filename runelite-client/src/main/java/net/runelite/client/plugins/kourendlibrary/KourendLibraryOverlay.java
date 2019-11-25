@@ -36,8 +36,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.getCanvasTilePoly;
@@ -58,9 +56,6 @@ class KourendLibraryOverlay extends Overlay
 	private final KourendLibraryConfig config;
 	private final KourendLibraryPlugin plugin;
 
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hidden;
-
 	@Inject
 	private KourendLibraryOverlay(Library library, Client client, KourendLibraryConfig config, KourendLibraryPlugin plugin)
 	{
@@ -76,11 +71,6 @@ class KourendLibraryOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
-		if (hidden)
-		{
-			return null;
-		}
-
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{
