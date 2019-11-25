@@ -29,7 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("kingdomtopup")
+@ConfigGroup("kingdomOfMiscellania")
 public interface KingdomPluginConfiguration extends Config
 {
     @ConfigItem
@@ -39,7 +39,8 @@ public interface KingdomPluginConfiguration extends Config
                     description = "Set the max amount of coins that you would like in your coffer",
                     position = 2
             )
-    default int maxCofferAmount() {
+    default int maxCofferAmount()
+    {
         return 750000;
     }
 }

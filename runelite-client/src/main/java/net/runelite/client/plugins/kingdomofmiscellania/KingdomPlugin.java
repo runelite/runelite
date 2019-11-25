@@ -27,7 +27,6 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
