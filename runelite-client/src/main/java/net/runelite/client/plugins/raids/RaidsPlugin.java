@@ -100,6 +100,7 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
+	private static final int MAX_LAYOUT_LEN = 300;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -636,6 +637,12 @@ public class RaidsPlugin extends Plugin
 			.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
 			.map(RaidRoom::getName)
 			.toArray());
+
+		if (layoutMessage.length() > MAX_LAYOUT_LEN)
+		{
+			log.debug("layout message too long! {}", layoutMessage.length());
+			return;
+		}
 
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
