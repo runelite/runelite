@@ -275,7 +275,7 @@ class KourendLibraryOverlay extends Overlay
 	{
 		return config.hideVarlamore()
 				&& book != null
-				&& book.getShortName() == "Varlamore Envoy";
+				&& book.getShortName().equals("Varlamore Envoy");
 	}
 
 	private boolean shouldHideBook(@Nullable Book book, WorldPoint location)
