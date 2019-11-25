@@ -183,6 +183,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHelp",
+		name = "Help",
+		description = "Swap Talk-to with Help on Arceuus library customers"
+	)
+	default boolean swapHelp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHomePortal",
 		name = "Home",
 		description = "Swap Enter with Home or Build or Friend's house on Portal"
