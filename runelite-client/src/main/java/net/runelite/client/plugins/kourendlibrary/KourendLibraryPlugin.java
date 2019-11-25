@@ -39,6 +39,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -252,39 +253,37 @@ public class KourendLibraryPlugin extends Plugin
 		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
 		if (npcHead != null)
 		{
+			//TODO see if there is a way to fix checking a normal book location
+			String textNPC = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT).getText();
+			if (npcHead.getModelId() == NpcID.BIBLIA && (textNPC.startsWith("Try the ")))
+			{
+				panel.setManuscriptLocation(textNPC.substring(8));
+				panel.update();
+			}
 			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
 			if (cust != null)
 			{
 				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 				String text = textw.getText();
-				//TODO see if there is a way to fix checking a normal book location
-				if (cust.getName().equals("Biblia") && (text.startsWith("Try the ")))
+				Matcher m = BOOK_EXTRACTOR.matcher(text);
+				if (m.find())
 				{
-					panel.setManuscriptLocation(text.substring(8));
+					String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
+					Book book = Book.byName(bookName);
+					if (book == null)
+					{
+						log.warn("Book '{}' is not recognised", bookName);
+						return;
+					}
+
+					overlay.setHidden(false);
+					library.setCustomer(cust, book);
 					panel.update();
 				}
-				else
+				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
-					Matcher m = BOOK_EXTRACTOR.matcher(text);
-					if (m.find())
-					{
-						String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
-						Book book = Book.byName(bookName);
-						if (book == null)
-						{
-							log.warn("Book '{}' is not recognised", bookName);
-							return;
-						}
-
-						overlay.setHidden(false);
-						library.setCustomer(cust, book);
-						panel.update();
-					}
-					else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
-					{
-						library.setCustomer(null, null);
-						panel.update();
-					}
+					library.setCustomer(null, null);
+					panel.update();
 				}
 			}
 		}
