@@ -66,17 +66,20 @@ public class KingdomPlugin extends Plugin
 
 	@Inject
 	private KingdomPluginConfiguration config;
+	@Getter
+	private int favor = 0, coffer = 0;
+	private KingdomCounter counter;
+
+	static int getFavorPercent(int favor)
+	{
+		return (favor * 100) / 127;
+	}
 
 	@Provides
 	KingdomPluginConfiguration getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(KingdomPluginConfiguration.class);
 	}
-
-	@Getter
-	private int favor = 0, coffer = 0;
-
-	private KingdomCounter counter;
 
 	@Override
 	protected void shutDown() throws Exception
@@ -143,11 +146,6 @@ public class KingdomPlugin extends Plugin
 	private boolean hasCompletedQuest()
 	{
 		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
-	}
-
-	static int getFavorPercent(int favor)
-	{
-		return (favor * 100) / 127;
 	}
 
 }
