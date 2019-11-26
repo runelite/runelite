@@ -101,6 +101,7 @@ public class KourendLibraryPlugin extends Plugin
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 	private EnumSet<Book> playerBooks = null;
+	private String playerDialog = null;
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -213,6 +214,15 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		try
+		{
+			playerDialog = client.getWidget(WidgetInfo.DIALOG_PLAYER).getStaticChildren()[3].getText();
+		}
+		catch(NullPointerException e)
+		{
+			//do nothing
+		}
+
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
 		if (config.hideButton() && inRegion != buttonAttached)
 		{
@@ -253,11 +263,10 @@ public class KourendLibraryPlugin extends Plugin
 		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
 		if (npcHead != null)
 		{
-			//TODO see if there is a way to fix checking a normal book location
-			String textNPC = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT).getText();
-			if (npcHead.getModelId() == NpcID.BIBLIA && (textNPC.startsWith("Try the ")))
+			String npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT).getText();
+			if (npcHead.getModelId() == NpcID.BIBLIA && playerDialog != null && playerDialog.equals("Have you seen any dark manuscripts?") && (npcDialog.startsWith("Try the ")))
 			{
-				panel.setManuscriptLocation(textNPC.substring(8));
+				panel.setManuscriptLocation(npcDialog.substring(8));
 				panel.update();
 			}
 			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
