@@ -146,7 +146,7 @@ public class NpcSceneOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isVisible())
+		if (npcComposition == null || !npcComposition.isInteractible())
 		{
 			return;
 		}
