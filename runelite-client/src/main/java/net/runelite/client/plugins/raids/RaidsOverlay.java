@@ -28,6 +28,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +40,7 @@ import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -45,10 +51,16 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.util.ImageUtil;
 
 public class RaidsOverlay extends Overlay
 {
 	private static final int OLM_PLANE = 0;
+	private static final int SMALL_IMAGE_SIZE = 24;
+	private static final int REGULAR_IMAGE_SIZE = 32;
+	private static final int BOLD_IMAGE_SIZE = 27;
 	static final String BROADCAST_ACTION = "Broadcast layout";
 	static final String SCREENSHOT_ACTION = "Screenshot";
 
@@ -56,13 +68,15 @@ public class RaidsOverlay extends Overlay
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
+	private final PanelComponent itemImages = new PanelComponent();
+	private final ItemManager itemManager;
 
 	@Getter
 	@Setter
 	private boolean scoutOverlayShown = false;
 
 	@Inject
-	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
+	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config, ItemManager itemManager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -70,6 +84,7 @@ public class RaidsOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.itemManager = itemManager;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
@@ -130,6 +145,9 @@ public class RaidsOverlay extends Overlay
 				.build());
 		}
 
+		boolean showItems = config.showRecommendedItems();
+		Set<Integer> recommendedItems = new HashSet<>();
+
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -156,13 +174,12 @@ public class RaidsOverlay extends Overlay
 					}
 
 					String name = room == RaidRoom.UNKNOWN_COMBAT ? "Unknown" : room.getName();
-
+					recommendedItems.add(room.getRecommendedItem());
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(room.getType().getName())
+						.left(showItems ? "" : room.getType().getName())
 						.right(name)
 						.rightColor(color)
 						.build());
-
 					break;
 
 				case PUZZLE:
@@ -176,9 +193,9 @@ public class RaidsOverlay extends Overlay
 					}
 
 					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
-
+					recommendedItems.add(room.getRecommendedItem());
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(room.getType().getName())
+						.left(showItems ? "" : room.getType().getName())
 						.right(name)
 						.rightColor(color)
 						.build());
@@ -186,6 +203,57 @@ public class RaidsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		// Remove -1 which is the item ID placeholder, not a real item
+		recommendedItems.remove(-1);
+
+		if (!showItems || recommendedItems.isEmpty())
+		{
+			return panelComponent.render(graphics);
+		}
+
+		Dimension mainPanelDimensions = panelComponent.render(graphics);
+		FontMetrics metrics = graphics.getFontMetrics();
+		int fontHeight = metrics.getHeight();
+		String fontName = metrics.getFont().getFontName();
+
+		// adjusts the size of the images in order to have them layout correctly with the different sized fonts
+		int imageSize = fontName.equals("RuneScape Small") ? SMALL_IMAGE_SIZE
+				: fontName.equals("RuneScape Standard") ? REGULAR_IMAGE_SIZE : BOLD_IMAGE_SIZE;
+
+		// adjust the location the images will be rendered on the parent component based on whats already there
+		int verticalOffset = (config.ccDisplay() ? fontHeight * 2 : fontHeight) + ComponentConstants.STANDARD_BORDER;
+
+		itemImages.getChildren().clear();
+		itemImages.setBorder(new Rectangle(0, 0, 0, 0));
+		itemImages.setPreferredLocation(new Point(ComponentConstants.STANDARD_BORDER, verticalOffset));
+		itemImages.setBackgroundColor(null);
+		itemImages.setWrapping(2);
+		itemImages.setOrientation(ComponentOrientation.HORIZONTAL);
+
+		for (int item : recommendedItems)
+		{
+			final BufferedImage image = getImage(item, imageSize);
+			if (image != null)
+			{
+				itemImages.getChildren().add(new ImageComponent(image));
+			}
+		}
+
+		// render the items over the main panel so they aren't occluded then return the dimensions of the main panel
+		itemImages.render(graphics);
+		return mainPanelDimensions;
+	}
+
+	private BufferedImage getImage(int id, int size)
+	{
+		BufferedImage image = itemManager.getImage(id);
+		if (image == null)
+		{
+			return null;
+		}
+		else
+		{
+			return ImageUtil.resizeImage(image, size, size);
+		}
 	}
 }

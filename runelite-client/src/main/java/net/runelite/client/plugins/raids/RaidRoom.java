@@ -26,6 +26,12 @@ package net.runelite.client.plugins.raids;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import static net.runelite.api.ItemID.ELDER_MAUL;
+import static net.runelite.api.ItemID.DRAGON_PICKAXE;
+import static net.runelite.api.ItemID.SANFEW_SERUM4;
+import static net.runelite.api.ItemID.GHRAZI_RAPIER;
+import static net.runelite.api.ItemID.SALVE_AMULETEI;
+import static net.runelite.api.ItemID.LOCKPICK;
 
 @RequiredArgsConstructor
 @Getter
@@ -37,24 +43,32 @@ enum RaidRoom
 	FARMING("Farming", RoomType.FARMING),
 	EMPTY("Empty", RoomType.EMPTY),
 
-	TEKTON("Tekton", RoomType.COMBAT),
+	TEKTON("Tekton", RoomType.COMBAT, ELDER_MAUL),
 	MUTTADILES("Muttadiles", RoomType.COMBAT),
-	GUARDIANS("Guardians", RoomType.COMBAT),
-	VESPULA("Vespula", RoomType.COMBAT),
-	SHAMANS("Shamans", RoomType.COMBAT),
-	VASA("Vasa", RoomType.COMBAT),
+	GUARDIANS("Guardians", RoomType.COMBAT, DRAGON_PICKAXE),
+	VESPULA("Vespula", RoomType.COMBAT, SANFEW_SERUM4),
+	SHAMANS("Shamans", RoomType.COMBAT, SANFEW_SERUM4),
+	VASA("Vasa", RoomType.COMBAT, GHRAZI_RAPIER),
 	VANGUARDS("Vanguards", RoomType.COMBAT),
-	MYSTICS("Mystics", RoomType.COMBAT),
+	MYSTICS("Mystics", RoomType.COMBAT, SALVE_AMULETEI),
 	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
 
 	CRABS("Crabs", RoomType.PUZZLE),
 	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
 	TIGHTROPE("Tightrope", RoomType.PUZZLE),
-	THIEVING("Thieving", RoomType.PUZZLE),
+	THIEVING("Thieving", RoomType.PUZZLE, LOCKPICK),
 	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
 
 	static final int ROOM_MAX_SIZE = 32;
 
 	private final String name;
 	private final RoomType type;
+	private final int recommendedItem;
+
+	RaidRoom(String name, RoomType type)
+	{
+		this.name = name;
+		this.type = type;
+		this.recommendedItem = -1;
+	}
 }
