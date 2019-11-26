@@ -111,6 +111,7 @@ class KourendLibraryPanel extends PluginPanel
 			{
 				reset.setIcon(RESET_CLICK_ICON);
 				library.reset();
+				setManuscriptLocation(null);
 				update();
 			}
 
