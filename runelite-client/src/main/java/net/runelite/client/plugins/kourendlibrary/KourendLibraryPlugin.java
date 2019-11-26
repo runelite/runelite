@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -94,6 +95,11 @@ public class KourendLibraryPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	boolean manuscriptDirections = false;
+	boolean manuscriptNorth;
+	boolean manuscriptWest;
+	int manuscriptFloor = 0;
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
@@ -218,7 +224,7 @@ public class KourendLibraryPlugin extends Plugin
 		{
 			playerDialog = client.getWidget(WidgetInfo.DIALOG_PLAYER).getStaticChildren()[3].getText();
 		}
-		catch(NullPointerException e)
+		catch (NullPointerException e)
 		{
 			//do nothing
 		}
@@ -266,7 +272,7 @@ public class KourendLibraryPlugin extends Plugin
 			String npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT).getText();
 			if (npcHead.getModelId() == NpcID.BIBLIA && playerDialog != null && playerDialog.equals("Have you seen any dark manuscripts?") && (npcDialog.startsWith("Try the ")))
 			{
-				panel.setManuscriptLocation(npcDialog.substring(8));
+				panel.setManuscriptLocation(parseLocation(npcDialog.substring(8)));
 				panel.update();
 			}
 			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
@@ -306,6 +312,7 @@ public class KourendLibraryPlugin extends Plugin
 				{
 					library.mark(lastBookcaseAnimatedOn, null);
 					panel.setManuscriptLocation(null);
+					manuscriptDirections = false;
 
 					panel.update();
 					lastBookcaseAnimatedOn = null;
@@ -349,5 +356,58 @@ public class KourendLibraryPlugin extends Plugin
 
 			playerBooks = books;
 		}
+	}
+
+	private String parseLocation(String input)
+	{
+		StringBuilder b = new StringBuilder();
+		boolean north = input.contains("north");
+		boolean west = input.contains("west");
+
+		if (north && west)
+		{
+			b.append("Northwest");
+			manuscriptNorth = true;
+			manuscriptWest = true;
+		}
+		else if (north)
+		{
+			b.append("Northeast");
+			manuscriptNorth = true;
+			manuscriptWest = false;
+		}
+		else if (west)
+		{
+			b.append("Southwest");
+			manuscriptNorth = false;
+			manuscriptWest = true;
+		}
+		else
+		{
+			b.append("Center");
+			manuscriptNorth = false;
+			manuscriptWest = false;
+		}
+
+		b.append(" ");
+
+		if (input.contains("bottom"))
+		{
+			b.append("ground floor");
+			manuscriptFloor = 0;
+		}
+		if (input.contains("middle"))
+		{
+			b.append("middle floor");
+			manuscriptFloor = 1;
+		}
+		if (input.contains("top"))
+		{
+			b.append("top floor");
+			manuscriptFloor = 2;
+		}
+		manuscriptDirections = true;
+
+		return b.toString();
 	}
 }

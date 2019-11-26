@@ -163,11 +163,10 @@ class KourendLibraryPanel extends PluginPanel
 					if (manuscriptLocation == null)
 					{
 						e.getValue().setLocation("Unknown");
-						library.setManuscriptDirections(false);
 					}
 					else
 					{
-						e.getValue().setLocation("<html>" + getFormattedLocation(manuscriptLocation) + "</html>");
+						e.getValue().setLocation("<html>" + manuscriptLocation + "</html>");
 					}
 				}
 				else
@@ -184,58 +183,5 @@ class KourendLibraryPanel extends PluginPanel
 				}
 			}
 		});
-	}
-
-	private String getFormattedLocation(String input)
-	{
-		StringBuilder b = new StringBuilder();
-		boolean north = input.contains("north");
-		boolean west = input.contains("west");
-
-		if (north && west)
-		{
-			b.append("Northwest");
-			library.setManuscriptNorth(true);
-			library.setManuscriptWest(true);
-		}
-		else if (north)
-		{
-			b.append("Northeast");
-			library.setManuscriptNorth(true);
-			library.setManuscriptWest(false);
-		}
-		else if (west)
-		{
-			b.append("Southwest");
-			library.setManuscriptNorth(false);
-			library.setManuscriptWest(true);
-		}
-		else
-		{
-			b.append("Center");
-			library.setManuscriptNorth(false);
-			library.setManuscriptWest(false);
-		}
-
-		b.append(" ");
-
-		if (input.contains("bottom"))
-		{
-			b.append("ground floor");
-			library.setManuscriptFloor(0);
-		}
-		if (input.contains("middle"))
-		{
-			b.append("middle floor");
-			library.setManuscriptFloor(1);
-		}
-		if (input.contains("top"))
-		{
-			b.append("top floor");
-			library.setManuscriptFloor(2);
-		}
-		library.setManuscriptDirections(true);
-
-		return b.toString();
 	}
 }

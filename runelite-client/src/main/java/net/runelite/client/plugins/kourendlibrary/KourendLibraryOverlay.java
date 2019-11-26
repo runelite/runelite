@@ -265,10 +265,10 @@ class KourendLibraryOverlay extends Overlay
 		return config.hideUnconfirmedManuscripts()
 				&& book != null
 				&& book.isDarkManuscript()
-				&& (!library.isManuscriptDirections()
-				|| north != library.isManuscriptNorth()
-				||  west != library.isManuscriptWest()
-				|| plane != library.getManuscriptFloor());
+				&& (!plugin.manuscriptDirections
+				|| north != plugin.manuscriptNorth
+				||  west != plugin.manuscriptWest
+				|| plane != plugin.manuscriptFloor);
 	}
 
 	private boolean shouldHideVarlamore(@Nullable Book book)
