@@ -35,7 +35,7 @@ public interface KingdomPluginConfiguration extends Config
 	@ConfigItem(
 		keyName = "maxCofferAmount",
 		name = "Max coffer amount",
-		description = "Set the max amount of coins that you would like in your coffer",
+		description = "Set the max amount of coins that you would like in your coffer"
 	)
 	default int maxCofferAmount()
 	{
