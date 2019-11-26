@@ -389,7 +389,7 @@ class LootTrackerBox extends JPanel
 			? getFilteredRecords()
 			: records;
 
-		long kills = activeRecords.size();
+		int kills = activeRecords.size();
 		if (kills == 1)
 		{
 			Date time = Date.from(activeRecords.get(0).getTime());
