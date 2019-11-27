@@ -68,14 +68,19 @@ public class TickTimersPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private TimersOverlay timersOverlay;
+
 	@Inject
 	private TickTimersConfig config;
+
 	@Inject
 	private NPCManager npcManager;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Set<NPCContainer> npcContainer = new HashSet<>();
 	private boolean validRegion;

@@ -84,7 +84,7 @@ public class RoguesDenPlugin extends Plugin
 	private RoguesDenMinimapOverlay minimapOverlay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		overlayManager.add(overlay);
@@ -92,7 +92,7 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);

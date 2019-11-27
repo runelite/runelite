@@ -55,7 +55,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		plugin = null;
 	}
 
-	protected Overlay(Plugin plugin)
+	protected Overlay(@Nullable Plugin plugin)
 	{
 		this.plugin = plugin;
 	}

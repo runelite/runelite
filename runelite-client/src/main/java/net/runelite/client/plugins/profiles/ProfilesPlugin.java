@@ -72,13 +72,9 @@ public class ProfilesPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-
-		if (this.switchToPanel)
-		{
-		}
 
 		panel = injector.getInstance(ProfilesPanel.class);
 		panel.init();

@@ -73,12 +73,6 @@ public class BlastMinePlugin extends Plugin
 	@Inject
 	private BlastMinePluginConfig config;
 
-	@Provides
-	BlastMinePluginConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BlastMinePluginConfig.class);
-	}
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showOreOverlay;
 	@Getter(AccessLevel.PACKAGE)
@@ -92,8 +86,14 @@ public class BlastMinePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Color warningColor;
 
+	@Provides
+	BlastMinePluginConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BlastMinePluginConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -102,7 +102,7 @@ public class BlastMinePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(blastMineRockOverlay);
 		overlayManager.remove(blastMineOreCountOverlay);

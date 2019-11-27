@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -38,7 +39,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<FairyRingClue> CLUES = ImmutableSet.of(

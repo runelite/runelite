@@ -239,7 +239,7 @@ public interface ImplingsConfig extends Config
 	{
 		return new Color(71, 70, 75);
 	}
-	
+
 	@ConfigItem(
 		position = 19,
 		keyName = "showCrystal",

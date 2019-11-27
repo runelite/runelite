@@ -25,8 +25,8 @@
 package net.runelite.client.chat;
 
 import java.awt.Color;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.api.util.Text;
+import net.runelite.client.util.ColorUtil;
 
 public class ChatMessageBuilder
 {

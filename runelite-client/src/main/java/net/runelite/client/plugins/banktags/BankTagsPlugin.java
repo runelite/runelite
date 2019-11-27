@@ -97,9 +97,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 {
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
@@ -112,6 +112,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
+	@VisibleForTesting
+	final Multiset<Integer> itemQuantities = HashMultiset.create();
 
 	@Inject
 	private ItemManager itemManager;
@@ -151,8 +153,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	private boolean shiftPressed = false;
 	private int nextRowIndex = 0;
-	@VisibleForTesting
-	Multiset<Integer> itemQuantities = HashMultiset.create();
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -169,6 +169,18 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+	}
+
+	@Override
+	public void shutDown()
+	{
+		keyManager.unregisterKeyListener(this);
+		mouseManager.unregisterMouseWheelListener(this);
+		clientThread.invokeLater(tabInterface::destroy);
+		spriteManager.removeSpriteOverrides(TabSprites.values());
+
+		shiftPressed = false;
+		itemQuantities.clear();
 	}
 
 	@Deprecated
@@ -224,19 +236,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
-	@Override
-	public void shutDown()
-	{
-		keyManager.unregisterKeyListener(this);
-		mouseManager.unregisterMouseWheelListener(this);
-		clientThread.invokeLater(tabInterface::destroy);
-		spriteManager.removeSpriteOverrides(TabSprites.values());
-
-		shiftPressed = false;
-		itemQuantities.clear();
-	}
-
-private boolean isSearching()
+	private boolean isSearching()
 	{
 		return client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType()
 			|| (client.getVar(VarClientInt.INPUT_TYPE) <= 0

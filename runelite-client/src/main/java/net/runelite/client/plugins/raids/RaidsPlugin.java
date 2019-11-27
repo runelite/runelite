@@ -157,51 +157,67 @@ public class RaidsPlugin extends Plugin
 		"SCFPC.CSPCF - #WSWWNE#WSEENE" //good crabs first rare crabs second
 	);
 	private static final Pattern PUZZLES = Pattern.compile("Puzzle - (\\w+)");
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private Client client;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsConfig config;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsOverlay overlay;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsPointsOverlay pointsOverlay;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private RaidsPartyOverlay partyOverlay;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private LayoutSolver layoutSolver;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private SpriteManager spriteManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private ClientThread clientThread;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private TooltipManager tooltipManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private ClientToolbar clientToolbar;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private ItemManager itemManager;
+
 	@Getter(AccessLevel.NONE)
 	@Inject
 	private EventBus eventBus;
+
 	private boolean raidStarted;
 
 	@Inject
@@ -288,7 +304,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -314,7 +330,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
@@ -1094,7 +1110,7 @@ public class RaidsPlugin extends Plugin
 		return room;
 	}
 
-	public void reset()
+	private void reset()
 	{
 		raid = null;
 		upperTime = -1;

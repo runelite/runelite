@@ -29,11 +29,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Item;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -46,7 +47,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
 {
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
@@ -156,7 +157,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[] {FALO_THE_BARD};
+		return new String[]{FALO_THE_BARD};
 	}
 
 	public static FaloTheBardClue forText(String text)

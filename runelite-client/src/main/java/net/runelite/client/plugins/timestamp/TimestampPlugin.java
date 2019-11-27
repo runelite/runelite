@@ -34,6 +34,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -61,7 +62,7 @@ public class TimestampPlugin extends Plugin
 	@Inject
 	private TimestampConfig config;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private SimpleDateFormat formatter;
 
 	@Provides
@@ -71,14 +72,14 @@ public class TimestampPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		updateFormatter();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		formatter = null;
 	}

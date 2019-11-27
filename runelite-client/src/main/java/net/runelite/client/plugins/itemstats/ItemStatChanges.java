@@ -31,7 +31,13 @@ import java.util.HashSet;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemstats.Builders.*;
+import static net.runelite.client.plugins.itemstats.Builders.boost;
+import static net.runelite.client.plugins.itemstats.Builders.combo;
+import static net.runelite.client.plugins.itemstats.Builders.dec;
+import static net.runelite.client.plugins.itemstats.Builders.food;
+import static net.runelite.client.plugins.itemstats.Builders.heal;
+import static net.runelite.client.plugins.itemstats.Builders.perc;
+import static net.runelite.client.plugins.itemstats.Builders.range;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
@@ -43,7 +49,7 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @Singleton
 @Slf4j
-public class ItemStatChanges
+class ItemStatChanges
 {
 	ItemStatChanges()
 	{

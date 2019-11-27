@@ -27,12 +27,13 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
-import javax.annotation.Nullable;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 enum TransportationPointLocation
 {
@@ -42,7 +43,7 @@ enum TransportationPointLocation
 	BRIMHAVEN_TO_ARDOUGNE("Ship to Ardougne / Rimmington", new WorldPoint(2772, 3234, 0)),
 	RIMMINGTON_TO_ARDOUGNE("Ship to Ardougne / Brimhaven", new WorldPoint(2915, 3224, 0)),
 	CATHERBY_TO_KEEP_LE_FAYE("Ship to Keep Le Faye", new WorldPoint(2804, 3421, 0), new WorldPoint(2769, 3402, 0)),
-	CORSAIR_TO_RIMMINGTON("Ship to Rimmington", new WorldPoint(2577, 2839, 0), new WorldPoint(2909, 3227, 0 )),
+	CORSAIR_TO_RIMMINGTON("Ship to Rimmington", new WorldPoint(2577, 2839, 0), new WorldPoint(2909, 3227, 0)),
 	DRAGONTOOTH_TO_PHASMATYS("Ship to Port Phasmatys", new WorldPoint(3791, 3561, 0), new WorldPoint(3703, 3487, 0)),
 	DIGSITE_TO_FOSSIL("Ship to Fossil Island", new WorldPoint(3361, 3448, 0), new WorldPoint(3723, 3807, 0)),
 	ENTRANA_TO_PORTSARIM("Ship to Port Sarim", new WorldPoint(2833, 3334, 0), new WorldPoint(3046, 3233, 0)),
@@ -75,7 +76,7 @@ enum TransportationPointLocation
 	RELLEKKA_TO_WATERBIRTH("Ship to Waterbirth", new WorldPoint(2618, 3685, 0), new WorldPoint(2549, 3758, 0)),
 	RELLEKKA_TO_WEISS_ICEBERG("Ship to Weiss/Iceberg", new WorldPoint(2707, 3735, 0)),
 	RELLEKKA_TO_UNGAEL("Ship to Ungael", new WorldPoint(2638, 3698, 0), new WorldPoint(2276, 4034, 0)),
-	RIMMINGTON_TO_CORSAIR_COVE("Ship to Corsair Cove", new WorldPoint(2909, 3227, 0 ), new WorldPoint(2577, 2839, 0)),
+	RIMMINGTON_TO_CORSAIR_COVE("Ship to Corsair Cove", new WorldPoint(2909, 3227, 0), new WorldPoint(2577, 2839, 0)),
 	WATERBIRTH_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2549, 3758, 0), new WorldPoint(2618, 3685, 0)),
 	WEISS_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2847, 3967, 0), new WorldPoint(2707, 3735, 0)),
 	UNGAEL_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2276, 4034, 0), new WorldPoint(2638, 3698, 0)),

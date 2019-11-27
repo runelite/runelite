@@ -127,7 +127,7 @@ public class MultiIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -146,7 +146,7 @@ public class MultiIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
@@ -154,7 +154,7 @@ public class MultiIndicatorsPlugin extends Plugin
 		uninitializePaths();
 	}
 
-private void initializePaths()
+	private void initializePaths()
 	{
 		multicombatPathToDisplay = new GeneralPath[Constants.MAX_Z];
 		pvpPathToDisplay = new GeneralPath[Constants.MAX_Z];

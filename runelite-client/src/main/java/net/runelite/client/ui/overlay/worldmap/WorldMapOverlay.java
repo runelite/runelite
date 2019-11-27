@@ -192,7 +192,7 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
-		Float pixelsPerTile = ro.getWorldMapZoom();
+		float pixelsPerTile = ro.getWorldMapZoom();
 
 		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)

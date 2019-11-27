@@ -87,14 +87,14 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		clientThread.invoke(this::updateAllOverrides);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientThread.invoke(() ->
 		{

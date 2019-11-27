@@ -26,10 +26,11 @@
  */
 package net.runelite.client.plugins.hideprayers.util;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum Zamorak
 {

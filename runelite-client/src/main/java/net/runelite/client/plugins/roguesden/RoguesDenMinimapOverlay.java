@@ -39,8 +39,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class RoguesDenMinimapOverlay extends Overlay
 {
-	private Client client;
-	private RoguesDenPlugin plugin;
+	private final Client client;
+	private final RoguesDenPlugin plugin;
 
 	@Inject
 	public RoguesDenMinimapOverlay(Client client, RoguesDenPlugin plugin)

@@ -28,7 +28,7 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.client.input.KeyListener;
 
-public class NpcIndicatorsInput implements KeyListener
+class NpcIndicatorsInput implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_SHIFT;
 

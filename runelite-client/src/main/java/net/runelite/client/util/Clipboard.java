@@ -38,7 +38,7 @@ public class Clipboard
 	{
 		Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
-		if (contents == null || ! contents.isDataFlavorSupported(DataFlavor.stringFlavor))
+		if (contents == null || !contents.isDataFlavorSupported(DataFlavor.stringFlavor))
 		{
 			return null;
 		}

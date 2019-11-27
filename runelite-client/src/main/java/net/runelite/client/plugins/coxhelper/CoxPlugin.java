@@ -88,27 +88,35 @@ public class CoxPlugin extends Plugin
 {
 	private static final int ANIMATION_ID_G1 = 430;
 	private static final Pattern TP_REGEX = Pattern.compile("You have been paired with <col=ff0000>(.*)</col>! The magical power will enact soon...");
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private ChatMessageManager chatMessageManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private CoxOverlay coxOverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private CoxInfoBox coxInfoBox;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private CoxConfig config;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
+
 	private boolean handCripple;
 	private boolean runOlm;
 	private int vanguards;

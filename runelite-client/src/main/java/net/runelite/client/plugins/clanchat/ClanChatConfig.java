@@ -137,7 +137,7 @@ public interface ClanChatConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		position = 9,
 		keyName = "clanname",

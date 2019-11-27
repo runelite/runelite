@@ -56,6 +56,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 
 	/**
 	 * Draws the names of the wilderness WorldLocations on the World Map
+	 *
 	 * @param graphics - Overlay graphics
 	 */
 	private void drawWildLocations(Graphics2D graphics)
@@ -126,7 +127,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 	 * @param worldPoint WorldPoint to get screen coordinates of
 	 * @return Point of screen coordinates of the center of the world point
 	 */
-	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
+	private Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
 		RenderOverview ro = client.getRenderOverview();
 
@@ -135,7 +136,7 @@ public class WildernessLocationsMapOverlay extends Overlay
 			return null;
 		}
 
-		Float pixelsPerTile = ro.getWorldMapZoom();
+		float pixelsPerTile = ro.getWorldMapZoom();
 
 		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)

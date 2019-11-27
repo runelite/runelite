@@ -99,7 +99,7 @@ public class ClanManModeService
 						consumer.accept(player, plugin.getGetClanMemberColor());
 					}
 					if (plugin.isHighlightAttacked() && interactors.containsKey(player.getName()))
-						{
+					{
 						String attackername = interactors.get(player.getName());
 						boolean found = false;
 						for (Player attacker : client.getPlayers())

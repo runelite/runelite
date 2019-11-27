@@ -26,18 +26,7 @@
 package net.runelite.client.game;
 
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.NULL_25337;
-import static net.runelite.api.NullObjectID.NULL_26371;
-import static net.runelite.api.NullObjectID.NULL_26375;
-import static net.runelite.api.NullObjectID.NULL_26884;
-import static net.runelite.api.NullObjectID.NULL_26886;
-import static net.runelite.api.NullObjectID.NULL_29868;
-import static net.runelite.api.NullObjectID.NULL_29869;
-import static net.runelite.api.NullObjectID.NULL_29870;
-import static net.runelite.api.NullObjectID.NULL_31823;
-import static net.runelite.api.NullObjectID.NULL_31849;
-import static net.runelite.api.NullObjectID.NULL_33327;
-import static net.runelite.api.NullObjectID.NULL_33328;
+import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -45,40 +34,40 @@ import net.runelite.api.coords.WorldPoint;
 public enum AgilityShortcut
 {
 	GENERIC_SHORTCUT(1, "Shortcut", null,
-			// Trollheim
-			ROCKS_3790, ROCKS_3791,
-			// Fremennik Slayer Cave
-			STEPS_29993,
-			// Fossil Island
-			LADDER_30938, LADDER_30939, LADDER_30940, LADDER_30941, RUBBER_CAP_MUSHROOM,
-			// Brimhaven dungeon
-			CREVICE_30198,
-			// Lumbridge
-			STILE_12982,
-			// Gu'Tanoth Bridge
-			GAP, GAP_2831,
-			// Lumbridge Swamp Caves
-			STEPPING_STONE_5948, STEPPING_STONE_5949, ROCKS_6673,
-			// Morytania Pirate Ship
-			ROCK_16115,
-			// Lumber Yard
-			BROKEN_FENCE_2618,
-			// McGrubor's Wood
-			LOOSE_RAILING,
-			// Underwater Area Fossil Island
-			TUNNEL_30959, HOLE_30966, OBSTACLE, OBSTACLE_30767, OBSTACLE_30964, OBSTACLE_30962, PLANT_DOOR_30961,
-			// Tree Gnome Village
-			LOOSE_RAILING_2186,
-			// Burgh de Rott
-			LOW_FENCE,
-			// Taverley
-			STILE,
-			// Asgarnian Ice Dungeon
-			STEPS,
-			// Fossil Island Wyvern Cave
-			STAIRS_31485,
-			// Trollweiss Mountain Cave
-			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847),
+		// Trollheim
+		ROCKS_3790, ROCKS_3791,
+		// Fremennik Slayer Cave
+		STEPS_29993,
+		// Fossil Island
+		LADDER_30938, LADDER_30939, LADDER_30940, LADDER_30941, RUBBER_CAP_MUSHROOM,
+		// Brimhaven dungeon
+		CREVICE_30198,
+		// Lumbridge
+		STILE_12982,
+		// Gu'Tanoth Bridge
+		GAP, GAP_2831,
+		// Lumbridge Swamp Caves
+		STEPPING_STONE_5948, STEPPING_STONE_5949, ROCKS_6673,
+		// Morytania Pirate Ship
+		ROCK_16115,
+		// Lumber Yard
+		BROKEN_FENCE_2618,
+		// McGrubor's Wood
+		LOOSE_RAILING,
+		// Underwater Area Fossil Island
+		TUNNEL_30959, HOLE_30966, OBSTACLE, OBSTACLE_30767, OBSTACLE_30964, OBSTACLE_30962, PLANT_DOOR_30961,
+		// Tree Gnome Village
+		LOOSE_RAILING_2186,
+		// Burgh de Rott
+		LOW_FENCE,
+		// Taverley
+		STILE,
+		// Asgarnian Ice Dungeon
+		STEPS,
+		// Fossil Island Wyvern Cave
+		STAIRS_31485,
+		// Trollweiss Mountain Cave
+		ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847),
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
@@ -206,7 +195,7 @@ public enum AgilityShortcut
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_NORTH(75, "Jump", new WorldPoint(3180, 10209, 0), PILLAR_31561),
 	ZUL_ANDRA_ISLAND_CROSSING(76, "Stepping Stone", new WorldPoint(2156, 3073, 0), STEPPING_STONE_10663),
-	SHILO_VILLAGE_STEPPING_STONES( 77, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	SHILO_VILLAGE_STEPPING_STONES(77, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
 	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_EAST(78, "Tight Gap", new WorldPoint(3221, 12441, 0), TIGHT_GAP),
 	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_WEST(78, "Tight Gap", new WorldPoint(3215, 12441, 0), TIGHT_GAP_36693),
 	KHARAZI_JUNGLE_VINE_CLIMB(79, "Vine", new WorldPoint(2897, 2939, 0), NULL_26884, NULL_26886),

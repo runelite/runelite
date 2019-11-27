@@ -238,7 +238,7 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
-	void setStyle(Style style)
+	private void setStyle(Style style)
 	{
 		container.removeAll();
 

@@ -62,7 +62,7 @@ public class PlayerIndicatorsService
 			&& client.isFriended(player.getName(), false)
 			&& plugin.getLocationHashMap().containsKey(PlayerRelation.FRIEND));
 
-		clan = (player) -> (player.isClanMember()  && !client.getLocalPlayer().equals(player) && !client.isFriended(player.getName(), false)
+		clan = (player) -> (player.isClanMember() && !client.getLocalPlayer().equals(player) && !client.isFriended(player.getName(), false)
 			&& plugin.getLocationHashMap().containsKey(PlayerRelation.CLAN));
 
 		team = (player) -> (Objects.requireNonNull(client.getLocalPlayer()).getTeam() != 0 && !player.isClanMember()
@@ -100,7 +100,7 @@ public class PlayerIndicatorsService
 				consumer.accept(p, PlayerRelation.CALLER);
 				continue;
 			}
-			if (callerTarget.test(p) )
+			if (callerTarget.test(p))
 			{
 				consumer.accept(p, PlayerRelation.CALLER_TARGET);
 				continue;
@@ -135,7 +135,7 @@ public class PlayerIndicatorsService
 				consumer.accept(p, PlayerRelation.TARGET);
 			}
 		}
-}
+	}
 
 	private boolean highlight()
 	{

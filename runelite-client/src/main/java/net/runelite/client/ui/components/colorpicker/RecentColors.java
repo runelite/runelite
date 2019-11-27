@@ -35,10 +35,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 import javax.swing.JPanel;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.ui.components.colorpicker.RuneliteColorPicker.CONFIG_GROUP;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.api.util.Text;
 
 final class RecentColors
 {

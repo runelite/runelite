@@ -43,7 +43,7 @@ import okhttp3.HttpUrl;
 class HostSupplier implements Supplier<HttpUrl>
 {
 	private final Random random = new Random();
-	private Queue<HttpUrl> hosts = new ArrayDeque<>();
+	private final Queue<HttpUrl> hosts = new ArrayDeque<>();
 
 	@Override
 	public HttpUrl get()
@@ -53,7 +53,7 @@ class HostSupplier implements Supplier<HttpUrl>
 			return hosts.poll();
 		}
 
-		List<HttpUrl> newHosts = new  WorldClient(RuneLiteAPI.CLIENT)
+		List<HttpUrl> newHosts = new WorldClient(RuneLiteAPI.CLIENT)
 			.lookupWorlds()
 			.map(WorldResult::getWorlds)
 			.blockingSingle()

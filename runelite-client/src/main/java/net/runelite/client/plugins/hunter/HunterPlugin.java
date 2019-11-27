@@ -111,7 +111,7 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);

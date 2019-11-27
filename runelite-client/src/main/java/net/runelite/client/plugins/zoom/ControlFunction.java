@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.zoom;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum ControlFunction
 {

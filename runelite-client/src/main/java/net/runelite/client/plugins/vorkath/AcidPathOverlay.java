@@ -70,7 +70,7 @@ public class AcidPathOverlay extends Overlay
 		}
 
 		if (plugin.isIndicateAcidPools() && plugin.getAcidSpots() != null
-				&& !plugin.getAcidSpots().isEmpty())
+			&& !plugin.getAcidSpots().isEmpty())
 		{
 			for (WorldPoint acidWorldPoint : plugin.getAcidSpots())
 			{
@@ -80,12 +80,12 @@ public class AcidPathOverlay extends Overlay
 					continue;
 				}
 				OverlayUtil.renderPolygon(graphics, Perspective.getCanvasTilePoly(client,
-						acidLocalPoint), ACID_SPOTS_COLOR);
+					acidLocalPoint), ACID_SPOTS_COLOR);
 			}
 		}
 
 		if (plugin.isIndicateAcidFreePath() && plugin.getAcidFreePath() != null
-				&& !plugin.getAcidFreePath().isEmpty())
+			&& !plugin.getAcidFreePath().isEmpty())
 		{
 			for (WorldPoint acidFreeWorldPoint : plugin.getAcidFreePath())
 			{
@@ -96,12 +96,12 @@ public class AcidPathOverlay extends Overlay
 				}
 
 				OverlayUtil.renderPolygon(graphics, Perspective.getCanvasTilePoly(client,
-						acidFreeLocalPoint), ACID_FREE_PATH_COLOR);
+					acidFreeLocalPoint), ACID_FREE_PATH_COLOR);
 			}
 		}
 
 		if (plugin.isIndicateWooxWalkPath() && plugin.getWooxWalkPath()[0] != null
-				&& plugin.getWooxWalkPath()[1] != null)
+			&& plugin.getWooxWalkPath()[1] != null)
 		{
 			LocalPoint attackLocalPoint = LocalPoint.fromWorld(client, plugin.getWooxWalkPath()[0]);
 			LocalPoint outOfReachLocalPoint = LocalPoint.fromWorld(client, plugin.getWooxWalkPath()[1]);
@@ -117,22 +117,22 @@ public class AcidPathOverlay extends Overlay
 					&& plugin.getWooxWalkTimer() != -1)
 				{
 					int[] xpointsAttack = {
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0 + 1),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth()),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth()),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2 + 1)
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0 + 1),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth()),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth()),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2 + 1)
 					};
 					int[] xpointsOutOfReach = {
-							(int) plugin.getWooxWalkBar().getX(),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0),
-							(int) plugin.getWooxWalkBar().getX()
+						(int) plugin.getWooxWalkBar().getX(),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getWidth() / 2.0),
+						(int) plugin.getWooxWalkBar().getX()
 					};
 					int[] ypointsBoth = {
-							(int) plugin.getWooxWalkBar().getY(),
-							(int) plugin.getWooxWalkBar().getY(),
-							(int) (plugin.getWooxWalkBar().getY() + plugin.getWooxWalkBar().getHeight()),
-							(int) (plugin.getWooxWalkBar().getY() + plugin.getWooxWalkBar().getHeight())
+						(int) plugin.getWooxWalkBar().getY(),
+						(int) plugin.getWooxWalkBar().getY(),
+						(int) (plugin.getWooxWalkBar().getY() + plugin.getWooxWalkBar().getHeight()),
+						(int) (plugin.getWooxWalkBar().getY() + plugin.getWooxWalkBar().getHeight())
 					};
 					Polygon wooxWalkAttack = new Polygon(xpointsAttack, ypointsBoth, 4);
 					Polygon wooxWalkOutOfReach = new Polygon(xpointsOutOfReach, ypointsBoth, 4);
@@ -153,14 +153,14 @@ public class AcidPathOverlay extends Overlay
 					int progress = (int) Math.round(plugin.getWooxWalkBar().getWidth() * timeScale);
 
 					int[] xpointsIndicator = {
-							(int) (plugin.getWooxWalkBar().getX() - plugin.getWooxWalkBar().getHeight() / 2 + progress),
-							(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getHeight() / 2 + progress),
-							(int) plugin.getWooxWalkBar().getX() + progress
+						(int) (plugin.getWooxWalkBar().getX() - plugin.getWooxWalkBar().getHeight() / 2 + progress),
+						(int) (plugin.getWooxWalkBar().getX() + plugin.getWooxWalkBar().getHeight() / 2 + progress),
+						(int) plugin.getWooxWalkBar().getX() + progress
 					};
 					int[] ypointsIndicator = {
-							(int) (plugin.getWooxWalkBar().getY() - plugin.getWooxWalkBar().getHeight() - BAR_INDICATOR_SPACER),
-							(int) (plugin.getWooxWalkBar().getY() - plugin.getWooxWalkBar().getHeight() - BAR_INDICATOR_SPACER),
-							(int) (plugin.getWooxWalkBar().getY() - BAR_INDICATOR_SPACER)
+						(int) (plugin.getWooxWalkBar().getY() - plugin.getWooxWalkBar().getHeight() - BAR_INDICATOR_SPACER),
+						(int) (plugin.getWooxWalkBar().getY() - plugin.getWooxWalkBar().getHeight() - BAR_INDICATOR_SPACER),
+						(int) (plugin.getWooxWalkBar().getY() - BAR_INDICATOR_SPACER)
 					};
 					Polygon indicator = new Polygon(xpointsIndicator, ypointsIndicator, 3);
 					OverlayUtil.renderPolygon(graphics, indicator, Color.WHITE);

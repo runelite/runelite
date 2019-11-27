@@ -27,6 +27,7 @@ package net.runelite.client.plugins.itemskeptondeath;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -38,7 +39,7 @@ import net.runelite.api.ItemID;
  * Death Price = Charge price * Current Charges
  */
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum DynamicPriceItem
 {
 	GAMES_NECKLACE1(ItemID.GAMES_NECKLACE1, 1, 8, ItemID.GAMES_NECKLACE8),
@@ -91,12 +92,13 @@ enum DynamicPriceItem
 
 	/**
 	 * Calculates the price off the partially charged jewelry based on the base items price
+	 *
 	 * @param basePrice price of the base item, usually the trade-able variant
 	 * @return death price of the current DynamicPriceItem
 	 */
 	int calculateDeathPrice(final int basePrice)
 	{
-		return (basePrice /  maxCharges) * currentCharges;
+		return (basePrice / maxCharges) * currentCharges;
 	}
 
 	@Nullable

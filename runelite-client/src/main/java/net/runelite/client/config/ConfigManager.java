@@ -59,10 +59,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.StringUtils;
 

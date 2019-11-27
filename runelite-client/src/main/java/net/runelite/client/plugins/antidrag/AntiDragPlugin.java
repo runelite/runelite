@@ -74,20 +74,74 @@ public class AntiDragPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
-	@Provides
-	AntiDragConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AntiDragConfig.class);
-	}
-
 	private boolean toggleDrag;
 	private boolean configOverlay;
 	private boolean changeCursor;
 	private CustomCursor selectedCursor;
 	private Keybind key;
 
+	private final HotkeyListener toggleListener = new HotkeyListener(() -> this.key)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			toggleDrag = !toggleDrag;
+			if (toggleDrag)
+			{
+				if (configOverlay)
+				{
+					overlayManager.add(overlay);
+				}
+				if (changeCursor)
+				{
+					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+				}
+
+				client.setInventoryDragDelay(config.dragDelay());
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+				clientUI.resetCursor();
+			}
+		}
+	};
+
+	private final HotkeyListener holdListener = new HotkeyListener(() -> this.key)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (configOverlay)
+			{
+				overlayManager.add(overlay);
+			}
+			if (changeCursor)
+			{
+				clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+			}
+
+			client.setInventoryDragDelay(config.dragDelay());
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			overlayManager.remove(overlay);
+			client.setInventoryDragDelay(DEFAULT_DELAY);
+			clientUI.resetCursor();
+		}
+	};
+
+	@Provides
+	AntiDragConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AntiDragConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlay.setColor(config.color());
 		updateConfig();
@@ -100,7 +154,7 @@ public class AntiDragPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(holdListener);
@@ -194,58 +248,4 @@ public class AntiDragPlugin extends Plugin
 			keyManager.unregisterKeyListener(toggleListener);
 		}
 	}
-
-	private final HotkeyListener toggleListener = new HotkeyListener(() -> this.key)
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			toggleDrag = !toggleDrag;
-			if (toggleDrag)
-			{
-				if (configOverlay)
-				{
-					overlayManager.add(overlay);
-				}
-				if (changeCursor)
-				{
-					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
-				}
-
-				client.setInventoryDragDelay(config.dragDelay());
-			}
-			else
-			{
-				overlayManager.remove(overlay);
-				client.setInventoryDragDelay(DEFAULT_DELAY);
-				clientUI.resetCursor();
-			}
-		}
-	};
-
-	private final HotkeyListener holdListener = new HotkeyListener(() -> this.key)
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			if (configOverlay)
-			{
-				overlayManager.add(overlay);
-			}
-			if (changeCursor)
-			{
-				clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
-			}
-
-			client.setInventoryDragDelay(config.dragDelay());
-		}
-
-		@Override
-		public void hotkeyReleased()
-		{
-			overlayManager.remove(overlay);
-			client.setInventoryDragDelay(DEFAULT_DELAY);
-			clientUI.resetCursor();
-		}
-	};
 }

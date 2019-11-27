@@ -36,7 +36,7 @@ public class ContainableFrame extends JFrame
 	{
 		ALWAYS,
 		RESIZING,
-		NEVER;
+		NEVER
 	}
 
 	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;

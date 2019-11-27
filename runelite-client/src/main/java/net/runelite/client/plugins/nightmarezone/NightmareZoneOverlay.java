@@ -111,12 +111,12 @@ class NightmareZoneOverlay extends Overlay
 		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 		tableComponent.addRow("Points:", QuantityFormatter.formatNumber(currentPoints));
 		tableComponent.addRow("Points/Hour:", QuantityFormatter.formatNumber(plugin.getPointsPerHour()));
-		
+
 		if (plugin.isShowtotalpoints())
 		{
 			tableComponent.addRow("Total:", QuantityFormatter.formatNumber(totalPoints));
 		}
-		
+
 		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);

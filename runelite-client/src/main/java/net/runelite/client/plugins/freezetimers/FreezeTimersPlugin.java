@@ -68,14 +68,19 @@ public class FreezeTimersPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private Timers timers;
+
 	@Inject
 	private PrayerTracker prayerTracker;
+
 	@Inject
 	private FreezeTimersOverlay overlay;
+
 	@Inject
 	private FreezeTimersConfig config;
 

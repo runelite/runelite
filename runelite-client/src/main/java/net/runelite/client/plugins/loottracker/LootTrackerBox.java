@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
@@ -50,12 +51,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.api.util.Text;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.api.util.Text;
 import net.runelite.client.util.QuantityFormatter;
 
 class LootTrackerBox extends JPanel
@@ -66,9 +67,7 @@ class LootTrackerBox extends JPanel
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
-	private final JLabel dateLabel = new JLabel();
 	private final JPanel logTitle = new JPanel();
-	private final JLabel titleLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
@@ -79,9 +78,8 @@ class LootTrackerBox extends JPanel
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
 	private long totalPrice;
-	private boolean hideIgnoredItems;
-	private BiConsumer<String, Boolean> onItemToggle;
-	private final long timeStamp;
+	private final boolean hideIgnoredItems;
+	private final BiConsumer<String, Boolean> onItemToggle;
 
 	LootTrackerBox(
 		final long timeStamp,
@@ -94,7 +92,6 @@ class LootTrackerBox extends JPanel
 		@Nullable final Boolean showDate,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
-		this.timeStamp = timeStamp;
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
@@ -109,6 +106,7 @@ class LootTrackerBox extends JPanel
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
+		JLabel titleLabel = new JLabel();
 		titleLabel.setText(Text.removeTags(id));
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
@@ -119,7 +117,8 @@ class LootTrackerBox extends JPanel
 		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
-		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(FontManager.getRunescapeSmallFont().getSize() - 2));
+		JLabel dateLabel = new JLabel();
+		dateLabel.setFont(FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, FontManager.getRunescapeSmallFont().getSize() - 2));
 		dateLabel.setForeground(Color.LIGHT_GRAY);
 		dateLabel.setText(DateFormat.getDateInstance().format(new Date(timeStamp)));
 
@@ -157,7 +156,7 @@ class LootTrackerBox extends JPanel
 	{
 		return hideIgnoredItems
 			? records.stream().filter(
-				r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
+			r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
 			: records.size();
 	}
 

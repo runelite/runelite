@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -60,7 +61,7 @@ public class BronzemanPlugin extends Plugin
 
 	private List<Integer> unlockedItems;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage unlockImage = null;
 	/**
 	 * Loads GrandExchange widgets for further manipulation of the interface
@@ -69,7 +70,7 @@ public class BronzemanPlugin extends Plugin
 	private Widget grandExchangeChatBox;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		loadUnlockImage();
 		unlockedItems = new ArrayList<>();
@@ -77,13 +78,13 @@ public class BronzemanPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		unlockedItems = null;
 		overlayManager.remove(bronzemanOverlay);
 	}
 
-/**
+	/**
 	 * Loads players unlocks on login
 	 **/
 	@Subscribe
@@ -178,7 +179,7 @@ public class BronzemanPlugin extends Plugin
 	/**
 	 * Queues a new unlock to be properly displayed
 	 **/
-	public void queueItemUnlock(int itemId)
+	private void queueItemUnlock(int itemId)
 	{
 		unlockedItems.add(itemId);
 		bronzemanOverlay.addItemUnlock(itemId);

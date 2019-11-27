@@ -65,7 +65,7 @@ public interface WhaleWatchersConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName  = "pneckBreak",
+		keyName = "pneckBreak",
 		name = "Phoenix Necklace Break Sound",
 		description = "play a sound notification when your phoenix necklace breaks"
 	)

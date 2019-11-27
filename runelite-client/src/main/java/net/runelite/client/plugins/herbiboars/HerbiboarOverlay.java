@@ -47,7 +47,7 @@ class HerbiboarOverlay extends Overlay
 {
 	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
-	private Client client;
+	private final Client client;
 
 	private final HerbiboarPlugin plugin;
 	private final ModelOutlineRenderer modelOutlineRenderer;

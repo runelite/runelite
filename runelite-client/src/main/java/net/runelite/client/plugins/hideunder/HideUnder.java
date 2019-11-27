@@ -56,9 +56,11 @@ public class HideUnder extends Plugin
 {
 	@Inject
 	private Client client;
+
 	@Inject
 	private EventBus eventBus;
-	private Set<PlayerContainer> playerContainer = new HashSet<>();
+
+	private final Set<PlayerContainer> playerContainer = new HashSet<>();
 
 	@Override
 	protected void startUp()

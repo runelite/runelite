@@ -115,13 +115,13 @@ public class RandomEventPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		lastNotificationTick = 0;
 		currentRandomEvent = null;

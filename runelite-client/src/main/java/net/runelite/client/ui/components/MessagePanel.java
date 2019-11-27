@@ -52,7 +52,7 @@ public class MessagePanel extends JPanel
 
 	private final JLabel titleLabel = new JLabel("Welcome to OpenOSRS");
 	private final JLabel messageArea;
-	private final JLabel barLabel = new JLabel("Doing something important");
+	private final JLabel barLabel = new JLabel("Loading...");
 	private final JProgressBar bar = new JProgressBar(0, 100);
 
 	@Getter(AccessLevel.NONE)

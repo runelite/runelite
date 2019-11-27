@@ -60,7 +60,7 @@ public class PrayerAlertPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.alwaysShowAlert = config.alwaysShowAlert();
 		this.oldRenderMode = config.oldRenderMode();
@@ -69,7 +69,7 @@ public class PrayerAlertPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}

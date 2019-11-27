@@ -33,7 +33,7 @@ import net.runelite.api.ItemID;
 /**
  * A locked item will be kept in its unbroken state upon dying with it past level 20 Wildy but its locked status will be lost.
  * Only certain untradeable items can be combined with a Trouver parchment by talking to Perdu and paying a fee.
- *
+ * <p>
  * View the Trouver parchment wiki page for more information: https://oldschool.runescape.wiki/w/Trouver_parchment
  */
 @AllArgsConstructor
@@ -101,6 +101,7 @@ public enum LockedItem
 	final private int baseID;
 
 	private final static Map<Integer, Integer> ITEMS;
+
 	static
 	{
 		final ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();

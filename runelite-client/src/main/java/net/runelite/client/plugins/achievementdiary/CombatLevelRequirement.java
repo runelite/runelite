@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class CombatLevelRequirement implements Requirement
 {
 	private final int level;

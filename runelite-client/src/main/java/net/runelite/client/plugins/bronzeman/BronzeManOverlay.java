@@ -2,15 +2,15 @@ package net.runelite.client.plugins.bronzeman;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import javax.inject.Inject;
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**

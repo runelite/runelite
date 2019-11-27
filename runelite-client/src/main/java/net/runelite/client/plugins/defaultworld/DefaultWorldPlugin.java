@@ -67,7 +67,7 @@ public class DefaultWorldPlugin extends Plugin
 	private boolean worldChangeRequired;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		worldChangeRequired = true;
@@ -75,13 +75,13 @@ public class DefaultWorldPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		worldChangeRequired = true;
 		changeWorld(worldCache);
 	}
 
-@Provides
+	@Provides
 	DefaultWorldConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(DefaultWorldConfig.class);
@@ -94,7 +94,7 @@ public class DefaultWorldPlugin extends Plugin
 		applyWorld();
 	}
 
-	@Subscribe
+	@Subscribe(takeUntil = 2)
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)

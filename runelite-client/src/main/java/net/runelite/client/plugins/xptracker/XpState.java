@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
@@ -149,10 +150,7 @@ class XpState
 		else
 		{
 			// So we have a decent average off the bat, lets populate all values with what we see.
-			for (int i = 0; i < action.getActionExps().length; i++)
-			{
-				action.getActionExps()[i] = actionExp;
-			}
+			Arrays.fill(action.getActionExps(), actionExp);
 
 			action.setActionsHistoryInitialized(true);
 		}

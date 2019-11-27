@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -39,90 +40,90 @@ import net.runelite.api.widgets.WidgetInfo;
 enum Role
 {
 	ATTACKER(WidgetInfo.BA_ATK_WAVE_TEXT, WidgetInfo.BA_ATK_LISTEN_TOP_TEXT, WidgetInfo.BA_ATK_HORN_LISTEN_TEXT,
-			WidgetInfo.BA_ATK_CALL_TEXT, WidgetInfo.BA_COLL_HORN_LISTEN_TEXT, WidgetInfo.BA_ATK_ROLE_TEXT,
-			WidgetInfo.BA_ATK_ROLE_SPRITE),
+		WidgetInfo.BA_ATK_CALL_TEXT, WidgetInfo.BA_COLL_HORN_LISTEN_TEXT, WidgetInfo.BA_ATK_ROLE_TEXT,
+		WidgetInfo.BA_ATK_ROLE_SPRITE),
 	DEFENDER(WidgetInfo.BA_DEF_WAVE_TEXT, WidgetInfo.BA_DEF_LISTEN_TEXT, WidgetInfo.BA_DEF_HORN_LISTEN_TEXT,
-			WidgetInfo.BA_DEF_CALL_TEXT, WidgetInfo.BA_HEAL_HORN_LISTEN_TEXT, WidgetInfo.BA_DEF_ROLE_TEXT,
-			WidgetInfo.BA_DEF_ROLE_SPRITE),
+		WidgetInfo.BA_DEF_CALL_TEXT, WidgetInfo.BA_HEAL_HORN_LISTEN_TEXT, WidgetInfo.BA_DEF_ROLE_TEXT,
+		WidgetInfo.BA_DEF_ROLE_SPRITE),
 	COLLECTOR(WidgetInfo.BA_COLL_WAVE_TEXT, WidgetInfo.BA_COLL_LISTEN_TEXT, WidgetInfo.BA_COLL_HORN_LISTEN_TEXT,
-			WidgetInfo.BA_COLL_CALL_TEXT, WidgetInfo.BA_ATK_HORN_LISTEN_TEXT, WidgetInfo.BA_COLL_ROLE_TEXT,
-			WidgetInfo.BA_COLL_ROLE_SPRITE),
+		WidgetInfo.BA_COLL_CALL_TEXT, WidgetInfo.BA_ATK_HORN_LISTEN_TEXT, WidgetInfo.BA_COLL_ROLE_TEXT,
+		WidgetInfo.BA_COLL_ROLE_SPRITE),
 	HEALER(WidgetInfo.BA_HEAL_WAVE_TEXT, WidgetInfo.BA_HEAL_LISTEN_TEXT, WidgetInfo.BA_DEF_HORN_LISTEN_TEXT,
-			WidgetInfo.BA_HEAL_CALL_TEXT, WidgetInfo.BA_DEF_HORN_LISTEN_TEXT, WidgetInfo.BA_HEAL_ROLE_TEXT,
-			WidgetInfo.BA_HEAL_ROLE_SPRITE);
+		WidgetInfo.BA_HEAL_CALL_TEXT, WidgetInfo.BA_DEF_HORN_LISTEN_TEXT, WidgetInfo.BA_HEAL_ROLE_TEXT,
+		WidgetInfo.BA_HEAL_ROLE_SPRITE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo wave;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo listen;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo gloryListen;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo call;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo gloryCall;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo roleText;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WidgetInfo roleSprite;
 
 	// Duplicate* entries are to catch instances where the horn of glory has
 	// text different than the normal horn
 	private static final ImmutableMap<String, String> TELLS = ImmutableMap.<String, String>builder()
-			.put("Red egg", "Tell-red")
-			.put("Green egg", "Tell-green")
-			.put("Blue egg", "Tell-blue")
-			.put("Controlled/Bullet/Wind", "Tell-controlled")
-			.put("Accurate/Field/Water", "Tell-accurate")
-			.put("Aggressive/Blunt/Earth", "Tell-aggressive")
-			.put("Defensive/Barbed/Fire", "Tell-defensive")
-			.put("Tofu", "Tell-tofu")
-			.put("Crackers", "Tell-crackers")
-			.put("Worms", "Tell-worms")
-			.put("Poison Worms", "Tell-worms")
-			.put("Pois. Worms", "Tell-worms")
-			.put("Poison Tofu", "Tell-tofu")
-			.put("Pois. Tofu", "Tell-tofu")
-			.put("Poison Meat", "Tell-meat")
-			.put("Pois. Meat", "Tell-meat")
-			.build();
+		.put("Red egg", "Tell-red")
+		.put("Green egg", "Tell-green")
+		.put("Blue egg", "Tell-blue")
+		.put("Controlled/Bullet/Wind", "Tell-controlled")
+		.put("Accurate/Field/Water", "Tell-accurate")
+		.put("Aggressive/Blunt/Earth", "Tell-aggressive")
+		.put("Defensive/Barbed/Fire", "Tell-defensive")
+		.put("Tofu", "Tell-tofu")
+		.put("Crackers", "Tell-crackers")
+		.put("Worms", "Tell-worms")
+		.put("Poison Worms", "Tell-worms")
+		.put("Pois. Worms", "Tell-worms")
+		.put("Poison Tofu", "Tell-tofu")
+		.put("Pois. Tofu", "Tell-tofu")
+		.put("Poison Meat", "Tell-meat")
+		.put("Pois. Meat", "Tell-meat")
+		.build();
 	private static final ImmutableMap<String, String> GLORY_CALLS = ImmutableMap.<String, String>builder()
-			.put("Controlled/Bullet/Wind", "Controlled/")
-			.put("Accurate/Field/Water", "Accurate/")
-			.put("Aggressive/Blunt/Earth", "Aggressive/")
-			.put("Defensive/Barbed/Fire", "Defensive/")
-			.put("Tofu", "Tofu")
-			.put("Crackers", "Crackers")
-			.put("Worms", "Worms")
-			.put("Poison worms", "Pois. Worms")
-			.put("Poison tofu", "Pois. Tofu")
-			.put("Poison meat", "Pois. Meat")
-			.put("Red egg", "Red egg")
-			.put("Green egg", "Green egg")
-			.put("Blue egg", "Blue egg")
-			.build();
+		.put("Controlled/Bullet/Wind", "Controlled/")
+		.put("Accurate/Field/Water", "Accurate/")
+		.put("Aggressive/Blunt/Earth", "Aggressive/")
+		.put("Defensive/Barbed/Fire", "Defensive/")
+		.put("Tofu", "Tofu")
+		.put("Crackers", "Crackers")
+		.put("Worms", "Worms")
+		.put("Poison worms", "Pois. Worms")
+		.put("Poison tofu", "Pois. Tofu")
+		.put("Poison meat", "Pois. Meat")
+		.put("Red egg", "Red egg")
+		.put("Green egg", "Green egg")
+		.put("Blue egg", "Blue egg")
+		.build();
 	private static final ImmutableMap<String, Integer> ITEMS = ImmutableMap.<String, Integer>builder()
-			.put("Tofu", ItemID.TOFU)
-			.put("Crackers", ItemID.CRACKERS)
-			.put("Worms", ItemID.WORMS)
-			.put("Pois. Worms", ItemID.POISONED_WORMS)
-			.put("Pois. Tofu", ItemID.POISONED_TOFU)
-			.put("Pois. Meat", ItemID.POISONED_MEAT)
-			.put("Defensive/", ItemID.BARBED_ARROW)
-			.put("Aggressive/", ItemID.BLUNT_ARROW)
-			.put("Accurate/", ItemID.FIELD_ARROW)
-			.put("Controlled/", ItemID.BULLET_ARROW)
-			.build();
+		.put("Tofu", ItemID.TOFU)
+		.put("Crackers", ItemID.CRACKERS)
+		.put("Worms", ItemID.WORMS)
+		.put("Pois. Worms", ItemID.POISONED_WORMS)
+		.put("Pois. Tofu", ItemID.POISONED_TOFU)
+		.put("Pois. Meat", ItemID.POISONED_MEAT)
+		.put("Defensive/", ItemID.BARBED_ARROW)
+		.put("Aggressive/", ItemID.BLUNT_ARROW)
+		.put("Accurate/", ItemID.FIELD_ARROW)
+		.put("Controlled/", ItemID.BULLET_ARROW)
+		.build();
 	private static final ImmutableMap<String, String> SPLIT_LISTENS = ImmutableMap.<String, String>builder()
-			.put("Controlled/", "Bullet/Wind")
-			.put("Bullet/Wind", "Controlled/")
-			.put("Accurate/", "Field/Water")
-			.put("Field/Water", "Accurate/")
-			.put("Aggressive/", "Blunt/Earth")
-			.put("Blunt/Earth", "Aggressive/")
-			.put("Defensive/", "Barbed/Fire")
-			.put("Barbed/Fire", "Defensive/")
-			.build();
+		.put("Controlled/", "Bullet/Wind")
+		.put("Bullet/Wind", "Controlled/")
+		.put("Accurate/", "Field/Water")
+		.put("Field/Water", "Accurate/")
+		.put("Aggressive/", "Blunt/Earth")
+		.put("Blunt/Earth", "Aggressive/")
+		.put("Defensive/", "Barbed/Fire")
+		.put("Barbed/Fire", "Defensive/")
+		.build();
 
 
 	int getListenItem(String listen)

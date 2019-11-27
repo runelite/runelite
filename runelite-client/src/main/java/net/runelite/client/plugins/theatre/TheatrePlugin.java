@@ -55,25 +55,33 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 @Singleton
 @Slf4j
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class TheatrePlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
 	@Inject
 	private EventBus eventBus;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private TheatreOverlay overlay;
+
 	@Inject
 	private TheatreConfig config;
+
 	@Inject
 	private MenuManager menuManager;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private ModelOutlineRenderer modelOutline;
+
 	private BloatHandler bloatHandler;
 	private MaidenHandler maidenHandler;
 	private NyloHandler nyloHandler;

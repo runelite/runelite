@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -42,7 +43,7 @@ import net.runelite.api.coords.WorldPoint;
  * with specific set of solution points, so this solver will filter from a provided set of possible solutions as new
  * signals of temperatures and temperature changes are provided.
  */
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class HotColdSolver
 {
 	private final Set<HotColdLocation> possibleLocations;
@@ -63,7 +64,7 @@ public class HotColdSolver
 	 * @param temperature       The temperature of the checked point
 	 * @param temperatureChange The change of temperature of the checked point compared to the previously-checked point
 	 * @return A set of {@link HotColdLocation}s which are still possible after the filtering occurs. This return value
-	 *         is the same as would be returned by {@code getPossibleLocations()}.
+	 * is the same as would be returned by {@code getPossibleLocations()}.
 	 */
 	public Set<HotColdLocation> signal(@Nonnull final WorldPoint worldPoint, @Nonnull final HotColdTemperature temperature, @Nullable final HotColdTemperatureChange temperatureChange)
 	{
@@ -118,11 +119,11 @@ public class HotColdSolver
 	 * @param secondPoint Second point to test
 	 * @param rect        Rectangle, whose corner points will be compared to the first and second points passed
 	 * @return {@code true} if {@code firstPoint} is closer to each of {@code rect}'s four corner points than
-	 *         {@code secondPoint}, {@code false} otherwise.
+	 * {@code secondPoint}, {@code false} otherwise.
 	 * @see WorldPoint#distanceTo2D
 	 */
 	@VisibleForTesting
-	static boolean isFirstPointCloserRect(final WorldPoint firstPoint, final WorldPoint secondPoint, final Rectangle rect)
+	private static boolean isFirstPointCloserRect(final WorldPoint firstPoint, final WorldPoint secondPoint, final Rectangle rect)
 	{
 		final WorldPoint nePoint = new WorldPoint((rect.x + rect.width), (rect.y + rect.height), 0);
 
@@ -156,11 +157,11 @@ public class HotColdSolver
 	 * @param secondPoint Second point to test
 	 * @param worldPoint  Point to compare to the first and second points passed
 	 * @return {@code true} if {@code firstPoint} is closer to {@code worldPoint} than {@code secondPoint},
-	 *         {@code false} otherwise.
+	 * {@code false} otherwise.
 	 * @see WorldPoint#distanceTo2D
 	 */
 	@VisibleForTesting
-	static boolean isFirstPointCloser(final WorldPoint firstPoint, final WorldPoint secondPoint, final WorldPoint worldPoint)
+	private static boolean isFirstPointCloser(final WorldPoint firstPoint, final WorldPoint secondPoint, final WorldPoint worldPoint)
 	{
 		return firstPoint.distanceTo2D(worldPoint) < secondPoint.distanceTo2D(worldPoint);
 	}

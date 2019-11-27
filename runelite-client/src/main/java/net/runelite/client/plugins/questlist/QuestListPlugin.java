@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -379,7 +380,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PRIVATE)
 	private enum QuestContainer
 	{
 		FREE_QUESTS(WidgetInfo.QUESTLIST_FREE_CONTAINER),
@@ -390,7 +391,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PRIVATE)
 	private enum QuestState
 	{
 		NOT_STARTED(0xff0000, "Not started", SpriteID.MINIMAP_ORB_HITPOINTS),

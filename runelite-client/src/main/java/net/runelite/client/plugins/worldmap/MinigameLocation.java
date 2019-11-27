@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum MinigameLocation
 {
 	BARBARIAN_ASSAULT("Barbarian Assault", new WorldPoint(2531, 3569, 0)),

@@ -54,6 +54,7 @@ public class MouseHighlightPlugin extends Plugin
 {
 	@Inject
 	MouseHighlightConfig config;
+
 	@Inject
 	private Client client;
 
@@ -81,7 +82,7 @@ public class MouseHighlightPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -90,7 +91,7 @@ public class MouseHighlightPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		resetTips();
 		overlayManager.remove(overlay);

@@ -116,7 +116,7 @@ public class KourendLibraryPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		hideButton = config.hideButton();

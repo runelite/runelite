@@ -148,7 +148,7 @@ public class EntityHiderPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setIsHidingEntities(false);
 

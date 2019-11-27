@@ -149,7 +149,7 @@ public class WorldHopperPlugin extends Plugin
 	private net.runelite.api.World quickHopTargetWorld;
 	private int displaySwitcherAttempts = 0;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int lastWorld;
 
 	private int favoriteWorld1, favoriteWorld2;
@@ -199,7 +199,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -240,7 +240,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		pingFuture.cancel(true);
 		pingFuture = null;

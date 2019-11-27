@@ -113,7 +113,7 @@ public class EquipmentInspectorPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -137,7 +137,7 @@ public class EquipmentInspectorPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		menuManager.removePlayerMenuItem(INSPECT_EQUIPMENT);
 		pluginToolbar.removeNavigation(navButton);

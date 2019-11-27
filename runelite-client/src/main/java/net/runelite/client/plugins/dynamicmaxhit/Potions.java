@@ -23,11 +23,12 @@
  */
 package net.runelite.client.plugins.dynamicmaxhit;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum Potions
 {

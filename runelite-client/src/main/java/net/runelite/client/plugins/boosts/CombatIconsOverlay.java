@@ -11,6 +11,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -20,7 +21,6 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
@@ -51,12 +51,12 @@ class CombatIconsOverlay extends Overlay
 		{
 			return null;
 		}
-		
+
 		if (plugin.isBoldIconFont())
 		{
 			graphics.setFont(FontManager.getRunescapeBoldFont());
 		}
-		
+
 		panelComponent.getChildren().clear();
 		panelComponent.setPreferredSize(new Dimension(28, 0));
 		panelComponent.setWrapping(2);

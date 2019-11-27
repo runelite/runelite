@@ -71,10 +71,10 @@ public class JShadowedLabel extends JLabel
 	{
 		// Set font rendering properties like the OS's font rendering
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
+		Map desktopHints = (Map) (tk.getDesktopProperty("awt.font.desktophints"));
 		if (desktopHints != null)
 		{
-			((Graphics2D)g).addRenderingHints(desktopHints);
+			((Graphics2D) g).addRenderingHints(desktopHints);
 		}
 		super.paint(g);
 	}

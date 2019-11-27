@@ -40,7 +40,7 @@ import net.runelite.client.ui.RuneLiteSplashScreen;
 @Slf4j
 public class ClientLoader implements Supplier<Applet>
 {
-	private ClientUpdateCheckMode updateCheckMode;
+	private final ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
@@ -69,7 +69,9 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			RuneLiteSplashScreen.stage(.2, "Fetching applet viewer config");
 
-			final RSConfig config = ClientConfigLoader.fetch().blockingGet();
+			final RSConfig config = ClientConfigLoader.fetch()
+				.retry(50)
+				.blockingGet();
 
 			switch (updateCheckMode)
 			{
@@ -102,7 +104,7 @@ public class ClientLoader implements Supplier<Applet>
 	}
 
 	private static Applet loadRLPlus(final RSConfig config)
-	throws ClassNotFoundException, InstantiationException, IllegalAccessException
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
 		RuneLiteSplashScreen.stage(.465, "Starting Open Old School RuneScape");
 
@@ -136,7 +138,7 @@ public class ClientLoader implements Supplier<Applet>
 	}
 
 	private static Applet loadVanilla(final RSConfig config)
-	throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+		throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
 		RuneLiteSplashScreen.stage(.465, "Starting Vanilla Old School RuneScape");
 
@@ -153,7 +155,7 @@ public class ClientLoader implements Supplier<Applet>
 	}
 
 	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass)
-	throws IllegalAccessException, InstantiationException
+		throws IllegalAccessException, InstantiationException
 	{
 		final Applet rs = (Applet) clientClass.newInstance();
 		rs.setStub(new RSAppletStub(config));

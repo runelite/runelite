@@ -220,9 +220,7 @@ public class NpcSceneOverlay extends Overlay
 				final Color squareColor = color;
 
 				getSquare(wp, size).forEach(square ->
-				{
-					drawTile(graphics, square, squareColor, 1, 255, 50);
-				});
+					drawTile(graphics, square, squareColor, 1, 255, 50));
 				break;
 		}
 

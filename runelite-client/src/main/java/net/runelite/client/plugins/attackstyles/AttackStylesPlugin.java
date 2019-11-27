@@ -70,7 +70,7 @@ public class AttackStylesPlugin extends Plugin
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@Nullable
 	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
@@ -112,7 +112,7 @@ public class AttackStylesPlugin extends Plugin
 	boolean removeWarnedStyles;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 

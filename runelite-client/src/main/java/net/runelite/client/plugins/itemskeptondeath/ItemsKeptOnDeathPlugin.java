@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +82,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+).*");
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@VisibleForTesting
 	static class DeathItems
 	{
@@ -125,16 +126,6 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	boolean protectingItem;
 	@VisibleForTesting
 	int wildyLevel;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
 
 	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
@@ -356,9 +347,9 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
 				&& !isTradeable(itemManager.getItemDefinition(id))
 				&& (wildyLevel <= 0
-					|| LockedItem.getBaseIdFromLockedId(id) != null
-					|| (wildyLevel <= DEEP_WILDY && ItemReclaimCost.of(id) != null))
-				)
+				|| LockedItem.getBaseIdFromLockedId(id) != null
+				|| (wildyLevel <= DEEP_WILDY && ItemReclaimCost.of(id) != null))
+			)
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}

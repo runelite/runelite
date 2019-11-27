@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.freezetimers;
 
 import java.awt.Color;
+import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -42,7 +43,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ImageUtil;
-import static java.awt.Color.WHITE;
 
 @Singleton
 public class FreezeTimersOverlay extends Overlay
@@ -264,7 +264,7 @@ public class FreezeTimersOverlay extends Overlay
 		g.setColor(WHITE);
 		final int xOffset = plugin.getOffset();
 		renderActorTextAndImage(g, actor, text, Color.WHITE, image, yOffset,
-				xOffset);
+			xOffset);
 	}
 
 	private void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)

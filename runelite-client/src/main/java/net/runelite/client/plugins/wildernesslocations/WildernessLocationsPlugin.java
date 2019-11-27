@@ -50,7 +50,6 @@ import net.runelite.client.util.HotkeyListener;
 @Singleton
 public class WildernessLocationsPlugin extends Plugin
 {
-
 	@Inject
 	private Client client;
 
@@ -60,10 +59,10 @@ public class WildernessLocationsPlugin extends Plugin
 	@Inject
 	private WildernessLocationsOverlay overlay = new WildernessLocationsOverlay(this);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean renderLocation;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private String locationString = "";
 
 	@Inject
@@ -95,13 +94,13 @@ public class WildernessLocationsPlugin extends Plugin
 	private boolean drawOverlay;
 	private boolean pvpWorld;
 	private Keybind keybind;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean worldMapNames;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Color mapOverlayColor;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean outlineLocations;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean worldMapOverlay;
 
 
@@ -112,7 +111,7 @@ public class WildernessLocationsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		updateConfig();
@@ -145,7 +144,7 @@ public class WildernessLocationsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(wildernessLocationsMapOverlay);

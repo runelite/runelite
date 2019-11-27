@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ColorScheme;
@@ -39,7 +40,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class TimeablePanel<T> extends JPanel
 {
 	private final T timeable;

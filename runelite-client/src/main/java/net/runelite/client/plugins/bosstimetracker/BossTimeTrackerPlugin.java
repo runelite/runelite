@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -76,18 +77,13 @@ public class BossTimeTrackerPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private BossTimeTracker timer;
 
 	private Instant startTime;
 	private Instant lastTime;
 	private Boolean started = false;
 	private boolean loggingIn;
-
-	@Override
-	public void startUp()
-	{
-	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
@@ -238,14 +234,14 @@ public class BossTimeTrackerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		removeTimer();
 		resetConfig();
 		resetVars();
 	}
 
-private void loadConfig()
+	private void loadConfig()
 	{
 		startTime = configManager.getConfiguration(CONFIG_GROUP, CONFIG_TIME, Instant.class);
 		started = configManager.getConfiguration(CONFIG_GROUP, CONFIG_STARTED, Boolean.class);

@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.chattranslation;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 // TODO: Doesn't Locale pretty much do this as well?
@@ -12,7 +13,7 @@ public enum Languages
 	FRENCH("French", "fr"),
 	GERMAN("German", "de");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 	private final String shortName;
 

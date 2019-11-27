@@ -95,6 +95,12 @@ public class ClanChatPlugin extends Plugin
 	private static final String RECENT_TITLE = "Recent CCs";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
+	private static final CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
+	/**
+	 * queue of temporary messages added to the client
+	 */
+	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
+	private final Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -115,22 +121,8 @@ public class ClanChatPlugin extends Plugin
 	private ClientThread clientThread;
 
 	private List<String> chats = new ArrayList<>();
-
-	@SuppressWarnings("unchecked")
-	public static CopyOnWriteArrayList<Player> getClanMembers()
-	{
-		return (CopyOnWriteArrayList<Player>) clanMembers.clone();
-	}
-
-	private static final CopyOnWriteArrayList<Player> clanMembers = new CopyOnWriteArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
-	/**
-	 * queue of temporary messages added to the client
-	 */
-	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
-	private final Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
-
 	private boolean clanChatIcons;
 	private boolean recentChats;
 	private boolean showClanCounter;
@@ -141,6 +133,12 @@ public class ClanChatPlugin extends Plugin
 	private boolean publicChatIcons;
 	private boolean clanTabChat;
 	private String clanname;
+
+	@SuppressWarnings("unchecked")
+	public static CopyOnWriteArrayList<Player> getClanMembers()
+	{
+		return (CopyOnWriteArrayList<Player>) clanMembers.clone();
+	}
 
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)

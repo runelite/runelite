@@ -238,7 +238,7 @@ public class RuneLite
 
 				Authenticator.setDefault(new Authenticator()
 				{
-					private PasswordAuthentication auth = new PasswordAuthentication(user, pass);
+					private final PasswordAuthentication auth = new PasswordAuthentication(user, pass);
 
 					protected PasswordAuthentication getPasswordAuthentication()
 					{
@@ -308,7 +308,7 @@ public class RuneLite
 		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
 	}
 
-	public void start() throws Exception
+	private void start() throws Exception
 	{
 		// Load RuneLite or Vanilla client
 		final boolean isOutdated = client == null;

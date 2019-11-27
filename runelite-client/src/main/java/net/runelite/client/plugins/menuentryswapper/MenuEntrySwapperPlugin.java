@@ -34,14 +34,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -158,28 +156,31 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private MenuEntrySwapperConfig config;
+
 	@Inject
 	private PluginManager pluginManager;
+
 	@Inject
 	private MenuManager menuManager;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private EventBus eventBus;
+
 	@Inject
 	private PvpToolsPlugin pvpTools;
+
 	@Inject
 	private PvpToolsConfig pvpToolsConfig;
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	@Inject
-	private ConfigManager configManager;
+
 	private boolean buildingMode;
 	private boolean inTobRaid = false;
 	private boolean inCoxRaid = false;
@@ -316,7 +317,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		this.lastDes = JewelleryBoxDestination.withOption(config.lastDes());
 
-		migrateConfig();
 		updateConfig();
 		if (config.lastJewel())
 		{
@@ -2035,90 +2035,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			removedObjects = null;
 		}
-	}
-
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	private static boolean oldParse(String value)
-	{
-		try
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : value.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
-			return true;
-		}
-		catch (IllegalArgumentException ex)
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	private void migrateConfig()
-	{
-		final String customSwaps = config.customSwaps();
-
-		if (!CustomSwapParse.parse(customSwaps) && oldParse(customSwaps))
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : customSwaps.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			final Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
-
-			sb.setLength(0);
-
-			for (Map.Entry<String, String> entry : split.entrySet())
-			{
-				String val = entry.getValue();
-				if (!val.contains(","))
-				{
-					continue;
-				}
-
-				sb.append(entry.getValue()).append(":0\n");
-			}
-
-			configManager.setConfiguration("menuentryswapper", "customSwaps", sb.toString());
-		}
-
-		// Ugly band-aid i'm sorry
-		configManager.setConfiguration("menuentryswapper", "customSwaps",
-			Arrays.stream(config.customSwaps()
-				.split("\n"))
-				.distinct()
-				.filter(swap -> !"walk here"
-					.equals(swap.
-						split(":")[0]
-						.trim()
-						.toLowerCase()))
-				.filter(swap -> !"cancel"
-					.equals(swap
-						.split(":")[0]
-						.trim()
-						.toLowerCase()))
-				.collect(Collectors.joining("\n"))
-		);
 	}
 
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)

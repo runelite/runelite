@@ -65,7 +65,7 @@ public class SpawnTimerPlugin extends Plugin
 	private Color getHighlightColor;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		this.getNpcToHighlight = config.getNpcToHighlight();
@@ -77,7 +77,7 @@ public class SpawnTimerPlugin extends Plugin
 
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		ticks.clear();
 		highlightedNpcs.clear();

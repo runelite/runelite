@@ -34,6 +34,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Wrapper for ${@link ScheduledExecutorService} that will log all uncaught exceptions as warning to console
@@ -53,26 +54,29 @@ public class ExecutorServiceExceptionLogger implements ScheduledExecutorService
 		return CallableExceptionLogger.wrap(command);
 	}
 
+	@NotNull
 	@Override
-	public <T> Future<T> submit(Callable<T> task)
+	public <T> Future<T> submit(@NotNull Callable<T> task)
 	{
 		return service.submit(monitor(task));
 	}
 
+	@NotNull
 	@Override
-	public <T> Future<T> submit(Runnable task, T result)
+	public <T> Future<T> submit(@NotNull Runnable task, T result)
 	{
 		return service.submit(monitor(task), result);
 	}
 
+	@NotNull
 	@Override
-	public Future<?> submit(Runnable task)
+	public Future<?> submit(@NotNull Runnable task)
 	{
 		return service.submit(monitor(task));
 	}
 
 	@Override
-	public void execute(Runnable command)
+	public void execute(@NotNull Runnable command)
 	{
 		service.execute(monitor(command));
 	}
@@ -85,6 +89,7 @@ public class ExecutorServiceExceptionLogger implements ScheduledExecutorService
 		service.shutdown();
 	}
 
+	@NotNull
 	@Override
 	public List<Runnable> shutdownNow()
 	{
@@ -104,55 +109,62 @@ public class ExecutorServiceExceptionLogger implements ScheduledExecutorService
 	}
 
 	@Override
-	public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
+	public boolean awaitTermination(long timeout, @NotNull TimeUnit unit) throws InterruptedException
 	{
 		return service.awaitTermination(timeout, unit);
 	}
 
+	@NotNull
 	@Override
-	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException
+	public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException
 	{
 		return service.invokeAll(tasks);
 	}
 
+	@NotNull
 	@Override
-	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException
+	public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit) throws InterruptedException
 	{
 		return service.invokeAll(tasks, timeout, unit);
 	}
 
+	@NotNull
 	@Override
-	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException
+	public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException
 	{
 		return service.invokeAny(tasks);
 	}
 
 	@Override
-	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
+	public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
 	{
 		return service.invokeAny(tasks, timeout, unit);
 	}
 
+	@NotNull
 	@Override
-	public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit)
+	public ScheduledFuture<?> schedule(@NotNull Runnable command, long delay, @NotNull TimeUnit unit)
 	{
 		return service.schedule(command, delay, unit);
 	}
 
+	@NotNull
 	@Override
-	public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit)
+	public <V> ScheduledFuture<V> schedule(@NotNull Callable<V> callable, long delay, @NotNull TimeUnit unit)
 	{
 		return service.schedule(callable, delay, unit);
 	}
 
+	@NotNull
 	@Override
-	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)
+	public ScheduledFuture<?> scheduleAtFixedRate(@NotNull Runnable command, long initialDelay, long period, @NotNull TimeUnit unit)
 	{
 		return service.scheduleAtFixedRate(command, initialDelay, period, unit);
 	}
 
+	@NotNull
 	@Override
-	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit)
+	public ScheduledFuture<?> scheduleWithFixedDelay(@NotNull Runnable command, long initialDelay, long delay, @NotNull TimeUnit unit)
 	{
 		return service.scheduleWithFixedDelay(command, initialDelay, delay, unit);
 	}

@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
@@ -44,7 +45,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.QuantityFormatter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 class ItemPanel extends JPanel
 {
 	private static final GridBagLayout LAYOUT = new GridBagLayout();

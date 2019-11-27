@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Constants;
 
@@ -127,10 +128,7 @@ public class MapLocations
 
 	private static void initializeWithEmptyLists(List<Shape>[] array)
 	{
-		for (int i = 0; i < array.length; i++)
-		{
-			array[i] = new ArrayList<>();
-		}
+		Arrays.fill(array, new ArrayList<>());
 	}
 
 	static

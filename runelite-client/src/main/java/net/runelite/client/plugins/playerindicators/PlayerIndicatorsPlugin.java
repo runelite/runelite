@@ -87,27 +87,35 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
 	private final ExecutorService executorService = Executors.newFixedThreadPool(100);
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsConfig config;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private ClanManager clanManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
+
 	private ClanMemberRank callerRank;
 	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
 	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
@@ -137,7 +145,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		resultCache.clear();
@@ -147,7 +155,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);

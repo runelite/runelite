@@ -79,34 +79,49 @@ public class CannonPlugin extends Plugin
 	);
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
+
 	@Getter(AccessLevel.PACKAGE)
 	private int cballsLeft;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean cannonPlaced;
+
 	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint cannonPosition;
+
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject cannon;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> spotPoints = new ArrayList<>();
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private CannonOverlay cannonOverlay;
+
 	@Inject
 	private CannonSpotOverlay cannonSpotOverlay;
+
 	@Inject
 	private CannonConfig config;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	private boolean lock;
 	private boolean showEmptyCannonNotification;
 	private boolean showInfobox;
@@ -126,7 +141,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -136,7 +151,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
@@ -271,7 +286,7 @@ public class CannonPlugin extends Plugin
 				// counter doesn't decrease if the player has been too far away
 				// from the cannon due to the projectiels not being in memory,
 				// so our counter can be higher than it is supposed to be.
-				int amt = Integer.valueOf(m.group());
+				int amt = Integer.parseInt(m.group());
 				if (cballsLeft + amt >= MAX_CBALLS)
 				{
 					skipProjectileCheckThisTick = true;

@@ -137,14 +137,14 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		clientThread.invokeLater(this::resetGEInventory);
@@ -376,7 +376,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	private static Widget createText(Widget parent, String text, int fontId, int textColor,
-		int x, int y, int width, int height)
+									int x, int y, int width, int height)
 	{
 		final Widget widget = parent.createChild(-1, WidgetType.TEXT);
 		widget.setText(text);

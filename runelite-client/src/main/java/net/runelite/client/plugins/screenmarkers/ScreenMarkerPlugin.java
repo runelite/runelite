@@ -70,7 +70,7 @@ public class ScreenMarkerPlugin extends Plugin
 	private static final String DEFAULT_MARKER_NAME = "Marker";
 	private static final Dimension DEFAULT_SIZE = new Dimension(2, 2);
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
 
 	@Inject
@@ -88,7 +88,7 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	@Inject
 	private ColorPickerManager colorPickerManager;
 
@@ -99,12 +99,12 @@ public class ScreenMarkerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private ScreenMarker currentMarker;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean creatingScreenMarker = false;
 	private Point startLocation = null;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
@@ -128,7 +128,7 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);

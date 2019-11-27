@@ -82,7 +82,7 @@ public class StatusBarsPlugin extends Plugin
 	@Inject
 	private SpecialAttackRenderer specialAttackRenderer;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<BarMode, BarRenderer> barRenderers = Maps.newEnumMap(BarMode.class);
 
 	@Inject
@@ -108,7 +108,7 @@ public class StatusBarsPlugin extends Plugin
 	private int hideStatusBarDelay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -162,13 +162,13 @@ public class StatusBarsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		barRenderers.clear();
 	}
 
-@Provides
+	@Provides
 	StatusBarsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(StatusBarsConfig.class);

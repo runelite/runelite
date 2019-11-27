@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.bronzeman;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,14 +12,14 @@ import lombok.Setter;
 public class ItemUnlock
 {
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int itemId;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private long initTime;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int locationY;
 
 	ItemUnlock(int itemId)
