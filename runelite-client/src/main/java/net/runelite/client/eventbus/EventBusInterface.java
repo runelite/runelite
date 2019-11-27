@@ -10,6 +10,8 @@ public interface EventBusInterface
 
 	<T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil);
 
+	<T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil, EventScheduler subscribe, EventScheduler observe);
+
 	void unregister(@NonNull Object lifecycle);
 
 	<T extends Event> void post(Class<? extends T> eventClass, @NonNull T event);
