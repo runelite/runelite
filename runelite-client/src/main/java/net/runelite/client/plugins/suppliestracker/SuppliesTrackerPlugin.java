@@ -114,8 +114,8 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final Random random = new Random();
 
-	private static final int[] THROWING_IDS = new int[] {BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP, DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
-	private static final int[] RUNE_IDS = new int[] {AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
+	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP, DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
+	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
 	private static final Map<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
@@ -131,7 +131,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private int mainHand = 0;
 	private SuppliesTrackerPanel panel;
 	private NavigationButton navButton;
-	private final String[] RAIDS_CONSUMABLES = new String[] {"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
+	private final String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
 
 	private int attackStyleVarbit = -1;
 	private int ticks = 0;
@@ -150,7 +150,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private Client client;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		panel = new SuppliesTrackerPanel(itemManager, this);
@@ -174,7 +174,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-@Provides
+	@Provides
 	SuppliesTrackerConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(SuppliesTrackerConfig.class);
@@ -289,6 +289,7 @@ public class SuppliesTrackerPlugin extends Plugin
 					if (oldItem.getId() == runeId)
 					{
 						isRune = true;
+						break;
 					}
 				}
 				if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))

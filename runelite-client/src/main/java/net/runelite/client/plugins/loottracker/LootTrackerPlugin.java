@@ -79,11 +79,10 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.PlayerDeath;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.util.Text;
@@ -210,24 +209,34 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private ClientToolbar clientToolbar;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
 	@Inject
 	private SpriteManager spriteManager;
+
 	@Inject
 	private LootTrackerConfig config;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private SessionManager sessionManager;
+
 	@Inject
 	private ScheduledExecutorService executor;
+
 	@Inject
 	private LootRecordWriter writer;
+
 	@Inject
 	private DatabaseManager databaseManager;
+
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
@@ -240,9 +249,9 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerClient lootTrackerClient;
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 
-	private Map<String, Integer> killCountMap = new HashMap<>();
+	private final Map<String, Integer> killCountMap = new HashMap<>();
 	private boolean gotPet = false;
-	private Map<String, UUID> userUuidMap = new HashMap<>();
+	private final Map<String, UUID> userUuidMap = new HashMap<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -356,7 +365,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());

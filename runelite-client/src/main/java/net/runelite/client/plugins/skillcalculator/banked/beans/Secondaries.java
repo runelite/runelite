@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked.beans;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum Secondaries
 {
 	/**

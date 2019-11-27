@@ -23,6 +23,7 @@ class Translator
 	{
 		incomingUrlBase = BASE_URL + SOURCE + CENT_URL + lang.toShortString() + LAST_URL;
 	}
+
 	void setOutLang(Languages lang)
 	{
 		outgoingUrlBase = BASE_URL + SOURCE + CENT_URL + lang.toShortString() + LAST_URL;
@@ -40,7 +41,7 @@ class Translator
 		return translate(new URL(url));
 	}
 
-	public String translate(URL url) throws IOException
+	private String translate(URL url) throws IOException
 	{
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -56,10 +57,6 @@ class Translator
 			}
 
 			return parseResult(response.toString());
-		}
-		catch (IOException e)
-		{
-			throw e;
 		}
 	}
 

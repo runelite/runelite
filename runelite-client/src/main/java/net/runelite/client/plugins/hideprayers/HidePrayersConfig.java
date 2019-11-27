@@ -76,7 +76,7 @@ public interface HidePrayersConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		position = 0,
 		keyName = "showindividualprayers",
@@ -538,7 +538,7 @@ public interface HidePrayersConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		position = 3,
 		keyName = "barrows",

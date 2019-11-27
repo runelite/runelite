@@ -99,7 +99,7 @@ public class NpcStatusPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		this.getRange = config.getRange();
@@ -107,7 +107,7 @@ public class NpcStatusPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(npcStatusOverlay);
 		memorizedNPCs.clear();

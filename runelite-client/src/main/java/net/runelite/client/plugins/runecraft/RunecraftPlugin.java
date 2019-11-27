@@ -100,22 +100,31 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
 	@Inject
 	private AbyssMinimapOverlay abyssMinimapOverlay;
+
 	@Inject
 	private RunecraftOverlay runecraftOverlay;
+
 	@Inject
 	private PouchOverlay pouchOverlay;
+
 	@Inject
 	private RunecraftConfig config;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private MenuManager menuManager;
+
 	@Inject
 	private EventBus eventBus;
 
@@ -145,7 +154,7 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		overlayManager.add(abyssOverlay);
@@ -155,7 +164,7 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		abyssObjects.clear();
 		darkMage = null;
@@ -166,7 +175,7 @@ public class RunecraftPlugin extends Plugin
 		removeSwaps();
 	}
 
-private void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		final int before = pouchVar;
 		pouchVar = client.getVar(VarPlayer.POUCH_STATUS);

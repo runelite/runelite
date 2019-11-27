@@ -25,13 +25,14 @@
 package net.runelite.client.plugins.timetracking.clocks;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor
 @AllArgsConstructor
 abstract class Clock

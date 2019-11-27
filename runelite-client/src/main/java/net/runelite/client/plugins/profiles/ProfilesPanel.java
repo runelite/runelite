@@ -436,7 +436,7 @@ class ProfilesPanel extends PluginPanel
 			getProfileData() + data + "\n");
 	}
 
-	void removeProfile(String data) throws InvalidKeySpecException,  NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
+	void removeProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		setProfileData(
 			getProfileData().replaceAll(data + "\\n", ""));
@@ -524,7 +524,7 @@ class ProfilesPanel extends PluginPanel
 		return cipher.doFinal(text.getBytes());
 	}
 
-	private static String decryptText(byte[] enc, SecretKey aesKey)  throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
+	private static String decryptText(byte[] enc, SecretKey aesKey) throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		Cipher cipher = Cipher.getInstance("AES");
 		SecretKeySpec newKey = new SecretKeySpec(aesKey.getEncoded(), "AES");

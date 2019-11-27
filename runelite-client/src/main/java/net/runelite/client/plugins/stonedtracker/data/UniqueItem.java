@@ -26,6 +26,7 @@ package net.runelite.client.plugins.stonedtracker.data;
 
 import com.google.common.collect.ImmutableMultimap;
 import java.util.Collection;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -34,7 +35,7 @@ import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum UniqueItem
 {
 	// "Uniques" which are actually dropped by multiple bosses

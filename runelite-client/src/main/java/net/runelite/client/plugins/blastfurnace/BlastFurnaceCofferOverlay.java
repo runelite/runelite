@@ -38,8 +38,8 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.QuantityFormatter;
 
 @Singleton

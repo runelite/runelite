@@ -50,16 +50,22 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class GrotesqueGuardiansPlugin extends Plugin
 {
 	private static final int GARGOYLES_REGION = 6727;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private GrotesqueGuardiansPrayerOverlay prayerOverlay;
+
 	@Nullable
 	private DuskAttack prayAgainst;
+
 	@Nullable
 	private NPC dusk;
+
 	private boolean inGargs;
 	private boolean needingToRun;
 
@@ -73,7 +79,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	private GrotesqueGuardiansOverlay overlay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		overlayManager.add(overlay);
@@ -83,7 +89,7 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(prayerOverlay);

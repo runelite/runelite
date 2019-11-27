@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -37,7 +38,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final ImmutableMap<WorldPoint, String> CLUES = new ImmutableMap.Builder<WorldPoint, String>()
@@ -206,7 +207,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	@Nullable
 	private final WorldPoint mirrorLocation;
 
-	public CoordinateClue(String text, WorldPoint location, WorldPoint mirrorLocation)
+	public CoordinateClue(String text, WorldPoint location, @Nullable WorldPoint mirrorLocation)
 	{
 		this.text = text;
 		this.location = location;

@@ -73,6 +73,11 @@ public class BoostsPlugin extends Plugin
 		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
 		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER);
 
+	@Getter
+	private final Set<Skill> shownSkills = new LinkedHashSet<>();
+	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+	private final List<String> boostedSkillsChanged = new ArrayList<>();
+
 	@Inject
 	private Notifier notifier;
 
@@ -88,26 +93,21 @@ public class BoostsPlugin extends Plugin
 	@Inject
 	private BoostsOverlay boostsOverlay;
 
-	//made this a LinkedHashSet so the order stays consistent for my OCD
-	@Getter
-	private final Set<Skill> shownSkills = new LinkedHashSet<>();
 	@Inject
 	private BoostsConfig config;
 
 	@Inject
 	private SkillIconManager skillIconManager;
+
 	@Inject
 	private CombatIconsOverlay combatIconsOverlay;
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
-	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
 	private int lastChangeDown = -1;
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
 	private long lastTickMillis;
-	private final List<String> boostedSkillsChanged = new ArrayList<>();
-
 	private BoostsConfig.DisplayBoosts displayBoosts;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean useRelativeBoost;
@@ -130,7 +130,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -154,7 +154,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(boostsOverlay);
 		overlayManager.remove(combatIconsOverlay);

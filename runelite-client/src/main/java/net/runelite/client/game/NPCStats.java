@@ -74,6 +74,7 @@ public class NPCStats
 
 	/**
 	 * Based off the formula found here: http://services.runescape.com/m=forum/c=PLuJ4cy6gtA/forums.ws?317,318,712,65587452,209,337584542#209
+	 *
 	 * @return bonus XP modifier
 	 */
 	public double calculateXpModifier()

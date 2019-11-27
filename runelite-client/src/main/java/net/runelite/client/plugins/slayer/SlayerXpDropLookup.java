@@ -89,6 +89,7 @@ class SlayerXpDropLookup
 			if (xpCombatLevel.get(i) > 0)
 			{
 				givesSlayerXp = true;
+				break;
 			}
 		}
 		if (!givesSlayerXp)
@@ -102,6 +103,7 @@ class SlayerXpDropLookup
 				&& xpCombatLevel.get(i) > 0)
 			{
 				foundCombatLevel = true;
+				break;
 			}
 		}
 		if (foundCombatLevel)

@@ -32,9 +32,9 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -46,8 +46,8 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuOpcode;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -178,7 +178,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		// Set font rendering properties like the OS's font rendering
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
+		Map desktopHints = (Map) (tk.getDesktopProperty("awt.font.desktophints"));
 		if (desktopHints != null)
 		{
 			graphics.addRenderingHints(desktopHints);

@@ -444,7 +444,7 @@ public class NyloPredictor
 		EAST
 	}
 
-	public static class Nylocas
+	static class Nylocas
 	{
 
 		private final NylocasType type;

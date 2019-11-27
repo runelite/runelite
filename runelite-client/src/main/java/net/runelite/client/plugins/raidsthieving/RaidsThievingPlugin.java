@@ -71,12 +71,16 @@ public class RaidsThievingPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private ChestOverlay overlay;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private RaidsThievingConfig config;
 
@@ -113,13 +117,13 @@ public class RaidsThievingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		chests.clear();
 
-		}
+	}
 
 	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)

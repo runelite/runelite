@@ -42,8 +42,8 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -430,7 +430,7 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testTaskLookupInvalid() throws IOException
+	public void testTaskLookupInvalid()
 	{
 		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
 		task.setTask("task<");

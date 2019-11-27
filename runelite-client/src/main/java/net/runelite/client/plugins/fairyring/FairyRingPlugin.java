@@ -71,9 +71,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Singleton
 public class FairyRingPlugin extends Plugin
 {
-	private static final String[] leftDial = new String[] {"A", "D", "C", "B"};
-	private static final String[] middleDial = new String[] {"I", "L", "K", "J"};
-	private static final String[] rightDial = new String[] {"P", "S", "R", "Q"};
+	private static final String[] leftDial = new String[]{"A", "D", "C", "B"};
+	private static final String[] middleDial = new String[]{"I", "L", "K", "J"};
+	private static final String[] rightDial = new String[]{"P", "S", "R", "Q"};
 
 	private static final int ENTRY_PADDING = 3;
 
@@ -112,15 +112,10 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.autoOpen = config.autoOpen();
 	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)

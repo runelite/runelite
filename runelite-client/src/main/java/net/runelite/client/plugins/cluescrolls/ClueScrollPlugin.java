@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -122,24 +123,24 @@ public class ClueScrollPlugin extends Plugin
 		13150, 9011,
 		13151, 9012
 	};
-
-	@Getter
-	private ClueScroll clue;
-
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<NPC> npcsToMark = new ArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<TileObject> objectsToMark = new ArrayList<>();
+	private final TextComponent textComponent = new TextComponent();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
+	private ClueScroll clue;
+
+	@Getter(AccessLevel.PUBLIC)
 	private Item[] equippedItems;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private Item[] inventoryItems;
 
 	@Inject
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private Client client;
 
 	@Inject
@@ -170,10 +171,32 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
 	private boolean worldMapPointsSet = false;
-
-	private final TextComponent textComponent = new TextComponent();
-
 	private boolean displayHintArrows;
+
+	/**
+	 * Translate a coordinate either between overworld and real, or real and overworld
+	 *
+	 * @param worldPoint
+	 * @param toOverworld whether to convert to overworld coordinates, or to real coordinates
+	 * @return
+	 */
+	public static WorldPoint getMirrorPoint(WorldPoint worldPoint, boolean toOverworld)
+	{
+		int region = worldPoint.getRegionID();
+		for (int i = 0; i < REGION_MIRRORS.length; i += 2)
+		{
+			int real = REGION_MIRRORS[i];
+			int overworld = REGION_MIRRORS[i + 1];
+
+			// Test against what we are converting from
+			if (region == (toOverworld ? real : overworld))
+			{
+				return WorldPoint.fromRegion(toOverworld ? overworld : real,
+					worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane());
+			}
+		}
+		return worldPoint;
+	}
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
@@ -188,7 +211,7 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		this.displayHintArrows = config.displayHintArrows();
@@ -199,7 +222,7 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
@@ -833,30 +856,5 @@ public class ClueScrollPlugin extends Plugin
 			list.getId(),
 			newScroll
 		);
-	}
-
-	/**
-	 * Translate a coordinate either between overworld and real, or real and overworld
-	 *
-	 * @param worldPoint
-	 * @param toOverworld whether to convert to overworld coordinates, or to real coordinates
-	 * @return
-	 */
-	public static WorldPoint getMirrorPoint(WorldPoint worldPoint, boolean toOverworld)
-	{
-		int region = worldPoint.getRegionID();
-		for (int i = 0; i < REGION_MIRRORS.length; i += 2)
-		{
-			int real = REGION_MIRRORS[i];
-			int overworld = REGION_MIRRORS[i + 1];
-
-			// Test against what we are converting from
-			if (region == (toOverworld ? real : overworld))
-			{
-				return WorldPoint.fromRegion(toOverworld ? overworld : real,
-					worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane());
-			}
-		}
-		return worldPoint;
 	}
 }

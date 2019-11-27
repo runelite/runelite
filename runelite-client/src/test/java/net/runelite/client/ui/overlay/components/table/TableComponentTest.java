@@ -25,14 +25,13 @@
 package net.runelite.client.ui.overlay.components.table;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import org.junit.After;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
 
 
 public class TableComponentTest

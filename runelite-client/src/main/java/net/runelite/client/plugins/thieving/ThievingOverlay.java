@@ -111,6 +111,11 @@ public class ThievingOverlay extends Overlay
 
 	private boolean isThieving()
 	{
+		if (client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
 		switch (client.getLocalPlayer().getAnimation())
 		{
 			case THIEVING_STALL:
@@ -123,12 +128,11 @@ public class ThievingOverlay extends Overlay
 
 	private boolean isStunned()
 	{
-		switch (client.getLocalPlayer().getAnimation())
+		if (client.getLocalPlayer() == null)
 		{
-			case BLOCK_UNARMED:
-				return true;
-			default:
-				return false;
+			return false;
 		}
+
+		return client.getLocalPlayer().getAnimation() == BLOCK_UNARMED;
 	}
 }

@@ -345,8 +345,6 @@ public class ItemVariationMappingTest
 		ItemVariationMapping.load();
 
 		ITEMS_MAP.forEach((key, value) ->
-		{
-			assertEquals(value, (Integer) ItemVariationMapping.map(key));
-		});
+			assertEquals(value, (Integer) ItemVariationMapping.map(key)));
 	}
 }

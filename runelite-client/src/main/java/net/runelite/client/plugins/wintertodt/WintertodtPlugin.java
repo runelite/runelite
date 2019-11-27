@@ -118,7 +118,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.notifyCondition = config.notifyCondition();
 		this.damageNotificationColor = config.damageNotificationColor();

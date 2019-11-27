@@ -25,6 +25,11 @@
 package net.runelite.client.plugins.runecraft;
 
 import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.Perspective;
@@ -33,11 +38,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 class AbyssMinimapOverlay extends Overlay
 {

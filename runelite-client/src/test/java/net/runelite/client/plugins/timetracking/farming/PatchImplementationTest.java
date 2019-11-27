@@ -26,10 +26,14 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.notNullValue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import static org.hamcrest.Matchers.*;
 
 public class PatchImplementationTest
 {

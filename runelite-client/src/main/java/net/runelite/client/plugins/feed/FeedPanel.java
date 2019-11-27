@@ -65,6 +65,7 @@ import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -163,13 +164,13 @@ class FeedPanel extends PluginPanel
 					RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 					{
 						@Override
-						public void onFailure(Call call, IOException e)
+						public void onFailure(@NotNull Call call, @NotNull IOException e)
 						{
 							log.warn(null, e);
 						}
 
 						@Override
-						public void onResponse(Call call, Response response) throws IOException
+						public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 						{
 							try (ResponseBody responseBody = response.body())
 							{

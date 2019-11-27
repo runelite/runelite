@@ -35,6 +35,7 @@ import net.runelite.client.plugins.inventorysetups.InventorySetup;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
+
 @Singleton
 public class InventorySetupInventoryPanel extends InventorySetupContainerPanel
 {

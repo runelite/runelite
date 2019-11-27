@@ -84,7 +84,7 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		overlayManager.add(overlay);
@@ -95,7 +95,7 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlay.setShowMap(false);
 		overlayManager.remove(overlay);

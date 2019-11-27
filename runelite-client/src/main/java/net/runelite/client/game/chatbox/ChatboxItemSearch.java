@@ -59,7 +59,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final ItemManager itemManager;
 	private final Client client;
 
-	private Map<Integer, ItemDefinition> results = new LinkedHashMap<>();
+	private final Map<Integer, ItemDefinition> results = new LinkedHashMap<>();
 	private String tooltipText;
 	private int index = -1;
 
@@ -68,7 +68,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 
 	@Inject
 	private ChatboxItemSearch(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-		ItemManager itemManager, Client client)
+							ItemManager itemManager, Client client)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
@@ -181,7 +181,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 				{
 					if (onItemSelected != null)
 					{
-						onItemSelected.accept(results.keySet().toArray(new Integer[results.size()])[index]);
+						onItemSelected.accept(results.keySet().toArray(new Integer[0])[index]);
 					}
 
 					chatboxPanelManager.close();

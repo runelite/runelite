@@ -404,7 +404,7 @@ public class GroundMarkerPlugin extends Plugin
 		points.clear();
 	}
 
-private void markTile(LocalPoint localPoint, int group)
+	private void markTile(LocalPoint localPoint, int group)
 	{
 		if (localPoint == null)
 		{

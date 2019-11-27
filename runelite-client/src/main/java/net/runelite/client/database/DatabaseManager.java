@@ -64,7 +64,7 @@ public class DatabaseManager
 		Settings settings = new Settings();
 		settings.setExecuteLogging(false);
 
-		return  DSL.using(connection, SQLDialect.H2, settings);
+		return DSL.using(connection, SQLDialect.H2, settings);
 	}
 
 	public boolean checkTableExists(String table)

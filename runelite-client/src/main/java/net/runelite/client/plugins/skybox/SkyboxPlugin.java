@@ -65,7 +65,7 @@ public class SkyboxPlugin extends Plugin
 		skybox = null;
 	}
 
-private int mapChunk(int cx, int cy, int plane)
+	private int mapChunk(int cx, int cy, int plane)
 	{
 		cx -= client.getBaseX() / 8;
 		cy -= client.getBaseY() / 8;

@@ -1,6 +1,9 @@
 {
   "bonuses": [
-    { "name": "Lumberjack Outfit (+2.5%)", "value": 0.025 }
+    {
+      "name": "Lumberjack Outfit (+2.5%)",
+      "value": 0.025
+    }
   ],
   "actions": [
     {

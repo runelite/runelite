@@ -161,7 +161,7 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(overlayPrayerTab);

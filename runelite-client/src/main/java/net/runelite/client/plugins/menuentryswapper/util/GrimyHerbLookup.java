@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class GrimyHerbLookup
 {
-	private static Map<String, HerbInfo> mapping;
+	private static final Map<String, HerbInfo> mapping;
 
 	static
 	{
@@ -47,7 +47,7 @@ public class GrimyHerbLookup
 		return mapping.keySet().stream().mapToInt(Integer::valueOf).boxed().collect(Collectors.toList());
 	}
 
-	private class HerbInfo
+	private static class HerbInfo
 	{
 		@SerializedName("cleaned")
 		private int cleanedId;

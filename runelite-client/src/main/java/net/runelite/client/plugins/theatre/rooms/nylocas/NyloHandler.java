@@ -238,7 +238,7 @@ public class NyloHandler extends RoomHandler
 
 					toHighlight.add(npc);
 				}
-				catch (Exception ex)
+				catch (Exception ignored)
 				{
 
 				}
@@ -270,7 +270,7 @@ public class NyloHandler extends RoomHandler
 				graphics.setColor(color);
 				graphics.draw(objectClickbox);
 			}
-			catch (Exception ex)
+			catch (Exception ignored)
 			{
 
 			}
@@ -394,7 +394,7 @@ public class NyloHandler extends RoomHandler
 		}
 	}
 
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		final String option = event.getOption().toLowerCase();
 

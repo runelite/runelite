@@ -94,7 +94,7 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
@@ -113,7 +113,7 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
 		if (bankedUiNavigationButton != null)

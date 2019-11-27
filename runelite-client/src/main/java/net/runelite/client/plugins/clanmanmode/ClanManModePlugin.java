@@ -34,6 +34,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class ClanManModePlugin extends Plugin
 {
+	final Map<String, Integer> clan = new HashMap<>();
+	int wildernessLevel;
+	int clanmin;
+	int clanmax;
+	int inwildy;
+	int ticks;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -89,15 +96,8 @@ public class ClanManModePlugin extends Plugin
 		return configManager.getConfig(ClanManModeConfig.class);
 	}
 
-	int wildernessLevel;
-	int clanmin;
-	int clanmax;
-	int inwildy;
-	int ticks;
-	final Map<String, Integer> clan = new HashMap<>();
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -107,7 +107,7 @@ public class ClanManModePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(ClanManModeOverlay);
 		overlayManager.remove(ClanManModeTileOverlay);

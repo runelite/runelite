@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -39,7 +40,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
 	private static final Set<CipherClue> CLUES = ImmutableSet.of(
@@ -140,6 +141,6 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 
 	public String[] getNpcs()
 	{
-		return new String[] {npc};
+		return new String[]{npc};
 	}
 }

@@ -97,14 +97,19 @@ public class PlayerScouter extends Plugin
 	private static final Map<WorldArea, String> WILD_LOCS = WorldLocation.getLOCATION_MAP();
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd h:mm a z");
 	private static final String ICON_URL = "https://www.osrsbox.com/osrsbox-db/items-icons/"; // Add item id + ".png"
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private PlayerScouterConfig config;
+
 	@Inject
 	private EventBus eventBus;
+
 	private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
 	private final Set<PlayerContainer> playerContainer = new HashSet<>();
 	private final Map<String, HiscoreResult> resultCache = new HashMap<>();

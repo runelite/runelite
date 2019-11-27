@@ -139,6 +139,7 @@ public class Hooks implements Callbacks
 	/**
 	 * Get the Graphics2D for the MainBufferProvider image
 	 * This caches the Graphics2D instance so it can be reused
+	 *
 	 * @param mainBufferProvider
 	 * @return
 	 */

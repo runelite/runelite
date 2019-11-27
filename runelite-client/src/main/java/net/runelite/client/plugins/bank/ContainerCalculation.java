@@ -57,8 +57,8 @@ class ContainerCalculation
 			return null;
 		}
 
-		final int newHash =  hashItems(items);
-		
+		final int newHash = hashItems(items);
+
 		if (containerPrices != null && hash == newHash)
 		{
 			return containerPrices;

@@ -36,7 +36,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -50,16 +49,14 @@ public class RoguesDenOverlay extends Overlay
 
 	private final Client client;
 	private final RoguesDenPlugin plugin;
-	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	public RoguesDenOverlay(final Client client, final RoguesDenPlugin plugin, ModelOutlineRenderer modelOutliner)
+	public RoguesDenOverlay(final Client client, final RoguesDenPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.modelOutliner = modelOutliner;
 	}
 
 	@Override

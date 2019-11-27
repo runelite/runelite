@@ -36,6 +36,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
 @Singleton
 public class HerbiboarMinimapOverlay extends Overlay
 {

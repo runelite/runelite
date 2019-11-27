@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableSet;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.MenuOpcode;
@@ -86,10 +87,10 @@ public enum Menus
 	MEDIC_HORN(null, newBaseComparableEntry("medic", "r horn", -1, -1, true, false)),
 	USE_HORN(null, newBaseComparableEntry("use", "r horn", -1, -1, true, false));
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Role role;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final BaseComparableEntry entry;
 
 	private static final ImmutableSet<Menus> ALL = ImmutableSet.copyOf(Menus.values());

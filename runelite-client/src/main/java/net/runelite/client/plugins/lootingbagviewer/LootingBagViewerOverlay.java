@@ -97,6 +97,7 @@ public class LootingBagViewerOverlay extends Overlay
 					if (!items[i].equals(tempItems[i]))
 					{
 						items = tempItems;
+						break;
 					}
 				}
 			}

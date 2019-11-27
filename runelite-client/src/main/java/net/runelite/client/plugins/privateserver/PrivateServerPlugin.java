@@ -56,6 +56,7 @@ public class PrivateServerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
 	@Inject
 	private PrivateServerConfig config;
 
@@ -66,7 +67,7 @@ public class PrivateServerPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		if (!RuneLite.allowPrivateServer)
 		{
@@ -80,10 +81,10 @@ public class PrivateServerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setModulus(null);
-		}
+	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)

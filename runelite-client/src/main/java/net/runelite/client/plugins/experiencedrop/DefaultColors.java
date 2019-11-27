@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.experiencedrop;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -40,6 +41,6 @@ enum DefaultColors
 	ORANGE(new Color(0xFF, 0x98, 0x1F)),
 	PINK(new Color(0xFF, 0xC8, 0xC8));
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Color color;
 }

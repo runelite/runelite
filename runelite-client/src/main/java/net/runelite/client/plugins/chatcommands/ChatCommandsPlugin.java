@@ -148,6 +148,192 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
+	/**
+	 * Returns the ironman status based on the symbol in the name of the player.
+	 *
+	 * @param name player name
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
+	{
+		if (name.contains(IconID.IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.IRONMAN);
+		}
+		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+		}
+		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+		}
+		else
+		{
+			return toEndPoint(AccountType.NORMAL);
+		}
+	}
+
+	/**
+	 * Converts account type to hiscore endpoint
+	 *
+	 * @param accountType account type
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	{
+		switch (accountType)
+		{
+			case IRONMAN:
+				return HiscoreEndpoint.IRONMAN;
+			case ULTIMATE_IRONMAN:
+				return HiscoreEndpoint.ULTIMATE_IRONMAN;
+			case HARDCORE_IRONMAN:
+				return HiscoreEndpoint.HARDCORE_IRONMAN;
+			default:
+				return HiscoreEndpoint.NORMAL;
+		}
+	}
+
+	private static String longBossName(String boss)
+	{
+		switch (boss.toLowerCase())
+		{
+			case "corp":
+				return "Corporeal Beast";
+
+			case "jad":
+				return "TzTok-Jad";
+
+			case "kq":
+				return "Kalphite Queen";
+
+			case "chaos ele":
+				return "Chaos Elemental";
+
+			case "dusk":
+			case "dawn":
+			case "gargs":
+				return "Grotesque Guardians";
+
+			case "crazy arch":
+				return "Crazy Archaeologist";
+
+			case "deranged arch":
+				return "Deranged Archaeologist";
+
+			case "mole":
+				return "Giant Mole";
+
+			case "vetion":
+				return "Vet'ion";
+
+			case "vene":
+				return "Venenatis";
+
+			case "kbd":
+				return "King Black Dragon";
+
+			case "vork":
+				return "Vorkath";
+
+			case "sire":
+				return "Abyssal Sire";
+
+			case "smoke devil":
+			case "thermy":
+				return "Thermonuclear Smoke Devil";
+
+			case "cerb":
+				return "Cerberus";
+
+			case "zuk":
+			case "inferno":
+				return "TzKal-Zuk";
+
+			case "hydra":
+				return "Alchemical Hydra";
+
+			// gwd
+			case "sara":
+			case "saradomin":
+			case "zilyana":
+			case "zily":
+				return "Commander Zilyana";
+			case "zammy":
+			case "zamorak":
+			case "kril":
+			case "kril trutsaroth":
+				return "K'ril Tsutsaroth";
+			case "arma":
+			case "kree":
+			case "kreearra":
+			case "armadyl":
+				return "Kree'arra";
+			case "bando":
+			case "bandos":
+			case "graardor":
+				return "General Graardor";
+
+			// dks
+			case "supreme":
+				return "Dagannoth Supreme";
+			case "rex":
+				return "Dagannoth Rex";
+			case "prime":
+				return "Dagannoth Prime";
+
+			case "wt":
+				return "Wintertodt";
+			case "barrows":
+				return "Barrows Chests";
+			case "herbi":
+				return "Herbiboar";
+
+			// cox
+			case "cox":
+			case "xeric":
+			case "chambers":
+			case "olm":
+			case "raids":
+				return "Chambers of Xeric";
+
+			// cox cm
+			case "cox cm":
+			case "xeric cm":
+			case "chambers cm":
+			case "olm cm":
+			case "raids cm":
+				return "Chambers of Xeric Challenge Mode";
+
+			// tob
+			case "tob":
+			case "theatre":
+			case "verzik":
+			case "verzik vitur":
+			case "raids 2":
+				return "Theatre of Blood";
+
+			// agility course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
+
+			// The Gauntlet
+			case "gaunt":
+			case "gauntlet":
+				return "Gauntlet";
+
+			// Corrupted Gauntlet
+			case "cgaunt":
+			case "cgauntlet":
+				return "Corrupted Gauntlet";
+
+			default:
+				return WordUtils.capitalize(boss);
+		}
+	}
+
 	@Override
 	public void startUp()
 	{
@@ -185,7 +371,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 	}
 
-@Provides
+	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
@@ -721,7 +907,6 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-
 	private void personalBestLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.pb())
@@ -1219,196 +1404,10 @@ public class ChatCommandsPlugin extends Plugin
 		return toEndPoint(client.getAccountType());
 	}
 
-	/**
-	 * Returns the ironman status based on the symbol in the name of the player.
-	 *
-	 * @param name player name
-	 * @return hiscore endpoint
-	 */
-	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
-	{
-		if (name.contains(IconID.IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.IRONMAN);
-		}
-		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
-		}
-		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.HARDCORE_IRONMAN);
-		}
-		else
-		{
-			return toEndPoint(AccountType.NORMAL);
-		}
-	}
-
-	/**
-	 * Converts account type to hiscore endpoint
-	 *
-	 * @param accountType account type
-	 * @return hiscore endpoint
-	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
-	{
-		switch (accountType)
-		{
-			case IRONMAN:
-				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
-				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
-				return HiscoreEndpoint.HARDCORE_IRONMAN;
-			default:
-				return HiscoreEndpoint.NORMAL;
-		}
-	}
-
 	@Value
 	private static class HiscoreLookup
 	{
 		private final String name;
 		private final HiscoreEndpoint endpoint;
-	}
-
-	private static String longBossName(String boss)
-	{
-		switch (boss.toLowerCase())
-		{
-			case "corp":
-				return "Corporeal Beast";
-
-			case "jad":
-				return "TzTok-Jad";
-
-			case "kq":
-				return "Kalphite Queen";
-
-			case "chaos ele":
-				return "Chaos Elemental";
-
-			case "dusk":
-			case "dawn":
-			case "gargs":
-				return "Grotesque Guardians";
-
-			case "crazy arch":
-				return "Crazy Archaeologist";
-
-			case "deranged arch":
-				return "Deranged Archaeologist";
-
-			case "mole":
-				return "Giant Mole";
-
-			case "vetion":
-				return "Vet'ion";
-
-			case "vene":
-				return "Venenatis";
-
-			case "kbd":
-				return "King Black Dragon";
-
-			case "vork":
-				return "Vorkath";
-
-			case "sire":
-				return "Abyssal Sire";
-
-			case "smoke devil":
-			case "thermy":
-				return "Thermonuclear Smoke Devil";
-
-			case "cerb":
-				return "Cerberus";
-
-			case "zuk":
-			case "inferno":
-				return "TzKal-Zuk";
-
-			case "hydra":
-				return "Alchemical Hydra";
-
-			// gwd
-			case "sara":
-			case "saradomin":
-			case "zilyana":
-			case "zily":
-				return "Commander Zilyana";
-			case "zammy":
-			case "zamorak":
-			case "kril":
-			case "kril trutsaroth":
-				return "K'ril Tsutsaroth";
-			case "arma":
-			case "kree":
-			case "kreearra":
-			case "armadyl":
-				return "Kree'arra";
-			case "bando":
-			case "bandos":
-			case "graardor":
-				return "General Graardor";
-
-			// dks
-			case "supreme":
-				return "Dagannoth Supreme";
-			case "rex":
-				return "Dagannoth Rex";
-			case "prime":
-				return "Dagannoth Prime";
-
-			case "wt":
-				return "Wintertodt";
-			case "barrows":
-				return "Barrows Chests";
-			case "herbi":
-				return "Herbiboar";
-
-			// cox
-			case "cox":
-			case "xeric":
-			case "chambers":
-			case "olm":
-			case "raids":
-				return "Chambers of Xeric";
-
-			// cox cm
-			case "cox cm":
-			case "xeric cm":
-			case "chambers cm":
-			case "olm cm":
-			case "raids cm":
-				return "Chambers of Xeric Challenge Mode";
-
-			// tob
-			case "tob":
-			case "theatre":
-			case "verzik":
-			case "verzik vitur":
-			case "raids 2":
-				return "Theatre of Blood";
-
-			// agility course
-			case "prif":
-			case "prifddinas":
-				return "Prifddinas Agility Course";
-
-			// The Gauntlet
-			case "gaunt":
-			case "gauntlet":
-				return "Gauntlet";
-
-			// Corrupted Gauntlet
-			case "cgaunt":
-			case "cgauntlet":
-				return "Corrupted Gauntlet";
-
-			default:
-				return WordUtils.capitalize(boss);
-		}
 	}
 }

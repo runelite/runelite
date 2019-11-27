@@ -65,7 +65,7 @@ public class NotesPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		panel = injector.getInstance(NotesPanel.class);

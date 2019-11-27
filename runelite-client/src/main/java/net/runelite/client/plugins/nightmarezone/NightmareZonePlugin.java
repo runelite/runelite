@@ -75,7 +75,7 @@ public class NightmareZonePlugin extends Plugin
 	@Inject
 	private NightmareZoneOverlay overlay;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int pointsPerHour;
 
 	private Instant nmzSessionStartTime;
@@ -102,7 +102,7 @@ public class NightmareZonePlugin extends Plugin
 	private Color absorptionColorBelowThreshold;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -111,7 +111,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();

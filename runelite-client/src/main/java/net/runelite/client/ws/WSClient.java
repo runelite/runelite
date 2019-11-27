@@ -44,6 +44,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -147,13 +148,13 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	}
 
 	@Override
-	public void onOpen(WebSocket webSocket, Response response)
+	public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response)
 	{
 		log.info("Websocket {} opened", webSocket);
 	}
 
 	@Override
-	public void onMessage(WebSocket webSocket, String text)
+	public void onMessage(@NotNull WebSocket webSocket, @NotNull String text)
 	{
 		final WebsocketMessage message;
 
@@ -178,14 +179,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	}
 
 	@Override
-	public void onClosed(WebSocket webSocket, int code, String reason)
+	public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason)
 	{
 		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
 		this.webSocket = null;
 	}
 
 	@Override
-	public void onFailure(WebSocket webSocket, Throwable t, Response response)
+	public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response)
 	{
 		log.warn("Error in websocket {}:{}", response, t);
 		this.webSocket = null;

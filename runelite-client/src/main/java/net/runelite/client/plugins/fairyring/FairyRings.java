@@ -26,6 +26,7 @@
 
 package net.runelite.client.plugins.fairyring;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 public enum FairyRings
@@ -83,10 +84,10 @@ public enum FairyRings
 	DLR("(Island) Poison Waste south of Isafdar"),
 	DLS("Myreque hideout under The Hollows");
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String destination;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String tags;
 
 	FairyRings(String destination)

@@ -24,9 +24,10 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class SkillData
 {
 	private SkillDataEntry[] actions;

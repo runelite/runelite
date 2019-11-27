@@ -6,13 +6,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.menus.AbstractComparableEntry;
 import net.runelite.client.menus.ComparableEntries;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 public enum Weapons
 {

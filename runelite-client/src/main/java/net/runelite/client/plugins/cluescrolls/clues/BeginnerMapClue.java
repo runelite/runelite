@@ -25,11 +25,12 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableList;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetID;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class BeginnerMapClue extends MapClue implements LocationClueScroll
 {
 	private static final ImmutableList<BeginnerMapClue> CLUES = ImmutableList.of(

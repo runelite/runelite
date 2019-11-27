@@ -157,7 +157,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -173,7 +173,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
@@ -192,7 +192,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		Arrays.fill(linesToDisplay, null);
 	}
 
-private Area generateSafeArea()
+	private Area generateSafeArea()
 	{
 		final Area area = new Area();
 

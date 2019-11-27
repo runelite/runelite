@@ -294,7 +294,7 @@ public class SlayerPlugin extends Plugin
 	private boolean weaknessOverlayAttached;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -336,7 +336,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetClickboxOverlay);

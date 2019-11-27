@@ -27,6 +27,7 @@ package net.runelite.client.plugins.thieving;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 
@@ -57,7 +58,7 @@ enum Chest
 		CHESTS = builder.build();
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Duration respawnTime;
 	private final int[] ids;
 

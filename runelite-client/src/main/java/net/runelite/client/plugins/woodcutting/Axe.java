@@ -29,28 +29,8 @@ import java.util.Map;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import static net.runelite.api.ItemID.ADAMANT_AXE;
-import static net.runelite.api.ItemID.BLACK_AXE;
-import static net.runelite.api.ItemID.BRONZE_AXE;
-import static net.runelite.api.ItemID.CRYSTAL_AXE;
-import static net.runelite.api.ItemID.DRAGON_AXE;
-import static net.runelite.api.ItemID.INFERNAL_AXE;
-import static net.runelite.api.ItemID.IRON_AXE;
-import static net.runelite.api.ItemID.MITHRIL_AXE;
-import static net.runelite.api.ItemID.RUNE_AXE;
-import static net.runelite.api.ItemID.STEEL_AXE;
-import static net.runelite.api.ItemID._3RD_AGE_AXE;
+import static net.runelite.api.AnimationID.*;
+import static net.runelite.api.ItemID.*;
 
 @AllArgsConstructor
 @Getter(AccessLevel.PACKAGE)

@@ -273,7 +273,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
 			{
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
@@ -281,7 +281,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(2);
 			if (widgetItem != null)
 			{
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
@@ -290,7 +290,7 @@ public class ExaminePlugin extends Plugin
 			Widget widgetItem = widget.getChild(actionParam);
 			if (widgetItem != null)
 			{
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
@@ -305,7 +305,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
@@ -314,25 +314,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[] {1, widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
@@ -341,16 +323,7 @@ public class ExaminePlugin extends Plugin
 			if (actionParam < children.length)
 			{
 				Widget widgetItem = children[actionParam];
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup)
-		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
-			{
-				Widget widgetItem = children[actionParam];
-				return new int[] {widgetItem.getItemQuantity(), widgetItem.getItemId()};
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 

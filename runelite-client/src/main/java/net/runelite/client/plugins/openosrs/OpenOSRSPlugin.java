@@ -74,7 +74,7 @@ public class OpenOSRSPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
 		@Override
 		public void hotkeyPressed()
@@ -91,7 +91,7 @@ public class OpenOSRSPlugin extends Plugin
 	private Keybind keybind;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		entered = -1;
@@ -102,7 +102,7 @@ public class OpenOSRSPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		entered = 0;
 		enterIdx = 0;

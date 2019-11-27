@@ -62,22 +62,22 @@ public class GauntletOverlay extends Overlay
 {
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private GauntletCounter GauntletCounter;
+
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int MAX_DISTANCE = 2400;
 	private final Client client;
 	private final GauntletPlugin plugin;
-	private final GauntletConfig config;
 	private final ModelOutlineRenderer outlineRenderer;
 	private int timeout;
 
 	@Inject
-	private GauntletOverlay(Client client, GauntletConfig config, GauntletPlugin plugin, ModelOutlineRenderer outlineRenderer)
+	private GauntletOverlay(Client client, GauntletPlugin plugin, ModelOutlineRenderer outlineRenderer)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.outlineRenderer = outlineRenderer;
 
 		setPosition(OverlayPosition.DYNAMIC);

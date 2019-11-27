@@ -30,12 +30,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.util.Text;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum HotColdTemperature
 {
 	ICE_COLD("ice cold", 500, 5000),
@@ -82,9 +83,9 @@ public enum HotColdTemperature
 	 * @param temperatureSet A set of temperature values to select from
 	 * @param message        A string containing a temperature value
 	 * @return The corresponding enum from the given temperature set.
-	 *         <p>
-	 *         Note that in cases where two temperature values in the given set are equally likely to be the given
-	 *         temperature (say, two temperatures with identical text values), the behavior is undefined.
+	 * <p>
+	 * Note that in cases where two temperature values in the given set are equally likely to be the given
+	 * temperature (say, two temperatures with identical text values), the behavior is undefined.
 	 */
 	@Nullable
 	public static HotColdTemperature getFromTemperatureSet(final Set<HotColdTemperature> temperatureSet, final String message)

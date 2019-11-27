@@ -27,93 +27,7 @@ package net.runelite.client.plugins.tarnslair;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import static net.runelite.api.NullObjectID.NULL_20575;
-import static net.runelite.api.ObjectID.FLOOR_20583;
-import static net.runelite.api.ObjectID.FLOOR_20584;
-import static net.runelite.api.ObjectID.FLOOR_20628;
-import static net.runelite.api.ObjectID.FLOOR_20634;
-import static net.runelite.api.ObjectID.FLOOR_20636;
-import static net.runelite.api.ObjectID.HANGING_LOG_20571;
-import static net.runelite.api.ObjectID.HANGING_LOG_20572;
-import static net.runelite.api.ObjectID.HANGING_LOG_20573;
-import static net.runelite.api.ObjectID.HANGING_LOG_20574;
-import static net.runelite.api.ObjectID.PASSAGEWAY_15770;
-import static net.runelite.api.ObjectID.PASSAGEWAY_15771;
-import static net.runelite.api.ObjectID.PASSAGEWAY_15772;
-import static net.runelite.api.ObjectID.PASSAGEWAY_15773;
-import static net.runelite.api.ObjectID.PASSAGEWAY_15774;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16129;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16130;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16131;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16132;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16133;
-import static net.runelite.api.ObjectID.PASSAGEWAY_16134;
-import static net.runelite.api.ObjectID.PASSAGEWAY_18307;
-import static net.runelite.api.ObjectID.PASSAGEWAY_18308;
-import static net.runelite.api.ObjectID.PASSAGEWAY_18309;
-import static net.runelite.api.ObjectID.PASSAGEWAY_18310;
-import static net.runelite.api.ObjectID.PASSAGEWAY_18311;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20488;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20489;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20490;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20491;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20492;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20493;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20495;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20497;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20498;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20499;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20500;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20501;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20502;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20503;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20504;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20505;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20506;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20507;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20509;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20510;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20511;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20512;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20513;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20514;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20515;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20516;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20517;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20518;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20519;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20520;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20521;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20522;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20523;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20524;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20525;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20526;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20527;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20528;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20529;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20530;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20531;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20532;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20533;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20534;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20535;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20536;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20537;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20538;
-import static net.runelite.api.ObjectID.PASSAGEWAY_20539;
-import static net.runelite.api.ObjectID.STAIRS_17098;
-import static net.runelite.api.ObjectID.STAIRS_17099;
-import static net.runelite.api.ObjectID.STAIRS_18973;
-import static net.runelite.api.ObjectID.STAIRS_18974;
-import static net.runelite.api.ObjectID.WALL_20588;
-import static net.runelite.api.ObjectID.WALL_20590;
-import static net.runelite.api.ObjectID.WALL_20592;
-import static net.runelite.api.ObjectID.WALL_20594;
-import static net.runelite.api.ObjectID.WALL_20596;
-import static net.runelite.api.ObjectID.WALL_20613;
-import static net.runelite.api.ObjectID.WALL_20615;
-import static net.runelite.api.ObjectID.WALL_20616;
-import static net.runelite.api.ObjectID.WALL_20618;
+import static net.runelite.api.ObjectID.*;
 
 class Obstacles
 {
@@ -129,11 +43,11 @@ class Obstacles
 		PASSAGEWAY_16132,    /*Wall staircase*/
 		PASSAGEWAY_16133,    /*Wall staircase*/
 		PASSAGEWAY_16134,    /*Wall staircase*/
-		PASSAGEWAY_18307,   /*Wall staircase*/
-		PASSAGEWAY_18308,   /*Wall staircase*/
-		PASSAGEWAY_18309,   /*Wall staircase*/
-		PASSAGEWAY_18310,   /*Wall staircase*/
-		PASSAGEWAY_18311,   /*Wall staircase*/
+		PASSAGEWAY_18307,    /*Wall staircase*/
+		PASSAGEWAY_18308,    /*Wall staircase*/
+		PASSAGEWAY_18309,    /*Wall staircase*/
+		PASSAGEWAY_18310,    /*Wall staircase*/
+		PASSAGEWAY_18311,    /*Wall staircase*/
 		PASSAGEWAY_20488,    /*Wall staircase*/
 		PASSAGEWAY_20489,    /*Wall staircase*/
 		PASSAGEWAY_20490,    /*Wall staircase*/
@@ -187,31 +101,31 @@ class Obstacles
 		STAIRS_17098,        /*Floor staircase*/
 		STAIRS_17099,        /*Floor staircase*/
 		STAIRS_18973,        /*Floor staircase*/
-		STAIRS_18974        /*Floor staircase*/
+		STAIRS_18974         /*Floor staircase*/
 	);
 
 	static final Set<Integer> WALL_TRAP_IDS = Sets.newHashSet(
-		WALL_20590,        /*Wall spikes*/
-		WALL_20592,        /*Wall spikes*/
-		WALL_20594,        /*Wall spikes*/
-		WALL_20596,        /*Wall spikes*/
-		WALL_20588,        /*Wall spikes*/
-		WALL_20613,        /*Wall pusher*/
-		WALL_20615,        /*Wall pusher*/
-		WALL_20616,        /*Wall pusher*/
-		WALL_20618,        /*Wall pusher*/
-		HANGING_LOG_20571,    /*Hanging log*/
-		HANGING_LOG_20572,    /*Hanging log*/
-		HANGING_LOG_20573,    /*Hanging log*/
+		WALL_20590,          /*Wall spikes*/
+		WALL_20592,          /*Wall spikes*/
+		WALL_20594,          /*Wall spikes*/
+		WALL_20596,          /*Wall spikes*/
+		WALL_20588,          /*Wall spikes*/
+		WALL_20613,          /*Wall pusher*/
+		WALL_20615,          /*Wall pusher*/
+		WALL_20616,          /*Wall pusher*/
+		WALL_20618,          /*Wall pusher*/
+		HANGING_LOG_20571,   /*Hanging log*/
+		HANGING_LOG_20572,   /*Hanging log*/
+		HANGING_LOG_20573,   /*Hanging log*/
 		HANGING_LOG_20574    /*Hanging log*/
 	);
 
 	static final Set<Integer> FLOOR_TRAP_IDS = Sets.newHashSet(
-		FLOOR_20583,    /*Floor spikes*/
-		FLOOR_20584,    /*Floor spikes*/
-		NULL_20575,        /*Floor spikes (visible)*/
-		FLOOR_20628,    /*Trapdoor*/
-		FLOOR_20634,    /*Floor button*/
-		FLOOR_20636        /*Floor button*/
+		FLOOR_20583,         /*Floor spikes*/
+		FLOOR_20584,         /*Floor spikes*/
+		NULL_20575,          /*Floor spikes (visible)*/
+		FLOOR_20628,         /*Trapdoor*/
+		FLOOR_20634,         /*Floor button*/
+		FLOOR_20636          /*Floor button*/
 	);
 }

@@ -56,7 +56,7 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PACKAGE)
 	private Stroke stroke;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final Rectangle bounds = new Rectangle();
 
 	@Override

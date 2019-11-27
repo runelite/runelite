@@ -120,16 +120,22 @@ public class FightCavePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private NPCManager npcManager;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private WaveOverlay waveOverlay;
+
 	@Inject
 	private FightCaveOverlay fightCaveOverlay;
+
 	@Inject
 	private FightCaveConfig config;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Set<FightCaveContainer> fightCaveContainer = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)

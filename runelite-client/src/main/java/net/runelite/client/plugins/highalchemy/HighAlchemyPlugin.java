@@ -92,7 +92,7 @@ public class HighAlchemyPlugin extends Plugin
 	private boolean usingFireRunes;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		buildGroupList();
@@ -100,7 +100,7 @@ public class HighAlchemyPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}
@@ -127,7 +127,7 @@ public class HighAlchemyPlugin extends Plugin
 		if (this.showInventory)
 		{
 			Arrays.stream(
-				new int[] {
+				new int[]{
 					DEPOSIT_BOX_GROUP_ID,
 					BANK_INVENTORY_GROUP_ID,
 					SHOP_INVENTORY_GROUP_ID,

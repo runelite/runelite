@@ -53,11 +53,6 @@ public class FriendListPlugin extends Plugin
 	private Client client;
 
 	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
 	protected void shutDown()
 	{
 		final int world = client.getWorld();

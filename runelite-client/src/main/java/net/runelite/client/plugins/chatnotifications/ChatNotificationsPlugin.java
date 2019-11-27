@@ -61,6 +61,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Singleton
 public class ChatNotificationsPlugin extends Plugin
 {
+	// Private message cache used to avoid duplicate notifications from ChatHistory.
+	private final Set<Integer> privateMessageHashes = new HashSet<>();
+
 	@Inject
 	private Client client;
 
@@ -77,10 +80,6 @@ public class ChatNotificationsPlugin extends Plugin
 	private Pattern usernameMatcher = null;
 	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
-
-	// Private message cache used to avoid duplicate notifications from ChatHistory.
-	private final Set<Integer> privateMessageHashes = new HashSet<>();
-
 	private boolean highlightOwnName;
 	private String highlightWordsString;
 	private boolean notifyOnOwnName;
@@ -88,6 +87,49 @@ public class ChatNotificationsPlugin extends Plugin
 	private boolean notifyOnTrade;
 	private boolean notifyOnDuel;
 	private boolean notifyOnPm;
+
+	/**
+	 * Get the last color tag from a string, or null if there was none
+	 *
+	 * @param str
+	 * @return
+	 */
+	private static String getLastColor(String str)
+	{
+		int colIdx = str.lastIndexOf("<col=");
+		int colEndIdx = str.lastIndexOf("</col>");
+
+		if (colEndIdx > colIdx)
+		{
+			// ends in a </col> which resets the color to normal
+			return "<col" + ChatColorType.NORMAL + ">";
+		}
+
+		if (colIdx == -1)
+		{
+			return null; // no color
+		}
+
+		int closeIdx = str.indexOf('>', colIdx);
+		if (closeIdx == -1)
+		{
+			return null; // unclosed col tag
+		}
+
+		return str.substring(colIdx, closeIdx + 1); // include the >
+	}
+
+	/**
+	 * Strip color tags from a string.
+	 *
+	 * @param str
+	 * @return
+	 */
+	@VisibleForTesting
+	static String stripColor(String str)
+	{
+		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
+	}
 
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
@@ -314,48 +356,5 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 
 		return stringBuilder.toString();
-	}
-
-	/**
-	 * Get the last color tag from a string, or null if there was none
-	 *
-	 * @param str
-	 * @return
-	 */
-	private static String getLastColor(String str)
-	{
-		int colIdx = str.lastIndexOf("<col=");
-		int colEndIdx = str.lastIndexOf("</col>");
-
-		if (colEndIdx > colIdx)
-		{
-			// ends in a </col> which resets the color to normal
-			return "<col" + ChatColorType.NORMAL + ">";
-		}
-
-		if (colIdx == -1)
-		{
-			return null; // no color
-		}
-
-		int closeIdx = str.indexOf('>', colIdx);
-		if (closeIdx == -1)
-		{
-			return null; // unclosed col tag
-		}
-
-		return str.substring(colIdx, closeIdx + 1); // include the >
-	}
-
-	/**
-	 * Strip color tags from a string.
-	 *
-	 * @param str
-	 * @return
-	 */
-	@VisibleForTesting
-	static String stripColor(String str)
-	{
-		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
 	}
 }

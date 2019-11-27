@@ -83,7 +83,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		translator.setInLang(config.publicTargetLanguage());
 		translator.setOutLang(config.playerTargetLanguage());
@@ -112,7 +112,7 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(OPTION);
 		eventBus.unregister(PUBLIC);
@@ -266,6 +266,12 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		// Nothing.
+	}
+
+	@Override
 	public void keyPressed(KeyEvent event)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
@@ -310,12 +316,6 @@ public class ChatTranslationPlugin extends Plugin implements KeyListener
 
 	@Override
 	public void keyReleased(KeyEvent e)
-	{
-		// Nothing.
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
 	{
 		// Nothing.
 	}

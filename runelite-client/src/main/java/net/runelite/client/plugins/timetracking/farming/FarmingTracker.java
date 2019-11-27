@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
-import net.runelite.api.vars.Autoweed;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;
@@ -35,6 +34,7 @@ import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -173,7 +173,7 @@ public class FarmingTracker
 					value = Integer.parseInt(parts[0]);
 					unixTime = Long.parseLong(parts[1]);
 				}
-				catch (NumberFormatException e)
+				catch (NumberFormatException ignored)
 				{
 				}
 			}

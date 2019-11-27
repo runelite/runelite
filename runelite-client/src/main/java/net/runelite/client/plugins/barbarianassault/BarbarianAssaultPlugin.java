@@ -122,6 +122,24 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	private static final ImmutableList<WidgetInfo> attackStyles = ImmutableList.of(WidgetInfo.COMBAT_STYLE_ONE,
 		WidgetInfo.COMBAT_STYLE_TWO, WidgetInfo.COMBAT_STYLE_THREE, WidgetInfo.COMBAT_STYLE_FOUR);
 
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, Integer> redEggs = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, Integer> greenEggs = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, Integer> blueEggs = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, Integer> yellowEggs = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<Integer, Healer> healers = new HashMap<>();
+
+	private final List<TimerBox> deathTimes = new ArrayList<>();
+	private final Map<Integer, Projectile> projectiles = new HashMap<>();
+
 	@Inject
 	private Client client;
 
@@ -155,98 +173,49 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean inGame = false;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Wave wave = null;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Role role = null;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Scorecard scorecard = null;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Timer gameTimer = null;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Timer callTimer = null;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private int stage = -1;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage clockImage;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Font font = null;
 
-	@Getter
-	private final Map<WorldPoint, Integer> redEggs = new HashMap<>();
-
-	@Getter
-	private final Map<WorldPoint, Integer> greenEggs = new HashMap<>();
-
-	@Getter
-	private final Map<WorldPoint, Integer> blueEggs = new HashMap<>();
-
-	@Getter
-	private final Map<WorldPoint, Integer> yellowEggs = new HashMap<>();
-
-	@Getter
-	private final Map<Integer, Healer> healers = new HashMap<>();
-
-	@Getter
-	private String lastCallText = null;
-
-	@Getter
-	private String lastListenText = null;
-
 	// private String lastClickedTell = null;
-
+	@Getter(AccessLevel.PACKAGE)
+	private String lastCallText = null;
+	@Getter(AccessLevel.PACKAGE)
+	private String lastListenText = null;
 	private int lastCallColor = -1;
-
 	private int lastInteracted = -1;
 
-	private int lastHealerPoisoned = -1;
-
-	private int tickNum = 0;
-
 	// private int gameTick = -1;
-
+	private int lastHealerPoisoned = -1;
+	private int tickNum = 0;
 	private int inGameBit = 0;
-
 	private boolean syncd = true;
-
 	private boolean tickReset = false;
-
 	private boolean hornCalled = false;
-
 	private boolean hornListened = false;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean usingGloryHorn = false;
-
 	private boolean shiftDown = false;
-
 	private boolean controlDown = false;
-
 	private BufferedImage torsoImage, fighterImage, healerImage, rangerImage, runnerImage;
-
-	private final List<TimerBox> deathTimes = new ArrayList<>();
-
-	private final Map<Integer, Projectile> projectiles = new HashMap<>();
-
 	private TimerBox tickCounter;
 
 	private String poisonUsed = null;
-
-	@Provides
-	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BarbarianAssaultConfig.class);
-	}
 
 	// save config values
 	@Getter(AccessLevel.PACKAGE)
@@ -302,8 +271,14 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showEggCountOverlay;
 
+	@Provides
+	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BarbarianAssaultConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -321,7 +296,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(widgetsOverlay);
 		overlayManager.remove(sceneOverlay);
@@ -343,7 +318,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 		menu.clearHiddenMenus();
 	}
 
-@Override
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 	}
@@ -399,7 +374,7 @@ public class BarbarianAssaultPlugin extends Plugin implements KeyListener
 			case "swapLadder":
 			case "swapCollectorBag":
 			case "swapDestroyEggs":
-				if (Boolean.valueOf(configChanged.getNewValue()))
+				if (Boolean.parseBoolean(configChanged.getNewValue()))
 				{
 					menu.enableSwaps();
 				}

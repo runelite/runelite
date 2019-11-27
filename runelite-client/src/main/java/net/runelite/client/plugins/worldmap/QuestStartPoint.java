@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import net.runelite.api.coords.WorldPoint;
 import java.awt.image.BufferedImage;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class QuestStartPoint extends WorldMapPoint

@@ -58,9 +58,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -180,13 +180,13 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
 		lastRaidVarb = -1;

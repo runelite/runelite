@@ -37,6 +37,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuOpcode.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
+import net.runelite.api.util.Text;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -46,7 +47,6 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.api.util.Text;
 
 @Singleton
 class OpponentInfoOverlay extends Overlay

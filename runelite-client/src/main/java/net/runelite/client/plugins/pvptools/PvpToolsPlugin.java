@@ -175,7 +175,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	};
 
-	private int[] overheadCount = new int[] {0, 0, 0};
+	private int[] overheadCount = new int[]{0, 0, 0};
 
 	@Getter
 	private int enemyPlayerCount = 0;
@@ -228,7 +228,7 @@ public class PvpToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -267,7 +267,7 @@ public class PvpToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(playerCountOverlay);
 		keyManager.unregisterKeyListener(renderselfHotkeyListener);
@@ -463,7 +463,7 @@ public class PvpToolsPlugin extends Plugin
 
 	private void countOverHeads()
 	{
-		overheadCount = new int[] {0, 0, 0};
+		overheadCount = new int[]{0, 0, 0};
 		for (Player p : client.getPlayers())
 		{
 			if (Objects.nonNull(p) && PvPUtil.isAttackable(client, p) &&
@@ -583,7 +583,7 @@ public class PvpToolsPlugin extends Plugin
 	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
-	public void hideAttackOptions(AttackMode mode)
+	private void hideAttackOptions(AttackMode mode)
 	{
 		switch (mode)
 		{
@@ -607,7 +607,7 @@ public class PvpToolsPlugin extends Plugin
 	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
-	public void hideCastOptions(AttackMode mode)
+	private void hideCastOptions(AttackMode mode)
 	{
 		switch (mode)
 		{

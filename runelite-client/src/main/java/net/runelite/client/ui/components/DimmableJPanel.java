@@ -73,7 +73,7 @@ public class DimmableJPanel extends JPanel
 	 *
 	 * @param dimmed
 	 */
-	public void setDimmed(boolean dimmed)
+	void setDimmed(boolean dimmed)
 	{
 		this.dimmed = dimmed;
 

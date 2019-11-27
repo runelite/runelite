@@ -25,14 +25,15 @@
 package net.runelite.client.plugins.party.data;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
-@Getter
-@Setter
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class PartyTilePingData
 {
 	private final WorldPoint point;
