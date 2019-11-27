@@ -55,7 +55,7 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (chatCommandsConfig.clearSingleWord() != Keybind.NOT_SET && e.getKeyCode() == chatCommandsConfig.clearSingleWord().getKeyCode())
+		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
 			String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
 			if (input != null)
@@ -85,17 +85,13 @@ public class ChatKeyboardListener implements KeyListener
 				});
 			}
 		}
-		else if (chatCommandsConfig.clearChatBox() != Keybind.NOT_SET && e.getKeyCode() == chatCommandsConfig.clearChatBox().getKeyCode())
+		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
 			clientThread.invoke(() ->
 			{
 				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 				client.runScript(ScriptID.CHAT_PROMPT_INIT);
 			});
-		}
-		else
-		{
-			return;
 		}
 	}
 
