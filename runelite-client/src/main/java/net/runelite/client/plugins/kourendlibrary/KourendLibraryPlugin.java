@@ -158,6 +158,11 @@ public class KourendLibraryPlugin extends Plugin
 			return;
 		}
 
+		if (ev.getKey().equals("hideVarlamoreEnvoy"))
+		{
+			panel.reload();
+		}
+
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!config.hideButton())

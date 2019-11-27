@@ -125,6 +125,12 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
+
+				if (book == Book.VARLAMORE_ENVOY && config.hideVarlamoreEnvoy())
+				{
+					continue;
+				}
+
 				Color color = bookIsKnown ? (book == library.getCustomerBook() ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
