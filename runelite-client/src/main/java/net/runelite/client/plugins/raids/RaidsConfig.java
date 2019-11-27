@@ -27,6 +27,8 @@ package net.runelite.client.plugins.raids;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.util.ImageUploadStyle;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -175,7 +177,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "showLootValue",
 		name = "Show Loot Value",
 		description = "Shows the value of your loot at the end of a raid"
@@ -183,5 +185,27 @@ public interface RaidsConfig extends Config
 	default boolean showLootValue()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "screenshotHotkey",
+		name = "Scouter screenshot hotkey",
+		description = "Hotkey used to screenshot the scouting overlay"
+	)
+	default Keybind screenshotHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "uploadScreenshot",
+		name = "Upload scouting screenshot",
+		description = "Uploads the scouting screenshot to Imgur or the clipboard"
+	)
+	default ImageUploadStyle uploadScreenshot()
+	{
+		return ImageUploadStyle.CLIPBOARD;
 	}
 }

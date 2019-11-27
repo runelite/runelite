@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
@@ -49,12 +50,14 @@ public class RaidsOverlay extends Overlay
 {
 	private static final int OLM_PLANE = 0;
 	static final String BROADCAST_ACTION = "Broadcast layout";
+	static final String SCREENSHOT_ACTION = "Screenshot";
 
 	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
+	@Getter
 	@Setter
 	private boolean scoutOverlayShown = false;
 
@@ -69,6 +72,7 @@ public class RaidsOverlay extends Overlay
 		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
 	}
 
 	@Override
