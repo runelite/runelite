@@ -47,7 +47,7 @@ class NoteTab extends JPanel
 	private final JTextArea notesEditor = new JTextArea();
 	private final UndoManager undoRedo = new UndoManager();
 
-	private int index;
+	private final int index;
 
 	NoteTab(NotesManager mManager, int mIndex)
 	{

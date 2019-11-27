@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -50,7 +51,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class CerberusPlugin extends Plugin
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> ghosts = new ArrayList<>();
 
 	@Inject
@@ -60,13 +61,13 @@ public class CerberusPlugin extends Plugin
 	private CerberusOverlay overlay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		ghosts.clear();

@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum RunecraftingAltarLocation
 {
 	AIR_ALTAR("Air Altar", 1, new WorldPoint(2985, 3293, 0), "air_altar_icon.png"),

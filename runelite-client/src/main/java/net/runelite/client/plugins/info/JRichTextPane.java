@@ -53,14 +53,14 @@ public class JRichTextPane extends JEditorPane
 		ek.getStyleSheet().addRule("a {color: #DDDDDD }");
 	}
 
-	public JRichTextPane(String type, String text)
+	private JRichTextPane(String type, String text)
 	{
 		this();
 		setContentType(type);
 		setText(text);
 	}
 
-	void enableAutoLinkHandler(boolean enable)
+	private void enableAutoLinkHandler(boolean enable)
 	{
 		if (enable == (linkHandler == null))
 		{

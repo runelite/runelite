@@ -34,6 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import joptsimple.internal.Strings;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.Notifier;
@@ -53,13 +54,13 @@ public class ClockManager
 	@Inject
 	private Notifier notifier;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<Timer> timers = new CopyOnWriteArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private ClockTabPanel clockTabPanel;
 
 	ClockManager()

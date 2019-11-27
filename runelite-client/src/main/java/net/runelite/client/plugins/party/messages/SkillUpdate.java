@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Skill;
@@ -31,7 +32,7 @@ import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class SkillUpdate extends PartyMemberMessage implements Event
 {
 	private final Skill skill;

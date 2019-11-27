@@ -40,7 +40,7 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class InfernoNPC
+class InfernoNPC
 {
 	@Getter(AccessLevel.PACKAGE)
 	private NPC npc;
@@ -63,7 +63,7 @@ public class InfernoNPC
 		this.ticksTillNextAttack = 0;
 		this.lastAnimation = -1;
 		this.lastCanAttack = false;
-		this.safeSpotCache = new HashMap();
+		this.safeSpotCache = new HashMap<>();
 	}
 
 	void updateNextAttack(Attack nextAttack, int ticksTillNextAttack)
@@ -235,7 +235,7 @@ public class InfernoNPC
 				case BAT:
 					// Range + LOS check for bat because it suffers from the defense animation bug, also dont activate on "stand" animation
 					if (this.canAttack(client, client.getLocalPlayer().getWorldLocation())
-						&& this.getNpc().getAnimation() != AnimationID.JAL_MEJRAH_STAND	&& this.getNpc().getAnimation() != -1)
+						&& this.getNpc().getAnimation() != AnimationID.JAL_MEJRAH_STAND && this.getNpc().getAnimation() != -1)
 					{
 						this.updateNextAttack(this.getType().getDefaultAttack(), this.getType().getTicksAfterAnimation());
 					}

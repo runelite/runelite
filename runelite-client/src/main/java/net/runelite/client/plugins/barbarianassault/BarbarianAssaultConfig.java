@@ -45,6 +45,7 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
@@ -223,7 +224,7 @@ public interface BarbarianAssaultConfig extends Config
 	/*///************///*/
 	/*///  Defender  ///*/
 	/*///************///*/
-	
+
 	@ConfigSection(
 		name = "Defender",
 		description = "",
@@ -301,7 +302,7 @@ public interface BarbarianAssaultConfig extends Config
 	/*///**********///*/
 	/*///  Healer  ///*/
 	/*///**********///*/
-	
+
 	@ConfigSection(
 		name = "Healer",
 		description = "",

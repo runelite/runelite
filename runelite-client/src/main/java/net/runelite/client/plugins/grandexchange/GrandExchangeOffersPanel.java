@@ -30,6 +30,7 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.inject.Singleton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -98,10 +99,7 @@ class GrandExchangeOffersPanel extends JPanel
 	void resetOffers()
 	{
 		offerPanel.removeAll();
-		for (int i = 0; i < offerSlotPanels.length; i++)
-		{
-			offerSlotPanels[i] = null;
-		}
+		Arrays.fill(offerSlotPanels, null);
 		updateEmptyOffersPanel();
 	}
 

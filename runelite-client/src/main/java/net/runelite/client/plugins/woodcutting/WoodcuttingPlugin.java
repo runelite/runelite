@@ -103,7 +103,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
 	private int statTimeout;
-	private boolean showNestNotification;
+	boolean showNestNotification;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showWoodcuttingStats;
 	@Getter(AccessLevel.PACKAGE)
@@ -122,7 +122,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -131,7 +131,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);

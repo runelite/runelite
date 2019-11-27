@@ -73,11 +73,6 @@ public class EmojiPlugin extends Plugin
 		loadEmojiIcons();
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
-
 	@Subscribe
 	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{

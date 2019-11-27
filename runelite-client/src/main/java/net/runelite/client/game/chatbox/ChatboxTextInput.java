@@ -48,6 +48,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.FontID;
 import net.runelite.api.FontTypeFace;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -58,7 +59,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.util.MiscUtils;
-import net.runelite.api.util.Text;
 
 @Slf4j
 public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener
@@ -67,7 +67,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
 
 	private final ChatboxPanelManager chatboxPanelManager;
-	protected final ClientThread clientThread;
+	final ClientThread clientThread;
 
 	private static IntPredicate getDefaultCharValidator()
 	{
@@ -135,7 +135,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		return this;
 	}
 
-	public ChatboxTextInput lines(int lines)
+	protected ChatboxTextInput lines(int lines)
 	{
 		this.lines = lines;
 		if (built)
@@ -573,7 +573,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	@Override
-	protected void close()
+	void close()
 	{
 		if (this.onClose != null)
 		{

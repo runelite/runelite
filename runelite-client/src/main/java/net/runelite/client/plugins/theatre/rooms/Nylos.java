@@ -23,7 +23,7 @@ class Nylos
 		this.spawnLocation = spawnLocation;
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@AllArgsConstructor
 	enum SpawnLocation
 	{

@@ -129,14 +129,14 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(miningOverlay);
 		overlayManager.remove(coalBagOverlay);
 		respawns.clear();
 	}
 
-@Provides
+	@Provides
 	MiningConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MiningConfig.class);

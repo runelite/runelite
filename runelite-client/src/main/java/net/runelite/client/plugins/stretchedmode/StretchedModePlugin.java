@@ -79,7 +79,7 @@ public class StretchedModePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setStretchedEnabled(false);
 		client.invalidateStretching(true);

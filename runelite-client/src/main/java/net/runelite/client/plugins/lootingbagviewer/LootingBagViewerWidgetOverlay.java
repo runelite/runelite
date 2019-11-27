@@ -37,7 +37,7 @@ import net.runelite.client.ui.overlay.WidgetItemOverlay;
 @Singleton
 public class LootingBagViewerWidgetOverlay extends WidgetItemOverlay
 {
-	private LootingBagViewerPlugin plugin;
+	private final LootingBagViewerPlugin plugin;
 
 	@Inject
 	LootingBagViewerWidgetOverlay(final LootingBagViewerPlugin plugin)

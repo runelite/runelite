@@ -295,8 +295,6 @@ public class OverlayUtil
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
-				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
-				break;
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);

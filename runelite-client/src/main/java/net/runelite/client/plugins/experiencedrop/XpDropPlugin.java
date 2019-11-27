@@ -72,14 +72,19 @@ public class XpDropPlugin extends Plugin
 	private static final double TL_MULTIPLIER_RATIO = 5;
 	private static final int TWISTED_LEAGUE_WAY_OF_THE_WARRIOR = 3;
 	private static final int TWISTED_LEAGUE_XERICS_WISDOM = 3;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private XpDropConfig config;
+
 	@Inject
 	private NPCManager npcManager;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private XpDropOverlay overlay;
 
@@ -116,7 +121,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -129,7 +134,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}
@@ -355,7 +360,7 @@ public class XpDropPlugin extends Plugin
 	private void calculateDamageDealt(int diff)
 	{
 		double damageDealt = diff / HITPOINT_RATIO;
-		
+
 		// DeadMan mode has an XP modifier of 10x, Twisted League mode has an XP modifier of 5x
 		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
@@ -364,7 +369,7 @@ public class XpDropPlugin extends Plugin
 		if (client.getWorldType().contains(WorldType.LEAGUE))
 		{
 			damageDealt = damageDealt / TL_MULTIPLIER_RATIO;
-			
+
 			if (client.getVar(Varbits.TWISTED_LEAGUE_RELIC_3) == TWISTED_LEAGUE_WAY_OF_THE_WARRIOR)
 			{
 				damageDealt = damageDealt / 2;
@@ -374,7 +379,7 @@ public class XpDropPlugin extends Plugin
 				damageDealt = damageDealt / 2;
 			}
 		}
-		
+
 		// Some NPCs have an XP modifier, account for it here.
 		Actor a = client.getLocalPlayer().getInteracting();
 		if (!(a instanceof NPC) && !(a instanceof Player))

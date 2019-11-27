@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
 public enum XpActionType
 {

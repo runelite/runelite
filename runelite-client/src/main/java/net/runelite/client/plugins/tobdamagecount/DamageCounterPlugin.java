@@ -41,8 +41,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -51,7 +51,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-
 
 @PluginDescriptor(
 	name = "ToB Damage Counter",
@@ -64,12 +63,6 @@ import net.runelite.client.plugins.PluginType;
 @Singleton
 public class DamageCounterPlugin extends Plugin
 {
-	private int currentWorld = -1;
-	private int DamageCount = 0;
-	private int currenthpxp = -1; // checking the current hp xp so be easier to find
-	private String BossName = null; //to ID the boss to calculate the damage
-	private int DamageTaken = 0;
-	private boolean status = true; //default boolean alive = true, dead = false
 	//formatting the number for damage taken and dealt with to look beeter
 	private static final DecimalFormat DAMAGEFORMAT = new DecimalFormat("#,###");
 	private static final double XP_RATIO = 1.3333;
@@ -101,22 +94,18 @@ public class DamageCounterPlugin extends Plugin
 		NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
 		NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
 		NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
+	private int currentWorld = -1;
+	private int DamageCount = 0;
+	private int currenthpxp = -1; // checking the current hp xp so be easier to find
+	private String BossName = null; //to ID the boss to calculate the damage
+	private int DamageTaken = 0;
+	private boolean status = true; //default boolean alive = true, dead = false
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private ChatMessageManager chatMessangerManager;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		}
 
 	//every game tick it will go through methods
 	@Subscribe
@@ -147,6 +136,7 @@ public class DamageCounterPlugin extends Plugin
 				if (aNPCARRAY == interactingId)
 				{
 					BossName = interactingName;
+					break;
 				}
 			}
 		}
@@ -346,7 +336,7 @@ public class DamageCounterPlugin extends Plugin
 		sendChatMessage(MessageTaken);
 	}
 
-	public int getPlayers()
+	private int getPlayers()
 	{
 		List<Player> players = client.getPlayers();
 

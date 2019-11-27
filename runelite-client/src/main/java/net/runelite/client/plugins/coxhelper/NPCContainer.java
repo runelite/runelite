@@ -81,7 +81,7 @@ class NPCContainer
 		MELEE("Melee", Color.RED),
 		UNKNOWN("Unknown", Color.WHITE);
 
-		private String name = "";
+		private String name;
 		private Color color;
 	}
 }

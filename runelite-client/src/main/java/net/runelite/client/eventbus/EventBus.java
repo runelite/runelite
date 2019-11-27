@@ -21,9 +21,9 @@ import net.runelite.client.config.OpenOSRSConfig;
 @Singleton
 public class EventBus implements EventBusInterface
 {
-	private Map<Object, Object> subscriptionList = new HashMap<>();
-	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
-	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
+	private final Map<Object, Object> subscriptionList = new HashMap<>();
+	private final Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
+	private final Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
 
 	@Inject
 	private OpenOSRSConfig openOSRSConfig;

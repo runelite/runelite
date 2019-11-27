@@ -100,7 +100,7 @@ public class PerformanceStatsOverlay extends Overlay
 			{
 				continue;
 			}
-			
+
 			final String[] eles = createRowElements(p);
 			tableComponent.addRow(eles);
 		}
@@ -111,12 +111,12 @@ public class PerformanceStatsOverlay extends Overlay
 	private String[] createRowElements(Performance performance)
 	{
 		return new String[]
-		{
-			performance.getUsername(),
-			(int) Math.round(performance.getDamageDealt()) + " | " + (int) Math.round(performance.getHighestHitDealt()),
-			(int) Math.round(performance.getDamageTaken()) + " | " + (int) Math.round(performance.getHighestHitTaken()),
-			String.valueOf(performance.getDPS()),
-			performance.getHumanReadableSecondsSpent()
-		};
+			{
+				performance.getUsername(),
+				(int) Math.round(performance.getDamageDealt()) + " | " + (int) Math.round(performance.getHighestHitDealt()),
+				(int) Math.round(performance.getDamageTaken()) + " | " + (int) Math.round(performance.getHighestHitTaken()),
+				String.valueOf(performance.getDPS()),
+				performance.getHumanReadableSecondsSpent()
+			};
 	}
 }

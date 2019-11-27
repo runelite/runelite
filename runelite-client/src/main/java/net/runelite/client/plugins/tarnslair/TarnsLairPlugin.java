@@ -85,13 +85,13 @@ public class TarnsLairPlugin extends Plugin
 	private TarnsLairOverlay overlay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		staircases.clear();

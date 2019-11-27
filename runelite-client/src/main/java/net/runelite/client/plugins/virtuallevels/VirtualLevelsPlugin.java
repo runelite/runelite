@@ -68,11 +68,6 @@ public class VirtualLevelsPlugin extends Plugin
 
 
 	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
 	protected void shutDown()
 	{
 		clientThread.invoke(this::simulateSkillChange);

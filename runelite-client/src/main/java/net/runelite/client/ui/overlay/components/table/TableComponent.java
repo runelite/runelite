@@ -130,6 +130,7 @@ public class TableComponent implements LayoutableRenderableEntity
 	/**
 	 * Returns the width that each column should take up
 	 * Based on https://stackoverflow.com/questions/22206825/algorithm-for-calculating-variable-column-widths-for-set-table-width
+	 *
 	 * @param metrics
 	 * @return int[] of column width
 	 */
@@ -325,7 +326,8 @@ public class TableComponent implements LayoutableRenderableEntity
 	/**
 	 * Returns the color for the specified table element.
 	 * Priority order: cell->row->column->default
-	 * @param row TableRow element
+	 *
+	 * @param row      TableRow element
 	 * @param colIndex column index
 	 */
 	private Color getCellColor(final TableRow row, final int colIndex)
@@ -359,7 +361,8 @@ public class TableComponent implements LayoutableRenderableEntity
 	/**
 	 * Returns the alignment for the specified table element.
 	 * Priority order: cell->row->column->default
-	 * @param row TableRow element
+	 *
+	 * @param row      TableRow element
 	 * @param colIndex column index
 	 */
 	private TableAlignment getCellAlignment(final TableRow row, final int colIndex)

@@ -139,15 +139,15 @@ class XpInfoBoxOverlay extends Overlay
 		}
 
 		final LineComponent xpLineBottom = LineComponent.builder()
-				.left(bottemLeftStr + ":")
-				.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
-				.build();
+			.left(bottemLeftStr + ":")
+			.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
+			.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
-				.first(xpLine)
-				.second(xpLineBottom)
-				.orientation(ComponentOrientation.VERTICAL)
-				.build();
+			.first(xpLine)
+			.second(xpLineBottom)
+			.orientation(ComponentOrientation.VERTICAL)
+			.build();
 
 		final ImageComponent imageComponent = new ImageComponent(icon);
 		final SplitComponent iconXpSplit = SplitComponent.builder()

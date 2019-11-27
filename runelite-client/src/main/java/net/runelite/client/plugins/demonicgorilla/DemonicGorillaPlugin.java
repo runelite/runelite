@@ -95,7 +95,7 @@ public class DemonicGorillaPlugin extends Plugin
 	private Map<Player, MemorizedPlayer> memorizedPlayers;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 		gorillas = new HashMap<>();
@@ -106,7 +106,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		gorillas = null;
@@ -115,7 +115,7 @@ public class DemonicGorillaPlugin extends Plugin
 		memorizedPlayers = null;
 	}
 
-private void clear()
+	private void clear()
 	{
 		recentBoulders.clear();
 		pendingAttacks.clear();

@@ -56,7 +56,7 @@ public class ZalcanoUtil
 	private final ZalcanoPlugin plugin;
 
 	static final String mine = "MINE";
-	protected static final String warning = "GET BACK";
+	static final String warning = "GET BACK";
 	private static final int ZALCANO_REGION = 12126;
 
 	@Inject

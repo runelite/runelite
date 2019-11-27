@@ -26,6 +26,7 @@ package net.runelite.client.plugins.xptracker;
 
 import java.util.EnumSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Skill;
@@ -33,12 +34,12 @@ import net.runelite.api.Skill;
 @RequiredArgsConstructor
 class XpPauseStateSingle
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
 	private final Set<XpPauseReason> pauseReasons = EnumSet.noneOf(XpPauseReason.class);
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private long lastChangeMillis;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private long xp;
 
 	boolean isPaused()

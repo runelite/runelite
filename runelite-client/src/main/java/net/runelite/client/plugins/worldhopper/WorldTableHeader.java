@@ -108,9 +108,7 @@ class WorldTableHeader extends JPanel
 
 		final JMenuItem refresh = new JMenuItem("Refresh worlds");
 		refresh.addActionListener(e ->
-		{
-			onRefresh.run();
-		});
+			onRefresh.run());
 
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));

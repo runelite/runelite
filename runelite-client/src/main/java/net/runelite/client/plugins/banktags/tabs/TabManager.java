@@ -33,12 +33,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
-import net.runelite.api.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
 @Singleton
@@ -46,7 +47,7 @@ class TabManager
 {
 	private static final String TAG_TABS_CONFIG = "tagtabs";
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<TagTab> tabs = new ArrayList<>();
 	private final ConfigManager configManager;
 

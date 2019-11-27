@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -67,7 +68,7 @@ import org.slf4j.LoggerFactory;
 	tags = {"panel"},
 	developerPlugin = true
 )
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuOpcode> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuOpcode.EXAMINE_ITEM,
@@ -141,7 +142,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		players = new DevToolsButton("Players");
@@ -204,7 +205,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(locationOverlay);

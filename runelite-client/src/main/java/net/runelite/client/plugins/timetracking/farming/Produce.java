@@ -25,13 +25,14 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum Produce
 {
 	WEEDS("Weeds", ItemID.WEEDS, 5, 4),

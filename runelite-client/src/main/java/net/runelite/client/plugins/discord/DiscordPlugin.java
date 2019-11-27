@@ -76,6 +76,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
 	name = "Discord",
@@ -131,7 +132,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -157,7 +158,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(discordButton);
 		discordState.reset();
@@ -283,7 +284,7 @@ public class DiscordPlugin extends Plugin
 
 			if (split.length == 2)
 			{
-				int disc = Integer.valueOf(split[1]);
+				int disc = Integer.parseInt(split[1]);
 				int avatarId = disc % 5;
 				url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
 			}
@@ -298,14 +299,15 @@ public class DiscordPlugin extends Plugin
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
 			@Override
-			public void onFailure(Call call, IOException e)
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
 
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
 			{
+				//noinspection TryFinallyCanBeTryWithResources
 				try
 				{
 					if (!response.isSuccessful())

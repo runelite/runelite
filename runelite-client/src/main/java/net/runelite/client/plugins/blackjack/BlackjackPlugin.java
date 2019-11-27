@@ -81,12 +81,16 @@ public class BlackjackPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private BlackjackConfig config;
+
 	@Inject
 	private EventBus eventBus;
+
 	@Inject
 	private MenuManager menuManager;
+
 	private boolean pickpocketOnAggro;
 	private boolean random;
 	private long nextKnockOutTick = 0;
@@ -98,7 +102,7 @@ public class BlackjackPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		menuManager.addPriorityEntry(KNOCKOUT_BANDIT);
 		menuManager.addPriorityEntry(KNOCKOUT_MENAPHITE);
@@ -106,7 +110,7 @@ public class BlackjackPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		menuManager.removePriorityEntry(PICKPOCKET_BANDIT);
 		menuManager.removePriorityEntry(PICKPOCKET_MENAPHITE);

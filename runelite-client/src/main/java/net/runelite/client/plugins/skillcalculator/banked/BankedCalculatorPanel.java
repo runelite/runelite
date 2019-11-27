@@ -75,6 +75,7 @@ public class BankedCalculatorPanel extends PluginPanel
 
 		final ComboBoxListRenderer renderer = new ComboBoxListRenderer();
 		renderer.setDefaultText("Select a Skill...");
+		//noinspection unchecked
 		dropdown.setRenderer(renderer);
 
 		for (final Skill skill : BANKABLE_SKILLS)

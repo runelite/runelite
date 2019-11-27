@@ -34,14 +34,14 @@ public class LootAssistPlugin extends Plugin
 	static final ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		overlayManager.add(lootAssistOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		lootPiles.clear();
 		overlayManager.remove(lootAssistOverlay);

@@ -35,7 +35,7 @@ import javax.swing.table.AbstractTableModel;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 
-public class WidgetInfoTableModel extends AbstractTableModel
+class WidgetInfoTableModel extends AbstractTableModel
 {
 	@Inject
 	private ClientThread clientThread;

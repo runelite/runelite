@@ -100,19 +100,19 @@ public class StatusOrbsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private double hitpointsPercentage;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private double specialPercentage;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private double runPercentage;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private double hpPerMs;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private double specPerMs = (double) 1 / (SPEC_REGEN_TICKS * 600);
 
 	// RegenMeter
@@ -124,7 +124,6 @@ public class StatusOrbsPlugin extends Plugin
 	// Run Energy
 	private int lastEnergy = 0;
 	private boolean localPlayerRunningToDestination;
-	private WorldPoint currPoint;
 	private WorldPoint prevLocalPlayerLocation;
 
 	private BufferedImage heart;
@@ -148,7 +147,7 @@ public class StatusOrbsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -160,7 +159,7 @@ public class StatusOrbsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		localPlayerRunningToDestination = false;
@@ -294,7 +293,7 @@ public class StatusOrbsPlugin extends Plugin
 		}
 
 		int currEnergy = client.getEnergy();
-		currPoint = client.getLocalPlayer().getWorldLocation();
+		WorldPoint currPoint = client.getLocalPlayer().getWorldLocation();
 		if (currEnergy == 100 || (prevLocalPlayerLocation != null && currPoint.distanceTo(prevLocalPlayerLocation) > 1) || currEnergy < lastEnergy)
 		{
 			ticksSinceRunRegen = 0;

@@ -47,7 +47,7 @@ public class GauntletPotion implements Effect
 	{
 		// Restores prayer similar to PrayerPotion but there aren't any possible boost so simplify the calculation
 		final int restorePerc = (int) (client.getRealSkillLevel(Skill.PRAYER) * PRAYER_RESTORE_PERCENT);
-		final StatChange prayer =  heal(Stats.PRAYER, restorePerc + PRAYER_RESTORE_DELTA).effect(client);
+		final StatChange prayer = heal(Stats.PRAYER, restorePerc + PRAYER_RESTORE_DELTA).effect(client);
 
 		final StatChange runEnergy = heal(Stats.RUN_ENERGY, 40).effect(client);
 

@@ -50,13 +50,11 @@ public class TemplateTest
 	{
 		Function<String, String> func = (String resource) ->
 		{
-			switch (resource)
+			if ("file2".equals(resource))
 			{
-				case "file2":
-					return FILE2;
-				default:
-					throw new RuntimeException("unknown resource");
+				return FILE2;
 			}
+			throw new RuntimeException("unknown resource");
 		};
 		String out = new Template(func).process(FILE1);
 		assertEquals(RESULT, out);

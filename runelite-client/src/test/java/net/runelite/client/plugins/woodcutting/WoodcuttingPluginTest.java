@@ -35,16 +35,15 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.OpenOSRSConfig;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -87,6 +86,10 @@ public class WoodcuttingPluginTest
 	@Bind
 	OverlayManager overlayManager;
 
+	@Mock
+	@Bind
+	private ItemManager itemManager;
+
 	@Before
 	public void before()
 	{
@@ -94,7 +97,6 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	@Ignore
 	public void testLogs()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some logs.", "", 0);
@@ -103,7 +105,6 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	@Ignore
 	public void testOakLogs()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some oak logs.", "", 0);
@@ -128,16 +129,15 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	@Ignore
 	public void testBirdsNest()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		woodcuttingPlugin.showNestNotification = true;
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier).notify("A bird nest has spawned!");
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
+		woodcuttingPlugin.showNestNotification = false;
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verifyNoMoreInteractions(notifier);
 	}

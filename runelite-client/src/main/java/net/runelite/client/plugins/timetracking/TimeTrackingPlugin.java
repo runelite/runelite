@@ -104,7 +104,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		clockManager.loadTimers();
@@ -129,7 +129,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		lastTickLocation = null;
 		lastTickPostLogin = false;

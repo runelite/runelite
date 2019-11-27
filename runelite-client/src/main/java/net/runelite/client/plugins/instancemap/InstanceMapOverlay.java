@@ -37,9 +37,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Sprite;
 import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
 import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
-import net.runelite.api.Sprite;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -90,7 +90,7 @@ class InstanceMapOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private boolean isCloseButtonHovered;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Rectangle closeButtonBounds;
 
 	private BufferedImage closeButtonImage;

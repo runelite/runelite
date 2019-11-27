@@ -43,7 +43,7 @@ public interface XpGlobesConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		keyName = "showXpLeft",
 		name = "Show XP Left",

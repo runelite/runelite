@@ -153,6 +153,7 @@ class PrayerAlertOverlay extends Overlay
 					if (item.getId() == prayerPotionId)
 					{
 						hasPrayerPotion = true;
+						break;
 					}
 				}
 			}

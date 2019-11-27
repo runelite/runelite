@@ -45,6 +45,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -64,7 +65,7 @@ import net.runelite.client.ui.FontManager;
 @Slf4j
 class VarInspector extends JFrame
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private enum VarType
 	{
 		VARBIT("Varbit"),

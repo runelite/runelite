@@ -23,10 +23,11 @@
  */
 package net.runelite.client.plugins.dynamicmaxhit;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 enum Spells
 {

@@ -87,10 +87,13 @@ public class TMorph extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private TMorphConfig config;
+
 	@Inject
 	private EventBus eventBus;
+
 	private Map<String, String> set1;
 	private Map<String, String> set2;
 	private Map<String, String> set3;
@@ -108,14 +111,14 @@ public class TMorph extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		addSubscriptions();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(this);
 	}

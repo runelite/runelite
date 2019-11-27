@@ -103,7 +103,7 @@ public class BlastFurnacePlugin extends Plugin
 	private boolean showBarDispenser;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -124,7 +124,7 @@ public class BlastFurnacePlugin extends Plugin
 		foremanTimer = null;
 	}
 
-@Provides
+	@Provides
 	BlastFurnaceConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BlastFurnaceConfig.class);

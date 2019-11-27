@@ -86,7 +86,7 @@ public class FeedPlugin extends Plugin
 	}, 10, TimeUnit.MINUTES);
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		feedPanel = new FeedPanel(config, feedSupplier);
 
@@ -104,7 +104,7 @@ public class FeedPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
 	}

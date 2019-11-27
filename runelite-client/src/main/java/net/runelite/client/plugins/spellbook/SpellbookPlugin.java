@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -117,13 +118,13 @@ public class SpellbookPlugin extends Plugin
 	@Inject
 	private SpellbookDragOverlay overlay;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean dragging;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Widget draggingWidget;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Point draggingLocation;
 
 	private ImmutableSet<String> notFilteredSpells;
@@ -157,7 +158,7 @@ public class SpellbookPlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(mouseListener);
 	}
 
-private void updateConfig()
+	private void updateConfig()
 	{
 		loadFilter();
 		this.enableMobile = config.enableMobile();
@@ -470,7 +471,7 @@ private void updateConfig()
 			return;
 		}
 
-		final Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>()  {}.getType());
+		final Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>() {}.getType());
 
 		for (final Spell s : gson)
 		{

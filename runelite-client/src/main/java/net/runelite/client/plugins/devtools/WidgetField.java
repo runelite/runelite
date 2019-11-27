@@ -26,6 +26,7 @@ package net.runelite.client.plugins.devtools;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.widgets.Widget;
@@ -34,7 +35,7 @@ import org.slf4j.helpers.MessageFormatter;
 @Slf4j
 public class WidgetField<T>
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
 	private final Function<Widget, T> getter;

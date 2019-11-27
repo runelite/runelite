@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mta.alchemy;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -38,9 +39,9 @@ public enum AlchemyItem
 	POSSIBLY_EMPTY("", ItemID.CAKE_OF_GUIDANCE),
 	UNKNOWN("Unknown", ItemID.CAKE_OF_GUIDANCE);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
 	AlchemyItem(final String name, final int id)

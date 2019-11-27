@@ -64,14 +64,14 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	private ShayzienInfirmaryOverlay overlay;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		loadPlugin();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		unloadPlugin();
 	}

@@ -237,7 +237,7 @@ public class InfernoPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -261,7 +261,7 @@ public class InfernoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(waveOverlay);

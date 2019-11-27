@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.banktags.tabs;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.game.SpriteOverride;
@@ -39,9 +40,9 @@ public enum TabSprites implements SpriteOverride
 	DOWN_ARROW(-204, "down-arrow.png"),
 	NEW_TAB(-205, "new-tab.png");
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final int spriteId;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final String fileName;
 }

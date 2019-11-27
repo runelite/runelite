@@ -28,7 +28,6 @@ package net.runelite.client.rs;
 import org.junit.Test;
 
 /**
- *
  * @author Adam
  */
 public class ClientConfigLoaderTest

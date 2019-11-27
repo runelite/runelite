@@ -129,7 +129,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.attackingColTag = ColorUtil.colorTag(config.attackingColor());
 		this.showAttackers = config.showAttackersMenu();
@@ -144,7 +144,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(MENU);
 
@@ -154,7 +154,7 @@ public class OpponentInfoPlugin extends Plugin
 		overlayManager.remove(playerComparisonOverlay);
 	}
 
-private void updateMenuSubs()
+	private void updateMenuSubs()
 	{
 		if (showAttackers || showAttacking || showHitpoints)
 		{

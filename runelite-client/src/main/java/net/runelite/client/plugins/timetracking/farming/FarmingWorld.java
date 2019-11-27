@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -42,10 +43,10 @@ import net.runelite.client.plugins.timetracking.Tab;
 @Singleton
 class FarmingWorld
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final ImmutableMap<Integer, FarmingRegion> regions;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
 
 	private final Comparator<FarmingPatch> tabSorter = Comparator

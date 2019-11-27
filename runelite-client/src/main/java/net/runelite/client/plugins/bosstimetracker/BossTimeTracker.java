@@ -36,7 +36,7 @@ public class BossTimeTracker extends InfoBox
 {
 	private final Instant startTime;
 	private LocalTime time;
-	private Instant lastTime;
+	private final Instant lastTime;
 
 	public BossTimeTracker(BufferedImage image, BossTimeTrackerPlugin plugin, Instant startTime, Instant lastTime)
 	{
@@ -80,10 +80,7 @@ public class BossTimeTracker extends InfoBox
 	@Override
 	public String getTooltip()
 	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("Elapsed time: ");
-		builder.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-		return builder.toString();
+		return "Elapsed time: " +
+			time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }

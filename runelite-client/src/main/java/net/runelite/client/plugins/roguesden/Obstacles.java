@@ -27,119 +27,127 @@ package net.runelite.client.plugins.roguesden;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
+import static net.runelite.api.ObjectID.CONTORTION_BARS;
+import static net.runelite.api.ObjectID.DOOR_7234;
+import static net.runelite.api.ObjectID.DOOR_7246;
+import static net.runelite.api.ObjectID.GRILL_7255;
+import static net.runelite.api.ObjectID.LEDGE_7240;
+import static net.runelite.api.ObjectID.PASSAGEWAY;
+import static net.runelite.api.ObjectID.WALL_7249;
+import static net.runelite.api.ObjectID.WALL_SAFE_7237;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.api.ObjectID.*;
 
 class Obstacles
 {
 	static final Map<WorldPoint, Obstacle> TILE_MAP = new HashMap<>();
 	static final Obstacle[] OBSTACLES =
-	{
-		new Obstacle(3050, 4997, "Enter"),
-		new Obstacle(3049, 4997, CONTORTION_BARS),
-		new Obstacle(3039, 4999, "Stand"),
-		new Obstacle(3029, 5003, "Run"),
-		new Obstacle(3024, 5001, "Open", GRILL_7255),
-		new Obstacle(3011, 5005, "Run"),
-		new Obstacle(3004, 5003, "Run"),
+		{
+			new Obstacle(3050, 4997, "Enter"),
+			new Obstacle(3049, 4997, CONTORTION_BARS),
+			new Obstacle(3039, 4999, "Stand"),
+			new Obstacle(3029, 5003, "Run"),
+			new Obstacle(3024, 5001, "Open", GRILL_7255),
+			new Obstacle(3011, 5005, "Run"),
+			new Obstacle(3004, 5003, "Run"),
 
-		new Obstacle(2994, 5004, "Climb"),
-		new Obstacle(2993, 5004, LEDGE_7240),
-		new Obstacle(2994, 5005, "Climb"),
-		new Obstacle(2993, 5005, LEDGE_7240),
+			new Obstacle(2994, 5004, "Climb"),
+			new Obstacle(2993, 5004, LEDGE_7240),
+			new Obstacle(2994, 5005, "Climb"),
+			new Obstacle(2993, 5005, LEDGE_7240),
 
-		new Obstacle(2969, 5016, "Stand"),
-		new Obstacle(2969, 5017, "Stand"),
-		new Obstacle(2969, 5018, "Stand"),
-		new Obstacle(2969, 5019, "Stand"),
+			new Obstacle(2969, 5016, "Stand"),
+			new Obstacle(2969, 5017, "Stand"),
+			new Obstacle(2969, 5018, "Stand"),
+			new Obstacle(2969, 5019, "Stand"),
 
-		new Obstacle(2958, 5031, "Cross"),
-		new Obstacle(2962, 5050, "Stand"),
-		new Obstacle(2963, 5056, "Run"),
+			new Obstacle(2958, 5031, "Cross"),
+			new Obstacle(2962, 5050, "Stand"),
+			new Obstacle(2963, 5056, "Run"),
 
-		new Obstacle(2957, 5068, "Enter"),
-		new Obstacle(2957, 5069, PASSAGEWAY),
+			new Obstacle(2957, 5068, "Enter"),
+			new Obstacle(2957, 5069, PASSAGEWAY),
 
-		new Obstacle(2955, 5094, "Enter"),
-		new Obstacle(2955, 5095, PASSAGEWAY),
+			new Obstacle(2955, 5094, "Enter"),
+			new Obstacle(2955, 5095, PASSAGEWAY),
 
-		new Obstacle(2963, 5105, "Stand"),
+			new Obstacle(2963, 5105, "Stand"),
 
-		new Obstacle(2972, 5098, "Enter"),
-		new Obstacle(2972, 5097, PASSAGEWAY),
+			new Obstacle(2972, 5098, "Enter"),
+			new Obstacle(2972, 5097, PASSAGEWAY),
 
-		new Obstacle(2972, 5094, "Open"),
-		new Obstacle(2972, 5094, GRILL_7255),
+			new Obstacle(2972, 5094, "Open"),
+			new Obstacle(2972, 5094, GRILL_7255),
 
-		new Obstacle(2982, 5087, "Climb"),
-		new Obstacle(2983, 5087, LEDGE_7240),
+			new Obstacle(2982, 5087, "Climb"),
+			new Obstacle(2983, 5087, LEDGE_7240),
 
-		new Obstacle(2982, 5090, "Climb"),
-		new Obstacle(2983, 5090, LEDGE_7240),
+			new Obstacle(2982, 5090, "Climb"),
+			new Obstacle(2983, 5090, LEDGE_7240),
 
-		new Obstacle(2993, 5088, "Search"),
-		new Obstacle(2993, 5087, WALL_7249),
-		new Obstacle(2997, 5088, "Run"),
+			new Obstacle(2993, 5088, "Search"),
+			new Obstacle(2993, 5087, WALL_7249),
+			new Obstacle(2997, 5088, "Run"),
 
-		new Obstacle(2993, 5089, "Search"),
-		new Obstacle(2993, 5089, WALL_7249),
-		new Obstacle(2997, 5089, "Run"),
+			new Obstacle(2993, 5089, "Search"),
+			new Obstacle(2993, 5089, WALL_7249),
+			new Obstacle(2997, 5089, "Run"),
 
-		new Obstacle(3006, 5088, "Run"),
-		new Obstacle(3018, 5080, "Take"),
-		new Obstacle(3023, 5082, "Open", DOOR_7234),
+			new Obstacle(3006, 5088, "Run"),
+			new Obstacle(3018, 5080, "Take"),
+			new Obstacle(3023, 5082, "Open", DOOR_7234),
 
-		// Maze
-		new Obstacle(3030, 5079, GRILL_7255),
-		new Obstacle(3032, 5078, GRILL_7255),
-		new Obstacle(3036, 5076, GRILL_7255),
-		new Obstacle(3039, 5079, GRILL_7255),
-		new Obstacle(3042, 5076, GRILL_7255),
-		new Obstacle(3044, 5069, GRILL_7255),
-		new Obstacle(3041, 5068, GRILL_7255),
-		new Obstacle(3040, 5070, GRILL_7255),
-		new Obstacle(3038, 5069, GRILL_7255),
+			// Maze
+			new Obstacle(3030, 5079, GRILL_7255),
+			new Obstacle(3032, 5078, GRILL_7255),
+			new Obstacle(3036, 5076, GRILL_7255),
+			new Obstacle(3039, 5079, GRILL_7255),
+			new Obstacle(3042, 5076, GRILL_7255),
+			new Obstacle(3044, 5069, GRILL_7255),
+			new Obstacle(3041, 5068, GRILL_7255),
+			new Obstacle(3040, 5070, GRILL_7255),
+			new Obstacle(3038, 5069, GRILL_7255),
 
-		new Obstacle(3028, 5033, "Stand"),
-		new Obstacle(3024, 5033, "Run"),
-		new Obstacle(3028, 5034, "Stand"),
-		new Obstacle(3024, 5034, "Run"),
+			new Obstacle(3028, 5033, "Stand"),
+			new Obstacle(3024, 5033, "Run"),
+			new Obstacle(3028, 5034, "Stand"),
+			new Obstacle(3024, 5034, "Run"),
 
-		new Obstacle(3015, 5033, "Open", GRILL_7255),
-		new Obstacle(3010, 5033, "Run/Open", GRILL_7255),
+			new Obstacle(3015, 5033, "Open", GRILL_7255),
+			new Obstacle(3010, 5033, "Run/Open", GRILL_7255),
 
-		new Obstacle(3000, 5034, "Run"),
+			new Obstacle(3000, 5034, "Run"),
 
-		new Obstacle(2992, 5045, "Stand"),
-		new Obstacle(2992, 5053, "Run"),
+			new Obstacle(2992, 5045, "Stand"),
+			new Obstacle(2992, 5053, "Run"),
 
-		new Obstacle(2992, 5067, "Stand"),
-		new Obstacle(2992, 5075, "Run"),
-		new Obstacle(3009, 5063, "Take"),
-		new Obstacle(3028, 5056, "Run"),
-		new Obstacle(3028, 5047, "Walk"),
+			new Obstacle(2992, 5067, "Stand"),
+			new Obstacle(2992, 5075, "Run"),
+			new Obstacle(3009, 5063, "Take"),
+			new Obstacle(3028, 5056, "Run"),
+			new Obstacle(3028, 5047, "Walk"),
 
-		new Obstacle(3018, 5047, "Crack", WALL_SAFE_7237),
+			new Obstacle(3018, 5047, "Crack", WALL_SAFE_7237),
 
-		// Start of 80+ thieving shortcut
-		new Obstacle(2967, 5061, "80 Thieving", DOOR_7246),
-		new Obstacle(2967, 5066, "80 Thieving", DOOR_7246),
-		new Obstacle(2974, 5061, "Enter"),
-		new Obstacle(2974, 5060, CONTORTION_BARS),
-		new Obstacle(2989, 5057, "Open", GRILL_7255),
-		new Obstacle(2989, 5058, "Open", GRILL_7255),
+			// Start of 80+ thieving shortcut
+			new Obstacle(2967, 5061, "80 Thieving", DOOR_7246),
+			new Obstacle(2967, 5066, "80 Thieving", DOOR_7246),
+			new Obstacle(2974, 5061, "Enter"),
+			new Obstacle(2974, 5060, CONTORTION_BARS),
+			new Obstacle(2989, 5057, "Open", GRILL_7255),
+			new Obstacle(2989, 5058, "Open", GRILL_7255),
 
-		// The 3x3 square around the spinning blade in the middle of the maze
-		new AvoidObstacle(2977, 5090), new AvoidObstacle(2978, 5090), new AvoidObstacle(2979, 5090),
-		new AvoidObstacle(2977, 5089), new AvoidObstacle(2978, 5089), new AvoidObstacle(2979, 5089),
-		new AvoidObstacle(2977, 5088), new AvoidObstacle(2978, 5088), new AvoidObstacle(2979, 5088),
+			// The 3x3 square around the spinning blade in the middle of the maze
+			new AvoidObstacle(2977, 5090), new AvoidObstacle(2978, 5090), new AvoidObstacle(2979, 5090),
+			new AvoidObstacle(2977, 5089), new AvoidObstacle(2978, 5089), new AvoidObstacle(2979, 5089),
+			new AvoidObstacle(2977, 5088), new AvoidObstacle(2978, 5088), new AvoidObstacle(2979, 5088),
 
-		new TipObstacle(3014, 5063, "Stun NPC"),
-		new TipObstacle(2992, 5057, "Continue North"),  // Hint for 80 thieving shortcut
-	};
+			new TipObstacle(3014, 5063, "Stun NPC"),
+			new TipObstacle(2992, 5057, "Continue North"),  // Hint for 80 thieving shortcut
+		};
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	static class Obstacle
 	{
 		private WorldPoint tile;
@@ -172,7 +180,7 @@ class Obstacles
 
 	private static class AvoidObstacle extends Obstacle
 	{
-		@Getter
+		@Getter(AccessLevel.PACKAGE)
 		private final Color tileColor = Color.RED;
 
 		private AvoidObstacle(int x, int y)
@@ -183,7 +191,7 @@ class Obstacles
 
 	private static class TipObstacle extends Obstacle
 	{
-		@Getter
+		@Getter(AccessLevel.PACKAGE)
 		private final Color tileColor = Color.ORANGE;
 
 		private TipObstacle(int x, int y, String hint)

@@ -42,8 +42,9 @@ public class ItemUtil
 	/**
 	 * Converts itemArray into a GameItem collection limited to the passed ids
 	 * Consolidates all matching Item's qty, by id
+	 *
 	 * @param itemArray item array to work on
-	 * @param ids item ids to include in result
+	 * @param ids       item ids to include in result
 	 * @return Map of GameItem by item id
 	 */
 	public static Map<Integer, GameItem> toGameItemMap(Item[] itemArray, @Nullable Set<Integer> ids)
@@ -69,6 +70,7 @@ public class ItemUtil
 	/**
 	 * Converts itemArray into a GameItem collection
 	 * Consolidates all matching Item's qty, by id
+	 *
 	 * @param itemArray item array to work on
 	 * @return Map of GameItem by item id
 	 */
@@ -79,8 +81,9 @@ public class ItemUtil
 
 	/**
 	 * Checks that the itemArray contains the all of the requested ids
+	 *
 	 * @param itemArray item array to work on
-	 * @param ids item ids to check for
+	 * @param ids       item ids to check for
 	 * @return true if itemArray contains all requested item ids
 	 */
 	public static boolean containsAllItemIds(Item[] itemArray, Set<Integer> ids)
@@ -106,8 +109,9 @@ public class ItemUtil
 
 	/**
 	 * Checks if itemArray contains any item id that also exists in ids
+	 *
 	 * @param itemArray item array to work on
-	 * @param ids item ids to check for
+	 * @param ids       item ids to check for
 	 * @return true if any item in itemArray contains any id from ids
 	 */
 	public static boolean containsAnyItemId(Item[] itemArray, Set<Integer> ids)
@@ -126,8 +130,9 @@ public class ItemUtil
 
 	/**
 	 * Checks if any item id in itemArray matches itemID
+	 *
 	 * @param itemArray item array to work on
-	 * @param itemID item id to check for
+	 * @param itemID    item id to check for
 	 * @return true if any item in itemArray matches itemID
 	 */
 	public static boolean containsItemId(Item[] itemArray, int itemID)
@@ -145,8 +150,9 @@ public class ItemUtil
 
 	/**
 	 * Returns null if index is bigger than array otherwise array content.
+	 *
 	 * @param itemArray item array to check
-	 * @param index index to grab
+	 * @param index     index to grab
 	 * @return null if index is bigger than array otherwise array content
 	 */
 	public static Item safeGetItemAtIndex(Item[] itemArray, int index)
@@ -161,8 +167,9 @@ public class ItemUtil
 
 	/**
 	 * Returns -1 if index is bigger than array otherwise array contents `id` value
+	 *
 	 * @param itemArray item array to check
-	 * @param index index to grab
+	 * @param index     index to grab
 	 * @return -1 if index is bigger than array otherwise array contents `id` value
 	 */
 	public static Integer safeGetItemIdAtIndex(Item[] itemArray, int index)
@@ -178,7 +185,8 @@ public class ItemUtil
 	/**
 	 * Checks that the itemArray contains all requestedItems. Must contain >= the requested qty for each id
 	 * Uses GameItem to represent the requestedItems since we can't easily create Item instances
-	 * @param itemArray item array to check against
+	 *
+	 * @param itemArray      item array to check against
 	 * @param requestedItems Collection of GameItems which contain the item id & minimum qty
 	 * @return true if contains all requestedItems
 	 */
@@ -206,7 +214,8 @@ public class ItemUtil
 	/**
 	 * Checks that the itemArray contains all requestedItems. Must contain >= the requested qty for each id
 	 * Uses GameItem to represent the requestedItems since we can't easily create Item instances
-	 * @param itemArray item array to check against
+	 *
+	 * @param itemArray      item array to check against
 	 * @param requestedItems GameItem(s) to request
 	 * @return true if contains all requestedItems
 	 */

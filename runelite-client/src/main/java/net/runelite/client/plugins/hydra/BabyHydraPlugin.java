@@ -94,7 +94,7 @@ public class BabyHydraPlugin extends Plugin
 	private boolean PrayerHelper;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -110,7 +110,7 @@ public class BabyHydraPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(hydraOverlay);
 		overlayManager.remove(hydraPrayOverlay);

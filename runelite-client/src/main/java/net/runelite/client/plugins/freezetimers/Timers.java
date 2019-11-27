@@ -34,7 +34,7 @@ import net.runelite.api.Actor;
 
 @Slf4j
 @Singleton
-public class Timers
+class Timers
 {
 	private final Map<Actor, HashMap<TimerType, Long>> timerMap = new HashMap<>();
 

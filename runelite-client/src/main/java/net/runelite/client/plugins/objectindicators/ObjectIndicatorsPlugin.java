@@ -152,7 +152,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		hotKeyPressed = false;
 	}
 
-@Override
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 

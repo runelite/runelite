@@ -160,7 +160,7 @@ public class BankPlugin extends Plugin
 	private boolean rightClickBankLoot;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 		searchString = "";

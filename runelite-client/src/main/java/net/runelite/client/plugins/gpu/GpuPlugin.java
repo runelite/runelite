@@ -261,7 +261,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -440,7 +440,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		});
 	}
 
-@Provides
+	@Provides
 	GpuPluginConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(GpuPluginConfig.class);
@@ -600,7 +600,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindVertexArray(vaoUiHandle);
 
 		FloatBuffer vboUiBuf = GpuFloatBuffer.allocateDirect(5 * 4);
-		vboUiBuf.put(new float[] {
+		vboUiBuf.put(new float[]{
 			// positions     // texture coords
 			1f, 1f, 0.0f, 1.0f, 0f, // top right
 			1f, -1f, 0.0f, 1.0f, 1f, // bottom right
@@ -727,7 +727,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glUseProgram(glProgram);
 
-		float[] matrix = new float[] {
+		float[] matrix = new float[]{
 			2 / (right - left), 0, 0, 0,
 			0, 2 / (top - bottom), 0, 0,
 			0, 0, -2 / (far - near), 0,
@@ -752,8 +752,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-		TilePaint paint, int tileZ, int tileX, int tileY,
-		int zoom, int centerX, int centerY)
+							TilePaint paint, int tileZ, int tileX, int tileY,
+							int zoom, int centerX, int centerY)
 	{
 		if (paint.getBufferLen() > 0)
 		{
@@ -778,8 +778,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-		TileModel model, int tileZ, int tileX, int tileY,
-		int zoom, int centerX, int centerY)
+							TileModel model, int tileZ, int tileX, int tileY,
+							int zoom, int centerX, int centerY)
 	{
 		if (model.getBufferLen() > 0)
 		{
@@ -816,7 +816,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutDown();
 				startUp();
 			}
-			catch (Exception e)
+			catch (Exception ignored)
 			{
 			}
 			return;

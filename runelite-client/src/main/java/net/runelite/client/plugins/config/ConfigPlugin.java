@@ -88,7 +88,7 @@ public class ConfigPlugin extends Plugin
 	private NavigationButton navButton;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, OpenOSRSConfig, chatColorConfig, colorPickerManager);
@@ -106,7 +106,7 @@ public class ConfigPlugin extends Plugin
 	}
 
 	@Override
-	public void shutDown() throws Exception
+	public void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
 		RuneLite.getInjector().getInstance(ClientThread.class).invokeLater(() ->

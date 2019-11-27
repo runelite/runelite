@@ -101,7 +101,7 @@ public class BarrowsPlugin extends Plugin
 	private LoopTimer barrowsPrayerDrainTimer;
 	private boolean wasInCrypt = false;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Widget puzzleAnswer;
 
 	@Inject
@@ -125,12 +125,6 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	private BarrowsConfig config;
 
-	@Provides
-	BarrowsConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BarrowsConfig.class);
-	}
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showMinimap;
 	@Getter(AccessLevel.PACKAGE)
@@ -143,8 +137,14 @@ public class BarrowsPlugin extends Plugin
 	private boolean showPuzzleAnswer;
 	private boolean showPrayerDrainTimer;
 
+	@Provides
+	BarrowsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BarrowsConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 

@@ -48,7 +48,7 @@ public class InfoPlugin extends Plugin
 
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		InfoPanel panel = injector.getInstance(InfoPanel.class);
 		panel.init();
@@ -66,7 +66,7 @@ public class InfoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
 	}

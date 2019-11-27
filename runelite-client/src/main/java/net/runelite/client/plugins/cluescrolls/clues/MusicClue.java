@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class MusicClue extends ClueScroll implements NpcClueScroll
 {
 	private static final WorldPoint LOCATION = new WorldPoint(2990, 3384, 0);
@@ -91,7 +91,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[] {CECILIA};
+		return new String[]{CECILIA};
 	}
 
 	public static MusicClue forText(String text)

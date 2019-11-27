@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cannon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -67,7 +68,7 @@ public enum CannonSpots
 	ICE_WARRIOR(new WorldPoint(2955, 3876, 0)),
 	BANDIT(new WorldPoint(3037, 3700, 0));
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static final List<WorldPoint> cannonSpots = new ArrayList<>();
 
 	static

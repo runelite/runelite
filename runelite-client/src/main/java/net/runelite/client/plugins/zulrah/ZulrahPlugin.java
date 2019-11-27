@@ -80,24 +80,34 @@ public class ZulrahPlugin extends Plugin
 			new ZulrahPatternC(),
 			new ZulrahPatternD()
 		};
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC zulrah;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ZulrahConfig config;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private SoundManager soundManager;
+
 	@Inject
 	private ZulrahCurrentPhaseOverlay currentPhaseOverlay;
+
 	@Inject
 	private ZulrahNextPhaseOverlay nextPhaseOverlay;
+
 	@Inject
 	private ZulrahPrayerOverlay zulrahPrayerOverlay;
+
 	@Inject
 	private ZulrahOverlay zulrahOverlay;
+
 	private ZulrahInstance instance;
 
 	@Provides
@@ -107,7 +117,7 @@ public class ZulrahPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		overlayManager.add(currentPhaseOverlay);
@@ -117,7 +127,7 @@ public class ZulrahPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(currentPhaseOverlay);
 		overlayManager.remove(nextPhaseOverlay);

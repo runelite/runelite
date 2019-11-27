@@ -146,16 +146,16 @@ public class HerbiboarPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private int finishId;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Set<Integer> previousShownTrailIds;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Integer previousTrailId = null;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean herbiboarRendered = false;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -188,7 +188,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -198,13 +198,13 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 	}
 
-private void updateTrailData()
+	private void updateTrailData()
 	{
 		currentTrail = null;
 		currentPath = -1;

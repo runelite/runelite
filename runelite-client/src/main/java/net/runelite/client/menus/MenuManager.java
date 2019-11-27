@@ -639,7 +639,7 @@ public class MenuManager
 	/**
 	 * Adds to the map of swaps.
 	 */
-	public void addSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
+	private void addSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
 	{
 		option = option.trim().toLowerCase();
 		target = Text.standardize(target);
@@ -660,7 +660,7 @@ public class MenuManager
 	}
 
 
-	public void removeSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
+	private void removeSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
 	{
 		option = option.trim().toLowerCase();
 		target = Text.standardize(target);

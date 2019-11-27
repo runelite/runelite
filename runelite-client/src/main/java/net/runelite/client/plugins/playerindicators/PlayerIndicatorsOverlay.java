@@ -61,8 +61,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 		"no-agility.png");
 	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
 		"skull.png");
-	private PlayerIndicatorsPlugin plugin;
-	private PlayerIndicatorsService playerIndicatorsService;
+	private final PlayerIndicatorsPlugin plugin;
+	private final PlayerIndicatorsService playerIndicatorsService;
 	@Inject
 	private Client client;
 	@Inject

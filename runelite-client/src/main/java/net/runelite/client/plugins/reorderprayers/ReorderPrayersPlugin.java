@@ -219,7 +219,7 @@ public class ReorderPrayersPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		refreshPrayerTabOption();
@@ -228,7 +228,7 @@ public class ReorderPrayersPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		clearPrayerTabMenus();
 		prayerOrder = Prayer.values();

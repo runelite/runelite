@@ -58,13 +58,13 @@ public class AnimationSmoothingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		update();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setInterpolatePlayerAnimations(false);
 		client.setInterpolateNpcAnimations(false);

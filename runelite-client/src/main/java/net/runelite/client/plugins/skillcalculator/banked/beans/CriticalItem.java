@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.ItemDefinition;
@@ -37,7 +38,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum CriticalItem
 {
 	/**

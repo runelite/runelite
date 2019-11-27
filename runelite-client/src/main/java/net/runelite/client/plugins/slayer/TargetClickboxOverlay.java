@@ -165,9 +165,7 @@ public class TargetClickboxOverlay extends Overlay
 
 				WorldPoint wp = actor.getWorldLocation();
 				getSquare(wp, size).forEach(square ->
-				{
-					drawTile(graphics, square, color, 1, 255, 50);
-				});
+					drawTile(graphics, square, color, 1, 255, 50));
 				break;
 		}
 

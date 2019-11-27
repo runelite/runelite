@@ -64,7 +64,7 @@ class ItemRecoilOverlay extends Overlay
 		{
 			BufferedImage recoilImage = plugin.getRecoilRingImage();
 			imagePanelComponent.setBackgroundColor(plugin
-					.isRingOfRecoilEquipped() ? ACTIVATED_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
+				.isRingOfRecoilEquipped() ? ACTIVATED_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
 			imagePanelComponent.getChildren().add(new ImageComponent(recoilImage));
 
 			imagePanelComponent.getChildren().add(tableComponent);

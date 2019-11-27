@@ -85,7 +85,7 @@ public class LizardmenShamanPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		this.showTimer = config.showTimer();
@@ -95,7 +95,7 @@ public class LizardmenShamanPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		spawns.clear();

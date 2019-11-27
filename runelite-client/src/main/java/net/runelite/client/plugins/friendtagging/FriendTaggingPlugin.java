@@ -83,7 +83,7 @@ public class FriendTaggingPlugin extends Plugin
 	private ChatboxPanelManager chatboxPanelManager;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 
 		menuManager.addManagedCustomMenu(friendsTabMenuOption);
@@ -94,7 +94,7 @@ public class FriendTaggingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		menuManager.removeManagedCustomMenu(friendsTabMenuOption);
 		menuManager.removeManagedCustomMenu(ignoreTabMenuOption);

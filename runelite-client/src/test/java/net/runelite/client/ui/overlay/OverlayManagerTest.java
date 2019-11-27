@@ -29,13 +29,12 @@ import java.awt.Graphics2D;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 public class OverlayManagerTest
 {
-	class TestOverlay extends Overlay
+	static class TestOverlay extends Overlay
 	{
 		TestOverlay(OverlayPosition position, OverlayPriority priority)
 		{
@@ -75,11 +74,11 @@ public class OverlayManagerTest
 		Overlay a2 = new OverlayA();
 		Overlay b = new OverlayB();
 		// The same instance of the same overlay should be equal
-		assertTrue(a1.equals(a1));
+		assertEquals(a1, a1);
 		// A different instance of the same overlay should not be equal by default
-		assertFalse(a1.equals(a2));
+		assertNotEquals(a1, a2);
 		// A different instance of a different overlay should not be equal
-		assertFalse(a1.equals(b));
+		assertNotEquals(a1, b);
 	}
 
 	@Test

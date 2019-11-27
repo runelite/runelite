@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.table.TableAlignment;
 import net.runelite.client.ui.overlay.components.table.TableComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Singleton
 public class ImplingCounterOverlay extends Overlay

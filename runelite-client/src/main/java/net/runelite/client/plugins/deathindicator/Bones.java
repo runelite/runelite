@@ -15,7 +15,7 @@ import net.runelite.client.config.ConfigManager;
 import static net.runelite.http.api.RuneLiteAPI.GSON;
 
 @Slf4j
-public class Bones
+class Bones
 {
 	private static final String CONFIG_GROUP = "deathIndicator";
 	private static final String BONES_PREFIX = "bones_";

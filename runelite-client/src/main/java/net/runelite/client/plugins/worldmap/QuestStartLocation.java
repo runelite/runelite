@@ -25,9 +25,10 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.Quest;
+import net.runelite.api.coords.WorldPoint;
 
 // Some quests are in the same spot, but they are done in order. If multiple
 // quests start in the same location, an array of quests is expected.
@@ -167,10 +168,10 @@ enum QuestStartLocation
 	WITCHS_HOUSE(Quest.WITCHS_HOUSE, new WorldPoint(2927, 3456, 0)),
 	ZOGRE_FLESH_EATERS(Quest.ZOGRE_FLESH_EATERS, new WorldPoint(2442, 3051, 0));
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint location;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Quest[] quests;
 
 	QuestStartLocation(Quest[] quests, WorldPoint location)

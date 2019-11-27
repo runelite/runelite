@@ -316,7 +316,7 @@ public class Notifier
 
 	private static Process sendCommand(final List<String> commands) throws IOException
 	{
-		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
+		return new ProcessBuilder(commands.toArray(new String[0]))
 			.redirectErrorStream(true)
 			.start();
 	}
