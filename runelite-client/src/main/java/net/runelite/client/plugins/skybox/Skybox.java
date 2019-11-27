@@ -86,6 +86,38 @@ class Skybox
 	private final int y2;
 	private final int stride;
 
+	private boolean override;
+	public void setOverrideEnabled(boolean value) { override = value; }
+	private int overrideTargetColor;
+	private int overrideReplacementColor;
+	public void setOverrideColors(int before, int after){
+		int cr, cg, cb;
+		byte cco, tmp, ccg, cy;
+		cr = before >> 16 & 0xFF;
+		cg = before >> 8 & 0xFF;
+		cb = before & 0xFF;
+
+		// Convert to YCoCg24
+		cco = (byte) (cb - cr);
+		tmp = (byte) (cr + (cco >> 1));
+		ccg = (byte) (tmp - cg);
+		cy = (byte) (cg + (ccg >> 1));
+
+		overrideTargetColor = (cy & 0xFF) << 16 | (cco & 0xFF) << 8 | (ccg & 0xFF);
+
+		cr = after >> 16 & 0xFF;
+		cg = after >> 8 & 0xFF;
+		cb = after & 0xFF;
+
+		// Convert to YCoCg24
+		cco = (byte) (cb - cr);
+		tmp = (byte) (cr + (cco >> 1));
+		ccg = (byte) (tmp - cg);
+		cy = (byte) (cg + (ccg >> 1));
+
+		overrideReplacementColor = (cy & 0xFF) << 16 | (cco & 0xFF) << 8 | (ccg & 0xFF);
+	}
+
 	public Skybox(InputStream is, String filename) throws IOException
 	{
 		this(new InputStreamReader(is), filename);
@@ -352,15 +384,44 @@ class Skybox
 		}
 
 		int cv = chunks[(stride * (cy - y1)) + (cx - x1)];
+
 		if (cv == -1)
 		{
 			return -1;
 		}
+
 		if ((cv & 0x8000_0000) != 0)
 		{
 			cv = planeOverrides[(cv & 0x7FFF_FFFF) | plane];
 		}
+
 		return cv;
+	}
+
+	private int chunkDataWithOverride(int cx, int cy, int plane, ChunkMapper chunkMapper){
+		int cv = chunkData(cx, cy, plane, chunkMapper);
+
+		if (override && cv == ((0xFF000000 & cv) | overrideTargetColor))
+			cv = ((0xFF000000 & cv) | overrideReplacementColor);
+
+		return cv;
+	}
+
+	public Color getCentralColorForPoint(int px, int py, int plane, ChunkMapper chunkMapper)
+	{
+		int ycocg = chunkData(px / 8, py / 8, plane, chunkMapper);
+
+		byte y = (byte) (ycocg >>> 16 & 0xFF);
+		byte co = (byte) (ycocg >>> 8);
+		byte cg = (byte) ycocg;
+
+		// convert back to rgb from YCoCg24
+		int g = (y - (cg >> 1)) & 0xFF;
+		int tmp = (g + cg) & 0xFF;
+		int r = (tmp - (co >> 1)) & 0xFF;
+		int b = (r + co) & 0xFF;
+
+		return new Color(r, g, b);
 	}
 
 	/**
@@ -380,7 +441,7 @@ class Skybox
 		int cx = (int) x;
 		int cy = (int) y;
 
-		int centerChunkData = chunkData(px / 8, py / 8, plane, chunkMapper);
+		int centerChunkData = chunkDataWithOverride(px / 8, py / 8, plane, chunkMapper);
 		if (centerChunkData == -1)
 		{
 			// No data in the center chunk?
@@ -401,7 +462,7 @@ class Skybox
 		{
 			for (int ucy = ymin; ucy <= ymax; ucy++)
 			{
-				int val = chunkData(ucx, ucy, plane, chunkMapper);
+				int val = chunkDataWithOverride(ucx, ucy, plane, chunkMapper);
 				if (val == -1)
 				{
 					continue;

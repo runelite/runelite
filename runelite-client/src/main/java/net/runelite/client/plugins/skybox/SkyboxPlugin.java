@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.skybox;
 
 import com.google.inject.Inject;
+import com.google.inject.Provides;
+import java.awt.Color;
 import java.io.IOException;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -32,9 +34,12 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.skybox.config.SkyOverrideMode;
 
 @PluginDescriptor(
 	name = "Skybox",
@@ -47,12 +52,16 @@ public class SkyboxPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private SkyboxPluginConfig config;
+
 	private Skybox skybox;
 
 	@Override
 	public void startUp() throws IOException
 	{
 		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
+		skybox.setOverrideColors(config.colorToOverride().getRGB(), config.customColor().getRGB());
 	}
 
 	@Override
@@ -60,6 +69,33 @@ public class SkyboxPlugin extends Plugin
 	{
 		client.setSkyboxColor(0);
 		skybox = null;
+	}
+
+	@Provides
+	SkyboxPluginConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkyboxPluginConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (config.pickColorToOverride()) {
+			Player player = client.getLocalPlayer();
+			if (player != null)
+			{
+				Color c = skybox.getCentralColorForPoint(
+					player.getWorldLocation().getX(),
+					player.getWorldLocation().getY(),
+					client.getPlane(),
+					client.isInInstancedRegion() ? this::mapChunk : null);
+				config.setColorToOverride(c);
+			}
+			config.setOverrideMode(SkyOverrideMode.ONE);
+		}
+
+		skybox.setOverrideColors(config.colorToOverride().getRGB(), config.customColor().getRGB());
+		skybox.setOverrideEnabled(config.overrideMode() == SkyOverrideMode.ONE);
 	}
 
 	private int mapChunk(int cx, int cy, int plane)
@@ -111,7 +147,10 @@ public class SkyboxPlugin extends Plugin
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
-		client.setSkyboxColor(skybox.getColorForPoint(
+		if (config.overrideMode() == SkyOverrideMode.ALL || (config.overrideMode() == SkyOverrideMode.OVERWORLD && baseY < 4200))
+			client.setSkyboxColor(config.customColor().getRGB());
+		else
+			client.setSkyboxColor(skybox.getColorForPoint(
 			baseX + ((px + spx) / 128.f),
 			baseY + ((py + spy) / 128.f),
 			baseX + (px / 128),
