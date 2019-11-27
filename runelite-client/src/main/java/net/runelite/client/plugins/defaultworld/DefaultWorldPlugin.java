@@ -91,6 +91,11 @@ public class DefaultWorldPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			config.lastWorld(client.getWorld());
+		}
+
 		applyWorld();
 	}
 
@@ -114,13 +119,6 @@ public class DefaultWorldPlugin extends Plugin
 		try
 		{
 			final WorldResult worldResult = worldClient.lookupWorlds();
-
-			if (worldResult == null)
-			{
-				log.warn("Failed to lookup worlds.");
-				return;
-			}
-
 			final World world = worldResult.findWorld(correctedWorld);
 
 			if (world != null)
@@ -155,7 +153,7 @@ public class DefaultWorldPlugin extends Plugin
 			log.debug("Stored old world {}", worldCache);
 		}
 
-		final int newWorld = config.getWorld();
+		final int newWorld = !config.useLastWorld() ? config.getWorld() : config.lastWorld();
 		changeWorld(newWorld);
 	}
 }

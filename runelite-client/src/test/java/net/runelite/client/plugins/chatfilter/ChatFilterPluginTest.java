@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.client.game.ClanManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -52,6 +53,10 @@ public class ChatFilterPluginTest
 	@Mock
 	@Bind
 	private ChatFilterConfig chatFilterConfig;
+
+	@Mock
+	@Bind
+	private ClanManager clanManager;
 
 	@Mock
 	private Player localPlayer;
@@ -132,7 +137,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
-		when(client.isClanMember("Iron Mammal")).thenReturn(false);
+		when(clanManager.isClanMember("Iron Mammal")).thenReturn(false);
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
@@ -156,7 +161,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromClanIsNotFiltered()
 	{
-		when(client.isClanMember("B0aty")).thenReturn(true);
+		when(clanManager.isClanMember("B0aty")).thenReturn(true);
 		when(chatFilterConfig.filterClan()).thenReturn(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
@@ -172,7 +177,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromNonFriendNonClanIsFiltered()
 	{
 		when(client.isFriended("Woox", false)).thenReturn(false);
-		when(client.isClanMember("Woox")).thenReturn(false);
+		when(clanManager.isClanMember("Woox")).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Woox"));
 	}
 }

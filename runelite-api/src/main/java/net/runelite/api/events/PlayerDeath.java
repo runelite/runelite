@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Levi <me@levischuck.com>
+ * Copyright (c) 2018, Matthew Steglinski <https://github.com/sainttx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.api.events;
 
-public enum FpsLimitMode
+import lombok.Value;
+import net.runelite.api.Player;
+
+/**
+ * An event fired when a player dies.
+ */
+@Value
+public class PlayerDeath
 {
-	NEVER,
-	UNFOCUSED,
-	ALWAYS
+	private final Player player;
 }

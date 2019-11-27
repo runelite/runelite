@@ -62,7 +62,7 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  6
-   iconst                 10551325
+   iconst                 10551326
    enum                  
    if_getheight          
    add                   
@@ -361,9 +361,9 @@ CHAT_FILTER:
    iload                  15                ; Load the messageType
    iload                  12                ; Load the id of the messageNode
    sconst                 "chatFilterCheck"
-   runelite_callback
-   pop_int                                  ; Pop the id of the messageNode
-   pop_int                                  ; Pop the messageType
+   runelite_callback     
+   pop_int               ; Pop the id of the messageNode
+   pop_int               ; Pop the messageType
    iconst                 1                 ; 2nd half of conditional
    sstore                 0                 ; Override the message with our filtered message
    if_icmpeq              LABEL327          ; Check if we are building this message
@@ -380,8 +380,8 @@ LABEL330:
    iload                  12                 ; Load the id of the messageNode
    sconst                 ""                 ; Push a container for the timestamp
    sconst                 "addTimestamp"     ; Push event name
-   runelite_callback                         ; Invoke callback
-   pop_int                                   ; Pop the id of the messageNode
+   runelite_callback     ; Invoke callback
+   pop_int               ; Pop the id of the messageNode
    sconst                 "From "
    sload                  1
    sconst                 ":"
@@ -409,8 +409,8 @@ LABEL351:
    iload                  12                 ; Load the id of the messageNode
    sconst                 ""                 ; Push container for the timestamp
    sconst                 "addTimestamp"     ; Push event name
-   runelite_callback                         ; Invoke callback
-   pop_int                                   ; Pop the id of the messageNode
+   runelite_callback     ; Invoke callback
+   pop_int               ; Pop the id of the messageNode
    sconst                 "To "
    sload                  1
    sconst                 ":"
@@ -438,8 +438,8 @@ LABEL372:
    iload                  12                 ; Load the id of the messageNode
    sconst                 ""                 ; Push a container for the timestamp
    sconst                 "addTimestamp"     ; Push event name
-   runelite_callback                         ; Invoke callback
-   pop_int                                   ; Pop the id of the messageNode
+   runelite_callback     ; Invoke callback
+   pop_int               ; Pop the id of the messageNode
    sload                  0                  ; Load the log in/out message
    join_string            2                  ; Add the timestamp to the message
    iload                  9

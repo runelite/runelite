@@ -49,6 +49,12 @@ public interface NPCComposition
 	boolean isClickable();
 
 	/**
+	 * NPC can be interacting with via menu options
+	 * @return
+	 */
+	boolean isInteractible();
+
+	/**
 	 * Gets whether the NPC is visible on the mini-map.
 	 */
 	boolean isMinimapVisible();

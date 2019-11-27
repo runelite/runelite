@@ -36,7 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;

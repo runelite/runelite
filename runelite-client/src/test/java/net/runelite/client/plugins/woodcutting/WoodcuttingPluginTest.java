@@ -25,52 +25,28 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WoodcuttingPluginTest
 {
-	private static final Map<String, Boolean> ALL_MESSAGES;
-
-	static
-	{
-		ImmutableMap.Builder<String, Boolean> map = ImmutableMap.builder();
-		map.put("You swing your axe at the tree.", Boolean.FALSE);
-		map.put("You get some oak logs.", Boolean.TRUE);
-		map.put("Logs cut from a willow tree.", Boolean.FALSE);
-		map.put("You get an arctic log.", Boolean.TRUE);
-		map.put("You get some logs.", Boolean.TRUE);
-		map.put("You get some maple logs.", Boolean.TRUE);
-		map.put("You get some mushrooms.", Boolean.TRUE);
-
-		ALL_MESSAGES = map.build();
-	}
-
 	private static final String BIRDS_NEST_MESSAGE = "A bird's nest falls out of the tree.";
 
 	@Inject
@@ -90,19 +66,11 @@ public class WoodcuttingPluginTest
 
 	@Mock
 	@Bind
-	InfoBoxManager infoBoxManager;
-
-	@Mock
-	@Bind
-	ItemManager itemManager;
-
-	@Mock
-	@Bind
-	XpTrackerService xpTrackerService;
-
-	@Mock
-	@Bind
 	WoodcuttingOverlay woodcuttingOverlay;
+
+	@Mock
+	@Bind
+	WoodcuttingTreesOverlay woodcuttingTreesOverlay;
 
 	@Mock
 	@Bind
@@ -115,64 +83,48 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	public void testOnChatMessage()
+	public void testLogs()
 	{
-		WoodcuttingSession woodcuttingSession;
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some logs.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
+	}
 
-		for (String message : ALL_MESSAGES.keySet())
-		{
-			// reset the plugin
-			woodcuttingPlugin = new WoodcuttingPlugin();
-			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", message, "", 0);
-			woodcuttingPlugin.onChatMessage(chatMessage);
-			woodcuttingSession = woodcuttingPlugin.getSession();
+	@Test
+	public void testOakLogs()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some oak logs.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
+	}
 
-			if (ALL_MESSAGES.get(message))
-			{
-				assertNotNull(woodcuttingSession);
-				assertNotNull(woodcuttingSession.getLastLogCut());
-			}
-			else
-			{
-				assertNull(woodcuttingSession);
-			}
-		}
+	@Test
+	public void testArcticLogs()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get an arctic log.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
+	}
+
+	@Test
+	public void testMushrooms()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some mushrooms.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
 	}
 
 	@Test
 	public void testBirdsNest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, ChatMessageType.SPAM, "", BIRDS_NEST_MESSAGE, "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		woodcuttingPlugin.onChatMessage(chatMessageEvent);
+		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier).notify("A bird nest has spawned!");
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
-		woodcuttingPlugin.onChatMessage(chatMessageEvent);
-		verifyNoMoreInteractions(notifier);
-	}
-
-	@Test
-	public void testDurationExpired() throws Exception
-	{
-		when(woodcuttingConfig.statTimeout()).thenReturn(1);
-		WoodcuttingSession woodcuttingSession;
-
-		woodcuttingPlugin.onGameTick(new GameTick());
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You get some oak logs.", "", 0);
 		woodcuttingPlugin.onChatMessage(chatMessage);
-
-		woodcuttingSession = woodcuttingPlugin.getSession();
-		woodcuttingPlugin.onGameTick(new GameTick());
-
-		assertNotNull(woodcuttingSession);
-		assertNotNull(woodcuttingSession.getLastLogCut());
-
-		when(woodcuttingConfig.statTimeout()).thenReturn(0);
-		Thread.sleep(15);
-		woodcuttingPlugin.onGameTick(new GameTick());
-		woodcuttingSession = woodcuttingPlugin.getSession();
-		assertNull(woodcuttingSession);
+		verifyNoMoreInteractions(notifier);
 	}
 }

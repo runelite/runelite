@@ -101,14 +101,6 @@ public class RaidsOverlay extends Overlay
 			.color(color)
 			.build());
 
-		int bossMatches = 0;
-		int bossCount = 0;
-
-		if (config.enableRotationWhitelist())
-		{
-			bossMatches = plugin.getRotationMatches();
-		}
-
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -124,38 +116,41 @@ public class RaidsOverlay extends Overlay
 			switch (room.getType())
 			{
 				case COMBAT:
-					bossCount++;
-					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
-							|| config.enableRotationWhitelist() && bossCount > bossMatches)
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
+							|| config.enableRotationWhitelist() && !plugin.getRotationMatches())
 					{
 						color = Color.RED;
 					}
 
+					String name = room == RaidRoom.UNKNOWN_COMBAT ? "Unknown" : room.getName();
+
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
-						.right(room.getBoss().getName())
+						.right(name)
 						.rightColor(color)
 						.build());
 
 					break;
 
 				case PUZZLE:
-					if (plugin.getRoomWhitelist().contains(room.getPuzzle().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.RED;
 					}
 
+					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
+
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
-						.right(room.getPuzzle().getName())
+						.right(name)
 						.rightColor(color)
 						.build());
 					break;
