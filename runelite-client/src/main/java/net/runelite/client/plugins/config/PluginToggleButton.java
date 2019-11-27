@@ -42,7 +42,7 @@ class PluginToggleButton extends JToggleButton
 		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
 		ON_SWITCHER = new ImageIcon(onSwitcher);
 		OFF_SWITCHER = new ImageIcon(ImageUtil.flipImage(
-			ImageUtil.grayscaleOffset(
+			ImageUtil.luminanceScale(
 				ImageUtil.grayscaleImage(onSwitcher),
 				0.61f
 			),

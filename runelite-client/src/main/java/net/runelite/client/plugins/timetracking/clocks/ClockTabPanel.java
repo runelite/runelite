@@ -75,15 +75,15 @@ public class ClockTabPanel extends TabContentPanel
 		BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "add_icon.png");
 
 		DELETE_ICON = new ImageIcon(deleteIcon);
-		DELETE_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(deleteIcon, -80));
+		DELETE_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(deleteIcon, -80));
 		LAP_ICON = new ImageIcon(lapIcon);
-		LAP_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(lapIcon, -80));
+		LAP_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(lapIcon, -80));
 		PAUSE_ICON = new ImageIcon(pauseIcon);
-		PAUSE_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(pauseIcon, -80));
+		PAUSE_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(pauseIcon, -80));
 		RESET_ICON = new ImageIcon(resetIcon);
-		RESET_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(resetIcon, -80));
+		RESET_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(resetIcon, -80));
 		START_ICON = new ImageIcon(startIcon);
-		START_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(startIcon, -80));
+		START_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(startIcon, -80));
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
 	}
