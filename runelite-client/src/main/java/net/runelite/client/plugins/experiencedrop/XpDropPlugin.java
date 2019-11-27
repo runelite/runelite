@@ -46,6 +46,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -58,6 +59,7 @@ import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "XP Drop",
@@ -354,6 +356,45 @@ public class XpDropPlugin extends Plugin
 		if (fakeXpDrop.getSkill() == Skill.HITPOINTS)
 		{
 			calculateDamageDealt(fakeXpDrop.getXp());
+		}
+	}
+
+	@Subscribe
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
+	{
+		if (this.showdamagedrops == XpDropConfig.DamageMode.NONE)
+		{
+			return;
+		}
+
+		final String eventName = e.getEventName();
+
+		if (eventName.equals("newXpDrop"))
+		{
+			damage = 0;
+		}
+		else if (eventName.equals("hpXpGained"))
+		{
+			final int[] intStack = client.getIntStack();
+			final int intStackSize = client.getIntStackSize();
+
+			final int exp = intStack[intStackSize - 1];
+			calculateDamageDealt(exp);
+		}
+		else if (eventName.equals("xpDropAddDamage")
+			&& damageMode == XpDropConfig.DamageMode.IN_XP_DROP
+			&& damage > 0)
+		{
+			final String[] stringStack = client.getStringStack();
+			final int stringStackSize = client.getStringStackSize();
+
+			String builder =
+				stringStack[stringStackSize - 1]
+					+ ColorUtil.colorTag(this.damageColor)
+					+ " ("
+					+ damage
+					+ ")";
+			stringStack[stringStackSize - 1] = builder;
 		}
 	}
 
