@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.getCanvasTilePoly;
 import net.runelite.api.Player;
@@ -212,21 +213,24 @@ class KourendLibraryOverlay extends Overlay
 		LibraryCustomer customer = library.getCustomer();
 		if (customer != null)
 		{
-			client.getNpcs().stream()
-				.filter(n -> n.getId() == customer.getId())
-				.forEach(n ->
+			for (NPC n : plugin.getNpcsToMark())
+			{
+				if (n.getId() != customer.getId())
 				{
-					Book b = library.getCustomerBook();
-					boolean doesPlayerContainBook = b != null && plugin.doesPlayerContainBook(b);
-					LocalPoint local = n.getLocalLocation();
-					Polygon poly = getCanvasTilePoly(client, local);
-					OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
-					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
-					if (screen != null)
-					{
-						g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
-					}
-				});
+					continue;
+				}
+
+				Book b = library.getCustomerBook();
+				boolean doesPlayerContainBook = plugin.doesPlayerContainBook(b);
+				LocalPoint local = n.getLocalLocation();
+				Polygon poly = getCanvasTilePoly(client, local);
+				OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
+				Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
+				if (screen != null)
+				{
+					g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
+				}
+			}
 		}
 
 		return null;

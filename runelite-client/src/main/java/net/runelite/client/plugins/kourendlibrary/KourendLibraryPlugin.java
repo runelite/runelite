@@ -27,10 +27,14 @@ package net.runelite.client.plugins.kourendlibrary;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -39,10 +43,13 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -103,6 +110,9 @@ public class KourendLibraryPlugin extends Plugin
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 	private EnumSet<Book> playerBooks = null;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<NPC> npcsToMark = new HashSet<>();
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -292,6 +302,21 @@ public class KourendLibraryPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
 		updatePlayerBooks();
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (LibraryCustomer.getById(event.getNpc().getId()) != null)
+		{
+			npcsToMark.add(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		npcsToMark.remove(event.getNpc());
 	}
 
 	boolean doesPlayerContainBook(Book book)
