@@ -125,7 +125,7 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
-				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
+				Color color = bookIsKnown ? (book == library.getCustomerBook() ? Color.GREEN : Color.ORANGE) : Color.WHITE;
 
 				// Render the poly on the floor
 				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book))
