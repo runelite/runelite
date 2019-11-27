@@ -81,8 +81,13 @@ void main()
   int fogSouth = max(FOG_SCENE_EDGE_MIN, cameraZ - drawDistance);
   int fogNorth = min(FOG_SCENE_EDGE_MAX, cameraZ + drawDistance - TILE_SIZE);
 
+
   // Calculate distance from the scene edge
-  float fogDistance = min(min(vertex.x - fogWest, fogEast - vertex.x), min(vertex.z - fogSouth, fogNorth - vertex.z));
+    int xDist = min(vertex.x - fogWest, fogEast - vertex.x);
+    int zDist = min(vertex.z - fogSouth, fogNorth - vertex.z);
+    float nearestEdgeDistance = min(xDist, zDist);
+    float secondNearestEdgeDistance = max(xDist, zDist);
+    float fogDistance = nearestEdgeDistance - 1.5 * TILE_SIZE * clamp((nearestEdgeDistance + 1) / (secondNearestEdgeDistance + 1), 0, 1);
 
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 }
