@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -40,9 +41,9 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
 public class ClockTabPanel extends TabContentPanel
 {
@@ -150,7 +151,9 @@ public class ClockTabPanel extends TabContentPanel
 		headerLabel.setFont(FontManager.getRunescapeSmallFont());
 		panel.add(headerLabel, BorderLayout.CENTER);
 
-		IconButton addButton = new IconButton(ADD_ICON, ADD_ICON_HOVER);
+		JButton addButton = new JButton(ADD_ICON);
+		addButton.setRolloverIcon(ADD_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(addButton);
 		addButton.setPreferredSize(new Dimension(14, 14));
 		addButton.setToolTipText("Add a " + type);
 		addButton.addActionListener(actionListener);
