@@ -27,6 +27,7 @@ package net.runelite.client.rs;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -36,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
 class HostSupplier implements Supplier<String>
@@ -57,6 +59,7 @@ class HostSupplier implements Supplier<String>
 				.lookupWorlds()
 				.getWorlds()
 				.stream()
+				.filter(w -> w.getTypes().isEmpty() || EnumSet.of(WorldType.MEMBERS).equals(w.getTypes()))
 				.map(World::getAddress)
 				.collect(Collectors.toList());
 

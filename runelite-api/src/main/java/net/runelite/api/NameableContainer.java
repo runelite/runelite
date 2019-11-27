@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +24,27 @@
  */
 package net.runelite.api;
 
-/**
- * Represents the friend and ignore list manager.
- */
-public interface FriendManager
+public interface NameableContainer<T extends Nameable>
 {
+	/**
+	 * Get the number of members in this container
+	 *
+	 * @return
+	 */
+	int getCount();
+
+	/**
+	 * Get the members in this container
+	 *
+	 * @return
+	 */
+	T[] getMembers();
+
+	/**
+	 * Find a nameable by name
+	 *
+	 * @param name the name
+	 * @return
+	 */
+	T findByName(String name);
 }

@@ -34,8 +34,6 @@ import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Comparator;
@@ -46,6 +44,7 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.ReflectUtil;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -146,7 +145,7 @@ public class EventBus
 
 				try
 				{
-					final MethodHandles.Lookup caller = privateLookupIn(clazz);
+					final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
 					final MethodType subscription = MethodType.methodType(void.class, parameterClazz);
 					final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 					final CallSite site = LambdaMetafactory.metafactory(
@@ -226,29 +225,6 @@ public class EventBus
 			{
 				exceptionHandler.accept(e);
 			}
-		}
-	}
-
-	private static MethodHandles.Lookup privateLookupIn(Class clazz) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException
-	{
-		try
-		{
-			// Java 9+ has privateLookupIn method on MethodHandles, but since we are shipping and using Java 8
-			// we need to access it via reflection. This is preferred way because it's Java 9+ public api and is
-			// likely to not change
-			final Method privateLookupIn = MethodHandles.class.getMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class);
-			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, MethodHandles.lookup());
-		}
-		catch (NoSuchMethodException e)
-		{
-			// In Java 8 we first do standard lookupIn class
-			final MethodHandles.Lookup lookupIn = MethodHandles.lookup().in(clazz);
-
-			// and then we mark it as trusted for private lookup via reflection on private field
-			final Field modes = MethodHandles.Lookup.class.getDeclaredField("allowedModes");
-			modes.setAccessible(true);
-			modes.setInt(lookupIn, -1); // -1 == TRUSTED
-			return lookupIn;
 		}
 	}
 }

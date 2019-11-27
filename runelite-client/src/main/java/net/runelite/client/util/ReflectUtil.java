@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,69 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-class ClientConfigLoader
+public class ReflectUtil
 {
-	private ClientConfigLoader()
+	private ReflectUtil()
 	{
 	}
 
-	static RSConfig fetch(HttpUrl url) throws IOException
+	public static MethodHandles.Lookup privateLookupIn(Class clazz)
 	{
-		final Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		final RSConfig config = new RSConfig();
-
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try
 		{
-			if (!response.isSuccessful())
+			// Java 9+ has privateLookupIn method on MethodHandles, but since we are shipping and using Java 8
+			// we need to access it via reflection. This is preferred way because it's Java 9+ public api and is
+			// likely to not change
+			final Method privateLookupIn = MethodHandles.class.getMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class);
+			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, MethodHandles.lookup());
+		}
+		catch (InvocationTargetException | IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+		catch (NoSuchMethodException e)
+		{
+			try
 			{
-				throw new IOException("Unsuccessful response: " + response.message());
+				// In Java 8 we first do standard lookupIn class
+				final MethodHandles.Lookup lookupIn = MethodHandles.lookup().in(clazz);
+
+				// and then we mark it as trusted for private lookup via reflection on private field
+				final Field modes = MethodHandles.Lookup.class.getDeclaredField("allowedModes");
+				modes.setAccessible(true);
+				modes.setInt(lookupIn, -1); // -1 == TRUSTED
+				return lookupIn;
 			}
-
-			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-			while ((str = in.readLine()) != null)
+			catch (ReflectiveOperationException ex)
 			{
-				int idx = str.indexOf('=');
-
-				if (idx == -1)
-				{
-					continue;
-				}
-
-				String s = str.substring(0, idx);
-
-				switch (s)
-				{
-					case "param":
-						str = str.substring(idx + 1);
-						idx = str.indexOf('=');
-						s = str.substring(0, idx);
-
-						config.getAppletProperties().put(s, str.substring(idx + 1));
-						break;
-					case "msg":
-						// ignore
-						break;
-					default:
-						config.getClassLoaderProperties().put(s, str.substring(idx + 1));
-						break;
-				}
+				throw new RuntimeException(ex);
 			}
 		}
-
-		return config;
 	}
 }

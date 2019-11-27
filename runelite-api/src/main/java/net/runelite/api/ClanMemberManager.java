@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +24,19 @@
  */
 package net.runelite.api;
 
-/**
- * Represents a clan member.
- */
-public interface ClanMember extends ChatPlayer
+public interface ClanMemberManager extends NameableContainer<ClanMember>
 {
 	/**
-	 * Gets the world the member is in.
+	 * Gets the clan owner of the currently joined clan chat
 	 *
-	 * @return the world
+	 * @return
 	 */
-	int getWorld();
+	String getClanOwner();
 
 	/**
-	 * Gets the rank of the clan member.
+	 * Gets the clan chat name of the currently joined clan chat
 	 *
-	 * @return the rank
+	 * @return
 	 */
-	ClanMemberRank getRank();
+	String getClanChatName();
 }

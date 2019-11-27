@@ -52,14 +52,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -74,6 +75,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -512,14 +514,10 @@ public class WorldHopperPlugin extends Plugin
 		try
 		{
 			WorldResult worldResult = worldClient.lookupWorlds();
-
-			if (worldResult != null)
-			{
-				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-				this.worldResult = worldResult;
-				this.lastFetch = Instant.now();
-				updateList();
-			}
+			worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+			this.worldResult = worldResult;
+			this.lastFetch = Instant.now();
+			updateList();
 		}
 		catch (IOException ex)
 		{
@@ -756,30 +754,20 @@ public class WorldHopperPlugin extends Plugin
 
 		// Search clan members first, because if a friend is in the clan chat but their private
 		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
-		ClanMember[] clanMembers = client.getClanMembers();
-
-		if (clanMembers != null)
+		ClanMemberManager clanMemberManager = client.getClanMemberManager();
+		if (clanMemberManager != null)
 		{
-			for (ClanMember clanMember : clanMembers)
+			ClanMember clanMember = clanMemberManager.findByName(cleanName);
+			if (clanMember != null)
 			{
-				if (clanMember != null && clanMember.getUsername().equals(cleanName))
-				{
-					return clanMember;
-				}
+				return clanMember;
 			}
 		}
 
-		Friend[] friends = client.getFriends();
-
-		if (friends != null)
+		NameableContainer<Friend> friendContainer = client.getFriendContainer();
+		if (friendContainer != null)
 		{
-			for (Friend friend : friends)
-			{
-				if (friend != null && friend.getName().equals(cleanName))
-				{
-					return friend;
-				}
-			}
+			return friendContainer.findByName(cleanName);
 		}
 
 		return null;
