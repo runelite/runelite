@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
-import lombok.Data;
+package net.runelite.client.util;
 
-@Data
-public class ImageUploadRequest
+public enum ImageUploadStyle
 {
-	private final String image;
-	private final String type;
-
-	public ImageUploadRequest(File imageFile) throws IOException
-	{
-		this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-		this.type = "base64";
-	}
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }
