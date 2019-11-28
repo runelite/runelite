@@ -949,6 +949,12 @@
       "xp": 960
     },
     {
+      "level": 77,
+      "icon": 20650,
+      "name": "Gnome Bench",
+      "xp": 840
+    },
+    {
       "level": 80,
       "icon": 8330,
       "name": "Marble Portal",
