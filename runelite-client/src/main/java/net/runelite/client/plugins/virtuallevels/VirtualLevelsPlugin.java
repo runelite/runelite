@@ -331,11 +331,6 @@ public class VirtualLevelsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onStatChanged(StatChanged event)
 	{
-		if (loginTick)
-		{
-			return;
-		}
-
 		Skill skill = event.getSkill();
 
 		int xpAfter = client.getSkillExperience(skill);
@@ -351,7 +346,10 @@ public class VirtualLevelsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		skillsLeveledUp.add(skill);
+		if (!loginTick)
+		{
+			skillsLeveledUp.add(skill);
+		}
 	}
 
 	@Subscribe
