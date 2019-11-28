@@ -92,6 +92,7 @@ public class SkyboxPlugin extends Plugin
 				config.setColorToOverride(c);
 			}
 			config.setOverrideMode(SkyOverrideMode.ONE);
+			config.setPickColorToOverride(false);
 		}
 
 		skybox.setOverrideColors(config.colorToOverride().getRGB(), config.customColor().getRGB());
