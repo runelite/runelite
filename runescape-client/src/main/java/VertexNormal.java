@@ -1,36 +1,39 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("de")
+@ObfuscatedName("dy")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("a")
+	@ObfuscatedName("rp")
+	@ObfuscatedSignature(
+		signature = "Lbz;"
+	)
+	@Export("friendSystem")
+	public static FriendSystem friendSystem;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 300716537
+		intValue = -1950560399
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -888954877
+		intValue = -1465831069
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -284116179
+		intValue = 1066205161
 	)
 	@Export("z")
 	int z;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1281469655
+		intValue = -600292875
 	)
 	@Export("magnitude")
 	int magnitude;
@@ -39,7 +42,7 @@ public class VertexNormal {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Lde;)V"
+		signature = "(Ldy;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x;
@@ -48,191 +51,159 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
-		garbageValue = "43195180"
+		signature = "(Lkg;J)V"
 	)
-	@Export("getCacheDir")
-	static File getCacheDir(String var0, String var1, int var2) {
-		String var3 = var2 == 0 ? "" : "" + var2;
-		SecureRandomCallable.JagexCache_locationFile = new File(class30.userHomeDirectory, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
-		String var4 = null;
-		String var5 = null;
-		boolean var6 = false;
-		Buffer var8;
-		int var11;
-		File var27;
-		if (SecureRandomCallable.JagexCache_locationFile.exists()) {
-			try {
-				AccessFile var7 = new AccessFile(SecureRandomCallable.JagexCache_locationFile, "rw", 10000L);
-
-				int var9;
-				for (var8 = new Buffer((int)var7.length()); var8.offset < var8.array.length; var8.offset += var9) {
-					var9 = var7.read(var8.array, var8.offset, var8.array.length - var8.offset);
-					if (var9 == -1) {
-						throw new IOException();
-					}
-				}
-
-				var8.offset = 0;
-				var9 = var8.readUnsignedByte();
-				if (var9 < 1 || var9 > 3) {
-					throw new IOException("" + var9);
-				}
-
-				int var10 = 0;
-				if (var9 > 1) {
-					var10 = var8.readUnsignedByte();
-				}
-
-				if (var9 <= 2) {
-					var4 = var8.readStringCp1252NullCircumfixed();
-					if (var10 == 1) {
-						var5 = var8.readStringCp1252NullCircumfixed();
-					}
-				} else {
-					var4 = var8.readCESU8();
-					if (var10 == 1) {
-						var5 = var8.readCESU8();
-					}
-				}
-
-				var7.close();
-			} catch (IOException var25) {
-				var25.printStackTrace();
-			}
-
-			if (var4 != null) {
-				var27 = new File(var4);
-				if (!var27.exists()) {
-					var4 = null;
-				}
-			}
-
-			if (var4 != null) {
-				var27 = new File(var4, "test.dat");
-
-				boolean var28;
-				try {
-					RandomAccessFile var15 = new RandomAccessFile(var27, "rw");
-					var11 = var15.read();
-					var15.seek(0L);
-					var15.write(var11);
-					var15.seek(0L);
-					var15.close();
-					var27.delete();
-					var28 = true;
-				} catch (Exception var23) {
-					var28 = false;
-				}
-
-				if (!var28) {
-					var4 = null;
-				}
-			}
+	static void method3019(Buffer var0, long var1) {
+		var1 /= 10L;
+		if (var1 < 0L) {
+			var1 = 0L;
+		} else if (var1 > 65535L) {
+			var1 = 65535L;
 		}
 
-		if (var4 == null && var2 == 0) {
-			label155:
-			for (int var16 = 0; var16 < class312.field3803.length; ++var16) {
-				for (int var17 = 0; var17 < BoundaryObject.field1859.length; ++var17) {
-					File var18 = new File(BoundaryObject.field1859[var17] + class312.field3803[var16] + File.separatorChar + var0 + File.separatorChar);
-					if (var18.exists()) {
-						File var19 = new File(var18, "test.dat");
-
-						boolean var29;
-						try {
-							RandomAccessFile var12 = new RandomAccessFile(var19, "rw");
-							int var13 = var12.read();
-							var12.seek(0L);
-							var12.write(var13);
-							var12.seek(0L);
-							var12.close();
-							var19.delete();
-							var29 = true;
-						} catch (Exception var22) {
-							var29 = false;
-						}
-
-						if (var29) {
-							var4 = var18.toString();
-							var6 = true;
-							break label155;
-						}
-					}
-				}
-			}
-		}
-
-		if (var4 == null) {
-			var4 = class30.userHomeDirectory + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-			var6 = true;
-		}
-
-		File var26;
-		if (var5 != null) {
-			var26 = new File(var5);
-			var27 = new File(var4);
-
-			try {
-				File[] var33 = var26.listFiles();
-				File[] var31 = var33;
-
-				for (var11 = 0; var11 < var31.length; ++var11) {
-					File var30 = var31[var11];
-					File var20 = new File(var27, var30.getName());
-					boolean var14 = var30.renameTo(var20);
-					if (!var14) {
-						throw new IOException();
-					}
-				}
-			} catch (Exception var24) {
-				var24.printStackTrace();
-			}
-
-			var6 = true;
-		}
-
-		if (var6) {
-			var26 = new File(var4);
-			var8 = null;
-
-			try {
-				AccessFile var34 = new AccessFile(SecureRandomCallable.JagexCache_locationFile, "rw", 10000L);
-				Buffer var32 = new Buffer(500);
-				var32.writeByte(3);
-				var32.writeByte(var8 != null ? 1 : 0);
-				var32.writeCESU8(var26.getPath());
-				if (var8 != null) {
-					var32.writeCESU8("");
-				}
-
-				var34.write(var32.array, 0, var32.offset);
-				var34.close();
-			} catch (IOException var21) {
-				var21.printStackTrace();
-			}
-		}
-
-		return new File(var4);
+		var0.writeShort((int)var1);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lhq;II)Llw;",
-		garbageValue = "-1257586004"
+		signature = "(IIIIIZI)Lln;",
+		garbageValue = "2136312432"
 	)
-	public static IndexedSprite method3121(AbstractArchive var0, int var1) {
-		byte[] var3 = var0.takeFileFlat(var1);
-		boolean var2;
-		if (var3 == null) {
-			var2 = false;
-		} else {
-			Message.SpriteBuffer_decode(var3);
-			var2 = true;
+	@Export("getItemSprite")
+	public static final Sprite getItemSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
+		if (var1 == -1) {
+			var4 = 0;
+		} else if (var4 == 2 && var1 != 1) {
+			var4 = 1;
 		}
 
-		return !var2 ? null : class51.method975();
+		long var6 = ((long)var3 << 42) + ((long)var4 << 40) + (long)var0 + ((long)var1 << 16) + ((long)var2 << 38);
+		Sprite var8;
+		if (!var5) {
+			var8 = (Sprite)ItemDefinition.ItemDefinition_cachedSprites.get(var6);
+			if (var8 != null) {
+				return var8;
+			}
+		}
+
+		ItemDefinition var9 = Interpreter.ItemDefinition_get(var0);
+		if (var1 > 1 && var9.countobj != null) {
+			int var10 = -1;
+
+			for (int var11 = 0; var11 < 10; ++var11) {
+				if (var1 >= var9.countco[var11] && var9.countco[var11] != 0) {
+					var10 = var9.countobj[var11];
+				}
+			}
+
+			if (var10 != -1) {
+				var9 = Interpreter.ItemDefinition_get(var10);
+			}
+		}
+
+		Model var19 = var9.getModel(1);
+		if (var19 == null) {
+			return null;
+		} else {
+			Sprite var20 = null;
+			if (var9.noteTemplate != -1) {
+				var20 = getItemSprite(var9.note, 10, 1, 0, 0, true);
+				if (var20 == null) {
+					return null;
+				}
+			} else if (var9.notedId != -1) {
+				var20 = getItemSprite(var9.unnotedId, var1, var2, var3, 0, false);
+				if (var20 == null) {
+					return null;
+				}
+			} else if (var9.placeholderTemplate != -1) {
+				var20 = getItemSprite(var9.placeholder, var1, 0, 0, 0, false);
+				if (var20 == null) {
+					return null;
+				}
+			}
+
+			int[] var12 = Rasterizer2D.Rasterizer2D_pixels;
+			int var13 = Rasterizer2D.Rasterizer2D_width;
+			int var14 = Rasterizer2D.Rasterizer2D_height;
+			int[] var15 = new int[4];
+			Rasterizer2D.Rasterizer2D_getClipArray(var15);
+			var8 = new Sprite(36, 32);
+			Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
+			Rasterizer2D.Rasterizer2D_clear();
+			Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
+			Rasterizer3D.method3024(16, 16);
+			Rasterizer3D.field1750 = false;
+			if (var9.placeholderTemplate != -1) {
+				var20.drawTransBgAt(0, 0);
+			}
+
+			int var16 = var9.zoom2d;
+			if (var5) {
+				var16 = (int)((double)var16 * 1.5D);
+			} else if (var2 == 2) {
+				var16 = (int)(1.04D * (double)var16);
+			}
+
+			int var17 = var16 * Rasterizer3D.Rasterizer3D_sine[var9.xan2d] >> 16;
+			int var18 = var16 * Rasterizer3D.Rasterizer3D_cosine[var9.xan2d] >> 16;
+			var19.calculateBoundsCylinder();
+			var19.method2958(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
+			if (var9.notedId != -1) {
+				var20.drawTransBgAt(0, 0);
+			}
+
+			if (var2 >= 1) {
+				var8.outline(1);
+			}
+
+			if (var2 >= 2) {
+				var8.outline(16777215);
+			}
+
+			if (var3 != 0) {
+				var8.shadow(var3);
+			}
+
+			Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
+			if (var9.noteTemplate != -1) {
+				var20.drawTransBgAt(0, 0);
+			}
+
+			if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
+				class335.ItemDefinition_fontPlain11.draw(WorldMapAreaData.method711(var1), 0, 9, 16776960, 1);
+			}
+
+			if (!var5) {
+				ItemDefinition.ItemDefinition_cachedSprites.put(var8, var6);
+			}
+
+			Rasterizer2D.Rasterizer2D_replace(var12, var13, var14);
+			Rasterizer2D.Rasterizer2D_setClipArray(var15);
+			Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
+			Rasterizer3D.field1750 = true;
+			return var8;
+		}
+	}
+
+	@ObfuscatedName("lb")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "-710411127"
+	)
+	static String method3017(String var0) {
+		PlayerType[] var1 = class2.PlayerType_values();
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			PlayerType var3 = var1[var2];
+			if (var3.modIcon != -1 && var0.startsWith(Client.method1749(var3.modIcon))) {
+				var0 = var0.substring(6 + Integer.toString(var3.modIcon).length());
+				break;
+			}
+		}
+
+		return var0;
 	}
 }

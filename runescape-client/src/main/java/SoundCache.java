@@ -1,39 +1,50 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("dm")
+@ObfuscatedName("dk")
 @Implements("SoundCache")
 public class SoundCache {
-	@ObfuscatedName("a")
+	@ObfuscatedName("sr")
 	@ObfuscatedSignature(
-		signature = "Lhq;"
+		signature = "Lh;"
+	)
+	@Export("grandExchangeEvents")
+	static GrandExchangeEvents grandExchangeEvents;
+	@ObfuscatedName("fd")
+	@ObfuscatedGetter(
+		intValue = -1460777927
+	)
+	static int field1438;
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "Lhf;"
 	)
 	@Export("soundEffectIndex")
 	AbstractArchive soundEffectIndex;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhq;"
+		signature = "Lhf;"
 	)
 	@Export("musicSampleIndex")
 	AbstractArchive musicSampleIndex;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Llh;"
+		signature = "Lle;"
 	)
 	@Export("musicSamples")
 	NodeHashTable musicSamples;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Llh;"
+		signature = "Lle;"
 	)
 	@Export("rawSounds")
 	NodeHashTable rawSounds;
 
 	@ObfuscatedSignature(
-		signature = "(Lhq;Lhq;)V"
+		signature = "(Lhf;Lhf;)V"
 	)
 	public SoundCache(AbstractArchive var1, AbstractArchive var2) {
 		this.musicSamples = new NodeHashTable(256);
@@ -42,10 +53,10 @@ public class SoundCache {
 		this.musicSampleIndex = var2;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(II[II)Lca;",
-		garbageValue = "-33690704"
+		signature = "(II[II)Lcw;",
+		garbageValue = "1674765898"
 	)
 	@Export("getSoundEffect0")
 	RawSound getSoundEffect0(int var1, int var2, int[] var3) {
@@ -73,10 +84,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II[II)Lca;",
-		garbageValue = "393198324"
+		signature = "(II[IB)Lcw;",
+		garbageValue = "-43"
 	)
 	@Export("getMusicSample0")
 	RawSound getMusicSample0(int var1, int var2, int[] var3) {
@@ -110,10 +121,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(I[II)Lca;",
-		garbageValue = "-1954377322"
+		signature = "(I[II)Lcw;",
+		garbageValue = "1055604971"
 	)
 	@Export("getSoundEffect")
 	public RawSound getSoundEffect(int var1, int[] var2) {
@@ -126,10 +137,10 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I[II)Lca;",
-		garbageValue = "-1912109066"
+		signature = "(I[IB)Lcw;",
+		garbageValue = "93"
 	)
 	@Export("getMusicSample")
 	public RawSound getMusicSample(int var1, int[] var2) {
@@ -142,51 +153,31 @@ public class SoundCache {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ILcj;ZI)I",
-		garbageValue = "-1732258105"
+		signature = "(II)Z",
+		garbageValue = "851722270"
 	)
-	static int method2673(int var0, Script var1, boolean var2) {
-		Widget var3 = PacketBufferNode.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-		if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = UserComparator5.method3551(class195.getWidgetClickMask(var3));
-			return 1;
-		} else if (var0 != ScriptOpcodes.IF_GETOP) {
-			if (var0 == ScriptOpcodes.IF_GETOPBASE) {
-				if (var3.dataText == null) {
-					Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = "";
-				} else {
-					Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = var3.dataText;
-				}
-
-				return 1;
-			} else {
-				return 2;
-			}
-		} else {
-			int var4 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			--var4;
-			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-				Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = var3.actions[var4];
-			} else {
-				Interpreter.Interpreter_stringStack[++WorldMapDecoration.Interpreter_stringStackSize - 1] = "";
-			}
-
-			return 1;
-		}
+	public static boolean method2544(int var0) {
+		return (var0 & 1) != 0;
 	}
 
-	@ObfuscatedName("lv")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(Lhi;B)Ljava/lang/String;",
-		garbageValue = "1"
+		signature = "(II)J",
+		garbageValue = "-1448942759"
 	)
-	static String method2666(Widget var0) {
-		if (UserComparator5.method3551(class195.getWidgetClickMask(var0)) == 0) {
-			return null;
-		} else {
-			return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
-		}
+	public static long method2531(int var0) {
+		return ViewportMouse.ViewportMouse_entityTags[var0];
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;I)I",
+		garbageValue = "-1986305068"
+	)
+	@Export("parseInt")
+	public static int parseInt(CharSequence var0) {
+		return UserComparator8.parseIntCustomRadix(var0, 10, true);
 	}
 }

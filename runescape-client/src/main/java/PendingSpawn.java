@@ -1,82 +1,89 @@
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("be")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-	@ObfuscatedName("a")
+	@ObfuscatedName("qu")
 	@ObfuscatedGetter(
-		intValue = -1584679065
+		intValue = 756269056
+	)
+	static int field925;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 2040420297
+	)
+	@Export("cacheGamebuild")
+	public static int cacheGamebuild;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = 842281271
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1530621461
+		intValue = -1195330125
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1386695055
+		intValue = -521000553
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1902286249
+		intValue = -156944661
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1162414355
+		intValue = 2076612057
 	)
 	@Export("objectId")
 	int objectId;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1880086587
+		intValue = 1798753117
 	)
-	int field913;
-	@ObfuscatedName("c")
+	int field929;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 1367998823
+		intValue = 1153270233
 	)
-	int field914;
-	@ObfuscatedName("o")
+	int field924;
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 1222529831
+		intValue = 37593595
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 235222743
+		intValue = -87951589
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("d")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 2005302789
+		intValue = 894134175
 	)
-	int field917;
-	@ObfuscatedName("m")
+	int field927;
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -1677449417
+		intValue = 1990017955
 	)
 	@Export("delay")
 	int delay;
-	@ObfuscatedName("p")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 2086246849
+		intValue = 458330281
 	)
 	@Export("hitpoints")
 	int hitpoints;
@@ -86,105 +93,58 @@ public final class PendingSpawn extends Node {
 		this.hitpoints = -1;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/io/File;",
-		garbageValue = "1594273687"
-	)
-	@Export("getFile")
-	static File getFile(String var0) {
-		if (!FileSystem.FileSystem_hasPermissions) {
-			throw new RuntimeException("");
-		} else {
-			File var1 = (File)FileSystem.FileSystem_cacheFiles.get(var0);
-			if (var1 != null) {
-				return var1;
-			} else {
-				File var2 = new File(FileSystem.FileSystem_cacheDir, var0);
-				RandomAccessFile var3 = null;
-
-				try {
-					File var4 = new File(var2.getParent());
-					if (!var4.exists()) {
-						throw new RuntimeException("");
-					} else {
-						var3 = new RandomAccessFile(var2, "rw");
-						int var5 = var3.read();
-						var3.seek(0L);
-						var3.write(var5);
-						var3.seek(0L);
-						var3.close();
-						FileSystem.FileSystem_cacheFiles.put(var0, var2);
-						return var2;
-					}
-				} catch (Exception var8) {
-					try {
-						if (var3 != null) {
-							var3.close();
-							var3 = null;
-						}
-					} catch (Exception var7) {
-					}
-
-					throw new RuntimeException();
-				}
-			}
-		}
-	}
-
-	@ObfuscatedName("ak")
-	@ObfuscatedSignature(
-		signature = "(Lff;IIB)Ldq;",
+		signature = "(ZZB)Llm;",
 		garbageValue = "0"
 	)
-	public static final PcmPlayer method1856(TaskHandler var0, int var1, int var2) {
-		if (PcmPlayer.PcmPlayer_sampleRate * 22050 == 0) {
-			throw new IllegalStateException();
-		} else if (var1 >= 0 && var1 < 2) {
-			if (var2 < 256) {
-				var2 = 256;
-			}
-
-			try {
-				PcmPlayer var3 = class188.pcmPlayerProvider.player();
-				var3.samples = new int[256 * (InterfaceParent.PcmPlayer_stereo ? 2 : 1)];
-				var3.field1388 = var2;
-				var3.init();
-				var3.capacity = (var2 & -1024) + 1024;
-				if (var3.capacity > 16384) {
-					var3.capacity = 16384;
-				}
-
-				var3.open(var3.capacity);
-				if (ParamDefinition.PcmPlayer_count > 0 && VerticalAlignment.soundSystem == null) {
-					VerticalAlignment.soundSystem = new SoundSystem();
-					SecureRandomCallable.soundSystemExecutor = Executors.newScheduledThreadPool(1);
-					SecureRandomCallable.soundSystemExecutor.scheduleAtFixedRate(VerticalAlignment.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
-				}
-
-				if (VerticalAlignment.soundSystem != null) {
-					if (VerticalAlignment.soundSystem.players[var1] != null) {
-						throw new IllegalArgumentException();
-					}
-
-					VerticalAlignment.soundSystem.players[var1] = var3;
-				}
-
-				return var3;
-			} catch (Throwable var4) {
-				return new PcmPlayer();
-			}
-		} else {
-			throw new IllegalArgumentException();
-		}
+	static IndexedSprite method1753(boolean var0, boolean var1) {
+		return var0 ? (var1 ? StructDefinition.field3315 : Varps.options_buttons_2Sprite) : (var1 ? Login.field1179 : InterfaceParent.options_buttons_0Sprite);
 	}
 
-	@ObfuscatedName("lm")
+	@ObfuscatedName("iw")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "92"
+		signature = "(Lhl;III)V",
+		garbageValue = "648761441"
 	)
-	public static boolean method1854() {
-		return Client.staffModLevel >= 2;
+	@Export("alignWidgetPosition")
+	static void alignWidgetPosition(Widget var0, int var1, int var2) {
+		if (var0.xAlignment == 0) {
+			var0.x = var0.rawX;
+		} else if (var0.xAlignment == 1) {
+			var0.x = var0.rawX + (var1 - var0.width) / 2;
+		} else if (var0.xAlignment == 2) {
+			var0.x = var1 - var0.width - var0.rawX;
+		} else if (var0.xAlignment == 3) {
+			var0.x = var0.rawX * var1 >> 14;
+		} else if (var0.xAlignment == 4) {
+			var0.x = (var1 - var0.width) / 2 + (var0.rawX * var1 >> 14);
+		} else {
+			var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
+		}
+
+		if (var0.yAlignment == 0) {
+			var0.y = var0.rawY;
+		} else if (var0.yAlignment == 1) {
+			var0.y = (var2 - var0.height) / 2 + var0.rawY;
+		} else if (var0.yAlignment == 2) {
+			var0.y = var2 - var0.height - var0.rawY;
+		} else if (var0.yAlignment == 3) {
+			var0.y = var2 * var0.rawY >> 14;
+		} else if (var0.yAlignment == 4) {
+			var0.y = (var2 * var0.rawY >> 14) + (var2 - var0.height) / 2;
+		} else {
+			var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
+		}
+
+	}
+
+	@ObfuscatedName("jx")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "-547734374"
+	)
+	static boolean method1751() {
+		return Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
 	}
 }

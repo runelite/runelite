@@ -1,343 +1,274 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("go")
 public enum class192 implements Enumerated {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2345("", 0, new class191[]{class191.field2335}),
-	@ObfuscatedName("t")
+	field2381("", 0, new class191[]{class191.field2375}),
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2338("", 1, new class191[]{class191.field2336, class191.field2335}),
-	@ObfuscatedName("n")
+	field2378("", 1, new class191[]{class191.field2372, class191.field2375}),
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2350("", 2, new class191[]{class191.field2336, class191.field2333, class191.field2335}),
-	@ObfuscatedName("q")
+	field2379("", 2, new class191[]{class191.field2372, class191.field2376, class191.field2375}),
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2341("", 3, new class191[]{class191.field2336}),
-	@ObfuscatedName("v")
+	field2392("", 3, new class191[]{class191.field2372}),
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2342("", 4),
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2339("", 5, new class191[]{class191.field2336, class191.field2335}),
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2344("", 6, new class191[]{class191.field2335}),
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2340("", 8, new class191[]{class191.field2336, class191.field2335}),
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2346("", 9, new class191[]{class191.field2336, class191.field2333}),
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2347("", 10, new class191[]{class191.field2336}),
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "Lgm;"
-	)
-	field2348("", 11, new class191[]{class191.field2336}),
+	field2390("", 4),
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2349("", 12, new class191[]{class191.field2336, class191.field2335}),
+	field2384("", 5, new class191[]{class191.field2372, class191.field2375}),
 	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "Lgm;"
+		signature = "Lgo;"
 	)
-	field2343("", 13, new class191[]{class191.field2336});
-
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 503596415
-	)
-	@Export("loginBoxCenter")
-	static int loginBoxCenter;
-	@ObfuscatedName("dh")
+	field2383("", 6, new class191[]{class191.field2375}),
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lij;"
+		signature = "Lgo;"
 	)
-	@Export("archive14")
-	static Archive archive14;
-	@ObfuscatedName("ek")
+	field2385("", 8, new class191[]{class191.field2372, class191.field2375}),
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lkb;"
+		signature = "Lgo;"
 	)
-	@Export("spriteIds")
-	static GraphicsDefaults spriteIds;
+	field2389("", 9, new class191[]{class191.field2372, class191.field2376}),
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Lgo;"
+	)
+	field2386("", 10, new class191[]{class191.field2372}),
 	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lgo;"
+	)
+	field2387("", 11, new class191[]{class191.field2372}),
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "Lgo;"
+	)
+	field2388("", 12, new class191[]{class191.field2372, class191.field2375}),
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "Lgo;"
+	)
+	field2382("", 13, new class191[]{class191.field2372});
+
+	@ObfuscatedName("ah")
 	@ObfuscatedGetter(
-		intValue = 2067874269
+		intValue = 2041641327
+	)
+	static int field2395;
+	@ObfuscatedName("gf")
+	@ObfuscatedSignature(
+		signature = "[Llm;"
+	)
+	@Export("modIconSprites")
+	static IndexedSprite[] modIconSprites;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = -130205167
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("x")
-	final Set field2352;
+	@ObfuscatedName("n")
+	final Set field2391;
 
 	static {
-		method3812();
+		method3733();
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I[Lgt;)V"
+		signature = "(Ljava/lang/String;I[Lgw;)V"
 	)
 	class192(String var3, int var4, class191[] var5) {
-		this.field2352 = new HashSet();
+		this.field2391 = new HashSet();
 		this.id = var4;
 		class191[] var6 = var5;
 
 		for (int var7 = 0; var7 < var6.length; ++var7) {
 			class191 var8 = var6[var7];
-			this.field2352.add(var8);
+			this.field2391.add(var8);
 		}
 
 	}
 
 	class192(String var3, int var4) {
-		this.field2352 = new HashSet();
+		this.field2391 = new HashSet();
 		this.id = var4;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1993081102"
+		signature = "(B)I",
+		garbageValue = "7"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
-		garbageValue = "927636504"
+		signature = "(I)[Lgo;",
+		garbageValue = "1222259750"
 	)
-	public static void method3814(String var0, String var1, int var2, int var3) throws IOException {
-		JagexCache.idxCount = var3;
-		class189.cacheGamebuild = var2;
-
-		try {
-			class43.field363 = System.getProperty("os.name");
-		} catch (Exception var17) {
-			class43.field363 = "Unknown";
-		}
-
-		class96.field1299 = class43.field363.toLowerCase();
-
-		try {
-			class30.userHomeDirectory = System.getProperty("user.home");
-			if (class30.userHomeDirectory != null) {
-				class30.userHomeDirectory = class30.userHomeDirectory + "/";
-			}
-		} catch (Exception var16) {
-		}
-
-		try {
-			if (class96.field1299.startsWith("win")) {
-				if (class30.userHomeDirectory == null) {
-					class30.userHomeDirectory = System.getenv("USERPROFILE");
-				}
-			} else if (class30.userHomeDirectory == null) {
-				class30.userHomeDirectory = System.getenv("HOME");
-			}
-
-			if (class30.userHomeDirectory != null) {
-				class30.userHomeDirectory = class30.userHomeDirectory + "/";
-			}
-		} catch (Exception var15) {
-		}
-
-		if (class30.userHomeDirectory == null) {
-			class30.userHomeDirectory = "~/";
-		}
-
-		BoundaryObject.field1859 = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", class30.userHomeDirectory, "/tmp/", ""};
-		class312.field3803 = new String[]{".jagex_cache_" + class189.cacheGamebuild, ".file_store_" + class189.cacheGamebuild};
-		int var12 = 0;
-
-		label99:
-		while (var12 < 4) {
-			JagexCache.cacheDir = VertexNormal.getCacheDir(var0, var1, var12);
-			if (!JagexCache.cacheDir.exists()) {
-				JagexCache.cacheDir.mkdirs();
-			}
-
-			File[] var5 = JagexCache.cacheDir.listFiles();
-			if (var5 == null) {
-				break;
-			}
-
-			File[] var6 = var5;
-			int var7 = 0;
-
-			while (true) {
-				if (var7 >= var6.length) {
-					break label99;
-				}
-
-				File var8 = var6[var7];
-
-				boolean var9;
-				try {
-					RandomAccessFile var10 = new RandomAccessFile(var8, "rw");
-					int var11 = var10.read();
-					var10.seek(0L);
-					var10.write(var11);
-					var10.seek(0L);
-					var10.close();
-					var9 = true;
-				} catch (Exception var14) {
-					var9 = false;
-				}
-
-				if (!var9) {
-					++var12;
-					break;
-				}
-
-				++var7;
-			}
-		}
-
-		File var4 = JagexCache.cacheDir;
-		FileSystem.FileSystem_cacheDir = var4;
-		if (!FileSystem.FileSystem_cacheDir.exists()) {
-			throw new RuntimeException("");
-		} else {
-			FileSystem.FileSystem_hasPermissions = true;
-			class14.method204();
-			JagexCache.JagexCache_dat2File = new BufferedFile(new AccessFile(PendingSpawn.getFile("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-			JagexCache.JagexCache_idx255File = new BufferedFile(new AccessFile(PendingSpawn.getFile("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-			ArchiveLoader.JagexCache_idxFiles = new BufferedFile[JagexCache.idxCount];
-
-			for (int var13 = 0; var13 < JagexCache.idxCount; ++var13) {
-				ArchiveLoader.JagexCache_idxFiles[var13] = new BufferedFile(new AccessFile(PendingSpawn.getFile("main_file_cache.idx" + var13), "rw", 1048576L), 6000, 0);
-			}
-
-		}
+	static class192[] method3733() {
+		return new class192[]{field2383, field2379, field2392, field2388, field2387, field2384, field2385, field2378, field2386, field2390, field2389, field2382, field2381};
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(B)[Lgm;",
-		garbageValue = "14"
+		signature = "(Lkg;IB)V",
+		garbageValue = "-107"
 	)
-	static class192[] method3812() {
-		return new class192[]{field2344, field2338, field2339, field2345, field2349, field2346, field2342, field2341, field2348, field2350, field2343, field2340, field2347};
-	}
+	@Export("readReflectionCheck")
+	public static void readReflectionCheck(Buffer var0, int var1) {
+		ReflectionCheck var2 = new ReflectionCheck();
+		var2.size = var0.readUnsignedByte();
+		var2.id = var0.readInt();
+		var2.operations = new int[var2.size];
+		var2.creationErrors = new int[var2.size];
+		var2.fields = new Field[var2.size];
+		var2.intReplaceValues = new int[var2.size];
+		var2.methods = new Method[var2.size];
+		var2.arguments = new byte[var2.size][][];
 
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;IZI)I",
-		garbageValue = "-1187268982"
-	)
-	@Export("parseIntCustomRadix")
-	public static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
-		if (var1 >= 2 && var1 <= 36) {
-			boolean var3 = false;
-			boolean var4 = false;
-			int var5 = 0;
-			int var6 = var0.length();
+		for (int var3 = 0; var3 < var2.size; ++var3) {
+			try {
+				int var4 = var0.readUnsignedByte();
+				String var5;
+				String var6;
+				int var7;
+				if (var4 != 0 && var4 != 1 && var4 != 2) {
+					if (var4 == 3 || var4 == 4) {
+						var5 = var0.readStringCp1252NullTerminated();
+						var6 = var0.readStringCp1252NullTerminated();
+						var7 = var0.readUnsignedByte();
+						String[] var8 = new String[var7];
 
-			for (int var7 = 0; var7 < var6; ++var7) {
-				char var8 = var0.charAt(var7);
-				if (var7 == 0) {
-					if (var8 == '-') {
-						var3 = true;
-						continue;
+						for (int var9 = 0; var9 < var7; ++var9) {
+							var8[var9] = var0.readStringCp1252NullTerminated();
+						}
+
+						String var20 = var0.readStringCp1252NullTerminated();
+						byte[][] var10 = new byte[var7][];
+						int var12;
+						if (var4 == 3) {
+							for (int var11 = 0; var11 < var7; ++var11) {
+								var12 = var0.readInt();
+								var10[var11] = new byte[var12];
+								var0.readBytes(var10[var11], 0, var12);
+							}
+						}
+
+						var2.operations[var3] = var4;
+						Class[] var21 = new Class[var7];
+
+						for (var12 = 0; var12 < var7; ++var12) {
+							var21[var12] = VarcInt.loadClassFromDescriptor(var8[var12]);
+						}
+
+						Class var22 = VarcInt.loadClassFromDescriptor(var20);
+						if (VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
+							throw new SecurityException();
+						}
+
+						Method[] var13 = VarcInt.loadClassFromDescriptor(var5).getDeclaredMethods();
+						Method[] var14 = var13;
+
+						for (int var15 = 0; var15 < var14.length; ++var15) {
+							Method var16 = var14[var15];
+							if (Reflection.getMethodName(var16).equals(var6)) {
+								Class[] var17 = Reflection.getParameterTypes(var16);
+								if (var21.length == var17.length) {
+									boolean var18 = true;
+
+									for (int var19 = 0; var19 < var21.length; ++var19) {
+										if (var21[var19] != var17[var19]) {
+											var18 = false;
+											break;
+										}
+									}
+
+									if (var18 && var22 == var16.getReturnType()) {
+										var2.methods[var3] = var16;
+									}
+								}
+							}
+						}
+
+						var2.arguments[var3] = var10;
 					}
-
-					if (var8 == '+') {
-						continue;
-					}
-				}
-
-				int var10;
-				if (var8 >= '0' && var8 <= '9') {
-					var10 = var8 - '0';
-				} else if (var8 >= 'A' && var8 <= 'Z') {
-					var10 = var8 - '7';
 				} else {
-					if (var8 < 'a' || var8 > 'z') {
-						throw new NumberFormatException();
+					var5 = var0.readStringCp1252NullTerminated();
+					var6 = var0.readStringCp1252NullTerminated();
+					var7 = 0;
+					if (var4 == 1) {
+						var7 = var0.readInt();
 					}
 
-					var10 = var8 - 'W';
-				}
+					var2.operations[var3] = var4;
+					var2.intReplaceValues[var3] = var7;
+					if (VarcInt.loadClassFromDescriptor(var5).getClassLoader() == null) {
+						throw new SecurityException();
+					}
 
-				if (var10 >= var1) {
-					throw new NumberFormatException();
+					var2.fields[var3] = Reflection.findField(VarcInt.loadClassFromDescriptor(var5), var6);
 				}
-
-				if (var3) {
-					var10 = -var10;
-				}
-
-				int var9 = var10 + var5 * var1;
-				if (var9 / var1 != var5) {
-					throw new NumberFormatException();
-				}
-
-				var5 = var9;
-				var4 = true;
+			} catch (ClassNotFoundException var24) {
+				var2.creationErrors[var3] = -1;
+			} catch (SecurityException var25) {
+				var2.creationErrors[var3] = -2;
+			} catch (NullPointerException var26) {
+				var2.creationErrors[var3] = -3;
+			} catch (Exception var27) {
+				var2.creationErrors[var3] = -4;
+			} catch (Throwable var28) {
+				var2.creationErrors[var3] = -5;
 			}
-
-			if (!var4) {
-				throw new NumberFormatException();
-			} else {
-				return var5;
-			}
-		} else {
-			throw new IllegalArgumentException("" + var1);
 		}
+
+		class96.reflectionChecks.addFirst(var2);
 	}
 
-	@ObfuscatedName("fh")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "11"
+		signature = "(B)I",
+		garbageValue = "25"
 	)
-	static void method3813(int var0, int var1) {
-		int[] var2 = new int[9];
+	static final int method3730() {
+		return ViewportMouse.ViewportMouse_y;
+	}
 
-		for (int var3 = 0; var3 < var2.length; ++var3) {
-			int var4 = var3 * 32 + 15 + 128;
-			int var5 = WorldMapSection0.method285(var4);
-			int var6 = Rasterizer3D.Rasterizer3D_sine[var4];
-			var5 = PcmPlayer.method2637(var5, var1);
-			var2[var3] = var6 * var5 >> 16;
-		}
-
-		Scene.Scene_buildVisiblityMap(var2, 500, 800, var0 * 334 / var1, 334);
+	@ObfuscatedName("ku")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-1031778889"
+	)
+	static void method3732(int var0) {
+		Client.oculusOrbState = var0;
 	}
 }

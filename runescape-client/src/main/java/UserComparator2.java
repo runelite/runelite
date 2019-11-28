@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
@@ -7,7 +8,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("lq")
 @Implements("UserComparator2")
 public class UserComparator2 implements Comparator {
-	@ObfuscatedName("a")
+	@ObfuscatedName("z")
+	@Export("cacheDir")
+	public static File cacheDir;
+	@ObfuscatedName("u")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -15,10 +19,10 @@ public class UserComparator2 implements Comparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljg;Ljg;B)I",
-		garbageValue = "34"
+		signature = "(Ljr;Ljr;I)I",
+		garbageValue = "-583410330"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(User var1, User var2) {

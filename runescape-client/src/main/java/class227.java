@@ -1,17 +1,11 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hl")
+@ObfuscatedName("hp")
 public final class class227 {
-	@ObfuscatedName("gl")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "401085216"
+	@ObfuscatedName("gy")
+	@ObfuscatedGetter(
+		intValue = 439347683
 	)
-	static void method4276() {
-		if (Client.renderSelf) {
-			Player.addPlayerToScene(class215.localPlayer, false);
-		}
-
-	}
+	static int field3092;
 }

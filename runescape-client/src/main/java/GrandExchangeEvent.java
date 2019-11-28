@@ -4,47 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("y")
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
-	@ObfuscatedName("nl")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1005036451
-	)
-	static int field46;
-	@ObfuscatedName("bu")
-	@ObfuscatedSignature(
-		signature = "[Llx;"
-	)
-	@Export("worldSelectBackSprites")
-	static Sprite[] worldSelectBackSprites;
-	@ObfuscatedName("a")
-	@ObfuscatedGetter(
-		intValue = 1055414531
+		intValue = 1903174229
 	)
 	@Export("world")
 	public final int world;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		longValue = -1970915304396216385L
+		longValue = -3619466799124397109L
 	)
 	@Export("age")
 	public final long age;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Ld;"
+		signature = "Li;"
 	)
 	@Export("grandExchangeOffer")
 	public final GrandExchangeOffer grandExchangeOffer;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@Export("offerName")
 	String offerName;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@Export("previousOfferName")
 	String previousOfferName;
 
 	@ObfuscatedSignature(
-		signature = "(Lkc;BI)V"
+		signature = "(Lkg;BI)V"
 	)
 	GrandExchangeEvent(Buffer var1, byte var2, int var3) {
 		this.offerName = var1.readStringCp1252NullTerminated();
@@ -54,8 +43,8 @@ public class GrandExchangeEvent {
 		int var4 = var1.readInt();
 		int var5 = var1.readInt();
 		this.grandExchangeOffer = new GrandExchangeOffer();
-		this.grandExchangeOffer.method139(2);
-		this.grandExchangeOffer.method152(var2);
+		this.grandExchangeOffer.method109(2);
+		this.grandExchangeOffer.method110(var2);
 		this.grandExchangeOffer.unitPrice = var4;
 		this.grandExchangeOffer.totalQuantity = var5;
 		this.grandExchangeOffer.currentQuantity = 0;
@@ -63,50 +52,72 @@ public class GrandExchangeEvent {
 		this.grandExchangeOffer.id = var3;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/lang/String;",
-		garbageValue = "65536"
+		signature = "(B)Ljava/lang/String;",
+		garbageValue = "16"
 	)
 	@Export("getOfferName")
 	public String getOfferName() {
 		return this.offerName;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(S)Ljava/lang/String;",
-		garbageValue = "3632"
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "1776036206"
 	)
 	@Export("getPreviousOfferName")
 	public String getPreviousOfferName() {
 		return this.previousOfferName;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II)Ljava/lang/String;",
-		garbageValue = "1325412403"
+		signature = "(Lkg;II)V",
+		garbageValue = "-894744142"
 	)
-	static String method122(int var0) {
-		return "<img=" + var0 + ">";
-	}
-
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "(DDII)[D",
-		garbageValue = "-2110450939"
-	)
-	public static double[] method123(double var0, double var2, int var4) {
-		int var5 = var4 * 2 + 1;
-		double[] var6 = new double[var5];
-		int var7 = -var4;
-
-		for (int var8 = 0; var7 <= var4; ++var8) {
-			var6[var8] = WorldMapSection1.method636((double)var7, var0, var2);
-			++var7;
+	public static void method86(Buffer var0, int var1) {
+		if (JagexCache.JagexCache_randomDat != null) {
+			try {
+				JagexCache.JagexCache_randomDat.seek(0L);
+				JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
+			} catch (Exception var3) {
+			}
 		}
 
-		return var6;
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(Lkg;II)Ljava/lang/String;",
+		garbageValue = "808138004"
+	)
+	static String method92(Buffer var0, int var1) {
+		try {
+			int var2 = var0.readUShortSmart();
+			if (var2 > var1) {
+				var2 = var1;
+			}
+
+			byte[] var3 = new byte[var2];
+			var0.offset += class210.huffman.decompress(var0.array, var0.offset, var3, 0, var2);
+			String var4 = NetCache.decodeStringCp1252(var3, 0, var2);
+			return var4;
+		} catch (Exception var6) {
+			return "Cabbage";
+		}
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-357486416"
+	)
+	static void method91(int var0) {
+		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+		if (var1 != null) {
+			var1.remove();
+		}
 	}
 }

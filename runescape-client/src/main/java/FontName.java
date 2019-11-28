@@ -2,54 +2,53 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("kq")
+@ObfuscatedName("ka")
 @Implements("FontName")
 public class FontName {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_plain11")
 	public static final FontName FontName_plain11;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_plain12")
 	public static final FontName FontName_plain12;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_bold12")
 	public static final FontName FontName_bold12;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_verdana11")
 	public static final FontName FontName_verdana11;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_verdana13")
 	public static final FontName FontName_verdana13;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lkq;"
+		signature = "Lka;"
 	)
 	@Export("FontName_verdana15")
 	public static final FontName FontName_verdana15;
-	@ObfuscatedName("o")
+	@ObfuscatedName("gg")
 	@ObfuscatedSignature(
-		signature = "Llx;"
+		signature = "[Lln;"
 	)
-	@Export("rightTitleSprite")
-	static Sprite rightTitleSprite;
-	@ObfuscatedName("c")
+	@Export("headIconPkSprites")
+	static Sprite[] headIconPkSprites;
+	@ObfuscatedName("h")
 	@Export("name")
 	String name;
 
@@ -66,125 +65,232 @@ public class FontName {
 		this.name = var1;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-		garbageValue = "703814886"
+		signature = "(Ljava/lang/Object;ZB)[B",
+		garbageValue = "-6"
 	)
-	@Export("loadClassFromDescriptor")
-	static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-		if (var0.equals("B")) {
-			return Byte.TYPE;
-		} else if (var0.equals("I")) {
-			return Integer.TYPE;
-		} else if (var0.equals("S")) {
-			return Short.TYPE;
-		} else if (var0.equals("J")) {
-			return Long.TYPE;
-		} else if (var0.equals("Z")) {
-			return Boolean.TYPE;
-		} else if (var0.equals("F")) {
-			return Float.TYPE;
-		} else if (var0.equals("D")) {
-			return Double.TYPE;
-		} else if (var0.equals("C")) {
-			return Character.TYPE;
+	@Export("serialize")
+	public static byte[] serialize(Object var0, boolean var1) {
+		if (var0 == null) {
+			return null;
+		} else if (var0 instanceof byte[]) {
+			byte[] var3 = (byte[])((byte[])var0);
+			return var1 ? ObjectSound.method1935(var3) : var3;
+		} else if (var0 instanceof AbstractByteArrayCopier) {
+			AbstractByteArrayCopier var2 = (AbstractByteArrayCopier)var0;
+			return var2.get();
 		} else {
-			return var0.equals("void") ? Void.TYPE : Reflection.findClass(var0);
+			throw new IllegalArgumentException();
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "348293638"
+		signature = "([Ljava/lang/CharSequence;IIS)Ljava/lang/String;",
+		garbageValue = "11835"
 	)
-	@Export("clearItemContainer")
-	static void clearItemContainer(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
-				var1.ids[var2] = -1;
-				var1.quantities[var2] = 0;
+	public static String method5425(CharSequence[] var0, int var1, int var2) {
+		if (var2 == 0) {
+			return "";
+		} else if (var2 == 1) {
+			CharSequence var3 = var0[var1];
+			return var3 == null ? "null" : var3.toString();
+		} else {
+			int var8 = var2 + var1;
+			int var4 = 0;
+
+			for (int var5 = var1; var5 < var8; ++var5) {
+				CharSequence var6 = var0[var5];
+				if (var6 == null) {
+					var4 += 4;
+				} else {
+					var4 += var6.length();
+				}
 			}
 
+			StringBuilder var9 = new StringBuilder(var4);
+
+			for (int var10 = var1; var10 < var8; ++var10) {
+				CharSequence var7 = var0[var10];
+				if (var7 == null) {
+					var9.append("null");
+				} else {
+					var9.append(var7);
+				}
+			}
+
+			return var9.toString();
 		}
 	}
 
-	@ObfuscatedName("gh")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-837375180"
-	)
-	@Export("setWindowedMode")
-	static void setWindowedMode(int var0) {
-		Client.field736 = 0L;
-		if (var0 >= 2) {
-			Client.isResizable = true;
-		} else {
-			Client.isResizable = false;
-		}
-
-		if (WallDecoration.getWindowedMode() == 1) {
-			WorldMapID.client.setMaxCanvasSize(765, 503);
-		} else {
-			WorldMapID.client.setMaxCanvasSize(7680, 2160);
-		}
-
-		if (Client.gameState >= 25) {
-			PacketBufferNode var1 = SoundSystem.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
-			var1.packetBuffer.writeByte(WallDecoration.getWindowedMode());
-			var1.packetBuffer.writeShort(class286.canvasWidth);
-			var1.packetBuffer.writeShort(FloorUnderlayDefinition.canvasHeight);
-			Client.packetWriter.addNode(var1);
-		}
-
-	}
-
-	@ObfuscatedName("hw")
+	@ObfuscatedName("gw")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1528266884"
+		garbageValue = "1549507676"
 	)
-	static final void method5442() {
-		for (GraphicsObject var0 = (GraphicsObject)Client.graphicsObjects.last(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjects.previous()) {
-			if (var0.plane == Player.Client_plane && !var0.isFinished) {
-				if (Client.cycle >= var0.cycleStart) {
-					var0.advance(Client.field693);
-					if (var0.isFinished) {
-						var0.remove();
-					} else {
-						WorldMapArea.scene.drawEntity(var0.plane, var0.x, var0.y, var0.height, 60, var0, 0, -1L, false);
-					}
+	static void method5427() {
+		if (Client.combatTargetPlayerIndex >= 0 && Client.players[Client.combatTargetPlayerIndex] != null) {
+			Varcs.addPlayerToScene(Client.players[Client.combatTargetPlayerIndex], false);
+		}
+
+	}
+
+	@ObfuscatedName("gr")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "-310614097"
+	)
+	static final void method5426(int var0, int var1, int var2, int var3) {
+		Client.overheadTextCount = 0;
+		boolean var4 = false;
+		int var5 = -1;
+		int var6 = -1;
+		int var7 = Players.Players_count;
+		int[] var8 = Players.Players_indices;
+
+		int var9;
+		for (var9 = 0; var9 < var7 + Client.npcCount; ++var9) {
+			Object var10;
+			if (var9 < var7) {
+				var10 = Client.players[var8[var9]];
+				if (var8[var9] == Client.combatTargetPlayerIndex) {
+					var4 = true;
+					var5 = var9;
+					continue;
+				}
+
+				if (var10 == class215.localPlayer) {
+					var6 = var9;
+					continue;
 				}
 			} else {
-				var0.remove();
+				var10 = Client.npcs[Client.npcIndices[var9 - var7]];
 			}
+
+			class80.drawActor2d((Actor)var10, var9, var0, var1, var2, var3);
 		}
 
-	}
+		if (Client.renderSelf && var6 != -1) {
+			class80.drawActor2d(class215.localPlayer, var6, var0, var1, var2, var3);
+		}
 
-	@ObfuscatedName("lp")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1324423171"
-	)
-	static void method5443() {
-		if (Client.field645 && class215.localPlayer != null) {
-			int var0 = class215.localPlayer.pathX[0];
-			int var1 = class215.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
-				return;
+		if (var4) {
+			class80.drawActor2d(Client.players[Client.combatTargetPlayerIndex], var5, var0, var1, var2, var3);
+		}
+
+		for (var9 = 0; var9 < Client.overheadTextCount; ++var9) {
+			int var19 = Client.overheadTextXs[var9];
+			int var11 = Client.overheadTextYs[var9];
+			int var12 = Client.overheadTextXOffsets[var9];
+			int var13 = Client.overheadTextAscents[var9];
+			boolean var14 = true;
+
+			while (var14) {
+				var14 = false;
+
+				for (int var15 = 0; var15 < var9; ++var15) {
+					if (var11 + 2 > Client.overheadTextYs[var15] - Client.overheadTextAscents[var15] && var11 - var13 < Client.overheadTextYs[var15] + 2 && var19 - var12 < Client.overheadTextXOffsets[var15] + Client.overheadTextXs[var15] && var19 + var12 > Client.overheadTextXs[var15] - Client.overheadTextXOffsets[var15] && Client.overheadTextYs[var15] - Client.overheadTextAscents[var15] < var11) {
+						var11 = Client.overheadTextYs[var15] - Client.overheadTextAscents[var15];
+						var14 = true;
+					}
+				}
 			}
 
-			IgnoreList.oculusOrbFocalPointX = class215.localPlayer.x;
-			int var2 = GraphicsObject.getTileHeight(class215.localPlayer.x, class215.localPlayer.y, Player.Client_plane) - Client.camFollowHeight;
-			if (var2 < Tiles.field497) {
-				Tiles.field497 = var2;
-			}
+			Client.viewportTempX = Client.overheadTextXs[var9];
+			Client.viewportTempY = Client.overheadTextYs[var9] = var11;
+			String var20 = Client.overheadText[var9];
+			if (Client.chatEffects == 0) {
+				int var16 = 16776960;
+				if (Client.overheadTextColors[var9] < 6) {
+					var16 = Client.field857[Client.overheadTextColors[var9]];
+				}
 
-			AbstractArchive.oculusOrbFocalPointY = class215.localPlayer.y;
-			Client.field645 = false;
+				if (Client.overheadTextColors[var9] == 6) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? 16711680 : 16776960;
+				}
+
+				if (Client.overheadTextColors[var9] == 7) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? 255 : '\uffff';
+				}
+
+				if (Client.overheadTextColors[var9] == 8) {
+					var16 = Client.viewportDrawCount % 20 < 10 ? '뀀' : 8454016;
+				}
+
+				int var17;
+				if (Client.overheadTextColors[var9] == 9) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = var17 * 1280 + 16711680;
+					} else if (var17 < 100) {
+						var16 = 16776960 - (var17 - 50) * 327680;
+					} else if (var17 < 150) {
+						var16 = (var17 - 100) * 5 + 65280;
+					}
+				}
+
+				if (Client.overheadTextColors[var9] == 10) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = var17 * 5 + 16711680;
+					} else if (var17 < 100) {
+						var16 = 16711935 - (var17 - 50) * 327680;
+					} else if (var17 < 150) {
+						var16 = (var17 - 100) * 327680 + 255 - (var17 - 100) * 5;
+					}
+				}
+
+				if (Client.overheadTextColors[var9] == 11) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					if (var17 < 50) {
+						var16 = 16777215 - var17 * 327685;
+					} else if (var17 < 100) {
+						var16 = (var17 - 50) * 327685 + 65280;
+					} else if (var17 < 150) {
+						var16 = 16777215 - (var17 - 100) * 327680;
+					}
+				}
+
+				if (Client.overheadTextEffects[var9] == 0) {
+					JagexCache.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0);
+				}
+
+				if (Client.overheadTextEffects[var9] == 1) {
+					JagexCache.fontBold12.drawCenteredWave(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount);
+				}
+
+				if (Client.overheadTextEffects[var9] == 2) {
+					JagexCache.fontBold12.drawCenteredWave2(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount);
+				}
+
+				if (Client.overheadTextEffects[var9] == 3) {
+					JagexCache.fontBold12.drawCenteredShake(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, var16, 0, Client.viewportDrawCount, 150 - Client.overheadTextCyclesRemaining[var9]);
+				}
+
+				if (Client.overheadTextEffects[var9] == 4) {
+					var17 = (150 - Client.overheadTextCyclesRemaining[var9]) * (JagexCache.fontBold12.stringWidth(var20) + 100) / 150;
+					Rasterizer2D.Rasterizer2D_expandClip(var0 + Client.viewportTempX - 50, var1, var0 + Client.viewportTempX + 50, var3 + var1);
+					JagexCache.fontBold12.draw(var20, var0 + Client.viewportTempX + 50 - var17, Client.viewportTempY + var1, var16, 0);
+					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
+				}
+
+				if (Client.overheadTextEffects[var9] == 5) {
+					var17 = 150 - Client.overheadTextCyclesRemaining[var9];
+					int var18 = 0;
+					if (var17 < 25) {
+						var18 = var17 - 25;
+					} else if (var17 > 125) {
+						var18 = var17 - 125;
+					}
+
+					Rasterizer2D.Rasterizer2D_expandClip(var0, Client.viewportTempY + var1 - JagexCache.fontBold12.ascent - 1, var0 + var2, Client.viewportTempY + var1 + 5);
+					JagexCache.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, var18 + Client.viewportTempY + var1, var16, 0);
+					Rasterizer2D.Rasterizer2D_setClip(var0, var1, var0 + var2, var3 + var1);
+				}
+			} else {
+				JagexCache.fontBold12.drawCentered(var20, var0 + Client.viewportTempX, Client.viewportTempY + var1, 16776960, 0);
+			}
 		}
 
 	}
