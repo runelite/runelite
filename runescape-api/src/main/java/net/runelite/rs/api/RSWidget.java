@@ -73,6 +73,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getModelId();
 
+	@Import("modelId")
+	@Override
+	void setModelId(int modelId);
+
 	@Import("itemIds")
 	int[] getItemIds();
 
@@ -160,14 +164,37 @@ public interface RSWidget extends Widget
 	@Import("childIndex")
 	void setIndex(int index);
 
-	//@Import("rotationX")
-	//int getRotationX();
+	@Import("modelAngleX")
+	@Override
+	int getRotationX();
 
-	//@Import("rotationY") --- All unused
-	//int getRotationY();
+	@Import("modelAngleX")
+	@Override
+	void setRotationX(int rotationX);
 
-	//@Import("rotationZ")
-	//int getRotationZ();
+	@Import("modelAngleY")
+	@Override
+	int getRotationY();
+
+	@Import("modelAngleY")
+	@Override
+	void setRotationY(int rotationY);
+
+	@Import("modelAngleZ")
+	@Override
+	int getRotationZ();
+
+	@Import("modelAngleZ")
+	@Override
+	void setRotationZ(int rotationZ);
+
+	@Import("modelZoom")
+	@Override
+	int getModelZoom();
+
+	@Import("modelZoom")
+	@Override
+	void setModelZoom(int modelZoom);
 
 	@Import("contentType")
 	@Override
