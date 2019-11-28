@@ -37,6 +37,8 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.WorldsFetch;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
@@ -51,16 +53,19 @@ public class WorldService
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final WorldClient worldClient;
+	private final EventBus eventBus;
 	private final CompletableFuture<WorldResult> firstRunFuture = new CompletableFuture<>();
 
 	private WorldResult worlds;
 
 	@Inject
-	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, WorldClient worldClient)
+	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, WorldClient worldClient,
+		EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.worldClient = worldClient;
+		this.eventBus = eventBus;
 
 		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 	}
@@ -89,6 +94,7 @@ public class WorldService
 			WorldResult worldResult = worldClient.lookupWorlds();
 			worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
 			worlds = worldResult;
+			eventBus.post(new WorldsFetch(worldResult));
 		}
 		catch (IOException ex)
 		{

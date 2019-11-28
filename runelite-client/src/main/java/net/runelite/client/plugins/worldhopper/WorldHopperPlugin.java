@@ -74,6 +74,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.WorldsFetch;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -222,6 +223,9 @@ public class WorldHopperPlugin extends Plugin
 		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
 		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
+
+		// populate initial world list
+		updateList();
 	}
 
 	@Override
@@ -473,6 +477,12 @@ public class WorldHopperPlugin extends Plugin
 
 		lastFetch = now;
 		worldService.refresh();
+	}
+
+	@Subscribe
+	public void onWorldsFetch(WorldsFetch worldsFetch)
+	{
+		updateList();
 	}
 
 	/**
