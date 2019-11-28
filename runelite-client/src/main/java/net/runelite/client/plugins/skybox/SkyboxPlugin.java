@@ -80,7 +80,8 @@ public class SkyboxPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pickColorToOverride()) {
+		if (config.pickColorToOverride())
+		{
 			Player player = client.getLocalPlayer();
 			if (player != null)
 			{

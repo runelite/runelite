@@ -87,10 +87,15 @@ class Skybox
 	private final int stride;
 
 	private boolean override;
-	public void setOverrideEnabled(boolean value) { override = value; }
+	public void setOverrideEnabled(boolean value)
+	{
+		override = value;
+	}
+
 	private int overrideTargetColor;
 	private int overrideReplacementColor;
-	public void setOverrideColors(int before, int after){
+	public void setOverrideColors(int before, int after)
+	{
 		int cr, cg, cb;
 		byte cco, tmp, ccg, cy;
 		cr = before >> 16 & 0xFF;
@@ -398,7 +403,8 @@ class Skybox
 		return cv;
 	}
 
-	private int chunkDataWithOverride(int cx, int cy, int plane, ChunkMapper chunkMapper){
+	private int chunkDataWithOverride(int cx, int cy, int plane, ChunkMapper chunkMapper)
+	{
 		int cv = chunkData(cx, cy, plane, chunkMapper);
 
 		if (override && cv == ((0xFF000000 & cv) | overrideTargetColor))
