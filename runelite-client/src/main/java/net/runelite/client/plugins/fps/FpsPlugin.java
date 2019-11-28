@@ -27,8 +27,6 @@ package net.runelite.client.plugins.fps;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -71,15 +69,6 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private DrawManager drawManager;
 
-	@Inject
-	private FpsConfig fpsConfig;
-
-	@Getter(AccessLevel.PACKAGE)
-	private FpsLimitMode limitMode;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean drawFps;
-
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
@@ -92,9 +81,6 @@ public class FpsPlugin extends Plugin
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			drawListener.reloadConfig();
-
-			limitMode = fpsConfig.limitMode();
-			drawFps = fpsConfig.drawFps();
 		}
 	}
 
@@ -108,9 +94,6 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-
-		limitMode = fpsConfig.limitMode();
-		drawFps = fpsConfig.drawFps();
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();

@@ -174,7 +174,7 @@ public class GrandExchangeOfferOwnWorldComparator implements Comparator {
 			class60.pcmPlayer1 = HealthBarUpdate.method1776(GameShell.taskHandler, 1, 2048);
 			ClientPacket.pcmStreamMixer = new PcmStreamMixer();
 			class60.pcmPlayer1.setStream(ClientPacket.pcmStreamMixer);
-			LoginScreenAnimation.decimator = new Decimator(22050, Messages.field1274);
+			LoginScreenAnimation.decimator = new Decimator(22050, Messages.PcmPlayer_sampleRate);
 			Login.Login_loadingText = "Prepared sound engine";
 			Login.Login_loadingPercent = 35;
 			Client.titleLoadingStage = 50;

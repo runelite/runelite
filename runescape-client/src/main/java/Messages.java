@@ -35,7 +35,8 @@ public class Messages {
 	@ObfuscatedGetter(
 		intValue = -1088425627
 	)
-	public static int field1274;
+	@Export("PcmPlayer_sampleRate")
+	public static int PcmPlayer_sampleRate;
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "Lat;"

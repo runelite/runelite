@@ -26,7 +26,7 @@
 package net.runelite.http.api.worlds;
 
 import com.google.gson.JsonParseException;
-import io.reactivex.Observable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.inject.Inject;
@@ -50,7 +50,7 @@ public class WorldClient
 		this.client = client;
 	}
 
-	public Observable<WorldResult> lookupWorlds()
+	public WorldResult lookupWorlds() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("worlds.js")
@@ -58,27 +58,24 @@ public class WorldClient
 
 		logger.debug("Built URI: {}", url);
 
-		return Observable.defer(() ->
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = client.newCall(request).execute())
 		{
-			Request request = new Request.Builder()
-				.url(url)
-				.build();
-
-			try (Response response = client.newCall(request).execute())
+			if (!response.isSuccessful())
 			{
-				if (!response.isSuccessful())
-				{
-					logger.debug("Error looking up worlds: {}", response);
-					return Observable.just(null);
-				}
+				logger.debug("Error looking up worlds: {}", response);
+				throw new IOException("unsuccessful response looking up worlds");
+			}
 
-				InputStream in = response.body().byteStream();
-				return Observable.just(RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class));
-			}
-			catch (JsonParseException ex)
-			{
-				return Observable.error(ex);
-			}
-		});
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

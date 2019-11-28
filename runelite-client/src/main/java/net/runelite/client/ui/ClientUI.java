@@ -1024,9 +1024,9 @@ public class ClientUI
 				setOpacityMethod.invoke(peerField.get(frame), opacity);
 
 			}
-			catch (NoSuchFieldException | NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException e)
+			catch (NoSuchFieldException | NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NullPointerException e)
 			{
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		});
 	}

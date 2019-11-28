@@ -52,6 +52,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
@@ -61,7 +62,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Singleton
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
-	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
@@ -137,7 +138,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		ChatMessageType chatMessageType = chatMessage.getType();
+		if (chatMessageType == ChatMessageType.WELCOME && StringUtils.startsWithIgnoreCase(chatMessage.getMessage(), WELCOME_MESSAGE))
 		{
 			if (!this.retainChatHistory)
 			{
@@ -154,7 +156,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		switch (chatMessage.getType())
+		switch (chatMessageType)
 		{
 			case PRIVATECHATOUT:
 			case PRIVATECHAT:
@@ -174,7 +176,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case FRIENDSCHAT:
 			case CONSOLE:
 				final QueuedMessage queuedMessage = QueuedMessage.builder()
-					.type(chatMessage.getType())
+					.type(chatMessageType)
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
 					.value(tweakSpaces(chatMessage.getMessage()))

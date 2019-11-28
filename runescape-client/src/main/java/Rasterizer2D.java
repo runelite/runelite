@@ -609,8 +609,8 @@ public class Rasterizer2D extends DualNode {
 	public static void Rasterizer2D_drawRectangle(int var0, int var1, int var2, int var3, int var4) {
 		Rasterizer2D_drawHorizontalLine(var0, var1, var2, var4);
 		Rasterizer2D_drawHorizontalLine(var0, var3 + var1 - 1, var2, var4);
-		rasterizerDrawVerticalLine(var0, var1, var3, var4);
-		rasterizerDrawVerticalLine(var0 + var2 - 1, var1, var3, var4);
+		Rasterizer2D_drawVerticalLine(var0, var1, var3, var4);
+		Rasterizer2D_drawVerticalLine(var0 + var2 - 1, var1, var3, var4);
 	}
 
 	@ObfuscatedName("df")
@@ -679,7 +679,7 @@ public class Rasterizer2D extends DualNode {
 
 	@ObfuscatedName("eg")
 	@Export("Rasterizer2D_drawVerticalLine")
-	public static void rasterizerDrawVerticalLine(int var0, int var1, int var2, int var3) {
+	public static void Rasterizer2D_drawVerticalLine(int var0, int var1, int var2, int var3) {
 		if (var0 >= Rasterizer2D_xClipStart && var0 < Rasterizer2D_xClipEnd) {
 			if (var1 < Rasterizer2D_yClipStart) {
 				var2 -= Rasterizer2D_yClipStart - var1;
@@ -744,9 +744,9 @@ public class Rasterizer2D extends DualNode {
 
 		} else if (var2 == 0) {
 			if (var3 >= 0) {
-				rasterizerDrawVerticalLine(var0, var1, var3 + 1, var4);
+				Rasterizer2D_drawVerticalLine(var0, var1, var3 + 1, var4);
 			} else {
-				rasterizerDrawVerticalLine(var0, var3 + var1, -var3 + 1, var4);
+				Rasterizer2D_drawVerticalLine(var0, var3 + var1, -var3 + 1, var4);
 			}
 
 		} else {

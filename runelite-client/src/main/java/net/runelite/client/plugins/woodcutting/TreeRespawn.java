@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, David <Dava96@github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +23,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
-import javax.annotation.Nullable;
-import net.runelite.api.widgets.WidgetInfo;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.coords.LocalPoint;
 
-enum TeleportWidget
+@AllArgsConstructor
+@Getter
+class TreeRespawn
 {
-	HOME_TELEPORT,
-	MINIGAME_TELEPORT;
+	private final Tree tree;
+	private final LocalPoint location;
+	private final Instant startTime;
+	private final int respawnTime;
 
-	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId()
-	);
-	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
-	);
-
-	@Nullable
-	static TeleportWidget of(int widgetId)
+	boolean isExpired()
 	{
-		if (HOME_TELEPORT_IDS.contains(widgetId))
-		{
-			return HOME_TELEPORT;
-		}
-		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
-		{
-			return MINIGAME_TELEPORT;
-		}
-		return null;
+		return Instant.now().isAfter(startTime.plusMillis(respawnTime));
 	}
 }

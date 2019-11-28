@@ -41,7 +41,7 @@ public class MusicPatchPcmStream extends PcmStream {
 	)
 	void method3962(MusicPatchNode var1, int[] var2, int var3, int var4, int var5) {
 		if ((this.superStream.field2428[var1.field2449] & 4) != 0 && var1.field2459 < 0) {
-			int var6 = this.superStream.field2433[var1.field2449] / Messages.field1274;
+			int var6 = this.superStream.field2433[var1.field2449] / Messages.PcmPlayer_sampleRate;
 
 			while (true) {
 				int var7 = (var6 + 1048575 - var1.field2463) / var6;
@@ -54,7 +54,7 @@ public class MusicPatchPcmStream extends PcmStream {
 				var3 += var7;
 				var4 -= var7;
 				var1.field2463 += var7 * var6 - 1048576;
-				int var8 = Messages.field1274 / 100;
+				int var8 = Messages.PcmPlayer_sampleRate / 100;
 				int var9 = 262144 / var6;
 				if (var9 < var8) {
 					var8 = var9;
@@ -91,7 +91,7 @@ public class MusicPatchPcmStream extends PcmStream {
 	)
 	void method3959(MusicPatchNode var1, int var2) {
 		if ((this.superStream.field2428[var1.field2449] & 4) != 0 && var1.field2459 < 0) {
-			int var3 = this.superStream.field2433[var1.field2449] / Messages.field1274;
+			int var3 = this.superStream.field2433[var1.field2449] / Messages.PcmPlayer_sampleRate;
 			int var4 = (var3 + 1048575 - var1.field2463) / var3;
 			var1.field2463 = var3 * var2 + var1.field2463 & 1048575;
 			if (var4 <= var2) {
