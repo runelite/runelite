@@ -897,7 +897,7 @@ public class WorldMapRegion {
 	void method469(int var1, int var2, int var3, int var4) {
 		var3 %= 4;
 		if (var3 == 0) {
-			Rasterizer2D.rasterizerDrawVerticalLine(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
+			Rasterizer2D.Rasterizer2D_drawVerticalLine(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
 		}
 
 		if (var3 == 1) {
@@ -905,7 +905,7 @@ public class WorldMapRegion {
 		}
 
 		if (var3 == 2) {
-			Rasterizer2D.rasterizerDrawVerticalLine(this.pixelsPerTile * var1 + this.pixelsPerTile - 1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
+			Rasterizer2D.Rasterizer2D_drawVerticalLine(this.pixelsPerTile * var1 + this.pixelsPerTile - 1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
 		}
 
 		if (var3 == 3) {

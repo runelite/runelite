@@ -245,7 +245,7 @@ public class MidiPcmStream extends PcmStream {
 	@Export("fill")
 	protected synchronized void fill(int[] var1, int var2, int var3) {
 		if (this.midiFile.isReady()) {
-			int var4 = this.midiFile.division * this.field2419 * -727379968 / Messages.field1274;
+			int var4 = this.midiFile.division * this.field2419 * -727379968 / Messages.PcmPlayer_sampleRate;
 
 			do {
 				long var5 = this.field2431 + (long)var4 * (long)var3;
@@ -294,7 +294,7 @@ public class MidiPcmStream extends PcmStream {
 	@Export("skip")
 	protected synchronized void skip(int var1) {
 		if (this.midiFile.isReady()) {
-			int var2 = this.midiFile.division * this.field2419 * -727379968 / Messages.field1274;
+			int var2 = this.midiFile.division * this.field2419 * -727379968 / Messages.PcmPlayer_sampleRate;
 
 			do {
 				long var3 = this.field2431 + (long)var2 * (long)var1;
@@ -519,7 +519,7 @@ public class MidiPcmStream extends PcmStream {
 		for (MusicPatchNode var2 = (MusicPatchNode)this.patchStream.queue.last(); var2 != null; var2 = (MusicPatchNode)this.patchStream.queue.previous()) {
 			if (var1 < 0 || var2.field2449 == var1) {
 				if (var2.stream != null) {
-					var2.stream.method2582(Messages.field1274 / 100);
+					var2.stream.method2582(Messages.PcmPlayer_sampleRate / 100);
 					if (var2.stream.method2686()) {
 						this.patchStream.mixer.addSubStream(var2.stream);
 					}
@@ -858,7 +858,7 @@ public class MidiPcmStream extends PcmStream {
 			var2 += (int)(var6 * (double)var4);
 		}
 
-		var4 = (int)((double)(var1.rawSound.sampleRate * 256) * Math.pow(2.0D, (double)var2 * 3.255208333333333E-4D) / (double)Messages.field1274 + 0.5D);
+		var4 = (int)((double)(var1.rawSound.sampleRate * 256) * Math.pow(2.0D, (double)var2 * 3.255208333333333E-4D) / (double)Messages.PcmPlayer_sampleRate + 0.5D);
 		return var4 < 1 ? 1 : var4;
 	}
 
@@ -990,7 +990,7 @@ public class MidiPcmStream extends PcmStream {
 		garbageValue = "178317578"
 	)
 	boolean method3802(MusicPatchNode var1, int[] var2, int var3, int var4) {
-		var1.field2464 = Messages.field1274 / 100;
+		var1.field2464 = Messages.PcmPlayer_sampleRate / 100;
 		if (var1.field2459 < 0 || var1.stream != null && !var1.stream.method2585()) {
 			int var5 = var1.field2455;
 			if (var5 > 0) {

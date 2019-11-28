@@ -85,4 +85,15 @@ public interface WoodcuttingConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showRespawnTimers",
+		name = "Show respawn timers",
+		description = "Configures whether to display the respawn timer overlay"
+	)
+	default boolean showRespawnTimers()
+	{
+		return true;
+	}
 }

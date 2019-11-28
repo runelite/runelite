@@ -38,7 +38,7 @@ public class DevicePcmPlayer extends PcmPlayer {
 	)
 	@Export("init")
 	protected void init() {
-		this.format = new AudioFormat((float)Messages.field1274, 16, PcmPlayer.PcmPlayer_stereo ? 2 : 1, true, false);
+		this.format = new AudioFormat((float)Messages.PcmPlayer_sampleRate, 16, PcmPlayer.PcmPlayer_stereo ? 2 : 1, true, false);
 		this.byteSamples = new byte[256 << (PcmPlayer.PcmPlayer_stereo ? 2 : 1)];
 	}
 

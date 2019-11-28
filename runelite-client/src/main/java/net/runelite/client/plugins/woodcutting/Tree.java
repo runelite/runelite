@@ -25,23 +25,27 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
 import java.util.Map;
-import lombok.AccessLevel;
+import javax.annotation.Nullable;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.REDWOOD;
-import static net.runelite.api.ObjectID.REDWOOD_29670;
+import static net.runelite.api.NullObjectID.NULL_10823;
+import static net.runelite.api.NullObjectID.NULL_10835;
+import net.runelite.api.ObjectID;
+import static net.runelite.api.ObjectID.*;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 enum Tree
 {
-	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
-
-	private final int[] treeIds;
-
-	Tree(final int... treeIds)
-	{
-		this.treeIds = treeIds;
-	}
+	REGULAR_TREE(null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
+	OAK_TREE(Duration.ofMillis(8500), ObjectID.OAK_TREE, OAK_TREE_4540, OAK_10820),
+	WILLOW_TREE(Duration.ofMillis(8500), WILLOW, WILLOW_10833, WILLOW_10831),
+	MAPLE_TREE(Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681),
+	TEAK_TREE(Duration.ofMillis(8500), TEAK, TEAK_36686),
+	MAHOGANY_TREE(Duration.ofMillis(8500), MAHOGANY, MAHOGANY_36688),
+	YEW_TREE(Duration.ofMinutes(1), YEW, NULL_10823, YEW_36683),
+	MAGIC_TREE(Duration.ofMinutes(2), MAGIC_TREE_10834, NULL_10835),
+	REDWOOD(Duration.ofMinutes(2), ObjectID.REDWOOD, REDWOOD_29670);
 
 	private static final Map<Integer, Tree> TREES;
 
@@ -58,6 +62,16 @@ enum Tree
 		}
 
 		TREES = builder.build();
+	}
+
+	@Nullable
+	private final Duration respawnTime;
+	private final int[] treeIds;
+
+	Tree(@org.jetbrains.annotations.Nullable Duration respawnTime, int... treeIds)
+	{
+		this.respawnTime = respawnTime;
+		this.treeIds = treeIds;
 	}
 
 	static Tree findTree(int objectId)

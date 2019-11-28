@@ -136,7 +136,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 	)
 	public static final void method170(int var0, boolean var1, int var2) {
 		if (var0 >= 8000 && var0 <= 48000) {
-			Messages.field1274 = var0;
+			Messages.PcmPlayer_sampleRate = var0;
 			PcmPlayer.PcmPlayer_stereo = var1;
 			RouteStrategy.field2114 = var2;
 		} else {

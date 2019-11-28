@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.events;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
-import javax.annotation.Nullable;
-import net.runelite.api.widgets.WidgetInfo;
+import lombok.Value;
+import net.runelite.api.events.Event;
+import net.runelite.http.api.worlds.WorldResult;
 
-enum TeleportWidget
+/**
+ * Fired when the @{link net.runelite.client.game.WorldService} refreshes the world list
+ */
+@Value
+public class WorldsFetch implements Event
 {
-	HOME_TELEPORT,
-	MINIGAME_TELEPORT;
-
-	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId()
-	);
-	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
-	);
-
-	@Nullable
-	static TeleportWidget of(int widgetId)
-	{
-		if (HOME_TELEPORT_IDS.contains(widgetId))
-		{
-			return HOME_TELEPORT;
-		}
-		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
-		{
-			return MINIGAME_TELEPORT;
-		}
-		return null;
-	}
+	private final WorldResult worldResult;
 }

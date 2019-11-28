@@ -263,7 +263,7 @@ public class PcmPlayer {
 
 				while (var1 > 5000L + this.timeMs) {
 					this.skip(256);
-					this.timeMs += (long)(256000 / Messages.field1274);
+					this.timeMs += (long)(256000 / Messages.PcmPlayer_sampleRate);
 				}
 			} catch (Exception var6) {
 				this.timeMs = var1;
@@ -359,7 +359,7 @@ public class PcmPlayer {
 		class300.clearIntArray(var1, 0, var3);
 		this.field1409 -= var2;
 		if (this.stream != null && this.field1409 <= 0) {
-			this.field1409 += Messages.field1274 >> 4;
+			this.field1409 += Messages.PcmPlayer_sampleRate >> 4;
 			class1.PcmStream_disable(this.stream);
 			this.method2452(this.stream, this.stream.vmethod2741());
 			int var4 = 0;

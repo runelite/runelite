@@ -78,7 +78,7 @@ public class HealthBarUpdate extends Node {
 		garbageValue = "148025221"
 	)
 	public static final PcmPlayer method1776(TaskHandler var0, int var1, int var2) {
-		if (Messages.field1274 == 0) {
+		if (Messages.PcmPlayer_sampleRate == 0) {
 			throw new IllegalStateException();
 		} else if (var1 >= 0 && var1 < 2) {
 			if (var2 < 256) {
