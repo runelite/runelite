@@ -76,6 +76,7 @@ import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import static net.runelite.client.plugins.gpu.GLUtil.*;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
@@ -1181,7 +1182,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 		}
 
-		if (client.isStretchedEnabled() && !client.isStretchedFast()) {
+		if (client.isStretchedEnabled() && config.uiScalingMode() == UIScalingMode.CATMULL_ROM) {
 			// Use the texture bound in the first pass
 			gl.glUseProgram(glUiBicubicProgram);
 			gl.glUniform1i(uniTexBicubic, 0);
@@ -1197,8 +1198,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
 		if (client.isStretchedEnabled())
 		{
-			// This needs adjustments if we want to give the option of linear sampling in fast mode, now that slow mode is actually a more demanding sampler
-			final int function = client.isStretchedFast() ? gl.GL_NEAREST : gl.GL_LINEAR;
+			final int function = config.uiScalingMode() == UIScalingMode.LINEAR ? gl.GL_LINEAR : gl.GL_NEAREST;
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, function);
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, function);
 		}
