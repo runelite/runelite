@@ -145,6 +145,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int glUiVertexShader;
 	private int glUiFragmentShader;
 
+	private int glUiBicubicProgram;
+	private int glUiBicubicVertexShader;
+	private int glUiBicubicFragmentShader;
+
 	private int vaoUiHandle;
 	private int vboUiHandle;
 
@@ -218,6 +222,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
+	private int uniTexBicubic;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -504,6 +509,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			null,
 			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
 
+		glUiBicubicProgram = gl.glCreateProgram();
+		glUiBicubicVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
+		glUiBicubicFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
+		GLUtil.loadShaders(gl, glUiBicubicProgram, glUiBicubicVertexShader, -1, glUiBicubicFragmentShader,
+		inputStreamToString(getClass().getResourceAsStream("vertui.glsl")),
+		null,
+		inputStreamToString(getClass().getResourceAsStream("fragui_bicubic.glsl")));
+
+
 		initUniforms();
 	}
 
@@ -518,6 +532,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
+		uniTexBicubic = gl.glGetUniformLocation(glUiBicubicProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -570,6 +585,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
+
+		gl.glDeleteProgram(glUiBicubicProgram);
+		glUiBicubicProgram = -1;
 	}
 
 	private void initVao()
@@ -1163,15 +1181,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 		}
 
-		// Use the texture bound in the first pass
-		gl.glUseProgram(glUiProgram);
-		gl.glUniform1i(uniTex, 0);
+		if (client.isStretchedEnabled() && !client.isStretchedFast()) {
+			// Use the texture bound in the first pass
+			gl.glUseProgram(glUiBicubicProgram);
+			gl.glUniform1i(uniTexBicubic, 0);
+		}
+		else {
+			// Use the texture bound in the first pass
+			gl.glUseProgram(glUiProgram);
+			gl.glUniform1i(uniTex, 0);
+		}
 
 		// Set the sampling function used when stretching the UI.
 		// This is probably better done with sampler objects instead of texture parameters, but this is easier and likely more portable.
 		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
 		if (client.isStretchedEnabled())
 		{
+			// This needs adjustments if we want to give the option of linear sampling in fast mode, now that slow mode is actually a more demanding sampler
 			final int function = client.isStretchedFast() ? gl.GL_NEAREST : gl.GL_LINEAR;
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, function);
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, function);
