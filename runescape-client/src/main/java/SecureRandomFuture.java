@@ -4,19 +4,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cy")
 @Implements("SecureRandomFuture")
 public class SecureRandomFuture {
-	@ObfuscatedName("q")
-	@Export("SpriteBuffer_xOffsets")
-	public static int[] SpriteBuffer_xOffsets;
-	@ObfuscatedName("a")
+	@ObfuscatedName("rh")
+	@ObfuscatedGetter(
+		intValue = 1810494336
+	)
+	static int field1242;
+	@ObfuscatedName("fx")
+	@ObfuscatedSignature(
+		signature = "Lfo;"
+	)
+	@Export("socketTask")
+	static Task socketTask;
+	@ObfuscatedName("u")
 	@Export("executor")
 	ExecutorService executor;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@Export("future")
 	Future future;
 
@@ -25,10 +34,10 @@ public class SecureRandomFuture {
 		this.future = this.executor.submit(new SecureRandomCallable());
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "824065163"
+		signature = "(B)V",
+		garbageValue = "3"
 	)
 	@Export("shutdown")
 	void shutdown() {
@@ -36,27 +45,27 @@ public class SecureRandomFuture {
 		this.executor = null;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-58"
+		signature = "(I)Z",
+		garbageValue = "583924598"
 	)
 	@Export("isDone")
 	boolean isDone() {
 		return this.future.isDone();
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/security/SecureRandom;",
-		garbageValue = "2107000562"
+		signature = "(B)Ljava/security/SecureRandom;",
+		garbageValue = "117"
 	)
 	@Export("get")
 	SecureRandom get() {
 		try {
 			return (SecureRandom)this.future.get();
 		} catch (Exception var2) {
-			return Language.method3800();
+			return NetCache.method4394();
 		}
 	}
 }

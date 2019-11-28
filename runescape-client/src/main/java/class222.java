@@ -1,125 +1,83 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("ht")
 public class class222 {
-	@ObfuscatedName("o")
-	@Export("ByteArrayPool_altSizeArrayCounts")
-	static int[] ByteArrayPool_altSizeArrayCounts;
-	@ObfuscatedName("eh")
-	@ObfuscatedGetter(
-		intValue = -1324768135
-	)
-	@Export("port1")
-	static int port1;
-
-	@ObfuscatedName("a")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II)Liw;",
-		garbageValue = "779944842"
+		signature = "(IB)Ljava/lang/String;",
+		garbageValue = "0"
 	)
-	@Export("ItemDefinition_get")
-	public static ItemDefinition ItemDefinition_get(int var0) {
-		ItemDefinition var1 = (ItemDefinition)ItemDefinition.ItemDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = ItemDefinition.ItemDefinition_archive.takeFile(10, var0);
-			var1 = new ItemDefinition();
-			var1.id = var0;
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.post();
-			if (var1.noteTemplate != -1) {
-				var1.genCert(ItemDefinition_get(var1.noteTemplate), ItemDefinition_get(var1.note));
-			}
-
-			if (var1.notedId != -1) {
-				var1.genBought(ItemDefinition_get(var1.notedId), ItemDefinition_get(var1.unnotedId));
-			}
-
-			if (var1.placeholderTemplate != -1) {
-				var1.genPlaceholder(ItemDefinition_get(var1.placeholderTemplate), ItemDefinition_get(var1.placeholder));
-			}
-
-			if (!ItemDefinition.ItemDefinition_inMembersWorld && var1.isMembersOnly) {
-				var1.name = "Members object";
-				var1.isTradable = false;
-				var1.groundActions = null;
-				var1.inventoryActions = null;
-				var1.shiftClickIndex = -1;
-				var1.team = 0;
-				if (var1.params != null) {
-					boolean var3 = false;
-
-					for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-						ParamDefinition var5 = class162.getParamDefinition((int)var4.key);
-						if (var5.autoDisable) {
-							var4.remove();
-						} else {
-							var3 = true;
-						}
-					}
-
-					if (!var3) {
-						var1.params = null;
-					}
-				}
-			}
-
-			ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
-			return var1;
-		}
+	@Export("colorStartTag")
+	static String colorStartTag(int var0) {
+		return "<col=" + Integer.toHexString(var0) + ">";
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-1844662442"
+		signature = "(ZI)V",
+		garbageValue = "-649981056"
 	)
-	public static String method4274(String var0) {
-		int var1 = var0.length();
-		char[] var2 = new char[var1];
-		byte var3 = 2;
+	@Export("Login_promptCredentials")
+	static void Login_promptCredentials(boolean var0) {
+		Login.Login_response1 = "";
+		Login.Login_response2 = "Enter your username/email & password.";
+		Login.Login_response3 = "";
+		Login.loginIndex = 2;
+		if (var0) {
+			Login.Login_password = "";
+		}
 
-		for (int var4 = 0; var4 < var1; ++var4) {
-			char var5 = var0.charAt(var4);
-			if (var3 == 0) {
-				var5 = Character.toLowerCase(var5);
-			} else if (var3 == 2 || Character.isUpperCase(var5)) {
-				var5 = class173.method3720(var5);
-			}
-
-			if (Character.isLetter(var5)) {
-				var3 = 0;
-			} else if (var5 != '.' && var5 != '?' && var5 != '!') {
-				if (Character.isSpaceChar(var5)) {
-					if (var3 != 2) {
-						var3 = 1;
-					}
-				} else {
-					var3 = 1;
-				}
+		if (Login.Login_username == null || Login.Login_username.length() <= 0) {
+			if (UserComparator10.clientPreferences.rememberedUsername != null) {
+				Login.Login_username = UserComparator10.clientPreferences.rememberedUsername;
+				Client.Login_isUsernameRemembered = true;
 			} else {
-				var3 = 2;
+				Client.Login_isUsernameRemembered = false;
 			}
-
-			var2[var4] = var5;
 		}
 
-		return new String(var2);
+		Buddy.method5251();
 	}
 
-	@ObfuscatedName("jh")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-8"
+		signature = "(B)V",
+		garbageValue = "-23"
 	)
-	static boolean method4272() {
-		return Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
+	public static void method4195() {
+		NPCDefinition.NpcDefinition_cached.clear();
+		NPCDefinition.NpcDefinition_cachedModels.clear();
+	}
+
+	@ObfuscatedName("aj")
+	@ObfuscatedSignature(
+		signature = "([BII)I",
+		garbageValue = "-2031476219"
+	)
+	public static int method4196(byte[] var0, int var1) {
+		return UserComparator5.method3467(var0, 0, var1);
+	}
+
+	@ObfuscatedName("fy")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "11"
+	)
+	static final void method4198() {
+		if (WorldMapID.ClanChat_inClanChat) {
+			if (InterfaceParent.clanChat != null) {
+				InterfaceParent.clanChat.sort();
+			}
+
+			for (int var0 = 0; var0 < Players.Players_count; ++var0) {
+				Player var1 = Client.players[Players.Players_indices[var0]];
+				var1.clearIsInClanChat();
+			}
+
+			WorldMapID.ClanChat_inClanChat = false;
+		}
+
 	}
 }

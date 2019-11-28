@@ -1,27 +1,23 @@
+import java.io.DataInputStream;
+import java.net.URL;
 import java.util.TimeZone;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gf")
 @Implements("Calendar")
 public class Calendar {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@Export("MONTH_NAMES_ENGLISH_GERMAN")
-	public static final String[][] MONTH_NAMES_ENGLISH_GERMAN;
-	@ObfuscatedName("t")
+	static final String[][] MONTH_NAMES_ENGLISH_GERMAN;
+	@ObfuscatedName("f")
 	@Export("DAYS_OF_THE_WEEK")
-	public static final String[] DAYS_OF_THE_WEEK;
-	@ObfuscatedName("n")
-	@Export("Calendar_calendar")
-	public static java.util.Calendar Calendar_calendar;
+	static final String[] DAYS_OF_THE_WEEK;
 	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "Lkc;"
-	)
-	@Export("NetCache_reference")
-	public static Buffer NetCache_reference;
+	@Export("Calendar_calendar")
+	static java.util.Calendar Calendar_calendar;
 
 	static {
 		MONTH_NAMES_ENGLISH_GERMAN = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}, {"jan", "fév", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"}, {"jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"}, {"jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"}, {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"}};
@@ -30,86 +26,46 @@ public class Calendar {
 		Calendar_calendar = java.util.Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-2132557577"
+		signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
+		garbageValue = "1722882053"
 	)
-	static final int method4102() {
-		return ViewportMouse.ViewportMouse_x;
-	}
-
-	@ObfuscatedName("gd")
-	@ObfuscatedSignature(
-		signature = "(IIIIZI)V",
-		garbageValue = "399120527"
-	)
-	@Export("setViewportShape")
-	static final void setViewportShape(int var0, int var1, int var2, int var3, boolean var4) {
-		if (var2 < 1) {
-			var2 = 1;
-		}
-
-		if (var3 < 1) {
-			var3 = 1;
-		}
-
-		int var5 = var3 - 334;
-		int var6;
-		if (var5 < 0) {
-			var6 = Client.field881;
-		} else if (var5 >= 100) {
-			var6 = Client.field882;
+	@Export("RunException_sendStackTrace")
+	public static void RunException_sendStackTrace(String var0, Throwable var1) {
+		if (var1 != null) {
+			var1.printStackTrace();
 		} else {
-			var6 = (Client.field882 - Client.field881) * var5 / 100 + Client.field881;
-		}
-
-		int var7 = var3 * var6 * 512 / (var2 * 334);
-		int var8;
-		int var9;
-		short var10;
-		if (var7 < Client.field844) {
-			var10 = Client.field844;
-			var6 = var10 * var2 * 334 / (var3 * 512);
-			if (var6 > Client.field886) {
-				var6 = Client.field886;
-				var8 = var3 * var6 * 512 / (var10 * 334);
-				var9 = (var2 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+			try {
+				String var2 = "";
+				if (var1 != null) {
+					var2 = SpriteMask.method4035(var1);
 				}
 
-				var0 += var9;
-				var2 -= var9 * 2;
-			}
-		} else if (var7 > Client.field888) {
-			var10 = Client.field888;
-			var6 = var10 * var2 * 334 / (var3 * 512);
-			if (var6 < Client.field885) {
-				var6 = Client.field885;
-				var8 = var10 * var2 * 334 / (var6 * 512);
-				var9 = (var3 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+				if (var0 != null) {
+					if (var1 != null) {
+						var2 = var2 + " | ";
+					}
+
+					var2 = var2 + var0;
 				}
 
-				var1 += var9;
-				var3 -= var9 * 2;
+				System.out.println("Error: " + var2);
+				var2 = var2.replace(':', '.');
+				var2 = var2.replace('@', '_');
+				var2 = var2.replace('&', '_');
+				var2 = var2.replace('#', '_');
+				if (RunException.RunException_applet == null) {
+					return;
+				}
+
+				URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.RunException_revision + "&u=" + RunException.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + TaskHandler.javaVersion + "&ct=" + RunException.clientType + "&e=" + var2);
+				DataInputStream var4 = new DataInputStream(var3.openStream());
+				var4.read();
+				var4.close();
+			} catch (Exception var5) {
 			}
-		}
 
-		Client.viewportZoom = var3 * var6 / 334;
-		if (var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
-			class192.method3813(var2, var3);
 		}
-
-		Client.viewportOffsetX = var0;
-		Client.viewportOffsetY = var1;
-		Client.viewportWidth = var2;
-		Client.viewportHeight = var3;
 	}
 }

@@ -90,4 +90,25 @@ tasks {
         filter(ReplaceTokens::class, "tokens" to tokens)
         filteringCharset = "UTF-8"
     }
+
+    register<JavaExec>("Downloader.main()") {
+        group = "gamepack"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.gamepack.Downloader"
+    }
+
+    register<JavaExec>("Deob.main()") {
+        group = "gamepack"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.deob.Deob"
+    }
+
+    register<JavaExec>("UpdateMappings.main()") {
+        group = "gamepack"
+
+        classpath = project.sourceSets.main.get().runtimeClasspath
+        main = "net.runelite.deob.updater.UpdateMappings"
+    }
 }
