@@ -31,7 +31,6 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
