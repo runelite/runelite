@@ -1182,12 +1182,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 		}
 
-		if (client.isStretchedEnabled() && config.uiScalingMode() == UIScalingMode.CATMULL_ROM) {
+		if (client.isStretchedEnabled() && config.uiScalingMode() == UIScalingMode.CATMULL_ROM)
+		{
 			// Use the texture bound in the first pass
 			gl.glUseProgram(glUiBicubicProgram);
 			gl.glUniform1i(uniTexBicubic, 0);
 		}
-		else {
+		else
+		{
 			// Use the texture bound in the first pass
 			gl.glUseProgram(glUiProgram);
 			gl.glUniform1i(uniTex, 0);
