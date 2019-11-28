@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2019, rbbi <31489752+rbbi@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +24,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.GridBagConstraints;
@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -47,7 +48,8 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager,
+						ItemManager itemManager, EventBus eventBus)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -71,7 +73,7 @@ class SkillCalculatorPanel extends PluginPanel
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
+		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager, eventBus);
 
 		add(tabGroup, c);
 		c.gridy++;
