@@ -122,10 +122,9 @@ public class LearnToClickPlugin extends Plugin
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		for (MenuEntry entry : menuEntries)
 		{
-			if ((entry.getOption().equals("Floating") && this.shouldRightClickMap) ||
-				(entry.getOption().equals("Hide") && this.shouldRightClickXp) || (entry.getOption().equals("Show")
-				&& this.shouldRightClickXp) || (entry.getOption().equals("Auto retaliate")
-				&& this.shouldRightClickRetaliate))
+			if ((entry.getOption().equals("Floating <col=ff9040>World Map</col>") && this.shouldRightClickMap) ||
+				(entry.getTarget().equals("<col=ff9040>XP drops</col>") && this.shouldRightClickXp) ||
+				(entry.getOption().equals("Auto retaliate") && this.shouldRightClickRetaliate))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -136,8 +135,8 @@ public class LearnToClickPlugin extends Plugin
 	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((event.getOption().equals("Floating") && this.shouldRightClickMap) || (event.getOption().equals("Hide")
-			&& this.shouldRightClickXp) || (event.getOption().equals("Show") && this.shouldRightClickXp) ||
+		if ((event.getOption().equals("Floating <col=ff9040>World Map</col>") && this.shouldRightClickMap) ||
+			(event.getTarget().equals("<col=ff9040>XP drops</col>") && this.shouldRightClickXp) ||
 			(event.getOption().equals("Auto retaliate") && this.shouldRightClickRetaliate))
 		{
 			forceRightClickFlag = true;
