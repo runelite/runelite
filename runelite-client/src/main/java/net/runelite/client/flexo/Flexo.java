@@ -59,7 +59,7 @@ public class Flexo extends Robot
 	public static final int fixedWidth = Constants.GAME_FIXED_WIDTH;
 	public static final int fixedHeight = Constants.GAME_FIXED_HEIGHT;
 	public static boolean isStretched;
-	public static final int minDelay = 45;
+	public static int minDelay = 45;
 	public static MouseMotionFactory currentMouseMotionFactory;
 	public boolean pausedIndefinitely = false;
 	private Robot peer;

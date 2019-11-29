@@ -44,6 +44,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -133,11 +134,11 @@ public class WoodcuttingPluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 
-		woodcuttingPlugin.showNestNotification = true;
+		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier).notify("A bird nest has spawned!");
 
-		woodcuttingPlugin.showNestNotification = false;
+		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verifyNoMoreInteractions(notifier);
 	}

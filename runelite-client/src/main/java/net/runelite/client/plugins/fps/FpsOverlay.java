@@ -57,16 +57,16 @@ public class FpsOverlay extends Overlay
 
 	// Local dependencies
 	private final Client client;
-	private final FpsPlugin plugin;
+	private final FpsConfig config;
 
 	// Often changing values
 	private boolean isFocused = true;
 
 	@Inject
-	private FpsOverlay(final FpsPlugin plugin, final Client client)
+	private FpsOverlay(final FpsConfig config, final Client client)
 	{
 		this.client = client;
-		this.plugin = plugin;
+		this.config = config;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
@@ -79,8 +79,8 @@ public class FpsOverlay extends Overlay
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == plugin.getLimitMode()
-			|| (FpsLimitMode.UNFOCUSED == plugin.getLimitMode() && !isFocused);
+		return config.limitFps()
+			|| (config.limitFpsUnfocused() && !isFocused);
 	}
 
 	private Color getFpsValueColor()
@@ -91,7 +91,7 @@ public class FpsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isDrawFps())
+		if (!config.drawFps())
 		{
 			return null;
 		}

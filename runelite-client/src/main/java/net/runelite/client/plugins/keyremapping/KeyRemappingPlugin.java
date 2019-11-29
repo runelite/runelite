@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -212,7 +211,7 @@ public class KeyRemappingPlugin extends Plugin
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				if (chatboxInput != null && chatboxInput.getText().endsWith(PRESS_ENTER_TO_CHAT))
 				{
-					chatboxInput.setText(getWaitingText());
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 			}
 		);
@@ -227,7 +226,7 @@ public class KeyRemappingPlugin extends Plugin
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				if (chatboxInput != null && chatboxFocused() && !typing)
 				{
-					chatboxInput.setText(getWaitingText());
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
 			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
@@ -246,7 +245,7 @@ public class KeyRemappingPlugin extends Plugin
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 		if (chatboxInput != null)
 		{
-			chatboxInput.setText(getWaitingText());
+			setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 		}
 	}
 
@@ -257,39 +256,24 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 			final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-			chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+			setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 		}
 	}
 
-	private String getPlayerNameWithIcon()
-	{
-		IconID icon;
-		switch (client.getAccountType())
-		{
-			case IRONMAN:
-				icon = IconID.IRONMAN;
-				break;
-			case ULTIMATE_IRONMAN:
-				icon = IconID.ULTIMATE_IRONMAN;
-				break;
-			case HARDCORE_IRONMAN:
-				icon = IconID.HARDCORE_IRONMAN;
-				break;
-			default:
-				return client.getLocalPlayer().getName();
-		}
-		return icon + client.getLocalPlayer().getName();
-	}
-
-	private String getWaitingText()
+	private void setChatboxWidgetInput(Widget widget, String input)
 	{
 		if (this.hideDisplayName)
 		{
-			return PRESS_ENTER_TO_CHAT;
+			widget.setText(input);
+			return;
 		}
-		else
+
+		String text = widget.getText();
+		int idx = text.indexOf(':');
+		if (idx != -1)
 		{
-			return getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT;
+			String newText = text.substring(0, idx) + ": " + input;
+			widget.setText(newText);
 		}
 	}
 

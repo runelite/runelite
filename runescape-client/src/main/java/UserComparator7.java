@@ -1,12 +1,19 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("eq")
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
-	@ObfuscatedName("a")
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = 1896521377
+	)
+	@Export("musicTrackFileId")
+	public static int musicTrackFileId;
+	@ObfuscatedName("u")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -14,10 +21,10 @@ public class UserComparator7 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljx;Ljx;I)I",
-		garbageValue = "249143808"
+		signature = "(Ljt;Ljt;I)I",
+		garbageValue = "2133624016"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {

@@ -1,29 +1,23 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jr")
+@ObfuscatedName("jq")
 @Implements("AbstractUserComparator")
 public abstract class AbstractUserComparator implements Comparator {
-	@ObfuscatedName("rb")
-	@ObfuscatedGetter(
-		intValue = -1217958016
-	)
-	static int field3583;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@Export("nextComparator")
 	Comparator nextComparator;
 
 	protected AbstractUserComparator() {
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Ljava/util/Comparator;B)V",
-		garbageValue = "115"
+		signature = "(Ljava/util/Comparator;I)V",
+		garbageValue = "314545919"
 	)
 	@Export("addComparator")
 	final void addComparator(Comparator var1) {
@@ -35,10 +29,10 @@ public abstract class AbstractUserComparator implements Comparator {
 
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Ljg;Ljg;B)I",
-		garbageValue = "124"
+		signature = "(Ljr;Ljr;B)I",
+		garbageValue = "14"
 	)
 	@Export("compareUser")
 	protected final int compareUser(User var1, User var2) {

@@ -4,54 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dy")
+@ObfuscatedName("da")
 @Implements("TileItemPile")
 public final class TileItemPile {
-	@ObfuscatedName("a")
+	@ObfuscatedName("i")
+	public static short[][] field1537;
+	@ObfuscatedName("kd")
 	@ObfuscatedGetter(
-		intValue = 960185027
+		intValue = -495854777
+	)
+	@Export("menuWidth")
+	static int menuWidth;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -811612081
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 518288239
+		intValue = -1672040969
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1518597633
+		intValue = -951728925
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Lee;"
 	)
 	@Export("first")
 	Entity first;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Lee;"
 	)
 	@Export("second")
 	Entity second;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Lee;"
 	)
 	@Export("third")
 	Entity third;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		longValue = 1765844833924880689L
+		longValue = 4343367721480266293L
 	)
 	@Export("tag")
 	long tag;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -483031039
+		intValue = -311771117
 	)
 	@Export("height")
 	int height;
@@ -59,18 +67,23 @@ public final class TileItemPile {
 	TileItemPile() {
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lhq;Lhq;Lhq;Lhq;I)V",
-		garbageValue = "320810810"
+		signature = "(B)[Lkc;",
+		garbageValue = "-76"
 	)
-	@Export("Widget_setArchives")
-	public static void Widget_setArchives(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
-		Coord.Widget_archive = var0;
-		StructDefinition.Widget_modelsArchive = var1;
-		Widget.Widget_spritesArchive = var2;
-		Widget.Widget_fontsArchive = var3;
-		Widget.Widget_interfaceComponents = new Widget[Coord.Widget_archive.getGroupCount()][];
-		class215.Widget_loadedInterfaces = new boolean[Coord.Widget_archive.getGroupCount()];
+	static PrivateChatMode[] method2810() {
+		return new PrivateChatMode[]{PrivateChatMode.field3793, PrivateChatMode.field3792, PrivateChatMode.field3794};
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1881198055"
+	)
+	public static void method2811() {
+		FaceNormal.midiPcmStream.clear();
+		class197.field2411 = 1;
+		class197.musicTrackArchive = null;
 	}
 }

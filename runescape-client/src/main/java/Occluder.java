@@ -4,182 +4,174 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ej")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("dt")
-	@ObfuscatedSignature(
-		signature = "Lij;"
-	)
-	@Export("archive12")
-	static Archive archive12;
-	@ObfuscatedName("iz")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1014742579
-	)
-	@Export("selectedItemId")
-	static int selectedItemId;
-	@ObfuscatedName("a")
-	@ObfuscatedGetter(
-		intValue = 2096461427
+		intValue = -868680993
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 658025365
+		intValue = -78813791
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -423718345
+		intValue = -307237447
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1740624753
+		intValue = -772985783
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 954528249
+		intValue = 1542494109
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1732339879
+		intValue = -291894415
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 1301635755
+		intValue = -724655561
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -258867493
+		intValue = 686060305
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1337393049
+		intValue = 2092987209
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("d")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1306653599
+		intValue = -264626047
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("m")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1760102387
+		intValue = -1980036159
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 1764224557
-	)
-	int field1869;
-	@ObfuscatedName("h")
-	@ObfuscatedGetter(
-		intValue = -1705634243
-	)
-	int field1887;
-	@ObfuscatedName("k")
-	@ObfuscatedGetter(
-		intValue = -682629895
-	)
-	int field1880;
 	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1219807155
+		intValue = -1409166921
 	)
-	int field1883;
-	@ObfuscatedName("j")
+	int field1896;
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 168844503
+		intValue = -307213361
 	)
-	int field1884;
-	@ObfuscatedName("r")
-	@ObfuscatedGetter(
-		intValue = -1533789259
-	)
-	int field1882;
+	int field1897;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1431077503
+		intValue = -1941150605
 	)
-	int field1885;
+	int field1898;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 1179191271
+	)
+	int field1900;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = -1336984119
+	)
+	int field1890;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -863399609
+	)
+	int field1901;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = -1653375525
+	)
+	int field1902;
 
 	Occluder() {
 	}
 
-	@ObfuscatedName("ir")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-1093183807"
+		signature = "(II)Lil;",
+		garbageValue = "513049272"
 	)
-	static final boolean method3415(int var0) {
-		if (var0 < 0) {
-			return false;
+	@Export("getObjectDefinition")
+	public static ObjectDefinition getObjectDefinition(int var0) {
+		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			int var1 = Client.menuOpcodes[var0];
-			if (var1 >= 2000) {
-				var1 -= 2000;
+			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
+			var1 = new ObjectDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			return var1 == 1007;
+			var1.postDecode();
+			if (var1.isSolid) {
+				var1.interactType = 0;
+				var1.boolean1 = false;
+			}
+
+			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
 	}
 
-	@ObfuscatedName("ih")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)V",
+		signature = "(I)V",
+		garbageValue = "-1792672505"
+	)
+	public static void method3336() {
+		WorldMapElement.WorldMapElement_cachedSprites.clear();
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(B)Lln;",
 		garbageValue = "0"
 	)
-	static final void method3416() {
-		boolean var0 = false;
+	static Sprite method3338() {
+		Sprite var0 = new Sprite();
+		var0.width = class325.SpriteBuffer_spriteWidth;
+		var0.height = UserComparator9.SpriteBuffer_spriteHeight;
+		var0.xOffset = UrlRequester.SpriteBuffer_xOffsets[0];
+		var0.yOffset = class216.SpriteBuffer_yOffsets[0];
+		var0.subWidth = class325.SpriteBuffer_spriteWidths[0];
+		var0.subHeight = VarcInt.SpriteBuffer_spriteHeights[0];
+		int var1 = var0.subHeight * var0.subWidth;
+		byte[] var2 = FillMode.SpriteBuffer_pixels[0];
+		var0.pixels = new int[var1];
 
-		while (!var0) {
-			var0 = true;
-
-			for (int var1 = 0; var1 < Client.menuOptionsCount - 1; ++var1) {
-				if (Client.menuOpcodes[var1] < 1000 && Client.menuOpcodes[var1 + 1] > 1000) {
-					String var2 = Client.menuTargets[var1];
-					Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-					Client.menuTargets[var1 + 1] = var2;
-					String var3 = Client.menuActions[var1];
-					Client.menuActions[var1] = Client.menuActions[var1 + 1];
-					Client.menuActions[var1 + 1] = var3;
-					int var4 = Client.menuOpcodes[var1];
-					Client.menuOpcodes[var1] = Client.menuOpcodes[var1 + 1];
-					Client.menuOpcodes[var1 + 1] = var4;
-					var4 = Client.menuArguments1[var1];
-					Client.menuArguments1[var1] = Client.menuArguments1[var1 + 1];
-					Client.menuArguments1[var1 + 1] = var4;
-					var4 = Client.menuArguments2[var1];
-					Client.menuArguments2[var1] = Client.menuArguments2[var1 + 1];
-					Client.menuArguments2[var1 + 1] = var4;
-					var4 = Client.menuIdentifiers[var1];
-					Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-					Client.menuIdentifiers[var1 + 1] = var4;
-					boolean var5 = Client.menuShiftClick[var1];
-					Client.menuShiftClick[var1] = Client.menuShiftClick[var1 + 1];
-					Client.menuShiftClick[var1 + 1] = var5;
-					var0 = false;
-				}
-			}
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var0.pixels[var3] = class325.SpriteBuffer_spritePalette[var2[var3] & 255];
 		}
 
+		PcmPlayer.method2510();
+		return var0;
 	}
 }

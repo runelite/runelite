@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-public class Raid
+class Raid
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final RaidRoom[] rooms = new RaidRoom[16];

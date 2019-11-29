@@ -1,14 +1,20 @@
 import java.awt.Component;
 import java.awt.Graphics;
+import java.net.URL;
+import java.util.LinkedHashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("ax")
 @Implements("Canvas")
 public final class Canvas extends java.awt.Canvas {
-	@ObfuscatedName("a")
+	@ObfuscatedName("ek")
+	@Export("worldHost")
+	static String worldHost;
+	@ObfuscatedName("u")
 	@Export("component")
 	Component component;
 
@@ -16,82 +22,165 @@ public final class Canvas extends java.awt.Canvas {
 		this.component = var1;
 	}
 
-	public final void paint(Graphics var1) {
-		this.component.paint(var1);
-	}
-
 	public final void update(Graphics var1) {
 		this.component.update(var1);
 	}
 
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-116"
-	)
-	static int method935(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
-			return 0;
-		} else if (var1 == -1) {
-			return 0;
-		} else {
-			int var3 = 0;
+	public final void paint(Graphics var1) {
+		this.component.paint(var1);
+	}
 
-			for (int var4 = 0; var4 < var2.quantities.length; ++var4) {
-				if (var2.ids[var4] == var1) {
-					var3 += var2.quantities[var4];
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "-1452894334"
+	)
+	@Export("loadWorlds")
+	static boolean loadWorlds() {
+		try {
+			if (GrandExchangeOfferOwnWorldComparator.World_request == null) {
+				GrandExchangeOfferOwnWorldComparator.World_request = SpriteMask.urlRequester.request(new URL(WallDecoration.field1914));
+			} else if (GrandExchangeOfferOwnWorldComparator.World_request.isDone()) {
+				byte[] var0 = GrandExchangeOfferOwnWorldComparator.World_request.getResponse();
+				Buffer var1 = new Buffer(var0);
+				var1.readInt();
+				World.World_count = var1.readUnsignedShort();
+				Skills.World_worlds = new World[World.World_count];
+
+				World var3;
+				for (int var2 = 0; var2 < World.World_count; var3.index = var2++) {
+					var3 = Skills.World_worlds[var2] = new World();
+					var3.id = var1.readUnsignedShort();
+					var3.properties = var1.readInt();
+					var3.host = var1.readStringCp1252NullTerminated();
+					var3.activity = var1.readStringCp1252NullTerminated();
+					var3.location = var1.readUnsignedByte();
+					var3.population = var1.readShort();
+				}
+
+				Clock.sortWorlds(Skills.World_worlds, 0, Skills.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2);
+				GrandExchangeOfferOwnWorldComparator.World_request = null;
+				return true;
+			}
+		} catch (Exception var4) {
+			var4.printStackTrace();
+			GrandExchangeOfferOwnWorldComparator.World_request = null;
+		}
+
+		return false;
+	}
+
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "(II)Ler;",
+		garbageValue = "-1118777455"
+	)
+	@Export("getFrames")
+	static Frames getFrames(int var0) {
+		Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			AbstractArchive var3 = SequenceDefinition.SequenceDefinition_animationsArchive;
+			AbstractArchive var4 = SequenceDefinition.SequenceDefinition_skeletonsArchive;
+			boolean var5 = true;
+			int[] var6 = var3.getGroupFileIds(var0);
+
+			for (int var7 = 0; var7 < var6.length; ++var7) {
+				byte[] var8 = var3.getFile(var0, var6[var7]);
+				if (var8 == null) {
+					var5 = false;
+				} else {
+					int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+					byte[] var10 = var4.getFile(var9, 0);
+					if (var10 == null) {
+						var5 = false;
+					}
 				}
 			}
 
-			return var3;
+			Frames var2;
+			if (!var5) {
+				var2 = null;
+			} else {
+				try {
+					var2 = new Frames(var3, var4, var0, false);
+				} catch (Exception var12) {
+					var2 = null;
+				}
+			}
+
+			if (var2 != null) {
+				SequenceDefinition.SequenceDefinition_cachedFrames.put(var2, (long)var0);
+			}
+
+			return var2;
 		}
 	}
 
-	@ObfuscatedName("il")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;I)V",
-		garbageValue = "-1452803850"
+		signature = "(ILci;ZB)I",
+		garbageValue = "-7"
 	)
-	static void method934(int var0, String var1) {
-		int var2 = Players.Players_count;
-		int[] var3 = Players.Players_indices;
-		boolean var4 = false;
-		Username var5 = new Username(var1, class60.loginType);
-
-		for (int var6 = 0; var6 < var2; ++var6) {
-			Player var7 = Client.players[var3[var6]];
-			if (var7 != null && var7 != class215.localPlayer && var7.username != null && var7.username.equals(var5)) {
-				PacketBufferNode var8;
-				if (var0 == 1) {
-					var8 = SoundSystem.getPacketBufferNode(ClientPacket.field2193, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeShort(var3[var6]);
-					var8.packetBuffer.writeByte(0);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 4) {
-					var8 = SoundSystem.getPacketBufferNode(ClientPacket.field2229, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeShortLE(var3[var6]);
-					var8.packetBuffer.method5634(0);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 6) {
-					var8 = SoundSystem.getPacketBufferNode(ClientPacket.field2236, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5635(0);
-					var8.packetBuffer.writeShort(var3[var6]);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 7) {
-					var8 = SoundSystem.getPacketBufferNode(ClientPacket.field2251, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5643(var3[var6]);
-					var8.packetBuffer.writeByte(0);
-					Client.packetWriter.addNode(var8);
-				}
-
-				var4 = true;
-				break;
-			}
+	static int method873(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? Interpreter.field1090 : class188.field2352;
+		if (var0 == ScriptOpcodes.CC_GETX) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.x;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETY) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.y;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.width;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.height;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
+			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.parentId;
+			return 1;
+		} else {
+			return 2;
 		}
+	}
 
-		if (!var4) {
-			class30.addGameMessage(4, "", "Unable to find " + var1);
+	@ObfuscatedName("ap")
+	@ObfuscatedSignature(
+		signature = "(ILhx;ZB)V",
+		garbageValue = "0"
+	)
+	static void method871(int var0, Coord var1, boolean var2) {
+		WorldMapArea var3 = Clock.getWorldMap().getMapArea(var0);
+		int var4 = class215.localPlayer.plane;
+		int var5 = class51.baseX * 64 + (class215.localPlayer.x >> 7);
+		int var6 = VarcInt.baseY * 64 + (class215.localPlayer.y >> 7);
+		Coord var7 = new Coord(var4, var5, var6);
+		Clock.getWorldMap().method6453(var3, var7, var1, var2);
+	}
+
+	@ObfuscatedName("fo")
+	@ObfuscatedSignature(
+		signature = "(ZB)V",
+		garbageValue = "-90"
+	)
+	static final void method872(boolean var0) {
+		if (var0) {
+			Client.field680 = Login.field1196 ? class160.field2008 : class160.field2005;
+		} else {
+			LinkedHashMap var1 = UserComparator10.clientPreferences.parameters;
+			String var3 = Login.Login_username;
+			int var4 = var3.length();
+			int var5 = 0;
+
+			for (int var6 = 0; var6 < var4; ++var6) {
+				var5 = (var5 << 5) - var5 + var3.charAt(var6);
+			}
+
+			Client.field680 = var1.containsKey(var5) ? class160.field2009 : class160.field2006;
 		}
 
 	}

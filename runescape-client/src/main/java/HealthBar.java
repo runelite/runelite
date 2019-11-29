@@ -4,25 +4,27 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("cm")
 @Implements("HealthBar")
 public class HealthBar extends Node {
-	@ObfuscatedName("v")
-	@Export("SpriteBuffer_yOffsets")
-	public static int[] SpriteBuffer_yOffsets;
-	@ObfuscatedName("fj")
+	@ObfuscatedName("ay")
 	@ObfuscatedGetter(
-		intValue = 1157381415
+		intValue = -1667121911
 	)
-	@Export("baseY")
-	static int baseY;
-	@ObfuscatedName("n")
+	static int field1115;
+	@ObfuscatedName("kt")
+	@ObfuscatedGetter(
+		intValue = 751391879
+	)
+	@Export("menuX")
+	static int menuX;
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lil;"
+		signature = "Liz;"
 	)
 	@Export("definition")
 	HealthBarDefinition definition;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "Ljm;"
 	)
@@ -30,17 +32,17 @@ public class HealthBar extends Node {
 	IterableNodeDeque updates;
 
 	@ObfuscatedSignature(
-		signature = "(Lil;)V"
+		signature = "(Liz;)V"
 	)
 	HealthBar(HealthBarDefinition var1) {
 		this.updates = new IterableNodeDeque();
 		this.definition = var1;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "703172784"
+		signature = "(IIIIB)V",
+		garbageValue = "34"
 	)
 	@Export("put")
 	void put(int var1, int var2, int var3, int var4) {
@@ -73,10 +75,10 @@ public class HealthBar extends Node {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II)Lbo;",
-		garbageValue = "1147155972"
+		signature = "(II)Lbl;",
+		garbageValue = "-1781435459"
 	)
 	@Export("get")
 	HealthBarUpdate get(int var1) {
@@ -87,7 +89,7 @@ public class HealthBar extends Node {
 				var2 = var3;
 			}
 
-			if (this.definition.int5 + var2.cycleOffset + var2.cycle > var1) {
+			if (this.definition.int5 + var2.cycle + var2.cycleOffset > var1) {
 				return var2;
 			} else {
 				var2.remove();
@@ -98,33 +100,78 @@ public class HealthBar extends Node {
 		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-47"
+		signature = "(I)Z",
+		garbageValue = "1222201022"
 	)
 	@Export("isEmpty")
 	boolean isEmpty() {
-		return this.updates.method5004();
+		return this.updates.method4911();
 	}
 
-	@ObfuscatedName("ap")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "2136910933"
+		garbageValue = "-154641567"
 	)
-	protected static final void method2161() {
-		GameShell.clock.mark();
+	public static void method2054() {
+		Widget.Widget_cachedSprites.clear();
+		Widget.Widget_cachedModels.clear();
+		Widget.Widget_cachedFonts.clear();
+		Widget.Widget_cachedSpriteMasks.clear();
+	}
 
-		int var0;
-		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.graphicsTickTimes[var0] = 0L;
+	@ObfuscatedName("hh")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "1071237867"
+	)
+	@Export("updateItemPile")
+	static final void updateItemPile(int var0, int var1) {
+		NodeDeque var2 = Client.groundItems[ClientPacket.Client_plane][var0][var1];
+		if (var2 == null) {
+			class2.scene.removeGroundItemPile(ClientPacket.Client_plane, var0, var1);
+		} else {
+			long var3 = -99999999L;
+			TileItem var5 = null;
+
+			TileItem var6;
+			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+				ItemDefinition var7 = Interpreter.ItemDefinition_get(var6.id);
+				long var8 = (long)var7.price;
+				if (var7.isStackable == 1) {
+					var8 *= (long)(var6.quantity + 1);
+				}
+
+				if (var8 > var3) {
+					var3 = var8;
+					var5 = var6;
+				}
+			}
+
+			if (var5 == null) {
+				class2.scene.removeGroundItemPile(ClientPacket.Client_plane, var0, var1);
+			} else {
+				var2.addLast(var5);
+				TileItem var12 = null;
+				TileItem var11 = null;
+
+				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+					if (var6.id != var5.id) {
+						if (var12 == null) {
+							var12 = var6;
+						}
+
+						if (var12.id != var6.id && var11 == null) {
+							var11 = var6;
+						}
+					}
+				}
+
+				long var9 = MouseHandler.calculateTag(var0, var1, 3, false, 0);
+				class2.scene.newGroundItemPile(ClientPacket.Client_plane, var0, var1, class195.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, ClientPacket.Client_plane), var5, var9, var12, var11);
+			}
 		}
-
-		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.clientTickTimes[var0] = 0L;
-		}
-
-		ArchiveLoader.gameCyclesToDo = 0;
 	}
 }

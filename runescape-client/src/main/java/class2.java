@@ -1,220 +1,106 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("n")
+@ObfuscatedName("b")
 final class class2 implements class0 {
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "Lhq;"
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -722721087
 	)
-	@Export("HitSplatDefinition_fontsArchive")
-	static AbstractArchive HitSplatDefinition_fontsArchive;
+	static int field5;
+	@ObfuscatedName("cb")
+	@ObfuscatedSignature(
+		signature = "Lbr;"
+	)
+	@Export("mouseRecorder")
+	static MouseRecorder mouseRecorder;
+	@ObfuscatedName("dq")
+	@ObfuscatedSignature(
+		signature = "Lij;"
+	)
+	@Export("archive9")
+	static Archive archive9;
+	@ObfuscatedName("gc")
+	@ObfuscatedSignature(
+		signature = "Lel;"
+	)
+	@Export("scene")
+	static Scene scene;
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkc;B)V",
-		garbageValue = "25"
+		signature = "(Ljava/lang/Object;Lkg;I)V",
+		garbageValue = "-1331780546"
 	)
-	public void vmethod89(Object var1, Buffer var2) {
-		this.method31((Long)var1, var2);
+	public void vmethod57(Object var1, Buffer var2) {
+		this.method26((Long)var1, var2);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkc;I)Ljava/lang/Object;",
-		garbageValue = "242985434"
+		signature = "(Lkg;I)Ljava/lang/Object;",
+		garbageValue = "1713449680"
 	)
-	public Object vmethod74(Buffer var1) {
+	public Object vmethod65(Buffer var1) {
 		return var1.readLong();
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Long;Lkc;I)V",
-		garbageValue = "-1524476378"
+		signature = "(Ljava/lang/Long;Lkg;I)V",
+		garbageValue = "-1453735507"
 	)
-	void method31(Long var1, Buffer var2) {
+	void method26(Long var1, Buffer var2) {
 		var2.writeLong(var1);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZZI)V",
-		garbageValue = "688165402"
+		signature = "(I)[Lhb;",
+		garbageValue = "277199676"
 	)
-	@Export("openURL")
-	public static void openURL(String var0, boolean var1, boolean var2) {
-		PacketWriter.method2421(var0, var1, "openjs", var2);
+	@Export("PlayerType_values")
+	public static PlayerType[] PlayerType_values() {
+		return new PlayerType[]{PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_hardcoreIronman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_ironman, PlayerType.PlayerType_normal};
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("gt")
 	@ObfuscatedSignature(
-		signature = "([Lbk;II[I[II)V",
-		garbageValue = "2056344966"
+		signature = "(B)V",
+		garbageValue = "-5"
 	)
-	@Export("sortWorlds")
-	static void sortWorlds(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-		if (var1 < var2) {
-			int var5 = var1 - 1;
-			int var6 = var2 + 1;
-			int var7 = (var2 + var1) / 2;
-			World var8 = var0[var7];
-			var0[var7] = var0[var1];
-			var0[var1] = var8;
+	static final void method31() {
+		Client.field756 = 0;
+		int var0 = class51.baseX * 64 + (class215.localPlayer.x >> 7);
+		int var1 = VarcInt.baseY * 64 + (class215.localPlayer.y >> 7);
+		if (var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+			Client.field756 = 1;
+		}
 
-			while (var5 < var6) {
-				boolean var9 = true;
+		if (var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+			Client.field756 = 1;
+		}
 
-				int var10;
-				int var11;
-				int var12;
-				do {
-					--var6;
-
-					for (var10 = 0; var10 < 4; ++var10) {
-						if (var3[var10] == 2) {
-							var11 = var0[var6].index;
-							var12 = var8.index;
-						} else if (var3[var10] == 1) {
-							var11 = var0[var6].population;
-							var12 = var8.population;
-							if (var11 == -1 && var4[var10] == 1) {
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) {
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) {
-							var11 = var0[var6].isMembersOnly() ? 1 : 0;
-							var12 = var8.isMembersOnly() ? 1 : 0;
-						} else {
-							var11 = var0[var6].id;
-							var12 = var8.id;
-						}
-
-						if (var11 != var12) {
-							if ((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-								var9 = false;
-							}
-							break;
-						}
-
-						if (var10 == 3) {
-							var9 = false;
-						}
-					}
-				} while(var9);
-
-				var9 = true;
-
-				do {
-					++var5;
-
-					for (var10 = 0; var10 < 4; ++var10) {
-						if (var3[var10] == 2) {
-							var11 = var0[var5].index;
-							var12 = var8.index;
-						} else if (var3[var10] == 1) {
-							var11 = var0[var5].population;
-							var12 = var8.population;
-							if (var11 == -1 && var4[var10] == 1) {
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) {
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) {
-							var11 = var0[var5].isMembersOnly() ? 1 : 0;
-							var12 = var8.isMembersOnly() ? 1 : 0;
-						} else {
-							var11 = var0[var5].id;
-							var12 = var8.id;
-						}
-
-						if (var11 != var12) {
-							if ((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-								var9 = false;
-							}
-							break;
-						}
-
-						if (var10 == 3) {
-							var9 = false;
-						}
-					}
-				} while(var9);
-
-				if (var5 < var6) {
-					World var13 = var0[var5];
-					var0[var5] = var0[var6];
-					var0[var6] = var13;
-				}
-			}
-
-			sortWorlds(var0, var1, var6, var3, var4);
-			sortWorlds(var0, var6 + 1, var2, var3, var4);
+		if (Client.field756 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+			Client.field756 = 0;
 		}
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("hq")
 	@ObfuscatedSignature(
-		signature = "(Lkf;I)V",
-		garbageValue = "-1107196386"
+		signature = "(I)V",
+		garbageValue = "-487610810"
 	)
-	static final void method49(PacketBuffer var0) {
-		for (int var1 = 0; var1 < Players.Players_pendingUpdateCount; ++var1) {
-			int var2 = Players.Players_pendingUpdateIndices[var1];
-			Player var3 = Client.players[var2];
-			int var4 = var0.readUnsignedByte();
-			if ((var4 & 2) != 0) {
-				var4 += var0.readUnsignedByte() << 8;
-			}
-
-			class189.method3797(var0, var2, var3, var4);
-		}
-
-	}
-
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(ILcj;ZB)I",
-		garbageValue = "59"
-	)
-	static int method32(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
-			var3 = PacketBufferNode.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
-			var3 = PacketBufferNode.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]);
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_HASSUB) {
-			int var5 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize];
-			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var5);
-			if (var4 != null) {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 1;
-			} else {
-				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETTOP) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.rootInterface;
-			return 1;
-		} else {
-			return 2;
-		}
+	@Export("addCancelMenuEntry")
+	static void addCancelMenuEntry() {
+		RouteStrategy.method3641();
+		Client.menuActions[0] = "Cancel";
+		Client.menuTargets[0] = "";
+		Client.menuOpcodes[0] = 1006;
+		Client.menuShiftClick[0] = false;
+		Client.menuOptionsCount = 1;
 	}
 }

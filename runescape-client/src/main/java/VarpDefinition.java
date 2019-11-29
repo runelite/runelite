@@ -4,30 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iu")
+@ObfuscatedName("ib")
 @Implements("VarpDefinition")
 public class VarpDefinition extends DualNode {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lhq;"
+		signature = "Lhf;"
 	)
 	@Export("VarpDefinition_archive")
-	static AbstractArchive VarpDefinition_archive;
-	@ObfuscatedName("t")
+	public static AbstractArchive VarpDefinition_archive;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -444432513
+		intValue = -1363987461
 	)
 	@Export("VarpDefinition_fileCount")
 	public static int VarpDefinition_fileCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Leb;"
+		signature = "Lef;"
 	)
 	@Export("VarpDefinition_cached")
 	static EvictingDualNodeHashTable VarpDefinition_cached;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1197454389
+		intValue = 2147120887
 	)
 	@Export("type")
 	public int type;
@@ -40,10 +40,10 @@ public class VarpDefinition extends DualNode {
 		this.type = 0;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkc;B)V",
-		garbageValue = "-86"
+		signature = "(Lkg;I)V",
+		garbageValue = "1343549927"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -57,10 +57,10 @@ public class VarpDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(Lkc;II)V",
-		garbageValue = "735169328"
+		signature = "(Lkg;II)V",
+		garbageValue = "1561569314"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {

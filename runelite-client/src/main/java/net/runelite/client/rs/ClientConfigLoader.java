@@ -70,7 +70,8 @@ class ClientConfigLoader
 							supplier = new HostSupplier();
 						}
 
-						url = supplier.get();
+						String host = supplier.get();
+						url = url.newBuilder().host(host).build();
 						continue;
 					}
 
