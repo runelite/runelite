@@ -117,6 +117,7 @@ public class InfernoPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean finalPhase = false;
+	@Getter(AccessLevel.PACKAGE)
 	private NPC zukShield = null;
 	private WorldPoint zukShieldLastPosition = null;
 	private WorldPoint zukShieldBase = null;
