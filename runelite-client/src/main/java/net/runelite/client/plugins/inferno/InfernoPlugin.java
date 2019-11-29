@@ -198,6 +198,9 @@ public class InfernoPlugin extends Plugin
 	private boolean ticksOnNpcJad;
 	private boolean ticksOnNpcZuk;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean ticksOnNpcZukShield;
+
 	private boolean safespotsBat;
 	private boolean safespotsBlob;
 	private boolean safespotsMeleer;
@@ -1065,6 +1068,7 @@ public class InfernoPlugin extends Plugin
 		this.ticksOnNpcHealerJad = config.ticksOnNpcHealerJad();
 		this.ticksOnNpcJad = config.ticksOnNpcJad();
 		this.ticksOnNpcZuk = config.ticksOnNpcZuk();
+		this.ticksOnNpcZukShield = config.ticksOnNpcZukShield();
 
 		this.safespotsBat = config.safespotsBat();
 		this.safespotsBlob = config.safespotsBlob();

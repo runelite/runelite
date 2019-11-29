@@ -13,6 +13,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
@@ -113,7 +114,12 @@ public class InfernoOverlay extends Overlay
 
 			if (plugin.isTicksOnNpc(infernoNPC) && infernoNPC.getTicksTillNextAttack() > 0)
 			{
-				renderTicksOnNpc(graphics, infernoNPC);
+				renderTicksOnNpc(graphics, infernoNPC, infernoNPC.getNpc());
+			}
+
+			if (plugin.isTicksOnNpcZukShield() && infernoNPC.getType() == InfernoNPC.Type.ZUK && plugin.getZukShield() != null && infernoNPC.getTicksTillNextAttack() > 0)
+			{
+				renderTicksOnNpc(graphics, infernoNPC, plugin.getZukShield());
 			}
 		}
 
@@ -345,12 +351,12 @@ public class InfernoOverlay extends Overlay
 		}
 	}
 
-	private void renderTicksOnNpc(Graphics2D graphics, InfernoNPC infernoNPC)
+	private void renderTicksOnNpc(Graphics2D graphics, InfernoNPC infernoNPC, NPC renderOnNPC)
 	{
 		final Color color = (infernoNPC.getTicksTillNextAttack() == 1
 			|| (infernoNPC.getType() == InfernoNPC.Type.BLOB && infernoNPC.getTicksTillNextAttack() == 4))
 			? infernoNPC.getNextAttack().getCriticalColor() : infernoNPC.getNextAttack().getNormalColor();
-		final Point canvasPoint = infernoNPC.getNpc().getCanvasTextLocation(
+		final Point canvasPoint = renderOnNPC.getCanvasTextLocation(
 			graphics, String.valueOf(infernoNPC.getTicksTillNextAttack()), 0);
 		OverlayUtil.renderTextLocation(graphics, String.valueOf(infernoNPC.getTicksTillNextAttack()),
 			plugin.getTextSize(), plugin.getFontStyle().getFont(), color, canvasPoint, false, 0);
