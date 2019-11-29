@@ -23,8 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Cubic filter with Catmull-Rom parameters
-float catmull_rom(float x)
+// General case cubic filter
+float cubic_custom(float x, float b, float c)
 {
     /* A generalized cubic filter as described by Mitchell and Netravali is defined by the piecewise equation:
      * if abs(x) < 1
@@ -33,16 +33,35 @@ float catmull_rom(float x)
      *  y = 1/6 * ( (-1b - 6c) * abs(x)^3 + (6b + 30c) * abs(x)^2 + (-12b - 48c) * abs(x) + (8b + 24c) )
      * otherwise
      *  y = 0
-     * Generally favorable results in image upscaling are given by the values b = 0 and c = 0.5.
-     * This is known as the Catmull-Rom filter, and it closely approximates Jinc upscaling with Lanczos input values.
-     * Placing these values into the piecewise equations gives us a more compact representation of:
-     *  y = 1.5 * abs(x)^3 - 2.5 * abs(x)^2 + 1                 // abs(x) < 1
-     *  y = -0.5 * abs(x)^3 + 2.5 * abs(x)^2 - 4 * abs(x) + 2   // 1 <= abs(x) < 2
+     * This produces a bell curve centered on 0 with a width of 2.
      */
 
     float t = abs(x);       // absolute value of the x coordinate
     float t2 = t * t;       // t squared
     float t3 = t * t * t;   // t cubed
+
+    if (t < 1)                                                  // This part defines the [-1,1] region of the curve.
+        return 1.0/6 * ( (12 - 9 * b - 6 * c) * t3 + (-18 + 12 * b + 6 * c) * t2 + (6 - 2 * b) );
+    else if (t < 2)                                             // This part defines the [-2,-1] and [1,2] regions.
+        return 1.0/6 * ( (-1 * b - 6 * c) * t3 + (6 * b + 30 * c) * t2 + (-12 * b - 48 * c) * t + (8 * b + 24 * c) );
+    else                                                        // Outside of [-2,2], the value is 0.
+        return 0;
+}
+
+// Cubic filter with Catmull-Rom parameters
+float catmull_rom(float x)
+{
+    /*
+     * Generally favorable results in image upscaling are given by a cubic filter with the values b = 0 and c = 0.5.
+     * This is known as the Catmull-Rom filter, and it closely approximates Jinc upscaling with Lanczos input values.
+     * Placing these values into the piecewise equation gives us a more compact representation of:
+     *  y = 1.5 * abs(x)^3 - 2.5 * abs(x)^2 + 1                 // abs(x) < 1
+     *  y = -0.5 * abs(x)^3 + 2.5 * abs(x)^2 - 4 * abs(x) + 2   // 1 <= abs(x) < 2
+     */
+
+    float t = abs(x);
+    float t2 = t * t;
+    float t3 = t * t * t;
 
     if (t < 1)
         return 1.5 * t3 - 2.5 * t2 + 1;
@@ -59,28 +78,14 @@ float mitchell(float x)
      * B = 1/3, C = 1/3.
      */
 
-    float t = abs(x);       // absolute value of the x coordinate
-    float t2 = t * t;       // t squared
-    float t3 = t * t * t;   // t cubed
+    float t = abs(x);
+    float t2 = t * t;
+    float t3 = t * t * t;
 
     if (t < 1)
         return 7.0/6 * t3 + -2 * t2 + 8.0/9;
     else if (t < 2)
         return -7.0/18 * t3 + 2 * t2 - 10.0/3 * t + 16.0/9;
-    else
-        return 0;
-}
-
-float cubic_custom(float x, float b, float c)
-{
-    float t = abs(x);       // absolute value of the x coordinate
-    float t2 = t * t;       // t squared
-    float t3 = t * t * t;   // t cubed
-
-    if (t < 1)
-        return 1.0/6 * ( (12 - 9 * b - 6 * c) * t3 + (-18 + 12 * b + 6 * c) * t2 + (6 - 2 * b) );
-    else if (t < 2)
-        return 1.0/6 * ( (-1 * b - 6 * c) * t3 + (6 * b + 30 * c) * t2 + (-12 * b - 48 * c) * t + (8 * b + 24 * c) );
     else
         return 0;
 }
@@ -114,7 +119,7 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode){
 
     if (mode == SAMPLING_CATROM)
     {
-        // catrom benefits from anti-ringing
+        // catrom benefits from anti-ringing, which requires knowledge of the minimum and maximum samples in the kernel
         vec4 min_sample = vec4(FLT_MAX);
         vec4 max_sample = vec4(FLT_MIN);
         for (int m = -1; m <= 2; m++)
@@ -124,6 +129,7 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode){
                 // get the raw texel, bypassing any other filters
                 vec4 vecData = texelFetch(sampler, texelCoords + ivec2(m, n), 0);
 
+                // update min and max as we go
                 min_sample = min(min_sample, vecData);
                 max_sample = max(max_sample, vecData);
 
@@ -138,9 +144,11 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode){
         // calculate weighted average
         c = nSum / nDenom;
 
-        // anti-ringing
+        // store value before anti-ringing
         vec4 aux = c;
+        // anti-ringing: clamp the color value so that it cannot exceed values already present in the kernel area
         c = clamp(c, min_sample, max_sample);
+        // mix according to anti-ringing strength
         c = mix(aux, c, CR_AR_STRENGTH);
     }
     else if (mode == SAMPLING_MITCHELL)

@@ -24,26 +24,25 @@
    Incorporates some of the ideas from SABR shader. Thanks to Joshua Street.
 */
 
-#define mul(a,b) (b*a)
-
-// Uncomment just one of the three params below to choose the corner detection
+//   PARAMETERS   //
+// Uncomment just one of the four params below to choose the corner detection
 //#define CORNER_A
 //#define CORNER_B
 #define CORNER_C
 //#define CORNER_D
 
+#define XBR_Y_WEIGHT 50.0           // involved in preserving small details if small_details = 1, otherwise unused
+#define XBR_EQ_THRESHOLD 9.0        // equality threshold for comparisons
+//#define XBR_LV1_COEFFICIENT 0.5   // unused, probably left over from a previous iteration
+#define XBR_LV2_COEFFICIENT 2.0     // moves the step in a step function at one point during blending
+#define small_details 1.0           // 0 or 1, switches logic in a few spots to help preserve small details
+// END PARAMETERS //
+
+#define mul(a,b) (b*a)
+#define lv2_cf XBR_LV2_COEFFICIENT
 #ifndef CORNER_A
 #define SMOOTH_TIPS
 #endif
-
-#define lv2_cf XBR_LV2_COEFFICIENT
-
-#define XBR_Y_WEIGHT 48.0
-#define XBR_EQ_THRESHOLD 15.0
-#define XBR_LV1_COEFFICIENT 0.5
-#define XBR_LV2_COEFFICIENT 2.0
-#define small_details 1.0
-// END PARAMETERS //
 
 const float coef         = 2.0;
 const vec3 rgbw          = vec3(14.352, 28.176, 5.472);
