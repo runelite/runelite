@@ -33,7 +33,9 @@ public enum UIScalingMode
 {
 	NEAREST("Nearest Neighbor", 0),
 	LINEAR("Bilinear", 0),
-	CATMULL_ROM("Bicubic (Catmull-Rom)", 1);
+	MITCHELL("Bicubic (Mitchell)", 1),
+	CATMULL_ROM("Bicubic (Catmull-Rom)", 2),
+	XBR("XBR (use Integer Scaling)", 3);
 
 	private final String name;
 	private final int mode;
