@@ -112,47 +112,56 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode){
 
     vec4 c;
 
-    vec4 min_sample = vec4(FLT_MAX);
-    vec4 max_sample = vec4(FLT_MIN);
-
-    for (int m = -1; m <= 2; m++)
+    if (mode == SAMPLING_CATROM)
     {
-        for (int n = -1; n <= 2; n++)
+        // catrom benefits from anti-ringing
+        vec4 min_sample = vec4(FLT_MAX);
+        vec4 max_sample = vec4(FLT_MIN);
+        for (int m = -1; m <= 2; m++)
         {
-            // get the raw texel, bypassing any other filters
-            vec4 vecData = texelFetch(sampler, texelCoords + ivec2(m, n), 0);
+            for (int n = -1; n <= 2; n++)
+            {
+                // get the raw texel, bypassing any other filters
+                vec4 vecData = texelFetch(sampler, texelCoords + ivec2(m, n), 0);
 
-            min_sample = min(min_sample, vecData);
-            max_sample = max(max_sample, vecData);
+                min_sample = min(min_sample, vecData);
+                max_sample = max(max_sample, vecData);
 
+                // calculate weight based on distance of the current texel offset from the sub-texel position of the sampling location
+                float w = catmull_rom( d(vec2(m, n), coordFract) );
 
-            float w;
-            // calculate weight based on distance of the current texel offset from the sub-texel position of the sampling location
-            switch (mode){
-                case SAMPLING_CATROM:
-                    w = catmull_rom( d(vec2(m, n), coordFract) );
-                    break;
-                case SAMPLING_MITCHELL:
-                    w = mitchell( d(vec2(m, n), coordFract) );
-                    break;
-                default:
-                    w = 0;
-                    break;
+                // build the weighted average
+                nSum += vecData * w;
+                nDenom += w;
             }
-
-            // build the weighted average
-            nSum += vecData * w;
-            nDenom += w;
         }
-    }
-    // calculate weighted average
-    c = nSum / nDenom;
+        // calculate weighted average
+        c = nSum / nDenom;
 
-    if (mode == SAMPLING_CATROM) {
         // anti-ringing
         vec4 aux = c;
         c = clamp(c, min_sample, max_sample);
         c = mix(aux, c, CR_AR_STRENGTH);
+    }
+    else if (mode == SAMPLING_MITCHELL)
+    {
+        for (int m = -1; m <= 2; m++)
+        {
+            for (int n = -1; n <= 2; n++)
+            {
+                // get the raw texel, bypassing any other filters
+                vec4 vecData = texelFetch(sampler, texelCoords + ivec2(m, n), 0);
+
+                // calculate weight based on distance of the current texel offset from the sub-texel position of the sampling location
+                float w = mitchell( d(vec2(m, n), coordFract) );
+
+                // build the weighted average
+                nSum += vecData * w;
+                nDenom += w;
+            }
+        }
+        // calculate weighted average
+        c = nSum / nDenom;
     }
 
     // return the weighted average
