@@ -27,7 +27,6 @@ package net.runelite.client.plugins.leaguechaticons;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatPlayer;
@@ -59,9 +58,9 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
-	name = "Chat League Icons",
-	description = "Changes the chat icon for players on league worlds",
-	enabledByDefault = false
+		name = "Chat League Icons",
+		description = "Changes the chat icon for players on league worlds",
+		enabledByDefault = false
 )
 @Slf4j
 public class LeagueChatIconsPlugin extends Plugin
@@ -134,7 +133,7 @@ public class LeagueChatIconsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
+	@Subscribe(priority = -1) // run before other onChatMessage plugins to change icon first
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
@@ -171,32 +170,20 @@ public class LeagueChatIconsPlugin extends Plugin
 	 */
 	private void addLeagueIconToMessage(ChatMessage chatMessage)
 	{
-		String name = chatMessage.getName(); // chatMessage name as we don't care for colors
+		String name = chatMessage.getName();
 		if (!name.startsWith(IRONMAN_PREFIX))
 		{
 			// don't replace non-ironman icons, like mods
 			return;
 		}
 
-		String nameNode = chatMessage.getMessageNode().getName(); // messageNode name as we want colors
-		name = removeImgTag(nameNode);
+		name = Text.removeTags(name);
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setName(getNameWithIcon(leagueIconOffset, name));
 
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
-	}
-
-	/**
-	 * Removes image tag from a username
-	 * @param str username to remove image tag from
-	 * @return username without image tag
-	 */
-	private String removeImgTag(String str)
-	{
-		final Pattern TAG_REGEXP = Pattern.compile("<img=[0-9]*>");
-		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
 	/**
