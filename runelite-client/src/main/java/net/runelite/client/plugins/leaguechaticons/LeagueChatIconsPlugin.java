@@ -27,6 +27,7 @@ package net.runelite.client.plugins.leaguechaticons;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatPlayer;
@@ -170,20 +171,32 @@ public class LeagueChatIconsPlugin extends Plugin
 	 */
 	private void addLeagueIconToMessage(ChatMessage chatMessage)
 	{
-		String name = chatMessage.getName();
+		String name = chatMessage.getName(); // chatMessage name as we don't care for colors
 		if (!name.startsWith(IRONMAN_PREFIX))
 		{
 			// don't replace non-ironman icons, like mods
 			return;
 		}
 
-		name = Text.removeTags(name);
+		String nameNode = chatMessage.getMessageNode().getName(); // messageNode name as we want colors
+		name = removeImgTag(nameNode);
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setName(getNameWithIcon(leagueIconOffset, name));
 
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
+	}
+
+	/**
+	 * Removes image tag from a username
+	 * @param str username to remove image tag from
+	 * @return username without image tag
+	 */
+	private String removeImgTag(String str)
+	{
+		final Pattern TAG_REGEXP = Pattern.compile("<img=[0-9]*>");
+		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
 	/**
