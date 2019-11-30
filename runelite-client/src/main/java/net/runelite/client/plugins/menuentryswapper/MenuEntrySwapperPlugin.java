@@ -381,6 +381,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("send-parcel", option, target, index);
 			}
 
+			if (config.swapCaptainKhaled() && target.contains("captain khaled"))
+			{
+				swap("task", option, target, index);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, index);
