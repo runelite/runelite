@@ -353,7 +353,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 					&& worldPoint.getRegionY() == objectPoint.getRegionY())
 			{
 				// Transform object to get the name which matches against what we've stored
-				if (objectPoint.getName().equals(getObjectDefinition(object.getId()).getName()))
+				ObjectDefinition objectDefinition = getObjectDefinition(object.getId());
+				if (objectDefinition != null && objectPoint.getName().equals(objectDefinition.getName()))
 				{
 					log.debug("Marking object {} due to matching {}", object, objectPoint);
 					objects.add(object);
