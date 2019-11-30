@@ -134,7 +134,7 @@ public class LeagueChatIconsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe(priority = -1) // run before other onChatMessage plugins to change icon first
+	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
