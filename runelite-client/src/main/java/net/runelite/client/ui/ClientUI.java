@@ -119,6 +119,14 @@ public class ClientUI
 
 	@Getter
 	private TrayIcon trayIcon;
+	@Getter
+	public static ContainableFrame frame;
+	@Getter
+	public static ClientPluginToolbar pluginToolbar;
+	@Getter
+	private boolean sidebarOpen;
+	@Getter
+	public static PluginPanel pluginPanel;
 
 	private final RuneLiteConfig config;
 	private final KeyManager keyManager;
@@ -131,14 +139,10 @@ public class ClientUI
 	private boolean withTitleBar;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarClosedIcon;
-	public static ContainableFrame frame;
 	private JPanel navContainer;
-	public static PluginPanel pluginPanel;
-	public static ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
-	private boolean sidebarOpen;
 	private JPanel container;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
