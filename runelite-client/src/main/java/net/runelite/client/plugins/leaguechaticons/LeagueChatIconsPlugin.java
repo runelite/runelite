@@ -58,14 +58,13 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
-	name = "League Chat Icons",
+	name = "Chat League Icons",
 	description = "Changes the chat icon for players on league worlds",
 	enabledByDefault = false
 )
 @Slf4j
 public class LeagueChatIconsPlugin extends Plugin
 {
-
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
 	private static final String IRONMAN_PREFIX = "<img=" + IconID.IRONMAN.getIndex() + ">";
 
