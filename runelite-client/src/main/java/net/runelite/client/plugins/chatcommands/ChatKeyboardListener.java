@@ -54,49 +54,43 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
+		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			return;
-		}
-
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_W:
-				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				if (input != null)
+			String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+			if (input != null)
+			{
+				// remove trailing space
+				while (input.endsWith(" "))
 				{
-					// remove trailing space
-					while (input.endsWith(" "))
-					{
-						input = input.substring(0, input.length() - 1);
-					}
-
-					// find next word
-					int idx = input.lastIndexOf(' ');
-					final String replacement;
-					if (idx != -1)
-					{
-						replacement = input.substring(0, idx);
-					}
-					else
-					{
-						replacement = "";
-					}
-
-					clientThread.invoke(() ->
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
-						client.runScript(ScriptID.CHAT_PROMPT_INIT);
-					});
+					input = input.substring(0, input.length() - 1);
 				}
-				break;
-			case KeyEvent.VK_BACK_SPACE:
+
+				// find next word
+				int idx = input.lastIndexOf(' ');
+				final String replacement;
+				if (idx != -1)
+				{
+					replacement = input.substring(0, idx);
+				}
+				else
+				{
+					replacement = "";
+				}
+
 				clientThread.invoke(() ->
 				{
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
 					client.runScript(ScriptID.CHAT_PROMPT_INIT);
 				});
-				break;
+			}
+		}
+		else if (chatCommandsConfig.clearChatBox().matches(e))
+		{
+			clientThread.invoke(() ->
+			{
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+				client.runScript(ScriptID.CHAT_PROMPT_INIT);
+			});
 		}
 	}
 
