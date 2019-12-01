@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoom;
+package net.runelite.client.plugins.camera;
 
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
@@ -43,12 +43,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Camera Zoom",
+	name = "Camera",
 	description = "Expand zoom limit and/or enable vertical camera",
-	tags = {"limit", "vertical"},
+	tags = {"zoom", "limit", "vertical"},
 	enabledByDefault = false
 )
-public class ZoomPlugin extends Plugin implements KeyListener
+public class CameraPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 
@@ -61,15 +61,15 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	private ClientThread clientThread;
 
 	@Inject
-	private ZoomConfig zoomConfig;
+	private CameraConfig config;
 
 	@Inject
 	private KeyManager keyManager;
 
 	@Provides
-	ZoomConfig getConfig(ConfigManager configManager)
+	CameraConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ZoomConfig.class);
+		return configManager.getConfig(CameraConfig.class);
 	}
 
 	@Subscribe
@@ -85,32 +85,32 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if (!controlDown && "scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
+		if (!controlDown && "scrollWheelZoom".equals(event.getEventName()) && config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
 		{
 			intStack[intStackSize - 1] = 1;
 		}
 
-		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
+		if ("innerZoomLimit".equals(event.getEventName()) && config.innerLimit())
 		{
-			intStack[intStackSize - 1] = ZoomConfig.INNER_ZOOM_LIMIT;
+			intStack[intStackSize - 1] = CameraConfig.INNER_ZOOM_LIMIT;
 			return;
 		}
 
 		if ("outerZoomLimit".equals(event.getEventName()))
 		{
-			int outerLimit = Ints.constrainToRange(zoomConfig.outerLimit(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.OUTER_LIMIT_MAX);
+			int outerLimit = Ints.constrainToRange(config.outerLimit(), CameraConfig.OUTER_LIMIT_MIN, CameraConfig.OUTER_LIMIT_MAX);
 			int outerZoomLimit = 128 - outerLimit;
 			intStack[intStackSize - 1] = outerZoomLimit;
 			return;
 		}
 
-		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && zoomConfig.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
+		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && config.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
 		{
-			intStack[intStackSize - 1] = zoomConfig.zoomIncrement();
+			intStack[intStackSize - 1] = config.zoomIncrement();
 			return;
 		}
 
-		if (zoomConfig.innerLimit())
+		if (config.innerLimit())
 		{
 			// This lets the options panel's slider have an exponential rate
 			final double exponent = 2.d;
@@ -148,7 +148,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
-		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		keyManager.registerKeyListener(this);
 	}
 
@@ -163,7 +163,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
-		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 	}
 
 	@Override
@@ -187,9 +187,9 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		{
 			controlDown = false;
 
-			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
+			if (config.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				final int zoomValue = Ints.constrainToRange(zoomConfig.ctrlZoomValue(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.INNER_ZOOM_LIMIT);
+				final int zoomValue = Ints.constrainToRange(config.ctrlZoomValue(), CameraConfig.OUTER_LIMIT_MIN, CameraConfig.INNER_ZOOM_LIMIT);
 				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
 			}
 		}
