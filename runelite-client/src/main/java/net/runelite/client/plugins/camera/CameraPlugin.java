@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Wynadorn <https://github.com/Wynadorn>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,33 +27,48 @@
 package net.runelite.client.plugins.camera;
 
 import com.google.common.primitives.Ints;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Camera",
-	description = "Expand zoom limit and/or enable vertical camera",
-	tags = {"zoom", "limit", "vertical"},
+	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
+	tags = {"zoom", "limit", "vertical", "click", "mouse"},
 	enabledByDefault = false
 )
-public class CameraPlugin extends Plugin implements KeyListener
+public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 
 	private boolean controlDown;
+	// flags used to store the mousedown states
+	private boolean rightClick;
+	private boolean middleClick;
+	/**
+	 * Whether or not the current menu has any non-ignored menu entries
+	 */
+	private boolean menuHasEntries;
 	
 	@Inject
 	private Client client;
@@ -65,6 +81,9 @@ public class CameraPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private MouseManager mouseManager;
 
 	@Provides
 	CameraConfig getConfig(ConfigManager configManager)
@@ -148,8 +167,12 @@ public class CameraPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
+		rightClick = false;
+		middleClick = false;
+		menuHasEntries = false;
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
 	}
 
 	@Override
@@ -157,6 +180,7 @@ public class CameraPlugin extends Plugin implements KeyListener
 	{
 		client.setCameraPitchRelaxerEnabled(false);
 		keyManager.unregisterKeyListener(this);
+		mouseManager.unregisterMouseListener(this);
 		controlDown = false;
 	}
 
@@ -194,4 +218,165 @@ public class CameraPlugin extends Plugin implements KeyListener
 			}
 		}
 	}
+
+	/**
+	 * Checks if the menu has any non-ignored entries
+	 */
+	private boolean hasMenuEntries(MenuEntry[] menuEntries)
+	{
+		for (MenuEntry menuEntry : menuEntries)
+		{
+			MenuAction action = MenuAction.of(menuEntry.getType());
+			switch (action)
+			{
+				case CANCEL:
+				case WALK:
+					break;
+				case EXAMINE_OBJECT:
+				case EXAMINE_NPC:
+				case EXAMINE_ITEM_GROUND:
+				case EXAMINE_ITEM:
+				case EXAMINE_ITEM_BANK_EQ:
+					if (config.ignoreExamine())
+					{
+						break;
+					}
+				default:
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if the menu has any options, because menu entries are built each
+	 * tick and the MouseListener runs on the awt thread
+	 */
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		menuHasEntries = hasMenuEntries(client.getMenuEntries());
+	}
+
+	/**
+	 * The event that is triggered when a mouse button is pressed
+	 * In this method the right click is changed to a middle-click to enable rotating the camera
+	 * <p>
+	 * This method also provides the config option to enable the middle-mouse button to always open the right click menu
+	 */
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
+		{
+			boolean oneButton = client.getVar(VarPlayer.MOUSE_BUTTONS) == 1;
+			// Only move the camera if there is nothing at the menu, or if
+			// in one-button mode. In one-button mode, left and right click always do the same thing,
+			// so always treat it as the menu is empty
+			if (!menuHasEntries || oneButton)
+			{
+				// Set the rightClick flag to true so we can release the button in mouseReleased() later
+				rightClick = true;
+				// Change the mousePressed() MouseEvent to the middle mouse button
+				mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON2);
+			}
+		}
+		else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
+		{
+			// Set the middleClick flag to true so we can release it later in mouseReleased()
+			middleClick = true;
+			// Chance the middle mouse button MouseEvent to a right-click
+			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON3);
+		}
+		return mouseEvent;
+	}
+
+	/**
+	 * Correct the MouseEvent to release the correct button
+	 */
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		if (rightClick)
+		{
+			rightClick = false;
+			// Change the MouseEvent to button 2 so the middle mouse button will be released
+			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON2);
+
+		}
+		if (middleClick)
+		{
+			middleClick = false;
+			// Change the MouseEvent ot button 3 so the right mouse button will be released
+			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON3);
+		}
+		return mouseEvent;
+	}
+
+	/*
+	 * These methods are unused but required to be present in a MouseListener implementation
+	 */
+	// region Unused MouseListener methods
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+	// endregion
 }
