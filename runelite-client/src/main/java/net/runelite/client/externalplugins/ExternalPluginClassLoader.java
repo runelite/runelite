@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.externalplugins;
 
-public class VerificationException extends Exception
+import java.net.URL;
+import java.net.URLClassLoader;
+import lombok.Getter;
+
+class ExternalPluginClassLoader extends URLClassLoader
 {
-	public VerificationException(String message)
-	{
-		super(message);
-	}
+	@Getter
+	private final ExternalPluginManifest manifest;
 
-	public VerificationException(String message, Throwable cause)
+	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls)
 	{
-		super(message, cause);
+		super(urls, ExternalPluginClassLoader.class.getClassLoader());
+		this.manifest = manifest;
 	}
 }

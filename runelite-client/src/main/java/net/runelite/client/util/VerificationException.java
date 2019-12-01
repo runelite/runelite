@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Abex
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.util;
 
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.function.IntConsumer;
-
-class CountingInputStream extends FilterInputStream
+public class VerificationException extends Exception
 {
-	private final IntConsumer changed;
-
-	CountingInputStream(InputStream in, IntConsumer changed)
+	public VerificationException(String message)
 	{
-		super(in);
-		this.changed = changed;
+		super(message);
 	}
 
-	private int read = 0;
-
-	@Override
-	public int read(byte[] b, int off, int len) throws IOException
+	public VerificationException(String message, Throwable cause)
 	{
-		int thisRead = super.read(b, off, len);
-		if (thisRead > 0)
-		{
-			this.read += thisRead;
-		}
-		changed.accept(this.read);
-		return thisRead;
-	}
-
-	@Override
-	public int read() throws IOException
-	{
-		int val = super.read();
-		if (val != -1)
-		{
-			this.read++;
-		}
-		return val;
-	}
-
-	@Override
-	public long skip(long n) throws IOException
-	{
-		long thisRead = in.skip(n);
-		this.read += thisRead;
-		changed.accept(this.read);
-		return thisRead;
-	}
-
-	@Override
-	public boolean markSupported()
-	{
-		return false;
+		super(message, cause);
 	}
 }

@@ -35,7 +35,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -48,6 +47,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
@@ -96,6 +96,11 @@ class PluginListItem extends JPanel
 		Collections.addAll(keywords, pluginConfig.getName().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getDescription().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getTags());
+		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
+		if (mf != null)
+		{
+			keywords.add(mf.getInternalName());
+		}
 
 		final List<JMenuItem> popupMenuItems = new ArrayList<>();
 
@@ -127,6 +132,7 @@ class PluginListItem extends JPanel
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		add(buttonPanel, BorderLayout.LINE_END);
 
+		JMenuItem configMenuItem = null;
 		if (pluginConfig.hasConfigurables())
 		{
 			JButton configButton = new JButton(CONFIG_ICON);
@@ -145,13 +151,18 @@ class PluginListItem extends JPanel
 			configButton.setVisible(true);
 			configButton.setToolTipText("Edit plugin configuration");
 
-			final JMenuItem configMenuItem = new JMenuItem("Configure");
+			configMenuItem = new JMenuItem("Configure");
 			configMenuItem.addActionListener(e -> openGroupConfigPanel());
-			popupMenuItems.add(configMenuItem);
 		}
 
-		popupMenuItems.add(pluginConfig.createSupportMenuItem());
-		addLabelPopupMenu(nameLabel, popupMenuItems);
+		JMenuItem uninstallItem = null;
+		if (mf != null)
+		{
+			uninstallItem = new JMenuItem("Uninstall");
+			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(mf.getInternalName()));
+		}
+
+		addLabelPopupMenu(nameLabel, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);
 		add(nameLabel, BorderLayout.CENTER);
 
 		onOffToggle = new PluginToggleButton();
@@ -216,24 +227,12 @@ class PluginListItem extends JPanel
 
 	/**
 	 * Adds a mouseover effect to change the text of the passed label to {@link ColorScheme#BRAND_ORANGE} color, and
-	 * adds the passed menu item to a popup menu shown when the label is clicked.
-	 *
-	 * @param label    The label to attach the mouseover and click effects to
-	 * @param menuItem The menu item to be shown when the label is clicked
-	 */
-	static void addLabelPopupMenu(final JLabel label, final JMenuItem menuItem)
-	{
-		addLabelPopupMenu(label, Collections.singletonList(menuItem));
-	}
-
-	/**
-	 * Adds a mouseover effect to change the text of the passed label to {@link ColorScheme#BRAND_ORANGE} color, and
 	 * adds the passed menu items to a popup menu shown when the label is clicked.
 	 *
 	 * @param label     The label to attach the mouseover and click effects to
 	 * @param menuItems The menu items to be shown when the label is clicked
 	 */
-	static void addLabelPopupMenu(final JLabel label, final Collection<JMenuItem> menuItems)
+	static void addLabelPopupMenu(JLabel label, JMenuItem... menuItems)
 	{
 		final JPopupMenu menu = new JPopupMenu();
 		final Color labelForeground = label.getForeground();
@@ -241,6 +240,11 @@ class PluginListItem extends JPanel
 
 		for (final JMenuItem menuItem : menuItems)
 		{
+			if (menuItem == null)
+			{
+				continue;
+			}
+
 			// Some machines register mouseEntered through a popup menu, and do not register mouseExited when a popup
 			// menu item is clicked, so reset the label's color when we click one of these options.
 			menuItem.addActionListener(e -> label.setForeground(labelForeground));

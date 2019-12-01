@@ -44,6 +44,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -66,7 +67,10 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -83,8 +87,8 @@ import net.runelite.client.util.Text;
 class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
-	private static final ImageIcon BACK_ICON;
-	private static final ImageIcon BACK_ICON_HOVER;
+	static final ImageIcon BACK_ICON;
+	static final ImageIcon BACK_ICON_HOVER;
 
 	private final FixedWidthPanel mainPanel;
 	private final JLabel title;
@@ -98,6 +102,9 @@ class ConfigPanel extends PluginPanel
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Inject
+	private ExternalPluginManager externalPluginManager;
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
@@ -162,7 +169,16 @@ class ConfigPanel extends PluginPanel
 		title.setText(name);
 		title.setForeground(Color.WHITE);
 		title.setToolTipText("<html>" + name + ":<br>" + pluginConfig.getDescription() + "</html>");
-		PluginListItem.addLabelPopupMenu(title, pluginConfig.createSupportMenuItem());
+
+		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
+		JMenuItem uninstallItem = null;
+		if (mf != null)
+		{
+			uninstallItem = new JMenuItem("Uninstall");
+			uninstallItem.addActionListener(ev -> externalPluginManager.remove(mf.getInternalName()));
+		}
+
+		PluginListItem.addLabelPopupMenu(title, pluginConfig.createSupportMenuItem(), uninstallItem);
 
 		if (pluginConfig.getPlugin() != null)
 		{
@@ -494,5 +510,16 @@ class ConfigPanel extends PluginPanel
 				pluginToggle.setSelected(event.isLoaded());
 			});
 		}
+	}
+
+	@Subscribe
+	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		if (pluginManager.getPlugins().stream()
+			.noneMatch(p -> p == this.pluginConfig.getPlugin()))
+		{
+			pluginList.getMuxer().popState();
+		}
+		SwingUtilities.invokeLater(this::rebuild);
 	}
 }

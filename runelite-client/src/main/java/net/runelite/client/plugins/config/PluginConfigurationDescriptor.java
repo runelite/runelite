@@ -29,6 +29,8 @@ import javax.swing.JMenuItem;
 import lombok.Value;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.LinkBrowser;
 
@@ -60,10 +62,35 @@ class PluginConfigurationDescriptor
 	 *
 	 * @return A {@link JMenuItem} which opens the plugin's wiki page URL in the browser when clicked
 	 */
+	@Nullable
 	JMenuItem createSupportMenuItem()
 	{
-		final JMenuItem menuItem = new JMenuItem("Wiki");
+		ExternalPluginManifest mf = getExternalPluginManifest();
+		if (mf != null)
+		{
+			if (mf.getSupport() == null)
+			{
+				return null;
+			}
+
+			JMenuItem menuItem = new JMenuItem("Support");
+			menuItem.addActionListener(e -> LinkBrowser.browse(mf.getSupport().toString()));
+			return menuItem;
+		}
+
+		JMenuItem menuItem = new JMenuItem("Wiki");
 		menuItem.addActionListener(e -> LinkBrowser.browse("https://github.com/runelite/runelite/wiki/" + name.replace(' ', '-')));
 		return menuItem;
+	}
+
+	@Nullable
+	ExternalPluginManifest getExternalPluginManifest()
+	{
+		if (plugin == null)
+		{
+			return null;
+		}
+
+		return ExternalPluginManager.getExternalPluginManifest(plugin.getClass());
 	}
 }

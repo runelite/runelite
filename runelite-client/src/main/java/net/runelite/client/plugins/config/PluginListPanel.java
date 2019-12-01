@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -53,7 +54,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -79,7 +82,11 @@ class PluginListPanel extends PluginPanel
 	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 
 	@Getter
+	private final ExternalPluginManager externalPluginManager;
+
+	@Getter
 	private final MultiplexingPluginPanel muxer;
+
 	private final IconTextField searchBar;
 	private final JScrollPane scrollPane;
 	private final FixedWidthPanel mainPanel;
@@ -89,14 +96,17 @@ class PluginListPanel extends PluginPanel
 	public PluginListPanel(
 		ConfigManager configManager,
 		PluginManager pluginManager,
+		ExternalPluginManager externalPluginManager,
 		ScheduledExecutorService executorService,
 		EventBus eventBus,
-		Provider<ConfigPanel> configPanelProvider)
+		Provider<ConfigPanel> configPanelProvider,
+		Provider<PluginHubPanel> pluginHubPanelProvider)
 	{
 		super(false);
 
 		this.configManager = configManager;
 		this.pluginManager = pluginManager;
+		this.externalPluginManager = externalPluginManager;
 		this.executorService = executorService;
 		this.configPanelProvider = configPanelProvider;
 
@@ -155,9 +165,15 @@ class PluginListPanel extends PluginPanel
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+		JButton externalPluginButton = new JButton("Plugin Hub");
+		externalPluginButton.setBorder(new EmptyBorder(5, 5, 5, 5));
+		externalPluginButton.setLayout(new BorderLayout(0, BORDER_OFFSET));
+		externalPluginButton.addActionListener(l -> muxer.pushState(pluginHubPanelProvider.get()));
+
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
 		northPanel.add(mainPanel, BorderLayout.NORTH);
+		northPanel.add(externalPluginButton, BorderLayout.SOUTH);
 
 		scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -225,6 +241,13 @@ class PluginListPanel extends PluginPanel
 		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
+	void openWithFilter(String filter)
+	{
+		searchBar.setText(filter);
+		onSearchBarChanged();
+		muxer.pushState(this);
+	}
+
 	private void onSearchBarChanged()
 	{
 		final String text = searchBar.getText();
@@ -260,6 +283,18 @@ class PluginListPanel extends PluginPanel
 		for (PluginListItem pluginListItem : pluginList)
 		{
 			if (pluginListItem.getPluginConfig().getName().equals(configGroup))
+			{
+				openConfigurationPanel(pluginListItem.getPluginConfig());
+				break;
+			}
+		}
+	}
+
+	void openConfigurationPanel(Plugin plugin)
+	{
+		for (PluginListItem pluginListItem : pluginList)
+		{
+			if (pluginListItem.getPluginConfig().getPlugin() == plugin)
 			{
 				openConfigurationPanel(pluginListItem.getPluginConfig());
 				break;
@@ -353,4 +388,9 @@ class PluginListPanel extends PluginPanel
 		}
 	}
 
+	@Subscribe
+	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		SwingUtilities.invokeLater(this::rebuildPluginList);
+	}
 }
