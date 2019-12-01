@@ -21,25 +21,83 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hideunder;
+package net.runelite.client.game;
 
+import java.util.LinkedHashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import net.runelite.api.Player;
+import net.runelite.http.api.hiscore.HiscoreResult;
 
-@Getter(AccessLevel.PACKAGE)
-@Setter(AccessLevel.PACKAGE)
-class PlayerContainer
+@Getter
+@Setter
+@ToString(exclude = "player")
+public class PlayerContainer
 {
+	private AttackStyle attackStyle;
+	private AttackStyle weakness;
+	private HiscoreResult skills;
+	private LinkedHashMap<Integer, Integer> gear;
+	private LinkedHashMap<Integer, Integer> riskedGear;
+	private MeleeStyle meleeStyle;
 	private Player player;
-	private boolean target;
+	private String location;
+	private String name;
+	private String targetString;
+	private CombatStats combatStats;
+	private boolean httpRetry;
+	private boolean scouted;
+	private boolean attacking;
+	private boolean friend;
+	private boolean clan;
+	private int hpLevel;
+	private int potionBoost;
+	private int prayerLevel;
+	private int risk;
+	private int scoutTimer;
+	private int shield;
 	private int timer;
+	private int weapon;
+	private int wildyLevel;
 
 	PlayerContainer(Player player)
 	{
+		this.attackStyle = AttackStyle.UNKNOWN;
+		this.gear = new LinkedHashMap<>();
+		this.hpLevel = 0;
+		this.location = "N/A";
+		this.meleeStyle = MeleeStyle.STAB;
+		this.name = player.getName();
 		this.player = player;
-		this.target = false;
-		this.timer = 0;
+		this.riskedGear = new LinkedHashMap<>();
+		this.scoutTimer = 500;
+		this.scouted = false;
+		this.skills = null;
+		this.targetString = "";
+		this.weakness = AttackStyle.UNKNOWN;
+	}
+
+	void reset()
+	{
+		setMeleeStyle(MeleeStyle.NONE);
+		if (getTimer() > 0)
+		{
+			setTimer(getTimer() - 1);
+			if (getTimer() == 0)
+			{
+				setAttacking(false);
+			}
+		}
+	}
+
+	@Getter(AccessLevel.PACKAGE)
+	enum MeleeStyle
+	{
+		CRUSH,
+		SLASH,
+		STAB,
+		NONE
 	}
 }

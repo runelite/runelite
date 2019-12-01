@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,44 +21,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.game;
 
-package net.runelite.client.plugins.prayagainstplayer;
+import java.awt.Color;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Prayer;
 
-import net.runelite.api.Player;
-
-/**
- * Contains a player object
- * When they attacked me
- * And (in milliseconds) when to expire the overlay around them
- */
-public class PlayerContainer
+@AllArgsConstructor
+@Getter
+public enum AttackStyle
 {
+	MAGE("Mage", Color.CYAN, Prayer.PROTECT_FROM_MAGIC),
+	RANGE("Range", Color.GREEN, Prayer.PROTECT_FROM_MISSILES),
+	MELEE("Melee", Color.RED, Prayer.PROTECT_FROM_MELEE),
+	UNKNOWN("Unknown", Color.WHITE, null);
 
-	private final Player player;
-	private final long whenTheyAttackedMe;
-	private final int millisToExpireHighlight;
-
-	PlayerContainer(final Player player, final long whenTheyAttackedMe, final int millisToExpireHighlight)
-	{
-		this.player = player;
-		this.whenTheyAttackedMe = whenTheyAttackedMe;
-		this.millisToExpireHighlight = millisToExpireHighlight;
-	}
-
-	//getters
-	public Player getPlayer()
-	{
-		return player;
-	}
-
-	long getWhenTheyAttackedMe()
-	{
-		return whenTheyAttackedMe;
-	}
-
-	int getMillisToExpireHighlight()
-	{
-		return millisToExpireHighlight;
-	}
-
+	private String name;
+	private Color color;
+	private Prayer prayer;
 }

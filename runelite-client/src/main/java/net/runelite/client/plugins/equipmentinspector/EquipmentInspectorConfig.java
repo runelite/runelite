@@ -38,7 +38,7 @@ public interface EquipmentInspectorConfig extends Config
 		description = "shows the total value of the items",
 		position = 1
 	)
-	default boolean ShowValue()
+	default boolean showValue()
 	{
 		return true;
 	}
@@ -49,11 +49,11 @@ public interface EquipmentInspectorConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "protecteditems",
-		name = "protected items",
-		description = "Limit 4",
+		name = "Protected Items",
+		description = "Limited to 4",
 		position = 2
 	)
-	default int protecteditems()
+	default int protectedItems()
 	{
 		return 1;
 	}
@@ -64,7 +64,7 @@ public interface EquipmentInspectorConfig extends Config
 		description = "shows the excact gp value",
 		position = 3
 	)
-	default boolean ExactValue()
+	default boolean exactValue()
 	{
 		return false;
 	}

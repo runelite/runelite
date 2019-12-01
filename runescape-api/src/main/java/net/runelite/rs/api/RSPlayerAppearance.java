@@ -11,6 +11,9 @@ public interface RSPlayerAppearance extends PlayerAppearance
 	@Import("bodyColors")
 	int[] getBodyPartColours();
 
+	@Import("hash")
+	long getHash();
+
 	@Import("equipment")
 	@Override
 	int[] getEquipmentIds();

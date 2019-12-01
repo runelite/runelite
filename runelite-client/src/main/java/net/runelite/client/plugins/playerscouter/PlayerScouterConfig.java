@@ -44,6 +44,18 @@ public interface PlayerScouterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "mini",
+		name = "Minify Output",
+		description = "",
+		position = 0,
+		secret = true
+	)
+	default boolean mini()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "onlyWildy",
 		name = "Only Scout in Wildy",
 		description = "This will only scout players in the wilderness.",

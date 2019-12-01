@@ -41,7 +41,8 @@ public class PlayerAppearance {
 	@ObfuscatedGetter(
 		longValue = 8570520165784208047L
 	)
-	long field2547;
+	@Export("hash")
+	long hash;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
 		longValue = -3088053679670010611L
@@ -186,40 +187,47 @@ public class PlayerAppearance {
 		garbageValue = "1306042907"
 	)
 	@Export("setHash")
-	void setHash() {
-		long var1 = this.field2547;
+	void setHash()
+	{
+		long var1 = this.hash;
 		int var3 = this.equipment[5];
 		int var4 = this.equipment[9];
 		this.equipment[5] = var4;
 		this.equipment[9] = var3;
-		this.field2547 = 0L;
+		this.hash = 0L;
 
 		int var5;
-		for (var5 = 0; var5 < 12; ++var5) {
-			this.field2547 <<= 4;
-			if (this.equipment[var5] >= 256) {
-				this.field2547 += (long)(this.equipment[var5] - 256);
+		for (var5 = 0; var5 < 12; ++var5)
+		{
+			this.hash <<= 4;
+			if (this.equipment[var5] >= 256)
+			{
+				this.hash += (long) (this.equipment[var5] - 256);
 			}
 		}
 
-		if (this.equipment[0] >= 256) {
-			this.field2547 += (long)(this.equipment[0] - 256 >> 4);
+		if (this.equipment[0] >= 256)
+		{
+			this.hash += (long) (this.equipment[0] - 256 >> 4);
 		}
 
-		if (this.equipment[1] >= 256) {
-			this.field2547 += (long)(this.equipment[1] - 256 >> 8);
+		if (this.equipment[1] >= 256)
+		{
+			this.hash += (long) (this.equipment[1] - 256 >> 8);
 		}
 
-		for (var5 = 0; var5 < 5; ++var5) {
-			this.field2547 <<= 3;
-			this.field2547 += (long)this.bodyColors[var5];
+		for (var5 = 0; var5 < 5; ++var5)
+		{
+			this.hash <<= 3;
+			this.hash += (long) this.bodyColors[var5];
 		}
 
-		this.field2547 <<= 1;
-		this.field2547 += (long)(this.isFemale ? 1 : 0);
+		this.hash <<= 1;
+		this.hash += (long) (this.isFemale ? 1 : 0);
 		this.equipment[5] = var3;
 		this.equipment[9] = var4;
-		if (0L != var1 && this.field2547 != var1) {
+		if (0L != var1 && this.hash != var1)
+		{
 			PlayerAppearance_cachedModels.remove(var1);
 		}
 
@@ -234,18 +242,22 @@ public class PlayerAppearance {
 	public Model getModel(SequenceDefinition var1, int var2, SequenceDefinition var3, int var4) {
 		if (this.npcTransformId != -1) {
 			return VarcInt.getNpcDefinition(this.npcTransformId).getModel(var1, var2, var3, var4);
-		} else {
-			long var5 = this.field2547;
+		} else
+		{
+			long var5 = this.hash;
 			int[] var7 = this.equipment;
-			if (var1 != null && (var1.shield >= 0 || var1.weapon >= 0)) {
+			if (var1 != null && (var1.shield >= 0 || var1.weapon >= 0))
+			{
 				var7 = new int[12];
 
-				for (int var15 = 0; var15 < 12; ++var15) {
+				for (int var15 = 0; var15 < 12; ++var15)
+				{
 					var7[var15] = this.equipment[var15];
 				}
 
-				if (var1.shield >= 0) {
-					var5 += (long)(var1.shield - this.equipment[5] << 40);
+				if (var1.shield >= 0)
+				{
+					var5 += (long) (var1.shield - this.equipment[5] << 40);
 					var7[5] = var1.shield;
 				}
 
