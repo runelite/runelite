@@ -140,6 +140,8 @@ public class EntityHiderPlugin extends Plugin
 		//client.setNPCsNames(Text.fromCSV(config.hideNPCsNames()));
 		//client.setNPCsHiddenOnDeath(Text.fromCSV(config.hideNPCsOnDeath()));
 
+		client.setPetsHidden(config.hidePets());
+
 		client.setAttackersHidden(config.hideAttackers());
 
 		client.setProjectilesHidden(config.hideProjectiles());
@@ -163,6 +165,8 @@ public class EntityHiderPlugin extends Plugin
 
 		client.setNPCsHidden(false);
 		client.setNPCsHidden2D(false);
+
+		client.setPetsHidden(false);
 
 		client.setAttackersHidden(false);
 

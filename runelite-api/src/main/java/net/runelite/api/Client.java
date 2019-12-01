@@ -1562,6 +1562,13 @@ public interface Client extends GameShell
 	void setNPCsHidden2D(boolean state);
 
 	/**
+	 * Sets whether Pets from other players are hidden.
+	 *
+	 * @param state new pet hidden state
+	 */
+	void setPetsHidden(boolean state);
+
+	/**
 	 * Sets whether attacking players or NPCs are hidden.
 	 *
 	 * @param state new attacker hidden state
