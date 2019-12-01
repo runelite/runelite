@@ -133,9 +133,9 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapCaptainKhaled",
-			name = "Task",
-			description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius"
+		keyName = "swapCaptainKhaled",
+		name = "Task",
+		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius"
 	)
 	default boolean swapCaptainKhaled()
 	{
