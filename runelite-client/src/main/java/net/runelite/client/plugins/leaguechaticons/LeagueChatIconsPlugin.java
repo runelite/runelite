@@ -25,10 +25,10 @@
  */
 package net.runelite.client.plugins.leaguechaticons;
 
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberManager;
@@ -47,7 +47,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,9 +64,9 @@ import net.runelite.http.api.worlds.WorldType;
 	description = "Changes the chat icon for players on league worlds",
 	enabledByDefault = false
 )
-@Slf4j
 public class LeagueChatIconsPlugin extends Plugin
 {
+	static final String CONFIG_GROUP_KEY = " leaguechaticons";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
 	private static final String IRONMAN_PREFIX = "<img=" + IconID.IRONMAN.getIndex() + ">";
 
@@ -80,26 +82,24 @@ public class LeagueChatIconsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private LeagueChatIconsConfig config;
+
+	@Provides
+	LeagueChatIconsConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LeagueChatIconsConfig.class);
+	}
+
 	private int leagueIconOffset = -1; // offset for league icon
 	private boolean onLeagueWorld;
+	private LeagueChatIcon leagueChatIcon;
 
 	@Override
 	protected void startUp()
 	{
 		onLeagueWorld = false;
-
-		clientThread.invoke(() ->
-		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				loadLeagueIcon();
-				onLeagueWorld = isLeagueWorld(client.getWorld());
-				if (onLeagueWorld)
-				{
-					setChatboxName(getNameChatbox());
-				}
-			}
-		});
+		applyIcon();
 	}
 
 	@Override
@@ -112,6 +112,15 @@ public class LeagueChatIconsPlugin extends Plugin
 				setChatboxName(getNameDefault());
 			}
 		});
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP_KEY))
+		{
+			applyIcon();
+		}
 	}
 
 	@Subscribe
@@ -308,15 +317,16 @@ public class LeagueChatIconsPlugin extends Plugin
 	{
 		final IndexedSprite[] modIcons = client.getModIcons();
 
-		if (leagueIconOffset != -1 || modIcons == null)
+		if (leagueIconOffset != -1 && leagueChatIcon == config.getIcon() || modIcons == null)
 		{
 			return;
 		}
 
-		BufferedImage image = ImageUtil.getResourceStreamFromClass(getClass(), "league_icon.png");
+		BufferedImage image = ImageUtil.getResourceStreamFromClass(getClass(), config.getIcon().getPath());
 		IndexedSprite indexedSprite = ImageUtil.getImageIndexedSprite(image, client);
 
 		leagueIconOffset = modIcons.length;
+		leagueChatIcon = config.getIcon();
 
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + 1);
 		newModIcons[newModIcons.length - 1] = indexedSprite;
@@ -346,5 +356,21 @@ public class LeagueChatIconsPlugin extends Plugin
 
 		NameableContainer<Friend> friendContainer = client.getFriendContainer();
 		return friendContainer.findByName(name);
+	}
+
+	void applyIcon()
+	{
+		clientThread.invoke(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				loadLeagueIcon();
+				onLeagueWorld = isLeagueWorld(client.getWorld());
+				if (onLeagueWorld)
+				{
+					setChatboxName(getNameChatbox());
+				}
+			}
+		});
 	}
 }
