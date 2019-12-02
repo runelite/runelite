@@ -26,7 +26,6 @@ package net.runelite.client.plugins.skybox;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.io.IOException;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -36,7 +35,6 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.skybox.config.SkyOverrideMode;
@@ -105,9 +103,10 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
-		if (
+		if
+		(
 			config.overrideMode() == SkyOverrideMode.ALL ||
-		    (config.overrideMode() == SkyOverrideMode.OVERWORLD && client.getLocalPlayer().getWorldLocation().getY() < 4200)
+			(config.overrideMode() == SkyOverrideMode.OVERWORLD && client.getLocalPlayer().getWorldLocation().getY() < 4200)
 		)
 		{
 			client.setSkyboxColor(config.customColor().getRGB());
