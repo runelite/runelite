@@ -35,7 +35,7 @@ public enum UIScalingMode
 	LINEAR("Bilinear", 0),
 	MITCHELL("Bicubic (Mitchell)", 1),
 	CATMULL_ROM("Bicubic (Catmull-Rom)", 2),
-	XBR("XBR (best at 2x & above)", 3);
+	XBR("xBR (best at 2x & above)", 3);
 
 	private final String name;
 	private final int mode;
