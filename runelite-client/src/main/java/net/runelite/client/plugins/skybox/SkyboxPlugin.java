@@ -61,7 +61,6 @@ public class SkyboxPlugin extends Plugin
 	public void startUp() throws IOException
 	{
 		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
-		skybox.setOverrideColors(config.colorToOverride().getRGB(), config.customColor().getRGB());
 	}
 
 	@Override
@@ -75,29 +74,6 @@ public class SkyboxPlugin extends Plugin
 	SkyboxPluginConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(SkyboxPluginConfig.class);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (config.pickColorToOverride())
-		{
-			Player player = client.getLocalPlayer();
-			if (player != null)
-			{
-				Color c = skybox.getCentralColorForPoint(
-					player.getWorldLocation().getX(),
-					player.getWorldLocation().getY(),
-					client.getPlane(),
-					client.isInInstancedRegion() ? this::mapChunk : null);
-				config.setColorToOverride(c);
-			}
-			config.setOverrideMode(SkyOverrideMode.ONE);
-			config.setPickColorToOverride(false);
-		}
-
-		skybox.setOverrideColors(config.colorToOverride().getRGB(), config.customColor().getRGB());
-		skybox.setOverrideEnabled(config.overrideMode() == SkyOverrideMode.ONE);
 	}
 
 	private int mapChunk(int cx, int cy, int plane)
@@ -129,6 +105,16 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
+		if (
+			config.overrideMode() == SkyOverrideMode.ALL ||
+		    (config.overrideMode() == SkyOverrideMode.OVERWORLD && client.getLocalPlayer().getWorldLocation().getY() < 4200)
+		)
+		{
+			client.setSkyboxColor(config.customColor().getRGB());
+			return;
+		}
+
+
 		int px, py;
 		if (client.getOculusOrbState() == 1)
 		{
@@ -149,10 +135,7 @@ public class SkyboxPlugin extends Plugin
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
-		if (config.overrideMode() == SkyOverrideMode.ALL || (config.overrideMode() == SkyOverrideMode.OVERWORLD && baseY < 4200))
-			client.setSkyboxColor(config.customColor().getRGB());
-		else
-			client.setSkyboxColor(skybox.getColorForPoint(
+		client.setSkyboxColor(skybox.getColorForPoint(
 			baseX + ((px + spx) / 128.f),
 			baseY + ((py + spy) / 128.f),
 			baseX + (px / 128),

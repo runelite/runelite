@@ -38,7 +38,7 @@ public interface SkyboxPluginConfig extends Config
 	@ConfigItem(
 		keyName = "customColor",
 		name = "Custom sky color",
-		description = "Set a color here to use it with the options below",
+		description = "Set a color here to use for the sky",
 		position = 1
 	)
 	default Color customColor()
@@ -49,47 +49,11 @@ public interface SkyboxPluginConfig extends Config
 	@ConfigItem(
 		keyName = "skyOverrideMode",
 		name = "Mode",
-		description = "Replace the sky color in regions of a certain target color, the overworld, or everywhere",
+		description = "Replace the sky color in just the overworld, or everywhere",
 		position = 2
 	)
 	default SkyOverrideMode overrideMode()
 	{
 		return SkyOverrideMode.NONE;
 	}
-	@ConfigItem(
-		keyName = "skyOverrideMode", name = "", description = ""
-	)
-	void setOverrideMode(SkyOverrideMode value);
-
-	@ConfigItem(
-		keyName = "pickColorToOverride",
-		name = "Set current sky as target",
-		description = "Sets target color to current chunk's sky color when switched on",
-		warning = "Are you sure that you want to set the target color to the current sky color and forget the previous one?",
-		position = 3
-	)
-	default boolean pickColorToOverride()
-	{
-		return false;
-	}
-	@ConfigItem(
-		keyName = "pickColorToOverride", name = "", description = ""
-	)
-	void setPickColorToOverride(boolean value);
-
-	@ConfigItem(
-		keyName = "colorToOverride",
-		name = "Target color",
-		description = "Changing this manually is not recommended, but copying the value for tweaking is useful. Note that the value will not update when you enable the picker, until you re-enter the config panel.",
-		hidden = true,
-		position = 4
-	)
-	default Color colorToOverride()
-	{
-		return Color.BLACK;
-	}
-	@ConfigItem(
-		keyName = "colorToOverride", name = "", description = ""
-	)
-	void setColorToOverride(Color value);
 }

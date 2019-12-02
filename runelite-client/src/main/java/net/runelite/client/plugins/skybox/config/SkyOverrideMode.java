@@ -33,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 public enum SkyOverrideMode
 {
 	NONE("None"),
-	ONE("Replace target sky color"),
 	OVERWORLD("Overworld"),
 	ALL("Everywhere");
 
