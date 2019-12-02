@@ -44,9 +44,9 @@
 #define SMOOTH_TIPS
 #endif
 
-const float coef         = 2.0;
-const vec3 rgbw          = vec3(14.352, 28.176, 5.472);
-const vec4 eq_threshold  = vec4(15.0, 15.0, 15.0, 15.0);
+//const float coef         = 2.0; // unused
+const vec3 rgbw          = vec3(14.352, 28.176, 5.472);     // rgb weights
+//const vec4 eq_threshold  = vec4(15.0, 15.0, 15.0, 15.0); // unused
 
 const  vec4 Ao = vec4( 1.0, -1.0, -1.0, 1.0 );
 const  vec4 Bo = vec4( 1.0,  1.0, -1.0,-1.0 );
@@ -59,7 +59,7 @@ const  vec4 By = vec4( 2.0,  0.5, -2.0,-0.5 );
 const  vec4 Cy = vec4( 2.0,  0.0, -1.0, 0.5 );
 const  vec4 Ci = vec4(0.25, 0.25, 0.25, 0.25);
 
-const vec3 Y = vec3(0.2126, 0.7152, 0.0722);
+const vec3 Y = vec3(0.2126, 0.7152, 0.0722); // rec.709 luma weights
 
 // Difference between vector components.
 vec4 df(vec4 A, vec4 B)
@@ -104,7 +104,7 @@ float c_df(vec3 c1, vec3 c2)
 
 #include scale/xbr_lv2_common.glsl
 
-vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
+vec4 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
 {
     vec4 delta   = vec4(1.0/scale, 1.0/scale, 1.0/scale, 1.0/scale);
     vec4 delta_l = vec4(0.5/scale, 1.0/scale, 0.5/scale, 1.0/scale);
@@ -118,32 +118,37 @@ vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
 
     vec2 fp = fract(texCoord*textureDimensions);
 
-    vec3 A1 = texture(image, t.t1.xw ).xyz;
-    vec3 B1 = texture(image, t.t1.yw ).xyz;
-    vec3 C1 = texture(image, t.t1.zw ).xyz;
-    vec3 A  = texture(image, t.t2.xw ).xyz;
-    vec3 B  = texture(image, t.t2.yw ).xyz;
-    vec3 C  = texture(image, t.t2.zw ).xyz;
-    vec3 D  = texture(image, t.t3.xw ).xyz;
-    vec3 E  = texture(image, t.t3.yw ).xyz;
-    vec3 F  = texture(image, t.t3.zw ).xyz;
-    vec3 G  = texture(image, t.t4.xw ).xyz;
-    vec3 H  = texture(image, t.t4.yw ).xyz;
-    vec3 I  = texture(image, t.t4.zw ).xyz;
-    vec3 G5 = texture(image, t.t5.xw ).xyz;
-    vec3 H5 = texture(image, t.t5.yw ).xyz;
-    vec3 I5 = texture(image, t.t5.zw ).xyz;
-    vec3 A0 = texture(image, t.t6.xy ).xyz;
-    vec3 D0 = texture(image, t.t6.xz ).xyz;
-    vec3 G0 = texture(image, t.t6.xw ).xyz;
-    vec3 C4 = texture(image, t.t7.xy ).xyz;
-    vec3 F4 = texture(image, t.t7.xz ).xyz;
-    vec3 I4 = texture(image, t.t7.xw ).xyz;
+    //    A1 B1 C1
+    // A0  A  B  C C4
+    // D0  D  E  F F4
+    // G0  G  H  I I4
+    //    G5 H5 I5
+    vec4 A1 = texture(image, t.t1.xw );
+    vec4 B1 = texture(image, t.t1.yw );
+    vec4 C1 = texture(image, t.t1.zw );
+    vec4 A  = texture(image, t.t2.xw );
+    vec4 B  = texture(image, t.t2.yw );
+    vec4 C  = texture(image, t.t2.zw );
+    vec4 D  = texture(image, t.t3.xw );
+    vec4 E  = texture(image, t.t3.yw );
+    vec4 F  = texture(image, t.t3.zw );
+    vec4 G  = texture(image, t.t4.xw );
+    vec4 H  = texture(image, t.t4.yw );
+    vec4 I  = texture(image, t.t4.zw );
+    vec4 G5 = texture(image, t.t5.xw );
+    vec4 H5 = texture(image, t.t5.yw );
+    vec4 I5 = texture(image, t.t5.zw );
+    vec4 A0 = texture(image, t.t6.xy );
+    vec4 D0 = texture(image, t.t6.xz );
+    vec4 G0 = texture(image, t.t6.xw );
+    vec4 C4 = texture(image, t.t7.xy );
+    vec4 F4 = texture(image, t.t7.xz );
+    vec4 I4 = texture(image, t.t7.xw );
 
-    vec4 b  = vec4(dot(B ,rgbw), dot(D ,rgbw), dot(H ,rgbw), dot(F ,rgbw));
-    vec4 c  = vec4(dot(C ,rgbw), dot(A ,rgbw), dot(G ,rgbw), dot(I ,rgbw));
+    vec4 b  = vec4(dot(B.xyz ,rgbw), dot(D.xyz ,rgbw), dot(H.xyz ,rgbw), dot(F.xyz ,rgbw));
+    vec4 c  = vec4(dot(C.xyz ,rgbw), dot(A.xyz ,rgbw), dot(G.xyz ,rgbw), dot(I.xyz ,rgbw));
     vec4 d  = b.yzwx;
-    vec4 e  = vec4(dot(E,rgbw));
+    vec4 e  = vec4(dot(E.xyz,rgbw));
     vec4 f  = b.wxyz;
     vec4 g  = c.zwxy;
     vec4 h  = b.zwxy;
@@ -155,15 +160,15 @@ vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
 
     if (small_details < 0.5)
     {
-        i4 = vec4(dot(I4,rgbw), dot(C1,rgbw), dot(A0,rgbw), dot(G5,rgbw));
-        i5 = vec4(dot(I5,rgbw), dot(C4,rgbw), dot(A1,rgbw), dot(G0,rgbw));
-        h5 = vec4(dot(H5,rgbw), dot(F4,rgbw), dot(B1,rgbw), dot(D0,rgbw));
+        i4 = vec4(dot(I4.xyz,rgbw), dot(C1.xyz,rgbw), dot(A0.xyz,rgbw), dot(G5.xyz,rgbw));
+        i5 = vec4(dot(I5.xyz,rgbw), dot(C4.xyz,rgbw), dot(A1.xyz,rgbw), dot(G0.xyz,rgbw));
+        h5 = vec4(dot(H5.xyz,rgbw), dot(F4.xyz,rgbw), dot(B1.xyz,rgbw), dot(D0.xyz,rgbw));
     }
     else
     {
-        i4 = mul( mat4x3(I4, C1, A0, G5), y_weight * Y );
-        i5 = mul( mat4x3(I5, C4, A1, G0), y_weight * Y );
-        h5 = mul( mat4x3(H5, F4, B1, D0), y_weight * Y );
+        i4 = mul( mat4x3(I4.xyz, C1.xyz, A0.xyz, G5.xyz), y_weight * Y );
+        i5 = mul( mat4x3(I5.xyz, C4.xyz, A1.xyz, G0.xyz), y_weight * Y );
+        h5 = mul( mat4x3(H5.xyz, F4.xyz, B1.xyz, D0.xyz), y_weight * Y );
     }
 
     // These inequations define the line below which interpolation occurs.
@@ -171,8 +176,8 @@ vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
     fx_l = (Ax*fp.y+Bx*fp.x);
     fx_u = (Ay*fp.y+By*fp.x);
 
+    // corner detection
     irlv1 = irlv0 = diff(e,f) * diff(e,h);
-
     #ifdef CORNER_B
     irlv1      = (irlv0 * ( neq(f,b) * neq(h,d) + eq(e,i) * neq(f,i4) * neq(h,i5) + eq(e,g) + eq(e,c) ) );
     #endif
@@ -185,6 +190,7 @@ vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
     irlv1     = (irlv0  * ( neq(f,b) * neq(f,c) + neq(h,d) * neq(h,g) + eq(e,i) * (neq(f,f4) * neq(f,i4) + neq(h,h5) * neq(h,i5)) + eq(e,g) + eq(e,c)) );
     #endif
 
+    // corner detection in the other direction
     irlv2l = diff(e,g) * diff(d,g);
     irlv2u = diff(e,c) * diff(b,c);
 
@@ -224,15 +230,15 @@ vec3 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
     vec4 maximos = max(max(fx30, fx60), fx45);
     #endif
 
-    vec3 res1 = E;
+    vec4 res1 = E;
     res1 = mix(res1, mix(H, F, px.x), maximos.x);
     res1 = mix(res1, mix(B, D, px.z), maximos.z);
 
-    vec3 res2 = E;
+    vec4 res2 = E;
     res2 = mix(res2, mix(F, B, px.y), maximos.y);
     res2 = mix(res2, mix(D, H, px.w), maximos.w);
 
-    vec3 res = mix(res1, res2, step(c_df(E, res1), c_df(E, res2)));
+    vec4 res = mix(res1, res2, step(c_df(E.xyz, res1.xyz), c_df(E.xyz, res2.xyz)));
 
     return res;
 }

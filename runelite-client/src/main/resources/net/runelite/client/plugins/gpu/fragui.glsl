@@ -51,11 +51,7 @@ void main() {
     else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL)
         c = textureCubic(tex, TexCoord, samplingMode);
     else if (samplingMode == SAMPLING_XBR)
-    {
-        float scaleFactor = ceil(1.0 * targetDimensions.x / sourceDimensions.x);
-        c = texture(tex, TexCoord);
-        c.xyz = textureXBR(tex, TexCoord, xbrTable, scaleFactor);
-    }
+        c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
 
     FragColor = c;
 }
