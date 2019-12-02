@@ -44,6 +44,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Priorities;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
@@ -107,7 +108,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe(priority = 1) // run after all plugins
+	@Subscribe(priority = Priorities.ChatMessage.CHAT_MESSAGE_MANAGER)
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
