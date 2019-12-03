@@ -516,7 +516,12 @@ public enum Varbits
 	TWISTED_LEAGUE_RELIC_2(10050),
 	TWISTED_LEAGUE_RELIC_3(10051),
 	TWISTED_LEAGUE_RELIC_4(10052),
-	TWISTED_LEAGUE_RELIC_5(10053);
+	TWISTED_LEAGUE_RELIC_5(10053),
+
+	/**
+	 * Stealing Artefacts (Port Piscarilius Thieving)
+	 */
+	STEALING_ARTEFACT_STATE(4903);
 
 	/**
 	 * The raw varbit ID.
