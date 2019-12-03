@@ -614,6 +614,7 @@ public class WidgetID
 	static class Tob
 	{
 		static final int PARTY_INTERFACE = 6;
+		static final int PARTY_STATS = 10;
 	}
 
 	static class ExperienceDrop
