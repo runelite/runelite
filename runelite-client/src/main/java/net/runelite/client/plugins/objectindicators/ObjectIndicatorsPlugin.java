@@ -325,7 +325,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
-					&& worldPoint.getRegionY() == objectPoint.getRegionY())
+					&& worldPoint.getRegionY() == objectPoint.getRegionY()
+					&& object.getPlane() == objectPoint.getZ())
 			{
 				// Transform object to get the name which matches against what we've stored
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
