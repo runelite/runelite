@@ -134,6 +134,20 @@
     },
     {
       "level": 49,
+      "icon": 13438,
+      "name": "Artefact Heist",
+      "xp": 750,
+      "xpScalings":
+      [
+        {
+          "startLevel": 0,
+          "endLevel": 99,
+          "levelCoefficient": 40
+        }
+      ]
+    },
+    {
+      "level": 49,
       "icon": 837,
       "name": "Crossbow Stall",
       "xp": 52
