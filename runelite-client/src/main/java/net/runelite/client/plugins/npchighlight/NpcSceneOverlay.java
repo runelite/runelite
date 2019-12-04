@@ -145,22 +145,29 @@ public class NpcSceneOverlay extends Overlay
 
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
+		NPCComposition npcComposition = actor.getTransformedComposition();
+		if (npcComposition == null || !npcComposition.isInteractible())
+		{
+			return;
+		}
+
 		switch (config.renderStyle())
 		{
 			case SOUTH_WEST_TILE:
-				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
-				Polygon tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
+			{
+				int size = npcComposition.getSize();
+				LocalPoint localPoint = actor.getLocalLocation();
 
-				renderPoly(graphics, color, tilePoly1);
+				int x = localPoint.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+				int y = localPoint.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+
+				Polygon tilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
+
+				renderPoly(graphics, color, tilePoly);
 				break;
-
+			}
 			case TILE:
-				int size = 1;
-				NPCComposition composition = actor.getTransformedComposition();
-				if (composition != null)
-				{
-					size = composition.getSize();
-				}
+				int size = npcComposition.getSize();
 				LocalPoint lp = actor.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 

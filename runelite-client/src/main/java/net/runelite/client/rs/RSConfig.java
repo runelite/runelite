@@ -40,6 +40,11 @@ class RSConfig
 		return classLoaderProperties.get("codebase");
 	}
 
+	void setCodebase(String codebase)
+	{
+		classLoaderProperties.put("codebase", codebase);
+	}
+
 	String getInitialJar()
 	{
 		return classLoaderProperties.get("initial_jar");
@@ -48,5 +53,10 @@ class RSConfig
 	String getInitialClass()
 	{
 		return classLoaderProperties.get("initial_class").replace(".class", "");
+	}
+
+	String getRuneLiteGamepack()
+	{
+		return classLoaderProperties.get("runelite.gamepack");
 	}
 }

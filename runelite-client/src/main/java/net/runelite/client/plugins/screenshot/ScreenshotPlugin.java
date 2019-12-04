@@ -65,7 +65,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -279,11 +279,16 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	public void onPlayerDeath(PlayerDeath playerDeath)
 	{
-		if (config.screenshotPlayerDeath())
+		Player player = playerDeath.getPlayer();
+		if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot("Death " + format(new Date()));
+		}
+		else if ((player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+		{
+			takeScreenshot("Death " + player.getName() + " " + format(new Date()));
 		}
 	}
 
@@ -451,7 +456,6 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				takeScreenshot(fileName);
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
@@ -616,15 +620,15 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			final EnumSet<WorldType> worldTypes = client.getWorldType();
-			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
-			final boolean isDmmWorld = dmm || sdmm || dmmt;
 
 			String playerDir = client.getLocalPlayer().getName();
-			if (isDmmWorld)
+			if (worldTypes.contains(WorldType.DEADMAN))
 			{
 				playerDir += "-Deadman";
+			}
+			else if (worldTypes.contains(WorldType.LEAGUE))
+			{
+				playerDir += "-League";
 			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
 		}

@@ -137,7 +137,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		new SkillChallengeClue("Mine a piece of mithril ore.", ANY_PICKAXE),
 		new SkillChallengeClue("Smith a mithril 2h sword.", item(ItemID.HAMMER), xOfItem(ItemID.MITHRIL_BAR, 3)),
 		new SkillChallengeClue("Catch a raw shark.", ANY_HARPOON),
-		new SkillChallengeClue("Chop a yew tree.", ANY_AXE),
+		new SkillChallengeClue("Cut a yew log.", ANY_AXE),
 		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),

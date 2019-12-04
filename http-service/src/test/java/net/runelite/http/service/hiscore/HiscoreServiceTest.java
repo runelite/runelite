@@ -60,16 +60,17 @@ public class HiscoreServiceTest
 			+ "638177,1,0\n"
 			+ "516239,9,1000\n"
 			+ "492790,1,0\n"
+			+ "2,2460\n" // leagues
 			+ "-1,-1\n"
 			+ "73,1738\n"
-			+ "-1,-1\n"
 			+ "531,1432\n"
 			+ "324,212\n"
 			+ "8008,131\n"
 			+ "1337,911\n"
 			+ "42,14113\n"
 			+ "1,777\n"
-			+ "254,92\n";
+			+ "254,92\n"
+			+ "-1,-1\n"; // lms
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -105,6 +106,7 @@ public class HiscoreServiceTest
 		Assert.assertEquals(777, result.getClueScrollElite().getLevel());
 		Assert.assertEquals(254, result.getClueScrollMaster().getRank());
 		Assert.assertEquals(-1, result.getLastManStanding().getLevel());
+		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
 	}
 
 }

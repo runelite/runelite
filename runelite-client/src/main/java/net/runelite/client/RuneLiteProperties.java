@@ -43,6 +43,8 @@ public class RuneLiteProperties
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
+	private static final String JAV_CONFIG = "runelite.jav_config";
+	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
 
 	private static final Properties properties = new Properties();
 
@@ -117,5 +119,15 @@ public class RuneLiteProperties
 	public static String getDNSChangeLink()
 	{
 		return properties.getProperty(DNS_CHANGE_LINK);
+	}
+
+	public static String getJavConfig()
+	{
+		return properties.getProperty(JAV_CONFIG);
+	}
+
+	public static String getJavConfigBackup()
+	{
+		return properties.getProperty(JAV_CONFIG_BACKUP);
 	}
 }

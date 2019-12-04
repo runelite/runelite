@@ -25,20 +25,54 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
+import java.time.Duration;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.REDWOOD;
+import net.runelite.api.ObjectID;
+import static net.runelite.api.ObjectID.MAGIC_TREE_10834;
+import static net.runelite.api.NullObjectID.NULL_10835;
+import static net.runelite.api.ObjectID.MAHOGANY;
+import static net.runelite.api.ObjectID.MAHOGANY_36688;
+import static net.runelite.api.ObjectID.MAPLE_TREE_10832;
+import static net.runelite.api.ObjectID.MAPLE_TREE_36681;
+import static net.runelite.api.ObjectID.OAK_10820;
+import static net.runelite.api.ObjectID.OAK_TREE_4540;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
+import static net.runelite.api.ObjectID.TEAK;
+import static net.runelite.api.ObjectID.TEAK_36686;
+import static net.runelite.api.ObjectID.TREE;
+import static net.runelite.api.ObjectID.TREE_1277;
+import static net.runelite.api.ObjectID.TREE_1278;
+import static net.runelite.api.ObjectID.TREE_1279;
+import static net.runelite.api.ObjectID.TREE_1280;
+import static net.runelite.api.ObjectID.WILLOW;
+import static net.runelite.api.ObjectID.WILLOW_10831;
+import static net.runelite.api.ObjectID.WILLOW_10833;
+import static net.runelite.api.ObjectID.YEW;
+import static net.runelite.api.NullObjectID.NULL_10823;
+import static net.runelite.api.ObjectID.YEW_36683;
 
 @Getter
 enum Tree
 {
-	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+	REGULAR_TREE(null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
+	OAK_TREE(Duration.ofMillis(8500), ObjectID.OAK_TREE, OAK_TREE_4540, OAK_10820),
+	WILLOW_TREE(Duration.ofMillis(8500), WILLOW, WILLOW_10833, WILLOW_10831),
+	MAPLE_TREE(Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681),
+	TEAK_TREE(Duration.ofMillis(8500), TEAK, TEAK_36686),
+	MAHOGANY_TREE(Duration.ofMillis(8500), MAHOGANY, MAHOGANY_36688),
+	YEW_TREE(Duration.ofMinutes(1), YEW, NULL_10823, YEW_36683),
+	MAGIC_TREE(Duration.ofMinutes(2), MAGIC_TREE_10834, NULL_10835),
+	REDWOOD(Duration.ofMinutes(2), ObjectID.REDWOOD, REDWOOD_29670);
 
+	@Nullable
+	private final Duration respawnTime;
 	private final int[] treeIds;
 
-	Tree(int... treeIds)
+	Tree(Duration respawnTime, int... treeIds)
 	{
+		this.respawnTime = respawnTime;
 		this.treeIds = treeIds;
 	}
 

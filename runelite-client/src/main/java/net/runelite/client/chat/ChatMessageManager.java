@@ -46,7 +46,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -107,7 +107,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run after all plugins
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
@@ -556,16 +556,9 @@ public class ChatMessageManager
 
 	public void process()
 	{
-		if (!queuedMessages.isEmpty())
+		for (QueuedMessage msg; (msg = queuedMessages.poll()) != null; )
 		{
-			try
-			{
-				queuedMessages.forEach(this::add);
-			}
-			finally
-			{
-				queuedMessages.clear();
-			}
+			add(msg);
 		}
 	}
 
