@@ -713,6 +713,17 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
+		checkNPCs(npcClueScroll, npcs);
+
+		if (!npcsToMark.isEmpty() && config.displayHintArrows())
+		{
+			// Always set hint arrow to first seen NPC
+			client.setHintArrow(npcsToMark.get(0));
+		}
+	}
+
+	private void checkNPCs(NpcClueScroll npcClueScroll, NPC[] npcs)
+	{
 		for (NPC npc : npcs)
 		{
 			if (npc == null || npc.getName() == null)
@@ -729,12 +740,6 @@ public class ClueScrollPlugin extends Plugin
 
 				npcsToMark.add(npc);
 			}
-		}
-
-		if (!npcsToMark.isEmpty() && config.displayHintArrows())
-		{
-			// Always set hint arrow to first seen NPC
-			client.setHintArrow(npcsToMark.get(0));
 		}
 	}
 

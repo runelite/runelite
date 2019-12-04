@@ -90,16 +90,22 @@ public class ClueScrollOverlay extends Overlay
 			}
 		}
 
+		if (doesRequireLightSource(graphics, clue)) return panelComponent.render(graphics);
+
+		return panelComponent.render(graphics);
+	}
+
+	private boolean doesRequireLightSource(Graphics2D graphics, ClueScroll clue)
+	{
 		if (clue.isRequiresLight() && ((plugin.getInventoryItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getInventoryItems()) || (plugin.getEquippedItems() != null && !HAS_LIGHT.fulfilledBy(plugin.getEquippedItems())))))
 		{
 			if (clue.getHasFirePit() != null && client.getVar(clue.getHasFirePit()) == 1)
 			{
-				return panelComponent.render(graphics);
+				return true;
 			}
 			panelComponent.getChildren().add(LineComponent.builder().left("").build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light!").leftColor(Color.ORANGE).build());
 		}
-
-		return panelComponent.render(graphics);
+		return false;
 	}
 }

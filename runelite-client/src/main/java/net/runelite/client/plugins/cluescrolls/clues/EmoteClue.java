@@ -253,6 +253,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
+		buildRequirementsTooltips(panelComponent, plugin);
+	}
+
+	private void buildRequirementsTooltips(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	{
 		if (itemRequirements.length > 0)
 		{
 			Client client = plugin.getClient();
