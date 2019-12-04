@@ -94,7 +94,6 @@ public class MiningPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
-			case LOADING:
 			case HOPPING:
 				respawns.clear();
 				break;
@@ -110,6 +109,7 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		respawns.removeIf(RockRespawn::isExpired);
 		recentlyLoggedIn = false;
 	}
 

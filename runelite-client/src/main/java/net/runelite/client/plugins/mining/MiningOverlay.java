@@ -28,14 +28,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Instant;
-import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -72,24 +70,18 @@ class MiningOverlay extends Overlay
 		}
 
 		Instant now = Instant.now();
-		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
+		for (RockRespawn rockRespawn : respawns)
 		{
-			Color pieFillColor = Color.YELLOW;
-			Color pieBorderColor = Color.ORANGE;
-			RockRespawn rockRespawn = it.next();
-			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
-			WorldPoint worldPoint = rockRespawn.getWorldPoint();
-			LocalPoint loc = LocalPoint.fromWorld(client, worldPoint);
-			if (loc == null || percent > 1.0f)
+			LocalPoint loc = LocalPoint.fromWorld(client, rockRespawn.getWorldPoint());
+			if (loc == null)
 			{
-				it.remove();
 				continue;
 			}
 
+			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
 			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
-			if (point == null)
+			if (point == null || percent > 1.0f)
 			{
-				it.remove();
 				continue;
 			}
 
@@ -101,6 +93,9 @@ class MiningOverlay extends Overlay
 			{
 				continue;
 			}
+
+			Color pieFillColor = Color.YELLOW;
+			Color pieBorderColor = Color.ORANGE;
 
 			// Recolour pie on motherlode veins during the portion of the timer where they may respawn
 			if (rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
