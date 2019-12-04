@@ -44,6 +44,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -270,8 +271,7 @@ public class KourendLibraryPlugin extends Plugin
 		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
 		if (npcHead != null)
 		{
-			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
-			if (cust != null)
+			if (isLibraryCustomer(npcHead.getModelId()))
 			{
 				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 				String text = textw.getText();
@@ -286,12 +286,12 @@ public class KourendLibraryPlugin extends Plugin
 						return;
 					}
 
-					library.setCustomer(cust, book);
+					library.setCustomer(npcHead.getModelId(), book);
 					panel.update();
 				}
 				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
-					library.setCustomer(null, null);
+					library.setCustomer(-1, null);
 					panel.update();
 				}
 			}
@@ -307,7 +307,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (LibraryCustomer.getById(event.getNpc().getId()) != null)
+		if (isLibraryCustomer(event.getNpc().getId()))
 		{
 			npcsToMark.add(event.getNpc());
 		}
@@ -344,5 +344,10 @@ public class KourendLibraryPlugin extends Plugin
 
 			playerBooks = books;
 		}
+	}
+
+	static boolean isLibraryCustomer(int npcId)
+	{
+		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
 	}
 }

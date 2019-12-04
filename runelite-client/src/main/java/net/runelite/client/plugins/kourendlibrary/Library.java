@@ -74,7 +74,7 @@ class Library
 	private Book customerBook;
 
 	@Getter
-	private LibraryCustomer customer;
+	private int customerId;
 
 	Library()
 	{
@@ -93,9 +93,9 @@ class Library
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(int customerId, Book book)
 	{
-		this.customer = customer;
+		this.customerId = customerId;
 		this.customerBook = book;
 	}
 

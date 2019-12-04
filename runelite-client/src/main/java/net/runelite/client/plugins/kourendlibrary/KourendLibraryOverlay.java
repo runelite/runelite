@@ -210,12 +210,12 @@ class KourendLibraryOverlay extends Overlay
 		}
 
 		// Render the customer's wanted book on their head and a poly under their feet
-		LibraryCustomer customer = library.getCustomer();
-		if (customer != null)
+		int customerId = library.getCustomerId();
+		if (customerId != -1)
 		{
 			for (NPC n : plugin.getNpcsToMark())
 			{
-				if (n.getId() != customer.getId())
+				if (n.getId() != customerId)
 				{
 					continue;
 				}
