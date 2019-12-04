@@ -319,6 +319,13 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		System.arraycopy(equipment, 0, combined, 0, equipment.length);
 		System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
 
+		buildRequirementTooltips(plugin, requireEquipped, components, equipment, combined, requirements);
+
+		return components;
+	}
+
+	private static void buildRequirementTooltips(ClueScrollPlugin plugin, boolean requireEquipped, List<LineComponent> components, Item[] equipment, Item[] combined, ItemRequirement[] requirements)
+	{
 		for (ItemRequirement requirement : requirements)
 		{
 			boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
@@ -331,8 +338,6 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 				.rightColor(equipmentFulfilled || (combinedFulfilled && !requireEquipped) ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
 				.build());
 		}
-
-		return components;
 	}
 
 	public static SkillChallengeClue forText(String text, String rawText)
