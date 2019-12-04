@@ -401,6 +401,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, index);
 			}
 
+			if (config.swapHelp())
+			{
+				swap("help", option, target, index);
+			}
+
 			if (config.swapDarkMage())
 			{
 				swap("repairs", option, target, index);
