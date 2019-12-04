@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2019, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +24,16 @@
  */
 package net.runelite.client.plugins.stealingartefacts;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableSet;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -38,10 +42,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 @PluginDescriptor(
@@ -61,15 +63,18 @@ public class StealingArtefactsPlugin extends Plugin
 	@Inject
 	private StealingArtefactsOverlay overlay;
 
+	@Getter(AccessLevel.PACKAGE)
 	private StealingArtefactState stealingArtefactState;
 
-	private static final List<Integer> PORT_PISCARILIUS_REGIONS = Lists.newArrayList(6970, 7226);
+	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
 
-	private static final List<Integer> ARTEFACT_ITEM_IDS = Lists.newArrayList(13434, 13435, 13436, 13437, 13438);
+	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
+			ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		stealingArtefactState = null;
 		overlayManager.add(overlay);
 	}
 
@@ -81,9 +86,10 @@ public class StealingArtefactsPlugin extends Plugin
 
 	public boolean isInPortPiscariliusRegion()
 	{
-		if (client.getLocalPlayer() != null)
+		Player player = client.getLocalPlayer();
+		if (player != null)
 		{
-			return PORT_PISCARILIUS_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+			return PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
 		}
 
 		return false;
@@ -100,12 +106,6 @@ public class StealingArtefactsPlugin extends Plugin
 		}
 
 		return false;
-	}
-
-	@Nullable
-	public StealingArtefactState getStealingArtefactState()
-	{
-		return stealingArtefactState;
 	}
 
 	@Subscribe
@@ -129,12 +129,9 @@ public class StealingArtefactsPlugin extends Plugin
 			{
 				stealingArtefactState = StealingArtefactState.DELIVER_ARTEFACT;
 			}
-			else
+			else if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
 			{
-				if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
-				{
 					stealingArtefactState = StealingArtefactState.FAILURE;
-				}
 			}
 		}
 	}

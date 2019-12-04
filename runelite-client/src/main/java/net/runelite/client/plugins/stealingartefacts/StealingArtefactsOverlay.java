@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2019, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,12 +55,12 @@ public class StealingArtefactsOverlay extends Overlay
 	{
 		panelComponent.getChildren().clear();
 
-		if (!plugin.isInPortPiscariliusRegion())
+		StealingArtefactState stealingArtefactState = plugin.getStealingArtefactState();
+
+		if (!plugin.isInPortPiscariliusRegion() || stealingArtefactState == null)
 		{
 			return null;
 		}
-
-		StealingArtefactState stealingArtefactState = plugin.getStealingArtefactState();
 
 		final String stealingArtefactDescription = stealingArtefactState.getDescription();
 
