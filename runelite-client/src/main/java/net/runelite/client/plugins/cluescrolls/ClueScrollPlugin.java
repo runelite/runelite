@@ -672,29 +672,36 @@ public class ClueScrollPlugin extends Plugin
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 		objectsToMark.clear();
 
-		for (GameObject object : tile.getGameObjects())
+		checkGameObjectsToMark(tile, objectIds);
+	}
+
+	private void checkGameObjectsToMark(Tile tile, int[] objectIds)
+	{
+		for (GameObject object : tile.getGameObjects()) {
+			checkGameObject(objectIds, object);
+		}
+	}
+
+	private void checkGameObject(int[] objectIds, GameObject object)
+	{
+		if (object == null)
+			return;
+
+		for (int id : objectIds)
 		{
-			if (object == null)
+			if (object.getId() == id)
 			{
+				objectsToMark.add(object);
 				continue;
 			}
 
-			for (int id : objectIds)
+			// Check impostors
+			final ObjectComposition comp = client.getObjectDefinition(object.getId());
+			final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+
+			if (impostor != null && impostor.getId() == id)
 			{
-				if (object.getId() == id)
-				{
-					objectsToMark.add(object);
-					continue;
-				}
-
-				// Check impostors
-				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
-
-				if (impostor != null && impostor.getId() == id)
-				{
-					objectsToMark.add(object);
-				}
+				objectsToMark.add(object);
 			}
 		}
 	}
