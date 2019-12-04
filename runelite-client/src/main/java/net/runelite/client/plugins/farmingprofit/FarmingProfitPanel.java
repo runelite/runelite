@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.farmingprofit;
 
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
@@ -124,7 +125,7 @@ class FarmingProfitPanel extends PluginPanel
 		final FarmingProfitBox box = new FarmingProfitBox(itemManager, run);
 
 		// Create remove run popup menu
-		final JMenuItem reset = new JMenuItem("Remove run");
+		final JMenuItem reset = new JMenuItem("Remove");
 		reset.addActionListener(e ->
 		{
 			overallProfit -= run.getProfit();
@@ -134,9 +135,25 @@ class FarmingProfitPanel extends PluginPanel
 			runsContainer.remove(box);
 			runsContainer.repaint();
 		});
+		// Copy
+		final JMenuItem copyRun = new JMenuItem("Copy");
+		copyRun.addActionListener(e -> addRun(run));
+		// Add dead run
+		final JMenuItem addDeadRun = new JMenuItem("Dead patch");
+		addDeadRun.addActionListener(e ->
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				FarmingProfitRun deadRun = run;
+				deadRun.addAmount(-run.getAmount());
+				addRun(deadRun);
+			});
+		});
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
+		popupMenu.add(copyRun);
+		popupMenu.add(addDeadRun);
 		box.setComponentPopupMenu(popupMenu);
 
 		// Add run box to the runs container
