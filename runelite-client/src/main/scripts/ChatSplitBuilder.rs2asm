@@ -482,7 +482,7 @@ LABEL407:
    runelite_callback     ; Invoke callback
    pop_int               ; Pop the id of the messageNode
    sload                  0                  ; Load the log in/out message
-   join_string            3                  ; Add the timestamp to the message
+   join_string            2                  ; Add the timestamp to the message
    iload                  9
    iload                  10
    iconst                 10682368
