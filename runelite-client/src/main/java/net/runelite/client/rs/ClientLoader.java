@@ -50,6 +50,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -64,6 +65,7 @@ import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -80,7 +82,7 @@ public class ClientLoader implements Supplier<Applet>
 	private ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
 
-	private HostSupplier hostSupplier = new HostSupplier();
+	private WorldSupplier worldSupplier = new WorldSupplier();
 	private RSConfig config;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
@@ -173,7 +175,7 @@ public class ClientLoader implements Supplier<Applet>
 			catch (IOException e)
 			{
 				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
-				String host = hostSupplier.get();
+				String host = worldSupplier.get().getAddress();
 				url = url.newBuilder().host(host).build();
 				err = e;
 			}
@@ -190,14 +192,19 @@ public class ClientLoader implements Supplier<Applet>
 				throw new IOException("Invalid or missing jav_config");
 			}
 
-			if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()))
+			if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
 			{
 				throw new IOException("Backup config does not have RuneLite gamepack url");
 			}
 
 			// Randomize the codebase
-			String codebase = hostSupplier.get();
-			backupConfig.setCodebase("http://" + codebase + "/");
+			World world = worldSupplier.get();
+			backupConfig.setCodebase("http://" + world.getAddress() + "/");
+
+			// Update the world applet parameter
+			Map<String, String> appletProperties = backupConfig.getAppletProperties();
+			appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
+
 			config = backupConfig;
 		}
 		catch (IOException ex)
@@ -347,7 +354,7 @@ public class ClientLoader implements Supplier<Applet>
 						throw e;
 					}
 
-					url = url.newBuilder().host(hostSupplier.get()).build();
+					url = url.newBuilder().host(worldSupplier.get().getAddress()).build();
 				}
 			}
 		}

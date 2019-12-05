@@ -59,4 +59,9 @@ class RSConfig
 	{
 		return classLoaderProperties.get("runelite.gamepack");
 	}
+
+	String getRuneLiteWorldParam()
+	{
+		return classLoaderProperties.get("runelite.worldparam");
+	}
 }

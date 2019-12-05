@@ -40,43 +40,47 @@ import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
-class HostSupplier implements Supplier<String>
+class WorldSupplier implements Supplier<World>
 {
 	private final Random random = new Random(System.nanoTime());
-	private Queue<String> hosts = new ArrayDeque<>();
+	private Queue<World> worlds = new ArrayDeque<>();
 
 	@Override
-	public String get()
+	public World get()
 	{
-		if (!hosts.isEmpty())
+		if (!worlds.isEmpty())
 		{
-			return hosts.poll();
+			return worlds.poll();
 		}
 
 		try
 		{
-			List<String> newHosts = new WorldClient(RuneLiteAPI.CLIENT)
+			List<World> newWorlds = new WorldClient(RuneLiteAPI.CLIENT)
 				.lookupWorlds()
 				.getWorlds()
 				.stream()
 				.filter(w -> w.getTypes().isEmpty() || EnumSet.of(WorldType.MEMBERS).equals(w.getTypes()))
-				.map(World::getAddress)
 				.collect(Collectors.toList());
 
-			Collections.shuffle(newHosts, random);
+			Collections.shuffle(newWorlds, random);
 
-			hosts.addAll(newHosts.subList(0, 16));
+			worlds.addAll(newWorlds.subList(0, 16));
 		}
 		catch (IOException e)
 		{
 			log.warn("Unable to retrieve world list", e);
 		}
 
-		while (hosts.size() < 2)
+		while (worlds.size() < 2)
 		{
-			hosts.add("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM");
+			int id = random.nextInt(50) + 1;
+			World world = World.builder()
+				.id(300 + id) // worlds start at 300
+				.address("oldschool" + id + ".runescape.COM")
+				.build();
+			worlds.add(world);
 		}
 
-		return hosts.poll();
+		return worlds.poll();
 	}
 }
