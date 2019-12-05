@@ -161,6 +161,7 @@ public class WidgetID
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int JEWELLERY_BOX_GROUP_ID = 590;
 	public static final int OPTIONS_GROUP_ID = 261;
+	public static final int THEATRE_OF_BLOOD_PARTY_GROUP_ID = 28;
 	public static final int GWD_KC_GROUP_ID = 406;
 
 	static class WorldMap
@@ -685,6 +686,11 @@ public class WidgetID
 		static final int RAIDING_PARTY = 9;
 		static final int ORB_BOX = 10;
 		static final int BOSS_HEALTH_BAR = 35;
+	}
+
+	static class TheatreOfBloodParty
+	{
+		static final int CONTAINER = 10;
 	}
 
 	static class ExperienceDrop
