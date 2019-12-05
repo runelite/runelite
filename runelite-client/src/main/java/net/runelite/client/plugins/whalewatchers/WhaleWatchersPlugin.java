@@ -60,7 +60,7 @@ import org.apache.commons.lang3.ObjectUtils;
 @Singleton
 public class WhaleWatchersPlugin extends Plugin
 {
-	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
+	private static final String BROKEN_PNECK_MESSAGE = "<col=ef1020>Your phoenix necklace heals you, but is destroyed in the process.</col>";
 	boolean protectItemOverlay = false;
 	int damageDone = 0;
 	int damageTaken = 0;
