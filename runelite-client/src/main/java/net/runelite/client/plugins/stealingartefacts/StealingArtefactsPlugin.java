@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableSet;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
-
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -36,6 +35,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
@@ -50,8 +50,8 @@ import java.util.stream.Stream;
 
 @PluginDescriptor(
 		name = "Stealing Artefacts",
-		description = "Show the location and/or status of your stealing artefact task.",
-		tags = {"stealing", "artefact", "thieving"},
+		description = "Show the location and status of your stealing artefact task.",
+		tags = {"thieving"},
 		enabledByDefault = false
 )
 public class StealingArtefactsPlugin extends Plugin
@@ -70,6 +70,9 @@ public class StealingArtefactsPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private StealingArtefactState stealingArtefactState;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean playerIsInPortPiscariliusRegion;
 
 	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
 
@@ -98,17 +101,6 @@ public class StealingArtefactsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-	}
-
-	public boolean isInPortPiscariliusRegion()
-	{
-		Player player = client.getLocalPlayer();
-		if (player != null)
-		{
-			return PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
-		}
-
-		return false;
 	}
 
 	private boolean hasArtefact()
@@ -149,6 +141,16 @@ public class StealingArtefactsPlugin extends Plugin
 			{
 				stealingArtefactState = StealingArtefactState.FAILURE;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		Player player = client.getLocalPlayer();
+		if (player != null)
+		{
+			playerIsInPortPiscariliusRegion = PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
 		}
 	}
 }
