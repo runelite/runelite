@@ -27,6 +27,7 @@ package net.runelite.client.plugins.prayagainstplayer;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("prayagainstplayer")
 public interface PrayAgainstPlayerConfig extends Config
@@ -62,5 +63,33 @@ public interface PrayAgainstPlayerConfig extends Config
 	default boolean drawTargetPrayAgainstPrayerTab()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "highlightAttackers",
+		name = "Highlight Attackers",
+		description = "This will highlight attackers."
+	)
+	default boolean highlightAttackers()
+	{
+		return false;
+	}
+
+	@Range(
+		min = 1,
+		max = 10
+	)
+	@ConfigItem(
+		position = 5,
+		keyName = "highlightWidth",
+		name = "Highlight Width",
+		description = "This will set the highlight attackers outline width.",
+		hidden = true,
+		unhide = "highlightAttackers"
+	)
+	default int highlightWidth()
+	{
+		return 4;
 	}
 }
