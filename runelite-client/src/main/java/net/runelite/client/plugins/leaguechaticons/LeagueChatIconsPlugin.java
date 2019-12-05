@@ -54,7 +54,7 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
-	name = "Chat League Icons",
+	name = "League Chat Icons",
 	description = "Changes the chat icon for players on league worlds",
 	enabledByDefault = false
 )

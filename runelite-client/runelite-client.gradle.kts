@@ -89,10 +89,11 @@ dependencies {
 
     testImplementation(Libraries.guiceGrapher)
     testImplementation(Libraries.guiceTestlib)
-    testImplementation(Libraries.junit)
     testImplementation(Libraries.hamcrest)
+    testImplementation(Libraries.junit)
     testImplementation(Libraries.mockitoCore)
     testImplementation(Libraries.mockitoInline)
+    testImplementation(Libraries.okhttp3Webserver)
     testImplementation(Libraries.slf4jApi)
 }
 

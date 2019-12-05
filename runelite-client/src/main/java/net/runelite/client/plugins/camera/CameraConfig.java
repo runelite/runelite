@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoom;
+package net.runelite.client.plugins.camera;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -30,7 +30,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 
 @ConfigGroup("zoom")
-public interface ZoomConfig extends Config
+public interface CameraConfig extends Config
 {
 	int OUTER_LIMIT_MIN = -400;
 	int OUTER_LIMIT_MAX = 400;
@@ -115,4 +115,36 @@ public interface ZoomConfig extends Config
 		return 25;
 	}
 
+	@ConfigItem(
+		keyName = "rightClickMovesCamera",
+		name = "Right click moves camera",
+		description = "Remaps right click to middle mouse click if there are no menu options",
+		position = 7
+	)
+	default boolean rightClickMovesCamera()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "ignoreExamine",
+		name = "Ignore Examine",
+		description = "Ignore the Examine menu entry",
+		position = 8
+	)
+	default boolean ignoreExamine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "middleClickMenu",
+		name = "Middle-button opens menu",
+		description = "Middle-mouse button always opens the menu",
+		position = 9
+	)
+	default boolean middleClickMenu()
+	{
+		return false;
+	}
 }

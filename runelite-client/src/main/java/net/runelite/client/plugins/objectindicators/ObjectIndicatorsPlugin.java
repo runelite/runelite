@@ -328,7 +328,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		markObject(name, object);
+		markObject(objectDefinition, name, object);
 	}
 
 	private void checkObjectPoints(TileObject object)
@@ -350,7 +350,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
-					&& worldPoint.getRegionY() == objectPoint.getRegionY())
+					&& worldPoint.getRegionY() == objectPoint.getRegionY()
+					&& object.getPlane() == objectPoint.getZ())
 			{
 				// Transform object to get the name which matches against what we've stored
 				ObjectDefinition objectDefinition = getObjectDefinition(object.getId());
@@ -432,13 +433,14 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return false;
 	}
 
-	private void markObject(String name, final TileObject object)
+	/** mark or unmark an object
+	 *
+	 * @param objectComposition transformed composition of object based on vars
+	 * @param name name of objectComposition
+	 * @param object tile object, for multilocs object.getId() is the base id
+	 */
+	private void markObject(ObjectDefinition objectComposition, String name, final TileObject object)
 	{
-		if (object == null)
-		{
-			return;
-		}
-
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		if (worldPoint == null)
 		{
@@ -457,9 +459,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		if (objects.remove(object))
 		{
-			// Use object id instead of name to match the object point with this object due to the object name being
-			// able to change because of multilocs.
-			if (!objectPoints.removeIf(op -> (op.getId() == -1 || op.getId() == object.getId())
+			// Find the object point that caused this object to be marked, there are two cases:
+			// 1) object is a multiloc, the name may have changed since marking - match from base id
+			// 2) not a multiloc, but an object has spawned with an identical name and a different
+			//    id as what was originally marked
+			if (!objectPoints.removeIf(op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
 				&& op.getRegionX() == worldPoint.getRegionX()
 				&& op.getRegionY() == worldPoint.getRegionY()
 				&& op.getZ() == worldPoint.getPlane()))
