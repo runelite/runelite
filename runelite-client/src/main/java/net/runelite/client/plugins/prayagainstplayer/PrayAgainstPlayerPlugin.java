@@ -66,6 +66,8 @@ public class PrayAgainstPlayerPlugin extends Plugin
 	private boolean ignoreFriends;
 	private boolean ignoreClanMates;
 	private boolean drawTargetPrayAgainstPrayerTab;
+	private boolean highlightAttackers;
+	private int highlightWidth;
 
 	@Provides
 	PrayAgainstPlayerConfig provideConfig(ConfigManager configManager)
@@ -104,6 +106,8 @@ public class PrayAgainstPlayerPlugin extends Plugin
 		this.ignoreFriends = config.ignoreFriends();
 		this.ignoreClanMates = config.ignoreClanMates();
 		this.drawTargetPrayAgainstPrayerTab = config.drawTargetPrayAgainstPrayerTab();
+		this.highlightAttackers = config.highlightAttackers();
+		this.highlightWidth = config.highlightWidth();
 
 		if (this.drawTargetPrayAgainstPrayerTab)
 		{
