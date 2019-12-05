@@ -62,16 +62,10 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.Menu;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.util.Text;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -96,7 +90,6 @@ import net.runelite.client.plugins.menuentryswapper.comparables.ShopComparableEn
 import net.runelite.client.plugins.menuentryswapper.comparables.WithdrawComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.util.ArdougneCloakMode;
 import net.runelite.client.plugins.menuentryswapper.util.BurningAmuletMode;
-import net.runelite.client.plugins.menuentryswapper.util.CharterOption;
 import net.runelite.client.plugins.menuentryswapper.util.CombatBraceletMode;
 import net.runelite.client.plugins.menuentryswapper.util.ConstructionCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.ConstructionMode;
@@ -108,7 +101,6 @@ import net.runelite.client.plugins.menuentryswapper.util.GamesNecklaceMode;
 import net.runelite.client.plugins.menuentryswapper.util.GloryMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseAdvertisementMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
-import net.runelite.client.plugins.menuentryswapper.util.JewelleryBoxDestination;
 import net.runelite.client.plugins.menuentryswapper.util.MaxCapeMode;
 import net.runelite.client.plugins.menuentryswapper.util.NecklaceOfPassageMode;
 import net.runelite.client.plugins.menuentryswapper.util.ObeliskMode;
@@ -123,7 +115,6 @@ import net.runelite.client.plugins.pvptools.PvpToolsConfig;
 import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.util.HotkeyListener;
 import static net.runelite.client.util.MenuUtil.swap;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
@@ -140,10 +131,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final Object CONTROL = new Object();
 	private static final Object HOTKEY_CHECK = new Object();
 	private static final Object CONTROL_CHECK = new Object();
-	private static final Object JEWEL_CLICKED = new Object();
-	private static final Object JEWEL_TELE = new Object();
-	private static final Object JEWEL_WIDGET = new Object();
-
 	private static final int PURO_PURO_REGION_ID = 10307;
 	private static final Set<MenuOpcode> NPC_MENU_TYPES = ImmutableSet.of(
 		MenuOpcode.NPC_FIRST_OPTION, MenuOpcode.NPC_SECOND_OPTION, MenuOpcode.NPC_THIRD_OPTION,
@@ -202,7 +189,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private List<String> bankItemNames = new ArrayList<>();
 	private BurningAmuletMode getBurningAmuletMode;
-	private CharterOption charterOption;
 	private CombatBraceletMode getCombatBraceletMode;
 	private ArdougneCloakMode ardougneCloakMode;
 	private ConstructionCapeMode constructionCapeMode;
@@ -304,8 +290,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapTravel;
 	private boolean swapWildernessLever;
 
-	private JewelleryBoxDestination lastDes;
-
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
 	{
@@ -315,13 +299,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		this.lastDes = JewelleryBoxDestination.withOption(config.lastDes());
 
 		updateConfig();
-		if (config.lastJewel())
-		{
-			eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
-		}
+
 		addSwaps();
 		loadConstructionItems();
 		loadCustomSwaps(config.customSwaps(), customSwaps);
@@ -413,16 +393,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			case "removeObjects":
 			case "removedObjects":
 				updateRemovedObjects();
-				return;
-			case "lastJewel":
-				if (config.lastJewel())
-				{
-					eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
-				}
-				else
-				{
-					eventBus.unregister(JEWEL_CLICKED);
-				}
 				return;
 		}
 
@@ -549,21 +519,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					continue;
 				}
-			}
-
-			if (config.lastJewel() && option.equals("teleport") && entry.getTarget().contains("Jewellery Box") && lastDes != null)
-			{
-				final MenuEntry lastDesEntry = new MenuEntry();
-
-				lastDesEntry.setOpcode(MenuOpcode.PRIO_RUNELITE.getId());
-				lastDesEntry.setOption(lastDes.getOption());
-
-				lastDesEntry.setTarget(entry.getTarget());
-				lastDesEntry.setIdentifier(entry.getIdentifier());
-				lastDesEntry.setParam0(entry.getParam0());
-				lastDesEntry.setParam1(entry.getParam1());
-
-				menu_entries.add(lastDesEntry);
 			}
 
 			menu_entries.add(entry);
@@ -732,83 +687,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-	}
-
-	private void onMenuOptionClicked(MenuOptionClicked entry)
-	{
-		if (entry.getOpcode() == MenuOpcode.WIDGET_DEFAULT.getId() &&
-			WidgetInfo.TO_GROUP(entry.getParam1()) == WidgetID.JEWELLERY_BOX_GROUP_ID)
-		{
-			if (entry.getOption().equals(lastDes == null ? null : lastDes.getOption()))
-			{
-				return;
-			}
-
-			JewelleryBoxDestination newDest = JewelleryBoxDestination.withOption(entry.getOption());
-			if (newDest == null)
-			{
-				return;
-			}
-
-			lastDes = newDest;
-			config.lastDes(lastDes.getOption());
-		}
-		else if (entry.getOption().equals("Teleport") && entry.getTarget().contains("Jewellery Box"))
-		{
-			eventBus.unregister(JEWEL_WIDGET);
-		}
-		else if (lastDes != null &&
-			entry.getOpcode() == MenuOpcode.PRIO_RUNELITE.getId() &&
-			entry.getOption().equals(lastDes.getOption()))
-		{
-			entry.setOption("Teleport");
-			entry.setOpcode(MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId());
-
-			eventBus.subscribe(ScriptCallbackEvent.class, JEWEL_WIDGET, this::onScriptCallback);
-		}
-	}
-
-	private void onScriptCallback(ScriptCallbackEvent event)
-	{
-		if (!event.getEventName().equals("jewelleryBoxDone"))
-		{
-			return;
-		}
-
-		eventBus.unregister(JEWEL_WIDGET);
-
-		// Use a event so we don't accidentally run another script before returning
-		// menu also is when jagex is probably expecting input like this so :)
-		eventBus.subscribe(Menu.class, JEWEL_TELE, this::teleportInputs);
-	}
-
-	private void teleportInputs(Menu menu)
-	{
-		final Widget parent = client.getWidget(lastDes.getParent());
-		if (parent == null)
-		{
-			return;
-		}
-
-		final Widget child = parent.getChild(lastDes.getChildIndex());
-		if (child == null)
-		{
-			return;
-		}
-
-		Object[] args = child.getOnOp();
-		if (args == null)
-		{
-			return;
-		}
-
-		// Replace opIndex with 1
-		args[ArrayUtils.indexOf(args, 0x80000004)] = 1;
-
-		client.runScript(args);
-		eventBus.unregister(JEWEL_TELE);
-
-		menu.dontRun();
 	}
 
 	private void loadCustomSwaps(String config, Map<AbstractComparableEntry, Integer> map)
@@ -1011,6 +889,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addPriorityEntry("Rellekka");
 			menuManager.addPriorityEntry("Follow", "Elkoy").setPriority(10);
 			menuManager.addPriorityEntry("Transport");
+		}
+
+		if (this.swapAbyssTeleport)
+		{
 			menuManager.addPriorityEntry("Teleport", "Mage of zamorak").setPriority(10);
 		}
 
@@ -1680,7 +1562,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void updateConfig()
 	{
-		this.charterOption = config.charterOption();
 		this.configCustomShiftSwaps = config.shiftCustomSwaps();
 		this.configCustomSwaps = config.customSwaps();
 		this.ardougneCloakMode = config.ardougneCloakMode();
