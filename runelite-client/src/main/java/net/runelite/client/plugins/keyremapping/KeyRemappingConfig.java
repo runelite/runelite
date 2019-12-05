@@ -263,6 +263,7 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_CONTROL, 0);
 	}
+	
 	@ConfigItem(
 		position = 21,
 		keyName = "alt",
@@ -273,6 +274,7 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_ALT, 0);
 	}
+	
 	@ConfigItem(
 		position = 22,
 		keyName = "shift",
