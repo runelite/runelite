@@ -238,44 +238,27 @@ public class BankPlugin extends Plugin
 		final long haPrice = prices.getHighAlchPrice();
 
 		String strCurrentTab = "";
-		if (config.showGE() && gePrice != 0)
-		{
+		strCurrentTab = getString(gePrice, strCurrentTab, config.showGE(), config.showHA(), "EX: ");
+
+		strCurrentTab = getString(haPrice, strCurrentTab, config.showHA(), config.showGE(), "HA: ");
+
+		return strCurrentTab;
+	}
+
+	private String getString(long gePrice, String strCurrentTab, boolean b, boolean b2, String s) {
+		if (b && gePrice != 0) {
 			strCurrentTab += " (";
 
-			if (config.showHA())
-			{
-				strCurrentTab += "EX: ";
+			if (b2) {
+				strCurrentTab += s;
 			}
 
-			if (config.showExact())
-			{
+			if (config.showExact()) {
 				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
-			}
-			else
-			{
+			} else {
 				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
 			}
 		}
-
-		if (config.showHA() && haPrice != 0)
-		{
-			strCurrentTab += " (";
-
-			if (config.showGE())
-			{
-				strCurrentTab += "HA: ";
-			}
-
-			if (config.showExact())
-			{
-				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
-			}
-			else
-			{
-				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
-			}
-		}
-
 		return strCurrentTab;
 	}
 
