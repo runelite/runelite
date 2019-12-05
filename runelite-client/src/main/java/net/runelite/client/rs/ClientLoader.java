@@ -26,6 +26,7 @@
  */
 package net.runelite.client.rs;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 import java.applet.Applet;
 import java.io.IOException;
@@ -36,12 +37,20 @@ import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.RuneLiteSplashScreen;
+import okhttp3.HttpUrl;
 
 @Slf4j
 public class ClientLoader implements Supplier<Applet>
 {
+	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
+	private static final String BACKUP_CONFIG_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/jav_config.ws";
+
+	private static final int NUM_ATTEMPTS = 6;
 	private final ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
+
+	private HostSupplier hostSupplier = new HostSupplier();
+	private RSConfig config;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
@@ -67,11 +76,7 @@ public class ClientLoader implements Supplier<Applet>
 	{
 		try
 		{
-			RuneLiteSplashScreen.stage(.2, "Fetching applet viewer config");
-
-			final RSConfig config = ClientConfigLoader.fetch()
-				.retry(50)
-				.blockingGet();
+			downloadConfig();
 
 			switch (updateCheckMode)
 			{
@@ -100,6 +105,55 @@ public class ClientLoader implements Supplier<Applet>
 
 			log.error("Error loading RS!", e);
 			return null;
+		}
+	}
+
+	private void downloadConfig() throws IOException
+	{
+		HttpUrl url = HttpUrl.parse(CONFIG_URL);
+		IOException err = null;
+		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
+		{
+			RuneLiteSplashScreen.stage(.0, "Connecting with gameserver (try " + (attempt + 1) + "/" + NUM_ATTEMPTS + ")");
+			try
+			{
+				config = ClientConfigLoader.fetch(url);
+
+				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
+				{
+					throw new IOException("Invalid or missing jav_config");
+				}
+
+				return;
+			}
+			catch (IOException e)
+			{
+				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+				String host = hostSupplier.get();
+				url = url.newBuilder().host(host).build();
+				err = e;
+			}
+		}
+
+		log.info("Falling back to backup client config");
+
+		try
+		{
+			RSConfig backupConfig = ClientConfigLoader.fetch(HttpUrl.parse(BACKUP_CONFIG_URL));
+
+			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+			{
+				throw new IOException("Invalid or missing jav_config");
+			}
+
+			// Randomize the codebase
+			String codebase = hostSupplier.get();
+			backupConfig.setCodebase("http://" + codebase + "/");
+			config = backupConfig;
+		}
+		catch (IOException ex)
+		{
+			throw err; // use error from Jagex's servers
 		}
 	}
 

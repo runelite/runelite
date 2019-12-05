@@ -40,6 +40,11 @@ class RSConfig
 		return classLoaderProperties.get("codebase");
 	}
 
+	void setCodebase(String codebase)
+	{
+		classLoaderProperties.put("codebase", codebase);
+	}
+
 	String getInitialJar()
 	{
 		return classLoaderProperties.get("initial_jar");
