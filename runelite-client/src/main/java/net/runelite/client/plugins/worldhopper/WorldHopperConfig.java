@@ -124,12 +124,23 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+	
+	@ConfigItem(
+		keyName = "removeBHWorld",
+		name = "Remove Hop-to menu option (BH)",
+		description = "Removes Hop-to menu option for Bounty Hunter worlds",
+		position = 8
+	)
+	default boolean removeBHWorld()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 8
+		position = 9
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
@@ -140,7 +151,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 9
+		position = 10
 	)
 	default boolean displayPing()
 	{
