@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Map;
 
 public enum StealingArtefactState
