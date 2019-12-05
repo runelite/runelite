@@ -355,55 +355,67 @@ public class BankPlugin extends Plugin
 		}
 
 		final String op = matcher.group("op");
-		if (op != null)
-		{
-			long compare;
-			try
-			{
-				compare = QuantityFormatter.parseQuantity(matcher.group("num"));
-			}
-			catch (ParseException e)
-			{
-				return false;
-			}
+        Boolean compare = getaBooleanVar(matcher, value, op);
+        if (compare != null) return compare;
 
-			switch (op)
-			{
-				case ">":
-					return value > compare;
-				case "<":
-					return value < compare;
-				case "=":
-					return value == compare;
-				case ">=":
-					return value >= compare;
-				case "<=":
-					return value <= compare;
-			}
-		}
-
-		final String num1 = matcher.group("num1");
+        final String num1 = matcher.group("num1");
 		final String num2 = matcher.group("num2");
-		if (num1 != null && num2 != null)
-		{
-			long compare1, compare2;
-			try
-			{
-				compare1 = QuantityFormatter.parseQuantity(num1);
-				compare2 = QuantityFormatter.parseQuantity(num2);
-			}
-			catch (ParseException e)
-			{
-				return false;
-			}
+        Boolean compare1 = getaBoolean(value, num1, num2);
+        if (compare1 != null) return compare1;
 
-			return compare1 <= value && compare2 >= value;
-		}
-
-		return false;
+        return false;
 	}
 
-	private Multiset<Integer> getBankItemSet()
+    private Boolean getaBoolean(long value, String num1, String num2) {
+        if (num1 != null && num2 != null)
+        {
+            long compare1, compare2;
+            try
+            {
+                compare1 = QuantityFormatter.parseQuantity(num1);
+                compare2 = QuantityFormatter.parseQuantity(num2);
+            }
+            catch (ParseException e)
+            {
+                return false;
+            }
+
+            return compare1 <= value && compare2 >= value;
+        }
+        return null;
+    }
+
+    private Boolean getaBooleanVar(Matcher matcher, long value, String op) {
+        if (op != null)
+        {
+            long compare;
+            try
+            {
+                compare = QuantityFormatter.parseQuantity(matcher.group("num"));
+            }
+            catch (ParseException e)
+            {
+                return false;
+            }
+
+            switch (op)
+            {
+                case ">":
+                    return value > compare;
+                case "<":
+                    return value < compare;
+                case "=":
+                    return value == compare;
+                case ">=":
+                    return value >= compare;
+                case "<=":
+                    return value <= compare;
+            }
+        }
+        return null;
+    }
+
+    private Multiset<Integer> getBankItemSet()
 	{
 		ItemContainer itemContainer = client.getItemContainer(InventoryID.BANK);
 		if (itemContainer == null)
