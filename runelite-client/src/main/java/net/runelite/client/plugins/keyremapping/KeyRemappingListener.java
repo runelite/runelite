@@ -162,6 +162,21 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					modified.put(e.getKeyCode(), KeyEvent.VK_ESCAPE);
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
+				else if (plugin.getCtrl().matches(e))
+				{
+					modified.put(e.getKeyCode(), KeyEvent.VK_CONTROL);
+					e.setKeyCode(KeyEvent.VK_CONTROL);
+				}
+				else if (plugin.getAlt().matches(e))
+				{
+					modified.put(e.getKeyCode(), KeyEvent.VK_ALT);
+					e.setKeyCode(KeyEvent.VK_ALT);
+				}
+				else if (plugin.getShift().matches(e))
+				{
+					modified.put(e.getKeyCode(), KeyEvent.VK_SHIFT);
+					e.setKeyCode(KeyEvent.VK_SHIFT);
+				}
 			}
 
 			switch (e.getKeyCode())
@@ -292,6 +307,18 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				else if (plugin.getEsc().matches(e))
 				{
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
+				}
+				else if (plugin.getCtrl().matches(e))
+				{
+					e.setKeyCode(KeyEvent.VK_CONTROL);
+				}
+				else if (plugin.getAlt().matches(e))
+				{
+					e.setKeyCode(KeyEvent.VK_ALT);
+				}
+				else if (plugin.getShift().matches(e))
+				{
+					e.setKeyCode(KeyEvent.VK_SHIFT);
 				}
 			}
 		}

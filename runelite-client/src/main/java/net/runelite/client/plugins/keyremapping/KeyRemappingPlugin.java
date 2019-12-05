@@ -122,6 +122,12 @@ public class KeyRemappingPlugin extends Plugin
 	private ModifierlessKeybind f12;
 	@Getter(AccessLevel.PACKAGE)
 	private ModifierlessKeybind esc;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind ctrl;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind alt;
+	@Getter(AccessLevel.PACKAGE)
+	private ModifierlessKeybind shift;
 
 	@Override
 	protected void startUp()
@@ -299,5 +305,8 @@ public class KeyRemappingPlugin extends Plugin
 		this.f11 = config.f11();
 		this.f12 = config.f12();
 		this.esc = config.esc();
+		this.ctrl = config.ctrl();
+		this.alt = config.alt();
+		this.shift = config.shift();
 	}
 }

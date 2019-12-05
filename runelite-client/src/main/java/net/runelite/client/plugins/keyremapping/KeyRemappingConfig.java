@@ -252,4 +252,37 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_ESCAPE, 0);
 	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "ctrl",
+		name = "CTRL",
+		description = "The key which will replace {CTRL}."
+	)
+	default ModifierlessKeybind ctrl()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_CONTROL, 0);
+	}
+	
+	@ConfigItem(
+		position = 21,
+		keyName = "alt",
+		name = "ALT",
+		description = "The key which will replace {ALT}."
+	)
+	default ModifierlessKeybind alt()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_ALT, 0);
+	}
+	
+	@ConfigItem(
+		position = 22,
+		keyName = "shift",
+		name = "SHIFT",
+		description = "The key which will replace {SHIFT}."
+	)
+	default ModifierlessKeybind shift()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_SHIFT, 0);
+	}
 }
