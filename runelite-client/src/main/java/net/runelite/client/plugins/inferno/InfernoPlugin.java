@@ -117,6 +117,7 @@ public class InfernoPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean finalPhase = false;
+	@Getter(AccessLevel.PACKAGE)
 	private NPC zukShield = null;
 	private WorldPoint zukShieldLastPosition = null;
 	private WorldPoint zukShieldBase = null;
@@ -197,6 +198,9 @@ public class InfernoPlugin extends Plugin
 	private boolean ticksOnNpcHealerJad;
 	private boolean ticksOnNpcJad;
 	private boolean ticksOnNpcZuk;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean ticksOnNpcZukShield;
 
 	private boolean safespotsBat;
 	private boolean safespotsBlob;
@@ -1065,6 +1069,7 @@ public class InfernoPlugin extends Plugin
 		this.ticksOnNpcHealerJad = config.ticksOnNpcHealerJad();
 		this.ticksOnNpcJad = config.ticksOnNpcJad();
 		this.ticksOnNpcZuk = config.ticksOnNpcZuk();
+		this.ticksOnNpcZukShield = config.ticksOnNpcZukShield();
 
 		this.safespotsBat = config.safespotsBat();
 		this.safespotsBlob = config.safespotsBlob();

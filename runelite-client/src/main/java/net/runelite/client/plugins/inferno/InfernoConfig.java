@@ -944,6 +944,18 @@ public interface InfernoConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		position = 4,
+		keyName = "ticksOnNpcZukShield",
+		name = "Ticks on Zuk Shield",
+		description = "Draws the amount of ticks before Zuk attacks on the floating shield",
+		section = "ZukSection"
+	)
+	default boolean ticksOnNpcZukShield()
+	{
+		return false;
+	}
+
 	@Getter
 	@AllArgsConstructor
 	enum FontStyle
