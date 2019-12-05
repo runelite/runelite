@@ -28,17 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.NULL_13615;
-import static net.runelite.api.NullObjectID.NULL_13618;
-import static net.runelite.api.NullObjectID.NULL_13620;
-import static net.runelite.api.NullObjectID.NULL_13622;
-import static net.runelite.api.NullObjectID.NULL_13625;
-import static net.runelite.api.NullObjectID.NULL_13627;
-import static net.runelite.api.NullObjectID.NULL_13629;
-import static net.runelite.api.NullObjectID.NULL_13632;
-import static net.runelite.api.NullObjectID.NULL_13634;
-import static net.runelite.api.NullObjectID.NULL_29228;
-import static net.runelite.api.NullObjectID.NULL_29229;
+import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.client.util.ImageUtil;
 
@@ -72,7 +62,7 @@ public enum PohIcons
 	GLORY("glory", AMULET_OF_GLORY),
 	REPAIR("repair", ARMOUR_REPAIR_STAND),
 	SPELLBOOKALTAR("spellbook", ANCIENT_ALTAR, LUNAR_ALTAR, DARK_ALTAR, ALTAR_OF_THE_OCCULT),
-	JEWELLERYBOX("jewellery", BASIC_JEWELLERY_BOX, FANCY_JEWELLERY_BOX, ORNATE_JEWELLERY_BOX),
+	JEWELLERYBOX("jewellery", NULL_29154, NULL_29155, NULL_29156),
 	MAGICTRAVEL("transportation", SPIRIT_TREE_29227, NULL_29228, NULL_29229, OBELISK_31554),
 	PORTALNEXUS("portalnexus",
 		PORTAL_NEXUS, PORTAL_NEXUS_33355, PORTAL_NEXUS_33356, PORTAL_NEXUS_33357, PORTAL_NEXUS_33358, PORTAL_NEXUS_33359, PORTAL_NEXUS_33360,
@@ -85,7 +75,7 @@ public enum PohIcons
 		PORTAL_NEXUS_33403, PORTAL_NEXUS_33404, PORTAL_NEXUS_33405, PORTAL_NEXUS_33406, PORTAL_NEXUS_33407, PORTAL_NEXUS_33408, PORTAL_NEXUS_33409,
 		PORTAL_NEXUS_33410, PORTAL_NEXUS_33423, PORTAL_NEXUS_33424, PORTAL_NEXUS_33425, PORTAL_NEXUS_33426, PORTAL_NEXUS_33427, PORTAL_NEXUS_33428,
 		PORTAL_NEXUS_33429, PORTAL_NEXUS_33430, PORTAL_NEXUS_33431
-		),
+	),
 	XERICSTALISMAN("xericstalisman",
 		XERICS_TALISMAN, XERICS_TALISMAN_33412, XERICS_TALISMAN_33413, XERICS_TALISMAN_33414, XERICS_TALISMAN_33415, XERICS_TALISMAN_33419
 	),
