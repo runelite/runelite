@@ -72,7 +72,7 @@ public class StealingArtefactsPlugin extends Plugin
 	private StealingArtefactState stealingArtefactState;
 
 	@Getter(AccessLevel.PACKAGE)
-	private boolean playerIsInPortPiscariliusRegion;
+	private boolean isInPortPiscariliusRegion;
 
 	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
 
@@ -150,7 +150,7 @@ public class StealingArtefactsPlugin extends Plugin
 		Player player = client.getLocalPlayer();
 		if (player != null)
 		{
-			playerIsInPortPiscariliusRegion = PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
+			isInPortPiscariliusRegion = PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
 		}
 	}
 }
