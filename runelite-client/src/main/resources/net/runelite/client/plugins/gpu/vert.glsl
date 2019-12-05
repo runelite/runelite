@@ -29,6 +29,8 @@
 
 #define FOG_SCENE_EDGE_MIN TILE_SIZE
 #define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
+#define FOG_CORNER_ROUNDING 1.5
+#define FOG_CORNER_ROUNDING_SQUARED FOG_CORNER_ROUNDING * FOG_CORNER_ROUNDING
 
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
@@ -87,7 +89,9 @@ void main()
     int zDist = min(vertex.z - fogSouth, fogNorth - vertex.z);
     float nearestEdgeDistance = min(xDist, zDist);
     float secondNearestEdgeDistance = max(xDist, zDist);
-    float fogDistance = nearestEdgeDistance - 1.5 * TILE_SIZE * clamp((nearestEdgeDistance + 1) / (secondNearestEdgeDistance + 1), 0, 1);
+    float fogDistance = nearestEdgeDistance - FOG_CORNER_ROUNDING * TILE_SIZE *
+        max(0, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) /
+               (secondNearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED));
 
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 }
