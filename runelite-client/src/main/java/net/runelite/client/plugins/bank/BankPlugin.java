@@ -140,6 +140,10 @@ public class BankPlugin extends Plugin
 
 		forceRightClickFlag = false;
 		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuShouldclickHelper(event, menuEntries);
+	}
+
+	private void MenuShouldclickHelper(MenuShouldLeftClick event, MenuEntry[] menuEntries) {
 		for (MenuEntry entry : menuEntries)
 		{
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
