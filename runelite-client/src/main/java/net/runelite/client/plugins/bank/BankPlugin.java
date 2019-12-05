@@ -144,16 +144,20 @@ public class BankPlugin extends Plugin
 	}
 
 	private void MenuShouldclickHelper(MenuShouldLeftClick event, MenuEntry[] menuEntries) {
-		for (MenuEntry entry : menuEntries)
-		{
-			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
-			{
-				event.setForceRightClick(true);
-				return;
-			}
+		for (MenuEntry entry : menuEntries) {
+			if (isMenuClick(event, entry)) return;
 		}
+	}
+
+	private boolean isMenuClick(MenuShouldLeftClick event, MenuEntry entry) {
+		if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
+			|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
+			|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+		{
+			event.setForceRightClick(true);
+			return true;
+		}
+		return false;
 	}
 
 	@Subscribe
