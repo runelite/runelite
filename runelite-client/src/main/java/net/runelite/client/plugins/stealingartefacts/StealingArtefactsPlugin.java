@@ -29,6 +29,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -37,6 +38,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -58,6 +60,9 @@ public class StealingArtefactsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -74,8 +79,19 @@ public class StealingArtefactsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		stealingArtefactState = null;
 		overlayManager.add(overlay);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			clientThread.invoke(() ->
+			{
+				stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
+			});
+		}
+		else
+		{
+			stealingArtefactState = null;
+		}
 	}
 
 	@Override
@@ -131,9 +147,8 @@ public class StealingArtefactsPlugin extends Plugin
 			}
 			else if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
 			{
-					stealingArtefactState = StealingArtefactState.FAILURE;
+				stealingArtefactState = StealingArtefactState.FAILURE;
 			}
 		}
 	}
-
 }
