@@ -26,6 +26,7 @@ package net.runelite.client.plugins.blastfurnace;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
@@ -64,9 +65,9 @@ public enum BarsOres
 		VARBIT = builder.build();
 	}
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Varbits varbit;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int itemID;
 
 	BarsOres(Varbits varbit, int itemID)

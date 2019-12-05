@@ -9,72 +9,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fq")
 @Implements("NetSocket")
 public final class NetSocket extends AbstractSocket implements Runnable {
-	@ObfuscatedName("gv")
-	@ObfuscatedSignature(
-		signature = "[Llw;"
-	)
-	@Export("scrollBarSprites")
-	static IndexedSprite[] scrollBarSprites;
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@Export("inputStream")
 	InputStream inputStream;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@Export("outputStream")
 	OutputStream outputStream;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@Export("socket")
 	Socket socket;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@Export("isClosed")
 	boolean isClosed;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lff;"
+		signature = "Lfu;"
 	)
 	@Export("taskHandler")
 	TaskHandler taskHandler;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lfw;"
+		signature = "Lfo;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@Export("outBuffer")
 	byte[] outBuffer;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1560599267
+		intValue = -802191953
 	)
 	@Export("outLength")
 	int outLength;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -1803415659
+		intValue = -2034803765
 	)
 	@Export("outOffset")
 	int outOffset;
-	@ObfuscatedName("d")
+	@ObfuscatedName("i")
 	@Export("exceptionWriting")
 	boolean exceptionWriting;
-	@ObfuscatedName("m")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1815160735
+		intValue = 1614956345
 	)
 	@Export("bufferLength")
 	final int bufferLength;
-	@ObfuscatedName("p")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 123096351
+		intValue = 881888213
 	)
 	@Export("maxPacketLength")
 	final int maxPacketLength;
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/Socket;Lff;I)V"
+		signature = "(Ljava/net/Socket;Lfu;I)V"
 	)
 	public NetSocket(Socket var1, TaskHandler var2, int var3) throws IOException {
 		this.isClosed = false;
@@ -93,10 +87,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		this.outputStream = this.socket.getOutputStream();
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1632517280"
+		signature = "(B)V",
+		garbageValue = "-29"
 	)
 	@Export("close")
 	public void close() {
@@ -108,7 +102,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
 			if (this.task != null) {
 				while (this.task.status == 0) {
-					ClanChat.method5367(1L);
+					try {
+						Thread.sleep(1L);
+					} catch (InterruptedException var4) {
+					}
 				}
 
 				if (this.task.status == 1) {
@@ -123,30 +120,30 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "0"
+		garbageValue = "27"
 	)
 	@Export("readUnsignedByte")
 	public int readUnsignedByte() throws IOException {
 		return this.isClosed ? 0 : this.inputStream.read();
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "-1"
+		garbageValue = "-53"
 	)
 	@Export("available")
 	public int available() throws IOException {
 		return this.isClosed ? 0 : this.inputStream.available();
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "1174929907"
+		garbageValue = "-1591428004"
 	)
 	@Export("isAvailable")
 	public boolean isAvailable(int var1) throws IOException {
@@ -157,10 +154,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "([BIII)I",
-		garbageValue = "1681485484"
+		signature = "([BIIB)I",
+		garbageValue = "29"
 	)
 	@Export("read")
 	public int read(byte[] var1, int var2, int var3) throws IOException {
@@ -182,10 +179,10 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "-340790701"
+		signature = "([BIIB)V",
+		garbageValue = "118"
 	)
 	@Export("write0")
 	void write0(byte[] var1, int var2, int var3) throws IOException {
@@ -217,14 +214,18 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
 		signature = "([BIII)V",
-		garbageValue = "1989353375"
+		garbageValue = "-543253817"
 	)
 	@Export("write")
 	public void write(byte[] var1, int var2, int var3) throws IOException {
 		this.write0(var1, var2, var3);
+	}
+
+	protected void finalize() {
+		this.close();
 	}
 
 	public void run() {
@@ -234,7 +235,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 					int var1;
 					int var2;
 					synchronized(this) {
-						if (this.outOffset == this.outLength) {
+						if (this.outLength == this.outOffset) {
 							if (this.isClosed) {
 								break label84;
 							}
@@ -266,7 +267,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 					this.outLength = (var1 + this.outLength) % this.bufferLength;
 
 					try {
-						if (this.outLength == this.outOffset) {
+						if (this.outOffset == this.outLength) {
 							this.outputStream.flush();
 						}
 					} catch (IOException var8) {
@@ -294,12 +295,8 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 				break;
 			}
 		} catch (Exception var12) {
-			User.RunException_sendStackTrace((String)null, var12);
+			Calendar.RunException_sendStackTrace((String)null, var12);
 		}
 
-	}
-
-	protected void finalize() {
-		this.close();
 	}
 }

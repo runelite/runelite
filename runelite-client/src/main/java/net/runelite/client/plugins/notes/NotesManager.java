@@ -31,6 +31,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import joptsimple.internal.Strings;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
@@ -40,7 +41,7 @@ import net.runelite.client.plugins.notes.events.PageDeleted;
 
 @Singleton
 @Slf4j
-public class NotesManager
+class NotesManager
 {
 	@Inject
 	private ConfigManager configManager;
@@ -51,7 +52,7 @@ public class NotesManager
 	@Inject
 	private EventBus eventBus;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private List<String> notes = new ArrayList<>();
 
 	void loadNotes()
@@ -62,9 +63,7 @@ public class NotesManager
 		if (!Strings.isNullOrEmpty(configJson))
 		{
 			final Gson gson = new Gson();
-			notes = gson.fromJson(configJson, new TypeToken<ArrayList<String>>()
-			{
-			}.getType());
+			notes = gson.fromJson(configJson, new TypeToken<ArrayList<String>>() {}.getType());
 		}
 
 		if (notes == null)
@@ -93,7 +92,7 @@ public class NotesManager
 		save();
 	}
 
-	void save()
+	private void save()
 	{
 		final Gson gson = new Gson();
 		final String json = gson.toJson(notes);

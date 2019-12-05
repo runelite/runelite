@@ -36,7 +36,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.attackstyles.WeaponType;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +43,7 @@ import static org.mockito.Mockito.when;
 public enum MeleeMaxHitConfig implements MaxHitConfig
 {
 
-	DRAGON_SCIMITAR(new int[] {75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
+	DRAGON_SCIMITAR(new int[]{75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
 		{
 			mockItem(ItemID.IRON_FULL_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -58,9 +57,9 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {17, 19, 22}),
+		}, new int[]{17, 19, 22}),
 
-	DRAGON_SCIMITAR_DEFENDER(new int[] {75, 83, 99}, 76, WeaponType.TYPE_9, 1, new Item[]
+	DRAGON_SCIMITAR_DEFENDER(new int[]{75, 83, 99}, 76, WeaponType.TYPE_9, 1, new Item[]
 		{
 			mockItem(ItemID.IRON_FULL_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -74,9 +73,9 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {19, 21, 24}),
+		}, new int[]{19, 21, 24}),
 
-	DRAGON_SCIMITAR_COMPLETE(new int[] {75, 83, 99}, 108, WeaponType.TYPE_9, 1, new Item[]
+	DRAGON_SCIMITAR_COMPLETE(new int[]{75, 83, 99}, 108, WeaponType.TYPE_9, 1, new Item[]
 		{
 			mockItem(ItemID.SLAYER_HELMET),
 			mockItem(ItemID.FIRE_CAPE),
@@ -90,9 +89,9 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.BARROWS_GLOVES),
 			mockItem(ItemID.DRAGON_BOOTS),
 			mockItem(ItemID.BERSERKER_RING)
-		}, new int[] {26, 29, 35}),
+		}, new int[]{26, 29, 35}),
 
-	OBSIDIAN_SET(new int[] {75, 83, 99}, 61, WeaponType.TYPE_17, 2, new Item[]
+	OBSIDIAN_SET(new int[]{75, 83, 99}, 61, WeaponType.TYPE_17, 2, new Item[]
 		{
 			mockItem(ItemID.OBSIDIAN_HELMET),
 			mockItem(ItemID.OBSIDIAN_CAPE),
@@ -106,10 +105,10 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {18, 19, 23}),
+		}, new int[]{18, 19, 23}),
 
-	DHAROK_SET(new int[] {75, 75, 75, 83, 83, 83, 99, 99, 99}, 105, WeaponType.TYPE_1, 1,
-		new int[][] {{99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}},
+	DHAROK_SET(new int[]{75, 75, 75, 83, 83, 83, 99, 99, 99}, 105, WeaponType.TYPE_1, 1,
+		new int[][]{{99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}},
 		new Item[]
 			{
 				mockItem(ItemID.DHAROKS_HELM_100),
@@ -124,9 +123,9 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 				mockItem(ItemID.LEATHER_GLOVES),
 				mockItem(ItemID.LEATHER_BOOTS),
 				mockItem(ItemID.GOLD_RING)
-			}, new int[] {23, 45, 30, 25, 49, 33, 29, 57, 38}),
+			}, new int[]{23, 45, 30, 25, 49, 33, 29, 57, 38}),
 
-	VOID_SET(new int[] {75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
+	VOID_SET(new int[]{75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
 		{
 			mockItem(ItemID.VOID_MELEE_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -140,7 +139,7 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.VOID_KNIGHT_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {19, 21, 25}),
+		}, new int[]{19, 21, 25}),
 	;
 
 

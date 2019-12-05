@@ -41,7 +41,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
@@ -68,16 +68,19 @@ public class TickTimersPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private TimersOverlay timersOverlay;
+
 	@Inject
 	private TickTimersConfig config;
+
 	@Inject
 	private NPCManager npcManager;
-	@Inject
-	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Set<NPCContainer> npcContainer = new HashSet<>();
 	private boolean validRegion;
@@ -107,28 +110,18 @@ public class TickTimersPlugin extends Plugin
 	public void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 		npcContainer.clear();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
 		npcContainer.clear();
 		overlayManager.remove(timersOverlay);
 		validRegion = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
@@ -149,6 +142,7 @@ public class TickTimersPlugin extends Plugin
 		npcContainer.clear();
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!validRegion)
@@ -192,6 +186,7 @@ public class TickTimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!validRegion)
@@ -227,6 +222,7 @@ public class TickTimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onGameTick(GameTick Event)
 	{
 		if (!validRegion)
@@ -263,6 +259,7 @@ public class TickTimersPlugin extends Plugin
 		);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"TickTimers".equals(event.getGroup()))

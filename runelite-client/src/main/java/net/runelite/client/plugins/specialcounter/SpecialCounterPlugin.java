@@ -42,14 +42,16 @@ import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -72,6 +74,7 @@ public class SpecialCounterPlugin extends Plugin
 	private int currentWorld = -1;
 	private int specialPercentage = -1;
 	private int specialHitpointsExperience = -1;
+	private int specialHitpointsGained = -1;
 	private boolean specialUsed;
 	private double modifier = 1d;
 
@@ -97,13 +100,9 @@ public class SpecialCounterPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 	}
@@ -111,21 +110,11 @@ public class SpecialCounterPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		removeCounters();
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(SpecialCounterUpdate.class, this, this::onSpecialCounterUpdate);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -142,6 +131,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
@@ -159,8 +149,28 @@ public class SpecialCounterPlugin extends Plugin
 
 		specialUsed = true;
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
+		specialHitpointsGained = -1;
 	}
 
+	@Subscribe
+	private void onStatChanged(StatChanged statChanged)
+	{
+		if (specialUsed && statChanged.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = statChanged.getXp() - specialHitpointsExperience;
+		}
+	}
+
+	@Subscribe
+	private void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (specialUsed && fakeXpDrop.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = fakeXpDrop.getXp();
+		}
+	}
+
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -169,13 +179,11 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		int interactingId = checkInteracting();
-
-		if (interactingId > -1 && specialHitpointsExperience != -1 && specialUsed)
+		if (interactingId > -1 && specialUsed)
 		{
+			int deltaExperience = specialHitpointsGained;
+
 			specialUsed = false;
-			int hpXp = client.getSkillExperience(Skill.HITPOINTS);
-			int deltaExperience = hpXp - specialHitpointsExperience;
-			specialHitpointsExperience = -1;
 
 			if (deltaExperience > 0 && specialWeapon != null)
 			{
@@ -292,6 +300,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC actor = npcDespawned.getNpc();
@@ -302,6 +311,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))

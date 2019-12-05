@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2019 Abex
- * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +24,10 @@
  */
 package net.runelite.client.rs;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -36,39 +37,44 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
-import net.runelite.http.api.worlds.WorldResult;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
-class HostSupplier implements Supplier<HttpUrl>
+class HostSupplier implements Supplier<String>
 {
-	private final Random random = new Random();
-	private Queue<HttpUrl> hosts = new ArrayDeque<>();
+	private final Random random = new Random(System.nanoTime());
+	private Queue<String> hosts = new ArrayDeque<>();
 
 	@Override
-	public HttpUrl get()
+	public String get()
 	{
 		if (!hosts.isEmpty())
 		{
 			return hosts.poll();
 		}
 
-		List<HttpUrl> newHosts = new  WorldClient(RuneLiteAPI.CLIENT)
-			.lookupWorlds()
-			.map(WorldResult::getWorlds)
-			.blockingSingle()
-			.stream()
-			.map(World::getAddress)
-			.map(HttpUrl::parse)
-			.collect(Collectors.toList());
+		try
+		{
+			List<String> newHosts = new WorldClient(RuneLiteAPI.CLIENT)
+				.lookupWorlds()
+				.getWorlds()
+				.stream()
+				.filter(w -> w.getTypes().isEmpty() || EnumSet.of(WorldType.MEMBERS).equals(w.getTypes()))
+				.map(World::getAddress)
+				.collect(Collectors.toList());
 
-		Collections.shuffle(newHosts, random);
+			Collections.shuffle(newHosts, random);
 
-		hosts.addAll(newHosts.subList(0, 16));
+			hosts.addAll(newHosts.subList(0, 16));
+		}
+		catch (IOException e)
+		{
+			log.warn("Unable to retrieve world list", e);
+		}
 
 		while (hosts.size() < 2)
 		{
-			hosts.add(HttpUrl.parse("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM"));
+			hosts.add("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM");
 		}
 
 		return hosts.poll();

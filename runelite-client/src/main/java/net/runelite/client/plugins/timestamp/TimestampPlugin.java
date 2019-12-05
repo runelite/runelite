@@ -34,14 +34,15 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
@@ -61,10 +62,7 @@ public class TimestampPlugin extends Plugin
 	@Inject
 	private TimestampConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private SimpleDateFormat formatter;
 
 	@Provides
@@ -74,22 +72,19 @@ public class TimestampPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 
 		updateFormatter();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		formatter = null;
 	}
 
+	@Subscribe
 	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("timestamp") && event.getKey().equals("format"))
@@ -98,6 +93,7 @@ public class TimestampPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("addTimestamp"))

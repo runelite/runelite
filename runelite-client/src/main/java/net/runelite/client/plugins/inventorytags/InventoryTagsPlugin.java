@@ -39,7 +39,7 @@ import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
@@ -106,9 +106,6 @@ public class InventoryTagsPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private boolean editorMode;
 
 	private InventoryTagsConfig.amount amount;
@@ -149,33 +146,23 @@ public class InventoryTagsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		refreshInventoryMenuOptions();
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		removeInventoryMenuOptions();
 		overlayManager.remove(overlay);
 		editorMode = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
-	}
-
+	@Subscribe
 	private void onWidgetMenuOptionClicked(final WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
@@ -187,6 +174,7 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		if (event.getMenuOpcode() != MenuOpcode.RUNELITE)
@@ -206,6 +194,7 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOpened(final MenuOpened event)
 	{
 		final MenuEntry firstEntry = event.getFirstEntry();
@@ -305,6 +294,7 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("inventorytags"))

@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -37,7 +38,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final ImmutableMap<WorldPoint, String> CLUES = new ImmutableMap.Builder<WorldPoint, String>()
@@ -127,7 +128,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3058, 3884, 0), "Wilderness. Near runite ore north of Lava Maze.")
 		.put(new WorldPoint(3290, 3889, 0), "Wilderness. Demonic Ruins.")
 		.put(new WorldPoint(3770, 3897, 0), "Small Island north of Fossil Island.")
-		.put(new WorldPoint(2505, 3899, 0), "Small Island north-east of Miscellania (AJS).")
+		.put(new WorldPoint(2505, 3899, 0), "Small Island north-west of Miscellania (AJS).")
 		.put(new WorldPoint(3285, 3942, 0), "Wilderness. Rogues' Castle.")
 		.put(new WorldPoint(3159, 3959, 0), "Wilderness. North of Deserted Keep, west of Resource Area.")
 		.put(new WorldPoint(3039, 3960, 0), "Wilderness. Pirates' Hideout.")
@@ -206,7 +207,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	@Nullable
 	private final WorldPoint mirrorLocation;
 
-	public CoordinateClue(String text, WorldPoint location, WorldPoint mirrorLocation)
+	public CoordinateClue(String text, WorldPoint location, @Nullable WorldPoint mirrorLocation)
 	{
 		this.text = text;
 		this.location = location;

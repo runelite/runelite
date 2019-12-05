@@ -47,7 +47,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -84,9 +84,6 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private int favor = 0, coffer = 0;
 
@@ -102,33 +99,25 @@ public class KingdomPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		removeKingdomInfobox();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-	}
-
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		updateKingdomVarbits();
 		processInfobox();
 	}
 
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 
@@ -144,6 +133,7 @@ public class KingdomPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("kingdomofmiscellania"))

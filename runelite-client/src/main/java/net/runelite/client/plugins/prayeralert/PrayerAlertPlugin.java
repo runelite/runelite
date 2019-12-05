@@ -22,7 +22,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,9 +48,6 @@ public class PrayerAlertPlugin extends Plugin
 	@Inject
 	private PrayerAlertConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean alwaysShowAlert;
 	@Getter(AccessLevel.PACKAGE)
@@ -63,24 +60,21 @@ public class PrayerAlertPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.alwaysShowAlert = config.alwaysShowAlert();
 		this.oldRenderMode = config.oldRenderMode();
-
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("prayeralert"))

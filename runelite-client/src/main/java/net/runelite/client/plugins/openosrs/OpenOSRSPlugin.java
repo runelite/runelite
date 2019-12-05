@@ -40,7 +40,7 @@ import static net.runelite.api.widgets.WidgetInfo.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.OpenOSRSConfig;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -74,10 +74,7 @@ public class OpenOSRSPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private EventBus eventbus;
-
-	private HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
 		@Override
 		public void hotkeyPressed()
@@ -94,9 +91,8 @@ public class OpenOSRSPlugin extends Plugin
 	private Keybind keybind;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		entered = -1;
 		enterIdx = 0;
@@ -106,10 +102,8 @@ public class OpenOSRSPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventbus.unregister(this);
-
 		entered = 0;
 		enterIdx = 0;
 		expectInput = false;
@@ -117,6 +111,7 @@ public class OpenOSRSPlugin extends Plugin
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("openosrs"))
@@ -145,12 +140,7 @@ public class OpenOSRSPlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventbus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		if (!config.keyboardPin())

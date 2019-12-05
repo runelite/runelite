@@ -44,6 +44,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
 	name = "Crystal Math Labs",
@@ -71,7 +72,7 @@ public class CrystalMathLabs extends Plugin
 	private long lastXp;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		fetchXp = true;
 
@@ -80,7 +81,7 @@ public class CrystalMathLabs extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		eventBus.unregister(this);
 	}
@@ -146,13 +147,13 @@ public class CrystalMathLabs extends Plugin
 		httpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
-			public void onFailure(Call call, IOException e)
+			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
 				log.warn("Error submitting CML update, caused by {}.", e.getMessage());
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(@NotNull Call call, @NotNull Response response)
 			{
 				response.close();
 			}

@@ -56,6 +56,7 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
@@ -86,27 +87,35 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, HiscoreResult> resultCache = new HashMap<>();
 	private final ExecutorService executorService = Executors.newFixedThreadPool(100);
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private OverlayManager overlayManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsConfig config;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private Client client;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private ClanManager clanManager;
+
 	@Inject
 	@Getter(AccessLevel.NONE)
 	private EventBus eventBus;
+
 	private ClanMemberRank callerRank;
 	private PlayerIndicatorsPlugin.AgilityFormats agilityFormat;
 	private PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation;
@@ -136,10 +145,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 		resultCache.clear();
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
@@ -147,24 +155,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 		resultCache.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ClanMemberJoined.class, this, this::onClanMemberJoined);
-		eventBus.subscribe(ClanMemberLeft.class, this, this::onClanMemberLeft);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(InteractingChanged.class, this, this::onInteractingChanged);
-		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
-	}
-
+	@Subscribe
 	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (!this.highlightCallerTargets || event.getSource() == null || callers.isEmpty() || !isCaller(event.getSource()))
@@ -194,6 +192,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		callerPiles.put(caller.getName(), event.getTarget());
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("playerindicators"))
@@ -204,16 +203,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 		updateConfig();
 	}
 
+	@Subscribe
 	private void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
 	}
 
+	@Subscribe
 	private void onClanMemberLeft(ClanMemberLeft event)
 	{
 		getCallerList();
 	}
 
+	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player player = event.getPlayer();
@@ -251,6 +253,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		});
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getOpcode();

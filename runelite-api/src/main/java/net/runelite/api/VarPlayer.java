@@ -273,9 +273,12 @@ public enum VarPlayer
 	QUEST_ENTER_THE_ABYSS(492),
 	QUEST_ALFRED_GRIMHANDS_BARCRAWL(77),
 	QUEST_ALFRED_GRIMHANDS_BARCRAWL_STATE_76(76),
-	QUEST_THE_MAGE_ARENA(267);
+	QUEST_THE_MAGE_ARENA(267),
 
-
+	/**
+	 * 0 = 2 buttons, 1 = 1 button
+	 */
+	MOUSE_BUTTONS(170);
 
 	public final int id;
 }

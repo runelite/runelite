@@ -45,9 +45,9 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.util.Text;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.api.util.Text;
 
 @Singleton
 public class ClanManager

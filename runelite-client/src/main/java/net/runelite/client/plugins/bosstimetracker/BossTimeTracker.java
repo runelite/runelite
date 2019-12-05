@@ -24,20 +24,19 @@
  */
 package net.runelite.client.plugins.bosstimetracker;
 
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-
-import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 public class BossTimeTracker extends InfoBox
 {
 	private final Instant startTime;
 	private LocalTime time;
-	private Instant lastTime;
+	private final Instant lastTime;
 
 	public BossTimeTracker(BufferedImage image, BossTimeTrackerPlugin plugin, Instant startTime, Instant lastTime)
 	{
@@ -81,10 +80,7 @@ public class BossTimeTracker extends InfoBox
 	@Override
 	public String getTooltip()
 	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("Elapsed time: ");
-		builder.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-		return builder.toString();
+		return "Elapsed time: " +
+			time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }

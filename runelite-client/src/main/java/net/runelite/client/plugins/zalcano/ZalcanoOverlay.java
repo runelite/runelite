@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.util.List;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -40,8 +41,6 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-
-import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -71,7 +70,6 @@ public class ZalcanoOverlay extends Overlay
 	private final ZalcanoConfig config;
 	private final ZalcanoUtil util;
 	private final Client client;
-
 
 	@Inject
 	ZalcanoOverlay(final ZalcanoPlugin plugin, final ZalcanoConfig config, final ZalcanoUtil util, final Client client)
@@ -166,7 +164,7 @@ public class ZalcanoOverlay extends Overlay
 			{
 				final Color green = new Color(140, 255, 60);
 				OverlayUtil.renderPolygon(graphics, poly, !util.projectileExists() ? green : Color.RED);
-				OverlayUtil.renderTextLocation(graphics, glowingRock.getCanvasLocation(), !util.projectileExists() ? util.mine : util.warning, !util.projectileExists() ? green : Color.RED);
+				OverlayUtil.renderTextLocation(graphics, glowingRock.getCanvasLocation(), !util.projectileExists() ? ZalcanoUtil.mine : ZalcanoUtil.warning, !util.projectileExists() ? green : Color.RED);
 			}
 		}
 	}
@@ -221,7 +219,7 @@ public class ZalcanoOverlay extends Overlay
 
 	private void renderZalcanoMineable(Graphics2D graphics)
 	{
-		renderZalcanoAOE(graphics, 4, util.mine, Color.GREEN);
+		renderZalcanoAOE(graphics, 4, ZalcanoUtil.mine, Color.GREEN);
 	}
 
 	private void renderZalcanoWakeup(Graphics2D graphics)

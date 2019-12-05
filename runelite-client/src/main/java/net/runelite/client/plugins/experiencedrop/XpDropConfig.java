@@ -36,7 +36,7 @@ public interface XpDropConfig extends Config
 	{
 		NONE,
 		ABOVE_OPPONENT,
-		IN_XP_DROP;
+		IN_XP_DROP
 	}
 
 	@ConfigItem(

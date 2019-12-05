@@ -39,7 +39,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
@@ -81,9 +81,6 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private SkillCalculatorConfig skillCalculatorConfig;
 
-	@Inject
-	private EventBus eventBus;
-
 	private NavigationButton uiNavigationButton;
 	private NavigationButton bankedUiNavigationButton;
 
@@ -97,9 +94,8 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
 		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
@@ -117,9 +113,8 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		clientToolbar.removeNavigation(uiNavigationButton);
 		if (bankedUiNavigationButton != null)
 		{
@@ -127,12 +122,7 @@ public class SkillCalculatorPlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("skillCalculator") && event.getKey().equals("enabledBankedXp"))
@@ -141,6 +131,7 @@ public class SkillCalculatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!event.getEventName().equals("setBankTitle") || !skillCalculatorConfig.showBankedXp())

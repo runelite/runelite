@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
@@ -42,12 +41,6 @@ public abstract class TabContentPanel extends JPanel
 	public abstract int getUpdateInterval();
 
 	public abstract void update();
-
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return super.getPreferredSize();
-	}
 
 	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
 	{

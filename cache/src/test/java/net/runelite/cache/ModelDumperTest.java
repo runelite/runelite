@@ -25,7 +25,6 @@
 
 package net.runelite.cache;
 
-
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;

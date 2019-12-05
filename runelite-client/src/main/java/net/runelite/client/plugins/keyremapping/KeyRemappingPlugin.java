@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -44,7 +43,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ModifierlessKeybind;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -79,9 +78,6 @@ public class KeyRemappingPlugin extends Plugin
 
 	@Inject
 	private KeyRemappingListener inputListener;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -128,10 +124,9 @@ public class KeyRemappingPlugin extends Plugin
 	private ModifierlessKeybind esc;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
@@ -148,10 +143,8 @@ public class KeyRemappingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
@@ -161,12 +154,6 @@ public class KeyRemappingPlugin extends Plugin
 		});
 
 		keyManager.unregisterKeyListener(inputListener);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
 	}
 
 	@Provides
@@ -209,6 +196,7 @@ public class KeyRemappingPlugin extends Plugin
 		return w == null || w.isSelfHidden();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("keyremapping"))
@@ -223,12 +211,13 @@ public class KeyRemappingPlugin extends Plugin
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				if (chatboxInput != null && chatboxInput.getText().endsWith(PRESS_ENTER_TO_CHAT))
 				{
-					chatboxInput.setText(getWaitingText());
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 			}
 		);
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())
@@ -237,7 +226,7 @@ public class KeyRemappingPlugin extends Plugin
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				if (chatboxInput != null && chatboxFocused() && !typing)
 				{
-					chatboxInput.setText(getWaitingText());
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
 			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
@@ -256,7 +245,7 @@ public class KeyRemappingPlugin extends Plugin
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 		if (chatboxInput != null)
 		{
-			chatboxInput.setText(getWaitingText());
+			setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 		}
 	}
 
@@ -267,39 +256,24 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 			final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-			chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+			setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 		}
 	}
 
-	private String getPlayerNameWithIcon()
-	{
-		IconID icon;
-		switch (client.getAccountType())
-		{
-			case IRONMAN:
-				icon = IconID.IRONMAN;
-				break;
-			case ULTIMATE_IRONMAN:
-				icon = IconID.ULTIMATE_IRONMAN;
-				break;
-			case HARDCORE_IRONMAN:
-				icon = IconID.HARDCORE_IRONMAN;
-				break;
-			default:
-				return client.getLocalPlayer().getName();
-		}
-		return icon + client.getLocalPlayer().getName();
-	}
-
-	private String getWaitingText()
+	private void setChatboxWidgetInput(Widget widget, String input)
 	{
 		if (this.hideDisplayName)
 		{
-			return PRESS_ENTER_TO_CHAT;
+			widget.setText(input);
+			return;
 		}
-		else
+
+		String text = widget.getText();
+		int idx = text.indexOf(':');
+		if (idx != -1)
 		{
-			return getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT;
+			String newText = text.substring(0, idx) + ": " + input;
+			widget.setText(newText);
 		}
 	}
 

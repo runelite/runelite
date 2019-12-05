@@ -47,7 +47,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -58,7 +57,8 @@ import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -97,9 +97,6 @@ public class ItemStatPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private EventBus eventBus;
 
 	private Widget itemInformationTitle;
 
@@ -140,30 +137,20 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		clientThread.invokeLater(this::resetGEInventory);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getKey().equals("geStats"))
@@ -173,6 +160,7 @@ public class ItemStatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && this.geStats
@@ -184,6 +172,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (client.getVar(VarPlayer.CURRENT_GE_ITEM) == -1 && this.geStats)
@@ -192,6 +181,7 @@ public class ItemStatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (event.getEventName().equals("geBuilt") && this.geStats)

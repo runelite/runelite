@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableList;
+import java.awt.Color;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -35,38 +36,36 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageBuilder;
 
-import java.awt.Color;
-
 @Data
 public class Wave
 {
 	@Getter(AccessLevel.NONE)
 	private static final ImmutableList<WidgetInfo> WIDGETS = ImmutableList.of(
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
-			WidgetInfo.BA_RUNNERS_PASSED,
-			WidgetInfo.BA_EGGS_COLLECTED,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED,
-			WidgetInfo.BA_WRONG_POISON_PACKS,
-			WidgetInfo.BA_HONOUR_POINTS_REWARD
+		WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
+		WidgetInfo.BA_RUNNERS_PASSED,
+		WidgetInfo.BA_EGGS_COLLECTED,
+		WidgetInfo.BA_HITPOINTS_REPLENISHED,
+		WidgetInfo.BA_WRONG_POISON_PACKS,
+		WidgetInfo.BA_HONOUR_POINTS_REWARD
 	);
 
 	@Getter(AccessLevel.NONE)
 	private static final ImmutableList<WidgetInfo> POINTSWIDGETS = ImmutableList.of(
-			//Base
-			WidgetInfo.BA_BASE_POINTS,
-			//Attacker
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
-			WidgetInfo.BA_RANGERS_KILLED,
-			WidgetInfo.BA_FIGHTERS_KILLED,
-			//Defender
-			WidgetInfo.BA_RUNNERS_PASSED_POINTS,
-			WidgetInfo.BA_RUNNERS_KILLED,
-			//Collector
-			WidgetInfo.BA_EGGS_COLLECTED_POINTS,
-			//Healer
-			WidgetInfo.BA_HEALERS_KILLED,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
-			WidgetInfo.BA_WRONG_POISON_PACKS_POINTS
+		//Base
+		WidgetInfo.BA_BASE_POINTS,
+		//Attacker
+		WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
+		WidgetInfo.BA_RANGERS_KILLED,
+		WidgetInfo.BA_FIGHTERS_KILLED,
+		//Defender
+		WidgetInfo.BA_RUNNERS_PASSED_POINTS,
+		WidgetInfo.BA_RUNNERS_KILLED,
+		//Collector
+		WidgetInfo.BA_EGGS_COLLECTED_POINTS,
+		//Healer
+		WidgetInfo.BA_HEALERS_KILLED,
+		WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
+		WidgetInfo.BA_WRONG_POISON_PACKS_POINTS
 	);
 
 	@Getter(AccessLevel.NONE)

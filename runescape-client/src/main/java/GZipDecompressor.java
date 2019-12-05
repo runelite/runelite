@@ -1,17 +1,13 @@
-import java.security.SecureRandom;
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lj")
+@ObfuscatedName("lk")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-	@ObfuscatedName("eo")
-	@Export("secureRandom")
-	static SecureRandom secureRandom;
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@Export("inflater")
 	Inflater inflater;
 
@@ -26,10 +22,10 @@ public class GZipDecompressor {
 		this(-1, 1000000, 1000000);
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lkc;[BI)V",
-		garbageValue = "924316150"
+		signature = "(Lkg;[BI)V",
+		garbageValue = "1447004496"
 	)
 	@Export("decompress")
 	public void decompress(Buffer var1, byte[] var2) {

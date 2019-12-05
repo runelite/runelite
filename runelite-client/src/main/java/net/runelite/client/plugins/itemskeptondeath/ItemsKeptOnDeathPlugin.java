@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.game.ItemReclaimCost;
@@ -81,7 +82,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+).*");
 
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@VisibleForTesting
 	static class DeathItems
 	{
@@ -116,9 +117,6 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private WidgetButton deepWildyButton;
 	private WidgetButton lowWildyButton;
 
@@ -129,18 +127,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	int wildyLevel;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (event.getEventName().equals("itemsKeptOnDeath"))
@@ -353,12 +340,16 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 
 			// Items are kept if:
 			// 1) is not tradeable
-			// 2) is under the deep wilderness line
-			// 3) is outside of the wilderness, or item has a broken form
+			// 2) Outside the wilderness: All are kept excluding `Pets` & `LostIfNotProtected`. (`AlwaysLostItem` are handled above)
+			// 3) In low level wilderness: (<=20) only `LockedItem`s and `BrokenOnDeathItem`s are kept
+			// 4) In deep level wilderness: (>=21) only `LockedItem`s are kept
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
-				&& !isTradeable(itemManager.getItemDefinition(id)) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || ItemReclaimCost.of(id) != null))
+				&& !isTradeable(itemManager.getItemDefinition(id))
+				&& (wildyLevel <= 0
+				|| LockedItem.getBaseIdFromLockedId(id) != null
+				|| (wildyLevel <= DEEP_WILDY && ItemReclaimCost.of(id) != null))
+			)
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}
@@ -437,15 +428,31 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	@VisibleForTesting
 	int getDeathPrice(Item item)
 	{
+		return getDeathPriceById(item.getId());
+	}
+
+	/**
+	 * Get the price of an item by its id
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	private int getDeathPriceById(final int itemId)
+	{
 		// 1) Check if the death price is dynamically calculated, if so return that value
 		// 2) If death price is based off another item default to that price, otherwise apply normal ItemMapping GE price
 		// 3) If still no price, default to store price
 		// 4) Apply fixed price offset if applicable
-
-		int itemId = item.getId();
 		// Unnote/unplaceholder item
 		int canonicalizedItemId = itemManager.canonicalize(itemId);
 		int exchangePrice = 0;
+
+
+		final Integer lockedBase = LockedItem.getBaseIdFromLockedId(canonicalizedItemId);
+		if (lockedBase != null)
+		{
+			return getDeathPriceById(lockedBase);
+		}
 
 		final DynamicPriceItem dynamicPrice = DynamicPriceItem.find(canonicalizedItemId);
 		if (dynamicPrice != null)

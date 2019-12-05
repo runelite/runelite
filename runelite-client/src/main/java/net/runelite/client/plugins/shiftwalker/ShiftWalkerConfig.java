@@ -40,7 +40,7 @@ public interface ShiftWalkerConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "shiftLoot",
 		name = "Shift to Loot",

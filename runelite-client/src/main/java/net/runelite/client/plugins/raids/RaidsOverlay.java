@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -164,6 +165,7 @@ public class RaidsOverlay extends Overlay
 		boolean vanguards = false;
 		boolean unknownCombat = false;
 		String puzzles = "";
+		String roomName;
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -178,20 +180,36 @@ public class RaidsOverlay extends Overlay
 			{
 				case COMBAT:
 					combatCount++;
-
-					vanguards = room == RaidRoom.VANGUARDS;
-					unknownCombat = room == RaidRoom.UNKNOWN_COMBAT;
+					roomName = room.getBoss().getName();
+					switch (Objects.requireNonNull(RaidRoom.Boss.fromString(roomName)))
+					{
+						case VANGUARDS:
+							vanguards = true;
+							break;
+						case UNKNOWN:
+							unknownCombat = true;
+							break;
+					}
 					break;
 				case PUZZLE:
-					crabs = room == RaidRoom.CRABS;
-					iceDemon = room == RaidRoom.ICE_DEMON;
-					thieving = room == RaidRoom.THIEVING;
-					tightrope = room == RaidRoom.TIGHTROPE;
-
-					if (iceDemon)
+					roomName = room.getPuzzle().getName();
+					switch (Objects.requireNonNull(RaidRoom.Puzzle.fromString(roomName)))
 					{
-						iceRooms.add(roomCount);
+						case CRABS:
+							crabs = true;
+							break;
+						case ICE_DEMON:
+							iceDemon = true;
+							iceRooms.add(roomCount);
+							break;
+						case THIEVING:
+							thieving = true;
+							break;
+						case TIGHTROPE:
+							tightrope = true;
+							break;
 					}
+					break;
 				case SCAVENGERS:
 					scavRooms.add(roomCount);
 					break;
@@ -298,17 +316,17 @@ public class RaidsOverlay extends Overlay
 			{
 				case COMBAT:
 					bossCount++;
-					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
+					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
 						|| plugin.isEnableRotationWhitelist() && bossCount > bossMatches)
 					{
 						color = Color.RED;
 					}
 
-					String bossName = room.getName();
+					String bossName = room.getBoss().getName();
 					String bossNameLC = bossName.toLowerCase();
 					if (plugin.isShowRecommendedItems() && plugin.getRecommendedItemsList().get(bossNameLC) != null)
 					{
@@ -320,7 +338,7 @@ public class RaidsOverlay extends Overlay
 					break;
 
 				case PUZZLE:
-					String puzzleName = room.getName();
+					String puzzleName = room.getPuzzle().getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
 					{

@@ -32,11 +32,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
 public enum BossTab
 {

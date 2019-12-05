@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -47,21 +47,7 @@ public class SpecBarPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"drawSpecbarAnyway".equals(event.getEventName()))

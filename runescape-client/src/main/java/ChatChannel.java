@@ -4,24 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("cs")
 @Implements("ChatChannel")
 public class ChatChannel {
-	@ObfuscatedName("lb")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhi;"
-	)
-	@Export("mousedOverWidgetIf1")
-	static Widget mousedOverWidgetIf1;
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "[Lbt;"
+		signature = "[Lba;"
 	)
 	@Export("messages")
 	Message[] messages;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1655773149
+		intValue = -2111791625
 	)
 	@Export("count")
 	int count;
@@ -30,10 +24,10 @@ public class ChatChannel {
 		this.messages = new Message[100];
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbt;",
-		garbageValue = "-2124852367"
+		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lba;",
+		garbageValue = "1583297440"
 	)
 	@Export("addMessage")
 	Message addMessage(int var1, String var2, String var3, String var4) {
@@ -61,49 +55,41 @@ public class ChatChannel {
 		return var5;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(II)Lbt;",
-		garbageValue = "1546938937"
+		signature = "(IB)Lba;",
+		garbageValue = "-6"
 	)
 	@Export("getMessage")
 	Message getMessage(int var1) {
 		return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "126"
+		garbageValue = "0"
 	)
 	@Export("size")
 	int size() {
 		return this.count;
 	}
 
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "(CI)Z",
-		garbageValue = "1710830217"
-	)
-	@Export("isCharAlphabetic")
-	public static boolean isCharAlphabetic(char var0) {
-		return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-	}
-
-	@ObfuscatedName("fz")
+	@ObfuscatedName("ll")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1507769653"
+		garbageValue = "-1059026202"
 	)
-	@Export("playPcmPlayers")
-	static final void playPcmPlayers() {
-		if (MenuAction.pcmPlayer1 != null) {
-			MenuAction.pcmPlayer1.run();
-		}
+	static void method2274() {
+		if (InvDefinition.field3210 != null) {
+			Client.field863 = Client.cycle;
+			InvDefinition.field3210.method4403();
 
-		if (class80.pcmPlayer0 != null) {
-			class80.pcmPlayer0.run();
+			for (int var0 = 0; var0 < Client.players.length; ++var0) {
+				if (Client.players[var0] != null) {
+					InvDefinition.field3210.method4406(class51.baseX * 64 + (Client.players[var0].x >> 7), VarcInt.baseY * 64 + (Client.players[var0].y >> 7));
+				}
+			}
 		}
 
 	}

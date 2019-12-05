@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -37,7 +38,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -50,7 +51,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class CerberusPlugin extends Plugin
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> ghosts = new ArrayList<>();
 
 	@Inject
@@ -59,33 +60,20 @@ public class CerberusPlugin extends Plugin
 	@Inject
 	private CerberusOverlay overlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		addSubscriptions();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		ghosts.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
@@ -95,17 +83,20 @@ public class CerberusPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		CerberusGhost.fromNPC(npc).ifPresent(ghost -> ghosts.add(npc));
 	}
 
+	@Subscribe
 	private void onNpcDespawned(final NpcDespawned event)
 	{
 		ghosts.remove(event.getNpc());
 	}
 
+	@Subscribe
 	void onGameTick(GameTick gameTick)
 	{
 		if (ghosts.isEmpty())

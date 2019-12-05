@@ -46,12 +46,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
@@ -61,7 +62,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Singleton
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
-	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
@@ -85,11 +86,26 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private boolean retainChatHistory;
 	private boolean pmTargetCycling;
+
+	/**
+	 * Small hack to prevent plugins checking for specific messages to match. This works because the "—" character
+	 * cannot be seen in-game. This replacement preserves wrapping on chat history messages.
+	 *
+	 * @param message message
+	 * @return message with invisible character before every space
+	 */
+	private static String tweakSpaces(final String message)
+	{
+		if (message != null)
+		{
+			// First replacement cleans up prior applications of this so as not to keep extending the message
+			return message.replace("— ", " ").replace(" ", "— ");
+		}
+
+		return null;
+	}
 
 	@Provides
 	ChatHistoryConfig getConfig(ConfigManager configManager)
@@ -101,7 +117,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		messageQueue = EvictingQueue.create(100);
 		friends = new ArrayDeque<>(FRIENDS_MAX_SIZE + 1);
@@ -111,8 +126,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		messageQueue.clear();
 		messageQueue = null;
 		friends.clear();
@@ -120,18 +133,13 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-	}
-
+	@Subscribe
 	private void onChatMessage(ChatMessage chatMessage)
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		ChatMessageType chatMessageType = chatMessage.getType();
+		if (chatMessageType == ChatMessageType.WELCOME && StringUtils.startsWithIgnoreCase(chatMessage.getMessage(), WELCOME_MESSAGE))
 		{
 			if (!this.retainChatHistory)
 			{
@@ -148,7 +156,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		switch (chatMessage.getType())
+		switch (chatMessageType)
 		{
 			case PRIVATECHATOUT:
 			case PRIVATECHAT:
@@ -168,7 +176,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case FRIENDSCHAT:
 			case CONSOLE:
 				final QueuedMessage queuedMessage = QueuedMessage.builder()
-					.type(chatMessage.getType())
+					.type(chatMessageType)
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
 					.value(tweakSpaces(chatMessage.getMessage()))
@@ -183,6 +191,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		String menuOption = event.getOption();
@@ -202,22 +211,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	/**
-	 * Small hack to prevent plugins checking for specific messages to match. This works because the "—" character
-	 * cannot be seen in-game. This replacement preserves wrapping on chat history messages.
-	 *
-	 * @param message message
-	 * @return message with invisible character before every space
-	 */
-	private static String tweakSpaces(final String message)
+	@Override
+	public void keyTyped(KeyEvent e)
 	{
-		if (message != null)
-		{
-			// First replacement cleans up prior applications of this so as not to keep extending the message
-			return message.replace("— ", " ").replace(" ", "— ");
-		}
-
-		return null;
 	}
 
 	@Override
@@ -251,11 +247,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override
 	public void keyReleased(KeyEvent e)
 	{
 	}
@@ -280,6 +271,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		return friends.getLast();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"chathistory".equals(event.getGroup()))

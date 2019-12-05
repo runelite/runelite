@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -74,7 +73,7 @@ public class GrotesqueGuardiansPrayerOverlay extends Overlay
 			BufferedImage prayerImage;
 			prayerImage = getPrayerImage(attack);
 			imagePanelComponent.setBackgroundColor(client
-					.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
+				.isPrayerActive(attack.getPrayer()) ? ComponentConstants.STANDARD_BACKGROUND_COLOR : NOT_ACTIVATED_BACKGROUND_COLOR);
 
 			NPC dusk = plugin.getDusk();
 			imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));

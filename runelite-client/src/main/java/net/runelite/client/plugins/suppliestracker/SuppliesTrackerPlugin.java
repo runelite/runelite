@@ -28,7 +28,6 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
-
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;
@@ -62,7 +61,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -150,13 +149,9 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		panel = new SuppliesTrackerPanel(itemManager, this);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -176,18 +171,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		clientToolbar.removeNavigation(navButton);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(CannonballFired.class, this, this::onCannonballFired);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
 	}
 
 	@Provides
@@ -196,6 +180,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		return configManager.getConfig(SuppliesTrackerConfig.class);
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		Player player = client.getLocalPlayer();
@@ -253,6 +238,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		return percent;
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
@@ -303,6 +289,7 @@ public class SuppliesTrackerPlugin extends Plugin
 					if (oldItem.getId() == runeId)
 					{
 						isRune = true;
+						break;
 					}
 				}
 				if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))
@@ -327,11 +314,13 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onCannonballFired(CannonballFired cannonballFired)
 	{
 		buildEntries(CANNONBALL);
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		if (animationChanged.getActor() == client.getLocalPlayer())
@@ -385,6 +374,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
@@ -515,6 +505,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		// Fix for house pool

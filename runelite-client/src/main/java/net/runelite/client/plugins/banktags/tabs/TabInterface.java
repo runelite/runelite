@@ -131,7 +131,7 @@ public class TabInterface
 	private final Rectangle bounds = new Rectangle();
 	private final Rectangle canvasBounds = new Rectangle();
 
-	private ChatboxItemSearch searchProvider;
+	private final ChatboxItemSearch searchProvider;
 	private TagTab activeTab;
 	private int maxTabs;
 	private int currentTabIndex;
@@ -302,7 +302,7 @@ public class TabInterface
 
 					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
 					String name = dataIter.next();
-					StringBuffer sb = new StringBuffer();
+					StringBuilder sb = new StringBuilder();
 					for (char c : name.toCharArray())
 					{
 						if (FILTERED_CHARS.test(c))
@@ -324,7 +324,7 @@ public class TabInterface
 
 					while (dataIter.hasNext())
 					{
-						final int itemId = Integer.valueOf(dataIter.next());
+						final int itemId = Integer.parseInt(dataIter.next());
 						tagManager.addTag(itemId, name, itemId < 0);
 					}
 
@@ -600,10 +600,10 @@ public class TabInterface
 		}
 
 		if ((event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-				|| event.getIdentifier() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
+			|| event.getIdentifier() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
 			&& event.getMenuOpcode() == MenuOpcode.EXAMINE_ITEM_BANK_EQ
 			&& (event.getOption().equalsIgnoreCase("withdraw-x")
-				|| event.getOption().equalsIgnoreCase("deposit-x")))
+			|| event.getOption().equalsIgnoreCase("deposit-x")))
 		{
 			waitSearchTick = true;
 			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);

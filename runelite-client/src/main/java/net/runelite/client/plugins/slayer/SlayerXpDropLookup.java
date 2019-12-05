@@ -44,9 +44,7 @@ class SlayerXpDropLookup
 		try (final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json"))
 		{
 			Gson gson = new Gson();
-			xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
-			{
-			}.getType());
+			xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>() {}.getType());
 		}
 	}
 
@@ -91,6 +89,7 @@ class SlayerXpDropLookup
 			if (xpCombatLevel.get(i) > 0)
 			{
 				givesSlayerXp = true;
+				break;
 			}
 		}
 		if (!givesSlayerXp)
@@ -104,6 +103,7 @@ class SlayerXpDropLookup
 				&& xpCombatLevel.get(i) > 0)
 			{
 				foundCombatLevel = true;
+				break;
 			}
 		}
 		if (foundCombatLevel)

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.herbiboars;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Varbits;
@@ -61,18 +62,18 @@ public enum HerbiboarTrail
 	TRAIL_31369(31369, Varbits.HB_TRAIL_31369, new WorldPoint(3706, 3811, 0), null, null, null),
 	TRAIL_31372(31372, Varbits.HB_TRAIL_31372, new WorldPoint(3713, 3840, 0), null, null, null);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final int trailId;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Varbits varbit;
 	private final WorldPoint objectLoc1;
 	private final WorldPoint objectLoc2;
 	private final WorldPoint objectLoc3;
 	private final WorldPoint objectLoc4;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static Set<Integer> trailIds = new HashSet<>();
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private static Set<WorldPoint> allObjectLocs = new HashSet<>();
 
 	static

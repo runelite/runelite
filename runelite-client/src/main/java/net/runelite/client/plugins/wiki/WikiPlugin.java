@@ -50,7 +50,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -101,9 +101,6 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
-	@Inject
-	private EventBus eventBus;
-
 	private Widget icon;
 
 	private boolean wikiSelected = false;
@@ -111,7 +108,6 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
@@ -120,8 +116,6 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(() ->
 		{
@@ -142,13 +136,7 @@ public class WikiPlugin extends Plugin
 		});
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-	}
-
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
 		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
@@ -208,6 +196,7 @@ public class WikiPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
 		optarget:
@@ -346,6 +335,7 @@ public class WikiPlugin extends Plugin
 		return w;
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetIndex = event.getParam0();
@@ -362,9 +352,7 @@ public class WikiPlugin extends Plugin
 				// plugin might have added something on this same event, and we probably shouldn't remove that instead
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
-				for (int ourEntry = oldEntries.length - 1;
-					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getOpcode() != MenuOpcode.SPELL_CAST_ON_WIDGET.getId();
-					ourEntry--)
+				for (int ourEntry = oldEntries.length - 1; ourEntry >= 2 && oldEntries[oldEntries.length - 1].getOpcode() != MenuOpcode.SPELL_CAST_ON_WIDGET.getId(); ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];
 				}

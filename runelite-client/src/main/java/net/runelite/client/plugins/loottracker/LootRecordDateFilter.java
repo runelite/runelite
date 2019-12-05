@@ -11,10 +11,10 @@
 
 package net.runelite.client.plugins.loottracker;
 
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.time.Duration;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 public enum LootRecordDateFilter
@@ -29,7 +29,7 @@ public enum LootRecordDateFilter
 	ALL("All", Duration.ZERO);
 
 	private final String name;
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Duration duration;
 	static RuntimeMXBean mxBean = ManagementFactory.getRuntimeMXBean();
 
@@ -37,11 +37,11 @@ public enum LootRecordDateFilter
 	/**
 	 * Constructor for a Loot Tracker filter that filters by date, more specifically Duration.
 	 *
-	 * @param name - String the name that represents the date filter. This is what will be displayed in the GUI
+	 * @param name     - String the name that represents the date filter. This is what will be displayed in the GUI
 	 * @param duration - The duration the current time - the time of the loot record must be greater than to display if
 	 *                 a date filter other than all or Session is enabled
 	 */
-	private LootRecordDateFilter(String name, Duration duration)
+	LootRecordDateFilter(String name, Duration duration)
 	{
 		this.name = name;
 		this.duration = duration;

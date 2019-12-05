@@ -27,6 +27,13 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableMap;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -39,14 +46,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.BasicStroke;
-import java.util.Map;
-
 @Singleton
 class AboveSceneOverlay extends Overlay
 {
@@ -56,10 +55,10 @@ class AboveSceneOverlay extends Overlay
 	private static final int EGG_DIAMETER = Perspective.LOCAL_HALF_TILE_SIZE / 4;
 	private static final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
 	private static final ImmutableMap<WidgetInfo, Point> TEAMMATES = ImmutableMap.of(
-			WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28, 2),
-			WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26, 2),
-			WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26, 2),
-			WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25, 2));
+		WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28, 2),
+		WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26, 2),
+		WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26, 2),
+		WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25, 2));
 
 	private final Client client;
 	private final BarbarianAssaultPlugin game;
@@ -124,9 +123,9 @@ class AboveSceneOverlay extends Overlay
 
 			graphics.setColor(HEALTH_BAR_COLOR);
 			graphics.fillRect((widget.getCanvasLocation().getX() - teammate.getValue().getX()),
-					(widget.getCanvasLocation().getY() - teammate.getValue().getY()),
-					getBarWidth(Integer.parseInt(teammateHealth[1]), Integer.parseInt(teammateHealth[0])),
-					HEALTH_BAR_HEIGHT);
+				(widget.getCanvasLocation().getY() - teammate.getValue().getY()),
+				getBarWidth(Integer.parseInt(teammateHealth[1]), Integer.parseInt(teammateHealth[0])),
+				HEALTH_BAR_HEIGHT);
 		}
 	}
 

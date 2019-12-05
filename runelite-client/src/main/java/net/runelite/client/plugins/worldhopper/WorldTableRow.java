@@ -64,6 +64,7 @@ class WorldTableRow extends JPanel
 	private static final Color TOURNAMENT_WORLD = new Color(79, 145, 255);
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
+	private static final Color LEAGUE_WORLD = new Color(157, 237, 1);
 
 	static
 	{
@@ -81,7 +82,7 @@ class WorldTableRow extends JPanel
 	private JLabel pingField;
 	private BiConsumer<World, Boolean> onFavorite;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final World world;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -90,11 +91,9 @@ class WorldTableRow extends JPanel
 	private int ping;
 
 	private Color lastBackground;
-	private boolean current;
 
 	WorldTableRow(World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
-		this.current = current;
 		this.world = world;
 		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();
@@ -202,9 +201,7 @@ class WorldTableRow extends JPanel
 		}
 
 		favoriteMenuOption.addActionListener(e ->
-		{
-			onFavorite.accept(world, !favorite);
-		});
+			onFavorite.accept(world, !favorite));
 	}
 
 	void updatePlayerCount(int playerCount)
@@ -247,10 +244,13 @@ class WorldTableRow extends JPanel
 		}
 		else if (world.getTypes().contains(WorldType.PVP)
 			|| world.getTypes().contains(WorldType.HIGH_RISK)
-			|| world.getTypes().contains(WorldType.DEADMAN)
-			|| world.getTypes().contains(WorldType.SEASONAL_DEADMAN))
+			|| world.getTypes().contains(WorldType.DEADMAN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
+		}
+		else if (world.getTypes().contains(WorldType.LEAGUE))
+		{
+			activityField.setForeground(LEAGUE_WORLD);
 		}
 		else if (world.getTypes().contains(WorldType.TOURNAMENT))
 		{

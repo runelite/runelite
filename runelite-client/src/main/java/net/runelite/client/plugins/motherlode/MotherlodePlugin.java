@@ -85,7 +85,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
@@ -151,9 +151,6 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
@@ -215,7 +212,6 @@ public class MotherlodePlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(rocksOverlay);
@@ -234,8 +230,6 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
@@ -255,27 +249,7 @@ public class MotherlodePlugin extends Plugin
 		});
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
-		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
-		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
-		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
-	}
-
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
@@ -287,6 +261,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onVarbitChanged(VarbitChanged event)
 	{
 		if (inMlm)
@@ -309,6 +284,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (!inMlm || event.getType() != ChatMessageType.SPAM)
@@ -372,6 +348,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked menu)
 	{
 		if (!inMlm)
@@ -379,7 +356,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		if (MINE_SPOTS.contains(menu.getIdentifier()) &&  menu.getMenuOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION)
+		if (MINE_SPOTS.contains(menu.getIdentifier()) && menu.getMenuOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION)
 		{
 			resetIdleChecks();
 			int veinX = menu.getParam0();
@@ -388,6 +365,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (!inMlm)
@@ -420,7 +398,8 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
-	private void onAnimationChanged (AnimationChanged event)
+	@Subscribe
+	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (!inMlm)
 		{
@@ -489,6 +468,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (!inMlm || targetVeinLocation == null)
@@ -525,6 +505,7 @@ public class MotherlodePlugin extends Plugin
 		notifier.notify(client.getLocalPlayer().getName() + " has stopped mining!");
 	}
 
+	@Subscribe
 	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		if (!inMlm)
@@ -546,6 +527,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		if (!inMlm)
@@ -563,6 +545,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		if (!inMlm)
@@ -574,6 +557,7 @@ public class MotherlodePlugin extends Plugin
 		veins.remove(wallObject);
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!inMlm)
@@ -588,6 +572,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		if (!inMlm)
@@ -606,6 +591,7 @@ public class MotherlodePlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (!inMlm)
@@ -617,6 +603,7 @@ public class MotherlodePlugin extends Plugin
 		rocks.remove(gameObject);
 	}
 
+	@Subscribe
 	void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -634,6 +621,7 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
@@ -743,6 +731,7 @@ public class MotherlodePlugin extends Plugin
 		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("motherlode"))
@@ -769,6 +758,7 @@ public class MotherlodePlugin extends Plugin
 		this.payDirtMsg = config.payDirtMsg();
 	}
 
+	@Subscribe
 	private void onOverheadTextChanged(OverheadTextChanged event)
 	{
 		if (!payDirtMsg || Strings.isNullOrEmpty(event.getOverheadText()) || !(event.getActor() instanceof NPC))

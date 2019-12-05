@@ -125,7 +125,7 @@ class WidgetButton
 		final int yIncrement = BACKGROUND_HEIGHT + PADDING;
 		int maxRowItems = container.getWidth() / xIncrement;
 		// Ensure at least 1 button per row
-		maxRowItems = maxRowItems < 1 ? 1 : maxRowItems;
+		maxRowItems = Math.max(maxRowItems, 1);
 
 		int index = 0;
 		for (final WidgetButton w : buttons)

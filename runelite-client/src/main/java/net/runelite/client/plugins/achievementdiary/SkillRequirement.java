@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Skill;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public class SkillRequirement implements Requirement
 {
 	private final Skill skill;

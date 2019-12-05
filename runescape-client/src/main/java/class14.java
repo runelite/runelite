@@ -1,79 +1,64 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.awt.Component;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("x")
+@ObfuscatedName("n")
 public class class14 {
-	@ObfuscatedName("qn")
-	@ObfuscatedGetter(
-		intValue = 1643724800
-	)
-	static int field88;
-	@ObfuscatedName("gd")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "[Llx;"
+		signature = "Lhf;"
 	)
-	@Export("headIconHintSprites")
-	static Sprite[] headIconHintSprites;
+	@Export("KitDefinition_archive")
+	static AbstractArchive KitDefinition_archive;
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1580849456"
+		signature = "(Ljava/awt/Component;B)V",
+		garbageValue = "66"
 	)
-	static void method204() {
-		try {
-			File var0 = new File(class30.userHomeDirectory, "random.dat");
-			int var2;
-			if (var0.exists()) {
-				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
-			} else {
-				label39:
-				for (int var1 = 0; var1 < class312.field3803.length; ++var1) {
-					for (var2 = 0; var2 < BoundaryObject.field1859.length; ++var2) {
-						File var3 = new File(BoundaryObject.field1859[var2] + class312.field3803[var1] + File.separatorChar + "random.dat");
-						if (var3.exists()) {
-							JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var3, "rw", 25L), 24, 0);
-							break label39;
-						}
-					}
-				}
-			}
-
-			if (JagexCache.JagexCache_randomDat == null) {
-				RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
-				var2 = var4.read();
-				var4.seek(0L);
-				var4.write(var2);
-				var4.seek(0L);
-				var4.close();
-				JagexCache.JagexCache_randomDat = new BufferedFile(new AccessFile(var0, "rw", 25L), 24, 0);
-			}
-		} catch (IOException var5) {
-		}
-
+	static void method178(Component var0) {
+		var0.setFocusTraversalKeysEnabled(false);
+		var0.addKeyListener(KeyHandler.KeyHandler_instance);
+		var0.addFocusListener(KeyHandler.KeyHandler_instance);
 	}
 
-	@ObfuscatedName("fw")
+	@ObfuscatedName("hr")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "363418967"
+		signature = "(IIB)I",
+		garbageValue = "-1"
 	)
-	static int method203() {
-		if (Client.archiveLoaders != null && Client.archiveLoadersDone < Client.archiveLoaders.size()) {
-			int var0 = 0;
+	static int method176(int var0, int var1) {
+		int var2 = var1 - 334;
+		if (var2 < 0) {
+			var2 = 0;
+		} else if (var2 > 100) {
+			var2 = 100;
+		}
 
-			for (int var1 = 0; var1 <= Client.archiveLoadersDone; ++var1) {
-				var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).loadedCount;
+		int var3 = (Client.zoomWidth - Client.zoomHeight) * var2 / 100 + Client.zoomHeight;
+		return var0 * var3 / 256;
+	}
+
+	@ObfuscatedName("is")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZI)V",
+		garbageValue = "-1867920411"
+	)
+	@Export("insertMenuItem")
+	static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+		if (!Client.isMenuOpen) {
+			if (Client.menuOptionsCount < 500) {
+				Client.menuActions[Client.menuOptionsCount] = var0;
+				Client.menuTargets[Client.menuOptionsCount] = var1;
+				Client.menuOpcodes[Client.menuOptionsCount] = var2;
+				Client.menuIdentifiers[Client.menuOptionsCount] = var3;
+				Client.menuArguments1[Client.menuOptionsCount] = var4;
+				Client.menuArguments2[Client.menuOptionsCount] = var5;
+				Client.menuShiftClick[Client.menuOptionsCount] = var6;
+				++Client.menuOptionsCount;
 			}
 
-			return var0 * 10000 / Client.field903;
-		} else {
-			return 10000;
 		}
 	}
 }

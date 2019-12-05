@@ -66,7 +66,7 @@ public class PluginListItem extends JPanel
 
 	private final ConfigPanel configPanel;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@Nullable
 	private final Plugin plugin;
 
@@ -93,13 +93,13 @@ public class PluginListItem extends JPanel
 	private final IconButton configButton = new IconButton(CONFIG_ICON, CONFIG_ICON_HOVER);
 	private final IconButton toggleButton = new IconButton(OFF_SWITCHER);
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean isPluginEnabled = false;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean isPinned = false;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean isHidden = false;
 
 	private Color color = null;

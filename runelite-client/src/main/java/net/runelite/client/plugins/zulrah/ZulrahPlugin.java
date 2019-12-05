@@ -44,7 +44,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.Sound;
 import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
@@ -80,26 +80,34 @@ public class ZulrahPlugin extends Plugin
 			new ZulrahPatternC(),
 			new ZulrahPatternD()
 		};
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC zulrah;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ZulrahConfig config;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private SoundManager soundManager;
+
 	@Inject
 	private ZulrahCurrentPhaseOverlay currentPhaseOverlay;
+
 	@Inject
 	private ZulrahNextPhaseOverlay nextPhaseOverlay;
+
 	@Inject
 	private ZulrahPrayerOverlay zulrahPrayerOverlay;
+
 	@Inject
 	private ZulrahOverlay zulrahOverlay;
-	@Inject
-	private EventBus eventBus;
+
 	private ZulrahInstance instance;
 
 	@Provides
@@ -109,9 +117,8 @@ public class ZulrahPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		overlayManager.add(currentPhaseOverlay);
 		overlayManager.add(nextPhaseOverlay);
@@ -120,10 +127,8 @@ public class ZulrahPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(currentPhaseOverlay);
 		overlayManager.remove(nextPhaseOverlay);
 		overlayManager.remove(zulrahPrayerOverlay);
@@ -132,14 +137,7 @@ public class ZulrahPlugin extends Plugin
 		instance = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-	}
-
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -209,6 +207,7 @@ public class ZulrahPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (instance == null)
@@ -247,6 +246,7 @@ public class ZulrahPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
@@ -257,6 +257,7 @@ public class ZulrahPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();

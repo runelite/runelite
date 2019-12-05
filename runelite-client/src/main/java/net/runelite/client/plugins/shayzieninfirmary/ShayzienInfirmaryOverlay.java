@@ -46,7 +46,7 @@ public class ShayzienInfirmaryOverlay extends Overlay
 {
 	private final ShayzienInfirmaryPlugin plugin;
 
-	private BufferedImage medPackImage;
+	private final BufferedImage medPackImage;
 
 	@Inject
 	public ShayzienInfirmaryOverlay(final ShayzienInfirmaryPlugin plugin, final ItemManager itemManager)

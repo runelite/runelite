@@ -35,9 +35,9 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.OpenOSRSConfig;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
@@ -84,16 +84,12 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ColorPickerManager colorPickerManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, OpenOSRSConfig, chatColorConfig, colorPickerManager);
 
@@ -110,10 +106,8 @@ public class ConfigPlugin extends Plugin
 	}
 
 	@Override
-	public void shutDown() throws Exception
+	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientToolbar.removeNavigation(navButton);
 		RuneLite.getInjector().getInstance(ClientThread.class).invokeLater(() ->
 		{
@@ -133,17 +127,13 @@ public class ConfigPlugin extends Plugin
 		});
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
-		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
-	}
-
+	@Subscribe
 	private void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(configPanel::refreshPluginList);
 	}
 
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();

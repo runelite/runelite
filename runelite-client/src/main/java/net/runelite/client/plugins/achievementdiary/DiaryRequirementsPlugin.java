@@ -40,11 +40,12 @@ import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -59,7 +60,6 @@ import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequir
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WesternDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequirement;
-import net.runelite.api.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -79,21 +79,7 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
+	@Subscribe
 	private void onWidgetLoaded(final WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.DIARY_QUEST_GROUP_ID)

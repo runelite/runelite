@@ -58,7 +58,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -85,9 +85,6 @@ public class DemonicGorillaPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, DemonicGorilla> gorillas;
 
@@ -98,9 +95,8 @@ public class DemonicGorillaPlugin extends Plugin
 	private Map<Player, MemorizedPlayer> memorizedPlayers;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 		overlayManager.add(overlay);
 		gorillas = new HashMap<>();
 		recentBoulders = new ArrayList<>();
@@ -110,26 +106,13 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 		gorillas = null;
 		recentBoulders = null;
 		pendingAttacks = null;
 		memorizedPlayers = null;
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
-		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	private void clear()
@@ -548,6 +531,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		final Projectile projectile = event.getProjectile();
@@ -627,6 +611,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (gorillas.isEmpty())
@@ -655,6 +640,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gs = event.getGameState();
@@ -666,6 +652,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (gorillas.isEmpty())
@@ -677,6 +664,7 @@ public class DemonicGorillaPlugin extends Plugin
 		memorizedPlayers.put(player, new MemorizedPlayer(player));
 	}
 
+	@Subscribe
 	private void onPlayerDespawned(PlayerDespawned event)
 	{
 		if (gorillas.isEmpty())
@@ -687,6 +675,7 @@ public class DemonicGorillaPlugin extends Plugin
 		memorizedPlayers.remove(event.getPlayer());
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
@@ -703,6 +692,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (gorillas.remove(event.getNpc()) != null && gorillas.isEmpty())
@@ -711,6 +701,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		checkGorillaAttacks();

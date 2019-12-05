@@ -1,32 +1,26 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
+@ObfuscatedName("ja")
 @Implements("TriBool")
 public class TriBool {
-	@ObfuscatedName("nq")
-	@ObfuscatedGetter(
-		intValue = -1976717039
-	)
-	static int field3600;
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Ljs;"
+		signature = "Lja;"
 	)
 	@Export("TriBool_unknown")
 	public static final TriBool TriBool_unknown;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Ljs;"
+		signature = "Lja;"
 	)
 	@Export("TriBool_true")
 	public static final TriBool TriBool_true;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Ljs;"
+		signature = "Lja;"
 	)
 	@Export("TriBool_false")
 	public static final TriBool TriBool_false;
@@ -40,49 +34,23 @@ public class TriBool {
 	TriBool() {
 	}
 
-	@ObfuscatedName("jw")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Lhi;IIZI)V",
-		garbageValue = "-723705185"
+		signature = "(III)I",
+		garbageValue = "-218767973"
 	)
-	@Export("alignWidgetSize")
-	static void alignWidgetSize(Widget var0, int var1, int var2, boolean var3) {
-		int var4 = var0.width;
-		int var5 = var0.height;
-		if (var0.widthAlignment == 0) {
-			var0.width = var0.rawWidth;
-		} else if (var0.widthAlignment == 1) {
-			var0.width = var1 - var0.rawWidth;
-		} else if (var0.widthAlignment == 2) {
-			var0.width = var0.rawWidth * var1 >> 14;
-		}
+	static final int method5255(int var0, int var1) {
+		if (var0 == -1) {
+			return 12345678;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
 
-		if (var0.heightAlignment == 0) {
-			var0.height = var0.rawHeight;
-		} else if (var0.heightAlignment == 1) {
-			var0.height = var2 - var0.rawHeight;
-		} else if (var0.heightAlignment == 2) {
-			var0.height = var2 * var0.rawHeight >> 14;
+			return (var0 & 65408) + var1;
 		}
-
-		if (var0.widthAlignment == 4) {
-			var0.width = var0.field2565 * var0.height / var0.field2566;
-		}
-
-		if (var0.heightAlignment == 4) {
-			var0.height = var0.field2566 * var0.width / var0.field2565;
-		}
-
-		if (var0.contentType == 1337) {
-			Client.viewportWidget = var0;
-		}
-
-		if (var3 && var0.onResize != null && (var4 != var0.width || var5 != var0.height)) {
-			ScriptEvent var6 = new ScriptEvent();
-			var6.widget = var0;
-			var6.args = var0.onResize;
-			Client.scriptEvents.addFirst(var6);
-		}
-
 	}
 }

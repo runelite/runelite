@@ -34,14 +34,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -62,7 +60,6 @@ import static net.runelite.api.Varbits.WITHDRAW_X_AMOUNT;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.Menu;
@@ -79,6 +76,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.AbstractComparableEntry;
 import static net.runelite.client.menus.ComparableEntries.newBankComparableEntry;
@@ -157,28 +156,31 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private MenuEntrySwapperConfig config;
+
 	@Inject
 	private PluginManager pluginManager;
+
 	@Inject
 	private MenuManager menuManager;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private EventBus eventBus;
+
 	@Inject
 	private PvpToolsPlugin pvpTools;
+
 	@Inject
 	private PvpToolsConfig pvpToolsConfig;
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	@Inject
-	private ConfigManager configManager;
+
 	private boolean buildingMode;
 	private boolean inTobRaid = false;
 	private boolean inCoxRaid = false;
@@ -315,9 +317,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		this.lastDes = JewelleryBoxDestination.withOption(config.lastDes());
 
-		migrateConfig();
 		updateConfig();
-		addSubscriptions();
+		if (config.lastJewel())
+		{
+			eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
+		}
 		addSwaps();
 		loadConstructionItems();
 		loadCustomSwaps(config.customSwaps(), customSwaps);
@@ -341,8 +345,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		loadCustomSwaps("", customSwaps); // Removes all custom swaps
 		removeSwaps();
 		removeBuySellEntries();
@@ -358,21 +360,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(MenuOpened.class, this, this::onMenuOpened);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-
-		if (config.lastJewel())
-		{
-			eventBus.subscribe(MenuOptionClicked.class, JEWEL_CLICKED, this::onMenuOptionClicked);
-		}
-	}
-
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
@@ -382,6 +370,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"menuentryswapper".equals(event.getGroup()))
@@ -452,6 +441,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
@@ -466,6 +456,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		keyManager.registerKeyListener(hotkey);
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		buildingMode = client.getVar(BUILDING_MODE) == 1;
@@ -474,6 +465,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		setCastOptions(false);
 	}
 
+	@Subscribe
 	private void onMenuOpened(MenuOpened event)
 	{
 		Player localPlayer = client.getLocalPlayer();
@@ -581,6 +573,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		event.setModified();
 	}
 
+	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -2042,90 +2035,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			removedObjects = null;
 		}
-	}
-
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	private static boolean oldParse(String value)
-	{
-		try
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : value.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
-			return true;
-		}
-		catch (IllegalArgumentException ex)
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Migrates old custom swaps config
-	 * This should be removed after a reasonable amount of time.
-	 */
-	private void migrateConfig()
-	{
-		final String customSwaps = config.customSwaps();
-
-		if (!CustomSwapParse.parse(customSwaps) && oldParse(customSwaps))
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : customSwaps.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			final Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(sb);
-
-			sb.setLength(0);
-
-			for (Map.Entry<String, String> entry : split.entrySet())
-			{
-				String val = entry.getValue();
-				if (!val.contains(","))
-				{
-					continue;
-				}
-
-				sb.append(entry.getValue()).append(":0\n");
-			}
-
-			configManager.setConfiguration("menuentryswapper", "customSwaps", sb.toString());
-		}
-
-		// Ugly band-aid i'm sorry
-		configManager.setConfiguration("menuentryswapper", "customSwaps",
-			Arrays.stream(config.customSwaps()
-				.split("\n"))
-				.distinct()
-				.filter(swap -> !"walk here"
-					.equals(swap.
-						split(":")[0]
-						.trim()
-						.toLowerCase()))
-				.filter(swap -> !"cancel"
-					.equals(swap
-						.split(":")[0]
-						.trim()
-						.toLowerCase()))
-				.collect(Collectors.joining("\n"))
-		);
 	}
 
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)

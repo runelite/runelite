@@ -26,7 +26,6 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
-
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 import net.runelite.api.Sprite;
@@ -244,13 +243,6 @@ public interface Widget
 	void setName(String name);
 
 	/**
-	 * Gets the model ID displayed in the widget.
-	 *
-	 * @return the model ID
-	 */
-	int getModelId();
-
-	/**
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
@@ -294,6 +286,76 @@ public interface Widget
 	 * The index of this widget in it's parent's children array
 	 */
 	int getIndex();
+
+	/**
+	 * Gets the model ID displayed in the widget.
+	 *
+	 * @return the model ID
+	 */
+	int getModelId();
+
+	/**
+	 * Sets the model ID displayed in the widget
+	 *
+	 * @param modelId the new model ID
+	 */
+	void setModelId(int modelId);
+
+	/**
+	 * Gets the x rotation of the model displayed in the widget
+	 *
+	 * @return the x rotation
+	 */
+	int getRotationX();
+
+	/**
+	 * Sets the x rotation of the model displayed in the widget
+	 *
+	 * @param rotationX 0 = no rotation, 2047 = full rotation, outside range = crash
+	 */
+	void setRotationX(int rotationX);
+
+	/**
+	 * Gets the y rotation of the model displayed in the widget
+	 *
+	 * @return the y rotation
+	 */
+	int getRotationY();
+
+	/**
+	 * Sets the y rotation of the model displayed in the widget
+	 *
+	 * @param rotationY 0 = no rotation, 2047 = full rotation, outside range = crash
+	 */
+	void setRotationY(int rotationY);
+
+	/**
+	 * Gets the z rotation of the model displayed in the widget
+	 *
+	 * @return the z rotation
+	 */
+	int getRotationZ();
+
+	/**
+	 * Sets the z rotation of the model displayed in the widget
+	 *
+	 * @param rotationZ 0 = no rotation, 2047 = full rotation, outside range = crash
+	 */
+	void setRotationZ(int rotationZ);
+
+	/**
+	 * Gets the amount zoomed in on the model displayed in the widget
+	 *
+	 * @return the amount zoomed in
+	 */
+	int getModelZoom();
+
+	/**
+	 * Sets the amount zoomed in on the model displayed in the widget
+	 * 
+	 * @param modelZoom the new zoom amount
+	 */
+	void setModelZoom(int modelZoom);
 
 	/**
 	 * Gets the location the widget is being drawn on the canvas.

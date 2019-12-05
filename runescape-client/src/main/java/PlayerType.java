@@ -4,64 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hy")
+@ObfuscatedName("hb")
 @Implements("PlayerType")
 public enum PlayerType implements Enumerated {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_normal")
 	PlayerType_normal(0, -1, true, false, true),
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_playerModerator")
 	PlayerType_playerModerator(1, 0, true, true, true),
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_jagexModerator")
 	PlayerType_jagexModerator(2, 1, true, true, false),
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_ironman")
 	PlayerType_ironman(3, 2, false, false, true),
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_ultimateIronman")
 	PlayerType_ultimateIronman(4, 3, false, false, true),
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lhy;"
+		signature = "Lhb;"
 	)
 	@Export("PlayerType_hardcoreIronman")
 	PlayerType_hardcoreIronman(5, 10, false, false, true);
 
-	@ObfuscatedName("k")
-	static int[] field3083;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 28008263
+		intValue = 519677779
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -573652869
+		intValue = 2036327739
 	)
 	@Export("modIcon")
 	public final int modIcon;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@Export("isPrivileged")
 	public final boolean isPrivileged;
-	@ObfuscatedName("d")
+	@ObfuscatedName("i")
 	@Export("isUser")
 	public final boolean isUser;
 
@@ -72,65 +70,54 @@ public enum PlayerType implements Enumerated {
 		this.isUser = var7;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1993081102"
+		signature = "(B)I",
+		garbageValue = "7"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(Llx;IIII)V",
-		garbageValue = "-964423468"
+		signature = "(ILke;Lij;I)V",
+		garbageValue = "1224063547"
 	)
-	static void method4285(Sprite var0, int var1, int var2, int var3) {
-		DemotingHashTable var4 = WorldMapRegion.WorldMapRegion_cachedSprites;
-		long var6 = (long)(var3 << 16 | var1 << 8 | var2);
-		var4.put(var0, var6, var0.pixels.length * 4);
-	}
+	static void method4210(int var0, ArchiveDisk var1, Archive var2) {
+		byte[] var3 = null;
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+			for (ArchiveDiskAction var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var5 != null; var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
+				if (var5.key == (long)var0 && var1 == var5.archiveDisk && var5.type == 0) {
+					var3 = var5.data;
+					break;
+				}
+			}
+		}
 
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "(II)Liv;",
-		garbageValue = "-872663018"
-	)
-	@Export("SequenceDefinition_get")
-	public static SequenceDefinition SequenceDefinition_get(int var0) {
-		SequenceDefinition var1 = (SequenceDefinition)SequenceDefinition.SequenceDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
+		if (var3 != null) {
+			var2.load(var1, var0, var3, true);
 		} else {
-			byte[] var2 = SequenceDefinition.SequenceDefinition_archive.takeFile(12, var0);
-			var1 = new SequenceDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			SequenceDefinition.SequenceDefinition_cached.put(var1, (long)var0);
-			return var1;
+			byte[] var4 = var1.read(var0);
+			var2.load(var1, var0, var4, true);
 		}
 	}
 
-	@ObfuscatedName("ku")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lhi;IIII)V",
-		garbageValue = "-1541837446"
+		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+		garbageValue = "1655356407"
 	)
-	@Export("drawCompass")
-	static final void drawCompass(Widget var0, int var1, int var2, int var3) {
-		SpriteMask var4 = var0.getSpriteMask(false);
-		if (var4 != null) {
-			if (Client.minimapState < 3) {
-				class1.compass.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
-			} else {
-				Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
-			}
+	public static String method4212(CharSequence var0) {
+		int var2 = var0.length();
+		char[] var3 = new char[var2];
 
+		for (int var4 = 0; var4 < var2; ++var4) {
+			var3[var4] = '*';
 		}
+
+		String var1 = new String(var3);
+		return var1;
 	}
 }

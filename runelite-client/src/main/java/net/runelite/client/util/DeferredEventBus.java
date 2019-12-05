@@ -47,7 +47,7 @@ public class DeferredEventBus extends EventBus
 	}
 
 	@Override
-	public <T> void post(Class<T> eventClass, @NonNull Event event)
+	public <T extends Event> void post(Class<? extends T> eventClass, @NonNull T event)
 	{
 		pendingEvents.add(new ImmutablePair<>(eventClass, event));
 	}

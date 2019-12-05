@@ -31,11 +31,11 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -61,15 +61,11 @@ public class AmmoPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	private AmmoCounter counterBox;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
 
 		clientThread.invokeLater(() ->
 		{
@@ -83,14 +79,13 @@ public class AmmoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))

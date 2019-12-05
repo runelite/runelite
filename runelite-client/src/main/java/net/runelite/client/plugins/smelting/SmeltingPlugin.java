@@ -36,7 +36,7 @@ import net.runelite.api.MenuOpcode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
@@ -64,9 +64,6 @@ public class SmeltingPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private SmeltingSession session;
 
@@ -81,7 +78,6 @@ public class SmeltingPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		this.statTimeout = config.statTimeout();
 		session = null;
@@ -91,20 +87,11 @@ public class SmeltingPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		session = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
-	}
-
+	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
@@ -116,6 +103,7 @@ public class SmeltingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
@@ -141,6 +129,7 @@ public class SmeltingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (session != null)
@@ -155,6 +144,7 @@ public class SmeltingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("smelting"))

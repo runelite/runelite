@@ -42,9 +42,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,7 +70,7 @@ public class ScreenMarkerPlugin extends Plugin
 	private static final String DEFAULT_MARKER_NAME = "Marker";
 	private static final Dimension DEFAULT_SIZE = new Dimension(2, 2);
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
 
 	@Inject
@@ -88,12 +88,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	@Inject
 	private ColorPickerManager colorPickerManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
@@ -102,15 +99,13 @@ public class ScreenMarkerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private ScreenMarker currentMarker;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean creatingScreenMarker = false;
 	private Point startLocation = null;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-
 		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
 		screenMarkers.forEach(overlayManager::add);
@@ -133,10 +128,8 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
@@ -150,6 +143,7 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = null;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))

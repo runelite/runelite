@@ -4,18 +4,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("it")
 @Implements("InvDefinition")
 public class InvDefinition extends DualNode {
-	@ObfuscatedName("t")
+	@ObfuscatedName("sy")
 	@ObfuscatedSignature(
-		signature = "Leb;"
+		signature = "Lif;"
+	)
+	public static class237 field3210;
+	@ObfuscatedName("u")
+	@ObfuscatedSignature(
+		signature = "Lhf;"
+	)
+	@Export("InvDefinition_archive")
+	public static AbstractArchive InvDefinition_archive;
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "Lef;"
 	)
 	@Export("InvDefinition_cached")
 	static EvictingDualNodeHashTable InvDefinition_cached;
-	@ObfuscatedName("n")
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lhf;"
+	)
+	@Export("Widget_archive")
+	public static AbstractArchive Widget_archive;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1300111967
+		intValue = 1331007469
 	)
 	@Export("size")
 	public int size;
@@ -28,10 +45,10 @@ public class InvDefinition extends DualNode {
 		this.size = 0;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkc;B)V",
-		garbageValue = "-57"
+		signature = "(Lkg;B)V",
+		garbageValue = "-67"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -45,10 +62,10 @@ public class InvDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(Lkc;IB)V",
-		garbageValue = "-64"
+		signature = "(Lkg;II)V",
+		garbageValue = "63686644"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -56,5 +73,24 @@ public class InvDefinition extends DualNode {
 			this.size = var1.readUnsignedShort();
 		}
 
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(B)Z",
+		garbageValue = "-77"
+	)
+	@Export("isKeyDown")
+	public static final boolean isKeyDown() {
+		synchronized(KeyHandler.KeyHandler_instance) {
+			if (KeyHandler.field399 == KeyHandler.field384) {
+				return false;
+			} else {
+				class49.field418 = KeyHandler.field396[KeyHandler.field399];
+				class297.field3699 = KeyHandler.field395[KeyHandler.field399];
+				KeyHandler.field399 = KeyHandler.field399 + 1 & 127;
+				return true;
+			}
+		}
 	}
 }

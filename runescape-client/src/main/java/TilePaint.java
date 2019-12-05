@@ -4,45 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ey")
 @Implements("TilePaint")
 public final class TilePaint {
-	@ObfuscatedName("a")
+	@ObfuscatedName("ns")
 	@ObfuscatedGetter(
-		intValue = -1607728329
+		intValue = -1788868487
+	)
+	static int field1782;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -94402457
 	)
 	@Export("swColor")
 	int swColor;
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -293038201
+		intValue = 1565892331
 	)
 	@Export("seColor")
 	int seColor;
-	@ObfuscatedName("n")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1492739509
+		intValue = 813293965
 	)
 	@Export("neColor")
 	int neColor;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 276503717
+		intValue = -1163969349
 	)
 	@Export("nwColor")
 	int nwColor;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1272946255
+		intValue = 1857222665
 	)
 	@Export("texture")
 	int texture;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@Export("isFlat")
 	boolean isFlat;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 609514679
+		intValue = -1506842685
 	)
 	@Export("rgb")
 	int rgb;
@@ -58,33 +63,80 @@ public final class TilePaint {
 		this.isFlat = var7;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "([BIIII[Lfm;I)V",
-		garbageValue = "1145128419"
+		signature = "(IIB)I",
+		garbageValue = "82"
 	)
-	static final void method3200(byte[] var0, int var1, int var2, int var3, int var4, CollisionMap[] var5) {
-		int var7;
-		int var8;
-		for (int var6 = 0; var6 < 4; ++var6) {
-			for (var7 = 0; var7 < 64; ++var7) {
-				for (var8 = 0; var8 < 64; ++var8) {
-					if (var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
-						int[] var10000 = var5[var6].flags[var7 + var1];
-						var10000[var8 + var2] &= -16777217;
-					}
-				}
+	static int method3104(int var0, int var1) {
+		if (var0 == -2) {
+			return 12345678;
+		} else if (var0 == -1) {
+			if (var1 < 0) {
+				var1 = 0;
+			} else if (var1 > 127) {
+				var1 = 127;
+			}
+
+			var1 = 127 - var1;
+			return var1;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
+			}
+
+			return (var0 & 65408) + var1;
+		}
+	}
+
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(IIII)V",
+		garbageValue = "606674318"
+	)
+	static final void method3105(int var0, int var1, int var2) {
+		int var3;
+		for (var3 = 0; var3 < 8; ++var3) {
+			for (int var4 = 0; var4 < 8; ++var4) {
+				Tiles.Tiles_heights[var0][var3 + var1][var4 + var2] = 0;
 			}
 		}
 
-		Buffer var10 = new Buffer(var0);
-
-		for (var7 = 0; var7 < 4; ++var7) {
-			for (var8 = 0; var8 < 64; ++var8) {
-				for (int var9 = 0; var9 < 64; ++var9) {
-					class312.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
-				}
+		if (var1 > 0) {
+			for (var3 = 1; var3 < 8; ++var3) {
+				Tiles.Tiles_heights[var0][var1][var3 + var2] = Tiles.Tiles_heights[var0][var1 - 1][var3 + var2];
 			}
+		}
+
+		if (var2 > 0) {
+			for (var3 = 1; var3 < 8; ++var3) {
+				Tiles.Tiles_heights[var0][var3 + var1][var2] = Tiles.Tiles_heights[var0][var3 + var1][var2 - 1];
+			}
+		}
+
+		if (var1 > 0 && Tiles.Tiles_heights[var0][var1 - 1][var2] != 0) {
+			Tiles.Tiles_heights[var0][var1][var2] = Tiles.Tiles_heights[var0][var1 - 1][var2];
+		} else if (var2 > 0 && Tiles.Tiles_heights[var0][var1][var2 - 1] != 0) {
+			Tiles.Tiles_heights[var0][var1][var2] = Tiles.Tiles_heights[var0][var1][var2 - 1];
+		} else if (var1 > 0 && var2 > 0 && Tiles.Tiles_heights[var0][var1 - 1][var2 - 1] != 0) {
+			Tiles.Tiles_heights[var0][var1][var2] = Tiles.Tiles_heights[var0][var1 - 1][var2 - 1];
+		}
+
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-770375157"
+	)
+	public static void method3103(int var0) {
+		if (class197.field2411 != 0) {
+			class197.musicTrackVolume = var0;
+		} else {
+			FaceNormal.midiPcmStream.setPcmStreamVolume(var0);
 		}
 
 	}

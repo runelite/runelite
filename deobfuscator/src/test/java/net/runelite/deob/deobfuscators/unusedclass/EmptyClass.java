@@ -24,7 +24,4 @@
  */
 package net.runelite.deob.deobfuscators.unusedclass;
 
-public class EmptyClass
-{
-
-}
+public class EmptyClass {}

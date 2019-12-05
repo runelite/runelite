@@ -3,7 +3,7 @@ package net.runelite.client.plugins.menuentryswapper.util;
 public enum QuestCapeMode
 {
 	TRIM("Trim"),
-	TELEPORT ("Teleport");
+	TELEPORT("Teleport");
 
 	private final String name;
 

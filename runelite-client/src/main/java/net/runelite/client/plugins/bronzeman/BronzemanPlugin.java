@@ -1,10 +1,19 @@
 package net.runelite.client.plugins.bronzeman;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -19,19 +28,11 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Seth Davis
@@ -53,9 +54,6 @@ public class BronzemanPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private EventBus eventBus;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -63,7 +61,7 @@ public class BronzemanPlugin extends Plugin
 
 	private List<Integer> unlockedItems;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage unlockImage = null;
 	/**
 	 * Loads GrandExchange widgets for further manipulation of the interface
@@ -72,34 +70,24 @@ public class BronzemanPlugin extends Plugin
 	private Widget grandExchangeChatBox;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 		loadUnlockImage();
 		unlockedItems = new ArrayList<>();
 		overlayManager.add(bronzemanOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		unlockedItems = null;
 		overlayManager.remove(bronzemanOverlay);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-
 	}
 
 	/**
 	 * Loads players unlocks on login
 	 **/
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGED_IN)
@@ -111,6 +99,7 @@ public class BronzemanPlugin extends Plugin
 	/**
 	 * Unlocks all new items that are currently not unlocked
 	 **/
+	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged e)
 	{
 		for (Item i : e.getItemContainer().getItems())
@@ -134,6 +123,7 @@ public class BronzemanPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded e)
 	{
 		switch (e.getGroupId())
@@ -151,6 +141,7 @@ public class BronzemanPlugin extends Plugin
 	/**
 	 * Handles greying out items in the GrandExchange
 	 **/
+	@Subscribe
 	public void onGameTick(GameTick e)
 	{
 		if (grandExchangeWindow == null || grandExchangeChatBox == null || grandExchangeWindow.isHidden())
@@ -188,7 +179,7 @@ public class BronzemanPlugin extends Plugin
 	/**
 	 * Queues a new unlock to be properly displayed
 	 **/
-	public void queueItemUnlock(int itemId)
+	private void queueItemUnlock(int itemId)
 	{
 		unlockedItems.add(itemId);
 		bronzemanOverlay.addItemUnlock(itemId);

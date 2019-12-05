@@ -1,6 +1,5 @@
 package net.runelite.gamepack;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -57,5 +56,10 @@ public class Downloader
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args)
+	{
+		gamepack();
 	}
 }

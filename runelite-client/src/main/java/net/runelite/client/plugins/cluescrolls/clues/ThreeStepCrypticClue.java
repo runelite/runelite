@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
@@ -42,15 +43,15 @@ import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_2;
 import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_3;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.util.Text;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.api.util.Text;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 @RequiredArgsConstructor
 public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {

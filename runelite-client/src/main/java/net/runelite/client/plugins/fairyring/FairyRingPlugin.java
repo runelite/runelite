@@ -55,7 +55,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
@@ -92,9 +92,6 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private EventBus eventBus;
-
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
@@ -115,26 +112,12 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		this.autoOpen = config.autoOpen();
-		addSubscriptions();
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("fairyrings"))
@@ -151,11 +134,13 @@ public class FairyRingPlugin extends Plugin
 		return configManager.getConfig(FairyRingConfig.class);
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		setWidgetTextToDestination();
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.FAIRY_RING_PANEL_GROUP_ID)
@@ -242,6 +227,7 @@ public class FairyRingPlugin extends Plugin
 			.build();
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick t)
 	{
 		// This has to happen because the only widget that gets hidden is the tli one

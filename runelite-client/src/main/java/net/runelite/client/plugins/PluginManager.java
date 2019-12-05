@@ -376,6 +376,8 @@ public class PluginManager
 				}
 			});
 
+			plugin.addAnnotatedSubscriptions(eventBus);
+
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			if (!isOutdated && sceneTileManager != null)
 			{
@@ -386,7 +388,6 @@ public class PluginManager
 				}
 			}
 
-			// eventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
@@ -423,6 +424,8 @@ public class PluginManager
 					throw new RuntimeException(ex);
 				}
 			});
+
+			plugin.removeAnnotatedSubscriptions(eventBus);
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
@@ -567,6 +570,7 @@ public class PluginManager
 	 * Plugins in group 2 has dependents in group 1, etc.
 	 * This allows for loading dependent groups serially, starting from the last group,
 	 * while loading plugins within each group in parallel.
+	 *
 	 * @param graph
 	 * @param <T>
 	 * @return

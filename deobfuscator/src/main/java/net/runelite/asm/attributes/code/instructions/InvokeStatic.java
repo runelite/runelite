@@ -40,7 +40,6 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import static net.runelite.asm.execution.StaticStep.stepInto;
-
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;

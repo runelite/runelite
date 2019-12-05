@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,10 +56,9 @@ public class PrivateServerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
 	@Inject
 	private PrivateServerConfig config;
-	@Inject
-	private EventBus eventBus;
 
 	@Provides
 	PrivateServerConfig getConfig(ConfigManager configManager)
@@ -68,7 +67,7 @@ public class PrivateServerPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		if (!RuneLite.allowPrivateServer)
 		{
@@ -79,22 +78,15 @@ public class PrivateServerPlugin extends Plugin
 		{
 			client.setModulus(new BigInteger(config.modulus(), 16));
 		}
-
-		addSubscriptions();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.setModulus(null);
-		eventBus.unregister(this);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("privateserver"))

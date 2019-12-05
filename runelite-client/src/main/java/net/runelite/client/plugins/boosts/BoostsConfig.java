@@ -100,7 +100,7 @@ public interface BoostsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "displayNextBuffChange",
 		name = "Display next buff change",

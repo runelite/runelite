@@ -31,10 +31,11 @@ import java.awt.Polygon;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
-import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
+import static net.runelite.api.EquipmentInventorySlot.*;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
@@ -45,19 +46,23 @@ import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.all;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.any;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.emptySlot;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.range;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
@@ -195,7 +200,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this(text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
 	}
 
-	private EmoteClue(String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(String text, String locationName, @Nullable STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this.text = text;
 		this.locationName = locationName;

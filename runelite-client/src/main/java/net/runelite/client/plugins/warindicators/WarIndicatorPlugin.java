@@ -36,7 +36,7 @@ import static net.runelite.api.MenuOpcode.*;
 import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -69,9 +69,6 @@ public class WarIndicatorPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highLightCallers;
 	@Getter(AccessLevel.PACKAGE)
@@ -100,29 +97,22 @@ public class WarIndicatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(warIndicatorOverlay);
 		overlayManager.add(warIndicatorMiniMapOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(warIndicatorOverlay);
 		overlayManager.remove(warIndicatorMiniMapOverlay);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-	}
-
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded onMenuEntryAdded)
 	{
 		int type = onMenuEntryAdded.getOpcode();
@@ -194,6 +184,7 @@ public class WarIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("warIndicators"))

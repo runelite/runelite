@@ -44,7 +44,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -79,9 +79,6 @@ public class ThievingPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private ThievingSession session;
 
@@ -98,9 +95,8 @@ public class ThievingPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		this.statTimeout = config.statTimeout();
 
@@ -115,24 +111,14 @@ public class ThievingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(chestOverlay);
 		session = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -141,6 +127,7 @@ public class ThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
@@ -159,6 +146,7 @@ public class ThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
@@ -190,6 +178,7 @@ public class ThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
@@ -207,6 +196,7 @@ public class ThievingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"thieving".equals(event.getGroup()))

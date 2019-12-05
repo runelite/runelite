@@ -24,7 +24,4 @@
  */
 package net.runelite.cache.definitions;
 
-public interface WorldMapTypeBase
-{
-
-}
+public interface WorldMapTypeBase {}

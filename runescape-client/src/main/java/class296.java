@@ -1,35 +1,16 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ka")
+@ObfuscatedName("kk")
 public final class class296 {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		longValue = 2084337511336446697L
+		longValue = -6454763268597817631L
 	)
-	static long field3684;
-	@ObfuscatedName("t")
+	static long field3695;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		longValue = 1232556563702335995L
+		longValue = -1124279977682692331L
 	)
-	static long field3683;
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(IIB)Z",
-		garbageValue = "1"
-	)
-	static final boolean method5547(int var0, int var1) {
-		ObjectDefinition var2 = WorldMapDecorationType.getObjectDefinition(var0);
-		if (var1 == 11) {
-			var1 = 10;
-		}
-
-		if (var1 >= 5 && var1 <= 8) {
-			var1 = 4;
-		}
-
-		return var2.method4737(var1);
-	}
+	static long field3696;
 }

@@ -1,68 +1,56 @@
-import java.applet.Applet;
-import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hq")
 public class class226 {
-	@ObfuscatedName("q")
+	@ObfuscatedName("gn")
+	@Export("regions")
+	static int[] regions;
+
+	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-		garbageValue = "-1976934272"
+		signature = "([BI)[B",
+		garbageValue = "-424113908"
 	)
-	static boolean method4275(String var0, int var1, String var2) {
-		if (var1 == 0) {
-			try {
-				if (!class51.field416.startsWith("win")) {
-					throw new Exception();
-				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
-					throw new Exception();
-				} else {
-					String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-					for (int var4 = 0; var4 < var0.length(); ++var4) {
-						if (var13.indexOf(var0.charAt(var4)) == -1) {
-							throw new Exception();
-						}
-					}
-
-					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-					return true;
-				}
-			} catch (Throwable var8) {
-				return false;
-			}
-		} else if (var1 == 1) {
-			try {
-				Applet var7 = class51.applet;
-				Object[] var5 = new Object[]{(new URL(class51.applet.getCodeBase(), var0)).toString()};
-				Object var3 = JSObject.getWindow(var7).call(var2, var5);
-				return var3 != null;
-			} catch (Throwable var9) {
-				return false;
-			}
-		} else if (var1 == 2) {
-			try {
-				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_blank");
-				return true;
-			} catch (Exception var10) {
-				return false;
-			}
-		} else if (var1 == 3) {
-			try {
-				class47.method923(class51.applet, "loggedout");
-			} catch (Throwable var12) {
-			}
-
-			try {
-				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_top");
-				return true;
-			} catch (Exception var11) {
-				return false;
-			}
+	@Export("decompressBytes")
+	static final byte[] decompressBytes(byte[] var0) {
+		Buffer var1 = new Buffer(var0);
+		int var2 = var1.readUnsignedByte();
+		int var3 = var1.readInt();
+		if (var3 < 0 || AbstractArchive.field3152 != 0 && var3 > AbstractArchive.field3152) {
+			throw new RuntimeException();
+		} else if (var2 == 0) {
+			byte[] var4 = new byte[var3];
+			var1.readBytes(var4, 0, var3);
+			return var4;
 		} else {
-			throw new IllegalArgumentException();
+			int var6 = var1.readInt();
+			if (var6 >= 0 && (AbstractArchive.field3152 == 0 || var6 <= AbstractArchive.field3152)) {
+				byte[] var5 = new byte[var6];
+				if (var2 == 1) {
+					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
+				} else {
+					AbstractArchive.gzipDecompressor.decompress(var1, var5);
+				}
+
+				return var5;
+			} else {
+				throw new RuntimeException();
+			}
 		}
+	}
+
+	@ObfuscatedName("ki")
+	@ObfuscatedSignature(
+		signature = "([BIB)V",
+		garbageValue = "-41"
+	)
+	static void method4200(byte[] var0, int var1) {
+		if (Client.randomDatData == null) {
+			Client.randomDatData = new byte[24];
+		}
+
+		class300.writeRandomDat(var0, var1, Client.randomDatData, 0, 24);
 	}
 }

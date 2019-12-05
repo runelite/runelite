@@ -76,7 +76,7 @@ class MiningOverlay extends Overlay
 		}
 
 		Instant now = Instant.now();
-		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
+		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext(); )
 		{
 			Color pieFillColor = config.progressPieColor();
 			Color pieBorderColor;
@@ -133,7 +133,7 @@ class MiningOverlay extends Overlay
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
-	 *
+	 * <p>
 	 * This method assumes that the given point is already in the mlm
 	 * and is not meaningful when outside the mlm.
 	 *

@@ -43,7 +43,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -84,20 +84,15 @@ public class TarnsLairPlugin extends Plugin
 	@Inject
 	private TarnsLairOverlay overlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		staircases.clear();
 		wallTraps.clear();
@@ -105,54 +100,50 @@ public class TarnsLairPlugin extends Plugin
 		inLair = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
-		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
-		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 		inLair = (regionID == TARNS_LAIR_NORTH_REGION || regionID == TARNS_LAIR_SOUTH_REGION);
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
+	@Subscribe
 	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)

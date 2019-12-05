@@ -31,7 +31,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -67,9 +67,6 @@ public class InstanceMapPlugin extends Plugin
 	@Inject
 	private MouseManager mouseManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
 	public void configure(Binder binder)
 	{
@@ -87,9 +84,8 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		addCustomOptions();
@@ -99,10 +95,8 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlay.setShowMap(false);
 		overlayManager.remove(overlay);
 		removeCustomOptions();
@@ -111,12 +105,7 @@ public class InstanceMapPlugin extends Plugin
 		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WidgetMenuOptionClicked.class, this, this::onWidgetMenuOptionClicked);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		overlay.onGameStateChange(event);
@@ -127,6 +116,7 @@ public class InstanceMapPlugin extends Plugin
 		return event.getMenuOption().equals(widgetMenuOption.getMenuOption()) && event.getMenuTarget().equals(widgetMenuOption.getMenuTarget());
 	}
 
+	@Subscribe
 	private void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() != WORLD_MAP_OPTION)

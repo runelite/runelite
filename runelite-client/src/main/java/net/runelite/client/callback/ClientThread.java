@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 import java.util.function.BooleanSupplier;
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -41,6 +42,7 @@ public class ClientThread implements Executor
 	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
 
 	@Inject
+	@Nullable
 	private Client client;
 
 	public void invoke(Runnable r)

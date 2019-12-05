@@ -26,14 +26,13 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.collect.ImmutableList;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import net.runelite.api.NPC;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 
 
 @Data
@@ -41,17 +40,17 @@ class Healer
 {
 	@Getter(AccessLevel.NONE)
 	private static final List<List<int[]>> CODES = ImmutableList.of(
-			// ImmutableList.of(firstCallFood, secondCallFood, lastFoodTime),
-			ImmutableList.of(new int[]{1, 1}, new int[]{0, 0}, new int[]{0, 0}),
-			ImmutableList.of(new int[]{1, 1, 2}, new int[]{0, 0, 0}, new int[]{0, 0, 21}),
-			ImmutableList.of(new int[]{1, 6, 2}, new int[]{0, 0, 0}, new int[]{0, 0, 0}),
-			ImmutableList.of(new int[]{2, 5, 2, 0}, new int[]{0, 0, 7, 10}, new int[]{0, 0, 0, 0}),
-			ImmutableList.of(new int[]{2, 5, 2, 3, 0}, new int[]{0, 0, 0, 0, 7}, new int[]{0, 0, 21, 30, 0}),
-			ImmutableList.of(new int[]{3, 5, 2, 2, 0, 0}, new int[]{0, 0, 0, 2, 9, 10}, new int[]{12, 18, 21, 0, 0, 0}),
-			ImmutableList.of(new int[]{3, 7, 1, 1, 0, 0, 0}, new int[]{2, 0, 1, 1, 2, 4, 10}, new int[]{0, 21, 0, 0, 30, 45, 0}),
-			ImmutableList.of(new int[]{1, 9, 1, 1, 0, 0, 0}, new int[]{1, 0, 1, 1, 2, 2, 10}, new int[]{0, 0, 0, 0, 33, 42, 0}),
-			ImmutableList.of(new int[]{2, 8, 1, 1, 0, 0, 0, 0}, new int[]{1, 0, 1, 1, 2, 1, 1, 10}, new int[]{0, 21, 0, 0, 0, 0, 0, 0, 0}),
-			ImmutableList.of(new int[]{2, 5, 1, 1, 0, 0, 0}, new int[]{1, 0, 1, 1, 4, 4, 8}, new int[]{21, 33, 0, 33, 30, 45, 0}));
+		// ImmutableList.of(firstCallFood, secondCallFood, lastFoodTime),
+		ImmutableList.of(new int[]{1, 1}, new int[]{0, 0}, new int[]{0, 0}),
+		ImmutableList.of(new int[]{1, 1, 2}, new int[]{0, 0, 0}, new int[]{0, 0, 21}),
+		ImmutableList.of(new int[]{1, 6, 2}, new int[]{0, 0, 0}, new int[]{0, 0, 0}),
+		ImmutableList.of(new int[]{2, 5, 2, 0}, new int[]{0, 0, 7, 10}, new int[]{0, 0, 0, 0}),
+		ImmutableList.of(new int[]{2, 5, 2, 3, 0}, new int[]{0, 0, 0, 0, 7}, new int[]{0, 0, 21, 30, 0}),
+		ImmutableList.of(new int[]{3, 5, 2, 2, 0, 0}, new int[]{0, 0, 0, 2, 9, 10}, new int[]{12, 18, 21, 0, 0, 0}),
+		ImmutableList.of(new int[]{3, 7, 1, 1, 0, 0, 0}, new int[]{2, 0, 1, 1, 2, 4, 10}, new int[]{0, 21, 0, 0, 30, 45, 0}),
+		ImmutableList.of(new int[]{1, 9, 1, 1, 0, 0, 0}, new int[]{1, 0, 1, 1, 2, 2, 10}, new int[]{0, 0, 0, 0, 33, 42, 0}),
+		ImmutableList.of(new int[]{2, 8, 1, 1, 0, 0, 0, 0}, new int[]{1, 0, 1, 1, 2, 1, 1, 10}, new int[]{0, 21, 0, 0, 0, 0, 0, 0, 0}),
+		ImmutableList.of(new int[]{2, 5, 1, 1, 0, 0, 0}, new int[]{1, 0, 1, 1, 4, 4, 8}, new int[]{21, 33, 0, 33, 30, 45, 0}));
 
 	private final NPC npc;
 
@@ -90,7 +89,7 @@ class Healer
 		else
 		{
 			long time = Duration.between(timeLastPoisoned, Instant.now()).getSeconds();
-			return time > 20 ? 0 : (int)(20 - time);
+			return time > 20 ? 0 : (int) (20 - time);
 		}
 	}
 }

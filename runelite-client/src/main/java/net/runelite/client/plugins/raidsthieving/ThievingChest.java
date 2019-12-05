@@ -65,7 +65,7 @@ public class ThievingChest
 	/**
 	 * Constructor for a ThievingChest object
 	 *
-	 * @param worldPoint The world location of the gameobject that corresponds with this trap.
+	 * @param worldPoint    The world location of the gameobject that corresponds with this trap.
 	 * @param instancePoint The world location accounting for instances of the gameobject that corresponds with this trap.
 	 */
 	ThievingChest(final WorldPoint worldPoint, final Point instancePoint)

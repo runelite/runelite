@@ -45,7 +45,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -79,9 +79,6 @@ public class MusicIndicatorPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private EventBus eventBus;
-
 	// Mapping of relevant varps to their values, used to compare against new values
 	private final Map<VarPlayer, Integer> musicTrackVarpValues = new HashMap<>();
 
@@ -90,24 +87,16 @@ public class MusicIndicatorPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 		loggingIn = true;
 	}
 
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
 		musicTrackVarpValues.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -120,6 +109,7 @@ public class MusicIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (!loggingIn)
@@ -136,6 +126,7 @@ public class MusicIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int idx = event.getIndex();
@@ -182,6 +173,7 @@ public class MusicIndicatorPlugin extends Plugin
 
 	/**
 	 * Get the id for a track identified by the given varp and a bit index
+	 *
 	 * @param variableId
 	 * @param bit
 	 * @return

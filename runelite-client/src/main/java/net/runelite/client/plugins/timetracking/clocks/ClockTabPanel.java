@@ -40,7 +40,6 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
@@ -96,13 +95,6 @@ public class ClockTabPanel extends TabContentPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		rebuild();
-	}
-
-	// The max panel width is 225 but the + sign gets cut off at 225 so we set it at 223
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(PluginPanel.PANEL_WIDTH - 2, super.getPreferredSize().height);
 	}
 
 	/**

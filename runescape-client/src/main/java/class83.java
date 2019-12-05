@@ -1,86 +1,116 @@
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("ch")
 public class class83 {
-	@ObfuscatedName("a")
-	static final BigInteger field1144;
-	@ObfuscatedName("t")
-	static final BigInteger field1145;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 543275717
+	@ObfuscatedName("u")
+	static final BigInteger field1158;
+	@ObfuscatedName("f")
+	static final BigInteger field1160;
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "Lkg;"
 	)
-	static int field1146;
+	@Export("NetCache_reference")
+	static Buffer NetCache_reference;
 
 	static {
-		field1144 = new BigInteger("10001", 16);
-		field1145 = new BigInteger("8ffe6122bc1531a9d3909c2cefb420d9099dcda7494cf98fcd054d7eac1f32c03cc1cff0955965d35dfb6bd322c5e9201941edfa6f26cfff45524daf4c6b09c8a121f3b0262443ca7164bbad436420e7fd23d9d2b74f228f68f961563e337b95772bf046cf05bb699549141325085c55e5d44ea15e3c7f17dd6c03d521f963f7", 16);
+		field1158 = new BigInteger("10001", 16);
+		field1160 = new BigInteger("94e80a7ee588d1a5fb0774efe8f6014553fea4aa4055827491c7e94dff7547dde03cd70414c02606e8d2ef1bcb94156dfb4f4abd7b407d9a9956eec5d65bf0afa119cbbef760e19e26954f30fc19a91f3cd3cef7e9bf824f15d2b41f2fa4c59059d88212a350ada947c584a6a1b1e01ce33399aeb88dade6d1e4601f5be82cbb", 16);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Lhq;III)[Llx;",
-		garbageValue = "676628248"
+		signature = "(Lhf;Lhf;Lhf;I)V",
+		garbageValue = "568934897"
 	)
-	@Export("SpriteBuffer_getSpriteArray")
-	public static Sprite[] SpriteBuffer_getSpriteArray(AbstractArchive var0, int var1, int var2) {
-		if (!class32.method618(var0, var1, var2)) {
-			return null;
-		} else {
-			Sprite[] var4 = new Sprite[class325.SpriteBuffer_spriteCount];
+	public static void method2090(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2) {
+		SequenceDefinition.SequenceDefinition_archive = var0;
+		SequenceDefinition.SequenceDefinition_animationsArchive = var1;
+		SequenceDefinition.SequenceDefinition_skeletonsArchive = var2;
+	}
 
-			for (int var5 = 0; var5 < class325.SpriteBuffer_spriteCount; ++var5) {
-				Sprite var6 = var4[var5] = new Sprite();
-				var6.width = class325.SpriteBuffer_spriteWidth;
-				var6.height = class325.SpriteBuffer_spriteHeight;
-				var6.xOffset = SecureRandomFuture.SpriteBuffer_xOffsets[var5];
-				var6.yOffset = HealthBar.SpriteBuffer_yOffsets[var5];
-				var6.subWidth = SecureRandomCallable.SpriteBuffer_spriteWidths[var5];
-				var6.subHeight = AttackOption.SpriteBuffer_spriteHeights[var5];
-				int var7 = var6.subHeight * var6.subWidth;
-				byte[] var8 = class325.SpriteBuffer_pixels[var5];
-				var6.pixels = new int[var7];
+	@ObfuscatedName("am")
+	@ObfuscatedSignature(
+		signature = "(ILci;ZI)I",
+		garbageValue = "480831567"
+	)
+	static int method2091(int var0, Script var1, boolean var2) {
+		int var3;
+		int var4;
+		int var6;
+		if (var0 == ScriptOpcodes.ENUM_STRING) {
+			GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
+			var3 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
+			var4 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
+			EnumDefinition var5 = Language.getEnum(var3);
+			if (var5.outputType != 's') {
+			}
 
-				for (int var9 = 0; var9 < var7; ++var9) {
-					var6.pixels[var9] = class325.SpriteBuffer_spritePalette[var8[var9] & 255];
+			for (var6 = 0; var6 < var5.outputCount; ++var6) {
+				if (var4 == var5.keys[var6]) {
+					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var5.strVals[var6];
+					var5 = null;
+					break;
 				}
 			}
 
-			WorldMapData_1.method787();
-			return var4;
-		}
-	}
+			if (var5 != null) {
+				Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var5.defaultStr;
+			}
 
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "13"
-	)
-	@Export("Messages_getNextChatID")
-	static int Messages_getNextChatID(int var0) {
-		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
-		if (var1 == null) {
-			return -1;
+			return 1;
+		} else if (var0 != ScriptOpcodes.ENUM) {
+			if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
+				var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
+				EnumDefinition var10 = Language.getEnum(var3);
+				Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var10.size();
+				return 1;
+			} else {
+				return 2;
+			}
 		} else {
-			return var1.previousDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.previousDual).count;
-		}
-	}
+			GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 4;
+			var3 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
+			var4 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
+			int var9 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 2];
+			var6 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 3];
+			EnumDefinition var7 = Language.getEnum(var9);
+			if (var3 == var7.inputType && var4 == var7.outputType) {
+				for (int var8 = 0; var8 < var7.outputCount; ++var8) {
+					if (var6 == var7.keys[var8]) {
+						if (var4 == 115) {
+							Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var7.strVals[var8];
+						} else {
+							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var7.intVals[var8];
+						}
 
-	@ObfuscatedName("if")
-	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "1903758255"
-	)
-	static final void method2212(int var0, int var1, int var2, int var3) {
-		for (int var4 = 0; var4 < Client.rootWidgetCount; ++var4) {
-			if (Client.rootWidgetXs[var4] + Client.rootWidgetWidths[var4] > var0 && Client.rootWidgetXs[var4] < var0 + var2 && Client.rootWidgetYs[var4] + Client.rootWidgetHeights[var4] > var1 && Client.rootWidgetYs[var4] < var3 + var1) {
-				Client.field842[var4] = true;
+						var7 = null;
+						break;
+					}
+				}
+
+				if (var7 != null) {
+					if (var4 == 115) {
+						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var7.defaultStr;
+					} else {
+						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var7.defaultInt;
+					}
+				}
+
+				return 1;
+			} else {
+				if (var4 == 115) {
+					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "null";
+				} else {
+					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
+				}
+
+				return 1;
 			}
 		}
-
 	}
 }

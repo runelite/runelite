@@ -36,7 +36,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.attackstyle.WeaponType;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +43,7 @@ import static org.mockito.Mockito.when;
 public enum RangeMaxHitConfig implements MaxHitConfig
 {
 
-	MAGIC_SHORTBOW(new int[] {75, 83, 99}, 49, WeaponType.TYPE_3, 1, new Item[]
+	MAGIC_SHORTBOW(new int[]{75, 83, 99}, 49, WeaponType.TYPE_3, 1, new Item[]
 		{
 			mockItem(ItemID.IRON_FULL_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -59,9 +58,9 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING),
 			mockItem(ItemID.RUNE_ARROW)
-		}, new int[] {15, 16, 19}),
+		}, new int[]{15, 16, 19}),
 
-	RUNE_CROSSBOW(new int[] {75, 83, 99}, 115, WeaponType.TYPE_5, 0, new Item[]
+	RUNE_CROSSBOW(new int[]{75, 83, 99}, 115, WeaponType.TYPE_5, 0, new Item[]
 		{
 			mockItem(ItemID.IRON_FULL_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -76,9 +75,9 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING),
 			mockItem(ItemID.RUNITE_BOLTS)
-		}, new int[] {24, 26, 31}),
+		}, new int[]{24, 26, 31}),
 
-	BLOwPIPE(new int[] {75, 83, 99}, 50, WeaponType.TYPE_19, 1, new Item[]
+	BLOwPIPE(new int[]{75, 83, 99}, 50, WeaponType.TYPE_19, 1, new Item[]
 		{
 			mockItem(ItemID.IRON_FULL_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -92,9 +91,9 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {15, 16, 19}),
+		}, new int[]{15, 16, 19}),
 
-	VOID_SET(new int[] {75, 83, 99}, 115, WeaponType.TYPE_5, 1, new Item[]
+	VOID_SET(new int[]{75, 83, 99}, 115, WeaponType.TYPE_5, 1, new Item[]
 		{
 			mockItem(ItemID.VOID_RANGER_HELM),
 			mockItem(ItemID.BLACK_CAPE),
@@ -108,7 +107,7 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.VOID_KNIGHT_GLOVES),
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
-		}, new int[] {26, 28, 33}),
+		}, new int[]{26, 28, 33}),
 
 	;
 

@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.puzzlesolver.solver;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum PuzzleSwapPattern
 {
 	ROTATE_LEFT_UP(new int[]{1, -1, 0, -1, -1, -1, -1, 0}, 1, 1), //Reference point

@@ -26,11 +26,12 @@
 package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.util.ImageUtil;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum TeleportLocationData
 {
 	VARROCK(TeleportType.NORMAL_MAGIC, "Varrock", 25, new WorldPoint(3213, 3424, 0), "varrock_teleport_icon.png"),
@@ -153,6 +154,7 @@ enum TeleportLocationData
 	OBELISK_44(TeleportType.OTHER, "Obelisk", "44", new WorldPoint(2980, 3866, 0), "obelisk_icon.png"),
 	OBELISK_50(TeleportType.OTHER, "Obelisk", "50", new WorldPoint(3307, 3916, 0), "obelisk_icon.png"),
 	WILDERNESS_CRABS_TELEPORT(TeleportType.OTHER, "Wilderness crabs teleport", new WorldPoint(3348, 3783, 0), "wilderness_crabs_teleport_icon.png"),
+	CANOE_WILDERNESS(TeleportType.OTHER, "Canoe (No departure)", "35", new WorldPoint(3141, 3796, 0), "transportation_icon.png"),
 
 	// Achievement Diary
 	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),

@@ -38,7 +38,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,9 +73,6 @@ public class BabyHydraPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Provides
 	BabyHydraConfig provideConfig(ConfigManager configManager)
 	{
@@ -97,10 +94,9 @@ public class BabyHydraPlugin extends Plugin
 	private boolean PrayerHelper;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		if (this.TextIndicator)
 		{
@@ -114,10 +110,8 @@ public class BabyHydraPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(hydraOverlay);
 		overlayManager.remove(hydraPrayOverlay);
 		overlayManager.remove(hydraIndicatorOverlay);
@@ -125,14 +119,7 @@ public class BabyHydraPlugin extends Plugin
 		hydraattacks.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("hydra"))
@@ -168,6 +155,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC hydra = event.getNpc();
@@ -177,6 +165,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC hydra = event.getNpc();
@@ -187,6 +176,7 @@ public class BabyHydraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		Actor monster = event.getActor();

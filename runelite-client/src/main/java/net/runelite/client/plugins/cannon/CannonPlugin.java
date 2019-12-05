@@ -48,7 +48,6 @@ import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -56,7 +55,8 @@ import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -79,36 +79,49 @@ public class CannonPlugin extends Plugin
 	);
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
+
 	@Getter(AccessLevel.PACKAGE)
 	private int cballsLeft;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean cannonPlaced;
+
 	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint cannonPosition;
+
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject cannon;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> spotPoints = new ArrayList<>();
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private CannonOverlay cannonOverlay;
+
 	@Inject
 	private CannonSpotOverlay cannonSpotOverlay;
+
 	@Inject
 	private CannonConfig config;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
-	@Inject
-	private EventBus eventbus;
+
 	private boolean lock;
 	private boolean showEmptyCannonNotification;
 	private boolean showInfobox;
@@ -128,10 +141,9 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
@@ -139,10 +151,8 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventbus.unregister(this);
-
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
@@ -155,16 +165,7 @@ public class CannonPlugin extends Plugin
 		spotPoints.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventbus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventbus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventbus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventbus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
-		eventbus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventbus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
@@ -175,6 +176,7 @@ public class CannonPlugin extends Plugin
 		cannonSpotOverlay.setHidden(!ItemUtil.containsAllItemIds(event.getItemContainer().getItems(), CANNON_PARTS));
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cannon"))
@@ -196,8 +198,8 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Schedule(
-			period = 1,
-			unit = ChronoUnit.SECONDS
+		period = 1,
+		unit = ChronoUnit.SECONDS
 	)
 	public void checkSpots()
 	{
@@ -218,6 +220,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
@@ -232,6 +235,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		final Projectile projectile = event.getProjectile();
@@ -247,6 +251,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -281,7 +286,7 @@ public class CannonPlugin extends Plugin
 				// counter doesn't decrease if the player has been too far away
 				// from the cannon due to the projectiels not being in memory,
 				// so our counter can be higher than it is supposed to be.
-				int amt = Integer.valueOf(m.group());
+				int amt = Integer.parseInt(m.group());
 				if (cballsLeft + amt >= MAX_CBALLS)
 				{
 					skipProjectileCheckThisTick = true;
@@ -330,6 +335,7 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		skipProjectileCheckThisTick = false;

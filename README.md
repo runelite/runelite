@@ -2,15 +2,17 @@
 
 
 
-# OpenOSRS 
+# OpenOSRS  
+
 [![Build Status](https://github.com/open-osrs/runelite/workflows/OpenOSRS%20-%20CI%20(push)/badge.svg)](https://github.com/open-osrs/runelite/actions?query=workflow%3A%22OpenOSRS+-+CI+%28push%29%22)
 [![HitCount](http://hits.dwyl.io/open-osrs/runelite.svg)](http://hits.dwyl.io/open-osrs/runelite)  
-[OpenOSRS](https://openosrs.com)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying more open-source. We are not affiliated with RuneLite.
+[OpenOSRS](https://openosrs.com)  is an extended version of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying fully open-source. We are not affiliated with RuneLite.
 
-## Discord
+## Discord  
+
 [![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m)
 
-## Project Layout
+## Project Layout  
 
 - [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
 - [deobfuscator](deobfuscator/src/main/java/net/runelite/deob) - Can decompile and cleanup gamepacks as well as map updates to newer revs
@@ -23,38 +25,18 @@
 - [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
-## Building
+## Building  
+
 We have migrated the project to Gradle. Information on how to setup and build the project can be found at https://github.com/open-osrs/runelite/wiki/Building-with-IntelliJ-IDEA
 
-## Private Servers
-Currently we support RSMod which can be found at: https://github.com/Tomm0017/rsmod but should work with any server that follows osrs protocol.
-```
-Gradle  
-enter  
-run --args='--rs=RSPS'  
-into the tasks box
-
-Jar
-Use -rs=RSPS arg.
-
-Exe
-Use --clientargs="--rs=RSPS" arg.
-
------
-
-Codebase is set to 127.0.0.1 by default and can be changed in the Private Server plugin (requires restart) 
-Update modulus in Private Server plugin. 
-    
-Disable Default World plugin if you have it enabled, this causes issues with codebase.
-```  
-## License
+## License  
 
 OpenOSRS is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 
-## Contribute and Develop
+## Contribute and Develop  
 
 We've set up a separate document for our [contribution guidelines](https://github.com/open-osrs/runelite/blob/master/.github/CONTRIBUTING.md).
 
-## Supported By
+## Supported By  
 
 OpenOSRS uses profiling tools provided by [![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/)

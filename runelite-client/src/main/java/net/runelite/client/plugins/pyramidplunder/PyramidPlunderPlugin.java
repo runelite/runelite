@@ -55,7 +55,7 @@ import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -80,7 +80,7 @@ public class PyramidPlunderPlugin extends Plugin
 	static final int CLOSED_DOOR = TOMB_DOOR_20948;
 	static final int OPENED_DOOR = TOMB_DOOR_20949;
 
-//	// Next 2 are in here for anyone who wants to spend more time on this
+	//	// Next 2 are in here for anyone who wants to spend more time on this
 //	private static final Set<Integer> LOOTABLE = ImmutableSet.of(
 //		GRAND_GOLD_CHEST,
 //		SARCOPHAGUS_21255,
@@ -120,9 +120,6 @@ public class PyramidPlunderPlugin extends Plugin
 	@Inject
 	private PyramidPlunderOverlay pyramidPlunderOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter
 	private boolean isInGame;
 
@@ -147,35 +144,20 @@ public class PyramidPlunderPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(pyramidPlunderOverlay);
 		highlighted.clear();
 		reset();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
-		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
-		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"pyramidplunder".equals(event.getGroup()))
@@ -225,6 +207,7 @@ public class PyramidPlunderPlugin extends Plugin
 		);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -258,6 +241,7 @@ public class PyramidPlunderPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int lastValue = pyramidTimer;
@@ -292,31 +276,37 @@ public class PyramidPlunderPlugin extends Plugin
 		removeTimer();
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
+	@Subscribe
 	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);

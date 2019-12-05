@@ -34,6 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import joptsimple.internal.Strings;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.Notifier;
@@ -53,13 +54,13 @@ public class ClockManager
 	@Inject
 	private Notifier notifier;
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<Timer> timers = new CopyOnWriteArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
 
-	@Getter
+	@Getter(AccessLevel.PUBLIC)
 	private ClockTabPanel clockTabPanel;
 
 	ClockManager()
@@ -153,9 +154,7 @@ public class ClockManager
 		if (!Strings.isNullOrEmpty(timersJson))
 		{
 			final Gson gson = new Gson();
-			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>()
-			{
-			}.getType());
+			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>() {}.getType());
 
 			this.timers.clear();
 			this.timers.addAll(timers);
@@ -170,9 +169,7 @@ public class ClockManager
 		if (!Strings.isNullOrEmpty(stopwatchesJson))
 		{
 			final Gson gson = new Gson();
-			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>()
-			{
-			}.getType());
+			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>() {}.getType());
 
 			this.stopwatches.clear();
 			this.stopwatches.addAll(stopwatches);

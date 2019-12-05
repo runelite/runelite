@@ -55,7 +55,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -115,9 +115,6 @@ public class PoisonPlugin extends Plugin
 	@Inject
 	private PoisonActorOverlay actorOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter
 	private int lastDamage;
 
@@ -145,10 +142,9 @@ public class PoisonPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		actorOverlay.setFontSize(this.fontSize);
 		overlayManager.add(poisonOverlay);
@@ -165,10 +161,8 @@ public class PoisonPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(poisonOverlay);
 
 		if (infobox != null)
@@ -187,16 +181,7 @@ public class PoisonPlugin extends Plugin
 		clientThread.invoke(this::resetHealthIcon);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
-	}
-
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		final int poisonValue = client.getVar(VarPlayer.POISON);
@@ -245,6 +230,7 @@ public class PoisonPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		Hitsplat.HitsplatType type = event.getHitsplat().getHitsplatType();
@@ -309,6 +295,7 @@ public class PoisonPlugin extends Plugin
 		info.setLastDamageTick(tickCount);
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		int tickCount = client.getTickCount();
@@ -317,16 +304,19 @@ public class PoisonPlugin extends Plugin
 		poisonedActors.values().removeIf(info -> info.getLastDamageTick() + POISON_TICK_TICKS + 5 < tickCount);
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		poisonedActors.remove(event.getNpc());
 	}
 
+	@Subscribe
 	private void onPlayerDespawned(PlayerDespawned event)
 	{
 		poisonedActors.remove(event.getPlayer());
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(PoisonConfig.GROUP))

@@ -27,11 +27,9 @@ package net.runelite.client.plugins.fps;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -71,35 +69,22 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private DrawManager drawManager;
 
-	@Inject
-	private FpsConfig fpsConfig;
-
-	@Inject
-	private EventBus eventBus;
-
-	@Getter(AccessLevel.PACKAGE)
-	private FpsLimitMode limitMode;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean drawFps;
-
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FpsConfig.class);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			drawListener.reloadConfig();
-
-			limitMode = fpsConfig.limitMode();
-			drawFps = fpsConfig.drawFps();
 		}
 	}
 
+	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		drawListener.onFocusChanged(event);
@@ -107,29 +92,18 @@ public class FpsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
-
-		limitMode = fpsConfig.limitMode();
-		drawFps = fpsConfig.drawFps();
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(FocusChanged.class, this, this::onFocusChanged);
-	}
 }

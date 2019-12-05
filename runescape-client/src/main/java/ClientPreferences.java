@@ -7,34 +7,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bs")
 @Implements("ClientPreferences")
 public class ClientPreferences {
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 1383703517
+		intValue = -1145191991
 	)
 	@Export("ClientPreferences_optionCount")
 	static int ClientPreferences_optionCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("ak")
+	static String field1052;
+	@ObfuscatedName("b")
 	@Export("roofsHidden")
 	boolean roofsHidden;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@Export("titleMusicDisabled")
 	boolean titleMusicDisabled;
-	@ObfuscatedName("v")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1268365417
+		intValue = -1051174515
 	)
 	@Export("windowMode")
 	int windowMode;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@Export("rememberedUsername")
 	String rememberedUsername;
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@Export("hideUsername")
 	boolean hideUsername;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@Export("parameters")
 	LinkedHashMap parameters;
 
@@ -47,11 +49,11 @@ public class ClientPreferences {
 		this.rememberedUsername = null;
 		this.hideUsername = false;
 		this.parameters = new LinkedHashMap();
-		this.method1957(true);
+		this.method1856(true);
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Lkc;)V"
+		signature = "(Lkg;)V"
 	)
 	ClientPreferences(Buffer var1) {
 		this.windowMode = 1;
@@ -91,26 +93,26 @@ public class ClientPreferences {
 					this.hideUsername = var1.readBoolean();
 				}
 			} else {
-				this.method1957(true);
+				this.method1856(true);
 			}
 		} else {
-			this.method1957(true);
+			this.method1856(true);
 		}
 
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "(ZI)V",
-		garbageValue = "271600309"
+		garbageValue = "1503707935"
 	)
-	void method1957(boolean var1) {
+	void method1856(boolean var1) {
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(I)Lkc;",
-		garbageValue = "1659906273"
+		signature = "(I)Lkg;",
+		garbageValue = "-650033927"
 	)
 	@Export("toBuffer")
 	Buffer toBuffer() {
@@ -133,13 +135,50 @@ public class ClientPreferences {
 		return var1;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "1282610090"
+		signature = "(Lij;IIIBZI)V",
+		garbageValue = "-4346330"
 	)
-	@Export("parseInt")
-	public static int parseInt(CharSequence var0) {
-		return class192.parseIntCustomRadix(var0, 10, true);
+	@Export("requestNetFile")
+	static void requestNetFile(Archive var0, int var1, int var2, int var3, byte var4, boolean var5) {
+		long var6 = (long)((var1 << 16) + var2);
+		NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
+		if (var8 == null) {
+			var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var6);
+			if (var8 == null) {
+				var8 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var6);
+				if (var8 != null) {
+					if (var5) {
+						var8.removeDual();
+						NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
+						--NetCache.NetCache_pendingWritesCount;
+						++NetCache.NetCache_pendingPriorityWritesCount;
+					}
+
+				} else {
+					if (!var5) {
+						var8 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var6);
+						if (var8 != null) {
+							return;
+						}
+					}
+
+					var8 = new NetFileRequest();
+					var8.archive = var0;
+					var8.crc = var3;
+					var8.padding = var4;
+					if (var5) {
+						NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
+						++NetCache.NetCache_pendingPriorityWritesCount;
+					} else {
+						NetCache.NetCache_pendingWritesQueue.addFirst(var8);
+						NetCache.NetCache_pendingWrites.put(var8, var6);
+						++NetCache.NetCache_pendingWritesCount;
+					}
+
+				}
+			}
+		}
 	}
 }

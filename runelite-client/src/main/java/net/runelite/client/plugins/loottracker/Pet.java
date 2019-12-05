@@ -26,10 +26,11 @@ package net.runelite.client.plugins.loottracker;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@Getter
+@Getter(AccessLevel.PACKAGE)
 public enum Pet
 {
 	// GWD Pets

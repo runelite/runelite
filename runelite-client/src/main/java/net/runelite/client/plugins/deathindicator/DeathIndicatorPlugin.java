@@ -44,11 +44,9 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -58,6 +56,8 @@ import net.runelite.api.util.Text;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -80,6 +80,7 @@ public class DeathIndicatorPlugin extends Plugin
 	static final int HIJACKED_ITEMID = 0x69696969;
 
 	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		6457, // Kourend
 		12850, // Lumbridge
 		11828, // Falador
 		12342, // Edgeville
@@ -122,6 +123,7 @@ public class DeathIndicatorPlugin extends Plugin
 	private Instant lastDeathTime;
 	private int lastDeathWorld;
 	private int despawnIdx = 0;
+
 	@Provides
 	DeathIndicatorConfig deathIndicatorConfig(ConfigManager configManager)
 	{
@@ -131,7 +133,10 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
+		if (config.permaBones())
+		{
+			addBoneSubs();
+		}
 
 		if (!hasDied())
 		{
@@ -165,7 +170,6 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		eventBus.unregister(BONES);
 
 		if (client.hasHintArrow())
@@ -194,22 +198,9 @@ public class DeathIndicatorPlugin extends Plugin
 		bones.clear(client.getScene());
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		if (config.permaBones())
-		{
-			addBoneSubs();
-		}
-	}
-
 	private void addBoneSubs()
 	{
 		eventBus.subscribe(ItemDespawned.class, BONES, this::onItemDespawn);
-		eventBus.subscribe(PlayerDeath.class, BONES, this::onPlayerDeath);
 		eventBus.subscribe(MenuEntryAdded.class, BONES, this::onMenuEntryAdded);
 		eventBus.subscribe(MenuOptionClicked.class, BONES, this::onMenuOptionClicked);
 		eventBus.subscribe(MenuOpened.class, BONES, this::onMenuOpened);
@@ -228,9 +219,29 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDeath(PlayerDeath death)
 	{
-		newBoneFor(death.getPlayer());
+		if (client.isInInstancedRegion())
+		{
+			return;
+		}
+
+		final Player player = death.getPlayer();
+
+		if (config.permaBones() && player.getWorldLocation().getRegionID() != 13362)
+		{
+			newBoneFor(player);
+		}
+
+		if (player != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		lastDeath = player.getWorldLocation();
+		lastDeathWorld = client.getWorld();
+		lastDeathTime = Instant.now();
 	}
 
 	private void newBoneFor(Player player)
@@ -301,24 +312,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
-	private void onLocalPlayerDeath(LocalPlayerDeath death)
-	{
-		if (client.isInInstancedRegion())
-		{
-			return;
-		}
-
-		Player lp = client.getLocalPlayer();
-		if (config.permaBones())
-		{
-			newBoneFor(lp);
-		}
-
-		lastDeath = lp.getWorldLocation();
-		lastDeathWorld = client.getWorld();
-		lastDeathTime = Instant.now();
-	}
-
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		// Check if player respawned in a death respawn location
@@ -383,6 +377,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("deathIndicator"))
@@ -436,6 +431,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

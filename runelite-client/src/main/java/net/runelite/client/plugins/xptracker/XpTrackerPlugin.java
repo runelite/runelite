@@ -62,7 +62,7 @@ import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
@@ -92,7 +92,7 @@ public class XpTrackerPlugin extends Plugin
 	private static final String MENUOP_ADD_CANVAS_TRACKER = "Add to canvas";
 	private static final String MENUOP_REMOVE_CANVAS_TRACKER = "Remove from canvas";
 
-	static final List<Skill> COMBAT = ImmutableList.of(
+	private static final List<Skill> COMBAT = ImmutableList.of(
 		Skill.ATTACK,
 		Skill.STRENGTH,
 		Skill.DEFENCE,
@@ -117,9 +117,6 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	private NavigationButton navButton;
 	@Setter(AccessLevel.PACKAGE)
@@ -159,10 +156,9 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
@@ -183,25 +179,14 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.removeIf(e -> e instanceof XpInfoBoxOverlay);
 		xpState.reset();
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(StatChanged.class, this, this::onStatChanged);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-	}
-
+	@Subscribe
 	void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
@@ -371,6 +356,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	void onStatChanged(StatChanged statChanged)
 	{
 		final Skill skill = statChanged.getSkill();
@@ -410,6 +396,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
@@ -429,6 +416,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
+	@Subscribe
 	void onGameTick(GameTick event)
 	{
 		if (initializeTracker)
@@ -496,6 +484,7 @@ public class XpTrackerPlugin extends Plugin
 		rebuildSkills();
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(final MenuEntryAdded event)
 	{
 		int widgetID = event.getParam1();
@@ -524,6 +513,7 @@ public class XpTrackerPlugin extends Plugin
 		client.setMenuEntries(menuEntries);
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuOpcode().getId() != MenuOpcode.RUNELITE.getId()
@@ -746,6 +736,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("xpTracker"))

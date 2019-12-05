@@ -165,9 +165,9 @@ public class InfernoOverlay extends Overlay
 				continue;
 			}
 
-			Color colorEdge1 = null;
+			Color colorEdge1;
 			Color colorEdge2 = null;
-			Color colorFill = null;
+			Color colorFill;
 
 			switch (safeSpotId)
 			{

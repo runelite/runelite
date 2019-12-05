@@ -48,6 +48,8 @@ public interface NPCDefinition
 
 	boolean isClickable();
 
+	boolean isFollower();
+
 	/**
 	 * Gets whether the NPC is visible on the mini-map.
 	 */

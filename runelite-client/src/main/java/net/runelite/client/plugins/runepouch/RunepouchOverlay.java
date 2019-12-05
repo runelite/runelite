@@ -49,13 +49,13 @@ import net.runelite.client.util.ColorUtil;
 public class RunepouchOverlay extends WidgetItemOverlay
 {
 	private static final Varbits[] AMOUNT_VARBITS =
-	{
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
-	};
+		{
+			Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+		};
 	private static final Varbits[] RUNE_VARBITS =
-	{
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
-	};
+		{
+			Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+		};
 	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
 	private final Client client;
@@ -78,7 +78,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		if (itemId != ItemID.RUNE_POUCH)
+		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L)
 		{
 			return;
 		}

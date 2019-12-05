@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public enum HotColdArea
 {
 	ASGARNIA("Asgarnia"),

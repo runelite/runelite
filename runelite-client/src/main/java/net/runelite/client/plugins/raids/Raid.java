@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-public class Raid
+class Raid
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final RaidRoom[] rooms = new RaidRoom[16];
@@ -61,8 +61,18 @@ public class Raid
 
 			if (room == null)
 			{
-				RoomType type = RoomType.fromCode(layout.getRoomAt(i).getSymbol());
-				room = type.getUnsolvedRoom();
+				RaidRoom.Type type = RaidRoom.Type.fromCode(layout.getRoomAt(i).getSymbol());
+				room = new RaidRoom(null, type);
+
+				if (type == RaidRoom.Type.COMBAT)
+				{
+					room.setBoss(RaidRoom.Boss.UNKNOWN);
+				}
+
+				if (type == RaidRoom.Type.PUZZLE)
+				{
+					room.setPuzzle(RaidRoom.Puzzle.UNKNOWN);
+				}
 
 				setRoom(room, i);
 			}
@@ -93,13 +103,18 @@ public class Raid
 				continue;
 			}
 
-			if (rooms[room.getPosition()].getType() == RoomType.COMBAT)
+			if (rooms[room.getPosition()].getType() == RaidRoom.Type.COMBAT)
 			{
 				combatRooms.add(rooms[room.getPosition()]);
 			}
 		}
 
 		return combatRooms.toArray(new RaidRoom[0]);
+	}
+
+	String getRotationString()
+	{
+		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
 	private RaidRoom[] getAllRooms()
@@ -152,7 +167,7 @@ public class Raid
 			final int position = r.getPosition();
 			final RaidRoom room = getRoom(position);
 
-			if (room == null)
+			if (room == null || !(room.getType() == RaidRoom.Type.COMBAT || room.getType() == RaidRoom.Type.PUZZLE))
 			{
 				continue;
 			}
@@ -160,8 +175,26 @@ public class Raid
 			switch (room.getType())
 			{
 				case PUZZLE:
+					final RaidRoom.Puzzle puzzle = room.getPuzzle();
+					sb.append(puzzle.getName());
+
+					if (puzzle == RaidRoom.Puzzle.UNKNOWN)
+					{
+						sb.append(" (puzzle)");
+					}
+
+					sb.append(", ");
+					break;
 				case COMBAT:
-					sb.append(room.getName()).append(", ");
+					final RaidRoom.Boss boss = room.getBoss();
+					sb.append(boss.getName());
+
+					if (boss == RaidRoom.Boss.UNKNOWN)
+					{
+						sb.append(" (combat)");
+					}
+
+					sb.append(", ");
 					break;
 			}
 		}

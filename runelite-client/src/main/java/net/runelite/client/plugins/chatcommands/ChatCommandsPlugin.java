@@ -28,6 +28,7 @@ package net.runelite.client.plugins.chatcommands;
 import com.google.inject.Provides;
 import io.reactivex.schedulers.Schedulers;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -42,12 +43,15 @@ import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import static net.runelite.api.util.Text.sanitize;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
@@ -58,14 +62,13 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import static net.runelite.api.util.Text.sanitize;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -145,13 +148,195 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
-	@Inject
-	private EventBus eventBus;
+	/**
+	 * Returns the ironman status based on the symbol in the name of the player.
+	 *
+	 * @param name player name
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
+	{
+		if (name.contains(IconID.IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.IRONMAN);
+		}
+		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+		}
+		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
+		{
+			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+		}
+		else
+		{
+			return toEndPoint(AccountType.NORMAL);
+		}
+	}
+
+	/**
+	 * Converts account type to hiscore endpoint
+	 *
+	 * @param accountType account type
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	{
+		switch (accountType)
+		{
+			case IRONMAN:
+				return HiscoreEndpoint.IRONMAN;
+			case ULTIMATE_IRONMAN:
+				return HiscoreEndpoint.ULTIMATE_IRONMAN;
+			case HARDCORE_IRONMAN:
+				return HiscoreEndpoint.HARDCORE_IRONMAN;
+			default:
+				return HiscoreEndpoint.NORMAL;
+		}
+	}
+
+	private static String longBossName(String boss)
+	{
+		switch (boss.toLowerCase())
+		{
+			case "corp":
+				return "Corporeal Beast";
+
+			case "jad":
+				return "TzTok-Jad";
+
+			case "kq":
+				return "Kalphite Queen";
+
+			case "chaos ele":
+				return "Chaos Elemental";
+
+			case "dusk":
+			case "dawn":
+			case "gargs":
+				return "Grotesque Guardians";
+
+			case "crazy arch":
+				return "Crazy Archaeologist";
+
+			case "deranged arch":
+				return "Deranged Archaeologist";
+
+			case "mole":
+				return "Giant Mole";
+
+			case "vetion":
+				return "Vet'ion";
+
+			case "vene":
+				return "Venenatis";
+
+			case "kbd":
+				return "King Black Dragon";
+
+			case "vork":
+				return "Vorkath";
+
+			case "sire":
+				return "Abyssal Sire";
+
+			case "smoke devil":
+			case "thermy":
+				return "Thermonuclear Smoke Devil";
+
+			case "cerb":
+				return "Cerberus";
+
+			case "zuk":
+			case "inferno":
+				return "TzKal-Zuk";
+
+			case "hydra":
+				return "Alchemical Hydra";
+
+			// gwd
+			case "sara":
+			case "saradomin":
+			case "zilyana":
+			case "zily":
+				return "Commander Zilyana";
+			case "zammy":
+			case "zamorak":
+			case "kril":
+			case "kril trutsaroth":
+				return "K'ril Tsutsaroth";
+			case "arma":
+			case "kree":
+			case "kreearra":
+			case "armadyl":
+				return "Kree'arra";
+			case "bando":
+			case "bandos":
+			case "graardor":
+				return "General Graardor";
+
+			// dks
+			case "supreme":
+				return "Dagannoth Supreme";
+			case "rex":
+				return "Dagannoth Rex";
+			case "prime":
+				return "Dagannoth Prime";
+
+			case "wt":
+				return "Wintertodt";
+			case "barrows":
+				return "Barrows Chests";
+			case "herbi":
+				return "Herbiboar";
+
+			// cox
+			case "cox":
+			case "xeric":
+			case "chambers":
+			case "olm":
+			case "raids":
+				return "Chambers of Xeric";
+
+			// cox cm
+			case "cox cm":
+			case "xeric cm":
+			case "chambers cm":
+			case "olm cm":
+			case "raids cm":
+				return "Chambers of Xeric Challenge Mode";
+
+			// tob
+			case "tob":
+			case "theatre":
+			case "verzik":
+			case "verzik vitur":
+			case "raids 2":
+				return "Theatre of Blood";
+
+			// agility course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
+
+			// The Gauntlet
+			case "gaunt":
+			case "gauntlet":
+				return "Gauntlet";
+
+			// Corrupted Gauntlet
+			case "cgaunt":
+			case "cgauntlet":
+				return "Corrupted Gauntlet";
+
+			default:
+				return WordUtils.capitalize(boss);
+		}
+	}
 
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		keyManager.registerKeyListener(chatKeyboardListener);
 
@@ -170,8 +355,6 @@ public class ChatCommandsPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		lastBossKill = null;
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
@@ -186,14 +369,6 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
 	}
 
 	@Provides
@@ -228,6 +403,7 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
+	@Subscribe
 	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
@@ -361,6 +537,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (!logKills)
@@ -397,6 +574,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		// don't load kc if in an instance, if the player is in another players poh
@@ -409,6 +587,7 @@ public class ChatCommandsPlugin extends Plugin
 		logKills = true;
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		hiscoreEndpoint = getLocalHiscoreEndpointType();
@@ -727,7 +906,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		return true;
 	}
-
 
 	private void personalBestLookup(ChatMessage chatMessage, String message)
 	{
@@ -1157,31 +1335,28 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private HiscoreLookup getCorrectLookupFor(final ChatMessage chatMessage)
 	{
-		final String player;
-		final HiscoreEndpoint ironmanStatus;
+		Player localPlayer = client.getLocalPlayer();
+		final String player = sanitize(chatMessage.getName());
 
-		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT))
+		// If we are sending the message then just use the local hiscore endpoint for the world
+		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT)
+			|| player.equals(localPlayer.getName()))
 		{
-			player = client.getLocalPlayer().getName();
-			ironmanStatus = hiscoreEndpoint;
+			return new HiscoreLookup(localPlayer.getName(), hiscoreEndpoint);
 		}
-		else
-		{
-			player = sanitize(chatMessage.getName());
 
-			if (player.equals(client.getLocalPlayer().getName()))
+		// Public chat on a leagues world is always league hiscores, regardless of icon
+		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT || chatMessage.getType() == ChatMessageType.MODCHAT)
+		{
+			if (client.getWorldType().contains(WorldType.LEAGUE))
 			{
-				// Get ironman status from for the local player
-				ironmanStatus = hiscoreEndpoint;
-			}
-			else
-			{
-				// Get ironman status from their icon in chat
-				ironmanStatus = getHiscoreEndpointByName(chatMessage.getName());
+				return new HiscoreLookup(player, HiscoreEndpoint.LEAGUE);
 			}
 		}
 
-		return new HiscoreLookup(player, ironmanStatus);
+		// Get ironman status from their icon in chat
+		HiscoreEndpoint endpoint = getHiscoreEndpointByName(chatMessage.getName());
+		return new HiscoreLookup(player, endpoint);
 	}
 
 	/**
@@ -1220,54 +1395,13 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private HiscoreEndpoint getLocalHiscoreEndpointType()
 	{
+		EnumSet<WorldType> worldType = client.getWorldType();
+		if (worldType.contains(WorldType.LEAGUE))
+		{
+			return HiscoreEndpoint.LEAGUE;
+		}
+
 		return toEndPoint(client.getAccountType());
-	}
-
-	/**
-	 * Returns the ironman status based on the symbol in the name of the player.
-	 *
-	 * @param name player name
-	 * @return hiscore endpoint
-	 */
-	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
-	{
-		if (name.contains(IconID.IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.IRONMAN);
-		}
-		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
-		}
-		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
-		{
-			return toEndPoint(AccountType.HARDCORE_IRONMAN);
-		}
-		else
-		{
-			return toEndPoint(AccountType.NORMAL);
-		}
-	}
-
-	/**
-	 * Converts account type to hiscore endpoint
-	 *
-	 * @param accountType account type
-	 * @return hiscore endpoint
-	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
-	{
-		switch (accountType)
-		{
-			case IRONMAN:
-				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
-				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
-				return HiscoreEndpoint.HARDCORE_IRONMAN;
-			default:
-				return HiscoreEndpoint.NORMAL;
-		}
 	}
 
 	@Value
@@ -1275,144 +1409,5 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		private final String name;
 		private final HiscoreEndpoint endpoint;
-	}
-
-	private static String longBossName(String boss)
-	{
-		switch (boss.toLowerCase())
-		{
-			case "corp":
-				return "Corporeal Beast";
-
-			case "jad":
-				return "TzTok-Jad";
-
-			case "kq":
-				return "Kalphite Queen";
-
-			case "chaos ele":
-				return "Chaos Elemental";
-
-			case "dusk":
-			case "dawn":
-			case "gargs":
-				return "Grotesque Guardians";
-
-			case "crazy arch":
-				return "Crazy Archaeologist";
-
-			case "deranged arch":
-				return "Deranged Archaeologist";
-
-			case "mole":
-				return "Giant Mole";
-
-			case "vetion":
-				return "Vet'ion";
-
-			case "vene":
-				return "Venenatis";
-
-			case "kbd":
-				return "King Black Dragon";
-
-			case "vork":
-				return "Vorkath";
-
-			case "sire":
-				return "Abyssal Sire";
-
-			case "smoke devil":
-			case "thermy":
-				return "Thermonuclear Smoke Devil";
-
-			case "cerb":
-				return "Cerberus";
-
-			case "zuk":
-			case "inferno":
-				return "TzKal-Zuk";
-
-			case "hydra":
-				return "Alchemical Hydra";
-
-			// gwd
-			case "sara":
-			case "saradomin":
-			case "zilyana":
-			case "zily":
-				return "Commander Zilyana";
-			case "zammy":
-			case "zamorak":
-			case "kril":
-			case "kril trutsaroth":
-				return "K'ril Tsutsaroth";
-			case "arma":
-			case "kree":
-			case "kreearra":
-			case "armadyl":
-				return "Kree'arra";
-			case "bando":
-			case "bandos":
-			case "graardor":
-				return "General Graardor";
-
-			// dks
-			case "supreme":
-				return "Dagannoth Supreme";
-			case "rex":
-				return "Dagannoth Rex";
-			case "prime":
-				return "Dagannoth Prime";
-
-			case "wt":
-				return "Wintertodt";
-			case "barrows":
-				return "Barrows Chests";
-			case "herbi":
-				return "Herbiboar";
-
-			// cox
-			case "cox":
-			case "xeric":
-			case "chambers":
-			case "olm":
-			case "raids":
-				return "Chambers of Xeric";
-
-			// cox cm
-			case "cox cm":
-			case "xeric cm":
-			case "chambers cm":
-			case "olm cm":
-			case "raids cm":
-				return "Chambers of Xeric Challenge Mode";
-
-			// tob
-			case "tob":
-			case "theatre":
-			case "verzik":
-			case "verzik vitur":
-			case "raids 2":
-				return "Theatre of Blood";
-
-			// agility course
-			case "prif":
-			case "prifddinas":
-				return "Prifddinas Agility Course";
-
-			// The Gauntlet
-			case "gaunt":
-			case "gauntlet":
-				return "Gauntlet";
-
-			// Corrupted Gauntlet
-			case "cgaunt":
-			case "cgauntlet":
-				return "Corrupted Gauntlet";
-
-			default:
-				return WordUtils.capitalize(boss);
-		}
 	}
 }

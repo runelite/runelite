@@ -30,16 +30,16 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.Entity;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Entity;
 import net.runelite.api.Scene;
+import net.runelite.api.Tile;
 import net.runelite.api.TileModel;
 import net.runelite.api.TilePaint;
-import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import static net.runelite.client.plugins.gpu.GpuPlugin.SMALL_TRIANGLE_COUNT;
 

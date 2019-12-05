@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -44,7 +45,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
@@ -273,12 +274,12 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[] {npc};
+		return new String[]{npc};
 	}
 
 	@Override
 	public int[] getObjectIds()
 	{
-		return new int[] {objectId};
+		return new int[]{objectId};
 	}
 }

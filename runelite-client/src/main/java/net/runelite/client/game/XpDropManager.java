@@ -21,9 +21,8 @@ public class XpDropManager
 	private int damage = 0;
 	@Getter(AccessLevel.PACKAGE)
 	private int tickShow = 0;
-	private int previousExpGained;
-	private Client client;
-	private EventBus eventBus;
+	private final Client client;
+	private final EventBus eventBus;
 
 	@Inject
 	private XpDropManager(
@@ -50,7 +49,7 @@ public class XpDropManager
 		Integer previous = previousSkillExpTable.put(skill, xp);
 		if (previous != null)
 		{
-			previousExpGained = xp - previous;
+			int previousExpGained = xp - previous;
 			XpDropEvent xpDropEvent = new XpDropEvent();
 			xpDropEvent.setExp(previousExpGained);
 			xpDropEvent.setSkill(skill);

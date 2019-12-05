@@ -92,7 +92,7 @@ public class PlayerInfoPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
 
@@ -120,7 +120,7 @@ public class PlayerInfoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		infoBoxManager.removeIf(i -> i instanceof PlayerInfoCustomIndicator);
 	}

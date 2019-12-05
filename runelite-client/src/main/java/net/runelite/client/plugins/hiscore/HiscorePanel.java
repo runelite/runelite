@@ -65,34 +65,7 @@ import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
-import static net.runelite.http.api.hiscore.HiscoreSkill.AGILITY;
-import static net.runelite.http.api.hiscore.HiscoreSkill.ATTACK;
-import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_HUNTER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_ROGUE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CLUE_SCROLL_ALL;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CONSTRUCTION;
-import static net.runelite.http.api.hiscore.HiscoreSkill.COOKING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CRAFTING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.DEFENCE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FARMING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FIREMAKING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FISHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FLETCHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HERBLORE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HITPOINTS;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HUNTER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.LAST_MAN_STANDING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.MAGIC;
-import static net.runelite.http.api.hiscore.HiscoreSkill.MINING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.OVERALL;
-import static net.runelite.http.api.hiscore.HiscoreSkill.PRAYER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.RANGED;
-import static net.runelite.http.api.hiscore.HiscoreSkill.RUNECRAFT;
-import static net.runelite.http.api.hiscore.HiscoreSkill.SLAYER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.SMITHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.STRENGTH;
-import static net.runelite.http.api.hiscore.HiscoreSkill.THIEVING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
@@ -275,6 +248,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL));
+		minigamePanel.add(makeSkillPanel(LEAGUE_POINTS));
 		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER));
@@ -470,15 +444,17 @@ public class HiscorePanel extends PluginPanel
 			case 0:
 				return null;
 			case 1:
-				return HiscoreSkill.OVERALL;
+				return OVERALL;
 			case 2:
-				return HiscoreSkill.CLUE_SCROLL_ALL;
+				return CLUE_SCROLL_ALL;
 			case 3:
-				return HiscoreSkill.LAST_MAN_STANDING;
+				return LEAGUE_POINTS;
 			case 4:
-				return HiscoreSkill.BOUNTY_HUNTER_ROGUE;
+				return LAST_MAN_STANDING;
 			case 5:
-				return HiscoreSkill.BOUNTY_HUNTER_HUNTER;
+				return BOUNTY_HUNTER_ROGUE;
+			case 6:
+				return BOUNTY_HUNTER_HUNTER;
 		}
 
 		return null;
@@ -559,6 +535,12 @@ public class HiscorePanel extends PluginPanel
 				case LAST_MAN_STANDING:
 				{
 					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case LEAGUE_POINTS:
+				{
+					String rank = (result.getLeaguePoints().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLeaguePoints().getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
@@ -651,17 +633,13 @@ public class HiscorePanel extends PluginPanel
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
-			{
-				return HiscoreEndpoint.DEADMAN_TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.SEASONAL_DEADMAN))
-			{
-				return HiscoreEndpoint.SEASONAL_DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
+			if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
+			}
+			else if (wTypes.contains(WorldType.LEAGUE))
+			{
+				return HiscoreEndpoint.LEAGUE;
 			}
 		}
 		return HiscoreEndpoint.NORMAL;

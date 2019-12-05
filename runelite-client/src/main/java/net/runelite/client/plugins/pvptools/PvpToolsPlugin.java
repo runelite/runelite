@@ -49,7 +49,7 @@ import net.runelite.api.util.Text;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -102,9 +102,6 @@ public class PvpToolsPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	private final PvpToolsPlugin uhPvpToolsPlugin = this;
 
@@ -231,10 +228,9 @@ public class PvpToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(playerCountOverlay);
 		keyManager.registerKeyListener(renderselfHotkeyListener);
@@ -271,10 +267,8 @@ public class PvpToolsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(playerCountOverlay);
 		keyManager.unregisterKeyListener(renderselfHotkeyListener);
 		clientToolbar.removeNavigation(navButton);
@@ -287,15 +281,7 @@ public class PvpToolsPlugin extends Plugin
 		loaded = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
-		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!"pvptools".equals(configChanged.getGroup()))
@@ -371,6 +357,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer().equals(client.getItemContainer(InventoryID.INVENTORY)) &&
@@ -380,6 +367,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState().equals(GameState.LOGGED_IN))
@@ -399,6 +387,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (this.countPlayers && PvPUtil.isAttackable(client, event.getPlayer()))
@@ -411,6 +400,7 @@ public class PvpToolsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onPlayerDespawned(PlayerDespawned event)
 	{
 		if (this.countPlayers && PvPUtil.isAttackable(client, event.getPlayer()))
@@ -593,7 +583,7 @@ public class PvpToolsPlugin extends Plugin
 	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
-	public void hideAttackOptions(AttackMode mode)
+	private void hideAttackOptions(AttackMode mode)
 	{
 		switch (mode)
 		{
@@ -617,7 +607,7 @@ public class PvpToolsPlugin extends Plugin
 	 *
 	 * @param mode The {@link AttackMode} specifying clanmates, friends, or both.
 	 */
-	public void hideCastOptions(AttackMode mode)
+	private void hideCastOptions(AttackMode mode)
 	{
 		switch (mode)
 		{

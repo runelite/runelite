@@ -38,7 +38,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.Sound;
@@ -60,29 +60,36 @@ import org.apache.commons.lang3.ObjectUtils;
 @Singleton
 public class WhaleWatchersPlugin extends Plugin
 {
+	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
 	boolean protectItemOverlay = false;
 	int damageDone = 0;
 	int damageTaken = 0;
 	boolean inCombat = false;
-	private static final String BROKEN_PNECK_MESSAGE = "Your phoenix necklace heals you, but is destroyed in the process.";
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private WhaleWatchersConfig config;
+
 	@Inject
 	private WhaleWatchersOverlay overlay;
+
 	@Inject
 	private WhaleWatchersProtOverlay whaleWatchersProtOverlay;
+
 	@Inject
 	private WhaleWatchersSmiteableOverlay whaleWatchersSmiteableOverlay;
+
 	@Inject
 	private WhaleWatchersGloryOverlay whaleWatchersGloryOverlay;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private SoundManager soundManager;
-	@Inject
-	private EventBus eventBus;
+
 	private int tickCountdown = 0;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean displaySmiteOverlay;
@@ -104,6 +111,7 @@ public class WhaleWatchersPlugin extends Plugin
 		return configManager.getConfig(WhaleWatchersConfig.class);
 	}
 
+	@Subscribe
 	private void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		if (event.getOverlay().equals(overlay) && event.getEntry().getOption().equals("Reset"))
@@ -113,10 +121,9 @@ public class WhaleWatchersPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(whaleWatchersProtOverlay);
@@ -125,9 +132,8 @@ public class WhaleWatchersPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		overlayManager.remove(overlay);
 		overlayManager.remove(whaleWatchersProtOverlay);
 		overlayManager.remove(whaleWatchersSmiteableOverlay);
@@ -135,18 +141,7 @@ public class WhaleWatchersPlugin extends Plugin
 		resetDamageCounter();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(OverlayMenuClicked.class, this, this::onOverlayMenuClicked);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(VarbitChanged.class, this, this::onVarbitChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("WhaleWatchers"))
@@ -170,6 +165,7 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (this.pneckBreak && event.getType() == ChatMessageType.GAMEMESSAGE && event.getMessage().equals(BROKEN_PNECK_MESSAGE))
@@ -178,6 +174,7 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (this.showDamageCounter)
@@ -202,6 +199,7 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (this.gloryWarning && event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
@@ -216,6 +214,7 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (this.showDamageCounter && event.getMenuOpcode().equals(MenuOpcode.SPELL_CAST_ON_PLAYER))
@@ -224,12 +223,13 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (this.showDamageCounter && client.getVar(VarPlayer.ATTACKING_PLAYER) == -1 && inCombat)
-			{
-				tickCountdown = 10;
-			}
+		{
+			tickCountdown = 10;
+		}
 
 		if (this.protectItemWarning)
 		{
@@ -264,6 +264,7 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (this.showDamageCounter && tickCountdown > 0 && tickCountdown < 11)
@@ -315,7 +316,7 @@ public class WhaleWatchersPlugin extends Plugin
 		damageTaken = 0;
 		damageDone = 0;
 	}
-	
+
 	private void updateConfig()
 	{
 		this.protectItemWarning = config.protectItemWarning();

@@ -25,10 +25,12 @@
  */
 package net.runelite.client.plugins.music;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -40,6 +42,7 @@ import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
@@ -47,7 +50,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AreaSoundEffectPlayed;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientIntChanged;
@@ -62,7 +64,8 @@ import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -75,6 +78,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class MusicPlugin extends Plugin
 {
+	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.TELEPORT_VWOOP
+	);
+
 	@Inject
 	private Client client;
 
@@ -86,9 +93,6 @@ public class MusicPlugin extends Plugin
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
-
-	@Inject
-	private EventBus eventBus;
 
 	private ChatboxTextInput searchInput;
 
@@ -102,7 +106,6 @@ public class MusicPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		clientThread.invoke(() ->
 		{
@@ -132,17 +135,7 @@ public class MusicPlugin extends Plugin
 		return configManager.getConfig(MusicConfig.class);
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WidgetLoaded.class, this, this::onWidgetLoaded);
-		eventBus.subscribe(VarClientIntChanged.class, this, this::onVarClientIntChanged);
-		eventBus.subscribe(VolumeChanged.class, this, this::onVolumeChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-		eventBus.subscribe(AreaSoundEffectPlayed.class, this, this::onAreaSoundEffectPlayed);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
@@ -153,6 +146,7 @@ public class MusicPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.MUSIC_GROUP_ID)
@@ -208,6 +202,7 @@ public class MusicPlugin extends Plugin
 		musicFilterButton.revalidate();
 	}
 
+	@Subscribe
 	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (isChatboxOpen() && !isOnMusicTab())
@@ -217,11 +212,13 @@ public class MusicPlugin extends Plugin
 	}
 
 
+	@Subscribe
 	private void onVolumeChanged(VolumeChanged volumeChanged)
 	{
 		applyMusicVolumeConfig();
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals("music"))
@@ -554,22 +551,40 @@ public class MusicPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
-		switch (ev.getEventName())
+		// We have to override this script because it gets invoked periodically from the server
+		if ("optionsAllSounds".equals(ev.getEventName()))
 		{
-			case "optionsAllSounds":
-				// We have to override this script because it gets invoked periodically from the server
-				client.getIntStack()[client.getIntStackSize() - 1] = -1;
+			client.getIntStack()[client.getIntStackSize() - 1] = -1;
 		}
 	}
 
+	@Subscribe
 	private void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
-		if (source != client.getLocalPlayer()
-			&& source instanceof Player
+		int soundId = areaSoundEffectPlayed.getSoundId();
+		if (source == client.getLocalPlayer()
+			&& musicConfig.muteOwnAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source != client.getLocalPlayer()
+			&& (source instanceof Player || (source == null && SOURCELESS_PLAYER_SOUNDS.contains(soundId)))
 			&& musicConfig.muteOtherAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source instanceof NPC
+			&& musicConfig.muteNpcAreaSounds())
+		{
+			areaSoundEffectPlayed.consume();
+		}
+		else if (source == null
+			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundId)
+			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
 		}

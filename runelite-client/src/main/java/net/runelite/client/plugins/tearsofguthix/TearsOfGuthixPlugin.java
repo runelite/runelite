@@ -39,7 +39,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -66,9 +66,6 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixExperienceOverlay experienceOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
 
@@ -78,7 +75,6 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(experienceOverlay);
@@ -87,21 +83,13 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(experienceOverlay);
 		streams.clear();
 		playerLowestSkill = null;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
-		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -133,6 +121,7 @@ public class TearsOfGuthixPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject object = event.getDecorativeObject();
@@ -145,6 +134,7 @@ public class TearsOfGuthixPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		if (streams.isEmpty())

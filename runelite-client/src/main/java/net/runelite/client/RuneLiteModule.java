@@ -41,8 +41,8 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.OpenOSRSConfig;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
@@ -75,7 +75,7 @@ public class RuneLiteModule extends AbstractModule
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(RuneLite.RUNELITE_DIR, "cache" + File.separator + "okhttp"), MAX_OKHTTP_CACHE_SIZE))
+			.cache(new Cache(new File(RuneLite.CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
 			.build());
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);

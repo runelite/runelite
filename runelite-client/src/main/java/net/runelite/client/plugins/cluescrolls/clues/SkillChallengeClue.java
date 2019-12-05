@@ -25,6 +25,12 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.ImmutableSet;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,28 +38,28 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
-import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.all;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.any;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.emptySlot;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.range;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.xOfItem;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
-@Getter
+@Getter(AccessLevel.PUBLIC)
 public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 {
 	@AllArgsConstructor
-	@Getter
+	@Getter(AccessLevel.PRIVATE)
 	enum ChallengeType
 	{
 		CHARLIE("Charlie the Tramp", "Southern Entrance to Varrock"),
@@ -124,20 +130,20 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 			any("Earth Rune x15", xOfItem(ItemID.EARTH_RUNE, 15), xOfItem(ItemID.DUST_RUNE, 15), xOfItem(ItemID.MUD_RUNE, 15), xOfItem(ItemID.LAVA_RUNE, 15), item(ItemID.STAFF_OF_EARTH), item(ItemID.EARTH_BATTLESTAFF), item(ItemID.MYSTIC_EARTH_STAFF), item(ItemID.MUD_BATTLESTAFF), item(ItemID.MYSTIC_MUD_STAFF), item(ItemID.DUST_BATTLESTAFF), item(ItemID.MYSTIC_DUST_STAFF), item(ItemID.LAVA_BATTLESTAFF), item(ItemID.MYSTIC_LAVA_STAFF), item(ItemID.LAVA_BATTLESTAFF_21198), item(ItemID.MYSTIC_LAVA_STAFF_21200)),
 			any("Unenchanted Dragonstone Jewellery", item(ItemID.DRAGONSTONE_RING), item(ItemID.DRAGON_NECKLACE), item(ItemID.DRAGON_BRACELET), item(ItemID.DRAGONSTONE_AMULET))),
 		new SkillChallengeClue("Craft a nature rune.", item(ItemID.PURE_ESSENCE)),
-		new SkillChallengeClue("Catch a mottled eel with aerial fishing in Lake Molch.", any("Fish chunks or King worms", item(ItemID.FISH_CHUNKS), item(ItemID.KING_WORM)), emptySlot("No Gloves", EquipmentInventorySlot.GLOVES), emptySlot("No Weapon",  EquipmentInventorySlot.WEAPON), emptySlot("No Shield", EquipmentInventorySlot.SHIELD)),
+		new SkillChallengeClue("Catch a mottled eel with aerial fishing in Lake Molch.", any("Fish chunks or King worms", item(ItemID.FISH_CHUNKS), item(ItemID.KING_WORM)), emptySlot("No Gloves", EquipmentInventorySlot.GLOVES), emptySlot("No Weapon", EquipmentInventorySlot.WEAPON), emptySlot("No Shield", EquipmentInventorySlot.SHIELD)),
 		new SkillChallengeClue("Score a goal in skullball.", true, any("Ring of Charos", item(ItemID.RING_OF_CHAROS), item(ItemID.RING_OF_CHAROSA))),
 		new SkillChallengeClue("Complete a lap of Ape atoll agility course.", true, any("Ninja Monkey Greegree", item(ItemID.NINJA_MONKEY_GREEGREE), item(ItemID.NINJA_MONKEY_GREEGREE_4025), item(ItemID.KRUK_MONKEY_GREEGREE))),
 		new SkillChallengeClue("Create a super defence potion.", item(ItemID.CADANTINE_POTION_UNF), item(ItemID.WHITE_BERRIES)),
 		new SkillChallengeClue("Steal from a chest in King Lathas' castle in East Ardougne."),
 		new SkillChallengeClue("Craft a green d'hide body.", xOfItem(ItemID.GREEN_DRAGON_LEATHER, 3), item(ItemID.NEEDLE), item(ItemID.THREAD)),
 		new SkillChallengeClue("String a yew longbow.", item(ItemID.YEW_LONGBOW_U), item(ItemID.BOW_STRING)),
-		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true, any("Facemask or Slayer Helmet", item(ItemID.FACEMASK), item(ItemID.SLAYER_HELMET), item(ItemID. SLAYER_HELMET_I), item(ItemID. BLACK_SLAYER_HELMET), item(ItemID. BLACK_SLAYER_HELMET_I), item(ItemID. PURPLE_SLAYER_HELMET), item(ItemID. PURPLE_SLAYER_HELMET_I), item(ItemID. RED_SLAYER_HELMET), item(ItemID. RED_SLAYER_HELMET_I), item(ItemID.GREEN_SLAYER_HELMET), item(ItemID. GREEN_SLAYER_HELMET_I), item(ItemID. TURQUOISE_SLAYER_HELMET), item(ItemID. TURQUOISE_SLAYER_HELMET_I), item(ItemID. HYDRA_SLAYER_HELMET), item(ItemID. HYDRA_SLAYER_HELMET_I))),
+		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true, any("Facemask or Slayer Helmet", item(ItemID.FACEMASK), item(ItemID.SLAYER_HELMET), item(ItemID.SLAYER_HELMET_I), item(ItemID.BLACK_SLAYER_HELMET), item(ItemID.BLACK_SLAYER_HELMET_I), item(ItemID.PURPLE_SLAYER_HELMET), item(ItemID.PURPLE_SLAYER_HELMET_I), item(ItemID.RED_SLAYER_HELMET), item(ItemID.RED_SLAYER_HELMET_I), item(ItemID.GREEN_SLAYER_HELMET), item(ItemID.GREEN_SLAYER_HELMET_I), item(ItemID.TURQUOISE_SLAYER_HELMET), item(ItemID.TURQUOISE_SLAYER_HELMET_I), item(ItemID.HYDRA_SLAYER_HELMET), item(ItemID.HYDRA_SLAYER_HELMET_I))),
 		new SkillChallengeClue("Catch a black warlock.", item(ItemID.BUTTERFLY_JAR), any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
 		new SkillChallengeClue("Mine a piece of mithril ore.", ANY_PICKAXE),
 		new SkillChallengeClue("Smith a mithril 2h sword.", item(ItemID.HAMMER), xOfItem(ItemID.MITHRIL_BAR, 3)),
 		new SkillChallengeClue("Catch a raw shark.", ANY_HARPOON),
-		new SkillChallengeClue("Chop a yew tree.", ANY_AXE),
+		new SkillChallengeClue("Cut a yew log.", ANY_AXE),
 		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
@@ -177,7 +183,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, ANY_AXE, all("Lumberjack outfit", item(ItemID.LUMBERJACK_HAT), item(ItemID.LUMBERJACK_TOP), item(ItemID.LUMBERJACK_LEGS), item(ItemID.LUMBERJACK_BOOTS))),
 		new SkillChallengeClue("Craft a light orb in the Dorgesh-Kaan bank.", item(ItemID.CAVE_GOBLIN_WIRE), item(ItemID.EMPTY_LIGHT_ORB)),
 		new SkillChallengeClue("Kill a reanimated Abyssal Demon.", "kill a reanimated abyssal.", xOfItem(ItemID.SOUL_RUNE, 4), xOfItem(ItemID.BLOOD_RUNE, 1), any("Nature Rune x4", xOfItem(ItemID.NATURE_RUNE, 4), item(ItemID.BRYOPHYTAS_STAFF)), range("Ensouled abyssal head", ItemID.ENSOULED_ABYSSAL_HEAD, ItemID.ENSOULED_ABYSSAL_HEAD_13508)),
-		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.", any("Any Silver Shade Key",  item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE)))
+		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.", any("Any Silver Shade Key", item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE)))
 	);
 
 	private final ChallengeType type;
@@ -191,7 +197,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 	private boolean challengeCompleted;
 
 	// Charlie Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, String returnText, SingleItemRequirement returnItem, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, String returnText, SingleItemRequirement returnItem, ItemRequirement... itemRequirements)
 	{
 		this.type = ChallengeType.CHARLIE;
 		this.challenge = challenge;
@@ -204,25 +210,25 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 	}
 
 	// Non-cryptic Sherlock Tasks
-	private SkillChallengeClue(String challenge, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, ItemRequirement... itemRequirements)
 	{
 		this(challenge, challenge.toLowerCase(), itemRequirements);
 	}
 
 	// Non-cryptic Sherlock Tasks
-	private SkillChallengeClue(String challenge, boolean requireEquip, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, boolean requireEquip, ItemRequirement... itemRequirements)
 	{
 		this(challenge, challenge.toLowerCase(), requireEquip, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, ItemRequirement... itemRequirements)
 	{
 		this(challenge, rawChallenge, false, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, ItemRequirement... itemRequirements)
 	{
 		this.type = ChallengeType.SHERLOCK;
 		this.challenge = challenge;
@@ -296,7 +302,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 		}
 	}
 
-	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement ... requirements)
+	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement... requirements)
 	{
 		List<LineComponent> components = new ArrayList<>();
 
@@ -356,6 +362,6 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[] {type.getName()};
+		return new String[]{type.getName()};
 	}
 }

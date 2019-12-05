@@ -48,7 +48,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -93,9 +93,6 @@ public class InfernoPlugin extends Plugin
 
 	@Inject
 	private InfernoConfig config;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private InfernoConfig.FontStyle fontStyle = InfernoConfig.FontStyle.BOLD;
@@ -240,10 +237,9 @@ public class InfernoPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		waveOverlay.setDisplayMode(this.waveDisplay);
 		waveOverlay.setWaveHeaderColor(this.getWaveOverlayHeaderColor);
@@ -265,10 +261,8 @@ public class InfernoPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(infernoOverlay);
 		overlayManager.remove(waveOverlay);
 		overlayManager.remove(jadOverlay);
@@ -279,17 +273,7 @@ public class InfernoPlugin extends Plugin
 		showNpcDeaths();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"inferno".equals(event.getGroup()))
@@ -319,6 +303,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick GameTickEvent)
 	{
 		if (!isInInferno())
@@ -347,6 +332,7 @@ public class InfernoPlugin extends Plugin
 		calculateCentralNibbler();
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!isInInferno())
@@ -392,6 +378,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!isInInferno())
@@ -407,6 +394,7 @@ public class InfernoPlugin extends Plugin
 		infernoNpcs.removeIf(infernoNPC -> infernoNPC.getNpc() == event.getNpc());
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (!isInInferno())
@@ -426,6 +414,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
@@ -461,6 +450,7 @@ public class InfernoPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (!isInInferno() || event.getType() != ChatMessageType.GAMEMESSAGE)

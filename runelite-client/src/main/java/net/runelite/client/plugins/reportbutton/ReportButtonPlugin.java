@@ -44,7 +44,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -76,9 +76,6 @@ public class ReportButtonPlugin extends Plugin
 	@Inject
 	private ReportButtonConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	private TimeStyle timeStyle;
 
 	@Provides
@@ -90,7 +87,6 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		addSubscriptions();
 
 		this.timeStyle = config.time();
 		clientThread.invoke(this::updateReportButtonTime);
@@ -99,8 +95,6 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		clientThread.invoke(() ->
 		{
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
@@ -111,12 +105,7 @@ public class ReportButtonPlugin extends Plugin
 		});
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-	}
-
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
@@ -217,6 +206,7 @@ public class ReportButtonPlugin extends Plugin
 		return DATE_FORMAT.format(new Date());
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("reportButton"))

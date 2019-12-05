@@ -32,10 +32,21 @@ import net.runelite.client.config.ConfigItem;
 public interface VirtualLevelsConfig extends Config
 {
 	@ConfigItem(
+		keyName = "virtualMessage",
+		name = "Enable level up message for virtual levels",
+		description = "Configures whether or not to show level up messages for virtual levels",
+		position = 0
+	)
+	default boolean virtualMessage()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "virtualTotalLevel",
 		name = "Virtual Total Level",
 		description = "Count virtual levels towards total level",
-		position = 0
+		position = 1
 	)
 	default boolean virtualTotalLevel()
 	{

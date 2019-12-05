@@ -32,7 +32,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.when;
 public enum MagicMaxHitConfig implements MaxHitConfig
 {
 
-	TRIDENT_SLAYER(new int[] {75, 83, 99}, 0, new Item[]
+	TRIDENT_SLAYER(new int[]{75, 83, 99}, 0, new Item[]
 		{
 			mockItem(ItemID.SLAYER_HELMET_I),
 			mockItem(ItemID.SARADOMIN_CAPE),
@@ -54,9 +53,9 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.MYSTIC_GLOVES),
 			mockItem(ItemID.WIZARD_BOOTS),
 			mockItem(ItemID.RING_OF_WEALTH)
-		}, new int[] {25, 27, 34}),
+		}, new int[]{25, 27, 34}),
 
-	TRIDENT_OF_SEAS(new int[] {75, 83, 99}, 0, new Item[]
+	TRIDENT_OF_SEAS(new int[]{75, 83, 99}, 0, new Item[]
 		{
 			mockItem(ItemID.MYSTIC_HAT),
 			mockItem(ItemID.SARADOMIN_CAPE),
@@ -70,9 +69,9 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.MYSTIC_GLOVES),
 			mockItem(ItemID.WIZARD_BOOTS),
 			mockItem(ItemID.RING_OF_WEALTH)
-		}, new int[] {20, 22, 28}),
+		}, new int[]{20, 22, 28}),
 
-	TRIDENT_OF_SWAMP(new int[] {75, 83, 99}, 0, new Item[]
+	TRIDENT_OF_SWAMP(new int[]{75, 83, 99}, 0, new Item[]
 		{
 			mockItem(ItemID.MYSTIC_HAT),
 			mockItem(ItemID.SARADOMIN_CAPE),
@@ -86,9 +85,9 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.MYSTIC_GLOVES),
 			mockItem(ItemID.WIZARD_BOOTS),
 			mockItem(ItemID.RING_OF_WEALTH)
-		}, new int[] {23, 25, 31}),
+		}, new int[]{23, 25, 31}),
 
-	MAGIC_DART(new int[] {75, 83, 99}, 18, new Item[]
+	MAGIC_DART(new int[]{75, 83, 99}, 18, new Item[]
 		{
 			mockItem(ItemID.MYSTIC_HAT),
 			mockItem(ItemID.SARADOMIN_CAPE),
@@ -102,7 +101,7 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.MYSTIC_GLOVES),
 			mockItem(ItemID.WIZARD_BOOTS),
 			mockItem(ItemID.RING_OF_WEALTH)
-		}, new int[] {17, 18, 19}),
+		}, new int[]{17, 18, 19}),
 
 
 	FIRE_BOLT(75, 8, new Item[]
@@ -198,10 +197,10 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 
 	MagicMaxHitConfig(int magicLevel, int spellId, Item[] equipedItems, int expectedMaxHit)
 	{
-		this.magicLevels = new int[] {magicLevel};
+		this.magicLevels = new int[]{magicLevel};
 		this.spellId = spellId;
 		this.equipedItems = equipedItems;
-		this.expectedMaxHits = new int[] {expectedMaxHit};
+		this.expectedMaxHits = new int[]{expectedMaxHit};
 	}
 
 	MagicMaxHitConfig(int[] magicLevels, int spellId, Item[] equipedItems, int[] expectedMaxHits)

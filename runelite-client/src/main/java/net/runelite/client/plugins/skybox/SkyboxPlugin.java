@@ -33,7 +33,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -49,15 +49,11 @@ public class SkyboxPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private EventBus eventBus;
-
 	private Skybox skybox;
 
 	@Override
 	public void startUp() throws IOException
 	{
-		addSubscriptions();
 
 		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
 	}
@@ -65,16 +61,8 @@ public class SkyboxPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		eventBus.unregister(this);
-
 		client.setSkyboxColor(0);
 		skybox = null;
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(BeforeRender.class, this, this::onBeforeRender);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	private int mapChunk(int cx, int cy, int plane)
@@ -92,6 +80,7 @@ public class SkyboxPlugin extends Plugin
 		return instanceTemplateChunks[cx][cy];
 	}
 
+	@Subscribe
 	private void onBeforeRender(BeforeRender r)
 	{
 		if (skybox == null || client.getGameState() != GameState.LOGGED_IN)
@@ -136,6 +125,7 @@ public class SkyboxPlugin extends Plugin
 		));
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)

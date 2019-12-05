@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class GrimyHerbComparableEntry extends AbstractComparableEntry
 {
-	private SwapGrimyHerbMode mode;
+	private final SwapGrimyHerbMode mode;
 
 	private final GrimyHerbLookup lookup = new GrimyHerbLookup();
 	private final Client client;

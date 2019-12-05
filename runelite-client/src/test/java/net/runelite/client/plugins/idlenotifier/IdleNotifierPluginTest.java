@@ -104,13 +104,13 @@ public class IdleNotifierPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		// Mock monster
-		final String[] monsterActions = new String[] { "Attack", "Examine" };
+		final String[] monsterActions = new String[]{"Attack", "Examine"};
 		final NPCDefinition monsterComp = mock(NPCDefinition.class);
 		when(monsterComp.getActions()).thenReturn(monsterActions);
 		when(monster.getDefinition()).thenReturn(monsterComp);
 
 		// Mock random event
-		final String[] randomEventActions = new String[] { "Talk-to", "Dismiss", "Examine" };
+		final String[] randomEventActions = new String[]{"Talk-to", "Dismiss", "Examine"};
 		final NPCDefinition randomEventComp = mock(NPCDefinition.class);
 		when(randomEventComp.getActions()).thenReturn(randomEventActions);
 		when(randomEvent.getDefinition()).thenReturn(randomEventComp);

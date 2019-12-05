@@ -50,12 +50,11 @@ class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return new StringBuilder("Favor: ")
-			.append(plugin.getFavor())
-			.append("/127")
-			.append("</br>")
-			.append("Coffer: ")
-			.append(QuantityFormatter.quantityToStackSize(plugin.getCoffer()))
-			.toString();
+		return "Favor: " +
+			plugin.getFavor() +
+			"/127" +
+			"</br>" +
+			"Coffer: " +
+			QuantityFormatter.quantityToStackSize(plugin.getCoffer());
 	}
 }

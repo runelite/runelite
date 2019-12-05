@@ -65,7 +65,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -108,9 +108,6 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
@@ -123,7 +120,6 @@ public class MiningPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 
 		this.showCoalBagOverlay = config.showCoalBagOverlay();
 		this.amountOfCoalInCoalBag = config.amountOfCoalInCoalBag();
@@ -133,24 +129,11 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(miningOverlay);
 		overlayManager.remove(coalBagOverlay);
 		respawns.clear();
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(ChatMessage.class, this, this::onChatMessage);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
 
 	@Provides
@@ -159,6 +142,7 @@ public class MiningPlugin extends Plugin
 		return configManager.getConfig(MiningConfig.class);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -176,11 +160,13 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
@@ -199,6 +185,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -241,6 +228,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		//TODO: should work hopefully
@@ -271,6 +259,7 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -317,6 +306,7 @@ public class MiningPlugin extends Plugin
 		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("mining"))

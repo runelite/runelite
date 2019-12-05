@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.timetracking.hunter;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 
 @AllArgsConstructor
-@Getter
+@Getter(AccessLevel.PACKAGE)
 enum BirdHouseState
 {
 	SEEDED(ColorScheme.PROGRESS_COMPLETE_COLOR),

@@ -32,6 +32,7 @@ import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -45,7 +46,7 @@ import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,33 +84,19 @@ public class FriendNotesPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private HoveredFriend hoveredFriend = null;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(MenuEntryAdded.class, this, this::onMenuEntryAdded);
-		eventBus.subscribe(MenuOptionClicked.class, this, this::onMenuOptionClicked);
-		eventBus.subscribe(NameableNameChanged.class, this, this::onNameableNameChanged);
-		eventBus.subscribe(FriendRemoved.class, this, this::onFriendRemoved);
 	}
 
 	/**
@@ -172,6 +159,7 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());
@@ -200,6 +188,7 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (WidgetInfo.TO_GROUP(event.getParam1()) == WidgetInfo.FRIENDS_LIST.getGroupId())
@@ -237,6 +226,7 @@ public class FriendNotesPlugin extends Plugin
 
 	}
 
+	@Subscribe
 	private void onNameableNameChanged(NameableNameChanged event)
 	{
 		final Nameable nameable = event.getNameable();
@@ -258,6 +248,7 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onFriendRemoved(FriendRemoved event)
 	{
 		// Delete a friend's note if they are removed

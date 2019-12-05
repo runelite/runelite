@@ -50,14 +50,14 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -105,9 +105,6 @@ public class PohPlugin extends Plugin
 	@Inject
 	private BurnerOverlay burnerOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showPortals;
 	@Getter(AccessLevel.PACKAGE)
@@ -142,10 +139,9 @@ public class PohPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(burnerOverlay);
@@ -153,27 +149,15 @@ public class PohPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(burnerOverlay);
 		pohObjects.clear();
 		incenseBurners.clear();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
-		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("poh"))
@@ -186,6 +170,7 @@ public class PohPlugin extends Plugin
 		overlay.updateConfig();
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
@@ -205,12 +190,14 @@ public class PohPlugin extends Plugin
 		incenseBurners.put(event.getTile(), new IncenseBurner(gameObject.getId(), countdownTimer, randomTimer, null));
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 		pohObjects.remove(gameObject);
 	}
 
+	@Subscribe
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
@@ -220,12 +207,14 @@ public class PohPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
 		pohObjects.remove(decorativeObject);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -235,6 +224,7 @@ public class PohPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();

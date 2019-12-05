@@ -49,7 +49,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -83,23 +83,17 @@ public class RoguesDenPlugin extends Plugin
 	@Inject
 	private RoguesDenMinimapOverlay minimapOverlay;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
 		obstaclesHull.clear();
@@ -107,24 +101,7 @@ public class RoguesDenPlugin extends Plugin
 		hasGem = false;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ItemContainerChanged.class, this, this::onItemContainerChanged);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
-		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
-		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
-		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
-		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
-		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
-		eventBus.subscribe(DecorativeObjectChanged.class, this, this::onDecorativeObjectChanged);
-		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
-	}
-
+	@Subscribe
 	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
@@ -135,6 +112,7 @@ public class RoguesDenPlugin extends Plugin
 		hasGem = ItemUtil.containsItemId(event.getItemContainer().getItems(), MYSTIC_JEWEL);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -144,61 +122,73 @@ public class RoguesDenPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
+	@Subscribe
 	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
+	@Subscribe
 	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
 
+	@Subscribe
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
 	}
 
+	@Subscribe
 	private void onDecorativeObjectChanged(DecorativeObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
+	@Subscribe
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);

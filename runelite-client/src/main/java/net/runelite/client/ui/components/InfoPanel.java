@@ -65,10 +65,9 @@ public class InfoPanel extends JPanel
 	private static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 
-	private final Properties properties = new Properties();
-
 	public InfoPanel()
 	{
+		Properties properties = new Properties();
 		try (InputStream in = getClass().getResourceAsStream("/open.osrs.properties"))
 		{
 			properties.load(in);

@@ -2,6 +2,7 @@ package net.runelite.client.plugins.deathindicator;
 
 import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +13,8 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.MiscUtils;
 
 @EqualsAndHashCode
-@Getter
-@Setter
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
 class Bone
 {
 	private String name;

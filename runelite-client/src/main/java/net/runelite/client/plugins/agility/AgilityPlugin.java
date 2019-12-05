@@ -71,6 +71,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
@@ -134,12 +135,6 @@ public class AgilityPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int agilityLevel;
 
-	@Provides
-	AgilityConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AgilityConfig.class);
-	}
-
 	// Config values
 	@Getter(AccessLevel.PACKAGE)
 	private boolean removeDistanceCap;
@@ -166,11 +161,16 @@ public class AgilityPlugin extends Plugin
 	private boolean notifyAgilityArena;
 	private boolean showAgilityArenaTimer;
 
+	@Provides
+	AgilityConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AgilityConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		if (config.showShortcutLevel())
 		{
@@ -183,9 +183,8 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
 		eventBus.unregister(MENU_SUBS);
 
 		overlayManager.remove(agilityOverlay);
@@ -196,34 +195,13 @@ public class AgilityPlugin extends Plugin
 		agilityLevel = 0;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(StatChanged .class, this, this::onStatChanged);
-		eventBus.subscribe(ItemSpawned.class, this, this::onItemSpawned);
-		eventBus.subscribe(ItemDespawned.class, this, this::onItemDespawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectChanged.class, this, this::onGameObjectChanged);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(GroundObjectSpawned.class, this, this::onGroundObjectSpawned);
-		eventBus.subscribe(GroundObjectChanged.class, this, this::onGroundObjectChanged);
-		eventBus.subscribe(GroundObjectDespawned.class, this, this::onGroundObjectDespawned);
-		eventBus.subscribe(WallObjectSpawned.class, this, this::onWallObjectSpawned);
-		eventBus.subscribe(WallObjectChanged.class, this, this::onWallObjectChanged);
-		eventBus.subscribe(WallObjectDespawned.class, this, this::onWallObjectDespawned);
-		eventBus.subscribe(DecorativeObjectSpawned.class, this, this::onDecorativeObjectSpawned);
-		eventBus.subscribe(DecorativeObjectChanged.class, this, this::onDecorativeObjectChanged);
-		eventBus.subscribe(DecorativeObjectDespawned.class, this, this::onDecorativeObjectDespawned);
-	}
-
 	private void addMenuSubscriptions()
 	{
 		eventBus.subscribe(BeforeRender.class, MENU_SUBS, this::onBeforeRender);
 		eventBus.subscribe(MenuOpened.class, MENU_SUBS, this::onMenuOpened);
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
@@ -248,6 +226,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("agility"))
@@ -276,7 +255,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
-	public void updateConfig()
+	private void updateConfig()
 	{
 		this.removeDistanceCap = config.removeDistanceCap();
 		this.showLapCount = config.showLapCount();
@@ -293,6 +272,7 @@ public class AgilityPlugin extends Plugin
 		this.showAgilityArenaTimer = config.showAgilityArenaTimer();
 	}
 
+	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
 		if (statChanged.getSkill() != AGILITY)
@@ -335,6 +315,7 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (obstacles.isEmpty())
@@ -351,12 +332,14 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final Tile tile = itemDespawned.getTile();
 		marksOfGrace.remove(tile);
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (isInAgilityArena())
@@ -408,61 +391,73 @@ public class AgilityPlugin extends Plugin
 		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(AGILITY_ARENA_TICKET)));
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
+	@Subscribe
 	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
+	@Subscribe
 	private void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
+	@Subscribe
 	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectChanged(WallObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
+	@Subscribe
 	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
 
+	@Subscribe
 	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
 	}
 
+	@Subscribe
 	private void onDecorativeObjectChanged(DecorativeObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
+	@Subscribe
 	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);

@@ -51,14 +51,14 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -119,9 +119,6 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final WorldPoint[] safeCenters = new WorldPoint[2];
 
@@ -160,10 +157,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		overlayManager.add(overlay);
 		if (this.showNotWorkingOverlay)
@@ -177,10 +173,8 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		removeTimer();
 		overlayManager.remove(overlay);
 		if (notWorkingOverlayShown)
@@ -196,14 +190,6 @@ public class NpcAggroAreaPlugin extends Plugin
 		active = false;
 
 		Arrays.fill(linesToDisplay, null);
-	}
-
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 	}
 
 	private Area generateSafeArea()
@@ -357,6 +343,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		checkAreaNpcs(client.getCachedNPCs());
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (this.alwaysActive)
@@ -367,6 +354,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		checkAreaNpcs(event.getNpc());
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
@@ -406,6 +394,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		lastPlayerLocation = newLocation;
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("npcUnaggroArea"))
@@ -496,6 +485,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())

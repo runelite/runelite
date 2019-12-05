@@ -1,6 +1,5 @@
 package net.runelite.mixins;
 
-
 import java.awt.Dimension;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Mixin;

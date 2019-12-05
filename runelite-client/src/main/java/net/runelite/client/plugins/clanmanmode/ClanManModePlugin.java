@@ -17,7 +17,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -34,6 +34,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Singleton
 public class ClanManModePlugin extends Plugin
 {
+	final Map<String, Integer> clan = new HashMap<>();
+	int wildernessLevel;
+	int clanmin;
+	int clanmax;
+	int inwildy;
+	int ticks;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -51,9 +58,6 @@ public class ClanManModePlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean highlightAttackable;
@@ -92,29 +96,19 @@ public class ClanManModePlugin extends Plugin
 		return configManager.getConfig(ClanManModeConfig.class);
 	}
 
-	int wildernessLevel;
-	int clanmin;
-	int clanmax;
-	int inwildy;
-	int ticks;
-	final Map<String, Integer> clan = new HashMap<>();
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
-		
+
 		overlayManager.add(ClanManModeOverlay);
 		overlayManager.add(ClanManModeTileOverlay);
 		overlayManager.add(ClanManModeMinimapOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		overlayManager.remove(ClanManModeOverlay);
 		overlayManager.remove(ClanManModeTileOverlay);
 		overlayManager.remove(ClanManModeMinimapOverlay);
@@ -126,23 +120,18 @@ public class ClanManModePlugin extends Plugin
 		inwildy = 0;
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"clanmanmode".equals(event.getGroup()))
 		{
 			return;
 		}
-		
+
 		updateConfig();
 	}
 
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN || gameStateChanged.getGameState() == GameState.HOPPING)
@@ -151,6 +140,7 @@ public class ClanManModePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		ticks++;
@@ -170,7 +160,7 @@ public class ClanManModePlugin extends Plugin
 			clanmax = Collections.max(clan.values());
 		}
 	}
-	
+
 	private void updateConfig()
 	{
 		this.highlightAttackable = config.highlightAttackable();

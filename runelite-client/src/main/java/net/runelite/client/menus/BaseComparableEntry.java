@@ -83,10 +83,7 @@ public class BaseComparableEntry extends AbstractComparableEntry
 		{
 			int type = entry.getOpcode();
 
-			if (this.type != type)
-			{
-				return false;
-			}
+			return this.type == type;
 		}
 
 		return true;

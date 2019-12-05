@@ -2,10 +2,14 @@ package net.runelite.client.eventbus;
 
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.jakewharton.rxrelay2.Relay;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.sentry.Sentry;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,21 +19,25 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.Event;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.OpenOSRSConfig;
 
 @Slf4j
 @Singleton
 public class EventBus implements EventBusInterface
 {
-	private Map<Object, Object> subscriptionList = new HashMap<>();
-	private Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
-	private Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
+	private final Map<Object, Object> subscriptionList = new HashMap<>();
+	private final Map<Class<?>, Relay<Object>> subjectList = new HashMap<>();
+	private final Map<Object, CompositeDisposable> subscriptionsMap = new HashMap<>();
 
 	@Inject
 	private OpenOSRSConfig openOSRSConfig;
 
+	@Inject
+	private ClientThread clientThread;
+
 	@NonNull
-	private <T> Relay<Object> getSubject(Class<T> eventClass)
+	private <T extends Event> Relay<Object> getSubject(Class<T> eventClass)
 	{
 		return subjectList.computeIfAbsent(eventClass, k -> PublishRelay.create().toSerialized());
 	}
@@ -47,34 +55,65 @@ public class EventBus implements EventBusInterface
 		return compositeDisposable;
 	}
 
-	@Override
-	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
-	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
+	private <T> ObservableTransformer<T, T> applyTake(int until)
 	{
-		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
+		return observable -> until > 0 ? observable.take(until) : observable;
+	}
+
+	private Scheduler getScheduler(EventScheduler scheduler)
+	{
+		Scheduler subscribeScheduler;
+		switch (scheduler)
 		{
-			return;
+			case COMPUTATION:
+				subscribeScheduler = Schedulers.computation();
+				break;
+			case IO:
+				subscribeScheduler = Schedulers.io();
+				break;
+			case NEWTHREAD:
+				subscribeScheduler = Schedulers.newThread();
+				break;
+			case SINGLE:
+				subscribeScheduler = Schedulers.single();
+				break;
+			case TRAMPOLINE:
+				subscribeScheduler = Schedulers.trampoline();
+				break;
+			case CLIENT:
+				subscribeScheduler = Schedulers.from(clientThread);
+				break;
+			case DEFAULT:
+			default:
+				subscribeScheduler = null;
+				break;
 		}
 
-		Disposable disposable = getSubject(eventClass)
-			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
-			.cast(eventClass) // Cast it for easier usage
-			.subscribe(action, error ->
-			{
-				log.error("Exception in eventbus", error);
+		return subscribeScheduler;
+	}
 
-				if (RuneLiteProperties.getLauncherVersion() != null && openOSRSConfig.shareLogs())
-				{
-					Sentry.capture(error);
-				}
-			});
+	private <T> ObservableTransformer<T, T> applyScheduler(EventScheduler eventScheduler, boolean subscribe)
+	{
+		Scheduler scheduler = getScheduler(eventScheduler);
 
-		getCompositeDisposable(lifecycle).add(disposable);
-		subscriptionList.put(lifecycle, eventClass);
+		return observable -> scheduler == null ? observable : subscribe ? observable.subscribeOn(scheduler) : observable.observeOn(scheduler);
 	}
 
 	@Override
-	public <T> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil)
+	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action)
+	{
+		subscribe(eventClass, lifecycle, action, -1, EventScheduler.DEFAULT, EventScheduler.DEFAULT);
+	}
+
+	@Override
+	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUtil)
+	{
+		subscribe(eventClass, lifecycle, action, takeUtil, EventScheduler.DEFAULT, EventScheduler.DEFAULT);
+	}
+
+	@Override
+	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
+	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil, @Nullable EventScheduler subscribe, @Nullable EventScheduler observe)
 	{
 		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
 		{
@@ -82,10 +121,12 @@ public class EventBus implements EventBusInterface
 		}
 
 		Disposable disposable = getSubject(eventClass)
+			.compose(applyTake(takeUntil))
 			.filter(Objects::nonNull) // Filter out null objects, better safe than sorry
 			.cast(eventClass) // Cast it for easier usage
-			.take(takeUntil)
 			.doFinally(() -> unregister(lifecycle))
+			.compose(applyScheduler(subscribe, true))
+			.compose(applyScheduler(observe, false))
 			.subscribe(action, error ->
 			{
 				log.error("Exception in eventbus", error);
@@ -113,7 +154,7 @@ public class EventBus implements EventBusInterface
 	}
 
 	@Override
-	public <T> void post(Class<T> eventClass, @NonNull Event event)
+	public <T extends Event> void post(Class<? extends T> eventClass, @NonNull T event)
 	{
 		getSubject(eventClass).accept(event);
 	}

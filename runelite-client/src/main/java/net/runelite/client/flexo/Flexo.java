@@ -74,7 +74,7 @@ public class Flexo extends Robot
 			.getDefaultScreenDevice());
 	}
 
-	private void init(GraphicsDevice screen) throws AWTException
+	private void init(GraphicsDevice screen)
 	{
 		try
 		{

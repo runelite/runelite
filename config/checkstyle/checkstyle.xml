@@ -32,6 +32,8 @@
 		<module name="SuppressionCommentFilter"/>
 		<module name="LeftCurly">
 			<property name="option" value="nl"/>
+			<!-- allow {} on anonymous classes and lambdas-->
+			<property name="tokens" value="ANNOTATION_DEF, CLASS_DEF, CTOR_DEF, ENUM_CONSTANT_DEF, ENUM_DEF, INTERFACE_DEF, LITERAL_CASE, LITERAL_CATCH, LITERAL_DEFAULT, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF, STATIC_INIT"/>
 		</module>
 		<module name="RightCurly">
 			<property name="option" value="alone"/>
@@ -42,12 +44,12 @@
 			<property name="message" value="Indent must use tab characters"/>
 			<property name="ignoreComments" value="true"/>
 		</module>
-		<module name="RegexpSinglelineJava">
-			<property name="format" value="import (?!static|java\.awt).*\*"/>
-			<property name="message" value="Multiline imports are disallowed if they are not static"/>
-			<property name="ignoreComments" value="true"/>
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true"/>
 		</module>
-		<module name="WhitespaceAround"/>
+		<module name="WhitespaceAround">
+			<property name="allowEmptyTypes" value="true"/>
+		</module>
 		<module name="WhitespaceAfter">
 			<property name="tokens" value="COMMA"/>
 		</module>
@@ -56,6 +58,11 @@
 	<module name="RegexpMultiline">
 		<property name="format" value="else[ \t]*[\r\n]+[ \t]*if"/>
 		<property name="message" value="Newline should not be between else and if"/>
+	</module>
+	<module name="RegexpMultiline">
+		<property name="format" value="^[\r\n\s]+import"/>
+		<property name="maximum" value="1"/>
+		<property name="message" value="There should not be empty lines in the imports list"/>
 	</module>
 	<module name="SuppressionFilter">
 		<property name="file" value="${config_loc}/suppressions.xml"/>

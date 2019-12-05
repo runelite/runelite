@@ -331,7 +331,7 @@ public class ItemManager
 		return getRepairValue(itemId, false);
 	}
 
-	public int getRepairValue(int itemId, boolean fullValue)
+	private int getRepairValue(int itemId, boolean fullValue)
 	{
 		final ItemReclaimCost b = ItemReclaimCost.of(itemId);
 

@@ -24,6 +24,4 @@
  */
 package net.runelite.rs.api;
 
-public interface RSDecimator
-{
-}
+public interface RSDecimator {}

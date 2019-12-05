@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
-import javax.inject.Singleton;
-import net.runelite.api.geometry.Geometry;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,10 +32,12 @@ import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.time.Instant;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.geometry.Geometry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;

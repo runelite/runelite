@@ -42,12 +42,12 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import org.apache.commons.lang3.StringUtils;
@@ -76,9 +76,6 @@ public class ChatFilterPlugin extends Plugin
 	@Inject
 	private ChatFilterConfig config;
 
-	@Inject
-	private EventBus eventBus;
-
 	@Setter(AccessLevel.PACKAGE)
 	private ChatFilterType filterType;
 	@Setter(AccessLevel.PACKAGE)
@@ -97,31 +94,22 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateConfig();
-		addSubscriptions();
 
 		updateFilteredPatterns();
 		client.refreshChat();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		eventBus.unregister(this);
-
 		filteredPatterns.clear();
 		client.refreshChat();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-		eventBus.subscribe(OverheadTextChanged.class, this, this::onOverheadTextChanged);
-	}
-
+	@Subscribe
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"chatFilterCheck".equals(event.getEventName()))
@@ -185,6 +173,7 @@ public class ChatFilterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onOverheadTextChanged(OverheadTextChanged event)
 	{
 		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !shouldFilterPlayerMessage(event.getActor().getName()))
@@ -267,6 +256,7 @@ public class ChatFilterPlugin extends Plugin
 			.forEach(filteredPatterns::add);
 	}
 
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"chatfilter".equals(event.getGroup()))

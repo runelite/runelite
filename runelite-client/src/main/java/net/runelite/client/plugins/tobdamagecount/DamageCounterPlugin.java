@@ -41,17 +41,16 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-
 
 @PluginDescriptor(
 	name = "ToB Damage Counter",
@@ -64,12 +63,6 @@ import net.runelite.client.plugins.PluginType;
 @Singleton
 public class DamageCounterPlugin extends Plugin
 {
-	private int currentWorld = -1;
-	private int DamageCount = 0;
-	private int currenthpxp = -1; // checking the current hp xp so be easier to find
-	private String BossName = null; //to ID the boss to calculate the damage
-	private int DamageTaken = 0;
-	private boolean status = true; //default boolean alive = true, dead = false
 	//formatting the number for damage taken and dealt with to look beeter
 	private static final DecimalFormat DAMAGEFORMAT = new DecimalFormat("#,###");
 	private static final double XP_RATIO = 1.3333;
@@ -101,32 +94,21 @@ public class DamageCounterPlugin extends Plugin
 		NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
 		NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
 		NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
+	private int currentWorld = -1;
+	private int DamageCount = 0;
+	private int currenthpxp = -1; // checking the current hp xp so be easier to find
+	private String BossName = null; //to ID the boss to calculate the damage
+	private int DamageTaken = 0;
+	private boolean status = true; //default boolean alive = true, dead = false
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private ChatMessageManager chatMessangerManager;
-	@Inject
-	private EventBus eventBus;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
-		eventBus.subscribe(HitsplatApplied.class, this, this::onHitsplatApplied);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(LocalPlayerDeath.class, this, this::onLocalPlayerDeath);
-	}
-
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		eventBus.unregister(this);
-	}
 
 	//every game tick it will go through methods
+	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -154,12 +136,14 @@ public class DamageCounterPlugin extends Plugin
 				if (aNPCARRAY == interactingId)
 				{
 					BossName = interactingName;
+					break;
 				}
 			}
 		}
 	}
 
 	//if you hop it will reset the counter
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
@@ -223,6 +207,7 @@ public class DamageCounterPlugin extends Plugin
 
 
 	//will add the damage that you have taken from the current boss fight
+	@Subscribe
 	private void onHitsplatApplied(HitsplatApplied Hit)
 	{
 		if (Hit.getActor().equals(client.getLocalPlayer()))
@@ -237,6 +222,7 @@ public class DamageCounterPlugin extends Plugin
 	because every time she phases she "dies" so making sure the counter doesn't print out the damage for phase 1, 2,
 	and 3.
 	 */
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = npc.getNpc();
@@ -350,7 +336,7 @@ public class DamageCounterPlugin extends Plugin
 		sendChatMessage(MessageTaken);
 	}
 
-	public int getPlayers()
+	private int getPlayers()
 	{
 		List<Player> players = client.getPlayers();
 
@@ -359,9 +345,10 @@ public class DamageCounterPlugin extends Plugin
 
 	//whenever you have died in tob you will get a death message with damage
 	// made sure the message works at ToB area or else it will message every where
-	private void onLocalPlayerDeath(LocalPlayerDeath death)
+	@Subscribe
+	private void onPlayerDeath(PlayerDeath death)
 	{
-		if (client.getLocalPlayer() == null)
+		if (client.getLocalPlayer() == null || death.getPlayer() != client.getLocalPlayer())
 		{
 			return;
 		}

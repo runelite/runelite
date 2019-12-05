@@ -27,7 +27,6 @@ package net.runelite.client.plugins.barbarianassault;
 
 import java.awt.Color;
 import java.util.ArrayList;
-
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;

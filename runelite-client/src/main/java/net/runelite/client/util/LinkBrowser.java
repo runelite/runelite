@@ -132,6 +132,7 @@ public class LinkBrowser
 	/**
 	 * Tries to open the specified {@code File} with the systems default text editor. If operation fails
 	 * an error message is displayed with the option to copy the absolute file path to clipboard.
+	 *
 	 * @param file the File instance of the log file
 	 * @return did the file open successfully?
 	 */

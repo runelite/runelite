@@ -6,7 +6,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("spawntimer")
-public interface SpawnTimerConfig extends Config 
+public interface SpawnTimerConfig extends Config
 {
 	@ConfigItem(
 		position = 1,

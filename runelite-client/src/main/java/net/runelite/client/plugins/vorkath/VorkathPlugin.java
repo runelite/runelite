@@ -57,7 +57,7 @@ import net.runelite.api.events.ProjectileSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -80,31 +80,41 @@ public class VorkathPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private VorkathOverlay overlay;
+
 	@Inject
 	private AcidPathOverlay acidPathOverlay;
+
 	@Inject
 	private VorkathConfig config;
-	@Inject
-	private EventBus eventBus;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Vorkath vorkath;
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC zombifiedSpawn;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> acidSpots = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> acidFreePath = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint[] wooxWalkPath = new WorldPoint[2];
+
 	@Getter(AccessLevel.PACKAGE)
 	private long wooxWalkTimer = -1;
+
 	@Getter(AccessLevel.PACKAGE)
 	private Rectangle wooxWalkBar;
 	private int lastAcidSpotsSize = 0;
+
 	// Config values
 	@Getter(AccessLevel.PACKAGE)
 	private boolean indicateAcidPools;
@@ -125,7 +135,6 @@ public class VorkathPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		addSubscriptions();
 		updateConfig();
 	}
 
@@ -135,20 +144,7 @@ public class VorkathPlugin extends Plugin
 		reset();
 	}
 
-	private void addSubscriptions()
-	{
-		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
-		eventBus.subscribe(NpcSpawned.class, this, this::onNpcSpawned);
-		eventBus.subscribe(NpcDespawned.class, this, this::onNpcDespawned);
-		eventBus.subscribe(ProjectileMoved.class, this, this::onProjectileMoved);
-		eventBus.subscribe(ProjectileSpawned.class, this, this::onProjectileSpawned);
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(GameObjectSpawned.class, this, this::onGameObjectSpawned);
-		eventBus.subscribe(GameObjectDespawned.class, this, this::onGameObjectDespawned);
-		eventBus.subscribe(ClientTick.class, this, this::onClientTick);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-	}
-
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("vorkath"))
@@ -159,6 +155,7 @@ public class VorkathPlugin extends Plugin
 		updateConfig();
 	}
 
+	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (!isAtVorkath())
@@ -184,6 +181,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onNpcDespawned(NpcDespawned event)
 	{
 		if (!isAtVorkath())
@@ -208,6 +206,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onProjectileSpawned(ProjectileSpawned event)
 	{
 		if (!isAtVorkath() || vorkath == null)
@@ -250,6 +249,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onProjectileMoved(ProjectileMoved event)
 	{
 		if (!isAtVorkath())
@@ -266,6 +266,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!isAtVorkath())
@@ -281,6 +282,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (!isAtVorkath())
@@ -296,6 +298,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (!isAtVorkath())
@@ -321,6 +324,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onGameTick(GameTick event)
 	{
 		if (!isAtVorkath())
@@ -362,6 +366,7 @@ public class VorkathPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
 	private void onClientTick(ClientTick event)
 	{
 		if (acidSpots.size() != lastAcidSpotsSize)

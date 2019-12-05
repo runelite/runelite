@@ -47,6 +47,7 @@ class WorldMapRegionOverlay extends Overlay
 	private static final int LABEL_PADDING = 4;
 	private static final int REGION_SIZE = 1 << 6;
 	// Bitmask to return first coordinate in region
+	@SuppressWarnings("PointlessBitwiseExpression")
 	private static final int REGION_TRUNCATE = ~((1 << 6) - 1);
 	private final Client client;
 	private final DevToolsPlugin plugin;
@@ -77,7 +78,7 @@ class WorldMapRegionOverlay extends Overlay
 	{
 		RenderOverview ro = client.getRenderOverview();
 		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
-		Float pixelsPerTile = ro.getWorldMapZoom();
+		float pixelsPerTile = ro.getWorldMapZoom();
 
 		if (map == null)
 		{

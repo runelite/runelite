@@ -11,15 +11,13 @@ import java.util.stream.Collectors;
 
 public class GrimyHerbLookup
 {
-	private static Map<String, HerbInfo> mapping;
+	private static final Map<String, HerbInfo> mapping;
 
 	static
 	{
 		final InputStream herbFile = GrimyHerbLookup.class.getResourceAsStream("/herbs.json");
 		Gson gson = new Gson();
-		mapping = gson.fromJson(new InputStreamReader(herbFile), new TypeToken<Map<String, HerbInfo>>()
-		{
-		}.getType());
+		mapping = gson.fromJson(new InputStreamReader(herbFile), new TypeToken<Map<String, HerbInfo>>() {}.getType());
 	}
 
 	public int getCleanLevel(int itemId)
@@ -49,7 +47,7 @@ public class GrimyHerbLookup
 		return mapping.keySet().stream().mapToInt(Integer::valueOf).boxed().collect(Collectors.toList());
 	}
 
-	private class HerbInfo
+	private static class HerbInfo
 	{
 		@SerializedName("cleaned")
 		private int cleanedId;
