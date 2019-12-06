@@ -35,8 +35,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -254,11 +254,8 @@ public class ScreenMarkerPlugin extends Plugin
 
 		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
 		{
-			// Intentionally left empty
 		}.getType());
 
-		screenMarkerData.removeAll(Collections.singleton(null));
-
-		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
+		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
 	}
 }
