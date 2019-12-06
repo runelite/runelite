@@ -53,8 +53,8 @@ class KourendLibraryPanel extends PluginPanel
 	private static final ImageIcon RESET_ICON;
 	private static final ImageIcon RESET_CLICK_ICON;
 
-	@Inject
-	private Library library;
+	private final KourendLibraryConfig config;
+	private final Library library;
 
 	private final HashMap<Book, BookPanel> bookPanels = new HashMap<>();
 
@@ -63,6 +63,15 @@ class KourendLibraryPanel extends PluginPanel
 		final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(KourendLibraryPanel.class, "/util/reset.png");
 		RESET_ICON = new ImageIcon(resetIcon);
 		RESET_CLICK_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
+	}
+
+	@Inject
+	KourendLibraryPanel(KourendLibraryConfig config, Library library)
+	{
+		super();
+
+		this.config = config;
+		this.library = library;
 	}
 
 	void init()
@@ -79,6 +88,7 @@ class KourendLibraryPanel extends PluginPanel
 		c.gridy = 0;
 		Stream.of(Book.values())
 			.filter(b -> !b.isDarkManuscript())
+			.filter(b -> !config.hideVarlamoreEnvoy() || b != Book.VARLAMORE_ENVOY)
 			.sorted(Comparator.comparing(Book::getShortName))
 			.forEach(b ->
 			{
@@ -154,5 +164,12 @@ class KourendLibraryPanel extends PluginPanel
 				}
 			}
 		});
+	}
+
+	void reload()
+	{
+		bookPanels.clear();
+		removeAll();
+		init();
 	}
 }
