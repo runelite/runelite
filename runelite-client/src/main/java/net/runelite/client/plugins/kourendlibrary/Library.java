@@ -74,7 +74,7 @@ class Library
 	private Book customerBook;
 
 	@Getter(AccessLevel.PACKAGE)
-	private LibraryCustomer customer;
+	private int customerId;
 
 	Library()
 	{
@@ -93,9 +93,9 @@ class Library
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(int customerId, Book book)
 	{
-		this.customer = customer;
+		this.customerId = customerId;
 		this.customerBook = book;
 	}
 
@@ -131,7 +131,7 @@ class Library
 		else if (state != SolvedState.NO_DATA)
 		{
 			// We know all of the possible things in this shelf.
-			if (book != null)
+			if (book != null || bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
 			{
 				// Check to see if our guess is wrong
 				if (!bookcase.getPossibleBooks().contains(book))
