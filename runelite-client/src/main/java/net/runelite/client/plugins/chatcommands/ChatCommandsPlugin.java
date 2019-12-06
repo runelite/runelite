@@ -458,7 +458,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		search = longBossName(search);
 
-		final int kc;
+		ChatMessageBuilder responseBuilder = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append(search)
+			.append(ChatColorType.NORMAL)
+			.append(" kill count: ")
+			.append(ChatColorType.HIGHLIGHT);
+
+		int kc = 0;
 		try
 		{
 			kc = chatClient.getKc(player, search);
@@ -466,18 +473,58 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("unable to lookup killcount", ex);
-			return;
 		}
 
-		String response = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append(search)
-			.append(ChatColorType.NORMAL)
-			.append(" kill count: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(kc))
-			.build();
+		HiscoreSkill skill = null;
+		try
+		{
+			skill = HiscoreSkill.valueOf(search.toUpperCase().replace(" ", "_"));
+		}
+		catch (IllegalArgumentException ignored)
+		{
+		}
 
+		if (skill == null)
+		{
+			// Do nothing if we couldn't find KC and not on the jagex hiscores
+			if (kc <= 0)
+			{
+				return;
+			}
+			responseBuilder.append(Integer.toString(kc));
+		}
+		else
+		{
+			try
+			{
+				final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
+				final SingleHiscoreSkillResult result = hiscoreClient.lookup(lookup.getName(), skill, lookup.getEndpoint());
+
+				if (result == null)
+				{
+					log.warn("unable to look up skill {} for {}: not found", skill, search);
+					responseBuilder.append(Integer.toString(kc));
+				}
+				else
+				{
+					final Skill hiscoreSkill = result.getSkill();
+
+					responseBuilder.append(Integer.toString(hiscoreSkill.getLevel()))
+						.append(ChatColorType.NORMAL)
+						.append(" Rank: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(String.format("%,d", hiscoreSkill.getRank()))
+						.build();
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to lookup boss {} kc for {}", skill, search, ex);
+				responseBuilder.append(Integer.toString(kc));
+			}
+		}
+
+		final String response = responseBuilder.build();
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
