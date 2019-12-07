@@ -323,6 +323,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapTradeCrewmember",
+		name = "Trade Crewmember",
+		description = "Swap Talk-to with Trade or Charter on Trade Crewmembers"
+	)
+	default TradeCrewmemberMode swapTradeCrewmember()
+	{
+		// Default to CHARTER as it is mostly Ironmen who wants TRADE
+		return TradeCrewmemberMode.CHARTER;
+	}
+
+	@ConfigItem(
 		keyName = "swapEnchant",
 		name = "Enchant",
 		description = "Swap Talk-to with Enchant for Eluned"
