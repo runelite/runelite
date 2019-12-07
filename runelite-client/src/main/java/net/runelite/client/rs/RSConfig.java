@@ -54,4 +54,9 @@ class RSConfig
 	{
 		return classLoaderProperties.get("initial_class").replace(".class", "");
 	}
+
+	String getRuneLiteWorldParam()
+	{
+		return classLoaderProperties.get("runelite.worldparam");
+	}
 }

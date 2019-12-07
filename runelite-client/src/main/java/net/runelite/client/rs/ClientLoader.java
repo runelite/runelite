@@ -33,10 +33,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Map;
 import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.RuneLiteSplashScreen;
+import net.runelite.http.api.worlds.World;
 import okhttp3.HttpUrl;
 
 @Slf4j
@@ -45,11 +47,11 @@ public class ClientLoader implements Supplier<Applet>
 	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
 	private static final String BACKUP_CONFIG_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/jav_config.ws";
 
-	private static final int NUM_ATTEMPTS = 6;
+	private static final int NUM_ATTEMPTS = 10;
 	private final ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
 
-	private HostSupplier hostSupplier = new HostSupplier();
+	private WorldSupplier worldSupplier = new WorldSupplier();
 	private RSConfig config;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
@@ -129,7 +131,7 @@ public class ClientLoader implements Supplier<Applet>
 			catch (IOException e)
 			{
 				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
-				String host = hostSupplier.get();
+				String host = worldSupplier.get().getAddress();
 				url = url.newBuilder().host(host).build();
 				err = e;
 			}
@@ -141,14 +143,19 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			RSConfig backupConfig = ClientConfigLoader.fetch(HttpUrl.parse(BACKUP_CONFIG_URL));
 
-			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar())
+				|| Strings.isNullOrEmpty(backupConfig.getInitialClass()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
 			{
 				throw new IOException("Invalid or missing jav_config");
 			}
 
 			// Randomize the codebase
-			String codebase = hostSupplier.get();
-			backupConfig.setCodebase("http://" + codebase + "/");
+			World world = worldSupplier.get();
+			backupConfig.setCodebase("http://" + world.getAddress() + "/");
+
+			// Update the world applet parameter
+			Map<String, String> appletProperties = backupConfig.getAppletProperties();
+			appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
 			config = backupConfig;
 		}
 		catch (IOException ex)
