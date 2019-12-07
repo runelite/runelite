@@ -508,7 +508,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("start-minigame", option, target, index);
 			}
 
-			if (target.equals("trader crewmember")) {
+			if (target.equals("trader crewmember"))
+			{
 				switch (config.swapTradeCrewmember())
 				{
 					case TRADE:
