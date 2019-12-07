@@ -28,10 +28,13 @@ package net.runelite.client.plugins.chatcommands;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +50,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -113,6 +117,8 @@ public class ChatCommandsPlugin extends Plugin
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
 	private int lastPb = -1;
+
+	private Map<HiscoreSkill, Integer> kcMap = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -183,14 +189,39 @@ public class ChatCommandsPlugin extends Plugin
 		return configManager.getConfig(ChatCommandsConfig.class);
 	}
 
+	@Subscribe
+	protected void onGameStateChanged(GameStateChanged e)
+	{
+		switch (e.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case CONNECTION_LOST:
+			case HOPPING:
+				kcMap.clear();
+		}
+	}
+
 	private void setKc(String boss, int killcount)
 	{
+		final HiscoreSkill hiscoreBoss = getHiscoreSkill(boss);
+		if (hiscoreBoss != null)
+		{
+			kcMap.put(hiscoreBoss, killcount);
+			return;
+		}
+
 		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
 			boss.toLowerCase(), killcount);
 	}
 
 	private int getKc(String boss)
 	{
+		final HiscoreSkill hiscoreBoss = getHiscoreSkill(boss);
+		if (hiscoreBoss != null)
+		{
+			return kcMap.getOrDefault(hiscoreBoss, 0);
+		}
+
 		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
 			boss.toLowerCase(), int.class);
 		return killCount == null ? 0 : killCount;
@@ -475,15 +506,7 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("unable to lookup killcount", ex);
 		}
 
-		HiscoreSkill skill = null;
-		try
-		{
-			skill = HiscoreSkill.valueOf(search.toUpperCase().replace(" ", "_"));
-		}
-		catch (IllegalArgumentException ignored)
-		{
-		}
-
+		final HiscoreSkill skill = getHiscoreSkill(search);
 		if (skill == null)
 		{
 			// Do nothing if we couldn't find KC and not on the jagex hiscores
@@ -1438,6 +1461,19 @@ public class ChatCommandsPlugin extends Plugin
 
 			default:
 				return WordUtils.capitalize(boss);
+		}
+	}
+
+	@Nullable
+	public static HiscoreSkill getHiscoreSkill(final String name)
+	{
+		try
+		{
+			return HiscoreSkill.valueOf(name.toUpperCase().replace(" ", "_"));
+		}
+		catch (IllegalArgumentException e)
+		{
+			return null;
 		}
 	}
 }
