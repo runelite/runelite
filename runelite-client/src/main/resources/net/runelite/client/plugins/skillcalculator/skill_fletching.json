@@ -27,13 +27,13 @@
     {
       "level": 5,
       "icon": 50,
-      "name": "Shortbow (half)",
+      "name": "Shortbow (U)",
       "xp": 5
     },
     {
       "level": 5,
       "icon": 841,
-      "name": "Shortbow (full)",
+      "name": "Shortbow (Full)",
       "xp": 10
     },
     {
@@ -51,7 +51,7 @@
     {
       "level": 9,
       "icon": 9454,
-      "name": "Bronze Crossbow (half)",
+      "name": "Bronze Crossbow (U)",
       "xp": 12
     },
     {
@@ -63,7 +63,7 @@
     {
       "level": 9,
       "icon": 9174,
-      "name": "Bronze Crossbow (full)",
+      "name": "Bronze Crossbow (Full)",
       "xp": 24
     },
     {
@@ -81,7 +81,7 @@
     {
       "level": 10,
       "icon": 839,
-      "name": "Longbow (full)",
+      "name": "Longbow (Full)",
       "xp": 20
     },
     {
@@ -99,13 +99,13 @@
     {
       "level": 20,
       "icon": 54,
-      "name": "Oak Shortbow (half)",
+      "name": "Oak Shortbow (U)",
       "xp": 16.5
     },
     {
       "level": 20,
       "icon": 843,
-      "name": "Oak Shortbow (full)",
+      "name": "Oak Shortbow (Full)",
       "xp": 33
     },
     {
@@ -123,7 +123,7 @@
     {
       "level": 24,
       "icon": 9456,
-      "name": "Blurite Crossbow (half)",
+      "name": "Blurite Crossbow (U)",
       "xp": 32
     },
     {
@@ -135,19 +135,19 @@
     {
       "level": 24,
       "icon": 9176,
-      "name": "Blurite Crossbow (full)",
+      "name": "Blurite Crossbow (Full)",
       "xp": 64
     },
     {
       "level": 25,
       "icon": 56,
-      "name": "Oak Longbow (half)",
+      "name": "Oak Longbow (U)",
       "xp": 25
     },
     {
       "level": 25,
       "icon": 845,
-      "name": "Oak Longbow (full)",
+      "name": "Oak Longbow (Full)",
       "xp": 50
     },
     {
@@ -171,13 +171,13 @@
     {
       "level": 35,
       "icon": 60,
-      "name": "Willow Shortbow (half)",
+      "name": "Willow Shortbow (U)",
       "xp": 33.3
     },
     {
       "level": 35,
       "icon": 849,
-      "name": "Willow Shortbow (full)",
+      "name": "Willow Shortbow (Full)",
       "xp": 66.6
     },
     {
@@ -201,7 +201,7 @@
     {
       "level": 39,
       "icon": 9457,
-      "name": "Iron Crossbow (half)",
+      "name": "Iron Crossbow (U)",
       "xp": 44
     },
     {
@@ -213,19 +213,19 @@
     {
       "level": 39,
       "icon": 9177,
-      "name": "Iron Crossbow (full)",
+      "name": "Iron Crossbow (Full)",
       "xp": 88
     },
     {
       "level": 40,
       "icon": 58,
-      "name": "Willow Longbow (half)",
+      "name": "Willow Longbow (U)",
       "xp": 41.5
     },
     {
       "level": 40,
       "icon": 847,
-      "name": "Willow Longbow (full)",
+      "name": "Willow Longbow (Full)",
       "xp": 83
     },
     {
@@ -273,7 +273,7 @@
     {
       "level": 46,
       "icon": 9459,
-      "name": "Steel Crossbow (half)",
+      "name": "Steel Crossbow (U)",
       "xp": 54
     },
     {
@@ -285,19 +285,19 @@
     {
       "level": 46,
       "icon": 9179,
-      "name": "Steel Crossbow (full)",
+      "name": "Steel Crossbow (Full)",
       "xp": 108
     },
     {
       "level": 50,
       "icon": 64,
-      "name": "Maple Shortbow (half)",
+      "name": "Maple Shortbow (U)",
       "xp": 50
     },
     {
       "level": 50,
       "icon": 853,
-      "name": "Maple Shortbow (full)",
+      "name": "Maple Shortbow (Full)",
       "xp": 100
     },
     {
@@ -339,7 +339,7 @@
     {
       "level": 54,
       "icon": 9461,
-      "name": "Mithril Crossbow (half)",
+      "name": "Mithril Crossbow (U)",
       "xp": 64
     },
     {
@@ -351,19 +351,19 @@
     {
       "level": 54,
       "icon": 9181,
-      "name": "Mith Crossbow (full)",
+      "name": "Mith Crossbow (Full)",
       "xp": 128
     },
     {
       "level": 55,
       "icon": 62,
-      "name": "Maple Longbow (half)",
+      "name": "Maple Longbow (U)",
       "xp": 58.5
     },
     {
       "level": 55,
       "icon": 851,
-      "name": "Maple Longbow (full)",
+      "name": "Maple Longbow (Full)",
       "xp": 116
     },
     {
@@ -411,7 +411,7 @@
     {
       "level": 61,
       "icon": 9463,
-      "name": "Adamant Crossbow (half)",
+      "name": "Adamant Crossbow (U)",
       "xp": 82
     },
     {
@@ -423,7 +423,7 @@
     {
       "level": 61,
       "icon": 9183,
-      "name": "Adamant Crossbow (full)",
+      "name": "Adamant Crossbow (Full)",
       "xp": 164
     },
     {
@@ -441,13 +441,13 @@
     {
       "level": 65,
       "icon": 68,
-      "name": "Yew Shortbow (half)",
+      "name": "Yew Shortbow (U)",
       "xp": 67.5
     },
     {
       "level": 65,
       "icon": 857,
-      "name": "Yew Shortbow (full)",
+      "name": "Yew Shortbow (Full)",
       "xp": 135
     },
     {
@@ -471,7 +471,7 @@
     {
       "level": 69,
       "icon": 9465,
-      "name": "Runite Crossbow (half)",
+      "name": "Runite Crossbow (U)",
       "xp": 100
     },
     {
@@ -483,19 +483,19 @@
     {
       "level": 69,
       "icon": 9185,
-      "name": "Rune Crossbow (full)",
+      "name": "Rune Crossbow (Full)",
       "xp": 200
     },
     {
       "level": 70,
       "icon": 66,
-      "name": "Yew Longbow (half)",
+      "name": "Yew Longbow (U)",
       "xp": 75
     },
     {
       "level": 70,
       "icon": 855,
-      "name": "Yew Longbow (full)",
+      "name": "Yew Longbow (Full)",
       "xp": 150
     },
     {
@@ -537,7 +537,7 @@
     {
       "level": 78,
       "icon": 21921,
-      "name": "Dragon Crossbow (half)",
+      "name": "Dragon Crossbow (U)",
       "xp": 135
     },
     {
@@ -549,19 +549,19 @@
     {
       "level": 78,
       "icon": 21902,
-      "name": "Dragon Crossbow (full)",
+      "name": "Dragon Crossbow (Full)",
       "xp": 275
     },
     {
       "level": 80,
       "icon": 72,
-      "name": "Magic Shortbow (half)",
+      "name": "Magic Shortbow (U)",
       "xp": 83.3
     },
     {
       "level": 80,
       "icon": 861,
-      "name": "Magic Shortbow (full)",
+      "name": "Magic Shortbow (Full)",
       "xp": 166.6
     },
     {
@@ -591,13 +591,13 @@
     {
       "level": 85,
       "icon": 70,
-      "name": "Magic Longbow (half)",
+      "name": "Magic Longbow (U)",
       "xp": 91.5
     },
     {
       "level": 85,
       "icon": 859,
-      "name": "Magic Longbow (full)",
+      "name": "Magic Longbow (Full)",
       "xp": 183
     },
     {
