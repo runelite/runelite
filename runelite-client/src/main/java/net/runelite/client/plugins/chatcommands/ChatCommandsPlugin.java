@@ -508,8 +508,11 @@ public class ChatCommandsPlugin extends Plugin
 				else
 				{
 					final Skill hiscoreSkill = result.getSkill();
+					final int sessionKc = kc - hiscoreSkill.getLevel();
+					final String sessionKcMsg = sessionKc > 0 ? "(+" + Integer.toString(sessionKc) + ")" : "";
 
 					responseBuilder.append(Integer.toString(hiscoreSkill.getLevel()))
+						.append(sessionKcMsg)
 						.append(ChatColorType.NORMAL)
 						.append(" Rank: ")
 						.append(ChatColorType.HIGHLIGHT)
