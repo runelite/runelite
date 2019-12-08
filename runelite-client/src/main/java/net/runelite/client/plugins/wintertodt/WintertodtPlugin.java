@@ -313,6 +313,10 @@ public class WintertodtPlugin extends Plugin
 
 				break;
 			case INVENTORY_FULL:
+				if (!config.notifyFullInventory())
+				{
+					break;
+				}
 			case OUT_OF_ROOTS:
 			case BRAZIER_WENT_OUT:
 				wasInterrupted = true;

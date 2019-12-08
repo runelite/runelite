@@ -70,4 +70,15 @@ public interface WintertodtConfig extends Config
 	{
 		return 5;
 	}
+
+	@ConfigItem(
+			position = 4,
+			keyName = "notifyFullInventory",
+			name = "Notify full inventory interrupt",
+			description = "Notify interrupted on full inventory"
+	)
+	default boolean notifyFullInventory()
+	{
+		return true;
+	}
 }
