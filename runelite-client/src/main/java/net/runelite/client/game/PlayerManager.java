@@ -28,7 +28,6 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventScheduler;
 import net.runelite.client.events.AttackStyleChanged;
 import net.runelite.client.util.PvPUtil;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -62,7 +61,7 @@ public class PlayerManager
 		eventBus.subscribe(PlayerDespawned.class, this, this::onPlayerDespawned);
 		eventBus.subscribe(PlayerSpawned.class, this, this::onPlayerSpawned);
 		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(PlayerAppearanceChanged.class, this, this::onAppearenceChanged, -1, EventScheduler.DEFAULT, EventScheduler.COMPUTATION);
+		eventBus.subscribe(PlayerAppearanceChanged.class, this, this::onAppearenceChanged);
 	}
 
 	/**
