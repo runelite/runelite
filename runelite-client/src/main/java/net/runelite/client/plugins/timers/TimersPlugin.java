@@ -718,13 +718,27 @@ public class TimersPlugin extends Plugin
 			&& actor instanceof NPC)
 		{
 			int npcId = ((NPC)actor).getId();
+			// keep track of if it's stunned already; 0 = not stunned; 1 = stunned;
+			int stun_flag = 0;
 
 			switch (npcId)
 			{
 				// Show the countdown when the Sire enters the stunned state.
 				case NpcID.ABYSSAL_SIRE_5887:
-					createGameTimer(ABYSSAL_SIRE_STUN);
-					break;
+					// not stunned
+					if(stun_flag == 0) {
+						createGameTimer(ABYSSAL_SIRE_STUN);
+						// set flag to stunned
+						stun_flag = 1;
+						break;
+					} else {
+						// remove existing game timer and create a new one
+						removeGameTimer(ABYSSAL_SIRE_STUN);
+						createGameTimer(ABYSSAL_SIRE_STUN);
+						// keep flag to stunned
+						stun_flag = 1;
+						break;
+					}
 
 				// Hide the countdown if the Sire isn't in the stunned state.
 				// This is necessary because the Sire leaves the stunned
@@ -736,6 +750,8 @@ public class TimersPlugin extends Plugin
 				case NpcID.ABYSSAL_SIRE_5891:
 				case NpcID.ABYSSAL_SIRE_5908:
 					removeGameTimer(ABYSSAL_SIRE_STUN);
+					// set flag back to not stunned
+					stun_flag = 0;
 					break;
 			}
 		}
