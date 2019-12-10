@@ -52,6 +52,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ChatCommandsPluginTest
 {
+	private static final String PLAYER_NAME = "Adam";
+
 	@Mock
 	@Bind
 	Client client;
@@ -79,13 +81,13 @@ public class ChatCommandsPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		when(client.getUsername()).thenReturn(PLAYER_NAME);
 	}
 
 	@Test
 	public void testCorporealBeastKill()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Corporeal Beast kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -95,8 +97,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBlood()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -106,8 +106,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testWintertodt()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -117,8 +115,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testKreearra()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -128,8 +124,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testBarrows()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -139,8 +133,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testHerbiboar()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your herbiboar harvest count is: <col=ff0000>4091</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -150,8 +142,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testGauntlet()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage gauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>123</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(gauntletMessage);
 
@@ -161,8 +151,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCorruptedGauntlet()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage corruptedGauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Corrupted Gauntlet completion count is: <col=ff0000>4729</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(corruptedGauntletMessage);
 
@@ -173,8 +161,6 @@ public class ChatCommandsPluginTest
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
-
-		when(client.getUsername()).thenReturn("Adam");
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
@@ -191,8 +177,6 @@ public class ChatCommandsPluginTest
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>0:59</col>. Personal best: 0:55";
 
-		when(client.getUsername()).thenReturn("Adam");
-
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -208,8 +192,6 @@ public class ChatCommandsPluginTest
 	{
 		final String NEW_PB = "Fight duration: <col=ff0000>3:01</col> (new personal best).";
 
-		when(client.getUsername()).thenReturn("Adam");
-
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -223,8 +205,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testDuelArenaWin()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 27 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -235,8 +215,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testDuelArenaWin2()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 22 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -246,8 +224,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testDuelArenaLose()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 999 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -258,8 +234,6 @@ public class ChatCommandsPluginTest
 	public void testAgilityLap()
 	{
 		final String NEW_PB = "Lap duration: <col=ff0000>1:01</col> (new personal best).";
-
-		when(client.getUsername()).thenReturn("Adam");
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
@@ -275,8 +249,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testZukNewPb()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>2</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -290,8 +262,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testZukKill()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>3</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -305,8 +275,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testGgNewPb()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:36</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -320,8 +288,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testGgKill()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:41</col>. Personal best: 2:14", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -335,8 +301,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testGuantletPersonalBest()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24</col>. Personal best: 7:59.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -350,8 +314,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testGuantletNewPersonalBest()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -365,8 +327,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKill()
 	{
-		when(client.getUsername()).thenReturn("Adam");
-
 		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>37:04</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -380,7 +340,6 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKillNoPb()
 	{
-		when(client.getUsername()).thenReturn("Adam");
 		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
 
 		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>1:45:04</col>", null, 0);
