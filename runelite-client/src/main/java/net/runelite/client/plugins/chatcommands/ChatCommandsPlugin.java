@@ -56,6 +56,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.COUNTERS_LOG_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
@@ -69,7 +70,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import static net.runelite.client.util.Text.sanitize;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -99,6 +100,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
+	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("([a-zA-Z]+(?: [a-zA-Z]+)*) Fastest (?:kill|run): ([0-9:]+)");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -122,6 +124,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
+	private boolean countersLogLoaded;
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
@@ -436,6 +439,20 @@ public class ChatCommandsPlugin extends Plugin
 				}
 			}
 		}
+
+		if (countersLogLoaded && pohOwner.equals(client.getLocalPlayer().getName()))
+		{
+			countersLogLoaded = false;
+
+			String counterText = Text.sanitizeMultilineText(client.getWidget(WidgetInfo.COUNTERS_LOG_TEXT).getText());
+			Matcher mCounterText = ADVENTURE_LOG_PB_PATTERN.matcher(counterText);
+			while (mCounterText.find())
+			{
+				String bossName = mCounterText.group(1);
+				String pbTime = mCounterText.group(2);
+				setPb(longBossName(bossName), timeStringToSeconds(pbTime));
+			}
+		}
 	}
 
 	@Subscribe
@@ -448,6 +465,9 @@ public class ChatCommandsPlugin extends Plugin
 				break;
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;
+				break;
+			case COUNTERS_LOG_GROUP_ID:
+				countersLogLoaded = true;
 				break;
 		}
 	}
@@ -523,7 +543,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -604,7 +624,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		Duels duels;
@@ -661,7 +681,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		int qp;
@@ -735,7 +755,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -818,7 +838,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		int gc;
@@ -1028,7 +1048,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		try
@@ -1296,7 +1316,7 @@ public class ChatCommandsPlugin extends Plugin
 	private HiscoreLookup getCorrectLookupFor(final ChatMessage chatMessage)
 	{
 		Player localPlayer = client.getLocalPlayer();
-		final String player = sanitize(chatMessage.getName());
+		final String player = Text.sanitize(chatMessage.getName());
 
 		// If we are sending the message then just use the local hiscore endpoint for the world
 		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT)
@@ -1426,6 +1446,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Corporeal Beast";
 
 			case "jad":
+			case "tzhaar fight cave":
 				return "TzTok-Jad";
 
 			case "kq":
@@ -1545,11 +1566,13 @@ public class ChatCommandsPlugin extends Plugin
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
+			case "the gauntlet":
 				return "Gauntlet";
 
 			// Corrupted Gauntlet
 			case "cgaunt":
 			case "cgauntlet":
+			case "the corrupted gauntlet":
 				return "Corrupted Gauntlet";
 
 			case "the nightmare":

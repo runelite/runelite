@@ -151,6 +151,7 @@ public class WidgetID
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int ADVENTURE_LOG_ID = 187;
+	public static final int COUNTERS_LOG_GROUP_ID = 625;
 
 	static class WorldMap
 	{
@@ -877,5 +878,11 @@ public class WidgetID
 	static class AdventureLog
 	{
 		static final int CONTAINER = 0;
+	}
+
+	static class CountersLog
+	{
+		static final int OWNER = 4;
+		static final int TEXT = 6;
 	}
 }
