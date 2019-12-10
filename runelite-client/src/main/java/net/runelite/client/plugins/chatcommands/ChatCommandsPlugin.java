@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -47,11 +48,13 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -95,6 +98,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
+	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -110,10 +114,15 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 
+	@VisibleForTesting
+	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
+
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
 
-	private boolean logKills;
+	private boolean bossLogLoaded;
+	private boolean advLogLoaded;
+	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
 	private int lastPb = -1;
@@ -380,36 +389,51 @@ public class ChatCommandsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!logKills)
+		if (client.getLocalPlayer() == null)
 		{
 			return;
 		}
 
-		logKills = false;
-
-		Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
-		Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
-		Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
-
-		if (title == null || bossMonster == null || bossKills == null
-			|| !"Boss Kill Log".equals(title.getText()))
+		if (advLogLoaded)
 		{
-			return;
-		}
+			advLogLoaded = false;
 
-		Widget[] bossChildren = bossMonster.getChildren();
-		Widget[] killsChildren = bossKills.getChildren();
-
-		for (int i = 0; i < bossChildren.length; ++i)
-		{
-			Widget boss = bossChildren[i];
-			Widget kill = killsChildren[i];
-
-			String bossName = boss.getText().replace(":", "");
-			int kc = Integer.parseInt(kill.getText().replace(",", ""));
-			if (kc != getKc(bossName))
+			Widget adventureLog = client.getWidget(WidgetInfo.ADVENTURE_LOG);
+			Matcher advLogExploitsText = ADVENTURE_LOG_TITLE_PATTERN.matcher(adventureLog.getChild(ADV_LOG_EXPLOITS_TEXT_INDEX).getText());
+			if (advLogExploitsText.find())
 			{
-				setKc(bossName, kc);
+				pohOwner = advLogExploitsText.group(1);
+			}
+		}
+
+		if (bossLogLoaded && (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName())))
+		{
+			bossLogLoaded = false;
+
+			Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
+			Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
+			Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
+
+			if (title == null || bossMonster == null || bossKills == null
+				|| !"Boss Kill Log".equals(title.getText()))
+			{
+				return;
+			}
+
+			Widget[] bossChildren = bossMonster.getChildren();
+			Widget[] killsChildren = bossKills.getChildren();
+
+			for (int i = 0; i < bossChildren.length; ++i)
+			{
+				Widget boss = bossChildren[i];
+				Widget kill = killsChildren[i];
+
+				String bossName = boss.getText().replace(":", "");
+				int kc = Integer.parseInt(kill.getText().replace(",", ""));
+				if (kc != getKc(longBossName(bossName)))
+				{
+					setKc(longBossName(bossName), kc);
+				}
 			}
 		}
 	}
@@ -417,14 +441,26 @@ public class ChatCommandsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
-		// don't load kc if in an instance, if the player is in another players poh
-		// and reading their boss log
-		if (widget.getGroupId() != KILL_LOGS_GROUP_ID || client.isInInstancedRegion())
+		switch (widget.getGroupId())
 		{
-			return;
+			case ADVENTURE_LOG_ID:
+				advLogLoaded = true;
+				break;
+			case KILL_LOGS_GROUP_ID:
+				bossLogLoaded = true;
+				break;
 		}
+	}
 
-		logKills = true;
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOADING:
+			case HOPPING:
+				pohOwner = null;
+		}
 	}
 
 	@Subscribe
@@ -1515,6 +1551,9 @@ public class ChatCommandsPlugin extends Plugin
 			case "cgaunt":
 			case "cgauntlet":
 				return "Corrupted Gauntlet";
+
+			case "the nightmare":
+				return "Nightmare";
 
 			default:
 				return WordUtils.capitalize(boss);
