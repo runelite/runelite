@@ -726,12 +726,15 @@ public class TimersPlugin extends Plugin
 				// Show the countdown when the Sire enters the stunned state.
 				case NpcID.ABYSSAL_SIRE_5887:
 					// not stunned
-					if(stun_flag == 0) {
+					if(stun_flag == 0)
+					{
 						createGameTimer(ABYSSAL_SIRE_STUN);
 						// set flag to stunned
 						stun_flag = 1;
 						break;
-					} else {
+					}
+					else
+					{
 						// remove existing game timer and create a new one
 						removeGameTimer(ABYSSAL_SIRE_STUN);
 						createGameTimer(ABYSSAL_SIRE_STUN);
