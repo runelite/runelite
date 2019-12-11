@@ -266,21 +266,24 @@ public class MenuManager
 		}
 
 		int widgetId = event.getParam1();
-		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
-
-		for (WidgetMenuOption currentMenu : options)
+		if (managedMenuOptions.containsKey(widgetId))
 		{
-			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+			Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+
+			for (WidgetMenuOption currentMenu : options)
 			{
-				client.insertMenuItem(
-					currentMenu.getMenuOption(),
-					currentMenu.getMenuTarget(),
-					MenuOpcode.RUNELITE.getId(),
-					0,
-					0,
-					widgetId,
-					false
-				);
+				if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+				{
+					client.insertMenuItem(
+						currentMenu.getMenuOption(),
+						currentMenu.getMenuTarget(),
+						MenuOpcode.RUNELITE.getId(),
+						0,
+						0,
+						widgetId,
+						false
+					);
+				}
 			}
 		}
 	}
