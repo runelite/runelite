@@ -25,11 +25,8 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
-import java.util.Arrays;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -53,18 +50,18 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Wiki",
 	description = "Adds a Wiki button that takes you to the OSRS Wiki"
 )
-@Singleton
 public class WikiPlugin extends Plugin
 {
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
@@ -93,9 +90,6 @@ public class WikiPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ChatboxPanelManager chatboxPanelManager;
-
-	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -108,7 +102,6 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-
 		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
@@ -199,123 +192,128 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
-		optarget:
-		if (wikiSelected)
+		if (ev.getMenuOpcode() == MenuOpcode.RUNELITE)
 		{
-			onDeselect();
-			client.setSpellSelected(false);
-			ev.consume();
+			checkQuestClicked(ev);
+		}
 
-			String type;
-			int id;
-			String name;
-			WorldPoint location;
+		if (!wikiSelected)
+		{
+			return;
+		}
 
-			switch (ev.getMenuOpcode())
+		onDeselect();
+		client.setSpellSelected(false);
+		ev.consume();
+
+		String type;
+		int id;
+		String name;
+		WorldPoint location;
+
+		switch (ev.getMenuOpcode())
+		{
+			case RUNELITE:
+			case CANCEL:
+				return;
+			case ITEM_USE_ON_WIDGET:
+			case SPELL_CAST_ON_GROUND_ITEM:
 			{
-				case RUNELITE:
-					// This is a quest widget op
-					break optarget;
-				case CANCEL:
-					return;
-				case ITEM_USE_ON_WIDGET:
-				case SPELL_CAST_ON_GROUND_ITEM:
+				type = "item";
+				id = itemManager.canonicalize(ev.getIdentifier());
+				name = itemManager.getItemDefinition(id).getName();
+				location = null;
+				break;
+			}
+			case SPELL_CAST_ON_NPC:
+			{
+				type = "npc";
+				NPC npc = client.getCachedNPCs()[ev.getIdentifier()];
+				NPCDefinition nc = npc.getTransformedDefinition();
+				id = nc.getId();
+				name = nc.getName();
+				location = npc.getWorldLocation();
+				break;
+			}
+			case SPELL_CAST_ON_GAME_OBJECT:
+			{
+				type = "object";
+				ObjectDefinition lc = client.getObjectDefinition(ev.getIdentifier());
+				if (lc.getImpostorIds() != null)
+				{
+					lc = lc.getImpostor();
+				}
+				id = lc.getId();
+				name = lc.getName();
+				location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
+				break;
+			}
+			case SPELL_CAST_ON_WIDGET:
+			{
+				Widget w = getWidget(ev.getParam1(), ev.getParam0());
+
+				if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
 				{
 					type = "item";
-					id = itemManager.canonicalize(ev.getIdentifier());
+					id = itemManager.canonicalize(w.getItemId());
 					name = itemManager.getItemDefinition(id).getName();
 					location = null;
 					break;
 				}
-				case SPELL_CAST_ON_NPC:
-				{
-					type = "npc";
-					NPC npc = client.getCachedNPCs()[ev.getIdentifier()];
-					NPCDefinition nc = npc.getTransformedDefinition();
-					id = nc.getId();
-					name = nc.getName();
-					location = npc.getWorldLocation();
-					break;
-				}
-				case SPELL_CAST_ON_GAME_OBJECT:
-				{
-					type = "object";
-					ObjectDefinition lc = client.getObjectDefinition(ev.getIdentifier());
-					if (lc.getImpostorIds() != null)
-					{
-						lc = lc.getImpostor();
-					}
-					id = lc.getId();
-					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
-					break;
-				}
-				case SPELL_CAST_ON_WIDGET:
-					Widget w = getWidget(ev.getParam1(), ev.getParam0());
-
-					if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
-					{
-						type = "item";
-						id = itemManager.canonicalize(w.getItemId());
-						name = itemManager.getItemDefinition(id).getName();
-						location = null;
-						break;
-					}
-					// fallthrough
-				default:
-					log.info("Unknown menu option: {} {} {}", ev, ev.getMenuOpcode(), ev.getMenuOpcode() == MenuOpcode.CANCEL);
-					return;
 			}
-
-			name = Text.removeTags(name);
-			HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
-			urlBuilder.addPathSegments("w/Special:Lookup")
-				.addQueryParameter("type", type)
-				.addQueryParameter("id", "" + id)
-				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
-
-			if (location != null)
-			{
-				urlBuilder.addQueryParameter("x", "" + location.getX())
-					.addQueryParameter("y", "" + location.getY())
-					.addQueryParameter("plane", "" + location.getPlane());
-			}
-
-			HttpUrl url = urlBuilder.build();
-
-			LinkBrowser.browse(url.toString());
-			return;
+				// fallthrough
+			default:
+				log.info("Unknown menu option: {} {} {}", ev, ev.getMenuOpcode(), ev.getMenuOpcode() == MenuOpcode.CANCEL);
+				return;
 		}
 
-		if (ev.getMenuOpcode() == MenuOpcode.RUNELITE)
+		name = Text.removeTags(name);
+		HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
+		urlBuilder.addPathSegments("w/Special:Lookup")
+			.addQueryParameter("type", type)
+			.addQueryParameter("id", "" + id)
+			.addQueryParameter("name", name)
+			.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
+
+		if (location != null)
 		{
-			boolean quickguide = false;
-			switch (ev.getOption())
-			{
-				case MENUOP_QUICKGUIDE:
-					quickguide = true;
-					//fallthrough;
-				case MENUOP_GUIDE:
-					ev.consume();
-					String quest = Text.removeTags(ev.getTarget());
-					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
-						.addPathSegment("w")
-						.addPathSegment(quest)
-						.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
-					if (quickguide)
-					{
-						ub.addPathSegment("Quick_guide");
-					}
-					LinkBrowser.browse(ub.build().toString());
-					break;
-				case MENUOP_WIKI:
-					LinkBrowser.browse(WIKI_BASE.newBuilder()
-						.addPathSegment("w")
-						.addPathSegment(Text.removeTags(ev.getTarget()))
-						.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
-						.build().toString());
-			}
+			urlBuilder.addQueryParameter("x", "" + location.getX())
+				.addQueryParameter("y", "" + location.getY())
+				.addQueryParameter("plane", "" + location.getPlane());
+		}
+
+		HttpUrl url = urlBuilder.build();
+
+		LinkBrowser.browse(url.toString());
+	}
+
+	private void checkQuestClicked(MenuOptionClicked ev)
+	{
+		boolean quickguide = false;
+		switch (ev.getOption())
+		{
+			case MENUOP_QUICKGUIDE:
+				quickguide = true;
+				//fallthrough;
+			case MENUOP_GUIDE:
+				ev.consume();
+				String quest = Text.removeTags(ev.getTarget());
+				HttpUrl.Builder ub = WIKI_BASE.newBuilder()
+					.addPathSegment("w")
+					.addPathSegment(quest)
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
+				if (quickguide)
+				{
+					ub.addPathSegment("Quick_guide");
+				}
+				LinkBrowser.browse(ub.build().toString());
+				break;
+			case MENUOP_WIKI:
+				LinkBrowser.browse(WIKI_BASE.newBuilder()
+					.addPathSegment("w")
+					.addPathSegment(Text.removeTags(ev.getTarget()))
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
+					.build().toString());
 		}
 	}
 
@@ -325,22 +323,11 @@ public class WikiPlugin extends Plugin
 			.build();
 	}
 
-	private Widget getWidget(int wid, int index)
-	{
-		Widget w = client.getWidget(WidgetInfo.TO_GROUP(wid), WidgetInfo.TO_CHILD(wid));
-		if (index != -1)
-		{
-			w = w.getChild(index);
-		}
-		return w;
-	}
-
 	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetIndex = event.getParam0();
 		int widgetID = event.getParam1();
-		MenuEntry[] menuEntries = client.getMenuEntries();
 
 		if (wikiSelected && event.getOpcode() == MenuOpcode.SPELL_CAST_ON_WIDGET.getId())
 		{
@@ -350,13 +337,16 @@ public class WikiPlugin extends Plugin
 				// we don't support this widget
 				// remove the last SPELL_CAST_ON_WIDGET; we can't blindly remove the top action because some other
 				// plugin might have added something on this same event, and we probably shouldn't remove that instead
-				MenuEntry[] oldEntries = menuEntries;
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
-				for (int ourEntry = oldEntries.length - 1; ourEntry >= 2 && oldEntries[oldEntries.length - 1].getOpcode() != MenuOpcode.SPELL_CAST_ON_WIDGET.getId(); ourEntry--)
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				for (int i = menuEntries.length - 1; i >= 0; i--)
 				{
-					menuEntries[ourEntry - 1] = oldEntries[ourEntry];
+					if (menuEntries[i].getOpcode() == MenuOpcode.SPELL_CAST_ON_WIDGET.getId())
+					{
+						menuEntries[i] = null;
+						client.setMenuEntries(menuEntries);
+						break;
+					}
 				}
-				client.setMenuEntries(menuEntries);
 			}
 		}
 
@@ -396,9 +386,7 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 
-			String action = Stream.of(w.getActions())
-				.filter(s -> s != null && !s.isEmpty())
-				.findFirst().orElse(null);
+			String action = firstAction(w);
 			if (action == null)
 			{
 				return;
@@ -424,9 +412,7 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 
-			String action = Stream.of(w.getActions())
-				.filter(s -> s != null && !s.isEmpty())
-				.findFirst().orElse(null);
+			String action = firstAction(w);
 			if (action == null)
 			{
 				return;
@@ -442,5 +428,29 @@ public class WikiPlugin extends Plugin
 				false
 			);
 		}
+	}
+
+	private Widget getWidget(int wid, int index)
+	{
+		Widget w = client.getWidget(WidgetInfo.TO_GROUP(wid), WidgetInfo.TO_CHILD(wid));
+		if (index != -1)
+		{
+			w = w.getChild(index);
+		}
+		return w;
+	}
+
+	@Nullable
+	private static String firstAction(Widget widget)
+	{
+		for (String action : widget.getActions())
+		{
+			if (StringUtils.isNotEmpty(action))
+			{
+				return action;
+			}
+		}
+
+		return null;
 	}
 }
