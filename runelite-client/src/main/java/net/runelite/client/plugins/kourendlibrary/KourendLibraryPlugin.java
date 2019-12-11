@@ -302,6 +302,7 @@ public class KourendLibraryPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
 		updatePlayerBooks();
+		panel.update();
 	}
 
 	@Subscribe
