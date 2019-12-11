@@ -77,6 +77,20 @@ class BookPanel extends JPanel
 
 	void setBookColor(boolean target, boolean playerContainsBook)
 	{
-		location.setForeground(target ? Color.GREEN : (playerContainsBook ? Color.WHITE : Color.RED));
+		if (target)
+		{
+			location.setForeground(Color.GREEN);
+		}
+		else
+		{
+			if (playerContainsBook)
+			{
+				location.setForeground(Color.WHITE);
+			}
+			else
+			{
+				location.setForeground(Color.RED);
+			}
+		}
 	}
 }
