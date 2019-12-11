@@ -41,6 +41,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.AnimationID.BARRAGE_ANIMATION;
+import static net.runelite.api.AnimationID.BLITZ_ANIMATION;
 import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
 import static net.runelite.api.AnimationID.HIGH_LEVEL_MAGIC_ATTACK;
 import static net.runelite.api.AnimationID.LOW_LEVEL_MAGIC_ATTACK;
@@ -366,6 +368,17 @@ public class SuppliesTrackerPlugin extends Plugin
 
 				if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
 					a.getType() == CAST))
+				{
+					MenuAction newAction = new MenuAction(CAST, old.getItems());
+					actionStack.push(newAction);
+				}
+			}
+			else if (animationChanged.getActor().getAnimation() == BARRAGE_ANIMATION || animationChanged.getActor().getAnimation() == BLITZ_ANIMATION )
+			{
+				old = client.getItemContainer(InventoryID.INVENTORY);
+
+				if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
+						a.getType() == CAST))
 				{
 					MenuAction newAction = new MenuAction(CAST, old.getItems());
 					actionStack.push(newAction);

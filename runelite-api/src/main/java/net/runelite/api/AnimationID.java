@@ -338,6 +338,7 @@ public final class AnimationID
 
 	// Combat counter
 	public static final int BARRAGE_ANIMATION = 1979;
+	public static final int BLITZ_ANIMATION = 1978;
 	public static final int CHIN_ANIMATION = 7618;
 
 	// Gauntlet Hunleff

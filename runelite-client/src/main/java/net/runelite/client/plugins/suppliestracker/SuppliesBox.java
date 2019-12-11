@@ -340,7 +340,7 @@ class SuppliesBox extends JPanel
 	{
 		ItemDefinition item = this.itemManager.getItemDefinition(itemId);
 		final String name = item.getName();
-		final long price = item.getPrice();
+		final long price = itemManager.getItemPrice(itemId);
 		return name + " x " + qty + " (" + QuantityFormatter.quantityToStackSize(price * qty) + ") ";
 	}
 
