@@ -52,7 +52,7 @@ public class MessagePanel extends JPanel
 
 	private final JLabel titleLabel = new JLabel("Welcome to OpenOSRS");
 	private final JLabel messageArea;
-	private final JLabel barLabel = new JLabel("Connecting with gameserver (try 1/6)");
+	private final JLabel barLabel = new JLabel("Connecting with gameserver (try 1/10)");
 	private final JProgressBar bar = new JProgressBar(0, 100);
 
 	@Getter(AccessLevel.NONE)
