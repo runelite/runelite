@@ -9,6 +9,7 @@ public enum TradeCrewmemberMode
 {
 	TRADE("Trade"),
 	CHARTER("Charter"),
+	PREVIOUS_LOCATION("Previous location"),
 	OFF("Off");
 
 	private final String name;

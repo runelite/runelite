@@ -518,6 +518,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 					case CHARTER:
 						swap("charter", option, target, index);
 						break;
+					case PREVIOUS_LOCATION:
+						swap("charter-to catherby", option, target, index);
+						swap("charter-to brimhaven", option, target, index);
+						swap("charter-to port khazard", option, target, index);
+						swap("charter-to corsair cove", option, target, index);
+						swap("charter-to musa point", option, target, index);
+						swap("charter-to port sarim", option, target, index);
+						break;
 				}
 			}
 		}
