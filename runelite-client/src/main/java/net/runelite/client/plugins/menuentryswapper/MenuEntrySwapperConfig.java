@@ -325,7 +325,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapTradeCrewmember",
 		name = "Trade Crewmember",
-		description = "Swap Talk-to with Trade or Charter on Trade Crewmembers"
+		description = "Swap Talk-to with Trade, Charter or Previous location for Trade Crewmembers"
 	)
 	default TradeCrewmemberMode swapTradeCrewmember()
 	{
