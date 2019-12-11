@@ -72,6 +72,7 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(100, GAME_TICKS) : super.respawnTime;
 			}
 		},
+	LOVAKITE(Duration.of(MiningOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, ROCKS_28596, ROCKS_28597),
 	ADAMANTITE(Duration.of(400, GAME_TICKS), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
 		{
 			@Override
