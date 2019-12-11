@@ -95,6 +95,18 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case SACK:
+				if (!config.showSacks())
+				{
+					return;
+				}
+				break;
+			case BASKET:
+				if (!config.showBaskets())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());

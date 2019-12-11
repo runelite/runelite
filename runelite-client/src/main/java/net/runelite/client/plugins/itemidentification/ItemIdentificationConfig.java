@@ -103,4 +103,24 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showSacks",
+		name = "Sacks",
+		description = "Show identification on Sacks"
+	)
+	default boolean showSacks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showBaskets",
+		name = "Baskets",
+		description = "Show identification on Baskets"
+	)
+	default boolean showBaskets()
+	{
+		return false;
+	}
 }
