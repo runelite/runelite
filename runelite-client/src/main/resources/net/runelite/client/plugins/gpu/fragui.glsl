@@ -36,7 +36,6 @@ uniform ivec2 targetDimensions;
 
 #include scale/bicubic.glsl
 #include scale/xbr_lv2_frag.glsl
-#include scale/hq2x.glsl
 
 in vec2 TexCoord;
 in XBRTable xbrTable;
