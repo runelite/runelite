@@ -146,6 +146,6 @@ public interface ClanChatConfig extends Config
 	)
 	default boolean confirmKicks()
 	{
-		return true;
+		return false;
 	}
 }
