@@ -60,7 +60,7 @@ import net.runelite.client.util.HotkeyListener;
 public class OpenOSRSPlugin extends Plugin
 {
 	private final openosrsKeyListener keyListener = new openosrsKeyListener();
-	private final List<String> colorOptions = Arrays.asList("externalColor", "pvmColor", "pvpColor", "skillingColor", "utilityColor");
+	private final List<String> HidePlugins = Arrays.asList("hidePlugins", "hidePvmPlugins", "hidePvpPlugins", "hideSkillingPlugins", "hideUtilityPlugins", "hideExternalPlugins");
 
 	@Inject
 	private OpenOSRSConfig config;
@@ -73,7 +73,11 @@ public class OpenOSRSPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
+	private int entered = -1;
+	private int enterIdx;
+	private boolean expectInput;
+	private boolean detach;
+	private Keybind keybind;
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> this.keybind)
 	{
 		@Override
@@ -84,16 +88,10 @@ public class OpenOSRSPlugin extends Plugin
 			client.setOculusOrbNormalSpeed(detach ? 36 : 12);
 		}
 	};
-	private int entered = -1;
-	private int enterIdx;
-	private boolean expectInput;
-	private boolean detach;
-	private Keybind keybind;
 
 	@Override
 	protected void startUp()
 	{
-
 		entered = -1;
 		enterIdx = 0;
 		expectInput = false;
@@ -119,7 +117,7 @@ public class OpenOSRSPlugin extends Plugin
 			return;
 		}
 
-		if (colorOptions.stream().anyMatch(option -> option.equals(event.getKey())))
+		if (HidePlugins.stream().anyMatch(option -> option.equals(event.getKey())))
 		{
 			updatePlugins();
 		}
@@ -220,6 +218,20 @@ public class OpenOSRSPlugin extends Plugin
 		}
 	}
 
+	private void updatePlugins()
+	{
+		ConfigPanel.pluginList.forEach(listItem ->
+		{
+			if (listItem.getPluginType() == PluginType.GENERAL_USE || listItem.getPluginType() == PluginType.IMPORTANT)
+			{
+				return;
+			}
+
+			listItem.setColor(ConfigPanel.getColorByCategory(config, listItem.getPluginType()));
+			listItem.setHidden(ConfigPanel.getHiddenByCategory(config, listItem.getPluginType()));
+		});
+	}
+
 	private class openosrsKeyListener implements KeyListener
 	{
 		private int lastKeyCycle;
@@ -253,19 +265,5 @@ public class OpenOSRSPlugin extends Plugin
 		public void keyReleased(KeyEvent keyEvent)
 		{
 		}
-	}
-
-	private void updatePlugins()
-	{
-		ConfigPanel.pluginList.forEach(listItem ->
-		{
-			if (listItem.getPluginType() == PluginType.GENERAL_USE || listItem.getPluginType() == PluginType.IMPORTANT)
-			{
-				return;
-			}
-
-			listItem.setColor(ConfigPanel.getColorByCategory(config, listItem.getPluginType()));
-			listItem.setHidden(ConfigPanel.getHiddenByCategory(config, listItem.getPluginType()));
-		});
 	}
 }
