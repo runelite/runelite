@@ -28,15 +28,50 @@ package net.runelite.client.plugins.bank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("bank")
 public interface BankConfig extends Config
 {
+	@ConfigSection(
+		name = "Show Values",
+		description = "",
+		position = 0,
+		keyName = "ValueSection"
+	)
+	default boolean ValueSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Disable Left Click",
+		description = "",
+		position = 1,
+		keyName = "DisableLClickSection"
+	)
+	default boolean DisableLClickSection()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Bank Pin",
+		description = "",
+		position = 2,
+		keyName = "BankPinSection"
+	)
+	default boolean BankPinSection()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		keyName = "showGE",
 		name = "Show Grand Exchange price",
 		description = "Show grand exchange price total (GE)",
-		position = 1
+		position = 0,
+		section = "ValueSection"
 	)
 	default boolean showGE()
 	{
@@ -47,7 +82,8 @@ public interface BankConfig extends Config
 		keyName = "showHA",
 		name = "Show high alchemy price",
 		description = "Show high alchemy price total (HA)",
-		position = 2
+		position = 2,
+		section = "ValueSection"
 	)
 	default boolean showHA()
 	{
@@ -58,7 +94,8 @@ public interface BankConfig extends Config
 		keyName = "showExact",
 		name = "Show exact bank value",
 		description = "Show exact bank value",
-		position = 3
+		position = 3,
+		section = "ValueSection"
 	)
 	default boolean showExact()
 	{
@@ -66,10 +103,23 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "seedVaultValue",
+		name = "Show seed vault value",
+		description = "Adds the total value of all seeds inside the seed vault to the title",
+		position = 4,
+		section = "ValueSection"
+	)
+	default boolean seedVaultValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "rightClickBankInventory",
 		name = "Disable left click bank inventory",
 		description = "Configures whether the bank inventory button will bank your inventory on left click",
-		position = 4
+		position = 0,
+		section = "DisableLClickSection"
 	)
 	default boolean rightClickBankInventory()
 	{
@@ -80,7 +130,8 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankEquip",
 		name = "Disable left click bank equipment",
 		description = "Configures whether the bank equipment button will bank your equipment on left click",
-		position = 5
+		position = 1,
+		section = "DisableLClickSection"
 	)
 	default boolean rightClickBankEquip()
 	{
@@ -91,7 +142,8 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankLoot",
 		name = "Disable left click bank looting bag",
 		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-		position = 6
+		position = 2,
+		section = "DisableLClickSection"
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -99,21 +151,59 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "seedVaultValue",
-		name = "Show seed vault value",
-		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 7
+		keyName = "rightClickSetPlaceholders",
+		name = "Disable left click set placeholders",
+		description = "Configures whether the set bank placeholder button will be on left click",
+		position = 3,
+		section = "DisableLClickSection"
 	)
-	default boolean seedVaultValue()
+	default boolean rightClickSetPlaceholders()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickReleasePlaceholders",
+		name = "Disable left click release placeholder",
+		description = "Configures whether the release bank placeholder button will be on left click",
+		position = 4,
+		section = "DisableLClickSection"
+	)
+	default boolean rightClickReleasePlaceholders()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickFillBankFiller",
+		name = "Disable left click fill bank fillers",
+		description = "Configures whether the fill bank fillers button will be on left click",
+		position = 5,
+		section = "DisableLClickSection"
+	)
+	default boolean rightClickFillBankFiller()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickSearch",
+		name = "Disable left click search",
+		description = "Configures whether the search button will search on left click",
+		position = 6,
+		section = "DisableLClickSection"
+	)
+	default boolean rightClickSearch()
+	{
+		return false;
 	}
 
 	@ConfigItem(
 		keyName = "largePinNumbers",
 		name = "Large bank pin numbers",
 		description = "Enlarges and centers the numbers inside the bank pin buttons",
-		position = 8
+		position = 0,
+		section = "BankPinSection"
 	)
 	default boolean largePinNumbers()
 	{

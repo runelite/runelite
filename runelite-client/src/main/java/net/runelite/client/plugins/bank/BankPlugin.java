@@ -110,6 +110,12 @@ public class BankPlugin extends Plugin
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String DISABLE = "Disable";
+	private static final String ENABLE = "Enable";
+	private static final String RELEASE_ALL_PLACEHOLDERS = "Release all placeholders";
+	private static final String SEARCH = "Search";
+	private static final String FILL = "Fill";
+
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 	private static final int PIN_FONT_OFFSET = 5;
 
@@ -143,13 +149,6 @@ public class BankPlugin extends Plugin
 	private boolean largePinNumbers;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
-
-	@Provides
-	BankConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BankConfig.class);
-	}
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showGE;
 	@Getter(AccessLevel.PACKAGE)
@@ -158,6 +157,17 @@ public class BankPlugin extends Plugin
 	private boolean rightClickBankInventory;
 	private boolean rightClickBankEquip;
 	private boolean rightClickBankLoot;
+	private boolean seedVaultValue;
+	private boolean rightClickSetPlaceholders;
+	private boolean rightClickReleasePlaceholders;
+	private boolean rightClickSearch;
+	private boolean rightClickFillBankFiller;
+
+	@Provides
+	BankConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BankConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -188,7 +198,12 @@ public class BankPlugin extends Plugin
 		{
 			if ((entry.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
+				|| (entry.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot)
+				|| (entry.getOption().startsWith(DISABLE) && this.rightClickSetPlaceholders)
+				|| (entry.getOption().startsWith(ENABLE) && this.rightClickSetPlaceholders)
+				|| (entry.getOption().equals(RELEASE_ALL_PLACEHOLDERS) && this.rightClickReleasePlaceholders)
+				|| (entry.getOption().equals(SEARCH) && this.rightClickSearch)
+				|| (entry.getOption().equals(FILL) && this.rightClickFillBankFiller))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -201,7 +216,12 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && this.rightClickBankEquip)
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && this.rightClickBankInventory)
-			|| (event.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot))
+			|| (event.getOption().equals(DEPOSIT_LOOT) && this.rightClickBankLoot)
+			|| (event.getOption().startsWith(DISABLE) && this.rightClickSetPlaceholders)
+			|| (event.getOption().startsWith(ENABLE) && this.rightClickSetPlaceholders)
+			|| (event.getOption().equals(RELEASE_ALL_PLACEHOLDERS) && this.rightClickReleasePlaceholders)
+			|| (event.getOption().equals(SEARCH) && this.rightClickSearch)
+			|| (event.getOption().equals(FILL) && this.rightClickFillBankFiller))
 		{
 			forceRightClickFlag = true;
 		}
@@ -255,7 +275,7 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
+		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !this.seedVaultValue)
 		{
 			return;
 		}
@@ -300,7 +320,7 @@ public class BankPlugin extends Plugin
 		{
 			itemQuantities = null;
 		}
-		else if (containerId == InventoryID.SEED_VAULT.getId() && config.seedVaultValue())
+		else if (containerId == InventoryID.SEED_VAULT.getId() && this.seedVaultValue)
 		{
 			updateSeedVaultTotal();
 		}
@@ -312,7 +332,7 @@ public class BankPlugin extends Plugin
 		final long haPrice = prices.getHighAlchPrice();
 
 		String strCurrentTab = "";
-		if (config.showGE() && gePrice != 0)
+		if (this.showGE && gePrice != 0)
 		{
 			strCurrentTab += " (";
 
@@ -471,6 +491,11 @@ public class BankPlugin extends Plugin
 		this.rightClickBankInventory = config.rightClickBankInventory();
 		this.rightClickBankEquip = config.rightClickBankEquip();
 		this.rightClickBankLoot = config.rightClickBankLoot();
+		this.seedVaultValue = config.seedVaultValue();
+		this.rightClickSetPlaceholders = config.rightClickSetPlaceholders();
+		this.rightClickReleasePlaceholders = config.rightClickReleasePlaceholders();
+		this.rightClickSearch = config.rightClickSearch();
+		this.rightClickFillBankFiller = config.rightClickFillBankFiller();
 	}
 
 	@VisibleForTesting
