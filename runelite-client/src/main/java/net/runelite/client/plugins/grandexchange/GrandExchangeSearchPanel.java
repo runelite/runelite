@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
+import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -52,6 +53,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -61,6 +63,8 @@ import net.runelite.http.api.item.ItemPrice;
 @Singleton
 class GrandExchangeSearchPanel extends JPanel
 {
+	@Inject
+	private static final OSBGrandExchangeClient OSBCLIENT = new OSBGrandExchangeClient();
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String RESULTS_PANEL = "RESULTS_PANEL";
 	private static final int MAX_SEARCH_ITEMS = 100;
@@ -73,6 +77,9 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ScheduledExecutorService executor;
 
 	private final IconTextField searchBar = new IconTextField();
+
+	private final GrandExchangeConfig config;
+
 
 	/*  The results container, this will hold all the individual ge item panels */
 	private final JPanel searchItemsPanel = new JPanel();
@@ -88,11 +95,12 @@ class GrandExchangeSearchPanel extends JPanel
 	@Setter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
 
-	GrandExchangeSearchPanel(final ClientThread clientThread, final ItemManager itemManager, final ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(final ClientThread clientThread, final ItemManager itemManager, final ScheduledExecutorService executor, final GrandExchangeConfig config)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
+		this.config = config;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -237,8 +245,20 @@ class GrandExchangeSearchPanel extends JPanel
 			int index = 0;
 			for (GrandExchangeItems item : itemsList)
 			{
+				final int[] osbPrice = {0};
+				if (config.enableOsbPrices())
+				{
+					OSBCLIENT.lookupItem(item.getItemId())
+						.subscribe(
+							(osbresult) -> {
+								osbPrice[0] = osbresult.getOverall_average();
+							},
+							(e) -> log.debug("GE : Error getting price of item {}", item.getItemId(), e)
+						);
+				}
+
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
+					item.getItemId(), item.getGePrice(), osbPrice[0], item.getHaPrice(), item.getGeItemLimit());
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
