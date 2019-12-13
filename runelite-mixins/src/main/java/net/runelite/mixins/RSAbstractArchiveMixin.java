@@ -1,9 +1,6 @@
 package net.runelite.mixins;
 
-import net.runelite.api.overlay.OverlayIndex;
-import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import java.io.IOException;
@@ -14,10 +11,11 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import org.slf4j.Logger;
+import net.runelite.api.overlay.OverlayIndex;
 import net.runelite.rs.api.RSAbstractArchive;
-import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSArchive;
+import net.runelite.rs.api.RSClient;
+import org.slf4j.Logger;
 
 @Mixin(RSAbstractArchive.class)
 public abstract class RSAbstractArchiveMixin implements RSAbstractArchive
@@ -39,77 +37,49 @@ public abstract class RSAbstractArchiveMixin implements RSAbstractArchive
 	abstract byte[] rs$getConfigData(int archiveId, int fileId);
 
 	@Replace("takeFile")
-	public byte[] rl$getConfigData(int archiveId, int fileId)
+	public byte[] rl$getConfigData(int groupId, int fileId)
 	{
-		byte[] rsData = rs$getConfigData(archiveId, fileId);
-		RSArchive indexData = (RSArchive) this;
+		final byte[] rsData = rs$getConfigData(groupId, fileId);
+		final int archiveId = ((RSArchive) this).getIndex();
 
-		if (!OverlayIndex.hasOverlay(indexData.getIndex(), archiveId))
+		if (!OverlayIndex.hasOverlay(archiveId, groupId))
 		{
 			return rsData;
 		}
 
-		Logger log = client.getLogger();
+		final Logger log = client.getLogger();
+		final String path = String.format("/runelite/%s/%s", archiveId, groupId);
 
-		InputStream in = getClass().getResourceAsStream("/runelite/" + indexData.getIndex() + "/" + archiveId);
-		if (in == null)
+		String overlayHash, originalHash;
+
+		try (final InputStream hashIn = getClass().getResourceAsStream(path + ".hash"))
 		{
-			log.warn("Missing overlay data for {}/{}", indexData.getIndex(), archiveId);
+			overlayHash = CharStreams.toString(new InputStreamReader(hashIn));
+			originalHash = Hashing.sha256().hashBytes(rsData).toString();
+		}
+		catch (IOException e)
+		{
+			log.warn("Missing overlay hash for {}/{}", archiveId, groupId);
 			return rsData;
 		}
 
-		InputStream in2 = getClass().getResourceAsStream("/runelite/" + indexData.getIndex() + "/" + archiveId + ".hash");
-		if (rsData == null)
+		// Check if hash is correct first, so we don't have to load the overlay file if it doesn't match
+		if (!overlayHash.equalsIgnoreCase(originalHash))
 		{
-			if (in2 != null)
-			{
-				log.warn("Hash file for non existing archive {}/{}", indexData.getIndex(), archiveId);
-				return null;
-			}
-
-			log.debug("Adding archive {}/{}", indexData.getIndex(), archiveId);
-
-			try
-			{
-				return ByteStreams.toByteArray(in);
-			}
-			catch (IOException ex)
-			{
-				log.warn("error loading archive replacement", ex);
-			}
-
-			return null;
-		}
-		if (in2 == null)
-		{
-			log.warn("Missing hash file for {}/{}", indexData.getIndex(), archiveId);
-			return rsData;
-		}
-
-		HashCode rsDataHash = Hashing.sha256().hashBytes(rsData);
-
-		String rsHash = BaseEncoding.base16().encode(rsDataHash.asBytes());
-
-		try
-		{
-			String replaceHash = CharStreams.toString(new InputStreamReader(in2));
-
-			if (replaceHash.equals(rsHash))
-			{
-				log.debug("Replacing archive {}/{}",
-					indexData.getIndex(), archiveId);
-				return ByteStreams.toByteArray(in);
-			}
-
 			log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
-				indexData.getIndex(), archiveId, replaceHash, rsHash);
+				archiveId, groupId, overlayHash, originalHash);
 			overlayOutdated = true;
-		}
-		catch (IOException ex)
-		{
-			log.warn("error checking hash", ex);
+			return rsData;
 		}
 
-		return rsData;
+		try (final InputStream ovlIn = getClass().getResourceAsStream(path))
+		{
+			return ByteStreams.toByteArray(ovlIn);
+		}
+		catch (IOException e)
+		{
+			log.warn("Missing overlay data for {}/{}", archiveId, groupId);
+			return rsData;
+		}
 	}
 }
