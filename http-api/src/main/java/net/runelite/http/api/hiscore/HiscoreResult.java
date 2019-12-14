@@ -203,7 +203,7 @@ public class HiscoreResult
 				return chaosElemental;
 			case CHAOS_FANATIC:
 				return chaosFanatic;
-			case COMMMANDER_ZILYANA:
+			case COMMANDER_ZILYANA:
 				return commanderZilyana;
 			case CORPOREAL_BEAST:
 				return corporealBeast;
@@ -245,9 +245,9 @@ public class HiscoreResult
 				return scorpia;
 			case SKOTIZO:
 				return skotizo;
-			case THE_GAUNTLET:
+			case GAUNTLET:
 				return gauntlet;
-			case THE_CORRUPTED_GAUNTLET:
+			case CORRUPTED_GAUNTLET:
 				return corruptedGauntlet;
 			case THEATRE_OF_BLOOD:
 				return theatreOfBlood;
