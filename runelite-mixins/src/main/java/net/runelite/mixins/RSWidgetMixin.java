@@ -24,6 +24,11 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import net.runelite.api.HashTable;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
@@ -31,20 +36,15 @@ import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.FieldHook;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
+import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNode;
@@ -215,22 +215,10 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		Widget parent = getParent();
 
-		if (parent == null)
-		{
-			if (TO_GROUP(getId()) != client.getWidgetRoot())
-			{
-				// Widget has no parent and is not the root widget (which is always visible),
-				// so it's not visible.
-				return true;
-			}
-		}
-		else if (parent.isHidden())
-		{
-			// If the parent is hidden, this widget is also hidden.
-			return true;
-		}
-
-		return false;
+		// If the parent is hidden, this widget is also hidden.
+		// Widget has no parent and is not the root widget (which is always visible),
+		// so it's not visible.
+		return parent == null ? TO_GROUP(getId()) != client.getWidgetRoot() : parent.isHidden();
 	}
 
 	@Inject
