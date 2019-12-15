@@ -185,9 +185,8 @@ public class BlackjackPlugin extends Plugin
 		@Override
 		public boolean matches(MenuEntry entry)
 		{
-			return
-				Text.removeTags(entry.getTarget(), true).equalsIgnoreCase(this.getTarget()) &&
-					entry.getOption().equalsIgnoreCase(this.getOption());
+			return entry.getOption().equalsIgnoreCase(this.getOption()) &&
+				Text.removeTags(entry.getTarget(), true).equalsIgnoreCase(this.getTarget());
 		}
 	}
 }

@@ -53,7 +53,7 @@ public class ClientSessionManager
 	{
 		sessionClient.openSession()
 			.subscribeOn(Schedulers.io())
-			.observeOn(Schedulers.from(clientThread))
+			.observeOn(Schedulers.single())
 			.subscribe(this::setUuid, this::error);
 	}
 
@@ -68,7 +68,7 @@ public class ClientSessionManager
 
 		sessionClient.pingSession(sessionId)
 			.subscribeOn(Schedulers.io())
-			.observeOn(Schedulers.from(clientThread))
+			.observeOn(Schedulers.single())
 			.doOnError(this::error)
 			.subscribe();
 	}
@@ -79,7 +79,7 @@ public class ClientSessionManager
 		{
 			sessionClient.delete(sessionId)
 				.subscribeOn(Schedulers.io())
-				.observeOn(Schedulers.from(clientThread))
+				.observeOn(Schedulers.single())
 				.doOnError(this::error)
 				.subscribe();
 
