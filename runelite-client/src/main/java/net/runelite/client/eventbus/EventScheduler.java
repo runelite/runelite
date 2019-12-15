@@ -1,21 +1,27 @@
 package net.runelite.client.eventbus;
 
+import io.reactivex.Scheduler;
 import io.reactivex.annotations.Nullable;
+import io.reactivex.schedulers.Schedulers;
+import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public enum EventScheduler
 {
-	DEFAULT(null),
-	COMPUTATION("computation"),
-	IO("io"),
-	NEWTHREAD("newThread"),
-	SINGLE("single"),
-	TRAMPOLINE("trampoline"),
-	CLIENT("client");
+	DEFAULT(() -> null),
+	COMPUTATION(Schedulers::computation),
+	IO(Schedulers::io),
+	NEWTHREAD(Schedulers::newThread),
+	SINGLE(Schedulers::single),
+	TRAMPOLINE(Schedulers::trampoline),
+	CLIENT(Schedulers::single);
 
-	public final String scheduler;
+	private Supplier<Scheduler> scheduler;
 
-	EventScheduler(@Nullable String scheduler)
+	@Nullable
+	public Scheduler get()
 	{
-		this.scheduler = scheduler;
+		return scheduler.get();
 	}
 }

@@ -9,7 +9,6 @@ import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import io.sentry.Sentry;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,6 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.Event;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.OpenOSRSConfig;
 
 @Slf4j
@@ -32,9 +30,6 @@ public class EventBus implements EventBusInterface
 
 	@Inject
 	private OpenOSRSConfig openOSRSConfig;
-
-	@Inject
-	private ClientThread clientThread;
 
 	@NonNull
 	private <T extends Event> Relay<Object> getSubject(Class<T> eventClass)
@@ -60,41 +55,9 @@ public class EventBus implements EventBusInterface
 		return observable -> until > 0 ? observable.take(until) : observable;
 	}
 
-	private Scheduler getScheduler(EventScheduler scheduler)
-	{
-		Scheduler subscribeScheduler;
-		switch (scheduler)
-		{
-			case COMPUTATION:
-				subscribeScheduler = Schedulers.computation();
-				break;
-			case IO:
-				subscribeScheduler = Schedulers.io();
-				break;
-			case NEWTHREAD:
-				subscribeScheduler = Schedulers.newThread();
-				break;
-			case SINGLE:
-				subscribeScheduler = Schedulers.single();
-				break;
-			case TRAMPOLINE:
-				subscribeScheduler = Schedulers.trampoline();
-				break;
-			case CLIENT:
-				subscribeScheduler = Schedulers.from(clientThread);
-				break;
-			case DEFAULT:
-			default:
-				subscribeScheduler = null;
-				break;
-		}
-
-		return subscribeScheduler;
-	}
-
 	private <T> ObservableTransformer<T, T> applyScheduler(EventScheduler eventScheduler, boolean subscribe)
 	{
-		Scheduler scheduler = getScheduler(eventScheduler);
+		Scheduler scheduler = eventScheduler.get();
 
 		return observable -> scheduler == null ? observable : subscribe ? observable.subscribeOn(scheduler) : observable.observeOn(scheduler);
 	}
