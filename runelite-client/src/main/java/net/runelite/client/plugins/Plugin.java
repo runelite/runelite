@@ -24,25 +24,23 @@
  */
 package net.runelite.client.plugins;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.reactivex.functions.Consumer;
-import java.lang.reflect.Method;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
+import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Value;
-import net.runelite.api.events.Event;
+import net.runelite.client.eventbus.AccessorGenerator;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.EventScheduler;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.Subscription;
 
 public abstract class Plugin implements Module
 {
-	private final Set<Subscription> annotatedSubscriptions = findSubscriptions();
-	private final Object annotatedSubsLock = new Object();
+	private Set<Subscription> annotatedSubscriptions = null;
 
 	@Getter(AccessLevel.PROTECTED)
 	protected Injector injector;
@@ -60,53 +58,33 @@ public abstract class Plugin implements Module
 	{
 	}
 
-	@SuppressWarnings("unchecked")
 	final void addAnnotatedSubscriptions(EventBus eventBus)
 	{
-		annotatedSubscriptions.forEach(sub -> eventBus.subscribe(sub.type, annotatedSubsLock, sub.method, sub.takeUntil, sub.subscribe, sub.observe));
+		if (annotatedSubscriptions == null)
+		{
+			Observable.fromCallable(this::findSubscriptions)
+				.subscribeOn(Schedulers.computation())
+				.observeOn(Schedulers.single())
+				.subscribe(subs -> addSubs(eventBus, (annotatedSubscriptions = subs)));
+		}
+		else
+		{
+			addSubs(eventBus, annotatedSubscriptions);
+		}
 	}
 
 	final void removeAnnotatedSubscriptions(EventBus eventBus)
 	{
-		eventBus.unregister(annotatedSubsLock);
+		eventBus.unregister(this);
 	}
 
 	private Set<Subscription> findSubscriptions()
 	{
-		ImmutableSet.Builder<Subscription> builder = ImmutableSet.builder();
-
-		for (Method method : this.getClass().getDeclaredMethods())
-		{
-			Subscribe annotation = method.getAnnotation(Subscribe.class);
-			if (annotation == null)
-			{
-				continue;
-			}
-
-			assert method.getParameterCount() == 1 : "Methods annotated with @Subscribe should have only one parameter";
-
-			Class<?> type = method.getParameterTypes()[0];
-
-			assert Event.class.isAssignableFrom(type) : "Parameters of methods annotated with @Subscribe should implement net.runelite.api.events.Event";
-			assert method.getReturnType() == void.class : "Methods annotated with @Subscribe should have a void return type";
-
-			method.setAccessible(true);
-
-			Subscription sub = new Subscription(type.asSubclass(Event.class), event -> method.invoke(this, event), annotation.takeUntil(), annotation.subscribe(), annotation.observe());
-
-			builder.add(sub);
-		}
-
-		return builder.build();
+		return AccessorGenerator.scanSubscribes(MethodHandles.lookup(), this);
 	}
 
-	@Value
-	private static class Subscription
+	private void addSubs(EventBus eventBus, Collection<Subscription> subs)
 	{
-		private final Class type;
-		private final Consumer method;
-		private final int takeUntil;
-		private final EventScheduler subscribe;
-		private final EventScheduler observe;
+		subs.forEach(s -> s.subscribe(eventBus, this));
 	}
 }
