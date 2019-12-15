@@ -38,6 +38,7 @@ import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,6 +52,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.eventbus.AccessorGenerator;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import static org.junit.Assert.assertEquals;
@@ -218,7 +220,8 @@ public class PluginManagerTest
 		}
 
 		TestPlugin plugin = new TestPlugin();
-		pluginManager.startPlugin(plugin);
+		AccessorGenerator.scanSubscribes(MethodHandles.lookup(), plugin)
+			.forEach(s -> s.subscribe(eventbus, plugin));
 		eventbus.post(TestEvent.class, new TestEvent());
 		assert plugin.thisShouldBeTrue;
 	}

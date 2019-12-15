@@ -449,6 +449,10 @@ public class ConfigManager
 		{
 			return Integer.parseInt(str);
 		}
+		if (type == long.class)
+		{
+			return Long.parseLong(str);
+		}
 		if (type == Color.class)
 		{
 			return ColorUtil.fromString(str);
@@ -614,6 +618,10 @@ public class ConfigManager
 		if (object instanceof EnumSet)
 		{
 			return ((EnumSet) object).toArray()[0].getClass().getCanonicalName() + "{" + object.toString() + "}";
+		}
+		if (object instanceof Number)
+		{
+			return String.valueOf(object);
 		}
 		return object.toString();
 	}
