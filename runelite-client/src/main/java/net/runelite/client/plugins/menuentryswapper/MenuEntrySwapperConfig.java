@@ -361,4 +361,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapGEItemCollect",
+		name = "GE Item Collect",
+		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer"
+	)
+	default GEItemCollectMode swapGEItemCollect()
+	{
+		return GEItemCollectMode.DEFAULT;
+	}
 }
