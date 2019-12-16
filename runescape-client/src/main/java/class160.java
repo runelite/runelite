@@ -3,50 +3,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fv")
 public enum class160 implements Enumerated {
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lfx;"
-	)
-	field2009(1, 0),
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lfx;"
+		signature = "Lfv;"
 	)
-	field2008(0, 1),
-	@ObfuscatedName("b")
+	field1988(2, 0),
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lfx;"
+		signature = "Lfv;"
 	)
-	field2006(3, 2),
-	@ObfuscatedName("g")
+	field1984(1, 1),
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lfx;"
+		signature = "Lfv;"
 	)
-	field2005(2, 3);
+	field1985(3, 2),
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lfv;"
+	)
+	field1986(0, 3);
 
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = -406777895
-	)
-	public final int field2007;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -141760123
+		intValue = -410013457
+	)
+	public final int field1987;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = -1136729991
 	)
 	@Export("id")
 	final int id;
 
 	class160(int var3, int var4) {
-		this.field2007 = var3;
+		this.field1987 = var3;
 		this.id = var4;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "7"
+		garbageValue = "-57"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
@@ -55,48 +55,17 @@ public enum class160 implements Enumerated {
 
 	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "684662102"
+		signature = "(Lkq;II)V",
+		garbageValue = "1384182754"
 	)
-	@Export("iLog")
-	public static int iLog(int var0) {
-		int var1 = 0;
-		if (var0 < 0 || var0 >= 65536) {
-			var0 >>>= 16;
-			var1 += 16;
+	public static void method3432(Buffer var0, int var1) {
+		if (JagexCache.JagexCache_randomDat != null) {
+			try {
+				JagexCache.JagexCache_randomDat.seek(0L);
+				JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
+			} catch (Exception var3) {
+			}
 		}
 
-		if (var0 >= 256) {
-			var0 >>>= 8;
-			var1 += 8;
-		}
-
-		if (var0 >= 16) {
-			var0 >>>= 4;
-			var1 += 4;
-		}
-
-		if (var0 >= 4) {
-			var0 >>>= 2;
-			var1 += 2;
-		}
-
-		if (var0 >= 1) {
-			var0 >>>= 1;
-			++var1;
-		}
-
-		return var0 + var1;
-	}
-
-	@ObfuscatedName("ja")
-	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "7"
-	)
-	static final void method3494(int var0) {
-		if (UserComparator3.loadInterface(var0)) {
-			MusicPatchPcmStream.drawModelComponents(FloorDecoration.Widget_interfaceComponents[var0], -1);
-		}
 	}
 }

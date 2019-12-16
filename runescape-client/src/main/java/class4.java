@@ -1,203 +1,110 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("z")
+@ObfuscatedName("p")
 final class class4 implements class0 {
-	@ObfuscatedName("nw")
-	@ObfuscatedSignature(
-		signature = "[Lhl;"
-	)
-	static Widget[] field22;
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkg;I)V",
-		garbageValue = "-1331780546"
-	)
-	public void vmethod57(Object var1, Buffer var2) {
-		this.method55((String)var1, var2);
-	}
-
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkg;I)Ljava/lang/Object;",
-		garbageValue = "1713449680"
+		signature = "(Ljava/lang/Object;Lkq;I)V",
+		garbageValue = "-685052934"
 	)
-	public Object vmethod65(Buffer var1) {
-		return var1.readStringCp1252NullTerminated();
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lkg;B)V",
-		garbageValue = "-1"
-	)
-	void method55(String var1, Buffer var2) {
-		var2.writeStringCp1252NullTerminated(var1);
-	}
-
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "910919278"
-	)
-	public static void method56(int var0) {
-		MouseHandler.MouseHandler_idleCycles = var0;
+	public void vmethod53(Object var1, Buffer var2) {
+		this.method51((String)var1, var2);
 	}
 
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lhl;IIII)V",
-		garbageValue = "1884834950"
+		signature = "(Lkq;I)Ljava/lang/Object;",
+		garbageValue = "390816352"
 	)
-	@Export("Widget_setKeyRate")
-	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
-		if (var0.field2654 == null) {
-			throw new RuntimeException();
-		} else {
-			var0.field2654[var1] = var2;
-			var0.field2655[var1] = var3;
-		}
+	public Object vmethod60(Buffer var1) {
+		return var1.readStringCp1252NullTerminated();
 	}
 
-	@ObfuscatedName("ak")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(ILci;ZI)I",
-		garbageValue = "-578960278"
+		signature = "(Ljava/lang/String;Lkq;I)V",
+		garbageValue = "1310089464"
 	)
-	static int method66(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.OC_NAME) {
-			var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-			Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = Interpreter.ItemDefinition_get(var3).name;
-			return 1;
+	void method51(String var1, Buffer var2) {
+		var2.writeStringCp1252NullTerminated(var1);
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(ILhz;IIIZI)V",
+		garbageValue = "-1294056256"
+	)
+	public static void method59(int var0, AbstractArchive var1, int var2, int var3, int var4, boolean var5) {
+		class197.field2392 = 1;
+		Coord.musicTrackArchive = var1;
+		class16.musicTrackGroupId = var2;
+		GrandExchangeOffer.musicTrackFileId = var3;
+		class197.musicTrackVolume = var4;
+		WorldMapDecoration.musicTrackBoolean = var5;
+		ParamDefinition.field3275 = var0;
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(IB)Leq;",
+		garbageValue = "103"
+	)
+	@Export("getFrames")
+	static Frames getFrames(int var0) {
+		Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			int var4;
-			ItemDefinition var5;
-			if (var0 == ScriptOpcodes.OC_OP) {
-				GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-				var5 = Interpreter.ItemDefinition_get(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var5.groundActions[var4 - 1];
-				} else {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-				}
+			AbstractArchive var3 = SequenceDefinition.SequenceDefinition_animationsArchive;
+			AbstractArchive var4 = SequenceDefinition.SequenceDefinition_skeletonsArchive;
+			boolean var5 = true;
+			int[] var6 = var3.getGroupFileIds(var0);
 
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_IOP) {
-				GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-				var3 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-				var5 = Interpreter.ItemDefinition_get(var3);
-				if (var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var5.inventoryActions[var4 - 1];
+			for (int var7 = 0; var7 < var6.length; ++var7) {
+				byte[] var8 = var3.getFile(var0, var6[var7]);
+				if (var8 == null) {
+					var5 = false;
 				} else {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
+					int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+					byte[] var10 = var4.getFile(var9, 0);
+					if (var10 == null) {
+						var5 = false;
+					}
 				}
+			}
 
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_COST) {
-				var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Interpreter.ItemDefinition_get(var3).price;
-				return 1;
-			} else if (var0 == ScriptOpcodes.OC_STACKABLE) {
-				var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Interpreter.ItemDefinition_get(var3).isStackable == 1 ? 1 : 0;
-				return 1;
+			Frames var2;
+			if (!var5) {
+				var2 = null;
 			} else {
-				ItemDefinition var6;
-				if (var0 == ScriptOpcodes.OC_CERT) {
-					var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					var6 = Interpreter.ItemDefinition_get(var3);
-					if (var6.noteTemplate == -1 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNCERT) {
-					var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					var6 = Interpreter.ItemDefinition_get(var3);
-					if (var6.noteTemplate >= 0 && var6.note >= 0) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var6.note;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_MEMBERS) {
-					var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Interpreter.ItemDefinition_get(var3).isMembersOnly ? 1 : 0;
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_PLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					var6 = Interpreter.ItemDefinition_get(var3);
-					if (var6.placeholderTemplate == -1 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_UNPLACEHOLDER) {
-					var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					var6 = Interpreter.ItemDefinition_get(var3);
-					if (var6.placeholderTemplate >= 0 && var6.placeholder >= 0) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var6.placeholder;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3;
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.OC_FIND) {
-					String var7 = Interpreter.Interpreter_stringStack[--class43.Interpreter_stringStackSize];
-					var4 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					Message.findItemDefinitions(var7, var4 == 1);
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = UserComparator10.foundItemIdCount;
-					return 1;
-				} else if (var0 != ScriptOpcodes.OC_FINDNEXT) {
-					if (var0 == ScriptOpcodes.OC_FINDRESET) {
-						GrandExchangeOfferAgeComparator.foundItemIndex = 0;
-						return 1;
-					} else {
-						return 2;
-					}
-				} else {
-					if (MusicPatch.foundItemIds != null && GrandExchangeOfferAgeComparator.foundItemIndex < UserComparator10.foundItemIdCount) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = MusicPatch.foundItemIds[++GrandExchangeOfferAgeComparator.foundItemIndex - 1] & '\uffff';
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-					}
-
-					return 1;
+				try {
+					var2 = new Frames(var3, var4, var0, false);
+				} catch (Exception var12) {
+					var2 = null;
 				}
 			}
+
+			if (var2 != null) {
+				SequenceDefinition.SequenceDefinition_cachedFrames.put(var2, (long)var0);
+			}
+
+			return var2;
 		}
 	}
 
-	@ObfuscatedName("ed")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "1158604899"
+		signature = "(Lhz;IB)Z",
+		garbageValue = "-83"
 	)
-	static boolean method63() {
-		if (Client.archiveLoaders != null && Client.archiveLoadersDone < Client.archiveLoaders.size()) {
-			while (Client.archiveLoadersDone < Client.archiveLoaders.size()) {
-				ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoadersDone);
-				if (!var0.isLoaded()) {
-					return false;
-				}
-
-				++Client.archiveLoadersDone;
-			}
-
-			return true;
+	static boolean method61(AbstractArchive var0, int var1) {
+		byte[] var2 = var0.takeFileFlat(var1);
+		if (var2 == null) {
+			return false;
 		} else {
+			AbstractWorldMapIcon.SpriteBuffer_decode(var2);
 			return true;
 		}
 	}

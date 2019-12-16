@@ -4,87 +4,87 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("br")
 @Implements("ObjectSound")
 public final class ObjectSound extends Node {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Ljd;"
+		signature = "Ljs;"
 	)
 	@Export("objectSounds")
 	static NodeDeque objectSounds;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -284752301
+		intValue = -1656698135
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -320634943
+		intValue = 1779559040
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 351853767
+		intValue = -718591763
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 1257144143
-	)
-	int field1074;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -889892259
+		intValue = 787274277
 	)
-	int field1071;
-	@ObfuscatedName("h")
+	int field1064;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -919807871
+		intValue = -1137525137
 	)
-	int field1072;
-	@ObfuscatedName("y")
+	int field1052;
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -1412550033
+		intValue = 245525821
+	)
+	int field1053;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = 1263233623
 	)
 	@Export("soundEffectId")
 	int soundEffectId;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lds;"
+		signature = "Ldg;"
 	)
 	@Export("stream1")
 	RawPcmStream stream1;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 851722869
+		intValue = -938588117
 	)
-	int field1075;
-	@ObfuscatedName("k")
+	int field1060;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1188723059
+		intValue = -1891052931
 	)
-	int field1076;
-	@ObfuscatedName("x")
+	int field1061;
+	@ObfuscatedName("o")
 	@Export("soundEffectIds")
 	int[] soundEffectIds;
-	@ObfuscatedName("o")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1209496197
+		intValue = 2003220669
 	)
-	int field1078;
-	@ObfuscatedName("e")
+	int field1055;
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lds;"
+		signature = "Ldg;"
 	)
 	@Export("stream2")
 	RawPcmStream stream2;
-	@ObfuscatedName("n")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lil;"
+		signature = "Lig;"
 	)
 	@Export("obj")
 	ObjectDefinition obj;
@@ -96,10 +96,10 @@ public final class ObjectSound extends Node {
 	ObjectSound() {
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1485735851"
+		garbageValue = "448933263"
 	)
 	@Export("set")
 	void set() {
@@ -107,44 +107,22 @@ public final class ObjectSound extends Node {
 		ObjectDefinition var2 = this.obj.transform();
 		if (var2 != null) {
 			this.soundEffectId = var2.ambientSoundId;
-			this.field1072 = var2.int4 * 128;
-			this.field1075 = var2.int5;
-			this.field1076 = var2.int6;
+			this.field1053 = var2.int4 * 128;
+			this.field1060 = var2.int5;
+			this.field1061 = var2.int6;
 			this.soundEffectIds = var2.soundEffectIds;
 		} else {
 			this.soundEffectId = -1;
-			this.field1072 = 0;
-			this.field1075 = 0;
-			this.field1076 = 0;
+			this.field1053 = 0;
+			this.field1060 = 0;
+			this.field1061 = 0;
 			this.soundEffectIds = null;
 		}
 
 		if (var1 != this.soundEffectId && this.stream1 != null) {
-			ClientPacket.pcmStreamMixer.removeSubStream(this.stream1);
+			Tiles.pcmStreamMixer.removeSubStream(this.stream1);
 			this.stream1 = null;
 		}
 
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "([BI)[B",
-		garbageValue = "-359888333"
-	)
-	public static byte[] method1935(byte[] var0) {
-		int var1 = var0.length;
-		byte[] var2 = new byte[var1];
-		System.arraycopy(var0, 0, var2, 0, var1);
-		return var2;
-	}
-
-	@ObfuscatedName("ky")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "7"
-	)
-	static final void method1936() {
-		Client.field836 = Client.cycleCntr;
-		WorldMapID.ClanChat_inClanChat = true;
 	}
 }

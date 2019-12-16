@@ -4,62 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hp")
 @Implements("PlayerType")
 public enum PlayerType implements Enumerated {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_normal")
 	PlayerType_normal(0, -1, true, false, true),
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_playerModerator")
 	PlayerType_playerModerator(1, 0, true, true, true),
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_jagexModerator")
 	PlayerType_jagexModerator(2, 1, true, true, false),
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_ironman")
 	PlayerType_ironman(3, 2, false, false, true),
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_ultimateIronman")
 	PlayerType_ultimateIronman(4, 3, false, false, true),
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lhb;"
+		signature = "Lhp;"
 	)
 	@Export("PlayerType_hardcoreIronman")
 	PlayerType_hardcoreIronman(5, 10, false, false, true);
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 519677779
+		intValue = 1619956353
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 2036327739
+		intValue = -441584621
 	)
 	@Export("modIcon")
 	public final int modIcon;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@Export("isPrivileged")
 	public final boolean isPrivileged;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@Export("isUser")
 	public final boolean isUser;
 
@@ -70,54 +70,13 @@ public enum PlayerType implements Enumerated {
 		this.isUser = var7;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "7"
+		garbageValue = "-57"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
-	}
-
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(ILke;Lij;I)V",
-		garbageValue = "1224063547"
-	)
-	static void method4210(int var0, ArchiveDisk var1, Archive var2) {
-		byte[] var3 = null;
-		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-			for (ArchiveDiskAction var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var5 != null; var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
-				if (var5.key == (long)var0 && var1 == var5.archiveDisk && var5.type == 0) {
-					var3 = var5.data;
-					break;
-				}
-			}
-		}
-
-		if (var3 != null) {
-			var2.load(var1, var0, var3, true);
-		} else {
-			byte[] var4 = var1.read(var0);
-			var2.load(var1, var0, var4, true);
-		}
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-		garbageValue = "1655356407"
-	)
-	public static String method4212(CharSequence var0) {
-		int var2 = var0.length();
-		char[] var3 = new char[var2];
-
-		for (int var4 = 0; var4 < var2; ++var4) {
-			var3[var4] = '*';
-		}
-
-		String var1 = new String(var3);
-		return var1;
 	}
 }

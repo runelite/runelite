@@ -1,26 +1,30 @@
-import net.runelite.mapping.Export;
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hv")
+@ObfuscatedName("hx")
 public class class216 {
-	@ObfuscatedName("z")
-	@Export("SpriteBuffer_yOffsets")
-	static int[] SpriteBuffer_yOffsets;
 	@ObfuscatedName("y")
-	@Export("ByteArrayPool_altSizeArrayCounts")
-	static int[] ByteArrayPool_altSizeArrayCounts;
-
-	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)V",
-		garbageValue = "-126430026"
+		signature = "(Ljava/lang/String;II)Z",
+		garbageValue = "-1882269787"
 	)
-	static final void method4118(String var0, int var1) {
-		PacketBufferNode var2 = ModelData0.getPacketBufferNode(ClientPacket.field2319, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeByte(class173.stringCp1252NullTerminatedByteSize(var0) + 1);
-		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
-		var2.packetBuffer.writeByte(var1);
-		Client.packetWriter.addNode(var2);
+	static boolean method4017(String var0, int var1) {
+		return GrandExchangeEvent.method79(var0, var1, "openjs");
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "178095242"
+	)
+	static void method4013() {
+		Iterator var0 = Messages.Messages_hashTable.iterator();
+
+		while (var0.hasNext()) {
+			Message var1 = (Message)var0.next();
+			var1.clearIsFromFriend();
+		}
+
 	}
 }

@@ -4,62 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("da")
+@ObfuscatedName("dc")
 @Implements("TileItemPile")
 public final class TileItemPile {
-	@ObfuscatedName("i")
-	public static short[][] field1537;
-	@ObfuscatedName("kd")
+	@ObfuscatedName("so")
 	@ObfuscatedGetter(
-		intValue = -495854777
+		longValue = 3482799438459679755L
 	)
-	@Export("menuWidth")
-	static int menuWidth;
-	@ObfuscatedName("u")
+	static long field1522;
+	@ObfuscatedName("cn")
+	public static char field1521;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -811612081
+		intValue = 2053459421
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1672040969
+		intValue = 972029952
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -951728925
+		intValue = 1850274101
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lee;"
+		signature = "Lep;"
 	)
 	@Export("first")
 	Entity first;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lee;"
+		signature = "Lep;"
 	)
 	@Export("second")
 	Entity second;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lee;"
+		signature = "Lep;"
 	)
 	@Export("third")
 	Entity third;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		longValue = 4343367721480266293L
+		longValue = 6402708744668809381L
 	)
 	@Export("tag")
 	long tag;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -311771117
+		intValue = 790929517
 	)
 	@Export("height")
 	int height;
@@ -67,23 +66,12 @@ public final class TileItemPile {
 	TileItemPile() {
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(B)[Lkc;",
-		garbageValue = "-76"
+		signature = "(I)I",
+		garbageValue = "-2014741616"
 	)
-	static PrivateChatMode[] method2810() {
-		return new PrivateChatMode[]{PrivateChatMode.field3793, PrivateChatMode.field3792, PrivateChatMode.field3794};
-	}
-
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1881198055"
-	)
-	public static void method2811() {
-		FaceNormal.midiPcmStream.clear();
-		class197.field2411 = 1;
-		class197.musicTrackArchive = null;
+	static final int method2797() {
+		return ViewportMouse.ViewportMouse_y;
 	}
 }

@@ -1,11 +1,14 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hk")
 public final class class227 {
-	@ObfuscatedName("gy")
-	@ObfuscatedGetter(
-		intValue = 439347683
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(CI)Z",
+		garbageValue = "-2145751121"
 	)
-	static int field3092;
+	static boolean method4102(char var0) {
+		return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".indexOf(var0) != -1;
+	}
 }

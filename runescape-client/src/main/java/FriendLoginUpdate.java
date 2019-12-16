@@ -4,68 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jf")
+@ObfuscatedName("jj")
 @Implements("FriendLoginUpdate")
 public class FriendLoginUpdate extends Link {
-	@ObfuscatedName("rc")
-	@ObfuscatedGetter(
-		intValue = -1971912431
-	)
-	static int field3643;
-	@ObfuscatedName("i")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
-	@Export("Widget_modelsArchive")
-	public static AbstractArchive Widget_modelsArchive;
-	@ObfuscatedName("b")
+	@Export("Widget_archive")
+	static AbstractArchive Widget_archive;
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 674667209
+		intValue = 1496749481
 	)
-	public int field3646;
-	@ObfuscatedName("g")
+	public int field3623;
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Ljb;"
+		signature = "Ljc;"
 	)
 	@Export("username")
 	public Username username;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@Export("world")
 	public short world;
 
 	@ObfuscatedSignature(
-		signature = "(Ljb;I)V"
+		signature = "(Ljc;I)V"
 	)
 	FriendLoginUpdate(Username var1, int var2) {
-		this.field3646 = (int)(TaskHandler.currentTimeMillis() / 1000L);
+		this.field3623 = (int)(WorldMapID.currentTimeMillis() / 1000L);
 		this.username = var1;
 		this.world = (short)var2;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("f")
+	static double method5301(double var0) {
+		return Math.exp(var0 * -var0 / 2.0D) / Math.sqrt(6.283185307179586D);
+	}
+
+	@ObfuscatedName("au")
 	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "1735579843"
+		signature = "(Lcz;I)V",
+		garbageValue = "-651295245"
 	)
-	@Export("hslToRgb")
-	static final int hslToRgb(int var0, int var1, int var2) {
-		if (var2 > 179) {
-			var1 /= 2;
-		}
-
-		if (var2 > 192) {
-			var1 /= 2;
-		}
-
-		if (var2 > 217) {
-			var1 /= 2;
-		}
-
-		if (var2 > 243) {
-			var1 /= 2;
-		}
-
-		int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-		return var3;
+	public static final void method5300(class97 var0) {
+		ChatChannel.pcmPlayerProvider = var0;
 	}
 }

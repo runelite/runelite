@@ -4,40 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fx")
 @Implements("RouteStrategy")
 public abstract class RouteStrategy {
-	@ObfuscatedName("w")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1683670831
-	)
-	static int field2114;
-	@ObfuscatedName("fv")
-	@ObfuscatedGetter(
-		longValue = -7982817211457785639L
-	)
-	static long field2110;
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = 1694860109
+		intValue = 1026996041
 	)
 	@Export("approxDestinationX")
 	public int approxDestinationX;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -279352193
+		intValue = 229527517
 	)
 	@Export("approxDestinationY")
 	public int approxDestinationY;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1604762731
+		intValue = 309902599
 	)
 	@Export("approxDestinationSizeX")
 	public int approxDestinationSizeX;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 368404493
+		intValue = 762948669
 	)
 	@Export("approxDestinationSizeY")
 	public int approxDestinationSizeY;
@@ -45,59 +35,86 @@ public abstract class RouteStrategy {
 	protected RouteStrategy() {
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(IIILfh;B)Z",
-		garbageValue = "-103"
+		signature = "(IIILfp;I)Z",
+		garbageValue = "1339159810"
 	)
 	@Export("hasArrived")
-	protected abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
+	public abstract boolean hasArrived(int var1, int var2, int var3, CollisionMap var4);
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(IIB)Z",
-		garbageValue = "34"
+		signature = "(Ljava/lang/CharSequence;I)[B",
+		garbageValue = "959122064"
 	)
-	static boolean method3638(int var0, int var1) {
-		return var0 != 4 || var1 < 8;
-	}
+	public static byte[] method3566(CharSequence var0) {
+		int var1 = var0.length();
+		byte[] var2 = new byte[var1];
 
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(I)Ljava/lang/String;",
-		garbageValue = "62216772"
-	)
-	static String method3639() {
-		return UserComparator10.clientPreferences.hideUsername ? PlayerType.method4212(Login.Login_username) : Login.Login_username;
-	}
+		for (int var3 = 0; var3 < var1; ++var3) {
+			char var4 = var0.charAt(var3);
+			if (var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
+				var2[var3] = (byte)var4;
+			} else if (var4 == 8364) {
+				var2[var3] = -128;
+			} else if (var4 == 8218) {
+				var2[var3] = -126;
+			} else if (var4 == 402) {
+				var2[var3] = -125;
+			} else if (var4 == 8222) {
+				var2[var3] = -124;
+			} else if (var4 == 8230) {
+				var2[var3] = -123;
+			} else if (var4 == 8224) {
+				var2[var3] = -122;
+			} else if (var4 == 8225) {
+				var2[var3] = -121;
+			} else if (var4 == 710) {
+				var2[var3] = -120;
+			} else if (var4 == 8240) {
+				var2[var3] = -119;
+			} else if (var4 == 352) {
+				var2[var3] = -118;
+			} else if (var4 == 8249) {
+				var2[var3] = -117;
+			} else if (var4 == 338) {
+				var2[var3] = -116;
+			} else if (var4 == 381) {
+				var2[var3] = -114;
+			} else if (var4 == 8216) {
+				var2[var3] = -111;
+			} else if (var4 == 8217) {
+				var2[var3] = -110;
+			} else if (var4 == 8220) {
+				var2[var3] = -109;
+			} else if (var4 == 8221) {
+				var2[var3] = -108;
+			} else if (var4 == 8226) {
+				var2[var3] = -107;
+			} else if (var4 == 8211) {
+				var2[var3] = -106;
+			} else if (var4 == 8212) {
+				var2[var3] = -105;
+			} else if (var4 == 732) {
+				var2[var3] = -104;
+			} else if (var4 == 8482) {
+				var2[var3] = -103;
+			} else if (var4 == 353) {
+				var2[var3] = -102;
+			} else if (var4 == 8250) {
+				var2[var3] = -101;
+			} else if (var4 == 339) {
+				var2[var3] = -100;
+			} else if (var4 == 382) {
+				var2[var3] = -98;
+			} else if (var4 == 376) {
+				var2[var3] = -97;
+			} else {
+				var2[var3] = 63;
+			}
+		}
 
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "-377116898"
-	)
-	static final int method3640(int var0, int var1, int var2) {
-		int var3 = var0 / var2;
-		int var4 = var0 & var2 - 1;
-		int var5 = var1 / var2;
-		int var6 = var1 & var2 - 1;
-		int var7 = class266.method5066(var3, var5);
-		int var8 = class266.method5066(var3 + 1, var5);
-		int var9 = class266.method5066(var3, var5 + 1);
-		int var10 = class266.method5066(var3 + 1, var5 + 1);
-		int var12 = 65536 - Rasterizer3D.Rasterizer3D_cosine[var4 * 1024 / var2] >> 1;
-		int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
-		int var13 = class286.method5346(var9, var10, var4, var2);
-		return class286.method5346(var11, var13, var6, var2);
-	}
-
-	@ObfuscatedName("hu")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1126084733"
-	)
-	static void method3641() {
-		Client.menuOptionsCount = 0;
-		Client.isMenuOpen = false;
+		return var2;
 	}
 }

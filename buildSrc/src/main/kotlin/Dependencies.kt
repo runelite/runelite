@@ -27,11 +27,11 @@ const val kotlinVersion = "1.3.50"
 
 object ProjectVersions {
     const val launcherVersion = "2.0.4"
-    const val rlVersion = "1.5.43-SNAPSHOT"
+    const val rlVersion = "1.5.44-SNAPSHOT"
 
-    const val openosrsVersion = "2.1.17.0-SNAPSHOT"
+    const val openosrsVersion = "2.1.18-SNAPSHOT"
 
-    const val rsversion = 186
+    const val rsversion = 187
     const val cacheversion = 165
 }
 

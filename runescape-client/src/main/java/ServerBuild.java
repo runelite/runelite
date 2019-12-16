@@ -4,41 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hi")
 @Implements("ServerBuild")
 public class ServerBuild {
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("LIVE")
-	static final ServerBuild LIVE;
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhi;"
+	)
+	@Export("LIVE")
+	public static final ServerBuild LIVE;
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Lhi;"
 	)
 	@Export("BUILDLIVE")
-	static final ServerBuild BUILDLIVE;
-	@ObfuscatedName("b")
+	public static final ServerBuild BUILDLIVE;
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhi;"
 	)
 	@Export("RC")
-	static final ServerBuild RC;
-	@ObfuscatedName("g")
+	public static final ServerBuild RC;
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lhi;"
 	)
 	@Export("WIP")
-	static final ServerBuild WIP;
-	@ObfuscatedName("z")
+	public static final ServerBuild WIP;
+	@ObfuscatedName("dv")
+	@ObfuscatedSignature(
+		signature = "Lif;"
+	)
+	@Export("archive10")
+	static Archive archive10;
+	@ObfuscatedName("p")
 	@Export("name")
 	public final String name;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -832726311
+		intValue = 135493903
 	)
-	public final int field3109;
+	public final int field3081;
 
 	static {
 		LIVE = new ServerBuild("LIVE", 0);
@@ -49,20 +55,19 @@ public class ServerBuild {
 
 	ServerBuild(String var1, int var2) {
 		this.name = var1;
-		this.field3109 = var2;
+		this.field3081 = var2;
 	}
 
 	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(Llb;ILjava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "-88537768"
-	)
-	static String method4214(IterableNodeHashTable var0, int var1, String var2) {
-		if (var0 == null) {
-			return var2;
-		} else {
-			ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-			return var3 == null ? var2 : (String)var3.obj;
+	public static final void method4111(long var0) {
+		if (var0 > 0L) {
+			if (var0 % 10L == 0L) {
+				class188.method3604(var0 - 1L);
+				class188.method3604(1L);
+			} else {
+				class188.method3604(var0);
+			}
+
 		}
 	}
 }

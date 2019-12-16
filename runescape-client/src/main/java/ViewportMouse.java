@@ -4,46 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dz")
 @Implements("ViewportMouse")
 public class ViewportMouse {
-	@ObfuscatedName("u")
-	@Export("ViewportMouse_isInViewport")
-	static boolean ViewportMouse_isInViewport;
 	@ObfuscatedName("f")
+	@Export("ViewportMouse_isInViewport")
+	public static boolean ViewportMouse_isInViewport;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 2136731005
+		intValue = -52069035
 	)
 	@Export("ViewportMouse_x")
-	static int ViewportMouse_x;
-	@ObfuscatedName("b")
-	@ObfuscatedGetter(
-		intValue = -1807081523
-	)
-	@Export("ViewportMouse_y")
-	static int ViewportMouse_y;
-	@ObfuscatedName("g")
-	@Export("ViewportMouse_false0")
-	static boolean ViewportMouse_false0;
+	public static int ViewportMouse_x;
 	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 998794847
+		intValue = -819033673
 	)
-	static int field1737;
+	@Export("ViewportMouse_y")
+	public static int ViewportMouse_y;
 	@ObfuscatedName("w")
+	@Export("ViewportMouse_false0")
+	public static boolean ViewportMouse_false0;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 529684695
+		intValue = 945572255
 	)
-	static int field1739;
+	static int field1717;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 421048203
+		intValue = -45541993
+	)
+	static int field1718;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1585979181
+	)
+	static int field1719;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1002877627
+	)
+	static int field1720;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 1949057711
 	)
 	@Export("ViewportMouse_entityCount")
 	public static int ViewportMouse_entityCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("s")
 	@Export("ViewportMouse_entityTags")
 	public static long[] ViewportMouse_entityTags;
+	@ObfuscatedName("hb")
+	@ObfuscatedGetter(
+		intValue = -1167251555
+	)
+	@Export("cameraPitch")
+	static int cameraPitch;
 
 	static {
 		ViewportMouse_isInViewport = false;
@@ -54,23 +70,26 @@ public class ViewportMouse {
 		ViewportMouse_entityTags = new long[1000];
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ZZI)I",
-		garbageValue = "-1821844574"
+		signature = "(II)I",
+		garbageValue = "1626465516"
 	)
-	public static int method3015(boolean var0, boolean var1) {
-		byte var2 = 0;
-		int var3 = var2 + NetCache.NetCache_pendingPriorityResponsesCount + NetCache.NetCache_pendingPriorityWritesCount;
-		return var3;
+	public static int method2993(int var0) {
+		if (var0 > 0) {
+			return 1;
+		} else {
+			return var0 < 0 ? -1 : 0;
+		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("bg")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-950495199"
+		signature = "(Ljava/lang/String;B)I",
+		garbageValue = "-8"
 	)
-	public static void method3012() {
-		StructDefinition.StructDefinition_cached.clear();
+	@Export("stringCp1252NullTerminatedByteSize")
+	public static int stringCp1252NullTerminatedByteSize(String var0) {
+		return var0.length() + 1;
 	}
 }

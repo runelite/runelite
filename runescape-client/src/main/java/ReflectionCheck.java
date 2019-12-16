@@ -6,71 +6,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("dn")
 @Implements("ReflectionCheck")
 public class ReflectionCheck extends Node {
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = 200973425
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lko;"
 	)
-	@Export("id")
-	int id;
+	@Export("ItemDefinition_fontPlain11")
+	static Font ItemDefinition_fontPlain11;
+	@ObfuscatedName("m")
+	@Export("userHomeDirectory")
+	static String userHomeDirectory;
+	@ObfuscatedName("mp")
+	@ObfuscatedGetter(
+		intValue = -942024519
+	)
+	@Export("selectedSpellFlags")
+	static int selectedSpellFlags;
 	@ObfuscatedName("f")
 	@Export("intReplaceValues")
 	int[] intReplaceValues;
-	@ObfuscatedName("b")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 648866297
+		intValue = -1153531937
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("y")
+	@ObfuscatedGetter(
+		intValue = 1226139147
 	)
 	@Export("size")
 	int size;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@Export("operations")
 	int[] operations;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@Export("creationErrors")
 	int[] creationErrors;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@Export("fields")
 	Field[] fields;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@Export("methods")
 	Method[] methods;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@Export("arguments")
 	byte[][][] arguments;
 
 	ReflectionCheck() {
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(IIIIB)V",
-		garbageValue = "-15"
-	)
-	static final void method2316(int var0, int var1, int var2, int var3) {
-		for (int var4 = var1; var4 <= var3 + var1; ++var4) {
-			for (int var5 = var0; var5 <= var0 + var2; ++var5) {
-				if (var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-					class51.field423[0][var5][var4] = 127;
-					if (var0 == var5 && var5 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 - 1][var4];
-					}
-
-					if (var5 == var0 + var2 && var5 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 + 1][var4];
-					}
-
-					if (var4 == var1 && var4 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 - 1];
-					}
-
-					if (var4 == var3 + var1 && var4 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 + 1];
-					}
-				}
-			}
-		}
-
 	}
 }

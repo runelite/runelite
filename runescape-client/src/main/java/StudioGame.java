@@ -4,52 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hq")
 @Implements("StudioGame")
 public enum StudioGame implements Enumerated {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("runescape")
 	runescape("runescape", "RuneScape", 0),
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("stellardawn")
 	stellardawn("stellardawn", "Stellar Dawn", 1),
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("game3")
 	game3("game3", "Game 3", 2),
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("game4")
 	game4("game4", "Game 4", 3),
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("game5")
 	game5("game5", "Game 5", 4),
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lhe;"
+		signature = "Lhq;"
 	)
 	@Export("oldscape")
 	oldscape("oldscape", "RuneScape 2007", 5);
 
 	@ObfuscatedName("h")
+	static String field3092;
+	@ObfuscatedName("e")
 	@Export("name")
 	public final String name;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 366525809
+		intValue = 1105236049
 	)
 	@Export("id")
 	final int id;
@@ -59,243 +61,172 @@ public enum StudioGame implements Enumerated {
 		this.id = var5;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "7"
+		garbageValue = "-57"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;Llg;I)Ljava/lang/String;",
-		garbageValue = "-1208620842"
+		signature = "(IIIIIZB)Lls;",
+		garbageValue = "16"
 	)
-	public static String method4228(CharSequence var0, LoginType var1) {
-		if (var0 == null) {
+	@Export("getItemSprite")
+	public static final Sprite getItemSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
+		if (var1 == -1) {
+			var4 = 0;
+		} else if (var4 == 2 && var1 != 1) {
+			var4 = 1;
+		}
+
+		long var6 = ((long)var4 << 40) + ((long)var2 << 38) + ((long)var1 << 16) + (long)var0 + ((long)var3 << 42);
+		Sprite var8;
+		if (!var5) {
+			var8 = (Sprite)ItemDefinition.ItemDefinition_cachedSprites.get(var6);
+			if (var8 != null) {
+				return var8;
+			}
+		}
+
+		ItemDefinition var9 = PacketBufferNode.ItemDefinition_get(var0);
+		if (var1 > 1 && var9.countobj != null) {
+			int var10 = -1;
+
+			for (int var11 = 0; var11 < 10; ++var11) {
+				if (var1 >= var9.countco[var11] && var9.countco[var11] != 0) {
+					var10 = var9.countobj[var11];
+				}
+			}
+
+			if (var10 != -1) {
+				var9 = PacketBufferNode.ItemDefinition_get(var10);
+			}
+		}
+
+		Model var19 = var9.getModel(1);
+		if (var19 == null) {
 			return null;
 		} else {
-			int var2 = 0;
-
-			int var3;
-			boolean var4;
-			char var5;
-			for (var3 = var0.length(); var2 < var3; ++var2) {
-				var5 = var0.charAt(var2);
-				var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-				if (!var4) {
-					break;
+			Sprite var20 = null;
+			if (var9.noteTemplate != -1) {
+				var20 = getItemSprite(var9.note, 10, 1, 0, 0, true);
+				if (var20 == null) {
+					return null;
+				}
+			} else if (var9.notedId != -1) {
+				var20 = getItemSprite(var9.unnotedId, var1, var2, var3, 0, false);
+				if (var20 == null) {
+					return null;
+				}
+			} else if (var9.placeholderTemplate != -1) {
+				var20 = getItemSprite(var9.placeholder, var1, 0, 0, 0, false);
+				if (var20 == null) {
+					return null;
 				}
 			}
 
-			while (var3 > var2) {
-				var5 = var0.charAt(var3 - 1);
-				var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-				if (!var4) {
-					break;
-				}
-
-				--var3;
+			int[] var12 = Rasterizer2D.Rasterizer2D_pixels;
+			int var13 = Rasterizer2D.Rasterizer2D_width;
+			int var14 = Rasterizer2D.Rasterizer2D_height;
+			int[] var15 = new int[4];
+			Rasterizer2D.Rasterizer2D_getClipArray(var15);
+			var8 = new Sprite(36, 32);
+			Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
+			Rasterizer2D.Rasterizer2D_clear();
+			Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
+			Rasterizer3D.method3086(16, 16);
+			Rasterizer3D.field1739 = false;
+			if (var9.placeholderTemplate != -1) {
+				var20.drawTransBgAt(0, 0);
 			}
 
-			int var14 = var3 - var2;
-			if (var14 >= 1) {
-				byte var6;
-				if (var1 == null) {
-					var6 = 12;
-				} else {
-					switch(var1.field4032) {
-					case 6:
-						var6 = 20;
-						break;
-					default:
-						var6 = 12;
-					}
-				}
-
-				if (var14 <= var6) {
-					StringBuilder var12 = new StringBuilder(var14);
-
-					for (int var15 = var2; var15 < var3; ++var15) {
-						char var7 = var0.charAt(var15);
-						boolean var8;
-						if (Character.isISOControl(var7)) {
-							var8 = false;
-						} else if (Varcs.isAlphaNumeric(var7)) {
-							var8 = true;
-						} else {
-							char[] var13 = class338.field4034;
-							int var10 = 0;
-
-							label117:
-							while (true) {
-								char var11;
-								if (var10 >= var13.length) {
-									var13 = class338.field4037;
-
-									for (var10 = 0; var10 < var13.length; ++var10) {
-										var11 = var13[var10];
-										if (var11 == var7) {
-											var8 = true;
-											break label117;
-										}
-									}
-
-									var8 = false;
-									break;
-								}
-
-								var11 = var13[var10];
-								if (var7 == var11) {
-									var8 = true;
-									break;
-								}
-
-								++var10;
-							}
-						}
-
-						if (var8) {
-							char var9;
-							switch(var7) {
-							case ' ':
-							case '-':
-							case '_':
-							case ' ':
-								var9 = '_';
-								break;
-							case '#':
-							case '[':
-							case ']':
-								var9 = var7;
-								break;
-							case 'À':
-							case 'Á':
-							case 'Â':
-							case 'Ã':
-							case 'Ä':
-							case 'à':
-							case 'á':
-							case 'â':
-							case 'ã':
-							case 'ä':
-								var9 = 'a';
-								break;
-							case 'Ç':
-							case 'ç':
-								var9 = 'c';
-								break;
-							case 'È':
-							case 'É':
-							case 'Ê':
-							case 'Ë':
-							case 'è':
-							case 'é':
-							case 'ê':
-							case 'ë':
-								var9 = 'e';
-								break;
-							case 'Í':
-							case 'Î':
-							case 'Ï':
-							case 'í':
-							case 'î':
-							case 'ï':
-								var9 = 'i';
-								break;
-							case 'Ñ':
-							case 'ñ':
-								var9 = 'n';
-								break;
-							case 'Ò':
-							case 'Ó':
-							case 'Ô':
-							case 'Õ':
-							case 'Ö':
-							case 'ò':
-							case 'ó':
-							case 'ô':
-							case 'õ':
-							case 'ö':
-								var9 = 'o';
-								break;
-							case 'Ù':
-							case 'Ú':
-							case 'Û':
-							case 'Ü':
-							case 'ù':
-							case 'ú':
-							case 'û':
-							case 'ü':
-								var9 = 'u';
-								break;
-							case 'ß':
-								var9 = 'b';
-								break;
-							case 'ÿ':
-							case 'Ÿ':
-								var9 = 'y';
-								break;
-							default:
-								var9 = Character.toLowerCase(var7);
-							}
-
-							if (var9 != 0) {
-								var12.append(var9);
-							}
-						}
-					}
-
-					if (var12.length() == 0) {
-						return null;
-					}
-
-					return var12.toString();
-				}
+			int var16 = var9.zoom2d;
+			if (var5) {
+				var16 = (int)(1.5D * (double)var16);
+			} else if (var2 == 2) {
+				var16 = (int)((double)var16 * 1.04D);
 			}
 
+			int var17 = var16 * Rasterizer3D.Rasterizer3D_sine[var9.xan2d] >> 16;
+			int var18 = var16 * Rasterizer3D.Rasterizer3D_cosine[var9.xan2d] >> 16;
+			var19.calculateBoundsCylinder();
+			var19.method2907(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
+			if (var9.notedId != -1) {
+				var20.drawTransBgAt(0, 0);
+			}
+
+			if (var2 >= 1) {
+				var8.outline(1);
+			}
+
+			if (var2 >= 2) {
+				var8.outline(16777215);
+			}
+
+			if (var3 != 0) {
+				var8.shadow(var3);
+			}
+
+			Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
+			if (var9.noteTemplate != -1) {
+				var20.drawTransBgAt(0, 0);
+			}
+
+			if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
+				ReflectionCheck.ItemDefinition_fontPlain11.draw(Projectile.method2129(var1), 0, 9, 16776960, 1);
+			}
+
+			if (!var5) {
+				ItemDefinition.ItemDefinition_cachedSprites.put(var8, var6);
+			}
+
+			Rasterizer2D.Rasterizer2D_replace(var12, var13, var14);
+			Rasterizer2D.Rasterizer2D_setClipArray(var15);
+			Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
+			Rasterizer3D.field1739 = true;
+			return var8;
+		}
+	}
+
+	@ObfuscatedName("fa")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1629640167"
+	)
+	static final void method4119() {
+		if (Client.logoutTimer > 0) {
+			InterfaceParent.logOut();
+		} else {
+			Client.timer.method5025();
+			class195.updateGameState(40);
+			VertexNormal.field1730 = Client.packetWriter.getSocket();
+			Client.packetWriter.removeSocket();
+		}
+	}
+
+	@ObfuscatedName("kg")
+	@ObfuscatedSignature(
+		signature = "(Lha;I)Lha;",
+		garbageValue = "-525522937"
+	)
+	static Widget method4116(Widget var0) {
+		int var1 = class339.method6563(WorldMapSection0.getWidgetClickMask(var0));
+		if (var1 == 0) {
 			return null;
+		} else {
+			for (int var2 = 0; var2 < var1; ++var2) {
+				var0 = Tile.getWidget(var0.parentId);
+				if (var0 == null) {
+					return null;
+				}
+			}
+
+			return var0;
 		}
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(I)Lgx;",
-		garbageValue = "233010468"
-	)
-	static PacketBufferNode method4225() {
-		return PacketBufferNode.PacketBufferNode_packetBufferNodeCount == 0 ? new PacketBufferNode() : PacketBufferNode.PacketBufferNode_packetBufferNodes[--PacketBufferNode.PacketBufferNode_packetBufferNodeCount];
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "([BB)Ljava/lang/String;",
-		garbageValue = "117"
-	)
-	public static String method4220(byte[] var0) {
-		return class195.method3739(var0, 0, var0.length);
-	}
-
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(CLgc;I)I",
-		garbageValue = "-85765138"
-	)
-	@Export("lowercaseChar")
-	static int lowercaseChar(char var0, Language var1) {
-		int var2 = var0 << 4;
-		if (Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-			var0 = Character.toLowerCase(var0);
-			var2 = (var0 << 4) + 1;
-		}
-
-		if (var0 == 241 && var1 == Language.Language_ES) {
-			var2 = 1762;
-		}
-
-		return var2;
 	}
 }

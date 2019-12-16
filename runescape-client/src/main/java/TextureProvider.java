@@ -4,54 +4,53 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("dt")
 @Implements("TextureProvider")
 public class TextureProvider implements TextureLoader {
-	@ObfuscatedName("an")
-	@Export("hasFocus")
-	protected static boolean hasFocus;
-	@ObfuscatedName("u")
+	@ObfuscatedName("bz")
+	static String field1510;
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "[Ldv;"
+		signature = "[Ldq;"
 	)
 	@Export("textures")
 	Texture[] textures;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Ljd;"
+		signature = "Ljs;"
 	)
 	@Export("deque")
 	NodeDeque deque;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 913401883
+		intValue = 580366883
 	)
 	@Export("capacity")
 	int capacity;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -793022159
+		intValue = 1830310681
 	)
 	@Export("remaining")
 	int remaining;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@Export("brightness")
 	double brightness;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1514204273
+		intValue = 95221787
 	)
 	@Export("textureSize")
 	int textureSize;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("archive")
 	AbstractArchive archive;
 
 	@ObfuscatedSignature(
-		signature = "(Lhf;Lhf;IDI)V"
+		signature = "(Lhz;Lhz;IDI)V"
 	)
 	public TextureProvider(AbstractArchive var1, AbstractArchive var2, int var3, double var4, int var6) {
 		this.deque = new NodeDeque();
@@ -74,10 +73,10 @@ public class TextureProvider implements TextureLoader {
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-1516350248"
+		garbageValue = "16711935"
 	)
 	@Export("getLoadedPercentage")
 	public int getLoadedPercentage() {
@@ -93,7 +92,7 @@ public class TextureProvider implements TextureLoader {
 
 				for (int var7 = 0; var7 < var6.length; ++var7) {
 					int var8 = var6[var7];
-					if (this.archive.method4237(var8)) {
+					if (this.archive.method4157(var8)) {
 						++var2;
 					}
 				}
@@ -107,17 +106,17 @@ public class TextureProvider implements TextureLoader {
 		}
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@Export("setBrightness")
 	public void setBrightness(double var1) {
 		this.brightness = var1;
 		this.clear();
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(IB)[I",
-		garbageValue = "-64"
+		signature = "(IS)[I",
+		garbageValue = "-13601"
 	)
 	@Export("getTexturePixels")
 	public int[] getTexturePixels(int var1) {
@@ -147,39 +146,39 @@ public class TextureProvider implements TextureLoader {
 		return null;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "(II)I",
-		garbageValue = "298398688"
+		garbageValue = "935962168"
 	)
 	@Export("getAverageTextureRGB")
 	public int getAverageTextureRGB(int var1) {
 		return this.textures[var1] != null ? this.textures[var1].averageRGB : 0;
 	}
 
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "561655524"
-	)
-	public boolean vmethod3330(int var1) {
-		return this.textures[var1].field1615;
-	}
-
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-959544558"
+		garbageValue = "1307146254"
+	)
+	public boolean vmethod3284(int var1) {
+		return this.textures[var1].field1602;
+	}
+
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "(IB)Z",
+		garbageValue = "0"
 	)
 	@Export("isLowDetail")
 	public boolean isLowDetail(int var1) {
 		return this.textureSize == 64;
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1449865056"
+		garbageValue = "-2025101230"
 	)
 	@Export("clear")
 	public void clear() {
@@ -193,10 +192,10 @@ public class TextureProvider implements TextureLoader {
 		this.remaining = this.capacity;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "248051597"
+		garbageValue = "1849730240"
 	)
 	@Export("animate")
 	public void animate(int var1) {
@@ -210,83 +209,17 @@ public class TextureProvider implements TextureLoader {
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(II)Lit;",
-		garbageValue = "1399456300"
+		signature = "(IB)V",
+		garbageValue = "67"
 	)
-	@Export("getInvDefinition")
-	public static InvDefinition getInvDefinition(int var0) {
-		InvDefinition var1 = (InvDefinition)InvDefinition.InvDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
+	public static void method2796(int var0) {
+		if (class197.field2392 != 0) {
+			class197.musicTrackVolume = var0;
 		} else {
-			byte[] var2 = InvDefinition.InvDefinition_archive.takeFile(5, var0);
-			var1 = new InvDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			InvDefinition.InvDefinition_cached.put(var1, (long)var0);
-			return var1;
-		}
-	}
-
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "(IIIB)V",
-		garbageValue = "14"
-	)
-	@Export("worldToScreen")
-	static final void worldToScreen(int var0, int var1, int var2) {
-		if (var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-			int var3 = class195.getTileHeight(var0, var1, ClientPacket.Client_plane) - var2;
-			var0 -= class30.cameraX;
-			var3 -= GameObject.cameraY;
-			var1 -= FloorDecoration.cameraZ;
-			int var4 = Rasterizer3D.Rasterizer3D_sine[ItemContainer.cameraPitch];
-			int var5 = Rasterizer3D.Rasterizer3D_cosine[ItemContainer.cameraPitch];
-			int var6 = Rasterizer3D.Rasterizer3D_sine[Decimator.cameraYaw];
-			int var7 = Rasterizer3D.Rasterizer3D_cosine[Decimator.cameraYaw];
-			int var8 = var6 * var1 + var0 * var7 >> 16;
-			var1 = var7 * var1 - var0 * var6 >> 16;
-			var0 = var8;
-			var8 = var3 * var5 - var4 * var1 >> 16;
-			var1 = var5 * var1 + var4 * var3 >> 16;
-			if (var1 >= 50) {
-				Client.viewportTempX = var0 * Client.viewportZoom / var1 + Client.viewportWidth / 2;
-				Client.viewportTempY = Client.viewportHeight / 2 + var8 * Client.viewportZoom / var1;
-			} else {
-				Client.viewportTempX = -1;
-				Client.viewportTempY = -1;
-			}
-
-		} else {
-			Client.viewportTempX = -1;
-			Client.viewportTempY = -1;
-		}
-	}
-
-	@ObfuscatedName("ij")
-	@ObfuscatedSignature(
-		signature = "(IIIIB)V",
-		garbageValue = "-94"
-	)
-	@Export("selectSpell")
-	static void selectSpell(int var0, int var1, int var2, int var3) {
-		Widget var4 = UserComparator3.getWidgetChild(var0, var1);
-		if (var4 != null && var4.onTargetEnter != null) {
-			ScriptEvent var5 = new ScriptEvent();
-			var5.widget = var4;
-			var5.args = var4.onTargetEnter;
-			WorldMapLabel.runScriptEvent(var5);
+			GZipDecompressor.midiPcmStream.setPcmStreamVolume(var0);
 		}
 
-		Client.field799 = var3;
-		Client.isSpellSelected = true;
-		WorldMapAreaData.selectedSpellWidget = var0;
-		Client.selectedSpellChildIndex = var1;
-		Actor.selectedSpellFlags = var2;
-		ScriptEvent.invalidateWidget(var4);
 	}
 }

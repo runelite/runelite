@@ -2,28 +2,26 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hj")
 public class class210 {
-	@ObfuscatedName("u")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhg;"
+		signature = "(I)Z",
+		garbageValue = "-1841265610"
 	)
-	@Export("huffman")
-	static Huffman huffman;
-	@ObfuscatedName("df")
-	@ObfuscatedSignature(
-		signature = "Lij;"
-	)
-	@Export("archive15")
-	static Archive archive15;
+	public static boolean method3947() {
+		ReflectionCheck var0 = (ReflectionCheck)class117.reflectionChecks.last();
+		return var0 != null;
+	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "1"
+		signature = "(III)Lbs;",
+		garbageValue = "-453941581"
 	)
-	@Export("isWorldMapEvent")
-	public static boolean isWorldMapEvent(int var0) {
-		return var0 == 10 || var0 == 11 || var0 == 12 || var0 == 13 || var0 == 14 || var0 == 15 || var0 == 16 || var0 == 17;
+	@Export("Messages_getByChannelAndID")
+	static Message Messages_getByChannelAndID(int var0, int var1) {
+		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
+		return var2.getMessage(var1);
 	}
 }

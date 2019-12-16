@@ -4,42 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("fz")
 @Implements("PacketBufferNode")
 public class PacketBufferNode extends Node {
-	@ObfuscatedName("z")
+	@ObfuscatedName("rf")
+	@ObfuscatedGetter(
+		intValue = -1075361135
+	)
+	static int field2310;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "[Lgx;"
+		signature = "[Lfz;"
 	)
 	@Export("PacketBufferNode_packetBufferNodes")
-	static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
-	@ObfuscatedName("p")
+	public static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1218907641
+		intValue = 1681870953
 	)
 	@Export("PacketBufferNode_packetBufferNodeCount")
-	static int PacketBufferNode_packetBufferNodeCount;
-	@ObfuscatedName("u")
+	public static int PacketBufferNode_packetBufferNodeCount;
+	@ObfuscatedName("o")
+	@Export("Tiles_lightness")
+	static int[] Tiles_lightness;
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lgj;"
+		signature = "Lfh;"
 	)
 	@Export("clientPacket")
-	ClientPacket clientPacket;
-	@ObfuscatedName("f")
+	public ClientPacket clientPacket;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 328924249
+		intValue = -1093975901
 	)
 	@Export("clientPacketLength")
-	int clientPacketLength;
-	@ObfuscatedName("b")
+	public int clientPacketLength;
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lkj;"
+		signature = "Lkl;"
 	)
 	@Export("packetBuffer")
 	public PacketBuffer packetBuffer;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -1715023791
+		intValue = 468956445
 	)
 	@Export("index")
 	public int index;
@@ -49,13 +57,10 @@ public class PacketBufferNode extends Node {
 		PacketBufferNode_packetBufferNodeCount = 0;
 	}
 
-	PacketBufferNode() {
-	}
-
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "13"
+		signature = "(I)V",
+		garbageValue = "-2117853277"
 	)
 	@Export("release")
 	public void release() {
@@ -64,21 +69,73 @@ public class PacketBufferNode extends Node {
 		}
 	}
 
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(Lhf;I)V",
-		garbageValue = "-628490328"
-	)
-	public static void method3679(AbstractArchive var0) {
-		EnumDefinition.EnumDefinition_archive = var0;
-	}
-
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-380587936"
+		signature = "(IB)Lii;",
+		garbageValue = "57"
 	)
-	static final void method3670() {
-		WorldMapSection2.method347("Your friend list is full. Max of 200 for free users, and 400 for members");
+	@Export("ItemDefinition_get")
+	public static ItemDefinition ItemDefinition_get(int var0) {
+		ItemDefinition var1 = (ItemDefinition)ItemDefinition.ItemDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = UserComparator10.ItemDefinition_archive.takeFile(10, var0);
+			var1 = new ItemDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
+
+			var1.post();
+			if (var1.noteTemplate != -1) {
+				var1.genCert(ItemDefinition_get(var1.noteTemplate), ItemDefinition_get(var1.note));
+			}
+
+			if (var1.notedId != -1) {
+				var1.genBought(ItemDefinition_get(var1.notedId), ItemDefinition_get(var1.unnotedId));
+			}
+
+			if (var1.placeholderTemplate != -1) {
+				var1.genPlaceholder(ItemDefinition_get(var1.placeholderTemplate), ItemDefinition_get(var1.placeholder));
+			}
+
+			if (!ItemDefinition.ItemDefinition_inMembersWorld && var1.isMembersOnly) {
+				var1.name = "Members object";
+				var1.isTradable = false;
+				var1.groundActions = null;
+				var1.inventoryActions = null;
+				var1.shiftClickIndex = -1;
+				var1.team = 0;
+				if (var1.params != null) {
+					boolean var3 = false;
+
+					for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
+						ParamDefinition var5 = WorldMapIcon_1.getParamDefinition((int)var4.key);
+						if (var5.autoDisable) {
+							var4.remove();
+						} else {
+							var3 = true;
+						}
+					}
+
+					if (!var3) {
+						var1.params = null;
+					}
+				}
+			}
+
+			ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1234199679"
+	)
+	public static void method3587() {
+		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
 	}
 }

@@ -3,27 +3,15 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
+@ObfuscatedName("hv")
 @Implements("Skills")
 public class Skills {
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@Export("Skills_enabled")
 	public static final boolean[] Skills_enabled;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@Export("Skills_experienceTable")
 	public static int[] Skills_experienceTable;
-	@ObfuscatedName("z")
-	@ObfuscatedSignature(
-		signature = "[Lbp;"
-	)
-	@Export("World_worlds")
-	static World[] World_worlds;
-	@ObfuscatedName("ba")
-	@ObfuscatedSignature(
-		signature = "Llm;"
-	)
-	@Export("worldSelectLeftSprite")
-	static IndexedSprite worldSelectLeftSprite;
 
 	static {
 		Skills_enabled = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
@@ -39,74 +27,89 @@ public class Skills {
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
-		signature = "(CB)B",
-		garbageValue = "11"
+		signature = "([BI)[B",
+		garbageValue = "1842420439"
 	)
-	@Export("charToByteCp1252")
-	public static byte charToByteCp1252(char var0) {
-		byte var1;
-		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-			var1 = (byte)var0;
-		} else if (var0 == 8364) {
-			var1 = -128;
-		} else if (var0 == 8218) {
-			var1 = -126;
-		} else if (var0 == 402) {
-			var1 = -125;
-		} else if (var0 == 8222) {
-			var1 = -124;
-		} else if (var0 == 8230) {
-			var1 = -123;
-		} else if (var0 == 8224) {
-			var1 = -122;
-		} else if (var0 == 8225) {
-			var1 = -121;
-		} else if (var0 == 710) {
-			var1 = -120;
-		} else if (var0 == 8240) {
-			var1 = -119;
-		} else if (var0 == 352) {
-			var1 = -118;
-		} else if (var0 == 8249) {
-			var1 = -117;
-		} else if (var0 == 338) {
-			var1 = -116;
-		} else if (var0 == 381) {
-			var1 = -114;
-		} else if (var0 == 8216) {
-			var1 = -111;
-		} else if (var0 == 8217) {
-			var1 = -110;
-		} else if (var0 == 8220) {
-			var1 = -109;
-		} else if (var0 == 8221) {
-			var1 = -108;
-		} else if (var0 == 8226) {
-			var1 = -107;
-		} else if (var0 == 8211) {
-			var1 = -106;
-		} else if (var0 == 8212) {
-			var1 = -105;
-		} else if (var0 == 732) {
-			var1 = -104;
-		} else if (var0 == 8482) {
-			var1 = -103;
-		} else if (var0 == 353) {
-			var1 = -102;
-		} else if (var0 == 8250) {
-			var1 = -101;
-		} else if (var0 == 339) {
-			var1 = -100;
-		} else if (var0 == 382) {
-			var1 = -98;
-		} else if (var0 == 376) {
-			var1 = -97;
+	@Export("decompressBytes")
+	static final byte[] decompressBytes(byte[] var0) {
+		Buffer var1 = new Buffer(var0);
+		int var2 = var1.readUnsignedByte();
+		int var3 = var1.readInt();
+		if (var3 < 0 || AbstractArchive.field3118 != 0 && var3 > AbstractArchive.field3118) {
+			throw new RuntimeException();
+		} else if (var2 == 0) {
+			byte[] var4 = new byte[var3];
+			var1.readBytes(var4, 0, var3);
+			return var4;
 		} else {
-			var1 = 63;
-		}
+			int var6 = var1.readInt();
+			if (var6 >= 0 && (AbstractArchive.field3118 == 0 || var6 <= AbstractArchive.field3118)) {
+				byte[] var5 = new byte[var6];
+				if (var2 == 1) {
+					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
+				} else {
+					AbstractArchive.gzipDecompressor.decompress(var1, var5);
+				}
 
-		return var1;
+				return var5;
+			} else {
+				throw new RuntimeException();
+			}
+		}
+	}
+
+	@ObfuscatedName("hp")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "381562265"
+	)
+	@Export("updateItemPile")
+	static final void updateItemPile(int var0, int var1) {
+		NodeDeque var2 = Client.groundItems[UrlRequest.Client_plane][var0][var1];
+		if (var2 == null) {
+			class14.scene.removeGroundItemPile(UrlRequest.Client_plane, var0, var1);
+		} else {
+			long var3 = -99999999L;
+			TileItem var5 = null;
+
+			TileItem var6;
+			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+				ItemDefinition var7 = PacketBufferNode.ItemDefinition_get(var6.id);
+				long var8 = (long)var7.price;
+				if (var7.isStackable == 1) {
+					var8 *= (long)(var6.quantity + 1);
+				}
+
+				if (var8 > var3) {
+					var3 = var8;
+					var5 = var6;
+				}
+			}
+
+			if (var5 == null) {
+				class14.scene.removeGroundItemPile(UrlRequest.Client_plane, var0, var1);
+			} else {
+				var2.addLast(var5);
+				TileItem var12 = null;
+				TileItem var11 = null;
+
+				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+					if (var5.id != var6.id) {
+						if (var12 == null) {
+							var12 = var6;
+						}
+
+						if (var12.id != var6.id && var11 == null) {
+							var11 = var6;
+						}
+					}
+				}
+
+				long var9 = KeyHandler.calculateTag(var0, var1, 3, false, 0);
+				class14.scene.newGroundItemPile(UrlRequest.Client_plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, UrlRequest.Client_plane), var5, var9, var12, var11);
+			}
+		}
 	}
 }

@@ -4,41 +4,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lz")
+@ObfuscatedName("lg")
 @Implements("FillMode")
 public enum FillMode implements Enumerated {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Llz;"
+		signature = "Llg;"
 	)
 	@Export("SOLID")
 	SOLID(0, 0),
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Llz;"
+		signature = "Llg;"
 	)
-	field3854(1, 1),
-	@ObfuscatedName("b")
+	field3850(1, 1),
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Llz;"
+		signature = "Llg;"
 	)
-	field3855(2, 2);
+	field3853(2, 2);
 
 	@ObfuscatedName("w")
-	@Export("SpriteBuffer_pixels")
-	static byte[][] SpriteBuffer_pixels;
-	@ObfuscatedName("l")
-	@Export("BZip2Decompressor_block")
-	static int[] BZip2Decompressor_block;
-	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 80643323
+		intValue = -1693216809
 	)
 	@Export("value")
 	public final int value;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1639591945
+		intValue = -19931109
 	)
 	@Export("id")
 	final int id;
@@ -48,13 +42,22 @@ public enum FillMode implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "7"
+		garbageValue = "-57"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
+	}
+
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "(Lhz;I)V",
+		garbageValue = "-1700551628"
+	)
+	public static void method6117(AbstractArchive var0) {
+		FloorOverlayDefinition.FloorOverlayDefinition_archive = var0;
 	}
 }

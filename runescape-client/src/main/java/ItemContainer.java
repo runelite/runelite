@@ -4,37 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bc")
 @Implements("ItemContainer")
 public class ItemContainer extends Node {
-	@ObfuscatedName("oc")
-	@ObfuscatedSignature(
-		signature = "Lfk;"
-	)
-	@Export("mouseWheel")
-	static MouseWheel mouseWheel;
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "Lle;"
 	)
 	@Export("itemContainers")
 	static NodeHashTable itemContainers;
-	@ObfuscatedName("bq")
-	@ObfuscatedSignature(
-		signature = "[Llm;"
-	)
-	@Export("worldSelectFlagSprites")
-	static IndexedSprite[] worldSelectFlagSprites;
-	@ObfuscatedName("hs")
+	@ObfuscatedName("dg")
 	@ObfuscatedGetter(
-		intValue = 778957861
+		longValue = 151185411405630583L
 	)
-	@Export("cameraPitch")
-	static int cameraPitch;
-	@ObfuscatedName("f")
+	static long field519;
+	@ObfuscatedName("i")
 	@Export("ids")
 	int[] ids;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@Export("quantities")
 	int[] quantities;
 
@@ -47,19 +34,15 @@ public class ItemContainer extends Node {
 		this.quantities = new int[]{0};
 	}
 
-	@ObfuscatedName("h")
-	@Export("Entity_unpackID")
-	public static int Entity_unpackID(long var0) {
-		return (int)(var0 >>> 17 & 4294967295L);
-	}
-
-	@ObfuscatedName("gp")
+	@ObfuscatedName("jf")
 	@ObfuscatedSignature(
-		signature = "(Lbt;II)V",
-		garbageValue = "1416714498"
+		signature = "(IIB)V",
+		garbageValue = "-83"
 	)
-	@Export("getActorScreenLocation")
-	static final void getActorScreenLocation(Actor var0, int var1) {
-		TextureProvider.worldToScreen(var0.x, var0.y, var1);
+	@Export("runIntfCloseListeners")
+	static final void runIntfCloseListeners(int var0, int var1) {
+		if (MusicPatch.loadInterface(var0)) {
+			DynamicObject.runComponentCloseListeners(UserComparator7.Widget_interfaceComponents[var0], var1);
+		}
 	}
 }

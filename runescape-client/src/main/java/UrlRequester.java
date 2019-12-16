@@ -7,34 +7,20 @@ import java.util.LinkedList;
 import java.util.Queue;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("eo")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-	@ObfuscatedName("g")
-	@Export("SpriteBuffer_xOffsets")
-	static int[] SpriteBuffer_xOffsets;
-	@ObfuscatedName("h")
-	@ObfuscatedGetter(
-		intValue = 1446688081
-	)
-	@Export("musicTrackGroupId")
-	public static int musicTrackGroupId;
-	@ObfuscatedName("ez")
-	@ObfuscatedGetter(
-		intValue = 2240241
-	)
-	static int field1940;
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@Export("thread")
 	final Thread thread;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@Export("isClosed")
 	volatile boolean isClosed;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@Export("requests")
 	Queue requests;
 
@@ -45,10 +31,10 @@ public class UrlRequester implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/URL;I)Lez;",
-		garbageValue = "-1482865280"
+		signature = "(Ljava/net/URL;I)Lex;",
+		garbageValue = "-970365901"
 	)
 	@Export("request")
 	public UrlRequest request(URL var1) {
@@ -60,10 +46,10 @@ public class UrlRequester implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1184631073"
+		garbageValue = "1622964720"
 	)
 	@Export("close")
 	public void close() {
@@ -126,59 +112,161 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				Calendar.RunException_sendStackTrace((String)null, var17);
+				DesktopPlatformInfoProvider.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("fn")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lhl;III)V",
-		garbageValue = "-311109271"
+		signature = "(ILcu;ZI)I",
+		garbageValue = "360397660"
 	)
-	@Export("checkIfMinimapClicked")
-	static final void checkIfMinimapClicked(Widget var0, int var1, int var2) {
-		if (Client.minimapState == 0 || Client.minimapState == 3) {
-			if (!Client.isMenuOpen && (MouseHandler.MouseHandler_lastButton == 1 || !JagexCache.mouseCam && MouseHandler.MouseHandler_lastButton == 4)) {
-				SpriteMask var3 = var0.getSpriteMask(true);
-				if (var3 == null) {
-					return;
-				}
+	static int method3306(int var0, Script var1, boolean var2) {
+		boolean var3 = true;
+		Widget var4;
+		if (var0 >= 2000) {
+			var0 -= 1000;
+			var4 = Tile.getWidget(Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize]);
+			var3 = false;
+		} else {
+			var4 = var2 ? UserComparator7.field1946 : class197.field2398;
+		}
 
-				int var4 = MouseHandler.MouseHandler_lastPressedX - var1;
-				int var5 = MouseHandler.MouseHandler_lastPressedY - var2;
-				if (var3.contains(var4, var5)) {
-					var4 -= var3.width / 2;
-					var5 -= var3.height / 2;
-					int var6 = Client.camAngleY & 2047;
-					int var7 = Rasterizer3D.Rasterizer3D_sine[var6];
-					int var8 = Rasterizer3D.Rasterizer3D_cosine[var6];
-					int var9 = var7 * var5 + var8 * var4 >> 11;
-					int var10 = var5 * var8 - var4 * var7 >> 11;
-					int var11 = var9 + class215.localPlayer.x >> 7;
-					int var12 = class215.localPlayer.y - var10 >> 7;
-					PacketBufferNode var13 = ModelData0.getPacketBufferNode(ClientPacket.field2282, Client.packetWriter.isaacCipher);
-					var13.packetBuffer.writeByte(18);
-					var13.packetBuffer.method5636(class51.baseX * 64 + var11);
-					var13.packetBuffer.method5628(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0);
-					var13.packetBuffer.method5636(VarcInt.baseY * 64 + var12);
-					var13.packetBuffer.writeByte(var4);
-					var13.packetBuffer.writeByte(var5);
-					var13.packetBuffer.writeShort(Client.camAngleY);
-					var13.packetBuffer.writeByte(57);
-					var13.packetBuffer.writeByte(0);
-					var13.packetBuffer.writeByte(0);
-					var13.packetBuffer.writeByte(89);
-					var13.packetBuffer.writeShort(class215.localPlayer.x);
-					var13.packetBuffer.writeShort(class215.localPlayer.y);
-					var13.packetBuffer.writeByte(63);
-					Client.packetWriter.addNode(var13);
-					Client.destinationX = var11;
-					Client.destinationY = var12;
+		int var11;
+		if (var0 == ScriptOpcodes.CC_SETOP) {
+			var11 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize] - 1;
+			if (var11 >= 0 && var11 <= 9) {
+				var4.setAction(var11, Interpreter.Interpreter_stringStack[--class65.Interpreter_stringStackSize]);
+				return 1;
+			} else {
+				--class65.Interpreter_stringStackSize;
+				return 1;
+			}
+		} else {
+			int var6;
+			if (var0 == ScriptOpcodes.CC_SETDRAGGABLE) {
+				class188.Interpreter_intStackSize -= 2;
+				var11 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize];
+				var6 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1];
+				var4.parent = BZip2State.getWidgetChild(var11, var6);
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETDRAGGABLEBEHAVIOR) {
+				var4.isScrollBar = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize] == 1;
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETDRAGDEADZONE) {
+				var4.dragZoneSize = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize];
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETDRAGDEADTIME) {
+				var4.dragThreshold = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize];
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETOPBASE) {
+				var4.dataText = Interpreter.Interpreter_stringStack[--class65.Interpreter_stringStackSize];
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_SETTARGETVERB) {
+				var4.spellActionName = Interpreter.Interpreter_stringStack[--class65.Interpreter_stringStackSize];
+				return 1;
+			} else if (var0 == ScriptOpcodes.CC_CLEAROPS) {
+				var4.actions = null;
+				return 1;
+			} else if (var0 == 1308) {
+				var4.field2602 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize] == 1;
+				return 1;
+			} else {
+				int var7;
+				byte[] var9;
+				if (var0 != ScriptOpcodes.CC_SETOPKEY) {
+					byte var5;
+					if (var0 == ScriptOpcodes.CC_SETOPTKEY) {
+						class188.Interpreter_intStackSize -= 2;
+						var5 = 10;
+						var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize]};
+						byte[] var10 = new byte[]{(byte)Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1]};
+						AttackOption.Widget_setKey(var4, var5, var9, var10);
+						return 1;
+					} else if (var0 == ScriptOpcodes.CC_SETOPKEYRATE) {
+						class188.Interpreter_intStackSize -= 3;
+						var11 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize] - 1;
+						var6 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1];
+						var7 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 2];
+						if (var11 >= 0 && var11 <= 9) {
+							GrandExchangeOfferUnitPriceComparator.Widget_setKeyRate(var4, var11, var6, var7);
+							return 1;
+						} else {
+							throw new RuntimeException();
+						}
+					} else if (var0 == ScriptOpcodes.CC_SETOPTKEYRATE) {
+						var5 = 10;
+						var6 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize];
+						var7 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize];
+						GrandExchangeOfferUnitPriceComparator.Widget_setKeyRate(var4, var5, var6, var7);
+						return 1;
+					} else if (var0 == ScriptOpcodes.CC_SETOPKEYIGNOREHELD) {
+						--class188.Interpreter_intStackSize;
+						var11 = Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize] - 1;
+						if (var11 >= 0 && var11 <= 9) {
+							WorldMapCacheName.Widget_setKeyIgnoreHeld(var4, var11);
+							return 1;
+						} else {
+							throw new RuntimeException();
+						}
+					} else if (var0 == ScriptOpcodes.CC_SETOPTKEYIGNOREHELD) {
+						var5 = 10;
+						WorldMapCacheName.Widget_setKeyIgnoreHeld(var4, var5);
+						return 1;
+					} else {
+						return 2;
+					}
+				} else {
+					byte[] var8 = null;
+					var9 = null;
+					if (var3) {
+						class188.Interpreter_intStackSize -= 10;
+
+						for (var7 = 0; var7 < 10 && Interpreter.Interpreter_intStack[var7 + class188.Interpreter_intStackSize] >= 0; var7 += 2) {
+						}
+
+						if (var7 > 0) {
+							var8 = new byte[var7 / 2];
+							var9 = new byte[var7 / 2];
+
+							for (var7 -= 2; var7 >= 0; var7 -= 2) {
+								var8[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class188.Interpreter_intStackSize];
+								var9[var7 / 2] = (byte)Interpreter.Interpreter_intStack[var7 + class188.Interpreter_intStackSize + 1];
+							}
+						}
+					} else {
+						class188.Interpreter_intStackSize -= 2;
+						var8 = new byte[]{(byte)Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize]};
+						var9 = new byte[]{(byte)Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1]};
+					}
+
+					var7 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize] - 1;
+					if (var7 >= 0 && var7 <= 9) {
+						AttackOption.Widget_setKey(var4, var7, var8, var9);
+						return 1;
+					} else {
+						throw new RuntimeException();
+					}
 				}
 			}
-
 		}
+	}
+
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;B)I",
+		garbageValue = "0"
+	)
+	public static int method3299(CharSequence var0) {
+		int var1 = var0.length();
+		int var2 = 0;
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var2 = (var2 << 5) - var2 + var0.charAt(var3);
+		}
+
+		return var2;
 	}
 }

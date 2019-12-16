@@ -1,39 +1,60 @@
+import java.applet.Applet;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("y")
+@ObfuscatedName("x")
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
-	@ObfuscatedName("u")
+	@ObfuscatedName("ss")
+	@ObfuscatedSignature(
+		signature = "Lld;"
+	)
+	@Export("worldMap")
+	static WorldMap worldMap;
+	@ObfuscatedName("bs")
+	@ObfuscatedSignature(
+		signature = "Lli;"
+	)
+	@Export("worldSelectLeftSprite")
+	static IndexedSprite worldSelectLeftSprite;
+	@ObfuscatedName("kx")
 	@ObfuscatedGetter(
-		intValue = 1903174229
+		intValue = -830703967
+	)
+	@Export("menuX")
+	static int menuX;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = -492844339
 	)
 	@Export("world")
 	public final int world;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		longValue = -3619466799124397109L
+		longValue = 6772397130790099757L
 	)
 	@Export("age")
 	public final long age;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Li;"
+		signature = "Ld;"
 	)
 	@Export("grandExchangeOffer")
 	public final GrandExchangeOffer grandExchangeOffer;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@Export("offerName")
 	String offerName;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@Export("previousOfferName")
 	String previousOfferName;
 
 	@ObfuscatedSignature(
-		signature = "(Lkg;BI)V"
+		signature = "(Lkq;BI)V"
 	)
 	GrandExchangeEvent(Buffer var1, byte var2, int var3) {
 		this.offerName = var1.readStringCp1252NullTerminated();
@@ -43,8 +64,8 @@ public class GrandExchangeEvent {
 		int var4 = var1.readInt();
 		int var5 = var1.readInt();
 		this.grandExchangeOffer = new GrandExchangeOffer();
-		this.grandExchangeOffer.method109(2);
-		this.grandExchangeOffer.method110(var2);
+		this.grandExchangeOffer.method99(2);
+		this.grandExchangeOffer.method100(var2);
 		this.grandExchangeOffer.unitPrice = var4;
 		this.grandExchangeOffer.totalQuantity = var5;
 		this.grandExchangeOffer.currentQuantity = 0;
@@ -52,72 +73,98 @@ public class GrandExchangeEvent {
 		this.grandExchangeOffer.id = var3;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(B)Ljava/lang/String;",
-		garbageValue = "16"
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "-859042126"
 	)
 	@Export("getOfferName")
 	public String getOfferName() {
 		return this.offerName;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1776036206"
+		garbageValue = "342302982"
 	)
 	@Export("getPreviousOfferName")
 	public String getPreviousOfferName() {
 		return this.previousOfferName;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Lkg;II)V",
-		garbageValue = "-894744142"
+		signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
+		garbageValue = "-128"
 	)
-	public static void method86(Buffer var0, int var1) {
-		if (JagexCache.JagexCache_randomDat != null) {
+	static boolean method79(String var0, int var1, String var2) {
+		if (var1 == 0) {
 			try {
-				JagexCache.JagexCache_randomDat.seek(0L);
-				JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
-			} catch (Exception var3) {
-			}
-		}
+				if (!class50.field410.startsWith("win")) {
+					throw new Exception();
+				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
+					throw new Exception();
+				} else {
+					String var14 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
 
+					for (int var4 = 0; var4 < var0.length(); ++var4) {
+						if (var14.indexOf(var0.charAt(var4)) == -1) {
+							throw new Exception();
+						}
+					}
+
+					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+					return true;
+				}
+			} catch (Throwable var8) {
+				return false;
+			}
+		} else if (var1 == 1) {
+			try {
+				Applet var7 = class50.applet;
+				Object[] var5 = new Object[]{(new URL(class50.applet.getCodeBase(), var0)).toString()};
+				Object var13 = JSObject.getWindow(var7).call(var2, var5);
+				return var13 != null;
+			} catch (Throwable var9) {
+				return false;
+			}
+		} else if (var1 == 2) {
+			try {
+				class50.applet.getAppletContext().showDocument(new URL(class50.applet.getCodeBase(), var0), "_blank");
+				return true;
+			} catch (Exception var10) {
+				return false;
+			}
+		} else if (var1 == 3) {
+			try {
+				Applet var3 = class50.applet;
+				JSObject.getWindow(var3).call("loggedout", (Object[])null);
+			} catch (Throwable var12) {
+			}
+
+			try {
+				class50.applet.getAppletContext().showDocument(new URL(class50.applet.getCodeBase(), var0), "_top");
+				return true;
+			} catch (Exception var11) {
+				return false;
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("at")
 	@ObfuscatedSignature(
-		signature = "(Lkg;II)Ljava/lang/String;",
-		garbageValue = "808138004"
+		signature = "(ILht;ZI)V",
+		garbageValue = "1641094625"
 	)
-	static String method92(Buffer var0, int var1) {
-		try {
-			int var2 = var0.readUShortSmart();
-			if (var2 > var1) {
-				var2 = var1;
-			}
-
-			byte[] var3 = new byte[var2];
-			var0.offset += class210.huffman.decompress(var0.array, var0.offset, var3, 0, var2);
-			String var4 = NetCache.decodeStringCp1252(var3, 0, var2);
-			return var4;
-		} catch (Exception var6) {
-			return "Cabbage";
-		}
-	}
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-357486416"
-	)
-	static void method91(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			var1.remove();
-		}
+	static void method80(int var0, Coord var1, boolean var2) {
+		WorldMapArea var3 = Canvas.getWorldMap().getMapArea(var0);
+		int var4 = Message.localPlayer.plane;
+		int var5 = MusicPatchPcmStream.baseX * 64 + (Message.localPlayer.x >> 7);
+		int var6 = ScriptEvent.baseY * 64 + (Message.localPlayer.y >> 7);
+		Coord var7 = new Coord(var4, var5, var6);
+		Canvas.getWorldMap().method6373(var3, var7, var1, var2);
 	}
 }

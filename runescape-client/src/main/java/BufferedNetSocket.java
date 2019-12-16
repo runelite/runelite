@@ -5,19 +5,25 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ki")
+@ObfuscatedName("kw")
 @Implements("BufferedNetSocket")
 public class BufferedNetSocket extends AbstractSocket {
-	@ObfuscatedName("u")
+	@ObfuscatedName("fr")
+	@ObfuscatedSignature(
+		signature = "Leo;"
+	)
+	@Export("urlRequester")
+	static UrlRequester urlRequester;
+	@ObfuscatedName("f")
 	@Export("socket")
 	Socket socket;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lkt;"
+		signature = "Lkx;"
 	)
 	@Export("source")
 	BufferedSource source;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		signature = "Lkb;"
 	)
@@ -34,10 +40,10 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.sink = new BufferedSink(this.socket.getOutputStream(), var3);
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-29"
+		signature = "(I)V",
+		garbageValue = "-647274291"
 	)
 	@Export("close")
 	public void close() {
@@ -51,50 +57,50 @@ public class BufferedNetSocket extends AbstractSocket {
 		this.source.close();
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "27"
+		signature = "(I)I",
+		garbageValue = "2115277231"
 	)
 	@Export("readUnsignedByte")
 	public int readUnsignedByte() throws IOException {
 		return this.source.readUnsignedByte();
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-53"
+		signature = "(I)I",
+		garbageValue = "-972484659"
 	)
 	@Export("available")
 	public int available() throws IOException {
 		return this.source.available();
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-1591428004"
+		garbageValue = "497635177"
 	)
 	@Export("isAvailable")
 	public boolean isAvailable(int var1) throws IOException {
 		return this.source.isAvailable(var1);
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "([BIIB)I",
-		garbageValue = "29"
+		signature = "([BIII)I",
+		garbageValue = "-1642271193"
 	)
 	@Export("read")
 	public int read(byte[] var1, int var2, int var3) throws IOException {
 		return this.source.read(var1, var2, var3);
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "([BIII)V",
-		garbageValue = "-543253817"
+		garbageValue = "-340382115"
 	)
 	@Export("write")
 	public void write(byte[] var1, int var2, int var3) throws IOException {

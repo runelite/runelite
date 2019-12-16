@@ -7,36 +7,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bf")
 @Implements("ClientPreferences")
 public class ClientPreferences {
-	@ObfuscatedName("u")
+	@ObfuscatedName("qu")
+	@ObfuscatedSignature(
+		signature = "Ldr;"
+	)
+	@Export("decimator")
+	static Decimator decimator;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1145191991
+		intValue = 1642477041
 	)
 	@Export("ClientPreferences_optionCount")
 	static int ClientPreferences_optionCount;
-	@ObfuscatedName("ak")
-	static String field1052;
-	@ObfuscatedName("b")
+	@ObfuscatedName("jz")
+	@ObfuscatedSignature(
+		signature = "Lha;"
+	)
+	@Export("dragInventoryWidget")
+	static Widget dragInventoryWidget;
+	@ObfuscatedName("y")
 	@Export("roofsHidden")
 	boolean roofsHidden;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@Export("titleMusicDisabled")
 	boolean titleMusicDisabled;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1051174515
+		intValue = -732780625
 	)
 	@Export("windowMode")
 	int windowMode;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@Export("rememberedUsername")
 	String rememberedUsername;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@Export("hideUsername")
 	boolean hideUsername;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@Export("parameters")
 	LinkedHashMap parameters;
 
@@ -49,11 +59,11 @@ public class ClientPreferences {
 		this.rememberedUsername = null;
 		this.hideUsername = false;
 		this.parameters = new LinkedHashMap();
-		this.method1856(true);
+		this.method1835(true);
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Lkg;)V"
+		signature = "(Lkq;)V"
 	)
 	ClientPreferences(Buffer var1) {
 		this.windowMode = 1;
@@ -93,26 +103,26 @@ public class ClientPreferences {
 					this.hideUsername = var1.readBoolean();
 				}
 			} else {
-				this.method1856(true);
+				this.method1835(true);
 			}
 		} else {
-			this.method1856(true);
+			this.method1835(true);
 		}
 
 	}
 
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "1503707935"
-	)
-	void method1856(boolean var1) {
-	}
-
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(I)Lkg;",
-		garbageValue = "-650033927"
+		signature = "(ZS)V",
+		garbageValue = "-15246"
+	)
+	void method1835(boolean var1) {
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)Lkq;",
+		garbageValue = "458366092"
 	)
 	@Export("toBuffer")
 	Buffer toBuffer() {
@@ -133,52 +143,5 @@ public class ClientPreferences {
 		var1.writeStringCp1252NullTerminated(this.rememberedUsername != null ? this.rememberedUsername : "");
 		var1.writeBoolean(this.hideUsername);
 		return var1;
-	}
-
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		signature = "(Lij;IIIBZI)V",
-		garbageValue = "-4346330"
-	)
-	@Export("requestNetFile")
-	static void requestNetFile(Archive var0, int var1, int var2, int var3, byte var4, boolean var5) {
-		long var6 = (long)((var1 << 16) + var2);
-		NetFileRequest var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityWrites.get(var6);
-		if (var8 == null) {
-			var8 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.get(var6);
-			if (var8 == null) {
-				var8 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var6);
-				if (var8 != null) {
-					if (var5) {
-						var8.removeDual();
-						NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
-						--NetCache.NetCache_pendingWritesCount;
-						++NetCache.NetCache_pendingPriorityWritesCount;
-					}
-
-				} else {
-					if (!var5) {
-						var8 = (NetFileRequest)NetCache.NetCache_pendingResponses.get(var6);
-						if (var8 != null) {
-							return;
-						}
-					}
-
-					var8 = new NetFileRequest();
-					var8.archive = var0;
-					var8.crc = var3;
-					var8.padding = var4;
-					if (var5) {
-						NetCache.NetCache_pendingPriorityWrites.put(var8, var6);
-						++NetCache.NetCache_pendingPriorityWritesCount;
-					} else {
-						NetCache.NetCache_pendingWritesQueue.addFirst(var8);
-						NetCache.NetCache_pendingWrites.put(var8, var6);
-						++NetCache.NetCache_pendingWritesCount;
-					}
-
-				}
-			}
-		}
 	}
 }

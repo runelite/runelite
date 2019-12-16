@@ -2,105 +2,162 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("b")
+@ObfuscatedName("y")
 final class class2 implements class0 {
-	@ObfuscatedName("p")
+	@ObfuscatedName("da")
+	@ObfuscatedSignature(
+		signature = "Lif;"
+	)
+	@Export("archive2")
+	static Archive archive2;
+	@ObfuscatedName("fk")
 	@ObfuscatedGetter(
-		intValue = -722721087
+		longValue = -4799784442313615623L
 	)
-	static int field5;
-	@ObfuscatedName("cb")
-	@ObfuscatedSignature(
-		signature = "Lbr;"
-	)
-	@Export("mouseRecorder")
-	static MouseRecorder mouseRecorder;
-	@ObfuscatedName("dq")
-	@ObfuscatedSignature(
-		signature = "Lij;"
-	)
-	@Export("archive9")
-	static Archive archive9;
-	@ObfuscatedName("gc")
-	@ObfuscatedSignature(
-		signature = "Lel;"
-	)
-	@Export("scene")
-	static Scene scene;
+	static long field4;
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkg;I)V",
-		garbageValue = "-1331780546"
+		signature = "(Ljava/lang/Object;Lkq;I)V",
+		garbageValue = "-685052934"
 	)
-	public void vmethod57(Object var1, Buffer var2) {
-		this.method26((Long)var1, var2);
+	public void vmethod53(Object var1, Buffer var2) {
+		this.method22((Long)var1, var2);
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(Lkq;I)Ljava/lang/Object;",
+		garbageValue = "390816352"
+	)
+	public Object vmethod60(Buffer var1) {
+		return var1.readLong();
+	}
+
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Long;Lkq;I)V",
+		garbageValue = "-1352577432"
+	)
+	void method22(Long var1, Buffer var2) {
+		var2.writeLong(var1);
 	}
 
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkg;I)Ljava/lang/Object;",
-		garbageValue = "1713449680"
+		signature = "(Lfh;Llr;I)Lfz;",
+		garbageValue = "890540527"
 	)
-	public Object vmethod65(Buffer var1) {
-		return var1.readLong();
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Long;Lkg;I)V",
-		garbageValue = "-1453735507"
-	)
-	void method26(Long var1, Buffer var2) {
-		var2.writeLong(var1);
-	}
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(I)[Lhb;",
-		garbageValue = "277199676"
-	)
-	@Export("PlayerType_values")
-	public static PlayerType[] PlayerType_values() {
-		return new PlayerType[]{PlayerType.PlayerType_playerModerator, PlayerType.PlayerType_jagexModerator, PlayerType.PlayerType_hardcoreIronman, PlayerType.PlayerType_ultimateIronman, PlayerType.PlayerType_ironman, PlayerType.PlayerType_normal};
-	}
-
-	@ObfuscatedName("gt")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-5"
-	)
-	static final void method31() {
-		Client.field756 = 0;
-		int var0 = class51.baseX * 64 + (class215.localPlayer.x >> 7);
-		int var1 = VarcInt.baseY * 64 + (class215.localPlayer.y >> 7);
-		if (var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-			Client.field756 = 1;
+	@Export("getPacketBufferNode")
+	public static PacketBufferNode getPacketBufferNode(ClientPacket var0, IsaacCipher var1) {
+		PacketBufferNode var2;
+		if (PacketBufferNode.PacketBufferNode_packetBufferNodeCount == 0) {
+			var2 = new PacketBufferNode();
+		} else {
+			var2 = PacketBufferNode.PacketBufferNode_packetBufferNodes[--PacketBufferNode.PacketBufferNode_packetBufferNodeCount];
 		}
 
-		if (var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-			Client.field756 = 1;
+		var2.clientPacket = var0;
+		var2.clientPacketLength = var0.length;
+		if (var2.clientPacketLength == -1) {
+			var2.packetBuffer = new PacketBuffer(260);
+		} else if (var2.clientPacketLength == -2) {
+			var2.packetBuffer = new PacketBuffer(10000);
+		} else if (var2.clientPacketLength <= 18) {
+			var2.packetBuffer = new PacketBuffer(20);
+		} else if (var2.clientPacketLength <= 98) {
+			var2.packetBuffer = new PacketBuffer(100);
+		} else {
+			var2.packetBuffer = new PacketBuffer(260);
 		}
 
-		if (Client.field756 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-			Client.field756 = 0;
-		}
-
+		var2.packetBuffer.setIsaacCipher(var1);
+		var2.packetBuffer.writeByteIsaac(var2.clientPacket.id);
+		var2.index = 0;
+		return var2;
 	}
 
-	@ObfuscatedName("hq")
+	@ObfuscatedName("a")
+	@Export("Entity_unpackID")
+	public static int Entity_unpackID(long var0) {
+		return (int)(var0 >>> 17 & 4294967295L);
+	}
+
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-487610810"
+		signature = "(ILcu;ZB)I",
+		garbageValue = "43"
 	)
-	@Export("addCancelMenuEntry")
-	static void addCancelMenuEntry() {
-		RouteStrategy.method3641();
-		Client.menuActions[0] = "Cancel";
-		Client.menuTargets[0] = "";
-		Client.menuOpcodes[0] = 1006;
-		Client.menuShiftClick[0] = false;
-		Client.menuOptionsCount = 1;
+	static int method34(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? UserComparator7.field1946 : class197.field2398;
+		if (var0 == ScriptOpcodes.CC_GETX) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.x;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETY) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.y;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.width;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.height;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
+			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.parentId;
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+
+	@ObfuscatedName("hj")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "32937024"
+	)
+	static boolean method27() {
+		return (Client.drawPlayerNames & 2) != 0;
+	}
+
+	@ObfuscatedName("jh")
+	@ObfuscatedSignature(
+		signature = "(Lha;III)V",
+		garbageValue = "65280"
+	)
+	@Export("alignWidgetPosition")
+	static void alignWidgetPosition(Widget var0, int var1, int var2) {
+		if (var0.xAlignment == 0) {
+			var0.x = var0.rawX;
+		} else if (var0.xAlignment == 1) {
+			var0.x = var0.rawX + (var1 - var0.width) / 2;
+		} else if (var0.xAlignment == 2) {
+			var0.x = var1 - var0.width - var0.rawX;
+		} else if (var0.xAlignment == 3) {
+			var0.x = var0.rawX * var1 >> 14;
+		} else if (var0.xAlignment == 4) {
+			var0.x = (var0.rawX * var1 >> 14) + (var1 - var0.width) / 2;
+		} else {
+			var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
+		}
+
+		if (var0.yAlignment == 0) {
+			var0.y = var0.rawY;
+		} else if (var0.yAlignment == 1) {
+			var0.y = (var2 - var0.height) / 2 + var0.rawY;
+		} else if (var0.yAlignment == 2) {
+			var0.y = var2 - var0.height - var0.rawY;
+		} else if (var0.yAlignment == 3) {
+			var0.y = var2 * var0.rawY >> 14;
+		} else if (var0.yAlignment == 4) {
+			var0.y = (var2 - var0.height) / 2 + (var2 * var0.rawY >> 14);
+		} else {
+			var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
+		}
+
 	}
 }

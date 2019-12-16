@@ -1,17 +1,32 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hg")
 public class class218 {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "1649772022"
+		signature = "Lli;"
 	)
-	static final void method4179(String var0) {
-		PacketBufferNode var1 = ModelData0.getPacketBufferNode(ClientPacket.field2219, Client.packetWriter.isaacCipher);
-		var1.packetBuffer.writeByte(class173.stringCp1252NullTerminatedByteSize(var0));
-		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-		Client.packetWriter.addNode(var1);
+	@Export("options_buttons_0Sprite")
+	static IndexedSprite options_buttons_0Sprite;
+
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "(IB)[B",
+		garbageValue = "1"
+	)
+	@Export("ByteArrayPool_getArray")
+	public static synchronized byte[] ByteArrayPool_getArray(int var0) {
+		return ByteArrayPool.ByteArrayPool_getArrayBool(var0, false);
+	}
+
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "450645435"
+	)
+	static final int method4074() {
+		return ViewportMouse.ViewportMouse_x;
 	}
 }

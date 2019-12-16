@@ -1,10 +1,15 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("iv")
+@ObfuscatedName("iu")
 public class class247 {
-	@ObfuscatedName("u")
-	static boolean method4577(long var0) {
-		int var2 = (int)(var0 >>> 14 & 3L);
-		return var2 == 2;
-	}
+	@ObfuscatedName("w")
+	@Export("Interpreter_stringLocals")
+	static String[] Interpreter_stringLocals;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = 1864596047
+	)
+	static int field3261;
 }

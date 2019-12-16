@@ -9,21 +9,21 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("md")
+@ObfuscatedName("mk")
 @Implements("AccessFile")
 public final class AccessFile {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@Export("file")
 	RandomAccessFile file;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		longValue = -1982697081356352199L
+		longValue = -2099605315629278245L
 	)
 	@Export("maxSize")
 	final long maxSize;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		longValue = 797587694615508853L
+		longValue = 9136921121469373871L
 	)
 	@Export("offset")
 	long offset;
@@ -49,17 +49,17 @@ public final class AccessFile {
 		this.file.seek(0L);
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@Export("seek")
 	final void seek(long var1) throws IOException {
 		this.file.seek(var1);
 		this.offset = var1;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "2100291593"
+		signature = "([BIIB)V",
+		garbageValue = "87"
 	)
 	@Export("write")
 	public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -73,20 +73,20 @@ public final class AccessFile {
 		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-108"
+		signature = "(I)V",
+		garbageValue = "-1441194559"
 	)
 	@Export("close")
 	public final void close() throws IOException {
 		this.closeSync(false);
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-687857713"
+		signature = "(ZS)V",
+		garbageValue = "180"
 	)
 	@Export("closeSync")
 	public final void closeSync(boolean var1) throws IOException {
@@ -104,20 +104,20 @@ public final class AccessFile {
 
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		signature = "(I)J",
-		garbageValue = "-266154110"
+		garbageValue = "-1766264538"
 	)
 	@Export("length")
 	public final long length() throws IOException {
 		return this.file.length();
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		signature = "([BIII)I",
-		garbageValue = "-309112442"
+		garbageValue = "1663251439"
 	)
 	@Export("read")
 	public final int read(byte[] var1, int var2, int var3) throws IOException {

@@ -1,50 +1,62 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ju")
 @Implements("IgnoreList")
 public class IgnoreList extends UserList {
-	@ObfuscatedName("b")
+	@ObfuscatedName("ac")
 	@ObfuscatedSignature(
-		signature = "Llg;"
+		signature = "Llk;"
+	)
+	@Export("rasterProvider")
+	public static AbstractRasterProvider rasterProvider;
+	@ObfuscatedName("af")
+	@ObfuscatedGetter(
+		intValue = 171916373
+	)
+	static int field3579;
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "Lll;"
 	)
 	@Export("loginType")
 	final LoginType loginType;
 
 	@ObfuscatedSignature(
-		signature = "(Llg;)V"
+		signature = "(Lll;)V"
 	)
 	public IgnoreList(LoginType var1) {
 		super(400);
 		this.loginType = var1;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(I)Ljr;",
-		garbageValue = "-1592540968"
+		signature = "(B)Ljy;",
+		garbageValue = "68"
 	)
 	@Export("newInstance")
 	User newInstance() {
 		return new Ignored();
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IB)[Ljr;",
-		garbageValue = "-122"
+		signature = "(IB)[Ljy;",
+		garbageValue = "32"
 	)
 	@Export("newTypedArray")
 	User[] newTypedArray(int var1) {
 		return new Ignored[var1];
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Lkg;II)V",
-		garbageValue = "931957014"
+		signature = "(Lkq;II)V",
+		garbageValue = "1755489735"
 	)
 	@Export("read")
 	public void read(Buffer var1, int var2) {
@@ -59,7 +71,7 @@ public class IgnoreList extends UserList {
 					Ignored var7 = (Ignored)this.getByCurrentUsername(var5);
 					if (var4) {
 						Ignored var8 = (Ignored)this.getByCurrentUsername(var6);
-						if (var8 != null && var7 != var8) {
+						if (var8 != null && var8 != var7) {
 							if (var7 != null) {
 								this.remove(var8);
 							} else {

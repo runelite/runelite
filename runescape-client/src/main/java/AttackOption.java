@@ -4,55 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cf")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lco;"
+		signature = "Lcf;"
 	)
 	@Export("AttackOption_dependsOnCombatLevels")
 	AttackOption_dependsOnCombatLevels(0),
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lco;"
+		signature = "Lcf;"
 	)
 	@Export("AttackOption_alwaysRightClick")
 	AttackOption_alwaysRightClick(1),
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lco;"
+		signature = "Lcf;"
 	)
 	@Export("AttackOption_leftClickWhereAvailable")
 	AttackOption_leftClickWhereAvailable(2),
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lco;"
+		signature = "Lcf;"
 	)
 	@Export("AttackOption_hidden")
 	AttackOption_hidden(3);
 
-	@ObfuscatedName("ox")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Lcj;"
+		signature = "[Lmy;"
 	)
-	@Export("varcs")
-	static Varcs varcs;
-	@ObfuscatedName("fr")
-	@ObfuscatedSignature(
-		signature = "Lky;"
-	)
-	@Export("fontPlain11")
-	static Font fontPlain11;
-	@ObfuscatedName("gt")
-	@ObfuscatedSignature(
-		signature = "[Lln;"
-	)
-	@Export("mapMarkerSprites")
-	static Sprite[] mapMarkerSprites;
-	@ObfuscatedName("z")
+	@Export("JagexCache_idxFiles")
+	public static BufferedFile[] JagexCache_idxFiles;
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 2079114159
+		intValue = 478106921
+	)
+	@Export("canvasHeight")
+	public static int canvasHeight;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -201450723
 	)
 	@Export("id")
 	final int id;
@@ -61,43 +55,63 @@ public enum AttackOption implements Enumerated {
 		this.id = var3;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "7"
+		garbageValue = "-57"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-573010380"
+		signature = "(II)I",
+		garbageValue = "-1189493177"
 	)
-	static int method2098(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
+	@Export("Messages_getLastChatID")
+	static int Messages_getLastChatID(int var0) {
+		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
+		if (var1 == null) {
 			return -1;
 		} else {
-			return var1 >= 0 && var1 < var2.ids.length ? var2.ids[var1] : -1;
+			return var1.nextDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.nextDual).count;
 		}
 	}
 
-	@ObfuscatedName("fq")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-940191492"
+		signature = "(Lha;I[B[BI)V",
+		garbageValue = "304370962"
 	)
-	@Export("playSong")
-	static void playSong(int var0) {
-		if (var0 == -1 && !Client.field742) {
-			TileItemPile.method2811();
-		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field742) {
-			World.method1819(2, AbstractWorldMapData.archive6, var0, 0, Client.musicVolume, false);
+	@Export("Widget_setKey")
+	static final void Widget_setKey(Widget var0, int var1, byte[] var2, byte[] var3) {
+		if (var0.field2626 == null) {
+			if (var2 == null) {
+				return;
+			}
+
+			var0.field2626 = new byte[11][];
+			var0.field2629 = new byte[11][];
+			var0.field2631 = new int[11];
+			var0.field2670 = new int[11];
 		}
 
-		Client.currentTrackGroupId = var0;
+		var0.field2626[var1] = var2;
+		if (var2 != null) {
+			var0.field2625 = true;
+		} else {
+			var0.field2625 = false;
+
+			for (int var4 = 0; var4 < var0.field2626.length; ++var4) {
+				if (var0.field2626[var4] != null) {
+					var0.field2625 = true;
+					break;
+				}
+			}
+		}
+
+		var0.field2629[var1] = var3;
 	}
 }
