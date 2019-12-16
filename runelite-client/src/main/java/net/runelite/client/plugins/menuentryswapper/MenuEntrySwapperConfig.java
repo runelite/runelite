@@ -233,6 +233,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapJewelleryBox",
+		name = "Jewellery Box",
+		description = "Swap Teleport Menu with previous destination on Jewellery Box"
+	)
+	default boolean swapJewelleryBox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapPrivate",
 		name = "Private",
 		description = "Swap Shared with Private on the Chambers of Xeric storage units."
