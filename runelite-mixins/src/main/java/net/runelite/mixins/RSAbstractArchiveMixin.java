@@ -50,26 +50,30 @@ public abstract class RSAbstractArchiveMixin implements RSAbstractArchive
 		final Logger log = client.getLogger();
 		final String path = String.format("/runelite/%s/%s", archiveId, groupId);
 
-		String overlayHash, originalHash;
+		// rsData will be null if this script didn't exist at first
+		if (rsData != null)
+		{
+			String overlayHash, originalHash;
 
-		try (final InputStream hashIn = getClass().getResourceAsStream(path + ".hash"))
-		{
-			overlayHash = CharStreams.toString(new InputStreamReader(hashIn));
-			originalHash = Hashing.sha256().hashBytes(rsData).toString();
-		}
-		catch (IOException e)
-		{
-			log.warn("Missing overlay hash for {}/{}", archiveId, groupId);
-			return rsData;
-		}
+			try (final InputStream hashIn = getClass().getResourceAsStream(path + ".hash"))
+			{
+				overlayHash = CharStreams.toString(new InputStreamReader(hashIn));
+				originalHash = Hashing.sha256().hashBytes(rsData).toString();
+			}
+			catch (IOException e)
+			{
+				log.warn("Missing overlay hash for {}/{}", archiveId, groupId);
+				return rsData;
+			}
 
-		// Check if hash is correct first, so we don't have to load the overlay file if it doesn't match
-		if (!overlayHash.equalsIgnoreCase(originalHash))
-		{
-			log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
-				archiveId, groupId, overlayHash, originalHash);
-			overlayOutdated = true;
-			return rsData;
+			// Check if hash is correct first, so we don't have to load the overlay file if it doesn't match
+			if (!overlayHash.equalsIgnoreCase(originalHash))
+			{
+				log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
+					archiveId, groupId, overlayHash, originalHash);
+				overlayOutdated = true;
+				return rsData;
+			}
 		}
 
 		try (final InputStream ovlIn = getClass().getResourceAsStream(path))
