@@ -3,56 +3,83 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gv")
 public class class197 {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("musicPatchesArchive")
 	public static AbstractArchive musicPatchesArchive;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("musicSamplesArchive")
 	public static AbstractArchive musicSamplesArchive;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("soundEffectsArchive")
 	public static AbstractArchive soundEffectsArchive;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 569775055
-	)
-	public static int field2411;
 	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "Lhf;"
-	)
-	@Export("musicTrackArchive")
-	public static AbstractArchive musicTrackArchive;
-	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 2134983541
+		intValue = -680038187
+	)
+	public static int field2392;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = 1263500685
 	)
 	@Export("musicTrackVolume")
-	public static int musicTrackVolume;
+	static int musicTrackVolume;
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "Lgh;"
+	)
+	@Export("musicTrack")
+	public static MusicTrack musicTrack;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lha;"
+	)
+	static Widget field2398;
+	@ObfuscatedName("an")
+	@ObfuscatedSignature(
+		signature = "Llh;"
+	)
+	static Bounds field2397;
+	@ObfuscatedName("en")
+	@ObfuscatedGetter(
+		intValue = -54870407
+	)
+	@Export("port1")
+	static int port1;
 
 	static {
-		field2411 = 0;
+		field2392 = 0;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(III)Lba;",
-		garbageValue = "1833957440"
+		signature = "(II)Lip;",
+		garbageValue = "760670759"
 	)
-	@Export("Messages_getByChannelAndID")
-	static Message Messages_getByChannelAndID(int var0, int var1) {
-		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
-		return var2.getMessage(var1);
+	@Export("getInvDefinition")
+	public static InvDefinition getInvDefinition(int var0) {
+		InvDefinition var1 = (InvDefinition)InvDefinition.InvDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = InvDefinition.InvDefinition_archive.takeFile(5, var0);
+			var1 = new InvDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
+
+			InvDefinition.InvDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
 	}
 }

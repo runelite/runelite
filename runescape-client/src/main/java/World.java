@@ -4,60 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bp")
+@ObfuscatedName("be")
 @Implements("World")
 public class World {
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -2124078527
+		intValue = 1287165751
 	)
 	@Export("World_count")
 	static int World_count;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -92333775
+		intValue = 583854419
 	)
 	@Export("World_listCount")
 	static int World_listCount;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@Export("World_sortOption2")
 	static int[] World_sortOption2;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@Export("World_sortOption1")
 	static int[] World_sortOption1;
-	@ObfuscatedName("k")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 176871977
+		intValue = -1519088655
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("x")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 767874413
+		intValue = 1545527697
 	)
 	@Export("properties")
 	int properties;
-	@ObfuscatedName("o")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1258994719
+		intValue = 1058065385
 	)
 	@Export("population")
 	int population;
-	@ObfuscatedName("e")
+	@ObfuscatedName("k")
 	@Export("host")
 	String host;
-	@ObfuscatedName("n")
+	@ObfuscatedName("s")
 	@Export("activity")
 	String activity;
-	@ObfuscatedName("r")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -1182748769
+		intValue = -511848303
 	)
 	@Export("location")
 	int location;
-	@ObfuscatedName("c")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1616243125
+		intValue = -1131143169
 	)
 	@Export("index")
 	int index;
@@ -72,29 +72,29 @@ public class World {
 	World() {
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-946882921"
+		signature = "(S)Z",
+		garbageValue = "-26711"
 	)
 	@Export("isMembersOnly")
 	boolean isMembersOnly() {
 		return (1 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-32"
+		signature = "(I)Z",
+		garbageValue = "-1453157769"
 	)
-	boolean method1802() {
+	boolean method1782() {
 		return (2 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-1605869890"
+		garbageValue = "-2060131341"
 	)
 	@Export("isPvp")
 	boolean isPvp() {
@@ -104,203 +104,60 @@ public class World {
 	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1798300394"
+		garbageValue = "1753772408"
 	)
-	boolean method1785() {
+	boolean method1780() {
 		return (8 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "0"
+		signature = "(I)Z",
+		garbageValue = "1313707308"
 	)
 	@Export("isDeadman")
 	boolean isDeadman() {
 		return (536870912 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-758716073"
+		garbageValue = "-1940654935"
 	)
 	@Export("isBeta")
 	boolean isBeta() {
 		return (33554432 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "5"
+		signature = "(I)Z",
+		garbageValue = "-44264871"
 	)
-	boolean method1788() {
+	boolean method1775() {
 		return (1073741824 & this.properties) != 0;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(ILhf;IIIZI)V",
-		garbageValue = "592972731"
+		signature = "(IB)Lik;",
+		garbageValue = "20"
 	)
-	public static void method1819(int var0, AbstractArchive var1, int var2, int var3, int var4, boolean var5) {
-		class197.field2411 = 1;
-		class197.musicTrackArchive = var1;
-		UrlRequester.musicTrackGroupId = var2;
-		UserComparator7.musicTrackFileId = var3;
-		class197.musicTrackVolume = var4;
-		ArchiveLoader.musicTrackBoolean = var5;
-		class335.field4014 = var0;
-	}
-
-	@ObfuscatedName("hd")
-	@ObfuscatedSignature(
-		signature = "(IIIIII)V",
-		garbageValue = "1377503152"
-	)
-	@Export("drawObject")
-	static final void drawObject(int var0, int var1, int var2, int var3, int var4) {
-		long var5 = class2.scene.getBoundaryObjectTag(var0, var1, var2);
-		int var7;
-		int var8;
-		int var9;
-		int var10;
-		int var12;
-		int var13;
-		if (0L != var5) {
-			var7 = class2.scene.getObjectFlags(var0, var1, var2, var5);
-			var8 = var7 >> 6 & 3;
-			var9 = var7 & 31;
-			var10 = var3;
-			if (WallDecoration.method3340(var5)) {
-				var10 = var4;
+	@Export("getEnum")
+	public static EnumDefinition getEnum(int var0) {
+		EnumDefinition var1 = (EnumDefinition)EnumDefinition.EnumDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = class286.EnumDefinition_archive.takeFile(8, var0);
+			var1 = new EnumDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			int[] var11 = Interpreter.sceneMinimapSprite.pixels;
-			var12 = var1 * 4 + (103 - var2) * 2048 + 24624;
-			var13 = ItemContainer.Entity_unpackID(var5);
-			ObjectDefinition var14 = Occluder.getObjectDefinition(var13);
-			if (var14.mapSceneId != -1) {
-				IndexedSprite var15 = GrandExchangeOfferTotalQuantityComparator.mapSceneSprites[var14.mapSceneId];
-				if (var15 != null) {
-					int var16 = (var14.sizeX * 4 - var15.subWidth) / 2;
-					int var17 = (var14.sizeY * 4 - var15.subHeight) / 2;
-					var15.drawAt(var1 * 4 + var16 + 48, (104 - var2 - var14.sizeY) * 4 + var17 + 48);
-				}
-			} else {
-				if (var9 == 0 || var9 == 2) {
-					if (var8 == 0) {
-						var11[var12] = var10;
-						var11[var12 + 512] = var10;
-						var11[var12 + 1024] = var10;
-						var11[var12 + 1536] = var10;
-					} else if (var8 == 1) {
-						var11[var12] = var10;
-						var11[var12 + 1] = var10;
-						var11[var12 + 2] = var10;
-						var11[var12 + 3] = var10;
-					} else if (var8 == 2) {
-						var11[var12 + 3] = var10;
-						var11[var12 + 512 + 3] = var10;
-						var11[var12 + 1024 + 3] = var10;
-						var11[var12 + 1536 + 3] = var10;
-					} else if (var8 == 3) {
-						var11[var12 + 1536] = var10;
-						var11[var12 + 1536 + 1] = var10;
-						var11[var12 + 1536 + 2] = var10;
-						var11[var12 + 1536 + 3] = var10;
-					}
-				}
-
-				if (var9 == 3) {
-					if (var8 == 0) {
-						var11[var12] = var10;
-					} else if (var8 == 1) {
-						var11[var12 + 3] = var10;
-					} else if (var8 == 2) {
-						var11[var12 + 1536 + 3] = var10;
-					} else if (var8 == 3) {
-						var11[var12 + 1536] = var10;
-					}
-				}
-
-				if (var9 == 2) {
-					if (var8 == 3) {
-						var11[var12] = var10;
-						var11[var12 + 512] = var10;
-						var11[var12 + 1024] = var10;
-						var11[var12 + 1536] = var10;
-					} else if (var8 == 0) {
-						var11[var12] = var10;
-						var11[var12 + 1] = var10;
-						var11[var12 + 2] = var10;
-						var11[var12 + 3] = var10;
-					} else if (var8 == 1) {
-						var11[var12 + 3] = var10;
-						var11[var12 + 512 + 3] = var10;
-						var11[var12 + 1024 + 3] = var10;
-						var11[var12 + 1536 + 3] = var10;
-					} else if (var8 == 2) {
-						var11[var12 + 1536] = var10;
-						var11[var12 + 1536 + 1] = var10;
-						var11[var12 + 1536 + 2] = var10;
-						var11[var12 + 1536 + 3] = var10;
-					}
-				}
-			}
+			EnumDefinition.EnumDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-
-		var5 = class2.scene.getGameObjectTag(var0, var1, var2);
-		if (0L != var5) {
-			var7 = class2.scene.getObjectFlags(var0, var1, var2, var5);
-			var8 = var7 >> 6 & 3;
-			var9 = var7 & 31;
-			var10 = ItemContainer.Entity_unpackID(var5);
-			ObjectDefinition var24 = Occluder.getObjectDefinition(var10);
-			int var19;
-			if (var24.mapSceneId != -1) {
-				IndexedSprite var18 = GrandExchangeOfferTotalQuantityComparator.mapSceneSprites[var24.mapSceneId];
-				if (var18 != null) {
-					var13 = (var24.sizeX * 4 - var18.subWidth) / 2;
-					var19 = (var24.sizeY * 4 - var18.subHeight) / 2;
-					var18.drawAt(var1 * 4 + var13 + 48, var19 + (104 - var2 - var24.sizeY) * 4 + 48);
-				}
-			} else if (var9 == 9) {
-				var12 = 15658734;
-				if (WallDecoration.method3340(var5)) {
-					var12 = 15597568;
-				}
-
-				int[] var23 = Interpreter.sceneMinimapSprite.pixels;
-				var19 = var1 * 4 + (103 - var2) * 2048 + 24624;
-				if (var8 != 0 && var8 != 2) {
-					var23[var19] = var12;
-					var23[var19 + 1 + 512] = var12;
-					var23[var19 + 1024 + 2] = var12;
-					var23[var19 + 1536 + 3] = var12;
-				} else {
-					var23[var19 + 1536] = var12;
-					var23[var19 + 1 + 1024] = var12;
-					var23[var19 + 512 + 2] = var12;
-					var23[var19 + 3] = var12;
-				}
-			}
-		}
-
-		var5 = class2.scene.getFloorDecorationTag(var0, var1, var2);
-		if (0L != var5) {
-			var7 = ItemContainer.Entity_unpackID(var5);
-			ObjectDefinition var20 = Occluder.getObjectDefinition(var7);
-			if (var20.mapSceneId != -1) {
-				IndexedSprite var21 = GrandExchangeOfferTotalQuantityComparator.mapSceneSprites[var20.mapSceneId];
-				if (var21 != null) {
-					var10 = (var20.sizeX * 4 - var21.subWidth) / 2;
-					int var22 = (var20.sizeY * 4 - var21.subHeight) / 2;
-					var21.drawAt(var10 + var1 * 4 + 48, (104 - var2 - var20.sizeY) * 4 + var22 + 48);
-				}
-			}
-		}
-
 	}
 }

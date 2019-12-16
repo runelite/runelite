@@ -2,88 +2,76 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("be")
+@ObfuscatedName("bh")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-	@ObfuscatedName("qu")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 756269056
-	)
-	static int field925;
-	@ObfuscatedName("r")
-	@ObfuscatedGetter(
-		intValue = 2040420297
-	)
-	@Export("cacheGamebuild")
-	public static int cacheGamebuild;
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = 842281271
+		intValue = 844166729
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1195330125
+		intValue = 377421093
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -521000553
+		intValue = -1257246671
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -156944661
+		intValue = 1319343831
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 2076612057
+		intValue = 2111575223
 	)
 	@Export("objectId")
 	int objectId;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1798753117
+		intValue = -135346951
 	)
-	int field929;
-	@ObfuscatedName("h")
+	int field911;
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1153270233
+		intValue = -2066167261
 	)
-	int field924;
-	@ObfuscatedName("y")
+	int field912;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 37593595
+		intValue = -530727913
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -87951589
+		intValue = 1202721073
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 894134175
+		intValue = -1258720415
 	)
-	int field927;
-	@ObfuscatedName("k")
+	int field918;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1990017955
+		intValue = 1975686607
 	)
 	@Export("delay")
 	int delay;
-	@ObfuscatedName("x")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 458330281
+		intValue = 614220967
 	)
 	@Export("hitpoints")
 	int hitpoints;
@@ -91,60 +79,5 @@ public final class PendingSpawn extends Node {
 	PendingSpawn() {
 		this.delay = 0;
 		this.hitpoints = -1;
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(ZZB)Llm;",
-		garbageValue = "0"
-	)
-	static IndexedSprite method1753(boolean var0, boolean var1) {
-		return var0 ? (var1 ? StructDefinition.field3315 : Varps.options_buttons_2Sprite) : (var1 ? Login.field1179 : InterfaceParent.options_buttons_0Sprite);
-	}
-
-	@ObfuscatedName("iw")
-	@ObfuscatedSignature(
-		signature = "(Lhl;III)V",
-		garbageValue = "648761441"
-	)
-	@Export("alignWidgetPosition")
-	static void alignWidgetPosition(Widget var0, int var1, int var2) {
-		if (var0.xAlignment == 0) {
-			var0.x = var0.rawX;
-		} else if (var0.xAlignment == 1) {
-			var0.x = var0.rawX + (var1 - var0.width) / 2;
-		} else if (var0.xAlignment == 2) {
-			var0.x = var1 - var0.width - var0.rawX;
-		} else if (var0.xAlignment == 3) {
-			var0.x = var0.rawX * var1 >> 14;
-		} else if (var0.xAlignment == 4) {
-			var0.x = (var1 - var0.width) / 2 + (var0.rawX * var1 >> 14);
-		} else {
-			var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
-		}
-
-		if (var0.yAlignment == 0) {
-			var0.y = var0.rawY;
-		} else if (var0.yAlignment == 1) {
-			var0.y = (var2 - var0.height) / 2 + var0.rawY;
-		} else if (var0.yAlignment == 2) {
-			var0.y = var2 - var0.height - var0.rawY;
-		} else if (var0.yAlignment == 3) {
-			var0.y = var2 * var0.rawY >> 14;
-		} else if (var0.yAlignment == 4) {
-			var0.y = (var2 * var0.rawY >> 14) + (var2 - var0.height) / 2;
-		} else {
-			var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
-		}
-
-	}
-
-	@ObfuscatedName("jx")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-547734374"
-	)
-	static boolean method1751() {
-		return Client.tapToDrop || KeyHandler.KeyHandler_pressedKeys[81];
 	}
 }

@@ -4,70 +4,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bk")
+@ObfuscatedName("bp")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Entity {
-	@ObfuscatedName("by")
+	@ObfuscatedName("gp")
 	@ObfuscatedSignature(
-		signature = "[Llm;"
+		signature = "[Lls;"
 	)
-	@Export("worldSelectStars")
-	static IndexedSprite[] worldSelectStars;
-	@ObfuscatedName("u")
+	@Export("headIconPrayerSprites")
+	static Sprite[] headIconPrayerSprites;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 816767025
+		intValue = -1192844989
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1764619827
+		intValue = -1714996375
 	)
 	@Export("cycleStart")
 	int cycleStart;
-	@ObfuscatedName("b")
-	@ObfuscatedGetter(
-		intValue = -356819999
-	)
-	@Export("plane")
-	int plane;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -200533199
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 528585543
-	)
-	@Export("height")
-	int height;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 1230154279
-	)
-	@Export("y")
-	int y;
-	@ObfuscatedName("h")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Liy;"
+		signature = "Liv;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("y")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1295103123
+		intValue = 1267418181
+	)
+	@Export("plane")
+	int plane;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -474548897
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = 60095829
+	)
+	@Export("y")
+	int y;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 464992447
+	)
+	@Export("height")
+	int height;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -945304711
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = 1745958933
+		intValue = 53235765
 	)
 	@Export("frameCycle")
 	int frameCycle;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@Export("isFinished")
 	boolean isFinished;
 
@@ -81,20 +81,20 @@ public final class GraphicsObject extends Entity {
 		this.y = var4;
 		this.height = var5;
 		this.cycleStart = var7 + var6;
-		int var8 = WorldMapRegion.SpotAnimationDefinition_get(this.id).sequence;
+		int var8 = ClientPacket.SpotAnimationDefinition_get(this.id).sequence;
 		if (var8 != -1) {
 			this.isFinished = false;
-			this.sequenceDefinition = GrandExchangeOfferAgeComparator.SequenceDefinition_get(var8);
+			this.sequenceDefinition = WorldMapSection0.SequenceDefinition_get(var8);
 		} else {
 			this.isFinished = true;
 		}
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "(IB)V",
-		garbageValue = "-93"
+		garbageValue = "0"
 	)
 	@Export("advance")
 	final void advance(int var1) {
@@ -113,14 +113,14 @@ public final class GraphicsObject extends Entity {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(I)Ldf;",
-		garbageValue = "-174129419"
+		signature = "(I)Ldw;",
+		garbageValue = "822221372"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		SpotAnimationDefinition var1 = WorldMapRegion.SpotAnimationDefinition_get(this.id);
+		SpotAnimationDefinition var1 = ClientPacket.SpotAnimationDefinition_get(this.id);
 		Model var2;
 		if (!this.isFinished) {
 			var2 = var1.getModel(this.frame);
@@ -131,207 +131,77 @@ public final class GraphicsObject extends Entity {
 		return var2 == null ? null : var2;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkj;I)V",
-		garbageValue = "-219604871"
+		signature = "(Lkl;I)V",
+		garbageValue = "-2045791963"
 	)
-	static final void method2041(PacketBuffer var0) {
-		int var1 = 0;
+	@Export("updatePlayer")
+	static final void updatePlayer(PacketBuffer var0) {
 		var0.importIndex();
+		int var1 = Client.localPlayerIndex;
+		Player var2 = Message.localPlayer = Client.players[var1] = new Player();
+		var2.index = var1;
+		int var3 = var0.readBits(30);
+		byte var4 = (byte)(var3 >> 28);
+		int var5 = var3 >> 14 & 16383;
+		int var6 = var3 & 16383;
+		var2.pathX[0] = var5 - MusicPatchPcmStream.baseX * 64;
+		var2.x = (var2.pathX[0] << 7) + (var2.transformedSize() << 6);
+		var2.pathY[0] = var6 - ScriptEvent.baseY * 64;
+		var2.y = (var2.pathY[0] << 7) + (var2.transformedSize() << 6);
+		UrlRequest.Client_plane = var2.plane = var4;
+		if (Players.field1228[var1] != null) {
+			var2.read(Players.field1228[var1]);
+		}
 
-		byte[] var10000;
-		int var2;
-		int var3;
-		int var4;
-		for (var2 = 0; var2 < Players.Players_count; ++var2) {
-			var3 = Players.Players_indices[var2];
-			if ((Players.field1246[var3] & 1) == 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1246;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = Login.method2124(var0);
-						var10000 = Players.field1246;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						GrandExchangeOfferNameComparator.readPlayerUpdate(var0, var3);
-					}
-				}
+		Players.Players_count = 0;
+		Players.Players_indices[++Players.Players_count - 1] = var1;
+		Players.field1230[var1] = 0;
+		Players.Players_emptyIdxCount = 0;
+
+		for (int var7 = 1; var7 < 2048; ++var7) {
+			if (var1 != var7) {
+				int var8 = var0.readBits(18);
+				int var9 = var8 >> 16;
+				int var10 = var8 >> 8 & 597;
+				int var11 = var8 & 597;
+				Players.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
+				Players.Players_orientations[var7] = 0;
+				Players.Players_targetIndices[var7] = -1;
+				Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var7;
+				Players.field1230[var7] = 0;
 			}
 		}
 
 		var0.exportIndex();
-		if (var1 != 0) {
-			throw new RuntimeException();
-		} else {
-			var0.importIndex();
-
-			for (var2 = 0; var2 < Players.Players_count; ++var2) {
-				var3 = Players.Players_indices[var2];
-				if ((Players.field1246[var3] & 1) != 0) {
-					if (var1 > 0) {
-						--var1;
-						var10000 = Players.field1246;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						var4 = var0.readBits(1);
-						if (var4 == 0) {
-							var1 = Login.method2124(var0);
-							var10000 = Players.field1246;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							GrandExchangeOfferNameComparator.readPlayerUpdate(var0, var3);
-						}
-					}
-				}
-			}
-
-			var0.exportIndex();
-			if (var1 != 0) {
-				throw new RuntimeException();
-			} else {
-				var0.importIndex();
-
-				for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-					var3 = Players.Players_emptyIndices[var2];
-					if ((Players.field1246[var3] & 1) != 0) {
-						if (var1 > 0) {
-							--var1;
-							var10000 = Players.field1246;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							var4 = var0.readBits(1);
-							if (var4 == 0) {
-								var1 = Login.method2124(var0);
-								var10000 = Players.field1246;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else if (Client.updateExternalPlayer(var0, var3)) {
-								var10000 = Players.field1246;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							}
-						}
-					}
-				}
-
-				var0.exportIndex();
-				if (var1 != 0) {
-					throw new RuntimeException();
-				} else {
-					var0.importIndex();
-
-					for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-						var3 = Players.Players_emptyIndices[var2];
-						if ((Players.field1246[var3] & 1) == 0) {
-							if (var1 > 0) {
-								--var1;
-								var10000 = Players.field1246;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else {
-								var4 = var0.readBits(1);
-								if (var4 == 0) {
-									var1 = Login.method2124(var0);
-									var10000 = Players.field1246;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								} else if (Client.updateExternalPlayer(var0, var3)) {
-									var10000 = Players.field1246;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								}
-							}
-						}
-					}
-
-					var0.exportIndex();
-					if (var1 != 0) {
-						throw new RuntimeException();
-					} else {
-						Players.Players_count = 0;
-						Players.Players_emptyIdxCount = 0;
-
-						for (var2 = 1; var2 < 2048; ++var2) {
-							var10000 = Players.field1246;
-							var10000[var2] = (byte)(var10000[var2] >> 1);
-							Player var5 = Client.players[var2];
-							if (var5 != null) {
-								Players.Players_indices[++Players.Players_count - 1] = var2;
-							} else {
-								Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var2;
-							}
-						}
-
-					}
-				}
-			}
-		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Z",
-		garbageValue = "1506076524"
+		signature = "(Lkq;I)Ljava/lang/String;",
+		garbageValue = "2062021922"
 	)
-	static boolean method2040(String var0, int var1) {
-		return class237.method4422(var0, var1, "openjs");
+	public static String method2028(Buffer var0) {
+		return class195.method3664(var0, 32767);
 	}
 
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(Lhf;IIB)Z",
-		garbageValue = "19"
-	)
-	public static boolean method2030(AbstractArchive var0, int var1, int var2) {
-		byte[] var3 = var0.takeFile(var1, var2);
-		if (var3 == null) {
-			return false;
-		} else {
-			Buffer.SpriteBuffer_decode(var3);
-			return true;
-		}
-	}
-
-	@ObfuscatedName("n")
+	@ObfuscatedName("lo")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1587719078"
+		garbageValue = "-1979767282"
 	)
-	public static void method2039() {
-		ObjectDefinition.ObjectDefinition_cached.clear();
-		ObjectDefinition.ObjectDefinition_cachedModelData.clear();
-		ObjectDefinition.ObjectDefinition_cachedEntities.clear();
-		ObjectDefinition.ObjectDefinition_cachedModels.clear();
-	}
+	static void method2030() {
+		if (class215.field2534 != null) {
+			Client.field749 = Client.cycle;
+			class215.field2534.method4304();
 
-	@ObfuscatedName("in")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lhl;S)Ljava/lang/String;",
-		garbageValue = "128"
-	)
-	static String method2036(String var0, Widget var1) {
-		if (var0.indexOf("%") != -1) {
-			for (int var2 = 1; var2 <= 5; ++var2) {
-				while (true) {
-					int var3 = var0.indexOf("%" + var2);
-					if (var3 == -1) {
-						break;
-					}
-
-					String var4 = var0.substring(0, var3);
-					int var6 = Language.method3719(var1, var2 - 1);
-					String var5;
-					if (var6 < 999999999) {
-						var5 = Integer.toString(var6);
-					} else {
-						var5 = "*";
-					}
-
-					var0 = var4 + var5 + var0.substring(var3 + 2);
+			for (int var0 = 0; var0 < Client.players.length; ++var0) {
+				if (Client.players[var0] != null) {
+					class215.field2534.method4303(MusicPatchPcmStream.baseX * 64 + (Client.players[var0].x >> 7), ScriptEvent.baseY * 64 + (Client.players[var0].y >> 7));
 				}
 			}
 		}
 
-		return var0;
 	}
 }

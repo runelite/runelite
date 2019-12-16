@@ -4,35 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("ip")
 @Implements("InvDefinition")
 public class InvDefinition extends DualNode {
-	@ObfuscatedName("sy")
-	@ObfuscatedSignature(
-		signature = "Lif;"
-	)
-	public static class237 field3210;
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "Lhf;"
-	)
-	@Export("InvDefinition_archive")
-	public static AbstractArchive InvDefinition_archive;
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lef;"
+		signature = "Lhz;"
+	)
+	@Export("InvDefinition_archive")
+	static AbstractArchive InvDefinition_archive;
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "Leb;"
 	)
 	@Export("InvDefinition_cached")
 	static EvictingDualNodeHashTable InvDefinition_cached;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Lhf;"
-	)
-	@Export("Widget_archive")
-	public static AbstractArchive Widget_archive;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 1331007469
+		intValue = -2110300501
 	)
 	@Export("size")
 	public int size;
@@ -45,10 +34,10 @@ public class InvDefinition extends DualNode {
 		this.size = 0;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Lkg;B)V",
-		garbageValue = "-67"
+		signature = "(Lkq;I)V",
+		garbageValue = "-1721962305"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -62,10 +51,10 @@ public class InvDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Lkg;II)V",
-		garbageValue = "63686644"
+		signature = "(Lkq;II)V",
+		garbageValue = "-1369640921"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -75,22 +64,29 @@ public class InvDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("ks")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-77"
+		signature = "(IIIILls;Lhy;B)V",
+		garbageValue = "-108"
 	)
-	@Export("isKeyDown")
-	public static final boolean isKeyDown() {
-		synchronized(KeyHandler.KeyHandler_instance) {
-			if (KeyHandler.field399 == KeyHandler.field384) {
-				return false;
-			} else {
-				class49.field418 = KeyHandler.field396[KeyHandler.field399];
-				class297.field3699 = KeyHandler.field395[KeyHandler.field399];
-				KeyHandler.field399 = KeyHandler.field399 + 1 & 127;
-				return true;
-			}
+	@Export("worldToMinimap")
+	static final void worldToMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
+		int var6 = var3 * var3 + var2 * var2;
+		if (var6 > 4225 && var6 < 90000) {
+			int var7 = Client.camAngleY & 2047;
+			int var8 = Rasterizer3D.Rasterizer3D_sine[var7];
+			int var9 = Rasterizer3D.Rasterizer3D_cosine[var7];
+			int var10 = var3 * var8 + var9 * var2 >> 16;
+			int var11 = var3 * var9 - var8 * var2 >> 16;
+			double var12 = Math.atan2((double)var10, (double)var11);
+			int var14 = var5.width / 2 - 25;
+			int var15 = (int)(Math.sin(var12) * (double)var14);
+			int var16 = (int)(Math.cos(var12) * (double)var14);
+			byte var17 = 20;
+			class40.redHintArrowSprite.method6167(var15 + (var0 + var5.width / 2 - var17 / 2), var5.height / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+		} else {
+			GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var0, var1, var2, var3, var4, var5);
 		}
+
 	}
 }

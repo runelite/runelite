@@ -4,90 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kc")
 @Implements("GraphicsDefaults")
 public class GraphicsDefaults {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 576730349
+		intValue = -1707006757
 	)
 	@Export("compass")
 	public int compass;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 262749653
+		intValue = 990004197
 	)
-	public int field3808;
-	@ObfuscatedName("b")
+	public int field3803;
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -1408165655
+		intValue = -1541922539
 	)
 	@Export("mapScenes")
 	public int mapScenes;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -951498167
+		intValue = -1405131859
 	)
 	@Export("headIconsPk")
 	public int headIconsPk;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = 62857473
-	)
-	public int field3799;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1864495415
+		intValue = 1085795545
 	)
-	public int field3804;
-	@ObfuscatedName("h")
+	public int field3798;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -1605363745
-	)
-	public int field3805;
-	@ObfuscatedName("y")
-	@ObfuscatedGetter(
-		intValue = -177407337
-	)
-	public int field3806;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = -410491181
+		intValue = -1754657277
 	)
 	public int field3807;
-	@ObfuscatedName("i")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -270590657
+		intValue = -939471917
 	)
-	public int field3800;
-	@ObfuscatedName("k")
+	public int field3804;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 838114045
+		intValue = -773091265
 	)
-	public int field3809;
+	public int field3805;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = -1993061967
+	)
+	public int field3806;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = -1849016603
+	)
+	public int field3799;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 735486601
+	)
+	public int field3808;
 
 	public GraphicsDefaults() {
 		this.compass = -1;
-		this.field3808 = -1;
+		this.field3803 = -1;
 		this.mapScenes = -1;
 		this.headIconsPk = -1;
-		this.field3799 = -1;
+		this.field3798 = -1;
+		this.field3807 = -1;
 		this.field3804 = -1;
 		this.field3805 = -1;
 		this.field3806 = -1;
-		this.field3807 = -1;
-		this.field3800 = -1;
-		this.field3809 = -1;
+		this.field3799 = -1;
+		this.field3808 = -1;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lhf;B)V",
-		garbageValue = "16"
+		signature = "(Lhz;B)V",
+		garbageValue = "-29"
 	)
 	@Export("decode")
 	public void decode(AbstractArchive var1) {
-		byte[] var2 = var1.takeFileFlat(DefaultsGroup.field3797.group);
+		byte[] var2 = var1.takeFileFlat(DefaultsGroup.field3796.group);
 		Buffer var3 = new Buffer(var2);
 
 		while (true) {
@@ -101,29 +101,44 @@ public class GraphicsDefaults {
 				var3.readMedium();
 				break;
 			case 2:
-				this.compass = var3.method5618();
-				this.field3808 = var3.method5618();
-				this.mapScenes = var3.method5618();
-				this.headIconsPk = var3.method5618();
-				this.field3799 = var3.method5618();
-				this.field3804 = var3.method5618();
-				this.field3805 = var3.method5618();
-				this.field3806 = var3.method5618();
-				this.field3807 = var3.method5618();
-				this.field3800 = var3.method5618();
-				this.field3809 = var3.method5618();
+				this.compass = var3.method5560();
+				this.field3803 = var3.method5560();
+				this.mapScenes = var3.method5560();
+				this.headIconsPk = var3.method5560();
+				this.field3798 = var3.method5560();
+				this.field3807 = var3.method5560();
+				this.field3804 = var3.method5560();
+				this.field3805 = var3.method5560();
+				this.field3806 = var3.method5560();
+				this.field3799 = var3.method5560();
+				this.field3808 = var3.method5560();
 			}
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Lhf;Ljava/lang/String;Ljava/lang/String;I)[Lln;",
-		garbageValue = "-1956835175"
+		signature = "([BB)V",
+		garbageValue = "-116"
 	)
-	public static Sprite[] method5997(AbstractArchive var0, String var1, String var2) {
-		int var3 = var0.getGroupId(var1);
-		int var4 = var0.getFileId(var3, var2);
-		return UserComparator5.SpriteBuffer_getSpriteArray(var0, var3, var4);
+	@Export("ByteArrayPool_release")
+	public static synchronized void ByteArrayPool_release(byte[] var0) {
+		if (var0.length == 100 && ByteArrayPool.ByteArrayPool_smallCount < 1000) {
+			ByteArrayPool.ByteArrayPool_small[++ByteArrayPool.ByteArrayPool_smallCount - 1] = var0;
+		} else if (var0.length == 5000 && ByteArrayPool.ByteArrayPool_mediumCount < 250) {
+			ByteArrayPool.ByteArrayPool_medium[++ByteArrayPool.ByteArrayPool_mediumCount - 1] = var0;
+		} else if (var0.length == 30000 && ByteArrayPool.ByteArrayPool_largeCount < 50) {
+			ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0;
+		} else {
+			if (ByteArrayPool.ByteArrayPool_arrays != null) {
+				for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) {
+					if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && Interpreter.ByteArrayPool_altSizeArrayCounts[var1] < ByteArrayPool.ByteArrayPool_arrays[var1].length) {
+						ByteArrayPool.ByteArrayPool_arrays[var1][Interpreter.ByteArrayPool_altSizeArrayCounts[var1]++] = var0;
+						return;
+					}
+				}
+			}
+
+		}
 	}
 }

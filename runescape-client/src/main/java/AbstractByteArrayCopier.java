@@ -2,43 +2,49 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("gp")
+@ObfuscatedName("gu")
 @Implements("AbstractByteArrayCopier")
 public abstract class AbstractByteArrayCopier {
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		signature = "Lln;"
-	)
-	@Export("leftTitleSprite")
-	static Sprite leftTitleSprite;
-
 	AbstractByteArrayCopier() {
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(S)[B",
-		garbageValue = "18982"
+		signature = "(I)[B",
+		garbageValue = "-112018699"
 	)
 	@Export("get")
-	abstract byte[] get();
+	public abstract byte[] get();
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "([BI)V",
-		garbageValue = "-1436271820"
+		signature = "([BB)V",
+		garbageValue = "33"
 	)
 	@Export("set")
 	public abstract void set(byte[] var1);
 
-	@ObfuscatedName("kg")
+	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
-		signature = "(Lhl;B)Z",
-		garbageValue = "-78"
+		signature = "(ILcu;ZB)I",
+		garbageValue = "-27"
 	)
-	@Export("isComponentHidden")
-	static boolean isComponentHidden(Widget var0) {
-		return var0.isHidden;
+	static int method3937(int var0, Script var1, boolean var2) {
+		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
+			class188.Interpreter_intStackSize -= 3;
+			class268.queueSoundEffect(Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 2]);
+			return 1;
+		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
+			WorldMapSprite.playSong(Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize]);
+			return 1;
+		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
+			class188.Interpreter_intStackSize -= 2;
+			ScriptFrame.playSoundJingle(Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class188.Interpreter_intStackSize + 1]);
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 }

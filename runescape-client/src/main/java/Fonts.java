@@ -4,27 +4,27 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kf")
+@ObfuscatedName("ki")
 @Implements("Fonts")
 public class Fonts {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("spritesArchive")
 	AbstractArchive spritesArchive;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("fontsArchive")
 	AbstractArchive fontsArchive;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@Export("map")
 	HashMap map;
 
 	@ObfuscatedSignature(
-		signature = "(Lhf;Lhf;)V"
+		signature = "(Lhz;Lhz;)V"
 	)
 	public Fonts(AbstractArchive var1, AbstractArchive var2) {
 		this.spritesArchive = var1;
@@ -32,10 +32,10 @@ public class Fonts {
 		this.map = new HashMap();
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "([Lka;B)Ljava/util/HashMap;",
-		garbageValue = "35"
+		signature = "([Lkk;I)Ljava/util/HashMap;",
+		garbageValue = "-819608021"
 	)
 	@Export("createMap")
 	public HashMap createMap(FontName[] var1) {
@@ -47,12 +47,7 @@ public class Fonts {
 			if (this.map.containsKey(var5)) {
 				var2.put(var5, this.map.get(var5));
 			} else {
-				AbstractArchive var7 = this.spritesArchive;
-				AbstractArchive var8 = this.fontsArchive;
-				String var9 = var5.name;
-				int var10 = var7.getGroupId(var9);
-				int var11 = var7.getFileId(var10, "");
-				Font var6 = class60.method1195(var7, var8, var10, var11);
+				Font var6 = ArchiveDisk.method5909(this.spritesArchive, this.fontsArchive, var5.name, "");
 				if (var6 != null) {
 					this.map.put(var5, var6);
 					var2.put(var5, var6);
@@ -61,43 +56,5 @@ public class Fonts {
 		}
 
 		return var2;
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "([Ljava/lang/String;[SIII)V",
-		garbageValue = "-1903452094"
-	)
-	@Export("sortItemsByName")
-	static void sortItemsByName(String[] var0, short[] var1, int var2, int var3) {
-		if (var2 < var3) {
-			int var4 = (var3 + var2) / 2;
-			int var5 = var2;
-			String var6 = var0[var4];
-			var0[var4] = var0[var3];
-			var0[var3] = var6;
-			short var7 = var1[var4];
-			var1[var4] = var1[var3];
-			var1[var3] = var7;
-
-			for (int var8 = var2; var8 < var3; ++var8) {
-				if (var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-					String var9 = var0[var8];
-					var0[var8] = var0[var5];
-					var0[var5] = var9;
-					short var10 = var1[var8];
-					var1[var8] = var1[var5];
-					var1[var5++] = var10;
-				}
-			}
-
-			var0[var3] = var0[var5];
-			var0[var5] = var6;
-			var1[var3] = var1[var5];
-			var1[var5] = var7;
-			sortItemsByName(var0, var1, var2, var5 - 1);
-			sortItemsByName(var0, var1, var5 + 1, var3);
-		}
-
 	}
 }

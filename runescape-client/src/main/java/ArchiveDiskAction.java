@@ -1,30 +1,31 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("hr")
 @Implements("ArchiveDiskAction")
 public class ArchiveDiskAction extends Node {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 168002015
+		intValue = -867682367
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@Export("data")
 	byte[] data;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Lke;"
+		signature = "Lkg;"
 	)
 	@Export("archiveDisk")
 	ArchiveDisk archiveDisk;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lij;"
+		signature = "Lif;"
 	)
 	@Export("archive")
 	Archive archive;
@@ -32,29 +33,14 @@ public class ArchiveDiskAction extends Node {
 	ArchiveDiskAction() {
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "([BILjava/lang/CharSequence;I)I",
-		garbageValue = "-1806066306"
+		signature = "(Ljava/awt/Component;I)V",
+		garbageValue = "2084975828"
 	)
-	public static int method4229(byte[] var0, int var1, CharSequence var2) {
-		int var3 = var2.length();
-		int var4 = var1;
-
-		for (int var5 = 0; var5 < var3; ++var5) {
-			char var6 = var2.charAt(var5);
-			if (var6 <= 127) {
-				var0[var4++] = (byte)var6;
-			} else if (var6 <= 2047) {
-				var0[var4++] = (byte)(192 | var6 >> 6);
-				var0[var4++] = (byte)(128 | var6 & '?');
-			} else {
-				var0[var4++] = (byte)(224 | var6 >> '\f');
-				var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-				var0[var4++] = (byte)(128 | var6 & '?');
-			}
-		}
-
-		return var4 - var1;
+	static void method4120(Component var0) {
+		var0.removeKeyListener(KeyHandler.KeyHandler_instance);
+		var0.removeFocusListener(KeyHandler.KeyHandler_instance);
+		KeyHandler.field373 = -1;
 	}
 }

@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.mapping.Export;
@@ -5,44 +7,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("ce")
 @Implements("Messages")
 public class Messages {
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@Export("Messages_channels")
 	static final Map Messages_channels;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Llb;"
+		signature = "Llc;"
 	)
 	@Export("Messages_hashTable")
 	static final IterableNodeHashTable Messages_hashTable;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "Ljz;"
+		signature = "Lji;"
 	)
 	@Export("Messages_queue")
 	static final IterableDualNodeQueue Messages_queue;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 2018287287
+		intValue = -984405515
 	)
 	@Export("Messages_count")
 	static int Messages_count;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = -1088425627
-	)
-	@Export("PcmPlayer_sampleRate")
-	public static int PcmPlayer_sampleRate;
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Lat;"
-	)
-	@Export("worldMapEvent")
-	static WorldMapEvent worldMapEvent;
 
 	static {
 		Messages_channels = new HashMap();
@@ -51,47 +40,118 @@ public class Messages {
 		Messages_count = 0;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lhg;I)V",
-		garbageValue = "-1903945924"
+		signature = "(II)Z",
+		garbageValue = "-2062774197"
 	)
-	public static void method2230(Huffman var0) {
-		class210.huffman = var0;
+	public static boolean method2240(int var0) {
+		return var0 >= WorldMapDecorationType.field2719.id && var0 <= WorldMapDecorationType.field2708.id || var0 == WorldMapDecorationType.field2707.id;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(ILci;ZI)I",
-		garbageValue = "-1564166931"
+		signature = "(Lhz;I)V",
+		garbageValue = "2079698916"
 	)
-	static int method2241(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? Interpreter.field1090 : class188.field2352;
-		if (var0 == ScriptOpcodes.CC_GETTARGETMASK) {
-			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Client.method1655(MenuAction.getWidgetClickMask(var3));
-			return 1;
-		} else if (var0 != ScriptOpcodes.CC_GETOP) {
-			if (var0 == ScriptOpcodes.CC_GETOPBASE) {
-				if (var3.dataText == null) {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-				} else {
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.dataText;
-				}
+	public static void method2227(AbstractArchive var0) {
+		StructDefinition.StructDefinition_archive = var0;
+	}
 
-				return 1;
-			} else {
-				return 2;
-			}
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(IB)Lib;",
+		garbageValue = "83"
+	)
+	@Export("FloorUnderlayDefinition_get")
+	public static FloorOverlayDefinition FloorUnderlayDefinition_get(int var0) {
+		FloorOverlayDefinition var1 = (FloorOverlayDefinition)FloorOverlayDefinition.FloorOverlayDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			int var4 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-			--var4;
-			if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-				Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.actions[var4];
-			} else {
-				Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
+			byte[] var2 = FloorOverlayDefinition.FloorOverlayDefinition_archive.takeFile(4, var0);
+			var1 = new FloorOverlayDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2), var0);
 			}
 
-			return 1;
+			var1.postDecode();
+			FloorOverlayDefinition.FloorOverlayDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lmk;",
+		garbageValue = "1038906134"
+	)
+	@Export("getPreferencesFile")
+	public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
+		File var3 = new File(JagexCache.cacheDir, "preferences" + var0 + ".dat");
+		if (var3.exists()) {
+			try {
+				AccessFile var10 = new AccessFile(var3, "rw", 10000L);
+				return var10;
+			} catch (IOException var9) {
+			}
+		}
+
+		String var4 = "";
+		if (VertexNormal.cacheGamebuild == 33) {
+			var4 = "_rc";
+		} else if (VertexNormal.cacheGamebuild == 34) {
+			var4 = "_wip";
+		}
+
+		File var5 = new File(ReflectionCheck.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+		AccessFile var6;
+		if (!var2 && var5.exists()) {
+			try {
+				var6 = new AccessFile(var5, "rw", 10000L);
+				return var6;
+			} catch (IOException var8) {
+			}
+		}
+
+		try {
+			var6 = new AccessFile(var3, "rw", 10000L);
+			return var6;
+		} catch (IOException var7) {
+			throw new RuntimeException();
+		}
+	}
+
+	@ObfuscatedName("it")
+	@ObfuscatedSignature(
+		signature = "(Lcq;III)V",
+		garbageValue = "-1826909304"
+	)
+	static final void method2231(MenuAction var0, int var1, int var2) {
+		AbstractWorldMapData.menuAction(var0.param0, var0.param1, var0.opcode, var0.identifier, var0.action, var0.action, var1, var2);
+	}
+
+	@ObfuscatedName("jo")
+	@ObfuscatedSignature(
+		signature = "([Lha;Lha;ZI)V",
+		garbageValue = "1663251439"
+	)
+	@Export("revalidateWidgetScroll")
+	static void revalidateWidgetScroll(Widget[] var0, Widget var1, boolean var2) {
+		int var3 = var1.scrollWidth != 0 ? var1.scrollWidth : var1.width;
+		int var4 = var1.scrollHeight != 0 ? var1.scrollHeight : var1.height;
+		FloorOverlayDefinition.resizeInterface(var0, var1.id, var3, var4, var2);
+		if (var1.children != null) {
+			FloorOverlayDefinition.resizeInterface(var1.children, var1.id, var3, var4, var2);
+		}
+
+		InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
+		if (var5 != null) {
+			LoginPacket.method3572(var5.group, var3, var4, var2);
+		}
+
+		if (var1.contentType == 1337) {
+		}
+
 	}
 }

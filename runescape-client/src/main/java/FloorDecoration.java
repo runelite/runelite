@@ -7,80 +7,49 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("du")
 @Implements("FloorDecoration")
 public final class FloorDecoration {
-	@ObfuscatedName("h")
+	@ObfuscatedName("ds")
 	@ObfuscatedSignature(
-		signature = "[[Lhl;"
+		signature = "Lif;"
 	)
-	@Export("Widget_interfaceComponents")
-	public static Widget[][] Widget_interfaceComponents;
-	@ObfuscatedName("hj")
+	@Export("archive4")
+	static Archive archive4;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -787534095
-	)
-	@Export("cameraZ")
-	static int cameraZ;
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = 1000348855
+		intValue = -813492053
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -2093523795
+		intValue = -508707057
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = -512662577
+		intValue = 1453565009
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "Lee;"
+		signature = "Lep;"
 	)
 	@Export("entity")
 	public Entity entity;
-	@ObfuscatedName("z")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		longValue = -2591467341780492125L
+		longValue = 5434856025712210831L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 424120209
+		intValue = -1187671267
 	)
 	@Export("flags")
 	int flags;
 
 	FloorDecoration() {
-	}
-
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "(CI)Z",
-		garbageValue = "-345109095"
-	)
-	@Export("isCharPrintable")
-	public static boolean isCharPrintable(char var0) {
-		if (var0 >= ' ' && var0 <= '~') {
-			return true;
-		} else if (var0 >= 160 && var0 <= 255) {
-			return true;
-		} else {
-			return var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376;
-		}
-	}
-
-	@ObfuscatedName("fe")
-	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "3"
-	)
-	static int method2888(int var0) {
-		return var0 * 3 + 600;
 	}
 }

@@ -1,21 +1,18 @@
+import java.awt.FontMetrics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ad")
+@ObfuscatedName("av")
 @Implements("WorldMapSprite")
 public final class WorldMapSprite {
-	@ObfuscatedName("h")
-	@Export("ByteArrayPool_alternativeSizes")
-	static int[] ByteArrayPool_alternativeSizes;
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "Lgt;"
-	)
-	@Export("musicTrack")
-	public static MusicTrack musicTrack;
-	@ObfuscatedName("f")
+	@ObfuscatedName("j")
+	static String[] field219;
+	@ObfuscatedName("ak")
+	@Export("loginScreenFontMetrics")
+	static FontMetrics loginScreenFontMetrics;
+	@ObfuscatedName("i")
 	@Export("tileColors")
 	final int[] tileColors;
 
@@ -27,23 +24,44 @@ public final class WorldMapSprite {
 		this.tileColors = var1;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(III)I",
-		garbageValue = "1354976876"
+		garbageValue = "-1062686446"
 	)
 	@Export("getTileColor")
 	final int getTileColor(int var1, int var2) {
-		return this.tileColors[var2 * 64 + var1];
+		return this.tileColors[var1 + var2 * 64];
 	}
 
-	@ObfuscatedName("ib")
+	@ObfuscatedName("fm")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
-		garbageValue = "-1935936401"
+		signature = "(II)V",
+		garbageValue = "-1175490871"
 	)
-	@Export("insertMenuItemNoShift")
-	public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
-		class14.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
+	@Export("playSong")
+	static void playSong(int var0) {
+		if (var0 == -1 && !Client.field767) {
+			Actor.method1755();
+		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field767) {
+			class4.method59(2, GrandExchangeOfferWorldComparator.archive6, var0, 0, Client.musicVolume, false);
+		}
+
+		Client.currentTrackGroupId = var0;
+	}
+
+	@ObfuscatedName("gu")
+	@ObfuscatedSignature(
+		signature = "(IIB)V",
+		garbageValue = "-50"
+	)
+	static final void method408(int var0, int var1) {
+		if (Client.hintArrowType == 2) {
+			KeyHandler.worldToScreen((Client.hintArrowX - MusicPatchPcmStream.baseX * 64 << 7) + Client.hintArrowSubX * 4096, (Client.hintArrowY - ScriptEvent.baseY * 64 << 7) + Client.hintArrowSubY * 4096, Client.hintArrowHeight * 2);
+			if (Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
+				WorldMapData_0.headIconHintSprites[0].drawTransBgAt(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
+			}
+
+		}
 	}
 }

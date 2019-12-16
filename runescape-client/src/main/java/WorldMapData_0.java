@@ -1,31 +1,36 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("r")
+@ObfuscatedName("l")
 @Implements("WorldMapData_0")
 public class WorldMapData_0 extends AbstractWorldMapData {
-	@ObfuscatedName("gp")
-	@ObfuscatedSignature(
-		signature = "[Lln;"
+	@ObfuscatedName("qb")
+	@ObfuscatedGetter(
+		intValue = -1984844597
 	)
-	@Export("mapDotSprites")
-	static Sprite[] mapDotSprites;
+	static int field92;
+	@ObfuscatedName("gy")
+	@ObfuscatedSignature(
+		signature = "[Lls;"
+	)
+	@Export("headIconHintSprites")
+	static Sprite[] headIconHintSprites;
 
 	WorldMapData_0() {
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkg;B)V",
-		garbageValue = "55"
+		signature = "(Lkq;I)V",
+		garbageValue = "-2087111410"
 	)
 	@Export("init")
 	void init(Buffer var1) {
 		int var2 = var1.readUnsignedByte();
-		if (var2 != WorldMapID.field268.value) {
+		if (var2 != WorldMapID.field252.value) {
 			throw new IllegalStateException("");
 		} else {
 			super.minPlane = var1.readUnsignedByte();
@@ -34,26 +39,26 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 			super.regionYLow = var1.readUnsignedShort() * 4096;
 			super.regionX = var1.readUnsignedShort();
 			super.regionY = var1.readUnsignedShort();
-			super.groupId = var1.method5618();
-			super.fileId = var1.method5618();
+			super.groupId = var1.method5560();
+			super.fileId = var1.method5560();
 		}
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkg;B)V",
-		garbageValue = "35"
+		signature = "(Lkq;I)V",
+		garbageValue = "1425420215"
 	)
 	@Export("readGeography")
 	void readGeography(Buffer var1) {
 		super.planes = Math.min(super.planes, 4);
 		super.floorUnderlayIds = new short[1][64][64];
 		super.floorOverlayIds = new short[super.planes][64][64];
-		super.field166 = new byte[super.planes][64][64];
-		super.field160 = new byte[super.planes][64][64];
+		super.field150 = new byte[super.planes][64][64];
+		super.field149 = new byte[super.planes][64][64];
 		super.decorations = new WorldMapDecoration[super.planes][64][64][];
 		int var2 = var1.readUnsignedByte();
-		if (var2 != class30.field258.value) {
+		if (var2 != class30.field246.value) {
 			throw new IllegalStateException("");
 		} else {
 			int var3 = var1.readUnsignedByte();
@@ -71,120 +76,151 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 		}
 	}
 
-	public int hashCode() {
-		return super.regionX | super.regionY << 8;
-	}
-
 	public boolean equals(Object var1) {
 		if (!(var1 instanceof WorldMapData_0)) {
 			return false;
 		} else {
 			WorldMapData_0 var2 = (WorldMapData_0)var1;
-			return var2.regionX == super.regionX && super.regionY == var2.regionY;
+			return super.regionX == var2.regionX && super.regionY == var2.regionY;
 		}
 	}
 
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(Lhf;Ljava/lang/String;Ljava/lang/String;IZI)V",
-		garbageValue = "-2068665668"
-	)
-	public static void method191(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
-		int var5 = var0.getGroupId(var1);
-		int var6 = var0.getFileId(var5, var2);
-		class65.playMusicTrack(var0, var5, var6, var3, var4);
+	public int hashCode() {
+		return super.regionX | super.regionY << 8;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "121"
+		signature = "(Lls;IIII)V",
+		garbageValue = "-1317915753"
 	)
-	public static boolean method192(int var0) {
-		return (var0 >> 20 & 1) != 0;
+	static void method169(Sprite var0, int var1, int var2, int var3) {
+		DemotingHashTable var4 = WorldMapRegion.WorldMapRegion_cachedSprites;
+		long var6 = (long)(var3 << 16 | var1 << 8 | var2);
+		var4.put(var0, var6, var0.pixels.length * 4);
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "0"
+		signature = "(IIB)I",
+		garbageValue = "-45"
 	)
-	static void method187() {
-		if (Canvas.loadWorlds()) {
-			Login.worldSelectOpen = true;
-			Login.worldSelectPage = 0;
-			Login.worldSelectPagesCount = 0;
-		}
-
+	public static int method164(int var0, int var1) {
+		int var2 = var0 >>> 31;
+		return (var0 + var2) / var1 - var2;
 	}
 
-	@ObfuscatedName("ab")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(ILci;ZI)I",
-		garbageValue = "1752052270"
+		signature = "(IIZB)Ljava/lang/String;",
+		garbageValue = "118"
 	)
-	static int method193(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.GETWINDOWMODE) {
-			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = class43.getWindowedMode();
-			return 1;
-		} else {
-			int var3;
-			if (var0 == ScriptOpcodes.SETWINDOWMODE) {
-				var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				if (var3 == 1 || var3 == 2) {
-					MouseHandler.setWindowedMode(var3);
+	static String method163(int var0, int var1, boolean var2) {
+		if (var1 >= 2 && var1 <= 36) {
+			if (var2 && var0 >= 0) {
+				int var3 = 2;
+
+				for (int var4 = var0 / var1; var4 != 0; ++var3) {
+					var4 /= var1;
 				}
 
-				return 1;
-			} else if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) {
-				Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = UserComparator10.clientPreferences.windowMode;
-				return 1;
-			} else if (var0 != ScriptOpcodes.SETDEFAULTWINDOWMODE) {
-				if (var0 == 5310) {
-					--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize;
-					return 1;
-				} else {
-					return 2;
-				}
-			} else {
-				var3 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-				if (var3 == 1 || var3 == 2) {
-					UserComparator10.clientPreferences.windowMode = var3;
-					class40.savePreferences();
-				}
+				char[] var5 = new char[var3];
+				var5[0] = '+';
 
-				return 1;
-			}
-		}
-	}
-
-	@ObfuscatedName("gy")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-251143454"
-	)
-	@Export("addNpcsToScene")
-	static final void addNpcsToScene(boolean var0) {
-		for (int var1 = 0; var1 < Client.npcCount; ++var1) {
-			NPC var2 = Client.npcs[Client.npcIndices[var1]];
-			if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.transformIsVisible()) {
-				int var3 = var2.x >> 7;
-				int var4 = var2.y >> 7;
-				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-					if (var2.field938 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
-							continue;
-						}
-
-						Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
+				for (int var6 = var3 - 1; var6 > 0; --var6) {
+					int var7 = var0;
+					var0 /= var1;
+					int var8 = var7 - var0 * var1;
+					if (var8 >= 10) {
+						var5[var6] = (char)(var8 + 87);
+					} else {
+						var5[var6] = (char)(var8 + 48);
 					}
-
-					long var5 = MouseHandler.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
-					var2.playerCycle = Client.cycle;
-					class2.scene.drawEntity(ClientPacket.Client_plane, var2.x, var2.y, class195.getTileHeight(var2.field938 * 64 - 64 + var2.x, var2.field938 * 64 - 64 + var2.y, ClientPacket.Client_plane), var2.field938 * 64 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
 				}
+
+				return new String(var5);
+			} else {
+				return Integer.toString(var0, var1);
 			}
+		} else {
+			throw new IllegalArgumentException("" + var1);
+		}
+	}
+
+	@ObfuscatedName("fg")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-991747570"
+	)
+	@Export("forceDisconnect")
+	static final void forceDisconnect(int var0) {
+		InterfaceParent.logOut();
+		switch(var0) {
+		case 1:
+			Login.loginIndex = 24;
+			AbstractWorldMapData.setLoginResponseString("", "You were disconnected from the server.", "");
+			break;
+		case 2:
+			Login.loginIndex = 24;
+			AbstractWorldMapData.setLoginResponseString("The game servers are currently being updated.", "Please wait a few minutes and try again.", "");
 		}
 
+	}
+
+	@ObfuscatedName("iy")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "-1702503786"
+	)
+	@Export("selectSpell")
+	static void selectSpell(int var0, int var1, int var2, int var3) {
+		Widget var4 = BZip2State.getWidgetChild(var0, var1);
+		if (var4 != null && var4.onTargetEnter != null) {
+			ScriptEvent var5 = new ScriptEvent();
+			var5.widget = var4;
+			var5.args = var4.onTargetEnter;
+			Client.runScriptEvent(var5);
+		}
+
+		Client.field785 = var3;
+		Client.isSpellSelected = true;
+		WorldMapDecoration.selectedSpellWidget = var0;
+		Client.selectedSpellChildIndex = var1;
+		ReflectionCheck.selectedSpellFlags = var2;
+		LoginPacket.invalidateWidget(var4);
+	}
+
+	@ObfuscatedName("jk")
+	@ObfuscatedSignature(
+		signature = "(Lha;I)Z",
+		garbageValue = "-2123617287"
+	)
+	@Export("runCs1")
+	static final boolean runCs1(Widget var0) {
+		if (var0.cs1Comparisons == null) {
+			return false;
+		} else {
+			for (int var1 = 0; var1 < var0.cs1Comparisons.length; ++var1) {
+				int var2 = User.method5076(var0, var1);
+				int var3 = var0.cs1ComparisonValues[var1];
+				if (var0.cs1Comparisons[var1] == 2) {
+					if (var2 >= var3) {
+						return false;
+					}
+				} else if (var0.cs1Comparisons[var1] == 3) {
+					if (var2 <= var3) {
+						return false;
+					}
+				} else if (var0.cs1Comparisons[var1] == 4) {
+					if (var3 == var2) {
+						return false;
+					}
+				} else if (var3 != var2) {
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 }

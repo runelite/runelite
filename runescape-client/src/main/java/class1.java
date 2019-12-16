@@ -1,88 +1,78 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("i")
 final class class1 implements class0 {
-	@ObfuscatedName("ix")
-	@ObfuscatedGetter(
-		intValue = -609036975
-	)
-	@Export("selectedItemWidget")
-	static int selectedItemWidget;
-
-	@ObfuscatedName("u")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkg;I)V",
-		garbageValue = "-1331780546"
-	)
-	public void vmethod57(Object var1, Buffer var2) {
-		this.method7((Integer)var1, var2);
-	}
-
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lkg;I)Ljava/lang/Object;",
-		garbageValue = "1713449680"
+		signature = "(Ljava/lang/Object;Lkq;I)V",
+		garbageValue = "-685052934"
 	)
-	public Object vmethod65(Buffer var1) {
+	public void vmethod53(Object var1, Buffer var2) {
+		this.method8((Integer)var1, var2);
+	}
+
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(Lkq;I)Ljava/lang/Object;",
+		garbageValue = "390816352"
+	)
+	public Object vmethod60(Buffer var1) {
 		return var1.readInt();
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Integer;Lkg;I)V",
-		garbageValue = "-1969898467"
+		signature = "(Ljava/lang/Integer;Lkq;I)V",
+		garbageValue = "-1005316457"
 	)
-	void method7(Integer var1, Buffer var2) {
+	void method8(Integer var1, Buffer var2) {
 		var2.writeInt(var1);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("gv")
 	@ObfuscatedSignature(
-		signature = "(I)Lbp;",
-		garbageValue = "1259947083"
+		signature = "(Ljava/lang/String;ZB)V",
+		garbageValue = "-52"
 	)
-	@Export("getNextWorldListWorld")
-	static World getNextWorldListWorld() {
-		return World.World_listCount < World.World_count ? Skills.World_worlds[++World.World_listCount - 1] : null;
-	}
+	@Export("drawLoadingMessage")
+	static final void drawLoadingMessage(String var0, boolean var1) {
+		if (Client.showLoadingMessages) {
+			byte var2 = 4;
+			int var3 = var2 + 6;
+			int var4 = var2 + 6;
+			int var5 = ScriptFrame.fontPlain12.lineWidth(var0, 250);
+			int var6 = ScriptFrame.fontPlain12.lineCount(var0, 250) * 13;
+			Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+			Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
+			ScriptFrame.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+			GameObject.method3297(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
+			if (var1) {
+				IgnoreList.rasterProvider.drawFull(0, 0);
+			} else {
+				int var7 = var3;
+				int var8 = var4;
+				int var9 = var5;
+				int var10 = var6;
 
-	@ObfuscatedName("ab")
-	@ObfuscatedSignature(
-		signature = "(Ldt;B)V",
-		garbageValue = "104"
-	)
-	@Export("PcmStream_disable")
-	static final void PcmStream_disable(PcmStream var0) {
-		var0.active = false;
-		if (var0.sound != null) {
-			var0.sound.position = 0;
+				for (int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
+					if (Client.rootWidgetXs[var11] + Client.rootWidgetWidths[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var10 + var8) {
+						Client.field834[var11] = true;
+					}
+				}
+			}
+
 		}
-
-		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
-			PcmStream_disable(var1);
-		}
-
 	}
 
-	@ObfuscatedName("ev")
+	@ObfuscatedName("ij")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1824721053"
+		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIB)V",
+		garbageValue = "3"
 	)
-	static final void method15() {
-		Scene.Scene_isLowDetail = false;
-		Client.isLowDetail = false;
-	}
-
-	@ObfuscatedName("gz")
-	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "1"
-	)
-	static boolean method16() {
-		return (Client.drawPlayerNames & 1) != 0;
+	@Export("insertMenuItemNoShift")
+	public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
+		AbstractWorldMapIcon.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
 	}
 }

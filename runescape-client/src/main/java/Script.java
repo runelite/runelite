@@ -4,51 +4,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("cu")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("u")
+	@ObfuscatedName("st")
 	@ObfuscatedSignature(
-		signature = "Lef;"
+		signature = "Le;"
+	)
+	@Export("grandExchangeEvents")
+	static GrandExchangeEvents grandExchangeEvents;
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "Leb;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("f")
-	@Export("opcodes")
-	int[] opcodes;
-	@ObfuscatedName("b")
-	@Export("intOperands")
-	int[] intOperands;
-	@ObfuscatedName("g")
-	@Export("stringOperands")
-	String[] stringOperands;
 	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 1633620765
+		intValue = -1585175051
+	)
+	@Export("loginBoxCenter")
+	static int loginBoxCenter;
+	@ObfuscatedName("i")
+	@Export("opcodes")
+	int[] opcodes;
+	@ObfuscatedName("y")
+	@Export("intOperands")
+	int[] intOperands;
+	@ObfuscatedName("w")
+	@Export("stringOperands")
+	String[] stringOperands;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 465356471
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 212878753
+		intValue = -1243420491
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -133776919
+		intValue = -308424659
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 329828895
+		intValue = -2632789
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "[Llb;"
+		signature = "[Llc;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -60,83 +72,34 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(II)[Llb;",
-		garbageValue = "-135060615"
+		signature = "(IB)[Llc;",
+		garbageValue = "-1"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("fj")
 	@ObfuscatedSignature(
-		signature = "([BIIB)Z",
-		garbageValue = "27"
+		signature = "(I)V",
+		garbageValue = "1158039075"
 	)
-	static final boolean method2257(byte[] var0, int var1, int var2) {
-		boolean var3 = true;
-		Buffer var4 = new Buffer(var0);
-		int var5 = -1;
-
-		label69:
-		while (true) {
-			int var6 = var4.method5710();
-			if (var6 == 0) {
-				return var3;
+	static final void method2244() {
+		if (Projectile.ClanChat_inClanChat) {
+			if (Calendar.clanChat != null) {
+				Calendar.clanChat.sort();
 			}
 
-			var5 += var6;
-			int var7 = 0;
-			boolean var8 = false;
-
-			while (true) {
-				int var9;
-				while (!var8) {
-					var9 = var4.readUShortSmart();
-					if (var9 == 0) {
-						continue label69;
-					}
-
-					var7 += var9 - 1;
-					int var10 = var7 & 63;
-					int var11 = var7 >> 6 & 63;
-					int var12 = var4.readUnsignedByte() >> 2;
-					int var13 = var11 + var1;
-					int var14 = var10 + var2;
-					if (var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-						ObjectDefinition var15 = Occluder.getObjectDefinition(var5);
-						if (var12 != 22 || !Client.isLowDetail || var15.int1 != 0 || var15.interactType == 1 || var15.boolean2) {
-							if (!var15.needsModelFiles()) {
-								++Client.field850;
-								var3 = false;
-							}
-
-							var8 = true;
-						}
-					}
-				}
-
-				var9 = var4.readUShortSmart();
-				if (var9 == 0) {
-					break;
-				}
-
-				var4.readUnsignedByte();
+			for (int var0 = 0; var0 < Players.Players_count; ++var0) {
+				Player var1 = Client.players[Players.Players_indices[var0]];
+				var1.clearIsInClanChat();
 			}
-		}
-	}
 
-	@ObfuscatedName("jk")
-	@ObfuscatedSignature(
-		signature = "(IIIIIIII)V",
-		garbageValue = "-1415762573"
-	)
-	@Export("updateRootInterface")
-	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (UserComparator3.loadInterface(var0)) {
-			UserComparator9.updateInterface(FloorDecoration.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6);
+			Projectile.ClanChat_inClanChat = false;
 		}
+
 	}
 }

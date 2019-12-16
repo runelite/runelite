@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("ht")
 @Implements("Coord")
 public class Coord {
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = 556251855
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		signature = "Lhz;"
 	)
-	@Export("graphicsTickTimeIdx")
-	static int graphicsTickTimeIdx;
-	@ObfuscatedName("u")
+	@Export("musicTrackArchive")
+	public static AbstractArchive musicTrackArchive;
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 1348059781
+		intValue = 84466269
 	)
 	@Export("plane")
 	public int plane;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1294830225
+		intValue = 468184679
 	)
 	@Export("x")
 	public int x;
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 358494981
+		intValue = -387366221
 	)
 	@Export("y")
 	public int y;
 
 	@ObfuscatedSignature(
-		signature = "(Lhx;)V"
+		signature = "(Lht;)V"
 	)
 	public Coord(Coord var1) {
 		this.plane = var1.plane;
@@ -58,20 +58,20 @@ public class Coord {
 
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-633329475"
+		signature = "(B)I",
+		garbageValue = "-72"
 	)
 	@Export("packed")
 	public int packed() {
 		return this.plane << 28 | this.x << 14 | this.y;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lhx;I)Z",
-		garbageValue = "1606698981"
+		signature = "(Lht;I)Z",
+		garbageValue = "1703593953"
 	)
 	@Export("equalsCoord")
 	boolean equalsCoord(Coord var1) {
@@ -84,14 +84,22 @@ public class Coord {
 		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "-38"
+		garbageValue = "32"
 	)
 	@Export("toString")
 	String toString(String var1) {
 		return this.plane + var1 + (this.x >> 6) + var1 + (this.y >> 6) + var1 + (this.x & 63) + var1 + (this.y & 63);
+	}
+
+	public int hashCode() {
+		return this.packed();
+	}
+
+	public String toString() {
+		return this.toString(",");
 	}
 
 	public boolean equals(Object var1) {
@@ -102,11 +110,32 @@ public class Coord {
 		}
 	}
 
-	public int hashCode() {
-		return this.packed();
-	}
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		signature = "(IB)Lig;",
+		garbageValue = "1"
+	)
+	@Export("getObjectDefinition")
+	public static ObjectDefinition getObjectDefinition(int var0) {
+		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
+			var1 = new ObjectDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
+			}
 
-	public String toString() {
-		return this.toString(",");
+			var1.postDecode();
+			if (var1.isSolid) {
+				var1.interactType = 0;
+				var1.boolean1 = false;
+			}
+
+			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
+			return var1;
+		}
 	}
 }

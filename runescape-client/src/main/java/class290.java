@@ -2,21 +2,18 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kw")
+@ObfuscatedName("kf")
 public final class class290 {
-	@ObfuscatedName("o")
-	@Export("Tiles_hueMultiplier")
-	static int[] Tiles_hueMultiplier;
+	@ObfuscatedName("a")
+	@Export("SpriteBuffer_pixels")
+	public static byte[][] SpriteBuffer_pixels;
 
-	@ObfuscatedName("kp")
+	@ObfuscatedName("bk")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-250466939"
+		signature = "(Ljava/lang/String;I)I",
+		garbageValue = "-1637680700"
 	)
-	@Export("Clan_leaveChat")
-	static final void Clan_leaveChat() {
-		PacketBufferNode var0 = ModelData0.getPacketBufferNode(ClientPacket.field2314, Client.packetWriter.isaacCipher);
-		var0.packetBuffer.writeByte(0);
-		Client.packetWriter.addNode(var0);
+	public static int method5375(String var0) {
+		return var0.length() + 2;
 	}
 }

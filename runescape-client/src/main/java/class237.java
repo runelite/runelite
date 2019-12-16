@@ -1,121 +1,129 @@
-import java.net.URL;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("ic")
 public class class237 {
-	@ObfuscatedName("u")
+	@ObfuscatedName("a")
+	static int[] field3164;
+	@ObfuscatedName("f")
 	@Export("spriteMap")
 	final HashMap spriteMap;
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Llw;"
+		signature = "Llh;"
 	)
 	@Export("bounds")
 	Bounds bounds;
-	@ObfuscatedName("b")
-	int[] field3192;
-	@ObfuscatedName("g")
-	int[] field3193;
-	@ObfuscatedName("z")
+	@ObfuscatedName("y")
+	int[] field3160;
+	@ObfuscatedName("w")
+	int[] field3161;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 136920125
+		intValue = -1798727119
 	)
-	int field3196;
+	int field3162;
 
 	public class237() {
 		this.spriteMap = new HashMap();
 		this.bounds = new Bounds(0, 0);
-		this.field3192 = new int[2048];
-		this.field3193 = new int[2048];
-		this.field3196 = 0;
-		WorldMapSectionType.method265();
+		this.field3160 = new int[2048];
+		this.field3161 = new int[2048];
+		this.field3162 = 0;
+		field3164 = new int[2000];
+		int var1 = 0;
+		int var2 = 240;
+
+		int var4;
+		for (byte var3 = 12; var1 < 16; var2 -= var3) {
+			var4 = Tiles.method1121((double)((float)var2 / 360.0F), 0.9998999834060669D, (double)((float)var1 * 0.425F / 16.0F + 0.075F));
+			field3164[var1] = var4;
+			++var1;
+		}
+
+		var2 = 48;
+
+		for (int var6 = var2 / 6; var1 < field3164.length; var2 -= var6) {
+			var4 = var1 * 2;
+
+			for (int var5 = Tiles.method1121((double)((float)var2 / 360.0F), 0.9998999834060669D, 0.5D); var1 < var4 && var1 < field3164.length; ++var1) {
+				field3164[var1] = var5;
+			}
+		}
+
 	}
 
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-1518977792"
+		garbageValue = "2086190547"
 	)
-	void method4404(int var1) {
+	void method4301(int var1) {
 		int var2 = var1 * 2 + 1;
-		double var4 = (double)((float)var1 / 3.0F);
-		int var6 = var1 * 2 + 1;
-		double[] var7 = new double[var6];
-		int var8 = -var1;
+		double[] var3 = class289.method5336(0.0D, (double)((float)var1 / 3.0F), var1);
+		double var4 = var3[var1] * var3[var1];
+		int[] var6 = new int[var2 * var2];
+		boolean var7 = false;
 
-		for (int var9 = 0; var8 <= var1; ++var9) {
-			double var16 = (double)(var8 - 0) / var4;
-			double var14 = Math.exp(var16 * -var16 / 2.0D) / Math.sqrt(6.283185307179586D);
-			double var12 = var14 / var4;
-			var7[var9] = var12;
-			++var8;
-		}
-
-		double[] var18 = var7;
-		double var19 = var7[var1] * var7[var1];
-		int[] var21 = new int[var2 * var2];
-		boolean var22 = false;
-
-		for (int var11 = 0; var11 < var2; ++var11) {
-			for (int var23 = 0; var23 < var2; ++var23) {
-				int var13 = var21[var23 + var11 * var2] = (int)(256.0D * (var18[var11] * var18[var23] / var19));
-				if (!var22 && var13 > 0) {
-					var22 = true;
+		for (int var8 = 0; var8 < var2; ++var8) {
+			for (int var9 = 0; var9 < var2; ++var9) {
+				int var10 = var6[var9 + var8 * var2] = (int)(var3[var8] * var3[var9] / var4 * 256.0D);
+				if (!var7 && var10 > 0) {
+					var7 = true;
 				}
 			}
 		}
 
-		Sprite var24 = new Sprite(var21, var2, var2);
-		this.spriteMap.put(var1, var24);
+		Sprite var11 = new Sprite(var6, var2, var2);
+		this.spriteMap.put(var1, var11);
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IS)Lln;",
-		garbageValue = "-15422"
+		signature = "(IB)Lls;",
+		garbageValue = "-60"
 	)
-	Sprite method4405(int var1) {
+	Sprite method4302(int var1) {
 		if (!this.spriteMap.containsKey(var1)) {
-			this.method4404(var1);
+			this.method4301(var1);
 		}
 
 		return (Sprite)this.spriteMap.get(var1);
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "-106"
+		signature = "(III)V",
+		garbageValue = "1391492570"
 	)
-	public final void method4406(int var1, int var2) {
-		if (this.field3196 < this.field3192.length) {
-			this.field3192[this.field3196] = var1;
-			this.field3193[this.field3196] = var2;
-			++this.field3196;
+	public final void method4303(int var1, int var2) {
+		if (this.field3162 < this.field3160.length) {
+			this.field3160[this.field3162] = var1;
+			this.field3161[this.field3162] = var2;
+			++this.field3162;
 		}
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1194246226"
+		garbageValue = "-938639376"
 	)
-	public final void method4403() {
-		this.field3196 = 0;
+	public final void method4304() {
+		this.field3162 = 0;
 	}
 
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(IILln;FI)V",
-		garbageValue = "-2013920472"
+		signature = "(IILls;FI)V",
+		garbageValue = "-501073565"
 	)
-	public final void method4408(int var1, int var2, Sprite var3, float var4) {
+	public final void method4318(int var1, int var2, Sprite var3, float var4) {
 		int var5 = (int)(var4 * 18.0F);
-		Sprite var6 = this.method4405(var5);
+		Sprite var6 = this.method4302(var5);
 		int var7 = var5 * 2 + 1;
 		Bounds var8 = new Bounds(0, 0, var3.subWidth, var3.subHeight);
 		Bounds var9 = new Bounds(0, 0);
@@ -125,14 +133,14 @@ public class class237 {
 		int var10;
 		int var11;
 		int var12;
-		for (var10 = 0; var10 < this.field3196; ++var10) {
-			var11 = this.field3192[var10];
-			var12 = this.field3193[var10];
-			int var13 = (int)((float)(var11 - var1) * var4) - var5;
+		for (var10 = 0; var10 < this.field3162; ++var10) {
+			var11 = this.field3160[var10];
+			var12 = this.field3161[var10];
+			int var13 = (int)(var4 * (float)(var11 - var1)) - var5;
 			int var14 = (int)((float)var3.subHeight - var4 * (float)(var12 - var2)) - var5;
 			this.bounds.setLow(var13, var14);
-			this.bounds.method6069(var8, var9);
-			this.method4409(var6, var3, var9);
+			this.bounds.method5997(var8, var9);
+			this.method4306(var6, var3, var9);
 		}
 
 		System.nanoTime();
@@ -146,11 +154,11 @@ public class class237 {
 				if (var11 <= 0) {
 					var3.pixels[var10] = -16777216;
 				} else {
-					if (var11 > Skeleton.field1788.length) {
-						var11 = Skeleton.field1788.length;
+					if (var11 > field3164.length) {
+						var11 = field3164.length;
 					}
 
-					var12 = Skeleton.field1788[var11 - 1];
+					var12 = field3164[var11 - 1];
 					var3.pixels[var10] = -16777216 | var12;
 				}
 			}
@@ -159,12 +167,12 @@ public class class237 {
 		System.nanoTime();
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(Lln;Lln;Llw;I)V",
-		garbageValue = "244697744"
+		signature = "(Lls;Lls;Llh;I)V",
+		garbageValue = "-17705083"
 	)
-	void method4409(Sprite var1, Sprite var2, Bounds var3) {
+	void method4306(Sprite var1, Sprite var2, Bounds var3) {
 		if (var3.highX != 0 && var3.highY != 0) {
 			int var4 = 0;
 			int var5 = 0;
@@ -193,71 +201,23 @@ public class class237 {
 		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
-		garbageValue = "-79"
+		signature = "(CI)Z",
+		garbageValue = "1561661467"
 	)
-	static boolean method4422(String var0, int var1, String var2) {
-		if (var1 == 0) {
-			try {
-				if (!class51.field424.startsWith("win")) {
-					throw new Exception();
-				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
-					throw new Exception();
-				} else {
-					String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-					for (int var4 = 0; var4 < var0.length(); ++var4) {
-						if (var10.indexOf(var0.charAt(var4)) == -1) {
-							throw new Exception();
-						}
-					}
-
-					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-					return true;
-				}
-			} catch (Throwable var5) {
-				return false;
-			}
-		} else if (var1 == 1) {
-			try {
-				Object var3 = class47.method865(class51.applet, var2, new Object[]{(new URL(class51.applet.getCodeBase(), var0)).toString()});
-				return var3 != null;
-			} catch (Throwable var6) {
-				return false;
-			}
-		} else if (var1 == 2) {
-			try {
-				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_blank");
-				return true;
-			} catch (Exception var7) {
-				return false;
-			}
-		} else if (var1 == 3) {
-			try {
-				class47.method864(class51.applet, "loggedout");
-			} catch (Throwable var9) {
-			}
-
-			try {
-				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_top");
-				return true;
-			} catch (Exception var8) {
-				return false;
-			}
-		} else {
-			throw new IllegalArgumentException();
-		}
+	@Export("isDigit")
+	public static boolean isDigit(char var0) {
+		return var0 >= '0' && var0 <= '9';
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-152675892"
+		garbageValue = "-1306967480"
 	)
-	public static void method4421() {
-		HealthBarDefinition.HealthBarDefinition_cached.clear();
-		HealthBarDefinition.HealthBarDefinition_cachedSprites.clear();
+	public static void method4300() {
+		NPCDefinition.NpcDefinition_cached.clear();
+		NPCDefinition.NpcDefinition_cachedModels.clear();
 	}
 }

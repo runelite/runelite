@@ -2,275 +2,145 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("em")
+@ObfuscatedName("ew")
 @Implements("ModelData0")
 public class ModelData0 {
-	ModelData0() {
-	}
-
-	@ObfuscatedName("u")
+	@ObfuscatedName("df")
 	@ObfuscatedSignature(
-		signature = "(Lkg;Llb;B)Llb;",
-		garbageValue = "38"
+		signature = "Lky;"
 	)
-	@Export("readStringIntParameters")
-	static final IterableNodeHashTable readStringIntParameters(Buffer var0, IterableNodeHashTable var1) {
-		int var2 = var0.readUnsignedByte();
-		int var3;
-		if (var1 == null) {
-			int var4 = var2 - 1;
-			var4 |= var4 >>> 1;
-			var4 |= var4 >>> 2;
-			var4 |= var4 >>> 4;
-			var4 |= var4 >>> 8;
-			var4 |= var4 >>> 16;
-			var3 = var4 + 1;
-			var1 = new IterableNodeHashTable(var3);
-		}
+	@Export("js5Socket")
+	static AbstractSocket js5Socket;
 
-		for (var3 = 0; var3 < var2; ++var3) {
-			boolean var7 = var0.readUnsignedByte() == 1;
-			int var5 = var0.readMedium();
-			Object var6;
-			if (var7) {
-				var6 = new ObjectNode(var0.readStringCp1252NullTerminated());
-			} else {
-				var6 = new IntegerNode(var0.readInt());
-			}
-
-			var1.put((Node)var6, (long)var5);
-		}
-
-		return var1;
+	ModelData0() {
 	}
 
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lgj;Lld;I)Lgx;",
-		garbageValue = "280522015"
+		signature = "(IIB)I",
+		garbageValue = "-54"
 	)
-	@Export("getPacketBufferNode")
-	public static PacketBufferNode getPacketBufferNode(ClientPacket var0, IsaacCipher var1) {
-		PacketBufferNode var2 = StudioGame.method4225();
-		var2.clientPacket = var0;
-		var2.clientPacketLength = var0.length;
-		if (var2.clientPacketLength == -1) {
-			var2.packetBuffer = new PacketBuffer(260);
-		} else if (var2.clientPacketLength == -2) {
-			var2.packetBuffer = new PacketBuffer(10000);
-		} else if (var2.clientPacketLength <= 18) {
-			var2.packetBuffer = new PacketBuffer(20);
-		} else if (var2.clientPacketLength <= 98) {
-			var2.packetBuffer = new PacketBuffer(100);
-		} else {
-			var2.packetBuffer = new PacketBuffer(260);
+	public static int method3266(int var0, int var1) {
+		int var2;
+		for (var2 = 1; var1 > 1; var1 >>= 1) {
+			if ((var1 & 1) != 0) {
+				var2 = var0 * var2;
+			}
+
+			var0 *= var0;
 		}
 
-		var2.packetBuffer.setIsaacCipher(var1);
-		var2.packetBuffer.writeByteIsaac(var2.clientPacket.id);
-		var2.index = 0;
-		return var2;
+		if (var1 == 1) {
+			return var0 * var2;
+		} else {
+			return var2;
+		}
 	}
 
-	@ObfuscatedName("at")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(ILci;ZI)I",
-		garbageValue = "1140897416"
+		signature = "(I)[Llg;",
+		garbageValue = "-19364585"
 	)
-	static int method3299(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.WORLDLIST_FETCH) {
-			Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Canvas.loadWorlds() ? 1 : 0;
-			return 1;
+	@Export("FillMode_values")
+	public static FillMode[] FillMode_values() {
+		return new FillMode[]{FillMode.field3850, FillMode.SOLID, FillMode.field3853};
+	}
+
+	@ObfuscatedName("fr")
+	@ObfuscatedSignature(
+		signature = "(IB)V",
+		garbageValue = "-21"
+	)
+	@Export("getLoginError")
+	static void getLoginError(int var0) {
+		if (var0 == -3) {
+			AbstractWorldMapData.setLoginResponseString("Connection timed out.", "Please try using a different world.", "");
+		} else if (var0 == -2) {
+			AbstractWorldMapData.setLoginResponseString("Error connecting to server.", "Please try using a different world.", "");
+		} else if (var0 == -1) {
+			AbstractWorldMapData.setLoginResponseString("No response from server.", "Please try using a different world.", "");
+		} else if (var0 == 3) {
+			Login.loginIndex = 3;
+			Login.field1181 = 1;
+		} else if (var0 == 4) {
+			Login.loginIndex = 12;
+			Login.field1167 = 0;
+		} else if (var0 == 5) {
+			Login.field1181 = 2;
+			AbstractWorldMapData.setLoginResponseString("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
+		} else if (var0 == 68 || !Client.onMobile && var0 == 6) {
+			AbstractWorldMapData.setLoginResponseString("RuneScape has been updated!", "Please reload this page.", "");
+		} else if (var0 == 7) {
+			AbstractWorldMapData.setLoginResponseString("This world is full.", "Please use a different world.", "");
+		} else if (var0 == 8) {
+			AbstractWorldMapData.setLoginResponseString("Unable to connect.", "Login server offline.", "");
+		} else if (var0 == 9) {
+			AbstractWorldMapData.setLoginResponseString("Login limit exceeded.", "Too many connections from your address.", "");
+		} else if (var0 == 10) {
+			AbstractWorldMapData.setLoginResponseString("Unable to connect.", "Bad session id.", "");
+		} else if (var0 == 11) {
+			AbstractWorldMapData.setLoginResponseString("We suspect someone knows your password.", "Press 'change your password' on front page.", "");
+		} else if (var0 == 12) {
+			AbstractWorldMapData.setLoginResponseString("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+		} else if (var0 == 13) {
+			AbstractWorldMapData.setLoginResponseString("Could not complete login.", "Please try using a different world.", "");
+		} else if (var0 == 14) {
+			AbstractWorldMapData.setLoginResponseString("The server is being updated.", "Please wait 1 minute and try again.", "");
+		} else if (var0 == 16) {
+			AbstractWorldMapData.setLoginResponseString("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+		} else if (var0 == 17) {
+			AbstractWorldMapData.setLoginResponseString("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+		} else if (var0 == 18) {
+			Login.loginIndex = 12;
+			Login.field1167 = 1;
+		} else if (var0 == 19) {
+			AbstractWorldMapData.setLoginResponseString("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+		} else if (var0 == 20) {
+			AbstractWorldMapData.setLoginResponseString("Invalid loginserver requested.", "Please try using a different world.", "");
+		} else if (var0 == 22) {
+			AbstractWorldMapData.setLoginResponseString("Malformed login packet.", "Please try again.", "");
+		} else if (var0 == 23) {
+			AbstractWorldMapData.setLoginResponseString("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+		} else if (var0 == 24) {
+			AbstractWorldMapData.setLoginResponseString("Error loading your profile.", "Please contact customer support.", "");
+		} else if (var0 == 25) {
+			AbstractWorldMapData.setLoginResponseString("Unexpected loginserver response.", "Please try using a different world.", "");
+		} else if (var0 == 26) {
+			AbstractWorldMapData.setLoginResponseString("This computers address has been blocked", "as it was used to break our rules.", "");
+		} else if (var0 == 27) {
+			AbstractWorldMapData.setLoginResponseString("", "Service unavailable.", "");
+		} else if (var0 == 31) {
+			AbstractWorldMapData.setLoginResponseString("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+		} else if (var0 == 32) {
+			AbstractWorldMapData.setLoginResponseString("Your attempt to log into your account was", "unsuccessful.  Don't worry, you can sort", "this out by visiting the billing system.");
+		} else if (var0 == 37) {
+			AbstractWorldMapData.setLoginResponseString("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+		} else if (var0 == 38) {
+			AbstractWorldMapData.setLoginResponseString("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+		} else if (var0 == 55) {
+			Login.loginIndex = 8;
 		} else {
-			World var3;
-			if (var0 == ScriptOpcodes.WORLDLIST_START) {
-				var3 = class215.worldListStart();
-				if (var3 != null) {
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.id;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.properties;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.activity;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.location;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.population;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.host;
-				} else {
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-				}
+			if (var0 == 56) {
+				AbstractWorldMapData.setLoginResponseString("Enter the 6-digit code generated by your", "authenticator app.", "");
+				class195.updateGameState(11);
+				return;
+			}
 
-				return 1;
-			} else if (var0 == ScriptOpcodes.WORLDLIST_NEXT) {
-				var3 = class1.getNextWorldListWorld();
-				if (var3 != null) {
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.id;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.properties;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.activity;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.location;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var3.population;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var3.host;
-				} else {
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-					Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-				}
+			if (var0 == 57) {
+				AbstractWorldMapData.setLoginResponseString("The code you entered was incorrect.", "Please try again.", "");
+				class195.updateGameState(11);
+				return;
+			}
 
-				return 1;
+			if (var0 == 61) {
+				Login.loginIndex = 7;
 			} else {
-				World var4;
-				int var5;
-				int var7;
-				if (var0 == ScriptOpcodes.WORLDLIST_SPECIFIC) {
-					var7 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					var4 = null;
-
-					for (var5 = 0; var5 < World.World_count; ++var5) {
-						if (var7 == Skills.World_worlds[var5].id) {
-							var4 = Skills.World_worlds[var5];
-							break;
-						}
-					}
-
-					if (var4 != null) {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.id;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.properties;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var4.activity;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.location;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.population;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var4.host;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-					}
-
-					return 1;
-				} else if (var0 == ScriptOpcodes.WORLDLIST_SORT) {
-					GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 4;
-					var7 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					boolean var10 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1] == 1;
-					var5 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 2];
-					boolean var6 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 3] == 1;
-					class42.sortWorldList(var7, var10, var5, var6);
-					return 1;
-				} else if (var0 != ScriptOpcodes.GETWORLDINFO) {
-					if (var0 == ScriptOpcodes.SETFOLLOWEROPSLOWPRIORITY) {
-						Client.followerOpsLowPriority = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize] == 1;
-						return 1;
-					} else {
-						int var8;
-						ParamDefinition var9;
-						if (var0 == ScriptOpcodes.NC_PARAM) {
-							GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-							var7 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-							var8 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-							var9 = MusicPatchNode.getParamDefinition(var8);
-							if (var9.isString()) {
-								Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = VarcInt.getNpcDefinition(var7).getStringParam(var8, var9.defaultStr);
-							} else {
-								Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = VarcInt.getNpcDefinition(var7).getIntParam(var8, var9.defaultInt);
-							}
-
-							return 1;
-						} else if (var0 == ScriptOpcodes.LC_PARAM) {
-							GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-							var7 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-							var8 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-							var9 = MusicPatchNode.getParamDefinition(var8);
-							if (var9.isString()) {
-								Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = Occluder.getObjectDefinition(var7).getStringParam(var8, var9.defaultStr);
-							} else {
-								Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Occluder.getObjectDefinition(var7).getIntParam(var8, var9.defaultInt);
-							}
-
-							return 1;
-						} else if (var0 == ScriptOpcodes.OC_PARAM) {
-							GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-							var7 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-							var8 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-							var9 = MusicPatchNode.getParamDefinition(var8);
-							if (var9.isString()) {
-								Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = Interpreter.ItemDefinition_get(var7).getStringParam(var8, var9.defaultStr);
-							} else {
-								Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Interpreter.ItemDefinition_get(var7).getIntParam(var8, var9.defaultInt);
-							}
-
-							return 1;
-						} else if (var0 == ScriptOpcodes.STRUCT_PARAM) {
-							GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize -= 2;
-							var7 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-							var8 = Interpreter.Interpreter_intStack[GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize + 1];
-							var9 = MusicPatchNode.getParamDefinition(var8);
-							if (var9.isString()) {
-								Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = class96.StructDefinition_getStructDefinition(var7).getStringParam(var8, var9.defaultStr);
-							} else {
-								Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = class96.StructDefinition_getStructDefinition(var7).getIntParam(var8, var9.defaultInt);
-							}
-
-							return 1;
-						} else if (var0 == ScriptOpcodes.ON_MOBILE) {
-							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Client.onMobile ? 1 : 0;
-							return 1;
-						} else if (var0 == ScriptOpcodes.CLIENTTYPE) {
-							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = Client.clientType & 3;
-							return 1;
-						} else if (var0 == 6520) {
-							return 1;
-						} else if (var0 == ScriptOpcodes.MOBILE_KEYBOARDHIDE) {
-							return 1;
-						} else if (var0 == 6522) {
-							--class43.Interpreter_stringStackSize;
-							--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize;
-							return 1;
-						} else if (var0 == 6523) {
-							--class43.Interpreter_stringStackSize;
-							--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize;
-							return 1;
-						} else if (var0 == ScriptOpcodes.BATTERYLEVEL) {
-							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-							return 1;
-						} else if (var0 == ScriptOpcodes.BATTERYCHARGING) {
-							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 1;
-							return 1;
-						} else if (var0 == ScriptOpcodes.WIFIAVAILABLE) {
-							Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 1;
-							return 1;
-						} else {
-							return 2;
-						}
-					}
-				} else {
-					var7 = Interpreter.Interpreter_intStack[--GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize];
-					if (var7 >= 0 && var7 < World.World_count) {
-						var4 = Skills.World_worlds[var7];
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.id;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.properties;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var4.activity;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.location;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = var4.population;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = var4.host;
-					} else {
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = -1;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_intStack[++GrandExchangeOfferTotalQuantityComparator.Interpreter_intStackSize - 1] = 0;
-						Interpreter.Interpreter_stringStack[++class43.Interpreter_stringStackSize - 1] = "";
-					}
-
-					return 1;
-				}
+				AbstractWorldMapData.setLoginResponseString("Unexpected server response", "Please try using a different world.", "");
 			}
 		}
+
+		class195.updateGameState(10);
 	}
 }

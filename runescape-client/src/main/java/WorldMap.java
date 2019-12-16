@@ -10,278 +10,278 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lo")
+@ObfuscatedName("ld")
 @Implements("WorldMap")
 public class WorldMap {
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Lka;"
+		signature = "Lkk;"
 	)
 	@Export("fontNameVerdana11")
 	static final FontName fontNameVerdana11;
-	@ObfuscatedName("k")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lka;"
+		signature = "Lkk;"
 	)
 	@Export("fontNameVerdana13")
 	static final FontName fontNameVerdana13;
-	@ObfuscatedName("x")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lka;"
+		signature = "Lkk;"
 	)
 	@Export("fontNameVerdana15")
 	static final FontName fontNameVerdana15;
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("WorldMap_archive")
 	AbstractArchive WorldMap_archive;
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("WorldMap_geographyArchive")
 	AbstractArchive WorldMap_geographyArchive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "Lhf;"
+		signature = "Lhz;"
 	)
 	@Export("WorldMap_groundArchive")
 	AbstractArchive WorldMap_groundArchive;
-	@ObfuscatedName("o")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lko;"
 	)
 	@Export("font")
 	Font font;
-	@ObfuscatedName("e")
+	@ObfuscatedName("k")
 	@Export("fonts")
 	HashMap fonts;
-	@ObfuscatedName("n")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "[Llm;"
+		signature = "[Lli;"
 	)
 	@Export("mapSceneSprites")
 	IndexedSprite[] mapSceneSprites;
-	@ObfuscatedName("r")
+	@ObfuscatedName("l")
 	@Export("details")
 	HashMap details;
-	@ObfuscatedName("c")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Laf;"
+		signature = "Laa;"
 	)
 	@Export("mainMapArea")
 	WorldMapArea mainMapArea;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "Laf;"
+		signature = "Laa;"
 	)
 	@Export("currentMapArea")
 	WorldMapArea currentMapArea;
-	@ObfuscatedName("d")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Laf;"
+		signature = "Laa;"
 	)
-	WorldMapArea field3985;
-	@ObfuscatedName("s")
+	WorldMapArea field3959;
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		signature = "Lar;"
 	)
 	@Export("worldMapManager")
 	WorldMapManager worldMapManager;
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Llr;"
+		signature = "Llm;"
 	)
 	@Export("cacheLoader")
 	WorldMapArchiveLoader cacheLoader;
-	@ObfuscatedName("m")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 415581719
+		intValue = 769697825
 	)
 	@Export("centerTileX")
 	int centerTileX;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 748843563
+		intValue = 1650708007
 	)
 	@Export("centerTileY")
 	int centerTileY;
-	@ObfuscatedName("q")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1376756297
+		intValue = -1898318821
 	)
 	@Export("worldMapTargetX")
 	int worldMapTargetX;
-	@ObfuscatedName("l")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -1002756295
+		intValue = 1415231623
 	)
 	@Export("worldMapTargetY")
 	int worldMapTargetY;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@Export("zoom")
 	float zoom;
-	@ObfuscatedName("af")
+	@ObfuscatedName("aa")
 	@Export("zoomTarget")
 	float zoomTarget;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("av")
 	@ObfuscatedGetter(
-		intValue = 1048089791
+		intValue = -1100831923
 	)
 	@Export("worldMapDisplayWidth")
 	int worldMapDisplayWidth;
-	@ObfuscatedName("am")
+	@ObfuscatedName("aw")
 	@ObfuscatedGetter(
-		intValue = 1251324601
+		intValue = -480393575
 	)
 	@Export("worldMapDisplayHeight")
 	int worldMapDisplayHeight;
-	@ObfuscatedName("ai")
+	@ObfuscatedName("as")
 	@ObfuscatedGetter(
-		intValue = -486711031
+		intValue = -971268509
 	)
 	@Export("worldMapDisplayX")
 	int worldMapDisplayX;
-	@ObfuscatedName("ag")
+	@ObfuscatedName("ak")
 	@ObfuscatedGetter(
-		intValue = 638623411
+		intValue = -763154973
 	)
 	@Export("worldMapDisplayY")
 	int worldMapDisplayY;
-	@ObfuscatedName("ao")
+	@ObfuscatedName("au")
 	@ObfuscatedGetter(
-		intValue = 1650876741
+		intValue = -258302625
 	)
 	@Export("maxFlashCount")
 	int maxFlashCount;
-	@ObfuscatedName("aw")
+	@ObfuscatedName("ah")
 	@ObfuscatedGetter(
-		intValue = -281706079
+		intValue = -1236137625
 	)
 	@Export("cyclesPerFlash")
 	int cyclesPerFlash;
-	@ObfuscatedName("ak")
+	@ObfuscatedName("aq")
 	@Export("perpetualFlash")
 	boolean perpetualFlash;
-	@ObfuscatedName("aa")
+	@ObfuscatedName("ao")
 	@Export("flashingElements")
 	HashSet flashingElements;
-	@ObfuscatedName("ab")
+	@ObfuscatedName("an")
 	@ObfuscatedGetter(
-		intValue = 2112542559
+		intValue = -458343583
 	)
 	@Export("flashCount")
 	int flashCount;
 	@ObfuscatedName("ar")
 	@ObfuscatedGetter(
-		intValue = -903079399
+		intValue = -710941377
 	)
 	@Export("flashCycle")
 	int flashCycle;
-	@ObfuscatedName("av")
-	@ObfuscatedGetter(
-		intValue = -178866611
-	)
-	int field3997;
-	@ObfuscatedName("aq")
-	@ObfuscatedGetter(
-		intValue = 1461367677
-	)
-	int field3979;
-	@ObfuscatedName("ac")
-	@ObfuscatedGetter(
-		intValue = 992436699
-	)
-	int field3966;
 	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -912937739
+		intValue = 634143331
 	)
-	int field3981;
-	@ObfuscatedName("at")
+	int field3978;
+	@ObfuscatedName("ay")
 	@ObfuscatedGetter(
-		longValue = -6268204185422691147L
+		intValue = -874414913
 	)
-	long field3982;
-	@ObfuscatedName("ae")
+	int field3979;
+	@ObfuscatedName("ag")
 	@ObfuscatedGetter(
-		intValue = 967500379
+		intValue = 1920735327
 	)
 	int field3980;
-	@ObfuscatedName("aj")
+	@ObfuscatedName("ac")
 	@ObfuscatedGetter(
-		intValue = -1249817665
+		intValue = 1563619535
+	)
+	int field3992;
+	@ObfuscatedName("al")
+	@ObfuscatedGetter(
+		longValue = 4789234822527169759L
+	)
+	long field3952;
+	@ObfuscatedName("ae")
+	@ObfuscatedGetter(
+		intValue = -1313666647
+	)
+	int field3982;
+	@ObfuscatedName("ad")
+	@ObfuscatedGetter(
+		intValue = 914367019
 	)
 	int field3984;
-	@ObfuscatedName("ap")
-	boolean field3957;
-	@ObfuscatedName("ay")
+	@ObfuscatedName("aj")
+	boolean field3981;
+	@ObfuscatedName("af")
 	@Export("enabledElements")
 	HashSet enabledElements;
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ap")
 	@Export("enabledCategories")
 	HashSet enabledCategories;
-	@ObfuscatedName("au")
+	@ObfuscatedName("ai")
 	@Export("enabledElementIds")
 	HashSet enabledElementIds;
-	@ObfuscatedName("as")
+	@ObfuscatedName("am")
 	HashSet field3989;
-	@ObfuscatedName("ah")
+	@ObfuscatedName("ab")
 	@Export("elementsDisabled")
 	boolean elementsDisabled;
-	@ObfuscatedName("bi")
+	@ObfuscatedName("bj")
 	@ObfuscatedGetter(
-		intValue = -1272343305
+		intValue = -1635351133
 	)
 	int field3991;
-	@ObfuscatedName("bx")
+	@ObfuscatedName("bw")
 	@Export("menuOpcodes")
 	final int[] menuOpcodes;
-	@ObfuscatedName("bu")
-	List field3953;
-	@ObfuscatedName("bd")
+	@ObfuscatedName("bk")
+	List field3946;
+	@ObfuscatedName("bl")
 	@Export("iconIterator")
 	Iterator iconIterator;
-	@ObfuscatedName("bn")
+	@ObfuscatedName("bq")
 	HashSet field3995;
-	@ObfuscatedName("bj")
+	@ObfuscatedName("bx")
 	@ObfuscatedSignature(
-		signature = "Lhx;"
+		signature = "Lht;"
 	)
 	@Export("mouseCoord")
 	Coord mouseCoord;
-	@ObfuscatedName("bm")
+	@ObfuscatedName("bc")
 	@Export("showCoord")
 	public boolean showCoord;
-	@ObfuscatedName("bq")
+	@ObfuscatedName("by")
 	@ObfuscatedSignature(
-		signature = "Lln;"
+		signature = "Lls;"
 	)
 	@Export("sprite")
 	Sprite sprite;
-	@ObfuscatedName("bf")
+	@ObfuscatedName("bz")
 	@ObfuscatedGetter(
-		intValue = -1436249859
+		intValue = 366608429
 	)
 	@Export("cachedPixelsPerTile")
 	int cachedPixelsPerTile;
-	@ObfuscatedName("by")
+	@ObfuscatedName("bm")
 	@ObfuscatedGetter(
-		intValue = 1279936485
+		intValue = 1813935141
 	)
 	@Export("minCachedTileX")
 	int minCachedTileX;
-	@ObfuscatedName("br")
+	@ObfuscatedName("bo")
 	@ObfuscatedGetter(
-		intValue = -1058135439
+		intValue = -3401919
 	)
 	@Export("minCachedTileY")
 	int minCachedTileY;
-	@ObfuscatedName("ba")
+	@ObfuscatedName("bs")
 	@ObfuscatedGetter(
-		intValue = 206636117
+		intValue = 842619581
 	)
 	int field4002;
 
@@ -304,11 +304,11 @@ public class WorldMap {
 		this.flashingElements = null;
 		this.flashCount = -1;
 		this.flashCycle = -1;
-		this.field3997 = -1;
+		this.field3978 = -1;
 		this.field3979 = -1;
-		this.field3966 = -1;
-		this.field3981 = -1;
-		this.field3957 = true;
+		this.field3980 = -1;
+		this.field3992 = -1;
+		this.field3981 = true;
 		this.enabledElements = new HashSet();
 		this.enabledCategories = new HashSet();
 		this.enabledElementIds = new HashSet();
@@ -324,10 +324,10 @@ public class WorldMap {
 		this.field4002 = -1;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Lhf;Lhf;Lhf;Lky;Ljava/util/HashMap;[Llm;B)V",
-		garbageValue = "-12"
+		signature = "(Lhz;Lhz;Lhz;Lko;Ljava/util/HashMap;[Lli;I)V",
+		garbageValue = "1728699917"
 	)
 	@Export("init")
 	public void init(AbstractArchive var1, AbstractArchive var2, AbstractArchive var3, Font var4, HashMap var5, IndexedSprite[] var6) {
@@ -341,7 +341,7 @@ public class WorldMap {
 		this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_medium, var5.get(fontNameVerdana13));
 		this.fonts.put(WorldMapLabelSize.WorldMapLabelSize_large, var5.get(fontNameVerdana15));
 		this.cacheLoader = new WorldMapArchiveLoader(var1);
-		int var7 = this.WorldMap_archive.getGroupId(WorldMapCacheName.field304.name);
+		int var7 = this.WorldMap_archive.getGroupId(WorldMapCacheName.field291.name);
 		int[] var8 = this.WorldMap_archive.getGroupFileIds(var7);
 		this.details = new HashMap(var8.length);
 
@@ -356,22 +356,22 @@ public class WorldMap {
 		}
 
 		this.setCurrentMapArea(this.mainMapArea);
-		this.field3985 = null;
+		this.field3959 = null;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "2075872374"
+		garbageValue = "-1661861008"
 	)
-	public void method6376() {
+	public void method6357() {
 		WorldMapRegion.WorldMapRegion_cachedSprites.demote(5);
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		signature = "(IIZIIIII)V",
-		garbageValue = "-1854854899"
+		garbageValue = "46505249"
 	)
 	@Export("onCycle")
 	public void onCycle(int var1, int var2, boolean var3, int var4, int var5, int var6, int var7) {
@@ -381,14 +381,14 @@ public class WorldMap {
 			if (var3) {
 				int var8 = (int)Math.ceil((double)((float)var6 / this.zoom));
 				int var9 = (int)Math.ceil((double)((float)var7 / this.zoom));
-				List var10 = this.worldMapManager.method645(this.centerTileX - var8 / 2 - 1, this.centerTileY - var9 / 2 - 1, var8 / 2 + this.centerTileX + 1, var9 / 2 + this.centerTileY + 1, var4, var5, var6, var7, var1, var2);
+				List var10 = this.worldMapManager.method647(this.centerTileX - var8 / 2 - 1, this.centerTileY - var9 / 2 - 1, var8 / 2 + this.centerTileX + 1, var9 / 2 + this.centerTileY + 1, var4, var5, var6, var7, var1, var2);
 				HashSet var11 = new HashSet();
 
 				Iterator var12;
 				AbstractWorldMapIcon var13;
 				ScriptEvent var14;
 				WorldMapEvent var15;
-				for (var12 = var10.iterator(); var12.hasNext(); WorldMapLabel.runScriptEvent(var14)) {
+				for (var12 = var10.iterator(); var12.hasNext(); Client.runScriptEvent(var14)) {
 					var13 = (AbstractWorldMapIcon)var12.next();
 					var11.add(var13);
 					var14 = new ScriptEvent();
@@ -410,7 +410,7 @@ public class WorldMap {
 						var15 = new WorldMapEvent(var13.getElement(), var13.coord1, var13.coord2);
 						var14.setArgs(new Object[]{var15, var1, var2});
 						var14.setType(16);
-						WorldMapLabel.runScriptEvent(var14);
+						Client.runScriptEvent(var14);
 					}
 				}
 
@@ -419,63 +419,74 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(IIZZI)V",
-		garbageValue = "-788666076"
+		signature = "(IIZZB)V",
+		garbageValue = "-96"
 	)
-	public void method6378(int var1, int var2, boolean var3, boolean var4) {
-		long var5 = TaskHandler.currentTimeMillis();
-		this.method6379(var1, var2, var4, var5);
+	public void method6359(int var1, int var2, boolean var3, boolean var4) {
+		long var5 = WorldMapID.currentTimeMillis();
+		this.method6423(var1, var2, var4, var5);
 		if (!this.hasTarget() && (var4 || var3)) {
 			if (var4) {
-				this.field3966 = var1;
-				this.field3981 = var2;
-				this.field3997 = this.centerTileX;
+				this.field3980 = var1;
+				this.field3992 = var2;
+				this.field3978 = this.centerTileX;
 				this.field3979 = this.centerTileY;
 			}
 
-			if (this.field3997 != -1) {
-				int var7 = var1 - this.field3966;
-				int var8 = var2 - this.field3981;
-				this.setWorldMapPosition(this.field3997 - (int)((float)var7 / this.zoomTarget), (int)((float)var8 / this.zoomTarget) + this.field3979, false);
+			if (this.field3978 != -1) {
+				int var7 = var1 - this.field3980;
+				int var8 = var2 - this.field3992;
+				this.setWorldMapPosition(this.field3978 - (int)((float)var7 / this.zoomTarget), (int)((float)var8 / this.zoomTarget) + this.field3979, false);
 			}
 		} else {
-			this.method6383();
+			this.method6532();
 		}
 
 		if (var4) {
-			this.field3982 = var5;
-			this.field3980 = var1;
+			this.field3952 = var5;
+			this.field3982 = var1;
 			this.field3984 = var2;
 		}
 
 	}
 
-	@ObfuscatedName("z")
-	void method6379(int var1, int var2, boolean var3, long var4) {
+	@ObfuscatedName("p")
+	void method6423(int var1, int var2, boolean var3, long var4) {
 		if (this.currentMapArea != null) {
 			int var6 = (int)((float)this.centerTileX + ((float)(var1 - this.worldMapDisplayX) - (float)this.getDisplayWith() * this.zoom / 2.0F) / this.zoom);
 			int var7 = (int)((float)this.centerTileY - ((float)(var2 - this.worldMapDisplayY) - (float)this.getDisplayHeight() * this.zoom / 2.0F) / this.zoom);
 			this.mouseCoord = this.currentMapArea.coord(var6 + this.currentMapArea.getRegionLowX() * 64, var7 + this.currentMapArea.getRegionLowY() * 64);
 			if (this.mouseCoord != null && var3) {
-				if (WorldMapSection0.method254() && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
-					Clock.method3555(this.mouseCoord.x, this.mouseCoord.y, this.mouseCoord.plane, false);
+				boolean var8 = Client.staffModLevel >= 2;
+				int var10;
+				int var11;
+				if (var8 && KeyHandler.KeyHandler_pressedKeys[82] && KeyHandler.KeyHandler_pressedKeys[81]) {
+					int var14 = this.mouseCoord.x;
+					var10 = this.mouseCoord.y;
+					var11 = this.mouseCoord.plane;
+					PacketBufferNode var12 = class2.getPacketBufferNode(ClientPacket.field2251, Client.packetWriter.isaacCipher);
+					var12.packetBuffer.writeIntME(var14);
+					var12.packetBuffer.writeShortLE(0);
+					var12.packetBuffer.writeIntME(var10);
+					var12.packetBuffer.method5569(var11);
+					Client.packetWriter.addNode(var12);
 				} else {
-					boolean var8 = true;
-					if (this.field3957) {
-						int var9 = var1 - this.field3980;
-						int var10 = var2 - this.field3984;
-						if (var4 - this.field3982 > 500L || var9 < -25 || var9 > 25 || var10 < -25 || var10 > 25) {
-							var8 = false;
+					boolean var9 = true;
+					if (this.field3981) {
+						var10 = var1 - this.field3982;
+						var11 = var2 - this.field3984;
+						if (var4 - this.field3952 > 500L || var10 < -25 || var10 > 25 || var11 < -25 || var11 > 25) {
+							var9 = false;
 						}
 					}
 
-					if (var8) {
-						PacketBufferNode var11 = ModelData0.getPacketBufferNode(ClientPacket.field2291, Client.packetWriter.isaacCipher);
-						var11.packetBuffer.method5647(this.mouseCoord.packed());
-						Client.packetWriter.addNode(var11);
-						this.field3982 = 0L;
+					if (var9) {
+						PacketBufferNode var13 = class2.getPacketBufferNode(ClientPacket.field2210, Client.packetWriter.isaacCipher);
+						var13.packetBuffer.writeShortLE(this.mouseCoord.packed());
+						Client.packetWriter.addNode(var13);
+						this.field3952 = 0L;
 					}
 				}
 			}
@@ -485,18 +496,18 @@ public class WorldMap {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-30"
+		signature = "(I)V",
+		garbageValue = "826413742"
 	)
 	@Export("smoothZoom")
 	void smoothZoom() {
-		if (InvDefinition.field3210 != null) {
+		if (class215.field2534 != null) {
 			this.zoom = this.zoomTarget;
 		} else {
 			if (this.zoom < this.zoomTarget) {
-				this.zoom = Math.min(this.zoomTarget, this.zoom + this.zoom / 30.0F);
+				this.zoom = Math.min(this.zoomTarget, this.zoom / 30.0F + this.zoom);
 			}
 
 			if (this.zoom > this.zoomTarget) {
@@ -506,10 +517,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "418852824"
+		garbageValue = "2135583041"
 	)
 	@Export("scrollToTarget")
 	void scrollToTarget() {
@@ -525,7 +536,7 @@ public class WorldMap {
 			}
 
 			this.setWorldMapPosition(var1 + this.centerTileX, var2 + this.centerTileY, true);
-			if (this.centerTileX == this.worldMapTargetX && this.worldMapTargetY == this.centerTileY) {
+			if (this.worldMapTargetX == this.centerTileX && this.centerTileY == this.worldMapTargetY) {
 				this.worldMapTargetX = -1;
 				this.worldMapTargetY = -1;
 			}
@@ -533,48 +544,48 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIZB)V",
-		garbageValue = "-72"
+		signature = "(IIZI)V",
+		garbageValue = "-2141502379"
 	)
 	@Export("setWorldMapPosition")
 	final void setWorldMapPosition(int var1, int var2, boolean var3) {
 		this.centerTileX = var1;
 		this.centerTileY = var2;
-		TaskHandler.currentTimeMillis();
+		WorldMapID.currentTimeMillis();
 		if (var3) {
-			this.method6383();
+			this.method6532();
 		}
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-93"
+		signature = "(I)V",
+		garbageValue = "304166033"
 	)
-	final void method6383() {
-		this.field3981 = -1;
-		this.field3966 = -1;
+	final void method6532() {
+		this.field3992 = -1;
+		this.field3980 = -1;
 		this.field3979 = -1;
-		this.field3997 = -1;
+		this.field3978 = -1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-1462551902"
+		garbageValue = "-1744394107"
 	)
 	@Export("hasTarget")
 	boolean hasTarget() {
 		return this.worldMapTargetX != -1 && this.worldMapTargetY != -1;
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIII)Laf;",
-		garbageValue = "250102276"
+		signature = "(IIII)Laa;",
+		garbageValue = "-1136090862"
 	)
 	@Export("mapAreaAtCoord")
 	public WorldMapArea mapAreaAtCoord(int var1, int var2, int var3) {
@@ -592,12 +603,12 @@ public class WorldMap {
 		return var5;
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(IIIZB)V",
-		garbageValue = "118"
+		signature = "(IIIZI)V",
+		garbageValue = "2020995373"
 	)
-	public void method6381(int var1, int var2, int var3, boolean var4) {
+	public void method6367(int var1, int var2, int var3, boolean var4) {
 		WorldMapArea var5 = this.mapAreaAtCoord(var1, var2, var3);
 		if (var5 == null) {
 			if (!var4) {
@@ -608,8 +619,8 @@ public class WorldMap {
 		}
 
 		boolean var6 = false;
-		if (var5 != this.field3985 || var4) {
-			this.field3985 = var5;
+		if (var5 != this.field3959 || var4) {
+			this.field3959 = var5;
 			this.setCurrentMapArea(var5);
 			var6 = true;
 		}
@@ -620,10 +631,10 @@ public class WorldMap {
 
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "2133824593"
+		signature = "(IB)V",
+		garbageValue = "-41"
 	)
 	@Export("setCurrentMapAreaId")
 	public void setCurrentMapAreaId(int var1) {
@@ -634,30 +645,30 @@ public class WorldMap {
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-116541187"
+		garbageValue = "-1765160144"
 	)
 	@Export("currentMapAreaId")
 	public int currentMapAreaId() {
 		return this.currentMapArea == null ? -1 : this.currentMapArea.getId();
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)Laf;",
-		garbageValue = "335674701"
+		signature = "(I)Laa;",
+		garbageValue = "-987525690"
 	)
 	@Export("getCurrentMapArea")
 	public WorldMapArea getCurrentMapArea() {
 		return this.currentMapArea;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(Laf;I)V",
-		garbageValue = "921553646"
+		signature = "(Laa;B)V",
+		garbageValue = "0"
 	)
 	@Export("setCurrentMapArea")
 	void setCurrentMapArea(WorldMapArea var1) {
@@ -667,10 +678,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Laf;I)V",
-		garbageValue = "1850742503"
+		signature = "(Laa;I)V",
+		garbageValue = "-2040877349"
 	)
 	@Export("initializeWorldMapManager")
 	void initializeWorldMapManager(WorldMapArea var1) {
@@ -679,12 +690,12 @@ public class WorldMap {
 		this.cacheLoader.reset(this.currentMapArea.getInternalName());
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Laf;Lhx;Lhx;ZI)V",
-		garbageValue = "1443129955"
+		signature = "(Laa;Lht;Lht;ZI)V",
+		garbageValue = "-118922828"
 	)
-	public void method6453(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
+	public void method6373(WorldMapArea var1, Coord var2, Coord var3, boolean var4) {
 		if (var1 != null) {
 			if (this.currentMapArea == null || var1 != this.currentMapArea) {
 				this.initializeWorldMapManager(var1);
@@ -699,10 +710,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
 		signature = "(IIII)V",
-		garbageValue = "34733782"
+		garbageValue = "1542600271"
 	)
 	@Export("jump")
 	void jump(int var1, int var2, int var3) {
@@ -717,16 +728,16 @@ public class WorldMap {
 			this.worldMapTargetY = -1;
 			this.zoom = this.getZoomFromPercentage(this.currentMapArea.getZoom());
 			this.zoomTarget = this.zoom;
-			this.field3953 = null;
+			this.field3946 = null;
 			this.iconIterator = null;
 			this.worldMapManager.clearIcons();
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "(IIIIII)V",
-		garbageValue = "2142283598"
+		garbageValue = "-87641945"
 	)
 	@Export("draw")
 	public void draw(int var1, int var2, int var3, int var4, int var5) {
@@ -760,8 +771,9 @@ public class WorldMap {
 			int var8 = (int)Math.ceil((double)((float)var3 / this.zoom));
 			int var9 = (int)Math.ceil((double)((float)var4 / this.zoom));
 			this.worldMapManager.drawTiles(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, var1, var2, var3 + var1, var2 + var4);
+			boolean var10;
 			if (!this.elementsDisabled) {
-				boolean var10 = false;
+				var10 = false;
 				if (var5 - this.field3991 > 100) {
 					this.field3991 = var5;
 					var10 = true;
@@ -770,8 +782,9 @@ public class WorldMap {
 				this.worldMapManager.drawElements(this.centerTileX - var8 / 2, this.centerTileY - var9 / 2, var8 / 2 + this.centerTileX, var9 / 2 + this.centerTileY, var1, var2, var3 + var1, var2 + var4, this.field3989, this.flashingElements, this.flashCycle, this.cyclesPerFlash, var10);
 			}
 
-			this.method6396(var1, var2, var3, var4, var8, var9);
-			if (WorldMapSection0.method254() && this.showCoord && this.mouseCoord != null) {
+			this.method6377(var1, var2, var3, var4, var8, var9);
+			var10 = Client.staffModLevel >= 2;
+			if (var10 && this.showCoord && this.mouseCoord != null) {
 				this.font.draw("Coord: " + this.mouseCoord, Rasterizer2D.Rasterizer2D_xClipStart + 10, Rasterizer2D.Rasterizer2D_yClipStart + 20, 16776960, -1);
 			}
 
@@ -783,18 +796,18 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("aa")
 	@ObfuscatedSignature(
 		signature = "(IIIIIII)Z",
-		garbageValue = "1539911567"
+		garbageValue = "-341847306"
 	)
-	boolean method6517(int var1, int var2, int var3, int var4, int var5, int var6) {
+	boolean method6514(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (this.sprite == null) {
 			return true;
 		} else if (this.sprite.subWidth == var1 && this.sprite.subHeight == var2) {
 			if (this.worldMapManager.pixelsPerTile != this.cachedPixelsPerTile) {
 				return true;
-			} else if (this.field4002 != Client.field863) {
+			} else if (this.field4002 != Client.field749) {
 				return true;
 			} else if (var3 <= 0 && var4 <= 0) {
 				return var3 + var1 < var5 || var2 + var4 < var6;
@@ -806,13 +819,13 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("av")
 	@ObfuscatedSignature(
 		signature = "(IIIIIIB)V",
-		garbageValue = "115"
+		garbageValue = "-53"
 	)
-	void method6396(int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (InvDefinition.field3210 != null) {
+	void method6377(int var1, int var2, int var3, int var4, int var5, int var6) {
+		if (class215.field2534 != null) {
 			int var7 = 512 / (this.worldMapManager.pixelsPerTile * 2);
 			int var8 = var3 + 512;
 			int var9 = var4 + 512;
@@ -821,9 +834,9 @@ public class WorldMap {
 			var9 = (int)((float)var9 / var10);
 			int var11 = this.getDisplayX() - var5 / 2 - var7;
 			int var12 = this.getDisplayY() - var6 / 2 - var7;
-			int var13 = var1 - (var7 + var11 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
+			int var13 = var1 - (var11 + var7 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
 			int var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
-			if (this.method6517(var8, var9, var13, var14, var3, var4)) {
+			if (this.method6514(var8, var9, var13, var14, var3, var4)) {
 				if (this.sprite != null && this.sprite.subWidth == var8 && this.sprite.subHeight == var9) {
 					Arrays.fill(this.sprite.pixels, 0);
 				} else {
@@ -833,26 +846,26 @@ public class WorldMap {
 				this.minCachedTileX = this.getDisplayX() - var5 / 2 - var7;
 				this.minCachedTileY = this.getDisplayY() - var6 / 2 - var7;
 				this.cachedPixelsPerTile = this.worldMapManager.pixelsPerTile;
-				InvDefinition.field3210.method4408(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
-				this.field4002 = Client.field863;
+				class215.field2534.method4318(this.minCachedTileX, this.minCachedTileY, this.sprite, (float)this.cachedPixelsPerTile / var10);
+				this.field4002 = Client.field749;
 				var13 = var1 - (var11 + var7 - this.minCachedTileX) * this.worldMapManager.pixelsPerTile;
 				var14 = var2 - this.worldMapManager.pixelsPerTile * (var7 - (var12 - this.minCachedTileY));
 			}
 
 			Rasterizer2D.Rasterizer2D_fillRectangleAlpha(var1, var2, var3, var4, 0, 128);
-			if (var10 == 1.0F) {
-				this.sprite.method6217(var13, var14, 192);
+			if (1.0F == var10) {
+				this.sprite.method6159(var13, var14, 192);
 			} else {
-				this.sprite.method6220(var13, var14, (int)(var10 * (float)var8), (int)(var10 * (float)var9), 192);
+				this.sprite.method6162(var13, var14, (int)(var10 * (float)var8), (int)(var10 * (float)var9), 192);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
 		signature = "(IIIII)V",
-		garbageValue = "2021601893"
+		garbageValue = "-2078512734"
 	)
 	@Export("drawOverview")
 	public void drawOverview(int var1, int var2, int var3, int var4) {
@@ -868,20 +881,20 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("ad")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-1654225345"
+		signature = "(IB)V",
+		garbageValue = "3"
 	)
 	@Export("setZoomPercentage")
 	public void setZoomPercentage(int var1) {
 		this.zoomTarget = this.getZoomFromPercentage(var1);
 	}
 
-	@ObfuscatedName("am")
+	@ObfuscatedName("ak")
 	@ObfuscatedSignature(
-		signature = "(IIIIII)V",
-		garbageValue = "-392772529"
+		signature = "(IIIIIB)V",
+		garbageValue = "55"
 	)
 	@Export("drawLoading")
 	void drawLoading(int var1, int var2, int var3, int var4, int var5) {
@@ -891,13 +904,13 @@ public class WorldMap {
 		Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
 		Rasterizer2D.Rasterizer2D_drawRectangle(var7 - 152, var8, 304, 34, -65536);
 		Rasterizer2D.Rasterizer2D_fillRectangle(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
-		this.font.drawCentered("Loading...", var7, var6 + var8, -1, -1);
+		this.font.drawCentered("Loading...", var7, var8 + var6, -1, -1);
 	}
 
-	@ObfuscatedName("ai")
+	@ObfuscatedName("au")
 	@ObfuscatedSignature(
 		signature = "(II)F",
-		garbageValue = "2147483647"
+		garbageValue = "-1442342288"
 	)
 	@Export("getZoomFromPercentage")
 	float getZoomFromPercentage(int var1) {
@@ -914,50 +927,50 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("ag")
+	@ObfuscatedName("ah")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1194767053"
+		signature = "(B)I",
+		garbageValue = "0"
 	)
 	@Export("getZoomLevel")
 	public int getZoomLevel() {
-		if (1.0D == (double)this.zoomTarget) {
+		if ((double)this.zoomTarget == 1.0D) {
 			return 25;
 		} else if ((double)this.zoomTarget == 1.5D) {
 			return 37;
-		} else if (2.0D == (double)this.zoomTarget) {
+		} else if ((double)this.zoomTarget == 2.0D) {
 			return 50;
-		} else if ((double)this.zoomTarget == 3.0D) {
+		} else if (3.0D == (double)this.zoomTarget) {
 			return 75;
 		} else {
 			return 4.0D == (double)this.zoomTarget ? 100 : 200;
 		}
 	}
 
-	@ObfuscatedName("ao")
+	@ObfuscatedName("aq")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1827072202"
+		garbageValue = "-1583418166"
 	)
 	@Export("loadCache")
 	public void loadCache() {
 		this.cacheLoader.load();
 	}
 
-	@ObfuscatedName("aw")
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "396230650"
+		signature = "(B)Z",
+		garbageValue = "9"
 	)
 	@Export("isCacheLoaded")
 	public boolean isCacheLoaded() {
 		return this.cacheLoader.isLoaded();
 	}
 
-	@ObfuscatedName("ak")
+	@ObfuscatedName("an")
 	@ObfuscatedSignature(
-		signature = "(IB)Laf;",
-		garbageValue = "-7"
+		signature = "(II)Laa;",
+		garbageValue = "-1454558464"
 	)
 	@Export("getMapArea")
 	public WorldMapArea getMapArea(int var1) {
@@ -975,10 +988,10 @@ public class WorldMap {
 		return var3;
 	}
 
-	@ObfuscatedName("aa")
+	@ObfuscatedName("ar")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "99"
+		signature = "(III)V",
+		garbageValue = "-1969437035"
 	)
 	@Export("setWorldMapPositionTarget")
 	public void setWorldMapPositionTarget(int var1, int var2) {
@@ -988,10 +1001,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("ab")
+	@ObfuscatedName("az")
 	@ObfuscatedSignature(
 		signature = "(III)V",
-		garbageValue = "-728638330"
+		garbageValue = "-1231977956"
 	)
 	@Export("setWorldMapPositionTargetInstant")
 	public void setWorldMapPositionTargetInstant(int var1, int var2) {
@@ -1002,10 +1015,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("ar")
+	@ObfuscatedName("ay")
 	@ObfuscatedSignature(
 		signature = "(IIIB)V",
-		garbageValue = "-72"
+		garbageValue = "37"
 	)
 	@Export("jumpToSourceCoord")
 	public void jumpToSourceCoord(int var1, int var2, int var3) {
@@ -1018,10 +1031,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("av")
+	@ObfuscatedName("ag")
 	@ObfuscatedSignature(
 		signature = "(IIII)V",
-		garbageValue = "87939973"
+		garbageValue = "-429166705"
 	)
 	@Export("jumpToSourceCoordInstant")
 	public void jumpToSourceCoordInstant(int var1, int var2, int var3) {
@@ -1034,60 +1047,60 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("aq")
+	@ObfuscatedName("ac")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-89"
+		signature = "(I)I",
+		garbageValue = "-640061076"
 	)
 	@Export("getDisplayX")
 	public int getDisplayX() {
 		return this.currentMapArea == null ? -1 : this.centerTileX + this.currentMapArea.getRegionLowX() * 64;
 	}
 
-	@ObfuscatedName("ac")
+	@ObfuscatedName("al")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-67"
+		signature = "(I)I",
+		garbageValue = "-1240183513"
 	)
 	@Export("getDisplayY")
 	public int getDisplayY() {
 		return this.currentMapArea == null ? -1 : this.centerTileY + this.currentMapArea.getRegionLowY() * 64;
 	}
 
-	@ObfuscatedName("az")
+	@ObfuscatedName("ae")
 	@ObfuscatedSignature(
-		signature = "(B)Lhx;",
-		garbageValue = "101"
+		signature = "(I)Lht;",
+		garbageValue = "1271020652"
 	)
 	@Export("getDisplayCoord")
 	public Coord getDisplayCoord() {
 		return this.currentMapArea == null ? null : this.currentMapArea.coord(this.getDisplayX(), this.getDisplayY());
 	}
 
-	@ObfuscatedName("at")
+	@ObfuscatedName("ad")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-587716195"
+		garbageValue = "310550352"
 	)
 	@Export("getDisplayWith")
 	public int getDisplayWith() {
 		return this.worldMapDisplayWidth;
 	}
 
-	@ObfuscatedName("ae")
+	@ObfuscatedName("aj")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-6"
+		signature = "(I)I",
+		garbageValue = "-238486844"
 	)
 	@Export("getDisplayHeight")
 	public int getDisplayHeight() {
 		return this.worldMapDisplayHeight;
 	}
 
-	@ObfuscatedName("aj")
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-776452419"
+		garbageValue = "1755019724"
 	)
 	@Export("setMaxFlashCount")
 	public void setMaxFlashCount(int var1) {
@@ -1097,20 +1110,20 @@ public class WorldMap {
 
 	}
 
-	@ObfuscatedName("ap")
+	@ObfuscatedName("at")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "2112620729"
+		garbageValue = "1329529501"
 	)
 	@Export("resetMaxFlashCount")
 	public void resetMaxFlashCount() {
 		this.maxFlashCount = 3;
 	}
 
-	@ObfuscatedName("an")
+	@ObfuscatedName("af")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-1674194456"
+		signature = "(IB)V",
+		garbageValue = "42"
 	)
 	@Export("setCyclesPerFlash")
 	public void setCyclesPerFlash(int var1) {
@@ -1120,30 +1133,30 @@ public class WorldMap {
 
 	}
 
-	@ObfuscatedName("al")
+	@ObfuscatedName("ap")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "29"
+		signature = "(I)V",
+		garbageValue = "1817253337"
 	)
 	@Export("resetCyclesPerFlash")
 	public void resetCyclesPerFlash() {
 		this.cyclesPerFlash = 50;
 	}
 
-	@ObfuscatedName("ay")
+	@ObfuscatedName("ai")
 	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-2012607233"
+		signature = "(ZB)V",
+		garbageValue = "50"
 	)
 	@Export("setPerpetualFlash")
 	public void setPerpetualFlash(boolean var1) {
 		this.perpetualFlash = var1;
 	}
 
-	@ObfuscatedName("ax")
+	@ObfuscatedName("am")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-1095491529"
+		garbageValue = "1830281477"
 	)
 	@Export("flashElement")
 	public void flashElement(int var1) {
@@ -1153,10 +1166,10 @@ public class WorldMap {
 		this.flashCycle = 0;
 	}
 
-	@ObfuscatedName("au")
+	@ObfuscatedName("ab")
 	@ObfuscatedSignature(
 		signature = "(IB)V",
-		garbageValue = "118"
+		garbageValue = "0"
 	)
 	@Export("flashCategory")
 	public void flashCategory(int var1) {
@@ -1164,38 +1177,38 @@ public class WorldMap {
 		this.flashCount = 0;
 		this.flashCycle = 0;
 
-		for (int var2 = 0; var2 < WorldMapElement.WorldMapElement_count; ++var2) {
-			if (Varcs.WorldMapElement_get(var2) != null && Varcs.WorldMapElement_get(var2).category == var1) {
-				this.flashingElements.add(Varcs.WorldMapElement_get(var2).objectId);
+		for (int var2 = 0; var2 < class180.WorldMapElement_count; ++var2) {
+			if (GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var2) != null && GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var2).category == var1) {
+				this.flashingElements.add(GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var2).objectId);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("as")
+	@ObfuscatedName("bj")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-682947928"
+		signature = "(B)V",
+		garbageValue = "104"
 	)
 	@Export("stopCurrentFlashes")
 	public void stopCurrentFlashes() {
 		this.flashingElements = null;
 	}
 
-	@ObfuscatedName("ah")
+	@ObfuscatedName("bg")
 	@ObfuscatedSignature(
 		signature = "(ZI)V",
-		garbageValue = "810003234"
+		garbageValue = "315793353"
 	)
 	@Export("setElementsDisabled")
 	public void setElementsDisabled(boolean var1) {
 		this.elementsDisabled = !var1;
 	}
 
-	@ObfuscatedName("bi")
+	@ObfuscatedName("bw")
 	@ObfuscatedSignature(
 		signature = "(IZI)V",
-		garbageValue = "-2063721830"
+		garbageValue = "-1035576762"
 	)
 	@Export("disableElement")
 	public void disableElement(int var1, boolean var2) {
@@ -1205,13 +1218,13 @@ public class WorldMap {
 			this.enabledElements.remove(var1);
 		}
 
-		this.method6428();
+		this.method6409();
 	}
 
-	@ObfuscatedName("bo")
+	@ObfuscatedName("bk")
 	@ObfuscatedSignature(
 		signature = "(IZI)V",
-		garbageValue = "-2093321412"
+		garbageValue = "-900905988"
 	)
 	@Export("setCategoryDisabled")
 	public void setCategoryDisabled(int var1, boolean var2) {
@@ -1221,9 +1234,9 @@ public class WorldMap {
 			this.enabledCategories.remove(var1);
 		}
 
-		for (int var3 = 0; var3 < WorldMapElement.WorldMapElement_count; ++var3) {
-			if (Varcs.WorldMapElement_get(var3) != null && Varcs.WorldMapElement_get(var3).category == var1) {
-				int var4 = Varcs.WorldMapElement_get(var3).objectId;
+		for (int var3 = 0; var3 < class180.WorldMapElement_count; ++var3) {
+			if (GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var3) != null && GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var3).category == var1) {
+				int var4 = GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var3).objectId;
 				if (!var2) {
 					this.enabledElementIds.add(var4);
 				} else {
@@ -1232,61 +1245,61 @@ public class WorldMap {
 			}
 		}
 
-		this.method6428();
+		this.method6409();
 	}
 
-	@ObfuscatedName("bx")
+	@ObfuscatedName("bl")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-102"
+		signature = "(I)Z",
+		garbageValue = "-1450981799"
 	)
 	@Export("getElementsDisabled")
 	public boolean getElementsDisabled() {
 		return !this.elementsDisabled;
 	}
 
-	@ObfuscatedName("bu")
+	@ObfuscatedName("bq")
 	@ObfuscatedSignature(
 		signature = "(II)Z",
-		garbageValue = "-2079425256"
+		garbageValue = "-2012828359"
 	)
 	@Export("isElementDisabled")
 	public boolean isElementDisabled(int var1) {
 		return !this.enabledElements.contains(var1);
 	}
 
-	@ObfuscatedName("bd")
+	@ObfuscatedName("bx")
 	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "35"
+		signature = "(II)Z",
+		garbageValue = "-521010176"
 	)
 	@Export("isCategoryDisabled")
 	public boolean isCategoryDisabled(int var1) {
 		return !this.enabledCategories.contains(var1);
 	}
 
-	@ObfuscatedName("bn")
+	@ObfuscatedName("bc")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "122"
+		signature = "(I)V",
+		garbageValue = "1601699261"
 	)
-	void method6428() {
+	void method6409() {
 		this.field3989.clear();
 		this.field3989.addAll(this.enabledElements);
 		this.field3989.addAll(this.enabledElementIds);
 	}
 
-	@ObfuscatedName("bj")
+	@ObfuscatedName("by")
 	@ObfuscatedSignature(
 		signature = "(IIIIIII)V",
-		garbageValue = "-1575355810"
+		garbageValue = "-1315174671"
 	)
 	@Export("addElementMenuOptions")
 	public void addElementMenuOptions(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if (this.cacheLoader.isLoaded()) {
 			int var7 = (int)Math.ceil((double)((float)var3 / this.zoom));
 			int var8 = (int)Math.ceil((double)((float)var4 / this.zoom));
-			List var9 = this.worldMapManager.method645(this.centerTileX - var7 / 2 - 1, this.centerTileY - var8 / 2 - 1, var7 / 2 + this.centerTileX + 1, var8 / 2 + this.centerTileY + 1, var1, var2, var3, var4, var5, var6);
+			List var9 = this.worldMapManager.method647(this.centerTileX - var7 / 2 - 1, this.centerTileY - var8 / 2 - 1, var7 / 2 + this.centerTileX + 1, var8 / 2 + this.centerTileY + 1, var1, var2, var3, var4, var5, var6);
 			if (!var9.isEmpty()) {
 				Iterator var10 = var9.iterator();
 
@@ -1297,12 +1310,12 @@ public class WorldMap {
 					}
 
 					AbstractWorldMapIcon var11 = (AbstractWorldMapIcon)var10.next();
-					WorldMapElement var12 = Varcs.WorldMapElement_get(var11.getElement());
+					WorldMapElement var12 = GrandExchangeOfferUnitPriceComparator.WorldMapElement_get(var11.getElement());
 					var13 = false;
 
 					for (int var14 = this.menuOpcodes.length - 1; var14 >= 0; --var14) {
 						if (var12.menuActions[var14] != null) {
-							WorldMapSprite.insertMenuItemNoShift(var12.menuActions[var14], var12.menuTargetName, this.menuOpcodes[var14], var11.getElement(), var11.coord1.packed(), var11.coord2.packed());
+							class1.insertMenuItemNoShift(var12.menuActions[var14], var12.menuTargetName, this.menuOpcodes[var14], var11.getElement(), var11.coord1.packed(), var11.coord2.packed());
 							var13 = true;
 						}
 					}
@@ -1312,12 +1325,12 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("bm")
+	@ObfuscatedName("bz")
 	@ObfuscatedSignature(
-		signature = "(ILhx;B)Lhx;",
-		garbageValue = "8"
+		signature = "(ILht;I)Lht;",
+		garbageValue = "1569536165"
 	)
-	public Coord method6430(int var1, Coord var2) {
+	public Coord method6416(int var1, Coord var2) {
 		if (!this.cacheLoader.isLoaded()) {
 			return null;
 		} else if (!this.worldMapManager.isLoaded()) {
@@ -1343,7 +1356,7 @@ public class WorldMap {
 						var8 = (AbstractWorldMapIcon)var7.next();
 						int var9 = var8.coord2.x - var2.x;
 						int var10 = var8.coord2.y - var2.y;
-						var11 = var9 * var9 + var10 * var10;
+						var11 = var10 * var10 + var9 * var9;
 						if (var11 == 0) {
 							return var8.coord2;
 						}
@@ -1358,10 +1371,10 @@ public class WorldMap {
 		}
 	}
 
-	@ObfuscatedName("bq")
+	@ObfuscatedName("bm")
 	@ObfuscatedSignature(
-		signature = "(IILhx;Lhx;I)V",
-		garbageValue = "-891012179"
+		signature = "(IILht;Lht;I)V",
+		garbageValue = "-268236233"
 	)
 	@Export("worldMapMenuAction")
 	public void worldMapMenuAction(int var1, int var2, Coord var3, Coord var4) {
@@ -1385,13 +1398,13 @@ public class WorldMap {
 			var5.setType(14);
 		}
 
-		WorldMapLabel.runScriptEvent(var5);
+		Client.runScriptEvent(var5);
 	}
 
-	@ObfuscatedName("bf")
+	@ObfuscatedName("bo")
 	@ObfuscatedSignature(
-		signature = "(I)Laa;",
-		garbageValue = "-2118416686"
+		signature = "(S)Lao;",
+		garbageValue = "-10343"
 	)
 	@Export("iconStart")
 	public AbstractWorldMapIcon iconStart() {
@@ -1401,23 +1414,23 @@ public class WorldMap {
 			return null;
 		} else {
 			HashMap var1 = this.worldMapManager.buildIcons();
-			this.field3953 = new LinkedList();
+			this.field3946 = new LinkedList();
 			Iterator var2 = var1.values().iterator();
 
 			while (var2.hasNext()) {
 				List var3 = (List)var2.next();
-				this.field3953.addAll(var3);
+				this.field3946.addAll(var3);
 			}
 
-			this.iconIterator = this.field3953.iterator();
+			this.iconIterator = this.field3946.iterator();
 			return this.iconNext();
 		}
 	}
 
-	@ObfuscatedName("by")
+	@ObfuscatedName("bs")
 	@ObfuscatedSignature(
-		signature = "(I)Laa;",
-		garbageValue = "1972262999"
+		signature = "(B)Lao;",
+		garbageValue = "88"
 	)
 	@Export("iconNext")
 	public AbstractWorldMapIcon iconNext() {
