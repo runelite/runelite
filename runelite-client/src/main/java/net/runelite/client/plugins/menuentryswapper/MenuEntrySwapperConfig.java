@@ -234,7 +234,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapJewelleryBox",
-		name = "Jewelry Box",
+		name = "Jewellery Box",
 		description = "Swap Teleport Menu with previous destination on Jewellery Box"
 	)
 	default boolean swapJewelleryBox()
