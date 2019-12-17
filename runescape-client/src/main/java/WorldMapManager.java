@@ -87,13 +87,13 @@ public final class WorldMapManager {
 	final HashMap fonts;
 	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -517203904
+		intValue = -880496543
 	)
 	@Export("tileX")
 	int tileX;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 800911040
+		intValue = -457247813
 	)
 	@Export("tileY")
 	int tileY;
