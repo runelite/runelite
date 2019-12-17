@@ -71,10 +71,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "farmingNotification",
+		name = "Farming notification",
+		description = "Notify you when your crops are ready to harvest",
+		position = 4
+	)
+	default boolean farmingNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 5
 	)
 	default int defaultTimerMinutes()
 	{

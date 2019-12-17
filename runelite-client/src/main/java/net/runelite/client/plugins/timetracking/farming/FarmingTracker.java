@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -49,6 +50,7 @@ public class FarmingTracker
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
+	private final Notifier notifier;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -58,15 +60,18 @@ public class FarmingTracker
 	 */
 	private final Map<Tab, Long> completionTimes = new EnumMap<>(Tab.class);
 
+	private final Map<PatchImplementation, Long> patchNotificationTimes = new EnumMap<>(PatchImplementation.class);
+
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, FarmingWorld farmingWorld)
+						   TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
 		this.farmingWorld = farmingWorld;
+		this.notifier = notifier;
 	}
 
 
@@ -252,6 +257,22 @@ public class FarmingTracker
 		return completionTime == null ? -1 : completionTime;
 	}
 
+	public boolean notificationCheck()
+	{
+		Long now = Instant.now().getEpochSecond();
+		if (config.farmingNotification())
+		{
+			patchNotificationTimes.forEach((patchImplementation, notificationTime) -> {
+				if (notificationTime <= now)
+				{
+					notifier.notify(String.format("Your %s %s ready to be harvested", patchImplementation.getName().toLowerCase(), patchImplementation.getPluralityWord()));
+				}
+			});
+		}
+
+		return patchNotificationTimes.values().removeIf(notificationTime -> (notificationTime <= now));
+	}
+
 	/**
 	 * Updates the overall completion time for the given patch type.
 	 *
@@ -259,6 +280,7 @@ public class FarmingTracker
 	 */
 	private void updateCompletionTime()
 	{
+		Long now = Instant.now().getEpochSecond();
 		for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
 		{
 			long maxCompletionTime = 0;
@@ -281,6 +303,10 @@ public class FarmingTracker
 
 					// update max duration if this patch takes longer to grow
 					maxCompletionTime = Math.max(maxCompletionTime, prediction.getDoneEstimate());
+					if (prediction.getDoneEstimate() > now)
+					{
+						patchNotificationTimes.put(patch.getImplementation(), Math.max(prediction.getDoneEstimate(), patchNotificationTimes.getOrDefault(patch.getImplementation(), 0L)));
+					}
 				}
 			}
 
@@ -297,7 +323,7 @@ public class FarmingTracker
 				state = SummaryState.EMPTY;
 				completionTime = -1L;
 			}
-			else if (maxCompletionTime <= Instant.now().getEpochSecond())
+			else if (maxCompletionTime <= now)
 			{
 				state = SummaryState.COMPLETED;
 				completionTime = 0;

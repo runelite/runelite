@@ -33,7 +33,7 @@ import net.runelite.client.plugins.timetracking.Tab;
 @Getter
 public enum PatchImplementation
 {
-	BELLADONNA(Tab.SPECIAL, "")
+	BELLADONNA(Tab.SPECIAL, "Belladonna", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -71,7 +71,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	MUSHROOM(Tab.SPECIAL, "")
+	MUSHROOM(Tab.SPECIAL, "Mushrooms", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -109,7 +109,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HESPORI(Tab.SPECIAL, "")
+	HESPORI(Tab.SPECIAL, "Hespori", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -137,7 +137,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	ALLOTMENT(Tab.ALLOTMENT, "")
+	ALLOTMENT(Tab.ALLOTMENT, "Allotments", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -470,7 +470,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HERB(Tab.HERB, "")
+	HERB(Tab.HERB, "Herbs", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -738,7 +738,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FLOWER(Tab.FLOWER, "")
+	FLOWER(Tab.FLOWER, "Flowers", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1011,7 +1011,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	BUSH(Tab.BUSH, "")
+	BUSH(Tab.BUSH, "Bushes", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1244,7 +1244,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FRUIT_TREE(Tab.FRUIT_TREE, "")
+	FRUIT_TREE(Tab.FRUIT_TREE, "Fruit Trees", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1527,7 +1527,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HOPS(Tab.HOPS, "")
+	HOPS(Tab.HOPS, "Hops", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1830,7 +1830,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	TREE(Tab.TREE, "")
+	TREE(Tab.TREE, "Trees", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2113,7 +2113,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HARDWOOD_TREE(Tab.TREE, "Hardwood Trees")
+	HARDWOOD_TREE(Tab.TREE, "Hardwood Trees", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2196,7 +2196,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	REDWOOD(Tab.TREE, "Redwood Trees")
+	REDWOOD(Tab.TREE, "Redwood Trees", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2244,7 +2244,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	SPIRIT_TREE(Tab.TREE, "Spirit Trees")
+	SPIRIT_TREE(Tab.TREE, "Spirit Trees", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2292,7 +2292,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	ANIMA(Tab.SPECIAL, "")
+	ANIMA(Tab.SPECIAL, "Anima", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2339,7 +2339,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	CACTUS(Tab.SPECIAL, "Cactus")
+	CACTUS(Tab.SPECIAL, "Cactus", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2412,7 +2412,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	SEAWEED(Tab.SPECIAL, "Seaweed")
+	SEAWEED(Tab.SPECIAL, "Seaweed", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2450,7 +2450,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	CALQUAT(Tab.FRUIT_TREE, "Calquat")
+	CALQUAT(Tab.FRUIT_TREE, "Calquat", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2493,7 +2493,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	CELASTRUS(Tab.FRUIT_TREE, "Celastrus")
+	CELASTRUS(Tab.FRUIT_TREE, "Celastrus", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2551,7 +2551,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GRAPES(Tab.GRAPE, "")
+	GRAPES(Tab.GRAPE, "Grapes", "are")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2576,7 +2576,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	CRYSTAL_TREE(Tab.FRUIT_TREE, "Crystal Tree")
+	CRYSTAL_TREE(Tab.FRUIT_TREE, "Crystal Tree", "is")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2611,4 +2611,6 @@ public enum PatchImplementation
 	private final Tab tab;
 
 	private final String name;
+
+	private final String pluralityWord;
 }

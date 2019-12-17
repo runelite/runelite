@@ -211,9 +211,7 @@ public class TimeTrackingPlugin extends Plugin
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
 	public void checkCompletion()
 	{
-		boolean birdHouseDataChanged = birdHouseTracker.checkCompletion();
-
-		if (birdHouseDataChanged)
+		if (birdHouseTracker.checkCompletion() || farmingTracker.notificationCheck())
 		{
 			panel.update();
 		}
