@@ -23,13 +23,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const val kotlinVersion = "1.3.50"
-
 object ProjectVersions {
     const val launcherVersion = "2.0.4"
-    const val rlVersion = "1.5.44-SNAPSHOT"
+    const val rlVersion = "1.5.43"
 
-    const val openosrsVersion = "2.1.18-SNAPSHOT"
+    const val openosrsVersion = "2.1.18"
 
     const val rsversion = 187
     const val cacheversion = 165
@@ -64,13 +62,8 @@ object Libraries {
         const val guice = "4.2.2"
         const val h2 = "1.4.200"
         const val hamcrest = "2.2"
-        const val httpcore = "4.4.12"
-        const val httpmime = "4.5.10"
-        const val javassist = "3.26.0-GA"
         const val javax = "1.3.2"
         const val javaxInject = "1"
-        const val jbsdiff = "1.0"
-        const val jclCore = "2.8"
         const val jedis = "3.1.0"
         const val jna = "5.5.0"
         const val jogamp = "2.3.2"
@@ -114,7 +107,6 @@ object Libraries {
     const val apacheCommonsText = "org.apache.commons:commons-text:${Versions.apacheCommonsText}"
     const val asmAll = "org.ow2.asm:asm:${Versions.asm}"
     const val asmUtil = "org.ow2.asm:asm-util:${Versions.asm}"
-    const val asmTree = "org.ow2.asm:asm-tree:${Versions.asm}"
     const val commonsCli = "commons-cli:commons-cli:${Versions.commonsCli}"
     const val discord = "net.runelite:discord:${Versions.discord}"
     const val fernflower = "net.runelite:fernflower:${Versions.fernflower}"
@@ -126,13 +118,8 @@ object Libraries {
     const val guiceTestlib = "com.google.inject.extensions:guice-testlib:${Versions.guice}"
     const val h2 = "com.h2database:h2:${Versions.h2}"
     const val hamcrest = "org.hamcrest:hamcrest-library:${Versions.hamcrest}"
-    const val httpcore = "org.apache.httpcomponents:httpcore:${Versions.httpcore}"
-    const val httpmime = "org.apache.httpcomponents:httpmime:${Versions.httpmime}"
-    const val javassist = "org.javassist:javassist:${Versions.javassist}"
     const val javax = "javax.annotation:javax.annotation-api:${Versions.javax}"
     const val javaxInject = "javax.inject:javax.inject:${Versions.javaxInject}"
-    const val jbsdiff = "io.sigpipe:jbsdiff:${Versions.jbsdiff}"
-    const val jclCore = "org.xeustechnologies:jcl-core:${Versions.jclCore}"
     const val jedis = "redis.clients:jedis:${Versions.jedis}"
     const val jna = "net.java.dev.jna:jna:${Versions.jna}"
     const val jnaPlatform = "net.java.dev.jna:jna-platform:${Versions.jna}"

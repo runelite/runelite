@@ -27,7 +27,7 @@ package net.runelite.http.api.hiscore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HiscoreResultBuilder
+class HiscoreResultBuilder
 {
 	private String player;
 	private final List<Skill> skills = new ArrayList<>();
@@ -37,7 +37,7 @@ public class HiscoreResultBuilder
 		this.player = player;
 	}
 
-	public void setNextSkill(Skill skill)
+	void setNextSkill(Skill skill)
 	{
 		skills.add(skill);
 	}
@@ -51,41 +51,89 @@ public class HiscoreResultBuilder
 	{
 		HiscoreResult hiscoreResult = new HiscoreResult();
 		hiscoreResult.setPlayer(player);
-		hiscoreResult.setOverall(skills.get(0));
-		hiscoreResult.setAttack(skills.get(1));
-		hiscoreResult.setDefence(skills.get(2));
-		hiscoreResult.setStrength(skills.get(3));
-		hiscoreResult.setHitpoints(skills.get(4));
-		hiscoreResult.setRanged(skills.get(5));
-		hiscoreResult.setPrayer(skills.get(6));
-		hiscoreResult.setMagic(skills.get(7));
-		hiscoreResult.setCooking(skills.get(8));
-		hiscoreResult.setWoodcutting(skills.get(9));
-		hiscoreResult.setFletching(skills.get(10));
-		hiscoreResult.setFishing(skills.get(11));
-		hiscoreResult.setFiremaking(skills.get(12));
-		hiscoreResult.setCrafting(skills.get(13));
-		hiscoreResult.setSmithing(skills.get(14));
-		hiscoreResult.setMining(skills.get(15));
-		hiscoreResult.setHerblore(skills.get(16));
-		hiscoreResult.setAgility(skills.get(17));
-		hiscoreResult.setThieving(skills.get(18));
-		hiscoreResult.setSlayer(skills.get(19));
-		hiscoreResult.setFarming(skills.get(20));
-		hiscoreResult.setRunecraft(skills.get(21));
-		hiscoreResult.setHunter(skills.get(22));
-		hiscoreResult.setConstruction(skills.get(23));
-		hiscoreResult.setLeaguePoints(skills.get(24));
-		hiscoreResult.setBountyHunterHunter(skills.get(25));
-		hiscoreResult.setBountyHunterRogue(skills.get(26));
-		hiscoreResult.setClueScrollAll(skills.get(27));
-		hiscoreResult.setClueScrollBeginner(skills.get(28));
-		hiscoreResult.setClueScrollEasy(skills.get(29));
-		hiscoreResult.setClueScrollMedium(skills.get(30));
-		hiscoreResult.setClueScrollHard(skills.get(31));
-		hiscoreResult.setClueScrollElite(skills.get(32));
-		hiscoreResult.setClueScrollMaster(skills.get(33));
-		hiscoreResult.setLastManStanding(skills.get(34));
+		int index = 0;
+		hiscoreResult.setOverall(skills.get(index++));
+		hiscoreResult.setAttack(skills.get(index++));
+		hiscoreResult.setDefence(skills.get(index++));
+		hiscoreResult.setStrength(skills.get(index++));
+		hiscoreResult.setHitpoints(skills.get(index++));
+		hiscoreResult.setRanged(skills.get(index++));
+		hiscoreResult.setPrayer(skills.get(index++));
+		hiscoreResult.setMagic(skills.get(index++));
+		hiscoreResult.setCooking(skills.get(index++));
+		hiscoreResult.setWoodcutting(skills.get(index++));
+		hiscoreResult.setFletching(skills.get(index++));
+		hiscoreResult.setFishing(skills.get(index++));
+		hiscoreResult.setFiremaking(skills.get(index++));
+		hiscoreResult.setCrafting(skills.get(index++));
+		hiscoreResult.setSmithing(skills.get(index++));
+		hiscoreResult.setMining(skills.get(index++));
+		hiscoreResult.setHerblore(skills.get(index++));
+		hiscoreResult.setAgility(skills.get(index++));
+		hiscoreResult.setThieving(skills.get(index++));
+		hiscoreResult.setSlayer(skills.get(index++));
+		hiscoreResult.setFarming(skills.get(index++));
+		hiscoreResult.setRunecraft(skills.get(index++));
+		hiscoreResult.setHunter(skills.get(index++));
+		hiscoreResult.setConstruction(skills.get(index++));
+		hiscoreResult.setLeaguePoints(skills.get(index++));
+		hiscoreResult.setBountyHunterHunter(skills.get(index++));
+		hiscoreResult.setBountyHunterRogue(skills.get(index++));
+		hiscoreResult.setClueScrollAll(skills.get(index++));
+		hiscoreResult.setClueScrollBeginner(skills.get(index++));
+		hiscoreResult.setClueScrollEasy(skills.get(index++));
+		hiscoreResult.setClueScrollMedium(skills.get(index++));
+		hiscoreResult.setClueScrollHard(skills.get(index++));
+		hiscoreResult.setClueScrollElite(skills.get(index++));
+		hiscoreResult.setClueScrollMaster(skills.get(index++));
+		hiscoreResult.setLastManStanding(skills.get(index++));
+		// seasonal doesn't have boss hiscores
+		if (index < skills.size())
+		{
+			hiscoreResult.setAbyssalSire(skills.get(index++));
+			hiscoreResult.setAlchemicalHydra(skills.get(index++));
+			hiscoreResult.setBarrowsChests(skills.get(index++));
+			hiscoreResult.setBryophyta(skills.get(index++));
+//			hiscoreResult.setCallisto(skills.get(index++));
+//			hiscoreResult.setCerberus(skills.get(index++));
+			hiscoreResult.setChambersOfXeric(skills.get(index++));
+			hiscoreResult.setChambersOfXericChallengeMode(skills.get(index++));
+			hiscoreResult.setChaosElemental(skills.get(index++));
+			hiscoreResult.setChaosFanatic(skills.get(index++));
+			hiscoreResult.setCommanderZilyana(skills.get(index++));
+			hiscoreResult.setCorporealBeast(skills.get(index++));
+			hiscoreResult.setCrazyArchaeologist(skills.get(index++));
+			hiscoreResult.setDagannothPrime(skills.get(index++));
+			hiscoreResult.setDagannothRex(skills.get(index++));
+			hiscoreResult.setDagannothSupreme(skills.get(index++));
+			hiscoreResult.setDerangedArchaeologist(skills.get(index++));
+			hiscoreResult.setGeneralGraardor(skills.get(index++));
+			hiscoreResult.setGiantMole(skills.get(index++));
+			hiscoreResult.setGrotesqueGuardians(skills.get(index++));
+			hiscoreResult.setHespori(skills.get(index++));
+			hiscoreResult.setKalphiteQueen(skills.get(index++));
+			hiscoreResult.setKingBlackDragon(skills.get(index++));
+			hiscoreResult.setKraken(skills.get(index++));
+			hiscoreResult.setKreearra(skills.get(index++));
+			hiscoreResult.setKrilTsutsaroth(skills.get(index++));
+			hiscoreResult.setMimic(skills.get(index++));
+			hiscoreResult.setObor(skills.get(index++));
+			hiscoreResult.setSarachnis(skills.get(index++));
+			hiscoreResult.setScorpia(skills.get(index++));
+			hiscoreResult.setSkotizo(skills.get(index++));
+			hiscoreResult.setGauntlet(skills.get(index++));
+			hiscoreResult.setCorruptedGauntlet(skills.get(index++));
+			hiscoreResult.setTheatreOfBlood(skills.get(index++));
+			hiscoreResult.setThermonuclearSmokeDevil(skills.get(index++));
+			hiscoreResult.setTzKalZuk(skills.get(index++));
+			hiscoreResult.setTzTokJad(skills.get(index++));
+			hiscoreResult.setVenenatis(skills.get(index++));
+			hiscoreResult.setVetion(skills.get(index++));
+			hiscoreResult.setVorkath(skills.get(index++));
+			hiscoreResult.setWintertodt(skills.get(index++));
+			hiscoreResult.setZalcano(skills.get(index++));
+			hiscoreResult.setZulrah(skills.get(index++));
+		}
 		return hiscoreResult;
 	}
 }
