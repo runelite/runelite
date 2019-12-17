@@ -185,7 +185,7 @@ public class ItemStatChanges
 		add(combo(2, boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), GUTHIX_REST1, GUTHIX_REST2, GUTHIX_REST3, GUTHIX_REST4);
 
 		// Misc/run energy
-		add(heal(RUN_ENERGY, 10), WHITE_TREE_FRUIT);
+		add(combo(food(3), range(heal(RUN_ENERGY, 5), heal(RUN_ENERGY, 10))), WHITE_TREE_FRUIT);
 		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT);
 		add(heal(RUN_ENERGY, 50), MINT_CAKE);
 		add(combo(food(12), heal(RUN_ENERGY, 50)), GOUT_TUBER);
