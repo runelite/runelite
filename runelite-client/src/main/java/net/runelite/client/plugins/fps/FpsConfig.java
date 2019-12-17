@@ -70,6 +70,10 @@ public interface FpsConfig extends Config
 		return false;
 	}
 
+	@Range(
+		min = 1,
+		max = 50
+	)
 	@ConfigItem(
 		keyName = "maxFpsUnfocused",
 		name = "Unfocused FPS target",
