@@ -217,5 +217,15 @@ public final class ScriptID
 	 */
 	@ScriptArguments(string = 1)
 	public static final int PUBLICMSG = 13337;
+
+	/**
+	 * Attempts to kick the specified player from the Clan Chat
+	 * <ul>
+	 * <li>String Players in-game name</li>
+	 * </ul>
+	 */
+	@ScriptArguments(string = 1)
+	public static final int CLAN_SEND_KICK = 215;
+
 }
 

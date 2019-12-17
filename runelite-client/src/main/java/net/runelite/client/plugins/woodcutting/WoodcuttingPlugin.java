@@ -42,6 +42,8 @@ import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuOpcode;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectChanged;
@@ -217,8 +219,12 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (tree.getRespawnTime() != null && !recentlyLoggedIn)
 			{
+				Point max = object.getSceneMaxLocation();
+				Point min = object.getSceneMinLocation();
+				int lenX = max.getX() - min.getX();
+				int lenY = max.getY() - min.getY();
 				log.debug("Adding respawn timer for {} tree at {}", tree, object.getLocalLocation());
-				TreeRespawn treeRespawn = new TreeRespawn(tree, object.getLocalLocation(), Instant.now(), (int) tree.getRespawnTime().toMillis());
+				TreeRespawn treeRespawn = new TreeRespawn(tree, lenX, lenY, WorldPoint.fromScene(client, min.getX(), min.getY(), client.getPlane()), Instant.now(), (int) tree.getRespawnTime().toMillis());
 				respawns.add(treeRespawn);
 			}
 
@@ -240,9 +246,9 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
-			case LOADING:
 			case HOPPING:
 				respawns.clear();
+			case LOADING:
 				treeObjects.clear();
 				break;
 			case LOGGED_IN:

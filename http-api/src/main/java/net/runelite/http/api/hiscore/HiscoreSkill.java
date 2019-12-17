@@ -24,6 +24,11 @@
  */
 package net.runelite.http.api.hiscore;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum HiscoreSkill
 {
 	OVERALL("Overall"),
@@ -60,17 +65,50 @@ public enum HiscoreSkill
 	CLUE_SCROLL_HARD("Clue Scrolls (hard)"),
 	CLUE_SCROLL_ELITE("Clue Scrolls (elite)"),
 	CLUE_SCROLL_MASTER("Clue Scrolls (master)"),
-	LAST_MAN_STANDING("Last Man Standing");
+	LAST_MAN_STANDING("Last Man Standing"),
+	ABYSSAL_SIRE("Abyssal Sire"),
+	ALCHEMICAL_HYDRA("Alchemical Hydra"),
+	BARROWS_CHESTS("Barrows Chests"),
+	BRYOPHYTA("Bryophyta"),
+	CALLISTO("Callisto"),
+	CERBERUS("Cerberus"),
+	CHAMBERS_OF_XERIC("Chambers of Xeric"),
+	CHAMBERS_OF_XERIC_CHALLENGE_MODE("Chambers of Xeric: Challenge Mode"),
+	CHAOS_ELEMENTAL("Chaos Elemental"),
+	CHAOS_FANATIC("Chaos Fanatic"),
+	COMMMANDER_ZILYANA("Commander Zilyana"),
+	CORPOREAL_BEAST("Corporeal Beast"),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist"),
+	DAGANNOTH_PRIME("Dagannoth Prime"),
+	DAGANNOTH_REX("Dagannoth Rex"),
+	DAGANNOTH_SUPREME("Dagannoth Supreme"),
+	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist"),
+	GENERAL_GRAARDOR("General Graardor"),
+	GIANT_MOLE("Giant Mole"),
+	GROTESQUE_GUARDIANS("Grotesque Guardians"),
+	HESPORI("Hespori"),
+	KALPHITE_QUEEN("Kalphite Queen"),
+	KING_BLACK_DRAGON("King Black Dragon"),
+	KRAKEN("Kraken"),
+	KREEARRA("Kree'Arra"),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth"),
+	MIMIC("Mimic"),
+	OBOR("Obor"),
+	SARACHNIS("Sarachnis"),
+	SCORPIA("Scorpia"),
+	SKOTIZO("Skotizo"),
+	THE_GAUNTLET("The Gauntlet"),
+	THE_CORRUPTED_GAUNTLET("The Corrupted Gauntlet"),
+	THEATRE_OF_BLOOD("Theatre of Blood"),
+	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil"),
+	TZKAL_ZUK("TzKal-Zuk"),
+	TZTOK_JAD("TzTok-Jad"),
+	VENENATIS("Venenatis"),
+	VETION("Vet'ion"),
+	VORKATH("Vorkath"),
+	WINTERTODT("Wintertodt"),
+	ZALCANO("Zalcano"),
+	ZULRAH("Zulrah");
 
 	private final String name;
-
-	HiscoreSkill(String name)
-	{
-		this.name = name;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
 }
