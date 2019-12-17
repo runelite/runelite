@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.events;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
+import java.util.List;
+import lombok.Value;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
 
-class HotkeyButton extends JButton
+/**
+ * Posted when an external plugin has been added, removed, or updated
+ */
+@Value
+public class ExternalPluginsChanged
 {
-	@Getter
-	private Keybind value;
-
-	public HotkeyButton(Keybind value, boolean modifierless)
-	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
-	}
-
-	public void setValue(Keybind value)
-	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
-
-		this.value = value;
-		setText(value.toString());
-	}
+	private final List<ExternalPluginManifest> loadedManifest;
 }

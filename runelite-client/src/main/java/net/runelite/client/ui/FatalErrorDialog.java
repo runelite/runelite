@@ -53,7 +53,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.rs.VerificationException;
+import net.runelite.client.util.VerificationException;
 import net.runelite.client.util.LinkBrowser;
 
 @Slf4j

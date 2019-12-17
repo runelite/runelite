@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.externalplugins;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import net.runelite.client.RuneLite;
 
-class HotkeyButton extends JButton
+@Data
+public class ExternalPluginManifest
 {
-	@Getter
-	private Keybind value;
+	private String internalName;
+	private String commit;
+	private String hash;
+	private int size;
+	private String[] plugins;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	private String displayName;
+	private String version;
+	private String author;
+	private String description;
+	private String[] tags;
+	@EqualsAndHashCode.Exclude
+	private URL support;
+	private boolean hasIcon;
+
+	public boolean hasIcon()
 	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		return hasIcon;
 	}
 
-	public void setValue(Keybind value)
+	File getJarFile()
 	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
+		return new File(RuneLite.PLUGINS_DIR, internalName + commit + ".jar");
+	}
 
-		this.value = value;
-		setText(value.toString());
+	boolean isValid()
+	{
+		File file = getJarFile();
+
+		try
+		{
+			if (file.exists())
+			{
+				String hash = Files.asByteSource(file).hash(Hashing.sha256()).toString();
+				if (this.hash.equals(hash))
+				{
+					return true;
+				}
+			}
+		}
+		catch (IOException e)
+		{
+		}
+		return false;
 	}
 }

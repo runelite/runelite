@@ -29,9 +29,11 @@ import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 
-@ConfigGroup("runelite")
+@ConfigGroup(RuneLiteConfig.GROUP_NAME)
 public interface RuneLiteConfig extends Config
 {
+	String GROUP_NAME = "runelite";
+
 	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.components;
+package net.runelite.client.externalplugins;
 
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import java.net.URL;
+import java.net.URLClassLoader;
+import lombok.Getter;
 
-/**
- * A button that consists of an icon, without any background, borders, or margins.
- */
-public class IconButton extends JButton
+class ExternalPluginClassLoader extends URLClassLoader
 {
-	public IconButton(ImageIcon icon)
+	@Getter
+	private final ExternalPluginManifest manifest;
+
+	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls)
 	{
-		this(icon, null);
-	}
-
-	public IconButton(ImageIcon icon, ImageIcon hoverIcon)
-	{
-		setIcon(icon);
-		setBorderPainted(false);
-		setContentAreaFilled(false);
-		setFocusPainted(false);
-		setMargin(new Insets(0, 0, 0, 0));
-		setOpaque(false);
-		setRolloverEnabled(false);
-
-		if (hoverIcon != null)
-		{
-			addMouseListener(new MouseAdapter()
-			{
-				@Override
-				public void mouseEntered(MouseEvent e)
-				{
-					setIcon(hoverIcon);
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e)
-				{
-					setIcon(icon);
-				}
-			});
-		}
+		super(urls, ExternalPluginClassLoader.class.getClassLoader());
+		this.manifest = manifest;
 	}
 }

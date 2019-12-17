@@ -36,12 +36,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
+import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -49,6 +44,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -61,66 +57,59 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.ChatColorConfig;
-import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
-import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
-import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginInstantiationException;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ExternalPluginsChanged;
+import net.runelite.client.events.PluginChanged;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
-import net.runelite.client.ui.components.IconButton;
-import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
-public class ConfigPanel extends PluginPanel
+class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
-	private static final int SCROLLBAR_WIDTH = 17;
-	private static final int OFFSET = 6;
-	private static final ImageIcon BACK_ICON;
-	private static final ImageIcon BACK_ICON_HOVER;
+	static final ImageIcon BACK_ICON;
+	static final ImageIcon BACK_ICON_HOVER;
 
-	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
-	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
-	private static final String RUNELITE_PLUGIN = "RuneLite";
-	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
+	private final FixedWidthPanel mainPanel;
+	private final JLabel title;
+	private final PluginToggleButton pluginToggle;
 
-	private final PluginManager pluginManager;
-	private final ConfigManager configManager;
-	private final ScheduledExecutorService executorService;
-	private final RuneLiteConfig runeLiteConfig;
-	private final ChatColorConfig chatColorConfig;
-	private final ColorPickerManager colorPickerManager;
-	private final List<PluginListItem> pluginList = new ArrayList<>();
+	@Inject
+	private PluginListPanel pluginList;
 
-	private final IconTextField searchBar = new IconTextField();
-	private final JPanel topPanel;
-	private final JPanel mainPanel;
-	private final JScrollPane scrollPane;
+	@Inject
+	private ConfigManager configManager;
 
-	private boolean showingPluginList = true;
-	private int scrollBarPosition = 0;
+	@Inject
+	private PluginManager pluginManager;
+
+	@Inject
+	private ExternalPluginManager externalPluginManager;
+
+	@Inject
+	private ColorPickerManager colorPickerManager;
+
+	private PluginConfigurationDescriptor pluginConfig = null;
 
 	static
 	{
@@ -129,48 +118,16 @@ public class ConfigPanel extends PluginPanel
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 	}
 
-	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig, ColorPickerManager colorPickerManager)
+	public ConfigPanel()
 	{
 		super(false);
-		this.pluginManager = pluginManager;
-		this.configManager = configManager;
-		this.executorService = executorService;
-		this.runeLiteConfig = runeLiteConfig;
-		this.chatColorConfig = chatColorConfig;
-		this.colorPickerManager = colorPickerManager;
-
-		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
-		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchBar.getDocument().addDocumentListener(new DocumentListener()
-		{
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-		});
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		topPanel = new JPanel();
+		JPanel topPanel = new JPanel();
 		topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		topPanel.setLayout(new BorderLayout(0, OFFSET));
+		topPanel.setLayout(new BorderLayout(0, BORDER_OFFSET));
 		add(topPanel, BorderLayout.NORTH);
 
 		mainPanel = new FixedWidthPanel();
@@ -182,139 +139,75 @@ public class ConfigPanel extends PluginPanel
 		northPanel.setLayout(new BorderLayout());
 		northPanel.add(mainPanel, BorderLayout.NORTH);
 
-		scrollPane = new JScrollPane(northPanel);
+		JScrollPane scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane, BorderLayout.CENTER);
 
-		initializePluginList();
-		refreshPluginList();
-	}
-
-	private void initializePluginList()
-	{
-		final List<String> pinnedPlugins = getPinnedPluginNames();
-
-		// populate pluginList with all non-hidden plugins
-		pluginManager.getPlugins().stream()
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-
-				final PluginListItem listItem = new PluginListItem(this, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				pluginList.add(listItem);
-			});
-
-		// add special entries for core client configurations
-		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
-			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
-		pluginList.add(runeLite);
-
-		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
-			configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
-		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
-		pluginList.add(chatColor);
-
-		pluginList.sort(Comparator.comparing(PluginListItem::getName));
-	}
-
-	void refreshPluginList()
-	{
-		// update enabled / disabled status of all items
-		pluginList.forEach(listItem ->
-		{
-			final Plugin plugin = listItem.getPlugin();
-			if (plugin != null)
-			{
-				listItem.setPluginEnabled(pluginManager.isPluginEnabled(plugin));
-			}
-		});
-
-		if (showingPluginList)
-		{
-			openConfigList();
-		}
-	}
-
-	void openConfigList()
-	{
-		if (showingPluginList)
-		{
-			scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-		}
-
-		showingPluginList = true;
-
-		topPanel.removeAll();
-		mainPanel.removeAll();
-		topPanel.add(searchBar, BorderLayout.CENTER);
-
-		onSearchBarChanged();
-		searchBar.requestFocusInWindow();
-		validate();
-		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
-	}
-
-	private void onSearchBarChanged()
-	{
-		final String text = searchBar.getText();
-
-		pluginList.forEach(mainPanel::remove);
-
-		showMatchingPlugins(true, text);
-		showMatchingPlugins(false, text);
-
-		revalidate();
-	}
-
-	private void showMatchingPlugins(boolean pinned, String text)
-	{
-		if (text.isEmpty())
-		{
-			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
-			return;
-		}
-
-		final String[] searchTerms = text.toLowerCase().split(" ");
-		pluginList.forEach(listItem ->
-		{
-			if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms))
-			{
-				mainPanel.add(listItem);
-			}
-		});
-	}
-
-	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd)
-	{
-		showingPluginList = false;
-
-		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-		topPanel.removeAll();
-		mainPanel.removeAll();
-
-		final IconButton topPanelBackButton = new IconButton(BACK_ICON, BACK_ICON_HOVER);
+		JButton topPanelBackButton = new JButton(BACK_ICON);
+		topPanelBackButton.setRolloverIcon(BACK_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(topPanelBackButton);
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
-		topPanelBackButton.addActionListener(e -> openConfigList());
+		topPanelBackButton.addActionListener(e -> pluginList.getMuxer().popState());
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
-		topPanel.add(listItem.getConfigToggleButton(), BorderLayout.EAST);
-
-		String name = listItem.getName();
-		JLabel title = new JLabel(name);
+		pluginToggle = new PluginToggleButton();
+		topPanel.add(pluginToggle, BorderLayout.EAST);
+		title = new JLabel();
 		title.setForeground(Color.WHITE);
-		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
-		PluginListItem.addLabelPopupMenu(title, PluginListItem.wikiLinkMenuItem(listItem.getName()));
-		topPanel.add(title);
 
+		topPanel.add(title);
+	}
+
+	void init(PluginConfigurationDescriptor pluginConfig)
+	{
+		assert this.pluginConfig == null;
+		this.pluginConfig = pluginConfig;
+
+		String name = pluginConfig.getName();
+		title.setText(name);
+		title.setForeground(Color.WHITE);
+		title.setToolTipText("<html>" + name + ":<br>" + pluginConfig.getDescription() + "</html>");
+
+		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
+		JMenuItem uninstallItem = null;
+		if (mf != null)
+		{
+			uninstallItem = new JMenuItem("Uninstall");
+			uninstallItem.addActionListener(ev -> externalPluginManager.remove(mf.getInternalName()));
+		}
+
+		PluginListItem.addLabelPopupMenu(title, pluginConfig.createSupportMenuItem(), uninstallItem);
+
+		if (pluginConfig.getPlugin() != null)
+		{
+			pluginToggle.setSelected(pluginManager.isPluginEnabled(pluginConfig.getPlugin()));
+			pluginToggle.addItemListener(i ->
+			{
+				if (pluginToggle.isSelected())
+				{
+					pluginList.startPlugin(pluginConfig.getPlugin());
+				}
+				else
+				{
+					pluginList.stopPlugin(pluginConfig.getPlugin());
+				}
+			});
+		}
+		else
+		{
+			pluginToggle.setVisible(false);
+		}
+
+		rebuild();
+	}
+
+	private void rebuild()
+	{
+		mainPanel.removeAll();
+
+		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -325,7 +218,7 @@ public class ConfigPanel extends PluginPanel
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
 			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-			name = cid.getItem().name();
+			String name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
@@ -336,7 +229,7 @@ public class ConfigPanel extends PluginPanel
 				JCheckBox checkbox = new JCheckBox();
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
-				checkbox.addActionListener(ae -> changeConfiguration(listItem, config, checkbox, cd, cid));
+				checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
 
 				item.add(checkbox, BorderLayout.EAST);
 			}
@@ -361,7 +254,7 @@ public class ConfigPanel extends PluginPanel
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
+				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
 
 				item.add(spinner, BorderLayout.EAST);
 			}
@@ -390,7 +283,7 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void focusLost(FocusEvent e)
 					{
-						changeConfiguration(listItem, config, textField, cd, cid);
+						changeConfiguration(textField, cd, cid);
 					}
 				});
 
@@ -433,7 +326,7 @@ public class ConfigPanel extends PluginPanel
 							colorPickerBtn.setBackground(c);
 							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
 						});
-						colorPicker.setOnClose(c -> changeConfiguration(listItem, config, colorPicker, cd, cid));
+						colorPicker.setOnClose(c -> changeConfiguration(colorPicker, cd, cid));
 						colorPicker.setVisible(true);
 					}
 				});
@@ -499,7 +392,7 @@ public class ConfigPanel extends PluginPanel
 				{
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
-						changeConfiguration(listItem, config, box, cd, cid);
+						changeConfiguration(box, cd, cid);
 						box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
 					}
 				});
@@ -519,7 +412,7 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void focusLost(FocusEvent e)
 					{
-						changeConfiguration(listItem, config, button, cd, cid);
+						changeConfiguration(button, cd, cid);
 					}
 				});
 
@@ -538,23 +431,21 @@ public class ConfigPanel extends PluginPanel
 
 			if (result == JOptionPane.YES_OPTION)
 			{
-				configManager.setDefaultConfiguration(config, true);
+				configManager.setDefaultConfiguration(pluginConfig.getConfig(), true);
 
-				// Reload configuration panel
-				openGroupConfigPanel(listItem, config, cd);
+				rebuild();
 			}
 		});
 		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
-		backButton.addActionListener(e -> openConfigList());
+		backButton.addActionListener(e -> pluginList.getMuxer().popState());
 		mainPanel.add(backButton);
 
 		revalidate();
-		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
-	private void changeConfiguration(PluginListItem listItem, Config config, Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	private void changeConfiguration(Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		final ConfigItem configItem = cid.getItem();
 
@@ -566,7 +457,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (result != JOptionPane.YES_OPTION)
 			{
-				openGroupConfigPanel(listItem, config, cd);
+				rebuild();
 				return;
 			}
 		}
@@ -603,102 +494,32 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
-	void startPlugin(Plugin plugin, PluginListItem listItem)
-	{
-		executorService.submit(() ->
-		{
-			pluginManager.setPluginEnabled(plugin, true);
-
-			try
-			{
-				pluginManager.startPlugin(plugin);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
-			}
-
-			listItem.setPluginEnabled(true);
-		});
-	}
-
-	void stopPlugin(Plugin plugin, PluginListItem listItem)
-	{
-		executorService.submit(() ->
-		{
-			pluginManager.setPluginEnabled(plugin, false);
-
-			try
-			{
-				pluginManager.stopPlugin(plugin);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
-			}
-
-			listItem.setPluginEnabled(false);
-		});
-	}
-
-	private List<String> getPinnedPluginNames()
-	{
-		final String config = configManager.getConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY);
-
-		if (config == null)
-		{
-			return Collections.emptyList();
-		}
-
-		return Text.fromCSV(config);
-	}
-
-	void savePinnedPlugins()
-	{
-		final String value = pluginList.stream()
-			.filter(PluginListItem::isPinned)
-			.map(PluginListItem::getName)
-			.collect(Collectors.joining(","));
-
-		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
-	}
-
-	void openConfigurationPanel(String configGroup)
-	{
-		for (PluginListItem pluginListItem : pluginList)
-		{
-			if (pluginListItem.getName().equals(configGroup))
-			{
-				openGroupConfigPanel(pluginListItem, pluginListItem.getConfig(), pluginListItem.getConfigDescriptor());
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void onActivate()
-	{
-		super.onActivate();
-
-		if (searchBar.getParent() != null)
-		{
-			searchBar.requestFocusInWindow();
-		}
-	}
-
 	@Override
 	public Dimension getPreferredSize()
 	{
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
 
-	private class FixedWidthPanel extends JPanel
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
 	{
-		@Override
-		public Dimension getPreferredSize()
+		if (event.getPlugin() == this.pluginConfig.getPlugin())
 		{
-			return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
+			SwingUtilities.invokeLater(() ->
+			{
+				pluginToggle.setSelected(event.isLoaded());
+			});
 		}
+	}
 
+	@Subscribe
+	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		if (pluginManager.getPlugins().stream()
+			.noneMatch(p -> p == this.pluginConfig.getPlugin()))
+		{
+			pluginList.getMuxer().popState();
+		}
+		SwingUtilities.invokeLater(this::rebuild);
 	}
 }

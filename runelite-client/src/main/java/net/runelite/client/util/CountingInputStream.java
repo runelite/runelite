@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.util;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.function.IntConsumer;
 
-class HotkeyButton extends JButton
+public class CountingInputStream extends FilterInputStream
 {
-	@Getter
-	private Keybind value;
+	private final IntConsumer changed;
 
-	public HotkeyButton(Keybind value, boolean modifierless)
+	public CountingInputStream(InputStream in, IntConsumer changed)
 	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		super(in);
+		this.changed = changed;
 	}
 
-	public void setValue(Keybind value)
-	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
+	private int read = 0;
 
-		this.value = value;
-		setText(value.toString());
+	@Override
+	public int read(byte[] b, int off, int len) throws IOException
+	{
+		int thisRead = super.read(b, off, len);
+		if (thisRead > 0)
+		{
+			this.read += thisRead;
+		}
+		changed.accept(this.read);
+		return thisRead;
+	}
+
+	@Override
+	public int read() throws IOException
+	{
+		int val = super.read();
+		if (val != -1)
+		{
+			this.read++;
+		}
+		return val;
+	}
+
+	@Override
+	public long skip(long n) throws IOException
+	{
+		long thisRead = in.skip(n);
+		this.read += thisRead;
+		changed.accept(this.read);
+		return thisRead;
+	}
+
+	@Override
+	public boolean markSupported()
+	{
+		return false;
 	}
 }
