@@ -64,7 +64,7 @@ public class FarmingTracker
 
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-						   TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
+		TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -262,7 +262,8 @@ public class FarmingTracker
 		Long now = Instant.now().getEpochSecond();
 		if (config.farmingNotification())
 		{
-			patchNotificationTimes.forEach((patchImplementation, notificationTime) -> {
+			patchNotificationTimes.forEach((patchImplementation, notificationTime) ->
+			{
 				if (notificationTime <= now)
 				{
 					notifier.notify(String.format("Your %s %s ready to be harvested", patchImplementation.getName().toLowerCase(), patchImplementation.getPluralityWord()));
