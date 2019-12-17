@@ -26,6 +26,7 @@ package net.runelite.client.config;
 
 import java.awt.Dimension;
 import net.runelite.api.Constants;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 
 @ConfigGroup("runelite")
@@ -155,13 +156,13 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "notificationSound",
-		name = "Enable sound on notifications",
+		name = "Notification sound",
 		description = "Enables the playing of a beep sound when notifications are displayed",
 		position = 22
 	)
-	default boolean enableNotificationSound()
+	default Notifier.NativeCustomOff notificationSound()
 	{
-		return true;
+		return Notifier.NativeCustomOff.NATIVE;
 	}
 
 	@ConfigItem(
