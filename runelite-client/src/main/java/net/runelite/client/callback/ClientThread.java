@@ -25,6 +25,8 @@
 package net.runelite.client.callback;
 
 import com.google.inject.Inject;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
@@ -44,6 +46,12 @@ public class ClientThread implements Executor
 	@Inject
 	@Nullable
 	private Client client;
+
+	@Inject
+	private ClientThread()
+	{
+		RxJavaPlugins.setSingleSchedulerHandler(old -> Schedulers.from(this));
+	}
 
 	public void invoke(Runnable r)
 	{

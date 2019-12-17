@@ -59,7 +59,7 @@ tasks {
             "rs.client" to deobjars.find { it.name.startsWith("runescape-client") }.toString().replace("\\", "/")
     )
 
-    processResources  {
+    processResources {
         finalizedBy("filterResources")
     }
 
@@ -110,5 +110,16 @@ tasks {
 
         classpath = project.sourceSets.main.get().runtimeClasspath
         main = "net.runelite.deob.updater.UpdateMappings"
+    }
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+    publications {
+        register("asd", MavenPublication::class) {
+            from(components["java"])
+        }
     }
 }

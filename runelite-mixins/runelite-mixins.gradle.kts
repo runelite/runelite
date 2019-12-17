@@ -29,12 +29,16 @@ dependencies {
     compileOnly(Libraries.guava)
     compileOnly(Libraries.javaxInject)
     compileOnly(Libraries.slf4jApi)
-
-    implementation(project(":runescape-api"))
+    compileOnly(project(":runescape-api"))
 }
 
 tasks {
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+        disableAutoTargetJvm()
+    }
     withType<JavaCompile> {
-        options.compilerArgs.addAll(arrayOf("-source", "7", "-Xlint:-unchecked"))
+        options.compilerArgs.addAll(arrayOf("-Xlint:-unchecked"))
     }
 }

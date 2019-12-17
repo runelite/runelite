@@ -93,7 +93,7 @@ public class HydraPlugin extends Plugin
 
 	private boolean inHydraInstance;
 	private int lastAttackTick;
-	
+
 	@Inject
 	private Client client;
 

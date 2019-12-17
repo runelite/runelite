@@ -258,7 +258,7 @@ public class RuneLite
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 		Completable.fromAction(clientLoader::get)
-			.subscribeOn(Schedulers.single())
+			.subscribeOn(Schedulers.computation())
 			.subscribe();
 
 		Completable.fromAction(ClassPreloader::preload)

@@ -26,11 +26,11 @@ package net.runelite.client.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.util.ReflectUtil;
 
 @Slf4j
 class ConfigInvocationHandler implements InvocationHandler
@@ -169,7 +169,7 @@ class ConfigInvocationHandler implements InvocationHandler
 	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
 	{
 		Class<?> declaringClass = method.getDeclaringClass();
-		return ReflectUtil.privateLookupIn(declaringClass)
+		return MethodHandles.privateLookupIn(declaringClass, MethodHandles.lookup())
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);

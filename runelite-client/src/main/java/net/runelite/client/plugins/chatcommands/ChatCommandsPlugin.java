@@ -1025,7 +1025,7 @@ public class ChatCommandsPlugin extends Plugin
 			ItemPrice item = retrieveFromList(results, search);
 			CLIENT.lookupItem(item.getId())
 				.subscribeOn(Schedulers.io())
-				.observeOn(Schedulers.from(clientThread))
+				.observeOn(Schedulers.single())
 				.subscribe(
 					(osbresult) ->
 					{
