@@ -55,13 +55,19 @@
       "level": 54,
       "icon": 10810,
       "name": "Arctic Pine Logs",
-      "xp": 140.2
+      "xp": 40
     },
     {
       "level": 60,
       "icon": 1515,
       "name": "Yew Logs",
       "xp": 175
+    },
+    {
+      "level": 65,
+      "icon": 21626,
+      "name": "Sulliusceps",
+      "xp": 127
     },
     {
       "level": 75,

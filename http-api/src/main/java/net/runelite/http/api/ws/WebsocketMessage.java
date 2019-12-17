@@ -26,5 +26,10 @@ package net.runelite.http.api.ws;
 
 public class WebsocketMessage
 {
+	protected boolean _party;
 
+	public boolean isParty()
+	{
+		return _party;
+	}
 }

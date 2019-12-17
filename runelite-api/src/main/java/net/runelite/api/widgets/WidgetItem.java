@@ -25,74 +25,44 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import net.runelite.api.Point;
 
 /**
  * An item that is being represented in a {@link Widget}.
  */
+@AllArgsConstructor
+@ToString
+@Getter
 public class WidgetItem
 {
-	private final int id;
-	private final int quantity;
-	private final int index;
-	private final Rectangle canvasBounds;
-
-	public WidgetItem(int id, int quantity, int index, Rectangle canvasBounds)
-	{
-		this.id = id;
-		this.quantity = quantity;
-		this.index = index;
-		this.canvasBounds = canvasBounds;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
-	}
-
 	/**
-	 * Gets the ID of the item represented.
+	 * The ID of the item represented.
 	 *
-	 * @return the items ID
 	 * @see net.runelite.api.ItemID
 	 */
-	public int getId()
-	{
-		return id;
-	}
-
+	private final int id;
 	/**
-	 * Gets the quantity of the represented item.
-	 *
-	 * @return the items quantity
+	 * The quantity of the represented item.
 	 */
-	public int getQuantity()
-	{
-		return quantity;
-	}
-
+	private final int quantity;
 	/**
-	 * Gets the index position of this WidgetItem inside its parents
+	 * The index position of this WidgetItem inside its parents
 	 * WidgetItem array.
 	 *
-	 * @return the index in the parent widget
 	 * @see Widget#getWidgetItems()
 	 */
-	public int getIndex()
-	{
-		return index;
-	}
-
+	private final int index;
 	/**
-	 * Gets the area where the widget is drawn on the canvas.
-	 *
-	 * @return the occupied area of the widget
+	 * The area where the widget is drawn on the canvas.
 	 */
-	public Rectangle getCanvasBounds()
-	{
-		return canvasBounds;
-	}
+	private final Rectangle canvasBounds;
+	/**
+	 * The widget which contains this item.
+	 */
+	private final Widget widget;
 
 	/**
 	 * Gets the upper-left coordinate of where the widget is being drawn

@@ -74,4 +74,26 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAlchProfit",
+		name = "Show High Alchemy Profit",
+		description = "Show the profit from casting high alchemy on items",
+		position = 5
+	)
+	default boolean showAlchProfit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showWhileAlching",
+		name = "Show prices while alching",
+		description = "Show the price overlay while using High Alchemy",
+		position = 6
+	)
+	default boolean showWhileAlching()
+	{
+		return true;
+	}
 }

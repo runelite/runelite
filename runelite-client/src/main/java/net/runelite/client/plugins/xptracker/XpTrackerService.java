@@ -30,29 +30,36 @@ public interface XpTrackerService
 {
 	/**
 	 * Get the number of actions done
-	 * @param skill
-	 * @return
 	 */
 	int getActions(Skill skill);
 
 	/**
 	 * Get the number of actions per hour
-	 * @param skill
-	 * @return
 	 */
 	int getActionsHr(Skill skill);
 
 	/**
 	 * Get the number of actions remaining
-	 * @param skill
-	 * @return
 	 */
 	int getActionsLeft(Skill skill);
 
 	/**
+	 * Get the action type
+	 */
+	XpActionType getActionType(Skill skill);
+
+	/**
 	 * Get the amount of xp per hour
-	 * @param skill
-	 * @return
 	 */
 	int getXpHr(Skill skill);
+
+	/**
+	 * Get the start goal XP
+	 */
+	int getStartGoalXp(Skill skill);
+
+	/**
+	 * Get the amount of XP left until goal level
+	 */
+	int getEndGoalXp(Skill skill);
 }

@@ -39,7 +39,7 @@ public interface BlastFurnaceConfig extends Config
 	)
 	default boolean showConveyorBelt()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -50,6 +50,6 @@ public interface BlastFurnaceConfig extends Config
 	)
 	default boolean showBarDispenser()
 	{
-		return true;
+		return false;
 	}
 }

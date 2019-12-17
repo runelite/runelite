@@ -28,20 +28,22 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.time.Duration;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,12 +51,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
-@Slf4j
 public class ItemController
 {
-	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 	private static final int MAX_BATCH_LOOKUP = 1024;
+
+	private static class MemoizedPrices
+	{
+		final ItemPrice[] prices;
+		final String hash;
+
+		MemoizedPrices(ItemPrice[] prices)
+		{
+			this.prices = prices;
+
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (ItemPrice itemPrice : prices)
+			{
+				hasher.putInt(itemPrice.getId()).putInt(itemPrice.getPrice());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
+		}
+	}
 
 	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
@@ -62,29 +81,27 @@ public class ItemController
 
 	private final ItemService itemService;
 
-	private final Supplier<ItemPrice[]> memorizedPrices;
+	private final Supplier<MemoizedPrices> memoizedPrices;
 
 	@Autowired
 	public ItemController(ItemService itemService)
 	{
 		this.itemService = itemService;
 
-		memorizedPrices = Suppliers.memoizeWithExpiration(() -> itemService.fetchPrices().stream()
+		memoizedPrices = Suppliers.memoizeWithExpiration(() -> new MemoizedPrices(itemService.fetchPrices().stream()
 			.map(priceEntry ->
 			{
-				Item item = new Item();
-				item.setId(priceEntry.getItem()); // fake item
-
 				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setItem(item);
+				itemPrice.setId(priceEntry.getItem());
+				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
 				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;
 			})
-			.toArray(ItemPrice[]::new), 30, TimeUnit.MINUTES);
+			.toArray(ItemPrice[]::new)), 30, TimeUnit.MINUTES);
 	}
 
-	@RequestMapping("/{itemId}")
+	@GetMapping("/{itemId}")
 	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -97,7 +114,7 @@ public class ItemController
 		return null;
 	}
 
-	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
+	@GetMapping(path = "/{itemId}/icon", produces = "image/gif")
 	public ResponseEntity<byte[]> getIcon(@PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -110,7 +127,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
+	@GetMapping(path = "/{itemId}/icon/large", produces = "image/gif")
 	public ResponseEntity<byte[]> getIconLarge(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -123,7 +140,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping("/{itemId}/price")
+	@GetMapping("/{itemId}/price")
 	public ResponseEntity<ItemPrice> itemPrice(
 		@PathVariable int itemId,
 		@RequestParam(required = false) Instant time
@@ -175,7 +192,8 @@ public class ItemController
 		}
 
 		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setItem(item.toItem());
+		itemPrice.setId(item.getId());
+		itemPrice.setName(item.getName());
 		itemPrice.setPrice(priceEntry.getPrice());
 		itemPrice.setTime(priceEntry.getTime());
 
@@ -184,7 +202,7 @@ public class ItemController
 			.body(itemPrice);
 	}
 
-	@RequestMapping("/search")
+	@GetMapping("/search")
 	public SearchResult search(@RequestParam String query)
 	{
 		List<ItemEntry> result = itemService.search(query);
@@ -198,7 +216,7 @@ public class ItemController
 		return searchResult;
 	}
 
-	@RequestMapping("/price")
+	@GetMapping("/price")
 	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
 	{
 		if (itemIds.length > MAX_BATCH_LOOKUP)
@@ -211,11 +229,9 @@ public class ItemController
 		return prices.stream()
 			.map(priceEntry ->
 			{
-				Item item = new Item();
-				item.setId(priceEntry.getItem()); // fake item
-
 				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setItem(item);
+				itemPrice.setId(priceEntry.getItem());
+				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
 				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;
@@ -223,11 +239,13 @@ public class ItemController
 			.toArray(ItemPrice[]::new);
 	}
 
-	@RequestMapping("/prices")
+	@GetMapping("/prices")
 	public ResponseEntity<ItemPrice[]> prices()
 	{
+		MemoizedPrices memorizedPrices = this.memoizedPrices.get();
 		return ResponseEntity.ok()
+			.eTag(memorizedPrices.hash)
 			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(memorizedPrices.get());
+			.body(memorizedPrices.prices);
 	}
 }

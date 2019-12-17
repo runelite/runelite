@@ -59,6 +59,7 @@ public class HandshakeResponseHandler extends SimpleChannelInboundHandler<Handsh
 		if (handshakeResponse.getResponse() != HandshakeResponseType.RESPONSE_OK)
 		{
 			logger.warn("Non-ok response from server {}", handshakeResponse.getResponse());
+			handshakeFuture.complete(handshakeResponse.getResponse());
 			ctx.close();
 			return;
 		}

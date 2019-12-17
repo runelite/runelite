@@ -56,13 +56,13 @@ public class WorldMapLocationOverlay extends Overlay
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_MAP);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleWorldMapLocation())
+		if (!plugin.getWorldMapLocation().isActive())
 		{
 			return null;
 		}

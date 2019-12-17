@@ -1,0 +1,21 @@
+# Use in-memory database for tests
+datasource:
+  runelite:
+    jndiName:
+    driverClassName: org.h2.Driver
+    type: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:runelite
+  runelite-cache:
+    jndiName:
+    driverClassName: org.h2.Driver
+    type: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:cache
+  runelite-tracker:
+    jndiName:
+    driverClassName: org.h2.Driver
+    type: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:xptracker
+
+mongo:
+  jndiName:
+  host: mongodb://localhost:27017

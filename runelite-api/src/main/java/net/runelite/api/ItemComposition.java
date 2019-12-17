@@ -87,6 +87,8 @@ public interface ItemComposition
 	 * alchemy values, respectively.
 	 *
 	 * @return the general store value of the item
+	 *
+	 * @see Constants#HIGH_ALCHEMY_MULTIPLIER
 	 */
 	int getPrice();
 
@@ -105,9 +107,7 @@ public interface ItemComposition
 	boolean isStackable();
 
 	/**
-	 * Returns whether or not the item can be traded to other players.
-	 *
-	 * @return true if tradeable, false otherwise
+	 * Returns whether or not the item can be sold on the grand exchange.
 	 */
 	boolean isTradeable();
 
@@ -129,9 +129,9 @@ public interface ItemComposition
 	/**
 	 * Sets the menu action index of the shift-click action.
 	 *
-	 * @param shiftclickActionIndex the new index of the shift-click action
+	 * @param shiftClickActionIndex the new index of the shift-click action
 	 */
-	void setShiftClickActionIndex(int shiftclickActionIndex);
+	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
 	 * Resets the menu action index of the shift-click action to its

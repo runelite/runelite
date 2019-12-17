@@ -24,66 +24,56 @@
  */
 package net.runelite.http.service.feed;
 
-import com.google.common.base.Suppliers;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
-import net.runelite.http.api.feed.FeedResult;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.feed.FeedItem;
+import net.runelite.http.api.feed.FeedResult;
 import net.runelite.http.service.feed.blog.BlogService;
 import net.runelite.http.service.feed.osrsnews.OSRSNewsService;
 import net.runelite.http.service.feed.twitter.TwitterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/feed")
+@Slf4j
 public class FeedController
 {
-	private static final Logger logger = LoggerFactory.getLogger(FeedController.class);
+	private final BlogService blogService;
+	private final TwitterService twitterService;
+	private final OSRSNewsService osrsNewsService;
 
-	private BlogService blogService;
-	private TwitterService twitterService;
-	private OSRSNewsService osrsNewsService;
-
-	private final Supplier<FeedResult> feed = Suppliers.memoizeWithExpiration(() ->
+	private static class MemoizedFeed
 	{
-		List<FeedItem> items = new ArrayList<>();
+		final FeedResult feedResult;
+		final String hash;
 
-		try
+		MemoizedFeed(FeedResult feedResult)
 		{
-			items.addAll(blogService.getBlogPosts());
-		}
-		catch (IOException e)
-		{
-			logger.warn(null, e);
-		}
+			this.feedResult = feedResult;
 
-		try
-		{
-			items.addAll(twitterService.getTweets());
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (FeedItem itemPrice : feedResult.getItems())
+			{
+				hasher.putBytes(itemPrice.getTitle().getBytes()).putBytes(itemPrice.getContent().getBytes());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
 		}
-		catch (IOException e)
-		{
-			logger.warn(null, e);
-		}
+	}
 
-		try
-		{
-			items.addAll(osrsNewsService.getNews());
-		}
-		catch (IOException e)
-		{
-			logger.warn(null, e);
-		}
-
-		return new FeedResult(items);
-	}, 10, TimeUnit.MINUTES);
+	private MemoizedFeed memoizedFeed;
 
 	@Autowired
 	public FeedController(BlogService blogService, TwitterService twitterService, OSRSNewsService osrsNewsService)
@@ -93,9 +83,53 @@ public class FeedController
 		this.osrsNewsService = osrsNewsService;
 	}
 
-	@RequestMapping
-	public FeedResult getFeed() throws IOException
+	@Scheduled(fixedDelay = 10 * 60 * 1000)
+	public void updateFeed()
 	{
-		return feed.get();
+		List<FeedItem> items = new ArrayList<>();
+
+		try
+		{
+			items.addAll(blogService.getBlogPosts());
+		}
+		catch (IOException e)
+		{
+			log.warn(e.getMessage());
+		}
+
+		try
+		{
+			items.addAll(twitterService.getTweets());
+		}
+		catch (IOException e)
+		{
+			log.warn(e.getMessage());
+		}
+
+		try
+		{
+			items.addAll(osrsNewsService.getNews());
+		}
+		catch (IOException e)
+		{
+			log.warn(e.getMessage());
+		}
+
+		memoizedFeed = new MemoizedFeed(new FeedResult(items));
+	}
+
+	@GetMapping
+	public ResponseEntity<FeedResult> getFeed()
+	{
+		if (memoizedFeed == null)
+		{
+			return ResponseEntity.notFound()
+				.build();
+		}
+
+		return ResponseEntity.ok()
+			.eTag(memoizedFeed.hash)
+			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
+			.body(memoizedFeed.feedResult);
 	}
 }

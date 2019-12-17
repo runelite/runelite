@@ -25,23 +25,30 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -51,6 +58,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class PrayerPlugin extends Plugin
 {
 	private final PrayerCounter[] prayerCounter = new PrayerCounter[PrayerType.values().length];
+
+	private Instant startOfLastTick = Instant.now();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean prayersActive = false;
 
 	@Inject
 	private Client client;
@@ -75,6 +87,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private PrayerConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
@@ -125,8 +140,8 @@ public class PrayerPlugin extends Plugin
 		if (container == inventory || container == equipment)
 		{
 			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerPotion(false);
-			doseOverlay.setHasRestorePotion(false);
+			doseOverlay.setHasPrayerRestore(false);
+			doseOverlay.setBonusPrayer(0);
 
 			if (inventory != null)
 			{
@@ -144,9 +159,11 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.prayerFlickHelper())
+		prayersActive = isAnyPrayerActive();
+
+		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
-			flickOverlay.onTick();
+			startOfLastTick = Instant.now();
 		}
 
 		if (config.showPrayerDoseIndicator())
@@ -201,6 +218,10 @@ public class PrayerPlugin extends Plugin
 
 		int total = 0;
 
+		boolean hasPrayerPotion = false;
+		boolean hasSuperRestore = false;
+		boolean hasSanfew = false;
+
 		for (Item item : items)
 		{
 			if (item == null)
@@ -215,22 +236,62 @@ public class PrayerPlugin extends Plugin
 				switch (type)
 				{
 					case PRAYERPOT:
-						doseOverlay.setHasPrayerPotion(true);
+						hasPrayerPotion = true;
+						break;
+					case RESTOREPOT:
+						hasSuperRestore = true;
+						break;
+					case SANFEWPOT:
+						hasSanfew = true;
 						break;
 					case HOLYWRENCH:
 						doseOverlay.setHasHolyWrench(true);
 						break;
-					case RESTOREPOT:
-						doseOverlay.setHasRestorePotion(true);
-						break;
 				}
 			}
 
-			int bonus = PrayerItems.getItemPrayerBonus(item.getId());
-			total += bonus;
+			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
+		}
+
+		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
+		{
+			doseOverlay.setHasPrayerRestore(true);
+			if (hasSanfew)
+			{
+				doseOverlay.setBonusPrayer(2);
+			}
+			else if (hasSuperRestore)
+			{
+				doseOverlay.setBonusPrayer(1);
+			}
 		}
 
 		return total;
+	}
+
+	double getTickProgress()
+	{
+		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
+
+		float tickProgress = (timeSinceLastTick % Constants.GAME_TICK_LENGTH) / (float) Constants.GAME_TICK_LENGTH;
+		return tickProgress * Math.PI;
+	}
+
+	private boolean isAnyPrayerActive()
+	{
+		for (Prayer pray : Prayer.values())//Check if any prayers are active
+		{
+			if (client.isPrayerActive(pray))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void removeIndicators()

@@ -111,11 +111,88 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "uploadScreenshot",
-		name = "Upload To Imgur",
-		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
+		name = "Upload",
+		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
 		position = 7
 	)
-	default boolean uploadScreenshot()
+	default UploadStyle uploadScreenshot()
+	{
+		return UploadStyle.NEITHER;
+	}
+
+	@ConfigItem(
+		keyName = "kills",
+		name = "Screenshot PvP Kills",
+		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		position = 8
+	)
+	default boolean screenshotKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "boss",
+		name = "Screenshot Boss Kills",
+		description = "Configures whether or not screenshots are automatically taken of boss kills",
+		position = 9
+	)
+	default boolean screenshotBossKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "playerDeath",
+		name = "Screenshot Deaths",
+		description = "Configures whether or not screenshots are automatically taken when you die.",
+		position = 10
+	)
+	default boolean screenshotPlayerDeath()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "friendDeath",
+		name = "Screenshot Friend Deaths",
+		description = "Configures whether or not screenshots are automatically taken when friends or clan members die.",
+		position = 11
+	)
+	default boolean screenshotFriendDeath()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "duels",
+		name = "Screenshot Duels",
+		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
+		position = 12
+	)
+	default boolean screenshotDuels()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "valuableDrop",
+		name = "Screenshot Valuable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
+		position = 13
+	)
+	default boolean screenshotValuableDrop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "untradeableDrop",
+		name = "Screenshot Untradeable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
+		position = 14
+	)
+	default boolean screenshotUntradeableDrop()
 	{
 		return false;
 	}
@@ -124,21 +201,10 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 10
+		position = 15
 	)
 	default Keybind hotkey()
 	{
 		return Keybind.NOT_SET;
-	}
-
-	@ConfigItem(
-		keyName = "kills",
-		name = "Screenshot PvP Kills",
-		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 9
-	)
-	default boolean screenshotKills()
-	{
-		return false;
 	}
 }

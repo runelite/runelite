@@ -70,13 +70,19 @@
       "level": 60,
       "icon": 4179,
       "name": "Werewolf Agility Course",
-      "xp": 540
+      "xp": 730
     },
     {
       "level": 70,
       "icon": 11849,
       "name": "Pollnivneach Rooftop",
       "xp": 890
+    },
+    {
+      "level": 75,
+      "icon": 23962,
+      "name": "Prifddinas Agility Course",
+      "xp": 1337
     },
     {
       "level": 80,

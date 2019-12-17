@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.corp;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -46,6 +47,8 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -55,6 +58,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show damage statistics and highlight dark energy cores",
 	tags = {"bosses", "combat", "pve", "overlay"}
 )
+@Slf4j
 public class CorpPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
@@ -86,6 +90,15 @@ public class CorpPlugin extends Plugin
 	@Inject
 	private CoreOverlay coreOverlay;
 
+	@Inject
+	private CorpConfig config;
+
+	@Provides
+	CorpConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CorpConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -108,9 +121,8 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
-			corp = core = null;
 			players.clear();
 		}
 	}
@@ -123,6 +135,7 @@ public class CorpPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.CORPOREAL_BEAST:
+				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
 				yourDamage = 0;
 				totalDamage = 0;
@@ -141,6 +154,7 @@ public class CorpPlugin extends Plugin
 
 		if (npc == corp)
 		{
+			log.debug("Corporeal beast despawn: {}", npc);
 			corp = null;
 			players.clear();
 
@@ -159,7 +173,7 @@ public class CorpPlugin extends Plugin
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(message)
 					.build());
 			}
@@ -171,7 +185,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Actor actor = hitsplatApplied.getActor();
 

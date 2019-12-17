@@ -32,4 +32,23 @@ import lombok.Value;
 @Value
 public class DiscordReady
 {
+	/**
+	 * The userId for the active user
+	 */
+	private String userId;
+
+	/**
+	 * The username of the active user
+	 */
+	private String username;
+
+	/**
+	 * The discriminator of the active user
+	 */
+	private String discriminator;
+
+	/**
+	 * The avatar of the active user
+	 */
+	private String avatar;
 }

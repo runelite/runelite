@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -54,11 +55,18 @@ class TearsOfGuthixOverlay extends Overlay
 	{
 		plugin.getStreams().forEach((object, timer) ->
 		{
+			final Point position = object.getCanvasLocation(100);
+
+			if (position == null)
+			{
+				return;
+			}
+
 			final ProgressPieComponent progressPie = new ProgressPieComponent();
 			progressPie.setDiameter(15);
 			progressPie.setFill(CYAN_ALPHA);
 			progressPie.setBorderColor(Color.CYAN);
-			progressPie.setPosition(object.getCanvasLocation(100));
+			progressPie.setPosition(position);
 
 			final Duration duration = Duration.between(timer, Instant.now());
 			progressPie.setProgress(1 - (duration.compareTo(MAX_TIME) < 0

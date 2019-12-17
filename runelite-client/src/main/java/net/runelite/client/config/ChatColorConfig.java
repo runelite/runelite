@@ -25,6 +25,7 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
 
 @ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
@@ -92,7 +93,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info",
 		description = "Clan Chat Information (eg. when joining a channel)"
 	)
-	Color opaqueClanChatInfo();
+	default Color opaqueClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 38,
@@ -102,7 +106,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color opaqueClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -160,7 +164,7 @@ public interface ChatColorConfig extends Config
 		position = 45,
 		keyName = "opaqueServerMessage",
 		name = "Server message",
-		description = "Color of Server Messages (eg. 'Welcome to Runescape')"
+		description = "Color of Server Messages (eg. 'Welcome to RuneScape')"
 	)
 	Color opaqueServerMessage();
 
@@ -329,7 +333,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info (transparent)",
 		description = "Clan Chat Information (eg. when joining a channel) (transparent)"
 	)
-	Color transparentClanChatInfo();
+	default Color transparentClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 68,
@@ -339,7 +346,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -397,7 +404,7 @@ public interface ChatColorConfig extends Config
 		position = 75,
 		keyName = "transparentServerMessage",
 		name = "Server message (transparent)",
-		description = "Color of Server Messages (eg. 'Welcome to Runescape') (transparent)"
+		description = "Color of Server Messages (eg. 'Welcome to RuneScape') (transparent)"
 	)
 	Color transparentServerMessage();
 
@@ -444,7 +451,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentExamineHighlight()
 	{
-		return Color.decode("#0000FF");
+		return Color.GREEN;
 	}
 
 	@ConfigItem(

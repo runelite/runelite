@@ -30,8 +30,12 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import lombok.Getter;
+import lombok.ToString;
 import net.runelite.client.plugins.Plugin;
 
+@Getter
+@ToString
 public class Timer extends InfoBox
 {
 	private final Instant startTime;
@@ -47,12 +51,6 @@ public class Timer extends InfoBox
 		startTime = Instant.now();
 		duration = Duration.of(period, unit);
 		endTime = startTime.plus(duration);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Timer{" + "startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + '}';
 	}
 
 	@Override

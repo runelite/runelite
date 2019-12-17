@@ -36,9 +36,39 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "hideButton",
 		name = "Hide when outside of the library",
-		description = "Don't show the button in the sidebar when your not in the library"
+		description = "Don't show the button in the sidebar when you're not in the library"
 	)
 	default boolean hideButton()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideDuplicateBook",
+		name = "Hide duplicate book",
+		description = "Don't show the duplicate book locations in the library"
+	)
+	default boolean hideDuplicateBook()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideVarlamoreEnvoy",
+		name = "Hide Varlamore Envoy",
+		description = "Whether to hide Varlamore Envoy, as it is only required in the Depths of Despair quest, and is never asked for."
+	)
+	default boolean hideVarlamoreEnvoy()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showTutorialOverlay",
+		name = "Show tutorial overlay",
+		description = "Whether to show an overlay to help understand how to use the plugin"
+	)
+	default boolean showTutorialOverlay()
 	{
 		return true;
 	}

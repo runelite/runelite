@@ -24,15 +24,13 @@
  */
 package net.runelite.client.plugins.raids;
 
-import com.google.common.base.Joiner;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-public class Raid
+class Raid
 {
 	@Getter
 	private final RaidRoom[] rooms = new RaidRoom[16];
@@ -40,7 +38,7 @@ public class Raid
 	@Getter
 	private Layout layout;
 
-	public void updateLayout(Layout layout)
+	void updateLayout(Layout layout)
 	{
 		if (layout == null)
 		{
@@ -60,19 +58,8 @@ public class Raid
 
 			if (room == null)
 			{
-				RaidRoom.Type type = RaidRoom.Type.fromCode(layout.getRoomAt(i).getSymbol());
-				room = new RaidRoom(null, type);
-
-				if (type == RaidRoom.Type.COMBAT)
-				{
-					room.setBoss(RaidRoom.Boss.UNKNOWN);
-				}
-
-				if (type == RaidRoom.Type.PUZZLE)
-				{
-					room.setPuzzle(RaidRoom.Puzzle.UNKNOWN);
-				}
-
+				RoomType type = RoomType.fromCode(layout.getRoomAt(i).getSymbol());
+				room = type.getUnsolvedRoom();
 				setRoom(room, i);
 			}
 		}
@@ -91,7 +78,7 @@ public class Raid
 		}
 	}
 
-	public RaidRoom[] getCombatRooms()
+	RaidRoom[] getCombatRooms()
 	{
 		List<RaidRoom> combatRooms = new ArrayList<>();
 
@@ -102,18 +89,32 @@ public class Raid
 				continue;
 			}
 
-			if (rooms[room.getPosition()].getType() == RaidRoom.Type.COMBAT)
+			if (rooms[room.getPosition()].getType() == RoomType.COMBAT)
 			{
 				combatRooms.add(rooms[room.getPosition()]);
 			}
 		}
 
-		return combatRooms.toArray(new RaidRoom[combatRooms.size()]);
+		return combatRooms.toArray(new RaidRoom[0]);
 	}
 
-	public String getRotationString()
+	void setCombatRooms(RaidRoom[] combatRooms)
 	{
-		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
+		int index = 0;
+
+		for (Room room : layout.getRooms())
+		{
+			if (room == null)
+			{
+				continue;
+			}
+
+			if (rooms[room.getPosition()].getType() == RoomType.COMBAT)
+			{
+				rooms[room.getPosition()] = combatRooms[index];
+				index++;
+			}
+		}
 	}
 
 	public String toCode()
@@ -133,5 +134,47 @@ public class Raid
 		}
 
 		return builder.toString();
+	}
+
+	/**
+	 * Get the raid rooms in the order they are in the raid
+	 * @return
+	 */
+	List<RaidRoom> getOrderedRooms()
+	{
+		List<RaidRoom> orderedRooms = new ArrayList<>();
+		for (Room r : getLayout().getRooms())
+		{
+			final int position = r.getPosition();
+			final RaidRoom room = getRoom(position);
+
+			if (room == null)
+			{
+				continue;
+			}
+
+			orderedRooms.add(room);
+		}
+
+		return orderedRooms;
+	}
+
+	String toRoomString()
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		for (RaidRoom room : getOrderedRooms())
+		{
+			switch (room.getType())
+			{
+				case PUZZLE:
+				case COMBAT:
+					sb.append(room.getName()).append(", ");
+					break;
+			}
+		}
+
+		final String roomsString = sb.toString();
+		return roomsString.substring(0, roomsString.length() - 2);
 	}
 }

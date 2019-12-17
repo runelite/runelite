@@ -26,15 +26,15 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
 
-	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
-		super(image, plugin, String.valueOf(plugin.getFavor()));
+		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
 	}
 
@@ -48,6 +48,6 @@ public class KingdomCounter extends Counter
 	public String getTooltip()
 	{
 		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
+			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
 	}
 }

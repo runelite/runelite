@@ -26,9 +26,7 @@ package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +36,10 @@ import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -72,22 +72,32 @@ public class InfoBoxManager
 		updateInfoBoxImage(infoBox);
 		infoBoxes.add(infoBox);
 		refreshInfoBoxes();
+
+		BufferedImage image = infoBox.getImage();
+
+		if (image instanceof AsyncBufferedImage)
+		{
+			AsyncBufferedImage abi = (AsyncBufferedImage) image;
+			abi.onLoaded(() -> updateInfoBoxImage(infoBox));
+		}
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
-		log.debug("Removing InfoBox {}", infoBox);
-		infoBoxes.remove(infoBox);
-
-		refreshInfoBoxes();
+		if (infoBoxes.remove(infoBox))
+		{
+			log.debug("Removed InfoBox {}", infoBox);
+			refreshInfoBoxes();
+		}
 	}
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
-		log.debug("Removing InfoBoxes for filter {}", filter);
-		infoBoxes.removeIf(filter);
-
-		refreshInfoBoxes();
+		if (infoBoxes.removeIf(filter))
+		{
+			log.debug("Removed InfoBoxes for filter {}", filter);
+			refreshInfoBoxes();
+		}
 	}
 
 	public List<InfoBox> getInfoBoxes()
@@ -116,7 +126,7 @@ public class InfoBoxManager
 		}
 	}
 
-	private void updateInfoBoxImage(final InfoBox infoBox)
+	public void updateInfoBoxImage(final InfoBox infoBox)
 	{
 		if (infoBox.getImage() == null)
 		{
@@ -124,8 +134,8 @@ public class InfoBoxManager
 		}
 
 		// Set scaled InfoBox image
-		final Image image = infoBox.getImage();
-		Image resultImage = image;
+		final BufferedImage image = infoBox.getImage();
+		BufferedImage resultImage = image;
 		final double width = image.getWidth(null);
 		final double height = image.getHeight(null);
 		final double size = Math.max(2, runeLiteConfig.infoBoxSize()); // Limit size to 2 as that is minimum size not causing breakage

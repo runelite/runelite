@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,27 +26,15 @@ package net.runelite.http.service.examine;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import static net.runelite.http.service.examine.ExamineType.ITEM;
-import static net.runelite.http.service.examine.ExamineType.NPC;
-import static net.runelite.http.service.examine.ExamineType.OBJECT;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
-@RestController
-@RequestMapping("/examine")
+@Service
 public class ExamineService
 {
-	private static final Logger logger = LoggerFactory.getLogger(ExamineService.class);
-
 	private static final String CREATE_EXAMINE = "CREATE TABLE IF NOT EXISTS `examine` (\n"
 		+ "  `type` enum('OBJECT','NPC','ITEM') NOT NULL,\n"
 		+ "  `id` int(11) NOT NULL,\n"
@@ -70,43 +58,7 @@ public class ExamineService
 		}
 	}
 
-	@RequestMapping("/npc/{id}")
-	public String getNpc(@PathVariable int id)
-	{
-		return get(NPC, id);
-	}
-
-	@RequestMapping("/object/{id}")
-	public String getObject(@PathVariable int id)
-	{
-		return get(OBJECT, id);
-	}
-
-	@RequestMapping("/item/{id}")
-	public String getItem(@PathVariable int id)
-	{
-		return get(ITEM, id);
-	}
-
-	@RequestMapping(path = "/npc/{id}", method = POST)
-	public void submitNpc(@PathVariable int id, @RequestBody String examine)
-	{
-		insert(NPC, id, examine);
-	}
-
-	@RequestMapping(path = "/object/{id}", method = POST)
-	public void submitObject(@PathVariable int id, @RequestBody String examine)
-	{
-		insert(OBJECT, id, examine);
-	}
-
-	@RequestMapping(path = "/item/{id}", method = POST)
-	public void submitItem(@PathVariable int id, @RequestBody String examine)
-	{
-		insert(ITEM, id, examine);
-	}
-
-	private String get(ExamineType type, int id)
+	public String get(ExamineType type, int id)
 	{
 		try (Connection con = sql2o.open())
 		{
@@ -125,7 +77,7 @@ public class ExamineService
 		return null;
 	}
 
-	private void insert(ExamineType type, int id, String examine)
+	public void insert(ExamineType type, int id, String examine)
 	{
 		try (Connection con = sql2o.open())
 		{

@@ -26,8 +26,6 @@
 package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,30 +34,30 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.events.SessionClose;
-import net.runelite.api.events.SessionOpen;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.RunnableExceptionLogger;
 
-@Slf4j
 @Singleton
 public class InfoPanel extends PluginPanel
 {
@@ -70,16 +68,16 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
 	private static final ImageIcon WIKI_ICON;
+	private static final ImageIcon IMPORT_ICON;
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
+	private JPanel syncPanel;
+	private JPanel actionsContainer;
 
 	@Inject
 	@Nullable
 	private Client client;
-
-	@Inject
-	private RuneLiteProperties runeLiteProperties;
 
 	@Inject
 	private EventBus eventBus;
@@ -90,23 +88,17 @@ public class InfoPanel extends PluginPanel
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Inject
+	private ConfigManager configManager;
+
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				ARROW_RIGHT_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("arrow_right.png")));
-				GITHUB_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("github_icon.png")));
-				DISCORD_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("discord_icon.png")));
-				PATREON_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("patreon_icon.png")));
-				WIKI_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("wiki_icon.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/util/arrow_right.png"));
+		GITHUB_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "github_icon.png"));
+		DISCORD_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "discord_icon.png"));
+		PATREON_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "patreon_icon.png"));
+		WIKI_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "wiki_icon.png"));
+		IMPORT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "import_icon.png"));
 	}
 
 	void init()
@@ -122,7 +114,7 @@ public class InfoPanel extends PluginPanel
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
+		JLabel version = new JLabel(htmlLabel("RuneLite version: ", RuneLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
 		JLabel revision = new JLabel();
@@ -152,7 +144,7 @@ public class InfoPanel extends PluginPanel
 			{
 				if (e.getURL().toString().equals(RUNELITE_LOGIN))
 				{
-					executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
+					executor.execute(sessionManager::login);
 				}
 			}
 		});
@@ -164,20 +156,32 @@ public class InfoPanel extends PluginPanel
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);
 
-		updateLoggedIn();
-
-		JPanel actionsContainer = new JPanel();
+		actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setLayout(new GridLayout(4, 1, 0, 10));
+		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
 
-		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
-		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
-		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
+		syncPanel = buildLinkPanel(IMPORT_ICON, "Import local settings", "to remote RuneLite account", () ->
+		{
+			final int result = JOptionPane.showOptionDialog(syncPanel,
+				"This will replace your current RuneLite account settings with settings from your local profile.",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result == JOptionPane.YES_OPTION)
+			{
+				configManager.importLocal();
+			}
+		});
+
+		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", RuneLiteProperties.getGithubLink()));
+		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", RuneLiteProperties.getDiscordInvite()));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", RuneLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", RuneLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
 
+		updateLoggedIn();
 		eventBus.register(this);
 	}
 
@@ -185,6 +189,14 @@ public class InfoPanel extends PluginPanel
 	 * Builds a link panel with a given icon, text and url to redirect to.
 	 */
 	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, String url)
+	{
+		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.browse(url));
+	}
+
+	/**
+	 * Builds a link panel with a given icon, text and callable to call.
+	 */
+	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, Runnable callback)
 	{
 		JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -207,7 +219,6 @@ public class InfoPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				LinkBrowser.browse(url);
 				container.setBackground(pressedColor);
 				textContainer.setBackground(pressedColor);
 			}
@@ -215,6 +226,7 @@ public class InfoPanel extends PluginPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
+				callback.run();
 				container.setBackground(hoverColor);
 				textContainer.setBackground(hoverColor);
 			}
@@ -266,12 +278,14 @@ public class InfoPanel extends PluginPanel
 			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
 			loggedLabel.setText("Logged in as");
+			actionsContainer.add(syncPanel, 0);
 		}
 		else
 		{
 			emailLabel.setContentType("text/html");
 			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
 			loggedLabel.setText("Not logged in");
+			actionsContainer.remove(syncPanel);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,22 +21,9 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */package net.runelite.client.plugins.achievementdiary;
+ */
+package net.runelite.client.plugins.achievementdiary;
 
-import lombok.Getter;
-import net.runelite.api.Skill;
-
-@Getter
-public class Requirement
+public interface Requirement
 {
-	private final Skill skill;
-	private final int levelRequirement;
-	private final Requirement[] altRequirements;
-
-	public Requirement(Skill skill, int levelRequirement, Requirement... altRequirements)
-	{
-		this.skill = skill;
-		this.levelRequirement = levelRequirement;
-		this.altRequirements = altRequirements;
-	}
 }

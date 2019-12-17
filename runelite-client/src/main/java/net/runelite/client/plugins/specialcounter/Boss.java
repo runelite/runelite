@@ -24,40 +24,48 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import lombok.AllArgsConstructor;
+import com.google.common.collect.Sets;
+import java.util.Set;
 import lombok.Getter;
 import lombok.ToString;
+import net.runelite.api.NpcID;
 
-@AllArgsConstructor
 @Getter
 @ToString
 enum Boss
 {
-	ABYSSAL_SIRE("Abyssal sire", 1.25d),
-	CALLISTO("Callisto", 1.225d),
-	CERBERUS("Cerberus", 1.15d),
-	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
-	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
-	GENERAL_GRAARDOR("General Graardor", 1.325d),
-	GIANT_MOLE("Giant Mole", 1.075d),
-	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
-	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
-	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
-	VENETENATIS("Venenatis", 1.4d),
-	VETION("Vet'ion", 1.225d);
+	ABYSSAL_SIRE(1.25d, NpcID.ABYSSAL_SIRE, NpcID.ABYSSAL_SIRE_5887, NpcID.ABYSSAL_SIRE_5888, NpcID.ABYSSAL_SIRE_5889, NpcID.ABYSSAL_SIRE_5890, NpcID.ABYSSAL_SIRE_5891, NpcID.ABYSSAL_SIRE_5908),
+	CALLISTO(1.225d, NpcID.CALLISTO, NpcID.CALLISTO_6609),
+	CERBERUS(1.15d, NpcID.CERBERUS, NpcID.CERBERUS_5863, NpcID.CERBERUS_5866),
+	CHAOS_ELEMENTAL(1.075d, NpcID.CHAOS_ELEMENTAL, NpcID.CHAOS_ELEMENTAL_6505),
+	CORPOREAL_BEAST(1.55d, NpcID.CORPOREAL_BEAST),
+	GENERAL_GRAARDOR(1.325d, NpcID.GENERAL_GRAARDOR, NpcID.GENERAL_GRAARDOR_6494),
+	GIANT_MOLE(1.075d, NpcID.GIANT_MOLE, NpcID.GIANT_MOLE_6499),
+	KALPHITE_QUEEN(1.05d, NpcID.KALPHITE_QUEEN, NpcID.KALPHITE_QUEEN_963, NpcID.KALPHITE_QUEEN_965, NpcID.KALPHITE_QUEEN_4303, NpcID.KALPHITE_QUEEN_4304, NpcID.KALPHITE_QUEEN_6500, NpcID.KALPHITE_QUEEN_6501),
+	KING_BLACK_DRAGON(1.075d, NpcID.KING_BLACK_DRAGON, NpcID.KING_BLACK_DRAGON_2642, NpcID.KING_BLACK_DRAGON_6502),
+	KRIL_TSUROTH(1.375d, NpcID.KRIL_TSUTSAROTH, NpcID.KRIL_TSUTSAROTH_6495),
+	VENETENATIS(1.4d, NpcID.VENENATIS, NpcID.VENENATIS_6610),
+	VETION(1.225d, NpcID.VETION, NpcID.VETION_REBORN);
 
-	private final String name;
+	private final Set<Integer> ids;
 	private final double modifier; // Some NPCs have a modifier to the experience a player receives.
 
-	public static Boss getBoss(String name)
+	Boss(double modifier, Integer... ids)
+	{
+		this.modifier = modifier;
+		this.ids = Sets.newHashSet(ids);
+	}
+
+	static Boss getBoss(int id)
 	{
 		for (Boss boss : values())
 		{
-			if (boss.getName().equals(name))
+			if (boss.ids.contains(id))
 			{
 				return boss;
 			}
 		}
+
 		return null;
 	}
 

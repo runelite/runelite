@@ -25,8 +25,10 @@
 package net.runelite.protocol.api.handshake;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class LoginHandshakePacket extends HandshakePacket
 {
 

@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -53,41 +54,43 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
+		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			return;
-		}
-
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_W:
-				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				if (input != null)
+			String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+			if (input != null)
+			{
+				// remove trailing space
+				while (input.endsWith(" "))
 				{
-					// remove trailing space
-					while (input.endsWith(" "))
-					{
-						input = input.substring(0, input.length() - 1);
-					}
-
-					// find next word
-					int idx = input.lastIndexOf(' ');
-					final String replacement;
-					if (idx != -1)
-					{
-						replacement = input.substring(0, idx);
-					}
-					else
-					{
-						replacement = "";
-					}
-
-					clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+					input = input.substring(0, input.length() - 1);
 				}
-				break;
-			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
-				break;
+
+				// find next word
+				int idx = input.lastIndexOf(' ');
+				final String replacement;
+				if (idx != -1)
+				{
+					replacement = input.substring(0, idx);
+				}
+				else
+				{
+					replacement = "";
+				}
+
+				clientThread.invoke(() ->
+				{
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+					client.runScript(ScriptID.CHAT_PROMPT_INIT);
+				});
+			}
+		}
+		else if (chatCommandsConfig.clearChatBox().matches(e))
+		{
+			clientThread.invoke(() ->
+			{
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+				client.runScript(ScriptID.CHAT_PROMPT_INIT);
+			});
 		}
 	}
 

@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -49,10 +48,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 @Service
-@Slf4j
 public class OSRSNewsService
 {
-	private static final HttpUrl RSS_URL = HttpUrl.parse("http://services.runescape.com/m=news/latest_news.rss?oldschool=true");
+	private static final HttpUrl RSS_URL = HttpUrl.parse("https://services.runescape.com/m=news/latest_news.rss?oldschool=true");
 	private static final SimpleDateFormat PUB_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy '00:00:00 GMT'", Locale.US);
 
 	public List<FeedItem> getNews() throws IOException
@@ -65,7 +63,7 @@ public class OSRSNewsService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error getting OSRS news: " + response.message());
+				throw new IOException("Error getting OSRS news: " + response);
 			}
 
 			try

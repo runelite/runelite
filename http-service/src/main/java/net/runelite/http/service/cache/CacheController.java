@@ -62,6 +62,7 @@ import net.runelite.http.service.cache.beans.IndexEntry;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,7 +76,7 @@ public class CacheController
 	@Autowired
 	private CacheService cacheService;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public List<Cache> listCaches()
 	{
 		return cacheService.listCaches().stream()
@@ -83,7 +84,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}")
+	@GetMapping("{cacheId}")
 	public List<CacheIndex> listIndexes(@PathVariable int cacheId)
 	{
 		CacheEntry cache = cacheService.findCache(cacheId);
@@ -99,7 +100,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}")
+	@GetMapping("{cacheId}/{indexId}")
 	public List<CacheArchive> listArchives(@PathVariable int cacheId,
 		@PathVariable int indexId)
 	{
@@ -122,7 +123,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}")
+	@GetMapping("{cacheId}/{indexId}/{archiveId}")
 	public CacheArchive getCacheArchive(@PathVariable int cacheId,
 		@PathVariable int indexId,
 		@PathVariable int archiveId)
@@ -149,7 +150,7 @@ public class CacheController
 			archiveEntry.getNameHash(), archiveEntry.getRevision());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}/data")
+	@GetMapping("{cacheId}/{indexId}/{archiveId}/data")
 	public byte[] getArchiveData(
 		@PathVariable int cacheId,
 		@PathVariable int indexId,
@@ -200,7 +201,7 @@ public class CacheController
 		return archiveEntry;
 	}
 
-	@RequestMapping("item/{itemId}")
+	@GetMapping("item/{itemId}")
 	public ItemDefinition getItem(@PathVariable int itemId) throws IOException
 	{
 		ArchiveEntry archiveEntry = findConfig(ConfigType.ITEM);
@@ -221,7 +222,7 @@ public class CacheController
 		return itemdef;
 	}
 
-	@RequestMapping(path = "item/{itemId}/image", produces = "image/png")
+	@GetMapping(path = "item/{itemId}/image", produces = "image/png")
 	public ResponseEntity<byte[]> getItemImage(
 		@PathVariable int itemId,
 		@RequestParam(defaultValue = "1") int quantity,
@@ -313,7 +314,7 @@ public class CacheController
 		return ResponseEntity.ok(bao.toByteArray());
 	}
 
-	@RequestMapping("object/{objectId}")
+	@GetMapping("object/{objectId}")
 	public ObjectDefinition getObject(
 		@PathVariable int objectId
 	) throws IOException
@@ -336,7 +337,7 @@ public class CacheController
 		return objectdef;
 	}
 
-	@RequestMapping("npc/{npcId}")
+	@GetMapping("npc/{npcId}")
 	public NpcDefinition getNpc(
 		@PathVariable int npcId
 	) throws IOException

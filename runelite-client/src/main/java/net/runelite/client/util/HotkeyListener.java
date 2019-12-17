@@ -26,7 +26,6 @@ package net.runelite.client.util;
 
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
@@ -36,7 +35,6 @@ public abstract class HotkeyListener implements KeyListener
 {
 	private final Supplier<Keybind> keybind;
 
-	@Getter
 	private boolean isPressed = false;
 
 	private boolean isConsumingTyped = false;
@@ -77,20 +75,10 @@ public abstract class HotkeyListener implements KeyListener
 		{
 			isPressed = false;
 			isConsumingTyped = false;
-			hotkeyReleased();
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				// Only consume non modifier keys
-				e.consume();
-			}
 		}
 	}
 
 	public void hotkeyPressed()
-	{
-	}
-
-	public void hotkeyReleased()
 	{
 	}
 }

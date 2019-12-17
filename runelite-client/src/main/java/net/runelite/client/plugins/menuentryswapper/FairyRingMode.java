@@ -33,7 +33,8 @@ public enum FairyRingMode
 {
 	ZANARIS("Zanaris"),
 	LAST_DESTINATION("Last-Destination"),
-	CONFIGURE("Configure");
+	CONFIGURE("Configure"),
+	OFF("Off");
 
 	private final String name;
 

@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.tearsofguthix;
 
-import com.google.common.eventbus.Subscribe;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +35,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;

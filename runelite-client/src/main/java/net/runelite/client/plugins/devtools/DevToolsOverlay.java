@@ -32,17 +32,18 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.TileItem;
 import net.runelite.api.GroundObject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -58,18 +59,19 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-public class DevToolsOverlay extends Overlay
+@Singleton
+class DevToolsOverlay extends Overlay
 {
-	public static final int ITEM_EMPTY = 6512;
-	public static final int ITEM_FILLED = 20594;
-
+	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -87,10 +89,11 @@ public class DevToolsOverlay extends Overlay
 	private final TooltipManager toolTipManager;
 
 	@Inject
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
+	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(OverlayPriority.HIGHEST);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
@@ -99,43 +102,37 @@ public class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Font font = plugin.getFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
-		}
+		graphics.setFont(FONT);
 
-		if (plugin.isTogglePlayers())
+		if (plugin.getPlayers().isActive())
 		{
 			renderPlayers(graphics);
 		}
 
-		if (plugin.isToggleNpcs())
+		if (plugin.getNpcs().isActive())
 		{
 			renderNpcs(graphics);
 		}
 
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
+		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
 		{
 			renderTileObjects(graphics);
 		}
 
-		if (plugin.isToggleInventory())
+		if (plugin.getInventory().isActive())
 		{
 			renderInventory(graphics);
 		}
 
-		if (plugin.isToggleProjectiles())
+		if (plugin.getProjectiles().isActive())
 		{
 			renderProjectiles(graphics);
 		}
 
-		if (plugin.isToggleGraphicsObjects())
+		if (plugin.getGraphicsObjects().isActive())
 		{
 			renderGraphicsObjects(graphics);
 		}
-
-		renderWidgets(graphics);
 
 		return null;
 	}
@@ -213,32 +210,32 @@ public class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				if (plugin.isToggleGroundItems())
+				if (plugin.getGroundItems().isActive())
 				{
 					renderGroundItems(graphics, tile, player);
 				}
 
-				if (plugin.isToggleGroundObjects())
+				if (plugin.getGroundObjects().isActive())
 				{
 					renderGroundObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleGameObjects())
+				if (plugin.getGameObjects().isActive())
 				{
 					renderGameObjects(graphics, tile, player);
 				}
 
-				if (plugin.isToggleWalls())
+				if (plugin.getWalls().isActive())
 				{
 					renderWallObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleDecor())
+				if (plugin.getDecorations().isActive())
 				{
 					renderDecorObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleTileLocation())
+				if (plugin.getTileLocation().isActive())
 				{
 					renderTileTooltip(graphics, tile);
 				}
@@ -264,9 +261,9 @@ public class DevToolsOverlay extends Overlay
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				Node current = itemLayer.getBottom();
-				while (current instanceof Item)
+				while (current instanceof TileItem)
 				{
-					Item item = (Item) current;
+					TileItem item = (TileItem) current;
 					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
 					current = current.getNext();
 				}
@@ -290,10 +287,10 @@ public class DevToolsOverlay extends Overlay
 
 					// Draw a polygon around the convex hull
 					// of the model vertices
-					Polygon p = gameObject.getConvexHull();
+					Shape p = gameObject.getConvexHull();
 					if (p != null)
 					{
-						graphics.drawPolygon(p);
+						graphics.draw(p);
 					}
 				}
 			}
@@ -334,10 +331,16 @@ public class DevToolsOverlay extends Overlay
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
 
-			Polygon p = decorObject.getConvexHull();
+			Shape p = decorObject.getConvexHull();
 			if (p != null)
 			{
-				graphics.drawPolygon(p);
+				graphics.draw(p);
+			}
+
+			p = decorObject.getConvexHull2();
+			if (p != null)
+			{
+				graphics.draw(p);
 			}
 		}
 	}
@@ -377,36 +380,15 @@ public class DevToolsOverlay extends Overlay
 
 		for (Projectile projectile : projectiles)
 		{
-			int originX = projectile.getX1();
-			int originY = projectile.getY1();
-
-			LocalPoint tilePoint = new LocalPoint(originX, originY);
-			Polygon poly = Perspective.getCanvasTilePoly(client, tilePoint);
-
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
-			}
-
 			int projectileId = projectile.getId();
-			Actor projectileInteracting = projectile.getInteracting();
-
-			String infoString = "";
-
-			if (projectileInteracting == null)
+			String text = "(ID: " + projectileId + ")";
+			int x = (int) projectile.getX();
+			int y = (int) projectile.getY();
+			LocalPoint projectilePoint = new LocalPoint(x, y);
+			Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
+			if (textLocation != null)
 			{
-				infoString += "AoE";
-			}
-			else
-			{
-				infoString += "Targeted (T: " + projectileInteracting.getName() + ")";
-			}
-
-			infoString += " (ID: " + projectileId + ")";
-
-			if (projectileInteracting != null)
-			{
-				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
+				OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.RED);
 			}
 		}
 	}
@@ -433,72 +415,6 @@ public class DevToolsOverlay extends Overlay
 				OverlayUtil.renderTextLocation(graphics, textLocation, infoString, Color.WHITE);
 			}
 		}
-	}
-
-	public void renderWidgets(Graphics2D graphics)
-	{
-		Widget widget = plugin.currentWidget;
-		int itemIndex = plugin.itemIndex;
-
-		if (widget == null || widget.isHidden())
-		{
-			return;
-		}
-
-		Rectangle childBounds = widget.getBounds();
-		graphics.setColor(CYAN);
-		graphics.draw(childBounds);
-
-		if (itemIndex == -1)
-		{
-			return;
-		}
-
-		if (widget.getItemId() != ITEM_EMPTY
-			&& widget.getItemId() != ITEM_FILLED)
-		{
-			Rectangle componentBounds = widget.getBounds();
-
-			graphics.setColor(ORANGE);
-			graphics.draw(componentBounds);
-
-			renderWidgetText(graphics, componentBounds, widget.getItemId(), YELLOW);
-		}
-
-		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
-		if (widgetItem == null
-			|| widgetItem.getId() == ITEM_EMPTY
-			|| widgetItem.getId() == ITEM_FILLED)
-		{
-			return;
-		}
-
-		Rectangle itemBounds = widgetItem.getCanvasBounds();
-
-		graphics.setColor(ORANGE);
-		graphics.draw(itemBounds);
-
-		renderWidgetText(graphics, itemBounds, widgetItem.getId(), YELLOW);
-	}
-
-	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int itemId, Color color)
-	{
-		if (itemId == -1)
-		{
-			return;
-		}
-
-		String text = itemId + "";
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
-
-		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, textX + 1, textY + 1);
-		graphics.setColor(color);
-		graphics.drawString(text, textX, textY);
 	}
 
 	private void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)

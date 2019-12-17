@@ -1,10 +1,12 @@
 package net.runelite.cache.definitions;
 
 import java.util.Arrays;
+import lombok.Data;
 import net.runelite.cache.models.CircularAngle;
 import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;
 
+@Data
 public class ModelDefinition
 {
 	public int id;
@@ -53,6 +55,8 @@ public class ModelDefinition
 	private transient int[] origVX;
 	private transient int[] origVY;
 	private transient int[] origVZ;
+
+	public transient int maxPriority;
 
 	public static transient int animOffsetX, animOffsetY, animOffsetZ;
 
@@ -611,5 +615,21 @@ public class ModelDefinition
 			this.vertexPositionsZ[i] += zOffset;
 		}
 		this.reset();
+	}
+
+	public void computeMaxPriority()
+	{
+		if (faceRenderPriorities == null)
+		{
+			return;
+		}
+
+		for (int i = 0; i < faceCount; ++i)
+		{
+			if (faceRenderPriorities[i] > maxPriority)
+			{
+				maxPriority = faceRenderPriorities[i];
+			}
+		}
 	}
 }

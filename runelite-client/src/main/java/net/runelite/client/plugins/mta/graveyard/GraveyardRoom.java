@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.mta.graveyard;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +37,7 @@ import static net.runelite.api.ItemID.ANIMALS_BONES_6907;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -91,7 +91,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void itemContainerChanged(ItemContainerChanged event)
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{

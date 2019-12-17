@@ -25,13 +25,10 @@
  */
 package net.runelite.client.chat;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -40,6 +37,8 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 
@@ -49,21 +48,21 @@ public class CommandManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
-	private static final String PRIVMATE_MESSAGE = "privateMessage";
+	private static final String PRIVATE_MESSAGE = "privateMessage";
 
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final EventBus eventBus;
-	private final Provider<ClientThread> clientThreadProvider;
+	private final ClientThread clientThread;
 	private boolean sending;
 
-	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
+	private final List<ChatboxInputListener> chatboxInputListenerList = new CopyOnWriteArrayList<>();
 
 	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
+	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.eventBus = eventBus;
-		this.clientThreadProvider = clientThreadProvider;
+		this.clientThread = clientThread;
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)
@@ -77,7 +76,7 @@ public class CommandManager
 	}
 
 	@Subscribe
-	private void scriptEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (sending)
 		{
@@ -92,7 +91,7 @@ public class CommandManager
 			case CHATBOX_INPUT:
 				handleInput(event);
 				break;
-			case PRIVMATE_MESSAGE:
+			case PRIVATE_MESSAGE:
 				handlePrivateMessage(event);
 				break;
 		}
@@ -100,7 +99,6 @@ public class CommandManager
 
 	private void runCommand()
 	{
-		Client client = clientProvider.get();
 		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
@@ -122,7 +120,6 @@ public class CommandManager
 
 	private void handleInput(ScriptCallbackEvent event)
 	{
-		Client client = clientProvider.get();
 		final String[] stringStack = client.getStringStack();
 		final int[] intStack = client.getIntStack();
 		int stringStackCount = client.getStringStackSize();
@@ -144,8 +141,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				ClientThread clientThread = clientThreadProvider.get();
-				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
 			}
 		};
 		boolean stop = false;
@@ -163,7 +159,6 @@ public class CommandManager
 
 	private void handlePrivateMessage(ScriptCallbackEvent event)
 	{
-		Client client = clientProvider.get();
 		final String[] stringStack = client.getStringStack();
 		final int[] intStack = client.getIntStack();
 		int stringStackCount = client.getStringStackSize();
@@ -185,8 +180,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				ClientThread clientThread = clientThreadProvider.get();
-				clientThread.invokeLater(() -> sendPrivmsg(target, message));
+				clientThread.invoke(() -> sendPrivmsg(target, message));
 			}
 		};
 
@@ -205,7 +199,6 @@ public class CommandManager
 
 	private void sendChatboxInput(int chatType, String input)
 	{
-		Client client = clientProvider.get();
 		sending = true;
 		try
 		{
@@ -219,7 +212,6 @@ public class CommandManager
 
 	private void sendPrivmsg(String target, String message)
 	{
-		Client client = clientProvider.get();
 		client.runScript(ScriptID.PRIVMSG, target, message);
 	}
 }

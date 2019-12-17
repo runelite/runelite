@@ -74,7 +74,7 @@ class Library
 	private Book customerBook;
 
 	@Getter
-	private LibraryCustomer customer;
+	private int customerId;
 
 	Library()
 	{
@@ -93,9 +93,9 @@ class Library
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(int customerId, Book book)
 	{
-		this.customer = customer;
+		this.customerId = customerId;
 		this.customerBook = book;
 	}
 
@@ -130,14 +130,12 @@ class Library
 		}
 		else if (state != SolvedState.NO_DATA)
 		{
-			// We know all of the possible things in this shelf.
-			if (book != null)
+			// Reset if the book we found isn't what we expected
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript, since the layout has changed
+			if ((book != null && !bookcase.getPossibleBooks().contains(book)) ||
+				(book == null && !bookcase.getPossibleBooks().isEmpty() && bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript)))
 			{
-				// Check to see if our guess is wrong
-				if (!bookcase.getPossibleBooks().contains(book))
-				{
-					reset();
-				}
+				reset();
 			}
 		}
 
@@ -299,7 +297,7 @@ class Library
 				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
@@ -322,7 +320,7 @@ class Library
 				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13522,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				DARK_MANUSCRIPT_13515,
@@ -348,7 +346,7 @@ class Library
 				DARK_MANUSCRIPT_13519,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13522,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
@@ -384,7 +382,7 @@ class Library
 				TREACHERY_OF_ROYALTY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				VARLAMORE_ENVOY
 			),
 			Arrays.asList(
@@ -409,7 +407,7 @@ class Library
 				IDEOLOGY_OF_DARKNESS,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13515,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13518,

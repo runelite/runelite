@@ -45,4 +45,9 @@ public enum OverlayLayer
 	 * Render overlay above all game elements
 	 */
 	ALWAYS_ON_TOP,
+
+	/**
+	 * Render over the map, even when it's fullscreen
+	 */
+	ABOVE_MAP,
 }

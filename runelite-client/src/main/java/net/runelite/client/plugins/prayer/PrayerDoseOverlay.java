@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
@@ -45,12 +46,12 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.StringUtils;
 
 class PrayerDoseOverlay extends Overlay
 {
-	private static final float PULSE_TIME = 1200f;
+	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 
 	private static final Color START_COLOR = new Color(0, 255, 255);
 	private static final Color END_COLOR = new Color(0, 92, 92);
@@ -64,9 +65,9 @@ class PrayerDoseOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private int prayerBonus;
 	@Setter(AccessLevel.PACKAGE)
-	private boolean hasPrayerPotion;
+	private boolean hasPrayerRestore;
 	@Setter(AccessLevel.PACKAGE)
-	private boolean hasRestorePotion;
+	private int bonusPrayer;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hasHolyWrench;
 
@@ -98,7 +99,7 @@ class PrayerDoseOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
-		if (xpOrb == null)
+		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;
 		}
@@ -120,7 +121,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(tooltip));
 		}
 
-		if (!config.showPrayerDoseIndicator() || (!hasPrayerPotion && !hasRestorePotion))
+		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
 		{
 			return null;
 		}
@@ -137,14 +138,9 @@ class PrayerDoseOverlay extends Overlay
 		final double dosePercentage = hasHolyWrench ? .27 : .25;
 		final int basePointsRestored = (int) Math.floor(maxPrayer * dosePercentage);
 
-		// how many points a prayer and super restore will heal
-		final int prayerPotionPointsRestored = basePointsRestored + 7;
-		final int superRestorePointsRestored = basePointsRestored + 8;
+		final int pointsRestored = basePointsRestored + 7 + bonusPrayer;
 
-		final boolean usePrayerPotion = prayerPointsMissing >= prayerPotionPointsRestored;
-		final boolean useSuperRestore = prayerPointsMissing >= superRestorePointsRestored;
-
-		if (!usePrayerPotion && !useSuperRestore)
+		if (prayerPointsMissing < pointsRestored)
 		{
 			return null;
 		}
@@ -160,7 +156,7 @@ class PrayerDoseOverlay extends Overlay
 		final float tickProgress = Math.min(timeSinceLastTick / PULSE_TIME, 1); // Cap between 0 and 1
 		final double t = tickProgress * Math.PI; // Convert to 0 - pi
 
-		graphics.setColor(SwingUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
+		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 

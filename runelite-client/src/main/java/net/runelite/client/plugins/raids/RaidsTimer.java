@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -41,14 +40,15 @@ public class RaidsTimer extends InfoBox
 	private LocalTime time;
 	private LocalTime firstFloorTime;
 	private LocalTime secondFloorTime;
+	private LocalTime thirdFloorTime;
 	private LocalTime olmTime;
 
 	@Setter
 	private boolean stopped;
 
-	public RaidsTimer(BufferedImage image, Plugin plugin, Instant startTime)
+	public RaidsTimer(Plugin plugin, Instant startTime)
 	{
-		super(image, plugin);
+		super(null, plugin);
 		this.startTime = startTime;
 		floorTime = startTime;
 		stopped = false;
@@ -66,12 +66,18 @@ public class RaidsTimer extends InfoBox
 		{
 			secondFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 		}
-		else if (olmTime == null)
+		else if (thirdFloorTime == null)
 		{
-			olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+			thirdFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 		}
 
 		floorTime = Instant.now();
+	}
+
+	public void timeOlm()
+	{
+		Duration elapsed = Duration.between(floorTime, Instant.now());
+		olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 	}
 
 	@Override
@@ -124,6 +130,12 @@ public class RaidsTimer extends InfoBox
 		{
 			builder.append("</br>Second floor: ");
 			builder.append(secondFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+		}
+
+		if (thirdFloorTime != null)
+		{
+			builder.append("</br>Third floor: ");
+			builder.append(thirdFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
 		}
 
 		if (olmTime != null)

@@ -111,6 +111,13 @@ public interface Tile
 	int getPlane();
 
 	/**
+	 * Get the plane this tile is rendered on, which is where the tile heights are from.
+	 *
+	 * @return
+	 */
+	int getRenderLevel();
+
+	/**
 	 * Computes and returns whether this tile has line of sight to another.
 	 *
 	 * @param other the other tile
@@ -123,5 +130,12 @@ public interface Tile
 	 *
 	 * @return the ground items
 	 */
-	List<Item> getGroundItems();
+	List<TileItem> getGroundItems();
+
+	/**
+	 * Return the tile under this one, if this tile is a bridge
+	 *
+	 * @return
+	 */
+	Tile getBridge();
 }

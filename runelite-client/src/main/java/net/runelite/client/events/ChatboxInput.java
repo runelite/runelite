@@ -25,12 +25,12 @@
 package net.runelite.client.events;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public abstract class ChatboxInput
+@EqualsAndHashCode(callSuper = true)
+public abstract class ChatboxInput extends ChatInput
 {
 	private final String value;
 	private final int chatType;
-
-	public abstract void resume();
 }

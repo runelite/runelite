@@ -1,0 +1,168 @@
+.id                 223
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      4
+.string_var_count   3
+   sconst                 "<col=0000ff>"
+   sstore                 0
+   iconst                 0
+   istore                 0
+   iconst                 6250335
+   istore                 1
+   invoke                 921
+   iconst                 1
+   if_icmpeq              LABEL10
+   jump                   LABEL20
+LABEL10:
+   sconst                 "<col=9090ff>"
+   iconst                 16777215
+   iconst                 12566463
+   istore                 1
+   istore                 0
+   sstore                 0
+   iconst                 1
+   iconst                 10616889
+   if_settextshadow      
+   jump                   LABEL23
+LABEL20:
+   iconst                 0
+   iconst                 10616889
+   if_settextshadow      
+LABEL23:
+   iload                  0
+   iconst                 10616889
+   if_setcolour          
+   get_varc_string        335
+   string_length         
+   istore                 2
+   get_varc_string        335
+   escape                
+   sstore                 1
+   sconst                 ""
+   sstore                 2
+   iconst                 0
+   istore                 3
+   get_varbit             8119
+   iconst                 1
+   if_icmpeq              LABEL40
+   jump                   LABEL99
+LABEL40:
+   iconst                 105
+   iconst                 115
+   iconst                 1894
+   get_varbit             1777
+   enum                  
+   chat_playername       
+   sconst                 ": "
+   sload                  0
+   sload                  1
+   sconst                 "</col>"
+   join_string            6
+   sstore                 2
+   iload                  2
+   iconst                 80
+   if_icmplt              LABEL56
+   jump                   LABEL63
+LABEL56:
+   sload                  2
+   sload                  0
+   sconst                 "*"
+   sconst                 "</col>"
+   join_string            3
+   append                
+   sstore                 2
+LABEL63:
+   sload                  2
+   iconst                 2147483647
+   iconst                 495
+   parawidth             
+   istore                 3
+   iload                  3
+   iconst                 10616889
+   if_getwidth           
+   if_icmpgt              LABEL73
+   jump                   LABEL79
+LABEL73:
+   iconst                 2
+   iconst                 2
+   iconst                 0
+   iconst                 10616889
+   if_settextalign       
+   jump                   LABEL84
+LABEL79:
+   iconst                 0
+   iconst                 2
+   iconst                 0
+   iconst                 10616889
+   if_settextalign       
+LABEL84:
+   iconst                 10616889
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616889
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616889
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616889
+   if_setonop            
+   jump                   LABEL140
+LABEL99:
+   iconst                 105
+   iconst                 115
+   iconst                 1894
+   get_varbit             1777
+   enum                  
+   sconst                 " You must set a name before you can chat."
+   join_string            2
+   sstore                 2
+   iconst                 1
+   iconst                 2
+   iconst                 0
+   iconst                 10616889
+   if_settextalign       
+   iconst                 10
+   sconst                 "Configure"
+   iconst                 10616889
+   if_setop              
+   sconst                 "<col=ff9040>"
+   sconst                 "Display name"
+   sconst                 "</col>"
+   join_string            3
+   iconst                 10616889
+   if_setopbase          
+   iconst                 45
+   iconst                 -2147483645
+   iload                  1
+   sconst                 "Ii"
+   iconst                 10616889
+   if_setonmouserepeat   
+   iconst                 45
+   iconst                 -2147483645
+   iload                  0
+   sconst                 "Ii"
+   iconst                 10616889
+   if_setonmouseleave    
+   iconst                 489
+   iconst                 -2147483644
+   iconst                 1024
+   sconst                 "ii"
+   iconst                 10616889
+   if_setonop            
+LABEL140:
+   sload                  2
+   iconst                 10616889
+   if_settext            
+   sconst                 "setChatboxInput"
+   runelite_callback     
+   iconst                 3
+   iconst                 16
+   iconst                 1
+   iconst                 0
+   iconst                 10616889
+   if_setsize            
+   return                

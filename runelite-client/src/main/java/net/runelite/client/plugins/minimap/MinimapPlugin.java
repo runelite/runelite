@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.minimap;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
@@ -32,12 +31,13 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -80,7 +80,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
@@ -90,7 +90,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void configChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("minimap"))
 		{
@@ -107,7 +107,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChange(WidgetHiddenChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		updateMinimapWidgetVisibility(config.hideMinimap());
 	}

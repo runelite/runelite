@@ -24,12 +24,13 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.collect.ComparisonChain;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager2;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JPanel;
 
 /**
@@ -37,10 +38,14 @@ import javax.swing.JPanel;
  */
 class ClientTitleToolbar extends JPanel
 {
-	static final int TITLEBAR_SIZE = 23;
+	private static final int TITLEBAR_SIZE = 23;
 	private static final int ITEM_PADDING = 4;
-
-	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
+	private final Map<NavigationButton, Component> componentMap = new TreeMap<>((a, b) ->
+		ComparisonChain
+			.start()
+			.compare(a.getPriority(), b.getPriority())
+			.compare(a.getTooltip(), b.getTooltip())
+			.result());
 
 	/**
 	 * Instantiates a new Client title toolbar.
@@ -122,24 +127,26 @@ class ClientTitleToolbar extends JPanel
 		});
 	}
 
-	public void addComponent(NavigationButton button, Component c)
+	void addComponent(final NavigationButton button, final Component c)
 	{
 		if (componentMap.put(button, c) == null)
 		{
-			add(c);
-			revalidate();
-			repaint();
+			update();
 		}
 	}
 
-	public void removeComponent(NavigationButton button)
+	void removeComponent(final NavigationButton button)
 	{
-		final Component component = componentMap.remove(button);
-		if (component != null)
+		if (componentMap.remove(button) != null)
 		{
-			remove(component);
-			revalidate();
-			repaint();
+			update();
 		}
+	}
+
+	private void update()
+	{
+		removeAll();
+		componentMap.values().forEach(this::add);
+		repaint();
 	}
 }

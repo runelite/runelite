@@ -29,19 +29,25 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
 
 @Singleton
 class InstanceMapOverlay extends Overlay
@@ -70,6 +76,7 @@ class InstanceMapOverlay extends Overlay
 	private int viewedPlane = 0;
 
 	private final Client client;
+	private final SpriteManager spriteManager;
 
 	/**
 	 * Saved image of the scene, no reason to draw the whole thing every
@@ -79,10 +86,20 @@ class InstanceMapOverlay extends Overlay
 	private volatile boolean showMap = false;
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
+	@Setter
+	private boolean isCloseButtonHovered;
+
+	@Getter
+	private Rectangle closeButtonBounds;
+
+	private BufferedImage closeButtonImage;
+	private BufferedImage closeButtonHoveredImage;
+
 	@Inject
-	InstanceMapOverlay(Client client)
+	InstanceMapOverlay(Client client, SpriteManager spriteManager)
 	{
 		this.client = client;
+		this.spriteManager = spriteManager;
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -163,6 +180,14 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
+		BufferedImage closeButton = getCloseButtonImage();
+		BufferedImage closeButtonHover = getCloseButtonHoveredImage();
+		if (closeButton != null && closeButtonBounds == null)
+		{
+			closeButtonBounds = new Rectangle(image.getWidth() - closeButton.getWidth() - 5, 6,
+				closeButton.getWidth(), closeButton.getHeight());
+		}
+
 		graphics.drawImage(image, 0, 0, null);
 		backgroundComponent.setRectangle(new Rectangle(0, 0, image.getWidth(), image.getHeight()));
 		backgroundComponent.render(graphics);
@@ -170,6 +195,16 @@ class InstanceMapOverlay extends Overlay
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
+		}
+
+		if (isCloseButtonHovered)
+		{
+			closeButton = closeButtonHover;
+		}
+
+		if (closeButton != null)
+		{
+			graphics.drawImage(closeButton, (int) closeButtonBounds.getX(), (int) closeButtonBounds.getY(), null);
 		}
 
 		return new Dimension(image.getWidth(), image.getHeight());
@@ -228,5 +263,25 @@ class InstanceMapOverlay extends Overlay
 		// 24624 / 512 and 24624 % 512 are both 48
 		img = img.getSubimage(48, 48, TILE_SIZE * 104, TILE_SIZE * 104);
 		return img;
+	}
+
+	@Nullable
+	private BufferedImage getCloseButtonImage()
+	{
+		if (closeButtonImage == null)
+		{
+			closeButtonImage = spriteManager.getSprite(WINDOW_CLOSE_BUTTON_RED_X, 0);
+		}
+		return closeButtonImage;
+	}
+
+	@Nullable
+	private BufferedImage getCloseButtonHoveredImage()
+	{
+		if (closeButtonHoveredImage == null)
+		{
+			closeButtonHoveredImage = spriteManager.getSprite(WINDOW_CLOSE_BUTTON_RED_X_HOVERED, 0);
+		}
+		return closeButtonHoveredImage;
 	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019, Sean Dewar <https://github.com/seandewar>
+ * Copyright (c) 2018, Abex
  * Copyright (c) 2018, Zimaya <https://github.com/Zimaya>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
@@ -26,19 +27,22 @@
  */
 package net.runelite.client.plugins.regenmeter;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -46,18 +50,23 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Regeneration Meter",
 	description = "Track and show the hitpoints and special attack regeneration timers",
-	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "notifications"}
 )
 public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
+	private static final int TWISTED_LEAGUE_ENDLESS_ENDURANCE_RELIC = 2;
+
 	@Inject
 	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private RegenMeterOverlay overlay;
@@ -115,7 +124,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onTick(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{
@@ -135,6 +144,11 @@ public class RegenMeterPlugin extends Plugin
 			ticksPerHPRegen /= 2;
 		}
 
+		if (client.getVar(Varbits.TWISTED_LEAGUE_RELIC_1) == TWISTED_LEAGUE_ENDLESS_ENDURANCE_RELIC)
+		{
+			ticksPerHPRegen /= 4;
+		}
+
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
 		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
 
@@ -149,5 +163,18 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
+
+		if (config.getNotifyBeforeHpRegenSeconds() > 0 && currentHP < maxHP && shouldNotifyHpRegenThisTick(ticksPerHPRegen))
+		{
+			notifier.notify("[" + client.getLocalPlayer().getName() + "] regenerates their next hitpoint soon!");
+		}
+	}
+
+	private boolean shouldNotifyHpRegenThisTick(int ticksPerHPRegen)
+	{
+		// if the configured duration lies between two ticks, choose the earlier tick
+		final int ticksBeforeHPRegen = ticksPerHPRegen - ticksSinceHPRegen;
+		final int notifyTick = (int) Math.ceil(config.getNotifyBeforeHpRegenSeconds() * 1000d / Constants.GAME_TICK_LENGTH);
+		return ticksBeforeHPRegen == notifyTick;
 	}
 }

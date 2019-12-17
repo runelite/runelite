@@ -44,4 +44,11 @@ public interface ChatLineBuffer
 	 * @return the length
 	 */
 	int getLength();
+
+	/**
+	 * Removes a message node
+	 *
+	 * @param node the {@link MessageNode} to remove
+	 */
+	void removeMessageNode(MessageNode node);
 }

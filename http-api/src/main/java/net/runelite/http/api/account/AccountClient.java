@@ -56,6 +56,7 @@ public class AccountClient
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")
 			.addPathSegment("login")
+			.addQueryParameter("uuid", uuid.toString())
 			.build();
 
 		logger.debug("Built URI: {}", url);
@@ -95,7 +96,7 @@ public class AccountClient
 		}
 	}
 
-	public boolean sesssionCheck()
+	public boolean sessionCheck()
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")

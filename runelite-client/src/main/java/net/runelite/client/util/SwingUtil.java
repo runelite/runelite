@@ -26,29 +26,23 @@ package net.runelite.client.util;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.Insets;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -66,7 +60,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Various Swing utilities.
@@ -104,48 +97,6 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	/**
-	 * Offsets an image in the grayscale (darkens/brightens) by an offset
-	 */
-	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
-	{
-		int numComponents = image.getColorModel().getNumComponents();
-		int index = numComponents - 1;
-
-		LookupTable lookup = new LookupTable(0, numComponents)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[index] != 0)
-				{
-					dest[index] = dest[index] + offset;
-					if (dest[index] < 0)
-					{
-						dest[index] = 0;
-					}
-					else if (dest[index] > 255)
-					{
-						dest[index] = 255;
-					}
-				}
-
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
-	}
-
-	/**
-	 * Converts a given color to it's hexidecimal equivalent.
-	 */
-	public static String toHexColor(Color color)
-	{
-		return "#" + Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	/**
@@ -233,20 +184,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Check if point is in screen bounds.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the boolean
-	 */
-	public static boolean isInScreenBounds(final int x, final int y)
-	{
-		final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		final Rectangle bounds = new Rectangle(size);
-		return bounds.contains(x, y);
-	}
-
-	/**
 	 * Add graceful exit callback.
 	 *
 	 * @param frame           the frame
@@ -289,25 +226,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Re-size a BufferedImage to the given dimensions.
-	 *
-	 * @param image the BufferedImage.
-	 * @param newWidth The width to set the BufferedImage to.
-	 * @param newHeight The height to set the BufferedImage to.
-	 * @return The BufferedImage with the specified dimensions
-	 */
-	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
-	{
-		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		final Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
-		g2d.dispose();
-		return dimg;
-	}
-
-	/**
 	 * Create swing button from navigation button.
 	 *
 	 * @param navigationButton the navigation button
@@ -322,11 +240,11 @@ public class SwingUtil
 	{
 
 		final BufferedImage scaledImage = iconSize > 0
-			? resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
-		button.setMaximumSize(new Dimension(30, 30));
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
@@ -362,37 +280,17 @@ public class SwingUtil
 		return button;
 	}
 
-	/**
-	 * Checks if custom substance title pane is present.
-	 *
-	 * @param frame the parent frame
-	 * @return true if title pane is present
-	 */
-	public static boolean isCustomTitlePanePresent(final Window frame)
+	public static void removeButtonDecorations(AbstractButton button)
 	{
-		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
+		button.setMargin(new Insets(0, 0, 0, 0));
+		button.setOpaque(false);
 	}
 
-	/**
-	 * Linearly interpolates between colors a and b by t.
-	 * @param a first color
-	 * @param b second color
-	 * @param t factor
-	 * @return interpolated color
-	 */
-	public static Color colorLerp(Color a, Color b, double t)
+	public static void addModalTooltip(AbstractButton button, String on, String off)
 	{
-		final double r1 = a.getRed();
-		final double r2 = b.getRed();
-		final double g1 = a.getGreen();
-		final double g2 = b.getGreen();
-		final double b1 = a.getBlue();
-		final double b2 = b.getBlue();
-
-		return new Color(
-			(int) Math.round(r1 + (t * (r2 - r1))),
-			(int) Math.round(g1 + (t * (g2 - g1))),
-			(int) Math.round(b1 + (t * (b2 - b1)))
-		);
+		button.addItemListener(l -> button.setToolTipText(button.isSelected() ? on : off));
 	}
 }

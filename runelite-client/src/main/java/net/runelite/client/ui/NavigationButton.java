@@ -45,9 +45,16 @@ public class NavigationButton
 	private final BufferedImage icon;
 
 	/**
+	 * If the button is tab or not
+	 */
+	@Builder.Default
+	private boolean tab = true;
+
+	/**
 	 * Tooltip to show when hovered.
 	 */
-	private final String tooltip;
+	@Builder.Default
+	private final String tooltip = "";
 
 	/**
 	 * Button selection state
@@ -68,7 +75,6 @@ public class NavigationButton
 	 * Plugin panel, used when expanding and contracting sidebar.
 	 */
 	private PluginPanel panel;
-
 
 	/**
 	 * The order in which the button should be displayed in the side bar. (from lower to higher)

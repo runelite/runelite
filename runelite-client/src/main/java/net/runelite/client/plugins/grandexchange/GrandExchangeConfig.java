@@ -63,4 +63,37 @@ public interface GrandExchangeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "enableGeLimits",
+		name = "Enable GE Limits on GE",
+		description = "Shows the GE Limits on the GE"
+	)
+	default boolean enableGELimits()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showTotal",
+		name = "Show grand exchange total",
+		description = "Show grand exchange total"
+	)
+	default boolean showTotal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showExact",
+		name = "Show exact total value",
+		description = "Show exact total value"
+	)
+	default boolean showExact()
+	{
+		return false;
+	}
 }

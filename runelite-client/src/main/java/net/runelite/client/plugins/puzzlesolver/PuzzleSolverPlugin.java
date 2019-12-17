@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +47,7 @@ import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_G;
 import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_H;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
@@ -55,6 +56,8 @@ import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolution;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolver;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Puzzle Solver",
@@ -64,6 +67,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
 {
+	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -118,14 +123,20 @@ public class PuzzleSolverPlugin extends Plugin
 			WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
 			WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
 
-		if (answerWidget != null && !answerWidget.getText().contains("<col="))
+		if (answerWidget == null)
 		{
-			answerWidget.setText("<col=00FF80>" + answerWidget.getText() + "</col>");
+			return;
+		}
+
+		final String answerText = answerWidget.getText();
+		if (answerText.equals(Text.removeTags(answerText)))
+		{
+			answerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
 		}
 	}
 
 	@Subscribe
-	public void onWidgetClicked(MenuOptionClicked menuOptionClicked)
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getWidgetId();
 		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID)

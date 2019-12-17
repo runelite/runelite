@@ -31,10 +31,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.inject.Inject;
 import lombok.Data;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.ws.PartyService;
+import static net.runelite.client.ws.PartyService.PARTY_MAX;
 
 /**
  * This class contains data about currently active discord state.
@@ -49,16 +53,19 @@ class DiscordState
 		private Instant updated;
 	}
 
+	private final UUID partyId = UUID.randomUUID();
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
+	private PartyService party;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config)
+	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
 	{
 		this.discordService = discordService;
 		this.config = config;
+		this.party = party;
 	}
 
 	/**
@@ -69,6 +76,34 @@ class DiscordState
 		discordService.clearPresence();
 		events.clear();
 		lastPresence = null;
+	}
+
+	/**
+	 * Force refresh discord presence
+	 */
+	void refresh()
+	{
+		if (lastPresence == null)
+		{
+			return;
+		}
+
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
+			.state(lastPresence.getState())
+			.details(lastPresence.getDetails())
+			.largeImageText(lastPresence.getLargeImageText())
+			.startTimestamp(lastPresence.getStartTimestamp())
+			.smallImageKey(lastPresence.getSmallImageKey())
+			.partyMax(lastPresence.getPartyMax())
+			.partySize(party.getMembers().size());
+
+		if (party.isOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
+		}
+
+		discordService.updatePresence(presenceBuilder.build());
 	}
 
 	/**
@@ -87,7 +122,10 @@ class DiscordState
 		}
 		else
 		{
-			event = new EventWithTime(eventType, Instant.now());
+			// If we aren't showing the elapsed time within Discord then
+			// We null out the event start property
+			event = new EventWithTime(eventType, config.hideElapsedTime() ? null : Instant.now());
+
 			events.add(event);
 		}
 
@@ -132,12 +170,25 @@ class DiscordState
 			}
 		}
 
-		final DiscordPresence presence = DiscordPresence.builder()
+		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
+		final String versionShortHand = RuneLiteProperties.getVersion().replace("-SNAPSHOT", "+");
+
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
+			.largeImageText(RuneLiteProperties.getTitle() + " v" + versionShortHand)
 			.startTimestamp(event.getStart())
-			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
-			.build();
+			.smallImageKey(imageKey)
+			.partyMax(PARTY_MAX)
+			.partySize(party.getMembers().size());
+
+		if (party.isOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
+		}
+
+		final DiscordPresence presence = presenceBuilder.build();
 
 		// This is to reduce amount of RPC calls
 		if (!presence.equals(lastPresence))

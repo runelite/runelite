@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import com.google.inject.Inject;
@@ -32,6 +33,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -39,14 +43,26 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Provider;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.FlashNotification;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.OSType;
@@ -55,6 +71,23 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
+	@Getter
+	@RequiredArgsConstructor
+	public enum NativeCustomOff
+	{
+		NATIVE("Native"),
+		CUSTOM("Custom"),
+		OFF("Off");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -64,31 +97,41 @@ public class Notifier
 
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
-	private static final int FLASH_DURATION = 2000;
-	private static final String MESSAGE_COLOR = "FF0000";
+	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
+	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
-	private final Provider<Client> client;
-	private final String appName;
+	private static final String appName = RuneLiteProperties.getTitle();
+
+	private final Client client;
 	private final RuneLiteConfig runeLiteConfig;
-	private final Provider<ClientUI> clientUI;
+	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
+	private final ChatMessageManager chatMessageManager;
 	private final Path notifyIconPath;
+	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
+	private long mouseLastPressedMillis;
 
 	@Inject
 	private Notifier(
-			final Provider<ClientUI> clientUI,
-			final Provider<Client> client,
-			final RuneLiteConfig runeliteConfig,
-			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+		final ClientUI clientUI,
+		final Client client,
+		final RuneLiteConfig runeliteConfig,
+		final ScheduledExecutorService executorService,
+		final ChatMessageManager chatMessageManager)
 	{
 		this.client = client;
-		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
+		this.chatMessageManager = chatMessageManager;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
+
+		// First check if we are running in launcher
+		this.terminalNotifierAvailable =
+			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
+			&& isTerminalNotifierAvailable();
+
 		storeIcon();
 	}
 
@@ -99,13 +142,6 @@ public class Notifier
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		final ClientUI clientUI = this.clientUI.get();
-
-		if (clientUI == null)
-		{
-			return;
-		}
-
 		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
 		{
 			return;
@@ -121,38 +157,52 @@ public class Notifier
 			sendNotification(appName, message, type);
 		}
 
-		if (runeLiteConfig.enableNotificationSound())
+		switch (runeLiteConfig.notificationSound())
 		{
-			Toolkit.getDefaultToolkit().beep();
+			case NATIVE:
+				Toolkit.getDefaultToolkit().beep();
+				break;
+			case CUSTOM:
+				executorService.submit(this::playCustomSound);
 		}
 
-		if (runeLiteConfig.enableGameMessageNotification())
+		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
 		{
-			final Client client = this.client.get();
+			final String formattedMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(message)
+				.build();
 
-			if (client != null && client.getGameState() == GameState.LOGGED_IN)
-			{
-				client.addChatMessage(ChatMessageType.GAME, appName,
-					"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
-			}
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.name(appName)
+				.runeLiteFormattedMessage(formattedMessage)
+				.build());
 		}
 
-		if (runeLiteConfig.enableFlashNotification())
+		if (runeLiteConfig.flashNotification() != FlashNotification.DISABLED)
 		{
 			flashStart = Instant.now();
+			mouseLastPressedMillis = client.getMouseLastPressedMillis();
 		}
+
+		log.debug(message);
 	}
 
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null)
+		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN)
 		{
+			flashStart = null;
 			return;
 		}
 
-		final Client client = this.client.get();
+		FlashNotification flashNotification = runeLiteConfig.flashNotification();
 
-		if (client == null || client.getGameCycle() % 40 >= 20)
+		if (client.getGameCycle() % 40 >= 20
+			// For solid colour, fall through every time.
+			&& (flashNotification == FlashNotification.FLASH_TWO_SECONDS
+			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED))
 		{
 			return;
 		}
@@ -162,9 +212,27 @@ public class Notifier
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
 
-		if (Instant.now().minusMillis(FLASH_DURATION).isAfter(flashStart))
+		if (!Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
 		{
-			flashStart = null;
+			return;
+		}
+
+		switch (flashNotification)
+		{
+			case FLASH_TWO_SECONDS:
+			case SOLID_TWO_SECONDS:
+				flashStart = null;
+				break;
+			case SOLID_UNTIL_CANCELLED:
+			case FLASH_UNTIL_CANCELLED:
+				// Any interaction with the client since the notification started will cancel it after the minimum duration
+				if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+					|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+					|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+				{
+					flashStart = null;
+				}
+				break;
 		}
 	}
 
@@ -175,7 +243,6 @@ public class Notifier
 	{
 		final String escapedTitle = SHELL_ESCAPE.escape(title);
 		final String escapedMessage = SHELL_ESCAPE.escape(message);
-		final String escapedSubtitle = null;
 
 		switch (OSType.getOSType())
 		{
@@ -183,7 +250,7 @@ public class Notifier
 				sendLinuxNotification(escapedTitle, escapedMessage, type);
 				break;
 			case MacOS:
-				sendMacNotification(escapedTitle, escapedMessage, escapedSubtitle);
+				sendMacNotification(escapedTitle, escapedMessage);
 				break;
 			default:
 				sendTrayNotification(title, message, type);
@@ -195,13 +262,6 @@ public class Notifier
 		final String message,
 		final TrayIcon.MessageType type)
 	{
-		final ClientUI clientUI = this.clientUI.get();
-
-		if (clientUI == null)
-		{
-			return;
-		}
-
 		if (clientUI.getTrayIcon() != null)
 		{
 			clientUI.getTrayIcon().displayMessage(title, message, type);
@@ -226,63 +286,73 @@ public class Notifier
 
 		executorService.submit(() ->
 		{
-			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
-
-			if (!success)
+			try
 			{
-				sendTrayNotification(title, message, type);
+				Process notificationProcess = sendCommand(commands);
+
+				boolean exited = notificationProcess.waitFor(500, TimeUnit.MILLISECONDS);
+				if (exited && notificationProcess.exitValue() == 0)
+				{
+					return;
+				}
 			}
+			catch (IOException | InterruptedException ex)
+			{
+				log.debug("error sending notification", ex);
+			}
+
+			// fall back to tray notification
+			sendTrayNotification(title, message, type);
 		});
 	}
 
-	private void sendMacNotification(
-		final String title,
-		final String message,
-		final String subtitle)
+	private void sendMacNotification(final String title, final String message)
 	{
 		final List<String> commands = new ArrayList<>();
-		commands.add("osascript");
-		commands.add("-e");
 
-		final StringBuilder script = new StringBuilder("display notification ");
-
-		script.append(DOUBLE_QUOTE)
-			.append(message)
-			.append(DOUBLE_QUOTE);
-
-		script.append(" with title ")
-			.append(DOUBLE_QUOTE)
-			.append(title)
-			.append(DOUBLE_QUOTE);
-
-		if (subtitle != null)
+		if (terminalNotifierAvailable)
 		{
-			script.append(" subtitle ")
-				.append(DOUBLE_QUOTE)
-				.append(subtitle)
-				.append(DOUBLE_QUOTE);
+			commands.add("terminal-notifier");
+			commands.add("-group");
+			commands.add("net.runelite.launcher");
+			commands.add("-sender");
+			commands.add("net.runelite.launcher");
+			commands.add("-message");
+			commands.add(DOUBLE_QUOTE + message + DOUBLE_QUOTE);
+			commands.add("-title");
+			commands.add(DOUBLE_QUOTE + title + DOUBLE_QUOTE);
+		}
+		else
+		{
+			commands.add("osascript");
+			commands.add("-e");
+
+			final String script = "display notification " + DOUBLE_QUOTE +
+				message +
+				DOUBLE_QUOTE +
+				" with title " +
+				DOUBLE_QUOTE +
+				title +
+				DOUBLE_QUOTE;
+
+			commands.add(script);
 		}
 
-		commands.add(script.toString());
-		sendCommand(commands);
-	}
-
-	private Optional<Process> sendCommand(final List<String> commands)
-	{
 		try
 		{
-			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
-				.redirectErrorStream(true)
-				.start());
+			sendCommand(commands);
 		}
 		catch (IOException ex)
 		{
-			log.warn(null, ex);
+			log.warn("error sending notification", ex);
 		}
+	}
 
-		return Optional.empty();
+	private static Process sendCommand(final List<String> commands) throws IOException
+	{
+		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
+			.redirectErrorStream(true)
+			.start();
 	}
 
 	private void storeIcon()
@@ -300,6 +370,25 @@ public class Notifier
 		}
 	}
 
+	private boolean isTerminalNotifierAvailable()
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			try
+			{
+				final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
+				exec.waitFor();
+				return exec.exitValue() == 0;
+			}
+			catch (IOException | InterruptedException e)
+			{
+				return false;
+			}
+		}
+
+		return false;
+	}
+
 	private static String toUrgency(TrayIcon.MessageType type)
 	{
 		switch (type)
@@ -310,5 +399,49 @@ public class Notifier
 			default:
 				return "normal";
 		}
+	}
+
+	private void playCustomSound()
+	{
+		Clip clip = null;
+
+		// Try to load the user sound from ~/.runelite/notification.wav
+		File file = new File(RuneLite.RUNELITE_DIR, "notification.wav");
+		if (file.exists())
+		{
+			try
+			{
+				InputStream fileStream = new BufferedInputStream(new FileInputStream(file));
+				try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+				{
+					clip = AudioSystem.getClip();
+					clip.open(sound);
+				}
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				clip = null;
+				log.warn("Unable to play notification sound", e);
+			}
+		}
+
+		if (clip == null)
+		{
+			// Otherwise load from the classpath
+			InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
+			try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+			{
+				clip = AudioSystem.getClip();
+				clip.open(sound);
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				log.warn("Unable to play builtin notification sound", e);
+
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+		}
+		clip.start();
 	}
 }

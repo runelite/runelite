@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.herbiboars;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
@@ -55,11 +53,11 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Herbiboar",
 	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
@@ -110,16 +108,16 @@ public class HerbiboarPlugin extends Plugin
 	private boolean inHerbiboarArea;
 
 	@Getter
-	private Map<TileObject, Tile> trails = new HashMap<>();
+	private Map<WorldPoint, TileObject> trails = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> tunnels = new HashMap<>();
+	private Map<WorldPoint, TileObject> tunnels = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> starts = new HashMap<>();
+	private Map<WorldPoint, TileObject> starts = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> trailObjects = new HashMap<>();
+	private Map<WorldPoint, TileObject> trailObjects = new HashMap<>();
 
 	@Getter
 	@Setter
@@ -215,7 +213,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -235,7 +233,10 @@ public class HerbiboarPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		updateTrailData();
+		if (isInHerbiboarArea())
+		{
+			updateTrailData();
+		}
 	}
 
 	@Subscribe
@@ -251,7 +252,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -269,7 +270,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onGroundObject(event.getTile(), event.getGroundObject(), null);
 	}
@@ -277,9 +278,13 @@ public class HerbiboarPlugin extends Plugin
 	// Store relevant GameObjects (starts, objects used to trigger next trails, and some tunnels)
 	private void onGameObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
-		trailObjects.remove(oldObject);
-		tunnels.remove(oldObject);
-		starts.remove(oldObject);
+		if (oldObject != null)
+		{
+			WorldPoint oldLocation = oldObject.getWorldLocation();
+			trailObjects.remove(oldLocation);
+			tunnels.remove(oldLocation);
+			starts.remove(oldLocation);
+		}
 
 		if (newObject == null)
 		{
@@ -289,29 +294,33 @@ public class HerbiboarPlugin extends Plugin
 		// Starts
 		if (START_OBJECT_IDS.contains(newObject.getId()))
 		{
-			starts.put(newObject, tile);
+			starts.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		// GameObject to trigger next trail (mushrooms, mud, seaweed, etc)
 		if (HerbiboarTrail.getAllObjectLocs().contains(newObject.getWorldLocation()))
 		{
-			trailObjects.put(newObject, tile);
+			trailObjects.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		// Herbiboar tunnel
 		if (END_LOCATIONS.contains(newObject.getWorldLocation()))
 		{
-			tunnels.put(newObject, tile);
+			tunnels.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 
 	// Store relevant GroundObjects (tracks on trails, and some tunnels)
 	private void onGroundObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
-		trails.remove(oldObject);
-		tunnels.remove(oldObject);
+		if (oldObject != null)
+		{
+			WorldPoint oldLocation = oldObject.getWorldLocation();
+			trails.remove(oldLocation);
+			tunnels.remove(oldLocation);
+		}
 
 		if (newObject == null)
 		{
@@ -321,14 +330,14 @@ public class HerbiboarPlugin extends Plugin
 		//Trails
 		if (HerbiboarTrail.getTrailIds().contains(newObject.getId()))
 		{
-			trails.put(newObject, tile);
+			trails.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		//Herbiboar tunnel
 		if (END_LOCATIONS.contains(newObject.getWorldLocation()))
 		{
-			tunnels.put(newObject, tile);
+			tunnels.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 

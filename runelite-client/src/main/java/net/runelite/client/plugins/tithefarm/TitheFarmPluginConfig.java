@@ -33,17 +33,6 @@ import net.runelite.client.config.ConfigItem;
 public interface TitheFarmPluginConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "showSack",
-		name = "Show fruit sack",
-		description = "Configures whether or not the fruit sack is displayed"
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 1,
 		keyName = "hexColorUnwatered",
 		name = "Unwatered plant",

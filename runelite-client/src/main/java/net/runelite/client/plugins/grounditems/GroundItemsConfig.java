@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
@@ -62,7 +63,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default String getHiddenItems()
 	{
-		return "";
+		return "Vial, Ashes, Coins, Bones, Bucket, Jug, Seaweed";
 	}
 
 	@ConfigItem(
@@ -128,10 +129,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyHighlightedDrops",
+		name = "Notify for Highlighted drops",
+		description = "Configures whether or not to notify for drops on your highlighted list",
+		position = 7
+	)
+	default boolean notifyHighlightedDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
 		description = "Configures what price types are shown alongside of ground item name",
-		position = 7
+		position = 8
 	)
 	default PriceDisplayMode priceDisplayMode()
 	{
@@ -142,7 +154,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
 		description = "Configures how ground items will be highlighted",
-		position = 8
+		position = 9
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -153,7 +165,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "menuHighlightMode",
 		name = "Menu Highlight Mode",
 		description = "Configures what to highlight in right-click menu",
-		position = 9
+		position = 10
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -161,10 +173,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightValueCalculation",
+		name = "Highlight Value Calculation",
+		description = "Configures which coin value is used to determine highlight color",
+		position = 11
+	)
+	default ValueCalculationMode valueCalculationMode()
+	{
+		return ValueCalculationMode.HIGHEST;
+	}
+
+	@ConfigItem(
 		keyName = "highlightOverValue2",
 		name = "Highlight > Value",
 		description = "Configures highlighted ground items over either GE or HA value",
-		position = 10
+		position = 12
 	)
 	default int getHighlightOverValue()
 	{
@@ -175,7 +198,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hideUnderValue",
 		name = "Hide < Value",
 		description = "Configures hidden ground items under both GE and HA value",
-		position = 11
+		position = 13
 	)
 	default int getHideUnderValue()
 	{
@@ -186,7 +209,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "defaultColor",
 		name = "Default items color",
 		description = "Configures the color for default, non-highlighted items",
-		position = 12
+		position = 14
 	)
 	default Color defaultColor()
 	{
@@ -197,7 +220,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
 		description = "Configures the color for highlighted items",
-		position = 13
+		position = 15
 	)
 	default Color highlightedColor()
 	{
@@ -208,7 +231,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenColor",
 		name = "Hidden items color",
 		description = "Configures the color for hidden items in right-click menu and when holding ALT",
-		position = 14
+		position = 16
 	)
 	default Color hiddenColor()
 	{
@@ -219,7 +242,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValueColor",
 		name = "Low value items color",
 		description = "Configures the color for low value items",
-		position = 15
+		position = 17
 	)
 	default Color lowValueColor()
 	{
@@ -230,7 +253,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValuePrice",
 		name = "Low value price",
 		description = "Configures the start price for low value items",
-		position = 16
+		position = 18
 	)
 	default int lowValuePrice()
 	{
@@ -241,7 +264,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 17
+		position = 19
 	)
 	default Color mediumValueColor()
 	{
@@ -252,7 +275,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 18
+		position = 20
 	)
 	default int mediumValuePrice()
 	{
@@ -263,7 +286,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 19
+		position = 21
 	)
 	default Color highValueColor()
 	{
@@ -274,7 +297,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 20
+		position = 22
 	)
 	default int highValuePrice()
 	{
@@ -285,7 +308,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 21
+		position = 23
 	)
 	default Color insaneValueColor()
 	{
@@ -296,10 +319,54 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 22
+		position = 24
 	)
 	default int insaneValuePrice()
 	{
 		return 10000000;
+	}
+
+	@ConfigItem(
+		keyName = "onlyShowLoot",
+		name = "Only show loot",
+		description = "Only shows drops from NPCs and players",
+		position = 25
+	)
+	default boolean onlyShowLoot()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "doubleTapDelay",
+		name = "Delay for double-tap ALT to hide",
+		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
+		position = 26
+	)
+	default int doubleTapDelay()
+	{
+		return 250;
+	}
+
+	@ConfigItem(
+		keyName = "collapseEntries",
+		name = "Collapse ground item menu entries",
+		description = "Collapses ground item menu entries together and appends count",
+		position = 27
+	)
+	default boolean collapseEntries()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Show despawn timers",
+		description = "Shows despawn timers for items you've dropped and received as loot",
+		position = 28
+	)
+	default boolean groundItemTimers()
+	{
+		return false;
 	}
 }

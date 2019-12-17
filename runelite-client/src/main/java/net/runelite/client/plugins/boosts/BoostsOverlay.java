@@ -29,12 +29,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.ColorUtil;
 
 class BoostsOverlay extends Overlay
 {
@@ -46,17 +50,19 @@ class BoostsOverlay extends Overlay
 	@Inject
 	private BoostsOverlay(Client client, BoostsConfig config, BoostsPlugin plugin)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayIndicators())
+		if (config.displayInfoboxes())
 		{
 			return null;
 		}
@@ -109,7 +115,8 @@ class BoostsOverlay extends Overlay
 				}
 				else
 				{
-					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
+					str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
+						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
 				}
 
 				panelComponent.getChildren().add(LineComponent.builder()
@@ -125,12 +132,12 @@ class BoostsOverlay extends Overlay
 
 	private Color getTextColor(int boost)
 	{
-		if (boost > 0)
+		if (boost < 0)
 		{
-			return Color.GREEN;
+			return new Color(238, 51, 51);
 		}
 
-		return new Color(238, 51, 51);
+		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
 
 	}
 }

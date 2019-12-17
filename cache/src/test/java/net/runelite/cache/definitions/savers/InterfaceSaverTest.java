@@ -40,7 +40,6 @@ import org.junit.Test;
 
 public class InterfaceSaverTest
 {
-
 	@Test
 	public void testSave() throws Exception
 	{
@@ -51,10 +50,10 @@ public class InterfaceSaverTest
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.INTERFACES);
-			Archive archive = index.getArchive(149);
+			Archive archive = index.getArchive(31);
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);
-			FSFile file = files.findFile(0);
+			FSFile file = files.findFile(76);
 			byte[] contents = file.getContents();
 
 			InterfaceDefinition def = new InterfaceLoader().load(0, contents);

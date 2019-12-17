@@ -124,14 +124,14 @@ public class ItemService
 	{
 		if (time != null)
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
 				.addParameter("item", itemId)
 				.addParameter("time", time.toString())
 				.executeAndFetchFirst(PriceEntry.class);
 		}
 		else
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
 				.addParameter("item", itemId)
 				.executeAndFetchFirst(PriceEntry.class);
 		}
@@ -295,9 +295,10 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query query = con.createQuery("select t2.item, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 join prices on t2.item=prices.item and t2.time=prices.time");
-			List<PriceEntry> entries = query.executeAndFetch(PriceEntry.class);
-			return entries;
+			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 " +
+					" join prices on t2.item=prices.item and t2.time=prices.time" +
+					" join items t3 on t2.item=t3.id");
+			return query.executeAndFetch(PriceEntry.class);
 		}
 	}
 
@@ -376,7 +377,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("Unsuccessful http response: " + response);
 			}
 
 			InputStream in = response.body().byteStream();
@@ -400,7 +401,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("Unsuccessful http response: " + response);
 			}
 
 			return response.body().bytes();
@@ -471,6 +472,14 @@ public class ItemService
 		int idx = random.nextInt(tradeableItems.length);
 		int id = tradeableItems[idx];
 
+		if (getItem(id) == null)
+		{
+			// This is a new item..
+			log.debug("Fetching new item {}", id);
+			queueItem(id);
+			return;
+		}
+
 		log.debug("Fetching price for {}", id);
 
 		fetchPrice(id);
@@ -480,10 +489,16 @@ public class ItemService
 	public void reloadItems() throws IOException
 	{
 		List<ItemDefinition> items = cacheService.getItems();
+		if (items.isEmpty())
+		{
+			log.warn("Failed to load any items from cache, item price updating will be disabled");
+		}
+
 		tradeableItems = items.stream()
 			.filter(item -> item.isTradeable)
 			.mapToInt(item -> item.id)
 			.toArray();
+
 		log.debug("Loaded {} tradeable items", tradeableItems.length);
 	}
 

@@ -33,4 +33,6 @@ public class PlayerEntity
 	private Integer id;
 	private String name;
 	private Instant tracked_since;
+	private Instant last_updated;
+	private Integer rank;
 }

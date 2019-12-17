@@ -35,27 +35,35 @@ public enum OverlayPosition
 	 */
 	DYNAMIC,
 	/**
-	 * Place overlay in the top left most area possible
+	 * Place overlay in the top left viewport area
 	 */
 	TOP_LEFT,
 	/**
-	 * Place overlay in the top right most area possible
+	 * Place overlay in the top center viewport area
+	 */
+	TOP_CENTER,
+	/**
+	 * Place overlay in the top right viewport area
 	 */
 	TOP_RIGHT,
 	/**
-	 * Place overlay in the bottom left most area possible
+	 * Place overlay in the bottom left viewport area
 	 */
 	BOTTOM_LEFT,
 	/**
-	 * Place overlay in the bottom right most area possible
+	 * Place overlay in the bottom right viewport area
 	 */
 	BOTTOM_RIGHT,
 	/**
-	 * Place overlay directly above right most area of chatbox possible
+	 * Place overlay directly above right side of chatbox
 	 */
 	ABOVE_CHATBOX_RIGHT,
 	/**
+	 * Place overlay in the top right most area possible
+	 */
+	CANVAS_TOP_RIGHT,
+	/**
 	 * Tooltip overlay
 	 */
-	TOOLTIP;
+	TOOLTIP
 }

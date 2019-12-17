@@ -38,15 +38,23 @@ public interface BoostsConfig extends Config
 		NEVER
 	}
 
+	enum DisplayBoosts
+	{
+		NONE,
+		COMBAT,
+		NON_COMBAT,
+		BOTH
+	}
+
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
+		keyName = "displayBoosts",
+		name = "Display Boosts",
+		description = "Configures which skill boosts to display",
 		position = 1
 	)
-	default boolean enableSkill()
+	default DisplayBoosts displayBoosts()
 	{
-		return true;
+		return DisplayBoosts.BOTH;
 	}
 
 	@ConfigItem(
@@ -62,11 +70,11 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayIndicators",
-		name = "Display as indicators",
-		description = "Configures whether or not to display the boost as indicators",
+		name = "Display as infoboxes",
+		description = "Configures whether or not to display the boost as infoboxes",
 		position = 3
 	)
-	default boolean displayIndicators()
+	default boolean displayInfoboxes()
 	{
 		return false;
 	}

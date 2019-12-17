@@ -42,4 +42,34 @@ public interface InterfaceStylesConfig extends Config
 	{
 		return Skin.AROUND_2010;
 	}
+
+	@ConfigItem(
+		keyName = "hdHealthBars",
+		name = "High Detail health bars",
+		description = "Replaces health bars with the RuneScape High Detail mode design"
+	)
+	default boolean hdHealthBars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hdMenu",
+		name = "High Detail menu",
+		description = "Replaces game menu with the RuneScape High Detail mode design"
+	)
+	default boolean hdMenu()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rsCrossSprites",
+		name = "RuneScape cross sprites",
+		description = "Replaces left-click cross sprites with the ones in RuneScape"
+	)
+	default boolean rsCrossSprites()
+	{
+		return false;
+	}
 }

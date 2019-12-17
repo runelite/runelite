@@ -47,7 +47,7 @@ public class Keybind
 		.put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
 		.build();
 
-	// Bitmask of all supported modifers
+	// Bitmask of all supported modifiers
 	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
 		.reduce((a, b) -> a | b).get();
 
@@ -60,12 +60,12 @@ public class Keybind
 	private final int keyCode;
 	private final int modifiers;
 
-	public Keybind(int keyCode, int modifiers)
+	protected Keybind(int keyCode, int modifiers, boolean ignoreModifiers)
 	{
 		modifiers &= KEYBOARD_MODIFIER_MASK;
 
 		// If the keybind is just modifiers we don't want the keyCode to contain the modifier too,
-		// becasue this breaks if you do the keycode backwards
+		// because this breaks if you do the keycode backwards
 		Integer mf = getModifierForKeyCode(keyCode);
 		if (mf != null)
 		{
@@ -73,8 +73,18 @@ public class Keybind
 			keyCode = KeyEvent.VK_UNDEFINED;
 		}
 
+		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			modifiers = 0;
+		}
+
 		this.keyCode = keyCode;
 		this.modifiers = modifiers;
+	}
+
+	public Keybind(int keyCode, int modifiers)
+	{
+		this(keyCode, modifiers, false);
 	}
 
 	/**
@@ -95,6 +105,11 @@ public class Keybind
 	 */
 	public boolean matches(KeyEvent e)
 	{
+		return matches(e, false);
+	}
+
+	protected boolean matches(KeyEvent e, boolean ignoreModifiers)
+	{
 		if (NOT_SET.equals(this))
 		{
 			return false;
@@ -111,6 +126,11 @@ public class Keybind
 		}
 
 		if (e.getID() == KeyEvent.KEY_RELEASED && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			return this.keyCode == keyCode;
+		}
+
+		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
 		{
 			return this.keyCode == keyCode;
 		}

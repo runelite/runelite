@@ -31,16 +31,13 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.client.ui.DrawManager;
@@ -50,41 +47,26 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-@Slf4j
-public class ScreenshotOverlay extends Overlay
+class ScreenshotOverlay extends Overlay
 {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 	private static final int REPORT_BUTTON_X_OFFSET = 404;
-	private static BufferedImage REPORT_BUTTON;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				REPORT_BUTTON = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("report_button.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Report button image failed to load", e);
-		}
-	}
 
 	private final Client client;
 	private final DrawManager drawManager;
+	private final ScreenshotPlugin plugin;
 
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	public ScreenshotOverlay(Client client, DrawManager drawManager)
+	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.drawManager = drawManager;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -97,9 +79,9 @@ public class ScreenshotOverlay extends Overlay
 
 		final MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		final int imageHeight = ((BufferedImage) bufferProvider.getImage()).getHeight();
-		final int y = imageHeight - REPORT_BUTTON.getHeight() - 1;
+		final int y = imageHeight - plugin.getReportButton().getHeight() - 1;
 
-		graphics.drawImage(REPORT_BUTTON, REPORT_BUTTON_X_OFFSET, y, null);
+		graphics.drawImage(plugin.getReportButton(), REPORT_BUTTON_X_OFFSET, y, null);
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 		FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -108,8 +90,8 @@ public class ScreenshotOverlay extends Overlay
 		final int dateWidth = fontMetrics.stringWidth(date);
 		final int dateHeight = fontMetrics.getHeight();
 
-		final int textX = REPORT_BUTTON_X_OFFSET + REPORT_BUTTON.getWidth() / 2 - dateWidth / 2;
-		final int textY = y + REPORT_BUTTON.getHeight() / 2 + dateHeight / 2;
+		final int textX = REPORT_BUTTON_X_OFFSET + plugin.getReportButton().getWidth() / 2 - dateWidth / 2;
+		final int textY = y + plugin.getReportButton().getHeight() / 2 + dateHeight / 2;
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(date, textX + 1, textY + 1);
@@ -128,9 +110,9 @@ public class ScreenshotOverlay extends Overlay
 		return null;
 	}
 
-	public void queueForTimestamp(Consumer<Image> screenshotConsumer)
+	void queueForTimestamp(Consumer<Image> screenshotConsumer)
 	{
-		if (REPORT_BUTTON == null)
+		if (plugin.getReportButton() == null)
 		{
 			return;
 		}

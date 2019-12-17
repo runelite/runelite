@@ -25,27 +25,29 @@
  */
 package net.runelite.client.plugins.notes;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-import java.awt.BorderLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
 @Slf4j
-public class NotesPanel extends PluginPanel
+class NotesPanel extends PluginPanel
 {
 	private final JTextArea notesEditor = new JTextArea();
+	private final UndoManager undoRedo = new UndoManager();
 
 	void init(NotesConfig config)
 	{
@@ -58,12 +60,7 @@ public class NotesPanel extends PluginPanel
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		final JLabel notesHeader = new JLabel("Notes");
-		notesHeader.setForeground(Color.WHITE);
-		notesHeader.setBorder(new EmptyBorder(1, 0, 10, 0));
-
-		add(notesHeader, BorderLayout.NORTH);
-
+		notesEditor.setTabSize(2);
 		notesEditor.setLineWrap(true);
 		notesEditor.setWrapStyleWord(true);
 
@@ -76,6 +73,53 @@ public class NotesPanel extends PluginPanel
 		// load note text
 		String data = config.notesData();
 		notesEditor.setText(data);
+
+		// setting the limit to a 500 as UndoManager registers every key press,
+		// which means that be default we would be able to undo only a sentence.
+		// note: the default limit is 100
+		undoRedo.setLimit(500);
+		notesEditor.getDocument().addUndoableEditListener(e -> undoRedo.addEdit(e.getEdit()));
+
+		notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
+		notesEditor.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+
+		notesEditor.getActionMap().put("Undo", new AbstractAction("Undo")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if (undoRedo.canUndo())
+					{
+						undoRedo.undo();
+					}
+				}
+				catch (CannotUndoException ex)
+				{
+					log.warn("Notes Document Unable To Undo: " + ex);
+				}
+			}
+		});
+
+		notesEditor.getActionMap().put("Redo", new AbstractAction("Redo")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if (undoRedo.canRedo())
+					{
+						undoRedo.redo();
+					}
+				}
+				catch (CannotUndoException ex)
+				{
+					log.warn("Notes Document Unable To Redo: " + ex);
+				}
+			}
+		});
 
 		notesEditor.addFocusListener(new FocusListener()
 		{
