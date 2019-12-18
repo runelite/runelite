@@ -66,8 +66,6 @@ public class FriendNotesPlugin extends Plugin
 	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
-	private static final String DELETE = "Delete";
-	private static final String REMOVE_IGNORE = "Remove ignore";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
 		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
 
@@ -196,8 +194,7 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getWidgetId());
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId() ||
-			groupId == WidgetInfo.CLAN_CHAT.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
 			if (Strings.isNullOrEmpty(event.getMenuTarget()))
 			{
@@ -228,14 +225,6 @@ public class FriendNotesPlugin extends Plugin
 						setFriendNote(sanitizedTarget, content);
 					}).build();
 			}
-			else if ((event.getMenuOption().equals(DELETE) && groupId == WidgetInfo.IGNORE_LIST.getGroupId()) ||
-					(event.getMenuOption().equals(REMOVE_IGNORE) && groupId == WidgetInfo.CLAN_CHAT.getGroupId()))
-			{
-				// Delete an ignored player's notes if the delete or remove ignore menu options are clicked
-				final String displayName = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
-				log.debug("Remove ignore: '{}'", displayName);
-				setFriendNote(displayName, null);
-			}
 		}
 
 	}
@@ -262,10 +251,10 @@ public class FriendNotesPlugin extends Plugin
 		}
 		else if (nameable instanceof Ignore)
 		{
-			// Migrate an ignore's note to their new display name
-			final Ignore friend = (Ignore) nameable;
-			String name = friend.getName();
-			String prevName = friend.getPrevName();
+			// Migrate an ignored player's note to their new display name
+			final Ignore ignore = (Ignore) nameable;
+			String name = ignore.getName();
+			String prevName = ignore.getPrevName();
 
 			if (prevName != null)
 			{
