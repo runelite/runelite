@@ -503,7 +503,7 @@ public class GroundItemsPlugin extends Plugin
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
 			final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER) * quantity;
 			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
+			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable(), quantity);
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
@@ -614,16 +614,17 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
-	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
+	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable, int quantity)
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
 		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
+		final boolean underCount = (item.contains("bolt") || item.contains("arrow") || item.contains("dart") || item.contains(" knife") || item.contains("javelin") || item.contains("thrownaxe")) ? quantity < config.showAmmoCount() : true;
 		final boolean underGe = gePrice < config.getHideUnderValue();
 		final boolean underHa = haPrice < config.getHideUnderValue();
 
 		// Explicit highlight takes priority over implicit hide
-		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
+		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa && underCount)
 			? config.hiddenColor()
 			: null;
 	}
@@ -661,19 +662,20 @@ public class GroundItemsPlugin extends Plugin
 			.append("] received a highlighted drop: ")
 			.append(item.getName());
 
-		if (item.getQuantity() > 1)
+		final int quantity = item.getQuantity();
+		if (quantity > 1)
 		{
-			notificationStringBuilder.append(" x ").append(item.getQuantity());
+			notificationStringBuilder.append(" x ").append(quantity);
 
 
-			if (item.getQuantity() > (int) Character.MAX_VALUE)
+			if (quantity > (int) Character.MAX_VALUE)
 			{
 				notificationStringBuilder.append(" (Lots!)");
 			}
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+					.append(QuantityFormatter.quantityToStackSize(quantity))
 					.append(")");
 			}
 		}

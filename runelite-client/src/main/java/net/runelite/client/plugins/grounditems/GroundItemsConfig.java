@@ -369,4 +369,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showAmmoCount",
+			name = "Show ammo count",
+			description = "Configures the least amount of ammo in a stack for the stack to show",
+			position = 29
+	)
+	default int showAmmoCount()
+	{
+		return 5;
+	}
 }
