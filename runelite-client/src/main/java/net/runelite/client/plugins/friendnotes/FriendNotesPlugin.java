@@ -234,33 +234,17 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final Nameable nameable = event.getNameable();
 
-		if (nameable instanceof Friend)
+		if (nameable instanceof Friend || nameable instanceof Ignore)
 		{
 			// Migrate a friend's note to their new display name
-			final Friend friend = (Friend) nameable;
-			String name = friend.getName();
-			String prevName = friend.getPrevName();
+			String name = nameable.getName();
+			String prevName = nameable.getPrevName();
 
 			if (prevName != null)
 			{
 				migrateFriendNote(
 					Text.toJagexName(name),
 					Text.toJagexName(prevName)
-				);
-			}
-		}
-		else if (nameable instanceof Ignore)
-		{
-			// Migrate an ignored player's note to their new display name
-			final Ignore ignore = (Ignore) nameable;
-			String name = ignore.getName();
-			String prevName = ignore.getPrevName();
-
-			if (prevName != null)
-			{
-				migrateFriendNote(
-						Text.toJagexName(name),
-						Text.toJagexName(prevName)
 				);
 			}
 		}
