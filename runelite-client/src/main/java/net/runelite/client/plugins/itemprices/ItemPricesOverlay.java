@@ -250,7 +250,6 @@ class ItemPricesOverlay extends Overlay
 				itemStringBuilder.append("</br>");
 			}
 
-
 			itemStringBuilder.append("HA: ")
 				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
