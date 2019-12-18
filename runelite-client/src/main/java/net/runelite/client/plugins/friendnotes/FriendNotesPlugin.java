@@ -62,7 +62,6 @@ import net.runelite.client.util.Text;
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";
-	private static final String CONFIG_GROUP_IGNORE = "ignoreNotes";
 	private static final int CHARACTER_LIMIT = 128;
 	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
@@ -105,15 +104,15 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Set a friend note, or unset by passing a null/empty note.
 	 */
-	private void setFriendNote(String groupName, String displayName, String note)
+	private void setFriendNote(String displayName, String note)
 	{
 		if (Strings.isNullOrEmpty(note))
 		{
-			configManager.unsetConfiguration(groupName, KEY_PREFIX + displayName);
+			configManager.unsetConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName);
 		}
 		else
 		{
-			configManager.setConfiguration(groupName, KEY_PREFIX + displayName, note);
+			configManager.setConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName, note);
 		}
 	}
 
@@ -121,26 +120,26 @@ public class FriendNotesPlugin extends Plugin
 	 * Get the friend note of a display name, or null if no friend note exists for it.
 	 */
 	@Nullable
-	private String getFriendNote(String groupName, String displayName)
+	private String getFriendNote(String displayName)
 	{
-		return configManager.getConfiguration(groupName, KEY_PREFIX + displayName);
+		return configManager.getConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName);
 	}
 
 	/**
 	 * Migrate a friend note to a new display name, and remove the previous one.
 	 * If current name already has a note, or previous name had none, do nothing.
 	 */
-	private void migrateFriendNote(String groupName, String currentDisplayName, String prevDisplayName)
+	private void migrateFriendNote(String currentDisplayName, String prevDisplayName)
 	{
-		final String currentNote = getFriendNote(groupName, currentDisplayName);
+		final String currentNote = getFriendNote(currentDisplayName);
 		if (currentNote == null)
 		{
-			final String prevNote = getFriendNote(groupName, prevDisplayName);
+			final String prevNote = getFriendNote(prevDisplayName);
 			if (prevNote != null)
 			{
 				log.debug("Update friend's username: '{}' -> '{}'", prevDisplayName, currentDisplayName);
-				setFriendNote(groupName, prevDisplayName, null);
-				setFriendNote(groupName, currentDisplayName, prevNote);
+				setFriendNote(prevDisplayName, null);
+				setFriendNote(currentDisplayName, prevNote);
 			}
 		}
 	}
@@ -148,13 +147,13 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Set the currently hovered display name, if a friend note exists for it.
 	 */
-	private void setHoveredFriend(String groupName, String displayName)
+	private void setHoveredFriend(String displayName)
 	{
 		hoveredFriend = null;
 
 		if (!Strings.isNullOrEmpty(displayName))
 		{
-			final String note = getFriendNote(groupName, displayName);
+			final String note = getFriendNote(displayName);
 			if (note != null)
 			{
 				hoveredFriend = new HoveredFriend(displayName, note);
@@ -171,10 +170,8 @@ public class FriendNotesPlugin extends Plugin
 		if ((groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message")) ||
 				(groupId == WidgetInfo.IGNORE_LIST.getGroupId() && event.getOption().equals("Delete")))
 		{
-			String groupName = (groupId == WidgetInfo.FRIENDS_LIST.getGroupId()) ? CONFIG_GROUP : CONFIG_GROUP_IGNORE;
-
 			// Friends have color tags
-			setHoveredFriend(groupName, Text.toJagexName(Text.removeTags(event.getTarget())));
+			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
@@ -202,8 +199,6 @@ public class FriendNotesPlugin extends Plugin
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId() ||
 			groupId == WidgetInfo.CLAN_CHAT.getGroupId())
 		{
-			String groupName = (groupId == WidgetInfo.FRIENDS_LIST.getGroupId()) ? CONFIG_GROUP : CONFIG_GROUP_IGNORE;
-
 			if (Strings.isNullOrEmpty(event.getMenuTarget()))
 			{
 				return;
@@ -216,7 +211,7 @@ public class FriendNotesPlugin extends Plugin
 
 				//Friends have color tags
 				final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
-				final String note = getFriendNote(groupName, sanitizedTarget);
+				final String note = getFriendNote(sanitizedTarget);
 
 				// Open the new chatbox input dialog
 				chatboxPanelManager.openTextInput(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget, CHARACTER_LIMIT))
@@ -230,7 +225,7 @@ public class FriendNotesPlugin extends Plugin
 
 						content = Text.removeTags(content).trim();
 						log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
-						setFriendNote(groupName, sanitizedTarget, content);
+						setFriendNote(sanitizedTarget, content);
 					}).build();
 			}
 			else if ((event.getMenuOption().equals(DELETE) && groupId == WidgetInfo.IGNORE_LIST.getGroupId()) ||
@@ -239,7 +234,7 @@ public class FriendNotesPlugin extends Plugin
 				// Delete an ignored player's notes if the delete or remove ignore menu options are clicked
 				final String displayName = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
 				log.debug("Remove ignore: '{}'", displayName);
-				setFriendNote(CONFIG_GROUP_IGNORE, displayName, null);
+				setFriendNote(displayName, null);
 			}
 		}
 
@@ -259,7 +254,7 @@ public class FriendNotesPlugin extends Plugin
 
 			if (prevName != null)
 			{
-				migrateFriendNote(CONFIG_GROUP,
+				migrateFriendNote(
 					Text.toJagexName(name),
 					Text.toJagexName(prevName)
 				);
@@ -274,7 +269,7 @@ public class FriendNotesPlugin extends Plugin
 
 			if (prevName != null)
 			{
-				migrateFriendNote(CONFIG_GROUP_IGNORE,
+				migrateFriendNote(
 						Text.toJagexName(name),
 						Text.toJagexName(prevName)
 				);
@@ -288,6 +283,6 @@ public class FriendNotesPlugin extends Plugin
 		// Delete a friend's note if they are removed
 		final String displayName = Text.toJagexName(event.getNameable().getName());
 		log.debug("Remove friend: '{}'", displayName);
-		setFriendNote(CONFIG_GROUP, displayName, null);
+		setFriendNote(displayName, null);
 	}
 }
