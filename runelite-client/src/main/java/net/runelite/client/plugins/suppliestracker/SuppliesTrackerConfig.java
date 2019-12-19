@@ -54,4 +54,26 @@ public interface SuppliesTrackerConfig extends Config
 	{
 		return BlowpipeDartType.MITHRIL;
 	}
+
+	@ConfigTitleSection(
+		keyName = "chargesBoxTitle",
+		name = "Charges Box",
+		description = "",
+		position = 2
+	)
+	default Title chargesBoxTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		keyName = "chargesBox",
+		name = "Show weapons charges used box?",
+		description = "Separates items with charges to show how many of those charges you used.",
+		titleSection = "chargesBoxTitle"
+	)
+	default boolean chargesBox()
+	{
+		return false;
+	}
 }
