@@ -680,6 +680,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 		}
 
+		//Adds tracking to Master Scroll Book
 		if (event.getOption().toLowerCase().equals("activate"))
 		{
 			String target = event.getTarget();
