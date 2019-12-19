@@ -1706,6 +1706,18 @@ public interface MenuEntrySwapperConfig extends Config
 		return SlayerRingMode.CHECK;
 	}
 
+	@ConfigItem(
+		keyName = "swapJewelleryBox",
+		name = "Jewellery Box",
+		description = "Swap Teleport Menu with previous destination on Jewellery Box",
+		position = 31,
+		section = "teleportationSection"
+	)
+	default boolean swapJewelleryBox()
+	{
+		return false;
+	}
+
 	//------------------------------------------------------------//
 	// Right Click Options
 	//------------------------------------------------------------//
