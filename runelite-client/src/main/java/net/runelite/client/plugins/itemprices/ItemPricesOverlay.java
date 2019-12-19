@@ -234,7 +234,7 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -251,7 +251,7 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -267,7 +267,7 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
+				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
