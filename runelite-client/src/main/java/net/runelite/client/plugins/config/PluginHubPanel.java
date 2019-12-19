@@ -417,7 +417,8 @@ class PluginHubPanel extends PluginPanel
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+		// Can't use Short.MAX_VALUE like the docs say because of JDK-8079640
+		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
 		scrollPane.setViewportView(mainPanelWrapper);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
