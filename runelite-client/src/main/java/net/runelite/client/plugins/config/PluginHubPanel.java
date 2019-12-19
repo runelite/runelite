@@ -410,7 +410,7 @@ class PluginHubPanel extends PluginPanel
 		refreshing = new JLabel("Loading...");
 		refreshing.setHorizontalAlignment(JLabel.CENTER);
 
-		JPanel mainPanelWrapper = new JPanel();
+		JPanel mainPanelWrapper = new FixedWidthPanel();
 		mainPanelWrapper.setLayout(new BorderLayout());
 		mainPanelWrapper.add(mainPanel, BorderLayout.NORTH);
 		mainPanelWrapper.add(refreshing, BorderLayout.CENTER);
@@ -418,8 +418,7 @@ class PluginHubPanel extends PluginPanel
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		scrollPane.getViewport().setLayout(new BorderLayout());
-		scrollPane.getViewport().add(mainPanelWrapper, BorderLayout.CENTER);
+		scrollPane.setViewportView(mainPanelWrapper);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addComponent(externalPluginWarning)
