@@ -229,12 +229,12 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String stackValueText(long qty, long gePrice, long haValue, long haProfit)
+	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
 	{
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -251,7 +251,7 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -267,7 +267,7 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
+				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -289,7 +289,7 @@ class ItemPricesOverlay extends Overlay
 		return haPrice - gePrice - natureRunePrice;
 	}
 
-	private static Color haProfitColor(long haProfit)
+	private static Color haProfitColor(int haProfit)
 	{
 		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}
