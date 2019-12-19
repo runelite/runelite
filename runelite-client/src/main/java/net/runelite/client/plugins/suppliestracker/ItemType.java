@@ -82,7 +82,7 @@ public enum ItemType
 		{
 			return ItemType.COINS;
 		}
-		if (item.getName().toLowerCase().contains("ring of") || item.getName().toLowerCase().contains("amulet of") ||
+		if (item.getName().toLowerCase().contains("ring of") || item.getName().toLowerCase().contains("amulet") ||
 			item.getName().toLowerCase().contains("bracelet") || item.getName().toLowerCase().contains("necklace"))
 		{
 			return ItemType.JEWELLERY;
