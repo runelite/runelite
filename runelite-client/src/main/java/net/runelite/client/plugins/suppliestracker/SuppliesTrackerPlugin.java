@@ -89,7 +89,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final String DRINK_PATTERN = "^drink";
 	private static final String TELEPORT_PATTERN = "^teleport";
 	private static final String TELETAB_PATTERN = "^break";
-	private static final String TELEPORT_SCROLL_BOOK_PATTERN = "teleport scroll$";
 	private static final String SPELL_PATTERN = "^cast|^grand\\sexchange|^outside|^seers|^yanille";
 
 	//Equipment slot constants
@@ -681,58 +680,68 @@ public class SuppliesTrackerPlugin extends Plugin
 
 		}
 
-		Pattern scrollPattern = Pattern.compile(TELEPORT_SCROLL_BOOK_PATTERN);
-
-		if (event.getOption().toLowerCase().equals("activate"))
+		if (event.getOption().toLowerCase().equals("activate") || event.getOption().toLowerCase().equals("teleport"))
 		{
-			String target = event.getTarget();
-			if (target.toLowerCase().contains("teleport scroll"))
+			String target = event.getTarget().toLowerCase();
+			if (target.contains("watson teleport"))
 			{
-				switch (target.toLowerCase().substring(target.indexOf(">") + 1))
-				{
-					case "watson teleport scroll":
-						buildEntries(WATSON_TELEPORT);
-						break;
-					case "zul-andra teleport scroll":
-						buildEntries(ZULANDRA_TELEPORT);
-						break;
-					case "nardah teleport scroll":
-						buildEntries(NARDAH_TELEPORT);
-						break;
-					case "digsite teleport scroll":
-						buildEntries(DIGSITE_TELEPORT);
-						break;
-					case "feldip hills teleport scroll":
-						buildEntries(FELDIP_HILLS_TELEPORT);
-						break;
-					case "lunar isle teleport scroll":
-						buildEntries(LUNAR_ISLE_TELEPORT);
-						break;
-					case "mort'ton teleport scroll":
-						buildEntries(MORTTON_TELEPORT);
-						break;
-					case "pest control teleport scroll":
-						buildEntries(PEST_CONTROL_TELEPORT);
-						break;
-					case "piscatoris teleport scroll":
-						buildEntries(PISCATORIS_TELEPORT);
-						break;
-					case "iorwerth camp teleport scroll":
-						buildEntries(IORWERTH_CAMP_TELEPORT);
-						break;
-					case "mos le'harmless teleport scroll":
-						buildEntries(MOS_LEHARMLESS_TELEPORT);
-						break;
-					case "lumberyard teleport scroll":
-						buildEntries(LUMBERYARD_TELEPORT);
-						break;
-					case "revenant cave teleport scroll":
-						buildEntries(REVENANT_CAVE_TELEPORT);
-						break;
-					case "tai bwo wannai teleport scroll":
-						buildEntries(TAI_BWO_WANNAI_TELEPORT);
-						break;
-				}
+				buildEntries(WATSON_TELEPORT);
+			}
+			else if (target.contains("zul-andra teleport"))
+			{
+				buildEntries(ZULANDRA_TELEPORT);
+			}
+			else if (target.contains("nardah teleport"))
+			{
+				buildEntries(NARDAH_TELEPORT);
+			}
+			else if (target.contains("digsite teleport"))
+			{
+				buildEntries(DIGSITE_TELEPORT);
+			}
+			else if (target.contains("feldip hills teleport"))
+			{
+				buildEntries(FELDIP_HILLS_TELEPORT);
+			}
+			else if (target.contains("lunar isle teleport"))
+			{
+				buildEntries(LUNAR_ISLE_TELEPORT);
+			}
+			else if (target.contains("mort'ton teleport"))
+			{
+				buildEntries(MORTTON_TELEPORT);
+			}
+			else if (target.contains("pest control teleport"))
+			{
+				buildEntries(PEST_CONTROL_TELEPORT);
+			}
+			else if (target.contains("piscatoris teleport"))
+			{
+				buildEntries(PISCATORIS_TELEPORT);
+			}
+			else if (target.contains("iorwerth camp teleport"))
+			{
+				buildEntries(IORWERTH_CAMP_TELEPORT);
+			}
+			else if (target.contains("mos le'harmless teleport"))
+			{
+				buildEntries(MOS_LEHARMLESS_TELEPORT);
+			}
+			else if (target.contains("lumberyard teleport"))
+			{
+				buildEntries(LUMBERYARD_TELEPORT);
+			}
+			else if (target.contains("revenant cave teleport"))
+			{
+				buildEntries(REVENANT_CAVE_TELEPORT);
+			}
+			else if (target.contains("tai bwo wannai teleport"))
+			{
+				buildEntries(TAI_BWO_WANNAI_TELEPORT);
+			}
+			else if (target.contains("key master teleport"))
+			{
+				buildEntries(KEY_MASTER_TELEPORT);
 			}
 		}
 	}
