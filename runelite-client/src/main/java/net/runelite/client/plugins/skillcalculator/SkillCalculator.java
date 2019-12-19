@@ -439,24 +439,24 @@ class SkillCalculator extends JPanel
 				try
 				{
 					JTextField field = (JTextField) e.getSource();
-					if(field.equals(uiInput.getUiFieldCurrentLevel()))
+					if (field.equals(uiInput.getUiFieldCurrentLevel()))
 					{
 						onFieldCurrentLevelUpdated();
 					}
-					else if(field.equals(uiInput.getUiFieldCurrentXP()))
+					else if (field.equals(uiInput.getUiFieldCurrentXP()))
 					{
 						onFieldCurrentXPUpdated();
 					}
-					else if(field.equals(uiInput.getUiFieldTargetLevel()))
+					else if (field.equals(uiInput.getUiFieldTargetLevel()))
 					{
 						onFieldTargetLevelUpdated();
 					}
-					else if(field.equals(uiInput.getUiFieldTargetXP()))
+					else if (field.equals(uiInput.getUiFieldTargetXP()))
 					{
 						onFieldTargetXPUpdated();
 					}
 				}
-				catch(ClassCastException ignored)
+				catch (ClassCastException ignored)
 				{
 					// Ignore all except JTextField (xp, level inputs)
 				}
