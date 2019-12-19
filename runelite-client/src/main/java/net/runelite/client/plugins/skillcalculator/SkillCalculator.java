@@ -28,6 +28,8 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -39,6 +41,7 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.client.game.ItemManager;
@@ -67,6 +70,7 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
+	private final FocusListener focusListener = buildFocusListener();
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -108,6 +112,12 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+
+		// Register focus listeners to calculate xp when exiting a text field
+		uiInput.getUiFieldCurrentLevel().addFocusListener(focusListener);
+		uiInput.getUiFieldCurrentXP().addFocusListener(focusListener);
+		uiInput.getUiFieldTargetLevel().addFocusListener(focusListener);
+		uiInput.getUiFieldTargetXP().addFocusListener(focusListener);
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -413,4 +423,44 @@ class SkillCalculator extends JPanel
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
 
+	private FocusListener buildFocusListener()
+	{
+		return new FocusListener()
+		{
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				// No action needed for focusGained
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				try
+				{
+					JTextField field = (JTextField) e.getSource();
+					if(field.equals(uiInput.getUiFieldCurrentLevel()))
+					{
+						onFieldCurrentLevelUpdated();
+					}
+					else if(field.equals(uiInput.getUiFieldCurrentXP()))
+					{
+						onFieldCurrentXPUpdated();
+					}
+					else if(field.equals(uiInput.getUiFieldTargetLevel()))
+					{
+						onFieldTargetLevelUpdated();
+					}
+					else if(field.equals(uiInput.getUiFieldTargetXP()))
+					{
+						onFieldTargetXPUpdated();
+					}
+				}
+				catch(ClassCastException ignored)
+				{
+					// Ignore all except JTextField (xp, level inputs)
+				}
+			}
+		};
+	}
 }
