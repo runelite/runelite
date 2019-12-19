@@ -89,7 +89,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final String DRINK_PATTERN = "^drink";
 	private static final String TELEPORT_PATTERN = "^teleport";
 	private static final String TELETAB_PATTERN = "^break";
-	private static final String TELEPORT_SCROLL_BOOK_PATTERN = "teleport scroll$";
 	private static final String SPELL_PATTERN = "^cast|^grand\\sexchange|^outside|^seers|^yanille";
 
 	//Equipment slot constants
@@ -681,8 +680,6 @@ public class SuppliesTrackerPlugin extends Plugin
 
 		}
 
-		Pattern scrollPattern = Pattern.compile(TELEPORT_SCROLL_BOOK_PATTERN);
-
 		if (event.getOption().toLowerCase().equals("activate"))
 		{
 			String target = event.getTarget();
@@ -732,6 +729,8 @@ public class SuppliesTrackerPlugin extends Plugin
 					case "tai bwo wannai teleport scroll":
 						buildEntries(TAI_BWO_WANNAI_TELEPORT);
 						break;
+					case "key master teleport":
+						buildEntries(KEY_MASTER_TELEPORT);
 				}
 			}
 		}
