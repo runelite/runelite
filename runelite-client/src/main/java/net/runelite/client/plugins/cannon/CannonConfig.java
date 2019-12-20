@@ -35,30 +35,33 @@ public interface CannonConfig extends Config
 		keyName = "enableCannonNotifications",
 		name = "Enable cannon notifications",
 		description = "Configures whether to notify you when your cannon has X cannonballs remaining.",
-        position = 1
+		position = 1
 	)
 	default boolean enableCannonNotifications()
 	{
 		return true;
 	}
 
-    @Range(
-        max = 30
-    )
+	@Range(
+		max = 30
+	)
 	@ConfigItem(
 		keyName = "numRemainingBeforeNotification",
 		name = "Number for notification",
 		description = "Configures the of cannonballs remaining before the user should be notified. Regardless of this" +
-                "value, a notification will still be sent when your cannon is empty.",
+			"value, a notification will still be sent when your cannon is empty.",
 		position = 2
 	)
-	default int numRemainingBeforeNotification() { return 0; }
+	default int numRemainingBeforeNotification()
+	{
+		return 0;
+	}
 
 	@ConfigItem(
 		keyName = "showInfobox",
 		name = "Show Cannonball infobox",
 		description = "Configures whether to show the cannonballs in an infobox",
-        position = 3
+		position = 3
 	)
 	default boolean showInfobox()
 	{
@@ -69,7 +72,7 @@ public interface CannonConfig extends Config
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
 		description = "Configures whether to show the NPC double hit spot",
-        position = 4
+		position = 4
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -81,7 +84,7 @@ public interface CannonConfig extends Config
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",
 		description = "Configures the highlight color of double hit spots",
-        position = 5
+		position = 5
 	)
 	default Color highlightDoubleHitColor()
 	{
@@ -92,7 +95,7 @@ public interface CannonConfig extends Config
 		keyName = "showCannonSpots",
 		name = "Show common cannon spots",
 		description = "Configures whether to show common cannon spots or not",
-        position = 6
+		position = 6
 	)
 	default boolean showCannonSpots()
 	{
