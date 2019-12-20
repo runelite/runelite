@@ -43,6 +43,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import static net.runelite.client.RuneLite.LOGS_DIR;
+import static net.runelite.client.RuneLite.PLUGINS_DIR;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
+import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
@@ -60,15 +63,10 @@ class InfoPanel extends PluginPanel
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
 	private static final ImageIcon IMPORT_ICON;
-
-	private JPanel syncPanel;
-
-	@Inject
-	@Nullable
-	private Client client;
-
-	@Inject
-	private ConfigManager configManager;
+	private static final String RUNELITE_DIRECTORY = System.getProperty("user.home") + "\\.runelite";
+	private static final String LOG_DIRECTORY = RUNELITE_DIRECTORY + "\\logs";
+	private static final String PLUGINS_DIRECTORY = RUNELITE_DIRECTORY + "\\plugins";
+	private static final String SCREENSHOT_DIRECTORY = RUNELITE_DIRECTORY + "\\screenshots";
 
 	static
 	{
@@ -80,8 +78,19 @@ class InfoPanel extends PluginPanel
 		IMPORT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "import_icon.png"));
 	}
 
-	void init()
+	private JPanel syncPanel;
+	@Inject
+	@Nullable
+	private Client client;
+	@Inject
+	private ConfigManager configManager;
+	@Inject
+	private InfoPlugin plugin;
+
+	@Inject
+	public InfoPanel(final InfoPlugin plugin, final Client client)
 	{
+
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -115,8 +124,8 @@ class InfoPanel extends PluginPanel
 		versionPanel.add(revision);
 
 		JPanel actionsContainer = new JPanel();
-		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setLayout(new GridLayout(5, 1, 0, 10));
+		actionsContainer.setBorder(new EmptyBorder(10, 0, 10, 0));
+		actionsContainer.setLayout(new GridLayout(9, 1, 0, 10));
 
 		syncPanel = buildLinkPanel(IMPORT_ICON, "Import local settings", "to remote RuneLite account", () ->
 		{
@@ -131,22 +140,63 @@ class InfoPanel extends PluginPanel
 			}
 		});
 
-		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "License info", "for distribution", "https://github.com/runelite-extended/runelite/blob/master/LICENSE"));
-		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open logs directory", "(for bug reports)", LOGS_DIR));
-		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", "https://discord.gg/HN5gf3m"));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the OpenOSRS devs", RuneLiteProperties.getPatreonLink()));
-		/*		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));*/
+		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "License info", "for distribution", "https://github.com/open-osrs/runelite/blob/master/LICENSE"));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the OpenOSRS Devs", RuneLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord Server", "https://discord.gg/OpenOSRS"));
+		if (plugin.isShowGithub())
+		{
+			actionsContainer.add(buildLinkPanel(GITHUB_ICON, "OpenOSRS Github", "", "https://github.com/open-osrs"));
+		}
+		if (plugin.isShowLauncher())
+		{
+			actionsContainer.add(buildLinkPanel(IMPORT_ICON, "Launcher Download", "for the latest launcher", "https://github.com/open-osrs/launcher/releases"));
+		}
+		if (plugin.isShowRuneliteDir())
+		{
+			actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Runelite Directory", "for your .properties file", RUNELITE_DIR));
+		}
+		if (plugin.isShowLogDir())
+		{
+			actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Logs Directory", "for bug reports", LOGS_DIR));
+		}
+		if (plugin.isShowPluginsDir())
+		{
+			actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Plugins Directory", "for external plugins", PLUGINS_DIR));
+		}
+		if (plugin.isShowScreenshotsDir())
+		{
+			actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Screenshots Directory", "for your screenshots", SCREENSHOT_DIR));
+		}
 
+		if (plugin.isShowPhysicalDir())
+		{
+			JPanel pathPanel = new JPanel();
+			pathPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			pathPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+			pathPanel.setLayout(new GridLayout(0, 1));
+
+			JLabel rldirectory = new JLabel(htmlLabel("Runelite Directory: ", RUNELITE_DIRECTORY));
+			rldirectory.setFont(smallFont);
+
+			JLabel logdirectory = new JLabel(htmlLabel("Log Directory: ", LOG_DIRECTORY));
+			logdirectory.setFont(smallFont);
+
+			JLabel pluginsdirectory = new JLabel(htmlLabel("Plugins Directory: ", PLUGINS_DIRECTORY));
+			pluginsdirectory.setFont(smallFont);
+
+			JLabel screenshotsdirectory = new JLabel(htmlLabel("Screenshot Directory: ", SCREENSHOT_DIRECTORY));
+			screenshotsdirectory.setFont(smallFont);
+
+			pathPanel.add(rldirectory);
+			pathPanel.add(logdirectory);
+			pathPanel.add(pluginsdirectory);
+			pathPanel.add(screenshotsdirectory);
+
+			add(pathPanel, BorderLayout.SOUTH);
+		}
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
-	}
 
-	/**
-	 * Builds a link panel with a given icon, text and directory to open.
-	 */
-	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, File dir)
-	{
-		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.openLocalFile(dir));
 	}
 
 	/**
@@ -234,5 +284,13 @@ class InfoPanel extends PluginPanel
 	private static String htmlLabel(String key, String value)
 	{
 		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
+	}
+
+	/**
+	 * Builds a link panel with a given icon, text and directory to open.
+	 */
+	private JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, File dir)
+	{
+		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.openLocalFile(dir));
 	}
 }

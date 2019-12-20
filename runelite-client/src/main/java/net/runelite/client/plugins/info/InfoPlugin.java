@@ -24,9 +24,15 @@
  */
 package net.runelite.client.plugins.info;
 
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -36,22 +42,58 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Info Panel",
 	description = "Enable the Info panel",
+	tags = {"info", "github", "patreon", "dir", "discord"},
 	loadWhenOutdated = true
 )
 @Singleton
 public class InfoPlugin extends Plugin
 {
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLogDir;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showRuneliteDir;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPluginsDir;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showScreenshotsDir;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showGithub;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showLauncher;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPhysicalDir;
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private InfoConfig config;
+
 	private NavigationButton navButton;
 
+	@Provides
+	InfoConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InfoConfig.class);
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("info"))
+		{
+			return;
+		}
+
+		updateConfig();
+	}
 
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
+
 		InfoPanel panel = injector.getInstance(InfoPanel.class);
-		panel.init();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "info_icon.png");
 
@@ -69,5 +111,16 @@ public class InfoPlugin extends Plugin
 	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	private void updateConfig()
+	{
+		this.showGithub = config.showGithub();
+		this.showLauncher = config.showLauncher();
+		this.showLogDir = config.showLogDir();
+		this.showRuneliteDir = config.showRuneliteDir();
+		this.showPluginsDir = config.showPluginsDir();
+		this.showScreenshotsDir = config.showScreenshotsDir();
+		this.showPhysicalDir = config.showPhysicalDir();
 	}
 }
