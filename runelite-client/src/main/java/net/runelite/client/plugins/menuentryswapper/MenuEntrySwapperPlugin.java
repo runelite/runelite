@@ -640,7 +640,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 						else
 						{
-							menuManager.removeSwaps(target);
+							menuManager.removeSwap("loot", target, "use");
 						}
 					}
 					break;
@@ -657,7 +657,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 						else
 						{
-							menuManager.removeSwaps(target);
+							menuManager.removeSwap("loot", target, "use");
 						}
 					}
 					break;
@@ -674,7 +674,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 						else
 						{
-							menuManager.removeSwaps(target);
+							menuManager.removeSwap("loot", target, "use");
 						}
 					}
 					break;
@@ -693,7 +693,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 						else
 						{
-							menuManager.removeSwaps(target);
+							menuManager.removeSwap("loot", target, "use");
 						}
 					}
 					break;
@@ -711,7 +711,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 						else
 						{
-							menuManager.removeSwaps(target);
+							menuManager.removeSwap("loot", target, "use");
 						}
 					}
 					break;
