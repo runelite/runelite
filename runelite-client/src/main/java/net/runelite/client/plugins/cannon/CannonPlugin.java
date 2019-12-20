@@ -278,6 +278,12 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
+
+		// Don't use this notification if we're at zero, that's handled in the onChatMessage method.
+		if (cballsLeft > 0 && cballsLeft == config.numRemainingBeforeNotification() && config.enableCannonNotifications())
+		{
+			notifier.notify(String.format("Your cannon has %d cannonballs remaining!", cballsLeft));
+		}
 	}
 
 	@Subscribe
@@ -349,7 +355,7 @@ public class CannonPlugin extends Plugin
 			// extra check is a good idea.
 			cballsLeft = 0;
 
-			if (config.showEmptyCannonNotification())
+			if (config.enableCannonNotifications())
 			{
 				notifier.notify("Your cannon is out of ammo!");
 			}
