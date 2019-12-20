@@ -53,9 +53,10 @@ class SuppliesTrackerPanel extends PluginPanel
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
-	// Handle loot logs
+	// Handle supplies logs
 	private final JPanel logsContainer = new JPanel();
 
+	//Boxes for holding supplies
 	private final List<SuppliesBox> boxList = new ArrayList<>();
 
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
@@ -97,9 +98,10 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		//Sorts boxes into usage types
 		for (ItemType type : ItemType.values())
 		{
-			SuppliesBox newBox = new SuppliesBox(itemManager, type.getLabel(), plugin, this, type);
+			SuppliesBox newBox = SuppliesBox.of(itemManager, type.getLabel(), plugin, this, type);
 			logsContainer.add(newBox);
 			boxList.add(newBox);
 		}
@@ -136,16 +138,6 @@ class SuppliesTrackerPanel extends PluginPanel
 	}
 
 	/**
-	 * loads an img to the icon on the header
-	 *
-	 * @param img the img for the header icon
-	 */
-	void loadHeaderIcon(BufferedImage img)
-	{
-		overallIcon.setIcon(new ImageIcon(img));
-	}
-
-	/**
 	 * convert key value pair to html formatting needed to display nicely
 	 *
 	 * @param key   key
@@ -156,6 +148,16 @@ class SuppliesTrackerPanel extends PluginPanel
 	{
 		final String valueStr = QuantityFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
+
+	/**
+	 * loads an img to the icon on the header
+	 *
+	 * @param img the img for the header icon
+	 */
+	void loadHeaderIcon(BufferedImage img)
+	{
+		overallIcon.setIcon(new ImageIcon(img));
 	}
 
 	/**
@@ -191,6 +193,8 @@ class SuppliesTrackerPanel extends PluginPanel
 		}
 
 		overallCost = 0;
+
+		//Checks all supply boxes for total price
 		for (SuppliesBox box : boxList)
 		{
 			overallCost += box.getTotalPrice();
