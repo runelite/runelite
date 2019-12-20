@@ -55,10 +55,19 @@ public class PvPUtil
 	public static boolean isAttackable(Client client, Player player)
 	{
 		int wildernessLevel = 0;
-		if (!(client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType())))
+		
+		if (!(client.getVar(Varbits.IN_WILDERNESS) == 1
+			|| WorldType.isPvpWorld(client.getWorldType())
+			|| WorldType.isDeadmanWorld(client.getWorldType())))
 		{
 			return false;
 		}
+		
+		if (WorldType.isDeadmanWorld(client.getWorldType()))
+		{
+			return true;
+		}
+		
 		if (WorldType.isPvpWorld(client.getWorldType()))
 		{
 			if (client.getVar(Varbits.IN_WILDERNESS) != 1)
