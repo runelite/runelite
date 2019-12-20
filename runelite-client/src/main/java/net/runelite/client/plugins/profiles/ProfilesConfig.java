@@ -70,7 +70,8 @@ public interface ProfilesConfig extends Config
 	@ConfigItem(
 		keyName = "rememberPassword",
 		name = "Remember Password",
-		description = "Remembers passwords for accounts"
+		description = "Remembers passwords for accounts",
+		position = 0
 	)
 	default boolean rememberPassword()
 	{
@@ -78,11 +79,25 @@ public interface ProfilesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "displayEmailAddress",
+		name = "Display email field",
+		description = "Displays the email address field",
+		position = 1
+	)
+	default boolean displayEmailAddress()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "streamerMode",
 		name = "Hide email addresses",
-		description = "Hides your account emails"
+		description = "Hides your account emails",
+		position = 2,
+		hidden = true,
+		unhide = "displayEmailAddress"
 	)
-	default boolean isStreamerMode()
+	default boolean streamerMode()
 	{
 		return false;
 	}
@@ -90,7 +105,8 @@ public interface ProfilesConfig extends Config
 	@ConfigItem(
 		keyName = "switchPanel",
 		name = "Auto-open Panel",
-		description = "Automatically switch to the account switcher panel on the login screen"
+		description = "Automatically switch to the account switcher panel on the login screen",
+		position = 3
 	)
 	default boolean switchPanel()
 	{

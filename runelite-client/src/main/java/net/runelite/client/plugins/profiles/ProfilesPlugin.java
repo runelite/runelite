@@ -29,6 +29,8 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
@@ -62,7 +64,14 @@ public class ProfilesPlugin extends Plugin
 
 	private ProfilesPanel panel;
 	private NavigationButton navButton;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean switchToPanel;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean streamerMode;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean displayEmailAddress;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean rememberPassword;
 
 
 	@Provides
@@ -124,9 +133,11 @@ public class ProfilesPlugin extends Plugin
 			this.startUp();
 			updateConfig();
 		}
-		if (event.getGroup().equals("profiles") && event.getKey().equals("switchPanel"))
+		if (event.getGroup().equals("profiles") && !event.getKey().equals("rememberPassword"))
 		{
 			updateConfig();
+			panel = injector.getInstance(ProfilesPanel.class);
+			panel.redrawProfiles();
 		}
 	}
 
@@ -140,9 +151,13 @@ public class ProfilesPlugin extends Plugin
 		}
 	}
 
+
 	private void updateConfig()
 	{
 		this.switchToPanel = config.switchPanel();
+		this.rememberPassword  = config.rememberPassword();
+		this.streamerMode = config.streamerMode();
+		this.displayEmailAddress = config.displayEmailAddress();
 	}
 
 }

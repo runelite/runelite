@@ -85,6 +85,8 @@ class ProfilesPanel extends PluginPanel
 	@Inject
 	private ProfilesConfig profilesConfig;
 
+	@Inject ProfilesPlugin profilesPlugin;
+
 	private final JPasswordField txtDecryptPassword = new JPasswordField(UNLOCK_PASSWORD);
 	private final JTextField txtAccountLabel = new JTextField(ACCOUNT_LABEL);
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
@@ -221,7 +223,7 @@ class ProfilesPanel extends PluginPanel
 				if (ACCOUNT_USERNAME.equals(String.valueOf(txtAccountLogin.getPassword())))
 				{
 					txtAccountLogin.setText("");
-					if (profilesConfig.isStreamerMode())
+					if (profilesPlugin.isStreamerMode())
 					{
 						txtAccountLogin.setEchoChar('*');
 					}
@@ -278,7 +280,7 @@ class ProfilesPanel extends PluginPanel
 				return;
 			}
 			String data;
-			if (profilesConfig.rememberPassword() && txtPasswordLogin.getPassword() != null)
+			if (profilesPlugin.isRememberPassword() && txtPasswordLogin.getPassword() != null)
 			{
 				data = labelText + ":" + loginText + ":" + passwordText;
 			}
@@ -357,7 +359,7 @@ class ProfilesPanel extends PluginPanel
 
 		accountPanel.add(txtAccountLabel);
 		accountPanel.add(txtAccountLogin);
-		if (profilesConfig.rememberPassword())
+		if (profilesPlugin.isRememberPassword())
 		{
 			accountPanel.add(txtPasswordLogin);
 		}
@@ -401,7 +403,7 @@ class ProfilesPanel extends PluginPanel
 		add(profilesPanel, BorderLayout.SOUTH);
 	}
 
-	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
+	void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException
 	{
 		profilesPanel.removeAll();
 		addAccounts(getProfileData());
@@ -412,7 +414,7 @@ class ProfilesPanel extends PluginPanel
 
 	private void addAccount(String data)
 	{
-		ProfilePanel profile = new ProfilePanel(client, data, profilesConfig, this);
+		ProfilePanel profile = new ProfilePanel(client, data, profilesPlugin, this);
 		profilesPanel.add(profile);
 
 		revalidate();
