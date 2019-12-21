@@ -48,7 +48,7 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "numRemainingBeforeNotification",
 		name = "Number for notification",
-		description = "Configures the of cannonballs remaining before the user should be notified. Regardless of this" +
+		description = "Configures the number of cannonballs remaining before the user should be notified. Regardless of this" +
 			"value, a notification will still be sent when your cannon is empty.",
 		position = 2
 	)
