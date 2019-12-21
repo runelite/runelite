@@ -55,10 +55,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "textGrimyColor",
-			name = "Grimy Color",
-			position = -2,
-			description = "The colour of the identification text when herbs are grimy"
+		keyName = "textGrimyColor",
+		name = "Grimy Color",
+		position = -2,
+		description = "The colour of the identification text when herbs are grimy"
 	)
 	default Color textGrimyColor()
 	{

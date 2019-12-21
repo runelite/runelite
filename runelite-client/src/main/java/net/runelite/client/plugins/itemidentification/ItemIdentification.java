@@ -46,7 +46,7 @@ enum ItemIdentification
 	DWARF_WEED_SEED(Type.SEED, "Dwarf", "D", ItemID.DWARF_WEED_SEED),
 	TORSTOL_SEED(Type.SEED, "Torstol", "TOR", ItemID.TORSTOL_SEED),
 	POISON_IVY_SEED(Type.SEED, "Ivy", "I", ItemID.POISON_IVY_SEED),
-	WHITEBERRY_SEED( Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
+	WHITEBERRY_SEED(Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
 
 	//Herbs
 	GUAM(Type.HERB, "Guam", "G", ItemID.GUAM_LEAF),
@@ -69,16 +69,16 @@ enum ItemIdentification
 	GRIMY_MARRENTILL(Type.GRIMYHERB, "Marren", "M", ItemID.GRIMY_MARRENTILL),
 	GRIMY_TARROMIN(Type.GRIMYHERB, "Tarro", "TAR", ItemID.GRIMY_TARROMIN),
 	GRIMY_HARRALANDER(Type.GRIMYHERB, "Harra", "H", ItemID.GRIMY_HARRALANDER),
-	GRIMY_RANARR(Type.GRIMYHERB, "Ranarr", "R",  ItemID.GRIMY_RANARR_WEED),
-	GRIMY_TOADFLAX(Type.GRIMYHERB, "Toad", "TOA",  ItemID.GRIMY_TOADFLAX),
-	GRIMY_IRIT(Type.GRIMYHERB, "Irit", "I",  ItemID.GRIMY_IRIT_LEAF),
-	GRIMY_AVANTOE(Type.GRIMYHERB, "Avan", "A",  ItemID.GRIMY_AVANTOE),
+	GRIMY_RANARR(Type.GRIMYHERB, "Ranarr", "R", ItemID.GRIMY_RANARR_WEED),
+	GRIMY_TOADFLAX(Type.GRIMYHERB, "Toad", "TOA", ItemID.GRIMY_TOADFLAX),
+	GRIMY_IRIT(Type.GRIMYHERB, "Irit", "I", ItemID.GRIMY_IRIT_LEAF),
+	GRIMY_AVANTOE(Type.GRIMYHERB, "Avan", "A", ItemID.GRIMY_AVANTOE),
 	GRIMY_KWUARM(Type.GRIMYHERB, "Kwuarm", "K", ItemID.GRIMY_KWUARM),
-	GRIMY_SNAPDRAGON(Type.GRIMYHERB, "Snap", "S",  ItemID.GRIMY_SNAPDRAGON),
-	GRIMY_CADANTINE(Type.GRIMYHERB, "Cadan", "C",  ItemID.GRIMY_CADANTINE),
-	GRIMY_LANTADYME(Type.GRIMYHERB, "Lanta", "L",  ItemID.GRIMY_LANTADYME),
-	GRIMY_DWARF_WEED(Type.GRIMYHERB, "Dwarf", "D",  ItemID.GRIMY_DWARF_WEED),
-	GRIMY_TORSTOL(Type.GRIMYHERB, "Torstol", "TOR",  ItemID.GRIMY_TORSTOL),
+	GRIMY_SNAPDRAGON(Type.GRIMYHERB, "Snap", "S", ItemID.GRIMY_SNAPDRAGON),
+	GRIMY_CADANTINE(Type.GRIMYHERB, "Cadan", "C", ItemID.GRIMY_CADANTINE),
+	GRIMY_LANTADYME(Type.GRIMYHERB, "Lanta", "L", ItemID.GRIMY_LANTADYME),
+	GRIMY_DWARF_WEED(Type.GRIMYHERB, "Dwarf", "D", ItemID.GRIMY_DWARF_WEED),
+	GRIMY_TORSTOL(Type.GRIMYHERB, "Torstol", "TOR", ItemID.GRIMY_TORSTOL),
 	//Saplings
 	OAK_SAPLING(Type.SAPLING, "Oak", "OAK", ItemID.OAK_SAPLING, ItemID.OAK_SEEDLING, ItemID.OAK_SEEDLING_W),
 	WILLOW_SAPLING(Type.SAPLING, "Willow", "WIL", ItemID.WILLOW_SAPLING, ItemID.WILLOW_SEEDLING, ItemID.WILLOW_SEEDLING_W),
@@ -137,19 +137,6 @@ enum ItemIdentification
 	ONYX(Type.GEM, "Onyx", "ON", ItemID.UNCUT_ONYX, ItemID.ONYX),
 	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE);
 
-	final Type type;
-	final String medName;
-	final String shortName;
-	final int[] itemIDs;
-
-	ItemIdentification(Type type, String medName, String shortName, int ... ids)
-	{
-		this.type = type;
-		this.medName = medName;
-		this.shortName = shortName;
-		this.itemIDs = ids;
-	}
-
 	private static final Map<Integer, ItemIdentification> itemIdentifications;
 
 	static
@@ -165,6 +152,19 @@ enum ItemIdentification
 		}
 
 		itemIdentifications = builder.build();
+	}
+
+	final Type type;
+	final String medName;
+	final String shortName;
+	final int[] itemIDs;
+
+	ItemIdentification(Type type, String medName, String shortName, int... ids)
+	{
+		this.type = type;
+		this.medName = medName;
+		this.shortName = shortName;
+		this.itemIDs = ids;
 	}
 
 	static ItemIdentification get(int id)
