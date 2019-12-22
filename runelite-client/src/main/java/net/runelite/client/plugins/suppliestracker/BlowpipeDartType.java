@@ -41,12 +41,15 @@ import static net.runelite.api.ItemID.STEEL_DART;
 @AllArgsConstructor
 public enum BlowpipeDartType
 {
-	BRONZE(BRONZE_DART), IRON(IRON_DART),
-	STEEL(STEEL_DART), MITHRIL(MITHRIL_DART),
-	ADAMANT(ADAMANT_DART), RUNE(RUNE_DART),
+	BRONZE(BRONZE_DART),
+	IRON(IRON_DART),
+	STEEL(STEEL_DART),
+	MITHRIL(MITHRIL_DART),
+	ADAMANT(ADAMANT_DART),
+	RUNE(RUNE_DART),
 	DRAGON(DRAGON_DART);
 
-	@Getter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.MODULE)
 	private int dartID;
 
 }

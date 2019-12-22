@@ -35,17 +35,17 @@ import net.runelite.api.Item;
 @AllArgsConstructor
 public class MenuAction
 {
-	@Getter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.MODULE)
 	private ActionType type;
-	@Getter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.MODULE)
 	private Item[] oldInventory;
 
 	static class ItemAction extends MenuAction
 	{
 
-		@Getter(AccessLevel.PACKAGE)
+		@Getter(AccessLevel.MODULE)
 		private int itemID;
-		@Getter(AccessLevel.PACKAGE)
+		@Getter(AccessLevel.MODULE)
 		private int slot;
 
 		ItemAction(final ActionType type, final Item[] oldInventory, final int itemID, final int slot)

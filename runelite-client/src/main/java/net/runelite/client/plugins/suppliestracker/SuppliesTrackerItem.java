@@ -28,9 +28,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
-class SuppliesTrackerItem
+public class SuppliesTrackerItem
 {
 	private int id;
 	private String name;
