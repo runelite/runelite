@@ -598,7 +598,6 @@ public class SuppliesTrackerPlugin extends Plugin
 
 		if (itemContainer != null && itemContainer == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			System.out.println("player inv change");
 			for (int i = 0; i < client.getItemContainer(InventoryID.INVENTORY).getItems().length; i++)
 			{
 
