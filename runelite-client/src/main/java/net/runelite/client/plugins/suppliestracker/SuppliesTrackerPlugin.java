@@ -367,7 +367,8 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * Checks local variable data against client data then returns differences then updates local to client
 	 */
-	private void updateRunePouch() {
+	private void updateRunePouch()
+	{
 		//check amounts
 		if (OLD_AMOUNT_VARBITS[0] != client.getVar(AMOUNT_VARBITS[0]))
 		{
