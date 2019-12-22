@@ -285,7 +285,6 @@ public class InventorySetupPluginPanel extends PluginPanel
 				return;
 			}
 		}
-
 		setupComboBox.addItem(name);
 	}
 
