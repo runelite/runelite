@@ -486,14 +486,20 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			int playerAniId = animationChanged.getActor().getAnimation();
 
-			switch (playerAniId) {
+			switch (playerAniId)
+			{
 				case HIGH_LEVEL_MAGIC_ATTACK:
 					//Trident of the seas
-					for (int tridentOfTheSeas : TRIDENT_OF_THE_SEAS_IDS) {
-						if (mainHand == tridentOfTheSeas) {
-							if (config.chargesBox()) {
+					for (int tridentOfTheSeas : TRIDENT_OF_THE_SEAS_IDS)
+					{
+						if (mainHand == tridentOfTheSeas)
+						{
+							if (config.chargesBox())
+							{
 								buildChargesEntries(TRIDENT_OF_THE_SEAS);
-							} else {
+							}
+							else
+							{
 								buildEntries(CHAOS_RUNE);
 								buildEntries(DEATH_RUNE);
 								buildEntries(FIRE_RUNE, 5);
@@ -503,11 +509,16 @@ public class SuppliesTrackerPlugin extends Plugin
 						}
 					}
 					//Trident of the swamp
-					for (int tridentOfTheSwamp : TRIDENT_OF_THE_SWAMP_IDS) {
-						if (mainHand == tridentOfTheSwamp) {
-							if (config.chargesBox()) {
+					for (int tridentOfTheSwamp : TRIDENT_OF_THE_SWAMP_IDS)
+					{
+						if (mainHand == tridentOfTheSwamp)
+						{
+							if (config.chargesBox())
+							{
 								buildChargesEntries(TRIDENT_OF_THE_SWAMP);
-							} else {
+							}
+							else
+							{
 								buildEntries(CHAOS_RUNE);
 								buildEntries(DEATH_RUNE);
 								buildEntries(FIRE_RUNE, 5);
@@ -517,10 +528,14 @@ public class SuppliesTrackerPlugin extends Plugin
 						}
 					}
 					//Sang Staff
-					if (mainHand == SANGUINESTI_STAFF) {
-						if (config.chargesBox()) {
+					if (mainHand == SANGUINESTI_STAFF)
+					{
+						if (config.chargesBox())
+						{
 							buildChargesEntries(SANGUINESTI_STAFF);
-						} else {
+						}
+						else
+						{
 							buildEntries(BLOOD_RUNE, 3);
 						}
 					}
@@ -535,20 +550,26 @@ public class SuppliesTrackerPlugin extends Plugin
 				case LUNAR_HUMIDIFY:
 					old = client.getItemContainer(InventoryID.INVENTORY);
 
-					if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
-							a.getType() == CAST)) {
+					if (old != null && old.getItems() != null &&
+							actionStack.stream().noneMatch(a ->
+							a.getType() == CAST))
+					{
 						MenuAction newAction = new MenuAction(CAST, old.getItems());
 						actionStack.push(newAction);
 					}
-					if (!magicXpChanged) {
+					if (!magicXpChanged)
+					{
 						skipTick = true;
 						noXpCast = true;
 					}
 					break;
 				case SCYTHE_OF_VITUR_ANIMATION:
-					if (config.chargesBox()) {
+					if (config.chargesBox())
+					{
 						buildChargesEntries(SCYTHE_OF_VITUR);
-					} else {
+					}
+					else
+					{
 						buildEntries(BLOOD_RUNE, 3);
 						buildEntries(COINS_995, itemManager.getItemPrice(VIAL_OF_BLOOD_22446) / 100);
 					}
