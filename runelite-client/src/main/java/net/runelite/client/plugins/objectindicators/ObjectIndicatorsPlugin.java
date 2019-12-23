@@ -43,7 +43,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -310,7 +309,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		markObject(name, object);
+		markObject(objectDefinition, name, object);
 	}
 
 	private void checkObjectPoints(TileObject object)
@@ -325,8 +324,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 		for (ObjectPoint objectPoint : objectPoints)
 		{
-			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+			if (worldPoint.getRegionX() == objectPoint.getRegionX()
+					&& worldPoint.getRegionY() == objectPoint.getRegionY()
+					&& worldPoint.getPlane() == objectPoint.getZ())
 			{
 				// Transform object to get the name which matches against what we've stored
 				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
@@ -407,28 +407,40 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return false;
 	}
 
-	private void markObject(String name, final TileObject object)
+	/** mark or unmark an object
+	 *
+	 * @param objectComposition transformed composition of object based on vars
+	 * @param name name of objectComposition
+	 * @param object tile object, for multilocs object.getId() is the base id
+	 */
+	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
 	{
-		if (object == null)
-		{
-			return;
-		}
-
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final ObjectPoint point = new ObjectPoint(
+			object.getId(),
 			name,
 			regionId,
-			worldPoint.getX() & (REGION_SIZE - 1),
-			worldPoint.getY() & (REGION_SIZE - 1),
-			client.getPlane());
+			worldPoint.getRegionX(),
+			worldPoint.getRegionY(),
+			worldPoint.getPlane());
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
-		if (objectPoints.contains(point))
+		if (objects.remove(object))
 		{
-			objectPoints.remove(point);
-			objects.remove(object);
+			// Find the object point that caused this object to be marked, there are two cases:
+			// 1) object is a multiloc, the name may have changed since marking - match from base id
+			// 2) not a multiloc, but an object has spawned with an identical name and a different
+			//    id as what was originally marked
+			if (!objectPoints.removeIf(op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
+				&& op.getRegionX() == worldPoint.getRegionX()
+				&& op.getRegionY() == worldPoint.getRegionY()
+				&& op.getZ() == worldPoint.getPlane()))
+			{
+				log.warn("unable to find object point for unmarked object {}", object.getId());
+			}
+
 			log.debug("Unmarking object: {}", point);
 		}
 		else

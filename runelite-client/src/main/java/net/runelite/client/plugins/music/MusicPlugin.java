@@ -25,10 +25,12 @@
  */
 package net.runelite.client.plugins.music;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -76,6 +78,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class MusicPlugin extends Plugin
 {
+	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.TELEPORT_VWOOP
+	);
+
 	@Inject
 	private Client client;
 
@@ -558,13 +564,14 @@ public class MusicPlugin extends Plugin
 	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
+		int soundId = areaSoundEffectPlayed.getSoundId();
 		if (source == client.getLocalPlayer()
 			&& musicConfig.muteOwnAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source != client.getLocalPlayer()
-			&& source instanceof Player
+			&& (source instanceof Player || (source == null && SOURCELESS_PLAYER_SOUNDS.contains(soundId)))
 			&& musicConfig.muteOtherAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
@@ -575,6 +582,7 @@ public class MusicPlugin extends Plugin
 			areaSoundEffectPlayed.consume();
 		}
 		else if (source == null
+			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundId)
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();

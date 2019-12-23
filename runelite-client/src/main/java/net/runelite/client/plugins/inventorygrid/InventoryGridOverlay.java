@@ -85,7 +85,6 @@ class InventoryGridOverlay extends Overlay
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
 		final int if1DraggedItemIndex = client.getIf1DraggedItemIndex();
 		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
-		final int itemId = draggedItem.getId();
 		final Rectangle initialBounds = draggedItem.getCanvasBounds();
 
 		if (initialMousePoint == null)
@@ -93,7 +92,7 @@ class InventoryGridOverlay extends Overlay
 			initialMousePoint = mousePoint;
 		}
 
-		if (itemId == -1 || !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
+		if (draggedItem.getId() == -1 || !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
 		}
@@ -102,16 +101,15 @@ class InventoryGridOverlay extends Overlay
 
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
-			WidgetItem widgetItem = inventoryWidget.getWidgetItem(i);
-			final int targetItemId = widgetItem.getId();
+			WidgetItem targetWidgetItem = inventoryWidget.getWidgetItem(i);
 
-			final Rectangle bounds = widgetItem.getCanvasBounds();
+			final Rectangle bounds = targetWidgetItem.getCanvasBounds();
 			boolean inBounds = bounds.contains(mousePoint);
 
 			if (config.showItem() && inBounds)
 			{
-				drawItem(graphics, bounds, itemId);
-				drawItem(graphics, initialBounds, targetItemId);
+				drawItem(graphics, bounds, draggedItem);
+				drawItem(graphics, initialBounds, targetWidgetItem);
 			}
 
 			if (config.showHighlight() && inBounds)
@@ -129,14 +127,14 @@ class InventoryGridOverlay extends Overlay
 		return null;
 	}
 
-	private void drawItem(Graphics2D graphics, Rectangle bounds, int itemId)
+	private void drawItem(Graphics2D graphics, Rectangle bounds, WidgetItem item)
 	{
-		if (itemId == -1)
+		if (item.getId() == -1)
 		{
 			return;
 		}
 
-		final BufferedImage draggedItemImage = itemManager.getImage(itemId);
+		final BufferedImage draggedItemImage = itemManager.getImage(item.getId(), item.getQuantity(), false);
 		final int x = (int) bounds.getX();
 		final int y = (int) bounds.getY();
 

@@ -381,6 +381,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("send-parcel", option, target, index);
 			}
 
+			if (config.swapCaptainKhaled() && target.contains("captain khaled"))
+			{
+				swap("task", option, target, index);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, index);
@@ -394,6 +399,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapExchange())
 			{
 				swap("exchange", option, target, index);
+			}
+
+			if (config.swapHelp())
+			{
+				swap("help", option, target, index);
 			}
 
 			if (config.swapDarkMage())
@@ -573,6 +583,35 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("teleport", option, target, index);
 			swap("spellbook", option, target, index);
 			swap("perks", option, target, index);
+		}
+		else if (config.swapJewelleryBox() && option.equals("teleport menu"))
+		{
+			swap("duel arena", option, target, index);
+			swap("castle wars", option, target, index);
+			swap("clan wars", option, target, index);
+			swap("burthorpe", option, target, index);
+			swap("barbarian outpost", option, target, index);
+			swap("corporeal beast", option, target, index);
+			swap("tears of guthix", option, target, index);
+			swap("wintertodt camp", option, target, index);
+			swap("warriors' guild", option, target, index);
+			swap("champions' guild", option, target, index);
+			swap("monastery", option, target, index);
+			swap("ranging guild", option, target, index);
+			swap("fishing guild", option, target, index);
+			swap("mining guild", option, target, index);
+			swap("crafting guild", option, target, index);
+			swap("cooking guild", option, target, index);
+			swap("woodcutting guild", option, target, index);
+			swap("farming guild", option, target, index);
+			swap("miscellania", option, target, index);
+			swap("grand exchange", option, target, index);
+			swap("falador park", option, target, index);
+			swap("dondakan's rock", option, target, index);
+			swap("edgeville", option, target, index);
+			swap("karamja", option, target, index);
+			swap("draynor village", option, target, index);
+			swap("al kharid", option, target, index);
 		}
 		else if (config.swapPrivate() && option.equals("shared"))
 		{

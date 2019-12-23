@@ -65,6 +65,49 @@ public class HiscoreResult
 	private Skill clueScrollElite;
 	private Skill clueScrollMaster;
 	private Skill lastManStanding;
+	private Skill abyssalSire;
+	private Skill alchemicalHydra;
+	private Skill barrowsChests;
+	private Skill bryophyta;
+	private Skill callisto;
+	private Skill cerberus;
+	private Skill chambersOfXeric;
+	private Skill chambersOfXericChallengeMode;
+	private Skill chaosElemental;
+	private Skill chaosFanatic;
+	private Skill commanderZilyana;
+	private Skill corporealBeast;
+	private Skill crazyArchaeologist;
+	private Skill dagannothPrime;
+	private Skill dagannothRex;
+	private Skill dagannothSupreme;
+	private Skill derangedArchaeologist;
+	private Skill generalGraardor;
+	private Skill giantMole;
+	private Skill grotesqueGuardians;
+	private Skill hespori;
+	private Skill kalphiteQueen;
+	private Skill kingBlackDragon;
+	private Skill kraken;
+	private Skill kreearra;
+	private Skill krilTsutsaroth;
+	private Skill mimic;
+	private Skill obor;
+	private Skill sarachnis;
+	private Skill scorpia;
+	private Skill skotizo;
+	private Skill gauntlet;
+	private Skill corruptedGauntlet;
+	private Skill theatreOfBlood;
+	private Skill thermonuclearSmokeDevil;
+	private Skill tzKalZuk;
+	private Skill tzTokJad;
+	private Skill venenatis;
+	private Skill vetion;
+	private Skill vorkath;
+	private Skill wintertodt;
+	private Skill zalcano;
+	private Skill zulrah;
 
 	public Skill getSkill(HiscoreSkill skill)
 	{
@@ -140,8 +183,94 @@ public class HiscoreResult
 				return getClueScrollMaster();
 			case LAST_MAN_STANDING:
 				return getLastManStanding();
+			case ABYSSAL_SIRE:
+				return abyssalSire;
+			case ALCHEMICAL_HYDRA:
+				return alchemicalHydra;
+			case BARROWS_CHESTS:
+				return barrowsChests;
+			case BRYOPHYTA:
+				return bryophyta;
+			case CALLISTO:
+				return callisto;
+			case CERBERUS:
+				return cerberus;
+			case CHAMBERS_OF_XERIC:
+				return chambersOfXeric;
+			case CHAMBERS_OF_XERIC_CHALLENGE_MODE:
+				return chambersOfXericChallengeMode;
+			case CHAOS_ELEMENTAL:
+				return chaosElemental;
+			case CHAOS_FANATIC:
+				return chaosFanatic;
+			case COMMMANDER_ZILYANA:
+				return commanderZilyana;
+			case CORPOREAL_BEAST:
+				return corporealBeast;
+			case CRAZY_ARCHAEOLOGIST:
+				return crazyArchaeologist;
+			case DAGANNOTH_PRIME:
+				return dagannothPrime;
+			case DAGANNOTH_REX:
+				return dagannothRex;
+			case DAGANNOTH_SUPREME:
+				return dagannothSupreme;
+			case DERANGED_ARCHAEOLOGIST:
+				return derangedArchaeologist;
+			case GENERAL_GRAARDOR:
+				return generalGraardor;
+			case GIANT_MOLE:
+				return giantMole;
+			case GROTESQUE_GUARDIANS:
+				return grotesqueGuardians;
+			case HESPORI:
+				return hespori;
+			case KALPHITE_QUEEN:
+				return kalphiteQueen;
+			case KING_BLACK_DRAGON:
+				return kingBlackDragon;
+			case KRAKEN:
+				return kraken;
+			case KREEARRA:
+				return kreearra;
+			case KRIL_TSUTSAROTH:
+				return krilTsutsaroth;
+			case MIMIC:
+				return mimic;
+			case OBOR:
+				return obor;
+			case SARACHNIS:
+				return sarachnis;
+			case SCORPIA:
+				return scorpia;
+			case SKOTIZO:
+				return skotizo;
+			case THE_GAUNTLET:
+				return gauntlet;
+			case THE_CORRUPTED_GAUNTLET:
+				return corruptedGauntlet;
+			case THEATRE_OF_BLOOD:
+				return theatreOfBlood;
+			case THERMONUCLEAR_SMOKE_DEVIL:
+				return thermonuclearSmokeDevil;
+			case TZKAL_ZUK:
+				return tzKalZuk;
+			case TZTOK_JAD:
+				return tzTokJad;
+			case VENENATIS:
+				return venenatis;
+			case VETION:
+				return vetion;
+			case VORKATH:
+				return vorkath;
+			case WINTERTODT:
+				return wintertodt;
+			case ZALCANO:
+				return zalcano;
+			case ZULRAH:
+				return zulrah;
+			default:
+				throw new IllegalArgumentException("Invalid hiscore skill");
 		}
-
-		throw new IllegalArgumentException("Invalid hiscore item");
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-/**
- * Represents the friend and ignore list manager.
- */
-public interface FriendManager
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.function.IntConsumer;
+
+public class CountingInputStream extends FilterInputStream
 {
+	private final IntConsumer changed;
+
+	public CountingInputStream(InputStream in, IntConsumer changed)
+	{
+		super(in);
+		this.changed = changed;
+	}
+
+	private int read = 0;
+
+	@Override
+	public int read(byte[] b, int off, int len) throws IOException
+	{
+		int thisRead = super.read(b, off, len);
+		if (thisRead > 0)
+		{
+			this.read += thisRead;
+		}
+		changed.accept(this.read);
+		return thisRead;
+	}
+
+	@Override
+	public int read() throws IOException
+	{
+		int val = super.read();
+		if (val != -1)
+		{
+			this.read++;
+		}
+		return val;
+	}
+
+	@Override
+	public long skip(long n) throws IOException
+	{
+		long thisRead = in.skip(n);
+		this.read += thisRead;
+		changed.accept(this.read);
+		return thisRead;
+	}
+
+	@Override
+	public boolean markSupported()
+	{
+		return false;
+	}
 }

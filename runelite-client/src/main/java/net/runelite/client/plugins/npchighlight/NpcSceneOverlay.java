@@ -145,17 +145,17 @@ public class NpcSceneOverlay extends Overlay
 
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
+		NPCComposition npcComposition = actor.getTransformedComposition();
+		if (npcComposition == null || !npcComposition.isInteractible())
+		{
+			return;
+		}
+
 		switch (config.renderStyle())
 		{
 			case SOUTH_WEST_TILE:
 			{
-				int size = 1;
-				NPCComposition composition = actor.getTransformedComposition();
-				if (composition != null)
-				{
-					size = composition.getSize();
-				}
-
+				int size = npcComposition.getSize();
 				LocalPoint localPoint = actor.getLocalLocation();
 
 				int x = localPoint.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
@@ -167,12 +167,7 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			}
 			case TILE:
-				int size = 1;
-				NPCComposition composition = actor.getTransformedComposition();
-				if (composition != null)
-				{
-					size = composition.getSize();
-				}
+				int size = npcComposition.getSize();
 				LocalPoint lp = actor.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 

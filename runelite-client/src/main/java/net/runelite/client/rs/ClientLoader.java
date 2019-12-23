@@ -30,6 +30,7 @@ import com.google.archivepatcher.applier.FileByFileV1DeltaApplier;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
@@ -39,8 +40,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -50,19 +49,26 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Enumeration;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
+import net.runelite.client.RuneLiteProperties;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
+import net.runelite.client.util.CountingInputStream;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
+import net.runelite.client.util.VerificationException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -79,7 +85,7 @@ public class ClientLoader implements Supplier<Applet>
 	private ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;
 
-	private HostSupplier hostSupplier = new HostSupplier();
+	private WorldSupplier worldSupplier = new WorldSupplier();
 	private RSConfig config;
 
 	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
@@ -117,6 +123,7 @@ public class ClientLoader implements Supplier<Applet>
 			SplashScreen.stage(.05, null, "Waiting for other clients to start");
 
 			LOCK_FILE.getParentFile().mkdirs();
+			ClassLoader classLoader;
 			try (FileChannel lockfile = FileChannel.open(LOCK_FILE.toPath(),
 				StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
 				FileLock flock = lockfile.lock())
@@ -129,14 +136,17 @@ public class ClientLoader implements Supplier<Applet>
 					SplashScreen.stage(.35, null, "Patching");
 					applyPatch();
 				}
-			}
 
-			File jarFile = updateCheckMode == AUTO ? PATCHED_CACHE : VANILLA_CACHE;
-			URL jar = jarFile.toURI().toURL();
+				SplashScreen.stage(.40, null, "Loading client");
+				File jarFile = updateCheckMode == AUTO ? PATCHED_CACHE : VANILLA_CACHE;
+				// create the classloader for the jar while we hold the lock, and eagerly load and link all classes
+				// in the jar. Otherwise the jar can change on disk and can break future classloads.
+				classLoader = createJarClassLoader(jarFile);
+			}
 
 			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
 
-			Applet rs = loadClient(jar);
+			Applet rs = loadClient(classLoader);
 
 			SplashScreen.stage(.5, null, "Starting core classes");
 
@@ -154,31 +164,59 @@ public class ClientLoader implements Supplier<Applet>
 
 	private void downloadConfig() throws IOException
 	{
-		String host = null;
-		for (int attempt = 0; ; attempt++)
+		HttpUrl url = HttpUrl.parse(RuneLiteProperties.getJavConfig());
+		IOException err = null;
+		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
 			try
 			{
-				config = ClientConfigLoader.fetch(host);
+				config = ClientConfigLoader.fetch(url);
 
 				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
 				{
 					throw new IOException("Invalid or missing jav_config");
 				}
 
-				break;
+				return;
 			}
 			catch (IOException e)
 			{
-				log.info("Failed to get jav_config from host \"{}\" ({})", host, e.getMessage());
-
-				if (attempt >= NUM_ATTEMPTS)
-				{
-					throw e;
-				}
-
-				host = hostSupplier.get();
+				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+				String host = worldSupplier.get().getAddress();
+				url = url.newBuilder().host(host).build();
+				err = e;
 			}
+		}
+
+		log.info("Falling back to backup client config");
+
+		try
+		{
+			RSConfig backupConfig = ClientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
+
+			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+			{
+				throw new IOException("Invalid or missing jav_config");
+			}
+
+			if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
+			{
+				throw new IOException("Backup config does not have RuneLite gamepack url");
+			}
+
+			// Randomize the codebase
+			World world = worldSupplier.get();
+			backupConfig.setCodebase("http://" + world.getAddress() + "/");
+
+			// Update the world applet parameter
+			Map<String, String> appletProperties = backupConfig.getAppletProperties();
+			appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
+
+			config = backupConfig;
+		}
+		catch (IOException ex)
+		{
+			throw err; // use error from Jagex's servers
 		}
 	}
 
@@ -217,10 +255,18 @@ public class ClientLoader implements Supplier<Applet>
 			vanilla.position(0);
 
 			// Start downloading the vanilla client
-
-			String codebase = config.getCodeBase();
-			String initialJar = config.getInitialJar();
-			HttpUrl url = HttpUrl.parse(codebase + initialJar);
+			HttpUrl url;
+			if (config.getRuneLiteGamepack() != null)
+			{
+				// If we are using the backup config, use our own gamepack and ignore the codebase
+				url = HttpUrl.parse(config.getRuneLiteGamepack());
+			}
+			else
+			{
+				String codebase = config.getCodeBase();
+				String initialJar = config.getInitialJar();
+				url = HttpUrl.parse(codebase + initialJar);
+			}
 
 			for (int attempt = 0; ; attempt++)
 			{
@@ -315,7 +361,7 @@ public class ClientLoader implements Supplier<Applet>
 						throw e;
 					}
 
-					url = url.newBuilder().host(hostSupplier.get()).build();
+					url = url.newBuilder().host(worldSupplier.get().getAddress()).build();
 				}
 			}
 		}
@@ -385,12 +431,62 @@ public class ClientLoader implements Supplier<Applet>
 		}
 	}
 
-	private Applet loadClient(URL url) throws ClassNotFoundException, IllegalAccessException, InstantiationException
+	private ClassLoader createJarClassLoader(File jar) throws IOException, ClassNotFoundException
 	{
-		URLClassLoader rsClassLoader = new URLClassLoader(new URL[]{url}, ClientLoader.class.getClassLoader());
+		try (JarFile jarFile = new JarFile(jar))
+		{
+			ClassLoader classLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+			{
+				@Override
+				protected Class<?> findClass(String name) throws ClassNotFoundException
+				{
+					String entryName = name.replace('.', '/').concat(".class");
+					JarEntry jarEntry = jarFile.getJarEntry(entryName);
+					if (jarEntry == null)
+					{
+						throw new ClassNotFoundException(name);
+					}
 
+					try
+					{
+						InputStream inputStream = jarFile.getInputStream(jarEntry);
+						if (inputStream == null)
+						{
+							throw new ClassNotFoundException(name);
+						}
+
+						byte[] bytes = ByteStreams.toByteArray(inputStream);
+						return defineClass(name, bytes, 0, bytes.length);
+					}
+					catch (IOException e)
+					{
+						throw new ClassNotFoundException(null, e);
+					}
+				}
+			};
+
+			// load all of the classes in this jar; after the jar is closed the classloader
+			// will no longer be able to look up classes
+			Enumeration<JarEntry> entries = jarFile.entries();
+			while (entries.hasMoreElements())
+			{
+				JarEntry jarEntry = entries.nextElement();
+				String name = jarEntry.getName();
+				if (name.endsWith(".class"))
+				{
+					name = name.substring(0, name.length() - 6);
+					classLoader.loadClass(name);
+				}
+			}
+
+			return classLoader;
+		}
+	}
+
+	private Applet loadClient(ClassLoader classLoader) throws ClassNotFoundException, IllegalAccessException, InstantiationException
+	{
 		String initialClass = config.getInitialClass();
-		Class<?> clientClass = rsClassLoader.loadClass(initialClass);
+		Class<?> clientClass = classLoader.loadClass(initialClass);
 
 		Applet rs = (Applet) clientClass.newInstance();
 		rs.setStub(new RSAppletStub(config));

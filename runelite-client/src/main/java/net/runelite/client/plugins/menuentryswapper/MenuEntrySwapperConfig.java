@@ -133,6 +133,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapCaptainKhaled",
+		name = "Task",
+		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius"
+	)
+	default boolean swapCaptainKhaled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapDecant",
 		name = "Decant",
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
@@ -183,6 +193,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHelp",
+		name = "Help",
+		description = "Swap Talk-to with Help on Arceuus library customers"
+	)
+	default boolean swapHelp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHomePortal",
 		name = "Home",
 		description = "Swap Enter with Home or Build or Friend's house on Portal"
@@ -210,6 +230,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapJewelleryBox",
+		name = "Jewellery Box",
+		description = "Swap Teleport Menu with previous destination on Jewellery Box"
+	)
+	default boolean swapJewelleryBox()
+	{
+		return false;
 	}
 
 	@ConfigItem(

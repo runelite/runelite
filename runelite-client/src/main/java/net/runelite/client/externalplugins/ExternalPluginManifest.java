@@ -22,58 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.externalplugins;
 
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
+import java.net.URL;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import net.runelite.client.RuneLite;
 
-@Slf4j
-class HostSupplier implements Supplier<String>
+@Data
+public class ExternalPluginManifest
 {
-	private final Random random = new Random(System.nanoTime());
-	private Queue<String> hosts = new ArrayDeque<>();
+	private String internalName;
+	private String commit;
+	private String hash;
+	private int size;
+	private String[] plugins;
 
-	@Override
-	public String get()
+	private String displayName;
+	private String version;
+	private String author;
+	private String description;
+	private String[] tags;
+	@EqualsAndHashCode.Exclude
+	private URL support;
+	private boolean hasIcon;
+
+	public boolean hasIcon()
 	{
-		if (!hosts.isEmpty())
-		{
-			return hosts.poll();
-		}
+		return hasIcon;
+	}
+
+	File getJarFile()
+	{
+		return new File(RuneLite.PLUGINS_DIR, internalName + commit + ".jar");
+	}
+
+	boolean isValid()
+	{
+		File file = getJarFile();
 
 		try
 		{
-			List<String> newHosts = new WorldClient(RuneLiteAPI.CLIENT)
-				.lookupWorlds()
-				.getWorlds()
-				.stream()
-				.map(World::getAddress)
-				.collect(Collectors.toList());
-
-			Collections.shuffle(newHosts, random);
-
-			hosts.addAll(newHosts.subList(0, 16));
+			if (file.exists())
+			{
+				String hash = Files.asByteSource(file).hash(Hashing.sha256()).toString();
+				if (this.hash.equals(hash))
+				{
+					return true;
+				}
+			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Unable to retrieve world list", e);
 		}
-
-		while (hosts.size() < 2)
-		{
-			hosts.add("oldschool" + (random.nextInt(50) + 1) + ".runescape.COM");
-		}
-
-		return hosts.poll();
+		return false;
 	}
 }

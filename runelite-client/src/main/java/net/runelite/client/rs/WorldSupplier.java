@@ -24,58 +24,63 @@
  */
 package net.runelite.client.rs;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.function.IntConsumer;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldType;
 
-class CountingInputStream extends FilterInputStream
+@Slf4j
+class WorldSupplier implements Supplier<World>
 {
-	private final IntConsumer changed;
-
-	CountingInputStream(InputStream in, IntConsumer changed)
-	{
-		super(in);
-		this.changed = changed;
-	}
-
-	private int read = 0;
+	private final Random random = new Random(System.nanoTime());
+	private Queue<World> worlds = new ArrayDeque<>();
 
 	@Override
-	public int read(byte[] b, int off, int len) throws IOException
+	public World get()
 	{
-		int thisRead = super.read(b, off, len);
-		if (thisRead > 0)
+		if (!worlds.isEmpty())
 		{
-			this.read += thisRead;
+			return worlds.poll();
 		}
-		changed.accept(this.read);
-		return thisRead;
-	}
 
-	@Override
-	public int read() throws IOException
-	{
-		int val = super.read();
-		if (val != -1)
+		try
 		{
-			this.read++;
+			List<World> newWorlds = new WorldClient(RuneLiteAPI.CLIENT)
+				.lookupWorlds()
+				.getWorlds()
+				.stream()
+				.filter(w -> w.getTypes().isEmpty() || EnumSet.of(WorldType.MEMBERS).equals(w.getTypes()))
+				.collect(Collectors.toList());
+
+			Collections.shuffle(newWorlds, random);
+
+			worlds.addAll(newWorlds.subList(0, 16));
 		}
-		return val;
-	}
+		catch (IOException e)
+		{
+			log.warn("Unable to retrieve world list", e);
+		}
 
-	@Override
-	public long skip(long n) throws IOException
-	{
-		long thisRead = in.skip(n);
-		this.read += thisRead;
-		changed.accept(this.read);
-		return thisRead;
-	}
+		while (worlds.size() < 2)
+		{
+			int id = random.nextInt(50) + 1;
+			World world = World.builder()
+				.id(300 + id) // worlds start at 300
+				.address("oldschool" + id + ".runescape.COM")
+				.build();
+			worlds.add(world);
+		}
 
-	@Override
-	public boolean markSupported()
-	{
-		return false;
+		return worlds.poll();
 	}
 }
