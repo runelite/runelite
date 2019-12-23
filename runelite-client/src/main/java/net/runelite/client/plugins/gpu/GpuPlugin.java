@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
@@ -74,7 +75,18 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.*;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
+import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -224,6 +236,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(GpuService.class).to(GpuServiceImpl.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -700,6 +718,41 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDeleteRenderbuffers(gl, rboSceneHandle);
 			rboSceneHandle = -1;
 		}
+	}
+
+	void replaceProgram(String vertexShaderSource, String geomShaderSource, String fragShaderSource) throws ShaderException
+	{
+		int program = gl.glCreateProgram();
+		int vertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
+		int geomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
+		int fragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
+		try
+		{
+			GLUtil.loadShaders(gl, program, vertexShader, geomShader, fragmentShader,
+				vertexShaderSource,
+				geomShaderSource,
+				fragShaderSource);
+		}
+		catch (ShaderException ex)
+		{
+			gl.glDeleteProgram(program);
+			gl.glDeleteShader(vertexShader);
+			gl.glDeleteShader(geomShader);
+			gl.glDeleteShader(fragmentShader);
+			throw ex;
+		}
+
+		gl.glDeleteProgram(glProgram);
+		gl.glDeleteShader(glVertexShader);
+		gl.glDeleteShader(glGeomShader);
+		gl.glDeleteShader(glFragmentShader);
+
+		glProgram = program;
+		glVertexShader = vertexShader;
+		glGeomShader = geomShader;
+		glFragmentShader = fragmentShader;
+
+		initUniforms();
 	}
 
 	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
