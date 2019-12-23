@@ -359,4 +359,5 @@ public final class AnimationID
 	public static final int WAVE_SPELL_ANIMATION = 727;
 	public static final int SURGE_SPELL_ANIMATION = 7855;
 	public static final int HIGH_ALCH_ANIMATION = 713;
+	public static final int LUNAR_HUMIDIFY = 6294;
 }

@@ -181,6 +181,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private SuppliesTrackerConfig config;
 	@Inject
 	private Client client;
+	private boolean noXpCast = false;
 
 	/**
 	 * Checks if item name is potion
@@ -254,8 +255,6 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				skipTick = true;
 				magicXpChanged = true;
-				checkUsedRunePouch();
-				magicXp = event.getXp();
 			}
 		}
 	}
@@ -284,18 +283,28 @@ public class SuppliesTrackerPlugin extends Plugin
 			ticks = 0;
 		}
 
-		amountused1 = 0;
-		amountused2 = 0;
-		amountused3 = 0;
+
 
 		if (skipTick)
 		{
 			skipTick = false;
+			return;
 		}
-		else
+		else if (magicXpChanged)
 		{
+			checkUsedRunePouch();
 			magicXpChanged = false;
+			noXpCast = false;
 		}
+		else if (noXpCast)
+		{
+			checkUsedRunePouch();
+			noXpCast = false;
+		}
+
+		amountused1 = 0;
+		amountused2 = 0;
+		amountused3 = 0;
 	}
 
 	/**
@@ -560,7 +569,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			else if ( playerAniId == LOW_LEVEL_STANDARD_SPELLS ||
 						playerAniId == WAVE_SPELL_ANIMATION ||
 						playerAniId == SURGE_SPELL_ANIMATION ||
-						playerAniId == HIGH_ALCH_ANIMATION)
+						playerAniId == HIGH_ALCH_ANIMATION ||
+						playerAniId == LUNAR_HUMIDIFY)
 			{
 				old = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -569,6 +579,11 @@ public class SuppliesTrackerPlugin extends Plugin
 				{
 					MenuAction newAction = new MenuAction(CAST, old.getItems());
 					actionStack.push(newAction);
+				}
+				if (!magicXpChanged)
+				{
+					skipTick = true;
+					noXpCast = true;
 				}
 			}
 			else if (playerAniId == SCYTHE_OF_VITUR_ANIMATION)
@@ -1226,7 +1241,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private void checkUsedRunePouch()
 	{
-		if (magicXpChanged)
+		if (magicXpChanged || noXpCast)
 		{
 			if (amountused1 != 0)
 			{
