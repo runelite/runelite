@@ -74,7 +74,18 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.*;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
+import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -435,35 +446,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glGeomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
 		glFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
 
-		final String glVersionHeader;
-
-		if (OSType.getOSType() == OSType.Linux)
-		{
-			glVersionHeader =
-				"#version 420\n" +
-				"#extension GL_ARB_compute_shader : require\n" +
-				"#extension GL_ARB_shader_storage_buffer_object : require\n";
-		}
-		else
-		{
-			glVersionHeader = "#version 430\n";
-		}
-
-		Function<String, String> resourceLoader = (s) ->
-		{
-			if (s.endsWith(".glsl"))
-			{
-				return inputStreamToString(getClass().getResourceAsStream(s));
-			}
-
-			if (s.equals("version_header"))
-			{
-				return glVersionHeader;
-			}
-
-			return "";
-		};
-
+		Function<String, String> resourceLoader = getResourceLoader();
 		Template template = new Template(resourceLoader);
 		String source = template.process(resourceLoader.apply("geom.glsl"));
 
@@ -1465,5 +1448,37 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			getScaledValue(t.getScaleY(), y),
 			getScaledValue(t.getScaleX(), width),
 			getScaledValue(t.getScaleY(), height));
+	}
+
+	public Function<String, String> getResourceLoader()
+	{
+		final String glVersionHeader;
+
+		if (OSType.getOSType() == OSType.Linux)
+		{
+			glVersionHeader =
+				"#version 420\n" +
+					"#extension GL_ARB_compute_shader : require\n" +
+					"#extension GL_ARB_shader_storage_buffer_object : require\n";
+		}
+		else
+		{
+			glVersionHeader = "#version 430\n";
+		}
+
+		return (s) ->
+		{
+			if (s.endsWith(".glsl"))
+			{
+				return inputStreamToString(getClass().getResourceAsStream(s));
+			}
+
+			if (s.equals("version_header"))
+			{
+				return glVersionHeader;
+			}
+
+			return "";
+		};
 	}
 }
