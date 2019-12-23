@@ -619,8 +619,6 @@ public abstract class SuppliesBox extends JPanel
 		@Override
 		final String buildTooltip(int itemId, int qty, SuppliesTrackerItem item)
 		{
-			final String name = item.getName();
-
 			final long price = itemManager.getItemPrice(itemId);
 			return item.getName() + " x " + qty + " (" + QuantityFormatter.quantityToStackSize(price * qty) + ") ";
 		}
@@ -651,8 +649,6 @@ public abstract class SuppliesBox extends JPanel
 		@Override
 		final String buildTooltip(int itemId, int qty, SuppliesTrackerItem item)
 		{
-			final String name = item.getName();
-
 			final long price = itemManager.getItemPrice(plugin.getPotionID(item.getName().replaceAll(POTION_PATTERN, "(4)"))) / 4;
 			return item.getName() + " x " + qty + " (" + QuantityFormatter.quantityToStackSize(price * qty) + ") ";
 		}
@@ -698,9 +694,6 @@ public abstract class SuppliesBox extends JPanel
 		@Override
 		final String buildTooltip(int itemId, int qty, SuppliesTrackerItem item)
 		{
-			final String name = item.getName();
-
-
 			final long price = itemManager.getItemPrice(itemId);
 			return item.getName() + " x " + qty + " (" + QuantityFormatter.quantityToStackSize(price * qty) + ") ";
 		}
