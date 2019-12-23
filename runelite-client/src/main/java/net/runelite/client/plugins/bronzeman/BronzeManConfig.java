@@ -20,9 +20,20 @@ public interface BronzeManConfig extends Config
 	}
 
 	@ConfigSection(
-		name = "Chat Commands",
+		name = "Game Mode Options",
 		description = "",
 		position = 1,
+		keyName = "gameModeOptions"
+	)
+	default boolean gameModeOptions()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		name = "Chat Commands",
+		description = "",
+		position = 2,
 		keyName = "chatCommands"
 	)
 	default boolean chatCommands()
@@ -91,14 +102,38 @@ public interface BronzeManConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "restoreCommand",
+		name = "Enable restoreunlocks command",
+		description = "Enables the !restoreunlocks command used for restoring your unlocked items file.",
+		position = 3,
+		section = "chatCommands"
+	)
+	default boolean restoreCommand()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "deleteCommand",
 		name = "Enable deleteunlocks command",
 		description = "Enables the !deleteunlocks command used for deleting your unlocked items file.",
-		position = 2,
+		position = 4,
 		section = "chatCommands"
 	)
 	default boolean deleteCommand()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideTradeOption",
+		name = "Hide trade with option",
+		description = "Hides the trade with option from the player menu",
+		position = 0,
+		section = "gameModeOptions"
+	)
+	default boolean hideTradeOption()
+	{
+		return true;
 	}
 }

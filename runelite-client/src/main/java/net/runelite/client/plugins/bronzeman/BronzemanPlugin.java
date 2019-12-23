@@ -5,18 +5,13 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,6 +47,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 /**
  * @author Seth Davis
@@ -73,6 +69,9 @@ public class BronzemanPlugin extends Plugin
 	private static final String COUNT_CHAT_COMMAND = "!countunlocks";
 	private static final String DELETE_CHAT_COMMAND = "!deleteunlocks";
 	private static final String RESET_CHAT_COMMAND = "!resetunlocks";
+	private static final String RESTORE_CHAT_COMMAND = "!restoreunlocks";
+
+	private final BufferedImage UNLOCK_IMAGE = ImageUtil.getResourceStreamFromClass(getClass(), "item_unlocked.png");
 
 	@Inject
 	ItemManager itemManager;
@@ -95,6 +94,8 @@ public class BronzemanPlugin extends Plugin
 	private boolean countCommand;
 	private boolean backupCommand;
 	private boolean deleteCommand;
+	private boolean restoreCommand;
+	private boolean hideTradeOption;
 
 	/**
 	 * Loads GrandExchange widgets for further manipulation of the interface
@@ -111,7 +112,11 @@ public class BronzemanPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		loadUnlockImage();
+		/**
+		 * Downloads the item-unlock png file to display unlocks
+		 **/
+		unlockImage = UNLOCK_IMAGE;
+
 		unlockedItems = new ArrayList<>();
 		overlayManager.add(bronzemanOverlay);
 		updateConfig();
@@ -320,26 +325,6 @@ public class BronzemanPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Downloads the item-unlock png file to display unlocks
-	 **/
-	private void loadUnlockImage()
-	{
-		try
-		{
-			File imageFile = new File(RuneLite.RUNELITE_DIR, "item-unlocked.png");
-			if (!imageFile.exists())
-			{
-				InputStream in = new URL("https://i.imgur.com/KWVNlsq.png").openStream();
-				Files.copy(in, Paths.get(imageFile.getPath()));
-			}
-			unlockImage = ImageIO.read(imageFile);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
@@ -370,6 +355,10 @@ public class BronzemanPlugin extends Plugin
 		{
 			deleteUnlocks();
 		}
+		if (this.restoreCommand && chatMessage.getMessage().toLowerCase().equals(RESTORE_CHAT_COMMAND))
+		{
+			restoreUnlocks();
+		}
 	}
 
 	private void backupUnlocks()
@@ -388,9 +377,7 @@ public class BronzemanPlugin extends Plugin
 		Path originalPath = playerFile.toPath();
 		try
 		{
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("MM_WW_HH_mm_ss");
-			Files.copy(originalPath, Paths.get(playerFolder.getPath() + "_" + sdf.format(cal.getTime()) + ".backup"),
+			Files.copy(originalPath, Paths.get(playerFile.getPath().replace(".txt", ".backup")),
 				StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (Exception e)
@@ -399,6 +386,33 @@ public class BronzemanPlugin extends Plugin
 			return;
 		}
 		sendMessage("Successfully backed up current unlock file!");
+	}
+
+	private void restoreUnlocks()
+	{
+		File playerFolder = new File(RuneLite.PROFILES_DIR, client.getUsername());
+		if (!playerFolder.exists())
+		{
+			return;
+		}
+		File playerFile = new File(playerFolder, "bronzeman-unlocks.backup");
+		if (!playerFile.exists())
+		{
+			return;
+		}
+
+		Path originalPath = playerFile.toPath();
+		try
+		{
+			Files.copy(originalPath, Paths.get(playerFile.getPath().replace(".backup", ".txt")),
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return;
+		}
+		sendMessage("Successfully restored current unlock file!");
 	}
 
 	private void resetUnlocks()
@@ -453,7 +467,7 @@ public class BronzemanPlugin extends Plugin
 		{
 			String option = Text.removeTags(entry.getOption()).toLowerCase();
 
-			if (option.contains("trade with"))
+			if (option.contains("trade with") && this.hideTradeOption)
 			{
 				continue;
 			}
@@ -483,6 +497,8 @@ public class BronzemanPlugin extends Plugin
 		this.backupCommand = config.backupCommand();
 		this.notifyChatUnlock = config.notifyChatUnlock();
 		this.deleteCommand = config.deleteCommand();
+		this.restoreCommand = config.restoreCommand();
+		this.hideTradeOption = config.hideTradeOption();
 	}
 
 }
