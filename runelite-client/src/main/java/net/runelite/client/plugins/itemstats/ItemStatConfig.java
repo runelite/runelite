@@ -43,6 +43,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideNoConsumableChanges",
+		name = "Hide tooltips for no changes",
+		description = "Hides tooltips if the consumable would result in no changes"
+	)
+	default boolean hideNoConsumableChange()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "equipmentStats",
 		name = "Enable equipment stats",
 		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)"
@@ -135,6 +145,7 @@ public interface ItemStatConfig extends Config
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",
