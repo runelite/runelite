@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
@@ -55,12 +56,32 @@ import net.runelite.client.util.Text;
 )
 public class InventoryTagsPlugin extends Plugin
 {
+	private static final int[] GRIMY_HERBS = new int[]{
+		//Grimy Herbs
+		ItemID.GRIMY_GUAM_LEAF,
+		ItemID.GRIMY_MARRENTILL,
+		ItemID.GRIMY_TARROMIN,
+		ItemID.GRIMY_HARRALANDER,
+		ItemID.GRIMY_RANARR_WEED,
+		ItemID.GRIMY_TOADFLAX,
+		ItemID.GRIMY_IRIT_LEAF,
+		ItemID.GRIMY_AVANTOE,
+		ItemID.GRIMY_KWUARM,
+		ItemID.GRIMY_SNAPDRAGON,
+		ItemID.GRIMY_CADANTINE,
+		ItemID.GRIMY_LANTADYME,
+		ItemID.GRIMY_DWARF_WEED,
+		ItemID.GRIMY_TORSTOL,
+	};
+
 	private static final String ITEM_KEY_PREFIX = "item_";
 
 	private static final String SETNAME_GROUP_1 = "Group 1";
 	private static final String SETNAME_GROUP_2 = "Group 2";
 	private static final String SETNAME_GROUP_3 = "Group 3";
 	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GRIMY_HERBS = "Grimy Herbs";
+
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -234,6 +255,8 @@ public class InventoryTagsPlugin extends Plugin
 				return config.getGroup3Color();
 			case SETNAME_GROUP_4:
 				return config.getGroup4Color();
+			case SETNAME_GRIMY_HERBS:
+				return config.getGrimyColor();
 		}
 
 		return null;
@@ -264,5 +287,20 @@ public class InventoryTagsPlugin extends Plugin
 			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
 		}
+	}
+
+	boolean isGrimyHerb(int id)
+	{
+		if (config.showGrimy())
+		{
+			for (int itemId : GRIMY_HERBS)
+			{
+				if (itemId == id)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

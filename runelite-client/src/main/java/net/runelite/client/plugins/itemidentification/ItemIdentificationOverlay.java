@@ -75,7 +75,6 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 				}
 				break;
 			case HERB:
-			case GRIMYHERB:
 				if (!config.showHerbs())
 				{
 					return;
@@ -109,14 +108,8 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	{
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + bounds.height - 1));
-		if (iden.type == ItemIdentification.Type.GRIMYHERB)
-		{
-			textComponent.setColor(config.textGrimyColor());
-		}
-		else
-		{
-			textComponent.setColor(config.textColor());
-		}
+		textComponent.setColor(config.textColor());
+
 
 		switch (config.identificationType())
 		{

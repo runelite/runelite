@@ -26,12 +26,15 @@ package net.runelite.client.plugins.inventorytags;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
@@ -45,21 +48,29 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 		this.plugin = plugin;
 		showOnEquipment();
 		showOnInventory();
+		showOnBank();
 	}
 
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
+		Rectangle bounds = itemWidget.getCanvasBounds();
 		final String group = plugin.getTag(itemId);
 		if (group != null)
 		{
 			final Color color = plugin.getGroupNameColor(group);
 			if (color != null)
 			{
-				Rectangle bounds = itemWidget.getCanvasBounds();
 				final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
 				graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
 			}
 		}
+		// Add grimy outline
+		if (plugin.isGrimyHerb(itemId))
+		{
+			final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), plugin.getGroupNameColor("Grimy Herbs"));
+			graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
+		}
 	}
+
 }

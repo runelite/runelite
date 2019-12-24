@@ -36,6 +36,17 @@ public interface InventoryTagsConfig extends Config
 
 	@ConfigItem(
 		position = 0,
+		keyName = "grimyColor",
+		name = "Grimy Herbs Color",
+		description = "Color of highlighted grimy herbs"
+	)
+	default Color getGrimyColor()
+	{
+		return new Color(128, 255, 0);
+	}
+
+	@ConfigItem(
+		position = 0,
 		keyName = "groupColor1",
 		name = "Group 1 Color",
 		description = "Color of the Tag"
@@ -77,4 +88,17 @@ public interface InventoryTagsConfig extends Config
 	{
 		return new Color(255, 0, 255);
 	}
+
+	@ConfigItem(
+		keyName = "showGrimy",
+		name = "Grimy Herbs",
+		description = "Show outline for Grimy herbs"
+	)
+	default boolean showGrimy()
+	{
+		return true;
+	}
+
 }
+
+

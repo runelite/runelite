@@ -54,16 +54,6 @@ public interface ItemIdentificationConfig extends Config
 		return Color.WHITE;
 	}
 
-	@ConfigItem(
-		keyName = "textGrimyColor",
-		name = "Grimy Color",
-		position = -2,
-		description = "The colour of the identification text when herbs are grimy"
-	)
-	default Color textGrimyColor()
-	{
-		return Color.GREEN;
-	}
 
 	@ConfigItem(
 		keyName = "showSeeds",
