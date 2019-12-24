@@ -180,8 +180,6 @@ public class HiscorePlugin extends Plugin
 				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
 				groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
-			boolean after;
-			
 			if (!AFTER_OPTIONS.contains(option) || (option.equals("Delete") && groupId != WidgetInfo.IGNORE_LIST.getGroupId()))
 			{
 				return;
