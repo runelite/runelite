@@ -275,6 +275,19 @@ public class InventorySetupPluginPanel extends PluginPanel
 		setupComboBox.addItem(name);
 	}
 
+	public void addInventorySetupUnsorted(final String name)
+	{
+		for (int i = 1; i < setupComboBox.getItemCount(); ++i)
+		{
+			if (setupComboBox.getItemAt(i).toLowerCase().compareTo(name.toLowerCase()) > 0)
+			{
+				setupComboBox.insertItemAt(name, i);
+				return;
+			}
+		}
+		setupComboBox.addItem(name);
+	}
+
 	public void removeInventorySetup(final String name)
 	{
 		setupComboBox.removeItem(name);

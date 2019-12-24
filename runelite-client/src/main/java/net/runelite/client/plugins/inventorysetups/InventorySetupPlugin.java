@@ -32,10 +32,12 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
@@ -213,7 +215,7 @@ public class InventorySetupPlugin extends Plugin
 			SwingUtilities.invokeLater(() ->
 			{
 				inventorySetups.put(name, invSetup);
-				panel.addInventorySetup(name);
+				panel.addInventorySetupUnsorted(name);
 				panel.setCurrentInventorySetup(name);
 
 				updateConfig();
@@ -305,7 +307,7 @@ public class InventorySetupPlugin extends Plugin
 			inventorySetups.putAll(gson.fromJson(json, type));
 		}
 
-		for (final String key : inventorySetups.keySet())
+		for (final String key : inventorySetups.keySet().stream().sorted(Comparator.comparing(String::toLowerCase)).collect(Collectors.toList()))
 		{
 			panel.addInventorySetup(key);
 		}
