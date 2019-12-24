@@ -32,6 +32,7 @@ import java.util.List;
 import lombok.Value;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
+import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.Perspective;
 
 /**
@@ -325,5 +326,37 @@ public class WorldPoint
 	public int getRegionID()
 	{
 		return ((x >> 6) << 8) | (y >> 6);
+	}
+
+	/**
+	 * Converts the passed region ID and coordinates to a world coordinate
+	 */
+	public static WorldPoint fromRegion(int regionId, int regionX, int regionY, int plane)
+	{
+		return new WorldPoint(
+			((regionId >>> 8) << 6) + regionX,
+			((regionId & 0xff) << 6) + regionY,
+			plane);
+	}
+
+	/**
+	 * Gets the X-axis coordinate of the region coordinate
+	 */
+	public int getRegionX()
+	{
+		return getRegionOffset(x);
+	}
+
+	/**
+	 * Gets the Y-axis coordinate of the region coordinate
+	 */
+	public int getRegionY()
+	{
+		return getRegionOffset(y);
+	}
+
+	private static int getRegionOffset(final int position)
+	{
+		return position & (REGION_SIZE - 1);
 	}
 }

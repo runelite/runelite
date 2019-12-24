@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 
@@ -36,7 +36,7 @@ enum PrayerRestoreType
 	HOLYWRENCH(ItemID.PRAYER_CAPE, ItemID.PRAYER_CAPET, ItemID.PRAYER_CAPE_10643, ItemID.MAX_CAPE, ItemID.MAX_CAPE_13282,
 		ItemID.MAX_CAPE_13342, ItemID.HOLY_WRENCH, ItemID.RING_OF_THE_GODS_I);
 
-	private static final Map<Integer, PrayerRestoreType> prayerRestores = new HashMap<>();
+	private static final Map<Integer, PrayerRestoreType> prayerRestores;
 
 	private final int[] items;
 
@@ -47,13 +47,15 @@ enum PrayerRestoreType
 
 	static
 	{
+		ImmutableMap.Builder<Integer, PrayerRestoreType> builder = new ImmutableMap.Builder<>();
 		for (PrayerRestoreType prayerRestoreType : values())
 		{
 			for (int itemId : prayerRestoreType.items)
 			{
-				prayerRestores.put(itemId, prayerRestoreType);
+				builder.put(itemId, prayerRestoreType);
 			}
 		}
+		prayerRestores = builder.build();
 	}
 
 	static PrayerRestoreType getType(final int itemId)

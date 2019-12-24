@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -84,8 +85,8 @@ public class InfoBoxOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.setWrapping(config.infoBoxWrap());
 		panelComponent.setOrientation(config.infoBoxVertical()
-			? PanelComponent.Orientation.VERTICAL
-			: PanelComponent.Orientation.HORIZONTAL);
+			? ComponentOrientation.VERTICAL
+			: ComponentOrientation.HORIZONTAL);
 		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
 		for (InfoBox box : infoBoxes)

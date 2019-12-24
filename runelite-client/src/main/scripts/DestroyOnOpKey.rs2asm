@@ -1,0 +1,93 @@
+.id                 1651
+.int_stack_count    5
+.string_stack_count 2
+.int_var_count      5
+.string_var_count   2
+   iload                  0
+   iconst                 1
+   if_icmpeq              LABEL13
+   iload                  1
+   iconst                 -1
+   if_icmpne              LABEL7
+   jump                   LABEL74
+LABEL7:
+   sload                  1
+   iload                  1
+   string_indexof_char   
+   iconst                 -1
+   if_icmpne              LABEL13
+   jump                   LABEL74
+LABEL13:
+   iload                  0
+   iconst                 1
+   if_icmpne              LABEL17
+   jump                   LABEL24
+LABEL17:
+   iconst                 584
+   iconst                 -1
+   invoke                 1701
+   iconst                 0
+   if_icmpeq              LABEL23
+   jump                   LABEL24
+LABEL23:
+   return                
+LABEL24:
+   iload                  3
+   sconst                 "destroyOnOpKey"  ; load event name
+   runelite_callback      ; invoke callback
+   pop_int
+   iconst                 2266
+   iconst                 1
+   iconst                 0
+   sound_synth           
+   iload                  2
+   iload                  4
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL34
+   jump                   LABEL38
+LABEL34:
+   iconst                 16777215
+   cc_setcolour          
+   sconst                 "..."
+   cc_settext            
+LABEL38:
+   iconst                 -1
+   sconst                 ""
+   iload                  2
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iload                  2
+   if_setonmouseleave    
+   iload                  2
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  2
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  2
+   if_setonkey           
+   iconst                 1652
+   iload                  2
+   sload                  0
+   iload                  3
+   sload                  1
+   clientclock           
+   iconst                 40
+   add                   
+   sconst                 "Isisi"
+   iload                  2
+   if_setontimer         
+   iconst                 38273024
+   iload                  3
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL73
+   jump                   LABEL74
+LABEL73:
+   cc_resume_pausebutton 
+LABEL74:
+   return                

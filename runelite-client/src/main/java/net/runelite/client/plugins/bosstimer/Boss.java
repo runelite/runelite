@@ -25,9 +25,9 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
+import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -39,7 +39,7 @@ enum Boss
 	KREEARRA(NpcID.KREEARRA, 90, ChronoUnit.SECONDS, ItemID.PET_KREEARRA),
 	COMMANDER_ZILYANA(NpcID.COMMANDER_ZILYANA, 90, ChronoUnit.SECONDS, ItemID.PET_ZILYANA),
 	CALLISTO(NpcID.CALLISTO_6609, 30, ChronoUnit.SECONDS, ItemID.CALLISTO_CUB),
-	CHAOS_ELEMENTAL(NpcID.CHAOS_ELEMENTAL, 150, ChronoUnit.SECONDS, ItemID.PET_CHAOS_ELEMENTAL),
+	CHAOS_ELEMENTAL(NpcID.CHAOS_ELEMENTAL, 60, ChronoUnit.SECONDS, ItemID.PET_CHAOS_ELEMENTAL),
 	CHAOS_FANATIC(NpcID.CHAOS_FANATIC, 30, ChronoUnit.SECONDS, ItemID.ANCIENT_STAFF),
 	CRAZY_ARCHAEOLOGIST(NpcID.CRAZY_ARCHAEOLOGIST, 30, ChronoUnit.SECONDS, ItemID.FEDORA),
 	KING_BLACK_DRAGON(NpcID.KING_BLACK_DRAGON, 9, ChronoUnit.SECONDS, ItemID.PRINCE_BLACK_DRAGON),
@@ -57,9 +57,11 @@ enum Boss
 	KRAKEN(NpcID.KRAKEN, 8400, ChronoUnit.MILLIS, ItemID.PET_KRAKEN),
 	KALPHITE_QUEEN(NpcID.KALPHITE_QUEEN_965, 30, ChronoUnit.SECONDS, ItemID.KALPHITE_PRINCESS),
 	DUSK(NpcID.DUSK_7889, 2, ChronoUnit.MINUTES, ItemID.NOON),
-	ALCHEMICAL_HYDRA(NpcID.ALCHEMICAL_HYDRA_8622, 25200, ChronoUnit.MILLIS, ItemID.IKKLE_HYDRA);
+	ALCHEMICAL_HYDRA(NpcID.ALCHEMICAL_HYDRA_8622, 25200, ChronoUnit.MILLIS, ItemID.IKKLE_HYDRA),
+	SARACHNIS(NpcID.SARACHNIS, 30, ChronoUnit.SECONDS, ItemID.SRARACHA),
+	ZALCANO(NpcID.ZALCANO_9050, 21600, ChronoUnit.MILLIS, ItemID.SMOLCANO);
 
-	private static final Map<Integer, Boss> bosses = new HashMap<>();
+	private static final Map<Integer, Boss> bosses;
 
 	private final int id;
 	private final Duration spawnTime;
@@ -67,10 +69,14 @@ enum Boss
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Boss> builder = new ImmutableMap.Builder<>();
+
 		for (Boss boss : values())
 		{
-			bosses.put(boss.getId(), boss);
+			builder.put(boss.getId(), boss);
 		}
+
+		bosses = builder.build();
 	}
 
 	private Boss(int id, long period, ChronoUnit unit, int itemSpriteId)

@@ -123,7 +123,7 @@ public interface RaidsConfig extends Config
 		position = 8,
 		keyName = "whitelistedRotations",
 		name = "Whitelisted rotations",
-		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
+		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like: tekton, muttadiles, guardians - each rotation on its own line"
 	)
 	default String whitelistedRotations()
 	{
@@ -160,6 +160,6 @@ public interface RaidsConfig extends Config
 	)
 	default boolean layoutMessage()
 	{
-		return true;
+		return false;
 	}
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -31,6 +32,22 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
 {
+	@AllArgsConstructor
+	enum OnScreenDisplayMode
+	{
+		XP_GAINED,
+		XP_LEFT,
+		ACTIONS_DONE,
+		ACTIONS_LEFT
+	}
+
+	@AllArgsConstructor
+	enum OnScreenDisplayModeBottom
+	{
+		XP_HOUR,
+		ACTIONS_HOUR,
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "hideMaxed",
@@ -73,5 +90,38 @@ public interface XpTrackerConfig extends Config
 	default int pauseSkillAfter()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "skillTabOverlayMenuOptions",
+		name = "Add skill tab canvas menu option",
+		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab"
+	)
+	default boolean skillTabOverlayMenuOptions()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "onScreenDisplayMode",
+		name = "On-screen tracker display mode (top)",
+		description = "Configures the information displayed in the first line of on-screen XP overlays"
+	)
+	default OnScreenDisplayMode onScreenDisplayMode()
+	{
+		return OnScreenDisplayMode.XP_GAINED;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "onScreenDisplayModeBottom",
+		name = "On-screen tracker display mode (bottom)",
+		description = "Configures the information displayed in the second line of on-screen XP overlays"
+	)
+	default OnScreenDisplayModeBottom onScreenDisplayModeBottom()
+	{
+		return OnScreenDisplayModeBottom.XP_HOUR;
 	}
 }

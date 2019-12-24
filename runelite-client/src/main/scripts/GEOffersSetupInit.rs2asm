@@ -1,0 +1,394 @@
+.id                 779
+.int_stack_count    15
+.string_stack_count 0
+.int_var_count      16
+.string_var_count   1
+   get_varbit             4397
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL65
+LABEL4:
+   iload                  0
+   iload                  1
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL10
+   jump                   LABEL12
+LABEL10:
+   iconst                 1
+   cc_sethide            
+LABEL12:
+   iload                  0
+   iload                  6
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL18
+   jump                   LABEL23
+LABEL18:
+   iconst                 0
+   cc_settrans           
+   iconst                 -1
+   sconst                 ""
+   cc_setontimer         
+LABEL23:
+   iload                  0
+   iload                  12
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL29
+   jump                   LABEL31
+LABEL29:
+   iconst                 1
+   cc_sethide            
+LABEL31:
+   iload                  0
+   iload                  4
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL37
+   jump                   LABEL39
+LABEL37:
+   sconst                 "Sell offer"
+   cc_settext            
+LABEL39:
+   iload                  0
+   iload                  5
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL45
+   jump                   LABEL47
+LABEL45:
+   iconst                 1119
+   cc_setgraphic         
+LABEL47:
+   iload                  0
+   iload                  2
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL53
+   jump                   LABEL56
+LABEL53:
+   iconst                 1
+   sconst                 "All"
+   cc_setop              
+LABEL56:
+   iload                  0
+   iload                  3
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL62
+   jump                   LABEL64
+LABEL62:
+   sconst                 "All"
+   cc_settext            
+LABEL64:
+   jump                   LABEL130
+LABEL65:
+   iload                  0
+   iload                  1
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL71
+   jump                   LABEL73
+LABEL71:
+   iconst                 0
+   cc_sethide            
+LABEL73:
+   iload                  0
+   iload                  6
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL79
+   jump                   LABEL89
+LABEL79:
+   iconst                 100
+   cc_settrans           
+   iconst                 811
+   iconst                 -2147483645
+   iconst                 -2147483643
+   clientclock           
+   iconst                 100
+   iconst                 250
+   sconst                 "Iiiii"
+   cc_setontimer         
+LABEL89:
+   iload                  0
+   iload                  12
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL95
+   jump                   LABEL97
+LABEL95:
+   iconst                 0
+   cc_sethide            
+LABEL97:
+   iload                  0
+   iload                  4
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL103
+   jump                   LABEL105
+LABEL103:
+   sconst                 "Buy offer"
+   cc_settext            
+LABEL105:
+   iload                  0
+   iload                  5
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL111
+   jump                   LABEL113
+LABEL111:
+   iconst                 1118
+   cc_setgraphic         
+LABEL113:
+   iload                  0
+   iload                  2
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL119
+   jump                   LABEL122
+LABEL119:
+   iconst                 1
+   sconst                 "+1K"
+   cc_setop              
+LABEL122:
+   iload                  0
+   iload                  3
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL128
+   jump                   LABEL130
+LABEL128:
+   sconst                 "+1K"
+   cc_settext            
+LABEL130:
+   sconst                 ","
+   sstore                 0
+   iconst                 0
+   istore                 15
+   get_varp               1151
+   iconst                 -1
+   if_icmpne              LABEL138
+   jump                   LABEL274
+LABEL138:
+   iload                  0
+   iload                  7
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL144
+   jump                   LABEL147
+LABEL144:
+   get_varp               1151
+   get_varbit             4396
+   cc_setobject_nonum    
+LABEL147:
+   iload                  0
+   iload                  8
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL153
+   jump                   LABEL156
+LABEL153:
+   get_varp               1151
+   oc_name               
+   cc_settext            
+LABEL156:
+   iload                  0
+   iload                  9
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL162
+   jump                   LABEL166
+LABEL162:
+   get_varbit             4396
+   sload                  0
+   invoke                 46
+   cc_settext            
+LABEL166:
+   iload                  0
+   iload                  10
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL172
+   jump                   LABEL185
+LABEL172:
+   get_varbit             4398
+   iconst                 1
+   if_icmpeq              LABEL176
+   jump                   LABEL179
+LABEL176:
+   sconst                 "1 coin"
+   cc_settext            
+   jump                   LABEL185
+LABEL179:
+   get_varbit             4398
+   sload                  0
+   invoke                 46
+   sconst                 " coins"
+   join_string            2
+   cc_settext            
+LABEL185:
+   get_varbit             4396
+   iconst                 0
+   if_icmpgt              LABEL189
+   jump                   LABEL211
+LABEL189:
+   iconst                 2147483647
+   get_varbit             4396
+   div                   
+   get_varbit             4398
+   if_icmplt              LABEL195
+   jump                   LABEL211
+LABEL195:
+   iload                  0
+   iload                  11
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL201
+   jump                   LABEL206
+LABEL201:
+   sconst                 "<col=ff0000>"
+   sconst                 "Too much money!"
+   sconst                 "</col>"
+   join_string            3
+   cc_settext            
+LABEL206:
+   iload                  0
+   iload                  14
+   iload                  13
+   invoke                 780
+   jump                   LABEL273
+LABEL211:
+   get_varbit             4396
+   get_varbit             4398
+   multiply              
+   istore                 15
+   iload                  0
+   iload                  11
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL221
+   jump                   LABEL234
+LABEL221:
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL225
+   jump                   LABEL228
+LABEL225:
+   sconst                 "1 coin"
+   cc_settext            
+   jump                   LABEL234
+LABEL228:
+   iload                  15
+   sload                  0
+   invoke                 46
+   sconst                 " coins"
+   join_string            2
+   cc_settext            
+LABEL234:
+   iload                  15
+   iconst                 0
+   if_icmpgt              LABEL238
+   jump                   LABEL269
+LABEL238:
+   iload                  13
+   invoke                 208
+   pop_int               
+   iconst                 772
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  13
+   if_setonmouserepeat   
+   iconst                 97
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  13
+   if_setonmouseleave    
+   iconst                 489
+   iconst                 -2147483644
+   iconst                 2
+   sconst                 "ii"
+   iload                  13
+   if_setonop            
+   iload                  0
+   iload                  14
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL263
+   jump                   LABEL268
+LABEL263:
+   sconst                 "<col=ffffff>"
+   sconst                 "Confirm"
+   sconst                 "</col>"
+   join_string            3
+   cc_settext            
+LABEL268:
+   jump                   LABEL273
+LABEL269:
+   iload                  0
+   iload                  14
+   iload                  13
+   invoke                 780
+LABEL273:
+   jump                   LABEL319
+LABEL274:
+   iload                  0
+   iload                  7
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL280
+   jump                   LABEL283
+LABEL280:
+   iconst                 6512
+   iconst                 1
+   cc_setobject_nonum    
+LABEL283:
+   iload                  0
+   iload                  8
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL289
+   jump                   LABEL291
+LABEL289:
+   sconst                 "Choose an item..."
+   cc_settext            
+LABEL291:
+   iload                  0
+   iload                  9
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL297
+   jump                   LABEL299
+LABEL297:
+   sconst                 ""
+   cc_settext            
+LABEL299:
+   iload                  0
+   iload                  10
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL305
+   jump                   LABEL307
+LABEL305:
+   sconst                 ""
+   cc_settext            
+LABEL307:
+   iload                  0
+   iload                  11
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL313
+   jump                   LABEL315
+LABEL313:
+   sconst                 ""
+   cc_settext            
+LABEL315:
+   iload                  0
+   iload                  14
+   iload                  13
+   invoke                 780
+LABEL319:
+   sconst                 "geBuilt"   ;
+   runelite_callback                  ;
+   return

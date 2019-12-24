@@ -29,11 +29,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -113,10 +113,10 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-				"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
-				JOptionPane.YES_NO_OPTION))
+			"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
+			JOptionPane.YES_NO_OPTION))
 		{
-			sessionManager.logout();
+			executor.execute(sessionManager::logout);
 		}
 	}
 

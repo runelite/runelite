@@ -44,7 +44,7 @@ import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.util.Text;
 
 @Singleton

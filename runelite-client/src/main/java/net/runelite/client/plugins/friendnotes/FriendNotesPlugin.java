@@ -36,6 +36,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.Ignore;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Nameable;
@@ -164,10 +165,11 @@ public class FriendNotesPlugin extends Plugin
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
+		if ((groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message")) ||
+				(groupId == WidgetInfo.IGNORE_LIST.getGroupId() && event.getOption().equals("Delete")))
 		{
 			// Friends have color tags
-			setHoveredFriend(Text.removeTags(event.getTarget()));
+			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
@@ -190,20 +192,22 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getWidgetId()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		final int groupId = WidgetInfo.TO_GROUP(event.getWidgetId());
+
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
 			if (Strings.isNullOrEmpty(event.getMenuTarget()))
 			{
 				return;
 			}
 
-			//Friends have color tags
-			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
-
 			// Handle clicks on "Add Note" or "Edit Note"
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
 			{
 				event.consume();
+
+				//Friends have color tags
+				final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
 				final String note = getFriendNote(sanitizedTarget);
 
 				// Open the new chatbox input dialog
@@ -230,11 +234,19 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final Nameable nameable = event.getNameable();
 
-		if (nameable instanceof Friend)
+		if (nameable instanceof Friend || nameable instanceof Ignore)
 		{
 			// Migrate a friend's note to their new display name
-			final Friend friend = (Friend) nameable;
-			migrateFriendNote(friend.getName(), friend.getPrevName());
+			String name = nameable.getName();
+			String prevName = nameable.getPrevName();
+
+			if (prevName != null)
+			{
+				migrateFriendNote(
+					Text.toJagexName(name),
+					Text.toJagexName(prevName)
+				);
+			}
 		}
 	}
 
@@ -242,7 +254,7 @@ public class FriendNotesPlugin extends Plugin
 	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
-		final String displayName = event.getName();
+		final String displayName = Text.toJagexName(event.getNameable().getName());
 		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}

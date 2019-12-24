@@ -187,7 +187,7 @@
       "xp": 6218.4
     },
     {
-      "level": 57,
+      "level": 58,
       "icon": 22932,
       "name": "White lily",
       "xp": 292
@@ -241,6 +241,12 @@
       "xp": 134.5
     },
     {
+      "level": 74,
+      "icon": 23962,
+      "name": "Crystal Tree",
+      "xp": 13366
+    },
+    {
       "level": 75,
       "icon": 1513,
       "name": "Magic Tree",
@@ -253,7 +259,7 @@
       "xp": 170.5
     },
     {
-      "level": 82,
+      "level": 81,
       "icon": 22929,
       "name": "Dragonfruit Tree",
       "xp": 17895

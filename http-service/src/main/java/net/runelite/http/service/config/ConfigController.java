@@ -31,6 +31,7 @@ import net.runelite.http.api.config.Configuration;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,7 @@ public class ConfigController
 		this.authFilter = authFilter;
 	}
 
-	@RequestMapping
+	@GetMapping
 	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = authFilter.handle(request, response);
@@ -80,7 +81,10 @@ public class ConfigController
 			return;
 		}
 
-		configService.setKey(session.getUser(), key, value);
+		if (!configService.setKey(session.getUser(), key, value))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@RequestMapping(path = "/{key:.+}", method = DELETE)
@@ -97,6 +101,9 @@ public class ConfigController
 			return;
 		}
 
-		configService.unsetKey(session.getUser(), key);
+		if (!configService.unsetKey(session.getUser(), key))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 }

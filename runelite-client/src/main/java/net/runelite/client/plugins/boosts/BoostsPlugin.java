@@ -33,12 +33,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.events.BoostedLevelChanged;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -176,9 +177,9 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = boostedLevelChanged.getSkill();
+		Skill skill = statChanged.getSkill();
 
 		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
 		{
@@ -262,16 +263,25 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		if (config.enableSkill())
+		switch (config.displayBoosts())
 		{
-			shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+			case NONE:
+				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case COMBAT:
+				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case NON_COMBAT:
+				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
+			case BOTH:
+				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
+				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+				break;
 		}
-		else
-		{
-			shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-		}
-
-		shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
 	}
 
 	private void updateBoostedStats()
@@ -372,6 +382,6 @@ public class BoostsPlugin extends Plugin
 	int getChangeTime(final int time)
 	{
 		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int)(time * 0.6 - (diff / 1000d)) : time;
+		return time != -1 ? (int)((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
 	}
 }

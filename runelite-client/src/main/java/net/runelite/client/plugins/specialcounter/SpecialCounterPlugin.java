@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
@@ -35,18 +36,25 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -59,6 +67,7 @@ public class SpecialCounterPlugin extends Plugin
 	private int currentWorld = -1;
 	private int specialPercentage = -1;
 	private int specialHitpointsExperience = -1;
+	private int specialHitpointsGained = -1;
 	private boolean specialUsed;
 	private double modifier = 1d;
 
@@ -70,15 +79,31 @@ public class SpecialCounterPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private WSClient wsClient;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Override
+	protected void startUp()
+	{
+		wsClient.registerMessage(SpecialCounterUpdate.class);
+	}
+
+	@Override
 	protected void shutDown()
 	{
 		removeCounters();
+		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
 	@Subscribe
@@ -116,6 +141,25 @@ public class SpecialCounterPlugin extends Plugin
 
 		specialUsed = true;
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
+		specialHitpointsGained = -1;
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged statChanged)
+	{
+		if (specialUsed && statChanged.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = statChanged.getXp() - specialHitpointsExperience;
+		}
+	}
+
+	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (specialUsed && fakeXpDrop.getSkill() == Skill.HITPOINTS)
+		{
+			specialHitpointsGained = fakeXpDrop.getXp();
+		}
 	}
 
 	@Subscribe
@@ -126,48 +170,73 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		checkInteracting();
-
-		if (specialHitpointsExperience != -1 && specialUsed)
+		int interactingId = checkInteracting();
+		if (interactingId > -1 && specialUsed)
 		{
+			int deltaExperience = specialHitpointsGained;
+
 			specialUsed = false;
-			int hpXp = client.getSkillExperience(Skill.HITPOINTS);
-			int deltaExperience = hpXp - specialHitpointsExperience;
-			specialHitpointsExperience = -1;
 
 			if (deltaExperience > 0)
 			{
 				if (specialWeapon != null)
 				{
-					updateCounter(specialWeapon, deltaExperience);
+					int hit = getHit(specialWeapon, deltaExperience);
+
+					updateCounter(specialWeapon, null, hit);
+
+					if (!party.getMembers().isEmpty())
+					{
+						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
+						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+						wsClient.send(specialCounterUpdate);
+					}
 				}
 			}
 		}
 	}
 
-	private void checkInteracting()
+	private int checkInteracting()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
 
 		if (interacting instanceof NPC)
 		{
-			int interactingId = ((NPC) interacting).getId();
+			NPC npc = (NPC) interacting;
+			NPCComposition composition = npc.getComposition();
+			int interactingId = npc.getId();
+
+			if (!ArrayUtils.contains(composition.getActions(), "Attack"))
+			{
+				// Skip over non attackable npcs so that eg. talking to bankers doesn't reset
+				// the counters.
+				return -1;
+			}
 
 			if (!interactedNpcIds.contains(interactingId))
 			{
 				removeCounters();
-				modifier = 1d;
-				interactedNpcIds.add(interactingId);
-
-				final Boss boss = Boss.getBoss(interactingId);
-				if (boss != null)
-				{
-					modifier = boss.getModifier();
-					interactedNpcIds.addAll(boss.getIds());
-				}
-
+				addInteracting(interactingId);
 			}
+
+			return interactingId;
+		}
+
+		return -1;
+	}
+
+	private void addInteracting(int npcId)
+	{
+		modifier = 1d;
+		interactedNpcIds.add(npcId);
+
+		// Add alternate forms of bosses
+		final Boss boss = Boss.getBoss(npcId);
+		if (boss != null)
+		{
+			modifier = boss.getModifier();
+			interactedNpcIds.addAll(boss.getIds());
 		}
 	}
 
@@ -180,6 +249,36 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			removeCounters();
 		}
+	}
+
+	@Subscribe
+	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	{
+		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
+		{
+			return;
+		}
+
+		String name = party.getMemberById(event.getMemberId()).getName();
+		if (name == null)
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			// If not interacting with any npcs currently, add to interacting list
+			if (interactedNpcIds.isEmpty())
+			{
+				addInteracting(event.getNpcId());
+			}
+
+			// Otherwise we only add the count if it is against a npc we are already tracking
+			if (interactedNpcIds.contains(event.getNpcId()))
+			{
+				updateCounter(event.getWeapon(), name, event.getHit());
+			}
+		});
 	}
 
 	private SpecialWeapon usedSpecialWeapon()
@@ -210,10 +309,9 @@ public class SpecialCounterPlugin extends Plugin
 		return null;
 	}
 
-	private void updateCounter(SpecialWeapon specialWeapon, int deltaExperience)
+	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-		int hit = getHit(specialWeapon, deltaExperience);
 
 		if (counter == null)
 		{
@@ -225,6 +323,20 @@ public class SpecialCounterPlugin extends Plugin
 		else
 		{
 			counter.addHits(hit);
+		}
+
+		// If in a party, add hit to partySpecs for the infobox tooltip
+		Map<String, Integer> partySpecs = counter.getPartySpecs();
+		if (!party.getMembers().isEmpty())
+		{
+			if (partySpecs.containsKey(name))
+			{
+				partySpecs.put(name, hit + partySpecs.get(name));
+			}
+			else
+			{
+				partySpecs.put(name, hit);
+			}
 		}
 	}
 

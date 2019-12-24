@@ -30,15 +30,9 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetMenuOptionClicked;
@@ -107,9 +101,6 @@ public class InventoryTagsPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean hasTaggedItems;
-
 	private boolean editorMode;
 
 	@Provides
@@ -151,7 +142,7 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		removeInventoryMenuOptions();
 		overlayManager.remove(overlay);
-		hasTaggedItems = editorMode = false;
+		editorMode = false;
 	}
 
 	@Subscribe
@@ -179,14 +170,10 @@ public class InventoryTagsPlugin extends Plugin
 		if (event.getMenuOption().equals(MENU_SET))
 		{
 			setTag(event.getId(), selectedMenu);
-
-			hasTaggedItems = true;
 		}
 		else if (event.getMenuOption().equals(MENU_REMOVE))
 		{
 			unsetTag(event.getId());
-
-			checkForTags(client.getItemContainer(InventoryID.INVENTORY));
 		}
 	}
 
@@ -232,47 +219,6 @@ public class InventoryTagsPlugin extends Plugin
 			}
 
 			client.setMenuEntries(menuList);
-		}
-	}
-
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
-	{
-		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
-		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY))
-		{
-			checkForTags(itemContainer);
-		}
-	}
-
-	private void checkForTags(ItemContainer itemContainer)
-	{
-		hasTaggedItems = false;
-
-		if (itemContainer == null)
-		{
-			return;
-		}
-
-		Item[] items = itemContainer.getItems();
-		if (items != null)
-		{
-			for (Item item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				String tag = getTag(item.getId());
-				if (tag == null)
-				{
-					continue;
-				}
-
-				hasTaggedItems = true;
-				return;
-			}
 		}
 	}
 

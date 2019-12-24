@@ -102,7 +102,7 @@ public class PestControlPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (overlay.getGame() != null && chatMessage.getType() == ChatMessageType.SERVER)
+		if (overlay.getGame() != null && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			Matcher matcher = SHIELD_DROP.matcher(chatMessage.getMessage());
 			if (matcher.lookingAt())

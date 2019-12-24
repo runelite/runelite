@@ -89,15 +89,19 @@ public class ChatboxPanelManager
 	private void unsafeCloseInput()
 	{
 		client.runScript(
-			ScriptID.RESET_CHATBOX_INPUT,
+			ScriptID.MESSAGE_LAYER_CLOSE,
 			0,
 			1
 		);
+		if (currentInput != null)
+		{
+			killCurrentPanel();
+		}
 	}
 
 	private void unsafeOpenInput(ChatboxInput input)
 	{
-		client.runScript(ScriptID.CLEAR_CHATBOX_PANEL);
+		client.runScript(ScriptID.MESSAGE_LAYER_OPEN, 0);
 
 		eventBus.register(input);
 		if (input instanceof KeyListener)
@@ -111,6 +115,11 @@ public class ChatboxPanelManager
 		if (input instanceof MouseWheelListener)
 		{
 			mouseManager.registerMouseWheelListener((MouseWheelListener) input);
+		}
+
+		if (currentInput != null)
+		{
+			killCurrentPanel();
 		}
 
 		currentInput = input;

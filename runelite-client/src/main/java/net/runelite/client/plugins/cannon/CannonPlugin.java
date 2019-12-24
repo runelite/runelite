@@ -47,7 +47,7 @@ import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -283,7 +283,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
@@ -295,7 +295,8 @@ public class CannonPlugin extends Plugin
 			cballsLeft = 0;
 		}
 
-		if (event.getMessage().contains("You pick up the cannon"))
+		if (event.getMessage().contains("You pick up the cannon")
+			|| event.getMessage().contains("Your cannon has decayed. Speak to Nulodion to get a new one!"))
 		{
 			cannonPlaced = false;
 			cballsLeft = 0;

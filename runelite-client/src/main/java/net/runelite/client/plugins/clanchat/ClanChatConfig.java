@@ -126,4 +126,26 @@ public interface ClanChatConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "clanTabChat",
+		name = "Clan Tab Chat",
+		description = "Allows clan chat without prepending '/' to messages when on clan tab",
+		position = 8
+	)
+	default boolean clanTabChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "confirmKicks",
+		name = "Confirm Kicks",
+		description = "Shows a chat prompt to confirm kicks",
+		position = 9
+	)
+	default boolean confirmKicks()
+	{
+		return false;
+	}
 }

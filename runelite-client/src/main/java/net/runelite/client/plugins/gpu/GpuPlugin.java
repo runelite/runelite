@@ -37,7 +37,9 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
@@ -46,6 +48,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
@@ -71,18 +74,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
-import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
-import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
+import static net.runelite.client.plugins.gpu.GLUtil.*;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -215,6 +207,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int centerX;
 	private int centerY;
+	private int yaw;
+	private int pitch;
 
 	// Uniforms
 	private int uniUseFog;
@@ -241,15 +235,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				bufferId = uvBufferId = uniformBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
 
+				canvas = client.getCanvas();
+
+				if (!canvas.isDisplayable())
+				{
+					return false;
+				}
+
+				canvas.setIgnoreRepaint(true);
+
 				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
 
 				modelBufferUnordered = new GpuIntBuffer();
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
-
-				canvas = client.getCanvas();
-				canvas.setIgnoreRepaint(true);
 
 				if (log.isDebugEnabled())
 				{
@@ -346,7 +346,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				shutDown();
 			}
-
+			return true;
 		});
 	}
 
@@ -651,7 +651,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_DYNAMIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
@@ -727,6 +727,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		centerX = client.getCenterX();
 		centerY = client.getCenterY();
+		yaw = client.getCameraYaw();
+		pitch = client.getCameraPitch();
 
 		final Scene scene = client.getScene();
 		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
@@ -919,8 +921,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
 		uniformBuffer.clear();
 		uniformBuffer
-			.put(client.getCameraYaw())
-			.put(client.getCameraPitch())
+			.put(yaw)
+			.put(pitch)
 			.put(centerX)
 			.put(centerY)
 			.put(client.getScale())
@@ -1021,7 +1023,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				renderWidthOff       = (int) Math.floor(scaleFactorX * (renderWidthOff )) - padding;
 			}
 
-			gl.glViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
+			glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
 
 			gl.glUseProgram(glProgram);
 
@@ -1154,11 +1156,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();
-			gl.glViewport(0, 0, dim.width, dim.height);
+			glDpiAwareViewport(0, 0, dim.width, dim.height);
 		}
 		else
 		{
-			gl.glViewport(0, 0, canvasWidth, canvasHeight);
+			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 		}
 
 		// Use the texture bound in the first pass
@@ -1322,10 +1324,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						int var21 = (pitchCos * modelHeight >> 16) + var19;
 						int var22 = (var18 - var21) * zoom;
-						if (var22 / var14 < Rasterizer3D_clipMidY2)
-						{
-							return true;
-						}
+						return var22 / var14 < Rasterizer3D_clipMidY2;
 					}
 				}
 			}
@@ -1453,4 +1452,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	private int getScaledValue(final double scale, final int value)
+	{
+		return SurfaceScaleUtils.scale(value, (float) scale);
+	}
+
+	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
+	{
+		final AffineTransform t = ((Graphics2D) canvas.getGraphics()).getTransform();
+		gl.glViewport(
+			getScaledValue(t.getScaleX(), x),
+			getScaledValue(t.getScaleY(), y),
+			getScaledValue(t.getScaleX(), width),
+			getScaledValue(t.getScaleY(), height));
+	}
 }

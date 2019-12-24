@@ -26,18 +26,17 @@ package net.runelite.http.service.worlds;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.worlds.WorldResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/worlds")
-@Slf4j
 public class WorldController
 {
 	@Autowired
@@ -45,7 +44,7 @@ public class WorldController
 
 	private WorldResult worldResult;
 
-	@RequestMapping
+	@GetMapping
 	public ResponseEntity<WorldResult> listWorlds() throws IOException
 	{
 		return ResponseEntity.ok()

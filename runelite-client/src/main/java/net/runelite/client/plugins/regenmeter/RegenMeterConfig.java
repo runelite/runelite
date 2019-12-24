@@ -57,4 +57,14 @@ public interface RegenMeterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notifyBeforeHpRegenDuration",
+		name = "Hitpoint Regen Notification (seconds)",
+		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
+	)
+	default int getNotifyBeforeHpRegenSeconds()
+	{
+		return 0;
+	}
 }

@@ -27,6 +27,9 @@ package net.runelite.client.plugins.chatcommands;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
@@ -99,12 +102,45 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+		keyName = "gc",
+		name = "GC Command",
+		description = "Configures whether the Barbarian Assault High gamble count command is enabled<br> !gc"
 	)
-	default boolean clearShortcuts()
+	default boolean gc()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "duels",
+		name = "Duels Command",
+		description = "Configures whether the duel arena command is enabled<br> !duels"
+	)
+	default boolean duels()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "clearSingleWord",
+		name = "Clear Single Word",
+		description = "Enable hot key to clear single word at a time"
+	)
+	default Keybind clearSingleWord()
+	{
+		return new Keybind(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "clearEntireChatBox",
+		name = "Clear Chat Box",
+		description = "Enable hotkey to clear entire chat box"
+	)
+	default Keybind clearChatBox()
+	{
+		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
 }

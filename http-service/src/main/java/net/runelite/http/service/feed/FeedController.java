@@ -24,6 +24,9 @@
  */
 package net.runelite.http.service.feed;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +54,26 @@ public class FeedController
 	private final TwitterService twitterService;
 	private final OSRSNewsService osrsNewsService;
 
-	private FeedResult feedResult;
+	private static class MemoizedFeed
+	{
+		final FeedResult feedResult;
+		final String hash;
+
+		MemoizedFeed(FeedResult feedResult)
+		{
+			this.feedResult = feedResult;
+
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (FeedItem itemPrice : feedResult.getItems())
+			{
+				hasher.putBytes(itemPrice.getTitle().getBytes()).putBytes(itemPrice.getContent().getBytes());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
+		}
+	}
+
+	private MemoizedFeed memoizedFeed;
 
 	@Autowired
 	public FeedController(BlogService blogService, TwitterService twitterService, OSRSNewsService osrsNewsService)
@@ -92,20 +115,21 @@ public class FeedController
 			log.warn(e.getMessage());
 		}
 
-		feedResult = new FeedResult(items);
+		memoizedFeed = new MemoizedFeed(new FeedResult(items));
 	}
 
-	@RequestMapping
+	@GetMapping
 	public ResponseEntity<FeedResult> getFeed()
 	{
-		if (feedResult == null)
+		if (memoizedFeed == null)
 		{
 			return ResponseEntity.notFound()
 				.build();
 		}
 
 		return ResponseEntity.ok()
+			.eTag(memoizedFeed.hash)
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
-			.body(feedResult);
+			.body(memoizedFeed.feedResult);
 	}
 }

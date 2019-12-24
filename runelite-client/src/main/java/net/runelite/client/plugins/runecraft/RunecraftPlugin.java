@@ -29,8 +29,6 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -45,21 +43,19 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -69,10 +65,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class RunecraftPlugin extends Plugin
 {
-	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+|one) charges? left before your Binding necklace disintegrates.");
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
-	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
 		ItemID.MEDIUM_POUCH_5511,
 		ItemID.LARGE_POUCH_5513,
@@ -81,6 +75,9 @@ public class RunecraftPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<AbyssRifts> rifts = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
@@ -95,10 +92,10 @@ public class RunecraftPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private BindNeckOverlay bindNeckOverlay;
+	private AbyssOverlay abyssOverlay;
 
 	@Inject
-	private AbyssOverlay abyssOverlay;
+	private AbyssMinimapOverlay abyssMinimapOverlay;
 
 	@Inject
 	private RunecraftConfig config;
@@ -115,16 +112,16 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(bindNeckOverlay);
 		overlayManager.add(abyssOverlay);
-		abyssOverlay.updateConfig();
+		overlayManager.add(abyssMinimapOverlay);
+		updateRifts();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(bindNeckOverlay);
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
@@ -133,80 +130,27 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		abyssOverlay.updateConfig();
+		if (event.getGroup().equals("runecraft"))
+		{
+			updateRifts();
+		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
 
-		if (config.showBindNeck())
-		{
-			Matcher match = bindNeckString.matcher(event.getMessage());
-			if (match.find())
-			{
-				if (match.group(1).equals("one"))
-				{
-					bindNeckOverlay.bindingCharges = 1;
-				}
-				else
-				{
-					bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
-				}
-
-				return;
-			}
-
-			if (event.getMessage().contains("You bind the temple's power"))
-			{
-				if (event.getMessage().contains("mud")
-					|| event.getMessage().contains("lava")
-					|| event.getMessage().contains("steam")
-					|| event.getMessage().contains("dust")
-					|| event.getMessage().contains("smoke")
-					|| event.getMessage().contains("mist"))
-				{
-					bindNeckOverlay.bindingCharges -= 1;
-					return;
-				}
-			}
-
-			if (event.getMessage().contains("Your Binding necklace has disintegrated."))
-			{
-				//set it to 17 because this message is triggered first before the above chat event
-				bindNeckOverlay.bindingCharges = 17;
-				return;
-			}
-		}
 		if (config.degradingNotification())
 		{
 			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 			{
 				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
-				return;
 			}
 		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getWidgetId() != DESTROY_ITEM_WIDGET_ID)
-		{
-			return;
-		}
-
-		Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
-		if (widgetDestroyItemName == null || !widgetDestroyItemName.getText().equals("Binding necklace"))
-		{
-			return;
-		}
-
-		bindNeckOverlay.bindingCharges = 16;
 	}
 
 	@Subscribe
@@ -272,6 +216,63 @@ public class RunecraftPlugin extends Plugin
 		if (npc == darkMage)
 		{
 			darkMage = null;
+		}
+	}
+
+	private void updateRifts()
+	{
+		rifts.clear();
+		if (config.showAir())
+		{
+			rifts.add(AIR_RIFT);
+		}
+		if (config.showBlood())
+		{
+			rifts.add(BLOOD_RIFT);
+		}
+		if (config.showBody())
+		{
+			rifts.add(BODY_RIFT);
+		}
+		if (config.showChaos())
+		{
+			rifts.add(CHAOS_RIFT);
+		}
+		if (config.showCosmic())
+		{
+			rifts.add(COSMIC_RIFT);
+		}
+		if (config.showDeath())
+		{
+			rifts.add(DEATH_RIFT);
+		}
+		if (config.showEarth())
+		{
+			rifts.add(EARTH_RIFT);
+		}
+		if (config.showFire())
+		{
+			rifts.add(FIRE_RIFT);
+		}
+		if (config.showLaw())
+		{
+			rifts.add(LAW_RIFT);
+		}
+		if (config.showMind())
+		{
+			rifts.add(MIND_RIFT);
+		}
+		if (config.showNature())
+		{
+			rifts.add(NATURE_RIFT);
+		}
+		if (config.showSoul())
+		{
+			rifts.add(SOUL_RIFT);
+		}
+		if (config.showWater())
+		{
+			rifts.add(WATER_RIFT);
 		}
 	}
 }

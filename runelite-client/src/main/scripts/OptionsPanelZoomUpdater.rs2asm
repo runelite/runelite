@@ -7,77 +7,77 @@
 ; 0 resizableZoomRange
 ; 1 fixedZoomRange
 ; 2 bar size
-   load_int               896
-   load_string            "innerZoomLimit"
+   iconst                 896
+   sconst                 "innerZoomLimit"
    runelite_callback     
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    istore                 0
-   load_int               896
-   load_string            "innerZoomLimit"
+   iconst                 896
+   sconst                 "innerZoomLimit"
    runelite_callback     
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    istore                 1
-   load_int               17104910
-   widget_get_width_widget
-   load_int               17104911
-   widget_get_width_widget
-   isub                  
+   iconst                 17104910
+   if_getwidth           
+   iconst                 17104911
+   if_getwidth           
+   sub                   
    istore                 2
-   load_int               0
+   iconst                 0
    istore                 3
-   load_int               0
+   iconst                 0
    istore                 4
-   get_viewport_size     
+   viewport_geteffectivesize
    istore                 4
    istore                 3
-   load_int               0
+   iconst                 0
    istore                 5
    iload                  3
-   load_int               334
+   iconst                 334
    if_icmpgt              LABEL27
    jump                   LABEL36
 LABEL27:
-   get_varc               74
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   get_varc_int           74
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    iload                  0
-   load_string            "zoomExpToLin"
+   sconst                 "zoomExpToLin"
    runelite_callback     
    pop_int               
    iload                  2
-   imul                  
+   multiply              
    iload                  0
-   idiv                  
+   div                   
    istore                 5
    jump                   LABEL44
 LABEL36:
-   get_varc               73
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   get_varc_int           73
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    iload                  0
-   load_string            "zoomExpToLin"
+   sconst                 "zoomExpToLin"
    runelite_callback     
    pop_int               
    iload                  2
-   imul                  
+   multiply              
    iload                  1
-   idiv                  
+   div                   
    istore                 5
 LABEL44:
    iload                  5
-   load_int               0
-   load_int               0
-   load_int               0
-   load_int               17104911
-   widget_put_position_widget
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 17104911
+   if_setposition        
    return                

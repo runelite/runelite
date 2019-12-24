@@ -28,7 +28,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local client variables.
+ * Server controlled "content-developer" integers.
+ *
+ * @see VarPlayer
+ *
+ * These differ from a {@link VarPlayer} in that VarBits can be
+ * less than 32 bits. One or more VarBits can be assigned to a
+ * backing VarPlayer, each with a static range of bits that it is
+ * allowed to access. This allows a more compact representation
+ * of small values, like booleans
  */
 @AllArgsConstructor
 @Getter
@@ -126,6 +134,11 @@ public enum Varbits
 	DIARY_KARAMJA_HARD(3611),
 	DIARY_KARAMJA_ELITE(4566),
 
+	DIARY_KOUREND_EASY(7925),
+	DIARY_KOUREND_MEDIUM(7926),
+	DIARY_KOUREND_HARD(7927),
+	DIARY_KOUREND_ELITE(7928),
+
 	DIARY_LUMBRIDGE_EASY(4495),
 	DIARY_LUMBRIDGE_MEDIUM(4496),
 	DIARY_LUMBRIDGE_HARD(4497),
@@ -212,6 +225,7 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness
@@ -369,11 +383,14 @@ public enum Varbits
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
 	DAILY_FLAX_STATE(4559),
+	DAILY_ARROWS_STATE(4563),
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
  	*/
 	DAILY_BONEMEAL_STATE(4543),
+
+	DAILY_DYNAMITE_COLLECTED(7939),
 
 	/**
 	 * Fairy Ring
@@ -468,7 +485,38 @@ public enum Varbits
 	BANK_TAB_SIX_COUNT(4176),
 	BANK_TAB_SEVEN_COUNT(4177),
 	BANK_TAB_EIGHT_COUNT(4178),
-	BANK_TAB_NINE_COUNT(4179);
+	BANK_TAB_NINE_COUNT(4179),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397),
+
+	/**
+	 * The active tab within the quest interface
+	 */
+	QUEST_TAB(8168),
+
+	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553),
+
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * Twisted league
+	 */
+	TWISTED_LEAGUE_RELIC_1(10049),
+	TWISTED_LEAGUE_RELIC_2(10050),
+	TWISTED_LEAGUE_RELIC_3(10051),
+	TWISTED_LEAGUE_RELIC_4(10052),
+	TWISTED_LEAGUE_RELIC_5(10053);
 
 	/**
 	 * The raw varbit ID.

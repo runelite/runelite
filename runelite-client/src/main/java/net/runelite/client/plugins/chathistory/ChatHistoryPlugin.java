@@ -50,6 +50,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
@@ -58,10 +59,11 @@ import net.runelite.client.util.Text;
 )
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
-	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
+	private static final int FRIENDS_MAX_SIZE = 5;
 
 	private Queue<QueuedMessage> messageQueue;
 	private Deque<String> friends;
@@ -91,7 +93,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		messageQueue = EvictingQueue.create(100);
-		friends = new ArrayDeque<>(5);
+		friends = new ArrayDeque<>(FRIENDS_MAX_SIZE + 1);
 		keyManager.registerKeyListener(this);
 	}
 
@@ -110,7 +112,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		ChatMessageType chatMessageType = chatMessage.getType();
+		if (chatMessageType == ChatMessageType.WELCOME && StringUtils.startsWithIgnoreCase(chatMessage.getMessage(), WELCOME_MESSAGE))
 		{
 			if (!config.retainChatHistory())
 			{
@@ -127,22 +130,29 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		switch (chatMessage.getType())
+		switch (chatMessageType)
 		{
-			case PRIVATE_MESSAGE_SENT:
-			case PRIVATE_MESSAGE_RECEIVED:
-			case PRIVATE_MESSAGE_RECEIVED_MOD:
+			case PRIVATECHATOUT:
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
 				final String name = Text.removeTags(chatMessage.getName());
 				// Remove to ensure uniqueness & its place in history
-				friends.remove(name);
+				if (!friends.remove(name))
+				{
+					// If the friend didn't previously exist ensure deque capacity doesn't increase by adding them
+					if (friends.size() >= FRIENDS_MAX_SIZE)
+					{
+						friends.remove();
+					}
+				}
 				friends.add(name);
 				// intentional fall-through
-			case PUBLIC:
-			case PUBLIC_MOD:
-			case CLANCHAT:
-			case GAME:
+			case PUBLICCHAT:
+			case MODCHAT:
+			case FRIENDSCHAT:
+			case CONSOLE:
 				final QueuedMessage queuedMessage = QueuedMessage.builder()
-					.type(chatMessage.getType())
+					.type(chatMessageType)
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
 					.value(nbsp(chatMessage.getMessage()))
@@ -166,12 +176,13 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		{
 			if (menuOption.startsWith(CLEAR_PRIVATE))
 			{
-				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
-					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
+				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATECHAT ||
+					e.getType() == ChatMessageType.PRIVATECHATOUT || e.getType() == ChatMessageType.MODPRIVATECHAT);
+				friends.clear();
 			}
 			else
 			{
-				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PUBLIC || e.getType() == ChatMessageType.PUBLIC_MOD);
+				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PUBLICCHAT || e.getType() == ChatMessageType.MODCHAT);
 			}
 		}
 	}

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -76,7 +77,40 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		keyName = "overlayColor",
+		name = "Overlay Color",
+		description = "Color of overlays",
+		position = 4
+	)
+	default Color getOverlayColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "minnowsOverlayColor",
+		name = "Minnows Overlay Color",
+		description = "Color of overlays for Minnows",
+		position = 5
+	)
+	default Color getMinnowsOverlayColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "aerialOverlayColor",
+		name = "Aerial Overlay Color",
+		description = "Color of overlays when 1-tick aerial fishing",
+		position = 6
+	)
+	default Color getAerialOverlayColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
 		description = "The time until fishing session data is reset in minutes."
@@ -87,7 +121,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 8,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Display the fishing session stats."
@@ -98,7 +132,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 9,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Display the minnow progress pie overlay."
@@ -109,12 +143,23 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 10,
 		keyName = "trawlerNotification",
 		name = "Trawler activity notification",
 		description = "Send a notification when fishing trawler activity drops below 15%."
 	)
 	default boolean trawlerNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "trawlerTimer",
+		name = "Trawler timer in MM:SS",
+		description = "Trawler Timer will display a more accurate timer in MM:SS format."
+	)
+	default boolean trawlerTimer()
 	{
 		return true;
 	}

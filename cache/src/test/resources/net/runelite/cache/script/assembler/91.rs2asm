@@ -12,111 +12,111 @@
    jump                   LABEL84
 LABEL3:
    iload                  1
-   get_varc               175
+   get_varc_int           175
    if_icmplt              LABEL7
    jump                   LABEL9
 LABEL7:
-   load_int               0
+   iconst                 0
    return                
 LABEL9:
    sload                  0
-   string_remove_html    
-   is_ignore             
-   load_int               1
+   removetags            
+   ignore_test           
+   iconst                 1
    if_icmpeq              LABEL15
    jump                   LABEL17
 LABEL15:
-   load_int               0
+   iconst                 0
    return                
 LABEL17:
-   load_int               1
+   iconst                 1
    return                
    jump                   LABEL84
 LABEL20:
    iload                  1
-   get_varc               175
+   get_varc_int           175
    if_icmplt              LABEL24
    jump                   LABEL26
 LABEL24:
-   load_int               0
+   iconst                 0
    return                
 LABEL26:
    sload                  0
-   string_remove_html    
-   is_ignore             
-   load_int               1
+   removetags            
+   ignore_test           
+   iconst                 1
    if_icmpeq              LABEL32
    jump                   LABEL34
 LABEL32:
-   load_int               0
+   iconst                 0
    return                
 LABEL34:
-   5005                  
-   load_int               0
+   chat_getfilter_private
+   iconst                 0
    if_icmpeq              LABEL38
    jump                   LABEL40
 LABEL38:
-   load_int               1
+   iconst                 1
    return                
 LABEL40:
-   5005                  
-   load_int               1
+   chat_getfilter_private
+   iconst                 1
    if_icmpeq              LABEL44
    jump                   LABEL51
 LABEL44:
    sload                  0
-   is_friend             
-   load_int               1
+   friend_test           
+   iconst                 1
    if_icmpeq              LABEL49
    jump                   LABEL51
 LABEL49:
-   load_int               1
+   iconst                 1
    return                
 LABEL51:
-   load_int               0
+   iconst                 0
    return                
    jump                   LABEL84
 LABEL54:
    iload                  1
-   get_varc               175
+   get_varc_int           175
    if_icmplt              LABEL58
    jump                   LABEL60
 LABEL58:
-   load_int               0
+   iconst                 0
    return                
 LABEL60:
    iload                  0
-   load_int               5
+   iconst                 5
    if_icmpeq              LABEL64
    jump                   LABEL76
 LABEL64:
    get_varbit             1627
-   load_int               0
+   iconst                 0
    if_icmpeq              LABEL68
    jump                   LABEL76
 LABEL68:
-   get_gamecycle         
+   clientclock           
    iload                  1
-   isub                  
-   load_int               500
+   sub                   
+   iconst                 500
    if_icmpge              LABEL74
    jump                   LABEL76
 LABEL74:
-   load_int               0
+   iconst                 0
    return                
 LABEL76:
-   5005                  
-   load_int               2
+   chat_getfilter_private
+   iconst                 2
    if_icmpne              LABEL80
    jump                   LABEL82
 LABEL80:
-   load_int               1
+   iconst                 1
    return                
 LABEL82:
-   load_int               0
+   iconst                 0
    return                
 LABEL84:
-   load_int               0
+   iconst                 0
    return                
-   load_int               -1
+   iconst                 -1
    return                

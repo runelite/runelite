@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,6 +46,7 @@ public class RuneLiteAPI
 
 	public static final OkHttpClient CLIENT;
 	public static final Gson GSON = new Gson();
+	public static final MediaType JSON = MediaType.parse("application/json");
 	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
@@ -95,23 +97,51 @@ public class RuneLiteAPI
 			.build();
 	}
 
-	public static HttpUrl getApiRoot()
+	public static HttpUrl getSessionBase()
 	{
-		return HttpUrl.parse(BASE);
+		final String prop = System.getProperty("runelite.session.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
+		return HttpUrl.parse(BASE + "/session");
 	}
 
 	public static HttpUrl getApiBase()
 	{
+		final String prop = System.getProperty("runelite.http-service.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
 	}
 
 	public static HttpUrl getStaticBase()
 	{
+		final String prop = System.getProperty("runelite.static.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(STATICBASE);
 	}
 
 	public static HttpUrl getWsEndpoint()
 	{
+		final String prop = System.getProperty("runelite.ws.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(WSBASE);
 	}
 

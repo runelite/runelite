@@ -44,7 +44,7 @@ public class ClueScrollWorldOverlay extends Overlay
 	private final ClueScrollPlugin plugin;
 
 	@Inject
-	public ClueScrollWorldOverlay(ClueScrollPlugin plugin)
+	private ClueScrollWorldOverlay(ClueScrollPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

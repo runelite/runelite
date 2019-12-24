@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.poh;
 
+import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.*;
 import static net.runelite.api.NullObjectID.*;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.client.util.ImageUtil;
 
 public enum PohIcons
@@ -56,13 +56,13 @@ public enum PohIcons
 	ALTAR("altar",
 		ALTAR_13179, ALTAR_13180, ALTAR_13181, ALTAR_13182, ALTAR_13183, ALTAR_13184, ALTAR_13185, ALTAR_13186,
 		ALTAR_13187, ALTAR_13188, ALTAR_13189, ALTAR_13190, ALTAR_13191, ALTAR_13192, ALTAR_13193, ALTAR_13194,
-		ALTAR_13194, ALTAR_13196, ALTAR_13197, ALTAR_13198, ALTAR_13199
+		ALTAR_13196, ALTAR_13197, ALTAR_13198, ALTAR_13199
 	),
 	POOLS("pool", POOL_OF_RESTORATION, POOL_OF_REVITALISATION, POOL_OF_REJUVENATION, FANCY_REJUVENATION_POOL, ORNATE_REJUVENATION_POOL),
 	GLORY("glory", AMULET_OF_GLORY),
 	REPAIR("repair", ARMOUR_REPAIR_STAND),
 	SPELLBOOKALTAR("spellbook", ANCIENT_ALTAR, LUNAR_ALTAR, DARK_ALTAR, ALTAR_OF_THE_OCCULT),
-	JEWELLERYBOX("jewellery", BASIC_JEWELLERY_BOX, FANCY_JEWELLERY_BOX, ORNATE_JEWELLERY_BOX),
+	JEWELLERYBOX("jewellery", NULL_29154, NULL_29155, NULL_29156),
 	MAGICTRAVEL("transportation", SPIRIT_TREE_29227, NULL_29228, NULL_29229, OBELISK_31554),
 	PORTALNEXUS("portalnexus",
 		PORTAL_NEXUS, PORTAL_NEXUS_33355, PORTAL_NEXUS_33356, PORTAL_NEXUS_33357, PORTAL_NEXUS_33358, PORTAL_NEXUS_33359, PORTAL_NEXUS_33360,
@@ -75,7 +75,7 @@ public enum PohIcons
 		PORTAL_NEXUS_33403, PORTAL_NEXUS_33404, PORTAL_NEXUS_33405, PORTAL_NEXUS_33406, PORTAL_NEXUS_33407, PORTAL_NEXUS_33408, PORTAL_NEXUS_33409,
 		PORTAL_NEXUS_33410, PORTAL_NEXUS_33423, PORTAL_NEXUS_33424, PORTAL_NEXUS_33425, PORTAL_NEXUS_33426, PORTAL_NEXUS_33427, PORTAL_NEXUS_33428,
 		PORTAL_NEXUS_33429, PORTAL_NEXUS_33430, PORTAL_NEXUS_33431
-		),
+	),
 	XERICSTALISMAN("xericstalisman",
 		XERICS_TALISMAN, XERICS_TALISMAN_33412, XERICS_TALISMAN_33413, XERICS_TALISMAN_33414, XERICS_TALISMAN_33415, XERICS_TALISMAN_33419
 	),
@@ -83,7 +83,7 @@ public enum PohIcons
 		DIGSITE_PENDANT, DIGSITE_PENDANT_33417, DIGSITE_PENDANT_33418, DIGSITE_PENDANT_33420
 	);
 
-	private static final Map<Integer, PohIcons> minimapIcons = new HashMap<>();
+	private static final Map<Integer, PohIcons> minimapIcons;
 
 	@Getter
 	private final String imageResource;
@@ -94,15 +94,17 @@ public enum PohIcons
 
 	static
 	{
-		PohIcons[] icons = values();
+		ImmutableMap.Builder<Integer, PohIcons> builder = new ImmutableMap.Builder<>();
 
-		for (PohIcons icon : icons)
+		for (PohIcons icon : values())
 		{
 			for (Integer spotId : icon.getIds())
 			{
-				minimapIcons.put(spotId, icon);
+				builder.put(spotId, icon);
 			}
 		}
+
+		minimapIcons = builder.build();
 	}
 
 	PohIcons(String imageResource, int... ids)

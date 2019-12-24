@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.twitch;
 
+import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -96,17 +97,26 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 		return configManager.getConfig(TwitchConfig.class);
 	}
 
-	private void connect()
+	private synchronized void connect()
 	{
-		if (twitchConfig.username() != null
-			&& twitchConfig.oauthToken() != null
-			&& twitchConfig.channel() != null)
+		if (twitchIRCClient != null)
+		{
+			log.debug("Terminating Twitch client {}", twitchIRCClient);
+			twitchIRCClient.close();
+			twitchIRCClient = null;
+		}
+
+		if (!Strings.isNullOrEmpty(twitchConfig.username())
+			&& !Strings.isNullOrEmpty(twitchConfig.oauthToken())
+			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
 		{
 			String channel = twitchConfig.channel().toLowerCase();
 			if (!channel.startsWith("#"))
 			{
 				channel = "#" + channel;
 			}
+
+			log.debug("Connecting to Twitch as {}", twitchConfig.username());
 
 			twitchIRCClient = new TwitchIRCClient(
 				this,
@@ -145,12 +155,6 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			return;
 		}
 
-		if (twitchIRCClient != null)
-		{
-			twitchIRCClient.close();
-			twitchIRCClient = null;
-		}
-
 		connect();
 	}
 
@@ -162,10 +166,11 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT)
+			.type(ChatMessageType.FRIENDSCHAT)
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
 			.build());
 	}
 

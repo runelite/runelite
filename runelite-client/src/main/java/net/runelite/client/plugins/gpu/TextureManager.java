@@ -38,7 +38,6 @@ class TextureManager
 	private static final float PERC_64 = 1f / 64f;
 	private static final float PERC_128 = 1f / 128f;
 
-	private static final int SMALL_TEXTURE_SIZE = 64;
 	private static final int TEXTURE_SIZE = 128;
 
 	int initTextureArray(TextureProvider textureProvider, GL4 gl)
@@ -130,8 +129,15 @@ class TextureManager
 
 				++cnt;
 
-				int srcSize = srcPixels.length == 4096 ? SMALL_TEXTURE_SIZE : TEXTURE_SIZE;
-				byte[] pixels = convertPixels(srcPixels, srcSize, srcSize, TEXTURE_SIZE, TEXTURE_SIZE);
+				if (srcPixels.length != TEXTURE_SIZE * TEXTURE_SIZE)
+				{
+					// The texture storage is 128x128 bytes, and will only work correctly with the
+					// 128x128 textures from high detail mode
+					log.warn("Texture size for {} is {}!", textureId, srcPixels.length);
+					continue;
+				}
+
+				byte[] pixels = convertPixels(srcPixels, TEXTURE_SIZE, TEXTURE_SIZE, TEXTURE_SIZE, TEXTURE_SIZE);
 				ByteBuffer pixelBuffer = ByteBuffer.wrap(pixels);
 				gl.glTexSubImage3D(gl.GL_TEXTURE_2D_ARRAY, 0, 0, 0, textureId, TEXTURE_SIZE, TEXTURE_SIZE,
 					1, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, pixelBuffer);
