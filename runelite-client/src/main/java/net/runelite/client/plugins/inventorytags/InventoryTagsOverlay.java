@@ -26,15 +26,12 @@ package net.runelite.client.plugins.inventorytags;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
-import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
