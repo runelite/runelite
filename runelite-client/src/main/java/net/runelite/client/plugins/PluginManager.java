@@ -254,7 +254,7 @@ public class PluginManager
 				continue;
 			}
 
-			if (clazz.getSuperclass() != Plugin.class)
+			if (!Plugin.class.isAssignableFrom(clazz))
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
