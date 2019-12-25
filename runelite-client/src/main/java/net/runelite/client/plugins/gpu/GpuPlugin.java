@@ -130,11 +130,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
-	private GL4 gl;
+	protected GL4 gl;
 	private GLContext glContext;
 	private GLDrawable glDrawable;
 
-	private int glProgram;
+	protected int glProgram;
 	private int glVertexShader;
 	private int glGeomShader;
 	private int glFragmentShader;
@@ -490,7 +490,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		initUniforms();
 	}
 
-	private void initUniforms()
+	protected void initUniforms()
 	{
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
@@ -1021,6 +1021,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 
+			setUniforms();
+
 			for (int id = 0; id < textures.length; ++id)
 			{
 				Texture texture = textures[id];
@@ -1105,6 +1107,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		drawManager.processDrawComplete(this::screenshot);
 	}
+
+	protected void setUniforms() {}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
 	{
