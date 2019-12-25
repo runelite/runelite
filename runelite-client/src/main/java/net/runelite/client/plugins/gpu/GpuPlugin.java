@@ -483,9 +483,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glUiVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
 		glUiFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
 		GLUtil.loadShaders(gl, glUiProgram, glUiVertexShader, -1, glUiFragmentShader,
-			inputStreamToString(getClass().getResourceAsStream("vertui.glsl")),
+			inputStreamToString(GpuPlugin.class.getResourceAsStream("vertui.glsl")),
 			null,
-			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
+			inputStreamToString(GpuPlugin.class.getResourceAsStream("fragui.glsl")));
 
 		initUniforms();
 	}
