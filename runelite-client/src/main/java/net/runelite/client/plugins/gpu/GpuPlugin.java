@@ -1108,7 +1108,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		drawManager.processDrawComplete(this::screenshot);
 	}
 
-	protected void setUniforms() {}
+	protected void setUniforms()
+	{
+		
+	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
 	{
