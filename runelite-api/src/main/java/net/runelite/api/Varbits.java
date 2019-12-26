@@ -219,7 +219,14 @@ public enum Varbits
 	HB_TRAIL_31372(5750),
 
 	HB_FINISH(5766),
-	HB_STARTED(5767), //not working
+
+	/**
+	 * Started hunting Herbiboar.
+	 * <br>
+	 * NOTE: This value remains at 0 even after starting a Herbiboar trail up until searching the first object along the
+	 * hunting path.
+	 */
+	HB_STARTED(5767),
 
 	/**
 	 * Barbarian Assault
