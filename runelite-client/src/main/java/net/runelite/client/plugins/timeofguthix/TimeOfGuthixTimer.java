@@ -26,7 +26,7 @@ class TimeOfGuthixTimer{
     @Inject
     private Client client;
 
-    private static String formatTime(LocalTime time)
+    private String formatTime(LocalTime time)
     {
         if (time.getHour() > 0)
         {
