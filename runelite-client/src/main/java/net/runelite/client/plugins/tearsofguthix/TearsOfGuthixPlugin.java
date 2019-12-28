@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Tears Of Guthix",
-	description = "Show timers for the Tears Of Guthix streams and ",
+	description = "Show timers for the Tears Of Guthix streams and time left",
 	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )
 public class TearsOfGuthixPlugin extends Plugin

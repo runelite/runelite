@@ -37,12 +37,8 @@ import java.time.format.DateTimeFormatter;
 
 class TearsOfGuthixTimer {
 
-    private Instant startTime = Instant.now();
-
     @Inject
     private TearsOfGuthixTimer tearsOfGuthixTimer;
-
-    private int allocatedTime = -1;
 
     @Inject
     private ChatClient chatClient;
@@ -52,6 +48,9 @@ class TearsOfGuthixTimer {
 
     @Inject
     private TearsOfGuthixConfig config;
+
+    private Instant startTime = Instant.now();
+    private int allocatedTime = -1;
 
     private static String formatTime(LocalTime time)
     {
@@ -72,7 +71,7 @@ class TearsOfGuthixTimer {
     {
         final Instant now = Instant.now();
         Duration elapsed;
-        if(!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3250 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+        if(!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
         {
             elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
             // if time is not calculated yet
@@ -100,7 +99,7 @@ class TearsOfGuthixTimer {
             chatClient.submitQp(client.getLocalPlayer().getName(), qp);
             return chatClient.getQp(client.getLocalPlayer().getName());
         }
-        catch (IOException e) {
+        catch (IOException | NullPointerException e) {
             e.printStackTrace();
             return -1;
         }
