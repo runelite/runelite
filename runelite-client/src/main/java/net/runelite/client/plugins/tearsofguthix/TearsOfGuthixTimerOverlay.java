@@ -36,6 +36,8 @@ import java.awt.*;
 
 public class TearsOfGuthixTimerOverlay extends Overlay {
 
+    private static final int TOG_REGION = 12948;
+
     @Inject
     private PanelComponent panelComponent = new PanelComponent();
 
@@ -61,7 +63,7 @@ public class TearsOfGuthixTimerOverlay extends Overlay {
     {
         String time = tearsOfGuthixTimer.getTime();
         // make sure player player is in region or check if timer is over
-        if(!config.time() || time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+        if(!config.time() || time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
         {
             return null;
         }

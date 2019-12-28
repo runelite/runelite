@@ -34,7 +34,7 @@ public interface TearsOfGuthixConfig extends Config {
     @ConfigItem(
             keyName= "time",
             name = "Show time left",
-            description = "Show time left for the Tears of Guthix.",
+            description = "Show time left for the Tears of Guthix",
             position = 1
     )
 

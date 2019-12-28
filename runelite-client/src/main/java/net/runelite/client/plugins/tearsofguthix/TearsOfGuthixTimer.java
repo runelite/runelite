@@ -51,6 +51,8 @@ class TearsOfGuthixTimer {
 
     private Instant startTime = Instant.now();
     private int allocatedTime = -1;
+    private static final int TOG_REGION = 12948;
+
 
     private static String formatTime(LocalTime time)
     {
@@ -71,7 +73,7 @@ class TearsOfGuthixTimer {
     {
         final Instant now = Instant.now();
         Duration elapsed;
-        if(!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+        if(!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
         {
             elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
             // if time is not calculated yet
@@ -79,7 +81,7 @@ class TearsOfGuthixTimer {
             {
                 allocatedTime = (int) Math.floor(getQp()*.6);
             }
-            final long remaining = (allocatedTime) - elapsed.getSeconds();
+            final long remaining = allocatedTime - elapsed.getSeconds();
             if(remaining < 0)
             {
                 return "-1";
@@ -100,7 +102,6 @@ class TearsOfGuthixTimer {
             return chatClient.getQp(client.getLocalPlayer().getName());
         }
         catch (IOException | NullPointerException e) {
-            e.printStackTrace();
             return -1;
         }
     }
