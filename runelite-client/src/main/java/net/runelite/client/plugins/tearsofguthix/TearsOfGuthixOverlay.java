@@ -56,7 +56,7 @@ class TearsOfGuthixOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(!config.streams())
+		if (!config.streams())
 		{
 			return null;
 		}

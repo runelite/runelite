@@ -97,7 +97,8 @@ class TearsOfGuthixTimer
 
 	int getQp()
 	{
-		try {
+		try
+        {
 			int qp = client.getVar(VarPlayer.QUEST_POINTS);
 			chatClient.submitQp(client.getLocalPlayer().getName(), qp);
 			return chatClient.getQp(client.getLocalPlayer().getName());
