@@ -58,6 +58,12 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixOverlay overlay;
 
+	@Inject
+	private TearsOfGuthixTimer timer;
+
+	@Inject
+	private TearsOfGuthixTimerOverlay timerOverlay;
+
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
 
@@ -65,12 +71,14 @@ public class TearsOfGuthixPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(timerOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(timerOverlay);
 		streams.clear();
 	}
 
