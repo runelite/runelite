@@ -7,13 +7,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.chat.ChatClient;
+
 import javax.inject.Inject;
 import java.io.IOException;
 
 @Slf4j
 @PluginDescriptor(
         name = "Time of Guthix",
-        description = "Shows time left in tears of guthix"
+        description = "Shows time left in Tears of Guthix"
 )
 public class TimeOfGuthix extends Plugin {
 
@@ -21,6 +22,7 @@ public class TimeOfGuthix extends Plugin {
     @Inject
     private ChatClient chatClient = new ChatClient();
 
+    @Inject
     private TimeOfGuthixTimer timeOfGuthixTimer;
 
     @Inject
@@ -45,7 +47,7 @@ public class TimeOfGuthix extends Plugin {
 
     int getQp() {
         try {
-            final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+            int qp = client.getVar(VarPlayer.QUEST_POINTS);
             chatClient.submitQp(client.getLocalPlayer().getName(), qp);
             return chatClient.getQp(client.getLocalPlayer().getName());
         }
@@ -54,8 +56,7 @@ public class TimeOfGuthix extends Plugin {
             return -1;
         }
     }
-    int allocatedTime() {
-        double time = getQp()*.6;
-        return (int) Math.floor(time);
-    }
+
+
+
 }

@@ -3,7 +3,6 @@ package net.runelite.client.plugins.timeofguthix;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.http.api.chat.ChatClient;
-
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
@@ -14,11 +13,10 @@ class TimeOfGuthixTimer{
 
     private Instant startTime = Instant.now();
 
-    void resetTimer() {
-        startTime = Instant.now();
-    }
     @Inject
-    private TimeOfGuthix timeOfGuthix = new TimeOfGuthix();
+    private TimeOfGuthix timeOfGuthix;
+
+    private int allocatedTime = -1;
 
     @Inject
     private ChatClient chatClient;
@@ -26,7 +24,7 @@ class TimeOfGuthixTimer{
     @Inject
     private Client client;
 
-    private String formatTime(LocalTime time)
+    private static String formatTime(LocalTime time)
     {
         if (time.getHour() > 0)
         {
@@ -45,14 +43,31 @@ class TimeOfGuthixTimer{
     {
 
         final Instant now = Instant.now();
-        final Duration elapsed;
-        elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
-        final long remaining = timeOfGuthix.allocatedTime() - elapsed.getSeconds();
-        if(remaining < 0) {
-            return "-1";
+        Duration elapsed;
+        if(client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+        {
+            elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
+            if(allocatedTime == -1)
+            {
+                allocatedTime = (int) Math.floor(timeOfGuthix.getQp()*.6);
+            }
+            final long remaining = (allocatedTime) - elapsed.getSeconds();
+            if(remaining < 0)
+            {
+                return "-1";
+            }
+            return formatTime(LocalTime.ofSecondOfDay(remaining));
         }
-        return formatTime(LocalTime.ofSecondOfDay( remaining ) );
+        else
+        {
+            startTime = Instant.now();
+        }
+        return "-1";
     }
+
+
+
+
 
 
 }
