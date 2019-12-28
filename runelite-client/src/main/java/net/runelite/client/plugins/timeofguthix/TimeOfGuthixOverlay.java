@@ -11,9 +11,6 @@ import java.awt.*;
 public class TimeOfGuthixOverlay extends Overlay {
 
     @Inject
-    private TimeOfGuthix plugin;
-
-    @Inject
     private PanelComponent panelComponent = new PanelComponent();
 
     @Inject
@@ -22,20 +19,19 @@ public class TimeOfGuthixOverlay extends Overlay {
     @Inject
     private TimeOfGuthixTimer timeOfGuthixTimer;
 
-
     @Inject
     private TimeOfGuthixOverlay(Client client, TimeOfGuthix plugin)
     {
         super(plugin);
         setPosition(OverlayPosition.BOTTOM_RIGHT);
         this.client = client;
-        this.plugin = plugin;
     }
 
     @Override
     public Dimension render(Graphics2D graphics)
     {
         String time = timeOfGuthixTimer.getTime();
+        //make sure player player is in region or check if timer is over
         if(time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
         {
             return null;
@@ -45,7 +41,6 @@ public class TimeOfGuthixOverlay extends Overlay {
             .left("Time Left: ")
             .right(time)
             .build());
-
         return panelComponent.render(graphics);
     }
 

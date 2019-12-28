@@ -14,7 +14,7 @@ import java.io.IOException;
 @Slf4j
 @PluginDescriptor(
         name = "Time of Guthix",
-        description = "Shows time left in Tears of Guthix"
+        description = "Shows time left in the Tears of Guthix minigame"
 )
 public class TimeOfGuthix extends Plugin {
 
@@ -37,12 +37,13 @@ public class TimeOfGuthix extends Plugin {
     @Override
     public void startUp() {
         overlayManager.add(timeOfGuthixOverlay);
-
+        timeOfGuthixTimer = new TimeOfGuthixTimer();
     }
 
     @Override
     public void shutDown() {
         overlayManager.remove(timeOfGuthixOverlay);
+        timeOfGuthixTimer = null;
     }
 
     int getQp() {

@@ -41,12 +41,12 @@ class TimeOfGuthixTimer{
     }
     String getTime()
     {
-
         final Instant now = Instant.now();
         Duration elapsed;
         if(client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
         {
             elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
+            // if time is not calculated yet
             if(allocatedTime == -1)
             {
                 allocatedTime = (int) Math.floor(timeOfGuthix.getQp()*.6);
