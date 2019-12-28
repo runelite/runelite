@@ -79,7 +79,7 @@ class TearsOfGuthixTimer {
             // if time is not calculated yet
             if(allocatedTime == -1)
             {
-                allocatedTime = (int) Math.floor(getQp()*.6);
+                allocatedTime = (int) Math.floor(getQp()*.6) + 1;
             }
             final long remaining = allocatedTime - elapsed.getSeconds();
             if(remaining < 0)
