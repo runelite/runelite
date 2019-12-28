@@ -43,6 +43,9 @@ class TearsOfGuthixOverlay extends Overlay
 	private final TearsOfGuthixPlugin plugin;
 
 	@Inject
+	private TearsOfGuthixConfig config;
+
+	@Inject
 	private TearsOfGuthixOverlay(TearsOfGuthixPlugin plugin)
 	{
 		this.plugin = plugin;
@@ -53,6 +56,10 @@ class TearsOfGuthixOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if(config.streams())
+		{
+			return null;
+		}
 		plugin.getStreams().forEach((object, timer) ->
 		{
 			final Point position = object.getCanvasLocation(100);

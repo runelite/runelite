@@ -28,6 +28,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -35,6 +37,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,7 +45,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Tears Of Guthix",
-	description = "Show timers for the Tears Of Guthix streams",
+	description = "Show timers for the Tears Of Guthix streams and ",
 	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )
 public class TearsOfGuthixPlugin extends Plugin
@@ -63,6 +66,15 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Inject
 	private TearsOfGuthixTimerOverlay timerOverlay;
+
+	@Inject
+	private TearsOfGuthixConfig tearsOfGuthixConfig;
+
+	@Provides
+	TearsOfGuthixConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TearsOfGuthixConfig.class);
+	}
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
@@ -120,4 +132,5 @@ public class TearsOfGuthixPlugin extends Plugin
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
 	}
+
 }
