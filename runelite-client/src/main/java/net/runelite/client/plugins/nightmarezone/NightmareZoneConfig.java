@@ -142,4 +142,26 @@ public interface NightmareZoneConfig extends Config
 		return Color.RED;
 	}
 
+	@ConfigItem(
+		keyName = "healthNotification",
+		name = "Health Notification",
+		description = "Toggles notifications when your hitpoints gets above your threshold. <br>" +
+			" Only starts to work after going equal or below the threshold",
+		position = 11
+	)
+	default boolean hitPointsNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hitpointThreshold",
+		name = "Hitpoint threshold",
+		description = "The amount of hitpoints to be above to send a notification",
+		position = 12
+	)
+	default int hitPointThreshold()
+	{
+		return 0;
+	}
 }

@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
@@ -76,9 +77,13 @@ public class NightmareZonePlugin extends Plugin
 	
 	private Instant nmzSessionStartTime;
 
-	// This starts as true since you need to get
+	// These starts as true since you need to get
 	// above the threshold before sending notifications
+	private boolean hitpointsNotificationSend = true;
 	private boolean absorptionNotificationSend = true;
+
+	// This starts are false since you need to reach the threshold first before you can be notified your health is too high.
+	private boolean hitPointsReduced = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -106,6 +111,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		hitPointsReduced = false;
 		overlay.updateConfig();
 	}
 
@@ -125,12 +131,22 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			if (!hitpointsNotificationSend)
+			{
+				hitpointsNotificationSend = true;
+			}
+
 			if (nmzSessionStartTime != null)
 			{
 				resetPointsPerHour();
 			}
 
 			return;
+		}
+
+		if (config.hitPointsNotification())
+		{
+			checkHealth();
 		}
 
 		if (config.absorptionNotification())
@@ -159,6 +175,12 @@ public class NightmareZonePlugin extends Plugin
 			if (config.overloadNotification())
 			{
 				notifier.notify("Your overload has worn off");
+			}
+
+			if (config.hitPointsNotification() && config.hitPointThreshold() < client.getBoostedSkillLevel(Skill.HITPOINTS) + 50)
+			{
+				hitPointsReduced = false;
+				hitpointsNotificationSend = true;
 			}
 		}
 		else if (msg.contains("A power-up has spawned:"))
@@ -190,6 +212,34 @@ public class NightmareZonePlugin extends Plugin
 				{
 					notifier.notify(msg);
 				}
+			}
+		}
+	}
+
+	private void checkHealth()
+	{
+		final int realHealth = client.getRealSkillLevel(Skill.HITPOINTS);
+		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+
+		if (config.hitPointThreshold() >= realHealth || config.hitPointThreshold() == 0)
+		{
+			return;
+		}
+
+		if (!hitpointsNotificationSend && hitPointsReduced)
+		{
+			if (currentHealth > config.hitPointThreshold())
+			{
+				notifier.notify("Hitpoints are above: " + config.hitPointThreshold());
+				hitpointsNotificationSend = true;
+			}
+		}
+		else
+		{
+			if (currentHealth <= config.hitPointThreshold())
+			{
+				hitPointsReduced = true;
+				hitpointsNotificationSend = false;
 			}
 		}
 	}
