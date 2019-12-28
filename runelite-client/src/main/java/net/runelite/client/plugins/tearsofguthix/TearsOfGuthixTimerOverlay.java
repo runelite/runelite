@@ -30,49 +30,49 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
 import javax.inject.Inject;
 import java.awt.*;
 
-public class TearsOfGuthixTimerOverlay extends Overlay {
+public class TearsOfGuthixTimerOverlay extends Overlay
+{
 
-    private static final int TOG_REGION = 12948;
+	private static final int TOG_REGION = 12948;
 
-    @Inject
-    private PanelComponent panelComponent = new PanelComponent();
+	@Inject
+	private PanelComponent panelComponent = new PanelComponent();
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private TearsOfGuthixTimer tearsOfGuthixTimer;
+	@Inject
+	private TearsOfGuthixTimer tearsOfGuthixTimer;
 
-    @Inject
-    private TearsOfGuthixConfig config;
+	@Inject
+	private TearsOfGuthixConfig config;
 
-    @Inject
-    private TearsOfGuthixTimerOverlay(Client client, TearsOfGuthixPlugin plugin)
-    {
-        super(plugin);
-        setPosition(OverlayPosition.BOTTOM_LEFT);
-        this.client = client;
-    }
+	@Inject
+	private TearsOfGuthixTimerOverlay(Client client, TearsOfGuthixPlugin plugin)
+	{
+		super(plugin);
+		setPosition(OverlayPosition.BOTTOM_LEFT);
+		this.client = client;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        String time = tearsOfGuthixTimer.getTime();
-        // make sure player player is in region or check if timer is over
-        if(!config.time() || time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
-        {
-            return null;
-        }
-        panelComponent.getChildren().clear();
-        panelComponent.getChildren().add(LineComponent.builder()
-            .left("Time Left: ")
-            .right(time)
-            .build());
-        return panelComponent.render(graphics);
-    }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		String time = tearsOfGuthixTimer.getTime();
+		// make sure player player is in region or check if timer is over
+		if (!config.time() || time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+		{
+			return null;
+		}
+		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Time Left: ")
+			.right(time)
+			.build());
+		return panelComponent.render(graphics);
+	}
 
 }

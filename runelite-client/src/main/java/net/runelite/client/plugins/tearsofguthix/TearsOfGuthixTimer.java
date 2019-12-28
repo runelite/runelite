@@ -35,79 +35,77 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-class TearsOfGuthixTimer {
+class TearsOfGuthixTimer
+{
+	@Inject
+	private TearsOfGuthixTimer tearsOfGuthixTimer;
 
-    @Inject
-    private TearsOfGuthixTimer tearsOfGuthixTimer;
+	@Inject
+	private ChatClient chatClient;
 
-    @Inject
-    private ChatClient chatClient;
+	@Inject
+	private Client client;
 
-    @Inject
-    private Client client;
+	@Inject
+	private TearsOfGuthixConfig config;
 
-    @Inject
-    private TearsOfGuthixConfig config;
-
-    private Instant startTime = Instant.now();
-    private int allocatedTime = -1;
-    private static final int TOG_REGION = 12948;
-
-
-    private static String formatTime(LocalTime time)
-    {
-        if (time.getHour() > 0)
-        {
-            return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-        }
-        else if (time.getMinute() > 9)
-        {
-            return time.format(DateTimeFormatter.ofPattern("mm:ss"));
-        }
-        else
-        {
-            return time.format(DateTimeFormatter.ofPattern("m:ss"));
-        }
-    }
-    String getTime()
-    {
-        final Instant now = Instant.now();
-        Duration elapsed;
-        if(!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
-        {
-            elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
-            // if time is not calculated yet
-            if(allocatedTime == -1)
-            {
-                allocatedTime = (int) Math.floor(getQp()*.6) + 1;
-            }
-            final long remaining = allocatedTime - elapsed.getSeconds();
-            if(remaining < 0)
-            {
-                return "-1";
-            }
-            return formatTime(LocalTime.ofSecondOfDay(remaining));
-        }
-        else
-        {
-            startTime = Instant.now();
-        }
-        return "-1";
-    }
-
-    int getQp() {
-        try {
-            int qp = client.getVar(VarPlayer.QUEST_POINTS);
-            chatClient.submitQp(client.getLocalPlayer().getName(), qp);
-            return chatClient.getQp(client.getLocalPlayer().getName());
-        }
-        catch (IOException | NullPointerException e) {
-            return -1;
-        }
-    }
+	private Instant startTime = Instant.now();
+	private int allocatedTime = -1;
+	private static final int TOG_REGION = 12948;
 
 
+	private static String formatTime(LocalTime time)
+	{
+		if (time.getHour() > 0)
+		{
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+		else if (time.getMinute() > 9)
+		{
+			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		}
+		else
+		{
+			return time.format(DateTimeFormatter.ofPattern("m:ss"));
+		}
+	}
+	String getTime()
+	{
+		final Instant now = Instant.now();
+		Duration elapsed;
+		if (!config.time() || client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+		{
+			elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
+			// if time is not calculated yet
+			if (allocatedTime == -1)
+			{
+				allocatedTime = (int) Math.floor(getQp() * 0.6) + 1;
+			}
+			final long remaining = allocatedTime - elapsed.getSeconds();
+			if (remaining < 0)
+			{
+				return "-1";
+			}
+			return formatTime(LocalTime.ofSecondOfDay(remaining));
+		}
+		else
+		{
+			startTime = Instant.now();
+		}
+		return "-1";
+	}
 
-
+	int getQp()
+	{
+		try {
+			int qp = client.getVar(VarPlayer.QUEST_POINTS);
+			chatClient.submitQp(client.getLocalPlayer().getName(), qp);
+			return chatClient.getQp(client.getLocalPlayer().getName());
+		}
+		catch (IOException | NullPointerException e)
+		{
+			return -1;
+		}
+	}
 
 }

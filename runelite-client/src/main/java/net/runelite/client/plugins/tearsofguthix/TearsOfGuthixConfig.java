@@ -29,30 +29,30 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("tearsofguthix")
-public interface TearsOfGuthixConfig extends Config {
+public interface TearsOfGuthixConfig extends Config
+{
 
-    @ConfigItem(
-            keyName= "time",
-            name = "Show time left",
-            description = "Show time left for the Tears of Guthix",
-            position = 1
-    )
+	@ConfigItem(
+			keyName = "time",
+			name = "Show time left",
+			description = "Show time left for the Tears of Guthix",
+			position = 1
+	)
 
-    default boolean time()
-    {
-        return true;
-    }
+	default boolean time()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "streams",
-            name = "Show stream timers",
-            description = "Toggles streams in the Tears of Guthix",
-            position = 2
-    )
+	@ConfigItem(
+			keyName = "streams",
+			name = "Show stream timers",
+			description = "Toggles streams in the Tears of Guthix",
+			position = 2
+	)
 
-    default boolean streams()
-    {
-        return true;
-    }
-
+	default boolean streams()
+	{
+		return true;
+	}
 }

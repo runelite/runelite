@@ -28,7 +28,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
