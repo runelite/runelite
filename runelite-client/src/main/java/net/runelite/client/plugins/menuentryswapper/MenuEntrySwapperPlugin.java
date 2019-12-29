@@ -1214,7 +1214,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			for (String jewellerybox : jewelleryBox)
 			{
-				menuManager.addPriorityEntry(jewellerybox);
+				menuManager.addPriorityEntry(jewellerybox, "basic jewellery box");
+				menuManager.addPriorityEntry(jewellerybox, "fancy jewellery box");
+				menuManager.addPriorityEntry(jewellerybox, "ornate jewellery box");
 			}
 		}
 	}
@@ -1341,7 +1343,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removeSwap("Bury", "bone", "Use");
 		for (String jewellerybox : jewelleryBox)
 		{
-			menuManager.removePriorityEntry(jewellerybox);
+			menuManager.removePriorityEntry(jewellerybox, "basic jewellery box");
+			menuManager.removePriorityEntry(jewellerybox, "fancy jewellery box");
+			menuManager.removePriorityEntry(jewellerybox, "ornate jewellery box");
 		}
 
 		switch (this.swapFairyRingMode)
