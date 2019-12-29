@@ -60,7 +60,14 @@ enum Tree
 	REGULAR_TREE(null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
 	OAK_TREE(Duration.ofMillis(8500), ObjectID.OAK_TREE, OAK_TREE_4540, OAK_10820),
 	WILLOW_TREE(Duration.ofMillis(8500), WILLOW, WILLOW_10829, WILLOW_10831, WILLOW_10833),
-	MAPLE_TREE(Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681),
+	MAPLE_TREE(Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681)
+		{
+			@Override
+			Duration getRespawnTime(int region)
+			{
+				return region == MISCELLANIA_REGION ? Duration.ofMillis(8500) : super.respawnTime;
+			}
+		},
 	TEAK_TREE(Duration.ofMillis(8500), TEAK, TEAK_36686),
 	MAHOGANY_TREE(Duration.ofMillis(8500), MAHOGANY, MAHOGANY_36688),
 	YEW_TREE(Duration.ofMinutes(1), YEW, NULL_10823, YEW_36683),
@@ -77,6 +84,7 @@ enum Tree
 		this.treeIds = treeIds;
 	}
 
+	private static final int MISCELLANIA_REGION = 10044;
 	private static final Map<Integer, Tree> TREES;
 
 	static
@@ -92,6 +100,11 @@ enum Tree
 		}
 
 		TREES = builder.build();
+	}
+
+	Duration getRespawnTime(int region)
+	{
+		return respawnTime;
 	}
 
 	static Tree findTree(int objectId)
