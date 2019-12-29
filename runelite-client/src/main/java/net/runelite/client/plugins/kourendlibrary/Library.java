@@ -131,18 +131,25 @@ class Library
 		else if (state != SolvedState.NO_DATA)
 		{
 			// Reset if the book we found isn't what we expected
-			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript, since the layout has changed
-			if ((book != null && !bookcase.getPossibleBooks().contains(book)) ||
-				(book == null && !bookcase.getPossibleBooks().isEmpty() && bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript)))
+
+			if (book != null && !bookcase.getPossibleBooks().contains(book))
 			{
 				reset();
 			}
 		}
 
-		// Everything is known, nothing to do
 		if (state == SolvedState.COMPLETE)
 		{
-			return;
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript, since the layout has changed
+			if (book == null && !bookcase.getPossibleBooks().isEmpty() && bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
+			{
+				reset();
+			}
+			else
+			{
+				// Everything is known, nothing to do
+				return;
+			}
 		}
 
 		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
