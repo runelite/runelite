@@ -371,4 +371,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return GEItemCollectMode.DEFAULT;
 	}
+
+	@ConfigItem(
+		keyName = "swapGEAbort",
+		name = "GE Abort",
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
+	)
+	default boolean swapGEAbort()
+	{
+		return false;
+	}
 }

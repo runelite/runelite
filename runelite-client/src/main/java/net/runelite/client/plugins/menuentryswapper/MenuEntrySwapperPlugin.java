@@ -622,6 +622,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pick-lots", option, target, index);
 		}
+		else if (shiftModifier && option.equals("view offer") && config.swapGEAbort())
+		{
+			swap("abort offer", option, target, index);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
