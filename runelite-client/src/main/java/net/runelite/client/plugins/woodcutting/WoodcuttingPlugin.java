@@ -103,6 +103,7 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
+	private int currentPlane;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -144,6 +145,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
+		currentPlane = client.getPlane();
 
 		respawns.removeIf(TreeRespawn::isExpired);
 
@@ -204,7 +206,7 @@ public class WoodcuttingPlugin extends Plugin
 		Tree tree = Tree.findTree(object.getId());
 		if (tree != null)
 		{
-			if (tree.getRespawnTime() != null && !recentlyLoggedIn)
+			if (tree.getRespawnTime() != null && !recentlyLoggedIn && currentPlane == object.getPlane())
 			{
 				Point max = object.getSceneMaxLocation();
 				Point min = object.getSceneMinLocation();
