@@ -213,7 +213,9 @@ public class WoodcuttingPlugin extends Plugin
 				int lenX = max.getX() - min.getX();
 				int lenY = max.getY() - min.getY();
 				log.debug("Adding respawn timer for {} tree at {}", tree, object.getLocalLocation());
-				TreeRespawn treeRespawn = new TreeRespawn(tree, lenX, lenY, WorldPoint.fromScene(client, min.getX(), min.getY(), client.getPlane()), Instant.now(), (int) tree.getRespawnTime().toMillis());
+
+				final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+				TreeRespawn treeRespawn = new TreeRespawn(tree, lenX, lenY, WorldPoint.fromScene(client, min.getX(), min.getY(), client.getPlane()), Instant.now(), (int) tree.getRespawnTime(region).toMillis());
 				respawns.add(treeRespawn);
 			}
 
