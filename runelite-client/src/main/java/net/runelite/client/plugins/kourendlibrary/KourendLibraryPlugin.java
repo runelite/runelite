@@ -174,29 +174,31 @@ public class KourendLibraryPlugin extends Plugin
 
 		if (ev.getKey().equals("hideVarlamoreEnvoy"))
 		{
-			panel.reload();
+			SwingUtilities.invokeLater(panel::reload);
 		}
-
-		SwingUtilities.invokeLater(() ->
+		else if (ev.getKey().equals("hideButton"))
 		{
-			if (!config.hideButton())
+			SwingUtilities.invokeLater(() ->
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				Player lp = client.getLocalPlayer();
-				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-				if (inRegion)
+				if (!config.hideButton())
 				{
 					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					clientToolbar.removeNavigation(navButton);
+					Player lp = client.getLocalPlayer();
+					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+					if (inRegion)
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@Subscribe
