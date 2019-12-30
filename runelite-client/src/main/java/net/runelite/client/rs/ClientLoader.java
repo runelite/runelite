@@ -279,6 +279,11 @@ public class ClientLoader implements Supplier<Applet>
 					// Its important to not close the response manually - this should be the only close or
 					// try-with-resources on this stream or it's children
 
+					if (!response.isSuccessful())
+					{
+						throw new IOException("unsuccessful response fetching gamepack: " + response.message());
+					}
+
 					int length = (int) response.body().contentLength();
 					if (length < 0)
 					{
@@ -307,6 +312,11 @@ public class ClientLoader implements Supplier<Applet>
 					// Get the mtime from the first entry so check it against the cache
 					{
 						JarEntry je = networkJIS.getNextJarEntry();
+						if (je == null)
+						{
+							throw new IOException("unable to peek first jar entry");
+						}
+
 						networkJIS.skip(Long.MAX_VALUE);
 						verifyJarEntry(je, jagexCertificateChain);
 						long vanillaClientMTime = je.getLastModifiedTime().toMillis();
