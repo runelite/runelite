@@ -140,7 +140,7 @@ public class Deob
 			new GetPathTransformer().transform(group);
 			new ClientErrorTransformer().transform(group);
 			new ReflectionTransformer().transform(group);
-			new MaxMemoryTransformer().transform(group);
+			//new MaxMemoryTransformer().transform(group);
 			//new RuneliteBufferTransformer().transform(group);
 		}
 
