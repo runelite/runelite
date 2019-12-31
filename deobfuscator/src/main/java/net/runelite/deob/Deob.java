@@ -53,7 +53,6 @@ import net.runelite.deob.deobfuscators.exprargorder.ExprArgOrder;
 import net.runelite.deob.deobfuscators.menuaction.MenuActionDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
-import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.OpcodesTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
 import net.runelite.deob.util.JarUtil;
