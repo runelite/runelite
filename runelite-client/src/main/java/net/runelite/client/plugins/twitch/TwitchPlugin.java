@@ -219,6 +219,6 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			addChatMessage(twitchConfig.username(), message);
 		}
 
-		chatboxInput.setStop(true);
+		chatboxInput.setStop();
 	}
 }

@@ -151,12 +151,10 @@ public class ChatCommandManager
 		}
 
 		BiPredicate<ChatInput, String> input = chatCommand.getInput();
-		if (input == null)
+		if (input != null && input.test(chatInput, message))
 		{
-			return;
+			chatInput.setStop();
 		}
-
-		chatInput.setStop(input.test(chatInput, message));
 	}
 
 	private static String extractCommand(String message)
