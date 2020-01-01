@@ -125,7 +125,7 @@ public class ItemStatOverlay extends Overlay
 
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
-					if (config.hideNoConsumableChange() && c.getPositivity() == Positivity.NO_CHANGE)
+					if (c.getPositivity() == Positivity.NO_CHANGE)
 					{
 						continue;
 					}
