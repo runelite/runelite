@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache;
+import net.runelite.cache.definitions.ParamDefinition;
+import net.runelite.cache.io.InputStream;
+import net.runelite.cache.util.ScriptVarType;
 
-public enum ConfigType
+public class ParamLoader
 {
-	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	PARAMS(11),
-	SEQUENCE(12),
-	SPOTANIM(13),
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	STRUCT(34),
-	AREA(35);
-
-	private final int id;
-
-	ConfigType(int id)
+	public ParamDefinition load(byte[] data)
 	{
-		this.id = id;
-	}
+		ParamDefinition def = new ParamDefinition();
+		InputStream b = new InputStream(data);
 
-	public int getId()
-	{
-		return id;
+		for (; ; )
+		{
+			int opcode = b.readUnsignedByte();
+
+			switch (opcode)
+			{
+				case 0:
+					return def;
+				case 1:
+				{
+					int idx = b.readByte();
+					def.setType(ScriptVarType.forCharKey((char) idx));
+					break;
+				}
+				case 2:
+					def.setDefaultInt(b.readInt());
+					break;
+				case 4:
+					def.setMembers(false);
+					break;
+				case 5:
+					def.setDefaultString(b.readString());
+					break;
+			}
+		}
 	}
 }
