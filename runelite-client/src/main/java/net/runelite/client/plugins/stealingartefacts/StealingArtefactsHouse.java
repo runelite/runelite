@@ -1,0 +1,78 @@
+/*
+ * Copyright (c) 2020, Dutta64 <https://github.com/dutta64>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.plugins.stealingartefacts;
+
+import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.coords.WorldPoint;
+
+@RequiredArgsConstructor
+enum StealingArtefactsHouse
+{
+	NORTH("Northern", "North", new WorldPoint(1767, 3751, 0)),
+	NORTH_WESTERN("North-Western", "N.West", new WorldPoint(1750, 3763, 1)),
+	SOUTH("Southern", "South", new WorldPoint(1764, 3735, 1)),
+	SOUTH_EASTERN("South-Eastern", "S.East", new WorldPoint(1774, 3730, 1)),
+	SOUTH_WESTERN("South-Western", "S.West", new WorldPoint(1749, 3735, 1)),
+	WEST("Western", "West", new WorldPoint(1747, 3749, 1)),
+	CAPTAIN_KHALED("Captain Khaled", "N/A", new WorldPoint(1845, 3752, 0));
+
+	private final String name;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final String shortName;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final WorldPoint worldPoint;
+
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
+
+	public static StealingArtefactsHouse fromName(String name)
+	{
+		StealingArtefactsHouse stealingArtefactsHouse = null;
+
+		for (StealingArtefactsHouse house : StealingArtefactsHouse.values())
+		{
+			if (Objects.equals(house.name, name))
+			{
+				stealingArtefactsHouse = house;
+				break;
+			}
+		}
+
+		if (stealingArtefactsHouse == null)
+		{
+			throw new IllegalArgumentException();
+		}
+
+		return stealingArtefactsHouse;
+	}
+}
