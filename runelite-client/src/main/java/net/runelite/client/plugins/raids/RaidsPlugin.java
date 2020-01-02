@@ -45,7 +45,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -58,7 +61,11 @@ import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -77,6 +84,13 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.bats.BatsLocator;
+import static net.runelite.client.plugins.raids.bats.BatsLocator.CLOSED;
+import static net.runelite.client.plugins.raids.bats.BatsLocator.OPENED_POISON_OR_BATS;
+import static net.runelite.client.plugins.raids.bats.BatsLocator.OPENED_WITHOUT_GRUBS;
+import static net.runelite.client.plugins.raids.bats.BatsLocator.OPENED_WITH_GRUBS;
+import static net.runelite.client.plugins.raids.bats.BatsLocator.TROUGH;
+import net.runelite.client.plugins.raids.bats.BatsOverlay;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -127,6 +141,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
+	private BatsOverlay batsOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -172,6 +189,9 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+	@Getter
+	private BatsLocator batsLocator;
+
 	private boolean chestOpened;
 
 	private RaidsTimer timer;
@@ -192,9 +212,11 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(batsOverlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
+		batsLocator = new BatsLocator(client);
 	}
 
 	@Override
@@ -202,6 +224,7 @@ public class RaidsPlugin extends Plugin
 	{
 		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
 		overlayManager.remove(overlay);
+		overlayManager.remove(batsOverlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -263,6 +286,47 @@ public class RaidsPlugin extends Plugin
 			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		//Checking if player is in raid chambers gives problems when chunks of thieving room are loaded at entering raid chambers since game objects spawn before varbit changes.
+		GameObject gameObject = event.getGameObject();
+		switch (gameObject.getId())
+		{
+			case TROUGH:
+				batsLocator.troughSpawnEvent(gameObject);
+				break;
+			case CLOSED:
+			case OPENED_POISON_OR_BATS:
+			case OPENED_WITHOUT_GRUBS:
+			case OPENED_WITH_GRUBS:
+				batsLocator.chestSpawnEvent(gameObject);
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
+	{
+		if (inRaidChambers)
+		{
+			GraphicsObject graphicsObject = event.getGraphicsObject();
+			if (graphicsObject.getId() == GraphicID.POISON_SPLAT)
+			{
+				batsLocator.poisonSplatEvent(WorldPoint.fromLocal(client, graphicsObject.getLocation()));
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (inRaidChambers)
+		{
+			batsLocator.gameTickEvent();
+		}
 	}
 
 	@Subscribe
@@ -353,6 +417,14 @@ public class RaidsPlugin extends Plugin
 
 		if (force || inRaidChambers != setting)
 		{
+			//A new instance is created when leaving the raid chambers instead of entering the raid chambers.
+			//Entering the raid chambers will change a varbit but game objects spawn before varbit changes.
+			//The first instance is created when the plugin is started.
+			if (!setting)
+			{
+				batsLocator = new BatsLocator(client);
+			}
+
 			inRaidChambers = setting;
 			updateInfoBoxState();
 

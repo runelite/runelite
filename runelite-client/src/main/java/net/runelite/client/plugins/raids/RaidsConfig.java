@@ -173,4 +173,15 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "enableBatsLocator",
+		name = "Enable bats locator",
+		description = "Helps locating bats in the thieving room"
+	)
+	default boolean enableBatsLocator()
+	{
+		return false;
+	}
 }
