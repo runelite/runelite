@@ -224,11 +224,15 @@ public class ItemChargePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showChronicleCharges;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean showKharedstsMemoirs;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showXericTalismanCharges;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showrecoil;
 	@Getter(AccessLevel.PACKAGE)
 	private int chronicle;
+	@Getter(AccessLevel.PACKAGE)
+	private int kharedstsMemoirs;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showRingOfForgingCount;
 	@Getter(AccessLevel.PACKAGE)
@@ -657,6 +661,8 @@ public class ItemChargePlugin extends Plugin
 			lastExplorerRingCharge = explorerRingCharge;
 			updateExplorerRingCharges(explorerRingCharge);
 		}
+
+		this.kharedstsMemoirs = client.getVar(Varbits.KHAREDSTS_MEMOIRS_CHARGES);
 	}
 
 	private void updateDodgyNecklaceCharges(final int value)
@@ -940,6 +946,7 @@ public class ItemChargePlugin extends Plugin
 		this.showSoulBearerCharges = config.showSoulBearerCharges();
 		this.soulBearer = config.soulBearer();
 		this.showChronicleCharges = config.showChronicleCharges();
+		this.showKharedstsMemoirs = config.showKharedstsMemoirsCharges();
 		this.showXericTalismanCharges = config.showXericTalismanCharges();
 		this.showrecoil = config.showrecoil();
 		this.chronicle = config.chronicle();

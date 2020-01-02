@@ -484,10 +484,21 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showKharedstsMemoirsCharges",
+		name = "Show Kharedst's Memoirs Charges",
+		description = "Configures if Kharedst's Memoirs item charge is shown",
+		position = 27
+	)
+	default boolean showKharedstsMemoirsCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 27
+		position = 28
 	)
 	default boolean showInfoboxes()
 	{
