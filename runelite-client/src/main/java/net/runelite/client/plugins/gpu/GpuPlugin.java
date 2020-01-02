@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
