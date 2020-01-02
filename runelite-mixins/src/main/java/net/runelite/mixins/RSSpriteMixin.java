@@ -37,6 +37,8 @@ import net.runelite.rs.api.RSSprite;
 @Mixin(RSSprite.class)
 public abstract class RSSpriteMixin implements RSSprite
 {
+	private static final int ALPHA = 0xFF000000;
+
 	@Shadow("client")
 	private static RSClient client;
 
@@ -155,21 +157,6 @@ public abstract class RSSpriteMixin implements RSSprite
 		if (!hdMinimapEnabled)
 		{
 			rs$drawAlphaMapped(x, y, width, height, xOffset, yOffset, rotation, zoom, xOffsets, yOffsets);
-
-			// hack required for this to work with gpu mode because
-			// the alpha injector does not inject the copied method
-			int[] graphicsPixels = client.getGraphicsPixels();
-			int pixelOffset = x + y * client.getGraphicsPixelsWidth();
-			for (int h = 0; h < height; h++)
-			{
-				int offset = xOffsets[h];
-				int pixelIndex = pixelOffset + offset;
-				for (int w = -yOffsets[h]; w < 0; w++)
-				{
-					graphicsPixels[pixelIndex++] |= 0xFF000000;
-				}
-				pixelOffset += client.getGraphicsPixelsWidth();
-			}
 			return;
 		}
 		try
@@ -222,7 +209,7 @@ public abstract class RSSpriteMixin implements RSSprite
 							(c3 >> 8 & 0xFF) * a3 + (c4 >> 8 & 0xFF) * a4 >> 8 & 0xFF00;
 					int b = (c1 & 0xFF) * a1 + (c2 & 0xFF) * a2 +
 							(c3 & 0xFF) * a3 + (c4 & 0xFF) * a4 >> 16;
-					graphicsPixels[graphicsPixelIndex++] = r | g | b;
+					graphicsPixels[graphicsPixelIndex++] = ALPHA | r | g | b;
 					spriteX += rotCos;
 					spriteY -= rotSin;
 				}
