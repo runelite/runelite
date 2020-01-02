@@ -51,7 +51,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
-import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
@@ -63,6 +62,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileSpawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -72,7 +72,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -206,6 +205,11 @@ public class GauntletPlugin extends Plugin
 	private int herbGathered;
 	private int currentFarmingAction = -1;
 	private boolean countersVisible = false;
+	private int miningXp = 0;
+	private int farmingXp = 0;
+	private int woodcuttingXp = 0;
+	private int fishingXp = 0;
+	private boolean inGauntlet = false;
 
 	@Provides
 	GauntletConfig getConfig(ConfigManager configManager)
@@ -272,11 +276,13 @@ public class GauntletPlugin extends Plugin
 		woodGathered = 0;
 		clothGathered = 0;
 		herbGathered = 0;
+		if (oreCounter != null) updateCounters();
 	}
 
 	private void updateCounters()
 	{
 		oreCounter.setCount(oresGathered);
+
 		woodCounter.setCount(woodGathered);
 		clothCounter.setCount(clothGathered);
 		fishCounter.setCount(fishGathered);
@@ -334,31 +340,48 @@ public class GauntletPlugin extends Plugin
 		updateCounters();
 	}
 
+
 	@Subscribe
-	private void onXpDropEvent(XpDropEvent experienceChanged)
+	private void onStatsChanged(StatChanged event)
 	{
-		if (experienceChanged.getSkill().compareTo(Skill.MINING) == 0)
+		switch (event.getSkill())
 		{
-			oresGathered++;
-		}
-		if (experienceChanged.getSkill().compareTo(Skill.WOODCUTTING) == 0)
-		{
-			woodGathered++;
-		}
-		if (experienceChanged.getSkill().compareTo(Skill.FARMING) == 0)
-		{
-			if (currentFarmingAction == GATHERING_HERB)
+			case MINING:
+				if (miningXp != event.getXp())
 			{
-				herbGathered++;
+				oresGathered++;
+				miningXp = event.getXp();
 			}
-			else if (currentFarmingAction == GATHERING_CLOTH)
-			{
-				clothGathered++;
-			}
-		}
-		if (experienceChanged.getSkill().compareTo(Skill.FISHING) == 0)
-		{
-			fishGathered++;
+				break;
+			case FISHING:
+				if (fishingXp != event.getXp())
+				{
+					fishGathered++;
+					fishingXp = event.getXp();
+				}
+				break;
+			case WOODCUTTING:
+				if (woodcuttingXp != event.getXp())
+				{
+					woodGathered++;
+					woodcuttingXp = event.getXp();
+				}
+				break;
+			case FARMING:
+				if (farmingXp != event.getXp())
+				{
+					if (currentFarmingAction == GATHERING_HERB)
+					{
+						herbGathered++;
+						farmingXp = event.getXp();
+					}
+					else if (currentFarmingAction == GATHERING_CLOTH)
+					{
+						clothGathered++;
+						farmingXp = event.getXp();
+					}
+				}
+				break;
 		}
 		updateCounters();
 	}
@@ -585,6 +608,11 @@ public class GauntletPlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
+		if (client.getVar(Varbits.GAUNTLET_ENTERED) == 1 && !inGauntlet)
+		{
+			resetGatheringCounters();
+			inGauntlet = true;
+		}
 		if (this.completeStartup)
 		{
 			timer.checkStates(true);
@@ -596,6 +624,7 @@ public class GauntletPlugin extends Plugin
 		else
 		{
 			removeCounters();
+			inGauntlet = false;
 		}
 	}
 
