@@ -53,18 +53,9 @@ import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
-import static net.runelite.api.MenuOpcode.PLAYER_EIGTH_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_FIFTH_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_FIRST_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_FOURTH_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_SECOND_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_SEVENTH_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_SIXTH_OPTION;
-import static net.runelite.api.MenuOpcode.PLAYER_THIRD_OPTION;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
-import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -135,6 +126,8 @@ import net.runelite.rs.api.RSTileItem;
 import net.runelite.rs.api.RSUsername;
 import net.runelite.rs.api.RSWidget;
 import org.slf4j.Logger;
+import static net.runelite.api.MenuOpcode.*;
+import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
@@ -284,6 +277,9 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
+	private static boolean hdMinimapEnabled;
+
+	@Inject
 	@Override
 	public Callbacks getCallbacks()
 	{
@@ -372,6 +368,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInventoryDragDelay(int delay)
 	{
 		inventoryDragDelay = delay;
+	}
+
+	@Inject
+	@Override
+	public boolean isHdMinimapEnabled()
+	{
+		return hdMinimapEnabled;
+	}
+
+	@Inject
+	@Override
+	public void setHdMinimapEnabled(boolean enabled)
+	{
+		hdMinimapEnabled = enabled;
 	}
 
 	@Inject
