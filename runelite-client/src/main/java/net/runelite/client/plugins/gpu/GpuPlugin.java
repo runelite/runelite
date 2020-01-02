@@ -52,6 +52,7 @@ import javax.inject.Inject;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
@@ -128,6 +129,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Setter
+	private static GpuService gpuService;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
@@ -236,12 +240,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(GpuService.class).to(GpuServiceImpl.class);
-	}
 
 	@Override
 	protected void startUp()
@@ -453,34 +451,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glGeomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
 		glFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
 
-		final String glVersionHeader;
-
-		if (OSType.getOSType() == OSType.Linux)
+		Function<String, String> resourceLoader;
+		if (gpuService != null)
 		{
-			glVersionHeader =
-				"#version 420\n" +
-				"#extension GL_ARB_compute_shader : require\n" +
-				"#extension GL_ARB_shader_storage_buffer_object : require\n";
+			resourceLoader = gpuService.getResourceLoader();
 		}
 		else
 		{
-			glVersionHeader = "#version 430\n";
+			resourceLoader = getResourceLoader();
 		}
-
-		Function<String, String> resourceLoader = (s) ->
-		{
-			if (s.endsWith(".glsl"))
-			{
-				return inputStreamToString(getClass().getResourceAsStream(s));
-			}
-
-			if (s.equals("version_header"))
-			{
-				return glVersionHeader;
-			}
-
-			return "";
-		};
 
 		Template template = new Template(resourceLoader);
 		String source = template.process(resourceLoader.apply("geom.glsl"));
@@ -542,6 +521,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
 		uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
 		uniBlockMain = gl.glGetUniformBlockIndex(glProgram, "uniforms");
+
+		if (gpuService != null)
+		{
+			gpuService.initUniforms(gl, glProgram);
+		}
 	}
 
 	private void shutdownProgram()
@@ -718,41 +702,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDeleteRenderbuffers(gl, rboSceneHandle);
 			rboSceneHandle = -1;
 		}
-	}
-
-	void replaceProgram(String vertexShaderSource, String geomShaderSource, String fragShaderSource) throws ShaderException
-	{
-		int program = gl.glCreateProgram();
-		int vertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		int geomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
-		int fragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-		try
-		{
-			GLUtil.loadShaders(gl, program, vertexShader, geomShader, fragmentShader,
-				vertexShaderSource,
-				geomShaderSource,
-				fragShaderSource);
-		}
-		catch (ShaderException ex)
-		{
-			gl.glDeleteProgram(program);
-			gl.glDeleteShader(vertexShader);
-			gl.glDeleteShader(geomShader);
-			gl.glDeleteShader(fragmentShader);
-			throw ex;
-		}
-
-		gl.glDeleteProgram(glProgram);
-		gl.glDeleteShader(glVertexShader);
-		gl.glDeleteShader(glGeomShader);
-		gl.glDeleteShader(glFragmentShader);
-
-		glProgram = program;
-		glVertexShader = vertexShader;
-		glGeomShader = geomShader;
-		glFragmentShader = fragmentShader;
-
-		initUniforms();
 	}
 
 	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
@@ -1090,6 +1039,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
+
+			if (gpuService != null)
+			{
+				gpuService.setUniforms(gl);
+			}
 
 			for (int id = 0; id < textures.length; ++id)
 			{
@@ -1518,5 +1472,37 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			getScaledValue(t.getScaleY(), y),
 			getScaledValue(t.getScaleX(), width),
 			getScaledValue(t.getScaleY(), height));
+	}
+
+	public Function<String, String> getResourceLoader()
+	{
+		final String glVersionHeader;
+
+		if (OSType.getOSType() == OSType.Linux)
+		{
+			glVersionHeader =
+					"#version 420\n" +
+							"#extension GL_ARB_compute_shader : require\n" +
+							"#extension GL_ARB_shader_storage_buffer_object : require\n";
+		}
+		else
+		{
+			glVersionHeader = "#version 430\n";
+		}
+
+		return (s) ->
+		{
+			if (s.endsWith(".glsl"))
+			{
+				return inputStreamToString(getClass().getResourceAsStream(s));
+			}
+
+			if (s.equals("version_header"))
+			{
+				return glVersionHeader;
+			}
+
+			return "";
+		};
 	}
 }
