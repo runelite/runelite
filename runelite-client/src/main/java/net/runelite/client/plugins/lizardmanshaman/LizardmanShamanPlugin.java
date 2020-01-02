@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2018, https://openosrs.com Dutta64
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,74 +22,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.lizardmenshaman;
+package net.runelite.client.plugins.lizardmanshaman;
 
 import com.google.inject.Provides;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Color;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.LIZARDMAN_SHAMAN_SPAWN;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import static net.runelite.client.plugins.lizardmanshaman.LizardmanShamanConfig.SpawnOverlayConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Lizard Shamans",
-	description = "Configures timer for lizardmen shaman spawns.",
-	tags = {"shaman", "lizard", "lizardmen"},
+	name = "Lizardman Shamans",
+	description = "Display an overlay for spawn explosion tiles",
+	tags = {"lizardman", "shaman", "lizard"},
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
 @Slf4j
 @Singleton
-public class LizardmenShamanPlugin extends Plugin
+public class LizardmanShamanPlugin extends Plugin
 {
-	private static final String SHAMAN = "Lizardman shaman";
-	private static final String MESSAGE = "A Lizardman shaman has summoned his spawn!";
+	private static final String CONFIG_GROUP_NAME = "lizardmanshaman";
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<LocalPoint, LizardmenShamanSpawn> spawns = new HashMap<>();
+	private SpawnOverlayConfig spawnOverlayConfig;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color explosionBorderColor;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color explosionFillColor;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color spawnWalkableBorderColor;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Color spawnWalkableFillColor;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private ShamanSpawnOverlay overlay;
+	private LizardmanShamanOverlay overlay;
 
 	@Inject
-	private LizardmenShamanConfig config;
-
-	@Inject
-	private Notifier notifier;
-
-	private boolean showTimer;
-	private boolean notifyOnSpawn;
+	private LizardmanShamanConfig config;
 
 	@Provides
-	LizardmenShamanConfig getConfig(ConfigManager configManager)
+	LizardmanShamanConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(LizardmenShamanConfig.class);
+		return configManager.getConfig(LizardmanShamanConfig.class);
 	}
 
 	@Override
 	protected void startUp()
 	{
-
-		this.showTimer = config.showTimer();
-		this.notifyOnSpawn = config.notifyOnSpawn();
+		initConfig();
 
 		overlayManager.add(overlay);
 	}
@@ -98,43 +96,25 @@ public class LizardmenShamanPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		spawns.clear();
-	}
-
-	@Subscribe
-	private void onChatMessage(ChatMessage event)
-	{
-		if (this.notifyOnSpawn && /* event.getType() == ChatMessageType.GAMEMESSAGE && */event.getMessage().contains(MESSAGE))
-		// ChatMessageType should probably be SPAM <- should be tested first though
-		{
-			notifier.notify(MESSAGE);
-		}
-	}
-
-	@Subscribe
-	private void onAnimationChanged(AnimationChanged event)
-	{
-		Actor actor = event.getActor();
-		if (actor == null || actor.getName() == null)
-		{
-			return;
-		}
-
-		if (actor.getName().equals(SHAMAN) && actor.getAnimation() == LIZARDMAN_SHAMAN_SPAWN && this.showTimer)
-		{
-			spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
-		}
 	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("shaman"))
+		if (Objects.equals(event.getGroup(), CONFIG_GROUP_NAME))
 		{
-			return;
+			initConfig();
 		}
+	}
 
-		this.showTimer = config.showTimer();
-		this.notifyOnSpawn = config.notifyOnSpawn();
+	private void initConfig()
+	{
+		this.spawnOverlayConfig = config.showSpawnOverlay();
+
+		this.explosionBorderColor = config.explosionBorderColor();
+		this.explosionFillColor = config.explosionFillColor();
+
+		this.spawnWalkableBorderColor = config.spawnWalkableBorderColor();
+		this.spawnWalkableFillColor = config.spawnWalkableFillColor();
 	}
 }
