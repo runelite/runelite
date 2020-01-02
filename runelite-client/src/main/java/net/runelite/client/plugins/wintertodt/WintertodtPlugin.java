@@ -306,7 +306,7 @@ public class WintertodtPlugin extends Plugin
 				client.refreshChat();
 
 				// all actions except woodcutting are interrupted from damage
-				if (currentActivity != WintertodtActivity.WOODCUTTING)
+				if (currentActivity != WintertodtActivity.WOODCUTTING && (currentActivity != WintertodtActivity.IDLE || config.notifyIdle()))
 				{
 					wasInterrupted = true;
 				}

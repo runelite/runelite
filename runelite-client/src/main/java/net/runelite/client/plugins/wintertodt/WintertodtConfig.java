@@ -81,4 +81,15 @@ public interface WintertodtConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "notifyIdle",
+			name = "Notify idle interrupt",
+			description = "Notify interrupted when idle"
+	)
+	default boolean notifyIdle()
+	{
+		return true;
+	}
 }
