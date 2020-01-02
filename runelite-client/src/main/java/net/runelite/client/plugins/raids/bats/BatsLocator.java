@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.raids.bats;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.FontManager;
 
 public class BatsLocator
 {
@@ -47,13 +45,7 @@ public class BatsLocator
 	private int highestChestCountIndex = -1;
 
 	@Getter
-	private boolean equalChestCounts = true;
-
-	@Getter
 	private boolean drawChestNumbers = false;
-
-	@Getter
-	private Font highestChestCountFont = FontManager.getRunescapeSmallFont();
 
 	private Client client;
 	private int rotation = -1;
@@ -61,7 +53,6 @@ public class BatsLocator
 	public BatsLocator(Client client)
 	{
 		this.client = client;
-		highestChestCountFont = new Font(highestChestCountFont.getName(), Font.PLAIN, highestChestCountFont.getSize() * 2);
 	}
 
 	public void troughSpawnEvent(GameObject trough)
@@ -252,7 +243,6 @@ public class BatsLocator
 	{
 		Arrays.fill(chestCounts, 0);
 		highestChestCountIndex = -1;
-		equalChestCounts = true;
 		for (int i = 0; i < chestLocations.size(); i++)
 		{
 			if (chestMap.get(chestLocations.get(i)).getState() == Chest.State.UNDEFINED)
@@ -268,14 +258,6 @@ public class BatsLocator
 				{
 					highestChestCountIndex = i;
 				}
-			}
-		}
-		for (int i = 0; i < chestCounts.length; i++)
-		{
-			if (chestCounts[i] != 0 && chestCounts[i] != chestCounts[highestChestCountIndex])
-			{
-				equalChestCounts = false;
-				break;
 			}
 		}
 	}
