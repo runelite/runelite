@@ -43,6 +43,11 @@ import lombok.Getter;
 public enum Varbits
 {
 	/*
+	 * Kharedst's Memoirs Teleport Item
+	 */
+	KHAREDSTS_MEMOIRS_CHARGES(6035),
+
+	/*
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARENT_CHATBOX(4608),

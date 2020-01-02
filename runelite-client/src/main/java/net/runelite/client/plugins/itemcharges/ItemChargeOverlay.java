@@ -129,6 +129,14 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 			charges = plugin.getChronicle();
 		}
+		else if (itemId == ItemID.KHAREDSTS_MEMOIRS)
+		{
+			if (!plugin.isShowKharedstsMemoirs())
+			{
+				return;
+			}
+			charges = plugin.getKharedstsMemoirs();
+		}
 		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
 		{
 			if (!plugin.isShowExplorerRingCharges())
