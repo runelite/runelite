@@ -27,7 +27,6 @@ package net.runelite.client.plugins.skillcalculator.banked.beans;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
-import net.runelite.api.Skill;
 
 @Getter(AccessLevel.PACKAGE)
 public enum Secondaries
