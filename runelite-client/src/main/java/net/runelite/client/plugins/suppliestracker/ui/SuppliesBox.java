@@ -334,10 +334,11 @@ public abstract class SuppliesBox extends JPanel
 
 			if (name.toLowerCase().contains("glory"))
 			{
+				long price = (((itemManager.getItemPrice(AMULET_OF_GLORY6) - (itemManager.getItemPrice(AMULET_OF_GLORY)))  * qty) / 6);
 				tooltip.append("Amulet of Glory(6) x ")
 					.append(qty)
 					.append("/6 (")
-					.append(QuantityFormatter.quantityToStackSize((itemManager.getItemPrice(AMULET_OF_GLORY6) * qty) / 6))
+					.append(QuantityFormatter.quantityToStackSize(price))
 					.append("gp)");
 			}
 			else if (name.toLowerCase().contains("dueling"))
@@ -350,18 +351,20 @@ public abstract class SuppliesBox extends JPanel
 			}
 			else if (name.toLowerCase().contains("wealth"))
 			{
+				long price = (((itemManager.getItemPrice(RING_OF_WEALTH_5) - (itemManager.getItemPrice(RING_OF_WEALTH)))  * qty) / 5);
 				tooltip.append("Ring of Wealth(5) x ")
 					.append(qty)
 					.append("/5 (")
-					.append(QuantityFormatter.quantityToStackSize((itemManager.getItemPrice(RING_OF_WEALTH_5) * qty) / 5))
+					.append(QuantityFormatter.quantityToStackSize(price))
 					.append("gp)");
 			}
 			else if (name.toLowerCase().contains("combat"))
 			{
+				long price = (((itemManager.getItemPrice(COMBAT_BRACELET6) - (itemManager.getItemPrice(COMBAT_BRACELET)))  * qty) / 6);
 				tooltip.append("Combat Bracelet(6) x ")
 					.append(qty)
 					.append("/6 (")
-					.append(QuantityFormatter.quantityToStackSize((itemManager.getItemPrice(COMBAT_BRACELET6) * qty) / 6))
+					.append(QuantityFormatter.quantityToStackSize(price))
 					.append("gp)");
 			}
 			else if (name.toLowerCase().contains("games"))
@@ -374,10 +377,11 @@ public abstract class SuppliesBox extends JPanel
 			}
 			else if (name.toLowerCase().contains("skills"))
 			{
+				long price = (((itemManager.getItemPrice(SKILLS_NECKLACE6) - (itemManager.getItemPrice(SKILLS_NECKLACE)))  * qty) / 6);
 				tooltip.append("Skills Necklace(6) x ")
 					.append(qty)
 					.append("/6 (")
-					.append(QuantityFormatter.quantityToStackSize((itemManager.getItemPrice(SKILLS_NECKLACE6) * qty) / 6))
+					.append(QuantityFormatter.quantityToStackSize(price))
 					.append("gp)");
 			}
 			else if (name.toLowerCase().contains("passage"))

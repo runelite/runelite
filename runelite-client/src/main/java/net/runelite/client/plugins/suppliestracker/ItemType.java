@@ -44,7 +44,9 @@ public enum ItemType
 	TELEPORT("Teleports"),
 	COINS("Coins"),
 	JEWELLERY("Jewellery"),
-	CHARGES("Charges");
+	CHARGES("Charges"),
+	FARMING("Farming"),
+	PRAYER("Prayer");
 
 	@Getter(AccessLevel.PUBLIC)
 	private String label;
@@ -63,34 +65,44 @@ public enum ItemType
 		{
 			return ItemType.POTION;
 		}
-		if (item.getName().toLowerCase().contains("bolt") || item.getName().toLowerCase().contains("dart")
-			|| item.getName().toLowerCase().contains(" arrow") || item.getName().toLowerCase().contains("javelin")
-			|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing")
-			|| item.getName().toLowerCase().contains("zulrah's scale") || item.getName().toLowerCase().contains("cannonball")
-			|| item.getName().toLowerCase().contains("knife") || item.getName().toLowerCase().contains("chinchompa"))
+		else if ((item.getName().toLowerCase().contains("bones") && !item.getName().toLowerCase().contains(" to ")) ||
+				item.getName().toLowerCase().contains("ensouled"))
+		{
+			return ItemType.PRAYER;
+		}
+		else if (item.getName().toLowerCase().contains("bolt") || item.getName().toLowerCase().contains("dart")
+				|| item.getName().toLowerCase().contains(" arrow") || item.getName().toLowerCase().contains("javelin")
+				|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing")
+				|| item.getName().toLowerCase().contains("zulrah's scale") || item.getName().toLowerCase().contains("cannonball")
+				|| item.getName().toLowerCase().contains("knife"))
 		{
 			return ItemType.AMMO;
 		}
-		if (item.getName().toLowerCase().contains("rune"))
+		else if (item.getName().toLowerCase().contains("rune"))
 		{
 			return ItemType.RUNE;
 		}
-		if (item.getName().toLowerCase().contains("teleport"))
+		else if (item.getName().toLowerCase().contains("teleport"))
 		{
 			return ItemType.TELEPORT;
 		}
-		if (item.getId() == COINS_995)
+		else if (item.getId() == COINS_995)
 		{
 			return ItemType.COINS;
 		}
-		if (item.getName().toLowerCase().contains("ring of") || item.getName().toLowerCase().contains("amulet") ||
-			item.getName().toLowerCase().contains("bracelet") || item.getName().toLowerCase().contains("necklace"))
+		else if (item.getName().toLowerCase().contains("ring of") || item.getName().toLowerCase().contains("amulet") ||
+				item.getName().toLowerCase().contains("bracelet") || item.getName().toLowerCase().contains("necklace"))
 		{
 			return ItemType.JEWELLERY;
 		}
-		if (item.getId() == SCYTHE_OF_VITUR || item.getId() == SANGUINESTI_STAFF ||
-			item.getId() == TRIDENT_OF_THE_SEAS || item.getId() == TRIDENT_OF_THE_SWAMP ||
-			item.getId() == BLADE_OF_SAELDOR)
+		else if (item.getName().toLowerCase().contains(" sapling") || item.getName().toLowerCase().contains(" seed") ||
+				item.getName().toLowerCase().contains("compost") || item.getName().toLowerCase().contains("plant cure"))
+		{
+			return ItemType.FARMING;
+		}
+		else if (item.getId() == SCYTHE_OF_VITUR || item.getId() == SANGUINESTI_STAFF ||
+				item.getId() == TRIDENT_OF_THE_SEAS || item.getId() == TRIDENT_OF_THE_SWAMP ||
+				item.getId() == BLADE_OF_SAELDOR)
 		{
 			return ItemType.CHARGES;
 		}

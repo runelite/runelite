@@ -68,6 +68,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.plugins.suppliestracker.ActionType.*;
+import net.runelite.client.plugins.suppliestracker.skills.Farming;
+import net.runelite.client.plugins.suppliestracker.skills.Prayer;
 import net.runelite.client.plugins.suppliestracker.ui.SuppliesTrackerPanel;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -123,8 +125,8 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	//Hold Supply Data
 	private final Map<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
-
 	private final Deque<MenuAction> actionStack = new ArrayDeque<>();
+
 	//Item arrays
 	private final String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk", "egniol"};
 	private final int[] TRIDENT_OF_THE_SEAS_IDS = new int[]{TRIDENT_OF_THE_SEAS, TRIDENT_OF_THE_SEAS_E, TRIDENT_OF_THE_SEAS_FULL};
@@ -156,7 +158,21 @@ public class SuppliesTrackerPlugin extends Plugin
 	private int amountused3 = 0;
 	private boolean magicXpChanged = false;
 	private boolean skipTick = false;
+	private boolean noXpCast = false;
 	private int magicXp = 0;
+
+	//prayer stuff
+	private Prayer prayer;
+	private boolean prayerAltarAnimationCheck = false;
+	private int prayerXp = 0;
+	private int boneId = 0;
+	private boolean skipBone = false;
+	private int longTickWait = 0;
+	private int ensouledHeadId = 0;
+
+	//farming stuff
+	private Farming farming;
+
 
 	private ItemContainer old;
 	private int ammoId = 0;
@@ -181,7 +197,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	private SuppliesTrackerConfig config;
 	@Inject
 	private Client client;
-	private boolean noXpCast = false;
 
 	/**
 	 * Checks if item name is potion
@@ -218,6 +233,8 @@ public class SuppliesTrackerPlugin extends Plugin
 	{
 
 		panel = new SuppliesTrackerPanel(itemManager, this);
+		farming = new Farming(this, itemManager);
+		prayer = new Prayer(this, itemManager);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 		panel.loadHeaderIcon(header);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -256,6 +273,20 @@ public class SuppliesTrackerPlugin extends Plugin
 				magicXp = event.getXp();
 			}
 		}
+		if (event.getSkill().name().toLowerCase().equals("prayer"))
+		{
+			if (prayerXp != event.getXp())
+			{
+				if (prayerAltarAnimationCheck)
+				{
+					if (!skipBone)
+					{
+						prayer.build();
+					}
+				}
+				prayerXp = event.getXp();
+			}
+		}
 	}
 
 	@Subscribe
@@ -281,6 +312,21 @@ public class SuppliesTrackerPlugin extends Plugin
 			}
 			ticks = 0;
 		}
+
+		//reset skip bone for dark altar
+		skipBone = false;
+
+		//Waits to reset prayer animation check. needed for 1 ticking or
+		//in case animation gets interrupted
+		if (longTickWait > 0)
+		{
+			longTickWait = longTickWait - 1;
+		}
+		else if (prayerAltarAnimationCheck)
+		{
+			prayerAltarAnimationCheck = false;
+		}
+
 
 		if (skipTick)
 		{
@@ -576,7 +622,19 @@ public class SuppliesTrackerPlugin extends Plugin
 					break;
 				case ONEHAND_SLASH_SWORD_ANIMATION:
 				case ONEHAND_STAB_SWORD_ANIMATION:
-					buildChargesEntries(BLADE_OF_SAELDOR);
+					if (mainHand == BLADE_OF_SAELDOR) buildChargesEntries(BLADE_OF_SAELDOR);
+					break;
+				case USING_GILDED_ALTAR:
+				case PRAY_AT_ALTAR:
+					prayerAltarAnimationCheck = true;
+					longTickWait = 5;
+					break;
+				case ENSOULED_HEADS_ANIMATION:
+					if (ensouledHeadId != 0)
+					{
+						buildEntries(ensouledHeadId);
+						ensouledHeadId = 0;
+					}
 					break;
 			}
 		}
@@ -738,25 +796,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		// Fix for house pool
-		switch (event.getMenuOpcode())
-		{
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
-			case EXAMINE_ITEM_BANK_EQ:
-			case WIDGET_FIRST_OPTION:
-			case WIDGET_SECOND_OPTION:
-			case WIDGET_THIRD_OPTION:
-			case WIDGET_FOURTH_OPTION:
-			case WIDGET_FIFTH_OPTION:
-			case WIDGET_DEFAULT:
-				break;
-			default:
-				return;
-		}
+
 		// Uses stacks to push/pop for tick eating
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
@@ -772,6 +812,24 @@ public class SuppliesTrackerPlugin extends Plugin
 				return false;
 			}))
 		{
+			switch (event.getMenuOpcode())
+			{
+				case ITEM_FIRST_OPTION:
+				case ITEM_SECOND_OPTION:
+				case ITEM_THIRD_OPTION:
+				case ITEM_FOURTH_OPTION:
+				case ITEM_FIFTH_OPTION:
+				case EXAMINE_ITEM_BANK_EQ:
+				case WIDGET_FIRST_OPTION:
+				case WIDGET_SECOND_OPTION:
+				case WIDGET_THIRD_OPTION:
+				case WIDGET_FOURTH_OPTION:
+				case WIDGET_FIFTH_OPTION:
+				case WIDGET_DEFAULT:
+					break;
+				default:
+					return;
+			}
 			old = client.getItemContainer(InventoryID.INVENTORY);
 			int slot = event.getParam0();
 			if (old.getItems() != null)
@@ -816,6 +874,33 @@ public class SuppliesTrackerPlugin extends Plugin
 				actionStack.push(newAction);
 			}
 
+		}
+
+		if (event.getTarget().toLowerCase().equals("use"))
+		{
+			if (itemManager.getItemDefinition(event.getIdentifier()).getName().toLowerCase().contains("compost"))
+			{
+				farming.setBucketId(event.getIdentifier());
+			}
+			else
+			{
+				farming.setPlantId(event.getIdentifier());
+			}
+
+		}
+
+		if (event.getTarget().equals("Use") || event.getOption().toLowerCase().contains("bury"))
+		{
+			if (itemManager.getItemDefinition(event.getIdentifier()).getName().toLowerCase().contains("bones"))
+			{
+				prayer.setBonesId(event.getIdentifier());
+				boneId = event.getIdentifier();
+			}
+		}
+
+		if (event.getOption().equals("Reanimate") && event.getMenuOpcode().name().equals("ITEM_USE_ON_WIDGET"))
+		{
+			ensouledHeadId = event.getIdentifier();
 		}
 
 		//Adds tracking to Master Scroll Book
@@ -879,9 +964,27 @@ public class SuppliesTrackerPlugin extends Plugin
 	void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
+
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
-			if (message.toLowerCase().contains("your amulet has") ||
+			if (message.toLowerCase().contains("you plant "))
+			{
+				farming.OnChatPlant(message.toLowerCase());
+			}
+			else if (message.toLowerCase().contains("you treat "))
+			{
+				farming.setEndlessBucket(message);
+				farming.OnChatTreat(message.toLowerCase());
+			}
+			else if (message.toLowerCase().contains("you bury the bones"))
+			{
+				prayer.OnChat(message);
+			}
+			else if (message.toLowerCase().contains("dark lord"))
+			{
+				skipBone = true;
+			}
+			else if (message.toLowerCase().contains("your amulet has") ||
 				message.toLowerCase().contains("your amulet's last charge"))
 			{
 				buildChargesEntries(AMULET_OF_GLORY6);
@@ -957,7 +1060,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 *
 	 * @param itemId the id of the item
 	 */
-	private void buildEntries(int itemId)
+	public void buildEntries(int itemId)
 	{
 		buildEntries(itemId, 1);
 	}
@@ -968,7 +1071,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * @param itemId the id of the item
 	 * @param count  the amount of the item to add to the tracker
 	 */
-	private void buildEntries(int itemId, int count)
+	public void buildEntries(int itemId, int count)
 	{
 		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		String name = itemComposition.getName();
@@ -1219,18 +1322,19 @@ public class SuppliesTrackerPlugin extends Plugin
 	{
 		if (magicXpChanged || noXpCast)
 		{
-			if (amountused1 != 0)
+			if (amountused1 != 0 && amountused1 < 20)
 			{
 				buildEntries(Runes.getRune(rune1).getItemId(), amountused1);
 			}
-			if (amountused2 != 0)
+			if (amountused2 != 0 && amountused2 < 20)
 			{
 				buildEntries(Runes.getRune(rune2).getItemId(), amountused2);
 			}
-			if (amountused3 != 0)
+			if (amountused3 != 0 && amountused3 < 20)
 			{
 				buildEntries(Runes.getRune(rune3).getItemId(), amountused3);
 			}
 		}
+
 	}
 }
