@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2020, Dutta64 <https://github.com/dutta64>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,38 +30,49 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("hydra")
-public interface BabyHydraConfig extends Config
+public interface HydraConfig extends Config
 {
 
 	@ConfigItem(
 		position = 1,
-		keyName = "textindicators",
-		name = "Text Indicator",
-		description = "Configures if text indicator is shown above hydra's or not."
+		keyName = "attackCounterOverlay",
+		name = "Attack Counter Overlay",
+		description = "Configures if an attack counter overlay is shown."
 	)
-	default boolean TextIndicator()
+	default boolean isAttackCounterOverlay()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		position = 2,
-		keyName = "countersize",
-		name = "Bold indicator",
-		description = "Configures if text indicator is bold or not."
+		keyName = "boldAttackCounterOverlay",
+		name = "Bold Attack Counter",
+		description = "Configures if the attack counter is <b>bold</b>.<br>Attack Counter Overlay must be enabled."
 	)
-	default boolean BoldText()
+	default boolean isBoldAttackCounterOverlay()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 3,
-		keyName = "prayerhelper",
-		name = "Prayer Helper",
-		description = "Configures if prayer helper is shown or not."
+		keyName = "prayerOverlay",
+		name = "Prayer Overlay",
+		description = "Configures if a prayer overlay is shown.<br>This overlay includes a mini attack counter."
 	)
-	default boolean PrayerHelper()
+	default boolean isPrayerOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "poisonProjectileOverlay",
+		name = "Poison Projectile Overlay",
+		description = "Configures if a poison projectile overlay is shown."
+	)
+	default boolean isPoisonOverlay()
 	{
 		return true;
 	}

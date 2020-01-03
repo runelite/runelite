@@ -40,7 +40,7 @@ import net.runelite.client.util.ImageUtil;
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 @Singleton
-class Hydra
+class AlchemicalHydra
 {
 	@Getter(AccessLevel.PACKAGE)
 	@RequiredArgsConstructor
@@ -61,7 +61,7 @@ class Hydra
 			if (image == null)
 			{
 				BufferedImage tmp = spriteManager.getSprite(spriteID, 0);
-				image = tmp == null ? null : ImageUtil.resizeImage(tmp, HydraOverlay.IMGSIZE, HydraOverlay.IMGSIZE);
+				image = tmp == null ? null : ImageUtil.resizeImage(tmp, AlchemicalHydraOverlay.IMGSIZE, AlchemicalHydraOverlay.IMGSIZE);
 			}
 
 			return image;
@@ -70,7 +70,7 @@ class Hydra
 
 	private final NPC npc;
 
-	private HydraPhase phase = HydraPhase.ONE;
+	private AlchemicalHydraPhase phase = AlchemicalHydraPhase.ONE;
 
 	private int attackCount = 0;
 	private int nextSwitch = phase.getAttacksPerSwitch();
@@ -84,14 +84,14 @@ class Hydra
 	@Setter(AccessLevel.PACKAGE)
 	private boolean weakened = false;
 
-	void changePhase(HydraPhase newPhase)
+	void changePhase(AlchemicalHydraPhase newPhase)
 	{
 		phase = newPhase;
 		nextSpecial = 3;
 		attackCount = 0;
 		weakened = false;
 
-		if (newPhase == HydraPhase.FOUR)
+		if (newPhase == AlchemicalHydraPhase.FOUR)
 		{
 			weakened = true;
 			switchStyles();
@@ -101,9 +101,9 @@ class Hydra
 
 	private void switchStyles()
 	{
-		nextAttack = lastAttack == Hydra.AttackStyle.MAGIC
-			? Hydra.AttackStyle.RANGED
-			: Hydra.AttackStyle.MAGIC;
+		nextAttack = lastAttack == AlchemicalHydra.AttackStyle.MAGIC
+			? AlchemicalHydra.AttackStyle.RANGED
+			: AlchemicalHydra.AttackStyle.MAGIC;
 	}
 
 	void handleAttack(int id)

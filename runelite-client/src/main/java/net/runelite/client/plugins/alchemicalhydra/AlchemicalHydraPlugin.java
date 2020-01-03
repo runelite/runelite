@@ -56,7 +56,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.alchemicalhydra.Hydra.AttackStyle;
+import net.runelite.client.plugins.alchemicalhydra.AlchemicalHydra.AttackStyle;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -68,7 +68,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 @Slf4j
 @Singleton
-public class HydraPlugin extends Plugin
+public class AlchemicalHydraPlugin extends Plugin
 {
 	private static final int[] HYDRA_REGIONS = {
 		5279, 5280,
@@ -80,7 +80,7 @@ public class HydraPlugin extends Plugin
 	private Map<LocalPoint, Projectile> poisonProjectiles = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private Hydra hydra;
+	private AlchemicalHydra hydra;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean counting;
@@ -101,21 +101,21 @@ public class HydraPlugin extends Plugin
 	private EventBus eventBus;
 
 	@Inject
-	private HydraConfig config;
+	private AlchemicalHydraConfig config;
 
 	@Inject
-	private HydraOverlay overlay;
+	private AlchemicalHydraOverlay overlay;
 
 	@Inject
-	private HydraSceneOverlay sceneOverlay;
+	private AlchemicalHydraSceneOverlay sceneOverlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Provides
-	HydraConfig provideConfig(ConfigManager configManager)
+	AlchemicalHydraConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(HydraConfig.class);
+		return configManager.getConfig(AlchemicalHydraConfig.class);
 	}
 
 	@Override
@@ -235,7 +235,7 @@ public class HydraPlugin extends Plugin
 		{
 			if (npc.getId() == NpcID.ALCHEMICAL_HYDRA)
 			{
-				hydra = new Hydra(npc);
+				hydra = new AlchemicalHydra(npc);
 				addFightSubscriptions();
 				break;
 			}
@@ -252,7 +252,7 @@ public class HydraPlugin extends Plugin
 		}
 
 		eventBus.unregister("npcSpawned");
-		hydra = new Hydra(event.getNpc());
+		hydra = new AlchemicalHydra(event.getNpc());
 		addFightSubscriptions();
 		addOverlays();
 	}
@@ -266,23 +266,23 @@ public class HydraPlugin extends Plugin
 			return;
 		}
 
-		HydraPhase phase = hydra.getPhase();
+		AlchemicalHydraPhase phase = hydra.getPhase();
 
 		if (actor.getAnimation() == phase.getDeathAnim2() &&
-			phase != HydraPhase.THREE  // Else log's gonna say "Tried some weird shit"
+			phase != AlchemicalHydraPhase.THREE  // Else log's gonna say "Tried some weird shit"
 			|| actor.getAnimation() == phase.getDeathAnim1() &&
-			phase == HydraPhase.THREE) // We want the pray to switch ye ok ty
+			phase == AlchemicalHydraPhase.THREE) // We want the pray to switch ye ok ty
 		{
 			switch (phase)
 			{
 				case ONE:
-					hydra.changePhase(HydraPhase.TWO);
+					hydra.changePhase(AlchemicalHydraPhase.TWO);
 					return;
 				case TWO:
-					hydra.changePhase(HydraPhase.THREE);
+					hydra.changePhase(AlchemicalHydraPhase.THREE);
 					return;
 				case THREE:
-					hydra.changePhase(HydraPhase.FOUR);
+					hydra.changePhase(AlchemicalHydraPhase.FOUR);
 					return;
 				case FOUR:
 					hydra = null;
