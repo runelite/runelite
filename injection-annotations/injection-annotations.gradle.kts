@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2020, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,5 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-group = "com.openosrs.rs"
-description = "RuneScape Client"
-
-dependencies {
-    implementation(project(":injection-annotations"))
-
-    testImplementation(Libraries.junit)
-    testImplementation(Libraries.slf4jApi)
-    testImplementation(Libraries.slf4jSimple)
-}
-
-tasks {
-    java {
-        // Needs 1.8 because of lambdas in reflection
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        disableAutoTargetJvm()
-    }
-    withType<JavaCompile> {
-        options.compilerArgs.addAll(arrayOf("-g:source,vars,lines", "-Xlint:-unchecked"))
-    }
-}
+description = "Injection/Mapping annotations"
+version = "1.0"

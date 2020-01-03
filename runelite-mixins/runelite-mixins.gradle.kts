@@ -29,6 +29,7 @@ dependencies {
     compileOnly(Libraries.guava)
     compileOnly(Libraries.javaxInject)
     compileOnly(Libraries.slf4jApi)
+    compileOnly(project(":injection-annotations"))
     compileOnly(project(":runescape-api"))
 }
 
