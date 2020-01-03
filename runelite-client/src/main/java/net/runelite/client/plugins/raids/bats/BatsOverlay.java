@@ -15,6 +15,7 @@ import net.runelite.client.plugins.raids.RaidsPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 public class BatsOverlay extends Overlay
@@ -66,20 +67,27 @@ public class BatsOverlay extends Overlay
 								Point chestCanvas = Perspective.localToCanvas(client, chestLocal, client.getPlane());
 								if (chestCanvas != null)
 								{
-									Color color;
-									if (batsLocator.getHighestChestCountIndex() != -1 && chestCounts[i] != 0 && chestCounts[i] == chestCounts[batsLocator.getHighestChestCountIndex()])
+									if (batsLocator.getSolutionSets().size() == 0 && (chest.getState() == Chest.State.POISON || chest.getState() == Chest.State.BATS))
 									{
-										pie.setDiameter(12);
-										color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 255);
+										OverlayUtil.renderTextLocation(graphics, chestCanvas, String.valueOf(i), chest.getState().getColor());
 									}
 									else
 									{
-										pie.setDiameter(9);
-										color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 75);
+										Color color;
+										if (batsLocator.getHighestChestCountIndex() != -1 && chestCounts[i] != 0 && chestCounts[i] == chestCounts[batsLocator.getHighestChestCountIndex()])
+										{
+											pie.setDiameter(12);
+											color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 255);
+										}
+										else
+										{
+											pie.setDiameter(9);
+											color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 75);
+										}
+										pie.setFill(color);
+										pie.setPosition(new Point(chestCanvas.getX(), chestCanvas.getY()));
+										pie.render(graphics);
 									}
-									pie.setFill(color);
-									pie.setPosition(new Point(chestCanvas.getX(), chestCanvas.getY()));
-									pie.render(graphics);
 								}
 							}
 						}

@@ -153,6 +153,16 @@ public class BatsLocator
 
 		if (solutionSets.size() == 0)
 		{
+			if (poisonBatsChestLocations.size() == 4)
+			{
+				for (WorldPoint location : chestLocations)
+				{
+					if (!poisonBatsChestLocations.contains(location))
+					{
+						chestMap.get(location).setState(Chest.State.GRUBS);
+					}
+				}
+			}
 			return;
 		}
 
