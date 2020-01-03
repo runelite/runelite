@@ -90,6 +90,9 @@ public class BarrowsPlugin extends Plugin
 	private BarrowsBrotherSlainOverlay brotherOverlay;
 
 	@Inject
+	private BarrowsCryptKCOverlay kcOverlay;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -118,6 +121,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
+		overlayManager.add(kcOverlay);
 	}
 
 	@Override
@@ -125,6 +129,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
+		overlayManager.remove(kcOverlay);
 		puzzleAnswer = null;
 		wasInCrypt = false;
 		stopPrayerDrainTimer();

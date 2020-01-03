@@ -97,4 +97,15 @@ public interface BarrowsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showCryptMonsterKills",
+			name = "Show Crypt Monsters Killed",
+			description = "Configure if the number of crypt monsters killed is displayed",
+			position = 6
+	)
+	default boolean showCryptMonsterKills()
+	{
+		return false;
+	}
 }
