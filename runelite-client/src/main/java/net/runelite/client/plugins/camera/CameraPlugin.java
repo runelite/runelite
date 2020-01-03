@@ -91,6 +91,26 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		return configManager.getConfig(CameraConfig.class);
 	}
 
+	@Override
+	protected void startUp()
+	{
+		rightClick = false;
+		middleClick = false;
+		menuHasEntries = false;
+		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
+		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		client.setCameraPitchRelaxerEnabled(false);
+		keyManager.unregisterKeyListener(this);
+		mouseManager.unregisterMouseListener(this);
+		controlDown = false;
+	}
+
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
@@ -162,26 +182,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			controlDown = false;
 		}
-	}
-
-	@Override
-	protected void startUp()
-	{
-		rightClick = false;
-		middleClick = false;
-		menuHasEntries = false;
-		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
-		keyManager.registerKeyListener(this);
-		mouseManager.registerMouseListener(this);
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		client.setCameraPitchRelaxerEnabled(false);
-		keyManager.unregisterKeyListener(this);
-		mouseManager.unregisterMouseListener(this);
-		controlDown = false;
 	}
 
 	@Subscribe
