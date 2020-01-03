@@ -11,14 +11,14 @@ public class ShopComparableEntry extends AbstractComparableEntry
 	{
 		assert amount == 1 || amount == 5 || amount == 10 || amount == 50 : "Only 1, 5, 10, or 50 are valid amounts";
 
-		this.setOption((buy ? "Buy " : "Sell ") + amount);
+		this.setOption((buy ? "buy " : "sell ") + amount);
 		this.setTarget(Text.standardize(item));
 	}
 
 	@Override
 	public boolean matches(final MenuEntry entry)
 	{
-		return entry.getOption().equals(this.getOption()) && Text.standardize(entry.getTarget()).equals(this.getTarget());
+		return Text.standardize(entry.getOption()).equals(this.getOption()) && Text.standardize(entry.getTarget()).equals(this.getTarget());
 	}
 
 	@Override
