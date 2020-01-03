@@ -40,6 +40,14 @@ public class BatsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		Player player = client.getLocalPlayer();
+		WorldPoint playerLocation = player == null ? null : player.getWorldLocation();
+
+		if (playerLocation == null)
+		{
+			return null;
+		}
+
 		BatsLocator batsLocator = plugin.getBatsLocator();
 		if (config.enableBatsLocator() && plugin.isInRaidChambers() && batsLocator.isDrawChestNumbers())
 		{
@@ -53,42 +61,34 @@ public class BatsOverlay extends Overlay
 				{
 					continue;
 				}
-				Player player = client.getLocalPlayer();
-				if (player != null)
+				if (playerLocation.distanceTo(chestLocation) <= client.getScene().getDrawDistance())
 				{
-					WorldPoint playerLocation = player.getWorldLocation();
-					if (playerLocation != null)
+					LocalPoint chestLocal = LocalPoint.fromWorld(client, chestLocation);
+					if (chestLocal != null)
 					{
-						if (playerLocation.distanceTo(chestLocation) <= client.getScene().getDrawDistance())
+						Point chestCanvas = Perspective.localToCanvas(client, chestLocal, client.getPlane());
+						if (chestCanvas != null)
 						{
-							LocalPoint chestLocal = LocalPoint.fromWorld(client, chestLocation);
-							if (chestLocal != null)
+							if (batsLocator.getSolutionSets().size() == 0 && (chest.getState() == Chest.State.POISON || chest.getState() == Chest.State.BATS))
 							{
-								Point chestCanvas = Perspective.localToCanvas(client, chestLocal, client.getPlane());
-								if (chestCanvas != null)
+								OverlayUtil.renderTextLocation(graphics, chestCanvas, String.valueOf(i), chest.getState().getColor());
+							}
+							else
+							{
+								Color color;
+								if (batsLocator.getHighestChestCountIndex() != -1 && chestCounts[i] != 0 && chestCounts[i] == chestCounts[batsLocator.getHighestChestCountIndex()])
 								{
-									if (batsLocator.getSolutionSets().size() == 0 && (chest.getState() == Chest.State.POISON || chest.getState() == Chest.State.BATS))
-									{
-										OverlayUtil.renderTextLocation(graphics, chestCanvas, String.valueOf(i), chest.getState().getColor());
-									}
-									else
-									{
-										Color color;
-										if (batsLocator.getHighestChestCountIndex() != -1 && chestCounts[i] != 0 && chestCounts[i] == chestCounts[batsLocator.getHighestChestCountIndex()])
-										{
-											pie.setDiameter(12);
-											color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 255);
-										}
-										else
-										{
-											pie.setDiameter(9);
-											color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 75);
-										}
-										pie.setFill(color);
-										pie.setPosition(new Point(chestCanvas.getX(), chestCanvas.getY()));
-										pie.render(graphics);
-									}
+									pie.setDiameter(12);
+									color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 255);
 								}
+								else
+								{
+									pie.setDiameter(9);
+									color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 75);
+								}
+								pie.setFill(color);
+								pie.setPosition(new Point(chestCanvas.getX(), chestCanvas.getY()));
+								pie.render(graphics);
 							}
 						}
 					}
