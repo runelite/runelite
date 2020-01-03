@@ -9,7 +9,7 @@
     {
       "level": 1,
       "icon": 10851,
-      "name": "Winter sq'irkjuice",
+      "name": "Winter Sq'irkjuice",
       "xp": 350
     },
     {
@@ -87,7 +87,7 @@
     {
       "level": 25,
       "icon": 10848,
-      "name": "Spring sq'irkjuice",
+      "name": "Spring Sq'irkjuice",
       "xp": 1350
     },
     {
@@ -147,7 +147,7 @@
     {
       "level": 45,
       "icon": 10850,
-      "name": "Autumn sq'irkjuice",
+      "name": "Autumn Sq'irkjuice",
       "xp": 2350
     },
     {
@@ -213,7 +213,7 @@
     {
       "level": 65,
       "icon": 10849,
-      "name": "Summer sq'irkjuice",
+      "name": "Summer Sq'irkjuice",
       "xp": 3000
     },
     {
