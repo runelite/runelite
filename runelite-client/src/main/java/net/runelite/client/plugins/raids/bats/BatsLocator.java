@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.raids.bats;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.function.Function;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
@@ -307,12 +309,32 @@ public class BatsLocator
 		if (rotation != -1 && roomType != null && chests.size() == roomType.getChestCount())
 		{
 			//Assign chest numbers.
-			ArrayList<Chest> chests = new ArrayList<>();
-			for (WorldPoint chestLocation : this.chests.keySet())
+			ArrayList<Chest> chests = new ArrayList<>(this.chests.values());
+			Comparator<Chest> comparator;
+			switch (rotation)
 			{
-				chests.add(this.chests.get(chestLocation));
+				case 0:
+					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY))
+							.thenComparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX));
+					break;
+				case 1:
+					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX))
+							.thenComparing(Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY)).reversed());
+					break;
+				case 2:
+					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY)).reversed()
+							.thenComparing(Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX)).reversed());
+					break;
+				case 3:
+					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX)).reversed()
+							.thenComparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY));
+					break;
+				default:
+					//This should never be reached.
+					comparator = Comparator.comparing(Chest::getNumber);
+					break;
 			}
-			chests.sort(new WorldPointComparator(rotation));
+			chests.sort(comparator);
 			for (int i = 0; i < chests.size(); i++)
 			{
 				chests.get(i).setNumber(i);
