@@ -49,21 +49,17 @@ public class BatsOverlay extends Overlay
 		}
 
 		BatsLocator batsLocator = plugin.getBatsLocator();
-		if (config.enableBatsLocator() && plugin.isInRaidChambers() && batsLocator.isDrawChestNumbers())
+		if (config.enableBatsLocator() && plugin.isInRaidChambers() && batsLocator.isDrawChestStates())
 		{
-			int[] chestCounts = batsLocator.getChestCounts();
-			int i = -1;
-			for (WorldPoint chestLocation : batsLocator.getChestLocations())
+			for (Chest chest : batsLocator.getChests().values())
 			{
-				i++;
-				Chest chest = batsLocator.getChestMap().get(chestLocation);
 				if (chest.getState() == Chest.State.GRUBS)
 				{
 					continue;
 				}
-				if (playerLocation.distanceTo(chestLocation) <= client.getScene().getDrawDistance())
+				if (playerLocation.distanceTo(chest.getLocation()) <= client.getScene().getDrawDistance())
 				{
-					LocalPoint chestLocal = LocalPoint.fromWorld(client, chestLocation);
+					LocalPoint chestLocal = LocalPoint.fromWorld(client, chest.getLocation());
 					if (chestLocal != null)
 					{
 						Point chestCanvas = Perspective.localToCanvas(client, chestLocal, client.getPlane());
@@ -71,12 +67,12 @@ public class BatsOverlay extends Overlay
 						{
 							if (batsLocator.getSolutionSets().size() == 0 && (chest.getState() == Chest.State.POISON || chest.getState() == Chest.State.BATS))
 							{
-								OverlayUtil.renderTextLocation(graphics, chestCanvas, String.valueOf(i), chest.getState().getColor());
+								OverlayUtil.renderTextLocation(graphics, chestCanvas, String.valueOf(chest.getNumber()), chest.getState().getColor());
 							}
 							else
 							{
 								Color color;
-								if (batsLocator.getHighestChestCountIndex() != -1 && chestCounts[i] != 0 && chestCounts[i] == chestCounts[batsLocator.getHighestChestCountIndex()])
+								if (chest.getSolutionSetCount() != 0 && chest.getSolutionSetCount() == batsLocator.getHighestSolutionSetCount())
 								{
 									pie.setDiameter(12);
 									color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 255);
@@ -84,7 +80,7 @@ public class BatsOverlay extends Overlay
 								else
 								{
 									pie.setDiameter(9);
-									color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 75);
+									color = new Color(chest.getState().getColor().getRed(), chest.getState().getColor().getGreen(), chest.getState().getColor().getBlue(), 150);
 								}
 								pie.setFill(color);
 								pie.setPosition(new Point(chestCanvas.getX(), chestCanvas.getY()));

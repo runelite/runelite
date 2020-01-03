@@ -3,7 +3,7 @@ package net.runelite.client.plugins.raids.bats;
 import java.util.Comparator;
 import net.runelite.api.coords.WorldPoint;
 
-public class WorldPointComparator implements Comparator<WorldPoint>
+public class WorldPointComparator implements Comparator<Chest>
 {
 	private int rotation;
 
@@ -13,8 +13,11 @@ public class WorldPointComparator implements Comparator<WorldPoint>
 	}
 
 	@Override
-	public int compare(WorldPoint worldPointA, WorldPoint worldPointB)
+	public int compare(Chest chestA, Chest chestB)
 	{
+		WorldPoint worldPointA = chestA.getLocation();
+		WorldPoint worldPointB = chestB.getLocation();
+
 		switch (rotation)
 		{
 			case 0:

@@ -1,7 +1,6 @@
 package net.runelite.client.plugins.raids.bats;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,28 +23,22 @@ public class BatsLocator
 	private RoomType roomType;
 
 	@Getter
-	private HashMap<WorldPoint, Chest> chestMap = new HashMap<>();
+	private HashMap<WorldPoint, Chest> chests = new HashMap<>();
 
 	@Getter
-	private ArrayList<WorldPoint> chestLocations = new ArrayList<>();
+	private HashSet<Chest> poisonBatsChests = new HashSet<>();
 
 	@Getter
-	private HashSet<WorldPoint> poisonBatsChestLocations = new HashSet<>();
+	private HashSet<Chest> grubsChests = new HashSet<>();
 
 	@Getter
-	private HashSet<WorldPoint> grubsChestLocations = new HashSet<>();
+	private ArrayList<ArrayList<Chest>> solutionSets = new ArrayList<>();
 
 	@Getter
-	private ArrayList<ArrayList<WorldPoint>> solutionSets = new ArrayList<>();
+	private int highestSolutionSetCount = 0;
 
 	@Getter
-	private int[] chestCounts = new int[0];
-
-	@Getter
-	private int highestChestCountIndex = -1;
-
-	@Getter
-	private boolean drawChestNumbers = false;
+	private boolean drawChestStates = false;
 
 	private Client client;
 	private int rotation = -1;
@@ -79,55 +72,54 @@ public class BatsLocator
 					break;
 			}
 			//This code is repeated from the chest spawn event since the room type may not have been set when the last chest spawns, same goes for the rotation.
-			sortChestLocations();
-			generateSolutionSets();
+			assignChestNumbersAndGenerateSolutionSets();
 		}
 	}
 
 	public void chestSpawnEvent(GameObject chestObject)
 	{
 		WorldPoint chestLocation = chestObject.getWorldLocation();
-		if (!chestMap.containsKey(chestLocation))
+		Chest chest = chests.get(chestLocation);
+		if (chest == null)
 		{
-			chestMap.put(chestLocation, new Chest());
-			chestLocations.add(chestLocation);
+			chest = new Chest(chestLocation);
+			chests.put(chestLocation, chest);
 			switch (chestObject.getId())
 			{
 				case OPENED_POISON_OR_BATS:
-					poisonBatsChestLocations.add(chestLocation);
+					poisonBatsChests.add(chest);
 					break;
 				case OPENED_WITHOUT_GRUBS:
 				case OPENED_WITH_GRUBS:
-					grubsChestLocations.add(chestLocation);
+					grubsChests.add(chest);
 					break;
 			}
 			//This code is repeated at the trough spawn event since the room type may not have been set when the last chest spawns, same goes for the rotation.
-			sortChestLocations();
-			generateSolutionSets();
+			assignChestNumbersAndGenerateSolutionSets();
 		}
 		else
 		{
 			switch (chestObject.getId())
 			{
 				case OPENED_POISON_OR_BATS:
-					poisonBatsChestLocations.add(chestLocation);
-					openChest(chestLocation, Chest.State.POISON);
+					poisonBatsChests.add(chest);
+					openChest(chest, Chest.State.POISON);
 					break;
 				case OPENED_WITHOUT_GRUBS:
 				case OPENED_WITH_GRUBS:
-					grubsChestLocations.add(chestLocation);
-					openChest(chestLocation, Chest.State.GRUBS);
+					grubsChests.add(chests.get(chestLocation));
+					openChest(chest, Chest.State.GRUBS);
 					break;
 			}
 		}
 	}
 
-	private ArrayList<ArrayList<WorldPoint>> solutionSetsContaining(WorldPoint chestLocation)
+	private ArrayList<ArrayList<Chest>> solutionSetsContaining(Chest chest)
 	{
-		ArrayList<ArrayList<WorldPoint>> solutionSets = new ArrayList<>();
-		for (ArrayList<WorldPoint> solutionSet : this.solutionSets)
+		ArrayList<ArrayList<Chest>> solutionSets = new ArrayList<>();
+		for (ArrayList<Chest> solutionSet : this.solutionSets)
 		{
-			if (solutionSet.contains(chestLocation))
+			if (solutionSet.contains(chest))
 			{
 				solutionSets.add(solutionSet);
 			}
@@ -135,11 +127,11 @@ public class BatsLocator
 		return solutionSets;
 	}
 
-	private boolean solutionSetContains(ArrayList<WorldPoint> solutionSet, Chest.State state)
+	private boolean solutionSetContains(ArrayList<Chest> solutionSet, Chest.State state)
 	{
-		for (WorldPoint worldPoint : solutionSet)
+		for (Chest chest : solutionSet)
 		{
-			if (chestMap.get(worldPoint).getState() == state)
+			if (chest.getState() == state)
 			{
 				return true;
 			}
@@ -147,19 +139,19 @@ public class BatsLocator
 		return false;
 	}
 
-	private void openChest(WorldPoint chestLocation, Chest.State state)
+	private void openChest(Chest openedChest, Chest.State state)
 	{
-		chestMap.get(chestLocation).setState(state);
+		openedChest.setState(state);
 
 		if (solutionSets.size() == 0)
 		{
-			if (poisonBatsChestLocations.size() == 4)
+			if (poisonBatsChests.size() == 4)
 			{
-				for (WorldPoint location : chestLocations)
+				for (Chest chest : chests.values())
 				{
-					if (!poisonBatsChestLocations.contains(location))
+					if (!poisonBatsChests.contains(chest))
 					{
-						chestMap.get(location).setState(Chest.State.GRUBS);
+						chest.setState(Chest.State.GRUBS);
 					}
 				}
 			}
@@ -168,43 +160,43 @@ public class BatsLocator
 
 		if (state == Chest.State.POISON || state == Chest.State.BATS)
 		{
-			HashSet<WorldPoint> possiblePoisonBatsChestLocations = new HashSet<>();
-			for (ArrayList<WorldPoint> solutionSet : solutionSetsContaining(chestLocation))
+			HashSet<Chest> possiblePoisonBatsChests = new HashSet<>();
+			for (ArrayList<Chest> solutionSet : solutionSetsContaining(openedChest))
 			{
-				for (WorldPoint worldPoint : solutionSet)
+				for (Chest chest : solutionSet)
 				{
-					if (chestMap.get(worldPoint).getState() != Chest.State.GRUBS)
+					if (chest.getState() != Chest.State.GRUBS)
 					{
-						possiblePoisonBatsChestLocations.add(worldPoint);
+						possiblePoisonBatsChests.add(chest);
 					}
 				}
 			}
-			if (possiblePoisonBatsChestLocations.size() == 0)
+			if (possiblePoisonBatsChests.size() == 0)
 			{
 				solutionSets.clear();
 			}
-			for (ArrayList<WorldPoint> solutionSet : solutionSets)
+			for (ArrayList<Chest> solutionSet : solutionSets)
 			{
-				for (WorldPoint worldPoint : solutionSet)
+				for (Chest chest : solutionSet)
 				{
-					if (!possiblePoisonBatsChestLocations.contains(worldPoint) && chestMap.get(worldPoint).getState() == Chest.State.UNDEFINED)
+					if (!possiblePoisonBatsChests.contains(chest) && chest.getState() == Chest.State.UNDEFINED)
 					{
-						chestMap.get(worldPoint).setState(Chest.State.GRUBS);
+						chest.setState(Chest.State.GRUBS);
 					}
 				}
 			}
 		}
 
-		Iterator<ArrayList<WorldPoint>> solutionSets = this.solutionSets.iterator();
+		Iterator<ArrayList<Chest>> solutionSets = this.solutionSets.iterator();
 		while (solutionSets.hasNext())
 		{
-			ArrayList<WorldPoint> solutionSet = solutionSets.next();
-			for (WorldPoint worldPoint : solutionSet)
+			ArrayList<Chest> solutionSet = solutionSets.next();
+			for (Chest chest : solutionSet)
 			{
-				if (chestMap.get(worldPoint).getState() == Chest.State.UNDEFINED)
+				if (chest.getState() == Chest.State.UNDEFINED)
 				{
 					boolean setState = true;
-					for (ArrayList<WorldPoint> otherSolutionSet : solutionSetsContaining(worldPoint))
+					for (ArrayList<Chest> otherSolutionSet : solutionSetsContaining(chest))
 					{
 						if (!solutionSetContains(otherSolutionSet, Chest.State.GRUBS))
 						{
@@ -214,7 +206,7 @@ public class BatsLocator
 					}
 					if (setState)
 					{
-						chestMap.get(worldPoint).setState(Chest.State.GRUBS);
+						chest.setState(Chest.State.GRUBS);
 					}
 				}
 			}
@@ -226,204 +218,223 @@ public class BatsLocator
 
 		if (this.solutionSets.size() == 1 && solutionSetContains(this.solutionSets.get(0), Chest.State.BATS))
 		{
-			for (WorldPoint worldPoint : this.solutionSets.get(0))
+			for (Chest chest : this.solutionSets.get(0))
 			{
-				if (chestMap.get(worldPoint).getState() == Chest.State.UNDEFINED)
+				if (chest.getState() == Chest.State.UNDEFINED)
 				{
-					chestMap.get(worldPoint).setState(Chest.State.POISON);
+					chest.setState(Chest.State.POISON);
 				}
 			}
 		}
 
 		if (this.solutionSets.size() == 0)
 		{
-			for (WorldPoint location : chestLocations)
+			if (poisonBatsChests.size() == 4)
 			{
-				if (!poisonBatsChestLocations.contains(location) && !grubsChestLocations.contains(location))
+				for (Chest chest : chests.values())
 				{
-					chestMap.get(location).setState(Chest.State.UNDEFINED);
-				}
-			}
-		}
-
-		findChestCounts();
-	}
-
-	private void findChestCounts()
-	{
-		Arrays.fill(chestCounts, 0);
-		highestChestCountIndex = -1;
-		for (int i = 0; i < chestLocations.size(); i++)
-		{
-			if (chestMap.get(chestLocations.get(i)).getState() == Chest.State.UNDEFINED)
-			{
-				for (ArrayList<WorldPoint> solutionSet : solutionSetsContaining(chestLocations.get(i)))
-				{
-					if (!solutionSetContains(solutionSet, Chest.State.GRUBS))
+					if (!poisonBatsChests.contains(chest))
 					{
-						chestCounts[i]++;
+						chest.setState(Chest.State.GRUBS);
 					}
 				}
-				if (highestChestCountIndex == -1 || chestCounts[i] > chestCounts[highestChestCountIndex])
+			}
+			else
+			{
+				for (Chest chest : chests.values())
 				{
-					highestChestCountIndex = i;
+					if (!poisonBatsChests.contains(chest) && !grubsChests.contains(chest))
+					{
+						chest.setState(Chest.State.UNDEFINED);
+					}
 				}
+			}
+		}
+
+		findSolutionSetCounts();
+	}
+
+	private void findSolutionSetCounts()
+	{
+		highestSolutionSetCount = 0;
+		for (Chest chest : chests.values())
+		{
+			chest.setSolutionSetCount(0);
+			if (chest.getState() != Chest.State.UNDEFINED)
+			{
+				continue;
+			}
+			for (ArrayList<Chest> solutionSet : solutionSetsContaining(chest))
+			{
+				if (!solutionSetContains(solutionSet, Chest.State.GRUBS))
+				{
+					chest.setSolutionSetCount(chest.getSolutionSetCount() + 1);
+				}
+			}
+			if (chest.getSolutionSetCount() > highestSolutionSetCount)
+			{
+				highestSolutionSetCount = chest.getSolutionSetCount();
 			}
 		}
 	}
 
-	private void sortChestLocations()
+	private void assignChestNumbersAndGenerateSolutionSets()
 	{
-		if (rotation != -1 && roomType != null && chestLocations.size() == roomType.getChestCount())
+		if (rotation != -1 && roomType != null && chests.size() == roomType.getChestCount())
 		{
-			chestLocations.sort(new WorldPointComparator(rotation));
-			chestCounts = new int[roomType.getChestCount()];
-			drawChestNumbers = true;
-		}
-	}
+			//Assign chest numbers.
+			ArrayList<Chest> chests = new ArrayList<>();
+			for (WorldPoint chestLocation : this.chests.keySet())
+			{
+				chests.add(this.chests.get(chestLocation));
+			}
+			chests.sort(new WorldPointComparator(rotation));
+			for (int i = 0; i < chests.size(); i++)
+			{
+				chests.get(i).setNumber(i);
+			}
 
-	private void generateSolutionSets()
-	{
-		if (roomType != null && chestLocations.size() == roomType.getChestCount())
-		{
+			//Generate solution sets.
 			switch (roomType)
 			{
 				case LEFT:
-					addSolutionSet(0, 15, 16, 54);
-					addSolutionSet(0, 16, 37, 53);
-					addSolutionSet(1, 6, 20, 36);
-					addSolutionSet(2, 4, 18, 29);
-					addSolutionSet(2, 10, 14, 39);
-					addSolutionSet(3, 21, 26, 45);
-					addSolutionSet(4, 8, 18, 44);
-					addSolutionSet(5, 23, 25, 40);
-					addSolutionSet(5, 25, 31, 51);
-					addSolutionSet(6, 12, 43, 58);
-					addSolutionSet(7, 9, 27, 32);
-					addSolutionSet(7, 13, 40, 42);
-					addSolutionSet(7, 30, 46, 49);
-					addSolutionSet(9, 29, 31, 58);
-					addSolutionSet(9, 34, 53, 62);
-					addSolutionSet(11, 12, 41, 53);
-					addSolutionSet(11, 39, 52, 55);
-					addSolutionSet(12, 21, 26, 45);
-					addSolutionSet(13, 17, 22, 50);
-					addSolutionSet(14, 15, 41, 44);
-					addSolutionSet(14, 42, 43, 57);
-					addSolutionSet(19, 24, 31, 33);
-					addSolutionSet(19, 27, 50, 61);
-					addSolutionSet(19, 28, 44, 50);
-					addSolutionSet(20, 38, 40, 57);
-					addSolutionSet(21, 24, 53, 63);
-					addSolutionSet(22, 30, 46, 54);
-					addSolutionSet(22, 32, 36, 59);
-					addSolutionSet(23, 33, 47, 54);
-					addSolutionSet(25, 26, 49, 62);
-					addSolutionSet(28, 38, 40, 60);
-					addSolutionSet(32, 45, 51, 56);
-					addSolutionSet(33, 44, 48, 59);
-					addSolutionSet(35, 39, 41, 61);
-					addSolutionSet(36, 37, 50, 63);
-					addSolutionSet(47, 52, 54, 55);
+					addSolutionSet(chests, 0, 15, 16, 54);
+					addSolutionSet(chests, 0, 16, 37, 53);
+					addSolutionSet(chests, 1, 6, 20, 36);
+					addSolutionSet(chests, 2, 4, 18, 29);
+					addSolutionSet(chests, 2, 10, 14, 39);
+					addSolutionSet(chests, 3, 21, 26, 45);
+					addSolutionSet(chests, 4, 8, 18, 44);
+					addSolutionSet(chests, 5, 23, 25, 40);
+					addSolutionSet(chests, 5, 25, 31, 51);
+					addSolutionSet(chests, 6, 12, 43, 58);
+					addSolutionSet(chests, 7, 9, 27, 32);
+					addSolutionSet(chests, 7, 13, 40, 42);
+					addSolutionSet(chests, 7, 30, 46, 49);
+					addSolutionSet(chests, 9, 29, 31, 58);
+					addSolutionSet(chests, 9, 34, 53, 62);
+					addSolutionSet(chests, 11, 12, 41, 53);
+					addSolutionSet(chests, 11, 39, 52, 55);
+					addSolutionSet(chests, 12, 21, 26, 45);
+					addSolutionSet(chests, 13, 17, 22, 50);
+					addSolutionSet(chests, 14, 15, 41, 44);
+					addSolutionSet(chests, 14, 42, 43, 57);
+					addSolutionSet(chests, 19, 24, 31, 33);
+					addSolutionSet(chests, 19, 27, 50, 61);
+					addSolutionSet(chests, 19, 28, 44, 50);
+					addSolutionSet(chests, 20, 38, 40, 57);
+					addSolutionSet(chests, 21, 24, 53, 63);
+					addSolutionSet(chests, 22, 30, 46, 54);
+					addSolutionSet(chests, 22, 32, 36, 59);
+					addSolutionSet(chests, 23, 33, 47, 54);
+					addSolutionSet(chests, 25, 26, 49, 62);
+					addSolutionSet(chests, 28, 38, 40, 60);
+					addSolutionSet(chests, 32, 45, 51, 56);
+					addSolutionSet(chests, 33, 44, 48, 59);
+					addSolutionSet(chests, 35, 39, 41, 61);
+					addSolutionSet(chests, 36, 37, 50, 63);
+					addSolutionSet(chests, 47, 52, 54, 55);
 					break;
 				case RIGHT:
-					addSolutionSet(0, 6, 23, 54);
-					addSolutionSet(0, 9, 20, 34);
-					addSolutionSet(1, 14, 16, 43);
-					addSolutionSet(2, 8, 21, 51);
-					addSolutionSet(2, 10, 20, 33);
-					addSolutionSet(3, 13, 18, 36);
-					addSolutionSet(3, 16, 17, 40);
-					addSolutionSet(4, 7, 29, 60);
-					addSolutionSet(4, 12, 22, 35);
-					addSolutionSet(5, 11, 53, 55);
-					addSolutionSet(5, 12, 26);
-					addSolutionSet(6, 23, 41, 72);
-					addSolutionSet(7, 8, 25, 27);
-					addSolutionSet(9, 28, 32);
-					addSolutionSet(10, 43, 46, 56);
-					addSolutionSet(11, 39, 57, 69);
-					addSolutionSet(13, 18, 45, 52);
-					addSolutionSet(14, 19, 32, 73);
-					addSolutionSet(15, 21, 39, 48);
-					addSolutionSet(17, 19, 44, 47);
-					addSolutionSet(24, 53, 61, 63);
-					addSolutionSet(26, 53, 69, 71);
-					addSolutionSet(26, 53, 69);
-					addSolutionSet(27, 29, 57, 67);
-					addSolutionSet(27, 36, 70);
-					addSolutionSet(28, 31, 43, 71);
-					addSolutionSet(30, 43, 64, 72);
-					addSolutionSet(30, 54);
-					addSolutionSet(32, 34, 61, 66);
-					addSolutionSet(33, 42, 55, 65);
-					addSolutionSet(33, 46, 68, 73);
-					addSolutionSet(35, 37, 56, 63);
-					addSolutionSet(35, 38, 48, 58);
-					addSolutionSet(39, 51, 59, 65);
-					addSolutionSet(40, 47, 60, 62);
-					addSolutionSet(41, 50, 54, 70);
-					addSolutionSet(42, 45, 52, 58);
-					addSolutionSet(44, 50, 54, 66);
+					addSolutionSet(chests, 0, 6, 23, 54);
+					addSolutionSet(chests, 0, 9, 20, 34);
+					addSolutionSet(chests, 1, 14, 16, 43);
+					addSolutionSet(chests, 2, 8, 21, 51);
+					addSolutionSet(chests, 2, 10, 20, 33);
+					addSolutionSet(chests, 3, 13, 18, 36);
+					addSolutionSet(chests, 3, 16, 17, 40);
+					addSolutionSet(chests, 4, 7, 29, 60);
+					addSolutionSet(chests, 4, 12, 22, 35);
+					addSolutionSet(chests, 5, 11, 53, 55);
+					addSolutionSet(chests, 5, 12, 26);
+					addSolutionSet(chests, 6, 23, 41, 72);
+					addSolutionSet(chests, 7, 8, 25, 27);
+					addSolutionSet(chests, 9, 28, 32);
+					addSolutionSet(chests, 10, 43, 46, 56);
+					addSolutionSet(chests, 11, 39, 57, 69);
+					addSolutionSet(chests, 13, 18, 45, 52);
+					addSolutionSet(chests, 14, 19, 32, 73);
+					addSolutionSet(chests, 15, 21, 39, 48);
+					addSolutionSet(chests, 17, 19, 44, 47);
+					addSolutionSet(chests, 24, 53, 61, 63);
+					addSolutionSet(chests, 26, 53, 69, 71);
+					addSolutionSet(chests, 26, 53, 69);
+					addSolutionSet(chests, 27, 29, 57, 67);
+					addSolutionSet(chests, 27, 36, 70);
+					addSolutionSet(chests, 28, 31, 43, 71);
+					addSolutionSet(chests, 30, 43, 64, 72);
+					addSolutionSet(chests, 30, 54);
+					addSolutionSet(chests, 32, 34, 61, 66);
+					addSolutionSet(chests, 33, 42, 55, 65);
+					addSolutionSet(chests, 33, 46, 68, 73);
+					addSolutionSet(chests, 35, 37, 56, 63);
+					addSolutionSet(chests, 35, 38, 48, 58);
+					addSolutionSet(chests, 39, 51, 59, 65);
+					addSolutionSet(chests, 40, 47, 60, 62);
+					addSolutionSet(chests, 41, 50, 54, 70);
+					addSolutionSet(chests, 42, 45, 52, 58);
+					addSolutionSet(chests, 44, 50, 54, 66);
 					break;
 				case STRAIGHT:
-					addSolutionSet(0, 39, 43, 51);
-					addSolutionSet(1, 15, 20, 53);
-					addSolutionSet(2, 10, 42, 44);
-					addSolutionSet(3, 21, 54);
-					addSolutionSet(4, 14, 38, 52);
-					addSolutionSet(5, 6, 35, 41);
-					addSolutionSet(7, 16, 34, 49);
-					addSolutionSet(9, 12, 26, 27);
-					addSolutionSet(13, 25, 30, 31);
-					addSolutionSet(15, 20, 53);
-					addSolutionSet(17, 24, 34, 58);
-					addSolutionSet(18, 23, 35, 57);
-					addSolutionSet(19, 26, 47, 65);
-					addSolutionSet(21, 33, 36, 61);
-					addSolutionSet(22, 25, 46, 55);
-					addSolutionSet(24, 34, 58);
-					addSolutionSet(28, 40, 52, 63);
-					addSolutionSet(29, 41, 42, 64);
-					addSolutionSet(30, 32, 37, 62);
-					addSolutionSet(39, 43, 51);
-					addSolutionSet(43, 45, 50, 60);
-					addSolutionSet(51, 53, 56, 59);
+					addSolutionSet(chests, 0, 39, 43, 51);
+					addSolutionSet(chests, 1, 15, 20, 53);
+					addSolutionSet(chests, 2, 10, 42, 44);
+					addSolutionSet(chests, 3, 21, 54);
+					addSolutionSet(chests, 4, 14, 38, 52);
+					addSolutionSet(chests, 5, 6, 35, 41);
+					addSolutionSet(chests, 7, 16, 34, 49);
+					addSolutionSet(chests, 9, 12, 26, 27);
+					addSolutionSet(chests, 13, 25, 30, 31);
+					addSolutionSet(chests, 15, 20, 53);
+					addSolutionSet(chests, 17, 24, 34, 58);
+					addSolutionSet(chests, 18, 23, 35, 57);
+					addSolutionSet(chests, 19, 26, 47, 65);
+					addSolutionSet(chests, 21, 33, 36, 61);
+					addSolutionSet(chests, 22, 25, 46, 55);
+					addSolutionSet(chests, 24, 34, 58);
+					addSolutionSet(chests, 28, 40, 52, 63);
+					addSolutionSet(chests, 29, 41, 42, 64);
+					addSolutionSet(chests, 30, 32, 37, 62);
+					addSolutionSet(chests, 39, 43, 51);
+					addSolutionSet(chests, 43, 45, 50, 60);
+					addSolutionSet(chests, 51, 53, 56, 59);
 					break;
 			}
-			for (WorldPoint chestLocation : chestLocations)
+
+			for (Chest chest : this.chests.values())
 			{
-				if (solutionSetsContaining(chestLocation).size() == 0)
+				if (solutionSetsContaining(chest).size() == 0)
 				{
-					openChest(chestLocation, Chest.State.GRUBS);
+					openChest(chest, Chest.State.GRUBS);
 				}
 			}
-			for (WorldPoint chestLocation : poisonBatsChestLocations)
+			for (Chest chest : poisonBatsChests)
 			{
-				openChest(chestLocation, Chest.State.POISON);
+				openChest(chest, Chest.State.POISON);
 			}
-			for (WorldPoint chestLocation : grubsChestLocations)
+			for (Chest chest : grubsChests)
 			{
-				openChest(chestLocation, Chest.State.GRUBS);
+				openChest(chest, Chest.State.GRUBS);
 			}
 
-			findChestCounts();
+			findSolutionSetCounts();
+			drawChestStates = true;
 		}
 	}
 
-	private void addSolutionSet(int... indices)
+	private void addSolutionSet(ArrayList<Chest> chests, int... indices)
 	{
-		ArrayList<WorldPoint> solutionSet = new ArrayList<>();
+		ArrayList<Chest> solutionSet = new ArrayList<>();
 		for (int index : indices)
 		{
-			solutionSet.add(chestLocations.get(index));
+			solutionSet.add(chests.get(index));
 		}
 		solutionSets.add(solutionSet);
 	}
 
 	public void poisonSplatEvent(WorldPoint worldPoint)
 	{
-		Chest chest = chestMap.get(worldPoint);
+		Chest chest = chests.get(worldPoint);
 		if (chest != null)
 		{
 			chest.setTickPoison(client.getTickCount());
@@ -431,14 +442,14 @@ public class BatsLocator
 	}
 
 	//This does have a delay switching from poison chest to bats chest which can be observed by the color change at the chest, only when starting the plugin.
+	//An open poison chest can't be differentiated from the bats chest which results in the poison chest being changed to a bats chest, only when starting the plugin.
 	public void gameTickEvent()
 	{
-		for (WorldPoint chestLocation : poisonBatsChestLocations)
+		for (Chest chest : poisonBatsChests)
 		{
-			Chest chest = chestMap.get(chestLocation);
 			if (chest.getState() == Chest.State.POISON && chest.getTickPoison() == -1)
 			{
-				openChest(chestLocation, Chest.State.BATS);
+				openChest(chest, Chest.State.BATS);
 			}
 		}
 	}
