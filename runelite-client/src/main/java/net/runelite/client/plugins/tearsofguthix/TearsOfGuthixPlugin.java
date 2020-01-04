@@ -24,23 +24,27 @@
  */
 package net.runelite.client.plugins.tearsofguthix;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.inject.Inject;
 import com.google.inject.Provides;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.ObjectID;
+import net.runelite.api.*;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.http.api.chat.ChatClient;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Tears Of Guthix",
@@ -50,6 +54,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;
+	private boolean hasCreatedTimer = false;
+	private boolean timerRunning = false;
 
 	@Inject
 	private Client client;
@@ -61,13 +67,19 @@ public class TearsOfGuthixPlugin extends Plugin
 	private TearsOfGuthixOverlay overlay;
 
 	@Inject
-	private TearsOfGuthixTimer timer;
-
-	@Inject
-	private TearsOfGuthixTimerOverlay timerOverlay;
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private TearsOfGuthixConfig tearsOfGuthixConfig;
+
+	@Inject
+	private ChatClient chatClient;
+
+	@Inject
+	private TearsOfGuthixTimerOverlay timer;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Provides
 	TearsOfGuthixConfig getConfig(ConfigManager configManager)
@@ -82,14 +94,13 @@ public class TearsOfGuthixPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(timerOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(timerOverlay);
+		infoBoxManager.removeInfoBox(timer);
 		streams.clear();
 	}
 
@@ -130,6 +141,69 @@ public class TearsOfGuthixPlugin extends Plugin
 
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!hasCreatedTimer)
+		{
+			if (client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+			{
+				timer = new TearsOfGuthixTimerOverlay(this);
+				spriteManager.getSpriteAsync(SpriteID.TAB_QUESTS_RED_MINIGAMES, 0, timer);
+				timer.setTooltip("Tears of Guthix");
+				if (tearsOfGuthixConfig.time())
+				{
+					infoBoxManager.addInfoBox(timer);
+					timerRunning = true;
+				}
+				hasCreatedTimer = true;
+			}
+
+		}
+		else if (timer != null)
+		{
+			if (client.getLocalPlayer().getWorldLocation().getX() <= 3253)
+			{
+				infoBoxManager.removeInfoBox(timer);
+				timer = null;
+				timerRunning = false;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (tearsOfGuthixConfig.time() && !timerRunning && hasCreatedTimer)
+		{
+			if (client.getLocalPlayer().getWorldLocation().getRegionID() == 12948 && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
+			{
+				infoBoxManager.addInfoBox(timer);
+				timerRunning = true;
+			}
+
+		}
+		else if (!tearsOfGuthixConfig.time() && timerRunning)
+		{
+			infoBoxManager.removeInfoBox(timer);
+			timerRunning = false;
+		}
+	}
+
+	int getQp()
+	{
+		try
+		{
+			int qp = client.getVar(VarPlayer.QUEST_POINTS);
+			chatClient.submitQp(client.getLocalPlayer().getName(), qp);
+			return chatClient.getQp(client.getLocalPlayer().getName());
+		}
+		catch (IOException | NullPointerException e)
+		{
+			return -1;
+		}
 	}
 
 }

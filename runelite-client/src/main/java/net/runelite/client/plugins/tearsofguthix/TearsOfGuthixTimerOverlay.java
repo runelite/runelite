@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, hiwilliam36 <https://github.com/hiwilliam36>
+ * Copyright (c) 2020, hiwilliam36 <https://github.com/hiwilliam36>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,54 +25,15 @@
 
 package net.runelite.client.plugins.tearsofguthix;
 
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.infobox.Timer;
 import javax.inject.Inject;
-import java.awt.*;
+import java.time.temporal.ChronoUnit;
 
-public class TearsOfGuthixTimerOverlay extends Overlay
+class TearsOfGuthixTimerOverlay extends Timer
 {
-
-	private static final int TOG_REGION = 12948;
-
 	@Inject
-	private PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private TearsOfGuthixTimer tearsOfGuthixTimer;
-
-	@Inject
-	private TearsOfGuthixConfig config;
-
-	@Inject
-	private TearsOfGuthixTimerOverlay(Client client, TearsOfGuthixPlugin plugin)
+	TearsOfGuthixTimerOverlay(TearsOfGuthixPlugin plugin)
 	{
-		super(plugin);
-		setPosition(OverlayPosition.BOTTOM_LEFT);
-		this.client = client;
+		super( (int) (plugin.getQp() * 0.6) + 1, ChronoUnit.SECONDS, null, plugin);
 	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		String time = tearsOfGuthixTimer.getTime();
-		// make sure player player is in region or check if timer is over
-		if (!config.time() || time.equals("-1") || client.getLocalPlayer().getWorldLocation().getRegionID() != TOG_REGION && client.getLocalPlayer().getWorldLocation().getX() >= 3254 && client.getLocalPlayer().getWorldLocation().getX() <= 3262)
-		{
-			return null;
-		}
-		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Time Left: ")
-			.right(time)
-			.build());
-		return panelComponent.render(graphics);
-	}
-
 }
