@@ -76,7 +76,7 @@ public enum HiscoreSkill
 	CHAMBERS_OF_XERIC_CHALLENGE_MODE("Chambers of Xeric: Challenge Mode"),
 	CHAOS_ELEMENTAL("Chaos Elemental"),
 	CHAOS_FANATIC("Chaos Fanatic"),
-	COMMMANDER_ZILYANA("Commander Zilyana"),
+	COMMANDER_ZILYANA("Commander Zilyana"),
 	CORPOREAL_BEAST("Corporeal Beast"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist"),
 	DAGANNOTH_PRIME("Dagannoth Prime"),
