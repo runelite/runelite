@@ -133,7 +133,7 @@ public class BatsLocator
 					break;
 				case OPENED_WITHOUT_GRUBS:
 				case OPENED_WITH_GRUBS:
-					grubsChests.add(chests.get(chestLocation));
+					grubsChests.add(chest);
 					openChest(chest, Chest.State.GRUBS);
 					break;
 			}
