@@ -26,10 +26,10 @@ package net.runelite.client.plugins.raids.bats;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import static java.util.Comparator.comparing;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.function.Function;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
@@ -314,24 +314,20 @@ public class BatsLocator
 			switch (rotation)
 			{
 				case 0:
-					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY))
-							.thenComparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX));
+					comparator = comparing(Chest::getLocation, comparing(WorldPoint::getY).thenComparing(WorldPoint::getX));
 					break;
 				case 1:
-					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX))
-							.thenComparing(Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY)).reversed());
+					comparator = comparing(Chest::getLocation, comparing(WorldPoint::getX).reversed().thenComparing(WorldPoint::getY).reversed());
 					break;
 				case 2:
-					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY)).reversed()
-							.thenComparing(Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX)).reversed());
+					comparator = comparing(Chest::getLocation, comparing(WorldPoint::getY).thenComparing(WorldPoint::getX).reversed());
 					break;
 				case 3:
-					comparator = Comparator.comparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getX)).reversed()
-							.thenComparing(((Function<Chest, WorldPoint>)Chest::getLocation).andThen(WorldPoint::getY));
+					comparator = comparing(Chest::getLocation, comparing(WorldPoint::getX).reversed().thenComparing(WorldPoint::getY));
 					break;
 				default:
 					//This should never be reached.
-					comparator = Comparator.comparing(Chest::getNumber);
+					comparator = comparing(Chest::getNumber);
 					break;
 			}
 			chests.sort(comparator);
@@ -488,8 +484,6 @@ public class BatsLocator
 		}
 	}
 
-	//This does have a delay switching from poison chest to bats chest which can be observed by the color change at the chest, only when starting the plugin.
-	//An open poison chest can't be differentiated from the bats chest which results in the poison chest being changed to a bats chest, only when starting the plugin.
 	public void gameTickEvent()
 	{
 		for (Chest chest : poisonBatsChests)
