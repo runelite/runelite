@@ -363,6 +363,7 @@ public class BatsLocator
 					addSolutionSet(chests, 11, 39, 52, 55);
 					addSolutionSet(chests, 12, 21, 26, 45);
 					addSolutionSet(chests, 13, 17, 22, 50);
+					addSolutionSet(chests, 13, 34, 53, 62);	//Could be instead of (9, 34, 53, 62).
 					addSolutionSet(chests, 14, 15, 41, 44);
 					addSolutionSet(chests, 14, 42, 43, 57);
 					addSolutionSet(chests, 19, 24, 31, 33);
