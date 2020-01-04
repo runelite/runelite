@@ -47,7 +47,9 @@ import net.runelite.api.ClanMemberManager;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Ignore;
 import net.runelite.api.MessageNode;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
@@ -139,11 +141,17 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
+
+		if (config.showIgnores())
+		{
+			clientThread.invoke(() -> colorIgnoredPlayers(config.showIgnoresColor()));
+		}
 	}
 
 	@Override
 	public void shutDown()
 	{
+		clientThread.invoke(() -> colorIgnoredPlayers(Color.WHITE));
 		clanMembers.clear();
 		removeClanCounter();
 		resetClanChats();
@@ -167,6 +175,9 @@ public class ClanChatPlugin extends Plugin
 			{
 				removeClanCounter();
 			}
+
+			Color ignoreColor = config.showIgnores() ? config.showIgnoresColor() : Color.WHITE;
+			clientThread.invoke(() -> colorIgnoredPlayers(ignoreColor));
 		}
 	}
 
@@ -541,6 +552,12 @@ public class ClanChatPlugin extends Plugin
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
 				break;
 			}
+			case "clanChatChannelRebuild":
+				if (config.showIgnores())
+				{
+					clientThread.invoke(() -> colorIgnoredPlayers(config.showIgnoresColor()));
+				}
+				break;
 		}
 	}
 
@@ -667,5 +684,28 @@ public class ClanChatPlugin extends Plugin
 			)
 			.option("2. Cancel", Runnables::doNothing)
 			.build();
+	}
+
+	private void colorIgnoredPlayers(Color ignoreColor)
+	{
+		Widget clanChatList = client.getWidget(WidgetInfo.CLAN_CHAT_LIST);
+		if (clanChatList == null || clanChatList.getChildren() == null)
+		{
+			return;
+		}
+
+		NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+		// Iterate every 3 widgets, since the order of widgets is name, world, icon
+		for (int i = 0; i < clanChatList.getChildren().length; i += 3)
+		{
+			Widget listWidget = clanChatList.getChild(i);
+			String clanMemberName = listWidget.getText();
+			if (clanMemberName.isEmpty() || ignoreContainer.findByName(clanMemberName) == null)
+			{
+				continue;
+			}
+
+			listWidget.setTextColor(ignoreColor.getRGB());
+		}
 	}
 }
