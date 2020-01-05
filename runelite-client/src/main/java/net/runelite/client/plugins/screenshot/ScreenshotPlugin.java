@@ -231,24 +231,21 @@ public class ScreenshotPlugin extends Plugin
 			}
 		});
 
-		if (config.uploadScreenshot() == UploadStyle.NEITHER)
+		popup.put("Save as", () ->
 		{
-			popup.put("Save as", () ->
-			{
-				final String fileName = JOptionPane.showInputDialog(saveAsPanel, "Enter the filename:",
-					"Screenshot", JOptionPane.QUESTION_MESSAGE);
+			final String fileName = JOptionPane.showInputDialog(saveAsPanel, "Enter the filename:",
+				"Screenshot", JOptionPane.QUESTION_MESSAGE);
 
-				if (fileName != null && !fileName.isEmpty())
-				{
-					takeScreenshot(fileName);
-				}
-				else if (fileName != null && fileName.isEmpty())
-				{
-					JOptionPane.showMessageDialog(saveAsPanel, "You cannot create a screenshot with an empty name",
-						"Screenshot", JOptionPane.ERROR_MESSAGE);
-				}
-			});
-		}
+			if (fileName != null && !fileName.isEmpty())
+			{
+				takeScreenshot(fileName);
+			}
+			else if (fileName != null && fileName.isEmpty())
+			{
+				JOptionPane.showMessageDialog(saveAsPanel, "You cannot create a screenshot with an empty name",
+					"Screenshot", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 
 		titleBarButton = NavigationButton.builder()
 			.tab(false)
