@@ -414,6 +414,18 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Removes the records from then panel
+	 */
+	void removeRecords()
+	{
+		records.clear();
+		rebuild();
+		add(errorPanel);
+		actionsContainer.setVisible(false);
+		overallPanel.setVisible(false);
+	}
+
+	/**
 	 * Changes grouping mode of panel
 	 *
 	 * @param group if loot should be grouped or not
