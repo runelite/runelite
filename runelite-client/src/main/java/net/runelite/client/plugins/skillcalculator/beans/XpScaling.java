@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2019, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,10 @@ package net.runelite.client.plugins.skillcalculator.beans;
 import lombok.Getter;
 
 @Getter
-public class SkillDataEntry
+public class XpScaling
 {
-	private String name;
-	private int level;
-	private double xp;
-	private Integer icon;
-	private Integer sprite;
-	private boolean ignoreBonus;
-	private XpScaling[] xpScalings;
+	private Integer startLevel;
+	private Integer endLevel;
+	private double levelCoefficient;
+	private double maxResult;
 }

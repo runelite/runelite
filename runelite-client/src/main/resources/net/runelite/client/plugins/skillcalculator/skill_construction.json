@@ -2,6 +2,20 @@
   "actions": [
     {
       "level": 1,
+      "icon": 20720,
+      "name": "Wintertodt Brazier",
+      "xp": 4,
+      "xpScalings":
+      [
+        {
+          "startLevel": 1,
+          "endLevel": 99,
+          "levelCoefficient": 4
+        }
+      ]
+    },
+    {
+      "level": 1,
       "icon": 8168,
       "name": "Exit Portal",
       "xp": 100
