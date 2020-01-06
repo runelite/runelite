@@ -162,8 +162,8 @@ public class RuneLite
 	@Inject
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
 
-    @Inject
-    private Provider<PartyService> partyService;
+	@Inject
+	private Provider<PartyService> partyService;
 
 	@Inject
 	private Hooks hooks;

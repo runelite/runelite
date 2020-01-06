@@ -30,7 +30,6 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Member;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,7 +86,12 @@ import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.ws.WebsocketMessage;
-import net.runelite.http.api.ws.messages.party.*;
+import net.runelite.http.api.ws.messages.party.Join;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.http.api.ws.messages.party.UserJoin;
+import net.runelite.http.api.ws.messages.party.UserPart;
+import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
@@ -97,52 +101,37 @@ import net.runelite.http.api.ws.messages.party.*;
 @Singleton
 public class PartyPlugin extends Plugin implements KeyListener
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private PartyService party;
-
-	@Inject
-	private WSClient ws;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private PartyStatsOverlay partyStatsOverlay;
-
-	@Inject
-	private PartyPingOverlay partyPingOverlay;
-
-	@Inject
-	private KeyManager keyManager;
-
-	@Inject
-	private WSClient wsClient;
-
-	@Inject
-	private WorldMapPointManager worldMapManager;
-
-	@Inject
-	private PartyConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private EventBus eventBus;
-
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
+	@Getter(AccessLevel.PACKAGE)
+	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
 	@Inject
 	@Named("developerMode")
 	boolean developerMode;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
-
-	@Getter(AccessLevel.PACKAGE)
-	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
-
+	@Inject
+	private Client client;
+	@Inject
+	private PartyService party;
+	@Inject
+	private WSClient ws;
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private PartyStatsOverlay partyStatsOverlay;
+	@Inject
+	private PartyPingOverlay partyPingOverlay;
+	@Inject
+	private KeyManager keyManager;
+	@Inject
+	private WSClient wsClient;
+	@Inject
+	private WorldMapPointManager worldMapManager;
+	@Inject
+	private PartyConfig config;
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	@Inject
+	private EventBus eventBus;
 	private int lastHp, lastPray;
 	private boolean hotkeyDown, doSync;
 	private boolean sendAlert;
