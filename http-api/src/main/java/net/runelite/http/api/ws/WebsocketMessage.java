@@ -29,6 +29,7 @@ import net.runelite.api.events.Event;
 public class WebsocketMessage implements Event
 {
 	protected boolean _party;
+	public String text;
 
 	public boolean isParty()
 	{
