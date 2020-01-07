@@ -26,6 +26,7 @@ package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
@@ -45,8 +46,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -155,8 +154,6 @@ public class ScreenshotPlugin extends Plugin
 
 	private final JPanel saveAsPanel = new JPanel();
 
-	private Map<String, Runnable> popup = new LinkedHashMap<>();
-
 	@Inject
 	private ScreenshotConfig config;
 
@@ -219,40 +216,40 @@ public class ScreenshotPlugin extends Plugin
 
 		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
-		popup.put("Open screenshot folder...", () ->
-		{
-			try
-			{
-				Desktop.getDesktop().open(SCREENSHOT_DIR);
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error opening screenshot dir", ex);
-			}
-		});
-
-		popup.put("Save as", () ->
-		{
-			final String fileName = JOptionPane.showInputDialog(saveAsPanel, "Enter the filename:",
-				"Screenshot", JOptionPane.QUESTION_MESSAGE);
-
-			if (fileName != null && !fileName.isEmpty())
-			{
-				takeScreenshot(fileName);
-			}
-			else if (fileName != null && fileName.isEmpty())
-			{
-				JOptionPane.showMessageDialog(saveAsPanel, "You cannot create a screenshot with an empty name",
-					"Screenshot", JOptionPane.ERROR_MESSAGE);
-			}
-		});
-
 		titleBarButton = NavigationButton.builder()
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
 			.onClick(() -> takeScreenshot(format(new Date())))
-			.popup(popup)
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					try
+					{
+						Desktop.getDesktop().open(SCREENSHOT_DIR);
+					}
+					catch (IOException ex)
+					{
+						log.warn("Error opening screenshot dir", ex);
+					}
+				})
+				.put("Save as", () ->
+				{
+					final String fileName = JOptionPane.showInputDialog(saveAsPanel, "Enter the filename:",
+						"Screenshot", JOptionPane.QUESTION_MESSAGE);
+
+					if (fileName != null && !fileName.isEmpty())
+					{
+						takeScreenshot(fileName);
+					}
+					else if (fileName != null && fileName.isEmpty())
+					{
+						JOptionPane.showMessageDialog(saveAsPanel,
+							"You cannot create a screenshot with an empty name",
+							"Screenshot", JOptionPane.ERROR_MESSAGE);
+					}
+				}).build())
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
