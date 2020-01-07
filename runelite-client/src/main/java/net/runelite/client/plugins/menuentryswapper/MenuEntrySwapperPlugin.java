@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, Rami <https://github.com/Rami-J>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +41,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -50,6 +50,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
@@ -621,6 +622,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pick-lots", option, target, index);
 		}
+		else if (shiftModifier && option.equals("view offer") && config.swapGEAbort())
+		{
+			swap("abort offer", option, target, index);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -646,6 +651,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, index);
+		}
+		else if (option.equals("collect to inventory") || option.startsWith("collect-note") || option.startsWith("collect-item"))
+		{
+			switch (config.swapGEItemCollect())
+			{
+				case ITEMS:
+					swap("collect-items", option, target, index);
+					swap("collect-item", option, target, index);
+					break;
+				case NOTES:
+					swap("collect-notes", option, target, index);
+					swap("collect-note", option, target, index);
+					break;
+				case BANK:
+					swap("collect to bank", option, target, index);
+					swap("bank", option, target, index);
+					break;
+			}
 		}
 
 		if (shiftModifier && config.swapTeleportSpell())

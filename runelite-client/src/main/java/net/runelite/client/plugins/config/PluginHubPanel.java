@@ -410,16 +410,16 @@ class PluginHubPanel extends PluginPanel
 		refreshing = new JLabel("Loading...");
 		refreshing.setHorizontalAlignment(JLabel.CENTER);
 
-		JPanel mainPanelWrapper = new JPanel();
+		JPanel mainPanelWrapper = new FixedWidthPanel();
 		mainPanelWrapper.setLayout(new BorderLayout());
 		mainPanelWrapper.add(mainPanel, BorderLayout.NORTH);
 		mainPanelWrapper.add(refreshing, BorderLayout.CENTER);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		scrollPane.getViewport().setLayout(new BorderLayout());
-		scrollPane.getViewport().add(mainPanelWrapper, BorderLayout.CENTER);
+		// Can't use Short.MAX_VALUE like the docs say because of JDK-8079640
+		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
+		scrollPane.setViewportView(mainPanelWrapper);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addComponent(externalPluginWarning)
