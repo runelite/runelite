@@ -163,13 +163,14 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
-			keyName = "showAgilityClickboxes",
-			name = "Show Agility Clickboxes",
-			description = "Enable/Disable the agility clickboxes.",
+			keyName = "showAgilityCourseClickboxes",
+			name = "Show Agility Course Clickboxes",
+			description = "Enable/Disable the agility course clickboxes.",
 			position = 13
 	)
-	default boolean showAgilityClickboxes()
+	default boolean showAgilityCourseClickboxes()
 	{
 		return true;
 	}
