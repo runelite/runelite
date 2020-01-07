@@ -670,7 +670,19 @@ public class XpTrackerPlugin extends Plugin
 			xpPauseState.tickXp(skill, skillExperience, xpTrackerConfig.pauseSkillAfter());
 		}
 
-		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), !GameState.LOGIN_SCREEN.equals(client.getGameState()));
+		final boolean loggedIn;
+		switch (client.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case LOGGING_IN:
+			case LOGIN_SCREEN_AUTHENTICATOR:
+				loggedIn = false;
+				break;
+			default:
+				loggedIn = true;
+				break;
+		}
+		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), loggedIn);
 
 		if (lastTickMillis == 0)
 		{

@@ -203,7 +203,7 @@ public class HiscoreResult
 				return chaosElemental;
 			case CHAOS_FANATIC:
 				return chaosFanatic;
-			case COMMMANDER_ZILYANA:
+			case COMMANDER_ZILYANA:
 				return commanderZilyana;
 			case CORPOREAL_BEAST:
 				return corporealBeast;

@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
+import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.hooks.Callbacks;
@@ -685,6 +686,42 @@ public interface Client extends GameEngine
 	 * @return the value
 	 */
 	String getVar(VarClientStr varClientStr);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarpValue(int varpId);
+
+	/**
+	 * Gets the value of a given Varbit.
+	 *
+	 * @param varbitId the varbit id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarbitValue(int varbitId);
+
+	/**
+	 * Gets the value of a given VarClientInt
+	 *
+	 * @param varcIntId the VarClientInt id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarcIntValue(int varcIntId);
+
+	/**
+	 * Gets the value of a given VarClientStr
+	 *
+	 * @param varcStrId the VarClientStr id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	String getVarcStrValue(int varcStrId);
 
 	/**
 	 * Sets a VarClientString to the passed value

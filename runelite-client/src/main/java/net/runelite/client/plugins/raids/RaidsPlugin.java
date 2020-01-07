@@ -421,7 +421,18 @@ public class RaidsPlugin extends Plugin
 	private void updateList(Collection<String> list, String input)
 	{
 		list.clear();
-		list.addAll(Text.fromCSV(input.toLowerCase()));
+		for (String s : Text.fromCSV(input.toLowerCase()))
+		{
+			if (s.equals("unknown"))
+			{
+				list.add("unknown (combat)");
+				list.add("unknown (puzzle)");
+			}
+			else
+			{
+				list.add(s);
+			}
+		}
 	}
 
 	boolean getRotationMatches()

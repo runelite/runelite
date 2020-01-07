@@ -36,6 +36,7 @@ public enum ConfigType
 	ENUM(8),
 	NPC(9),
 	ITEM(10),
+	PARAMS(11),
 	SEQUENCE(12),
 	SPOTANIM(13),
 	VARBIT(14),

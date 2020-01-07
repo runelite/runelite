@@ -71,10 +71,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-	private static final int MAX_CBALLS = 30;
+	static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
+	private boolean cannonBallNotificationSent;
 
 	@Getter
 	private int cballsLeft;
@@ -139,6 +140,7 @@ public class CannonPlugin extends Plugin
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
 		cannonPosition = null;
+		cannonBallNotificationSent = false;
 		cballsLeft = 0;
 		removeCounter();
 		skipProjectileCheckThisTick = false;
@@ -275,6 +277,12 @@ public class CannonPlugin extends Plugin
 				if (!skipProjectileCheckThisTick)
 				{
 					cballsLeft--;
+
+					if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
+					{
+						notifier.notify(String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
+						cannonBallNotificationSent = true;
+					}
 				}
 			}
 		}
@@ -338,6 +346,8 @@ public class CannonPlugin extends Plugin
 					cballsLeft++;
 				}
 			}
+
+			cannonBallNotificationSent = false;
 		}
 
 		if (event.getMessage().contains("Your cannon is out of ammo!"))
@@ -349,7 +359,7 @@ public class CannonPlugin extends Plugin
 			// extra check is a good idea.
 			cballsLeft = 0;
 
-			if (config.showEmptyCannonNotification())
+			if (config.showCannonNotifications())
 			{
 				notifier.notify("Your cannon is out of ammo!");
 			}

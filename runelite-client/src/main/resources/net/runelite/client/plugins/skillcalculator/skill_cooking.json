@@ -2,6 +2,12 @@
   "actions": [
     {
       "level": 1,
+      "icon": 9436,
+      "name": "Sinew",
+      "xp": 3
+    },
+    {
+      "level": 1,
       "icon": 315,
       "name": "Shrimps",
       "xp": 30
@@ -26,8 +32,26 @@
     },
     {
       "level": 1,
+      "icon": 319,
+      "name": "Anchovies",
+      "xp": 30
+    },
+    {
+      "level": 1,
       "icon": 325,
       "name": "Sardine",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 3146,
+      "name": "Poison Karambwan",
+      "xp": 80
+    },
+    {
+      "level": 1,
+      "icon": 1861,
+      "name": "Ugthanki Meat",
       "xp": 40
     },
     {
@@ -35,12 +59,6 @@
       "icon": 2309,
       "name": "Bread",
       "xp": 40
-    },
-    {
-      "level": 3,
-      "icon": 9436,
-      "name": "Sinew",
-      "xp": 3
     },
     {
       "level": 5,
@@ -70,7 +88,7 @@
       "level": 9,
       "icon": 7072,
       "name": "Spicy Sauce",
-      "xp": 24
+      "xp": 25
     },
     {
       "level": 10,
@@ -109,6 +127,12 @@
       "xp": 70
     },
     {
+      "level": 12,
+      "icon": 2213,
+      "name": "Spicy Crunchies",
+      "xp": 100
+    },
+    {
       "level": 13,
       "icon": 7078,
       "name": "Scrambled Egg",
@@ -128,21 +152,33 @@
     },
     {
       "level": 15,
-      "icon": 319,
-      "name": "Anchovies",
-      "xp": 30
-    },
-    {
-      "level": 15,
       "icon": 333,
       "name": "Trout",
       "xp": 70
     },
     {
       "level": 16,
+      "icon": 6293,
+      "name": "Spider on stick",
+      "xp": 80
+    },
+    {
+      "level": 16,
+      "icon": 6295,
+      "name": "Spider on shaft",
+      "xp": 80
+    },
+    {
+      "level": 16,
       "icon": 7223,
       "name": "Roast Rabbit",
       "xp": 72.5
+    },
+    {
+      "level": 16,
+      "icon": 2209,
+      "name": "Chocchip crunchies",
+      "xp": 100
     },
     {
       "level": 17,
@@ -187,10 +223,28 @@
       "xp": 80
     },
     {
+      "level": 20,
+      "icon": 712,
+      "name": "Cup of tea",
+      "xp": 52
+    },
+    {
       "level": 21,
       "icon": 9988,
       "name": "Roast Beast Meat",
       "xp": 82.5
+    },
+    {
+      "level": 21,
+      "icon": 7521,
+      "name": "Cooked Crab Meat",
+      "xp": 100
+    },
+    {
+      "level": 21,
+      "icon": 2130,
+      "name": "Pot of cream",
+      "xp": 18
     },
     {
       "level": 22,
@@ -265,6 +319,18 @@
       "xp": 128
     },
     {
+      "level": 29,
+      "icon": 1909,
+      "name": "Greenman's ale",
+      "xp": 281
+    },
+    {
+      "level": 29,
+      "icon": 2259,
+      "name": "Cheese and Tomato Batta",
+      "xp": 158
+    },
+    {
       "level": 30,
       "icon": 361,
       "name": "Tuna",
@@ -289,16 +355,40 @@
       "xp": 190
     },
     {
+      "level": 30,
+      "icon": 2878,
+      "name": "Roasted Chompy",
+      "xp": 100
+    },
+    {
+      "level": 31,
+      "icon": 7530,
+      "name": "Fishcake",
+      "xp": 100
+    },
+    {
       "level": 32,
       "icon": 2092,
       "name": "Drunk Dragon",
       "xp": 160
     },
     {
+      "level": 33,
+      "icon": 2074,
+      "name": "Choc Saturday",
+      "xp": 170
+    },
+    {
       "level": 34,
       "icon": 7178,
       "name": "Garden Pie",
       "xp": 138
+    },
+    {
+      "level": 34,
+      "icon": 1907,
+      "name": "Wizard's mind bomb",
+      "xp": 314
     },
     {
       "level": 35,
@@ -319,6 +409,12 @@
       "xp": 110
     },
     {
+      "level": 35,
+      "icon": 2195,
+      "name": "Veg ball",
+      "xp": 175
+    },
+    {
       "level": 37,
       "icon": 2064,
       "name": "Blurberry Special",
@@ -331,10 +427,22 @@
       "xp": 115
     },
     {
+      "level": 38,
+      "icon": 6697,
+      "name": "Pat of butter",
+      "xp": 40.5
+    },
+    {
       "level": 39,
       "icon": 1911,
       "name": "Dragon Bitter",
       "xp": 347
+    },
+    {
+      "level": 39,
+      "icon": 6703,
+      "name": "Potato with butter",
+      "xp": 40
     },
     {
       "level": 40,
@@ -349,16 +457,34 @@
       "xp": 180
     },
     {
+      "level": 40,
+      "icon": 2187,
+      "name": "Tangled toad's legs",
+      "xp": 185
+    },
+    {
       "level": 41,
       "icon": 7054,
       "name": "Chilli Potato",
       "xp": 165.5
     },
     {
+      "level": 41,
+      "icon": 7568,
+      "name": "Cooked Jubbly",
+      "xp": 160
+    },
+    {
       "level": 42,
       "icon": 2185,
       "name": "Chocolate Bomb",
       "xp": 190
+    },
+    {
+      "level": 42,
+      "icon": 7084,
+      "name": "Fried Onions",
+      "xp": 60
     },
     {
       "level": 43,
@@ -385,10 +511,34 @@
       "xp": 169
     },
     {
+      "level": 46,
+      "icon": 7082,
+      "name": "Fried Mushrooms",
+      "xp": 60
+    },
+    {
       "level": 47,
       "icon": 7188,
       "name": "Fish Pie",
       "xp": 164
+    },
+    {
+      "level": 47,
+      "icon": 6705,
+      "name": "Potato with cheese",
+      "xp": 40
+    },
+    {
+      "level": 48,
+      "icon": 1985,
+      "name": "Cheese",
+      "xp": 64
+    },
+    {
+      "level": 49,
+      "icon": 5751,
+      "name": "Axeman's folly",
+      "xp": 413
     },
     {
       "level": 50,
@@ -415,16 +565,46 @@
       "xp": 180
     },
     {
+      "level": 53,
+      "icon": 2149,
+      "name": "Lava Eel",
+      "xp": 30
+    },
+    {
+      "level": 54,
+      "icon": 5755,
+      "name": "Chef's Delight",
+      "xp": 446
+    },
+    {
       "level": 55,
       "icon": 2297,
       "name": "Anchovy Pizza",
       "xp": 182
     },
     {
+      "level": 57,
+      "icon": 7066,
+      "name": "Mushroom & onion",
+      "xp": 120
+    },
+    {
       "level": 58,
       "icon": 1883,
       "name": "Ugthanki Kebab (Fresh)",
       "xp": 80
+    },
+    {
+      "level": 58,
+      "icon": 1865,
+      "name": "Pitta Bread",
+      "xp": 40
+    },
+    {
+      "level": 59,
+      "icon": 5759,
+      "name": "Slayer's respite",
+      "xp": 479
     },
     {
       "level": 60,
@@ -457,6 +637,12 @@
       "xp": 188
     },
     {
+      "level": 65,
+      "icon": 245,
+      "name": "Wine of Zamorak",
+      "xp": 200
+    },
+    {
       "level": 67,
       "icon": 7068,
       "name": "Tuna And Corn",
@@ -473,6 +659,12 @@
       "icon": 7198,
       "name": "Admiral Pie",
       "xp": 210
+    },
+    {
+      "level": 72,
+      "icon": 13339,
+      "name": "Sacred Eel",
+      "xp": 109
     },
     {
       "level": 73,
