@@ -662,6 +662,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("abort offer", option, target, index);
 		}
+		else if (shiftModifier && target.equals("npc contact") && config.swapNpcContact())
+		{
+			swap("honest jimmy", option, target, index);
+			swap("bert the sandman", option, target, index);
+			swap("advisor ghrim", option, target, index);
+			swap("dark mage", option, target, index);
+			swap("lanthus", option, target, index);
+			swap("turael", option, target, index);
+			swap("mazchna", option, target, index);
+			swap("vannaka", option, target, index);
+			swap("chaeldar", option, target, index);
+			swap("nieve", option, target, index);
+			swap("steve", option, target, index);
+			swap("duradel", option, target, index);
+			swap("krystilia", option, target, index);
+			swap("konar", option, target, index);
+			swap("murphy", option, target, index);
+			swap("cyrisus", option, target, index);
+			swap("smoggy", option, target, index);
+			swap("ginea", option, target, index);
+			swap("watson", option, target, index);
+			swap("barbarian guard", option, target, index);
+			swap("random", option, target, index);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
