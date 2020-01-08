@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
+			keyName = "showClickboxes",
+			name = "Show Clickboxes",
+			description = "Enable/Disable the agility course clickboxes.",
+			position = 0
+	)
+	default boolean showClickboxes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showLapCount",
 		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
@@ -160,17 +171,6 @@ public interface AgilityConfig extends Config
 		position = 12
 	)
 	default boolean showAgilityArenaTimer()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showAgilityCourseClickboxes",
-			name = "Show Agility Course Clickboxes",
-			description = "Enable/Disable the agility course clickboxes.",
-			position = 13
-	)
-	default boolean showAgilityCourseClickboxes()
 	{
 		return true;
 	}
