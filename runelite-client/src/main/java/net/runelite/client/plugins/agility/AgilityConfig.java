@@ -33,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
-			keyName = "showClickboxes",
-			name = "Show Clickboxes",
-			description = "Enable/Disable the agility course clickboxes.",
-			position = 0
+		keyName = "showClickboxes",
+		name = "Show Clickboxes",
+		description = "Show agility course obstacle clickboxes",
+		position = 0
 	)
 	default boolean showClickboxes()
 	{
