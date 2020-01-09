@@ -228,14 +228,14 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
-		static final int CONTENT_CONTAINER = 10;
-		static final int TAB_CONTAINER = 11;
-		static final int ITEM_CONTAINER = 13;
-		static final int SEARCH_BUTTON_BACKGROUND = 40;
-		static final int DEPOSIT_INVENTORY = 42;
-		static final int DEPOSIT_EQUIPMENT = 44;
-		static final int INCINERATOR = 46;
-		static final int INCINERATOR_CONFIRM = 47;
+		static final int CONTENT_CONTAINER = 9;
+		static final int TAB_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 12;
+		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
+		static final int INCINERATOR = 45;
+		static final int INCINERATOR_CONFIRM = 46;
 	}
 
 	static class GrandExchange
@@ -279,17 +279,6 @@ public class WidgetID
 
 	static class Equipment
 	{
-		static final int HELMET = 6;
-		static final int CAPE = 7;
-		static final int AMULET = 8;
-		static final int WEAPON = 9;
-		static final int BODY = 10;
-		static final int SHIELD = 11;
-		static final int LEGS = 12;
-		static final int GLOVES = 13;
-		static final int BOOTS = 14;
-		static final int RING = 15;
-		static final int AMMO = 16;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
