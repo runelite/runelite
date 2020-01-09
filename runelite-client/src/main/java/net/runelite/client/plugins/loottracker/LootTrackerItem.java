@@ -29,19 +29,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
+@Getter
 class LootTrackerItem
 {
-	@Getter
 	private final int id;
-	@Getter
 	private final String name;
-	@Getter
-	private final int quantity;
-	@Getter
-	private final long gePrice;
-	@Getter
-	private final long haPrice;
-	@Getter
+	private int quantity;
+	private final int gePrice;
+	private final int haPrice;
 	@Setter
 	private boolean ignored;
+
+	long getTotalGePrice()
+	{
+		return (long) gePrice * quantity;
+	}
+
+	long getTotalHaPrice()
+	{
+		return (long) haPrice * quantity;
+	}
 }
