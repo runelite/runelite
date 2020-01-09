@@ -14234,7 +14234,6 @@ public final class ObjectID
 	public static final int LIGHT_27093 = 27093;
 	public static final int CLAN_CUP_PORTAL = 27095;
 	public static final int EXIT_PORTAL_27096 = 27096;
-	public static final int ANTISANTA = 27097;
 	public static final int SOFA = 27098;
 	public static final int CRATE_27100 = 27100;
 	public static final int CRATES_27101 = 27101;

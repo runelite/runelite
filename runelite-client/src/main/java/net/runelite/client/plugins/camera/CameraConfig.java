@@ -147,4 +147,15 @@ public interface CameraConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "compassLook",
+		name = "Compass options",
+		description = "Adds Look South, East, and West options to the compass",
+		position = 10
+	)
+	default boolean compassLook()
+	{
+		return true;
+	}
 }

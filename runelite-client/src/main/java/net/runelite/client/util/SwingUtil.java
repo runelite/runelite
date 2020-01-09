@@ -32,6 +32,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
@@ -45,6 +46,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.ButtonModel;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -455,5 +457,19 @@ public class SwingUtil
 			//SwingUtil.setFont(FontManager.getFontOrDefault(config.clientFont()));
 			SwingUtil.setFont(FontManager.getRunescapeFont());
 		}
+	}
+
+	public static void removeButtonDecorations(AbstractButton button)
+	{
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
+		button.setMargin(new Insets(0, 0, 0, 0));
+		button.setOpaque(false);
+	}
+
+	public static void addModalTooltip(AbstractButton button, String on, String off)
+	{
+		button.addItemListener(l -> button.setToolTipText(button.isSelected() ? on : off));
 	}
 }
