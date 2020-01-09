@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.loottracker;
+package net.runelite.http.api.loottracker;
 
 import java.time.Instant;
+import java.util.Collection;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.http.api.loottracker.LootRecordType;
+import lombok.NoArgsConstructor;
 
 @Data
-class LootResult
+@AllArgsConstructor
+@NoArgsConstructor
+public class LootAggregate
 {
-	private int killId;
+	private String eventId;
+	private LootRecordType type;
+	private Collection<GameItem> drops;
 	private Instant first_time;
 	private Instant last_time;
-	private LootRecordType type;
-	private String eventId;
 	private int amount;
-	private int itemId;
-	private int itemQuantity;
 }
