@@ -46,9 +46,12 @@ dependencies {
     implementation(Libraries.apacheCommonsCompress)
     implementation(Libraries.slf4jApi)
 
+    testAnnotationProcessor(Libraries.lombok)
+
+    testCompileOnly(Libraries.lombok)
+
     testImplementation(Libraries.junit)
     testImplementation(group = "net.runelite.rs", name = "cache", version = "${ProjectVersions.cacheversion}")
-    testImplementation(Libraries.slf4jSimple)
 }
 
 tasks {
