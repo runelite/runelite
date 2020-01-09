@@ -130,21 +130,26 @@ class Library
 		}
 		else if (state != SolvedState.NO_DATA)
 		{
-			// We know all of the possible things in this shelf.
-			if (book != null || bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
+			// Reset if the book we found isn't what we expected
+
+			if (book != null && !bookcase.getPossibleBooks().contains(book))
 			{
-				// Check to see if our guess is wrong
-				if (!bookcase.getPossibleBooks().contains(book))
-				{
-					reset();
-				}
+				reset();
 			}
 		}
 
-		// Everything is known, nothing to do
 		if (state == SolvedState.COMPLETE)
 		{
-			return;
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript, since the layout has changed
+			if (book == null && !bookcase.getPossibleBooks().isEmpty() && bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
+			{
+				reset();
+			}
+			else
+			{
+				// Everything is known, nothing to do
+				return;
+			}
 		}
 
 		log.debug("Setting bookcase {} to {}", bookcase.getIndex(), book);
