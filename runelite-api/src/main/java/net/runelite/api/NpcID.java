@@ -993,14 +993,6 @@ public final class NpcID
 	public static final int BANDIT_1026 = 1026;
 	public static final int GUARD_BANDIT = 1027;
 	public static final int BARBARIAN_GUARD = 1028;
-	public static final int JACK_FROST = 1029;
-	public static final int SANTA = 1030;
-	public static final int ANTISANTA = 1031;
-	public static final int ANTISANTA_1032 = 1032;
-	public static final int ICELORD_1033 = 1033;
-	public static final int WORRIED_BAKER = 1034;
-	public static final int PAUL = 1035;
-	public static final int MARY = 1036;
 	public static final int SNAKE = 1037;
 	public static final int MONKEY_1038 = 1038;
 	public static final int ALBINO_BAT = 1039;
@@ -2884,14 +2876,6 @@ public final class NpcID
 	public static final int GOBLIN_3074 = 3074;
 	public static final int GOBLIN_3075 = 3075;
 	public static final int GOBLIN_3076 = 3076;
-	public static final int GEORGIE = 3077;
-	public static final int GEORGIE_3078 = 3078;
-	public static final int BEVERLY = 3079;
-	public static final int BEVERLY_3080 = 3080;
-	public static final int BILL = 3081;
-	public static final int BILL_3082 = 3082;
-	public static final int JESS = 3083;
-	public static final int JESS_3084 = 3084;
 	public static final int PORTAL_3086 = 3086;
 	public static final int PORTAL_3088 = 3088;
 	public static final int BANKER_3089 = 3089;
@@ -3977,7 +3961,7 @@ public final class NpcID
 	public static final int PIERRE = 4213;
 	public static final int HOBBES = 4214;
 	public static final int LOUISA = 4215;
-	public static final int MARY_4216 = 4216;
+	public static final int MARY = 4216;
 	public static final int STANFORD = 4217;
 	public static final int GUARD_4218 = 4218;
 	public static final int GOSSIP = 4219;
@@ -7172,7 +7156,7 @@ public final class NpcID
 	public static final int REVENANT_DARK_BEAST = 7938;
 	public static final int REVENANT_KNIGHT = 7939;
 	public static final int REVENANT_DRAGON = 7940;
-	public static final int PAUL_7941 = 7941;
+	public static final int PAUL = 7941;
 	public static final int EMBLEM_TRADER_7943 = 7943;
 	public static final int FISHING_SPOT_7946 = 7946;
 	public static final int FISHING_SPOT_7947 = 7947;
