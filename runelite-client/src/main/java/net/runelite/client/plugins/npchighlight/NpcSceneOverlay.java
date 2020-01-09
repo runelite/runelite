@@ -180,6 +180,7 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			}
 			case TILE:
+			{
 				int size = 1;
 				NPCDefinition composition = actor.getTransformedDefinition();
 				if (composition != null)
@@ -190,6 +191,20 @@ public class NpcSceneOverlay extends Overlay
 				final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 				renderPoly(graphics, color, tilePoly);
 				break;
+			}
+			case THIN_TILE:
+			{
+				int size = 1;
+				NPCDefinition composition = actor.getTransformedDefinition();
+				if (composition != null)
+				{
+					size = composition.getSize();
+				}
+				final LocalPoint lp = actor.getLocalLocation();
+				final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				renderPoly(graphics, color, tilePoly, 1);
+				break;
+			}
 			case HULL:
 				final Shape objectClickbox = actor.getConvexHull();
 				graphics.setColor(color);
@@ -208,8 +223,9 @@ public class NpcSceneOverlay extends Overlay
 				modelOutliner.drawOutline(actor, 8, color, TRANSPARENT);
 				break;
 			case TRUE_LOCATIONS:
-				size = 1;
-				composition = actor.getTransformedDefinition();
+			{
+				int size = 1;
+				NPCDefinition composition = actor.getTransformedDefinition();
 
 				if (composition != null)
 				{
@@ -222,6 +238,7 @@ public class NpcSceneOverlay extends Overlay
 				getSquare(wp, size).forEach(square ->
 					drawTile(graphics, square, squareColor, 1, 255, 50));
 				break;
+			}
 		}
 
 		if (plugin.isDrawNames() && actor.getName() != null)
@@ -254,6 +271,18 @@ public class NpcSceneOverlay extends Overlay
 		{
 			graphics.setColor(color);
 			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(polygon);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(polygon);
+		}
+	}
+
+	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon, int width)
+	{
+		if (polygon != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(width));
 			graphics.draw(polygon);
 			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
 			graphics.fill(polygon);
