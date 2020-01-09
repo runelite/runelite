@@ -27,7 +27,6 @@ package net.runelite.http.service.feed;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -92,27 +91,27 @@ public class FeedController
 		{
 			items.addAll(blogService.getBlogPosts());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch blogs", e);
 		}
 
 		try
 		{
 			items.addAll(twitterService.getTweets());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch tweets", e);
 		}
 
 		try
 		{
 			items.addAll(osrsNewsService.getNews());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch news", e);
 		}
 
 		memoizedFeed = new MemoizedFeed(new FeedResult(items));
