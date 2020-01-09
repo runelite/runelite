@@ -12856,7 +12856,6 @@ public final class NullObjectID
 	public static final int NULL_27103 = 27103;
 	public static final int NULL_27104 = 27104;
 	public static final int NULL_27105 = 27105;
-	public static final int NULL_27106 = 27106;
 	public static final int NULL_27111 = 27111;
 	public static final int NULL_27112 = 27112;
 	public static final int NULL_27113 = 27113;

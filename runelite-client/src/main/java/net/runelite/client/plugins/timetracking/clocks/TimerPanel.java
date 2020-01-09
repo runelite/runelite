@@ -25,7 +25,8 @@
 package net.runelite.client.plugins.timetracking.clocks;
 
 import java.awt.Dimension;
-import net.runelite.client.ui.components.IconButton;
+import javax.swing.JButton;
+import net.runelite.client.util.SwingUtil;
 
 class TimerPanel extends ClockPanel
 {
@@ -33,7 +34,9 @@ class TimerPanel extends ClockPanel
 	{
 		super(clockManager, timer, "timer", true);
 
-		IconButton deleteButton = new IconButton(ClockTabPanel.DELETE_ICON, ClockTabPanel.DELETE_ICON_HOVER);
+		JButton deleteButton = new JButton(ClockTabPanel.DELETE_ICON);
+		SwingUtil.removeButtonDecorations(deleteButton);
+		deleteButton.setRolloverIcon(ClockTabPanel.DELETE_ICON_HOVER);
 		deleteButton.setPreferredSize(new Dimension(16, 14));
 		deleteButton.setToolTipText("Delete timer");
 		deleteButton.addActionListener(e -> clockManager.removeTimer(timer));

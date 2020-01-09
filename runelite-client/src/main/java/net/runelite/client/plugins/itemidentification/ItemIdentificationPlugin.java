@@ -68,6 +68,8 @@ public class ItemIdentificationPlugin extends Plugin
 	private boolean showOres;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showGems;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showPotions;
 
 	@Provides
 	ItemIdentificationConfig getConfig(ConfigManager configManager)
@@ -108,5 +110,6 @@ public class ItemIdentificationPlugin extends Plugin
 		this.showSaplings = config.showSaplings();
 		this.showOres = config.showOres();
 		this.showGems = config.showGems();
+		this.showPotions = config.showPotions();
 	}
 }

@@ -21,3 +21,5 @@ classes/artifacts/client_jar/client.jar
 runelite-client/src/main/resources/runelite/*
 runelite-client/dependencies.txt
 .staging/
+.vscode
+.factorypath
