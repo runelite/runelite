@@ -33,7 +33,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -180,20 +179,18 @@ public class RaidsOverlay extends Overlay
 			{
 				case COMBAT:
 					combatCount++;
-					roomName = room.getBoss().getName();
-					switch (Objects.requireNonNull(RaidRoom.Boss.fromString(roomName)))
+					switch (room)
 					{
 						case VANGUARDS:
 							vanguards = true;
 							break;
-						case UNKNOWN:
+						case UNKNOWN_COMBAT:
 							unknownCombat = true;
 							break;
 					}
 					break;
 				case PUZZLE:
-					roomName = room.getPuzzle().getName();
-					switch (Objects.requireNonNull(RaidRoom.Puzzle.fromString(roomName)))
+					switch (room)
 					{
 						case CRABS:
 							crabs = true;
@@ -316,17 +313,17 @@ public class RaidsOverlay extends Overlay
 			{
 				case COMBAT:
 					bossCount++;
-					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getName().toLowerCase()))
 					{
 						color = Color.GREEN;
 					}
-					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
+					else if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase())
 						|| plugin.isEnableRotationWhitelist() && bossCount > bossMatches)
 					{
 						color = Color.RED;
 					}
 
-					String bossName = room.getBoss().getName();
+					String bossName = room.getName();
 					String bossNameLC = bossName.toLowerCase();
 					if (plugin.isShowRecommendedItems() && plugin.getRecommendedItemsList().get(bossNameLC) != null)
 					{
@@ -338,7 +335,7 @@ public class RaidsOverlay extends Overlay
 					break;
 
 				case PUZZLE:
-					String puzzleName = room.getPuzzle().getName();
+					String puzzleName = room.getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
 					{
