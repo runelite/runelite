@@ -79,7 +79,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -177,9 +176,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ScreenCapture screenCapture;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Getter
 	private final Set<String> roomWhitelist = new HashSet<String>();

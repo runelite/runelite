@@ -170,194 +170,6 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "enhanceScouterTitle",
-		name = "Enhance scouter title",
-		description = "Adds #combat and good puzzles to scouter title"
-	)
-	default boolean enhanceScouterTitle()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 13,
-		keyName = "enableSharableImage",
-		name = "Enable sharable image",
-		description = "Use the specified hotkey to capture the raid scouter"
-	)
-	default boolean enableSharableImage()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 14,
-		keyName = "hotkey",
-		name = "Capture hotkey",
-		description = "Hotkey used to capture the scouter"
-	)
-	default Keybind hotkey()
-	{
-		return new Keybind(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK);
-	}
-
-	@ConfigItem(
-		position = 15,
-		keyName = "enableTrayNotification",
-		name = "Enable tray notification",
-		description = "Adds a system tray notification on successful screen capture"
-	)
-	default boolean enableTrayNotification()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 16,
-		keyName = "showRecommendedItems",
-		name = "Show recommended items",
-		description = "Adds overlay with recommended items to scouter"
-	)
-	default boolean showRecommendedItems()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 17,
-		keyName = "recommendedItems",
-		name = "Recommended items",
-		description = "User-set recommended items in the form: [muttadiles,ice barrage,zamorak godsword],[tekton,elder maul], ..."
-	)
-	default String recommendedItems()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		position = 18,
-		keyName = "scavsBeforeIce",
-		name = "Show last scavs for Ice Demon",
-		description = "Highlights final scavengers before Ice Demon"
-	)
-	default boolean scavsBeforeIce()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 19,
-		keyName = "scavsBeforeOlm",
-		name = "Show last scavs for Olm",
-		description = "Highlights final scavengers before Olm"
-	)
-	default boolean scavsBeforeOlm()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 20,
-		keyName = "scavPrepColor",
-		name = "Last scavs color",
-		description = "The color of the final scavs before Ice Demon/Olm"
-	)
-	default Color scavPrepColor()
-	{
-		return new Color(130, 222, 255); //light blue
-	}
-
-	@ConfigItem(
-		position = 21,
-		keyName = "alwaysShowWorldAndCC",
-		name = "Always show CC and World",
-		description = "The CC and World are not removed from being in the in-game scouter"
-	)
-	default boolean alwaysShowWorldAndCC()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 22,
-		keyName = "colorTightrope",
-		name = "Color tightrope",
-		description = "Colors tightrope a separate color"
-	)
-	default boolean colorTightrope()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 23,
-		keyName = "tightropeColor",
-		name = "Tightrope color",
-		description = "The color of tightropes"
-	)
-	default Color tightropeColor()
-	{
-		return Color.MAGENTA;
-	}
-
-	@ConfigItem(
-		position = 24,
-		keyName = "hideRopeless",
-		name = "Hide no Tightrope raids",
-		description = "Completely hides raids with no tightrope"
-	)
-	default boolean hideRopeless()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			position = 25,
-			keyName = "hideVanguards",
-			name = "Hide Vanguard raids",
-			description = "Completely hides raids with Vanguards"
-	)
-	default boolean hideVanguards()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			position = 26,
-			keyName = "hideUnknownCombat",
-			name = "Hide Unknown combat raids",
-			description = "Completely hides raids with Unknown combat"
-	)
-	default boolean hideUnknownCombat()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			position = 27,
-			keyName = "hideUnknownPuzzle",
-			name = "Hide Unknown puzzle raids",
-			description = "Completely hides raids with Unknown puzzle"
-	)
-	default boolean hideUnknownPuzzle()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 28,
-		keyName = "layoutMessage",
-		name = "Send raid layout message when entering raid",
-		description = "Sends game message with raid layout on entering new raid"
-	)
-	default boolean layoutMessage()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			position = 29,
-		position = 12,
 		keyName = "showLootValue",
 		name = "Show Loot Value",
 		description = "Shows the value of your loot at the end of a raid"
@@ -368,7 +180,194 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 13,
+		keyName = "enhanceScouterTitle",
+		name = "Enhance scouter title",
+		description = "Adds #combat and good puzzles to scouter title"
+	)
+	default boolean enhanceScouterTitle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "enableSharableImage",
+		name = "Enable sharable image",
+		description = "Use the specified hotkey to capture the raid scouter"
+	)
+	default boolean enableSharableImage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hotkey",
+		name = "Capture hotkey",
+		description = "Hotkey used to capture the scouter"
+	)
+	default Keybind hotkey()
+	{
+		return new Keybind(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "enableTrayNotification",
+		name = "Enable tray notification",
+		description = "Adds a system tray notification on successful screen capture"
+	)
+	default boolean enableTrayNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "showRecommendedItems",
+		name = "Show recommended items",
+		description = "Adds overlay with recommended items to scouter"
+	)
+	default boolean showRecommendedItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "recommendedItems",
+		name = "Recommended items",
+		description = "User-set recommended items in the form: [muttadiles,ice barrage,zamorak godsword],[tekton,elder maul], ..."
+	)
+	default String recommendedItems()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "scavsBeforeIce",
+		name = "Show last scavs for Ice Demon",
+		description = "Highlights final scavengers before Ice Demon"
+	)
+	default boolean scavsBeforeIce()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "scavsBeforeOlm",
+		name = "Show last scavs for Olm",
+		description = "Highlights final scavengers before Olm"
+	)
+	default boolean scavsBeforeOlm()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "scavPrepColor",
+		name = "Last scavs color",
+		description = "The color of the final scavs before Ice Demon/Olm"
+	)
+	default Color scavPrepColor()
+	{
+		return new Color(130, 222, 255); //light blue
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "alwaysShowWorldAndCC",
+		name = "Always show CC and World",
+		description = "The CC and World are not removed from being in the in-game scouter"
+	)
+	default boolean alwaysShowWorldAndCC()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "colorTightrope",
+		name = "Color tightrope",
+		description = "Colors tightrope a separate color"
+	)
+	default boolean colorTightrope()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "tightropeColor",
+		name = "Tightrope color",
+		description = "The color of tightropes"
+	)
+	default Color tightropeColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "hideRopeless",
+		name = "Hide no Tightrope raids",
+		description = "Completely hides raids with no tightrope"
+	)
+	default boolean hideRopeless()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 26,
+			keyName = "hideVanguards",
+			name = "Hide Vanguard raids",
+			description = "Completely hides raids with Vanguards"
+	)
+	default boolean hideVanguards()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 27,
+			keyName = "hideUnknownCombat",
+			name = "Hide Unknown combat raids",
+			description = "Completely hides raids with Unknown combat"
+	)
+	default boolean hideUnknownCombat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 			position = 28,
+			keyName = "hideUnknownPuzzle",
+			name = "Hide Unknown puzzle raids",
+			description = "Completely hides raids with Unknown puzzle"
+	)
+	default boolean hideUnknownPuzzle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 29,
+		keyName = "layoutMessage",
+		name = "Send raid layout message when entering raid",
+		description = "Sends game message with raid layout on entering new raid"
+	)
+	default boolean layoutMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 30,
 			keyName = "displayFloorBreak",
 			name = "Layout floor break",
 			description = "Displays floor break in layout"
@@ -379,7 +378,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 30,
+			position = 31,
 			keyName = "uploadScreenshot",
 			name = "Upload",
 			description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard"
