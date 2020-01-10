@@ -170,6 +170,17 @@ public interface MenuEntrySwapperConfig extends Config
 		return false;
 	}
 
+	@ConfigSection(
+		name = "Hotkey Swapping",
+		description = "",
+		position = 1,
+		keyName = "hotkeySwapping"
+	)
+	default boolean hotkeySwapping()
+	{
+		return false;
+	}
+
 	//------------------------------------------------------------//
 	// Banking
 	//------------------------------------------------------------//
@@ -464,17 +475,6 @@ public interface MenuEntrySwapperConfig extends Config
 	// Miscellaneous
 	//------------------------------------------------------------//
 
-	@ConfigItem(
-		keyName = "hotkeyMod",
-		name = "Hotkey for Swaps",
-		description = "Set this hotkey to do custom swaps on hotkeys.",
-		position = 0,
-		section = "miscellaneousSection"
-	)
-	default Keybind hotkeyMod()
-	{
-		return Keybind.SHIFT;
-	}
 
 	@ConfigItem(
 		keyName = "customSwaps",
@@ -488,23 +488,6 @@ public interface MenuEntrySwapperConfig extends Config
 		method = "parse"
 	)
 	default String customSwaps()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "shiftCustomSwaps",
-		name = "Hotkey Swaps",
-		description = "Add custom swaps here that will only be activated when you press your hotkey." +
-			"<br>1 per line. Syntax: option,target:priority" +
-			"<br>Note that the higher your set the priority, the more it will overtake over swaps.",
-		position = 2,
-		section = "miscellaneousSection",
-		parse = true,
-		clazz = CustomSwapParse.class,
-		method = "parse"
-	)
-	default String shiftCustomSwaps()
 	{
 		return "";
 	}
@@ -1938,5 +1921,90 @@ public interface MenuEntrySwapperConfig extends Config
 	default String hideCastIgnoredCoX()
 	{
 		return "cure other, energy transfer, heal other, vengeance other";
+	}
+
+	//------------------------------------------------------------//
+	// HotKey menu swaps
+	//------------------------------------------------------------//
+
+	@ConfigItem(
+		keyName = "hotkeyMod",
+		name = "Hotkey for Swaps",
+		description = "Set this hotkey to do custom swaps on hotkeys.",
+		position = 0,
+		section = "hotkeySwapping"
+	)
+	default Keybind hotkeyMod()
+	{
+		return Keybind.SHIFT;
+	}
+
+	@ConfigItem(
+		keyName = "shiftCustomSwaps",
+		name = "Hotkey Swaps",
+		description = "Add custom swaps here that will only be activated when you press your hotkey." +
+			"<br>1 per line. Syntax: option,target:priority" +
+			"<br>Note that the higher your set the priority, the more it will overtake over swaps.",
+		position = 1,
+		section = "hotkeySwapping",
+		parse = true,
+		clazz = CustomSwapParse.class,
+		method = "parse"
+	)
+	default String shiftCustomSwaps()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "bankWieldItem",
+		name = "Left Click 'Wield' In Bank Screen",
+		description = "Enables Hotkey Left Click 'Wield' In Bank When Pressing The Hotkey",
+		position = 2,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankWieldItem()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankWearItem",
+		name = "Left Click 'Wear' In Bank Screen",
+		description = "Enables Hotkey Left Click 'Wear' In Bank When Pressing The Hotkey",
+		position = 3,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankWearItem()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankEatItem",
+		name = "Left Click 'Eat' In Bank Screen",
+		description = "Enables Left Click 'Eat' In Bank When Pressing The Hotkey",
+		position = 4,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankEatItem()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankDrinkItem",
+		name = "Left Click 'Drink' In Bank Screen",
+		description = "Enables Left Click 'Drink' In Bank When Pressing The Hotkey",
+		position = 5,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankDrinkItem()
+	{
+		return false;
 	}
 }

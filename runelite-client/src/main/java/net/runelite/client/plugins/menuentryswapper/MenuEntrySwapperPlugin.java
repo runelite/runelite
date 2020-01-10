@@ -260,6 +260,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapBoxTrap;
 	private boolean swapChase;
 	private boolean swapClimbUpDown;
+	private boolean bankWieldItem;
+	private boolean bankWearItem;
+	private boolean bankEatItem;
+	private boolean bankDrinkItem;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
 		@Override
@@ -1464,6 +1468,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		loadCustomSwaps(this.configCustomShiftSwaps, customShiftSwaps);
 
+		if (this.bankWieldItem)
+		{
+			menuManager.addPriorityEntry(new BankComparableEntry("wield", "", false));
+		}
+		if (this.bankWearItem)
+		{
+			menuManager.addPriorityEntry(new BankComparableEntry("wear", "", false));
+		}
+		if (this.bankEatItem)
+		{
+			menuManager.addPriorityEntry(new BankComparableEntry("eat", "", false));
+		}
+		if (this.bankDrinkItem)
+		{
+			menuManager.addPriorityEntry(new BankComparableEntry("drink", "", false));
+		}
+
 		if (this.swapClimbUpDown)
 		{
 			menuManager.addPriorityEntry("climb-up").setPriority(100);
@@ -1480,6 +1501,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void removeHotkey(ClientTick event)
 	{
 		menuManager.removePriorityEntry("climb-up");
+		menuManager.removePriorityEntry(new BankComparableEntry("wield", "", false));
+		menuManager.removePriorityEntry(new BankComparableEntry("wear", "", false));
+		menuManager.removePriorityEntry(new BankComparableEntry("eat", "", false));
+		menuManager.removePriorityEntry(new BankComparableEntry("drink", "", false));
 		loadCustomSwaps("", customShiftSwaps);
 		eventBus.unregister(HOTKEY);
 	}
@@ -1711,6 +1736,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.swapHouseAd = config.swapHouseAd();
 		this.swapHouseAdMode = config.swapHouseAdMode();
 		this.swapJewelleryBox = config.swapJewelleryBox();
+		this.bankWieldItem = config.bankWieldItem();
+		this.bankWearItem = config.bankWearItem();
+		this.bankEatItem = config.bankEatItem();
+		this.bankDrinkItem = config.bankDrinkItem();
 	}
 
 	private void addBuySellEntries()
