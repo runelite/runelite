@@ -49,7 +49,6 @@ plugins {
 
 val grgit = Grgit.open(mapOf("dir" to rootProject.projectDir.absolutePath))
 val localGitCommit = grgit.head().id
-val localGitCommitShort = grgit.head().getAbbreviatedId(7)
 
 fun isNonStable(version: String): Boolean {
     return listOf("ALPHA", "BETA", "RC").any {
@@ -77,8 +76,6 @@ subprojects {
     apply(plugin = Plugins.testLogger.first)
 
     project.extra["gitCommit"] = localGitCommit
-    project.extra["gitCommitShort"] = localGitCommitShort
-
     project.extra["rootPath"] = rootDir.toString().replace("\\", "/")
 
     if (this.name != "runescape-client") {
