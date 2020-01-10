@@ -380,11 +380,7 @@ public class StatusOrbsPlugin extends Plugin
 
 		// Calculate the amount of energy recovered every second
 		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0;
-
-		if (Graceful.hasFullSet(client.getItemContainer(InventoryID.EQUIPMENT)))
-		{
-			recoverRate *= 1.3; // 30% recover rate increase from Graceful set effect
-		}
+		recoverRate *= Graceful.calculateRecoveryRate(client.getItemContainer(InventoryID.EQUIPMENT));
 
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
@@ -430,11 +426,8 @@ public class StatusOrbsPlugin extends Plugin
 	private double runRegenPerTick()
 	{
 		double recoverRate = (client.getBoostedSkillLevel(Skill.AGILITY) / 6d + 8) / 100;
+		recoverRate *= Graceful.calculateRecoveryRate(client.getItemContainer(InventoryID.EQUIPMENT));
 
-		if (Graceful.hasFullSet(client.getItemContainer(InventoryID.EQUIPMENT)))
-		{
-			return recoverRate * 1.3;
-		}
 		return recoverRate;
 	}
 

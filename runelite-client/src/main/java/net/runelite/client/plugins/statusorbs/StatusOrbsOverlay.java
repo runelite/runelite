@@ -187,10 +187,7 @@ public class StatusOrbsOverlay extends Overlay
 			{
 				double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360000.0;
 
-				if (Graceful.hasFullSet(client.getItemContainer(InventoryID.EQUIPMENT)))
-				{
-					recoverRate *= 1.3; // 30% recover rate increase from Graceful set effect
-				}
+				recoverRate *= Graceful.calculateRecoveryRate(client.getItemContainer(InventoryID.EQUIPMENT));
 
 				percentRun += ms * recoverRate;
 			}
