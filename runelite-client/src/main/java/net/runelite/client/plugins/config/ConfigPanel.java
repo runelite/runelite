@@ -562,6 +562,7 @@ class ConfigPanel extends PluginPanel
 					JSlider slider = new JSlider(min, max, value);
 					sliderValueLabel.setText(String.valueOf(slider.getValue()));
 					slider.setPreferredSize(new Dimension(80, 25));
+					slider.setBackground(Color.WHITE);
 					slider.addChangeListener((l) ->
 						{
 							sliderValueLabel.setText(String.valueOf(slider.getValue()));
