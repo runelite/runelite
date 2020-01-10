@@ -28,17 +28,22 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
+import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -63,6 +68,10 @@ public class ChatFilterPlugin extends Plugin
 		.trimResults();
 
 	private static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
+	
+	private static final String MESSAGE_QUANTITY_PREFIX = "> x ";
+	private static final String MESSAGE_QUANTITY_FORMAT_PREFIX = "<col=";
+	private static final String MESSAGE_QUANTITY_FORMAT_SUFFIX = "</col>";
 
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
@@ -252,5 +261,97 @@ public class ChatFilterPlugin extends Plugin
 
 		//Refresh chat after config change to reflect current rules
 		client.refreshChat();
+	}
+	
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (!config.collapseChatMessages())
+		{
+			return;
+		}
+
+		collapseDuplicateMessages(event.getMessageNode());
+	}
+
+	private void collapseDuplicateMessages(MessageNode node)
+	{
+		Map<Integer, ChatLineBuffer> chatLineMap = client.getChatLineMap();
+
+		MessageNode oldNode = findMessage(chatLineMap.values(), node);
+		if (oldNode == null)
+		{
+			return;
+		}
+		node.setValue(addMessageQuantity(oldNode.getValue()));
+		for (ChatLineBuffer b : chatLineMap.values())
+		{
+			b.removeMessageNode(oldNode);
+		}
+		client.refreshChat();
+	}
+
+	private MessageNode findMessage(Collection<ChatLineBuffer> chatLineBufferCollection, MessageNode node)
+	{
+		for (ChatLineBuffer b : chatLineBufferCollection)
+		{
+			for (MessageNode m : b.getLines())
+			{
+				if (m == null) continue;
+				if (isEqual(m, node))
+				{
+					return m;
+				}
+			}
+		}
+		return null;
+	}
+
+	private boolean isEqual(MessageNode oldNode, MessageNode newNode)
+	{
+		if (oldNode.getId() == newNode.getId()) return false;
+		if (!oldNode.getType().equals(newNode.getType())) return false;
+		if (!Objects.equals(oldNode.getSender(), newNode.getSender())) return false;
+		if (!oldNode.getName().equals(newNode.getName())) return false;
+		if (!stripMessageQuantity(oldNode.getValue()).equals(newNode.getValue())) return false;
+		return true;
+	}
+
+	private String stripMessageQuantity(String message)
+	{
+		Color col = config.chatMessageCountColor();
+		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
+		if (message.contains(MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX) &&
+		    message.endsWith(MESSAGE_QUANTITY_FORMAT_SUFFIX))
+		{
+			return message.substring(0, message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_PREFIX +
+					         hexCol + MESSAGE_QUANTITY_PREFIX));
+		}
+		return message;
+	}
+
+	private String addMessageQuantity(String message)
+	{
+		int quantity = findMessageQuantity(message) + 1;
+		message = stripMessageQuantity(message);
+		Color col = config.chatMessageCountColor();
+		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
+		return message + MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX +
+		       quantity + MESSAGE_QUANTITY_FORMAT_SUFFIX;
+	}
+
+	private int findMessageQuantity(String message)
+	{
+		Color col = config.chatMessageCountColor();
+		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
+		int start = message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX);
+		int end = message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_SUFFIX);
+		if (start >= 0 && end > start)
+		{
+			start += (MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX).length();
+			String quantity = message.substring(start, end);
+			return Integer.parseInt(quantity);
+		}
+		return 1;
 	}
 }
