@@ -789,7 +789,9 @@ public class RaidsPlugin extends Plugin
 
 				layoutFullCode = layout.getCode();
 				raid.updateLayout(layout);
-				RotationSolver.solve(raid.getCombatRooms());
+				RaidRoom[] rooms = raid.getCombatRooms();
+				RotationSolver.solve(rooms);
+				raid.setCombatRooms(rooms);
 				setOverlayStatus(true);
 				if (this.displayLayoutMessage)
 				{

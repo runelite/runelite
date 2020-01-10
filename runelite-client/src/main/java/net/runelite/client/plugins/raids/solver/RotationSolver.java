@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.raids.solver;
 
+import com.google.common.collect.ImmutableList;
 import net.runelite.client.plugins.raids.RaidRoom;
 import net.runelite.client.plugins.raids.RoomType;
-import java.util.Arrays;
 import java.util.List;
 import static net.runelite.client.plugins.raids.RaidRoom.GUARDIANS;
 import static net.runelite.client.plugins.raids.RaidRoom.MUTTADILES;
@@ -40,13 +40,13 @@ import static net.runelite.client.plugins.raids.RaidRoom.VESPULA;
 
 public class RotationSolver
 {
-	private static final List[] ROTATIONS =
-		{
-				Arrays.asList(TEKTON, VASA, GUARDIANS, MYSTICS, SHAMANS, MUTTADILES, VANGUARDS, VESPULA),
-				Arrays.asList(TEKTON, MUTTADILES, GUARDIANS, VESPULA, SHAMANS, VASA, VANGUARDS, MYSTICS),
-				Arrays.asList(VESPULA, VANGUARDS, MUTTADILES, SHAMANS, MYSTICS, GUARDIANS, VASA, TEKTON),
-				Arrays.asList(MYSTICS, VANGUARDS, VASA, SHAMANS, VESPULA, GUARDIANS, MUTTADILES, TEKTON)
-		};
+	private static final ImmutableList<ImmutableList<RaidRoom>> ROTATIONS = ImmutableList.of
+	(
+			ImmutableList.of(TEKTON, VASA, GUARDIANS, MYSTICS, SHAMANS, MUTTADILES, VANGUARDS, VESPULA),
+			ImmutableList.of(TEKTON, MUTTADILES, GUARDIANS, VESPULA, SHAMANS, VASA, VANGUARDS, MYSTICS),
+			ImmutableList.of(VESPULA, VANGUARDS, MUTTADILES, SHAMANS, MYSTICS, GUARDIANS, VASA, TEKTON),
+			ImmutableList.of(MYSTICS, VANGUARDS, VASA, SHAMANS, VESPULA, GUARDIANS, MUTTADILES, TEKTON)
+	);
 
 	public static boolean solve(RaidRoom[] rooms)
 	{
@@ -128,9 +128,9 @@ public class RotationSolver
 				continue;
 			}
 
-			if (rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT)
+			if ((rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT))
 			{
-				rooms[i] = match.get((index + i) % match.size());
+				rooms[i] = match.get((index + i + match.size()) % match.size());
 			}
 		}
 		return true;

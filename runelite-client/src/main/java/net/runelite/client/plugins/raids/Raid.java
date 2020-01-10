@@ -128,6 +128,25 @@ class Raid
 		return Joiner.on(",").join(Arrays.stream(getAllRooms()).toArray());
 	}
 
+	void setCombatRooms(RaidRoom[] combatRooms)
+	{
+		int index = 0;
+
+		for (Room room : layout.getRooms())
+		{
+			if (room == null)
+			{
+				continue;
+			}
+
+			if (rooms[room.getPosition()].getType() == RoomType.COMBAT)
+			{
+				rooms[room.getPosition()] = combatRooms[index];
+				index++;
+			}
+		}
+	}
+
 	String toCode()
 	{
 		StringBuilder builder = new StringBuilder();
