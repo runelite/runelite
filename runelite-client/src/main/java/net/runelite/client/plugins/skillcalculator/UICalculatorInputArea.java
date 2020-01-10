@@ -44,14 +44,16 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JTextField uiFieldCustomActionXP;
 
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(2, 2, 7, 7));
+		setLayout(new GridLayout(3, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
+		uiFieldCustomActionXP = addComponent("Custom Action XP");
 	}
 
 	int getCurrentLevelInput()
@@ -92,6 +94,16 @@ class UICalculatorInputArea extends JPanel
 	void setTargetXPInput(Object value)
 	{
 		setInput(uiFieldTargetXP, value);
+	}
+
+	void setCustomActionXP(Object value)
+	{
+		setInput(uiFieldCustomActionXP, value);
+	}
+
+	int getCustomActionXP()
+	{
+		return getInput(uiFieldCustomActionXP);
 	}
 
 	private int getInput(JTextField field)
