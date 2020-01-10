@@ -63,6 +63,7 @@ public class ImageComponent implements LayoutableRenderableEntity
 		final Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
+		setPreferredSize(dimension);
 		return dimension;
 	}
 
