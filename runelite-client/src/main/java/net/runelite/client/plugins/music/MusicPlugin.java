@@ -70,11 +70,13 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Music",
 	description = "Adds search and filter for the music list, and additional volume control",
-	tags = {"sound", "volume"}
+	tags = {"sound", "volume"},
+	type = PluginType.MISCELLANEOUS
 )
 public class MusicPlugin extends Plugin
 {

@@ -51,13 +51,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Hunter",
 	description = "Show the state of your traps",
-	tags = {"overlay", "skilling", "timers"}
+	tags = {"overlay", "skilling", "timers"},
+	type = PluginType.SKILLING
 )
 @Singleton
 public class HunterPlugin extends Plugin

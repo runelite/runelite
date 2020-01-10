@@ -57,6 +57,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
@@ -64,7 +65,8 @@ import net.runelite.client.util.ColorUtil;
 @PluginDescriptor(
 	name = "Wintertodt",
 	description = "Show helpful information for the Wintertodt boss",
-	tags = {"minigame", "firemaking", "boss"}
+	tags = {"minigame", "firemaking", "boss"},
+	type = PluginType.MINIGAME
 )
 @Slf4j
 @Singleton

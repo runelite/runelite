@@ -47,6 +47,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemStats;
@@ -54,7 +55,8 @@ import net.runelite.http.api.item.ItemStats;
 @PluginDescriptor(
 	name = "Prayer",
 	description = "Show various information related to prayer",
-	tags = {"combat", "flicking", "overlay"}
+	tags = {"combat", "flicking", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class PrayerPlugin extends Plugin

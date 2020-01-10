@@ -52,12 +52,14 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
 	description = "Retain your chat history when logging in/out or world hopping",
-	tags = {"chat", "history", "retain", "cycle", "pm"}
+	tags = {"chat", "history", "retain", "cycle", "pm"},
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class ChatHistoryPlugin extends Plugin implements KeyListener

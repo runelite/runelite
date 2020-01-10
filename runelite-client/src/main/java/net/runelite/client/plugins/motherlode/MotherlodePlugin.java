@@ -90,6 +90,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -98,7 +99,8 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 	name = "Motherlode Mine",
 	description = "Show helpful information inside the Motherload Mine",
 	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.SKILLING
 )
 @Singleton
 public class MotherlodePlugin extends Plugin

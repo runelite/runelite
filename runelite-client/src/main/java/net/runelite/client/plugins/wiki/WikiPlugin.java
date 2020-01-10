@@ -52,6 +52,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +61,8 @@ import org.jetbrains.annotations.Nullable;
 @Slf4j
 @PluginDescriptor(
 	name = "Wiki",
-	description = "Adds a Wiki button that takes you to the OSRS Wiki"
+	description = "Adds a Wiki button that takes you to the OSRS Wiki",
+	type = PluginType.UTILITY
 )
 public class WikiPlugin extends Plugin
 {

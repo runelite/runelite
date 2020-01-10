@@ -51,13 +51,15 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Blast Furnace",
 	description = "Show helpful information for the Blast Furnace minigame",
-	tags = {"minigame", "overlay", "skilling", "smithing"}
+	tags = {"minigame", "overlay", "skilling", "smithing"},
+	type = PluginType.MINIGAME
 )
 @Singleton
 public class BlastFurnacePlugin extends Plugin

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.components;
 
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.Icon;
+package net.runelite.client.plugins.config;
+
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
-/**
- * A button that consists of an icon, without any background, borders, or margins.
- */
-public class IconButton extends JButton
+class PluginToggleButton extends JToggleButton
 {
-	public IconButton(ImageIcon icon)
+	private static final ImageIcon ON_SWITCHER;
+	private static final ImageIcon OFF_SWITCHER;
+
+	static
 	{
-		this(icon, null);
+		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
+		ON_SWITCHER = new ImageIcon(ImageUtil.recolorImage(onSwitcher, ColorScheme.BRAND_BLUE));
+		OFF_SWITCHER = new ImageIcon(ImageUtil.flipImage(
+			ImageUtil.luminanceScale(
+				ImageUtil.grayscaleImage(onSwitcher),
+				0.61f
+			),
+			true,
+			false
+		));
 	}
 
-	public IconButton(ImageIcon icon, ImageIcon hoverIcon)
+	public PluginToggleButton()
 	{
-		setIcon(icon);
-		setBorderPainted(false);
-		setContentAreaFilled(false);
-		setFocusPainted(false);
-		setMargin(new Insets(0, 0, 0, 0));
-		setOpaque(false);
-		setRolloverEnabled(false);
-
-		setHoverIcon(hoverIcon);
-	}
-
-	public void setHoverIcon(ImageIcon hoverIcon)
-	{
-		if (hoverIcon == null)
-		{
-			return;
-		}
-		final Icon icon = getIcon();
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				setIcon(hoverIcon);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				setIcon(icon);
-			}
-		});
+		super(OFF_SWITCHER);
+		setSelectedIcon(ON_SWITCHER);
+		SwingUtil.removeButtonDecorations(this);
+		setPreferredSize(new Dimension(25, 0));
+		SwingUtil.addModalTooltip(this, "Disable plugin", "Enable plugin");
 	}
 }

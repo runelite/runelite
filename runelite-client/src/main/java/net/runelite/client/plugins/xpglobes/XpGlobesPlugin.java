@@ -45,6 +45,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -53,7 +54,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "XP Globes",
 	description = "Show XP globes for the respective skill when gaining XP",
 	tags = {"experience", "levels", "overlay"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Singleton
 @PluginDependency(XpTrackerPlugin.class)

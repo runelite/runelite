@@ -45,12 +45,14 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Emojis",
 	description = "Replaces common emoticons such as :) with their corresponding emoji in the chat",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

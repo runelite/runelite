@@ -106,7 +106,7 @@ import org.apache.commons.lang3.StringUtils;
 	name = "Barbarian Assault",
 	description = "Custom barbarian assault plugin, use along with BA Tools",
 	tags = {"minigame", "overlay", "timer"},
-	type = PluginType.PVM // don't remove this, added this because our barbarian assault plugin is big time modified
+	type = PluginType.MINIGAME // don't remove this, added this because our barbarian assault plugin is big time modified
 )
 @Singleton
 public class BarbarianAssaultPlugin extends Plugin implements KeyListener

@@ -33,6 +33,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 
@@ -50,7 +51,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Performance",
 	description = "Show current FPS or set an FPS limit",
 	tags = {"frames", "framerate", "limit", "overlay"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class FpsPlugin extends Plugin

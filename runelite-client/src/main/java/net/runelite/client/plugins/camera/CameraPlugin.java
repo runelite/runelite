@@ -51,13 +51,15 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.MiscUtils;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
 	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
 	tags = {"zoom", "limit", "vertical", "click", "mouse"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {

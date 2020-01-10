@@ -59,6 +59,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
@@ -71,7 +72,8 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 @PluginDescriptor(
 	name = "Examine",
 	description = "Send examine information to the API",
-	tags = {"npcs", "items", "inventory", "objects"}
+	tags = {"npcs", "items", "inventory", "objects"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

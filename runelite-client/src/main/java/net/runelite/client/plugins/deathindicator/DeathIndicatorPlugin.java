@@ -61,6 +61,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -69,7 +70,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Death Indicator",
 	description = "Show where you last died, and on what world",
-	tags = {"arrow", "hints", "world", "map", "overlay"}
+	tags = {"arrow", "hints", "world", "map", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 @Slf4j

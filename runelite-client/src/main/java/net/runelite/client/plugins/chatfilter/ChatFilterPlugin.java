@@ -50,12 +50,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat Filter",
 	description = "Censor user configurable words or patterns from chat",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class ChatFilterPlugin extends Plugin

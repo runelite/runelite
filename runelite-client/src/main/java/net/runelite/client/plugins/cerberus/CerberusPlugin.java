@@ -41,12 +41,14 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Cerberus",
 	description = "Show what to pray against the summoned souls",
-	tags = {"bosses", "combat", "ghosts", "prayer", "pve", "overlay", "souls"}
+	tags = {"bosses", "combat", "ghosts", "prayer", "pve", "overlay", "souls"},
+	type = PluginType.PVM
 )
 @Singleton
 public class CerberusPlugin extends Plugin

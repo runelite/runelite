@@ -53,10 +53,12 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Reorder Prayers",
-	description = "Reorder the prayers displayed on the Prayer panel"
+	description = "Reorder the prayers displayed on the Prayer panel",
+	type = PluginType.UTILITY
 )
 @Singleton
 public class ReorderPrayersPlugin extends Plugin

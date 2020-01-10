@@ -46,6 +46,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
@@ -60,7 +61,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Time Tracking",
 	description = "Enable the Time Tracking panel, which contains timers, stopwatches, and farming and bird house trackers",
-	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"}
+	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"},
+	type = PluginType.MISCELLANEOUS
 )
 public class TimeTrackingPlugin extends Plugin
 {

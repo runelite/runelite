@@ -47,12 +47,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Implings",
 	description = "Highlight nearby implings on the minimap and on-screen",
-	tags = {"hunter", "minimap", "overlay", "imp"}
+	tags = {"hunter", "minimap", "overlay", "imp"},
+	type = PluginType.SKILLING
 )
 @Singleton
 public class ImplingsPlugin extends Plugin

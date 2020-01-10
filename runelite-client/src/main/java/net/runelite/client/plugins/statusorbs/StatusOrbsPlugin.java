@@ -55,6 +55,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Graceful;
 import net.runelite.client.util.ImageUtil;
@@ -63,7 +64,8 @@ import org.apache.commons.lang3.StringUtils;
 @PluginDescriptor(
 	name = "Status Orbs",
 	description = "Configure settings for the Minimap orbs",
-	tags = {"minimap", "orb", "regen", "energy", "special"}
+	tags = {"minimap", "orb", "regen", "energy", "special"},
+	type = PluginType.UTILITY
 )
 public class StatusOrbsPlugin extends Plugin
 {

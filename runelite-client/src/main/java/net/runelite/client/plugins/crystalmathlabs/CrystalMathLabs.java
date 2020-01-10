@@ -37,6 +37,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,7 +51,8 @@ import org.jetbrains.annotations.NotNull;
 	name = "Crystal Math Labs",
 	description = "Automatically updates your stats on Crystal Math Labs when you log out",
 	tags = {"cml", "external", "integration"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

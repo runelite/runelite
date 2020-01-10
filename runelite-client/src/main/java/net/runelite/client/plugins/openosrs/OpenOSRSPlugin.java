@@ -27,8 +27,6 @@
 package net.runelite.client.plugins.openosrs;
 
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -64,8 +62,6 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
@@ -78,7 +74,6 @@ import net.runelite.client.util.HotkeyListener;
 public class OpenOSRSPlugin extends Plugin
 {
 	private final openosrsKeyListener keyListener = new openosrsKeyListener();
-	private static final List<String> HidePlugins = Arrays.asList("hidePlugins", "hidePvmPlugins", "hidePvpPlugins", "hideSkillingPlugins", "hideUtilityPlugins", "hideExternalPlugins");
 
 	@Inject
 	private OpenOSRSConfig config;
@@ -145,16 +140,6 @@ public class OpenOSRSPlugin extends Plugin
 		if (!event.getGroup().equals("openosrs"))
 		{
 			return;
-		}
-
-		if (HidePlugins.stream().anyMatch(option -> option.equals(event.getKey())))
-		{
-			updatePlugins();
-		}
-
-		if (event.getKey().equals("pluginSortMode"))
-		{
-			ConfigPanel.sortPluginList(config, null);
 		}
 
 		this.keybind = config.detachHotkey();
@@ -376,20 +361,6 @@ public class OpenOSRSPlugin extends Plugin
 		{
 			entered += num * 10;
 		}
-	}
-
-	private void updatePlugins()
-	{
-		ConfigPanel.pluginList.forEach(listItem ->
-		{
-			if (listItem.getPluginType() == PluginType.GENERAL_USE || listItem.getPluginType() == PluginType.IMPORTANT)
-			{
-				return;
-			}
-
-			listItem.setColor(ConfigPanel.getColorByCategory(config, listItem.getPluginType()));
-			listItem.setHidden(ConfigPanel.getHiddenByCategory(config, listItem.getPluginType()));
-		});
 	}
 
 	private class openosrsKeyListener implements KeyListener

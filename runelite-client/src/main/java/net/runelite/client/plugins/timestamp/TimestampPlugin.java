@@ -45,13 +45,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Chat Timestamps",
 	description = "Add timestamps to chat messages",
 	tags = {"timestamp"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Singleton
 public class TimestampPlugin extends Plugin

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.client.plugins.config;
 
-import com.google.common.base.Splitter;
-import java.util.List;
-import javax.inject.Singleton;
+import javax.annotation.Nullable;
+import lombok.Value;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginType;
 
-@Singleton
-public class PrioParse
+@Value
+public class PluginConfigurationDescriptor
 {
-	public static boolean parse(String value)
+	private final String name;
+	private final String description;
+	private final PluginType pluginType;
+	private final String[] tags;
+
+	// Can be null if its not an actual plugin (RuneLite / ChatColors)
+	@Nullable
+	private final Plugin plugin;
+
+	// Can be null if it has no more configuration than the on/off toggle
+	@Nullable
+	private final Config config;
+
+	@Nullable
+	private final ConfigDescriptor configDescriptor;
+
+	boolean hasConfigurables()
 	{
-		if (value.equals(""))
-		{
-			return true;
-		}
-
-		try
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : value.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			final Splitter NEWLINE_SPLITTER = Splitter
-				.on("\n")
-				.omitEmptyStrings()
-				.trimResults();
-
-			final List<String> tmp = NEWLINE_SPLITTER.splitToList(sb);
-
-			for (String s : tmp)
-			{
-				final String[] strings = s.split(",");
-
-				if (strings.length <= 1)
-				{
-					return false;
-				}
-			}
-
-			return tmp.size() > 0;
-		}
-		catch (Exception ex)
-		{
-			return false;
-		}
+		return configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.client.ui.components;
 
-import com.google.common.base.Splitter;
-import java.util.List;
-import javax.inject.Singleton;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import net.runelite.client.ui.PluginPanel;
 
-@Singleton
-public class PrioParse
+class FixedWidthPanel extends JPanel
 {
-	public static boolean parse(String value)
+	@Override
+	public Dimension getPreferredSize()
 	{
-		if (value.equals(""))
-		{
-			return true;
-		}
-
-		try
-		{
-			final StringBuilder sb = new StringBuilder();
-
-			for (String str : value.split("\n"))
-			{
-				if (!str.startsWith("//"))
-				{
-					sb.append(str).append("\n");
-				}
-			}
-
-			final Splitter NEWLINE_SPLITTER = Splitter
-				.on("\n")
-				.omitEmptyStrings()
-				.trimResults();
-
-			final List<String> tmp = NEWLINE_SPLITTER.splitToList(sb);
-
-			for (String s : tmp)
-			{
-				final String[] strings = s.split(",");
-
-				if (strings.length <= 1)
-				{
-					return false;
-				}
-			}
-
-			return tmp.size() > 0;
-		}
-		catch (Exception ex)
-		{
-			return false;
-		}
+		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 	}
 }

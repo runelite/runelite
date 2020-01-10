@@ -48,6 +48,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
@@ -55,7 +56,8 @@ import net.runelite.client.util.ColorUtil;
 	name = "Key Remapping",
 	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat', and remapping number keys to F-keys",
 	tags = {"enter", "chat", "wasd", "camera"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class KeyRemappingPlugin extends Plugin

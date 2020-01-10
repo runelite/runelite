@@ -51,12 +51,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Chat Notifications",
 	description = "Highlight and notify you of chat messages",
 	tags = {"duel", "messages", "notifications", "trade", "username"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class ChatNotificationsPlugin extends Plugin

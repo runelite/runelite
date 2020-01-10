@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Drop Party",
 	description = "Marks where a user ran, for drop partys",
 	tags = {"Drop", "Party", "marker", "player"},
-	type = PluginType.UTILITY,
+	type = PluginType.MISCELLANEOUS,
 	enabledByDefault = false
 )
 @Singleton

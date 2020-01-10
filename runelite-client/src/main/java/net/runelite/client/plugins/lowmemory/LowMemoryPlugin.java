@@ -33,12 +33,14 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Low Detail",
 	description = "Turn off ground decorations and certain textures, reducing memory usage",
 	tags = {"memory", "usage", "ground", "decorations"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 public class LowMemoryPlugin extends Plugin
 {

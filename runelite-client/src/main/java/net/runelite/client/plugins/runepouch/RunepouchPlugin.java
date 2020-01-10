@@ -35,13 +35,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Rune Pouch",
 	description = "Show the contents of your rune pouch",
-	tags = {"combat", "magic", "overlay"}
+	tags = {"combat", "magic", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class RunepouchPlugin extends Plugin
