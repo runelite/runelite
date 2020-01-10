@@ -87,6 +87,7 @@ object Libraries {
         const val orangeExtensions = "1.0"
         const val petitparser = "2.3.1"
         const val plexus = "3.3.0"
+        const val radiance = "2.5.1"
         const val rxjava = "2.2.16"
         const val rxrelay = "2.1.1"
         const val scribejava = "6.9.0"
@@ -96,8 +97,6 @@ object Libraries {
         const val springJdbc = "5.2.2.RELEASE"
         const val springboot = "2.2.2.RELEASE"
         const val sql2o = "1.6.0"
-        const val substance = "8.0.02"
-        const val trident = "1.5.00"
     }
 
     const val annotations = "org.jetbrains:annotations:${Versions.annotations}"
@@ -175,7 +174,7 @@ object Libraries {
     const val springbootStarterTomcat = "org.springframework.boot:spring-boot-starter-tomcat:${Versions.springboot}"
     const val springbootJdbc = "org.springframework:spring-jdbc:${Versions.springJdbc}"
     const val sql2o = "org.sql2o:sql2o:${Versions.sql2o}"
-    const val substance = "net.runelite.pushingpixels:substance:${Versions.substance}"
-    const val trident = "net.runelite.pushingpixels:trident:${Versions.trident}"
+    const val substance = "org.pushing-pixels:radiance-substance:${Versions.radiance}"
+    const val trident = "org.pushing-pixels:radiance-trident:${Versions.radiance}"
     const val vanilla = "net.runelite.rs:vanilla:${ProjectVersions.rsversion}"
 }
