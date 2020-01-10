@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatfilter;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -96,5 +97,27 @@ public interface ChatFilterConfig extends Config
 	default boolean filterLogin()
 	{
 		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "collapseChatMessages",
+		name = "Collapse chat messages",
+		description = "Collapses chat messages together and appends count",
+		position = 7
+	)
+	default boolean collapseChatMessages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "chatMessageCountColor",
+		name = "Collapsed chat message count color",
+		description = "Color of the appended count on collapsed chat messages",
+		position = 8
+	)
+	default Color chatMessageCountColor()
+	{
+		return Color.decode("#FF00FF");
 	}
 }
