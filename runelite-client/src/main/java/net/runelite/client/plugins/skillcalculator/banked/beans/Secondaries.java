@@ -109,6 +109,23 @@ public enum Secondaries
 	 * Cooking
 	 */
 	JUG_OF_WATER(new ItemStack(ItemID.JUG_OF_WATER, 1)),
+
+	/**
+	 * Fletching
+	 */
+	BOW_STRING(new ItemStack(ItemID.BOW_STRING, 1)),
+	FEATHER(new ItemStack(ItemID.FEATHER, 1)),
+	HEADLESS_ARROW(new ItemStack(ItemID.HEADLESS_ARROW, 1)),
+	JAVELIN_SHAFT(new ItemStack(ItemID.JAVELIN_SHAFT, 1)),
+	BRONZE_BOLT(new ItemStack(ItemID.BRONZE_BOLTS, 1)),
+	BLURITE_BOLT(new ItemStack(ItemID.BLURITE_BOLTS, 1)),
+	IRON_BOLT(new ItemStack(ItemID.IRON_BOLTS, 1)),
+	STEEL_BOLT(new ItemStack(ItemID.STEEL_BOLTS, 1)),
+	MITHRIL_BOLT(new ItemStack(ItemID.MITHRIL_BOLTS, 1)),
+	BROAD_BOLT(new ItemStack(ItemID.BROAD_BOLTS, 1)),
+	ADAMANT_BOLT(new ItemStack(ItemID.ADAMANT_BOLTS, 1)),
+	RUNE_BOLT(new ItemStack(ItemID.RUNITE_BOLTS, 1)),
+	DRAGON_BOLT(new ItemStack(ItemID.DRAGON_BOLTS, 1)),
 	;
 	private final ItemStack[] items;
 

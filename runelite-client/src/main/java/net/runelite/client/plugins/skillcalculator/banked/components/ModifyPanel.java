@@ -52,8 +52,10 @@ import net.runelite.client.plugins.skillcalculator.banked.BankedCalculator;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
 import net.runelite.client.plugins.skillcalculator.banked.beans.BankedItem;
 import net.runelite.client.plugins.skillcalculator.banked.beans.CriticalItem;
+import net.runelite.client.plugins.skillcalculator.banked.beans.ItemStack;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxIconEntry;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -69,7 +71,13 @@ public class ModifyPanel extends JPanel
 
 	private final BankedCalculator calc;
 	private final ItemManager itemManager;
-
+	// Banked item information display
+	private final JPanel labelContainer;
+	private final JLabel image;
+	private final JShadowedLabel labelName;
+	private final JShadowedLabel labelValue;
+	// Elements used to adjust banked item
+	private final JPanel adjustContainer;
 	@Getter(AccessLevel.PUBLIC)
 	private BankedItem bankedItem;
 	private Map<CriticalItem, Integer> linkedMap;
@@ -77,15 +85,6 @@ public class ModifyPanel extends JPanel
 	private int amount = 0;
 	@Getter(AccessLevel.PUBLIC)
 	private double total = 0;
-
-	// Banked item information display
-	private final JPanel labelContainer;
-	private final JLabel image;
-	private final JShadowedLabel labelName;
-	private final JShadowedLabel labelValue;
-
-	// Elements used to adjust banked item
-	private final JPanel adjustContainer;
 
 	public ModifyPanel(final BankedCalculator calc, final ItemManager itemManager)
 	{
@@ -240,10 +239,16 @@ public class ModifyPanel extends JPanel
 
 		final float xpFactor = (bankedItem.getItem().isIgnoreBonus() ? 1.0f : this.calc.getXpFactor());
 
-		final List<Activity> activities = Activity.getByCriticalItem(bankedItem.getItem(), calc.getSkillLevel());
+		final int level = calc.getConfig().limitToCurrentLevel() ? calc.getSkillLevel() : -1;
+		final List<Activity> activities = Activity.getByCriticalItem(bankedItem.getItem(), level);
 		if (activities == null || activities.size() == 0)
 		{
-			adjustContainer.add(new JLabel("Unknown"));
+			final JLabel unusable = new JLabel("Unusable at current level");
+			unusable.setVerticalAlignment(JLabel.CENTER);
+			unusable.setHorizontalAlignment(JLabel.CENTER);
+
+			adjustContainer.removeAll();
+			adjustContainer.add(unusable, c);
 		}
 		else if (activities.size() == 1)
 		{
@@ -261,11 +266,17 @@ public class ModifyPanel extends JPanel
 			});
 
 			adjustContainer.add(container, c);
+			c.gridy++;
 		}
 		else
 		{
 			final JComboBox<ComboBoxIconEntry> dropdown = new JComboBox<>();
+			dropdown.setFocusable(false); // To prevent an annoying "focus paint" effect
+			dropdown.setForeground(Color.WHITE);
+			dropdown.setBorder(new EmptyBorder(2, 0, 0, 0));
+
 			final ComboBoxListRenderer renderer = new ComboBoxListRenderer();
+			renderer.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 40));
 			dropdown.setRenderer(renderer);
 
 			for (final Activity option : activities)
@@ -312,6 +323,56 @@ public class ModifyPanel extends JPanel
 			});
 
 			adjustContainer.add(dropdown, c);
+			c.gridy++;
+		}
+		final Activity a = bankedItem.getItem().getSelectedActivity();
+		if (a == null)
+		{
+			return;
+		}
+		final ItemStack[] secondaries = a.getSecondaries();
+		if (secondaries.length > 0 && this.calc.getConfig().showSecondaries())
+		{
+			final JLabel secondaryLabel = new JLabel("Secondaries:");
+			secondaryLabel.setVerticalAlignment(JLabel.CENTER);
+			secondaryLabel.setHorizontalAlignment(JLabel.CENTER);
+
+			adjustContainer.add(secondaryLabel, c);
+			c.gridy++;
+
+			final JPanel container = new JPanel();
+			container.setLayout(new GridLayout(1, 6, 1, 1));
+			container.setBackground(BACKGROUND_COLOR);
+
+			for (final ItemStack s : secondaries)
+			{
+				final JLabel l = new JLabel();
+				final int required = s.getQty() * amount;
+
+				final AsyncBufferedImage img = itemManager.getImage(s.getId(), required, required > 1);
+				final ImageIcon icon = new ImageIcon(img);
+				img.onLoaded(() ->
+				{
+					icon.setImage(img);
+					l.repaint();
+				});
+
+				l.setIcon(icon);
+				l.setHorizontalAlignment(JLabel.CENTER);
+
+				final int available = this.calc.getItemQtyFromBank(s.getId());
+				final int result = (available - required);
+
+				final String toolTip = "<html>" +
+					"Banked: " + FORMAT_COMMA.format(available) +
+					"<br/>Needed: " + FORMAT_COMMA.format(required) +
+					"<br/>Result: " + (result > 0 ? "+" : "") + FORMAT_COMMA.format(result) +
+					"</html>";
+				l.setToolTipText(toolTip);
+				container.add(l);
+			}
+			adjustContainer.add(container, c);
+			c.gridy++;
 		}
 	}
 

@@ -57,23 +57,18 @@ public class GridItem extends JLabel
 
 	private static final Color IGNORED_BACKGROUND = new Color(90, 0, 0);
 	private static final Color IGNORED_HOVER_BACKGROUND = new Color(120, 0, 0);
-
+	private final SelectionGrid parent;
+	private final BankedItem bankedItem;
+	private final JMenuItem IGNORE_OPTION = new JMenuItem(IGNORE);
 	/* To be executed when this element is clicked */
 	@Setter(AccessLevel.PUBLIC)
 	private BooleanSupplier onSelectEvent;
-
 	/* To be executed when this element is ignored */
 	@Setter(AccessLevel.PUBLIC)
 	private BooleanSupplier onIgnoreEvent;
-
-	private final SelectionGrid parent;
-	private final BankedItem bankedItem;
 	private int amount;
-
 	private boolean selected = false;
 	private boolean ignored = false;
-
-	private final JMenuItem IGNORE_OPTION = new JMenuItem(IGNORE);
 
 	GridItem(final SelectionGrid parent, final BankedItem item, final AsyncBufferedImage icon, final int amount)
 	{
@@ -193,8 +188,9 @@ public class GridItem extends JLabel
 		}
 		else
 		{
-			tip += "<br/>Outputs: " + bankedItem.getItem().getItemInfo().getName();
+			tip += "<br/>Unusable at current level";
 		}
+
 
 		return tip + "</html>";
 	}

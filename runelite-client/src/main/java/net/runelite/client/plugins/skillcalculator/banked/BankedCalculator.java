@@ -81,18 +81,14 @@ public class BankedCalculator extends JPanel
 	private final Map<CriticalItem, BankedItem> bankedItemMap = new LinkedHashMap<>();
 	private final JLabel totalXpLabel = new JLabel();
 	private final ModifyPanel modifyPanel;
+	private final Collection<JCheckBox> xpModifierButtons = new ArrayList<>();
 	private SelectionGrid itemGrid;
-
 	@Setter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private Skill currentSkill;
-
 	@Getter(AccessLevel.PUBLIC)
 	private int skillLevel, skillExp, endLevel, endExp;
-
-	private final Collection<JCheckBox> xpModifierButtons = new ArrayList<>();
 	@Getter(AccessLevel.PUBLIC)
 	private float xpFactor = 1.0f;
 
@@ -217,14 +213,15 @@ public class BankedCalculator extends JPanel
 			bankedItemMap.put(item, banked);
 
 			Activity a = item.getSelectedActivity();
-			if (a == null)
+			final int level = config.limitToCurrentLevel() ? skillLevel : -1;
+			if (a == null || (level > 0 && level < a.getLevel()))
 			{
-				final List<Activity> activities = Activity.getByCriticalItem(item);
+				final List<Activity> activities = Activity.getByCriticalItem(item, level);
 				if (activities.size() == 0)
 				{
+					item.setSelectedActivity(null);
 					continue;
 				}
-
 				item.setSelectedActivity(activities.get(0));
 				a = activities.get(0);
 			}
@@ -459,5 +456,10 @@ public class BankedCalculator extends JPanel
 		itemGrid.getPanelMap().values().forEach(GridItem::updateToolTip);
 		modifyPanel.setBankedItem(modifyPanel.getBankedItem());
 		calculateBankedXpTotal();
+	}
+
+	public int getItemQtyFromBank(final int id)
+	{
+		return bankMap.getOrDefault(id, 0);
 	}
 }
