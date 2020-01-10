@@ -73,7 +73,7 @@ public class BronzeManOverlay extends Overlay
 		{
 			currentUnlock.setLocationY(drawY + 1);
 		}
-		if (currentUnlock.displayed())
+		if (currentUnlock.displayed(itemUnlockList.size()))
 		{
 			itemUnlockList.remove(currentUnlock);
 			currentUnlock = null;
