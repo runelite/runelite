@@ -322,10 +322,10 @@ public class ChatFilterPlugin extends Plugin
 		Color col = config.chatMessageCountColor();
 		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
 		if (message.contains(MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX) &&
-		    message.endsWith(MESSAGE_QUANTITY_FORMAT_SUFFIX))
+			message.endsWith(MESSAGE_QUANTITY_FORMAT_SUFFIX))
 		{
 			return message.substring(0, message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_PREFIX +
-					         hexCol + MESSAGE_QUANTITY_PREFIX));
+				hexCol + MESSAGE_QUANTITY_PREFIX));
 		}
 		return message;
 	}
@@ -337,7 +337,7 @@ public class ChatFilterPlugin extends Plugin
 		Color col = config.chatMessageCountColor();
 		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
 		return message + MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX +
-		       quantity + MESSAGE_QUANTITY_FORMAT_SUFFIX;
+			quantity + MESSAGE_QUANTITY_FORMAT_SUFFIX;
 	}
 
 	private int findMessageQuantity(String message)
