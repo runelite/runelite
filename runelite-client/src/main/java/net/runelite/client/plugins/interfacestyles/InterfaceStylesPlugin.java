@@ -49,6 +49,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
@@ -56,7 +57,8 @@ import net.runelite.client.util.ImageUtil;
 	name = "Interface Styles",
 	description = "Change the interface style to the 2005/2010 interface",
 	tags = {"2005", "2010", "skin", "theme", "ui"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class InterfaceStylesPlugin extends Plugin

@@ -63,6 +63,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.pestcontrol.config.HighlightPortalOption;
 import net.runelite.client.plugins.pestcontrol.config.NpcHighlightStyle;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -72,7 +73,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Pest Control",
 	description = "Show helpful information for the Pest Control minigame",
-	tags = {"minigame", "overlay"}
+	tags = {"minigame", "overlay"},
+	type = PluginType.MINIGAME
 )
 @Singleton
 public class PestControlPlugin extends Plugin

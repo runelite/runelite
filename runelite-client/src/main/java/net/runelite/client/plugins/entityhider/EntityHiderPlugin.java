@@ -43,12 +43,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Entity Hider",
 	description = "Hide players, NPCs, and/or projectiles",
 	tags = {"npcs", "players", "projectiles"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Singleton
 public class EntityHiderPlugin extends Plugin

@@ -69,6 +69,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.WildcardMatcher;
@@ -76,7 +77,8 @@ import net.runelite.client.util.WildcardMatcher;
 @PluginDescriptor(
 	name = "NPC Indicators",
 	description = "Highlight NPCs on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
+	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

@@ -45,11 +45,13 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "Login Screen",
-	description = "Provides various enhancements for login screen"
+	description = "Provides various enhancements for login screen",
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

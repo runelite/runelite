@@ -49,6 +49,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -56,7 +57,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Boosts Information",
 	description = "Show combat and/or skill boost information",
-	tags = {"combat", "notifications", "skilling", "overlay"}
+	tags = {"combat", "notifications", "skilling", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class BoostsPlugin extends Plugin

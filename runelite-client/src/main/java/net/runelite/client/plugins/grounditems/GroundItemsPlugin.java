@@ -89,6 +89,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -105,7 +106,8 @@ import net.runelite.client.util.QuantityFormatter;
 @PluginDescriptor(
 	name = "Ground Items",
 	description = "Highlight ground items and/or show price information",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class GroundItemsPlugin extends Plugin

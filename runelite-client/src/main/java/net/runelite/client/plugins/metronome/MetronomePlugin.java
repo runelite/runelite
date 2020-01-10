@@ -46,12 +46,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Metronome",
 	description = "Play sounds in a customisable pattern",
 	tags = {"skilling", "tick", "timers"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

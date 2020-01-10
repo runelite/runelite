@@ -66,13 +66,15 @@ import net.runelite.client.game.ItemMapping;
 import net.runelite.client.game.ItemReclaimCost;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Items Kept on Death",
 	description = "Updates the Items Kept on Death interface to be more accurate",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

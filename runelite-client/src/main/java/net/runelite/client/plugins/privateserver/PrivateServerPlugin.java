@@ -47,7 +47,7 @@ import net.runelite.client.util.StringFileUtils;
 	name = "Private Server",
 	description = "Settings for connecting to non official servers",
 	tags = {"RSPS", "Server", "Private"},
-	type = PluginType.UTILITY,
+	type = PluginType.MISCELLANEOUS,
 	enabledByDefault = false
 )
 @Singleton

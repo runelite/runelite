@@ -42,12 +42,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Mouse Tooltips",
 	description = "Render default actions as a tooltip",
-	tags = {"actions", "overlay", "tooltip", "hide"}
+	tags = {"actions", "overlay", "tooltip", "hide"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class MouseHighlightPlugin extends Plugin

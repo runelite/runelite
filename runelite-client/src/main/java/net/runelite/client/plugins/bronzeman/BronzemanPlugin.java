@@ -58,7 +58,7 @@ import net.runelite.client.util.ImageUtil;
 	name = "Bronze Man Mode",
 	description = "Restrict yourself as an Iron Meme with GE use for items you have unlocked.",
 	tags = {"Bronze", "pve", "restrict", "game", "challenge", "bronzeman", "ironman"},
-	type = PluginType.UTILITY,
+	type = PluginType.GAMEMODE,
 	enabledByDefault = false
 )
 @Slf4j

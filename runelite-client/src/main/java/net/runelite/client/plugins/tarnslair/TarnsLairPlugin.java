@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Tarn's Lair",
 	description = "Mark tiles and clickboxes to help traverse the maze",
 	tags = {"agility", "maze", "minigame", "overlay"},
-	type = PluginType.UTILITY,
+	type = PluginType.MINIGAME,
 	enabledByDefault = false
 )
 @Singleton

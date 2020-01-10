@@ -78,6 +78,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
 import net.runelite.client.plugins.cluescrolls.clues.BeginnerMapClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
@@ -107,7 +108,8 @@ import net.runelite.client.util.ItemUtil;
 @PluginDescriptor(
 	name = "Clue Scroll",
 	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
-	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
+	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

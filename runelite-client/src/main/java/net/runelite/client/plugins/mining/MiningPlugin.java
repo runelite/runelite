@@ -69,13 +69,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Mining",
 	description = "Show ore respawn timers and coal bag overlay",
 	tags = {"overlay", "skilling", "timers", "coal", "coalbag", "coal bag"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.SKILLING
 )
 @Singleton
 public class MiningPlugin extends Plugin

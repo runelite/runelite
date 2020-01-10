@@ -39,12 +39,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Ammo",
 	description = "Shows the current ammo the player has equipped",
-	tags = {"bolts", "darts", "chinchompa", "equipment"}
+	tags = {"bolts", "darts", "chinchompa", "equipment"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class AmmoPlugin extends Plugin

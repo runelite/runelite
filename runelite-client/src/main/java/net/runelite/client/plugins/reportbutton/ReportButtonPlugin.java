@@ -48,12 +48,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Report Button",
 	description = "Replace the text on the Report button with the current time",
-	tags = {"time", "utc"}
+	tags = {"time", "utc"},
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class ReportButtonPlugin extends Plugin

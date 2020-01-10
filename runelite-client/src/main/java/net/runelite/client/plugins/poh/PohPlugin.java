@@ -61,6 +61,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -69,7 +70,8 @@ import net.runelite.http.api.hiscore.Skill;
 @PluginDescriptor(
 	name = "Player-owned House",
 	description = "Show minimap icons and mark unlit/lit burners",
-	tags = {"construction", "poh", "minimap", "overlay"}
+	tags = {"construction", "poh", "minimap", "overlay"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

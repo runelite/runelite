@@ -35,6 +35,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -43,7 +44,8 @@ import net.runelite.client.util.ImageUtil;
 	name = "Info Panel",
 	description = "Enable the Info panel",
 	tags = {"info", "github", "patreon", "dir", "discord"},
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class InfoPlugin extends Plugin

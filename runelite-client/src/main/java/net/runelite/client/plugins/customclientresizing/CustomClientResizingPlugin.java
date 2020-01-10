@@ -31,7 +31,7 @@ import net.runelite.client.util.ImageUtil;
 	name = "Custom Client Resizing",
 	description = "Resize the window to saved profiles",
 	tags = {"resize", "window", "position", "layout", "manage"},
-	type = PluginType.UTILITY,
+	type = PluginType.MISCELLANEOUS,
 	enabledByDefault = false
 )
 public class CustomClientResizingPlugin extends Plugin

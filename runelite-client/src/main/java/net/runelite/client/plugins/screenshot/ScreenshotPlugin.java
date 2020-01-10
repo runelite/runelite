@@ -95,6 +95,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientToolbar;
@@ -118,7 +119,8 @@ import org.jetbrains.annotations.Nullable;
 @PluginDescriptor(
 	name = "Screenshot",
 	description = "Enable the manual and automatic taking of screenshots",
-	tags = {"external", "images", "imgur", "integration", "notifications"}
+	tags = {"external", "images", "imgur", "integration", "notifications"},
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

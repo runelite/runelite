@@ -42,13 +42,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Tithe Farm",
 	description = "Show timers for the farming patches within the Tithe Farm minigame",
-	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
+	tags = {"farming", "minigame", "overlay", "skilling", "timers"},
+	type = PluginType.MINIGAME
 )
 @Singleton
 public class TitheFarmPlugin extends Plugin

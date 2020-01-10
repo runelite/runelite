@@ -77,13 +77,15 @@ import net.runelite.client.game.Sound;
 import net.runelite.client.game.SoundManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.PvPUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer", "pvp", "pker"}
+	tags = {"health", "hitpoints", "notifications", "prayer", "pvp", "pker"},
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class IdleNotifierPlugin extends Plugin

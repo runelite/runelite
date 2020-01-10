@@ -50,13 +50,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Friend Notes",
-	description = "Store notes about your friends"
+	description = "Store notes about your friends",
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class FriendNotesPlugin extends Plugin

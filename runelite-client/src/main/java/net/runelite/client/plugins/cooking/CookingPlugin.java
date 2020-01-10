@@ -51,6 +51,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -59,7 +60,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Cooking",
 	description = "Show cooking statistics",
-	tags = {"overlay", "skilling", "cook"}
+	tags = {"overlay", "skilling", "cook"},
+	type = PluginType.SKILLING
 )
 @Singleton
 @PluginDependency(XpTrackerPlugin.class)

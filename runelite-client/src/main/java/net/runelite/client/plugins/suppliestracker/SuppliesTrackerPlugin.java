@@ -80,7 +80,7 @@ import net.runelite.http.api.item.ItemPrice;
 	name = "Supplies Used Tracker",
 	description = "Tracks supplies used during the session",
 	tags = {"cost"},
-	type = PluginType.UTILITY,
+	type = PluginType.MISCELLANEOUS,
 	enabledByDefault = false
 )
 @Singleton

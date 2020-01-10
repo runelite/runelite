@@ -46,11 +46,13 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Random Events",
 	description = "Notify when random events appear and remove talk/dismiss options on events that aren't yours.",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Slf4j
 public class RandomEventPlugin extends Plugin

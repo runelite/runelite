@@ -53,6 +53,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.plugins.loottracker.localstorage.LTRecord;
 import net.runelite.client.plugins.loottracker.localstorage.LootRecordWriter;
@@ -68,7 +69,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Stoned Tracker",
 	description = "Local data persistence and unique UI for the Loot Tracker.",
-	tags = {"Stoned", "Loot", "Tracker"}
+	tags = {"Stoned", "Loot", "Tracker"},
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 public class StonedTrackerPlugin extends Plugin

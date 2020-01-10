@@ -45,6 +45,7 @@ import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
@@ -52,7 +53,8 @@ import net.runelite.client.task.Schedule;
 @PluginDescriptor(
 	name = "Twitch",
 	description = "Integrates Twitch chat",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

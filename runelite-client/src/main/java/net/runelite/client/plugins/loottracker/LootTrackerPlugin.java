@@ -113,6 +113,7 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.loottracker.localstorage.LTItemEntry;
 import net.runelite.client.plugins.loottracker.localstorage.LTRecord;
 import net.runelite.client.plugins.loottracker.localstorage.LootRecordWriter;
@@ -139,7 +140,8 @@ import org.jooq.impl.SQLDataType;
 	name = "Loot Tracker",
 	description = "Tracks loot from monsters and minigames",
 	tags = {"drops"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

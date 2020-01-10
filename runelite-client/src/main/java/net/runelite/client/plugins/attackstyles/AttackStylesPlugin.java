@@ -54,6 +54,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
@@ -62,7 +63,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Attack Styles",
 	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class AttackStylesPlugin extends Plugin

@@ -62,6 +62,7 @@ import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.comparables.BankComparableEntry;
 import net.runelite.client.plugins.menuentryswapper.comparables.EquipmentComparableEntry;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
@@ -71,7 +72,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Runecraft",
 	description = "Show minimap icons and clickboxes for abyssal rifts",
-	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
+	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"},
+	type = PluginType.SKILLING
 )
 @Singleton
 @Getter(AccessLevel.PACKAGE)

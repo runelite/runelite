@@ -40,6 +40,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -51,7 +52,8 @@ import net.runelite.http.api.feed.FeedResult;
 	name = "News Feed",
 	description = "Show the latest RuneLite blog posts, OSRS news, and JMod Twitter posts",
 	tags = {"external", "integration", "panel", "twitter"},
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

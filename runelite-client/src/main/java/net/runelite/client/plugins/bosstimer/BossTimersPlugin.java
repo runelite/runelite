@@ -34,12 +34,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Boss Timers",
 	description = "Show boss spawn timer overlays",
-	tags = {"combat", "pve", "overlay", "spawn"}
+	tags = {"combat", "pve", "overlay", "spawn"},
+	type = PluginType.PVM
 )
 @Singleton
 @Slf4j

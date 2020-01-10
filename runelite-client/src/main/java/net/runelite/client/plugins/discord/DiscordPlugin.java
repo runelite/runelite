@@ -60,6 +60,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -81,7 +82,8 @@ import org.jetbrains.annotations.NotNull;
 @PluginDescriptor(
 	name = "Discord",
 	description = "Show your status and activity in the Discord user panel",
-	tags = {"action", "activity", "external", "integration", "status"}
+	tags = {"action", "activity", "external", "integration", "status"},
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton
