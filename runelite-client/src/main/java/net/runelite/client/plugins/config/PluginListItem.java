@@ -40,7 +40,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -48,7 +47,6 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
-@Slf4j
 public class PluginListItem extends JPanel
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
@@ -195,7 +193,6 @@ public class PluginListItem extends JPanel
 		}
 
 		this.color = color;
-		log.info("{}, updated to {}", nameLabel.getText(), color);
 		this.nameLabel.setForeground(color);
 	}
 

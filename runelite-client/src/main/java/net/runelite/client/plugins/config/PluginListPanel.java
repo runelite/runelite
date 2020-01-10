@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -337,8 +338,22 @@ public class PluginListPanel extends PluginPanel
 			}
 
 			sections.get(sectionName).add(pluginListItem);
-
 		}
+
+		sections.forEach((key, value) ->
+		{
+			Container parent = value.getParent();
+			JToggleButton collapseButton = (JToggleButton) ((JPanel) parent.getComponent(0)).getComponent(0);
+
+			if (searchBar.getText().equals(""))
+			{
+				resetSection(key, collapseButton, value);
+			}
+			else
+			{
+				forceExpandSection(collapseButton, value);
+			}
+		});
 	}
 
 	private void showMatchingPlugins(boolean pinned, String text)
@@ -527,10 +542,10 @@ public class PluginListPanel extends PluginPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				toggleSection("pluginlist", name, collapse, sectionContents);
+				toggleSection(name, collapse, sectionContents);
 			}
 		};
-		collapse.addActionListener(e -> toggleSection("pluginlist", name, collapse, sectionContents));
+		collapse.addActionListener(e -> toggleSection(name, collapse, sectionContents));
 		headerLabel.addMouseListener(adapter);
 
 		// Allow for sub-sections
@@ -540,13 +555,45 @@ public class PluginListPanel extends PluginPanel
 		return sectionContents;
 	}
 
-	private void toggleSection(String group, String key, JToggleButton button, JPanel contents)
+	private void toggleSection(String key, JToggleButton button, JPanel contents)
 	{
+		if (!button.isEnabled())
+		{
+			return;
+		}
+
 		boolean newState = !contents.isVisible();
 		button.setSelected(newState);
-		contents.setVisible(newState);
-		configManager.setConfiguration(group, key, newState);
 		button.setToolTipText(newState ? "Retract" : "Expand");
+		contents.setVisible(newState);
+		configManager.setConfiguration("pluginlist", key, newState);
+		SwingUtilities.invokeLater(() ->
+		{
+			contents.revalidate();
+			contents.repaint();
+		});
+	}
+
+	private void forceExpandSection(JToggleButton button, JPanel contents)
+	{
+		button.setSelected(true);
+		button.setToolTipText(null);
+		button.setEnabled(false);
+		contents.setVisible(true);
+
+		SwingUtilities.invokeLater(() ->
+		{
+			contents.revalidate();
+			contents.repaint();
+		});
+	}
+
+	private void resetSection(String key, JToggleButton button, JPanel contents)
+	{
+		boolean newState = Boolean.parseBoolean(configManager.getConfiguration("pluginlist", key));
+		button.setSelected(newState);
+		button.setToolTipText(newState ? "Retract" : "Expand");
+		contents.setVisible(newState);
 		SwingUtilities.invokeLater(() ->
 		{
 			contents.revalidate();
