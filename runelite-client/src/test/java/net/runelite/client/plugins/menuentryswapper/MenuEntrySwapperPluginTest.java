@@ -263,4 +263,35 @@ public class MenuEntrySwapperPluginTest
 			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
+
+	@Test
+	public void testTobDoor()
+	{
+		when(config.swapQuick()).thenReturn(true);
+		when(config.swapHomePortal()).thenReturn(HouseMode.HOME);
+
+		//Quick-enter, Enter
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+		};
+
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
 }
