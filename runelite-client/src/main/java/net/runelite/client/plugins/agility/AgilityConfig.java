@@ -51,12 +51,23 @@ public interface AgilityConfig extends Config
 		description = "This will remove the distance cap on rendering overlays for agility.",
 		warning = "<html><center>Enabling this setting on a low end machine may severely affect your fps." +
 			"<br>Click yes to enable this setting, knowing it might affect performance.</center></html>",
-		position = 1,
+		position = 0,
 		titleSection = "mainConfig"
 	)
 	default boolean removeDistanceCap()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showCourseClickboxes",
+		name = "Show course Clickboxes",
+		description = "Show agility course obstacle clickboxes",
+		position = 1
+	)
+	default boolean showCourseClickboxes()
+	{
+		return true;
 	}
 
 	@ConfigItem(
