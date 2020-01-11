@@ -29,9 +29,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -275,32 +273,26 @@ public class ChatFilterPlugin extends Plugin
 
 	private void collapseDuplicateMessages(MessageNode node)
 	{
-		Map<Integer, ChatLineBuffer> chatLineMap = client.getChatLineMap();
-
-		MessageNode oldNode = findMessage(chatLineMap.values(), node);
+		MessageNode oldNode = findMessage(node);
 		if (oldNode == null)
 		{
 			return;
 		}
 		node.setValue(addMessageQuantity(oldNode.getValue()));
-		for (ChatLineBuffer b : chatLineMap.values())
+		for (ChatLineBuffer b : client.getChatLineMap().values())
 		{
 			b.removeMessageNode(oldNode);
 		}
 		client.refreshChat();
 	}
 
-	private MessageNode findMessage(Collection<ChatLineBuffer> chatLineBufferCollection, MessageNode node)
+	private MessageNode findMessage(MessageNode node)
 	{
-		for (ChatLineBuffer b : chatLineBufferCollection)
+		for (ChatLineBuffer b : client.getChatLineMap().values())
 		{
 			for (MessageNode m : b.getLines())
 			{
-				if (m == null)
-				{
-					continue;
-				}
-				if (isEqual(m, node))
+				if (m != null && isEqual(m, node))
 				{
 					return m;
 				}
