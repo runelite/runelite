@@ -27,7 +27,6 @@ package net.runelite.client.plugins.strongholdofsecurity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.widgets.Widget;
-
 import java.util.HashMap;
 import java.util.Map;
 
