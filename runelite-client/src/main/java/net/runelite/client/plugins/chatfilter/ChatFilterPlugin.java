@@ -297,7 +297,10 @@ public class ChatFilterPlugin extends Plugin
 		{
 			for (MessageNode m : b.getLines())
 			{
-				if (m == null) continue;
+				if (m == null)
+				{
+					continue;
+				}
 				if (isEqual(m, node))
 				{
 					return m;
@@ -309,12 +312,10 @@ public class ChatFilterPlugin extends Plugin
 
 	private boolean isEqual(MessageNode oldNode, MessageNode newNode)
 	{
-		if (oldNode.getId() == newNode.getId()) return false;
-		if (!oldNode.getType().equals(newNode.getType())) return false;
-		if (!Objects.equals(oldNode.getSender(), newNode.getSender())) return false;
-		if (!oldNode.getName().equals(newNode.getName())) return false;
-		if (!stripMessageQuantity(oldNode.getValue()).equals(newNode.getValue())) return false;
-		return true;
+		return oldNode.getId() != newNode.getId() && oldNode.getType().equals(newNode.getType()) &&
+			Objects.equals(oldNode.getSender(), newNode.getSender()) &&
+			oldNode.getName().equals(newNode.getName()) &&
+			stripMessageQuantity(oldNode.getValue()).equals(newNode.getValue());
 	}
 
 	private String stripMessageQuantity(String message)
