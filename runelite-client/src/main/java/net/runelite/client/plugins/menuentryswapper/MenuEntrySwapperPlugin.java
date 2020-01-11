@@ -1010,11 +1010,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (this.swapAdmire)
 		{
 			menuManager.addPriorityEntry("Teleport", "Mounted Strength Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Strength Cape (t)").setPriority(10);
 			menuManager.addPriorityEntry("Teleport", "Mounted Construction Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Construction Cape (t)").setPriority(10);
 			menuManager.addPriorityEntry("Teleport", "Mounted Crafting Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Crafting Cape (t)").setPriority(10);
 			menuManager.addPriorityEntry("Teleport", "Mounted Hunter Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Hunter Cape (t)").setPriority(10);
 			menuManager.addPriorityEntry("Teleport", "Mounted Fishing Cape").setPriority(10);
+			menuManager.addPriorityEntry("Teleport", "Mounted Fishing Cape (t)").setPriority(10);
 			menuManager.addPriorityEntry("Spellbook", "Mounted Magic Cape");
+			menuManager.addPriorityEntry("Spellbook", "Mounted Magic Cape (t)");
 			menuManager.addPriorityEntry("Perks", "Mounted Max Cape");
 		}
 
@@ -1311,11 +1317,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 3");
 		menuManager.removePriorityEntry("Teleport", "Explorer's ring 4");
 		menuManager.removePriorityEntry("Teleport", "Mage of zamorak");
-		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape");
-		menuManager.removePriorityEntry("Teleport", "Mounted Crafting Cape");
-		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape");
-		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
 		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Strength Cape (t)");
+		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Construction Cape (t)");
+		menuManager.removePriorityEntry("Teleport", "Mounted Crafting Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Crafting Cape (t)");
+		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Hunter Cape (t)");
+		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape");
+		menuManager.removePriorityEntry("Teleport", "Mounted Fishing Cape (t)");
+		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape");
+		menuManager.removePriorityEntry("Spellbook", "Mounted Magic Cape (t)");
 		menuManager.removePriorityEntry("Trade");
 		menuManager.removePriorityEntry("Trade-with");
 		menuManager.removePriorityEntry("Transport");
