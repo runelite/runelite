@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.runenergy;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.inject.Provides;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -199,49 +201,62 @@ public class RunEnergyPlugin extends Plugin
 		}
 	}
 
-	private boolean isLocalPlayerWearingFullGraceful()
-	{
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-
-		if (equipment == null)
-		{
-			return false;
-		}
-
-		final Item[] items = equipment.getItems();
-
-		// Check that the local player is wearing enough items to be using full Graceful
-		// (the Graceful boots will have the highest slot index in the worn set).
-		if (items == null || items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx())
-		{
-			return false;
-		}
-
-		return (ALL_GRACEFUL_HOODS.contains(items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_TOPS.contains(items[EquipmentInventorySlot.BODY.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_LEGS.contains(items[EquipmentInventorySlot.LEGS.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_GLOVES.contains(items[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_BOOTS.contains(items[EquipmentInventorySlot.BOOTS.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_CAPES.contains(items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId()));
-	}
-
 	int getEstimatedRecoverTimeRemaining()
 	{
 		if (localPlayerRunningToDestination)
 		{
 			return -1;
 		}
+		double recoveryRate = (8.0 + Math.floor(client.getBoostedSkillLevel(Skill.AGILITY) / 6.0)) / 60.0;
 
-		// Calculate the amount of energy recovered every second
-		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0;
-
-		if (isLocalPlayerWearingFullGraceful())
-		{
-			recoverRate *= 1.3; // 30% recover rate increase from Graceful set effect
-		}
+		recoveryRate *= getGracefulModifier();
 
 		// Calculate the number of seconds left
-		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
+		final double secondsLeft = (100 - client.getEnergy()) / recoveryRate;
 		return (int) secondsLeft;
+	}
+
+	// Calculate the amount of energy recovered every second
+	double getGracefulModifier()
+	{
+		double gracefulModifier = 1;
+
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+		if (equipment == null)
+		{
+			return gracefulModifier;
+		}
+
+		final Item[] items = equipment.getItems();
+
+		if (items == null)
+		{
+			return gracefulModifier;
+		}
+
+		// Items that have 3% bonus recovery rate
+		final List<Boolean> lowRecoverItems = Lists.newArrayList(
+			ALL_GRACEFUL_HOODS.contains(items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId()),
+			ALL_GRACEFUL_BOOTS.contains(items[EquipmentInventorySlot.BOOTS.getSlotIdx()].getId()),
+			ALL_GRACEFUL_GLOVES.contains(items[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId()),
+			ALL_GRACEFUL_CAPES.contains(items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId()));
+
+		gracefulModifier += lowRecoverItems.stream().filter(p -> p).count() * 0.03;
+
+		// Items that have 4% bonus recovery rate
+		final List<Boolean> highRecoverItems = Lists.newArrayList(
+			ALL_GRACEFUL_LEGS.contains(items[EquipmentInventorySlot.LEGS.getSlotIdx()].getId()),
+			ALL_GRACEFUL_TOPS.contains(items[EquipmentInventorySlot.BODY.getSlotIdx()].getId()));
+
+		gracefulModifier += highRecoverItems.stream().filter(p -> p).count() * 0.04;
+
+		// If the bonus is 20%, player has the full graceful set effect so we add 10% more
+		// Have to account for a floating point error so we floor it down to match up
+		if (Math.floor(gracefulModifier * 100) / 100 == 1.2)
+		{
+			gracefulModifier += 0.1;
+		}
+		return gracefulModifier;
 	}
 }
