@@ -141,6 +141,8 @@ public class AgilityPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean removeDistanceCap;
 	@Getter(AccessLevel.PACKAGE)
+	private boolean showCourseClickboxes;
+	@Getter(AccessLevel.PACKAGE)
 	private boolean showLapCount;
 	@Getter(AccessLevel.PACKAGE)
 	private int lapTimeout;
@@ -260,6 +262,7 @@ public class AgilityPlugin extends Plugin
 	private void updateConfig()
 	{
 		this.removeDistanceCap = config.removeDistanceCap();
+		this.showCourseClickboxes = config.showCourseClickboxes();
 		this.showLapCount = config.showLapCount();
 		this.lapTimeout = config.lapTimeout();
 		this.lapsToLevel = config.lapsToLevel();
