@@ -315,7 +315,7 @@ public class ChatFilterPlugin extends Plugin
 		return oldNode.getId() != newNode.getId() && oldNode.getType().equals(newNode.getType()) &&
 			Objects.equals(oldNode.getSender(), newNode.getSender()) &&
 			oldNode.getName().equals(newNode.getName()) &&
-			stripMessageQuantity(oldNode.getValue()).equals(newNode.getValue());
+			Text.removeTags(stripMessageQuantity(oldNode.getValue())).equals(newNode.getValue());
 	}
 
 	private String stripMessageQuantity(String message)
@@ -351,6 +351,7 @@ public class ChatFilterPlugin extends Plugin
 		{
 			start += (MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX).length();
 			String quantity = message.substring(start, end);
+			quantity = Text.removeTags(quantity);
 			return Integer.parseInt(quantity);
 		}
 		return 1;
