@@ -39,7 +39,7 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
-import net.runelite.http.api.ws.messages.party.PartyMessage;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -148,9 +148,17 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	}
 
 	@Override
-	public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response)
+	public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason)
 	{
-		log.info("Websocket {} opened", webSocket);
+		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
+		this.webSocket = null;
+	}
+
+	@Override
+	public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response)
+	{
+		log.warn("Error in websocket {}:{}", response, t);
+		this.webSocket = null;
 	}
 
 	@Override
@@ -167,28 +175,21 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			log.debug("Failed to deserialize message", e);
 			return;
 		}
+		message.text = text;
 
-		if (message.isParty() && !(message instanceof PartyMessage))
+		if (message instanceof PartyMemberMessage)
 		{
-			// spoofed message?
-			return;
+			eventBus.post(PartyMemberMessage.class, message);
 		}
-
-		log.debug("Got: {}", text);
-		eventBus.post(PartyMessage.class, message);
+		else
+		{
+			eventBus.post(WebsocketMessage.class, message);
+		}
 	}
 
 	@Override
-	public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason)
+	public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response)
 	{
-		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
-		this.webSocket = null;
-	}
-
-	@Override
-	public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response)
-	{
-		log.warn("Error in websocket {}:{}", response, t);
-		this.webSocket = null;
+		log.info("Websocket {} opened", webSocket);
 	}
 }

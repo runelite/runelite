@@ -155,7 +155,7 @@ public class DiscordPlugin extends Plugin
 		{
 			partyService.setUsername(discordService.getCurrentUser().username + "#" + discordService.getCurrentUser().discriminator);
 		}
-
+		wsClient.unregisterMessage(DiscordUserInfo.class);
 		wsClient.registerMessage(DiscordUserInfo.class);
 	}
 

@@ -30,7 +30,7 @@ import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-class DiscordUserInfo extends PartyMemberMessage
+public class DiscordUserInfo extends PartyMemberMessage
 {
 	private final String userId;
 	private final String avatarId;
