@@ -88,7 +88,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2209, 3161, 0), "North-east of Tyras Camp (BJS).")
 		.put(new WorldPoint(2181, 3206, 0), "South of Elf Camp.")
 		.put(new WorldPoint(3081, 3209, 0), "Small Island (CLP).")
-		.put(new WorldPoint(3374, 3250, 0), "Duel Arena combat area.")
+		.put(new WorldPoint(3399, 3246, 0), "Behind the Duel Arena.")
 		.put(new WorldPoint(2699, 3251, 0), "Little island (AIR).")
 		.put(new WorldPoint(3546, 3251, 0), "North-east of Burgh de Rott.")
 		.put(new WorldPoint(3544, 3256, 0), "North-east of Burgh de Rott.")
