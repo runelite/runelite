@@ -498,7 +498,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, index);
 		}
-		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
+		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter") && target.equals("portal"))
 		{
 			switch (config.swapHomePortal())
 			{
