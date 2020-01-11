@@ -37,6 +37,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
@@ -58,6 +59,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
@@ -70,7 +72,8 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 @PluginDescriptor(
 	name = "Examine",
 	description = "Send examine information to the API",
-	tags = {"npcs", "items", "inventory", "objects"}
+	tags = {"npcs", "items", "inventory", "objects"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton
@@ -335,8 +338,8 @@ public class ExaminePlugin extends Plugin
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
 		int itemCompositionPrice = itemComposition.getPrice();
-		final int gePrice = itemManager.getItemPrice(id);
-		final int alchPrice = itemCompositionPrice <= 0 ? 0 : itemManager.getAlchValue(itemComposition);
+		final long gePrice = itemManager.getItemPrice(id);
+		final long alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (gePrice > 0 || alchPrice > 0)
 		{

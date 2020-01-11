@@ -25,22 +25,22 @@
 
 object ProjectVersions {
     const val launcherVersion = "2.0.4"
-    const val rlVersion = "1.5.44-SNAPSHOT"
+    const val rlVersion = "1.6.2-SNAPSHOT"
 
-    const val openosrsVersion = "2.1.19-SNAPSHOT"
+    const val openosrsVersion = "2.1.21-SNAPSHOT"
 
     const val rsversion = 187
     const val cacheversion = 165
 }
 
 object Plugins {
-    val grgitPlugin = "org.ajoberstar:grgit:2.3.0"
+    val grgitPlugin = "org.ajoberstar.grgit:grgit-core:4.0.1"
     val versionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
     val injectorPlugin = "com.openosrs:injector-plugin:1.0.3.0"
     val testLogger = Pair("com.adarshr.test-logger", "2.0.0")
     val versions = Pair("com.github.ben-manes.versions", "0.27.0")
     val latestVersion = Pair("se.patrikerdes.use-latest-versions", "0.2.13")
-    val grgit = Pair("org.ajoberstar.grgit", "4.0.0-rc.1")
+    val grgit = Pair("org.ajoberstar.grgit", "4.0.1")
     val jarTest = Pair("com.github.hauner.jarTest", "1.0.1")
     val shadow = Pair("com.github.johnrengelman.shadow", "5.2.0")
 }
@@ -58,46 +58,45 @@ object Libraries {
         const val fernflower = "07082019"
         const val findbugs = "3.0.2"
         const val gson = "2.8.6"
-        const val guava = "28.1-jre"
+        const val guava = "28.2-jre"
         const val guice = "4.2.2"
         const val h2 = "1.4.200"
         const val hamcrest = "2.2"
         const val javax = "1.3.2"
         const val javaxInject = "1"
-        const val jedis = "3.1.0"
+        const val jedis = "3.2.0"
         const val jna = "5.5.0"
         const val jogamp = "2.3.2"
         const val jopt = "5.0.4"
         const val jooq = "3.12.3"
-        const val junit = "4.12"
+        const val junit = "4.13"
         const val jupiter = "5.6.0-M1"
         const val logback = "1.2.3"
         const val lombok = "1.18.10"
         const val mapstruct = "1.3.1.Final"
-        const val mariadbJdbc = "2.5.1"
+        const val mariadbJdbc = "2.5.2"
         const val mavenPluginAnnotations = "3.6.0"
-        const val mavenPluginApi = "3.6.2"
+        const val mavenPluginApi = "3.6.3"
         const val minio = "6.0.11"
-        const val mockito = "3.1.0"
-        const val mongodbDriverSync = "3.11.2"
+        const val mockito = "3.2.4"
+        const val mongodbDriverSync = "3.12.0"
         const val mysqlConnectorJava = "8.0.18"
         const val naturalMouse = "2.0.2"
-        const val netty = "4.1.43.Final"
-        const val okhttp3 = "4.2.2"
+        const val netty = "4.1.44.Final"
+        const val okhttp3 = "4.3.0"
         const val orangeExtensions = "1.0"
-        const val petitparser = "2.2.0"
+        const val petitparser = "2.3.1"
         const val plexus = "3.3.0"
-        const val rxjava = "2.2.14"
+        const val radiance = "2.5.1"
+        const val rxjava = "2.2.16"
         const val rxrelay = "2.1.1"
         const val scribejava = "6.9.0"
         const val sisu = "0.3.4"
-        const val sentry = "1.7.28"
-        const val slf4j = "1.7.29"
-        const val springJdbc = "5.2.1.RELEASE"
-        const val springboot = "2.2.1.RELEASE"
+        const val sentry = "1.7.29"
+        const val slf4j = "1.7.30"
+        const val springJdbc = "5.2.2.RELEASE"
+        const val springboot = "2.2.2.RELEASE"
         const val sql2o = "1.6.0"
-        const val substance = "8.0.02"
-        const val trident = "1.5.00"
     }
 
     const val annotations = "org.jetbrains:annotations:${Versions.annotations}"
@@ -175,7 +174,7 @@ object Libraries {
     const val springbootStarterTomcat = "org.springframework.boot:spring-boot-starter-tomcat:${Versions.springboot}"
     const val springbootJdbc = "org.springframework:spring-jdbc:${Versions.springJdbc}"
     const val sql2o = "org.sql2o:sql2o:${Versions.sql2o}"
-    const val substance = "net.runelite.pushingpixels:substance:${Versions.substance}"
-    const val trident = "net.runelite.pushingpixels:trident:${Versions.trident}"
+    const val substance = "org.pushing-pixels:radiance-substance:${Versions.radiance}"
+    const val trident = "org.pushing-pixels:radiance-trident:${Versions.radiance}"
     const val vanilla = "net.runelite.rs:vanilla:${ProjectVersions.rsversion}"
 }

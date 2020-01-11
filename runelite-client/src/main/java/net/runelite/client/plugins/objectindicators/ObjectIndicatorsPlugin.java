@@ -77,13 +77,15 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Object Markers",
 	description = "Enable marking of objects using the Shift key",
 	tags = {"overlay", "objects", "mark", "marker"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Singleton
 @Slf4j
@@ -351,7 +353,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
 					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& object.getPlane() == objectPoint.getZ())
+					&& worldPoint.getPlane() == objectPoint.getZ())
 			{
 				// Transform object to get the name which matches against what we've stored
 				ObjectDefinition objectDefinition = getObjectDefinition(object.getId());
@@ -453,7 +455,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			regionId,
 			worldPoint.getRegionX(),
 			worldPoint.getRegionY(),
-			client.getPlane());
+			worldPoint.getPlane());
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 

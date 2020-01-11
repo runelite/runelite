@@ -55,6 +55,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightBox;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolution;
@@ -66,7 +67,8 @@ import net.runelite.client.util.ColorUtil;
 @PluginDescriptor(
 	name = "Puzzle Solver",
 	description = "Show you where to click to solve puzzle boxes",
-	tags = {"clues", "scrolls", "overlay"}
+	tags = {"clues", "scrolls", "overlay"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

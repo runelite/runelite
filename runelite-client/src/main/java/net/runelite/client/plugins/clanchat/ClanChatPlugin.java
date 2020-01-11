@@ -78,6 +78,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
@@ -87,7 +88,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Clan Chat",
 	description = "Add rank icons to users talking in clan chat",
-	tags = {"icons", "rank", "recent"}
+	tags = {"icons", "rank", "recent"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class ClanChatPlugin extends Plugin

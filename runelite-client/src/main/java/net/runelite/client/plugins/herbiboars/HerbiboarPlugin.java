@@ -63,12 +63,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Herbiboar",
 	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
-	tags = {"herblore", "hunter", "skilling", "overlay"}
+	tags = {"herblore", "hunter", "skilling", "overlay"},
+	type = PluginType.SKILLING
 )
 @Singleton
 public class HerbiboarPlugin extends Plugin

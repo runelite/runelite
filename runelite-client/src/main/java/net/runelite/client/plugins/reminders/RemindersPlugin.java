@@ -52,7 +52,7 @@ import net.runelite.client.task.Schedule;
 	description = "various reminders",
 	tags = {"session", "reminder", "hydrate", "hydration"},
 	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.MISCELLANEOUS
 )
 
 @Slf4j

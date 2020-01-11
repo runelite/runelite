@@ -218,7 +218,7 @@ public class NpcStatsDumper
 					}
 
 					final Set<Integer> ids = Arrays.stream(wikiIdString.split(","))
-						.map(s -> Integer.parseInt(s.trim()))
+						.map(s -> Integer.parseInt(s.replaceAll("[^0-9]", "").trim()))
 						.collect(Collectors.toSet());
 
 					final NpcStats stats = buildNpcStats(base, variantKey);

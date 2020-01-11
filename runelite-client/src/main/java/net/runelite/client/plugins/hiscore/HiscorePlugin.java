@@ -54,6 +54,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -63,14 +64,15 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "HiScore",
 	description = "Enable the HiScore panel and an optional Lookup option on players",
 	tags = {"panel", "players"},
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
 	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", KICK_OPTION);
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 
 	// config
@@ -194,10 +196,11 @@ public class HiscorePlugin extends Plugin
 		String option = event.getOption();
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
-			groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-			groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
+				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
+				groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
-			if (!AFTER_OPTIONS.contains(option))
+			if (!AFTER_OPTIONS.contains(option) || (option.equals("Delete") && groupId != WidgetInfo.IGNORE_LIST.getGroupId()))
 			{
 				return;
 			}

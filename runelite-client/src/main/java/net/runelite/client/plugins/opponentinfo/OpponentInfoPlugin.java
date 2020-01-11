@@ -57,6 +57,7 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -65,7 +66,8 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 @PluginDescriptor(
 	name = "Opponent Information",
 	description = "Show name and hitpoints information about the NPC you are fighting",
-	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
+	tags = {"combat", "health", "hitpoints", "npcs", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 @Slf4j

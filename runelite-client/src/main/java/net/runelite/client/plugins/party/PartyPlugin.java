@@ -69,9 +69,10 @@ import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.plugins.discord.DiscordUserInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.discord.DiscordUserInfo;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
@@ -95,7 +96,8 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
-	description = "Shows useful information about current party"
+	description = "Shows useful information about current party",
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton

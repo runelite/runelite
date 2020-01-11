@@ -48,6 +48,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
@@ -56,7 +57,8 @@ import net.runelite.http.api.worlds.WorldType;
 @PluginDescriptor(
 	name = "League Chat Icons",
 	description = "Changes the chat icon for players on league worlds",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 public class LeagueChatIconsPlugin extends Plugin

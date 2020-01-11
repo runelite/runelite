@@ -63,6 +63,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -70,7 +71,8 @@ import net.runelite.client.util.ColorUtil;
 @PluginDescriptor(
 	name = "Ground Markers",
 	description = "Enable marking of tiles using the Shift key",
-	tags = {"overlay", "tiles"}
+	tags = {"overlay", "tiles"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class GroundMarkerPlugin extends Plugin

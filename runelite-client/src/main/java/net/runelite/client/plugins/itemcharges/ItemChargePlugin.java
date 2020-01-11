@@ -62,13 +62,15 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Item Charges",
 	description = "Show number of item charges remaining",
-	tags = {"inventory", "notifications", "overlay"}
+	tags = {"inventory", "notifications", "overlay"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class ItemChargePlugin extends Plugin

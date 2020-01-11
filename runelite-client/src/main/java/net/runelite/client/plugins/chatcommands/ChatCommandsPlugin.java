@@ -68,6 +68,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
@@ -84,7 +85,8 @@ import org.apache.commons.text.WordUtils;
 @PluginDescriptor(
 	name = "Chat Commands",
 	description = "Enable chat commands",
-	tags = {"grand", "exchange", "level", "prices"}
+	tags = {"grand", "exchange", "level", "prices"},
+	type = PluginType.UTILITY
 )
 @Singleton
 @Slf4j

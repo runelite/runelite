@@ -47,10 +47,12 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
-	description = "Show chat notifications for daily tasks upon login"
+	description = "Show chat notifications for daily tasks upon login",
+	type = PluginType.UTILITY
 )
 @Singleton
 public class DailyTasksPlugin extends Plugin

@@ -36,12 +36,14 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Stretched Mode",
 	description = "Stretches the game in fixed and resizable modes.",
 	tags = {"resize", "ui", "interface", "stretch", "scaling", "fixed"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class StretchedModePlugin extends Plugin

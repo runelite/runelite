@@ -48,6 +48,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.DesertDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.FaladorDiaryRequirement;
@@ -65,7 +66,8 @@ import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequi
 @PluginDescriptor(
 	name = "Diary Requirements",
 	description = "Display level requirements in Achievement Diary interface",
-	tags = {"achievements", "tasks"}
+	tags = {"achievements", "tasks"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class DiaryRequirementsPlugin extends Plugin

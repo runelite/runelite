@@ -78,6 +78,7 @@ import net.runelite.client.game.WorldService;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -93,7 +94,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "World Hopper",
-	description = "Allows you to quickly hop worlds"
+	description = "Allows you to quickly hop worlds",
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

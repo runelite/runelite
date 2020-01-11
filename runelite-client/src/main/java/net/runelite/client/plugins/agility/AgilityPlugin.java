@@ -77,6 +77,7 @@ import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -84,7 +85,8 @@ import net.runelite.client.util.ColorUtil;
 @PluginDescriptor(
 	name = "Agility",
 	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"},
+	type = PluginType.SKILLING
 )
 @Slf4j
 @Singleton
@@ -138,6 +140,8 @@ public class AgilityPlugin extends Plugin
 	// Config values
 	@Getter(AccessLevel.PACKAGE)
 	private boolean removeDistanceCap;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean showCourseClickboxes;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean showLapCount;
 	@Getter(AccessLevel.PACKAGE)
@@ -258,6 +262,7 @@ public class AgilityPlugin extends Plugin
 	private void updateConfig()
 	{
 		this.removeDistanceCap = config.removeDistanceCap();
+		this.showCourseClickboxes = config.showCourseClickboxes();
 		this.showLapCount = config.showLapCount();
 		this.lapTimeout = config.lapTimeout();
 		this.lapsToLevel = config.lapsToLevel();

@@ -36,12 +36,14 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Skybox",
 	description = "Draws an oldschool styled skybox",
 	enabledByDefault = false,
-	tags = {"sky"}
+	tags = {"sky"},
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class SkyboxPlugin extends Plugin

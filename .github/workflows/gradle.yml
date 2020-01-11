@@ -12,6 +12,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
       - name: Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version $(curl -s https://api.github.com/repos/gradle/gradle/releases/latest | grep -Po '"name":.*?[^\\]",' | sed -r 's/[\"name:, ]+//g') --distribution-type all --console=plain
       - name: Create Gradle wrapper update Pull Request

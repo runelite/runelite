@@ -46,6 +46,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 import net.runelite.client.plugins.statusbars.renderer.BarRenderer;
@@ -58,7 +59,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Status Bars",
 	description = "Draws status bars next to players inventory showing currentValue and restore amounts",
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 @Singleton
 @PluginDependency(ItemStatPlugin.class)
@@ -155,7 +157,8 @@ public class StatusBarsPlugin extends Plugin
 				overlayManager.add(overlay);
 			}
 		}
-		else if (lastCombatAction != null && Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > combatTimeout)
+		else if (lastCombatAction == null
+			|| (lastCombatAction != null && Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > combatTimeout))
 		{
 			overlayManager.remove(overlay);
 		}

@@ -60,6 +60,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -69,7 +70,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Poison",
 	description = "Tracks current damage values for Poison and Venom",
-	tags = {"combat", "poison", "venom", "heart", "hp"}
+	tags = {"combat", "poison", "venom", "heart", "hp"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class PoisonPlugin extends Plugin

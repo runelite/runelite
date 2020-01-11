@@ -42,12 +42,14 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Tears Of Guthix",
 	description = "Show timers for the Tears Of Guthix streams",
-	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
+	tags = {"minigame", "overlay", "skilling", "timers", "tog"},
+	type = PluginType.MINIGAME
 )
 @Singleton
 public class TearsOfGuthixPlugin extends Plugin

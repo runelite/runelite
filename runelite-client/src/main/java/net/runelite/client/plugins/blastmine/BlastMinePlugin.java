@@ -45,12 +45,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Blast Mine",
 	description = "Show helpful information for the Blast Mine minigame",
-	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
+	tags = {"explode", "explosive", "mining", "minigame", "skilling"},
+	type = PluginType.MINIGAME
 )
 @Singleton
 public class BlastMinePlugin extends Plugin

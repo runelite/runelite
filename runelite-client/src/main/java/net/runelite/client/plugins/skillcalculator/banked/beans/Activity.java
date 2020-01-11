@@ -188,25 +188,21 @@ public enum Activity
 	 * Construction Options
 	 */
 	PLANK(ItemID.PLANK, "Regular Plank", Skill.CONSTRUCTION, 1, 0,
-		CriticalItem.LOGS, Secondaries.COINS_100, new ItemStack(ItemID.PLANK, 1)),
+		CriticalItem.CON_LOGS, Secondaries.COINS_100, new ItemStack(ItemID.PLANK, 1)),
 	PLANKS(ItemID.PLANK, "Regular plank products", Skill.CONSTRUCTION, 1, 29,
 		CriticalItem.PLANK, null, null),
-
 	OAK_PLANK(ItemID.OAK_PLANK, "Oak Plank", Skill.CONSTRUCTION, 1, 0,
-		CriticalItem.OAK_LOGS, Secondaries.COINS_250, new ItemStack(ItemID.OAK_PLANK, 1)),
+		CriticalItem.CON_OAK_LOGS, Secondaries.COINS_250, new ItemStack(ItemID.OAK_PLANK, 1)),
 	OAK_PLANKS(ItemID.OAK_PLANK, "Oak products", Skill.CONSTRUCTION, 1, 60,
 		CriticalItem.OAK_PLANK, null, null),
-
 	TEAK_PLANK(ItemID.TEAK_PLANK, "Teak Plank", Skill.CONSTRUCTION, 1, 0,
-		CriticalItem.TEAK_LOGS, Secondaries.COINS_500, new ItemStack(ItemID.TEAK_PLANK, 1)),
+		CriticalItem.CON_TEAK_LOGS, Secondaries.COINS_500, new ItemStack(ItemID.TEAK_PLANK, 1)),
 	TEAK_PLANKS(ItemID.TEAK_PLANK, "Teak products", Skill.CONSTRUCTION, 1, 90,
 		CriticalItem.TEAK_PLANK, null, null),
 	MYTHICAL_CAPE(ItemID.MYTHICAL_CAPE, "Mythical cape rakes", Skill.CONSTRUCTION, 1, 123.33,
 		CriticalItem.TEAK_PLANK, null, null),
-
-
 	MAHOGANY_PLANK(ItemID.MAHOGANY_PLANK, "Mahogany Plank", Skill.CONSTRUCTION, 1, 0,
-		CriticalItem.MAHOGANY_LOGS, Secondaries.COINS_1500, new ItemStack(ItemID.MAHOGANY_PLANK, 1)),
+		CriticalItem.CON_MAHOGANY_LOGS, Secondaries.COINS_1500, new ItemStack(ItemID.MAHOGANY_PLANK, 1)),
 	MAHOGANY_PLANKS(ItemID.MAHOGANY_PLANK, "Mahogany products", Skill.CONSTRUCTION, 1, 140,
 		CriticalItem.MAHOGANY_PLANK, null, null),
 
@@ -349,7 +345,6 @@ public enum Activity
 		CriticalItem.RAW_DARK_CRAB, null, new ItemStack(ItemID.DARK_CRAB, 1)),
 	COOK_MANTA_RAY(ItemID.MANTA_RAY, "Manta ray", Skill.COOKING, 91, 216.2,
 		CriticalItem.RAW_MANTA_RAY, null, new ItemStack(ItemID.MANTA_RAY, 1)),
-
 	WINE(ItemID.JUG_OF_WINE, "Jug of wine", Skill.COOKING, 35, 200,
 		CriticalItem.GRAPES, Secondaries.JUG_OF_WATER, new ItemStack(ItemID.JUG_OF_WINE, 1)),
 
@@ -617,20 +612,238 @@ public enum Activity
 		CriticalItem.MAHOGANY_SAPLING, null, null),
 	SPIRIT_SAPLING(ItemID.SPIRIT_SAPLING, "Spirit tree", Skill.FARMING, 83, 19500,
 		CriticalItem.SPIRIT_SAPLING, null, null),
-	;
 
-	private final int icon;
-	private final String name;
-	private final CriticalItem criticalItem;
-	private final Skill skill;
-	private final int level;
-	private final double xp;
-	private final ItemStack[] secondaries;
-	@Nullable
-	private final ItemStack output;
-	private ItemInfo outputItemInfo = null;
-	@Nullable
-	private final CriticalItem linkedItem;
+	/**
+	 * Fletching
+	 */
+	// Logs
+	FLETCH_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 1, 5,
+		CriticalItem.FLETCH_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 15)),
+	FLETCH_SHORTBOW_U(ItemID.SHORTBOW_U, "Shortbow (u)", Skill.FLETCHING, 5, 5,
+		CriticalItem.FLETCH_LOGS, null, new ItemStack(ItemID.SHORTBOW_U, 1)),
+	FLETCH_LONGBOW_U(ItemID.LONGBOW_U, "Longbow (u)", Skill.FLETCHING, 10, 10,
+		CriticalItem.FLETCH_LOGS, null, new ItemStack(ItemID.LONGBOW_U, 1)),
+	// Oak Logs
+	FLETCH_OAK_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 15, 10,
+		CriticalItem.FLETCH_OAK_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 30)),
+	FLETCH_OAK_SHORTBOW_U(ItemID.OAK_SHORTBOW_U, "Oak shortbow (u)", Skill.FLETCHING, 25, 16.5,
+		CriticalItem.FLETCH_OAK_LOGS, null, new ItemStack(ItemID.OAK_SHORTBOW_U, 1)),
+	FLETCH_OAK_LONGBOW_U(ItemID.OAK_LONGBOW_U, "Oak longbow (u)", Skill.FLETCHING, 25, 25,
+		CriticalItem.FLETCH_OAK_LOGS, null, new ItemStack(ItemID.OAK_LONGBOW_U, 1)),
+	// Willow Logs
+	FLETCH_WILLOW_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 30, 15,
+		CriticalItem.FLETCH_WILLOW_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 45)),
+	FLETCH_WILLOW_SHORTBOW_U(ItemID.WILLOW_SHORTBOW_U, "Willow shortbow (u)", Skill.FLETCHING, 35, 33.3,
+		CriticalItem.FLETCH_WILLOW_LOGS, null, new ItemStack(ItemID.WILLOW_SHORTBOW_U, 1)),
+	FLETCH_WILLOW_LONGBOW_U(ItemID.WILLOW_LONGBOW_U, "Willow longbow (u)", Skill.FLETCHING, 40, 41.5,
+		CriticalItem.FLETCH_WILLOW_LOGS, null, new ItemStack(ItemID.WILLOW_LONGBOW_U, 1)),
+	// Maple Logs
+	FLETCH_MAPLE_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 45, 20,
+		CriticalItem.FLETCH_MAPLE_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 60)),
+	FLETCH_MAPLE_SHORTBOW_U(ItemID.MAPLE_SHORTBOW_U, "Maple shortbow (u)", Skill.FLETCHING, 50, 50,
+		CriticalItem.FLETCH_MAPLE_LOGS, null, new ItemStack(ItemID.MAPLE_SHORTBOW_U, 1)),
+	FLETCH_MAPLE_LONGBOW_U(ItemID.MAPLE_LONGBOW_U, "Maple longbow (u)", Skill.FLETCHING, 55, 58.3,
+		CriticalItem.FLETCH_MAPLE_LOGS, null, new ItemStack(ItemID.MAPLE_LONGBOW_U, 1)),
+	// Yew Logs
+	FLETCH_YEW_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 60, 25,
+		CriticalItem.FLETCH_YEW_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 75)),
+	FLETCH_YEW_SHORTBOW_U(ItemID.YEW_SHORTBOW_U, "Yew shortbow (u)", Skill.FLETCHING, 65, 67.5,
+		CriticalItem.FLETCH_YEW_LOGS, null, new ItemStack(ItemID.YEW_SHORTBOW_U, 1)),
+	FLETCH_YEW_LONGBOW_U(ItemID.YEW_LONGBOW_U, "Yew longbow (u)", Skill.FLETCHING, 70, 75,
+		CriticalItem.FLETCH_YEW_LOGS, null, new ItemStack(ItemID.YEW_LONGBOW_U, 1)),
+	// Magic Logs
+	FLETCH_MAGIC_HEADLESS_ARROWS(ItemID.ARROW_SHAFT, "Arrow shaft", Skill.FLETCHING, 75, 30,
+		CriticalItem.FLETCH_MAGIC_LOGS, null, new ItemStack(ItemID.ARROW_SHAFT, 90)),
+	FLETCH_MAGIC_SHORTBOW_U(ItemID.MAGIC_SHORTBOW_U, "Magic shortbow (u)", Skill.FLETCHING, 80, 83.3,
+		CriticalItem.FLETCH_MAGIC_LOGS, null, new ItemStack(ItemID.MAGIC_SHORTBOW_U, 1)),
+	FLETCH_MAGIC_LONGBOW_U(ItemID.MAGIC_LONGBOW_U, "Magic longbow (u)", Skill.FLETCHING, 85, 91.5,
+		CriticalItem.FLETCH_MAGIC_LOGS, null, new ItemStack(ItemID.MAGIC_LONGBOW_U, 1)),
+	// Strung Bows
+	FLETCH_SHORTBOW(ItemID.SHORTBOW, "Shortbow", Skill.FLETCHING, 5, 5,
+		CriticalItem.FLETCH_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.SHORTBOW, 1)),
+	FLETCH_LONGBOW(ItemID.LONGBOW, "Longbow", Skill.FLETCHING, 10, 10,
+		CriticalItem.FLETCH_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.LONGBOW, 1)),
+	FLETCH_OAK_SHORTBOW(ItemID.OAK_SHORTBOW, "Oak shortbow", Skill.FLETCHING, 20, 16.5,
+		CriticalItem.FLETCH_OAK_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.OAK_SHORTBOW, 1)),
+	FLETCH_OAK_LONGBOW(ItemID.OAK_LONGBOW, "Oak longbow", Skill.FLETCHING, 25, 25,
+		CriticalItem.FLETCH_OAK_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.OAK_LONGBOW, 1)),
+	FLETCH_WILLOW_SHORTBOW(ItemID.WILLOW_SHORTBOW, "Willow shortbow", Skill.FLETCHING, 35, 33.2,
+		CriticalItem.FLETCH_WILLOW_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.WILLOW_SHORTBOW, 1)),
+	FLETCH_WILLOW_LONGBOW(ItemID.WILLOW_LONGBOW, "Willow longbow", Skill.FLETCHING, 40, 41.5,
+		CriticalItem.FLETCH_WILLOW_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.WILLOW_LONGBOW, 1)),
+	FLETCH_MAPLE_SHORTBOW(ItemID.MAPLE_SHORTBOW, "Maple shortbow", Skill.FLETCHING, 50, 50,
+		CriticalItem.FLETCH_MAPLE_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.MAPLE_SHORTBOW, 1)),
+	FLETCH_MAPLE_LONGBOW(ItemID.MAPLE_LONGBOW, "Maple longbow", Skill.FLETCHING, 55, 58.2,
+		CriticalItem.FLETCH_MAPLE_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.MAPLE_LONGBOW, 1)),
+	FLETCH_YEW_SHORTBOW(ItemID.YEW_SHORTBOW, "Yew shortbow", Skill.FLETCHING, 65, 67.5,
+		CriticalItem.FLETCH_YEW_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.YEW_SHORTBOW, 1)),
+	FLETCH_YEW_LONGBOW(ItemID.YEW_LONGBOW, "Yew longbow", Skill.FLETCHING, 70, 75,
+		CriticalItem.FLETCH_YEW_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.YEW_LONGBOW, 1)),
+	FLETCH_MAGIC_SHORTBOW(ItemID.MAGIC_SHORTBOW, "Magic shortbow", Skill.FLETCHING, 80, 83.2,
+		CriticalItem.FLETCH_MAGIC_SHORTBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.MAGIC_SHORTBOW, 1)),
+	FLETCH_MAGIC_LONGBOW(ItemID.MAGIC_LONGBOW, "Magic longbow", Skill.FLETCHING, 85, 91.5,
+		CriticalItem.FLETCH_MAGIC_LONGBOW_U, Secondaries.BOW_STRING, new ItemStack(ItemID.MAGIC_LONGBOW, 1)),
+	// Darts
+	FLETCH_BRONZE_DARTS(ItemID.BRONZE_DART, "Bronze dart", Skill.FLETCHING, 10, 1.8,
+		CriticalItem.FLETCH_BRONZE_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.BRONZE_DART, 1)),
+	FLETCH_IRON_DARTS(ItemID.IRON_DART, "Iron dart", Skill.FLETCHING, 22, 3.8,
+		CriticalItem.FLETCH_IRON_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.IRON_DART, 1)),
+	FLETCH_STEEL_DARTS(ItemID.STEEL_DART, "Steel dart", Skill.FLETCHING, 37, 7.5,
+		CriticalItem.FLETCH_STEEL_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.STEEL_DART, 1)),
+	FLETCH_MITHRIL_DARTS(ItemID.MITHRIL_DART, "Mithril dart", Skill.FLETCHING, 52, 11.2,
+		CriticalItem.FLETCH_MITHRIL_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.MITHRIL_DART, 1)),
+	FLETCH_ADAMANT_DARTS(ItemID.ADAMANT_DART, "Adamant dart", Skill.FLETCHING, 67, 15,
+		CriticalItem.FLETCH_ADAMANT_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.ADAMANT_DART, 1)),
+	FLETCH_RUNE_DARTS(ItemID.RUNE_DART, "Rune dart", Skill.FLETCHING, 81, 18.8,
+		CriticalItem.FLETCH_RUNE_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.RUNE_DART, 1)),
+	FLETCH_DRAGON_DARTS(ItemID.DRAGON_DART, "Dragon dart", Skill.FLETCHING, 95, 25,
+		CriticalItem.FLETCH_DRAGON_DART_TIP, Secondaries.FEATHER, new ItemStack(ItemID.DRAGON_DART, 1)),
+	// Arrows
+	FLETCH_BRONZE_ARROW(ItemID.BRONZE_ARROW, "Bronze arrow", Skill.FLETCHING, 1, 1,
+		CriticalItem.FLETCH_BRONZE_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.BRONZE_ARROW, 1)),
+	FLETCH_IRON_ARROW(ItemID.IRON_ARROW, "Iron arrow", Skill.FLETCHING, 1, 1.3,
+		CriticalItem.FLETCH_IRON_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.IRON_ARROW, 1)),
+	FLETCH_STEEL_ARROW(ItemID.STEEL_ARROW, "Steel arrow", Skill.FLETCHING, 30, 2.5,
+		CriticalItem.FLETCH_STEEL_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.STEEL_ARROW, 1)),
+	FLETCH_MITHRIL_ARROW(ItemID.MITHRIL_ARROW, "Mithril arrow", Skill.FLETCHING, 45, 5,
+		CriticalItem.FLETCH_MITHRIL_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.MITHRIL_ARROW, 1)),
+	FLETCH_BROAD_ARROW(ItemID.BROAD_ARROWS, "Broad arrow", Skill.FLETCHING, 52, 7.5,
+		CriticalItem.FLETCH_BROAD_ARROWHEADS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.BROAD_ARROWS, 1)),
+	FLETCH_ADAMANT_ARROW(ItemID.ADAMANT_ARROW, "Adamant arrow", Skill.FLETCHING, 60, 10,
+		CriticalItem.FLETCH_ADAMANT_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.ADAMANT_ARROW, 1)),
+	FLETCH_RUNE_ARROW(ItemID.RUNE_ARROW, "Rune arrow", Skill.FLETCHING, 75, 12.5,
+		CriticalItem.FLETCH_RUNE_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.RUNE_ARROW, 1)),
+	FLETCH_AMETHYST_ARROW(ItemID.AMETHYST_ARROW, "Amethyst arrow", Skill.FLETCHING, 82, 13.5,
+		CriticalItem.FLETCH_AMETHYST_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.AMETHYST_ARROW, 1)),
+	FLETCH_DRAGON_ARROW(ItemID.DRAGON_ARROW, "Dragon arrow", Skill.FLETCHING, 90, 15,
+		CriticalItem.FLETCH_DRAGON_ARROWTIPS, Secondaries.HEADLESS_ARROW, new ItemStack(ItemID.DRAGON_ARROW, 1)),
+	//Javelin
+	FLETCH_BRONZE_JAVELIN(ItemID.BRONZE_JAVELIN, "Bronze javelin", Skill.FLETCHING, 3, 1,
+		CriticalItem.FLETCH_BRONZE_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.BRONZE_JAVELIN, 1)),
+	FLETCH_IRON_JAVELIN(ItemID.IRON_JAVELIN, "Iron javelin", Skill.FLETCHING, 17, 2,
+		CriticalItem.FLETCH_IRON_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.IRON_JAVELIN, 1)),
+	FLETCH_STEEL_JAVELIN(ItemID.STEEL_JAVELIN, "Steel javelin", Skill.FLETCHING, 32, 5,
+		CriticalItem.FLETCH_STEEL_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.STEEL_JAVELIN, 1)),
+	FLETCH_MITHRIL_JAVELIN(ItemID.MITHRIL_JAVELIN, "Mithril javelin", Skill.FLETCHING, 47, 8,
+		CriticalItem.FLETCH_MITHRIL_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.MITHRIL_JAVELIN, 1)),
+	FLETCH_ADAMANT_JAVELIN(ItemID.ADAMANT_JAVELIN, "Adamant javelin", Skill.FLETCHING, 62, 10,
+		CriticalItem.FLETCH_ADAMANT_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.ADAMANT_JAVELIN, 1)),
+	FLETCH_RUNE_JAVELIN(ItemID.RUNE_JAVELIN, "Rune javelin", Skill.FLETCHING, 77, 12.4,
+		CriticalItem.FLETCH_RUNE_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.RUNE_JAVELIN, 1)),
+	FLETCH_AMETHYST_JAVELIN(ItemID.AMETHYST_JAVELIN, "Amethyst javelin", Skill.FLETCHING, 84, 13.5,
+		CriticalItem.FLETCH_AMETHYST_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.AMETHYST_JAVELIN, 1)),
+	FLETCH_DRAGON_JAVELIN(ItemID.DRAGON_JAVELIN, "Dragon javelin", Skill.FLETCHING, 92, 15,
+		CriticalItem.FLETCH_DRAGON_JAVELINHEAD, Secondaries.JAVELIN_SHAFT, new ItemStack(ItemID.DRAGON_JAVELIN, 1)),
+	//Bolts
+	FLETCH_BRONZE_BOLT(ItemID.BRONZE_BOLTS, "Bronze bolt", Skill.FLETCHING, 9, 0.5,
+		CriticalItem.FLETCH_BRONZE_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.BRONZE_BOLTS, 1)),
+	FLETCH_BLURITE_BOLT(ItemID.BLURITE_BOLTS_UNF, "Blurite bolt", Skill.FLETCHING, 24, 1,
+		CriticalItem.FLETCH_BLURITE_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.BLURITE_BOLTS, 1)),
+	FLETCH_IRON_BOLT(ItemID.IRON_BOLTS, "Iron bolt", Skill.FLETCHING, 39, 1.5,
+		CriticalItem.FLETCH_IRON_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.IRON_BOLTS, 1)),
+	FLETCH_SILVER_BOLT(ItemID.SILVER_BOLTS, "Silver bolt", Skill.FLETCHING, 43, 2.5,
+		CriticalItem.FLETCH_SILVER_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.SILVER_BOLTS, 1)),
+	FLETCH_STEEL_BOLT(ItemID.STEEL_BOLTS, "Steel bolt", Skill.FLETCHING, 46, 3.5,
+		CriticalItem.FLETCH_STEEL_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.STEEL_BOLTS, 1)),
+	FLETCH_MITHRIL_BOLT(ItemID.MITHRIL_BOLTS, "Mithril bolt", Skill.FLETCHING, 54, 5,
+		CriticalItem.FLETCH_MITHRIL_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.MITHRIL_BOLTS, 1)),
+	FLETCH_BROAD_BOLT(ItemID.BROAD_BOLTS, "Broad bolt", Skill.FLETCHING, 55, 3,
+		CriticalItem.FLETCH_BROAD_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.BROAD_BOLTS, 1)),
+	FLETCH_ADAMANT_BOLT(ItemID.ADAMANT_BOLTS, "Adamant bolt", Skill.FLETCHING, 61, 7,
+		CriticalItem.FLETCH_ADAMANT_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.ADAMANT_BOLTS, 1)),
+	FLETCH_RUNE_BOLT(ItemID.RUNITE_BOLTS, "Rune bolt", Skill.FLETCHING, 69, 10,
+		CriticalItem.FLETCH_RUNE_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.RUNITE_BOLTS, 1)),
+	FLETCH_DRAGON_BOLT(ItemID.DRAGON_BOLTS, "Dragon bolt", Skill.FLETCHING, 84, 12,
+		CriticalItem.FLETCH_DRAGON_BOLT, Secondaries.FEATHER, new ItemStack(ItemID.DRAGON_BOLTS, 1)),
+	//Bolt tips
+	FLETCH_OPAL_TIPS(ItemID.OPAL_BOLT_TIPS, "Opal bolt tips", Skill.FLETCHING, 11, 1.6,
+		CriticalItem.FLETCH_OPAL_TIPS, null, new ItemStack(ItemID.OPAL_BOLT_TIPS, 1)),
+	FLETCH_JADE_TIPS(ItemID.JADE_BOLT_TIPS, "Jade bolt tips", Skill.FLETCHING, 26, 2.4,
+		CriticalItem.FLETCH_JADE_TIPS, null, new ItemStack(ItemID.JADE_BOLT_TIPS, 1)),
+	FLETCH_RED_TOPAZ_TIPS(ItemID.TOPAZ_BOLT_TIPS, "Topaz bolt tips", Skill.FLETCHING, 48, 3.9,
+		CriticalItem.FLETCH_RED_TOPAZ_TIPS, null, new ItemStack(ItemID.TOPAZ_BOLT_TIPS, 1)),
+	FLETCH_SAPPHIRE_TIPS(ItemID.SAPPHIRE_BOLT_TIPS, "Sapphire bolt tips", Skill.FLETCHING, 56, 4.7,
+		CriticalItem.FLETCH_SAPPHIRE_TIPS, null, new ItemStack(ItemID.SAPPHIRE_BOLT_TIPS, 1)),
+	FLETCH_EMERALD_TIPS(ItemID.EMERALD_BOLT_TIPS, "Emerald bolt tips", Skill.FLETCHING, 58, 5.5,
+		CriticalItem.FLETCH_EMERALD_TIPS, null, new ItemStack(ItemID.EMERALD_BOLT_TIPS, 1)),
+	FLETCH_RUBY_TIPS(ItemID.RUBY_BOLT_TIPS, "Ruby bolt tips", Skill.FLETCHING, 63, 6.3,
+		CriticalItem.FLETCH_RUBY_TIPS, null, new ItemStack(ItemID.RUBY_BOLT_TIPS, 1)),
+	FLETCH_DIAMOND_TIPS(ItemID.DIAMOND_BOLT_TIPS, "Diamond bolt tips", Skill.FLETCHING, 65, 7,
+		CriticalItem.FLETCH_DIAMOND_TIPS, null, new ItemStack(ItemID.DIAMOND_BOLT_TIPS, 1)),
+	FLETCH_DRAGONSTONE_TIPS(ItemID.DRAGONSTONE_BOLT_TIPS, "Dragonstone bolt tips", Skill.FLETCHING, 71, 8.2,
+		CriticalItem.FLETCH_DRAGONSTONE_TIPS, null, new ItemStack(ItemID.DRAGONSTONE_BOLT_TIPS, 1)),
+	FLETCH_ONYX_TIPS(ItemID.ONYX_BOLT_TIPS, "Onyx bolt tips", Skill.FLETCHING, 73, 9.4,
+		CriticalItem.FLETCH_ONYX_TIPS, null, new ItemStack(ItemID.ONYX_BOLT_TIPS, 1)),
+	//Tipped bolts
+	FLETCH_TIPPED_OPAL_BOLT(ItemID.OPAL_BOLT_TIPS, "Opal bolt", Skill.FLETCHING, 11, 1.6,
+		CriticalItem.FLETCH_TIPPED_OPAL_BOLT, Secondaries.BRONZE_BOLT, new ItemStack(ItemID.OPAL_BOLTS, 1)),
+	FLETCH_TIPPED_JADE_BOLT(ItemID.JADE_BOLT_TIPS, "Jade bolt", Skill.FLETCHING, 26, 2.4,
+		CriticalItem.FLETCH_TIPPED_JADE_BOLT, Secondaries.BLURITE_BOLT, new ItemStack(ItemID.JADE_BOLTS, 1)),
+	FLETCH_TIPPED_PEARL_BOLT(ItemID.PEARL_BOLT_TIPS, "Pearl bolt", Skill.FLETCHING, 41, 3.2,
+		CriticalItem.FLETCH_TIPPED_PEARL_BOLT, Secondaries.IRON_BOLT, new ItemStack(ItemID.PEARL_BOLTS, 1)),
+	FLETCH_TIPPED_TOPAZ_BOLT(ItemID.TOPAZ_BOLT_TIPS, "Red topaz bolt", Skill.FLETCHING, 48, 4,
+		CriticalItem.FLETCH_TIPPED_TOPAZ_BOLT, Secondaries.STEEL_BOLT, new ItemStack(ItemID.TOPAZ_BOLTS, 1)),
+	FLETCH_TIPPED_SAPPHIRE_BOLT(ItemID.SAPPHIRE_BOLT_TIPS, "Sapphire bolt", Skill.FLETCHING, 56, 4.7,
+		CriticalItem.FLETCH_TIPPED_SAPPHIRE_BOLT, Secondaries.MITHRIL_BOLT, new ItemStack(ItemID.SAPPHIRE_BOLTS, 1)),
+	FLETCH_TIPPED_EMERALD_BOLT(ItemID.EMERALD_BOLT_TIPS, "Emerald bolt", Skill.FLETCHING, 58, 5.5,
+		CriticalItem.FLETCH_TIPPED_EMERALD_BOLT, Secondaries.MITHRIL_BOLT, new ItemStack(ItemID.EMERALD_BOLTS, 1)),
+	FLETCH_TIPPED_RUBY_BOLT(ItemID.RUBY_BOLT_TIPS, "Ruby bolt", Skill.FLETCHING, 63, 6.3,
+		CriticalItem.FLETCH_TIPPED_RUBY_BOLT, Secondaries.ADAMANT_BOLT, new ItemStack(ItemID.RUBY_BOLTS, 1)),
+	FLETCH_TIPPED_DIAMOND_BOLT(ItemID.DIAMOND_BOLT_TIPS, "Diamond bolt", Skill.FLETCHING, 65, 7,
+		CriticalItem.FLETCH_TIPPED_DIAMOND_BOLT, Secondaries.ADAMANT_BOLT, new ItemStack(ItemID.DIAMOND_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGONSTONE_BOLT(ItemID.DRAGONSTONE_BOLT_TIPS, "Dragonstone bolt", Skill.FLETCHING, 71, 8.2,
+		CriticalItem.FLETCH_TIPPED_DRAGONSTONE_BOLT, Secondaries.RUNE_BOLT, new ItemStack(ItemID.DRAGONSTONE_BOLTS, 1)),
+	FLETCH_TIPPED_ONYX_BOLT(ItemID.ONYX_BOLT_TIPS, "Onyx bolt", Skill.FLETCHING, 73, 9.4,
+		CriticalItem.FLETCH_TIPPED_ONYX_BOLT, Secondaries.RUNE_BOLT, new ItemStack(ItemID.ONYX_BOLTS, 1)),
+	FLETCH_TIPPED_AMETHYST_BOLT(ItemID.AMETHYST_BOLT_TIPS, "Amethyst broad bolt", Skill.FLETCHING, 76, 10.6,
+		CriticalItem.FLETCH_TIPPED_AMETHYST_BOLT, Secondaries.BROAD_BOLT, new ItemStack(ItemID.AMETHYST_BROAD_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_OPAL_BOLT(ItemID.OPAL_BOLT_TIPS, "Dragon opal bolt", Skill.FLETCHING, 84, 1.6,
+		CriticalItem.OPAL, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.OPAL_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_JADE_BOLT(ItemID.JADE_BOLT_TIPS, "Dragon jade bolt", Skill.FLETCHING, 84, 2.4,
+		CriticalItem.FLETCH_TIPPED_JADE_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.JADE_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_PEARL_BOLT(ItemID.PEARL_BOLT_TIPS, "Dragon pearl bolt", Skill.FLETCHING, 84, 3.2,
+		CriticalItem.FLETCH_TIPPED_PEARL_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.PEARL_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_TOPAZ_BOLT(ItemID.TOPAZ_BOLT_TIPS, "Dragon topaz bolt", Skill.FLETCHING, 84, 4,
+		CriticalItem.FLETCH_TIPPED_TOPAZ_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.TOPAZ_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_SAPPHIRE_BOLT(ItemID.SAPPHIRE_BOLT_TIPS, "Dragon sapphire bolt", Skill.FLETCHING, 84, 4.7,
+		CriticalItem.FLETCH_TIPPED_SAPPHIRE_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.SAPPHIRE_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_EMERALD_BOLT(ItemID.EMERALD_BOLT_TIPS, "Dragon emerald bolt", Skill.FLETCHING, 84, 5.5,
+		CriticalItem.FLETCH_TIPPED_EMERALD_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.EMERALD_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_RUBY_BOLT(ItemID.RUBY_BOLT_TIPS, "Dragon ruby bolt", Skill.FLETCHING, 84, 6.3,
+		CriticalItem.FLETCH_TIPPED_RUBY_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.RUBY_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_DIAMOND_BOLT(ItemID.DIAMOND_BOLT_TIPS, "Dragon diamond bolt", Skill.FLETCHING, 84, 7,
+		CriticalItem.FLETCH_TIPPED_DIAMOND_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.DIAMOND_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_DRAGONSTONE_BOLT(ItemID.DRAGONSTONE_BOLT_TIPS, "Dragon dragonstone bolt", Skill.FLETCHING, 84, 8.2,
+		CriticalItem.FLETCH_TIPPED_DRAGONSTONE_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.DRAGONSTONE_DRAGON_BOLTS, 1)),
+	FLETCH_TIPPED_DRAGON_ONYX_BOLT(ItemID.ONYX_BOLT_TIPS, "Dragon onyx bolt", Skill.FLETCHING, 84, 9.4,
+		CriticalItem.FLETCH_TIPPED_ONYX_BOLT, Secondaries.DRAGON_BOLT, new ItemStack(ItemID.ONYX_DRAGON_BOLTS, 1)),
+
+	/**
+	 * Firemaking
+	 */
+	FM_LOGS(ItemID.LOGS, "Logs", Skill.FIREMAKING, 1, 40,
+		CriticalItem.FM_LOGS, null, null),
+	FM_ACHEY_LOGS(ItemID.ACHEY_TREE_LOGS, "Logs", Skill.FIREMAKING, 1, 40,
+		CriticalItem.FM_ACHEY_LOGS, null, null),
+	FM_OAK_LOGS(ItemID.OAK_LOGS, "Logs", Skill.FIREMAKING, 15, 60,
+		CriticalItem.FM_OAK_LOGS, null, null),
+	FM_WILLOW_LOGS(ItemID.WILLOW_LOGS, "Logs", Skill.FIREMAKING, 30, 90,
+		CriticalItem.FM_WILLOW_LOGS, null, null),
+	FM_TEAK_LOGS(ItemID.TEAK_LOGS, "Logs", Skill.FIREMAKING, 35, 105,
+		CriticalItem.FM_TEAK_LOGS, null, null),
+	FM_ARTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOGS, "Logs", Skill.FIREMAKING, 1, 40,
+		CriticalItem.FM_ARTIC_PINE_LOGS, null, null),
+	FM_MAPLE_LOGS(ItemID.MAPLE_LOGS, "Logs", Skill.FIREMAKING, 45, 135,
+		CriticalItem.FM_MAPLE_LOGS, null, null),
+	FM_MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS, "Logs", Skill.FIREMAKING, 50, 157.5,
+		CriticalItem.FM_MAHOGANY_LOGS, null, null),
+	FM_YEW_LOGS(ItemID.YEW_LOGS, "Logs", Skill.FIREMAKING, 60, 202.5,
+		CriticalItem.FM_YEW_LOGS, null, null),
+	FM_MAGIC_LOGS(ItemID.MAGIC_LOGS, "Logs", Skill.FIREMAKING, 75, 303.8,
+		CriticalItem.FM_MAGIC_LOGS, null, null),
+	FM_REDWOOD_LOGS(ItemID.REDWOOD_LOGS, "Logs", Skill.FIREMAKING, 90, 350,
+		CriticalItem.FM_REDWOOD_LOGS, null, null),
+	;
 
 	// Store activity by CriticalItem
 	private static final ImmutableMultimap<CriticalItem, Activity> CRITICAL_MAP;
@@ -644,6 +857,19 @@ public enum Activity
 		}
 		CRITICAL_MAP = map.build();
 	}
+
+	private final int icon;
+	private final String name;
+	private final CriticalItem criticalItem;
+	private final Skill skill;
+	private final int level;
+	private final double xp;
+	private final ItemStack[] secondaries;
+	@Nullable
+	private final ItemStack output;
+	@Nullable
+	private final CriticalItem linkedItem;
+	private ItemInfo outputItemInfo = null;
 
 	Activity(
 		final int icon,

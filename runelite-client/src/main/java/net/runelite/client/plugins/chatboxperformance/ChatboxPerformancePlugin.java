@@ -42,9 +42,11 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
-	name = "Chatbox performance"
+	name = "Chatbox performance",
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 public class ChatboxPerformancePlugin extends Plugin

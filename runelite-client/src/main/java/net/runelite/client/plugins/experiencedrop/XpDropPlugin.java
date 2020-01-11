@@ -58,13 +58,16 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.XpDropEvent;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "XP Drop",
 	description = "Enable customization of the way XP drops are displayed",
-	tags = {"experience", "levels", "tick"})
+	tags = {"experience", "levels", "tick"},
+	type = PluginType.UTILITY
+)
 @Singleton
 public class XpDropPlugin extends Plugin
 {

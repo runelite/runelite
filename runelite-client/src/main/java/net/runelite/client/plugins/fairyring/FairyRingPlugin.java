@@ -61,12 +61,14 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Fairy Rings",
 	description = "Show the location of the fairy ring teleport",
-	tags = {"teleportation"}
+	tags = {"teleportation"},
+	type = PluginType.UTILITY
 )
 @Singleton
 public class FairyRingPlugin extends Plugin

@@ -68,6 +68,7 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -79,7 +80,8 @@ import net.runelite.http.api.xp.XpClient;
 @PluginDescriptor(
 	name = "XP Tracker",
 	description = "Enable the XP Tracker panel",
-	tags = {"experience", "levels", "panel"}
+	tags = {"experience", "levels", "panel"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
@@ -686,7 +688,19 @@ public class XpTrackerPlugin extends Plugin
 			xpPauseState.tickXp(skill, skillExperience, this.pauseSkillAfter);
 		}
 
-		xpPauseState.tickLogout(this.pauseOnLogout, !GameState.LOGIN_SCREEN.equals(client.getGameState()));
+		final boolean loggedIn;
+		switch (client.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case LOGGING_IN:
+			case LOGIN_SCREEN_AUTHENTICATOR:
+				loggedIn = false;
+				break;
+			default:
+				loggedIn = true;
+				break;
+		}
+		xpPauseState.tickLogout(this.pauseOnLogout, loggedIn);
 
 		if (lastTickMillis == 0)
 		{

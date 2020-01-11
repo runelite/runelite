@@ -46,6 +46,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.skillcalculator.banked.BankedCalculatorPanel;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
 import net.runelite.client.plugins.skillcalculator.banked.beans.CriticalItem;
@@ -56,7 +57,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Skill Calculator",
 	description = "Enable the Skill Calculator panel",
-	tags = {"panel", "skilling"}
+	tags = {"panel", "skilling"},
+	type = PluginType.MISCELLANEOUS
 )
 public class SkillCalculatorPlugin extends Plugin
 {

@@ -51,6 +51,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -59,7 +60,8 @@ import net.runelite.client.util.ItemUtil;
 @PluginDescriptor(
 	name = "Cannon",
 	description = "Show information about cannon placement and/or amount of cannonballs",
-	tags = {"combat", "notifications", "ranged", "overlay"}
+	tags = {"combat", "notifications", "ranged", "overlay"},
+	type = PluginType.UTILITY
 )
 public class CannonPlugin extends Plugin
 {

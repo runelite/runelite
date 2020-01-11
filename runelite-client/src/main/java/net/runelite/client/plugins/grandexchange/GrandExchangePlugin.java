@@ -80,6 +80,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -93,7 +94,8 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 @PluginDescriptor(
 	name = "Grand Exchange",
 	description = "Provide additional and/or easier access to Grand Exchange information",
-	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
+	tags = {"external", "integration", "notifications", "panel", "prices", "trade"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton

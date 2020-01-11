@@ -26,8 +26,6 @@
 package net.runelite.client.chat;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -54,8 +52,6 @@ public class CommandManager
 	private final ClientThread clientThread;
 	private boolean sending;
 
-	private final List<ChatboxInputListener> chatboxInputListenerList = new CopyOnWriteArrayList<>();
-
 	@Inject
 	private CommandManager(
 		final Client client,
@@ -68,16 +64,6 @@ public class CommandManager
 		this.clientThread = clientThread;
 
 		eventBus.subscribe(ScriptCallbackEvent.class, this, this::onScriptCallbackEvent);
-	}
-
-	public void register(ChatboxInputListener chatboxInputListener)
-	{
-		chatboxInputListenerList.add(chatboxInputListener);
-	}
-
-	public void unregister(ChatboxInputListener chatboxInputListener)
-	{
-		chatboxInputListenerList.remove(chatboxInputListener);
 	}
 
 	private void onScriptCallbackEvent(ScriptCallbackEvent event)
@@ -148,13 +134,10 @@ public class CommandManager
 				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
 			}
 		};
-		boolean stop = false;
-		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
-		{
-			stop |= chatboxInputListener.onChatboxInput(chatboxInput);
-		}
 
-		if (stop)
+		eventBus.post(ChatboxInput.class, chatboxInput);
+
+		if (chatboxInput.isStop())
 		{
 			// input was blocked.
 			stringStack[stringStackCount - 1] = ""; // prevent script from sending
@@ -188,13 +171,9 @@ public class CommandManager
 			}
 		};
 
-		boolean stop = false;
-		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
-		{
-			stop |= chatboxInputListener.onPrivateMessageInput(privateMessageInput);
-		}
+		eventBus.post(PrivateMessageInput.class, privateMessageInput);
 
-		if (stop)
+		if (privateMessageInput.isStop())
 		{
 			intStack[intStackCount - 1] = 1;
 			client.setStringStackSize(stringStackCount - 2); // remove both target and message

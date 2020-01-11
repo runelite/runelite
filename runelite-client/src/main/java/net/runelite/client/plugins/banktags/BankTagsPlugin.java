@@ -79,6 +79,7 @@ import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
@@ -89,7 +90,8 @@ import net.runelite.client.util.QuantityFormatter;
 @PluginDescriptor(
 	name = "Bank Tags",
 	description = "Enable tagging of bank items and searching of bank tags",
-	tags = {"searching", "tagging"}
+	tags = {"searching", "tagging"},
+	type = PluginType.UTILITY
 )
 @PluginDependency(ClueScrollPlugin.class)
 @Singleton

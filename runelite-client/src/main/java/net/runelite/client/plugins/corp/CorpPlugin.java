@@ -55,12 +55,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Corporeal Beast",
 	description = "Show damage statistics and highlight dark energy cores",
-	tags = {"bosses", "combat", "pve", "overlay"}
+	tags = {"bosses", "combat", "pve", "overlay"},
+	type = PluginType.PVM
 )
 @Slf4j
 public class CorpPlugin extends Plugin

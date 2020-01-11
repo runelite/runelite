@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.skillcalculator.banked;
 
 import com.google.common.collect.ImmutableSet;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
@@ -49,7 +50,7 @@ import net.runelite.client.ui.components.ComboBoxListRenderer;
 public class BankedCalculatorPanel extends PluginPanel
 {
 	private final static ImmutableSet<Skill> BANKABLE_SKILLS = ImmutableSet.of(
-		Skill.CONSTRUCTION, Skill.COOKING, Skill.CRAFTING, Skill.FARMING, Skill.HERBLORE, Skill.PRAYER, Skill.SMITHING
+		Skill.CONSTRUCTION, Skill.COOKING, Skill.CRAFTING, Skill.FARMING, Skill.FIREMAKING, Skill.FLETCHING, Skill.HERBLORE, Skill.PRAYER, Skill.SMITHING
 	);
 
 	private final BankedCalculator calculator;
@@ -72,6 +73,8 @@ public class BankedCalculatorPanel extends PluginPanel
 
 		// Create the Skill dropdown with icons
 		final JComboBox<ComboBoxIconEntry> dropdown = new JComboBox<>();
+		dropdown.setFocusable(false); // To prevent an annoying "focus paint" effect
+		dropdown.setForeground(Color.WHITE);
 
 		final ComboBoxListRenderer renderer = new ComboBoxListRenderer();
 		renderer.setDefaultText("Select a Skill...");

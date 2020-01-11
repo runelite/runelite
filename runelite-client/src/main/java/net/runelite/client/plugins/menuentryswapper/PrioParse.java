@@ -33,6 +33,11 @@ public class PrioParse
 {
 	public static boolean parse(String value)
 	{
+		if (value.equals(""))
+		{
+			return true;
+		}
+
 		try
 		{
 			final StringBuilder sb = new StringBuilder();

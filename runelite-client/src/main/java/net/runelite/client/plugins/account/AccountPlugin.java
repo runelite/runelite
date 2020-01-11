@@ -38,7 +38,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Account",
 	description = "Sync RuneLite config settings with your Google account",
 	tags = {"external", "google", "integration"},
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	hidden = true
 )
 @Slf4j
 @Singleton

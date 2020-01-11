@@ -24,139 +24,37 @@
  */
 package net.runelite.client.plugins.raids;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Tile;
+import lombok.RequiredArgsConstructor;
 
-public class RaidRoom
+@RequiredArgsConstructor
+@Getter
+public enum RaidRoom
 {
+	START("Start", RoomType.START),
+	END("End", RoomType.END),
+	SCAVENGERS("Scavengers", RoomType.SCAVENGERS),
+	FARMING("Farming", RoomType.FARMING),
+	EMPTY("Empty", RoomType.EMPTY),
+
+	TEKTON("Tekton", RoomType.COMBAT),
+	MUTTADILES("Muttadiles", RoomType.COMBAT),
+	GUARDIANS("Guardians", RoomType.COMBAT),
+	VESPULA("Vespula", RoomType.COMBAT),
+	SHAMANS("Shamans", RoomType.COMBAT),
+	VASA("Vasa", RoomType.COMBAT),
+	VANGUARDS("Vanguards", RoomType.COMBAT),
+	MYSTICS("Mystics", RoomType.COMBAT),
+	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
+
+	CRABS("Crabs", RoomType.PUZZLE),
+	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
+	TIGHTROPE("Tightrope", RoomType.PUZZLE),
+	THIEVING("Thieving", RoomType.PUZZLE),
+	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
+
 	static final int ROOM_MAX_SIZE = 32;
-	@Getter(AccessLevel.PACKAGE)
-	private final Tile base;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private Type type;
-	@Getter(AccessLevel.PUBLIC)
-	@Setter(AccessLevel.PUBLIC)
-	private Boss boss;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private Puzzle puzzle;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private RaidRoom previousRoom;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private RaidRoom nextRoom;
 
-	RaidRoom(final Tile base, final Type type)
-	{
-		this.base = base;
-		this.type = type;
-	}
-
-	@Override
-	public String toString()
-	{
-		switch (type)
-		{
-			case COMBAT:
-				return " " + type.getName() + " - " + boss.getName();
-
-			case PUZZLE:
-				return " " + type.getName() + " - " + puzzle.getName();
-
-			default:
-				return " " + type.getName();
-		}
-	}
-
-	@AllArgsConstructor
-	public enum Type
-	{
-		START("Start", "#"),
-		END("End", "¤"),
-		SCAVENGERS("Scavengers", "S"),
-		FARMING("Farming", "F"),
-		COMBAT("Combat", "C"),
-		PUZZLE("Puzzle", "P"),
-		EMPTY("Empty", " ");
-
-		@Getter
-		private final String name;
-
-		@Getter
-		private final String code;
-
-		public static Type fromCode(char code)
-		{
-			for (Type type : Type.values())
-			{
-				if (type.getCode().equalsIgnoreCase(String.valueOf(code)))
-				{
-					return type;
-				}
-			}
-
-			return Type.EMPTY;
-		}
-	}
-
-	@AllArgsConstructor
-	public enum Boss
-	{
-		TEKTON("Tekton"),
-		MUTTADILES("Muttadiles"),
-		GUARDIANS("Guardians"),
-		VESPULA("Vespula"),
-		SHAMANS("Shamans"),
-		VASA("Vasa"),
-		VANGUARDS("Vanguards"),
-		MYSTICS("Mystics"),
-		UNKNOWN("Unknown");
-
-		@Getter
-		private final String name;
-
-		public static Boss fromString(String name)
-		{
-			for (Boss boss : Boss.values())
-			{
-				if (boss.getName().equalsIgnoreCase(name))
-				{
-					return boss;
-				}
-			}
-
-			return null;
-		}
-	}
-
-	@AllArgsConstructor
-	public enum Puzzle
-	{
-		CRABS("Crabs"),
-		ICE_DEMON("Ice Demon"),
-		TIGHTROPE("Tightrope"),
-		THIEVING("Thieving"),
-		UNKNOWN("Unknown");
-
-		@Getter
-		private final String name;
-
-		public static Puzzle fromString(String name)
-		{
-			for (Puzzle puzzle : Puzzle.values())
-			{
-				if (puzzle.getName().equalsIgnoreCase(name))
-				{
-					return puzzle;
-				}
-			}
-
-			return null;
-		}
-	}
+	private final String name;
+	private final RoomType type;
 }

@@ -64,7 +64,7 @@ public interface OpenOSRSConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "shareLogs",
-		name = "Anonymous error data",
+		name = "Share anonymous error data",
 		description = "Share anonymous error data with the OpenOSRS developers",
 		titleSection = "logTitle"
 	)
@@ -108,101 +108,26 @@ public interface OpenOSRSConfig extends Config
 		return SortStyle.CATEGORY;
 	}
 
-	@ConfigTitleSection(
-		keyName = "hidePluginsTitle",
-		name = "Hide By Type",
-		description = "",
+	@ConfigItem(
 		position = 4,
-		titleSection = "pluginsTitle"
+		keyName = "enableCategories",
+		name = "Categorize plugins",
+		description = "Show sections in the plugin list for each plugin type",
+		titleSection = "pluginSortingTitle",
+		hidden = true,
+		unhide = "pluginSortMode",
+		unhideValue = "Category"
 	)
-	default Title hidePluginsTitle()
+	default boolean enableCategories()
 	{
-		return new Title();
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "hidePlugins",
-		name = "Hide All Plugins",
-		description = "Hides all OpenOSRS plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePvmPlugins || hidePvpPlugins || hideSkillingPlugins || hideUtilityPlugins || hideExternalPlugins"
-	)
-	default boolean hidePlugins()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "hideExternalPlugins",
-		name = "Hide External Plugins",
-		description = "Hides all OpenOSRS external plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePlugins"
-	)
-	default boolean hideExternalPlugins()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 7,
-		keyName = "hidePvmPlugins",
-		name = "Hide PvM Plugins",
-		description = "Hides all OpenOSRS PvM plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePlugins"
-	)
-	default boolean hidePvmPlugins()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "hideSkillingPlugins",
-		name = "Hide Skilling Plugins",
-		description = "Hides all OpenOSRS skilling plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePlugins"
-	)
-	default boolean hideSkillingPlugins()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 9,
-		keyName = "hidePvpPlugins",
-		name = "Hide PvP Plugins",
-		description = "Hides all OpenOSRS Pvp plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePlugins"
-	)
-	default boolean hidePvpPlugins()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 10,
-		keyName = "hideUtilityPlugins",
-		name = "Hide Utility Plugins",
-		description = "Hides all OpenOSRS utility plugins if checked",
-		titleSection = "hidePluginsTitle",
-		hide = "hidePlugins"
-	)
-	default boolean hideUtilityPlugins()
-	{
-		return false;
+		return true;
 	}
 
 	@ConfigTitleSection(
 		keyName = "pluginsColorTitle",
 		name = "Colors",
 		description = "",
-		position = 11,
+		position = 5,
 		titleSection = "pluginsTitle"
 	)
 	default Title pluginsColorTitle()
@@ -210,26 +135,27 @@ public interface OpenOSRSConfig extends Config
 		return new Title();
 	}
 
-	@Alpha
 	@ConfigItem(
-		position = 12,
-		keyName = "externalColor",
-		name = "External color",
-		description = "Configure the color of external plugins",
+		position = 6,
+		keyName = "enabledColors",
+		name = "Enable plugin colors",
+		description = "Configure whether or not the plugins list should be colorcoded",
 		titleSection = "pluginsColorTitle"
 	)
-	default Color externalColor()
+	default boolean enabledColors()
 	{
-		return new Color(177, 156, 217, 255);
+		return true;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 13,
+		position = 7,
 		keyName = "pvmColor",
-		name = "PVM color",
-		description = "Configure the color of PVM related plugins",
-		titleSection = "pluginsColorTitle"
+		name = "PvM color",
+		description = "Configure the color of PvM related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
 	)
 	default Color pvmColor()
 	{
@@ -238,24 +164,13 @@ public interface OpenOSRSConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 14,
-		keyName = "pvpColor",
-		name = "PVP color",
-		description = "Configure the color of PVP related plugins",
-		titleSection = "pluginsColorTitle"
-	)
-	default Color pvpColor()
-	{
-		return new Color(255, 105, 97, 255);
-	}
-
-	@Alpha
-	@ConfigItem(
-		position = 15,
+		position = 8,
 		keyName = "skillingColor",
 		name = "Skilling color",
-		description = "Configure the color of Skilling related plugins",
-		titleSection = "pluginsColorTitle"
+		description = "Configure the color of skilling related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
 	)
 	default Color skillingColor()
 	{
@@ -264,22 +179,99 @@ public interface OpenOSRSConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 16,
+		position = 9,
+		keyName = "pvpColor",
+		name = "PvP color",
+		description = "Configure the color of PvP related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
+	)
+	default Color pvpColor()
+	{
+		return new Color(255, 105, 97, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 10,
 		keyName = "utilityColor",
 		name = "Utility color",
-		description = "Configure the color of Utility related plugins",
-		titleSection = "pluginsColorTitle"
+		description = "Configure the color of utility related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
 	)
 	default Color utilityColor()
 	{
 		return new Color(144, 212, 237, 255);
 	}
 
+	@Alpha
+	@ConfigItem(
+		position = 11,
+		keyName = "minigameColor",
+		name = "Minigame color",
+		description = "Configure the color of minigame related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
+	)
+	default Color minigameColor()
+	{
+		return new Color(235, 130, 66, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 12,
+		keyName = "miscellaneousColor",
+		name = "Miscellaneous color",
+		description = "Configure the color of miscellaneous related plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
+	)
+	default Color miscellaneousColor()
+	{
+		return new Color(243,  85,  136, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 13,
+		keyName = "gamemodeColor",
+		name = "Gamemode color",
+		description = "Configure the color of gamemode plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
+	)
+	default Color gamemodeColor()
+	{
+		return new Color(244, 239, 211, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 14,
+		keyName = "externalColor",
+		name = "External color",
+		description = "Configure the color of external plugins",
+		titleSection = "pluginsColorTitle",
+		hidden = true,
+		unhide = "enabledColors"
+	)
+	default Color externalColor()
+	{
+		return new Color(177, 156, 217, 255);
+	}
+
 	@ConfigTitleSection(
 		keyName = "externalPluginsTitle",
 		name = "External",
 		description = "",
-		position = 17,
+		position = 15,
 		titleSection = "pluginsTitle"
 	)
 	default Title externalPluginsTitle()
@@ -291,7 +283,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "enablePlugins",
 		name = "Enable loading of external plugins",
 		description = "Enable loading of external plugins",
-		position = 18,
+		position = 16,
 		titleSection = "externalPluginsTitle"
 	)
 	default boolean enablePlugins()
@@ -303,7 +295,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "opacityTitle",
 		name = "Opacity",
 		description = "",
-		position = 19
+		position = 17
 	)
 	default Title opacityTitle()
 	{
@@ -314,7 +306,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "enableOpacity",
 		name = "Enable opacity",
 		description = "Enables opacity for the whole window.<br>NOTE: This only stays enabled if your pc supports this!",
-		position = 20,
+		position = 18,
 		titleSection = "opacityTitle"
 	)
 	default boolean enableOpacity()
@@ -330,7 +322,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "opacityPercentage",
 		name = "Opacity percentage",
 		description = "Changes the opacity of the window if opacity is enabled",
-		position = 21,
+		position = 19,
 		titleSection = "opacityTitle"
 	)
 	default int opacityPercentage()
@@ -342,7 +334,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "miscTitle",
 		name = "Miscellaneous",
 		description = "",
-		position = 22
+		position = 20
 	)
 	default Title miscTitle()
 	{
@@ -353,7 +345,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "keyboardPin",
 		name = "Keyboard bank pin",
 		description = "Enables you to type your bank pin",
-		position = 23,
+		position = 21,
 		titleSection = "miscTitle"
 	)
 	default boolean keyboardPin()
@@ -365,7 +357,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "detachHotkey",
 		name = "Detach Cam",
 		description = "Detach Camera hotkey, press this and it will activate detatched camera.",
-		position = 24,
+		position = 22,
 		titleSection = "miscTitle"
 	)
 	default Keybind detachHotkey()

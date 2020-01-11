@@ -30,13 +30,16 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuOpcode;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -48,13 +51,15 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.MiscUtils;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
 	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
 	tags = {"zoom", "limit", "vertical", "click", "mouse"},
-	enabledByDefault = false
+	enabledByDefault = false,
+	type = PluginType.MISCELLANEOUS
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
@@ -65,6 +70,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
+	private static final String LOOK_NORTH = "Look North";
+	private static final String LOOK_SOUTH = "Look South";
+	private static final String LOOK_EAST = "Look East";
+	private static final String LOOK_WEST = "Look West";
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
@@ -94,6 +103,60 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	CameraConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(CameraConfig.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		rightClick = false;
+		middleClick = false;
+		menuHasEntries = false;
+
+		client.setCameraPitchRelaxerEnabled(cameraConfig.relaxCameraPitch());
+		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		client.setCameraPitchRelaxerEnabled(false);
+		keyManager.unregisterKeyListener(this);
+		mouseManager.unregisterMouseListener(this);
+		controlDown = false;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (menuEntryAdded.getOpcode() == MenuOpcode.WIDGET_DEFAULT.getId() && menuEntryAdded.getOption().equals(LOOK_NORTH) && cameraConfig.compassLook())
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			int len = menuEntries.length;
+			MenuEntry north = menuEntries[len - 1];
+
+			menuEntries = Arrays.copyOf(menuEntries, len + 3);
+
+			// The handling for these entries is done in ToplevelCompassOp.rs2asm
+			menuEntries[--len] = createCameraLookEntry(menuEntryAdded, 4, LOOK_WEST);
+			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 3, LOOK_EAST);
+			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 2, LOOK_SOUTH);
+			menuEntries[++len] = north;
+
+			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	private MenuEntry createCameraLookEntry(MenuEntryAdded lookNorth, int identifier, String option)
+	{
+		MenuEntry m = new MenuEntry();
+		m.setOption(option);
+		m.setTarget(lookNorth.getTarget());
+		m.setIdentifier(identifier);
+		m.setOpcode(MenuOpcode.WIDGET_DEFAULT.getId());
+		m.setParam0(lookNorth.getParam0());
+		m.setParam1(lookNorth.getParam1());
+		return m;
 	}
 
 	@Subscribe
@@ -167,27 +230,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			controlDown = false;
 		}
-	}
-
-	@Override
-	protected void startUp()
-	{
-		rightClick = false;
-		middleClick = false;
-		menuHasEntries = false;
-
-		client.setCameraPitchRelaxerEnabled(cameraConfig.relaxCameraPitch());
-		keyManager.registerKeyListener(this);
-		mouseManager.registerMouseListener(this);
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		client.setCameraPitchRelaxerEnabled(false);
-		keyManager.unregisterKeyListener(this);
-		mouseManager.unregisterMouseListener(this);
-		controlDown = false;
 	}
 
 	@Subscribe

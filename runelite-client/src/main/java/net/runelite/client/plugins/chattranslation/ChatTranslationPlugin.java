@@ -39,7 +39,7 @@ import net.runelite.client.plugins.PluginType;
 	name = "Chat Translator",
 	description = "Translates messages from one Language to another.",
 	tags = {"translate", "language", "english", "spanish", "dutch", "french", "welsh", "german"},
-	type = PluginType.UTILITY
+	type = PluginType.MISCELLANEOUS
 )
 @Singleton
 @Slf4j

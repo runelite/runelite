@@ -117,7 +117,7 @@ public class PestControlNpc
 		NpcID.PORTAL_1748, // Novice Blue Active
 		NpcID.PORTAL_1749, // Novice Yellow Active
 		NpcID.PORTAL_1750, // Novice Red Active
-		NpcID.PORTAL_1739, // Intermediate Purple Active
+		NpcID.PORTAL, // Intermediate Purple Active
 		NpcID.PORTAL_1740, // Intermediate Blue Active
 		NpcID.PORTAL_1741, // Intermediate Yellow Active
 		NpcID.PORTAL_1742 // Intermediate Red Active
