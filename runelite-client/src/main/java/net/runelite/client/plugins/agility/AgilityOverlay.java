@@ -72,7 +72,7 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !plugin.isHighlightShortcuts() ||
 				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !plugin.isShowTrapOverlay() ||
-				Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !plugin.showCourseClickboxes())
+				Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !plugin.isShowCourseClickboxes())
 			{
 				return;
 			}
