@@ -28,7 +28,6 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +51,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,9 +69,8 @@ public class ChatFilterPlugin extends Plugin
 
 	private static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
 	
-	private static final String MESSAGE_QUANTITY_PREFIX = "> x ";
-	private static final String MESSAGE_QUANTITY_FORMAT_PREFIX = "<col=";
-	private static final String MESSAGE_QUANTITY_FORMAT_SUFFIX = "</col>";
+	private static final String MESSAGE_QUANTITY_PREFIX = " x ";
+	private static final int MESSAGE_QUANTITY_DEFAULT = 1;
 
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
@@ -320,13 +319,15 @@ public class ChatFilterPlugin extends Plugin
 
 	private String stripMessageQuantity(String message)
 	{
-		Color col = config.chatMessageCountColor();
-		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
-		if (message.contains(MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX) &&
-			message.endsWith(MESSAGE_QUANTITY_FORMAT_SUFFIX))
+		int quantity = findMessageQuantity(message);
+		if (quantity > MESSAGE_QUANTITY_DEFAULT)
 		{
-			return message.substring(0, message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_PREFIX +
-				hexCol + MESSAGE_QUANTITY_PREFIX));
+			String end = ColorUtil.colorTag(config.chatMessageCountColor()) + MESSAGE_QUANTITY_PREFIX + quantity;
+			if (message.endsWith(end) || message.endsWith(end + ColorUtil.CLOSING_COLOR_TAG))
+			{
+				// Jagex sometimes append "</col>" to the end of messages
+				return message.substring(0, message.lastIndexOf(end));
+			}
 		}
 		return message;
 	}
@@ -334,26 +335,19 @@ public class ChatFilterPlugin extends Plugin
 	private String addMessageQuantity(String message)
 	{
 		int quantity = findMessageQuantity(message) + 1;
-		message = stripMessageQuantity(message);
-		Color col = config.chatMessageCountColor();
-		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
-		return message + MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX +
-			quantity + MESSAGE_QUANTITY_FORMAT_SUFFIX;
+		return stripMessageQuantity(message) + ColorUtil.colorTag(config.chatMessageCountColor()) +
+			MESSAGE_QUANTITY_PREFIX + quantity;
 	}
 
 	private int findMessageQuantity(String message)
 	{
-		Color col = config.chatMessageCountColor();
-		String hexCol = String.format("%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
-		int start = message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX);
-		int end = message.lastIndexOf(MESSAGE_QUANTITY_FORMAT_SUFFIX);
-		if (start >= 0 && end > start)
+		String quantityPrefix = ColorUtil.colorTag(config.chatMessageCountColor()) + MESSAGE_QUANTITY_PREFIX;
+		int start = message.lastIndexOf(quantityPrefix);
+		if (start >= 0)
 		{
-			start += (MESSAGE_QUANTITY_FORMAT_PREFIX + hexCol + MESSAGE_QUANTITY_PREFIX).length();
-			String quantity = message.substring(start, end);
-			quantity = Text.removeTags(quantity);
+			String quantity = Text.removeTags(message.substring(start + quantityPrefix.length()));
 			return Integer.parseInt(quantity);
 		}
-		return 1;
+		return MESSAGE_QUANTITY_DEFAULT;
 	}
 }
