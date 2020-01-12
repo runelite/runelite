@@ -42,7 +42,8 @@ import java.awt.Color;
 	name = "Stronghold",
 	description = "Highlights the correct answer to Stronghold of Security questions",
 	tags = {"stronghold", "security", "overlay", "answer", "highlight"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 public class StrongholdPlugin extends Plugin
 {
@@ -87,6 +88,12 @@ public class StrongholdPlugin extends Plugin
 	private void onNPCDialogue()
 	{
 		final Widget debugWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+
+		if (debugWidget == null)
+		{
+			return;
+		}
+
 		final String npcText = debugWidget.getText();
 		if (StrongholdAnswer.MATCHES.containsKey(npcText))
 		{
