@@ -59,17 +59,17 @@ public class TempleTrekkingOverlay extends Overlay
 			int points = plugin.getRewardPoints();
 			double percentage = plugin.getRewardPercentage() * 100;
 			panelComponent.getChildren().clear();
+			Color rightColor = percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
+				percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN;
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Trek Points: ")
 				.right(Integer.toString(points))
-				.rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
-					percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
+				.rightColor(rightColor)
 				.build());
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Reward %: ")
 				.right(String.format("%.2f", percentage) + "%")
-				.rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
-					percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
+				.rightColor(rightColor)
 				.build());
 			return panelComponent.render(graphics);
 		}

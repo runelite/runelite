@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.strongholdofsecurity;
 
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.WidgetLoaded;
@@ -45,7 +44,6 @@ import java.awt.Color;
 	tags = {"stronghold", "security", "overlay", "answer", "highlight"},
 	type = PluginType.UTILITY
 )
-@Slf4j
 public class StrongholdPlugin extends Plugin
 {
 	private static final Color ANSWER_COLOR = new Color(230, 0, 230);

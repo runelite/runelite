@@ -50,19 +50,21 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class TempleTrekkingPlugin extends Plugin
 {
-
 	@Getter
-	private final Set<GroundObject> bogList = new HashSet<GroundObject>();
+	private final Set<GroundObject> bogList = new HashSet<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private TempleTrekkingOverlay overlay;
+
 	@Inject
 	private TempleTrekkingBogOverlay bogOverlay;
-	@Inject
-	private TempleTrekkingConfig config;
+
 	@Getter
 	private boolean inTrek = false;
 
@@ -109,12 +111,9 @@ public class TempleTrekkingPlugin extends Plugin
 		{
 			inTrek = true;
 		}
-		else if (inTrek)
+		else if (inTrek && client.getVar(Varbits.TREK_STATUS) == 0 && client.getVar(Varbits.TREK_POINTS) == 0)
 		{
-			if (client.getVar(Varbits.TREK_STATUS) == 0 && client.getVar(Varbits.TREK_POINTS) == 0)
-			{
-				inTrek = false;
-			}
+			inTrek = false;
 		}
 	}
 

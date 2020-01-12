@@ -56,7 +56,7 @@ public class PartyStatsOverlay extends Overlay
 	private final PanelComponent body = new PanelComponent();
 
 	@Inject
-	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party, final PartyConfig config)
+	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party)
 	{
 		super(plugin);
 		this.plugin = plugin;

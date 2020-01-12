@@ -107,33 +107,47 @@ public class PartyPlugin extends Plugin implements KeyListener
 	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 	@Getter(AccessLevel.PACKAGE)
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
+
 	@Inject
 	@Named("developerMode")
 	boolean developerMode;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private PartyService party;
+
 	@Inject
 	private WSClient ws;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private PartyStatsOverlay partyStatsOverlay;
+
 	@Inject
 	private PartyPingOverlay partyPingOverlay;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private WSClient wsClient;
+
 	@Inject
 	private WorldMapPointManager worldMapManager;
+
 	@Inject
 	private PartyConfig config;
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
 	@Inject
 	private EventBus eventBus;
+
 	private int lastHp, lastPray;
 	private boolean hotkeyDown, doSync;
 	private boolean sendAlert;
@@ -511,7 +525,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 			DiscordUserInfo info = new DiscordUserInfo(jobj.get("userId").getAsString(), jobj.get("avatarId").getAsString());
 			info.setMemberId(event.getMemberId());
 			eventBus.post(DiscordUserInfo.class, info);
-			return;
 		}
 	}
 

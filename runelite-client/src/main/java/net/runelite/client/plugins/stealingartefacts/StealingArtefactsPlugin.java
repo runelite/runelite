@@ -67,7 +67,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 	name = "Stealing Artefacts",
 	description = "A plugin for the Stealing Artefacts minigame.",
 	tags = {"stealing", "artefacts", "artifacts", "thieving", "minigame", "zeah"},
-	type = PluginType.SKILLING,
+	type = PluginType.MINIGAME,
 	enabledByDefault = false
 )
 @Slf4j
