@@ -69,7 +69,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.ImageUtil;
-
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -149,10 +148,10 @@ public class InventorySetupPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-
 		updateConfig();
-		this.panel = new InventorySetupPluginPanel(this, itemManager);
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/inventorysetups_icon.png");
+
+		panel = new InventorySetupPluginPanel(this, itemManager);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "inventorysetups_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Inventory Setups")
@@ -166,11 +165,9 @@ public class InventorySetupPlugin extends Plugin
 		// load all the inventory setups from the config file
 		clientThread.invokeLater(() ->
 		{
-			switch (client.getGameState())
+			if (client.getGameState() != GameState.LOGIN_SCREEN)
 			{
-				case STARTING:
-				case UNKNOWN:
-					return false;
+				return false;
 			}
 
 			loadConfig();
@@ -182,7 +179,6 @@ public class InventorySetupPlugin extends Plugin
 
 			return true;
 		});
-
 	}
 
 	@Override

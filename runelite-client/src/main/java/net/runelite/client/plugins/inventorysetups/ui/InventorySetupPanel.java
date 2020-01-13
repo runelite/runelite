@@ -101,7 +101,7 @@ public class InventorySetupPanel extends JPanel
 
 	static
 	{
-		final BufferedImage bankFilterImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/filter_icon.png");
+		final BufferedImage bankFilterImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "filter_icon.png");
 		final BufferedImage bankFilterHover = ImageUtil.luminanceOffset(bankFilterImg, -150);
 		BANK_FILTER_ICON = new ImageIcon(bankFilterImg);
 		BANK_FILTER_HOVER_ICON = new ImageIcon(bankFilterHover);
@@ -109,7 +109,7 @@ public class InventorySetupPanel extends JPanel
 		NO_BANK_FILTER_ICON = new ImageIcon(bankFilterHover);
 		NO_BANK_FILTER_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(bankFilterHover, -100));
 
-		final BufferedImage stackImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/stack_icon.png");
+		final BufferedImage stackImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "stack_icon.png");
 		final BufferedImage stackHover = ImageUtil.luminanceOffset(stackImg, -150);
 		STACK_DIFFERENCE_ICON = new ImageIcon(stackImg);
 		STACK_DIFFERENCE_HOVER_ICON = new ImageIcon(stackHover);
@@ -117,7 +117,7 @@ public class InventorySetupPanel extends JPanel
 		NO_STACK_DIFFERENCE_ICON = new ImageIcon(stackHover);
 		NO_STACK_DIFFERENCE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(stackHover, -100));
 
-		final BufferedImage variationImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/variation_icon.png");
+		final BufferedImage variationImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "variation_icon.png");
 		final BufferedImage variationHover = ImageUtil.luminanceOffset(variationImg, -150);
 		VARIATION_DIFFERENCE_ICON = new ImageIcon(variationImg);
 		VARIATION_DIFFERENCE_HOVER_ICON = new ImageIcon(variationHover);
@@ -125,7 +125,7 @@ public class InventorySetupPanel extends JPanel
 		NO_VARIATION_DIFFERENCE_ICON = new ImageIcon(variationHover);
 		NO_VARIATION_DIFFERENCE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(variationHover, -100));
 
-		final BufferedImage unorderedHighlightImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/unordered_highlight_icon.png");
+		final BufferedImage unorderedHighlightImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "unordered_highlight_icon.png");
 		final BufferedImage unorderedHighlightHover = ImageUtil.luminanceOffset(unorderedHighlightImg, -150);
 		UNORDERED_HIGHLIGHT_ICON = new ImageIcon(unorderedHighlightImg);
 		UNORDERED_HIGHLIGHT_HOVER_ICON = new ImageIcon(unorderedHighlightHover);
@@ -133,7 +133,7 @@ public class InventorySetupPanel extends JPanel
 		NO_UNORDERED_HIGHLIGHT_ICON = new ImageIcon(unorderedHighlightHover);
 		NO_UNORDERED_HIGHLIGHT_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(unorderedHighlightHover, -100));
 
-		final BufferedImage highlightToggleImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/highlight_icon.png");
+		final BufferedImage highlightToggleImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "highlight_icon.png");
 		final BufferedImage highlightToggleHover = ImageUtil.luminanceOffset(highlightToggleImg, -150);
 		TOGGLE_HIGHLIGHT_ICON = new ImageIcon(highlightToggleImg);
 		TOGGLE_HIGHLIGHT_HOVER_ICON = new ImageIcon(highlightToggleHover);
@@ -141,7 +141,7 @@ public class InventorySetupPanel extends JPanel
 		NO_TOGGLE_HIGHLIGHT_ICON = new ImageIcon(highlightToggleHover);
 		NO_TOGGLE_HIGHLIGHT_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(highlightToggleHover, -100));
 
-		final BufferedImage highlightImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/highlight_color_icon.png");
+		final BufferedImage highlightImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "highlight_color_icon.png");
 		final BufferedImage highlightHover = ImageUtil.luminanceOffset(highlightImg, -150);
 		HIGHLIGHT_COLOR_ICON = new ImageIcon(highlightImg);
 		HIGHLIGHT_COLOR_HOVER_ICON = new ImageIcon(highlightHover);
@@ -149,17 +149,17 @@ public class InventorySetupPanel extends JPanel
 		NO_HIGHLIGHT_COLOR_ICON = new ImageIcon(highlightHover);
 		NO_HIGHLIGHT_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(highlightHover, -100));
 
-		final BufferedImage viewImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/visible_icon.png");
+		final BufferedImage viewImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "visible_icon.png");
 		final BufferedImage viewImgHover = ImageUtil.luminanceOffset(viewImg, -150);
 		VIEW_SETUP_ICON = new ImageIcon(viewImg);
 		VIEW_SETUP_HOVER_ICON = new ImageIcon(viewImgHover);
 
-		final BufferedImage exportImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/export_icon.png");
+		final BufferedImage exportImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "export_icon.png");
 		final BufferedImage exportImgHover = ImageUtil.luminanceOffset(exportImg, -150);
 		EXPORT_ICON = new ImageIcon(exportImg);
 		EXPORT_HOVER_ICON = new ImageIcon(exportImgHover);
 
-		final BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "/delete_icon.png");
+		final BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "delete_icon.png");
 		DELETE_ICON = new ImageIcon(deleteImg);
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.luminanceOffset(deleteImg, -100));
 	}
