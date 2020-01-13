@@ -107,6 +107,18 @@ public interface RunecraftConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "essenceOverlay",
+		name = "Show number of essence in pouch",
+		description = "This will show how many essence in your pouch.",
+		position = 7,
+		titleSection = "utilTitle"
+	)
+	default boolean essenceOverlay()
+	{
+		return true;
+	}
+
 	@ConfigTitleSection(
 		keyName = "riftsTitle",
 		name = "Rifts",
