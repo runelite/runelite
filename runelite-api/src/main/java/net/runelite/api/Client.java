@@ -1928,4 +1928,10 @@ public interface Client extends GameShell
 	 * when a inventory item is clicked and dragged.
 	 */
 	void setTempMenuEntry(MenuEntry entry);
+
+	void setShowMouseCross(boolean show);
+
+	void setMouseIdleTicks(int cycles);
+
+	void setKeyboardIdleTicks(int cycles);
 }

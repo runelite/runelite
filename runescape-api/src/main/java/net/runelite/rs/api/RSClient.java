@@ -585,9 +585,17 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getMouseIdleTicks();
 
+	@Import("MouseHandler_idleCycles")
+	@Override
+	void setMouseIdleTicks(int cycles);
+
 	@Import("MouseHandler_lastPressedTimeMillis")
 	@Override
 	long getMouseLastPressedMillis();
+
+	@Import("KeyHandler_idleCycles")
+	@Override
+	void setKeyboardIdleTicks(int cycles);
 
 	@Import("KeyHandler_idleCycles")
 	@Override
@@ -660,7 +668,7 @@ public interface RSClient extends RSGameShell, Client
 	 * It should be between 128 and (pitchUnlimiter?512:383) JAUs(1).
 	 * The difference between this and cameraPitch is that cameraPitch has a lower limit, imposed by the surrounding
 	 * terrain.
-	 *
+	 * <p>
 	 * (1) JAU - Jagex Angle Unit; 1/1024 of a revolution
 	 */
 	@Import("camAngleX")
@@ -1134,4 +1142,8 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("updateItemPile")
 	void updateItemPile(int localX, int localY);
+
+	@Import("showMouseCross")
+	@Override
+	void setShowMouseCross(boolean show);
 }
