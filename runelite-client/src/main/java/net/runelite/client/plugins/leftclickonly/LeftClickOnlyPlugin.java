@@ -38,7 +38,8 @@ import net.runelite.client.plugins.PluginType;
 	name = "Left Click Only",
 	description = "Only allow leftclicks",
 	tags = {"left", "click", "only", "gamemode", "leftclick"},
-	type = PluginType.GAMEMODE
+	type = PluginType.GAMEMODE,
+	enabledByDefault = false
 )
 public class LeftClickOnlyPlugin extends Plugin
 {
