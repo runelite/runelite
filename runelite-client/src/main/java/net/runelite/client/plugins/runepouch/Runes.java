@@ -58,7 +58,7 @@ public enum Runes
 
 	@Getter(AccessLevel.PACKAGE)
 	private final int id;
-	@Getter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PUBLIC)
 	private final int itemId;
 
 	@Getter(AccessLevel.PACKAGE)

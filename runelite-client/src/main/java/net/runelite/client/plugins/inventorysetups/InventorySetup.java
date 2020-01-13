@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, dillydill123 <https://github.com/dillydill123>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,16 +24,65 @@
  */
 package net.runelite.client.plugins.inventorysetups;
 
-import java.util.List;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import java.awt.Color;
+import java.util.ArrayList;
 
 @AllArgsConstructor
 public class InventorySetup
 {
-	@Getter(AccessLevel.PUBLIC)
-	private List<InventorySetupItem> inventory;
-	@Getter(AccessLevel.PUBLIC)
-	private List<InventorySetupItem> equipment;
+	@Getter
+	private ArrayList<InventorySetupItem> inventory;
+
+	@Getter
+	private ArrayList<InventorySetupItem> equipment;
+
+	@Getter
+	private ArrayList<InventorySetupItem> rune_pouch;
+
+	@Getter
+	@Setter
+	private String name;
+
+	@Getter
+	@Setter
+	private Color highlightColor;
+
+	@Getter
+	@Setter
+	private boolean stackDifference;
+
+	@Getter
+	@Setter
+	private boolean variationDifference;
+
+	@Getter
+	@Setter
+	private boolean highlightDifference;
+
+	@Getter
+	@Setter
+	private boolean filterBank;
+
+	@Getter
+	@Setter
+	private boolean unorderedHighlight;
+
+	public void updateInventory(final ArrayList<InventorySetupItem> inv)
+	{
+		inventory = inv;
+	}
+
+	public void updateEquipment(final ArrayList<InventorySetupItem> eqp)
+	{
+		equipment = eqp;
+	}
+
+	public void updateRunePouch(final ArrayList<InventorySetupItem> rp)
+	{
+		rune_pouch = rp;
+	}
+
 }
