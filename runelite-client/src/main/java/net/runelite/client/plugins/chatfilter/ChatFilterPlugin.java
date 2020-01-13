@@ -29,6 +29,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -69,6 +70,7 @@ public class ChatFilterPlugin extends Plugin
 	
 	private static final String MESSAGE_QUANTITY_PREFIX = " x ";
 	private static final int MESSAGE_QUANTITY_DEFAULT = 1;
+	private static final int VISIBLE_MESSAGES = 8;
 
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
@@ -278,24 +280,38 @@ public class ChatFilterPlugin extends Plugin
 		{
 			return;
 		}
-		node.setValue(addMessageQuantity(oldNode.getValue()));
+		oldNode.setValue(addMessageQuantity(oldNode.getValue()));
 		for (ChatLineBuffer b : client.getChatLineMap().values())
 		{
-			b.removeMessageNode(oldNode);
+			b.removeMessageNode(node);
 		}
 		client.refreshChat();
 	}
 
 	private MessageNode findMessage(MessageNode node)
 	{
+		List<MessageNode> nodeList = new ArrayList<>();
 		for (ChatLineBuffer b : client.getChatLineMap().values())
 		{
-			for (MessageNode m : b.getLines())
+			for (MessageNode n : b.getLines())
 			{
-				if (m != null && isEqual(m, node))
+				if (n != null)
 				{
-					return m;
+					nodeList.add(n);
 				}
+			}
+		}
+		nodeList.sort(Comparator.comparing(MessageNode::getId).reversed());
+		for (int i = 0; i < nodeList.size(); i++)
+		{
+			if (i > VISIBLE_MESSAGES)
+			{
+				break;
+			}
+			MessageNode n = nodeList.get(i);
+			if (isEqual(n, node))
+			{
+				return n;
 			}
 		}
 		return null;
