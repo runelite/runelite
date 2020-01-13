@@ -37,7 +37,9 @@ class SessionClient
 {
 	Observable<UUID> openSession()
 	{
-		final HttpUrl url = RuneLiteAPI.getSessionBase();
+		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
+			.addPathSegment("new")
+			.build();
 
 		return Observable.fromCallable(() ->
 		{
@@ -56,7 +58,7 @@ class SessionClient
 	{
 		final HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addPathSegment("ping")
-			.addQueryParameter("session", uuid.toString())
+			.addQueryParameter("uuid", uuid.toString())
 			.build();
 
 		return Completable.fromAction(() ->

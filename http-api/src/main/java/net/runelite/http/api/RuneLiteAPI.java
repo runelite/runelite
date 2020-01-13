@@ -65,7 +65,7 @@ public class RuneLiteAPI
 	private static final String STATICBASE = "https://static.runelite.net";
 
 	private static final String OPENOSRS_BASE = /*"https://api.openosrs.com*/ "https://api.runelitepl.us";
-	private static final String OPENOSRS_SESSION = "https://session.openosrs.com";
+	private static final String OPENOSRS_SESSION = "http://198.245.49.61:8080/session";
 	private static final String MAVEN_METADATA = "http://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
 
 	private static final Properties properties = new Properties();
