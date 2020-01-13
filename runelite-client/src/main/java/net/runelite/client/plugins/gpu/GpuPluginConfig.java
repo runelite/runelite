@@ -34,6 +34,7 @@ import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
@@ -78,10 +79,33 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigTitleSection(
+		keyName = "scalingTitle",
+		name = "Scaling",
+		description = "",
+		position = 4
+	)
+	default Title scalingTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		keyName = "uiScalingMode",
+		name = "UI scaling mode",
+		description = "Sampling function to use for the UI in stretched mode",
+		titleSection = "scalingTitle",
+		position = 5
+	)
+	default UIScalingMode uiScalingMode()
+	{
+		return UIScalingMode.CATMULL_ROM;
+	}
+
+	@ConfigTitleSection(
 		keyName = "ppTitle",
 		name = "Post processing",
 		description = "",
-		position = 4
+		position = 6
 	)
 	default Title ppTitle()
 	{
@@ -92,7 +116,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "antiAliasingMode",
 		name = "Anti Aliasing",
 		description = "Configures the anti-aliasing mode",
-		position = 5,
+		position = 7,
 		titleSection = "ppTitle"
 	)
 	default AntiAliasingMode antiAliasingMode()
@@ -104,7 +128,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "anisotropicFilteringMode",
 		name = "Anisotropic Filtering",
 		description = "Configures the anisotropic filtering mode",
-		position = 6,
+		position = 8,
 		titleSection = "ppTitle"
 	)
 	default AnisotropicFilteringMode anisotropicFilteringMode()
@@ -116,7 +140,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogTitle",
 		name = "Fog",
 		description = "",
-		position = 7
+		position = 9
 	)
 	default Title fogTitle()
 	{
@@ -130,7 +154,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogDepth",
 		name = "Depth",
 		description = "Distance from the scene edge the fog starts",
-		position = 8,
+		position = 10,
 		titleSection = "fogTitle"
 	)
 	default int fogDepth()
@@ -145,7 +169,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogCircularity",
 		name = "Roundness",
 		description = "Fog circularity in %",
-		position = 9,
+		position = 11,
 		titleSection = "fogTitle"
 	)
 	default int fogCircularity()
@@ -160,7 +184,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogDensity",
 		name = "Density",
 		description = "Relative fog thickness",
-		position = 10,
+		position = 12,
 		titleSection = "fogTitle"
 	)
 	default int fogDensity()
