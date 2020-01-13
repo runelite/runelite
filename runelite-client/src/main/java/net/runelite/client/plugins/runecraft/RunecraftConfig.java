@@ -109,8 +109,8 @@ public interface RunecraftConfig extends Config
 
 	@ConfigItem(
 		keyName = "essenceOverlay",
-		name = "Show number of essence in pouch",
-		description = "This will show how many essence in your pouch.",
+		name = "Show essence in pouch",
+		description = "This will show how many essence are in your pouch.",
 		position = 7,
 		titleSection = "utilTitle"
 	)
