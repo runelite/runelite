@@ -349,14 +349,17 @@ class Skybox
 		}
 
 		int cv = chunks[(stride * (cy - y1)) + (cx - x1)];
+
 		if (cv == -1)
 		{
 			return -1;
 		}
+
 		if ((cv & 0x8000_0000) != 0)
 		{
 			cv = planeOverrides[(cv & 0x7FFF_FFFF) | plane];
 		}
+
 		return cv;
 	}
 
