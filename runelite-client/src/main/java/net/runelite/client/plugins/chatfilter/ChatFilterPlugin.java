@@ -322,7 +322,7 @@ public class ChatFilterPlugin extends Plugin
 		return oldNode.getId() != newNode.getId() && oldNode.getType().equals(newNode.getType()) &&
 			Objects.equals(oldNode.getSender(), newNode.getSender()) &&
 			oldNode.getName().equals(newNode.getName()) &&
-			Text.removeTags(stripMessageQuantity(oldNode.getValue())).equals(newNode.getValue());
+			Text.removeStyleTags(stripMessageQuantity(oldNode.getValue())).equals(newNode.getValue());
 	}
 
 	private String stripMessageQuantity(String message)
