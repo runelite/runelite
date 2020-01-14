@@ -18,5 +18,4 @@ public enum InventorySetupSlotID
 	{
 		return id;
 	}
-
 }
