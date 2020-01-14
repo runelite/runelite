@@ -64,7 +64,7 @@ public class HitSplatLoader
 					def.setScrollToOffsetX(stream.readShort());
 					break;
 				case 8:
-					def.setStringFormat(stream.readString());
+					def.setStringFormat(stream.readString2());
 					break;
 				case 9:
 					def.setDisplayCycles(stream.readUnsignedShort());

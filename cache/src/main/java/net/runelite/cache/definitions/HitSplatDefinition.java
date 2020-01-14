@@ -25,7 +25,6 @@
 package net.runelite.cache.definitions;
 
 import lombok.Data;
-import net.runelite.cache.util.ScriptVarType;
 
 @Data
 public class HitSplatDefinition
