@@ -30,7 +30,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
-import java.util.reges.Matcher;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
 
