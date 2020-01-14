@@ -54,6 +54,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
@@ -488,7 +489,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	private void rebuild()
 	{
-		logsContainer.removeAll();
+		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();
 
 		if (groupLoot)
