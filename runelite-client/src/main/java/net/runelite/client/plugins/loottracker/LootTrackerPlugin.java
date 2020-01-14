@@ -574,7 +574,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			inventorySnapshot = HashMultiset.create();
 			Arrays.stream(itemContainer.getItems())
-					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 
@@ -661,7 +661,7 @@ public class LootTrackerPlugin extends Plugin
 					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
 				).toArray(LootTrackerItem[]::new);
 
-				return new LootTrackerRecord(record.getEventId(), "", drops);
+				return new LootTrackerRecord(record.getEventId(), "", drops, record.getTime());
 			})
 			.collect(Collectors.toCollection(ArrayList::new));
 	}

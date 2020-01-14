@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -394,7 +395,7 @@ class LootTrackerPanel extends PluginPanel
 	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, Instant.now());
 		records.add(record);
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
