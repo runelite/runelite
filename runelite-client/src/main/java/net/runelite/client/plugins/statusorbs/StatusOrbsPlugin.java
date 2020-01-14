@@ -127,6 +127,8 @@ public class StatusOrbsPlugin extends Plugin
 	private int lastEnergy = 0;
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
+	@Getter(AccessLevel.PACKAGE)
+	private double recoverRate = 1;
 
 	private BufferedImage heart;
 
@@ -288,6 +290,8 @@ public class StatusOrbsPlugin extends Plugin
 				prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+
+		recoverRate = Graceful.calculateRecoveryRate(client.getItemContainer(InventoryID.EQUIPMENT));
 
 		if (this.replaceOrbText)
 		{

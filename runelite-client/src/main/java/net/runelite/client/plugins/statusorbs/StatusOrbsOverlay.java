@@ -35,7 +35,6 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -46,7 +45,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.Graceful;
 import org.apache.commons.lang3.StringUtils;
 
 public class StatusOrbsOverlay extends Overlay
@@ -187,7 +185,7 @@ public class StatusOrbsOverlay extends Overlay
 			{
 				double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360000.0;
 
-				recoverRate *= Graceful.calculateRecoveryRate(client.getItemContainer(InventoryID.EQUIPMENT));
+				recoverRate *= plugin.getRecoverRate();
 
 				percentRun += ms * recoverRate;
 			}

@@ -129,36 +129,71 @@ public enum Graceful
 
 	public static boolean hasHood(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.HEAD.getSlotIdx())
+		{
+			return false;
+		}
+
 		return HOOD.ids.contains(items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId());
 	}
 
 	public static boolean hasTop(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.BODY.getSlotIdx())
+		{
+			return false;
+		}
+
 		return TOP.ids.contains(items[EquipmentInventorySlot.BODY.getSlotIdx()].getId());
 	}
 
 	public static boolean hasLegs(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.LEGS.getSlotIdx())
+		{
+			return false;
+		}
+
 		return LEGS.ids.contains(items[EquipmentInventorySlot.LEGS.getSlotIdx()].getId());
 	}
 
 	public static boolean hasGloves(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.GLOVES.getSlotIdx())
+		{
+			return false;
+		}
+
 		return GLOVES.ids.contains(items[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId());
 	}
 
 	public static boolean hasBoots(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.BOOTS.getSlotIdx())
+		{
+			return false;
+		}
+
 		return BOOTS.ids.contains(items[EquipmentInventorySlot.BOOTS.getSlotIdx()].getId());
 	}
 
 	public static boolean hasCape(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.CAPE.getSlotIdx())
+		{
+			return false;
+		}
+
 		return CAPE.ids.contains(items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId());
 	}
 
 	public static boolean hasFullSet(final Item[] items)
 	{
+		if (items.length < EquipmentInventorySlot.BOOTS.getSlotIdx())
+		{
+			return false;
+		}
+
 		return HOOD.ids.contains(items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId())
 			&& TOP.ids.contains(items[EquipmentInventorySlot.BODY.getSlotIdx()].getId())
 			&& LEGS.ids.contains(items[EquipmentInventorySlot.LEGS.getSlotIdx()].getId())
