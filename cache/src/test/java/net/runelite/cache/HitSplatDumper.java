@@ -1,5 +1,5 @@
-package net.runelite.cache;/*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+/*
+ * Copyright (c) 2020, Hexagon <hexagon@fking.work>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,6 +22,7 @@ package net.runelite.cache;/*
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
