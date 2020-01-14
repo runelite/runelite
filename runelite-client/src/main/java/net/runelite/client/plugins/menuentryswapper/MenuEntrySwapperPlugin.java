@@ -42,6 +42,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -297,6 +298,41 @@ public class MenuEntrySwapperPlugin extends Plugin
 		resetShiftClickEntry.setParam1(widgetId);
 		resetShiftClickEntry.setType(MenuAction.RUNELITE.getId());
 		client.setMenuEntries(ArrayUtils.addAll(entries, resetShiftClickEntry));
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		// This swap needs to happen prior to drag start on click, which happens during
+		// widget ticking and prior to our client tick event. This is because drag start
+		// is what builds the context menu row which is what the eventual click will use
+
+		// Deposit- op 2 is the current withdraw amount 1/5/10/x
+		if (shiftModifier && menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& config.swapBankOp() && menuEntryAdded.getOption().startsWith("Deposit-"))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+
+			// Find the extra menu option; they don't have fixed names, so check
+			// based on the menu identifier
+			for (int i = menuEntries.length - 1; i >= 0; --i)
+			{
+				MenuEntry entry = menuEntries[i];
+
+				// The extra options are always option 9
+				if (entry.getType() == MenuAction.CC_OP_LOW_PRIORITY.getId() && entry.getIdentifier() == 9)
+				{
+					// we must also raise the priority of the op so it doesn't get sorted later
+					entry.setType(MenuAction.CC_OP.getId());
+
+					menuEntries[i] = menuEntries[menuEntries.length - 1];
+					menuEntries[menuEntries.length - 1] = entry;
+
+					client.setMenuEntries(menuEntries);
+					break;
+				}
+			}
+		}
 	}
 
 	@Subscribe

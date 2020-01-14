@@ -381,4 +381,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapBankOp",
+		name = "Swap Bank Op",
+		description = "Swaps the extra menu option in banks (Weild, Eat, etc.) when holding shift"
+	)
+	default boolean swapBankOp()
+	{
+		return false;
+	}
 }
