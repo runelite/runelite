@@ -112,7 +112,7 @@ public class KourendLibraryPlugin extends Plugin
 	private boolean buttonAttached = false;
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
-	private EnumSet<Book> playerBooks = null;
+	private static EnumSet<Book> playerBooks = null;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> npcsToMark = new HashSet<>();
@@ -334,9 +334,13 @@ public class KourendLibraryPlugin extends Plugin
 		npcsToMark.remove(event.getNpc());
 	}
 
-	boolean doesPlayerContainBook(Book book)
+	public static boolean doesPlayerContainBook(Book book)
 	{
-		return playerBooks.contains(book);
+		if (playerBooks != null) {
+			return playerBooks.contains(book);
+		} else {
+			return true;
+		}
 	}
 
 	private void updatePlayerBooks()

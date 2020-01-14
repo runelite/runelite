@@ -79,4 +79,6 @@ class BookPanel extends JPanel
 	{
 		location.setForeground(target ? Color.GREEN : Color.WHITE);
 	}
+
+	void setIsNotInInventory(boolean inInventory) { location.setForeground(inInventory ? Color.RED : Color.WHITE); }
 }

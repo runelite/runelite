@@ -45,6 +45,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.plugins.kourendlibrary.KourendLibraryPlugin;
 
 @Singleton
 class KourendLibraryPanel extends PluginPanel
@@ -117,7 +118,12 @@ class KourendLibraryPanel extends PluginPanel
 			Book customerBook = library.getCustomerBook();
 			for (Map.Entry<Book, BookPanel> b : bookPanels.entrySet())
 			{
-				b.getValue().setIsTarget(customerBook == b.getKey());
+				boolean containsBook = KourendLibraryPlugin.doesPlayerContainBook(b.getKey());
+				if (!containsBook && customerBook != b.getKey()) {
+					b.getValue().setIsNotInInventory(true);
+				} else {
+					b.getValue().setIsTarget(customerBook == b.getKey());
+				}
 			}
 
 			HashMap<Book, HashSet<String>> bookLocations = new HashMap<>();
