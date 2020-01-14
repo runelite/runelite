@@ -29,7 +29,6 @@ import net.runelite.client.plugins.inventorysetups.InventorySetupSlotID;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.util.AsyncBufferedImage;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;

@@ -34,7 +34,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -96,7 +95,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 	private final JPanel setupTopRightButtonsPanel;
 	private final JLabel title;
 	private final JLabel addMarker;
-	private final JLabel importMarker;
+	private final JLabel addImportMarker;
 	private final JLabel updateMarker;
 	private final JLabel backMarker;
 	private final InventorySetupInventoryPanel invPanel;
@@ -123,9 +122,9 @@ public class InventorySetupPluginPanel extends PluginPanel
 		title.setText(MAIN_TITLE);
 		title.setForeground(Color.WHITE);
 
-		this.importMarker = new JLabel(IMPORT_ICON);
-		importMarker.setToolTipText("Import a new inventory setup");
-		importMarker.addMouseListener(new MouseAdapter()
+		this.addImportMarker = new JLabel(IMPORT_ICON);
+		addImportMarker.setToolTipText ("Import a new inventory setup");
+		addImportMarker.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent e)
@@ -136,13 +135,13 @@ public class InventorySetupPluginPanel extends PluginPanel
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				importMarker.setIcon(IMPORT_HOVER_ICON);
+				addImportMarker.setIcon(IMPORT_HOVER_ICON);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				importMarker.setIcon(IMPORT_ICON);
+				addImportMarker.setIcon(IMPORT_ICON);
 			}
 		});
 
@@ -224,7 +223,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 		});
 
 		this.overviewTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-		overviewTopRightButtonsPanel.add(importMarker);
+		overviewTopRightButtonsPanel.add(addImportMarker);
 		overviewTopRightButtonsPanel.add(addMarker);
 
 		this.setupTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));

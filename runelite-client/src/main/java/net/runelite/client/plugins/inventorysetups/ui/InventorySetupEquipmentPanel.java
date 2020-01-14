@@ -27,7 +27,6 @@ package net.runelite.client.plugins.inventorysetups.ui;
 import net.runelite.client.plugins.inventorysetups.InventorySetupSlotID;
 import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.api.EquipmentInventorySlot;
-
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.inventorysetups.InventorySetup;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
