@@ -226,9 +226,9 @@ public enum MenuAction
 	PLAYER_EIGTH_OPTION(51),
 
 	/**
-	 * Default menu action for a widget.
+	 * Menu action for normal priority child component actions.
 	 */
-	WIDGET_DEFAULT(57),
+	CC_OP(57),
 
 	/**
 	 * Casting a spell / op target on a widget
@@ -256,10 +256,9 @@ public enum MenuAction
 	 */
 	CANCEL(1006),
 	/**
-	 * Menu action triggered by either examining item in bank, examining
-	 * item in inventory while having bank open, or examining equipped item.
+	 * Menu action for low priority child component actions.
 	 */
-	EXAMINE_ITEM_BANK_EQ(1007),
+	CC_OP_LOW_PRIORITY(1007),
 
 	/**
 	 * Menu action injected by runelite for its menu items.
