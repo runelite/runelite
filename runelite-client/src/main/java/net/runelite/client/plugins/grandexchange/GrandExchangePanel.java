@@ -66,7 +66,7 @@ class GrandExchangePanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor, config);
+		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
 
 		//Offers Panel
 		offersPanel = new GrandExchangeOffersPanel();
