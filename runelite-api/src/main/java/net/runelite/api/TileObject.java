@@ -25,7 +25,6 @@
 package net.runelite.api;
 
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -64,10 +63,6 @@ public interface TileObject extends Locatable
 	 * @see NullObjectID
 	 */
 	int getId();
-
-	WorldPoint getWorldLocation();
-
-	LocalPoint getLocalLocation();
 
 	/**
 	 * Calculates the position of the center of this tile on the canvas
