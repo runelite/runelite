@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
+import java.util.reges.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
 
@@ -79,6 +80,32 @@ public class Text
 	public static String removeTags(String str)
 	{
 		return TAG_REGEXP.matcher(str).replaceAll("");
+	}
+	
+	/**
+	 * Removes all tags from the given string, except for &lt;lt&gt; and &lt;gt&gt;
+	 *
+	 * @param str The string to remove style tags from.
+	 * @return The given string with style tags removed from it.
+	 */
+	public static String removeStyleTags(String str)
+	{
+		StringBuffer stringBuffer = new StringBuffer();
+		Matcher matcher = TAG_REGEXP.matcher(str);
+		while (matcher.find())
+		{
+			matcher.appendReplacement(stringBuffer, "");
+			String match = matcher.group(0);
+			switch (match)
+			{
+				case "<lt>":
+				case "<gt>":
+					stringBuffer.append(match);
+					break;
+			}
+		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
 	}
 
 	/**
