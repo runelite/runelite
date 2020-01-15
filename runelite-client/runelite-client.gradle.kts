@@ -68,7 +68,7 @@ dependencies {
     implementation(Libraries.sentry)
     implementation(Libraries.slf4jApi)
     implementation(project(":http-api"))
-    implementation(project(":runelite-api"))
+    api(project(":runelite-api"))
     implementation(Libraries.naturalMouse)
 
     runtimeOnly(Libraries.trident)
