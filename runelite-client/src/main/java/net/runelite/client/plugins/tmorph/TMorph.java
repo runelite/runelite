@@ -26,7 +26,6 @@ package net.runelite.client.plugins.tmorph;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,7 +72,6 @@ public class TMorph extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
 	private static final Map<String, KitType> kit;
-	private static final Color COLOR = new Color(10, 134, 74, 255);
 
 	static
 	{
@@ -157,10 +155,7 @@ public class TMorph extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			clientThread.invokeLater(() ->
-			{
-				panel.populateSlots();
-			});
+			clientThread.invokeLater(() -> panel.populateSlots());
 		}
 	}
 

@@ -55,7 +55,7 @@ public class EquipSlot extends JComboBox<ComboBoxIconEntry>
 		super();
 		this.kitType = kitType;
 		this.boxMap = new LinkedHashMap<>();
-		setPreferredSize(new Dimension(220, 42));
+		setPreferredSize(new Dimension(200, 42));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setRenderer(new ComboBoxListRenderer());
 		original = new ComboBoxIconEntry(

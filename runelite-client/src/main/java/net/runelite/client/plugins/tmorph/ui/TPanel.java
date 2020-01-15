@@ -168,7 +168,7 @@ public class TPanel extends PluginPanel
 		captionPanel.add(caption);
 
 		equipPanel = new JPanel();
-		equipPanel.setLayout(new GridLayout(15, 1, 1, 1));
+		equipPanel.setLayout(new GridLayout(11, 1, 1, 1));
 		addSlots();
 
 		containerPanel.setLayout(new BorderLayout());
