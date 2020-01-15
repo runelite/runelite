@@ -27,8 +27,6 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -321,7 +319,8 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		matcher = COX_DURATION_PATTERN.matcher(message);
-		if (matcher.find()) {
+		if (matcher.find())
+		{
 			int duration = timeStringToSeconds(matcher.group(1));
 			// COX is hardcoded here because kc message comes after duration message
 			int currentPb = getPb("Chambers of Xeric");
