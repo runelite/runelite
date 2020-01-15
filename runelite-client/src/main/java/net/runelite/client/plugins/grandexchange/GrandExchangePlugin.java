@@ -30,6 +30,7 @@ package net.runelite.client.plugins.grandexchange;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.inject.Provides;
+import io.reactivex.schedulers.Schedulers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -169,6 +170,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private boolean quickLookup;
 	private boolean enableNotifications;
+	private boolean enableOsbPrices;
 	private boolean enableGELimits;
 	private boolean enableAfford;
 
@@ -275,6 +277,7 @@ public class GrandExchangePlugin extends Plugin
 	{
 		this.quickLookup = config.quickLookup();
 		this.enableNotifications = config.enableNotifications();
+		this.enableOsbPrices = config.enableOsbPrices();
 		this.enableGELimits = config.enableGELimits();
 		this.enableAfford = config.enableAfford();
 	}
@@ -577,5 +580,43 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		geText.setText(text);
+
+		if (!this.enableOsbPrices)
+		{
+			return;
+		}
+
+		// If we already have the result, use it
+		if (osbGrandExchangeResult != null && osbGrandExchangeResult.getItem_id() == itemId && osbGrandExchangeResult.getOverall_average() > 0)
+		{
+			geText.setText(text + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbGrandExchangeResult.getOverall_average()));
+		}
+
+		if (osbItem == itemId)
+		{
+			// avoid starting duplicate lookups
+			return;
+		}
+
+		osbItem = itemId;
+
+		log.debug("Looking up OSB item price {}", itemId);
+
+		final String start = text;
+		executorService.submit(() ->
+		{
+			CLIENT.lookupItem(itemId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(Schedulers.single())
+				.subscribe(
+					(osbresult) ->
+					{
+						osbGrandExchangeResult = osbresult;
+						// Update the text on the widget too
+						geText.setText(start + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbresult.getOverall_average()));
+					},
+					(e) -> log.debug("Error getting price of item {}", itemId, e)
+				);
+		});
 	}
 }

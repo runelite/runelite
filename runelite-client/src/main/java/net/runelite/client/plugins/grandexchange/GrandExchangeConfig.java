@@ -55,6 +55,17 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "enableOsbPrices",
+		name = "Enable OSB actively traded prices",
+		description = "Shows the OSBuddy actively traded price at the GE"
+	)
+	default boolean enableOsbPrices()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "enableGeLimits",
 		name = "Enable GE Limits on GE",
 		description = "Shows the GE Limits on the GE"
@@ -65,7 +76,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "showTotal",
 		name = "Show grand exchange total",
 		description = "Show grand exchange total"
@@ -76,7 +87,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "showExact",
 		name = "Show exact total value",
 		description = "Show exact total value"
@@ -87,7 +98,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "enableAfford",
 		name = "Enable Afford quantity on GE",
 		description = "Shows the quantity you can buy on the GE"
