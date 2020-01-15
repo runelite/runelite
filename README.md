@@ -17,8 +17,6 @@
 - [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
 - [deobfuscator](deobfuscator/src/main/java/net/runelite/deob) - Can decompile and cleanup gamepacks as well as map updates to newer revs
 - [http-api](http-api/src/main/java/net/runelite/http/api) - API for runelite and OpenOSRS
-- [http-service](http-service/src/main/java/net/runelite/http/service) - Service for https://api.runelite.net
-- [http-service-plus](http-service-plus/src/main/java/net/runelite/http/service) - Service for https://api.openosrs.com
 - [injector-plugin](injector-plugin/src/main/java/net/runelite/injector) - Tool for implementing our modifications to the gamepack
 - [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
 - [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Classes containing the Objects to be injected using the injector-plugin
