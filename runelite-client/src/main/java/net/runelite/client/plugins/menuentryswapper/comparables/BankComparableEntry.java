@@ -32,6 +32,12 @@ public class BankComparableEntry extends AbstractComparableEntry
 
 		return StringUtils.containsIgnoreCase(entry.getOption(), this.getOption()) && Text.standardize(entry.getTarget()).contains(this.getTarget());
 	}
+	
+	@Override
+	public int getPriority()
+	{
+		return 100;
+	}
 
 	static boolean isNotBankWidget(int widgetID)
 	{
