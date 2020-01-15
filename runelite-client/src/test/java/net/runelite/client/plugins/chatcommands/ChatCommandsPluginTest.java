@@ -40,6 +40,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -355,5 +359,36 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("gauntlet"), eq(10 * 60 + 24));
 		verify(configManager).setConfiguration(eq("killcount.adam"), eq("gauntlet"), eq(124));
+	}
+
+	@Test
+	public void testCoXKill()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Congratulations - your raid is complete! Duration <col=ff0000>37:04</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("chambers of xeric"), eq(51));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(37 * 60 + 4));
+	}
+
+	@Test
+	public void testCoXKillNoPb()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Congratulations - your raid is complete! Duration <col=ff0000>1:45:04</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("killcount.adam"), eq("chambers of xeric"), eq(52));
+		verify(configManager, never()).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), anyInt());
 	}
 }
