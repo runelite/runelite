@@ -55,10 +55,6 @@ public class GroundItem
 
 	@Nonnull
 	private LootType lootType;
-	/**
-	 * Is dropped by me
-	 */
-	private boolean isDropped;
 
 	@Nullable
 	private Instant spawnTime;

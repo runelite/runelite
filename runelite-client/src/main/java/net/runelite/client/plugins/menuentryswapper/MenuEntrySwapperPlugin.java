@@ -264,6 +264,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean bankWearItem;
 	private boolean bankEatItem;
 	private boolean bankDrinkItem;
+	private boolean bankEquipItem;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
 		@Override
@@ -1497,7 +1498,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry(new BankComparableEntry("drink", "", false));
 		}
-
+		if (this.bankEquipItem)
+		{
+			menuManager.addPriorityEntry(new BankComparableEntry("equip", "", false));
+		}
 		if (this.swapClimbUpDown)
 		{
 			menuManager.addPriorityEntry("climb-up").setPriority(100);
@@ -1518,6 +1522,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new BankComparableEntry("wear", "", false));
 		menuManager.removePriorityEntry(new BankComparableEntry("eat", "", false));
 		menuManager.removePriorityEntry(new BankComparableEntry("drink", "", false));
+		menuManager.removePriorityEntry(new BankComparableEntry("equip", "", false));
+
 		loadCustomSwaps("", customShiftSwaps);
 		eventBus.unregister(HOTKEY);
 	}
@@ -1753,6 +1759,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.bankWearItem = config.bankWearItem();
 		this.bankEatItem = config.bankEatItem();
 		this.bankDrinkItem = config.bankDrinkItem();
+		this.bankEquipItem = config.bankEquipItem();
 	}
 
 	private void addBuySellEntries()

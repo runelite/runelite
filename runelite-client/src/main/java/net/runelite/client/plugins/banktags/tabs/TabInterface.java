@@ -601,7 +601,7 @@ public class TabInterface
 
 		if ((event.getIdentifier() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			|| event.getIdentifier() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
-			&& event.getMenuOpcode() == MenuOpcode.EXAMINE_ITEM_BANK_EQ
+			&& event.getMenuOpcode() == MenuOpcode.CC_OP_LOW_PRIORITY
 			&& (event.getOption().equalsIgnoreCase("withdraw-x")
 			|| event.getOption().equalsIgnoreCase("deposit-x")))
 		{

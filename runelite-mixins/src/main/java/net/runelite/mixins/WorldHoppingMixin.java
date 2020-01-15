@@ -15,7 +15,7 @@ public abstract class WorldHoppingMixin implements RSClient
 	public void openWorldHopper()
 	{
 		// The clicked x & y coordinates (the last arguments) are not processed in the game or sent to Jagex, so they don't have to be real.
-		invokeMenuAction(-1, WidgetInfo.WORLD_SWITCHER_BUTTON.getId(), MenuOpcode.WIDGET_DEFAULT.getId(), 1, "World Switcher", "", 658, 384);
+		invokeMenuAction(-1, WidgetInfo.WORLD_SWITCHER_BUTTON.getId(), MenuOpcode.CC_OP.getId(), 1, "World Switcher", "", 658, 384);
 	}
 
 	@Inject
@@ -23,6 +23,6 @@ public abstract class WorldHoppingMixin implements RSClient
 	public void hopToWorld(World world)
 	{
 		final int worldId = world.getId();
-		invokeMenuAction(worldId, WidgetInfo.WORLD_SWITCHER_LIST.getId(), MenuOpcode.WIDGET_DEFAULT.getId(), 1, "Switch", "<col=ff9040>" + (worldId - 300) + "</col>", 683, 244);
+		invokeMenuAction(worldId, WidgetInfo.WORLD_SWITCHER_LIST.getId(), MenuOpcode.CC_OP.getId(), 1, "Switch", "<col=ff9040>" + (worldId - 300) + "</col>", 683, 244);
 	}
 }

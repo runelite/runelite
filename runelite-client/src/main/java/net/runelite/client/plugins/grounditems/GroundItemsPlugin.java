@@ -869,8 +869,7 @@ public class GroundItemsPlugin extends Plugin
 			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
 			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
 			.ticks(durationTicks)
-			.lootType(LootType.UNKNOWN)
-			.isDropped(dropped)
+			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
 			.spawnTime(Instant.now())
 			.build();
 
