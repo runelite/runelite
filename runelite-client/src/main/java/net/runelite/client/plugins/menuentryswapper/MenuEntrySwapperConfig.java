@@ -2007,4 +2007,17 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "bankEquipItem",
+		name = "Left Click 'Equip' In Bank Screen",
+		description = "Enables Left Click 'Equip' In Bank When Pressing The Hotkey",
+		position = 6,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankEquipItem()
+	{
+		return false;
+	}
 }
