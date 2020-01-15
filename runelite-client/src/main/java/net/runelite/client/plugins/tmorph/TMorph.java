@@ -27,32 +27,38 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.util.Clipboard;
-import net.runelite.client.util.ColorUtil;
+import net.runelite.client.plugins.tmorph.ui.TPanel;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 
 @PluginDescriptor(
@@ -79,7 +85,7 @@ public class TMorph extends Plugin
 		kit = builder.build();
 	}
 
-	@Getter(AccessLevel.PACKAGE)
+	@Getter(AccessLevel.PUBLIC)
 	private static final Splitter NEWLINE_SPLITTER = Splitter
 		.on("\n")
 		.omitEmptyStrings()
@@ -94,15 +100,26 @@ public class TMorph extends Plugin
 	@Inject
 	private EventBus eventBus;
 
-	private Map<String, String> set1;
-	private Map<String, String> set2;
-	private Map<String, String> set3;
+	@Inject
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ItemManager itemManager;
+
+
+	private TPanel panel;
+	private NavigationButton navButton;
 	private int animation;
 	private int globalAnimSwap;
 	private int globalGraphicSwap;
 	private int graphic;
 	private int targetAnimation;
 	private int targetGraphic;
+	@Setter
+	private Map<String, String> panelMorph = new HashMap<>();
 
 	@Provides
 	TMorphConfig provideConfig(ConfigManager configManager)
@@ -113,8 +130,20 @@ public class TMorph extends Plugin
 	@Override
 	protected void startUp()
 	{
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "nav.png");
+
+		panel = injector.getInstance(TPanel.class);
+
+		navButton = NavigationButton.builder()
+			.tooltip("TMorph")
+			.icon(icon)
+			.priority(100)
+			.panel(panel)
+			.build();
+
+		clientToolbar.addNavigation(navButton);
+
 		updateConfig();
-		addSubscriptions();
 	}
 
 	@Override
@@ -123,72 +152,20 @@ public class TMorph extends Plugin
 		eventBus.unregister(this);
 	}
 
-	private void addSubscriptions()
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		eventBus.subscribe(AnimationChanged.class, this, this::onAnimationChanged);
-		eventBus.subscribe(GameTick.class, this, this::onGameTick);
-		eventBus.subscribe(SpotAnimationChanged.class, this, this::onSpotAnimationChanged);
-		eventBus.subscribe(CommandExecuted.class, this, this::onCommandExecuted);
-	}
-
-	private void onCommandExecuted(CommandExecuted event)
-	{
-		final String[] args = event.getArguments();
-
-		if (event.getCommand().equals("tmorph"))
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			try
+			clientThread.invokeLater(() ->
 			{
-				if (args[0].equals("copy"))
-				{
-					final StringBuilder sb = new StringBuilder();
-					final Player player = client.getLocalPlayer();
-
-					if (player == null
-						|| player.getPlayerAppearance() == null
-						|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
-						|| client.getViewportWidget() == null)
-					{
-						return;
-					}
-
-					for (KitType kitType : KitType.values())
-					{
-						if (kitType.equals(KitType.RING) || kitType.equals(KitType.AMMUNITION))
-						{
-							continue;
-						}
-
-						final int id = player.getPlayerAppearance().getEquipmentId(kitType);
-
-						if (id == -1)
-						{
-							continue;
-						}
-
-						sb.append(id);
-						sb.append(",-1");
-						sb.append(":");
-						sb.append(kitType.getName());
-						sb.append("\n");
-					}
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Your current gear has been copied to your clipboard", COLOR), null);
-					Clipboard.store(sb.toString());
-				}
-				else
-				{
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED), null);
-				}
-			}
-			catch (Exception e)
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "TMorph", ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED), null);
-			}
+				panel.populateSlots();
+			});
 		}
 	}
 
 	@Subscribe
-	private void onConfigChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("TMorph"))
 		{
@@ -196,7 +173,8 @@ public class TMorph extends Plugin
 		}
 	}
 
-	private void onSpotAnimationChanged(SpotAnimationChanged event)
+	@Subscribe
+	public void onSpotAnimationChanged(SpotAnimationChanged event)
 	{
 		final Actor actor = event.getActor();
 
@@ -218,7 +196,8 @@ public class TMorph extends Plugin
 		}
 	}
 
-	private void onAnimationChanged(AnimationChanged event)
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();
 
@@ -240,7 +219,8 @@ public class TMorph extends Plugin
 		}
 	}
 
-	private void onGameTick(GameTick event)
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -257,12 +237,10 @@ public class TMorph extends Plugin
 			return;
 		}
 
-		updateGear(set1, player);
-		updateGear(set2, player);
-		updateGear(set3, player);
+		updateGear(panelMorph, player);
 	}
 
-	private void updateGear(Map<String, String> map, Player player)
+	public void updateGear(Map<String, String> map, Player player)
 	{
 		if (map == null || map.isEmpty())
 		{
@@ -308,9 +286,6 @@ public class TMorph extends Plugin
 
 	private void updateConfig()
 	{
-		this.set1 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set1());
-		this.set2 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set2());
-		this.set3 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set3());
 		this.animation = config.animationSwap();
 		this.globalAnimSwap = config.globalAnimSwap();
 		this.globalGraphicSwap = config.globalGraphicSwap();

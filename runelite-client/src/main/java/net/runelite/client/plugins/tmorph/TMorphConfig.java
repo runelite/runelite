@@ -27,76 +27,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
-import net.runelite.client.config.ConfigTitleSection;
-import net.runelite.client.config.Title;
 
 @ConfigGroup("TMorph")
 public interface TMorphConfig extends Config
 {
-	@ConfigTitleSection(
-		keyName = "swaps",
-		name = "Morphers",
-		description = "",
-		position = 1
-	)
-	default Title swaps()
-	{
-		return new Title();
-	}
-
-	@ConfigItem(
-		keyName = "mageSwap",
-		name = "Swap Set 1",
-		description = "<html><center>Proper Format is id,id:Slot" +
-			"<br>For example: 6570,21295:Cape" +
-			"<br>Valid Slots: Helmet, Cape, Amulet, Weapon, Torso, Shield, Legs, Head, Hands, Boots, Jaw, Ring, Ammo</center></html>",
-		titleSection = "swaps",
-		position = 1,
-		parse = true,
-		clazz = Parse.class,
-		method = "parse"
-	)
-	default String set1()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "rangeSwap",
-		name = "Swap Set 2",
-		description = "<html><center>Proper Format is id,id:Slot" +
-			"<br>For example: 6570,21295:Cape" +
-			"<br>Valid Slots: Helmet, Cape, Amulet, Weapon, Torso, Shield, Legs, Head, Hands, Boots, Jaw, Ring, Ammo</center></html>",
-		titleSection = "swaps",
-		position = 2,
-		parse = true,
-		clazz = Parse.class,
-		method = "parse"
-	)
-	default String set2()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "meleeSwap",
-		name = "Swap Set 3",
-		description = "<html><center>Proper Format is id,id:Slot" +
-			"<br>For example: 6570,21295:Cape" +
-			"<br>Valid Slots: Helmet, Cape, Amulet, Weapon, Torso, Shield, Legs, Head, Hands, Boots, Jaw, Ring, Ammo</center></html>",
-		titleSection = "swaps",
-		position = 3,
-		parse = true,
-		clazz = Parse.class,
-		method = "parse"
-	)
-	default String set3()
-	{
-		return "";
-	}
-
-	//////////////////Experimental Functions
-
 	@ConfigSection(
 		position = 4,
 		keyName = "experimentalSection",
@@ -202,19 +136,5 @@ public interface TMorphConfig extends Config
 	default int graphicTarget()
 	{
 		return 0;
-	}
-
-	@ConfigTitleSection(
-		keyName = "copy",
-		name = "<html><center>If you would like to copy your equipped" +
-			"<br>gear, type \"::tmorph copy\" in chat." +
-			"<br>This will copy your gear to your" +
-			"<br>clipboard for easy copy paste.</center></html>",
-		description = "",
-		position = 50
-	)
-	default Title copy()
-	{
-		return new Title();
 	}
 }
