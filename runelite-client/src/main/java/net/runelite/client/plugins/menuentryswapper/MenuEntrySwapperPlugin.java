@@ -144,6 +144,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		"miscellania", "grand exchange", "falador park", "dondakan's rock", "edgeville", "karamja",
 		"draynor village", "al kharid"
 	);
+		private static final List<String> npcContact = Arrays.asList(
+		"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "turael",
+		"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
+		"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "random"
+	);
 
 	private static final Splitter NEWLINE_SPLITTER = Splitter
 		.on("\n")
@@ -266,6 +271,34 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean bankDrinkItem;
 	private boolean bankEquipItem;
 	private boolean bankInvigorateItem;
+	private boolean swapNpcContact;
+	private boolean swapCoalBag;
+	private boolean swapContract;
+	private boolean swapEnchant;
+	private boolean swapHardWoodGrove;
+	private boolean swapHarpoon;
+	private boolean swapHouseAd;
+	private boolean swapImps;
+	private boolean swapInteract;
+	private boolean swapMax;
+	private boolean swapMetamorphosis;
+	private boolean swapMinigame;
+	private boolean swapNexus;
+	private boolean swapPay;
+	private boolean swapPick;
+	private boolean swapPickpocket;
+	private boolean swapPlank;
+	private boolean swapPrivate;
+	private boolean swapQuestCape;
+	private boolean swapQuick;
+	private boolean swapRogueschests;
+	private boolean swapSearch;
+	private boolean swapStun;
+	private boolean swapTeleportItem;
+	private boolean swapTrade;
+	private boolean swapTravel;
+	private boolean swapWildernessLever;
+	private boolean swapJewelleryBox;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
 		@Override
@@ -298,33 +331,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			setControlActive(false);
 		}
 	};
-	private boolean swapCoalBag;
-	private boolean swapContract;
-	private boolean swapEnchant;
-	private boolean swapHardWoodGrove;
-	private boolean swapHarpoon;
-	private boolean swapHouseAd;
-	private boolean swapImps;
-	private boolean swapInteract;
-	private boolean swapMax;
-	private boolean swapMetamorphosis;
-	private boolean swapMinigame;
-	private boolean swapNexus;
-	private boolean swapPay;
-	private boolean swapPick;
-	private boolean swapPickpocket;
-	private boolean swapPlank;
-	private boolean swapPrivate;
-	private boolean swapQuestCape;
-	private boolean swapQuick;
-	private boolean swapRogueschests;
-	private boolean swapSearch;
-	private boolean swapStun;
-	private boolean swapTeleportItem;
-	private boolean swapTrade;
-	private boolean swapTravel;
-	private boolean swapWildernessLever;
-	private boolean swapJewelleryBox;
+
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -1511,6 +1518,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry("climb-up").setPriority(100);
 		}
+		
+		if (this.swapNpcContact)
+		{
+			for (String npccontact : npcContact)
+			{
+				menuManager.addPriorityEntry(npccontact, "npc contact");
+			}
+		}
 
 		eventBus.unregister(HOTKEY);
 	}
@@ -1529,6 +1544,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new BankComparableEntry("equip", "", false));
 		menuManager.removePriorityEntry(new BankComparableEntry("invigorate", "", false));
 		menuManager.removePriorityEntry("climb-up");
+		
+		for (String npccontact : npcContact)
+		{
+			menuManager.removePriorityEntry(npccontact, "npc contact");
+		}
 
 		loadCustomSwaps("", customShiftSwaps);
 		eventBus.unregister(HOTKEY);
@@ -1767,6 +1787,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.bankDrinkItem = config.bankDrinkItem();
 		this.bankEquipItem = config.bankEquipItem();
 		this.bankInvigorateItem = config.bankInvigorateItem();
+		this.swapNpcContact = config.swapNpcContact();
 	}
 
 	private void addBuySellEntries()
