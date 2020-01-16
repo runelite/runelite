@@ -77,6 +77,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Inventory Setups",
@@ -712,7 +715,38 @@ public class InventorySetupPlugin extends Plugin
 			catch (Exception e)
 			{
 				inventorySetups = new ArrayList<>();
+
+				//Populate with old inventorysetups
+				final Gson gson = new Gson();
+				Type type = new TypeToken<HashMap<String, InventorySetupOld>>()
+				{
+				}.getType();
+
+				HashMap<String, InventorySetupOld> oldSetups = new HashMap<>();
+				oldSetups.putAll(gson.fromJson(json, type));
+
+				for (String name : oldSetups.keySet())
+				{
+					InventorySetup newSetup = new InventorySetup(
+							new ArrayList<>(oldSetups.get(name).getInventory()),
+							new ArrayList<>(oldSetups.get(name).getEquipment()),
+							null,
+							name,
+							this.highlightColor,
+							this.highlightStackDifference,
+							this.highlightVariationDifference,
+							this.highlightDifference,
+							this.bankFilter,
+							this.highlightUnorderedDifference);
+
+					inventorySetups.add(newSetup);
+				}
+
 			}
+
+			inventorySetups = new ArrayList<>(inventorySetups.stream()
+					.sorted(Comparator.comparing(InventorySetup::getName, String::compareToIgnoreCase))
+					.collect(Collectors.toList()));
 		}
 	}
 
@@ -721,6 +755,10 @@ public class InventorySetupPlugin extends Plugin
 		SwingUtilities.invokeLater(() ->
 		{
 			inventorySetups.add(newSetup);
+			inventorySetups = new ArrayList<>(inventorySetups.stream()
+					.sorted(Comparator.comparing(InventorySetup::getName, String::compareToIgnoreCase))
+					.collect(Collectors.toList()));
+
 			panel.rebuild();
 
 			updateJsonConfig();

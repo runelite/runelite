@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raids.solver;
 import com.google.common.collect.ImmutableList;
 import net.runelite.client.plugins.raids.RaidRoom;
 import net.runelite.client.plugins.raids.RoomType;
+import java.util.ArrayList;
 import java.util.List;
 import static net.runelite.client.plugins.raids.RaidRoom.GUARDIANS;
 import static net.runelite.client.plugins.raids.RaidRoom.MUTTADILES;
@@ -55,7 +56,7 @@ public class RotationSolver
 			return false;
 		}
 
-		List<RaidRoom> match = null;
+		List<ImmutableList<RaidRoom>> matches = new ArrayList<>();
 		Integer start = null;
 		Integer index = null;
 		int known = 0;
@@ -85,52 +86,49 @@ public class RotationSolver
 			return true;
 		}
 
-		for (List rotation : ROTATIONS)
+		//Iterate over each rotation
+		for (ImmutableList<RaidRoom> rotation : ROTATIONS)
 		{
-			COMPARE:
-			for (int i = 0; i < rotation.size(); i++)
+			//Determine the index of the first known combat room in this rotation
+			int rotationStart = rotation.indexOf(rooms[start]);
+
+			//Iterate over each room (except the starting room) and determine whether or not the rotation still matches
+			int roomStep = 1;
+			boolean doesNotMatch = false;
+			while (roomStep < rooms.length && !doesNotMatch)
 			{
-				if (rooms[start] == rotation.get(i))
+				var roomIndex = (start + roomStep) % rooms.length;
+				var rotationRoomIndex = (rotationStart + roomStep) % rotation.size();
+				if (rooms[roomIndex] != UNKNOWN_COMBAT && rooms[roomIndex] != rotation.get(rotationRoomIndex))
 				{
-					for (int j = start + 1; j < rooms.length; j++)
-					{
-						if (rooms[j].getType() != RoomType.COMBAT || rooms[j] == UNKNOWN_COMBAT)
-						{
-							continue;
-						}
-
-						if (rooms[j] != rotation.get((i + j - start) % rotation.size()))
-						{
-							break COMPARE;
-						}
-					}
-
-					if (match != null && match.equals(rotation))
-					{
-						return false;
-					}
-
-					index = i - start;
-					match = rotation;
+					doesNotMatch = true;
 				}
+
+				++roomStep;
+			}
+
+			if (!doesNotMatch)
+			{
+				//Found a matching rotation!
+				matches.add(rotation);
+				index = rotationStart - start;
 			}
 		}
 
-		if (match == null)
+		if (matches.size() != 1)
 		{
+			//Could not find a unique match!
 			return false;
 		}
 
+		List<RaidRoom> match = matches.get(0);
+
+
 		for (int i = 0; i < rooms.length; i++)
 		{
-			if (rooms[i] == null)
+			if (rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT)
 			{
-				continue;
-			}
-
-			if ((rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT))
-			{
-				rooms[i] = match.get((index + i + match.size()) % match.size());
+				rooms[i] = match.get(Math.floorMod((index + i), match.size()));
 			}
 		}
 		return true;
