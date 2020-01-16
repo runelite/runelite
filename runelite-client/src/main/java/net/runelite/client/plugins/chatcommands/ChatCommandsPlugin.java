@@ -335,7 +335,7 @@ public class ChatCommandsPlugin extends Plugin
 		matcher = RAIDS_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-		    matchPb(matcher);
+			matchPb(matcher);
 		}
 
 		lastBossKill = null;
