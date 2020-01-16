@@ -227,15 +227,15 @@ public class WidgetID
 	{
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
-		static final int BANK_TITLE_BAR = 4;
-		static final int CONTENT_CONTAINER = 9;
-		static final int TAB_CONTAINER = 10;
-		static final int ITEM_CONTAINER = 12;
-		static final int SEARCH_BUTTON_BACKGROUND = 39;
-		static final int DEPOSIT_INVENTORY = 41;
-		static final int DEPOSIT_EQUIPMENT = 43;
-		static final int INCINERATOR = 45;
-		static final int INCINERATOR_CONFIRM = 46;
+		static final int BANK_TITLE_BAR = 3;
+		static final int CONTENT_CONTAINER = 8;
+		static final int TAB_CONTAINER = 9;
+		static final int ITEM_CONTAINER = 11;
+		static final int SEARCH_BUTTON_BACKGROUND = 38;
+		static final int DEPOSIT_INVENTORY = 40;
+		static final int DEPOSIT_EQUIPMENT = 42;
+		static final int INCINERATOR = 44;
+		static final int INCINERATOR_CONFIRM = 45;
 	}
 
 	static class GrandExchange
