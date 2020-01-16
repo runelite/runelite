@@ -88,7 +88,7 @@ public class ChatCommandsPlugin extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
-	private static final Pattern COX_DURATION_PATTERN = Pattern.compile("Congratulations - your raid is complete! Duration <col=ff0000>([0-9:]+)</col>");
+	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("Congratulations - your raid is complete! Duration <col=ff0000>([0-9:]+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>[0-9:]+</col>\\. Personal best: ([0-9:]+)");
@@ -257,7 +257,21 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
-			lastBossKill = boss;
+            if (lastPb > -1)
+            {
+                log.debug("Got out-of-order personal best for {}: {}", boss, lastPb);
+
+                int currentPb = getPb(boss);
+                if (currentPb <= 0 || currentPb > lastPb)
+                {
+                    setPb(boss, lastPb);
+                }
+                lastPb = -1;
+            }
+            else
+            {
+                lastBossKill = boss;
+            }
 			return;
 		}
 
@@ -318,16 +332,10 @@ public class ChatCommandsPlugin extends Plugin
 			matchPb(matcher);
 		}
 
-		matcher = COX_DURATION_PATTERN.matcher(message);
+		matcher = RAIDS_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			int duration = timeStringToSeconds(matcher.group(1));
-			// COX is hardcoded here because kc message comes after duration message
-			int currentPb = getPb("Chambers of Xeric");
-			if (currentPb <= 0 || currentPb > duration)
-			{
-				setPb("Chambers of Xeric", duration);
-			}
+		    matchPb(matcher);
 		}
 
 		lastBossKill = null;
