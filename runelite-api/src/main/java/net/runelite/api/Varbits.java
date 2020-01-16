@@ -706,15 +706,6 @@ public enum Varbits
 	IN_PVP_AREA(8121),
 
 	/**
-	 * Twisted league
-	 */
-	TWISTED_LEAGUE_RELIC_1(10049),
-	TWISTED_LEAGUE_RELIC_2(10050),
-	TWISTED_LEAGUE_RELIC_3(10051),
-	TWISTED_LEAGUE_RELIC_4(10052),
-	TWISTED_LEAGUE_RELIC_5(10053),
-
-	/**
 	 * Value of hotkey varbits can be 0-13
 	 * 0 corresponds to no hotkey set
 	 * 1-12 correspond to F1-F12 respectively
