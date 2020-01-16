@@ -194,4 +194,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2)
 	public static final int XPDROP_DISABLED = 2091;
+
+	/**
+	 * Attempts to kick the specified player from the Clan Chat
+	 * <ul>
+	 * <li>String Players in-game name</li>
+	 * </ul>
+	 */
+	@ScriptArguments(string = 1)
+	public static final int CLAN_SEND_KICK = 215;
 }

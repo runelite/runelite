@@ -26,28 +26,33 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.GridLayout;
+import java.awt.TrayIcon;
 import javax.inject.Inject;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
+	private final Notifier notifier;
 	private final DevToolsPlugin plugin;
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
 
 	@Inject
-	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
+	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector, Notifier notifier)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
+		this.notifier = notifier;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
@@ -120,6 +125,13 @@ class DevToolsPanel extends PluginPanel
 		});
 
 		container.add(plugin.getSoundEffects());
+
+		final JButton notificationBtn = new JButton("Notification");
+		notificationBtn.addActionListener(e ->
+		{
+			notifier.notify("Wow!", TrayIcon.MessageType.ERROR);
+		});
+		container.add(notificationBtn);
 
 		return container;
 	}

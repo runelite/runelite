@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import static java.lang.Math.floorMod;
 import java.util.Arrays;
 import java.util.List;
 import static net.runelite.client.plugins.raids.RaidRoom.GUARDIANS;
@@ -97,7 +98,7 @@ class RotationSolver
 							continue;
 						}
 
-						if (rooms[j] != rotation.get((i + j - start) % rotation.size()))
+						if (rooms[j] != rotation.get(floorMod(i + j - start, rotation.size())))
 						{
 							break COMPARE;
 						}
@@ -128,7 +129,7 @@ class RotationSolver
 
 			if (rooms[i].getType() != RoomType.COMBAT || rooms[i] == UNKNOWN_COMBAT)
 			{
-				rooms[i] = match.get((index + i) % match.size());
+				rooms[i] = match.get(floorMod(index + i, match.size()));
 			}
 		}
 

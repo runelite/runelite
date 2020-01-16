@@ -69,4 +69,20 @@ public class RotationSolverTest
 		RotationSolver.solve(rooms);
 		assertArrayEquals(new RaidRoom[]{VASA, SHAMANS, VESPULA, GUARDIANS}, rooms);
 	}
+
+	@Test
+	public void testSolve5()
+	{
+		RaidRoom[] rooms = new RaidRoom[]{GUARDIANS, UNKNOWN_COMBAT, SHAMANS, VASA};
+		RotationSolver.solve(rooms);
+		assertArrayEquals(new RaidRoom[]{GUARDIANS, VESPULA, SHAMANS, VASA}, rooms);
+	}
+
+	@Test
+	public void testSolve6()
+	{
+		RaidRoom[] rooms = new RaidRoom[]{UNKNOWN_COMBAT, UNKNOWN_COMBAT, TEKTON, MUTTADILES};
+		RotationSolver.solve(rooms);
+		assertArrayEquals(new RaidRoom[]{VANGUARDS, MYSTICS, TEKTON, MUTTADILES}, rooms);
+	}
 }

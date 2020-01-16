@@ -6,9 +6,9 @@
    iload                  0 ; stat
    iload                  1 ; xp
    sconst                 "fakeXpDrop"
-   runelite_callback
-   pop_int
-   pop_int
+   runelite_callback     
+   pop_int               
+   pop_int               
    iconst                 105
    iconst                 83
    iconst                 681
@@ -25,7 +25,7 @@ LABEL9:
    iload                  1
    movecoord             
    set_varc_int           207
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL16:
    iconst                 105
    iconst                 83
@@ -43,7 +43,7 @@ LABEL25:
    iload                  1
    movecoord             
    set_varc_int           208
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL32:
    iconst                 105
    iconst                 83
@@ -61,7 +61,7 @@ LABEL41:
    iload                  1
    movecoord             
    set_varc_int           209
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL48:
    iconst                 105
    iconst                 83
@@ -79,7 +79,7 @@ LABEL57:
    iload                  1
    movecoord             
    set_varc_int           210
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL64:
    iconst                 105
    iconst                 83
@@ -97,7 +97,7 @@ LABEL73:
    iload                  1
    movecoord             
    set_varc_int           211
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL80:
    iconst                 105
    iconst                 83
@@ -115,7 +115,7 @@ LABEL89:
    iload                  1
    movecoord             
    set_varc_int           212
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL96:
    iconst                 105
    iconst                 83
@@ -133,13 +133,27 @@ LABEL105:
    iload                  1
    movecoord             
    set_varc_int           213
-   jump                   LABEL216
+   jump                   LABEL227
 LABEL112:
+   iload                  0
+   iconst                 3
+   if_icmpeq              LABEL116
+   jump                   LABEL123
+LABEL116:
+   iload                  1
+   iconst                 20000001
+   if_icmpeq              LABEL120
+   jump                   LABEL123
+LABEL120:
+   iconst                 269500481
+   set_varc_int           207
+   jump                   LABEL227
+LABEL123:
    get_varc_int           207
    iconst                 -1
-   if_icmpeq              LABEL116
-   jump                   LABEL127
-LABEL116:
+   if_icmpeq              LABEL127
+   jump                   LABEL138
+LABEL127:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -150,13 +164,13 @@ LABEL116:
    iload                  1
    movecoord             
    set_varc_int           207
-   jump                   LABEL216
-LABEL127:
+   jump                   LABEL227
+LABEL138:
    get_varc_int           208
    iconst                 -1
-   if_icmpeq              LABEL131
-   jump                   LABEL142
-LABEL131:
+   if_icmpeq              LABEL142
+   jump                   LABEL153
+LABEL142:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -167,13 +181,13 @@ LABEL131:
    iload                  1
    movecoord             
    set_varc_int           208
-   jump                   LABEL216
-LABEL142:
+   jump                   LABEL227
+LABEL153:
    get_varc_int           209
    iconst                 -1
-   if_icmpeq              LABEL146
-   jump                   LABEL157
-LABEL146:
+   if_icmpeq              LABEL157
+   jump                   LABEL168
+LABEL157:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -184,13 +198,13 @@ LABEL146:
    iload                  1
    movecoord             
    set_varc_int           209
-   jump                   LABEL216
-LABEL157:
+   jump                   LABEL227
+LABEL168:
    get_varc_int           210
    iconst                 -1
-   if_icmpeq              LABEL161
-   jump                   LABEL172
-LABEL161:
+   if_icmpeq              LABEL172
+   jump                   LABEL183
+LABEL172:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -201,13 +215,13 @@ LABEL161:
    iload                  1
    movecoord             
    set_varc_int           210
-   jump                   LABEL216
-LABEL172:
+   jump                   LABEL227
+LABEL183:
    get_varc_int           211
    iconst                 -1
-   if_icmpeq              LABEL176
-   jump                   LABEL187
-LABEL176:
+   if_icmpeq              LABEL187
+   jump                   LABEL198
+LABEL187:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -218,13 +232,13 @@ LABEL176:
    iload                  1
    movecoord             
    set_varc_int           211
-   jump                   LABEL216
-LABEL187:
+   jump                   LABEL227
+LABEL198:
    get_varc_int           212
    iconst                 -1
-   if_icmpeq              LABEL191
-   jump                   LABEL202
-LABEL191:
+   if_icmpeq              LABEL202
+   jump                   LABEL213
+LABEL202:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -235,13 +249,13 @@ LABEL191:
    iload                  1
    movecoord             
    set_varc_int           212
-   jump                   LABEL216
-LABEL202:
+   jump                   LABEL227
+LABEL213:
    get_varc_int           213
    iconst                 -1
-   if_icmpeq              LABEL206
-   jump                   LABEL216
-LABEL206:
+   if_icmpeq              LABEL217
+   jump                   LABEL227
+LABEL217:
    iconst                 0
    iconst                 83
    iconst                 105
@@ -252,5 +266,5 @@ LABEL206:
    iload                  1
    movecoord             
    set_varc_int           213
-LABEL216:
+LABEL227:
    return                

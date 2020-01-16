@@ -33,6 +33,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertArrayEquals;
@@ -99,10 +100,16 @@ public class MenuEntrySwapperPluginTest
 
 	private static MenuEntry menu(String option, String target, MenuAction menuAction)
 	{
+		return menu(option, target, menuAction, 0);
+	}
+
+	private static MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
+	{
 		MenuEntry menuEntry = new MenuEntry();
 		menuEntry.setOption(option);
 		menuEntry.setTarget(target);
 		menuEntry.setType(menuAction.getId());
+		menuEntry.setIdentifier(identifier);
 		return menuEntry;
 	}
 
@@ -261,6 +268,68 @@ public class MenuEntrySwapperPluginTest
 			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
 			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
 			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
+
+	@Test
+	public void testTobDoor()
+	{
+		when(config.swapQuick()).thenReturn(true);
+		when(config.swapHomePortal()).thenReturn(HouseMode.HOME);
+
+		//Quick-enter, Enter
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+		};
+
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
+
+	@Test
+	public void testBankExtraOp()
+	{
+		when(config.swapBankOp()).thenReturn(true);
+		menuEntrySwapperPlugin.setShiftModifier(true);
+
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Weild", "Abyssal whip", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
+		};
+
+		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
+			"Deposit-1",
+			"Abyssal whip",
+			MenuAction.CC_OP.getId(),
+			2,
+			-1,
+			-1
+		));
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
+			menu("Weild", "Abyssal whip", MenuAction.CC_OP, 9),
 		}, argumentCaptor.getValue());
 	}
 }

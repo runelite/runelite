@@ -26,12 +26,11 @@ package net.runelite.client.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.ReflectUtil;
 
 @Slf4j
 class ConfigInvocationHandler implements InvocationHandler
@@ -165,12 +164,8 @@ class ConfigInvocationHandler implements InvocationHandler
 
 	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
 	{
-		// Call the default method implementation - https://rmannibucau.wordpress.com/2014/03/27/java-8-default-interface-methods-and-jdk-dynamic-proxies/
-		Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, int.class);
-		constructor.setAccessible(true);
-
 		Class<?> declaringClass = method.getDeclaringClass();
-		return constructor.newInstance(declaringClass, MethodHandles.Lookup.PUBLIC | MethodHandles.Lookup.PRIVATE)
+		return ReflectUtil.privateLookupIn(declaringClass)
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);

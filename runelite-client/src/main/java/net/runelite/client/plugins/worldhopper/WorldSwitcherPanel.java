@@ -378,7 +378,7 @@ class WorldSwitcherPanel extends PluginPanel
 	 */
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
-		WorldTableRow row = new WorldTableRow(world, current, favorite,
+		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
 			world1 ->
 			{
 				plugin.hopTo(world1);

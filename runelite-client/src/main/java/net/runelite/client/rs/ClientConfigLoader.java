@@ -39,16 +39,8 @@ class ClientConfigLoader
 	{
 	}
 
-	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
-
-	static RSConfig fetch(String host) throws IOException
+	static RSConfig fetch(HttpUrl url) throws IOException
 	{
-		HttpUrl url = HttpUrl.parse(CONFIG_URL);
-		if (host != null)
-		{
-			url = url.newBuilder().host(host).build();
-		}
-
 		final Request request = new Request.Builder()
 			.url(url)
 			.build();

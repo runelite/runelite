@@ -133,6 +133,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapCaptainKhaled",
+		name = "Task",
+		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius"
+	)
+	default boolean swapCaptainKhaled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapDecant",
 		name = "Decant",
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
@@ -183,6 +193,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHelp",
+		name = "Help",
+		description = "Swap Talk-to with Help on Arceuus library customers"
+	)
+	default boolean swapHelp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHomePortal",
 		name = "Home",
 		description = "Swap Enter with Home or Build or Friend's house on Portal"
@@ -210,6 +230,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapJewelleryBox",
+		name = "Jewellery Box",
+		description = "Swap Teleport Menu with previous destination on Jewellery Box"
+	)
+	default boolean swapJewelleryBox()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -328,6 +358,46 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Leave Tomb with Quick-Leave at Pyramid Plunder"
 	)
 	default boolean swapQuickLeave()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGEItemCollect",
+		name = "GE Item Collect",
+		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer"
+	)
+	default GEItemCollectMode swapGEItemCollect()
+	{
+		return GEItemCollectMode.DEFAULT;
+	}
+
+	@ConfigItem(
+		keyName = "swapGEAbort",
+		name = "GE Abort",
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
+	)
+	default boolean swapGEAbort()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapBankOp",
+		name = "Swap Bank Op",
+		description = "Swaps the extra menu option in banks (Weild, Eat, etc.) when holding shift"
+	)
+	default boolean swapBankOp()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNpcContact",
+		name = "NPC Contact",
+		description = "Swap NPC Contact with last contacted NPC when shift-clicking"
+	)
+	default boolean swapNpcContact()
 	{
 		return false;
 	}
