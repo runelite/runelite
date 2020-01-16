@@ -1958,7 +1958,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankWieldItem",
-		name = "Left Click 'Wield' In Bank Screen",
+		name = "Bank - Left Click 'Wield'",
 		description = "Enables Hotkey Left Click 'Wield' In Bank When Pressing The Hotkey",
 		position = 2,
 		section = "hotkeySwapping"
@@ -1971,7 +1971,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankWearItem",
-		name = "Left Click 'Wear' In Bank Screen",
+		name = "Bank - Left Click 'Wear'",
 		description = "Enables Hotkey Left Click 'Wear' In Bank When Pressing The Hotkey",
 		position = 3,
 		section = "hotkeySwapping"
@@ -1984,7 +1984,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankEatItem",
-		name = "Left Click 'Eat' In Bank Screen",
+		name = "Bank - Left Click 'Eat'",
 		description = "Enables Left Click 'Eat' In Bank When Pressing The Hotkey",
 		position = 4,
 		section = "hotkeySwapping"
@@ -1997,7 +1997,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankDrinkItem",
-		name = "Left Click 'Drink' In Bank Screen",
+		name = "Bank - Left Click 'Drink'",
 		description = "Enables Left Click 'Drink' In Bank When Pressing The Hotkey",
 		position = 5,
 		section = "hotkeySwapping"
@@ -2010,13 +2010,26 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankEquipItem",
-		name = "Left Click 'Equip' In Bank Screen",
+		name = "Bank - Left Click 'Equip'",
 		description = "Enables Left Click 'Equip' In Bank When Pressing The Hotkey",
 		position = 6,
 		section = "hotkeySwapping"
 	)
 
 	default boolean bankEquipItem()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "bankInvigorateItem",
+		name = "Bank - Left Click 'Invigorate'",
+		description = "Enables Left Click 'Invigorate' In Bank When Pressing The Hotkey",
+		position = 7,
+		section = "hotkeySwapping"
+	)
+
+	default boolean bankInvigorateItem()
 	{
 		return false;
 	}
