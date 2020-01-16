@@ -113,6 +113,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Override
 	protected void startUp()
 	{
+		updateConfig();
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
