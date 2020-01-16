@@ -993,6 +993,14 @@ public final class NpcID
 	public static final int BANDIT_1026 = 1026;
 	public static final int GUARD_BANDIT = 1027;
 	public static final int BARBARIAN_GUARD = 1028;
+	public static final int SLEEPWALKER = 1029;
+	public static final int SLEEPWALKER_1030 = 1030;
+	public static final int SLEEPWALKER_1031 = 1031;
+	public static final int SLEEPWALKER_1032 = 1032;
+	public static final int SLEEPWALKER_1033 = 1033;
+	public static final int SLEEPWALKER_1034 = 1034;
+	public static final int SLEEPWALKER_1035 = 1035;
+	public static final int SLEEPWALKER_1036 = 1036;
 	public static final int SNAKE = 1037;
 	public static final int MONKEY_1038 = 1038;
 	public static final int ALBINO_BAT = 1039;
