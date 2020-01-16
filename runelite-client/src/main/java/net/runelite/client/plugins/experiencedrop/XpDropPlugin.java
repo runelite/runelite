@@ -74,9 +74,6 @@ public class XpDropPlugin extends Plugin
 	private static final int XPDROP_PADDING = 2; // space between xp drop icons
 	private static final double HITPOINT_RATIO = 1.33; // Base rate of hp xp per point damage
 	private static final double DMM_MULTIPLIER_RATIO = 10;
-	private static final double TL_MULTIPLIER_RATIO = 5;
-	private static final int TWISTED_LEAGUE_WAY_OF_THE_WARRIOR = 3;
-	private static final int TWISTED_LEAGUE_XERICS_WISDOM = 3;
 
 	@Inject
 	private Client client;
@@ -405,25 +402,12 @@ public class XpDropPlugin extends Plugin
 	{
 		double damageDealt = diff / HITPOINT_RATIO;
 
-		// DeadMan mode has an XP modifier of 10x, Twisted League mode has an XP modifier of 5x
+		// DeadMan mode has an XP modifier of 10x
 		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
 			damageDealt = damageDealt / DMM_MULTIPLIER_RATIO;
 		}
-		if (client.getWorldType().contains(WorldType.LEAGUE))
-		{
-			damageDealt = damageDealt / TL_MULTIPLIER_RATIO;
-
-			if (client.getVar(Varbits.TWISTED_LEAGUE_RELIC_3) == TWISTED_LEAGUE_WAY_OF_THE_WARRIOR)
-			{
-				damageDealt = damageDealt / 2;
-			}
-			if (client.getVar(Varbits.TWISTED_LEAGUE_RELIC_5) == TWISTED_LEAGUE_XERICS_WISDOM)
-			{
-				damageDealt = damageDealt / 2;
-			}
-		}
-
+		
 		// Some NPCs have an XP modifier, account for it here.
 		Actor a = client.getLocalPlayer().getInteracting();
 		if (!(a instanceof NPC) && !(a instanceof Player))
