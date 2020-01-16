@@ -3,6 +3,8 @@
 .string_stack_count 0
 .int_var_count      35
 .string_var_count   1
+   sconst                 "bankLayoutInit"
+   runelite_callback
    get_varbit             5102
    iconst                 1
    if_icmpeq              LABEL4
@@ -812,6 +814,8 @@ LABEL720:
    iload                  11
    iload                  27
    iload                  28
+   sconst                 "addLastRow"
+   runelite_callback
    iload                  12
    iload                  13
    iload                  14
