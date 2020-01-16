@@ -27,7 +27,9 @@ package net.runelite.mixins;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
@@ -82,6 +84,9 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 
 	@Inject
 	public static List<String> hideSpecificPlayers = new ArrayList<>();
+
+	@Inject
+	public static Set<Integer> blacklistDeadNpcs = new HashSet<>();
 
 	@Inject
 	@Override
@@ -223,6 +228,13 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	public void setHideSpecificPlayers(List<String> players)
 	{
 		hideSpecificPlayers = players;
+	}
+
+	@Inject
+	@Override
+	public void setBlacklistDeadNpcs(Set<Integer> blacklist)
+	{
+		blacklistDeadNpcs = blacklist;
 	}
 
 	@Inject

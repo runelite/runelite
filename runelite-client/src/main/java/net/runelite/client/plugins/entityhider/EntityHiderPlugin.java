@@ -28,7 +28,9 @@ package net.runelite.client.plugins.entityhider;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -82,6 +84,22 @@ public class EntityHiderPlugin extends Plugin
 		if (event.getGroup().equals("entityhider"))
 		{
 			updateConfig();
+
+			final Set<Integer> blacklist = new HashSet<>();
+
+			for (String s : Text.COMMA_SPLITTER.split(config.blacklistDeadNpcs()))
+			{
+				try
+				{
+					blacklist.add(Integer.parseInt(s));
+				}
+				catch (NumberFormatException ignored)
+				{
+				}
+
+			}
+
+			client.setBlacklistDeadNpcs(blacklist);
 
 			if (event.getOldValue() == null || event.getNewValue() == null)
 			{

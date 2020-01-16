@@ -27,6 +27,7 @@ package net.runelite.mixins;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -79,6 +80,9 @@ public abstract class EntityHiderMixin implements RSScene
 
 	@Shadow("hideSpecificPlayers")
 	private static List<String> hideSpecificPlayers;
+
+	@Shadow("blacklistDeadNpcs")
+	private static Set<Integer> blacklistDeadNpcs;
 
 	@Shadow("hideNPCs2D")
 	private static boolean hideNPCs2D;
@@ -199,7 +203,7 @@ public abstract class EntityHiderMixin implements RSScene
 				}
 			}
 
-			if (hideDeadNPCs && npc.getHealthRatio() == 0)
+			if (hideDeadNPCs && npc.getHealthRatio() == 0 && !blacklistDeadNpcs.contains(npc.getId()))
 			{
 				return false;
 			}
