@@ -257,21 +257,21 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
-            if (lastPb > -1)
-            {
-                log.debug("Got out-of-order personal best for {}: {}", boss, lastPb);
+			if (lastPb > -1)
+			{
+				log.debug("Got out-of-order personal best for {}: {}", boss, lastPb);
 
-                int currentPb = getPb(boss);
-                if (currentPb <= 0 || currentPb > lastPb)
-                {
-                    setPb(boss, lastPb);
-                }
-                lastPb = -1;
-            }
-            else
-            {
-                lastBossKill = boss;
-            }
+				int currentPb = getPb(boss);
+				if (currentPb <= 0 || currentPb > lastPb)
+				{
+					setPb(boss, lastPb);
+				}
+				lastPb = -1;
+			}
+			else
+			{
+				lastBossKill = boss;
+			}
 			return;
 		}
 
