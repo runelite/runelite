@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, dillydill123 <https://github.com/dillydill123>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,81 +25,77 @@
 package net.runelite.client.plugins.inventorysetups;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("inventorysetups")
+@ConfigGroup(InventorySetupPlugin.CONFIG_GROUP)
 public interface InventorySetupConfig extends Config
 {
 	@ConfigItem(
-		keyName = "highlightDifferences",
-		name = "Highlight Differences",
-		description = "Highlight slots that don't match the selected setup",
+		keyName = "bankFilter",
+		name = "Default Filter Bank",
+		description = "Configures the default setting for bank filtering in new setups",
 		position = 0
 	)
-
-	default boolean getHighlightDifferences()
+	default boolean bankFilter()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "highlightDifferenceColor",
-		name = "Highlight Color",
-		description = "The color used to highlight differences between setups",
+		keyName = "highlightStackDifference",
+		name = "Default Highlight Stack Difference",
+		description = "Configures the default setting for highlighting stack differences in new setups",
 		position = 1
 	)
-
-	default Color getHighlightColor()
-	{
-		return Color.RED;
-	}
-
-	@ConfigItem(
-		keyName = "stackDifference",
-		name = "Stack Difference",
-		description = "Differences between setups will be highlighted if the stack size is different",
-		position = 2
-	)
-
-	default boolean getStackDifference()
+	default boolean highlightStackDifference()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "variationDifference",
-		name = "Variation Difference",
-		description = "Variations of items (E.g., charged jewellery) will be counted as different",
+		keyName = "highlightVarianceDifference",
+		name = "Default Highlight Variation Difference",
+		description = "Configures the default setting for highlighting variations in new setups",
 		position = 2
 	)
-
-	default boolean getVariationDifference()
+	default boolean highlightVariationDifference()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "bankHighlight",
-		name = "Bank Highlight",
-		description = "Highlight setup items in bank",
+		keyName = "highlightUnorderedDifference",
+		name = "Default Highlight Unordered Difference",
+		description = "Configures the default setting for unordered highlighting in new setups",
+		position = 3
+	)
+	default boolean highlightUnorderedDifference()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDifference",
+		name = "Default Highlight",
+		description = "Configures the default setting for highlighting differences in new setups",
 		position = 4
 	)
-
-	default boolean getBankHighlight()
+	default boolean highlightDifference()
 	{
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
-		keyName = "bankHighlightColor",
-		name = "Bank Highlight Color",
-		description = "The color used to highlight setup items in bank",
+		keyName = "highlightColor",
+		name = "Default Highlight Color",
+		description = "Configures the default highlighting color in new setups",
 		position = 5
 	)
-
-	default Color getBankHighlightColor()
+	default Color highlightColor()
 	{
 		return Color.RED;
 	}

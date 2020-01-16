@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, dillydill123 <https://github.com/dillydill123>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,34 +24,37 @@
  */
 package net.runelite.client.plugins.inventorysetups.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.util.List;
-import javax.inject.Singleton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
+import net.runelite.client.plugins.inventorysetups.InventorySetup;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
-import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.AsyncBufferedImage;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
 
-@Singleton
-abstract class InventorySetupContainerPanel extends JPanel
+public abstract class InventorySetupContainerPanel extends JPanel
 {
-	private final ItemManager itemManager;
 
-	private final InventorySetupPlugin plugin;
+	protected final InventorySetupPlugin plugin;
+	protected ItemManager itemManager;
+	protected boolean isHighlighted;
 
 	InventorySetupContainerPanel(final ItemManager itemManager, final InventorySetupPlugin plugin, String captionText)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
+		this.isHighlighted = false;
 		JPanel containerPanel = new JPanel();
 
 		final JPanel containerSlotsPanel = new JPanel();
 
+		// sets up the custom container panel
 		setupContainerPanel(containerSlotsPanel);
 
 		// caption
@@ -71,11 +73,76 @@ abstract class InventorySetupContainerPanel extends JPanel
 		add(containerPanel);
 	}
 
-	void setContainerSlot(int index,
-						final InventorySetupSlot containerSlot,
-						final List<InventorySetupItem> items)
+	protected void addMouseListenerToSlot(final InventorySetupSlot slot)
 	{
-		if (index >= items.size() || items.get(index).getId() == -1)
+
+		JPopupMenu popupMenu = new JPopupMenu();
+
+		String updateContainerFrom = "";
+		switch (slot.getSlotID())
+		{
+			case INVENTORY:
+				updateContainerFrom = "Inventory";
+				break;
+			case EQUIPMENT:
+				updateContainerFrom = "Equipment";
+				break;
+			case RUNE_POUCH:
+				updateContainerFrom = "Rune Pouch";
+				break;
+			case SPELL_BOOK:
+				updateContainerFrom = "Spell Book";
+				break;
+			default:
+				assert false : "Wrong slot ID!";
+				break;
+		}
+		JMenuItem updateFromContainer = new JMenuItem("Update Slot from " + updateContainerFrom);
+		JMenuItem updateFromSearch = new JMenuItem("Update Slot from Search");
+		popupMenu.add(updateFromContainer);
+		popupMenu.add(updateFromSearch);
+
+		updateFromContainer.addActionListener(e ->
+		{
+			plugin.updateSlotFromContainer(slot);
+		});
+
+		updateFromSearch.addActionListener(e ->
+		{
+			plugin.updateSlotFromSearch(slot);
+		});
+
+		// both the panel and image label need adapters
+		// because the image will cover the entire panel
+		slot.setComponentPopupMenu(popupMenu);
+		slot.getImageLabel().setComponentPopupMenu(popupMenu);
+
+	}
+
+	protected void setContainerSlot(int index, final InventorySetupSlot containerSlot, final InventorySetup setup)
+	{
+		ArrayList<InventorySetupItem> items = null;
+		switch (containerSlot.getSlotID())
+		{
+			case INVENTORY:
+				items = setup.getInventory();
+				break;
+			case EQUIPMENT:
+				items = setup.getEquipment();
+				break;
+			case RUNE_POUCH:
+				items = setup.getRune_pouch();
+				break;
+			default:
+				assert false : "Wrong slot ID!";
+				break;
+		}
+
+		assert index < items.size() && index > 0 : "Index Off Array";
+
+		containerSlot.setParentSetup(setup);
+
+		if (items.get(index).getId() == -1)
 		{
 			containerSlot.setImageLabel(null, null);
 			return;
@@ -93,33 +160,32 @@ abstract class InventorySetupContainerPanel extends JPanel
 		containerSlot.setImageLabel(toolTip, itemImg);
 	}
 
-	void highlightDifferentSlotColor(InventorySetupItem savedItem,
-									InventorySetupItem currItem,
-									final InventorySetupSlot containerSlot)
+	protected void highlightDifferentSlotColor(final InventorySetup setup, InventorySetupItem savedItem, InventorySetupItem currItem, final InventorySetupSlot containerSlot)
 	{
 		// important note: do not use item names for comparisons
 		// they are all empty to avoid clientThread usage when highlighting
 
-		final Color highlightColor = plugin.getGetHighlightColor();
-
-		if (plugin.isGetStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
+		// first check if stack differences are enabled and compare quantities
+		if (setup.isStackDifference() && currItem.getQuantity() != savedItem.getQuantity())
 		{
-			containerSlot.setBackground(highlightColor);
+			containerSlot.setBackground(setup.getHighlightColor());
 			return;
 		}
 
+		// obtain the correct item ids using the variation difference if applicable
 		int currId = currItem.getId();
 		int checkId = savedItem.getId();
 
-		if (!plugin.isGetVariationDifference())
+		if (!setup.isVariationDifference())
 		{
 			currId = ItemVariationMapping.map(currId);
 			checkId = ItemVariationMapping.map(checkId);
 		}
 
+		// if the ids don't match, highlight the container slot
 		if (currId != checkId)
 		{
-			containerSlot.setBackground(highlightColor);
+			containerSlot.setBackground(setup.getHighlightColor());
 			return;
 		}
 
@@ -127,5 +193,11 @@ abstract class InventorySetupContainerPanel extends JPanel
 		containerSlot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 	}
 
-	protected abstract void setupContainerPanel(final JPanel containerSlotsPanel);
+	abstract public void setupContainerPanel(final JPanel containerSlotsPanel);
+
+	abstract public void highlightSlotDifferences(final ArrayList<InventorySetupItem> currContainer, final InventorySetup inventorySetup);
+
+	abstract public void setSlots(final InventorySetup setup);
+
+	abstract public void resetSlotColors();
 }

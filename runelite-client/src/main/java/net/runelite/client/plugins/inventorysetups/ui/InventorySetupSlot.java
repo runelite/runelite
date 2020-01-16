@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, dillydill123 <https://github.com/dillydill123>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,30 +24,45 @@
  */
 package net.runelite.client.plugins.inventorysetups.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.inject.Singleton;
+import net.runelite.client.plugins.inventorysetups.InventorySetup;
+import net.runelite.client.plugins.inventorysetups.InventorySetupSlotID;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.util.AsyncBufferedImage;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import net.runelite.client.util.AsyncBufferedImage;
+import java.awt.Color;
+import java.awt.Dimension;
 
-@Singleton
-class InventorySetupSlot extends JPanel
+public class InventorySetupSlot extends JPanel
 {
+	@Getter
 	private final JLabel imageLabel;
 
-	InventorySetupSlot(Color color)
+	@Getter
+	private final InventorySetupSlotID slotID;
+
+	@Getter
+	@Setter
+	private InventorySetup parentSetup;
+
+	@Getter
+	private int indexInSlot;
+
+	public InventorySetupSlot(Color color, InventorySetupSlotID id, int indexInSlot)
 	{
-		imageLabel = new JLabel();
+		this.slotID = id;
+		this.imageLabel = new JLabel();
+		this.parentSetup = null;
+		this.indexInSlot = indexInSlot;
 		imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 		setPreferredSize(new Dimension(46, 42));
 		setBackground(color);
 		add(imageLabel);
-
 	}
 
-	void setImageLabel(String toolTip, AsyncBufferedImage itemImage)
+	public void setImageLabel(String toolTip, AsyncBufferedImage itemImage)
 	{
 		if (itemImage == null || toolTip == null)
 		{
@@ -64,4 +78,5 @@ class InventorySetupSlot extends JPanel
 		validate();
 		repaint();
 	}
+
 }

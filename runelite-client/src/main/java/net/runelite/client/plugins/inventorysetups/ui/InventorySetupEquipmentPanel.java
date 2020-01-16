@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018-2019, Ethan <https://github.com/Wea1thRS/>
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, dillydill123 <https://github.com/dillydill123>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,23 +24,21 @@
  */
 package net.runelite.client.plugins.inventorysetups.ui;
 
-import java.awt.GridLayout;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Singleton;
-import javax.swing.JPanel;
+import net.runelite.client.plugins.inventorysetups.InventorySetupSlotID;
+import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.inventorysetups.InventorySetup;
 import net.runelite.client.plugins.inventorysetups.InventorySetupItem;
-import net.runelite.client.plugins.inventorysetups.InventorySetupPlugin;
 import net.runelite.client.ui.ColorScheme;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-@Singleton
 public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 {
-	private Map<EquipmentInventorySlot, InventorySetupSlot> equipmentSlots;
+	private HashMap<EquipmentInventorySlot, InventorySetupSlot> equipmentSlots;
 
 	InventorySetupEquipmentPanel(final ItemManager itemManager, final InventorySetupPlugin plugin)
 	{
@@ -54,65 +51,76 @@ public class InventorySetupEquipmentPanel extends InventorySetupContainerPanel
 		this.equipmentSlots = new HashMap<>();
 		for (EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
-			equipmentSlots.put(slot, new InventorySetupSlot(ColorScheme.DARKER_GRAY_COLOR));
+			final InventorySetupSlot setupSlot = new InventorySetupSlot(ColorScheme.DARKER_GRAY_COLOR, InventorySetupSlotID.EQUIPMENT, slot.getSlotIdx());
+			super.addMouseListenerToSlot(setupSlot);
+			equipmentSlots.put(slot, setupSlot);
 		}
 
 		final GridLayout gridLayout = new GridLayout(5, 3, 1, 1);
 		containerSlotsPanel.setLayout(gridLayout);
 
 		// add the grid layouts, including invisible ones
-		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR));
+		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR, InventorySetupSlotID.EQUIPMENT, -1));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.HEAD));
-		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR));
+		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR, InventorySetupSlotID.EQUIPMENT, -1));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.CAPE));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.AMULET));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.AMMO));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.WEAPON));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.BODY));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.SHIELD));
-		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR));
+		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR, InventorySetupSlotID.EQUIPMENT, -1));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.LEGS));
-		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR));
+		containerSlotsPanel.add(new InventorySetupSlot(ColorScheme.DARK_GRAY_COLOR, InventorySetupSlotID.EQUIPMENT, -1));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.GLOVES));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.BOOTS));
 		containerSlotsPanel.add(equipmentSlots.get(EquipmentInventorySlot.RING));
 
 	}
 
-	void setEquipmentSetupSlots(final InventorySetup setup)
+	@Override
+	public void highlightSlotDifferences(final ArrayList<InventorySetupItem> currEquipment, final InventorySetup inventorySetup)
 	{
-		final List<InventorySetupItem> equipment = setup.getEquipment();
+		final ArrayList<InventorySetupItem> equipToCheck = inventorySetup.getEquipment();
+
+		assert currEquipment.size() == equipToCheck.size() : "size mismatch";
+
+		isHighlighted = true;
 
 		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
+			int slotIdx = slot.getSlotIdx();
+			super.highlightDifferentSlotColor(inventorySetup, equipToCheck.get(slotIdx), currEquipment.get(slotIdx), equipmentSlots.get(slot));
+		}
+	}
+
+	@Override
+	public void setSlots(final InventorySetup setup)
+	{
+		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
+		{
 			int i = slot.getSlotIdx();
-			super.setContainerSlot(i, equipmentSlots.get(slot), equipment);
+			super.setContainerSlot(i, equipmentSlots.get(slot), setup);
 		}
 
 		validate();
 		repaint();
-
 	}
 
-	void highlightDifferences(final List<InventorySetupItem> currEquipment, final InventorySetup inventorySetup)
+	@Override
+	public void resetSlotColors()
 	{
-		final List<InventorySetupItem> equipToCheck = inventorySetup.getEquipment();
-
-		assert currEquipment.size() == equipToCheck.size() : "size mismatch";
-
-		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
+		// Don't waste time resetting if we were never highlighted to begin with
+		if (!isHighlighted)
 		{
-
-			int slotIdx = slot.getSlotIdx();
-			super.highlightDifferentSlotColor(equipToCheck.get(slotIdx), currEquipment.get(slotIdx), equipmentSlots.get(slot));
+			return;
 		}
-	}
 
-	void resetEquipmentSlotsColor()
-	{
 		for (final EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
 			equipmentSlots.get(slot).setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		}
+
+		isHighlighted = false;
 	}
 }
