@@ -1,6 +1,3 @@
-version-template: '$MAJOR.$MINOR.$PATCH.0'
-name-template: 'v$NEXT_PATCH_VERSION'
-tag-template: 'v$NEXT_PATCH_VERSION'
 exclude-labels:
   - 'skip-changelog'
   - 'automated-pull-request'
