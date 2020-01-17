@@ -24,11 +24,8 @@
  */
 package net.runelite.cache.util;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.http.api.xtea.XteaClient;
-import net.runelite.http.api.xtea.XteaKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,23 +37,7 @@ public class XteaKeyManager
 
 	public void loadKeys()
 	{
-		XteaClient xteaClient = new XteaClient();
 
-		try
-		{
-			for (XteaKey key : xteaClient.get())
-			{
-				keys.put(key.getRegion(), key.getKeys());
-			}
-		}
-		catch (IOException ex)
-		{
-			// happens on release when it is not deployed yet
-			logger.debug("unable to load xtea keys", ex);
-			return;
-		}
-
-		logger.info("Loaded {} keys", keys.size());
 	}
 
 	public int[] getKeys(int region)

@@ -24,18 +24,17 @@
  */
 package net.runelite.client.plugins.xtea;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
-import net.runelite.http.api.xtea.XteaKey;
-import net.runelite.http.api.xtea.XteaRequest;
 
 @PluginDescriptor(
 	name = "Xtea",
@@ -46,13 +45,22 @@ public class XteaPlugin extends Plugin
 {
 	private final XteaClient xteaClient = new XteaClient();
 
-	private final Set<Integer> sentRegions = new HashSet<>();
+	private HashMap<Integer, int[]> xteas;
+	{
+		try
+		{
+			xteas = xteaClient.get();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	@Inject
 	private Client client;
 
-	// todo re-enable when we have our server back up.
-	// @Subscribe
+	@Subscribe
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
@@ -60,24 +68,20 @@ public class XteaPlugin extends Plugin
 			return;
 		}
 
-		int revision = client.getRevision();
 		int[] regions = client.getMapRegions();
 		int[][] xteaKeys = client.getXteaKeys();
-
-		XteaRequest xteaRequest = new XteaRequest();
-		xteaRequest.setRevision(revision);
 
 		for (int idx = 0; idx < regions.length; ++idx)
 		{
 			int region = regions[idx];
 			int[] keys = xteaKeys[idx];
 
-			if (sentRegions.contains(region))
+			if (xteas.get(region) != null)
 			{
 				continue;
 			}
 
-			sentRegions.add(region);
+			xteas.put(region, keys);
 
 			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
 
@@ -87,17 +91,7 @@ public class XteaPlugin extends Plugin
 				continue;
 			}
 
-			XteaKey xteaKey = new XteaKey();
-			xteaKey.setRegion(region);
-			xteaKey.setKeys(keys);
-			xteaRequest.addKey(xteaKey);
+			xteaClient.submit(region, keys);
 		}
-
-		if (xteaRequest.getKeys().isEmpty())
-		{
-			return;
-		}
-
-		xteaClient.submit(xteaRequest);
 	}
 }
