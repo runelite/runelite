@@ -92,21 +92,15 @@ subprojects {
     configure<PublishingExtension> {
         repositories {
             maven {
-                name = "runelite"
-                url = uri("https://maven.pkg.github.com/open-osrs/runelite")
-                credentials {
-                    username = System.getProperty("gpr_user")
-                    password = System.getProperty("gpr_key")
-                }
+                url = uri("$buildDir/repo")
             }
         }
         publications {
-            register("gpr", MavenPublication::class) {
+            register("mavenJava", MavenPublication::class) {
                 from(components["java"])
             }
         }
     }
-
 
     tasks {
         java {
