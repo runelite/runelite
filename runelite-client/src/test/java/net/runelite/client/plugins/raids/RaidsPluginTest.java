@@ -30,15 +30,27 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.game.ItemManager;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -60,6 +72,14 @@ public class RaidsPluginTest
 	@Mock
 	@Bind
 	RuneLiteConfig runeliteConfig;
+
+	@Mock
+	@Bind
+	ItemManager itemManager;
+
+	@Mock
+	@Bind
+	ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
@@ -118,5 +138,31 @@ public class RaidsPluginTest
 		raidsPlugin.setRaid(raid);
 
 		assertFalse(raidsPlugin.getRotationMatches());
+	}
+
+	@Test
+	public void testLootValue()
+	{
+		when(raidsConfig.showLootValue()).thenReturn(true);
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.PURE_ESSENCE, 42)
+		});
+		when(client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST)).thenReturn(itemContainer);
+
+		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000);
+		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn(6);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID);
+		raidsPlugin.onWidgetLoaded(widgetLoaded);
+
+		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
+		verify(chatMessageManager).queue(captor.capture());
+
+		QueuedMessage queuedMessage = captor.getValue();
+		assertEquals("<colNORMAL>Your loot is worth around <colHIGHLIGHT>1,100,000,252<colNORMAL> coins.", queuedMessage.getRuneLiteFormattedMessage());
 	}
 }

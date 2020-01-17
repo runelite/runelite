@@ -42,6 +42,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -300,6 +301,41 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		// This swap needs to happen prior to drag start on click, which happens during
+		// widget ticking and prior to our client tick event. This is because drag start
+		// is what builds the context menu row which is what the eventual click will use
+
+		// Deposit- op 2 is the current withdraw amount 1/5/10/x
+		if (shiftModifier && menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& config.swapBankOp() && menuEntryAdded.getOption().startsWith("Deposit-"))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+
+			// Find the extra menu option; they don't have fixed names, so check
+			// based on the menu identifier
+			for (int i = menuEntries.length - 1; i >= 0; --i)
+			{
+				MenuEntry entry = menuEntries[i];
+
+				// The extra options are always option 9
+				if (entry.getType() == MenuAction.CC_OP_LOW_PRIORITY.getId() && entry.getIdentifier() == 9)
+				{
+					// we must also raise the priority of the op so it doesn't get sorted later
+					entry.setType(MenuAction.CC_OP.getId());
+
+					menuEntries[i] = menuEntries[menuEntries.length - 1];
+					menuEntries[menuEntries.length - 1] = entry;
+
+					client.setMenuEntries(menuEntries);
+					break;
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE || event.getWidgetId() != WidgetInfo.INVENTORY.getId())
@@ -498,7 +534,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, index);
 		}
-		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
+		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter") && target.equals("portal"))
 		{
 			switch (config.swapHomePortal())
 			{
@@ -625,6 +661,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (shiftModifier && option.equals("view offer") && config.swapGEAbort())
 		{
 			swap("abort offer", option, target, index);
+		}
+		else if (shiftModifier && target.equals("npc contact") && config.swapNpcContact())
+		{
+			swap("honest jimmy", option, target, index);
+			swap("bert the sandman", option, target, index);
+			swap("advisor ghrim", option, target, index);
+			swap("dark mage", option, target, index);
+			swap("lanthus", option, target, index);
+			swap("turael", option, target, index);
+			swap("mazchna", option, target, index);
+			swap("vannaka", option, target, index);
+			swap("chaeldar", option, target, index);
+			swap("nieve", option, target, index);
+			swap("steve", option, target, index);
+			swap("duradel", option, target, index);
+			swap("krystilia", option, target, index);
+			swap("konar", option, target, index);
+			swap("murphy", option, target, index);
+			swap("cyrisus", option, target, index);
+			swap("smoggy", option, target, index);
+			swap("ginea", option, target, index);
+			swap("watson", option, target, index);
+			swap("barbarian guard", option, target, index);
+			swap("random", option, target, index);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{

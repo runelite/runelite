@@ -162,4 +162,15 @@ public interface RaidsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "showLootValue",
+		name = "Show Loot Value",
+		description = "Shows the value of your loot at the end of a raid"
+	)
+	default boolean showLootValue()
+	{
+		return true;
+	}
 }

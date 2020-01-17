@@ -47,6 +47,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
@@ -58,6 +60,8 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
@@ -69,6 +73,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -76,6 +81,7 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.sanitize;
 import net.runelite.client.ws.PartyMember;
@@ -144,6 +150,9 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
 
+	@Inject
+	private ItemManager itemManager;
+
 	@Getter
 	private final Set<String> roomWhitelist = new HashSet<String>();
 
@@ -162,6 +171,8 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private boolean inRaidChambers;
+
+	private boolean chestOpened;
 
 	private RaidsTimer timer;
 
@@ -195,6 +206,7 @@ public class RaidsPlugin extends Plugin
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
+		chestOpened = false;
 	}
 
 	@Subscribe
@@ -213,6 +225,44 @@ public class RaidsPlugin extends Plugin
 
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID ||
+			!config.showLootValue() ||
+			chestOpened)
+		{
+			return;
+		}
+
+		chestOpened = true;
+
+		ItemContainer rewardItemContainer = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+		if (rewardItemContainer == null)
+		{
+			return;
+		}
+
+		long totalValue = Arrays.stream(rewardItemContainer.getItems())
+			.filter(item -> item.getId() > -1)
+			.mapToLong(item -> (long) itemManager.getItemPrice(item.getId()) * item.getQuantity())
+			.sum();
+
+		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Your loot is worth around ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(QuantityFormatter.formatNumber(totalValue))
+			.append(ChatColorType.NORMAL)
+			.append(" coins.")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(chatMessage)
+			.build());
 	}
 
 	@Subscribe
@@ -309,6 +359,7 @@ public class RaidsPlugin extends Plugin
 			if (inRaidChambers)
 			{
 				raid = buildRaid();
+				chestOpened = false;
 
 				if (raid == null)
 				{

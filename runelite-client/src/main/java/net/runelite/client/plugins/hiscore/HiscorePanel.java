@@ -538,26 +538,46 @@ public class HiscorePanel extends PluginPanel
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getBountyHunterRogue().getRank());
+					Skill bountyHunterRogue = result.getBountyHunterRogue();
+					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (bountyHunterRogue.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterRogue.getLevel()) + "</p>";
+					}
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getBountyHunterHunter().getRank());
+					Skill bountyHunterHunter = result.getBountyHunterHunter();
+					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (bountyHunterHunter.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterHunter.getLevel()) + "</p>";
+					}
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLastManStanding().getRank());
+					Skill lastManStanding = result.getLastManStanding();
+					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (lastManStanding.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
+					}
 					break;
 				}
 				case LEAGUE_POINTS:
 				{
-					String rank = (result.getLeaguePoints().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getLeaguePoints().getRank());
+					Skill leaguePoints = result.getLeaguePoints();
+					String rank = (leaguePoints.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(leaguePoints.getRank());
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (leaguePoints.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Points:</span> " + QuantityFormatter.formatNumber(leaguePoints.getLevel()) + "</p>";
+					}
 					break;
 				}
 				case OVERALL:

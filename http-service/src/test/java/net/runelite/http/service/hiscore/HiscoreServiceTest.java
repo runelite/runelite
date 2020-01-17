@@ -75,6 +75,8 @@ public class HiscoreServiceTest
 			+ "15020,388\n"
 			+ "50463,147\n"
 			+ "-1,-1\n"
+			+ "92357,1\n"
+			+ "22758,637\n"
 			+ "22744,107\n"
 			+ "-1,-1\n"
 			+ "20150,17\n"
@@ -149,6 +151,7 @@ public class HiscoreServiceTest
 		Assert.assertEquals(-1, result.getLastManStanding().getLevel());
 		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
 		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
+		Assert.assertEquals(92357, result.getCallisto().getRank());
 		Assert.assertEquals(5847, result.getZulrah().getLevel());
 	}
 

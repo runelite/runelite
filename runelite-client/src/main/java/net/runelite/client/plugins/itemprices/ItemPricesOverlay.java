@@ -100,7 +100,7 @@ class ItemPricesOverlay extends Overlay
 				{
 					break;
 				}
-			case WIDGET_DEFAULT:
+			case CC_OP:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
 			case ITEM_SECOND_OPTION:

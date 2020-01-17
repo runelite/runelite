@@ -608,7 +608,7 @@ public class TabInterface
 
 		if ((event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 				|| event.getWidgetId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
-			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
+			&& event.getMenuAction() == MenuAction.CC_OP_LOW_PRIORITY
 			&& (event.getMenuOption().equalsIgnoreCase("withdraw-x")
 				|| event.getMenuOption().equalsIgnoreCase("deposit-x")))
 		{
@@ -859,19 +859,21 @@ public class TabInterface
 			--maxTabs;
 		}
 
-		if (currentTabIndex + direction >= tabManager.size() || currentTabIndex + direction < 0)
+		int proposedIndex = currentTabIndex + direction;
+		int numTabs = tabManager.size() + 1;
+
+		if (proposedIndex >= numTabs || proposedIndex < 0)
 		{
 			currentTabIndex = 0;
 		}
-
-		if ((tabManager.size() - (currentTabIndex + direction) >= maxTabs) && (currentTabIndex + direction > -1))
+		else if (numTabs - proposedIndex >= maxTabs)
 		{
-			currentTabIndex += direction;
+			currentTabIndex = proposedIndex;
 		}
-		else if (maxTabs < tabManager.size() && tabManager.size() - (currentTabIndex + direction) < maxTabs)
+		else if (maxTabs < numTabs && numTabs - proposedIndex < maxTabs)
 		{
 			// Edge case when only 1 tab displays instead of up to maxTabs when one is deleted at the end of the list
-			currentTabIndex += direction;
+			currentTabIndex = proposedIndex;
 			scrollTab(-1);
 		}
 
@@ -952,7 +954,7 @@ public class TabInterface
 	{
 		int y = bounds.y + MARGIN + BUTTON_HEIGHT;
 
-		if (maxTabs >= tabManager.size())
+		if (maxTabs > tabManager.size())
 		{
 			currentTabIndex = 0;
 		}
@@ -977,6 +979,8 @@ public class TabInterface
 
 			y += TAB_HEIGHT + MARGIN;
 		}
+
+		updateWidget(newTab, y);
 
 		boolean hidden = !(tabManager.size() > 0);
 
