@@ -385,7 +385,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapBankOp",
 		name = "Swap Bank Op",
-		description = "Swaps the extra menu option in banks (Weild, Eat, etc.) when holding shift"
+		description = "Swaps the extra menu option in banks (Wield, Eat, etc.) when holding shift"
 	)
 	default boolean swapBankOp()
 	{
