@@ -34,7 +34,7 @@ class BootstrapPlugin : Plugin<Project> {
             dependsOn(project(":runelite-api").tasks["publish"])
             dependsOn(project(":runescape-api").tasks["publish"])
             dependsOn(project(":http-api").tasks["publish"])
-            dependsOn(project(":injected-client").tasks["publish"])
+            dependsOn(project(":runelite-client").tasks["publish"])
 
             this.clientJar = clientJar.singleFile
 
@@ -50,7 +50,7 @@ class BootstrapPlugin : Plugin<Project> {
                             "${parent?.projectDir}/http-api/build/repo/.",
                             "${parent?.projectDir}/runescape-api/build/repo/."
                     )
-                    into("${buildDir}/bootstrap/repo/")
+                    into("${buildDir}/bootstrap/repo/${type}")
                 }
             }
         }
