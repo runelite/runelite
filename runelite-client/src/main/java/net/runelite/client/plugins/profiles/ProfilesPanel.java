@@ -295,13 +295,13 @@ class ProfilesPanel extends PluginPanel
 				{
 					return;
 				}
+
+				redrawProfiles();
 			}
 			catch (InvalidKeySpecException | NoSuchAlgorithmException | IllegalBlockSizeException | InvalidKeyException | BadPaddingException | NoSuchPaddingException ex)
 			{
 				log.error(e.toString());
 			}
-
-			this.addAccount(data);
 
 			txtAccountLabel.setText(ACCOUNT_LABEL);
 
