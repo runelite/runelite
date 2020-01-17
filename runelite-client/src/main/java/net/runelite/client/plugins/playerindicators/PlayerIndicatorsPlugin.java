@@ -482,42 +482,60 @@ public class PlayerIndicatorsPlugin extends Plugin
 		if (this.highlightOwnPlayer)
 		{
 			relationColorHashMap.put(PlayerRelation.SELF, config.getOwnPlayerColor());
-			locationHashMap.put(PlayerRelation.SELF, EnumSet.copyOf(config.selfIndicatorModes()).toArray());
+			if (config.selfIndicatorModes() != null)
+			{
+				locationHashMap.put(PlayerRelation.SELF, EnumSet.copyOf(config.selfIndicatorModes()).toArray());
+			}
 		}
 
 		this.highlightFriends = config.highlightFriends();
 		if (this.highlightFriends)
 		{
 			relationColorHashMap.put(PlayerRelation.FRIEND, config.getFriendColor());
-			locationHashMap.put(PlayerRelation.FRIEND, config.friendIndicatorMode().toArray());
+			if (config.friendIndicatorMode() != null)
+			{
+				locationHashMap.put(PlayerRelation.FRIEND, config.friendIndicatorMode().toArray());
+			}
 		}
 
 		this.highlightClan = config.highlightClan();
 		if (this.highlightClan)
 		{
 			relationColorHashMap.put(PlayerRelation.CLAN, config.getClanColor());
-			locationHashMap.put(PlayerRelation.CLAN, config.clanIndicatorModes().toArray());
+			if (config.clanIndicatorModes() != null)
+			{
+				locationHashMap.put(PlayerRelation.CLAN, config.clanIndicatorModes().toArray());
+			}
 		}
 
 		this.highlightTeam = config.highlightTeamMembers();
 		if (this.highlightTeam)
 		{
 			relationColorHashMap.put(PlayerRelation.TEAM, config.getTeamcolor());
-			locationHashMap.put(PlayerRelation.TEAM, config.teamIndicatorModes().toArray());
+			if (config.teamIndicatorModes() != null)
+			{
+				locationHashMap.put(PlayerRelation.TEAM, config.teamIndicatorModes().toArray());
+			}
 		}
 
 		this.highlightOther = config.highlightOtherPlayers();
 		if (this.highlightOther)
 		{
 			relationColorHashMap.put(PlayerRelation.OTHER, config.getOtherColor());
-			locationHashMap.put(PlayerRelation.OTHER, EnumSet.copyOf(config.otherIndicatorModes()).toArray());
+			if (config.otherIndicatorModes() != null)
+			{
+				locationHashMap.put(PlayerRelation.OTHER, EnumSet.copyOf(config.otherIndicatorModes()).toArray());
+			}
 		}
 
 		this.highlightTargets = config.highlightTargets();
 		if (this.highlightTargets)
 		{
 			relationColorHashMap.put(PlayerRelation.TARGET, config.getTargetsColor());
-			locationHashMap.put(PlayerRelation.TARGET, config.targetsIndicatorModes().toArray());
+			if (config.targetsIndicatorModes() != null)
+			{
+				locationHashMap.put(PlayerRelation.TARGET, config.targetsIndicatorModes().toArray());
+			}
 		}
 
 		this.highlightCallers = config.highlightCallers();
@@ -527,7 +545,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 			this.configCallers = config.callers();
 			relationColorHashMap.put(PlayerRelation.CALLER, config.callerColor());
-			locationHashMap.put(PlayerRelation.CALLER, config.callerHighlightOptions().toArray());
+			if (config.callerHighlightOptions() != null)
+			{
+				locationHashMap.put(PlayerRelation.CALLER, config.callerHighlightOptions().toArray());
+			}
 			getCallerList();
 		}
 
@@ -535,7 +556,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 		if (this.highlightCallerTargets)
 		{
 			relationColorHashMap.put(PlayerRelation.CALLER_TARGET, config.callerTargetColor());
-			locationHashMap.put(PlayerRelation.CALLER_TARGET, config.callerTargetHighlightOptions().toArray());
+			if (config.callerTargetHighlightOptions() != null)
+			{
+				locationHashMap.put(PlayerRelation.CALLER_TARGET, config.callerTargetHighlightOptions().toArray());
+			}
 		}
 
 		this.showClanRanks = config.showClanRanks();

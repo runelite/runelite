@@ -26,11 +26,11 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -65,7 +65,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -359,7 +358,6 @@ class ConfigPanel extends PluginPanel
 			}
 		}
 	}
-
 
 
 	private Boolean parse(ConfigItem item, String value)
@@ -843,9 +841,6 @@ class ConfigPanel extends PluginPanel
 			}
 			else if (cid.getType() == EnumSet.class)
 			{
-
-				int displayRows = cid.getItem().displayRows();
-
 				Class enumType = cid.getItem().enumClass();
 
 				EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
@@ -854,37 +849,25 @@ class ConfigPanel extends PluginPanel
 				{
 					enumSet = EnumSet.noneOf(enumType);
 				}
-				JList jList = new JList(enumType.getEnumConstants());
-				jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-				if (!enumSet.isEmpty() && enumSet.size() > 1)
+				JPanel enumsetLayout = new JPanel(new GridLayout(0, 2));
+				List<JCheckBox> jcheckboxes = new ArrayList<>();
+
+				for (Object obj : enumType.getEnumConstants())
 				{
-					int[] selected = new int[enumSet.size()];
-					for (int i = 0; i < enumSet.size(); i++)
-					{
-						if (enumSet.contains(EnumSet.allOf(enumType).toArray()[i]))
-						{
-							selected[i] = Lists.newArrayList(EnumSet.allOf(enumType)).indexOf(enumSet.toArray()[i]);
-						}
-					}
-					jList.setSelectedIndices(selected);
-				}
-				if (enumSet.size() == 1)
-				{
-					enumSet.forEach(anObject -> jList.setSelectedValue(anObject, true));
-				}
-				jList.setVisibleRowCount(displayRows);
-				jList.setPrototypeCellValue("XXXXXXXXXX");
-				jList.setCellRenderer(new ComboBoxListRenderer());
-				jList.setLayoutOrientation(JList.VERTICAL);
-				jList.setSelectionBackground(Color.decode("708090"));
-				jList.addListSelectionListener(e -> changeConfiguration(jList, cd, cid));
-				JScrollPane jScrollPane = new JScrollPane();
-				jScrollPane.setViewportView(jList);
-				jScrollPane.setViewportBorder(BorderFactory.createLoweredSoftBevelBorder());
+					String option = String.valueOf(obj).toLowerCase().replace("_", " ");
 
-				item.add(jScrollPane, BorderLayout.SOUTH);
+					JCheckBox checkbox = new JCheckBox(option);
+					checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+					checkbox.setSelected(enumSet.contains(obj));
+					jcheckboxes.add(checkbox);
 
+					enumsetLayout.add(checkbox);
+				}
+
+				jcheckboxes.forEach(checkbox -> checkbox.addActionListener(ae -> changeConfiguration(jcheckboxes, cd, cid)));
+
+				item.add(enumsetLayout, BorderLayout.SOUTH);
 			}
 
 			JPanel titleSection = titleSectionWidgets.get(cid.getItem().titleSection());
@@ -938,6 +921,32 @@ class ConfigPanel extends PluginPanel
 		revalidate();
 	}
 
+	private void changeConfiguration(List<JCheckBox> components, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		Class<? extends Enum> enumType = cid.getItem().enumClass();
+		EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
+			cid.getItem().keyName(), EnumSet.class);
+		if (enumSet == null)
+		{
+			//noinspection unchecked
+			enumSet = EnumSet.noneOf(enumType);
+		}
+		enumSet.clear();
+
+		EnumSet finalEnumSet = enumSet;
+
+		//noinspection unchecked
+		components.forEach(value ->
+		{
+			if (value.isSelected())
+			{
+				finalEnumSet.add(Enum.valueOf(cid.getItem().enumClass(), String.valueOf(value.getText()).toUpperCase().replace(" ", "_")));
+			}
+		});
+
+		configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), finalEnumSet);
+	}
+
 	private void changeConfiguration(Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		final ConfigItem configItem = cid.getItem();
@@ -984,27 +993,6 @@ class ConfigPanel extends PluginPanel
 		{
 			JComboBox jComboBox = (JComboBox) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
-		}
-		else if (component instanceof JList)
-		{
-			JList jList = (JList) component;
-
-			Class<? extends Enum> enumType = cid.getItem().enumClass();
-			EnumSet enumSet = configManager.getConfiguration(cd.getGroup().value(),
-				cid.getItem().keyName(), EnumSet.class);
-			if (enumSet == null)
-			{
-				//noinspection unchecked
-				enumSet = EnumSet.noneOf(enumType);
-			}
-			enumSet.clear();
-
-			EnumSet finalEnumSet = enumSet;
-			//noinspection unchecked
-			jList.getSelectedValuesList().forEach(value ->
-				finalEnumSet.add(Enum.valueOf(cid.getItem().enumClass(), value.toString())));
-
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), finalEnumSet);
 		}
 		else if (component instanceof HotkeyButton)
 		{
