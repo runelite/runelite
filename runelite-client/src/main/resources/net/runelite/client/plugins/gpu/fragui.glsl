@@ -43,14 +43,15 @@ in XBRTable xbrTable;
 out vec4 FragColor;
 
 void main() {
-    vec4 c;
+  vec4 c;
 
-    if (samplingMode == SAMPLING_DEFAULT)
-        c = texture(tex, TexCoord);
-    else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL)
-        c = textureCubic(tex, TexCoord, samplingMode);
-    else if (samplingMode == SAMPLING_XBR)
-        c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+  if (samplingMode == SAMPLING_DEFAULT) {
+    c = texture(tex, TexCoord);
+  } else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL) {
+    c = textureCubic(tex, TexCoord, samplingMode);
+  } else if (samplingMode == SAMPLING_XBR) {
+    c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+  }
 
-    FragColor = c;
+  FragColor = c;
 }
