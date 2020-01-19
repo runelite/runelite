@@ -29,58 +29,39 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.util.HashMap;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnimationClient
+public class AnimationsClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final Logger logger = LoggerFactory.getLogger(AnimationsClient.class);
 
-	private static final Logger logger = LoggerFactory.getLogger(AnimationClient.class);
-
-	public void submit(AnimationRequest animationRequest)
+	public void submit(int npcid, int animation)
 	{
-		String json = RuneLiteAPI.GSON.toJson(animationRequest);
 
-		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
-			.addPathSegment("animation")
+		HttpUrl url = RuneLiteAPI.getAnimationsBase().newBuilder()
+			.addPathSegment("submit")
+			.addQueryParameter("npcid", String.valueOf(npcid))
+			.addQueryParameter("animation", String.valueOf(animation))
 			.build();
 
-		logger.debug("Built URI: {}", url);
-
-		RequestBody body = RequestBody.Companion.create(json, JSON);
 		Request request = new Request.Builder()
-			.post(body)
 			.url(url)
 			.build();
-
-		try
-		{
-			try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-			{
-				logger.debug("animation response " + response.code());
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("unable to submit animations", e);
+				System.out.println("unable to submit animation");
 			}
 
 			@Override
@@ -90,7 +71,7 @@ public class AnimationClient
 				{
 					if (!response.isSuccessful())
 					{
-						logger.debug("unsuccessful animation response");
+						System.out.println("unsuccessful animations response");
 					}
 				}
 				finally
@@ -101,10 +82,10 @@ public class AnimationClient
 		});
 	}
 
-	public List<AnimationKey> get() throws IOException
+	public HashMap<Integer, int[]> get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
-			.addPathSegment("animation")
+		HttpUrl url = RuneLiteAPI.getAnimationsBase().newBuilder()
+			.addPathSegment("get")
 			.build();
 
 		Request request = new Request.Builder()
@@ -115,30 +96,10 @@ public class AnimationClient
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<AnimationKey>>() {}.getType());
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<HashMap<Integer, int[]>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
-	}
-
-	public AnimationKey get(int npcid) throws IOException
-	{
-		HttpUrl url = RuneLiteAPI.getOpenOSRSApiBase().newBuilder()
-			.addPathSegment("animation")
-			.addPathSegment(Integer.toString(npcid))
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), AnimationKey.class);
 		}
 		catch (JsonParseException ex)
 		{
