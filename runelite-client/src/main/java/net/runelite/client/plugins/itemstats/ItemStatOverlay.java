@@ -125,10 +125,6 @@ public class ItemStatOverlay extends Overlay
 
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
-					if (c.getPositivity() == Positivity.NO_CHANGE)
-					{
-						continue;
-					}
 					b.append(buildStatChangeString(c));
 				}
 
@@ -263,14 +259,14 @@ public class ItemStatOverlay extends Overlay
 		StringBuilder b = new StringBuilder();
 		b.append(ColorUtil.colorTag(Positivity.getColor(config, c.getPositivity())));
 
-		if (config.relative())
+		if (config.relative() && c.getPositivity() != Positivity.NO_CHANGE)
 		{
 			b.append(c.getFormattedRelative());
 		}
 
 		if (config.theoretical())
 		{
-			if (config.relative())
+			if (config.relative() && c.getPositivity() != Positivity.NO_CHANGE)
 			{
 				b.append("/");
 			}
