@@ -47,6 +47,9 @@ public class AnimationsPlugin extends Plugin
 	private final AnimationsClient animationsClient = new AnimationsClient();
 
 	private HashMap<Integer, int[]> animations;
+	@Inject
+	private Client client;
+
 	{
 		try
 		{
@@ -58,15 +61,12 @@ public class AnimationsPlugin extends Plugin
 		}
 	}
 
-	@Inject
-	private Client client;
-
 	@Subscribe
 	private void onAnimationChanged(AnimationChanged event)
 	{
 		if (event.getActor() instanceof NPC)
 		{
-			if (event.getActor().getAnimation()!=-1)
+			if (event.getActor().getAnimation() != -1)
 			{
 				if (ArrayUtils.contains(animations.get(((NPC) event.getActor()).getId()), event.getActor().getAnimation()))
 				{
