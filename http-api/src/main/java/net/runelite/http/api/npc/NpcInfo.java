@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.http.api.npc;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.npc.NpcInfo;
-import net.runelite.http.api.npc.NpcInfoClient;
-import okhttp3.OkHttpClient;
+import lombok.Data;
 
-@Singleton
-@Slf4j
-public class NPCManager
+@Data
+public class NpcInfo
 {
-	private final OkHttpClient okHttpClient;
-	private Map<Integer, NpcInfo> npcMap = Collections.emptyMap();
-
-	@Inject
-	private NPCManager(OkHttpClient okHttpClient, ScheduledExecutorService scheduledExecutorService)
-	{
-		this.okHttpClient = okHttpClient;
-		scheduledExecutorService.execute(this::loadNpcs);
-	}
-
-	@Nullable
-	public NpcInfo getNpcInfo(int npcId)
-	{
-		return npcMap.get(npcId);
-	}
-
-	@Nullable
-	public Integer getHealth(int npcId)
-	{
-		NpcInfo npcInfo = npcMap.get(npcId);
-		return npcInfo == null ? null : npcInfo.getHitpoints();
-	}
-
-	private void loadNpcs()
-	{
-		try
-		{
-			npcMap = new NpcInfoClient(okHttpClient).getNpcs();
-		}
-		catch (IOException e)
-		{
-			log.warn("error loading npc stats", e);
-		}
-	}
+	private String name;
+	private int combat;
+	private int hitpoints;
 }

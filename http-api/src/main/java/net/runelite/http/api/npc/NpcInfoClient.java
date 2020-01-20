@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.http.api.npc;
 
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.util.Collections;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.npc.NpcInfo;
-import net.runelite.http.api.npc.NpcInfoClient;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
-@Singleton
 @Slf4j
-public class NPCManager
+@Value
+public class NpcInfoClient
 {
-	private final OkHttpClient okHttpClient;
-	private Map<Integer, NpcInfo> npcMap = Collections.emptyMap();
+	private final OkHttpClient client;
 
-	@Inject
-	private NPCManager(OkHttpClient okHttpClient, ScheduledExecutorService scheduledExecutorService)
+	public Map<Integer, NpcInfo> getNpcs() throws IOException
 	{
-		this.okHttpClient = okHttpClient;
-		scheduledExecutorService.execute(this::loadNpcs);
-	}
+		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
+			.addPathSegment("npcs")
+			.addPathSegment("npcs.min.json");
 
-	@Nullable
-	public NpcInfo getNpcInfo(int npcId)
-	{
-		return npcMap.get(npcId);
-	}
+		HttpUrl url = urlBuilder.build();
 
-	@Nullable
-	public Integer getHealth(int npcId)
-	{
-		NpcInfo npcInfo = npcMap.get(npcId);
-		return npcInfo == null ? null : npcInfo.getHitpoints();
-	}
+		log.debug("Built URI: {}", url);
 
-	private void loadNpcs()
-	{
-		try
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = client.newCall(request).execute())
 		{
-			npcMap = new NpcInfoClient(okHttpClient).getNpcs();
+			if (!response.isSuccessful())
+			{
+				log.warn("Error looking up npcs: {}", response);
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			final Type typeToken = new TypeToken<Map<Integer, NpcInfo>>()
+			{
+			}.getType();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
 		}
-		catch (IOException e)
+		catch (JsonParseException ex)
 		{
-			log.warn("error loading npc stats", e);
+			throw new IOException(ex);
 		}
 	}
 }
