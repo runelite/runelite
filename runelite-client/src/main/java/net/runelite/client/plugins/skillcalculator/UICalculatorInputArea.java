@@ -44,14 +44,19 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JTextField uiFieldDeltaLevel;
+	private final JTextField uiFieldDeltaXP;
+
 
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(2, 2, 7, 7));
+		setLayout(new GridLayout(3, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
+		uiFieldDeltaLevel = addComponent("Level Diff");
+		uiFieldDeltaXP = addComponent("Experience Diff");
 	}
 
 	int getCurrentLevelInput()
@@ -93,6 +98,14 @@ class UICalculatorInputArea extends JPanel
 	{
 		setInput(uiFieldTargetXP, value);
 	}
+
+	int getDeltaLevelInput() { return getInput(uiFieldDeltaLevel); }
+
+	void setDeltaLevelInput(Object value) { setInput(uiFieldDeltaLevel, value); }
+
+	int getDeltaXPInput() { return getInput(uiFieldDeltaXP); }
+
+	void setDeltaXPInput(Object value) { setInput(uiFieldDeltaXP, value); }
 
 	private int getInput(JTextField field)
 	{

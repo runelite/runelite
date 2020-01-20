@@ -78,6 +78,8 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	private int deltaLevel = targetLevel - currentLevel;
+	private int deltaXP = targetXP - currentXP;
 	private float xpFactor = 1.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -111,14 +113,23 @@ class SkillCalculator extends JPanel
 			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
+		uiInput.getUiFieldDeltaLevel().addActionListener(e ->
+		{
+			onFieldDeltaLevelUpdated();
+			uiInput.getUiFieldDeltaXP().requestFocusInWindow();
+		});
+
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldDeltaXP().addActionListener(e ->onFieldDeltaXPUpdated());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
 		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
 		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
+		uiInput.getUiFieldDeltaLevel().addFocusListener(buildFocusAdapter(e -> onFieldDeltaLevelUpdated()));
+		uiInput.getUiFieldDeltaXP().addFocusListener(buildFocusAdapter(e -> onFieldDeltaXPUpdated()));
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -360,10 +371,15 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		deltaLevel = targetLevel - currentLevel;
+		deltaXP = targetXP - currentXP;
+
 		uiInput.setCurrentLevelInput(currentLevel);
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
+		uiInput.setDeltaLevelInput(deltaLevel);
+		uiInput.setDeltaXPInput(deltaXP);
 		calculate();
 	}
 
@@ -397,6 +413,20 @@ class SkillCalculator extends JPanel
 	private void onFieldTargetXPUpdated()
 	{
 		targetXP = enforceXPBounds(uiInput.getTargetXPInput());
+		targetLevel = Experience.getLevelForXp(targetXP);
+		updateInputFields();
+	}
+
+	private void onFieldDeltaLevelUpdated()
+	{
+		targetLevel = enforceSkillBounds(uiInput.getCurrentLevelInput() + uiInput.getDeltaLevelInput());
+		targetXP = Experience.getXpForLevel(targetLevel);
+		updateInputFields();
+	}
+
+	private void onFieldDeltaXPUpdated()
+	{
+		targetXP = enforceXPBounds(uiInput.getCurrentXPInput() + uiInput.getDeltaXPInput());
 		targetLevel = Experience.getLevelForXp(targetXP);
 		updateInputFields();
 	}
