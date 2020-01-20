@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,35 +42,37 @@ import org.sql2o.Sql2o;
 @Service
 public class LootTrackerService
 {
-	// Table for storing individual LootRecords
-	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
-		+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n"
-		+ "  `accountId` INT NOT NULL,\n"
-		+ "  `type` enum('NPC', 'PLAYER', 'EVENT', 'UNKNOWN') NOT NULL,\n"
-		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
-		+ "  PRIMARY KEY (id),\n"
-		+ "  FOREIGN KEY (accountId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,\n"
-		+ "  INDEX idx_acc (accountId, time),"
-		+ "  INDEX idx_time (time)"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `loottracker_kills` (\n" +
+		"  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+		"  `first_time` timestamp NOT NULL DEFAULT current_timestamp(),\n" +
+		"  `last_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n" +
+		"  `accountId` int(11) NOT NULL,\n" +
+		"  `type` enum('NPC','PLAYER','EVENT','UNKNOWN') NOT NULL,\n" +
+		"  `eventId` varchar(255) NOT NULL,\n" +
+		"  `amount` int(11) NOT NULL,\n" +
+		"  PRIMARY KEY (`id`),\n" +
+		"  FOREIGN KEY (accountId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+		"  INDEX idx_acc_lasttime (`accountId` ,`last_time`),\n" +
+		"  UNIQUE INDEX idx_acc_type_event (`accountId`, `type`, `eventId`),\n" +
+		"  INDEX idx_time (last_time)" +
+		") ENGINE=InnoDB;";
 
-	// Table for storing Items received as loot for individual LootRecords
-	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `drops` (\n"
-		+ "  `killId` INT NOT NULL,\n"
-		+ "  `itemId` INT NOT NULL,\n"
-		+ "  `itemQuantity` INT NOT NULL,\n"
-		+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `loottracker_drops` (\n" +
+		"  `killId` int(11),\n" +
+		"  `itemId` int(11) NOT NULL,\n" +
+		"  `itemQuantity` int(11) NOT NULL,\n" +
+		"  UNIQUE INDEX idx_kill_item (`killId`, `itemId`),\n" +
+		"  FOREIGN KEY (killId) REFERENCES loottracker_kills(id) ON DELETE CASCADE\n" +
+		") ENGINE=InnoDB;\n";
 
 	// Queries for inserting kills
-	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
-	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (:killId, :itemId, :itemQuantity)";
+	private static final String INSERT_KILL_QUERY = "INSERT INTO loottracker_kills (accountId, type, eventId, amount) VALUES (:accountId, :type, :eventId, 1) ON DUPLICATE KEY UPDATE amount = amount + 1";
+	private static final String INSERT_DROP_QUERY = "INSERT INTO loottracker_drops (killId, itemId, itemQuantity) VALUES (:killId, :itemId, :itemQuantity) ON DUPLICATE KEY UPDATE itemQuantity = itemQuantity + :itemQuantity";
 
-	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit OFFSET :offset";
+	private static final String SELECT_LOOT_QUERY = "SELECT killId,first_time,last_time,type,eventId,amount,itemId,itemQuantity FROM loottracker_kills JOIN loottracker_drops ON loottracker_drops.killId = loottracker_kills.id WHERE accountId = :accountId ORDER BY last_time DESC LIMIT :limit OFFSET :offset";
 
-	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM kills WHERE accountId = :accountId";
-	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM kills WHERE accountId = :accountId AND eventId = :eventId";
+	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM loottracker_kills WHERE accountId = :accountId";
+	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM loottracker_kills WHERE accountId = :accountId AND eventId = :eventId";
 
 	private final Sql2o sql2o;
 
@@ -96,8 +99,8 @@ public class LootTrackerService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			// Kill Entry Query
 			Query killQuery = con.createQuery(INSERT_KILL_QUERY, true);
+			Query insertDrop = con.createQuery(INSERT_DROP_QUERY);
 
 			for (LootRecord record : records)
 			{
@@ -105,41 +108,26 @@ public class LootTrackerService
 					.addParameter("accountId", accountId)
 					.addParameter("type", record.getType())
 					.addParameter("eventId", record.getEventId())
-					.addToBatch();
-			}
+					.executeUpdate();
+				Object[] keys = con.getKeys();
 
-			killQuery.executeBatch();
-			Object[] keys = con.getKeys();
-
-			if (keys.length != records.size())
-			{
-				throw new RuntimeException("Mismatch in keys vs records size");
-			}
-
-			Query insertDrop = con.createQuery(INSERT_DROP_QUERY);
-
-			// Append all queries for inserting drops
-			int idx = 0;
-			for (LootRecord record : records)
-			{
 				for (GameItem drop : record.getDrops())
 				{
 					insertDrop
-						.addParameter("killId", keys[idx])
+						.addParameter("killId", keys[0])
 						.addParameter("itemId", drop.getId())
 						.addParameter("itemQuantity", drop.getQty())
 						.addToBatch();
 				}
 
-				++idx;
+				insertDrop.executeBatch();
 			}
 
-			insertDrop.executeBatch();
 			con.commit(false);
 		}
 	}
 
-	public Collection<LootRecord> get(int accountId, int limit, int offset)
+	public Collection<LootAggregate> get(int accountId, int limit, int offset)
 	{
 		List<LootResult> lootResults;
 
@@ -153,7 +141,7 @@ public class LootTrackerService
 		}
 
 		LootResult current = null;
-		List<LootRecord> lootRecords = new ArrayList<>();
+		List<LootAggregate> lootRecords = new ArrayList<>();
 		List<GameItem> gameItems = new ArrayList<>();
 
 		for (LootResult lootResult : lootResults)
@@ -162,7 +150,7 @@ public class LootTrackerService
 			{
 				if (!gameItems.isEmpty())
 				{
-					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
+					LootAggregate lootRecord = new LootAggregate(current.getEventId(), current.getType(), gameItems, current.getFirst_time(), current.getLast_time(), current.getAmount());
 					lootRecords.add(lootRecord);
 
 					gameItems = new ArrayList<>();
@@ -177,7 +165,7 @@ public class LootTrackerService
 
 		if (!gameItems.isEmpty())
 		{
-			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
+			LootAggregate lootRecord = new LootAggregate(current.getEventId(), current.getType(), gameItems, current.getFirst_time(), current.getLast_time(), current.getAmount());
 			lootRecords.add(lootRecord);
 		}
 
@@ -204,12 +192,12 @@ public class LootTrackerService
 		}
 	}
 
-	@Scheduled(fixedDelay = 15 * 60 * 1000)
+	@Scheduled(fixedDelay = 60 * 60 * 1000)
 	public void expire()
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from kills where time < current_timestamp() - interval 30 day")
+			con.createQuery("delete from loottracker_kills where last_time < current_timestamp() - interval 30 day")
 				.executeUpdate();
 		}
 	}
