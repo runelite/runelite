@@ -29,7 +29,7 @@ import lombok.Data;
 @Data
 public class HitSplatDefinition
 {
-	String stringFormat = "";
+	private String stringFormat = "";
 	private int varbitID = -1;
 	private int leftSprite = -1;
 	private int leftSprite2 = -1;
