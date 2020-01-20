@@ -121,7 +121,7 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
-		uiInput.getUiFieldDeltaXP().addActionListener(e ->onFieldDeltaXPUpdated());
+		uiInput.getUiFieldDeltaXP().addActionListener(e -> onFieldDeltaXPUpdated());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));

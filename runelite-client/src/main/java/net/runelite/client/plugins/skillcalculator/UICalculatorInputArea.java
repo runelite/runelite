@@ -99,13 +99,25 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
-	int getDeltaLevelInput() { return getInput(uiFieldDeltaLevel); }
+	int getDeltaLevelInput()
+	{
+		return getInput(uiFieldDeltaLevel);
+	}
 
-	void setDeltaLevelInput(Object value) { setInput(uiFieldDeltaLevel, value); }
+	void setDeltaLevelInput(Object value)
+	{
+		setInput(uiFieldDeltaLevel, value);
+	}
 
-	int getDeltaXPInput() { return getInput(uiFieldDeltaXP); }
+	int getDeltaXPInput()
+	{
+		return getInput(uiFieldDeltaXP);
+	}
 
-	void setDeltaXPInput(Object value) { setInput(uiFieldDeltaXP, value); }
+	void setDeltaXPInput(Object value)
+	{
+		setInput(uiFieldDeltaXP, value);
+	}
 
 	private int getInput(JTextField field)
 	{
