@@ -526,6 +526,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("travel", option, target, index);
 		}
+		else if (config.swapTravel() && option.equals("board") && target.equals("travel cart"))
+		{
+			swap("pay-fare", option, target, index);
+		}
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap("harpoon", option, target, index);
