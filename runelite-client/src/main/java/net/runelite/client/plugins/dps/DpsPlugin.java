@@ -225,6 +225,9 @@ public class DpsPlugin extends Plugin
 					tracker.pause();
 				}
 				break;
+			case "Clear":
+				tracker = null;
+				break;
 		}
 	}
 
