@@ -282,7 +282,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
-		description = "",
+		description = "The key that will toggle the sidebar (accepts modifiers)",
 		position = 43
 	)
 	default Keybind sidebarToggleKey()
