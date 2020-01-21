@@ -35,6 +35,7 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSPcmStream;
 import net.runelite.rs.api.RSRawPcmStream;
 import net.runelite.rs.api.RSRawSound;
@@ -51,6 +52,80 @@ public abstract class SoundEffectMixin implements RSClient
 
 	@Inject
 	private static RSActor lastSoundEffectSourceActor;
+
+	@Inject
+	private static int lastSoundEffectSourceNPCid;
+
+	@Copy("updateActorSequence")
+	public static void rs$updateActorSequence(RSActor actor, int size)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("updateActorSequence")
+	public static void rl$updateActorSequence(RSActor actor, int size)
+	{
+		if (actor instanceof RSNPC)
+		{
+			lastSoundEffectSourceNPCid = ((RSNPC) actor).getId();
+		}
+		lastSoundEffectSourceActor = actor;
+
+		rs$updateActorSequence(actor, size);
+
+		lastSoundEffectSourceActor = null;
+	}
+
+	@FieldHook("soundEffectCount")
+	@Inject
+	public static void queuedSoundEffectCountChanged(int idx)
+	{
+		int soundCount = client.getQueuedSoundEffectCount();
+		if (soundCount == lastSoundEffectCount + 1)
+		{
+			int soundIndex = soundCount - 1;
+			int packedLocation = client.getSoundLocations()[soundIndex];
+			boolean consumed;
+
+			if (packedLocation == 0)
+			{
+				// Regular sound effect
+				SoundEffectPlayed event = new SoundEffectPlayed(lastSoundEffectSourceActor);
+				event.setNpcid(lastSoundEffectSourceNPCid);
+				lastSoundEffectSourceNPCid = -1;
+				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
+				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
+				client.getCallbacks().post(SoundEffectPlayed.class, event);
+				consumed = event.isConsumed();
+			}
+			else
+			{
+				// Area sound effect
+
+				int x = (packedLocation >> 16) & 0xFF;
+				int y = (packedLocation >> 8) & 0xFF;
+				int range = (packedLocation) & 0xFF;
+
+				AreaSoundEffectPlayed event = new AreaSoundEffectPlayed(lastSoundEffectSourceActor);
+				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
+				event.setSceneX(x);
+				event.setSceneY(y);
+				event.setRange(range);
+				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
+				client.getCallbacks().post(AreaSoundEffectPlayed.class, event);
+				consumed = event.isConsumed();
+			}
+
+			if (consumed)
+			{
+				soundCount--;
+				client.setQueuedSoundEffectCount(soundCount);
+			}
+		}
+
+
+		lastSoundEffectCount = soundCount;
+	}
 
 	@Inject
 	@Override
@@ -110,72 +185,5 @@ public abstract class SoundEffectMixin implements RSClient
 		rawPcmStream.setNumLoops(1);
 
 		getSoundEffectAudioQueue().addSubStream((RSPcmStream) rawPcmStream);
-	}
-
-
-	@Copy("updateActorSequence")
-	public static void rs$updateActorSequence(RSActor actor, int size)
-	{
-		throw new RuntimeException();
-	}
-
-	@Replace("updateActorSequence")
-	public static void rl$updateActorSequence(RSActor actor, int size)
-	{
-		lastSoundEffectSourceActor = actor;
-
-		rs$updateActorSequence(actor, size);
-
-		lastSoundEffectSourceActor = null;
-	}
-
-	@FieldHook("soundEffectCount")
-	@Inject
-	public static void queuedSoundEffectCountChanged(int idx)
-	{
-		int soundCount = client.getQueuedSoundEffectCount();
-		if (soundCount == lastSoundEffectCount + 1)
-		{
-			int soundIndex = soundCount - 1;
-			int packedLocation = client.getSoundLocations()[soundIndex];
-			boolean consumed;
-
-			if (packedLocation == 0)
-			{
-				// Regular sound effect
-
-				SoundEffectPlayed event = new SoundEffectPlayed(lastSoundEffectSourceActor);
-				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
-				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(SoundEffectPlayed.class, event);
-				consumed = event.isConsumed();
-			}
-			else
-			{
-				// Area sound effect
-
-				int x = (packedLocation >> 16) & 0xFF;
-				int y = (packedLocation >> 8) & 0xFF;
-				int range = (packedLocation) & 0xFF;
-
-				AreaSoundEffectPlayed event = new AreaSoundEffectPlayed(lastSoundEffectSourceActor);
-				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
-				event.setSceneX(x);
-				event.setSceneY(y);
-				event.setRange(range);
-				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(AreaSoundEffectPlayed.class, event);
-				consumed = event.isConsumed();
-			}
-
-			if (consumed)
-			{
-				soundCount--;
-				client.setQueuedSoundEffectCount(soundCount);
-			}
-		}
-
-
-		lastSoundEffectCount = soundCount;
 	}
 }
