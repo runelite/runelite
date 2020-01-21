@@ -28,6 +28,8 @@ package net.runelite.client.plugins.dps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.AccessLevel;
@@ -35,7 +37,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -80,6 +84,7 @@ public class DpsPlugin extends Plugin
 	private DpsTracker totalTracker = new DpsTracker("Total");
 	@Getter
 	private DpsTracker tracker;
+	private Instant idleStartTime;
 
 	@Provides
 	DpsConfig provideConfig(ConfigManager configManager)
@@ -107,6 +112,7 @@ public class DpsPlugin extends Plugin
 		overlayManager.remove(dpsOverlay);
 		members.clear();
 		tracker = null;
+		idleStartTime = null;
 	}
 
 	@Subscribe
@@ -129,7 +135,7 @@ public class DpsPlugin extends Plugin
 			case DAMAGE_ME:
 				if (tracker == null || tracker.getName() == null)
 				{
-					tracker = new DpsTracker();
+					tracker = new DpsTracker(client.getLocalPlayer().getName());
 				}
 				tracker.addDamage(e.getHitsplat().getAmount());
 
@@ -147,13 +153,78 @@ public class DpsPlugin extends Plugin
 	}
 
 	@Subscribe
+	protected void onInteractingChanged(InteractingChanged event)
+	{
+		if (tracker == null || tracker.isPaused()
+			|| event.getSource() != client.getLocalPlayer()
+			|| dpsConfig.idleTimeout() == 0)
+		{
+			return;
+		}
+
+		final boolean idleFlag = event.getTarget() == null || event.getTarget().getCombatLevel() < 1;
+		if (!idleFlag)
+		{
+			idleStartTime = null;
+		}
+		else if (idleStartTime == null)
+		{
+			idleStartTime = Instant.now();
+		}
+	}
+
+	@Subscribe
+	protected void onGameTick(final GameTick tick)
+	{
+		if (tracker == null || idleStartTime == null || dpsConfig.idleTimeout() == 0)
+		{
+			idleStartTime = null; // Reset here in case of config/tracker change while idle
+			return;
+		}
+
+		if (tracker.isPaused())
+		{
+			// Adjust end point to account for idle time
+			if (tracker.getEnd().compareTo(idleStartTime) > 0)
+			{
+				tracker.getEnd().plus(Duration.between(idleStartTime, tracker.getEnd()));
+			}
+			idleStartTime = null;
+			return;
+		}
+
+		final Duration idleTime = Duration.between(idleStartTime, Instant.now());
+		if (idleTime.compareTo(Duration.ofSeconds(dpsConfig.idleTimeout())) > 0)
+		{
+			tracker.setEnd(Instant.now().minus(idleTime));
+			idleStartTime = null;
+		}
+	}
+
+	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-			event.getEntry().getOption().equals("Reset") &&
-			event.getEntry().getTarget().equals("DPS counter"))
+		if (event.getEntry().getMenuAction() != MenuAction.RUNELITE_OVERLAY ||
+			!event.getEntry().getTarget().equals("DPS counter"))
 		{
-			tracker.reset();
+			return;
+		}
+
+		switch (event.getEntry().getOption())
+		{
+			case "Reset":
+				tracker.reset();
+				break;
+			case "Pause":
+				if (tracker.isPaused())
+				{
+					tracker.unpause();
+				}
+				else
+				{
+					tracker.pause();
+				}
+				break;
 		}
 	}
 

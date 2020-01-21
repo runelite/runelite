@@ -28,6 +28,8 @@ package net.runelite.client.plugins.dps;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("dps")
 public interface DpsConfig extends Config
@@ -41,5 +43,20 @@ public interface DpsConfig extends Config
 	default boolean showDamage()
 	{
 		return true;
+	}
+
+	@Range(
+		max = 60
+	)
+	@Units(Units.SECONDS)
+	@ConfigItem(
+		position = 1,
+		keyName = "idleTimeout",
+		name = "Idle Timeout",
+		description = "How long (in seconds) before the tracker auto-pauses from from being idle<br/>A value of 0 will require a manual pause via the overlay"
+	)
+	default int idleTimeout()
+	{
+		return 30;
 	}
 }

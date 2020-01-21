@@ -61,6 +61,7 @@ public class DpsOverlay extends Overlay
 		this.dpsConfig = dpsConfig;
 		this.partyService = partyService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter"));
 	}
 
 	@Override

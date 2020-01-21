@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 @Getter
@@ -35,6 +36,7 @@ public class DpsTracker
 {
 	private final String name;
 	private Instant start = Instant.now();
+	@Setter
 	private Instant end;
 	private int damage;
 
