@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, loldudester <HannahRyanster@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,12 +29,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum WintertodtNotifyMode
+public enum WintertodtNotifyDamage
 {
-	NONE("None"),
-	WHEN_DAMAGED("Damage Taken"),
-	ONLY_WHEN_INTERRUPTED("Action Interrupted"),
-	EITHER("Either");
+	OFF("Off"),
+	INTERRUPT("On Interrupt"),
+	ALWAYS("Always");
 
 	private final String name;
 
