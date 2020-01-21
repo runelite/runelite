@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.dps;
 
+import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.util.Map;
@@ -84,6 +85,12 @@ public class DpsPlugin extends Plugin
 	DpsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(DpsConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(DpsService.class).to(DpsServiceImpl.class);
 	}
 
 	@Override
