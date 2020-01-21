@@ -114,7 +114,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private MenuEntrySwapperConfig config;
 
 	@Inject
-	private ShiftClickInputListener inputListener;
+	private KeyModifierInputListener inputListener;
 
 	@Inject
 	private ConfigManager configManager;
@@ -133,6 +133,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Setter
 	private boolean shiftModifier = false;
+
+	@Setter
+	private boolean ctrlModifier = false;
 
 	private final ArrayListMultimap<String, Integer> optionIndexes = ArrayListMultimap.create();
 
@@ -307,30 +310,57 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// widget ticking and prior to our client tick event. This is because drag start
 		// is what builds the context menu row which is what the eventual click will use
 
-		// Deposit- op 2 is the current withdraw amount 1/5/10/x
-		if (shiftModifier && menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
-			&& config.swapBankOp() && menuEntryAdded.getOption().startsWith("Deposit-"))
+		// Deposit- with id 2 is the current withdraw amount 1/5/10/x
+		if (menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& menuEntryAdded.getOption().startsWith("Deposit-"))
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-
-			// Find the extra menu option; they don't have fixed names, so check
-			// based on the menu identifier
-			for (int i = menuEntries.length - 1; i >= 0; --i)
+			// Swap Bank Op on shift-click
+			if(shiftModifier && config.swapBankOp())
 			{
-				MenuEntry entry = menuEntries[i];
-
 				// The extra options are always option 9
-				if (entry.getType() == MenuAction.CC_OP_LOW_PRIORITY.getId() && entry.getIdentifier() == 9)
-				{
-					// we must also raise the priority of the op so it doesn't get sorted later
-					entry.setType(MenuAction.CC_OP.getId());
+				onMenuEntryAddedSwap(MenuAction.CC_OP_LOW_PRIORITY.getId(), 9);
+			}
 
-					menuEntries[i] = menuEntries[menuEntries.length - 1];
-					menuEntries[menuEntries.length - 1] = entry;
+			// Deposit-All on ctrl-click
+			if(ctrlModifier && config.ctrlClickBankAll())
+			{
+				// Deposit-All is id 8
+				onMenuEntryAddedSwap(MenuAction.CC_OP_LOW_PRIORITY.getId(), 8);
+			}
+		}
 
-					client.setMenuEntries(menuEntries);
-					break;
-				}
+		// Swap to Deposit-All or Withdraw-All on Ctrl-Click
+		// Withdraw- with id 1 is the current withdraw amount 1/5/10/x
+		if (menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 1
+			&& menuEntryAdded.getOption().startsWith("Withdraw-"))
+		{
+			// Withdraw-All on ctrl-click
+			if(ctrlModifier && config.ctrlClickBankAll())
+			{
+				// Withdraw-All is id 7
+				onMenuEntryAddedSwap(MenuAction.CC_OP_LOW_PRIORITY.getId(), 7);
+			}
+		}
+	}
+
+	private void onMenuEntryAddedSwap(int entryType, int entryIdentifier)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (int i = menuEntries.length - 1; i >= 0; --i)
+		{
+			MenuEntry entry = menuEntries[i];
+
+			if (entry.getType() == entryType && entry.getIdentifier() == entryIdentifier)
+			{
+				// Raise the priority of the op so it doesn't get sorted later
+				entry.setType(MenuAction.CC_OP.getId());
+
+				menuEntries[i] = menuEntries[menuEntries.length - 1];
+				menuEntries[menuEntries.length - 1] = entry;
+
+				client.setMenuEntries(menuEntries);
+				break;
 			}
 		}
 	}
@@ -815,6 +845,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (!event.isFocused())
 		{
 			shiftModifier = false;
+			ctrlModifier = false;
 		}
 	}
 

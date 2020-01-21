@@ -30,7 +30,7 @@ import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
-public class ShiftClickInputListener implements KeyListener
+public class KeyModifierInputListener implements KeyListener
 {
 	@Inject
 	private ClientThread clientThread;
@@ -54,6 +54,11 @@ public class ShiftClickInputListener implements KeyListener
 		{
 			plugin.setShiftModifier(true);
 		}
+
+		if(event.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			plugin.setCtrlModifier(true);
+		}
 	}
 
 	@Override
@@ -62,6 +67,11 @@ public class ShiftClickInputListener implements KeyListener
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			plugin.setShiftModifier(false);
+		}
+
+		if(event.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			plugin.setCtrlModifier(false);
 		}
 	}
 }

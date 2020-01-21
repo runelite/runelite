@@ -401,4 +401,11 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "ctrlClickBankAll",
+		name = "Ctrl-Click Deposit/Withdraw-All",
+		description = "Deposit-All/Withdraw-All with a left click while holding control no matter which 1/5/10/X option is selected."
+	)
+	default boolean ctrlClickBankAll() { return true; }
 }
