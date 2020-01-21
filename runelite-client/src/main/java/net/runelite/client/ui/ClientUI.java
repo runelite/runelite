@@ -357,6 +357,18 @@ public class ClientUI
 
 			keyManager.registerKeyListener(sidebarListener);
 
+			final HotkeyListener pluginPanelListener = new HotkeyListener(() ->
+				config.panelToggleKey())
+			{
+				@Override
+				public void hotkeyPressed()
+				{
+					togglePluginPanel();
+				}
+			};
+
+			keyManager.registerKeyListener(pluginPanelListener);
+
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
 			{
@@ -739,6 +751,23 @@ public class ClientUI
 		else
 		{
 			frame.contractBy(pluginToolbar.getWidth());
+		}
+	}
+
+	private void togglePluginPanel()
+	{
+		// Toggle sidebar open
+		boolean isPanelOpen = sidebarOpen;
+		sidebarOpen = !sidebarOpen;
+
+		if (isPanelOpen)
+		{
+			contract();
+		}
+		else
+		{
+			// Try to restore last panel
+			expand(currentNavButton);;
 		}
 	}
 
