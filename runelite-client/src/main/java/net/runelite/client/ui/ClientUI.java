@@ -39,8 +39,6 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
@@ -73,7 +71,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.eventbus.Subscribe;
@@ -768,6 +765,9 @@ public class ClientUI
 		{
 			// Try to restore last panel
 			expand(currentNavButton);;
+
+			//Add toolbar in case togglesidebar closed it
+			container.add(pluginToolbar);
 		}
 	}
 
