@@ -25,6 +25,8 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
@@ -275,5 +277,16 @@ public interface RuneLiteConfig extends Config
 	default int infoBoxSize()
 	{
 		return 35;
+	}
+
+	@ConfigItem(
+		keyName = "sidebarToggleKey",
+		name = "Sidebar Toggle Key",
+		description = "",
+		position = 43
+	)
+	default Keybind sidebarToggleKey()
+	{
+		return new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK);
 	}
 }

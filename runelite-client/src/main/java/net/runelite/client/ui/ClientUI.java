@@ -346,7 +346,7 @@ public class ClientUI
 
 			// Add key listener
 			final HotkeyListener sidebarListener = new HotkeyListener(() ->
-				new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK))
+				config.sidebarToggleKey())
 			{
 				@Override
 				public void hotkeyPressed()
