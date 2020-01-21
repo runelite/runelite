@@ -475,7 +475,6 @@ public interface MenuEntrySwapperConfig extends Config
 	// Miscellaneous
 	//------------------------------------------------------------//
 
-
 	@ConfigItem(
 		keyName = "customSwaps",
 		name = "Custom Swaps",
@@ -509,6 +508,18 @@ public interface MenuEntrySwapperConfig extends Config
 	default String prioEntry()
 	{
 		return "";
+	}
+
+	@ConfigItem(
+		keyName = "getSwapOffer",
+		name = "Offer-All",
+		description = "Swap 'Offer', on trades with 'Offer-All'",
+		position = 3,
+		section = "miscellaneousSection"
+	)
+	default boolean getSwapOffer()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -1955,7 +1966,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return "";
 	}
-	
+
 	@ConfigItem(
 		keyName = "swapNpcContact",
 		name = "NPC Contact",
@@ -2033,7 +2044,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "bankInvigorateItem",
 		name = "Bank - Left Click 'Invigorate'",

@@ -144,7 +144,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		"miscellania", "grand exchange", "falador park", "dondakan's rock", "edgeville", "karamja",
 		"draynor village", "al kharid"
 	);
-		private static final List<String> npcContact = Arrays.asList(
+	private static final List<String> npcContact = Arrays.asList(
 		"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "turael",
 		"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
 		"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "random"
@@ -299,6 +299,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapTravel;
 	private boolean swapWildernessLever;
 	private boolean swapJewelleryBox;
+	private boolean getSwapOffer;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
 		@Override
@@ -821,6 +822,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addPriorityEntry("Tan <col=ff7000>All");
 		}
 
+		if (this.getSwapOffer)
+		{
+			menuManager.addPriorityEntry("Offer-All<col=ff9040>");
+		}
+
 		if (this.getSwapSawmill)
 		{
 			menuManager.addPriorityEntry("Buy-plank", "Sawmill operator");
@@ -1319,6 +1325,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry("Stun", "Hoop snake");
 		menuManager.removePriorityEntry("Take-boat");
 		menuManager.removePriorityEntry("Tan <col=ff7000>All");
+		menuManager.removePriorityEntry("Offer-All<col=ff9040>");
 		menuManager.removePriorityEntry("Teleport menu", "Portal nexus");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape");
 		menuManager.removePriorityEntry("Teleport", "Crafting cape(t)");
@@ -1518,7 +1525,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry("climb-up").setPriority(100);
 		}
-		
+
 		if (this.swapNpcContact)
 		{
 			for (String npccontact : npcContact)
@@ -1544,7 +1551,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new BankComparableEntry("equip", "", false));
 		menuManager.removePriorityEntry(new BankComparableEntry("invigorate", "", false));
 		menuManager.removePriorityEntry("climb-up");
-		
+
 		for (String npccontact : npcContact)
 		{
 			menuManager.removePriorityEntry(npccontact, "npc contact");
@@ -1788,6 +1795,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.bankEquipItem = config.bankEquipItem();
 		this.bankInvigorateItem = config.bankInvigorateItem();
 		this.swapNpcContact = config.swapNpcContact();
+		this.getSwapOffer = config.getSwapOffer();
 	}
 
 	private void addBuySellEntries()
