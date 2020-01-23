@@ -211,6 +211,6 @@ public interface GpuPluginConfig extends Config
 	)
 	default boolean ambientLighting()
 	{
-		return true;
+		return false;
 	}
 }
