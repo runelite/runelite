@@ -34,9 +34,11 @@ import net.runelite.api.MenuOpcode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -104,14 +106,12 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(() ->
 		{
 			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
@@ -125,6 +125,12 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 			children[0] = null;
+
+			Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			if (vanilla != null)
+			{
+				vanilla.setHidden(false);
+			}
 
 			onDeselect();
 			client.setSpellSelected(false);
@@ -148,14 +154,20 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
+		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		if (vanilla != null)
+		{
+			vanilla.setHidden(true);
+		}
+
 		icon = minimapOrbs.createChild(0, WidgetType.GRAPHIC);
-		icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		icon.setOriginalX(0);
-		icon.setOriginalY(2);
+		icon.setOriginalY(0);
 		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
 		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		icon.setOriginalWidth(42);
-		icon.setOriginalHeight(16);
+		icon.setOriginalWidth(40);
+		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
 		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC
@@ -164,7 +176,7 @@ public class WikiPlugin extends Plugin
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
 			wikiSelected = true;
-			icon.setSpriteId(WikiSprite.WIKI_SELECTED_ICON.getSpriteId());
+			icon.setSpriteId(SpriteID.WIKI_SELECTED);
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
@@ -180,6 +192,15 @@ public class WikiPlugin extends Plugin
 		icon.revalidate();
 	}
 
+	@Subscribe
+	private void onWidgetHiddenChanged(WidgetHiddenChanged ev)
+	{
+		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
+		{
+			ev.getWidget().setHidden(true);
+		}
+	}
+
 	private void onDeselect()
 	{
 		client.setAllWidgetsAreOpTargetable(false);
@@ -187,7 +208,7 @@ public class WikiPlugin extends Plugin
 		wikiSelected = false;
 		if (icon != null)
 		{
-			icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+			icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		}
 	}
 
@@ -350,59 +371,6 @@ public class WikiPlugin extends Plugin
 					}
 				}
 			}
-		}
-
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID)
-			&& ((wikiSelected && widgetIndex != -1) || "Read Journal:".equals(event.getOption())))
-		{
-			Widget w = getWidget(widgetID, widgetIndex);
-			String target = w.getName();
-
-			client.insertMenuItem(
-				MENUOP_QUICKGUIDE,
-				target,
-				MenuOpcode.RUNELITE.getId(),
-				0,
-				widgetIndex,
-				widgetID,
-				false
-			);
-
-			client.insertMenuItem(
-				MENUOP_GUIDE,
-				target,
-				MenuOpcode.RUNELITE.getId(),
-				0,
-				widgetIndex,
-				widgetID,
-				false
-			);
-		}
-
-		if (widgetID == WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId()
-			&& event.getOption().contains("Open"))
-		{
-			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getActions() == null)
-			{
-				return;
-			}
-
-			String action = firstAction(w);
-			if (action == null)
-			{
-				return;
-			}
-
-			client.insertMenuItem(
-				MENUOP_WIKI,
-				action.replace("Open ", "").replace("Journal", "Diary"),
-				MenuOpcode.RUNELITE.getId(),
-				0,
-				widgetIndex,
-				widgetID,
-				false
-			);
 		}
 
 		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId()
