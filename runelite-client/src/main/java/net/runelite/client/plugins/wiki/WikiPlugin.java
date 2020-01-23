@@ -35,9 +35,11 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -105,14 +107,12 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(() ->
 		{
 			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
@@ -126,6 +126,12 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 			children[0] = null;
+
+			Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			if (vanilla != null)
+			{
+				vanilla.setHidden(false);
+			}
 
 			onDeselect();
 			client.setSpellSelected(false);
@@ -149,14 +155,20 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
+		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		if (vanilla != null)
+		{
+			vanilla.setHidden(true);
+		}
+
 		icon = minimapOrbs.createChild(0, WidgetType.GRAPHIC);
-		icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		icon.setOriginalX(0);
-		icon.setOriginalY(2);
+		icon.setOriginalY(0);
 		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
 		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		icon.setOriginalWidth(42);
-		icon.setOriginalHeight(16);
+		icon.setOriginalWidth(40);
+		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
 		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC
@@ -165,7 +177,7 @@ public class WikiPlugin extends Plugin
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
 			wikiSelected = true;
-			icon.setSpriteId(WikiSprite.WIKI_SELECTED_ICON.getSpriteId());
+			icon.setSpriteId(SpriteID.WIKI_SELECTED);
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
@@ -183,6 +195,15 @@ public class WikiPlugin extends Plugin
 		icon.revalidate();
 	}
 
+	@Subscribe
+	private void onWidgetHiddenChanged(WidgetHiddenChanged ev)
+	{
+		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
+		{
+			ev.getWidget().setHidden(true);
+		}
+	}
+
 	private void onDeselect()
 	{
 		client.setAllWidgetsAreOpTargetable(false);
@@ -190,7 +211,7 @@ public class WikiPlugin extends Plugin
 		wikiSelected = false;
 		if (icon != null)
 		{
-			icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+			icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		}
 	}
 
