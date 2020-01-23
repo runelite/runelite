@@ -10,24 +10,52 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+        with:
+          repository: open-osrs/runelite
+          ref: master
+        -
+      - uses: actions/checkout@v1
+        with:
+          repository: open-osrs/cache-client
+          ref: master
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+        working-directory: /home/runner/work/runelite/runelite
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: /home/runner/work/runelite/cache-client
+
       - name: Assembling cache client
         run: ./gradlew :cache-client:assemble --console=plain
+        working-directory: /home/runner/work/runelite/cache-client
+
       - name: Assembling scraper
         run: ./gradlew :wiki-scraper:assemble --console=plain
+        working-directory: /home/runner/work/runelite/runelite
+
       - name: Building cache client
         run: ./gradlew :cache-client:build --console=plain
+        working-directory: /home/runner/work/runelite/cache-client
+
       - name: Building scraper
         run: ./gradlew :wiki-scraper:build --console=plain
+        working-directory: /home/runner/work/runelite/runelite
+
       - name: Downloading jagex cache
         run: ./gradlew :cache-client:download --console=plain
+        working-directory: /home/runner/work/runelite/cache-client
+
       - name: Scraping NPC stats
         run: ./gradlew :wiki-scraper:npcStatsScrape --console=plain
+        working-directory: /home/runner/work/runelite/runelite
+
       - name: Create NPC stats Pull Request
         uses: Owain94/create-pull-request@master
         env:
