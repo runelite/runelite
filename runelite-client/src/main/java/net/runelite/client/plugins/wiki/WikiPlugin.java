@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.wiki;
 
-import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -360,58 +359,6 @@ public class WikiPlugin extends Plugin
 				}
 				client.setMenuEntries(menuEntries);
 			}
-		}
-
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID)
-			&& ((wikiSelected && widgetIndex != -1) || "Read Journal:".equals(event.getOption())))
-		{
-			Widget w = getWidget(widgetID, widgetIndex);
-			String target = w.getName();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
-
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(target);
-			menuEntry.setOption(MENUOP_GUIDE);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
-
-			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			menuEntry.setTarget(target);
-			menuEntry.setOption(MENUOP_QUICKGUIDE);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
-		}
-
-		if (widgetID == WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId())
-		{
-			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getActions() == null)
-			{
-				return;
-			}
-
-			String action = Stream.of(w.getActions())
-				.filter(s -> s != null && !s.isEmpty())
-				.findFirst().orElse(null);
-			if (action == null)
-			{
-				return;
-			}
-
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(action.replace("Open ", "").replace("Journal", "Diary"));
-			menuEntry.setOption(MENUOP_WIKI);
-			menuEntry.setParam0(widgetIndex);
-			menuEntry.setParam1(widgetID);
-			menuEntry.setType(MenuAction.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
 		}
 
 		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
