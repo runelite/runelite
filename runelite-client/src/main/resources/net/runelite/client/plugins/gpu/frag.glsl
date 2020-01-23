@@ -29,6 +29,8 @@ uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
+uniform bool ambientLighting;
+vec3 mixedColor;
 
 in vec4 Color;
 centroid in float fHsl;
@@ -58,7 +60,12 @@ void main() {
 
     smoothColor = textureColorBrightness * smoothColor;
   }
-
-  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
+  if(ambientLighting == true) {
+      mixedColor = mix(smoothColor.rgb, vec3((fogColor.r-fogColor.r/10),(fogColor.g-fogColor.g/10),(fogColor.b-fogColor.b/10)), fogAmount);
+      mixedColor = mixedColor+vec3(fogColor.r/10, fogColor.g/10, fogColor.b/10);
+  }
+  if(ambientLighting == false) {
+      mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
+  }
   FragColor = vec4(mixedColor, smoothColor.a);
 }

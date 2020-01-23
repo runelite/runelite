@@ -237,9 +237,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
+	private int uniAmbientLighting;
 
 	private int drawDistance;
 	private boolean smoothBanding;
+	private boolean ambientLighting;
 	private AntiAliasingMode antiAliasingMode;
 	private AnisotropicFilteringMode anisotropicFilteringMode;
 	private int fogDepth;
@@ -266,6 +268,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		this.fogCircularity = config.fogCircularity();
 		this.fogDensity = config.fogDensity();
 		this.uiScalingMode = config.uiScalingMode();
+		this.ambientLighting = config.ambientLighting();
 	}
 
 	@Override
@@ -548,6 +551,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniFogCornerRadius = gl.glGetUniformLocation(glProgram, "fogCornerRadius");
 		uniFogDensity = gl.glGetUniformLocation(glProgram, "fogDensity");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
+		uniAmbientLighting = gl.glGetUniformLocation(glProgram, "ambientLighting");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTexSamplingMode = gl.glGetUniformLocation(glUiProgram, "samplingMode");
@@ -1111,7 +1115,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
+
 			gl.glUniform1f(uniSmoothBanding, this.smoothBanding ? 0f : 1f);
+			gl.glUniform1f(uniAmbientLighting, !this.ambientLighting ? 0f : 1f);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
