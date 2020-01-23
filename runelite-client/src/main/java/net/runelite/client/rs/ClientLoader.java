@@ -451,7 +451,17 @@ public class ClientLoader implements Supplier<Applet>
 				protected Class<?> findClass(String name) throws ClassNotFoundException
 				{
 					String entryName = name.replace('.', '/').concat(".class");
-					JarEntry jarEntry = jarFile.getJarEntry(entryName);
+					JarEntry jarEntry;
+
+					try
+					{
+						jarEntry = jarFile.getJarEntry(entryName);
+					}
+					catch (IllegalStateException ex)
+					{
+						throw new ClassNotFoundException(name, ex);
+					}
+
 					if (jarEntry == null)
 					{
 						throw new ClassNotFoundException(name);
