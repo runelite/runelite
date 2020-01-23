@@ -191,4 +191,26 @@ public interface GpuPluginConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigTitleSection(
+		keyName = "effectsTitle",
+		name = "Effects",
+		description = "",
+		position = 13
+	)
+	default Title effectsTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		keyName = "ambientLighting",
+		name = "Ambient Lighting",
+		description = "Produces global lighting based on current fog color",
+		position = 14
+	)
+	default boolean ambientLighting()
+	{
+		return false;
+	}
 }
