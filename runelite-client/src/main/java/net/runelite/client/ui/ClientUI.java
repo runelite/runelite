@@ -612,21 +612,17 @@ public class ClientUI
 		{
 			OSXUtil.requestFocus();
 		}
-		// The workaround for Windows is to minimise and then un-minimise the client to bring
-		// it to the front because java.awt.Window#toFront doesn't work reliably.
+		// See https://stackoverflow.com/questions/309023/how-to-bring-a-window-to-the-front/7435722#7435722
 		else if (OSType.getOSType() == OSType.Windows && !frame.isFocused())
 		{
-			if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH)
+			SwingUtilities.invokeLater(() ->
 			{
-				SwingUtilities.invokeLater(() ->
+				if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH)
 				{
 					frame.setExtendedState(JFrame.ICONIFIED);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				});
-			}
-			else
-			{
-				SwingUtilities.invokeLater(() ->
+				}
+				else
 				{
 					// If the client is snapped to the top and bottom edges of the screen, setExtendedState will
 					// will reset it so setSize and setLocation ensure that the client doesn't move or resize.
@@ -639,8 +635,8 @@ public class ClientUI
 					frame.setExtendedState(JFrame.NORMAL);
 					frame.setLocation(x, y);
 					frame.setSize(width, height);
-				});
-			}
+				}
+			});
 		}
 
 		frame.requestFocus();

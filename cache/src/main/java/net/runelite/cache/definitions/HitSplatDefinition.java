@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Hexagon <hexagon@fking.work>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,20 +27,22 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class WorldMapType3 implements WorldMapTypeBase
+public class HitSplatDefinition
 {
-	public int chunk_oldXHigh;
-	public int numberOfPlanes;
-	public int oldX;
-	public int chunk_oldYHigh;
-	public int newX;
-	public int newY;
-	public int chunk_oldXLow;
-	public int oldY;
-	public int chunk_newYLow;
-	public int chunk_oldYLow;
-	public int chunk_newXLow;
-	public int oldPlane;
-	public int chunk_newXHigh;
-	public int chunk_newYHigh;
+	private String stringFormat = "";
+	private int varbitID = -1;
+	private int leftSprite = -1;
+	private int leftSprite2 = -1;
+	private int rightSpriteId = -1;
+	private int fontType = -1;
+	private int backgroundSprite = -1;
+	private int varpID = -1;
+	private int useDamage = -1;
+	private int textColor = 0xFFFFFF;
+	private int displayCycles = 70;
+	private int[] multihitsplats;
+	private int scrollToOffsetX = 0;
+	private int fadeStartCycle = -1;
+	private int scrollToOffsetY = 0;
+	private int textOffsetY = 0;
 }

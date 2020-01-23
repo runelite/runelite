@@ -171,7 +171,7 @@ public class WidgetID
 		static final int SEARCH = 24;
 		static final int SURFACE_SELECTOR = 32;
 		static final int TOOLTIP = 38;
-		static final int OPTION = 43;
+		static final int OPTION = 46;
 	}
 
 	static class SlayerRewards
@@ -342,6 +342,7 @@ public class WidgetID
 		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
 		static final int WORLDMAP_ORB = 41;
+		static final int WIKI_BANNER = 43;
 	}
 
 	static class LoginClickToPlayScreen
@@ -1187,9 +1188,9 @@ public class WidgetID
 
 	static class Options
 	{
-		static final int MUSIC_SLIDER = 44;
-		static final int SOUND_EFFECT_SLIDER = 50;
-		static final int AREA_SOUND_SLIDER = 56;
+		static final int MUSIC_SLIDER = 38;
+		static final int SOUND_EFFECT_SLIDER = 44;
+		static final int AREA_SOUND_SLIDER = 50;
 	}
 
 	static class AchievementDiary
