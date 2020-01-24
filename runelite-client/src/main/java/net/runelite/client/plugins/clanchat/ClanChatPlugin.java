@@ -528,7 +528,9 @@ public class ClanChatPlugin extends Plugin
 			{
 				final int[] intStack = client.getIntStack();
 				final int size = client.getIntStackSize();
-				intStack[size - 1] = config.clanTabChat() ? 1 : 0;
+				// If the user accidentally adds a / when the config and the clan chat tab is active, handle it like a normal message
+				boolean alterClanChatDispatch = config.clanTabChat() && !client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).startsWith("/");
+				intStack[size - 1] = alterClanChatDispatch ? 1 : 0;
 				break;
 			}
 			case "confirmClanKick":
