@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,44 +21,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.kit;
+package net.runelite.client.plugins.tmorph;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
+import lombok.Data;
 
-/**
- * Represents an equipment slot in a players composition.
- * <p>
- * These values are intended for use with {PlayerAppearance} equipment
- * slots. For obtaining information about equipment in the local players
- * equipment {net.runelite.api.ItemContainer}, use
- * {net.runelite.api.EquipmentInventorySlot}.
- */
-@Getter
-@AllArgsConstructor
-public enum KitType
+@Data
+public class TmorphSet
 {
-	HELMET("Helmet", 0, WidgetInfo.EQUIPMENT_HELMET),
-	CAPE("Cape", 1, WidgetInfo.EQUIPMENT_CAPE),
-	AMULET("Amulet", 2, WidgetInfo.EQUIPMENT_AMULET),
-	WEAPON("Weapon", 3, WidgetInfo.EQUIPMENT_WEAPON),
-	TORSO("Torso", 4, WidgetInfo.EQUIPMENT_BODY),
-	SHIELD("Shield", 5, WidgetInfo.EQUIPMENT_SHIELD),
-	LEGS("Legs", 7, WidgetInfo.EQUIPMENT_LEGS),
-	HEAD("Head", 8, null),
-	HANDS("Hands", 9, WidgetInfo.EQUIPMENT_GLOVES),
-	BOOTS("Boots", 10, WidgetInfo.EQUIPMENT_BOOTS),
-	JAW("Jaw", 11, null),
-	RING("Ring", 12, WidgetInfo.EQUIPMENT_RING),
-	AMMUNITION("Ammo", 13, WidgetInfo.EQUIPMENT_AMMO);
-
-	private final String name;
-
-	/**
-	 * Gets the raw equipment index for use in {PlayerAppearance#getEquipmentIds()}.
-	 */
-	private final int index;
-
-	private final WidgetInfo widgetInfo;
+	private String name;
+	private int helmet;
+	private int cape;
+	private int amulet;
+	private int weapon;
+	private int torso;
+	private int shield;
+	private int legs;
+	private int hands;
+	private int boots;
 }

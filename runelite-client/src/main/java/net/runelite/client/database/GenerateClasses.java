@@ -26,7 +26,7 @@ public class GenerateClasses
 					)
 					.withTarget(new Target()
 						.withPackageName("net.runelite.client.database.data")
-						.withDirectory("runelite-client/src/main/java/net/runelite/client/database/data")
+						.withDirectory("runelite-client/src/main/java/")
 					)
 				);
 
