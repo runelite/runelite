@@ -26,6 +26,7 @@ package net.runelite.client.plugins.tmorph;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,10 +37,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SpotAnimationChanged;
@@ -50,13 +53,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.tmorph.ui.TPanel;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.Clipboard;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -76,10 +80,12 @@ public class TMorph extends Plugin
 	static
 	{
 		final ImmutableMap.Builder<String, KitType> builder = new ImmutableMap.Builder<>();
+
 		for (KitType kit : KitType.values())
 		{
 			builder.put(kit.getName(), kit);
 		}
+
 		kit = builder.build();
 	}
 
@@ -104,10 +110,6 @@ public class TMorph extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private ItemManager itemManager;
-
-
 	private TPanel panel;
 	private NavigationButton navButton;
 	private int animation;
@@ -118,6 +120,9 @@ public class TMorph extends Plugin
 	private int targetGraphic;
 	@Setter
 	private Map<String, String> panelMorph = new HashMap<>();
+	private Map<String, String> set1;
+	private Map<String, String> set2;
+	private Map<String, String> set3;
 
 	@Provides
 	TMorphConfig provideConfig(ConfigManager configManager)
@@ -148,6 +153,78 @@ public class TMorph extends Plugin
 	protected void shutDown()
 	{
 		eventBus.unregister(this);
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted event)
+	{
+		final String[] args = event.getArguments();
+
+		if (event.getCommand().equals("tmorph"))
+		{
+			try
+			{
+				if (args[0].equals("copy"))
+				{
+					final StringBuilder sb = new StringBuilder();
+					final Player player = client.getLocalPlayer();
+
+					if (player == null
+						|| player.getPlayerAppearance() == null
+						|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+						|| client.getViewportWidget() == null)
+					{
+						return;
+					}
+
+					for (KitType kitType : KitType.values())
+					{
+						if (kitType.equals(KitType.RING) || kitType.equals(KitType.AMMUNITION))
+						{
+							continue;
+						}
+
+						final int id = player.getPlayerAppearance().getEquipmentId(kitType);
+
+						if (id == -1)
+						{
+							continue;
+						}
+
+						sb.append(id);
+						sb.append(",-1");
+						sb.append(":");
+						sb.append(kitType.getName());
+						sb.append("\n");
+					}
+					client.addChatMessage(
+						ChatMessageType.GAMEMESSAGE,
+						"TMorph",
+						ColorUtil.prependColorTag("Your current gear has been copied to your clipboard", Color.RED),
+						null
+					);
+					Clipboard.store(sb.toString());
+				}
+				else
+				{
+					client.addChatMessage(
+						ChatMessageType.GAMEMESSAGE,
+						"TMorph",
+						ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED),
+						null
+					);
+				}
+			}
+			catch (Exception e)
+			{
+				client.addChatMessage(
+					ChatMessageType.GAMEMESSAGE,
+					"TMorph",
+					ColorUtil.prependColorTag("Invalid syntax, do ::tmorph copy", Color.RED),
+					null
+				);
+			}
+		}
 	}
 
 	@Subscribe
@@ -233,11 +310,14 @@ public class TMorph extends Plugin
 		}
 
 		updateGear(panelMorph, player);
+		updateGear(set1, player);
+		updateGear(set2, player);
+		updateGear(set3, player);
 	}
 
 	public void updateGear(Map<String, String> map, Player player)
 	{
-		if (map == null || map.isEmpty())
+		if (map == null || map.isEmpty() || player.getPlayerAppearance() == null)
 		{
 			return;
 		}
@@ -281,6 +361,9 @@ public class TMorph extends Plugin
 
 	private void updateConfig()
 	{
+		this.set1 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set1());
+		this.set2 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set2());
+		this.set3 = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config.set3());
 		this.animation = config.animationSwap();
 		this.globalAnimSwap = config.globalAnimSwap();
 		this.globalGraphicSwap = config.globalGraphicSwap();

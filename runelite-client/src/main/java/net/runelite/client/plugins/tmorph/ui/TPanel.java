@@ -63,6 +63,7 @@ import static net.runelite.api.kit.KitType.TORSO;
 import static net.runelite.api.kit.KitType.WEAPON;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.database.DatabaseManager;
 import static net.runelite.client.database.data.Tables.TMORPH_SETS;
 import net.runelite.client.database.data.tables.records.TmorphSetsRecord;
@@ -86,6 +87,7 @@ public class TPanel extends PluginPanel
 	private final DatabaseManager databaseManager;
 	private final ItemManager itemManager;
 	private final TMorph plugin;
+	private final Notifier notifier;
 
 	private final JComboBox<String> selector;
 	private final Map<KitType, EquipSlot> equipSlots;
@@ -99,7 +101,8 @@ public class TPanel extends PluginPanel
 		final Client client,
 		final DatabaseManager databaseManager,
 		final ItemManager itemManager,
-		final TMorph plugin
+		final TMorph plugin,
+		final Notifier notifier
 	)
 	{
 		super(false);
@@ -107,6 +110,7 @@ public class TPanel extends PluginPanel
 		this.databaseManager = databaseManager;
 		this.itemManager = itemManager;
 		this.plugin = plugin;
+		this.notifier = notifier;
 		this.equipSlots = new LinkedHashMap<>();
 		this.kitToId = new HashMap<>();
 		this.setMap = new HashMap<>();
@@ -117,7 +121,7 @@ public class TPanel extends PluginPanel
 
 	private void init()
 	{
-		selector.addItem("");
+		selector.addItem("Populating fields...");
 		selector.setSelectedIndex(0);
 		selector.addActionListener((e) ->
 		{
@@ -159,7 +163,7 @@ public class TPanel extends PluginPanel
 		final JPanel containerPanel = new JPanel();
 
 		final JLabel caption = new JLabel();
-		caption.setText("Current Morph");
+		caption.setText("Morph Selector");
 		caption.setForeground(Color.WHITE);
 		caption.setHorizontalAlignment(JLabel.CENTER);
 		caption.setVerticalAlignment(JLabel.CENTER);
@@ -290,7 +294,7 @@ public class TPanel extends PluginPanel
 
 					if (client.getGameState() == GameState.LOGGED_IN)
 					{
-						Map<String, String> s = generate();
+						Map<String, String> s = generate(false);
 					}
 				}
 			});
@@ -300,18 +304,23 @@ public class TPanel extends PluginPanel
 			i++;
 		}
 
-		final JButton setButton = new JButton("Set Active Morph");
-		setButton.addActionListener((e) -> plugin.setPanelMorph(generate()));
+		final JButton setButton = new JButton("Set/Copy Active Morph");
+		setButton.addActionListener((e) -> plugin.setPanelMorph(generate(true)));
 		equipPanel.add(setButton);
 
 		final JButton saveButton = new JButton("Save Active Morph");
 		saveButton.addActionListener((e) ->
 		{
-			final String result = JOptionPane.showInputDialog(saveButton, "What would you like to name the set?");
+			final String s = JOptionPane.showInputDialog(saveButton, "What would you like to name the set?");
+
+			if (s == null || s.isEmpty())
+			{
+				return;
+			}
 
 			Result<TmorphSetsRecord> records = databaseManager.getDsl()
 				.selectFrom(TMORPH_SETS)
-				.where(TMORPH_SETS.SET_NAME.eq(result))
+				.where(TMORPH_SETS.SET_NAME.eq(s))
 				.fetch();
 
 			boolean exists = records.isNotEmpty();
@@ -319,7 +328,7 @@ public class TPanel extends PluginPanel
 			if (!exists)
 			{
 				databaseManager.getDsl().insertInto(TMORPH_SETS)
-					.set(TMORPH_SETS.SET_NAME, result)
+					.set(TMORPH_SETS.SET_NAME, s)
 					.set(TMORPH_SETS.HELMET, kitToId.getOrDefault(HELMET, -1))
 					.set(TMORPH_SETS.CAPE, kitToId.getOrDefault(CAPE, -1))
 					.set(TMORPH_SETS.AMULET, kitToId.getOrDefault(AMULET, -1))
@@ -344,7 +353,7 @@ public class TPanel extends PluginPanel
 					.set(TMORPH_SETS.LEGS, kitToId.getOrDefault(LEGS, -1))
 					.set(TMORPH_SETS.HANDS, kitToId.getOrDefault(HANDS, -1))
 					.set(TMORPH_SETS.BOOTS, kitToId.getOrDefault(BOOTS, -1))
-					.where(TMORPH_SETS.SET_NAME.eq(result))
+					.where(TMORPH_SETS.SET_NAME.eq(s))
 					.execute();
 			}
 		});
@@ -359,7 +368,7 @@ public class TPanel extends PluginPanel
 		}
 	}
 
-	public Map<String, String> generate()
+	public Map<String, String> generate(boolean copy)
 	{
 		final StringBuilder sb = new StringBuilder();
 		final Player player = client.getLocalPlayer();
@@ -403,7 +412,12 @@ public class TPanel extends PluginPanel
 		}
 
 		final String s = sb.toString();
-		Clipboard.store(s);
+
+		if (copy)
+		{
+			Clipboard.store(s);
+			notifier.notify("Saved to clipboard.");
+		}
 
 		return plugin.getNEWLINE_SPLITTER()
 			.withKeyValueSeparator(":")
