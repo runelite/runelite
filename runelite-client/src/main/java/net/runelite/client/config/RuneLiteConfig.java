@@ -239,4 +239,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "tooltipPosition",
+		name = "Tooltip Position",
+		description = "Configures whether to show the tooltip above or under the cursor.",
+		position = 35
+	)
+	default TooltipPositionType tooltipPosition()
+	{
+		return TooltipPositionType.UNDER_CURSOR;
+	}
 }
