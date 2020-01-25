@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -377,6 +378,13 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
+		final Color animationIdleFlashColor = config.getAnimationIdleFlashColor();
+		final Color logoutIdleFlashColor = config.getLogoutIdleFlashColor();
+		final Color combatIdleFlashColor = config.getCombatIdleFlashColor();
+		final Color hitpointsFlashColor = config.getHitpointsFlashColor();
+		final Color prayerFlashColor = config.getPrayerFlashColor();
+		final Color oxygenFlashColor = config.getOxygenFlashColor();
+		final Color energyFlashColor = config.getEnergyFlashColor();
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
 		if (client.getGameState() != GameState.LOGGED_IN
@@ -391,21 +399,25 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.logoutIdle() && checkIdleLogout())
 		{
+			Notifier.FLASH_COLOR = logoutIdleFlashColor;
 			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
 		}
 
 		if (check6hrLogout())
 		{
+			Notifier.FLASH_COLOR = logoutIdleFlashColor;
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
+			Notifier.FLASH_COLOR = animationIdleFlashColor;
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
 		if (config.movementIdle() && checkMovementIdle(waitDuration, local))
 		{
+			Notifier.FLASH_COLOR = animationIdleFlashColor;
 			notifier.notify("[" + local.getName() + "] has stopped moving!");
 		}
 
@@ -413,31 +425,37 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			if (lastInteractWasCombat)
 			{
+				Notifier.FLASH_COLOR = combatIdleFlashColor;
 				notifier.notify("[" + local.getName() + "] is now out of combat!");
 			}
 			else
 			{
+				Notifier.FLASH_COLOR = animationIdleFlashColor;
 				notifier.notify("[" + local.getName() + "] is now idle!");
 			}
 		}
 
 		if (checkLowHitpoints())
 		{
+			Notifier.FLASH_COLOR = hitpointsFlashColor;
 			notifier.notify("[" + local.getName() + "] has low hitpoints!");
 		}
 
 		if (checkLowPrayer())
 		{
+			Notifier.FLASH_COLOR = prayerFlashColor;
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
 
 		if (checkLowOxygen())
 		{
+			Notifier.FLASH_COLOR = oxygenFlashColor;
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
 		}
 
 		if (checkFullSpecEnergy())
 		{
+			Notifier.FLASH_COLOR = energyFlashColor;
 			notifier.notify("[" + local.getName() + "] has restored spec energy!");
 		}
 	}
