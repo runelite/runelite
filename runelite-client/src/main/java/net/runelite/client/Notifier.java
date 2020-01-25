@@ -62,6 +62,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.FlashNotification;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -96,7 +97,8 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
+
+	public static Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
