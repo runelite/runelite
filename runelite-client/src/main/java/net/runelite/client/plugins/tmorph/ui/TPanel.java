@@ -159,7 +159,7 @@ public class TPanel extends PluginPanel
 		northAnchoredPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		northAnchoredPanel.add(selector);
 
-		final JPanel lol = new JPanel();
+		final JPanel containerHolder = new JPanel();
 		final JPanel containerPanel = new JPanel();
 
 		final JLabel caption = new JLabel();
@@ -179,12 +179,12 @@ public class TPanel extends PluginPanel
 		containerPanel.add(captionPanel, BorderLayout.NORTH);
 		containerPanel.add(equipPanel, BorderLayout.CENTER);
 
-		lol.add(containerPanel);
+		containerHolder.add(containerPanel);
 
 		final JPanel contentPanel = new JPanel();
 		final BoxLayout contentLayout = new BoxLayout(contentPanel, Y_AXIS);
 		contentPanel.setLayout(contentLayout);
-		contentPanel.add(lol);
+		contentPanel.add(containerHolder);
 
 		final JPanel contentWrapper = new JPanel(new BorderLayout());
 		contentWrapper.add(Box.createGlue(), BorderLayout.CENTER);
@@ -294,7 +294,7 @@ public class TPanel extends PluginPanel
 
 					if (client.getGameState() == GameState.LOGGED_IN)
 					{
-						Map<String, String> s = generate(false);
+						generate(false);
 					}
 				}
 			});
