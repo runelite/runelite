@@ -276,4 +276,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "pluginHubWarning",
+		name = "Show Plugin Hub warning",
+		description = "Toggles whether to show the Plugin Hub warning",
+		position = 43
+	)
+	default boolean showPluginHubWarning()
+	{
+		return true;
+	}
 }

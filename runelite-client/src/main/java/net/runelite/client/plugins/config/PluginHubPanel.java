@@ -69,6 +69,8 @@ import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.externalplugins.ExternalPluginClient;
@@ -318,10 +320,13 @@ class PluginHubPanel extends PluginPanel
 	private final PluginManager pluginManager;
 	private final ExternalPluginClient externalPluginClient;
 	private final ScheduledExecutorService executor;
+	private final RuneLiteConfig config;
+	private final ConfigManager configManager;
 
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
+	private final JPanel warningPanel;
 	private List<PluginItem> plugins = null;
 
 	@Inject
@@ -330,7 +335,9 @@ class PluginHubPanel extends PluginPanel
 		ExternalPluginManager externalPluginManager,
 		PluginManager pluginManager,
 		ExternalPluginClient externalPluginClient,
-		ScheduledExecutorService executor)
+		ScheduledExecutorService executor,
+		RuneLiteConfig config,
+		ConfigManager configManager)
 	{
 		super(false);
 		this.pluginListPanel = pluginListPanel;
@@ -338,6 +345,8 @@ class PluginHubPanel extends PluginPanel
 		this.pluginManager = pluginManager;
 		this.externalPluginClient = externalPluginClient;
 		this.executor = executor;
+		this.config = config;
+		this.configManager = configManager;
 
 		{
 			Object refresh = "this could just be a lambda, but no, it has to be abstracted";
@@ -381,20 +390,44 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
-		JLabel externalPluginWarning = new JLabel("<html>External plugins are not supported by the RuneLite Developers." +
+		warningPanel = new JPanel();
+		GroupLayout warningLayout = new GroupLayout(warningPanel);
+		warningPanel.setLayout(warningLayout);
+		warningPanel.setBackground(new Color(0xFFBB33));
+		warningPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		warningPanel.setOpaque(true);
+
+		JLabel externalPluginWarning = new JLabel("<html>External plugins are not supported by the RuneLite Developers. " +
 			"They may cause bugs or instability.</html>");
-		externalPluginWarning.setBackground(new Color(0xFFBB33));
+		externalPluginWarning.setBackground(warningPanel.getBackground());
 		externalPluginWarning.setForeground(Color.BLACK);
-		externalPluginWarning.setBorder(new EmptyBorder(5, 5, 5, 2));
 		externalPluginWarning.setOpaque(true);
 
 		JLabel externalPluginWarning2 = new JLabel("Use at your own risk!");
-		externalPluginWarning2.setHorizontalAlignment(JLabel.CENTER);
 		externalPluginWarning2.setFont(FontManager.getRunescapeBoldFont());
-		externalPluginWarning2.setBackground(externalPluginWarning.getBackground());
+		externalPluginWarning2.setBackground(warningPanel.getBackground());
 		externalPluginWarning2.setForeground(externalPluginWarning.getForeground());
-		externalPluginWarning2.setBorder(new EmptyBorder(0, 5, 5, 5));
+		externalPluginWarning2.setBorder(new EmptyBorder(5, 0, 0, 0));
 		externalPluginWarning2.setOpaque(true);
+
+		JButton warningOk = new JButton("Ok");
+		warningOk.addActionListener(l ->
+		{
+			this.configManager.setConfiguration("runelite", "pluginHubWarning", false);
+			warningPanel.setVisible(false);
+		});
+
+		warningLayout.setVerticalGroup(warningLayout.createSequentialGroup()
+			.addComponent(externalPluginWarning)
+			.addGroup(warningLayout.createParallelGroup()
+				.addComponent(externalPluginWarning2)
+				.addComponent(warningOk)));
+
+		warningLayout.setHorizontalGroup(warningLayout.createParallelGroup()
+			.addComponent(externalPluginWarning, 0, Short.MAX_VALUE, Short.MAX_VALUE)
+			.addGroup(warningLayout.createSequentialGroup()
+				.addComponent(externalPluginWarning2, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+				.addComponent(warningOk, 0, GroupLayout.PREFERRED_SIZE, 50)));
 
 		JButton backButton = new JButton(ConfigPanel.BACK_ICON);
 		backButton.setRolloverIcon(ConfigPanel.BACK_ICON_HOVER);
@@ -422,8 +455,7 @@ class PluginHubPanel extends PluginPanel
 		scrollPane.setViewportView(mainPanelWrapper);
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
-			.addComponent(externalPluginWarning)
-			.addComponent(externalPluginWarning2)
+			.addComponent(warningPanel)
 			.addGap(10)
 			.addGroup(layout.createParallelGroup()
 				.addComponent(backButton)
@@ -432,8 +464,7 @@ class PluginHubPanel extends PluginPanel
 			.addComponent(scrollPane));
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
-			.addComponent(externalPluginWarning, 0, Short.MAX_VALUE, Short.MAX_VALUE)
-			.addComponent(externalPluginWarning2, 0, Short.MAX_VALUE, Short.MAX_VALUE)
+			.addComponent(warningPanel, 0, Short.MAX_VALUE, Short.MAX_VALUE)
 			.addGroup(layout.createSequentialGroup()
 				.addComponent(backButton)
 				.addComponent(searchBar)
@@ -548,6 +579,7 @@ class PluginHubPanel extends PluginPanel
 		revalidate();
 		searchBar.setText("");
 		reloadPluginList();
+		warningPanel.setVisible(config.showPluginHubWarning());
 		searchBar.requestFocusInWindow();
 	}
 
