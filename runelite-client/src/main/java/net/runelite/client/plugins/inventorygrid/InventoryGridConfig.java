@@ -24,17 +24,31 @@
  */
 package net.runelite.client.plugins.inventorygrid;
 
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("inventorygrid")
 public interface InventoryGridConfig extends Config
 {
+
+
+	@ConfigItem(
+		keyName = "showindividualGrid",
+		name = "Toggle individual grid",
+		description = "Shows boxes where items go",
+		position = 5
+	)
+	default boolean showIndividualGrid() { return false; }
+
 	@ConfigItem(
 		keyName = "showItem",
 		name = "Show item",
-		description = "Show a preview of the item in the new slot"
+		description = "Show a preview of the item in the new slot",
+		position = 4
 	)
 	default boolean showItem()
 	{
@@ -44,7 +58,8 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "showGrid",
 		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
+		description = "Show a grid on the inventory while dragging",
+		position = 3
 	)
 	default boolean showGrid()
 	{
@@ -54,10 +69,31 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "showHighlight",
 		name = "Highlight background",
-		description = "Show a green background highlight on the new slot"
+		description = "Show a green background highlight on the new slot",
+		position = 2
 	)
-	default boolean showHighlight()
+	default boolean showHighlight() { return true; }
+
+	@Alpha
+	@ConfigItem(
+			keyName = "colorHighlight",
+			name = "Highlighted Item",
+			description = "Configures the highlight color of the item box",
+			position = 1
+	)
+	default Color colorHighlight()
 	{
-		return true;
+		return new Color(0, 255, 0, 45);
 	}
+
+	@Alpha
+	@ConfigItem(
+			keyName = "colorGrid",
+			name = "Color of the grid",
+			description = "Configures the color of the item grid",
+			position = 0
+	)
+	default Color colorGrid() { return new Color(255, 255, 255, 45); }
+
+
 }
