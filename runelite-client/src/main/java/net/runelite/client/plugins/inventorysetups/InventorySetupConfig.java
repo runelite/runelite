@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup(InventorySetupPlugin.CONFIG_GROUP)
 public interface InventorySetupConfig extends Config
@@ -98,5 +99,27 @@ public interface InventorySetupConfig extends Config
 	default Color highlightColor()
 	{
 		return Color.RED;
+	}
+	
+	@ConfigItem(
+		keyName = "returnToSetupsHotkey",
+		name = "Return To Setups Hotkey",
+		description = "Configures the hotkey for returning to setups",
+		position = 6
+	)
+	default Keybind returnToSetupsHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		keyName = "filterBankHotkey",
+		name = "Filter Bank Hotkey",
+		description = "Configures the hotkey for filtering the bank",
+		position = 7
+	)
+	default Keybind filterBankHotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 }
