@@ -39,8 +39,6 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
@@ -73,7 +71,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.eventbus.Subscribe;
@@ -345,8 +342,7 @@ public class ClientUI
 			frame.add(container);
 
 			// Add key listener
-			final HotkeyListener sidebarListener = new HotkeyListener(() ->
-				new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK))
+			final HotkeyListener sidebarListener = new HotkeyListener(config::sidebarToggleKey)
 			{
 				@Override
 				public void hotkeyPressed()
