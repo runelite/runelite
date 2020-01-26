@@ -13,7 +13,7 @@ jobs:
         with:
           repository: open-osrs/runelite
           ref: master
-        -
+
       - uses: actions/checkout@v1
         with:
           repository: open-osrs/cache-client
