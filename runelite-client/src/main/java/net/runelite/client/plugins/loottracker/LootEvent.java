@@ -53,6 +53,16 @@ enum LootEvent
 	KINGDOM_OF_MISCELLANIA("Kingdom of Miscellania"),
 	LARRANS_CHEST_BIG("Larran's big chest"),
 	LARRANS_CHEST_SMALL("Larran's small chest"),
+	// Pickpocket-able NPCs who give loot other than coin pouches
+	PICKPOCKET_BANDIT("Bandit (Pickpocket)"),
+	PICKPOCKET_CAVE_GOBLIN("Cave Goblin (Pickpocket)"),
+	PICKPOCKET_ELF("Elf (Pickpocket)"),
+	PICKPOCKET_GNOME("Gnome (Pickpocket)"),
+	PICKPOCKET_HAM_MEMBER("H.A.M. Member (Pickpocket)"),
+	PICKPOCKET_HERO("Hero (Pickpocket)"),
+	PICKPOCKET_MASTER_FARMER("Master Farmer (Pickpocket)"),
+	PICKPOCKET_ROGUE("Rogue (Pickpocket)"),
+	PICKPOCKET_TZHAAR_HUR("TzHaar-Hur (Pickpocket)"),
 	THEATRE_OF_BLOOD("Theatre of Blood");
 
 	@Getter
@@ -66,9 +76,23 @@ enum LootEvent
 		13151, LootEvent.ELVEN_CRYSTAL_CHEST
 	);
 
+	static final Map<String, LootEvent> PICKPOCKET_EVENT_LOOKUP_TABLE = ImmutableMap.<String, LootEvent>builder()
+		.put("Master Farmer", PICKPOCKET_MASTER_FARMER)
+		.put("Martin", PICKPOCKET_MASTER_FARMER)
+		.put("TzHaar-Hur", PICKPOCKET_TZHAAR_HUR)
+		.put("Elf", PICKPOCKET_ELF)
+		.put("Hero", PICKPOCKET_HERO)
+		.put("Gnome", PICKPOCKET_GNOME)
+		.put("Bandit", PICKPOCKET_BANDIT)
+		.put("Cave Goblin", PICKPOCKET_CAVE_GOBLIN)
+		.put("Rogue", PICKPOCKET_ROGUE)
+		.put("H.A.M. Member", PICKPOCKET_HAM_MEMBER)
+		.build();
+
 	static final List<LootEvent> DIRECT_TO_INVENTORY_EVENTS = ImmutableList.<LootEvent>builder()
 		.add(HERBIBOAR, HESPORI, GAUNTLET)
 		.addAll(CHEST_EVENT_LOOKUP_TABLE.values())
+		.addAll(PICKPOCKET_EVENT_LOOKUP_TABLE.values())
 		.build();
 
 	static final Map<String, LootEvent> CLUE_SCROLL_LOOKUP_TABLE = ImmutableMap.<String, LootEvent>builder()

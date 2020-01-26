@@ -26,7 +26,9 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
@@ -64,6 +66,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
@@ -93,6 +96,7 @@ import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -125,6 +129,18 @@ public class LootTrackerPlugin extends Plugin
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
 
+	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
+	/*
+	 * This map is used when a pickpocket target has a different name in the chat message than their in-game name,
+	 * *and* the name in the chat box conflicts with other targets (otherwise just use that name in the look-up map)
+	 * Note that if the two NPCs can be found in the same place, there is a chance of race conditions
+	 * occurring when changing targets mid-pickpocket, in which case a different solution may need to be considered.
+	 */
+	private static final Multimap<String, String> PICKPOCKET_DISAMBIGUATION_MAP = ImmutableMultimap.of(
+		"H.A.M. Member", "Man",
+		"H.A.M. Member", "Woman"
+	);
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -156,6 +172,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private LootEvent mostRecentEvent;
 	private boolean chestLooted;
+	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
 
@@ -474,6 +491,28 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		final Matcher pickpocketMatcher = PICKPOCKET_REGEX.matcher(message);
+		if (pickpocketMatcher.matches())
+		{
+			// Get the target's name as listed in the chat box
+			String pickpocketTarget = WordUtils.capitalize(pickpocketMatcher.group("target"));
+
+			// Occasional edge case where the pickpocket message doesn't list the correct name of the NPC (e.g. H.A.M. Members)
+			// This case is considered first, since otherwise the ambiguity might not be caught
+			if (PICKPOCKET_DISAMBIGUATION_MAP.get(lastPickpocketTarget).contains(pickpocketTarget))
+			{
+				mostRecentEvent = LootEvent.PICKPOCKET_EVENT_LOOKUP_TABLE.get(lastPickpocketTarget);
+				takeInventorySnapshot();
+				return;
+			}
+			else if (LootEvent.PICKPOCKET_EVENT_LOOKUP_TABLE.containsKey(pickpocketTarget))
+			{
+				mostRecentEvent = LootEvent.PICKPOCKET_EVENT_LOOKUP_TABLE.get(pickpocketTarget);
+				takeInventorySnapshot();
+				return;
+			}
+		}
+
 		// Check if message is for a clue scroll reward
 		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(message));
 		if (m.find())
@@ -494,6 +533,17 @@ public class LootTrackerPlugin extends Plugin
 
 		processChestLoot(mostRecentEvent, event.getItemContainer());
 		mostRecentEvent = null;
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
+		// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
+		if (event.getMenuOption().equals("Pickpocket"))
+		{
+			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+		}
 	}
 
 	@Schedule(
