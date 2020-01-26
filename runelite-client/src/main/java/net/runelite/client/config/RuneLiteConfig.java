@@ -312,4 +312,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+		keyName = "panelToggleKey",
+		name = "Plugin Panel Toggle Key",
+		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
+		position = 45
+	)
+	default Keybind panelToggleKey()
+	{
+		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+	}
 }
