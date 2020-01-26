@@ -32,6 +32,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
 import javax.swing.Box;
@@ -47,10 +48,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InventorySetupPluginPanel extends PluginPanel
 {
@@ -81,8 +85,8 @@ public class InventorySetupPluginPanel extends PluginPanel
 		UPDATE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(updateIcon, 0.53f));
 
 		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(InventorySetupPlugin.class, "back_arrow_icon.png");
-		BACK_ICON = new ImageIcon(ImageUtil.flipImage(backIcon, true, false));
-		BACK_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.flipImage(backIcon, true, false), 0.53f));
+		BACK_ICON = new ImageIcon(backIcon);
+		BACK_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(backIcon, 0.53f));
 
 		MAIN_TITLE = "Inventory Setups";
 	}
@@ -98,6 +102,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 	private final JLabel addImportMarker;
 	private final JLabel updateMarker;
 	private final JLabel backMarker;
+	private final IconTextField searchBar;
 	private final InventorySetupInventoryPanel invPanel;
 	private final InventorySetupEquipmentPanel eqpPanel;
 	private final InventorySetupRunePouchPanel rpPanel;
@@ -199,14 +204,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				noSetupsPanel.setVisible(false);
-				invEqPanel.setVisible(false);
-				overviewPanel.setVisible(true);
-				overviewTopRightButtonsPanel.setVisible(true);
-				setupTopRightButtonsPanel.setVisible(false);
-				title.setText(MAIN_TITLE);
-				currentSelectedSetup = null;
-				plugin.resetBankSearch();
+				returnToOverviewPanel();
 			}
 
 			@Override
@@ -222,13 +220,15 @@ public class InventorySetupPluginPanel extends PluginPanel
 			}
 		});
 
-		this.overviewTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		this.overviewTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		overviewTopRightButtonsPanel.add(addImportMarker);
 		overviewTopRightButtonsPanel.add(addMarker);
+		addMarker.setBorder(new EmptyBorder(0, 8, 0, 0));
 
-		this.setupTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		this.setupTopRightButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		setupTopRightButtonsPanel.add(updateMarker);
 		setupTopRightButtonsPanel.add(backMarker);
+		backMarker.setBorder(new EmptyBorder(0, 8, 0, 0));
 
 		// the panel on the top right that holds the buttons
 		final JPanel markersPanel = new JPanel();
@@ -238,11 +238,36 @@ public class InventorySetupPluginPanel extends PluginPanel
 		overviewTopRightButtonsPanel.setVisible(true);
 		setupTopRightButtonsPanel.setVisible(false);
 
-		// the top panel that has the title and the buttons
+		// the top panel that has the title and the buttons, and search bar
 		final JPanel titleAndMarkersPanel = new JPanel();
 		titleAndMarkersPanel.setLayout(new BorderLayout());
 		titleAndMarkersPanel.add(title, BorderLayout.WEST);
 		titleAndMarkersPanel.add(markersPanel, BorderLayout.EAST);
+		this.searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 30));
+		searchBar.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				rebuild();
+			}
+		});
+		searchBar.addClearListener(actionEvent -> rebuild());
 
 		// the panel that stays at the top and doesn't scroll
 		// contains the title and buttons
@@ -250,7 +275,8 @@ public class InventorySetupPluginPanel extends PluginPanel
 		northAnchoredPanel.setLayout(new BoxLayout(northAnchoredPanel, BoxLayout.Y_AXIS));
 		northAnchoredPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		northAnchoredPanel.add(titleAndMarkersPanel);
-		northAnchoredPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		northAnchoredPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		northAnchoredPanel.add(searchBar);
 
 		// the panel that holds the inventory and equipment panels
 		final BoxLayout invEqLayout = new BoxLayout(invEqPanel, BoxLayout.Y_AXIS);
@@ -292,7 +318,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 
 	}
 
-	public void init()
+	public void init(List<InventorySetup> setups)
 	{
 		overviewPanel.setLayout(new GridBagLayout());
 		overviewPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -303,7 +329,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 
-		for (final InventorySetup setup : plugin.getInventorySetups())
+		for (final InventorySetup setup : setups)
 		{
 			InventorySetupPanel newPanel = new InventorySetupPanel(plugin, this, setup);
 			overviewPanel.add(newPanel, constraints);
@@ -323,7 +349,9 @@ public class InventorySetupPluginPanel extends PluginPanel
 	public void rebuild()
 	{
 		overviewPanel.removeAll();
-		init();
+		final String text = searchBar.getText();
+		List<InventorySetup> setupsToAdd = searchBar.getText().isEmpty() ? plugin.getInventorySetups() : plugin.filterSetups(searchBar.getText());
+		init(setupsToAdd);
 		revalidate();
 		repaint();
 	}
@@ -351,6 +379,7 @@ public class InventorySetupPluginPanel extends PluginPanel
 		overviewPanel.setVisible(false);
 
 		title.setText(inventorySetup.getName());
+		searchBar.setVisible(false);
 
 		// only show the rune pouch if the setup has a rune pouch
 		rpPanel.setVisible(currentSelectedSetup.getRune_pouch() != null);
@@ -410,5 +439,17 @@ public class InventorySetupPluginPanel extends PluginPanel
 		final ArrayList<InventorySetupItem> eqp = plugin.getNormalizedContainer(InventoryID.EQUIPMENT);
 		eqpPanel.highlightSlotDifferences(eqp, currentSelectedSetup);
 	}
-
+	
+	public void returnToOverviewPanel()
+	{
+		noSetupsPanel.setVisible(false);
+		invEqPanel.setVisible(false);
+		overviewPanel.setVisible(true);
+		overviewTopRightButtonsPanel.setVisible(true);
+		setupTopRightButtonsPanel.setVisible(false);
+		title.setText(MAIN_TITLE);
+		currentSelectedSetup = null;
+		searchBar.setVisible(true);
+		plugin.resetBankSearch();
+	}
 }

@@ -138,7 +138,7 @@ public abstract class InventorySetupContainerPanel extends JPanel
 				break;
 		}
 
-		assert index < items.size() && index > 0 : "Index Off Array";
+		assert index < items.size() && index >= 0 : "Index Off Array";
 
 		containerSlot.setParentSetup(setup);
 
