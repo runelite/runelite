@@ -455,7 +455,8 @@ public class ConfigManager
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType(),
 				m.getDeclaredAnnotation(Range.class),
-				m.getDeclaredAnnotation(Alpha.class)
+				m.getDeclaredAnnotation(Alpha.class),
+				m.getDeclaredAnnotation(Units.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
