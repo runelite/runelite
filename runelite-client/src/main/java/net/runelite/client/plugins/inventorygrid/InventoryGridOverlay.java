@@ -28,7 +28,6 @@ package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
