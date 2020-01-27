@@ -86,7 +86,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3770, 3898, 0), "On the small island north-east of Fossil Island's mushroom forest.")
 		// Hard
 		.put(new WorldPoint(2209, 3161, 0), "North-east of Tyras Camp (BJS).")
-		.put(new WorldPoint(2181, 3206, 0), "South of Elf Camp.")
+		.put(new WorldPoint(2181, 3206, 0), "South of Iorwerth Camp.")
 		.put(new WorldPoint(3081, 3209, 0), "Small Island (CLP).")
 		.put(new WorldPoint(3399, 3246, 0), "Behind the Duel Arena.")
 		.put(new WorldPoint(2699, 3251, 0), "Little island (AIR).")
@@ -141,7 +141,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3587, 3180, 0), "Meiyerditch.")
 		.put(new WorldPoint(2820, 3078, 0), "Tai Bwo Wannai. Hardwood Grove.")
 		.put(new WorldPoint(3811, 3060, 0), "Small island north-east of Mos Le'Harmless.")
-		.put(new WorldPoint(2180, 3282, 0), "North of Elf Camp.")
+		.put(new WorldPoint(2180, 3282, 0), "North of Iorwerth Camp.")
 		.put(new WorldPoint(2870, 2997, 0), "North-east of Shilo Village.")
 		.put(new WorldPoint(3302, 2988, 0), "On top of a cliff to the west of Pollnivneach.")
 		.put(new WorldPoint(2511, 2980, 0), "Just south of Gu'Tanoth, west of gnome glider.")
@@ -170,7 +170,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2872, 3937, 0), "Weiss.")
 		.put(new WorldPoint(2484, 4016, 0), "Northeast corner of the Island of Stone.")
 		// Master
-		.put(new WorldPoint(2178, 3209, 0), "South of Elf Camp.")
+		.put(new WorldPoint(2178, 3209, 0), "South of Iorwerth Camp.")
 		.put(new WorldPoint(2155, 3100, 0), "South of Port Tyras (BJS).")
 		.put(new WorldPoint(2217, 3092, 0), "Poison Waste island (DLR).")
 		.put(new WorldPoint(3830, 3060, 0), "Small island located north-east of Mos Le'Harmless.")
