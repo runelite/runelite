@@ -95,7 +95,7 @@ class TabManager
 		return tagTab;
 	}
 
-	void move(String tagToMove, String tagDestination)
+	void swap(String tagToMove, String tagDestination)
 	{
 		tagToMove = Text.standardize(tagToMove);
 		tagDestination = Text.standardize(tagDestination);
@@ -103,6 +103,17 @@ class TabManager
 		if (contains(tagToMove) && contains(tagDestination))
 		{
 			Collections.swap(tabs, indexOf(tagToMove), indexOf(tagDestination));
+		}
+	}
+
+	void insert(String tagToMove, String tagDestination)
+	{
+		tagToMove = Text.standardize(tagToMove);
+		tagDestination = Text.standardize(tagDestination);
+
+		if (contains(tagToMove) && contains(tagDestination))
+		{
+			tabs.add(indexOf(tagDestination), tabs.remove(indexOf(tagToMove)));
 		}
 	}
 
