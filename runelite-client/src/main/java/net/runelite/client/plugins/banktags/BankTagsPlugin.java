@@ -292,6 +292,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		int intStackSize = client.getIntStackSize();
 		int stringStackSize = client.getStringStackSize();
 
+		tabInterface.handleScriptEvent(event);
+
 		switch (eventName)
 		{
 			case "setSearchBankInputText":
