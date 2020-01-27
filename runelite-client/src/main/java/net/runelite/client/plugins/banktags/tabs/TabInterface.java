@@ -690,12 +690,7 @@ public class TabInterface
 			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId())
 			{
 				// Reorder tag tabs
-				if (!Strings.isNullOrEmpty(draggedOn.getName()))
-				{
-					tabManager.move(draggedWidget.getName(), draggedOn.getName());
-					tabManager.save();
-					updateTabs();
-				}
+				moveTagTab(draggedWidget, draggedOn);
 			}
 		}
 		else if (draggedWidget.getItemId() > 0)
@@ -723,6 +718,26 @@ public class TabInterface
 				}
 			}
 		}
+	}
+
+	private void moveTagTab(final Widget source, final Widget dest)
+	{
+		if (Strings.isNullOrEmpty(dest.getName()))
+		{
+			return;
+		}
+		
+		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
+		{
+			tabManager.swap(source.getName(), dest.getName());
+		}
+		else
+		{
+			tabManager.insert(source.getName(), dest.getName());
+		}
+
+		tabManager.save();
+		updateTabs();
 	}
 
 	private boolean isHidden()
