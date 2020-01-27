@@ -368,7 +368,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapWildernessLever;
 	private boolean swapJewelleryBox;
 	private boolean getSwapOffer;
-		private boolean hotKeyLoot;
+	private boolean hotKeyLoot;
 	private boolean hotKeyWalk;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
