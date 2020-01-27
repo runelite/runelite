@@ -383,16 +383,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBankOp",
-		name = "Swap Bank Op",
-		description = "Swaps the extra menu option in banks (Wield, Eat, etc.) when holding shift"
-	)
-	default boolean swapBankOp()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapNpcContact",
 		name = "NPC Contact",
 		description = "Swap NPC Contact with last contacted NPC when shift-clicking"
@@ -400,5 +390,25 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapNpcContact()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankWithdrawShiftClick",
+		name = "Bank Withdraw Shift-Click",
+		description = "Swaps the behavior of shift-click when withdrawing from bank."
+	)
+	default ShiftWithdrawMode bankWithdrawShiftClick()
+	{
+		return ShiftWithdrawMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "bankDepositShiftClick",
+		name = "Bank Deposit Shift-Click",
+		description = "Swaps the behavior of shift-click when depositing to bank."
+	)
+	default ShiftDepositMode bankDepositShiftClick()
+	{
+		return ShiftDepositMode.OFF;
 	}
 }
