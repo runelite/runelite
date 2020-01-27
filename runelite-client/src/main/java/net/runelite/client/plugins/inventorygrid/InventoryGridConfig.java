@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2020, Graviton <https://github.com/Graviton1647>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +43,10 @@ public interface InventoryGridConfig extends Config
 		description = "Shows boxes where items go",
 		position = 5
 	)
-	default boolean showIndividualGrid() { return false; }
+	default boolean showIndividualGrid()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "showItem",
@@ -72,14 +76,17 @@ public interface InventoryGridConfig extends Config
 		description = "Show a green background highlight on the new slot",
 		position = 2
 	)
-	default boolean showHighlight() { return true; }
+	default boolean showHighlight()
+	{
+		return true;
+	}
 
 	@Alpha
 	@ConfigItem(
-			keyName = "colorHighlight",
-			name = "Highlighted Item",
-			description = "Configures the highlight color of the item box",
-			position = 1
+		keyName = "colorHighlight",
+		name = "Highlighted Item",
+		description = "Configures the highlight color of the item box",
+		position = 1
 	)
 	default Color colorHighlight()
 	{
@@ -88,12 +95,15 @@ public interface InventoryGridConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			keyName = "colorGrid",
-			name = "Color of the grid",
-			description = "Configures the color of the item grid",
-			position = 0
+		keyName = "colorGrid",
+		name = "Color of the grid",
+		description = "Configures the color of the item grid",
+		position = 0
 	)
-	default Color colorGrid() { return new Color(255, 255, 255, 45); }
+	default Color colorGrid()
+	{
+		return new Color(255, 255, 255, 45);
+	}
 
 
 }

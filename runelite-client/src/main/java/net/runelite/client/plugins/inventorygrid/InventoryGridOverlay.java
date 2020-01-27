@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Graviton <https://github.com/Graviton1647>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +49,6 @@ class InventoryGridOverlay extends Overlay
 	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
 
 
-
 	private final InventoryGridConfig config;
 	private final Client client;
 	private final ItemManager itemManager;
@@ -81,7 +81,8 @@ class InventoryGridOverlay extends Overlay
 
 			final Rectangle bounds = targetWidgetItem.getCanvasBounds();
 
-			if (config.showIndividualGrid()) {
+			if (config.showIndividualGrid())
+			{
 				graphics.setColor(config.colorGrid());
 				graphics.fill(bounds);
 			}
@@ -139,7 +140,6 @@ class InventoryGridOverlay extends Overlay
 
 
 		}
-
 
 
 		return null;
