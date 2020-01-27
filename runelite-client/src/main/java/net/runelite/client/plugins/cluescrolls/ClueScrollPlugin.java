@@ -396,14 +396,17 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof LocationClueScroll)
 		{
 			final WorldPoint[] locations = ((LocationClueScroll) clue).getLocations();
+			final boolean npcHintArrowMarked = client.getHintArrowNpc() != null && npcsToMark.contains(client.getHintArrowNpc());
+
+			if (!npcHintArrowMarked)
+			{
+				client.clearHintArrow();
+			}
 
 			for (WorldPoint location : locations)
 			{
 				// Only set the location hint arrow if we do not already have more accurate location
-				if (location.isInScene(client)
-					&& config.displayHintArrows()
-					&& (client.getHintArrowNpc() == null
-					|| !npcsToMark.contains(client.getHintArrowNpc())))
+				if (location.isInScene(client) && config.displayHintArrows() && !npcHintArrowMarked)
 				{
 					client.setHintArrow(location);
 				}
