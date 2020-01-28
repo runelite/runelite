@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
@@ -56,10 +57,11 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
+		name = "Hide Lap Count",
 		description = "Time until the lap counter hides/resets",
 		position = 2
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;
