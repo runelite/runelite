@@ -946,4 +946,8 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnReleaseListener(Object ...args);
+
+	boolean isWidgetItemDragged(int index);
+
+	Point getWidgetItemDragOffsets();
 }

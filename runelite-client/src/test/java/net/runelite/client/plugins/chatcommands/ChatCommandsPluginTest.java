@@ -29,6 +29,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import static net.runelite.api.ChatMessageType.FRIENDSCHATNOTIFICATION;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
@@ -371,7 +372,7 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Congratulations - your raid is complete! Duration <col=ff0000>37:04</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>37:04</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
@@ -387,7 +388,7 @@ public class ChatCommandsPluginTest
 		when(client.getUsername()).thenReturn("Adam");
 		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
 
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Congratulations - your raid is complete! Duration <col=ff0000>1:45:04</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>1:45:04</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);

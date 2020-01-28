@@ -24,11 +24,6 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import net.runelite.api.HashTable;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
@@ -42,8 +37,6 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
@@ -52,24 +45,26 @@ import net.runelite.rs.api.RSNodeHashTable;
 import net.runelite.rs.api.RSPlayerAppearance;
 import net.runelite.rs.api.RSSequenceDefinition;
 import net.runelite.rs.api.RSWidget;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 
 @Mixin(RSWidget.class)
 public abstract class RSWidgetMixin implements RSWidget
 {
 	private static final int ITEM_SLOT_SIZE = 32;
-
 	@Shadow("client")
 	private static RSClient client;
-
 	@Inject
 	private static int rl$widgetLastPosChanged;
-
 	@Inject
 	private int rl$parentId;
-
 	@Inject
 	private int rl$x;
-
 	@Inject
 	private int rl$y;
 
@@ -295,8 +290,19 @@ public abstract class RSWidgetMixin implements RSWidget
 		int itemX = rl$x + ((ITEM_SLOT_SIZE + xPitch) * col);
 		int itemY = rl$y + ((ITEM_SLOT_SIZE + yPitch) * row);
 
-		Rectangle bounds = new Rectangle(itemX, itemY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this);
+		boolean isDragged = isWidgetItemDragged(index);
+		int dragOffsetX = 0;
+		int dragOffsetY = 0;
+
+		if (isDragged)
+		{
+			Point p = getWidgetItemDragOffsets();
+			dragOffsetX = p.getX();
+			dragOffsetY = p.getY();
+		}
+
+		Rectangle bounds = new Rectangle(itemX + dragOffsetX, itemY + dragOffsetY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this, isDragged);
 	}
 
 	@Inject
@@ -586,5 +592,32 @@ public abstract class RSWidgetMixin implements RSWidget
 			frame = frame | getModelFrameCycle() << 16 | Integer.MIN_VALUE;
 		}
 		return rs$getModel(sequence, frame, alternate, playerComposition);
+	}
+
+	@Inject
+	@Override
+	public boolean isWidgetItemDragged(int index)
+	{
+		return client.getIf1DraggedWidget() == this && client.getItemPressedDuration() >= 5 &&
+			client.getIf1DraggedItemIndex() == index;
+	}
+
+	@Inject
+	public Point getWidgetItemDragOffsets()
+	{
+		int dragOffsetX = client.getMouseX() - client.getDraggedWidgetX();
+		int dragOffsetY = client.getMouseY() - client.getDraggedWidgetY();
+
+		if (dragOffsetX < 5 && dragOffsetX > -5)
+		{
+			dragOffsetX = 0;
+		}
+
+		if (dragOffsetY < 5 && dragOffsetY > -5)
+		{
+			dragOffsetY = 0;
+		}
+
+		return new Point(dragOffsetX, dragOffsetY);
 	}
 }

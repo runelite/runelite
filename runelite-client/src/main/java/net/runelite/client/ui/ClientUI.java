@@ -612,32 +612,6 @@ public class ClientUI
 		{
 			OSXUtil.requestFocus();
 		}
-		// See https://stackoverflow.com/questions/309023/how-to-bring-a-window-to-the-front/7435722#7435722
-		else if (OSType.getOSType() == OSType.Windows && !frame.isFocused())
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH)
-				{
-					frame.setExtendedState(JFrame.ICONIFIED);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				}
-				else
-				{
-					// If the client is snapped to the top and bottom edges of the screen, setExtendedState will
-					// will reset it so setSize and setLocation ensure that the client doesn't move or resize.
-					// It is done this way because Windows does not support JFrame.MAXIMIZED_VERT
-					int x = frame.getLocation().x;
-					int y = frame.getLocation().y;
-					int width = frame.getWidth();
-					int height = frame.getHeight();
-					frame.setExtendedState(JFrame.ICONIFIED);
-					frame.setExtendedState(JFrame.NORMAL);
-					frame.setLocation(x, y);
-					frame.setSize(width, height);
-				}
-			});
-		}
 
 		frame.requestFocus();
 		giveClientFocus();

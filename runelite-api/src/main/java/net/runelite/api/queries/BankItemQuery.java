@@ -67,7 +67,7 @@ public class BankItemQuery extends WidgetItemQuery
 				Rectangle bounds = child.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
 				// Index is set to 0 because the widget's index does not correlate to the order in the bank
-				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), 0, bounds, child));
+				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), 0, bounds, child, false));
 			}
 		}
 		return widgetItems;

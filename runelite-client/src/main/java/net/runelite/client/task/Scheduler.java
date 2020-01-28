@@ -24,6 +24,11 @@
  */
 package net.runelite.client.task;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -62,15 +67,41 @@ public class Scheduler
 
 	public void registerObject(Object obj)
 	{
-		for (Method method : obj.getClass().getDeclaredMethods())
+		for (Method method : obj.getClass().getMethods())
 		{
 			Schedule schedule = method.getAnnotation(Schedule.class);
+
 			if (schedule == null)
 			{
 				continue;
 			}
 
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, obj);
+			Runnable runnable = null;
+			try
+			{
+				final Class<?> clazz = method.getDeclaringClass();
+				final MethodHandles.Lookup caller = MethodHandles.privateLookupIn(clazz, MethodHandles.lookup());
+				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
+				final CallSite site = LambdaMetafactory.metafactory(
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
+
+				final MethodHandle factory = site.getTarget();
+				runnable = (Runnable) factory.bindTo(obj).invokeExact();
+			}
+			catch (Throwable e)
+			{
+				log.warn("Unable to create lambda for method {}", method, e);
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, obj, runnable);
+			log.debug("Scheduled task {}", scheduledMethod);
+
 			addScheduledMethod(scheduledMethod);
 		}
 	}
@@ -120,11 +151,18 @@ public class Scheduler
 
 	private void run(ScheduledMethod scheduledMethod)
 	{
-		Method method = scheduledMethod.getMethod();
-
 		try
 		{
-			method.invoke(scheduledMethod.getObject());
+			Runnable lambda = scheduledMethod.getLambda();
+			if (lambda != null)
+			{
+				lambda.run();
+			}
+			else
+			{
+				Method method = scheduledMethod.getMethod();
+				method.invoke(scheduledMethod.getObject());
+			}
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{

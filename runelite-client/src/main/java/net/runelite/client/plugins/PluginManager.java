@@ -41,7 +41,6 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -73,7 +72,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.RuneLiteSplashScreen;
@@ -541,22 +539,10 @@ public class PluginManager
 		return plugins;
 	}
 
-	private void schedule(Plugin plugin)
+	public void schedule(Object plugin)
 	{
-		for (Method method : plugin.getClass().getMethods())
-		{
-			Schedule schedule = method.getAnnotation(Schedule.class);
-
-			if (schedule == null)
-			{
-				continue;
-			}
-
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
-			log.debug("Scheduled task {}", scheduledMethod);
-
-			scheduler.addScheduledMethod(scheduledMethod);
-		}
+		// note to devs: this method will almost certainly merge conflict in the future, just apply the changes in the scheduler instead
+		scheduler.registerObject(plugin);
 	}
 
 	private void unschedule(Plugin plugin)

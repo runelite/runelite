@@ -400,8 +400,8 @@ public class UserComparator7 extends AbstractUserComparator {
 
 													if (var27 != null) {
 														if (var10 == ClientPreferences.dragInventoryWidget && var30 == Client.dragItemSlotSource) {
-															var24 = MouseHandler.MouseHandler_x - Client.field863;
-															var25 = MouseHandler.MouseHandler_y - Client.field738;
+															var24 = MouseHandler.MouseHandler_x - Client.draggedWidgetX;
+															var25 = MouseHandler.MouseHandler_y - Client.draggedWidgetY;
 															if (var24 < 5 && var24 > -5) {
 																var24 = 0;
 															}
@@ -430,7 +430,7 @@ public class UserComparator7 extends AbstractUserComparator {
 																	}
 
 																	var28.scrollY -= var29;
-																	Client.field738 += var29;
+																	Client.draggedWidgetY += var29;
 																	LoginPacket.invalidateWidget(var28);
 																}
 
@@ -445,7 +445,7 @@ public class UserComparator7 extends AbstractUserComparator {
 																	}
 
 																	var28.scrollY += var29;
-																	Client.field738 -= var29;
+																	Client.draggedWidgetY -= var29;
 																	LoginPacket.invalidateWidget(var28);
 																}
 															}

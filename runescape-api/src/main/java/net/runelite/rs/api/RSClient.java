@@ -1146,4 +1146,10 @@ public interface RSClient extends RSGameShell, Client
 	@Import("showMouseCross")
 	@Override
 	void setShowMouseCross(boolean show);
+
+	@Import("draggedWidgetX")
+	int getDraggedWidgetX(); // these should probably have if1 in their names somewhere
+
+	@Import("draggedWidgetY")
+	int getDraggedWidgetY();
 }

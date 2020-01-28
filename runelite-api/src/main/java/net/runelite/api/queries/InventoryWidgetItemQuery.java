@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.api.QueryResults;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -79,10 +80,20 @@ public class InventoryWidgetItemQuery extends WidgetItemQuery
 				for (int i = 0; i < children.length; i++)
 				{
 					Widget child = children[i];
+					boolean isDragged = child.isWidgetItemDragged(child.getItemId());
+					int dragOffsetX = 0;
+					int dragOffsetY = 0;
+
+					if (isDragged)
+					{
+						Point p = child.getWidgetItemDragOffsets();
+						dragOffsetX = p.getX();
+						dragOffsetY = p.getY();
+					}
 					// set bounds to same size as default inventory
 					Rectangle bounds = child.getBounds();
-					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-					widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i, bounds, child));
+					bounds.setBounds(bounds.x + dragOffsetX, bounds.y + dragOffsetY, 32, 32);
+					widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i, bounds, child, isDragged));
 				}
 				break;
 			}

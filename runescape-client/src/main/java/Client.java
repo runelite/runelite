@@ -1049,12 +1049,14 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedGetter(
 		intValue = 1858822219
 	)
-	static int field863;
+	@Export("draggedWidgetX")
+	static int draggedWidgetX;
 	@ObfuscatedName("jd")
 	@ObfuscatedGetter(
 		intValue = 1449162079
 	)
-	static int field738;
+	@Export("draggedWidgetY")
+	static int draggedWidgetY;
 	@ObfuscatedName("jy")
 	@ObfuscatedGetter(
 		intValue = -1787846911
@@ -1372,8 +1374,8 @@ public final class Client extends GameShell implements Usernamed {
 		field764 = 0;
 		field735 = 0;
 		dragItemSlotSource = 0;
-		field863 = 0;
-		field738 = 0;
+		draggedWidgetX = 0;
+		draggedWidgetY = 0;
 		dragItemSlotDestination = 0;
 		field768 = false;
 		itemDragDuration = 0;
@@ -3765,10 +3767,10 @@ public final class Client extends GameShell implements Usernamed {
 																			packetWriter.addNode(var27);
 																		}
 																	} else if (this.shouldLeftClickOpenMenu()) {
-																		this.openMenu(field863, field738);
+																		this.openMenu(draggedWidgetX, draggedWidgetY);
 																	} else if (menuOptionsCount > 0) {
-																		var4 = field863;
-																		var5 = field738;
+																		var4 = draggedWidgetX;
+																		var5 = draggedWidgetY;
 																		Messages.method2231(LoginType.tempMenuAction, var4, var5);
 																		LoginType.tempMenuAction = null;
 																	}
@@ -3776,7 +3778,7 @@ public final class Client extends GameShell implements Usernamed {
 																	field764 = 10;
 																	MouseHandler.MouseHandler_lastButton = 0;
 																	ClientPreferences.dragInventoryWidget = null;
-																} else if (itemDragDuration >= 5 && (MouseHandler.MouseHandler_x > field863 + 5 || MouseHandler.MouseHandler_x < field863 - 5 || MouseHandler.MouseHandler_y > field738 + 5 || MouseHandler.MouseHandler_y < field738 - 5)) {
+																} else if (itemDragDuration >= 5 && (MouseHandler.MouseHandler_x > draggedWidgetX + 5 || MouseHandler.MouseHandler_x < draggedWidgetX - 5 || MouseHandler.MouseHandler_y > draggedWidgetY + 5 || MouseHandler.MouseHandler_y < draggedWidgetY - 5)) {
 																	field768 = true;
 																}
 															}
@@ -5795,8 +5797,8 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ClientPreferences.dragInventoryWidget != null && !field768 && menuOptionsCount > 0 && !this.shouldLeftClickOpenMenu()) {
-					var13 = field863;
-					var10 = field738;
+					var13 = draggedWidgetX;
+					var10 = draggedWidgetY;
 					Messages.method2231(LoginType.tempMenuAction, var13, var10);
 					LoginType.tempMenuAction = null;
 				}
@@ -5809,8 +5811,8 @@ public final class Client extends GameShell implements Usernamed {
 
 				ClientPreferences.dragInventoryWidget = Tile.getWidget(var5);
 				dragItemSlotSource = var4;
-				field863 = MouseHandler.MouseHandler_lastPressedX;
-				field738 = MouseHandler.MouseHandler_lastPressedY;
+				draggedWidgetX = MouseHandler.MouseHandler_lastPressedX;
+				draggedWidgetY = MouseHandler.MouseHandler_lastPressedY;
 				if (var2 >= 0) {
 					BuddyRankComparator.method3361(var2);
 				}
