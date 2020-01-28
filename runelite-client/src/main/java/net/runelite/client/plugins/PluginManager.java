@@ -40,6 +40,11 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import java.io.IOException;
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -78,6 +83,7 @@ import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
+import net.runelite.client.util.ReflectUtil;
 
 @Singleton
 @Slf4j
@@ -552,7 +558,30 @@ public class PluginManager
 				continue;
 			}
 
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
+			Runnable runnable = null;
+			try
+			{
+				final Class<?> clazz = method.getDeclaringClass();
+				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
+				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
+				final CallSite site = LambdaMetafactory.metafactory(
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
+
+				final MethodHandle factory = site.getTarget();
+				runnable = (Runnable) factory.bindTo(plugin).invokeExact();
+			}
+			catch (Throwable e)
+			{
+				log.warn("Unable to create lambda for method {}", method, e);
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin, runnable);
 			log.debug("Scheduled task {}", scheduledMethod);
 
 			scheduler.addScheduledMethod(scheduledMethod);
