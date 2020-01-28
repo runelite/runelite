@@ -129,7 +129,7 @@ public enum Graceful
 
 	public static boolean hasHood(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.HEAD.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.HEAD.getSlotIdx())
 		{
 			return false;
 		}
@@ -139,7 +139,7 @@ public enum Graceful
 
 	public static boolean hasTop(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.BODY.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.BODY.getSlotIdx())
 		{
 			return false;
 		}
@@ -149,7 +149,7 @@ public enum Graceful
 
 	public static boolean hasLegs(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.LEGS.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.LEGS.getSlotIdx())
 		{
 			return false;
 		}
@@ -159,7 +159,7 @@ public enum Graceful
 
 	public static boolean hasGloves(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.GLOVES.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.GLOVES.getSlotIdx())
 		{
 			return false;
 		}
@@ -169,7 +169,7 @@ public enum Graceful
 
 	public static boolean hasBoots(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.BOOTS.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx())
 		{
 			return false;
 		}
@@ -179,7 +179,7 @@ public enum Graceful
 
 	public static boolean hasCape(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.CAPE.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.CAPE.getSlotIdx())
 		{
 			return false;
 		}
@@ -189,7 +189,7 @@ public enum Graceful
 
 	public static boolean hasFullSet(final Item[] items)
 	{
-		if (items.length < EquipmentInventorySlot.BOOTS.getSlotIdx())
+		if (items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx())
 		{
 			return false;
 		}
