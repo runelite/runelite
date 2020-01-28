@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -170,7 +171,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
-	private LootEvent mostRecentEvent;
+	@VisibleForTesting
+	LootEvent mostRecentEvent;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
 
