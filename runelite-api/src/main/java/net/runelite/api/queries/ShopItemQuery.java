@@ -60,7 +60,7 @@ public class ShopItemQuery extends WidgetItemQuery
 				// set bounds to same size as default inventory
 				Rectangle bounds = child.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i - 1, bounds, child));
+				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i - 1, bounds, child, false)); // todo: maybe this shouldnt just be "false"
 			}
 		}
 		return widgetItems;

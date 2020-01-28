@@ -83,7 +83,6 @@ import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
-import net.runelite.client.util.ReflectUtil;
 
 @Singleton
 @Slf4j
@@ -547,45 +546,10 @@ public class PluginManager
 		return plugins;
 	}
 
-	private void schedule(Plugin plugin)
+	public void schedule(Object plugin)
 	{
-		for (Method method : plugin.getClass().getMethods())
-		{
-			Schedule schedule = method.getAnnotation(Schedule.class);
-
-			if (schedule == null)
-			{
-				continue;
-			}
-
-			Runnable runnable = null;
-			try
-			{
-				final Class<?> clazz = method.getDeclaringClass();
-				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
-				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
-				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
-				final CallSite site = LambdaMetafactory.metafactory(
-					caller,
-					"run",
-					MethodType.methodType(Runnable.class, clazz),
-					subscription,
-					target,
-					subscription);
-
-				final MethodHandle factory = site.getTarget();
-				runnable = (Runnable) factory.bindTo(plugin).invokeExact();
-			}
-			catch (Throwable e)
-			{
-				log.warn("Unable to create lambda for method {}", method, e);
-			}
-
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin, runnable);
-			log.debug("Scheduled task {}", scheduledMethod);
-
-			scheduler.addScheduledMethod(scheduledMethod);
-		}
+		// note to devs: this method will almost certainly merge conflict in the future, just apply the changes in the scheduler instead
+		scheduler.registerObject(plugin);
 	}
 
 	private void unschedule(Plugin plugin)
