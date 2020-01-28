@@ -723,6 +723,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("rub", option, target, index);
 			swap("teleport", option, target, index);
+			swap("gem mine", option, target, index);
 		}
 		else if (option.equals("wield"))
 		{
