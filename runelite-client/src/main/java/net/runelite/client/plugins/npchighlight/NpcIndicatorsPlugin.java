@@ -29,7 +29,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
