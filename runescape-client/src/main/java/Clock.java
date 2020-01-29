@@ -1,59 +1,98 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fu")
 @Implements("Clock")
 public abstract class Clock {
+	@ObfuscatedName("da")
+	@ObfuscatedSignature(
+		signature = "Lia;"
+	)
+	@Export("archive19")
+	static Archive archive19;
+	@ObfuscatedName("ju")
+	@ObfuscatedGetter(
+		intValue = 346699043
+	)
+	@Export("Client_plane")
+	static int Client_plane;
+
 	Clock() {
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "4"
+		garbageValue = "29"
 	)
 	@Export("mark")
 	public abstract void mark();
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(III)I",
-		garbageValue = "670539248"
+		garbageValue = "-561232674"
 	)
 	@Export("wait")
 	public abstract int wait(int var1, int var2);
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "90199453"
+		signature = "([BB)Lce;",
+		garbageValue = "-106"
 	)
-	static int method3489(int var0, int var1) {
-		long var2 = (long)((var0 << 16) + var1);
-		return PrivateChatMode.NetCache_currentResponse != null && PrivateChatMode.NetCache_currentResponse.key == var2 ? NetCache.NetCache_responseArchiveBuffer.offset * 99 / (NetCache.NetCache_responseArchiveBuffer.array.length - PrivateChatMode.NetCache_currentResponse.padding) + 1 : 0;
-	}
+	@Export("newScript")
+	static Script newScript(byte[] var0) {
+		Script var1 = new Script();
+		Buffer var2 = new Buffer(var0);
+		var2.offset = var2.array.length - 2;
+		int var3 = var2.readUnsignedShort();
+		int var4 = var2.array.length - 2 - var3 - 12;
+		var2.offset = var4;
+		int var5 = var2.readInt();
+		var1.localIntCount = var2.readUnsignedShort();
+		var1.localStringCount = var2.readUnsignedShort();
+		var1.intArgumentCount = var2.readUnsignedShort();
+		var1.stringArgumentCount = var2.readUnsignedShort();
+		int var6 = var2.readUnsignedByte();
+		int var7;
+		int var8;
+		if (var6 > 0) {
+			var1.switches = var1.newIterableNodeHashTable(var6);
 
-	@ObfuscatedName("kk")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1974720745"
-	)
-	static final void method3488() {
-		PacketBufferNode var0 = class2.getPacketBufferNode(ClientPacket.field2231, Client.packetWriter.isaacCipher);
-		Client.packetWriter.addNode(var0);
+			for (var7 = 0; var7 < var6; ++var7) {
+				var8 = var2.readUnsignedShort();
+				IterableNodeHashTable var9 = new IterableNodeHashTable(var8 > 0 ? DynamicObject.method2293(var8) : 1);
+				var1.switches[var7] = var9;
 
-		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {
-			if (var1.type == 0 || var1.type == 3) {
-				VarpDefinition.closeInterface(var1, true);
+				while (var8-- > 0) {
+					int var10 = var2.readInt();
+					int var11 = var2.readInt();
+					var9.put(new IntegerNode(var11), (long)var10);
+				}
 			}
 		}
 
-		if (Client.meslayerContinueWidget != null) {
-			LoginPacket.invalidateWidget(Client.meslayerContinueWidget);
-			Client.meslayerContinueWidget = null;
+		var2.offset = 0;
+		var2.readStringCp1252NullTerminatedOrNull();
+		var1.opcodes = new int[var5];
+		var1.intOperands = new int[var5];
+		var1.stringOperands = new String[var5];
+
+		for (var7 = 0; var2.offset < var4; var1.opcodes[var7++] = var8) {
+			var8 = var2.readUnsignedShort();
+			if (var8 == 3) {
+				var1.stringOperands[var7] = var2.readStringCp1252NullTerminated();
+			} else if (var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+				var1.intOperands[var7] = var2.readInt();
+			} else {
+				var1.intOperands[var7] = var2.readUnsignedByte();
+			}
 		}
 
+		return var1;
 	}
 }

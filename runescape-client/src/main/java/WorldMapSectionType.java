@@ -1,53 +1,56 @@
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("z")
+@ObfuscatedName("f")
 @Implements("WorldMapSectionType")
 public enum WorldMapSectionType implements Enumerated {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lz;"
+		signature = "Lf;"
 	)
 	@Export("WORLDMAPSECTIONTYPE0")
-	WORLDMAPSECTIONTYPE0(3, (byte)0),
-	@ObfuscatedName("i")
+	WORLDMAPSECTIONTYPE0(0, (byte)0),
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lz;"
+		signature = "Lf;"
 	)
 	@Export("WORLDMAPSECTIONTYPE1")
-	WORLDMAPSECTIONTYPE1(0, (byte)1),
-	@ObfuscatedName("y")
+	WORLDMAPSECTIONTYPE1(2, (byte)1),
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lz;"
+		signature = "Lf;"
 	)
 	@Export("WORLDMAPSECTIONTYPE2")
-	WORLDMAPSECTIONTYPE2(1, (byte)2),
-	@ObfuscatedName("w")
+	WORLDMAPSECTIONTYPE2(3, (byte)2),
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lz;"
+		signature = "Lf;"
 	)
 	@Export("WORLDMAPSECTIONTYPE3")
-	WORLDMAPSECTIONTYPE3(2, (byte)3);
+	WORLDMAPSECTIONTYPE3(1, (byte)3);
 
-	@ObfuscatedName("hi")
-	@ObfuscatedGetter(
-		intValue = 75470723
+	@ObfuscatedName("pv")
+	@ObfuscatedSignature(
+		signature = "Lkx;"
 	)
-	@Export("oculusOrbFocalPointX")
-	static int oculusOrbFocalPointX;
-	@ObfuscatedName("p")
+	@Export("privateChatMode")
+	static PrivateChatMode privateChatMode;
+	@ObfuscatedName("hq")
 	@ObfuscatedGetter(
-		intValue = -814445795
+		intValue = 1689470585
+	)
+	static int field166;
+	@ObfuscatedName("i")
+	@ObfuscatedGetter(
+		intValue = 262125779
 	)
 	@Export("type")
 	final int type;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@Export("id")
 	final byte id;
 
@@ -56,174 +59,73 @@ public enum WorldMapSectionType implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "-57"
+		garbageValue = "1"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)[Lz;",
-		garbageValue = "198707251"
+		signature = "(S)[Lf;",
+		garbageValue = "-3096"
 	)
-	static WorldMapSectionType[] method235() {
-		return new WorldMapSectionType[]{WORLDMAPSECTIONTYPE3, WORLDMAPSECTIONTYPE1, WORLDMAPSECTIONTYPE2, WORLDMAPSECTIONTYPE0};
+	static WorldMapSectionType[] method249() {
+		return new WorldMapSectionType[]{WORLDMAPSECTIONTYPE3, WORLDMAPSECTIONTYPE0, WORLDMAPSECTIONTYPE2, WORLDMAPSECTIONTYPE1};
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "125"
+		signature = "([BI)[B",
+		garbageValue = "84077862"
 	)
-	static void method236() {
-		for (ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-			if (var0.stream1 != null) {
-				Tiles.pcmStreamMixer.removeSubStream(var0.stream1);
-				var0.stream1 = null;
-			}
-
-			if (var0.stream2 != null) {
-				Tiles.pcmStreamMixer.removeSubStream(var0.stream2);
-				var0.stream2 = null;
-			}
-		}
-
-		ObjectSound.objectSounds.clear();
+	public static byte[] method250(byte[] var0) {
+		int var1 = var0.length;
+		byte[] var2 = new byte[var1];
+		System.arraycopy(var0, 0, var2, 0, var1);
+		return var2;
 	}
 
-	@ObfuscatedName("ab")
+	@ObfuscatedName("ac")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "20"
+		signature = "(ILce;ZI)I",
+		garbageValue = "637615278"
 	)
-	@Export("getGcDuration")
-	protected static int getGcDuration() {
-		int var0 = 0;
-		if (Interpreter.garbageCollector == null || !Interpreter.garbageCollector.isValid()) {
-			try {
-				Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-				while (var1.hasNext()) {
-					GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-					if (var2.isValid()) {
-						Interpreter.garbageCollector = var2;
-						GameShell.garbageCollectorLastCheckTimeMs = -1L;
-						GameShell.garbageCollectorLastCollectionTime = -1L;
-					}
-				}
-			} catch (Throwable var11) {
-			}
-		}
-
-		if (Interpreter.garbageCollector != null) {
-			long var9 = WorldMapID.currentTimeMillis();
-			long var3 = Interpreter.garbageCollector.getCollectionTime();
-			if (GameShell.garbageCollectorLastCollectionTime != -1L) {
-				long var5 = var3 - GameShell.garbageCollectorLastCollectionTime;
-				long var7 = var9 - GameShell.garbageCollectorLastCheckTimeMs;
-				if (0L != var7) {
-					var0 = (int)(var5 * 100L / var7);
-				}
-			}
-
-			GameShell.garbageCollectorLastCollectionTime = var3;
-			GameShell.garbageCollectorLastCheckTimeMs = var9;
-		}
-
-		return var0;
-	}
-
-	@ObfuscatedName("gq")
-	@ObfuscatedSignature(
-		signature = "(Lbv;I)V",
-		garbageValue = "-821947807"
-	)
-	static final void method239(Actor var0) {
-		if (var0.field969 == Client.cycle || var0.sequence == -1 || var0.sequenceDelay != 0 || var0.sequenceFrameCycle + 1 > WorldMapSection0.SequenceDefinition_get(var0.sequence).frameLengths[var0.sequenceFrame]) {
-			int var1 = var0.field969 - var0.field950;
-			int var2 = Client.cycle - var0.field950;
-			int var3 = var0.field921 * 128 + var0.field925 * 64;
-			int var4 = var0.field966 * 128 + var0.field925 * 64;
-			int var5 = var0.field965 * 128 + var0.field925 * 64;
-			int var6 = var0.field929 * 128 + var0.field925 * 64;
-			var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
-			var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;
-		}
-
-		var0.field980 = 0;
-		var0.orientation = var0.field970;
-		var0.rotation = var0.orientation;
-	}
-
-	@ObfuscatedName("jl")
-	@ObfuscatedSignature(
-		signature = "(IB)Ljava/lang/String;",
-		garbageValue = "24"
-	)
-	@Export("formatItemStacks")
-	static final String formatItemStacks(int var0) {
-		String var1 = Integer.toString(var0);
-
-		for (int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-			var1 = var1.substring(0, var2) + "," + var1.substring(var2);
-		}
-
-		if (var1.length() > 9) {
-			return " " + NPC.colorStartTag(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>";
+	static int method245(int var0, Script var1, boolean var2) {
+		if (var0 == ScriptOpcodes.LOGOUT) {
+			Client.logoutTimer = 250;
+			return 1;
 		} else {
-			return var1.length() > 6 ? " " + NPC.colorStartTag(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>" : " " + NPC.colorStartTag(16776960) + var1 + "</col>";
+			return 2;
 		}
 	}
 
-	@ObfuscatedName("lp")
+	@ObfuscatedName("hi")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZB)V",
-		garbageValue = "-1"
+		signature = "(IIIB)I",
+		garbageValue = "1"
 	)
-	@Export("findItemDefinitions")
-	static void findItemDefinitions(String var0, boolean var1) {
-		var0 = var0.toLowerCase();
-		short[] var2 = new short[16];
-		int var3 = 0;
-
-		for (int var4 = 0; var4 < ItemDefinition.ItemDefinition_fileCount; ++var4) {
-			ItemDefinition var5 = PacketBufferNode.ItemDefinition_get(var4);
-			if ((!var1 || var5.isTradable) && var5.noteTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-				if (var3 >= 250) {
-					KeyHandler.foundItemIdCount = -1;
-					class269.foundItemIds = null;
-					return;
-				}
-
-				if (var3 >= var2.length) {
-					short[] var6 = new short[var2.length * 2];
-
-					for (int var7 = 0; var7 < var3; ++var7) {
-						var6[var7] = var2[var7];
-					}
-
-					var2 = var6;
-				}
-
-				var2[var3++] = (short)var4;
+	@Export("getTileHeight")
+	static final int getTileHeight(int var0, int var1, int var2) {
+		int var3 = var0 >> 7;
+		int var4 = var1 >> 7;
+		if (var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+			int var5 = var2;
+			if (var2 < 3 && (Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
+				var5 = var2 + 1;
 			}
+
+			int var6 = var0 & 127;
+			int var7 = var1 & 127;
+			int var8 = Tiles.Tiles_heights[var5][var3 + 1][var4] * var6 + (128 - var6) * Tiles.Tiles_heights[var5][var3][var4] >> 7;
+			int var9 = Tiles.Tiles_heights[var5][var3 + 1][var4 + 1] * var6 + Tiles.Tiles_heights[var5][var3][var4 + 1] * (128 - var6) >> 7;
+			return var9 * var7 + var8 * (128 - var7) >> 7;
+		} else {
+			return 0;
 		}
-
-		class269.foundItemIds = var2;
-		class189.foundItemIndex = 0;
-		KeyHandler.foundItemIdCount = var3;
-		String[] var8 = new String[KeyHandler.foundItemIdCount];
-
-		for (int var9 = 0; var9 < KeyHandler.foundItemIdCount; ++var9) {
-			var8[var9] = PacketBufferNode.ItemDefinition_get(var2[var9]).name;
-		}
-
-		short[] var10 = class269.foundItemIds;
-		ParamDefinition.sortItemsByName(var8, var10, 0, var8.length - 1);
 	}
 }

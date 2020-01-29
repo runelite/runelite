@@ -4,46 +4,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dm")
+@ObfuscatedName("dp")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -914762705
+		longValue = 1130865268298434617L
 	)
-	@Export("cacheGamebuild")
-	static int cacheGamebuild;
-	@ObfuscatedName("cx")
-	@ObfuscatedGetter(
-		intValue = -435303731
-	)
-	public static int field1732;
-	@ObfuscatedName("fq")
+	static long field1752;
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lli;"
 	)
-	static AbstractSocket field1730;
-	@ObfuscatedName("f")
+	static IndexedSprite field1753;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "Lkp;"
+	)
+	@Export("NetCache_responseArchiveBuffer")
+	public static Buffer NetCache_responseArchiveBuffer;
+	@ObfuscatedName("gu")
+	@ObfuscatedSignature(
+		signature = "[Lli;"
+	)
+	@Export("mapSceneSprites")
+	static IndexedSprite[] mapSceneSprites;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 2142857667
+		intValue = 707257177
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("i")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -62403169
+		intValue = 1141720523
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("y")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -2087129489
+		intValue = 1695799799
 	)
 	@Export("z")
 	int z;
-	@ObfuscatedName("w")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1861306347
+		intValue = 1198697941
 	)
 	@Export("magnitude")
 	int magnitude;
@@ -52,7 +58,7 @@ public class VertexNormal {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ldm;)V"
+		signature = "(Ldp;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x;
@@ -61,21 +67,38 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1271488083"
+		signature = "(II)J",
+		garbageValue = "2082657015"
 	)
-	static final void method2996() {
-		Tiles.method1143("Your ignore list is full. Max of 100 for free users, and 400 for members");
+	public static long method3063(int var0) {
+		return ViewportMouse.ViewportMouse_entityTags[var0];
 	}
 
-	@ObfuscatedName("kj")
+	@ObfuscatedName("gn")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-68"
+		signature = "(II)V",
+		garbageValue = "1221286239"
 	)
-	static final void method2995() {
-		Client.field711 = Client.cycleCntr;
+	@Export("setWindowedMode")
+	static void setWindowedMode(int var0) {
+		Client.field859 = 0L;
+		if (var0 >= 2) {
+			Client.isResizable = true;
+		} else {
+			Client.isResizable = false;
+		}
+
+		if (Friend.getWindowedMode() == 1) {
+			Username.client.setMaxCanvasSize(765, 503);
+		} else {
+			Username.client.setMaxCanvasSize(7680, 2160);
+		}
+
+		if (Client.gameState >= 25) {
+			class238.method4415();
+		}
+
 	}
 }

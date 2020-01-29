@@ -1,29 +1,26 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("p")
 @Implements("GrandExchangeOfferUnitPriceComparator")
 final class GrandExchangeOfferUnitPriceComparator implements Comparator {
-	@ObfuscatedName("y")
-	@ObfuscatedGetter(
-		intValue = 815964443
-	)
-	@Export("KitDefinition_fileCount")
-	public static int KitDefinition_fileCount;
-
-	@ObfuscatedName("f")
+	@ObfuscatedName("ar")
+	@Export("null_string")
+	protected static String null_string;
+	@ObfuscatedName("la")
 	@ObfuscatedSignature(
-		signature = "(Lx;Lx;B)I",
-		garbageValue = "114"
+		signature = "Lhn;"
+	)
+	@Export("mousedOverWidgetIf1")
+	static Widget mousedOverWidgetIf1;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Ll;Ll;B)I",
+		garbageValue = "0"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
@@ -38,139 +35,139 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 		return super.equals(var1);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IB)Lit;",
-		garbageValue = "62"
+		signature = "(II)I",
+		garbageValue = "-2056490791"
 	)
-	@Export("WorldMapElement_get")
-	public static WorldMapElement WorldMapElement_get(int var0) {
-		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
-	}
-
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(Lkq;Ljava/lang/String;B)I",
-		garbageValue = "0"
-	)
-	public static int method122(Buffer var0, String var1) {
-		int var2 = var0.offset;
-		byte[] var3 = RouteStrategy.method3566(var1);
-		var0.writeSmartByteShort(var3.length);
-		var0.offset += class206.huffman.compress(var3, 0, var3.length, var0.array, var0.offset);
-		return var0.offset - var2;
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Throwable;B)Ljava/lang/String;",
-		garbageValue = "41"
-	)
-	static String method124(Throwable var0) throws IOException {
-		String var1;
-		if (var0 instanceof RunException) {
-			RunException var2 = (RunException)var0;
-			var1 = var2.message + " | ";
-			var0 = var2.throwable;
+	@Export("getVarbit")
+	public static int getVarbit(int var0) {
+		VarbitDefinition var2 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+		VarbitDefinition var1;
+		if (var2 != null) {
+			var1 = var2;
 		} else {
-			var1 = "";
-		}
-
-		StringWriter var12 = new StringWriter();
-		PrintWriter var3 = new PrintWriter(var12);
-		var0.printStackTrace(var3);
-		var3.close();
-		String var4 = var12.toString();
-		BufferedReader var5 = new BufferedReader(new StringReader(var4));
-		String var6 = var5.readLine();
-
-		while (true) {
-			while (true) {
-				String var7 = var5.readLine();
-				if (var7 == null) {
-					var1 = var1 + "| " + var6;
-					return var1;
-				}
-
-				int var8 = var7.indexOf(40);
-				int var9 = var7.indexOf(41, var8 + 1);
-				if (var8 >= 0 && var9 >= 0) {
-					String var10 = var7.substring(var8 + 1, var9);
-					int var11 = var10.indexOf(".java:");
-					if (var11 >= 0) {
-						var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
-						var1 = var1 + var10 + ' ';
-						continue;
-					}
-
-					var7 = var7.substring(0, var8);
-				}
-
-				var7 = var7.trim();
-				var7 = var7.substring(var7.lastIndexOf(32) + 1);
-				var7 = var7.substring(var7.lastIndexOf(9) + 1);
-				var1 = var1 + var7 + ' ';
-			}
-		}
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-2098166290"
-	)
-	static int method118(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
-			return 0;
-		} else if (var1 == -1) {
-			return 0;
-		} else {
-			int var3 = 0;
-
-			for (int var4 = 0; var4 < var2.quantities.length; ++var4) {
-				if (var2.ids[var4] == var1) {
-					var3 += var2.quantities[var4];
-				}
+			byte[] var7 = class287.VarbitDefinition_archive.takeFile(14, var0);
+			var2 = new VarbitDefinition();
+			if (var7 != null) {
+				var2.decode(new Buffer(var7));
 			}
 
-			return var3;
+			VarbitDefinition.VarbitDefinition_cached.put(var2, (long)var0);
+			var1 = var2;
 		}
+
+		int var3 = var1.baseVar;
+		int var4 = var1.startBit;
+		int var5 = var1.endBit;
+		int var6 = Varps.Varps_masks[var5 - var4];
+		return Varps.Varps_main[var3] >> var4 & var6;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("ez")
 	@ObfuscatedSignature(
-		signature = "(Lha;IIII)V",
-		garbageValue = "673237004"
+		signature = "(I)Lly;",
+		garbageValue = "-710096744"
 	)
-	@Export("Widget_setKeyRate")
-	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
-		if (var0.field2631 == null) {
-			throw new RuntimeException();
-		} else {
-			var0.field2631[var1] = var2;
-			var0.field2670[var1] = var3;
-		}
+	@Export("getWorldMap")
+	static WorldMap getWorldMap() {
+		return WorldMapIcon_0.worldMap;
 	}
 
-	@ObfuscatedName("ix")
+	@ObfuscatedName("gt")
+	@ObfuscatedSignature(
+		signature = "(IIIIZI)V",
+		garbageValue = "2147483647"
+	)
+	@Export("setViewportShape")
+	static final void setViewportShape(int var0, int var1, int var2, int var3, boolean var4) {
+		if (var2 < 1) {
+			var2 = 1;
+		}
+
+		if (var3 < 1) {
+			var3 = 1;
+		}
+
+		int var5 = var3 - 334;
+		int var6;
+		if (var5 < 0) {
+			var6 = Client.field908;
+		} else if (var5 >= 100) {
+			var6 = Client.field897;
+		} else {
+			var6 = (Client.field897 - Client.field908) * var5 / 100 + Client.field908;
+		}
+
+		int var7 = var3 * var6 * 512 / (var2 * 334);
+		int var8;
+		int var9;
+		short var10;
+		if (var7 < Client.field819) {
+			var10 = Client.field819;
+			var6 = var10 * var2 * 334 / (var3 * 512);
+			if (var6 > Client.field673) {
+				var6 = Client.field673;
+				var8 = var3 * var6 * 512 / (var10 * 334);
+				var9 = (var2 - var8) / 2;
+				if (var4) {
+					Rasterizer2D.Rasterizer2D_resetClip();
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+				}
+
+				var0 += var9;
+				var2 -= var9 * 2;
+			}
+		} else if (var7 > Client.field903) {
+			var10 = Client.field903;
+			var6 = var10 * var2 * 334 / (var3 * 512);
+			if (var6 < Client.field900) {
+				var6 = Client.field900;
+				var8 = var10 * var2 * 334 / (var6 * 512);
+				var9 = (var3 - var8) / 2;
+				if (var4) {
+					Rasterizer2D.Rasterizer2D_resetClip();
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
+					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+				}
+
+				var1 += var9;
+				var3 -= var9 * 2;
+			}
+		}
+
+		Client.viewportZoom = var3 * var6 / 334;
+		if (var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
+			CollisionMap.method3650(var2, var3);
+		}
+
+		Client.viewportOffsetX = var0;
+		Client.viewportOffsetY = var1;
+		Client.viewportWidth = var2;
+		Client.viewportHeight = var3;
+	}
+
+	@ObfuscatedName("gf")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1132135504"
+		garbageValue = "-1156773916"
 	)
-	@Export("Widget_runOnTargetLeave")
-	static void Widget_runOnTargetLeave() {
-		if (Client.isSpellSelected) {
-			Widget var0 = BZip2State.getWidgetChild(WorldMapDecoration.selectedSpellWidget, Client.selectedSpellChildIndex);
-			if (var0 != null && var0.onTargetLeave != null) {
-				ScriptEvent var1 = new ScriptEvent();
-				var1.widget = var0;
-				var1.args = var0.onTargetLeave;
-				Client.runScriptEvent(var1);
-			}
+	static void method141() {
+		if (class192.localPlayer.x >> 7 == Client.destinationX && class192.localPlayer.y >> 7 == Client.destinationY) {
+			Client.destinationX = 0;
+		}
 
-			Client.isSpellSelected = false;
-			LoginPacket.invalidateWidget(var0);
+	}
+
+	@ObfuscatedName("ir")
+	@ObfuscatedSignature(
+		signature = "(IIIZI)V",
+		garbageValue = "-1682009725"
+	)
+	static final void method135(int var0, int var1, int var2, boolean var3) {
+		if (ScriptFrame.loadInterface(var0)) {
+			FloorUnderlayDefinition.resizeInterface(WorldMapLabel.Widget_interfaceComponents[var0], -1, var1, var2, var3);
 		}
 	}
 }

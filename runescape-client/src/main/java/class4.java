@@ -1,111 +1,109 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("i")
 final class class4 implements class0 {
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkq;I)V",
-		garbageValue = "-685052934"
+	@ObfuscatedName("h")
+	@ObfuscatedGetter(
+		intValue = -905472929
 	)
-	public void vmethod53(Object var1, Buffer var2) {
-		this.method51((String)var1, var2);
+	static int field26;
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		signature = "Lkp;"
+	)
+	@Export("NetCache_reference")
+	static Buffer NetCache_reference;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Object;Lkp;B)V",
+		garbageValue = "95"
+	)
+	public void vmethod55(Object var1, Buffer var2) {
+		this.method54((String)var1, var2);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkq;I)Ljava/lang/Object;",
-		garbageValue = "390816352"
+		signature = "(Lkp;I)Ljava/lang/Object;",
+		garbageValue = "1665636232"
 	)
-	public Object vmethod60(Buffer var1) {
+	public Object vmethod53(Buffer var1) {
 		return var1.readStringCp1252NullTerminated();
-	}
-
-	@ObfuscatedName("x")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lkq;I)V",
-		garbageValue = "1310089464"
-	)
-	void method51(String var1, Buffer var2) {
-		var2.writeStringCp1252NullTerminated(var1);
-	}
-
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "(ILhz;IIIZI)V",
-		garbageValue = "-1294056256"
-	)
-	public static void method59(int var0, AbstractArchive var1, int var2, int var3, int var4, boolean var5) {
-		class197.field2392 = 1;
-		Coord.musicTrackArchive = var1;
-		class16.musicTrackGroupId = var2;
-		GrandExchangeOffer.musicTrackFileId = var3;
-		class197.musicTrackVolume = var4;
-		WorldMapDecoration.musicTrackBoolean = var5;
-		ParamDefinition.field3275 = var0;
-	}
-
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "(IB)Leq;",
-		garbageValue = "103"
-	)
-	@Export("getFrames")
-	static Frames getFrames(int var0) {
-		Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			AbstractArchive var3 = SequenceDefinition.SequenceDefinition_animationsArchive;
-			AbstractArchive var4 = SequenceDefinition.SequenceDefinition_skeletonsArchive;
-			boolean var5 = true;
-			int[] var6 = var3.getGroupFileIds(var0);
-
-			for (int var7 = 0; var7 < var6.length; ++var7) {
-				byte[] var8 = var3.getFile(var0, var6[var7]);
-				if (var8 == null) {
-					var5 = false;
-				} else {
-					int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-					byte[] var10 = var4.getFile(var9, 0);
-					if (var10 == null) {
-						var5 = false;
-					}
-				}
-			}
-
-			Frames var2;
-			if (!var5) {
-				var2 = null;
-			} else {
-				try {
-					var2 = new Frames(var3, var4, var0, false);
-				} catch (Exception var12) {
-					var2 = null;
-				}
-			}
-
-			if (var2 != null) {
-				SequenceDefinition.SequenceDefinition_cachedFrames.put(var2, (long)var0);
-			}
-
-			return var2;
-		}
 	}
 
 	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(Lhz;IB)Z",
-		garbageValue = "-83"
+		signature = "(Ljava/lang/String;Lkp;I)V",
+		garbageValue = "1837357255"
 	)
-	static boolean method61(AbstractArchive var0, int var1) {
-		byte[] var2 = var0.takeFileFlat(var1);
-		if (var2 == null) {
-			return false;
-		} else {
-			AbstractWorldMapIcon.SpriteBuffer_decode(var2);
-			return true;
+	void method54(String var1, Buffer var2) {
+		var2.writeStringCp1252NullTerminated(var1);
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "1447651687"
+	)
+	static int method57() {
+		return ++Messages.Messages_count - 1;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Lbw;I)V",
+		garbageValue = "1307142310"
+	)
+	@Export("runScriptEvent")
+	public static void runScriptEvent(ScriptEvent var0) {
+		WorldMapID.runScript(var0, 500000);
+	}
+
+	@ObfuscatedName("hz")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-2068371159"
+	)
+	static final void method64() {
+		int var0 = ArchiveDiskAction.menuX;
+		int var1 = SecureRandomCallable.menuY;
+		int var2 = InterfaceParent.menuWidth;
+		int var3 = Message.menuHeight;
+		int var4 = 6116423;
+		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, var4);
+		Rasterizer2D.Rasterizer2D_fillRectangle(var0 + 1, var1 + 1, var2 - 2, 16, 0);
+		Rasterizer2D.Rasterizer2D_drawRectangle(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
+		class1.fontBold12.draw("Choose Option", var0 + 3, var1 + 14, var4, -1);
+		int var5 = MouseHandler.MouseHandler_x;
+		int var6 = MouseHandler.MouseHandler_y;
+
+		int var7;
+		int var8;
+		int var9;
+		for (var7 = 0; var7 < Client.menuOptionsCount; ++var7) {
+			var8 = var1 + (Client.menuOptionsCount - 1 - var7) * 15 + 31;
+			var9 = 16777215;
+			if (var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < var8 + 3) {
+				var9 = 16776960;
+			}
+
+			class1.fontBold12.draw(VerticalAlignment.method4426(var7), var0 + 3, var8, var9, 0);
 		}
+
+		var7 = ArchiveDiskAction.menuX;
+		var8 = SecureRandomCallable.menuY;
+		var9 = InterfaceParent.menuWidth;
+		int var10 = Message.menuHeight;
+
+		for (int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
+			if (Client.rootWidgetWidths[var11] + Client.rootWidgetXs[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var8 + var10) {
+				Client.field852[var11] = true;
+			}
+		}
+
 	}
 }

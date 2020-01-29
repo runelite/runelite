@@ -4,161 +4,161 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jx")
+@ObfuscatedName("jn")
 @Implements("Timer")
 public class Timer {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		longValue = 1687468324454291725L
+		longValue = -5854066689636812733L
 	)
-	long field3560;
-	@ObfuscatedName("i")
+	long field3575;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		longValue = 7655978754782259035L
+		longValue = -7523897199781097135L
 	)
-	long field3554;
-	@ObfuscatedName("y")
-	public boolean field3555;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		longValue = 1665338134164527579L
-	)
-	long field3556;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		longValue = -779441764559487179L
-	)
-	long field3559;
-	@ObfuscatedName("b")
-	@ObfuscatedGetter(
-		longValue = 4469164127837216533L
-	)
-	long field3558;
+	long field3568;
+	@ObfuscatedName("o")
+	public boolean field3569;
 	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 602333417
+		longValue = 1307131764923953489L
 	)
-	int field3562;
-	@ObfuscatedName("x")
+	long field3570;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 1059100831
+		longValue = -1356096473288243273L
 	)
-	int field3557;
-	@ObfuscatedName("a")
+	long field3571;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1625866105
+		longValue = 7486360679644359965L
 	)
-	int field3561;
+	long field3567;
 	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -463850423
+		intValue = 1117727777
 	)
-	int field3563;
+	int field3572;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1378192309
+	)
+	int field3574;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = -966098649
+	)
+	int field3573;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 895210041
+	)
+	int field3576;
 
 	public Timer() {
-		this.field3560 = -1L;
-		this.field3554 = -1L;
-		this.field3555 = false;
-		this.field3556 = 0L;
-		this.field3559 = 0L;
-		this.field3558 = 0L;
-		this.field3562 = 0;
-		this.field3557 = 0;
-		this.field3561 = 0;
-		this.field3563 = 0;
+		this.field3575 = -1L;
+		this.field3568 = -1L;
+		this.field3569 = false;
+		this.field3570 = 0L;
+		this.field3571 = 0L;
+		this.field3567 = 0L;
+		this.field3572 = 0;
+		this.field3574 = 0;
+		this.field3573 = 0;
+		this.field3576 = 0;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "40"
+	)
+	public void method5044() {
+		this.field3575 = WorldMapIcon_0.currentTimeMillis();
+	}
+
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1677674321"
+		garbageValue = "-1041013158"
 	)
-	public void method5016() {
-		this.field3560 = WorldMapID.currentTimeMillis();
+	public void method5045() {
+		if (this.field3575 != -1L) {
+			this.field3571 = WorldMapIcon_0.currentTimeMillis() - this.field3575;
+			this.field3575 = -1L;
+		}
+
+	}
+
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "1882461656"
+	)
+	public void method5062(int var1) {
+		this.field3568 = WorldMapIcon_0.currentTimeMillis();
+		this.field3572 = var1;
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "2083921672"
+	)
+	public void method5047() {
+		if (this.field3568 != -1L) {
+			this.field3570 = WorldMapIcon_0.currentTimeMillis() - this.field3568;
+			this.field3568 = -1L;
+		}
+
+		++this.field3573;
+		this.field3569 = true;
 	}
 
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "608753777"
+		garbageValue = "-510534855"
 	)
-	public void method5025() {
-		if (-1L != this.field3560) {
-			this.field3559 = WorldMapID.currentTimeMillis() - this.field3560;
-			this.field3560 = -1L;
-		}
-
+	public void method5057() {
+		this.field3569 = false;
+		this.field3574 = 0;
 	}
 
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "45949945"
-	)
-	public void method5017(int var1) {
-		this.field3554 = WorldMapID.currentTimeMillis();
-		this.field3562 = var1;
-	}
-
-	@ObfuscatedName("w")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1761247014"
+		garbageValue = "-1911888392"
 	)
-	public void method5037() {
-		if (this.field3554 != -1L) {
-			this.field3556 = WorldMapID.currentTimeMillis() - this.field3554;
-			this.field3554 = -1L;
-		}
-
-		++this.field3561;
-		this.field3555 = true;
+	public void method5046() {
+		this.method5047();
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1677674321"
-	)
-	public void method5039() {
-		this.field3555 = false;
-		this.field3557 = 0;
-	}
-
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "541541745"
-	)
-	public void method5020() {
-		this.method5037();
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(Lkq;I)V",
-		garbageValue = "1449461967"
+		signature = "(Lkp;I)V",
+		garbageValue = "-822547863"
 	)
 	@Export("write")
 	public void write(Buffer var1) {
-		MusicPatchNode2.method3670(var1, this.field3559);
-		MusicPatchNode2.method3670(var1, this.field3556);
-		MusicPatchNode2.method3670(var1, this.field3558);
-		var1.writeShort(this.field3562);
-		var1.writeShort(this.field3557);
-		var1.writeShort(this.field3561);
-		var1.writeShort(this.field3563);
+		DynamicObject.method2291(var1, this.field3571);
+		DynamicObject.method2291(var1, this.field3570);
+		DynamicObject.method2291(var1, this.field3567);
+		var1.writeShort(this.field3572);
+		var1.writeShort(this.field3574);
+		var1.writeShort(this.field3573);
+		var1.writeShort(this.field3576);
 	}
 
 	@ObfuscatedName("ad")
 	@ObfuscatedSignature(
-		signature = "([BIII)I",
-		garbageValue = "880088989"
+		signature = "([BIS)I",
+		garbageValue = "11848"
 	)
-	public static int method5033(byte[] var0, int var1, int var2) {
+	public static int method5068(byte[] var0, int var1) {
 		int var3 = -1;
 
-		for (int var4 = var1; var4 < var2; ++var4) {
+		for (int var4 = 0; var4 < var1; ++var4) {
 			var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
 		}
 

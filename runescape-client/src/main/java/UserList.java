@@ -8,40 +8,34 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("jb")
+@ObfuscatedName("jm")
 @Implements("UserList")
 public abstract class UserList {
-	@ObfuscatedName("ba")
-	@ObfuscatedSignature(
-		signature = "Lli;"
-	)
-	@Export("worldSelectRightSprite")
-	static IndexedSprite worldSelectRightSprite;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -2101264289
+		intValue = -1736832459
 	)
 	@Export("capacity")
 	final int capacity;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -82110221
+		intValue = 114939403
 	)
 	@Export("size")
 	int size;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "[Ljy;"
+		signature = "[Ljk;"
 	)
 	@Export("array")
 	User[] array;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("usernamesMap")
 	HashMap usernamesMap;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@Export("previousUsernamesMap")
 	HashMap previousUsernamesMap;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@Export("comparator")
 	Comparator comparator;
 
@@ -54,26 +48,26 @@ public abstract class UserList {
 		this.previousUsernamesMap = new HashMap(var1 / 8);
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)Ljy;",
-		garbageValue = "68"
+		signature = "(S)Ljk;",
+		garbageValue = "30683"
 	)
 	@Export("newInstance")
 	abstract User newInstance();
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(IB)[Ljy;",
-		garbageValue = "32"
+		signature = "(IB)[Ljk;",
+		garbageValue = "19"
 	)
 	@Export("newTypedArray")
 	abstract User[] newTypedArray(int var1);
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "276707896"
+		garbageValue = "847313587"
 	)
 	@Export("clear")
 	public void clear() {
@@ -83,30 +77,30 @@ public abstract class UserList {
 		this.previousUsernamesMap.clear();
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "2"
+		signature = "(I)I",
+		garbageValue = "-444681526"
 	)
 	@Export("getSize")
 	public int getSize() {
 		return this.size;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-22"
+		signature = "(I)Z",
+		garbageValue = "-1093222971"
 	)
 	@Export("isFull")
 	public boolean isFull() {
-		return this.capacity == this.size;
+		return this.size == this.capacity;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Ljc;B)Z",
-		garbageValue = "-17"
+		signature = "(Ljz;I)Z",
+		garbageValue = "645077874"
 	)
 	@Export("contains")
 	public boolean contains(Username var1) {
@@ -117,10 +111,10 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(Ljc;I)Ljy;",
-		garbageValue = "1801288220"
+		signature = "(Ljz;I)Ljk;",
+		garbageValue = "111553486"
 	)
 	@Export("getByUsername")
 	public User getByUsername(Username var1) {
@@ -128,30 +122,30 @@ public abstract class UserList {
 		return var2 != null ? var2 : this.getByPreviousUsername(var1);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Ljc;I)Ljy;",
-		garbageValue = "-877412517"
+		signature = "(Ljz;I)Ljk;",
+		garbageValue = "-632690223"
 	)
 	@Export("getByCurrentUsername")
 	User getByCurrentUsername(Username var1) {
 		return !var1.hasCleanName() ? null : (User)this.usernamesMap.get(var1);
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("y")
 	@ObfuscatedSignature(
-		signature = "(Ljc;I)Ljy;",
-		garbageValue = "1064087548"
+		signature = "(Ljz;B)Ljk;",
+		garbageValue = "-97"
 	)
 	@Export("getByPreviousUsername")
 	User getByPreviousUsername(Username var1) {
 		return !var1.hasCleanName() ? null : (User)this.previousUsernamesMap.get(var1);
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("f")
 	@ObfuscatedSignature(
-		signature = "(Ljc;I)Z",
-		garbageValue = "1761929838"
+		signature = "(Ljz;I)Z",
+		garbageValue = "379093551"
 	)
 	@Export("removeByUsername")
 	public final boolean removeByUsername(Username var1) {
@@ -164,10 +158,10 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(Ljy;I)V",
-		garbageValue = "1344275485"
+		signature = "(Ljk;I)V",
+		garbageValue = "144802420"
 	)
 	@Export("remove")
 	final void remove(User var1) {
@@ -178,20 +172,20 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(Ljc;I)Ljy;",
-		garbageValue = "-1788654627"
+		signature = "(Ljz;I)Ljk;",
+		garbageValue = "450603537"
 	)
 	@Export("addLastNoPreviousUsername")
 	User addLastNoPreviousUsername(Username var1) {
 		return this.addLast(var1, (Username)null);
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("ae")
 	@ObfuscatedSignature(
-		signature = "(Ljc;Ljc;I)Ljy;",
-		garbageValue = "-814300512"
+		signature = "(Ljz;Ljz;B)Ljk;",
+		garbageValue = "0"
 	)
 	@Export("addLast")
 	User addLast(Username var1, Username var2) {
@@ -206,10 +200,10 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("af")
 	@ObfuscatedSignature(
-		signature = "(IS)Ljy;",
-		garbageValue = "-10703"
+		signature = "(II)Ljk;",
+		garbageValue = "1668205012"
 	)
 	@Export("get")
 	public final User get(int var1) {
@@ -220,10 +214,10 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("aa")
+	@ObfuscatedName("az")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "296571009"
+		garbageValue = "-1810920855"
 	)
 	@Export("sort")
 	public final void sort() {
@@ -235,10 +229,10 @@ public abstract class UserList {
 
 	}
 
-	@ObfuscatedName("av")
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
-		signature = "(Ljy;Ljc;Ljc;B)V",
-		garbageValue = "-18"
+		signature = "(Ljk;Ljz;Ljz;I)V",
+		garbageValue = "-1039891004"
 	)
 	@Export("changeName")
 	final void changeName(User var1, Username var2, Username var3) {
@@ -247,10 +241,10 @@ public abstract class UserList {
 		this.mapPut(var1);
 	}
 
-	@ObfuscatedName("aw")
+	@ObfuscatedName("aj")
 	@ObfuscatedSignature(
-		signature = "(Ljy;I)I",
-		garbageValue = "607308278"
+		signature = "(Ljk;I)I",
+		garbageValue = "-147054371"
 	)
 	@Export("indexOf")
 	final int indexOf(User var1) {
@@ -263,10 +257,10 @@ public abstract class UserList {
 		return -1;
 	}
 
-	@ObfuscatedName("as")
+	@ObfuscatedName("au")
 	@ObfuscatedSignature(
-		signature = "(Ljy;I)V",
-		garbageValue = "243308006"
+		signature = "(Ljk;I)V",
+		garbageValue = "1037986229"
 	)
 	@Export("mapRemove")
 	final void mapRemove(User var1) {
@@ -280,20 +274,20 @@ public abstract class UserList {
 		}
 	}
 
-	@ObfuscatedName("ak")
+	@ObfuscatedName("ay")
 	@ObfuscatedSignature(
-		signature = "(Ljy;I)V",
-		garbageValue = "760547455"
+		signature = "(Ljk;B)V",
+		garbageValue = "127"
 	)
 	@Export("arrayAddLast")
 	final void arrayAddLast(User var1) {
 		this.array[++this.size - 1] = var1;
 	}
 
-	@ObfuscatedName("au")
+	@ObfuscatedName("aa")
 	@ObfuscatedSignature(
-		signature = "(Ljy;B)V",
-		garbageValue = "1"
+		signature = "(Ljk;I)V",
+		garbageValue = "2145132082"
 	)
 	@Export("mapPut")
 	final void mapPut(User var1) {
@@ -307,10 +301,10 @@ public abstract class UserList {
 
 	}
 
-	@ObfuscatedName("ah")
+	@ObfuscatedName("aq")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "486481485"
+		garbageValue = "45023574"
 	)
 	@Export("arrayRemove")
 	final void arrayRemove(int var1) {
@@ -321,20 +315,20 @@ public abstract class UserList {
 
 	}
 
-	@ObfuscatedName("aq")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-25"
+		signature = "(I)V",
+		garbageValue = "186565478"
 	)
 	@Export("removeComparator")
 	public final void removeComparator() {
 		this.comparator = null;
 	}
 
-	@ObfuscatedName("ao")
+	@ObfuscatedName("ak")
 	@ObfuscatedSignature(
-		signature = "(Ljava/util/Comparator;B)V",
-		garbageValue = "-73"
+		signature = "(Ljava/util/Comparator;I)V",
+		garbageValue = "-144770664"
 	)
 	@Export("addComparator")
 	public final void addComparator(Comparator var1) {
@@ -346,26 +340,164 @@ public abstract class UserList {
 
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZB)I",
-		garbageValue = "28"
+		signature = "(IILfk;Lfv;I)Z",
+		garbageValue = "715183629"
 	)
-	static int method5193(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? UserComparator7.field1946 : class197.field2398;
-		if (var0 == ScriptOpcodes.CC_GETINVOBJECT) {
-			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETINVCOUNT) {
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = 0;
+	public static final boolean method5167(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
+		int var4 = var0;
+		int var5 = var1;
+		byte var6 = 64;
+		byte var7 = 64;
+		int var8 = var0 - var6;
+		int var9 = var1 - var7;
+		class173.directions[var6][var7] = 99;
+		class173.distances[var6][var7] = 0;
+		byte var10 = 0;
+		int var11 = 0;
+		class173.bufferX[var10] = var0;
+		byte var10001 = var10;
+		int var18 = var10 + 1;
+		class173.bufferY[var10001] = var1;
+		int[][] var12 = var3.flags;
+
+		while (var18 != var11) {
+			var4 = class173.bufferX[var11];
+			var5 = class173.bufferY[var11];
+			var11 = var11 + 1 & 4095;
+			int var16 = var4 - var8;
+			int var17 = var5 - var9;
+			int var13 = var4 - var3.xInset;
+			int var14 = var5 - var3.yInset;
+			if (var2.hasArrived(1, var4, var5, var3)) {
+				ChatChannel.field1289 = var4;
+				class173.field2093 = var5;
+				return true;
 			}
 
+			int var15 = class173.distances[var16][var17] + 1;
+			if (var16 > 0 && class173.directions[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136776) == 0) {
+				class173.bufferX[var18] = var4 - 1;
+				class173.bufferY[var18] = var5;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 - 1][var17] = 2;
+				class173.distances[var16 - 1][var17] = var15;
+			}
+
+			if (var16 < 127 && class173.directions[var16 + 1][var17] == 0 && (var12[var13 + 1][var14] & 19136896) == 0) {
+				class173.bufferX[var18] = var4 + 1;
+				class173.bufferY[var18] = var5;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 + 1][var17] = 8;
+				class173.distances[var16 + 1][var17] = var15;
+			}
+
+			if (var17 > 0 && class173.directions[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
+				class173.bufferX[var18] = var4;
+				class173.bufferY[var18] = var5 - 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16][var17 - 1] = 1;
+				class173.distances[var16][var17 - 1] = var15;
+			}
+
+			if (var17 < 127 && class173.directions[var16][var17 + 1] == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
+				class173.bufferX[var18] = var4;
+				class173.bufferY[var18] = var5 + 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16][var17 + 1] = 4;
+				class173.distances[var16][var17 + 1] = var15;
+			}
+
+			if (var16 > 0 && var17 > 0 && class173.directions[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
+				class173.bufferX[var18] = var4 - 1;
+				class173.bufferY[var18] = var5 - 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 - 1][var17 - 1] = 3;
+				class173.distances[var16 - 1][var17 - 1] = var15;
+			}
+
+			if (var16 < 127 && var17 > 0 && class173.directions[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
+				class173.bufferX[var18] = var4 + 1;
+				class173.bufferY[var18] = var5 - 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 + 1][var17 - 1] = 9;
+				class173.distances[var16 + 1][var17 - 1] = var15;
+			}
+
+			if (var16 > 0 && var17 < 127 && class173.directions[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
+				class173.bufferX[var18] = var4 - 1;
+				class173.bufferY[var18] = var5 + 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 - 1][var17 + 1] = 6;
+				class173.distances[var16 - 1][var17 + 1] = var15;
+			}
+
+			if (var16 < 127 && var17 < 127 && class173.directions[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 1] & 19136992) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
+				class173.bufferX[var18] = var4 + 1;
+				class173.bufferY[var18] = var5 + 1;
+				var18 = var18 + 1 & 4095;
+				class173.directions[var16 + 1][var17 + 1] = 12;
+				class173.distances[var16 + 1][var17 + 1] = var15;
+			}
+		}
+
+		ChatChannel.field1289 = var4;
+		class173.field2093 = var5;
+		return false;
+	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		signature = "(ILce;ZI)I",
+		garbageValue = "-495480060"
+	)
+	static int method5212(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? class186.field2331 : MidiPcmStream.field2444;
+		if (var0 == ScriptOpcodes.CC_GETSCROLLX) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.scrollX;
 			return 1;
-		} else if (var0 == ScriptOpcodes.CC_GETID) {
-			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.childIndex;
+		} else if (var0 == ScriptOpcodes.CC_GETSCROLLY) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.scrollY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETTEXT) {
+			Interpreter.Interpreter_stringStack[++Message.Interpreter_stringStackSize - 1] = var3.text;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETSCROLLWIDTH) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.scrollWidth;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETSCROLLHEIGHT) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.scrollHeight;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETMODELZOOM) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.modelZoom;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_X) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.modelAngleX;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Z) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.modelAngleZ;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Y) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.modelAngleY;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETTRANSTOP) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.transparencyTop;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETTRANSBOT) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.transparencyBot;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETCOLOUR) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.color;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETFILLCOLOUR) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.color2;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETFILLMODE) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.fillMode.rsOrdinal();
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETMODELTRANSPARENT) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0;
 			return 1;
 		} else {
 			return 2;

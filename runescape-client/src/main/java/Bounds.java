@@ -1,33 +1,39 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.Socket;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lh")
+@ObfuscatedName("ll")
 @Implements("Bounds")
 public class Bounds {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -136751855
+		intValue = -743788715
 	)
 	@Export("lowX")
 	public int lowX;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1318120515
+		intValue = 390143547
 	)
 	@Export("lowY")
 	public int lowY;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -388222223
+		intValue = -1967964901
 	)
 	@Export("highX")
 	public int highX;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1704369811
+		intValue = 1178395907
 	)
 	@Export("highY")
 	public int highY;
@@ -41,10 +47,10 @@ public class Bounds {
 		this(0, 0, var1, var2);
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(III)V",
-		garbageValue = "-535694945"
+		garbageValue = "2024948285"
 	)
 	@Export("setLow")
 	public void setLow(int var1, int var2) {
@@ -52,10 +58,10 @@ public class Bounds {
 		this.lowY = var2;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(IIB)V",
-		garbageValue = "69"
+		garbageValue = "-30"
 	)
 	@Export("setHigh")
 	public void setHigh(int var1, int var2) {
@@ -63,22 +69,22 @@ public class Bounds {
 		this.highY = var2;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(Llh;Llh;I)V",
-		garbageValue = "871538763"
+		signature = "(Lll;Lll;I)V",
+		garbageValue = "-782590696"
 	)
-	public void method5997(Bounds var1, Bounds var2) {
-		this.method6005(var1, var2);
-		this.method5999(var1, var2);
+	public void method6031(Bounds var1, Bounds var2) {
+		this.method6032(var1, var2);
+		this.method6033(var1, var2);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Llh;Llh;I)V",
-		garbageValue = "-541537742"
+		signature = "(Lll;Lll;I)V",
+		garbageValue = "-997217284"
 	)
-	void method6005(Bounds var1, Bounds var2) {
+	void method6032(Bounds var1, Bounds var2) {
 		var2.lowX = this.lowX;
 		var2.highX = this.highX;
 		if (this.lowX < var1.lowX) {
@@ -86,8 +92,8 @@ public class Bounds {
 			var2.lowX = var1.lowX;
 		}
 
-		if (var2.method6000() > var1.method6000()) {
-			var2.highX -= var2.method6000() - var1.method6000();
+		if (var2.method6034() > var1.method6034()) {
+			var2.highX -= var2.method6034() - var1.method6034();
 		}
 
 		if (var2.highX < 0) {
@@ -96,12 +102,12 @@ public class Bounds {
 
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Llh;Llh;B)V",
-		garbageValue = "-89"
+		signature = "(Lll;Lll;I)V",
+		garbageValue = "1896853998"
 	)
-	void method5999(Bounds var1, Bounds var2) {
+	void method6033(Bounds var1, Bounds var2) {
 		var2.lowY = this.lowY;
 		var2.highY = this.highY;
 		if (this.lowY < var1.lowY) {
@@ -109,8 +115,8 @@ public class Bounds {
 			var2.lowY = var1.lowY;
 		}
 
-		if (var2.method5994() > var1.method5994()) {
-			var2.highY -= var2.method5994() - var1.method5994();
+		if (var2.method6035() > var1.method6035()) {
+			var2.highY -= var2.method6035() - var1.method6035();
 		}
 
 		if (var2.highY < 0) {
@@ -119,25 +125,87 @@ public class Bounds {
 
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "1022454109"
+		garbageValue = "1353685285"
 	)
-	int method6000() {
+	int method6034() {
 		return this.lowX + this.highX;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "1"
+		signature = "(I)I",
+		garbageValue = "-155482088"
 	)
-	int method5994() {
+	int method6035() {
 		return this.highY + this.lowY;
 	}
 
 	public String toString() {
 		return null;
+	}
+
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Throwable;I)Ljava/lang/String;",
+		garbageValue = "1378927694"
+	)
+	static String method6058(Throwable var0) throws IOException {
+		String var1;
+		if (var0 instanceof RunException) {
+			RunException var2 = (RunException)var0;
+			var1 = var2.message + " | ";
+			var0 = var2.throwable;
+		} else {
+			var1 = "";
+		}
+
+		StringWriter var12 = new StringWriter();
+		PrintWriter var3 = new PrintWriter(var12);
+		var0.printStackTrace(var3);
+		var3.close();
+		String var4 = var12.toString();
+		BufferedReader var5 = new BufferedReader(new StringReader(var4));
+		String var6 = var5.readLine();
+
+		while (true) {
+			while (true) {
+				String var7 = var5.readLine();
+				if (var7 == null) {
+					var1 = var1 + "| " + var6;
+					return var1;
+				}
+
+				int var8 = var7.indexOf(40);
+				int var9 = var7.indexOf(41, var8 + 1);
+				if (var8 >= 0 && var9 >= 0) {
+					String var10 = var7.substring(var8 + 1, var9);
+					int var11 = var10.indexOf(".java:");
+					if (var11 >= 0) {
+						var10 = var10.substring(0, var11) + var10.substring(var11 + 5);
+						var1 = var1 + var10 + ' ';
+						continue;
+					}
+
+					var7 = var7.substring(0, var8);
+				}
+
+				var7 = var7.trim();
+				var7 = var7.substring(var7.lastIndexOf(32) + 1);
+				var7 = var7.substring(var7.lastIndexOf(9) + 1);
+				var1 = var1 + var7 + ' ';
+			}
+		}
+	}
+
+	@ObfuscatedName("af")
+	@ObfuscatedSignature(
+		signature = "(Ljava/net/Socket;IIB)Lkr;",
+		garbageValue = "-41"
+	)
+	public static AbstractSocket method6040(Socket var0, int var1, int var2) throws IOException {
+		return new BufferedNetSocket(var0, var1, var2);
 	}
 }

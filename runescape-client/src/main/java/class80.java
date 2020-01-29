@@ -1,66 +1,61 @@
 import java.math.BigInteger;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("cr")
 public class class80 {
-	@ObfuscatedName("rm")
-	@ObfuscatedGetter(
-		intValue = 638664704
-	)
-	static int field1111;
-	@ObfuscatedName("p")
-	static final BigInteger field1109;
-	@ObfuscatedName("b")
-	static final BigInteger field1112;
-	@ObfuscatedName("bj")
-	@Export("otp")
-	static String otp;
+	@ObfuscatedName("i")
+	static final BigInteger field1123;
+	@ObfuscatedName("g")
+	static final BigInteger field1120;
 
 	static {
-		field1109 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
-		field1112 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
+		field1123 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+		field1120 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-52"
+		signature = "(Lks;I)I",
+		garbageValue = "-1637825226"
 	)
-	static int method2053(int var0, int var1) {
-		if (var0 == -2) {
-			return 12345678;
-		} else if (var0 == -1) {
-			if (var1 < 0) {
-				var1 = 0;
-			} else if (var1 > 127) {
-				var1 = 127;
-			}
-
-			var1 = 127 - var1;
-			return var1;
+	static int method2094(PacketBuffer var0) {
+		int var1 = var0.readBits(2);
+		int var2;
+		if (var1 == 0) {
+			var2 = 0;
+		} else if (var1 == 1) {
+			var2 = var0.readBits(5);
+		} else if (var1 == 2) {
+			var2 = var0.readBits(8);
 		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
+			var2 = var0.readBits(11);
 		}
+
+		return var2;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Ljava/lang/String;Ljava/lang/String;B)[Lls;",
-		garbageValue = "-8"
+		signature = "(I)V",
+		garbageValue = "-1745616388"
 	)
-	public static Sprite[] method2058(AbstractArchive var0, String var1, String var2) {
-		int var3 = var0.getGroupId(var1);
-		int var4 = var0.getFileId(var3, var2);
-		return GrandExchangeOfferNameComparator.SpriteBuffer_getSpriteArray(var0, var3, var4);
+	static final void method2097() {
+		class60.method1188("You can't add yourself to your own ignore list");
+	}
+
+	@ObfuscatedName("ka")
+	@ObfuscatedSignature(
+		signature = "(Lhn;II)Ljava/lang/String;",
+		garbageValue = "237205846"
+	)
+	static String method2098(Widget var0, int var1) {
+		int var3 = WorldMapIcon_0.getWidgetClickMask(var0);
+		boolean var2 = (var3 >> var1 + 1 & 1) != 0;
+		if (!var2 && var0.onOp == null) {
+			return null;
+		} else {
+			return var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0 ? var0.actions[var1] : null;
+		}
 	}
 }

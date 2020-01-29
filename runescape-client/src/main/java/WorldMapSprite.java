@@ -1,18 +1,24 @@
-import java.awt.FontMetrics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("av")
+@ObfuscatedName("af")
 @Implements("WorldMapSprite")
 public final class WorldMapSprite {
-	@ObfuscatedName("j")
-	static String[] field219;
-	@ObfuscatedName("ak")
-	@Export("loginScreenFontMetrics")
-	static FontMetrics loginScreenFontMetrics;
-	@ObfuscatedName("i")
+	@ObfuscatedName("rc")
+	@ObfuscatedGetter(
+		intValue = -936631043
+	)
+	static int field240;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lli;"
+	)
+	@Export("options_buttons_0Sprite")
+	static IndexedSprite options_buttons_0Sprite;
+	@ObfuscatedName("t")
 	@Export("tileColors")
 	final int[] tileColors;
 
@@ -24,44 +30,45 @@ public final class WorldMapSprite {
 		this.tileColors = var1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-1062686446"
+		signature = "(IIB)I",
+		garbageValue = "35"
 	)
 	@Export("getTileColor")
 	final int getTileColor(int var1, int var2) {
 		return this.tileColors[var1 + var2 * 64];
 	}
 
-	@ObfuscatedName("fm")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-1175490871"
+		signature = "(Lkp;IS)V",
+		garbageValue = "-20256"
 	)
-	@Export("playSong")
-	static void playSong(int var0) {
-		if (var0 == -1 && !Client.field767) {
-			Actor.method1755();
-		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field767) {
-			class4.method59(2, GrandExchangeOfferWorldComparator.archive6, var0, 0, Client.musicVolume, false);
+	public static void method427(Buffer var0, int var1) {
+		if (JagexCache.JagexCache_randomDat != null) {
+			try {
+				JagexCache.JagexCache_randomDat.seek(0L);
+				JagexCache.JagexCache_randomDat.write(var0.array, var1, 24);
+			} catch (Exception var3) {
+			}
 		}
 
-		Client.currentTrackGroupId = var0;
 	}
 
-	@ObfuscatedName("gu")
+	@ObfuscatedName("gb")
 	@ObfuscatedSignature(
-		signature = "(IIB)V",
-		garbageValue = "-50"
+		signature = "(B)V",
+		garbageValue = "96"
 	)
-	static final void method408(int var0, int var1) {
-		if (Client.hintArrowType == 2) {
-			KeyHandler.worldToScreen((Client.hintArrowX - MusicPatchPcmStream.baseX * 64 << 7) + Client.hintArrowSubX * 4096, (Client.hintArrowY - ScriptEvent.baseY * 64 << 7) + Client.hintArrowSubY * 4096, Client.hintArrowHeight * 2);
-			if (Client.viewportTempX > -1 && Client.cycle % 20 < 10) {
-				WorldMapData_0.headIconHintSprites[0].drawTransBgAt(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
+	static final void method434() {
+		for (int var0 = 0; var0 < Client.npcCount; ++var0) {
+			int var1 = Client.npcIndices[var0];
+			NPC var2 = Client.npcs[var1];
+			if (var2 != null) {
+				ScriptFrame.updateActorSequence(var2, var2.definition.size);
 			}
-
 		}
+
 	}
 }

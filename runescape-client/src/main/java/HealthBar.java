@@ -3,40 +3,40 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cp")
 @Implements("HealthBar")
 public class HealthBar extends Node {
-	@ObfuscatedName("d")
+	@ObfuscatedName("dt")
 	@ObfuscatedSignature(
-		signature = "Ldk;"
+		signature = "Lia;"
 	)
-	@Export("soundSystem")
-	static SoundSystem soundSystem;
-	@ObfuscatedName("y")
+	@Export("archive10")
+	static Archive archive10;
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lio;"
+		signature = "Liy;"
 	)
 	@Export("definition")
 	HealthBarDefinition definition;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Ljl;"
+		signature = "Ljj;"
 	)
 	@Export("updates")
 	IterableNodeDeque updates;
 
 	@ObfuscatedSignature(
-		signature = "(Lio;)V"
+		signature = "(Liy;)V"
 	)
 	HealthBar(HealthBarDefinition var1) {
 		this.updates = new IterableNodeDeque();
 		this.definition = var1;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "76773386"
+		signature = "(IIIIS)V",
+		garbageValue = "6521"
 	)
 	@Export("put")
 	void put(int var1, int var2, int var3, int var4) {
@@ -69,10 +69,10 @@ public class HealthBar extends Node {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)Lbu;",
-		garbageValue = "-2132773081"
+		signature = "(II)Lbh;",
+		garbageValue = "-1345078848"
 	)
 	@Export("get")
 	HealthBarUpdate get(int var1) {
@@ -94,13 +94,13 @@ public class HealthBar extends Node {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1427646863"
+		garbageValue = "-818833492"
 	)
 	@Export("isEmpty")
 	boolean isEmpty() {
-		return this.updates.method4843();
+		return this.updates.method4886();
 	}
 }

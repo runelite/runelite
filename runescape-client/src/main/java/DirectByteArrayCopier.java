@@ -1,26 +1,26 @@
 import java.nio.ByteBuffer;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("gc")
 @Implements("DirectByteArrayCopier")
 public class DirectByteArrayCopier extends AbstractByteArrayCopier {
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = 1433331089
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Lli;"
 	)
-	public static int field2490;
-	@ObfuscatedName("f")
+	@Export("options_buttons_2Sprite")
+	static IndexedSprite options_buttons_2Sprite;
+	@ObfuscatedName("c")
 	@Export("directBuffer")
 	ByteBuffer directBuffer;
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)[B",
-		garbageValue = "-112018699"
+		garbageValue = "-571467457"
 	)
 	@Export("get")
 	public byte[] get() {
@@ -30,10 +30,10 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 		return var1;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "([BB)V",
-		garbageValue = "33"
+		signature = "([BI)V",
+		garbageValue = "1471312739"
 	)
 	@Export("set")
 	public void set(byte[] var1) {
@@ -42,12 +42,60 @@ public class DirectByteArrayCopier extends AbstractByteArrayCopier {
 		this.directBuffer.put(var1);
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lhz;B)V",
-		garbageValue = "7"
+		signature = "(IIB)V",
+		garbageValue = "19"
 	)
-	public static void method3940(AbstractArchive var0) {
-		class286.EnumDefinition_archive = var0;
+	public static void method4006(int var0, int var1) {
+		VarbitDefinition var3 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+		VarbitDefinition var2;
+		if (var3 != null) {
+			var2 = var3;
+		} else {
+			byte[] var8 = class287.VarbitDefinition_archive.takeFile(14, var0);
+			var3 = new VarbitDefinition();
+			if (var8 != null) {
+				var3.decode(new Buffer(var8));
+			}
+
+			VarbitDefinition.VarbitDefinition_cached.put(var3, (long)var0);
+			var2 = var3;
+		}
+
+		int var4 = var2.baseVar;
+		int var5 = var2.startBit;
+		int var6 = var2.endBit;
+		int var7 = Varps.Varps_masks[var6 - var5];
+		if (var1 < 0 || var1 > var7) {
+			var1 = 0;
+		}
+
+		var7 <<= var5;
+		Varps.Varps_main[var4] = Varps.Varps_main[var4] & ~var7 | var1 << var5 & var7;
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(CI)Z",
+		garbageValue = "-186978734"
+	)
+	static boolean method4004(char var0) {
+		for (int var1 = 0; var1 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".length(); ++var1) {
+			if (var0 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:'@#~,<.>/?\\| ".charAt(var1)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@ObfuscatedName("bf")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;I)I",
+		garbageValue = "-470893406"
+	)
+	public static int method4012(String var0) {
+		return var0.length() + 2;
 	}
 }

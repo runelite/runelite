@@ -2,26 +2,34 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hi")
 public class class210 {
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-1841265610"
+		signature = "Lhc;"
 	)
-	public static boolean method3947() {
-		ReflectionCheck var0 = (ReflectionCheck)class117.reflectionChecks.last();
-		return var0 != null;
+	@Export("huffman")
+	static Huffman huffman;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "1848259847"
+	)
+	public static int method4029(int var0, int var1) {
+		return (var0 + 40000 << 8) + var1;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(III)Lbs;",
-		garbageValue = "-453941581"
+		signature = "(IIS)V",
+		garbageValue = "11236"
 	)
-	@Export("Messages_getByChannelAndID")
-	static Message Messages_getByChannelAndID(int var0, int var1) {
-		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
-		return var2.getMessage(var1);
+	static void method4032(int var0, int var1) {
+		long var2 = (long)((var0 << 16) + var1);
+		NetFileRequest var4 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var2);
+		if (var4 != null) {
+			NetCache.NetCache_pendingWritesQueue.addLast(var4);
+		}
 	}
 }

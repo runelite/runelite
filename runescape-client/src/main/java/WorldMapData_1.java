@@ -4,42 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ar")
 @Implements("WorldMapData_1")
 public class WorldMapData_1 extends AbstractWorldMapData {
-	@ObfuscatedName("dp")
-	@ObfuscatedSignature(
-		signature = "Lif;"
-	)
-	@Export("archive3")
-	static Archive archive3;
-	@ObfuscatedName("el")
+	@ObfuscatedName("a")
 	@ObfuscatedGetter(
-		intValue = -88926389
+		intValue = -352069921
 	)
-	@Export("port3")
-	static int port3;
-	@ObfuscatedName("l")
+	@Export("canvasHeight")
+	public static int canvasHeight;
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 143866825
+		intValue = 650382493
 	)
 	@Export("chunkXLow")
 	int chunkXLow;
-	@ObfuscatedName("t")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -1351915861
+		intValue = 214088681
 	)
 	@Export("chunkYLow")
 	int chunkYLow;
-	@ObfuscatedName("j")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1168236865
+		intValue = -1958393799
 	)
 	@Export("chunkX")
 	int chunkX;
-	@ObfuscatedName("n")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -450265365
+		intValue = -1560494711
 	)
 	@Export("chunkY")
 	int chunkY;
@@ -47,47 +41,47 @@ public class WorldMapData_1 extends AbstractWorldMapData {
 	WorldMapData_1() {
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lkq;I)V",
-		garbageValue = "1553886419"
+		signature = "(Lkp;I)V",
+		garbageValue = "-431510829"
 	)
 	@Export("init")
 	void init(Buffer var1) {
 		int var2 = var1.readUnsignedByte();
-		if (var2 != WorldMapID.field253.value) {
+		if (var2 != WorldMapID.field278.value) {
 			throw new IllegalStateException("");
 		} else {
 			super.minPlane = var1.readUnsignedByte();
 			super.planes = var1.readUnsignedByte();
-			super.regionXLow = var1.readUnsignedShort() * 64;
-			super.regionYLow = var1.readUnsignedShort() * 4096;
+			super.regionXLow = var1.readUnsignedShort() * 4096;
+			super.regionYLow = var1.readUnsignedShort() * 64;
 			this.chunkXLow = var1.readUnsignedByte();
 			this.chunkYLow = var1.readUnsignedByte();
 			super.regionX = var1.readUnsignedShort();
 			super.regionY = var1.readUnsignedShort();
 			this.chunkX = var1.readUnsignedByte();
 			this.chunkY = var1.readUnsignedByte();
-			super.groupId = var1.method5560();
-			super.fileId = var1.method5560();
+			super.groupId = var1.method5593();
+			super.fileId = var1.method5593();
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkq;I)V",
-		garbageValue = "1425420215"
+		signature = "(Lkp;S)V",
+		garbageValue = "-30591"
 	)
 	@Export("readGeography")
 	void readGeography(Buffer var1) {
 		super.planes = Math.min(super.planes, 4);
 		super.floorUnderlayIds = new short[1][64][64];
 		super.floorOverlayIds = new short[super.planes][64][64];
-		super.field150 = new byte[super.planes][64][64];
-		super.field149 = new byte[super.planes][64][64];
+		super.field188 = new byte[super.planes][64][64];
+		super.field175 = new byte[super.planes][64][64];
 		super.decorations = new WorldMapDecoration[super.planes][64][64][];
 		int var2 = var1.readUnsignedByte();
-		if (var2 != class30.field251.value) {
+		if (var2 != class30.field271.value) {
 			throw new IllegalStateException("");
 		} else {
 			int var3 = var1.readUnsignedByte();
@@ -107,48 +101,44 @@ public class WorldMapData_1 extends AbstractWorldMapData {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1398372761"
+		signature = "(B)I",
+		garbageValue = "35"
 	)
 	@Export("getChunkXLow")
 	int getChunkXLow() {
 		return this.chunkXLow;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-2116975369"
+		signature = "(B)I",
+		garbageValue = "105"
 	)
 	@Export("getChunkYLow")
 	int getChunkYLow() {
 		return this.chunkYLow;
 	}
 
-	@ObfuscatedName("an")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-28"
+		signature = "(I)I",
+		garbageValue = "-1796035286"
 	)
 	@Export("getChunkX")
 	int getChunkX() {
 		return this.chunkX;
 	}
 
-	@ObfuscatedName("ar")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "1663251439"
+		garbageValue = "1186864483"
 	)
 	@Export("getChunkY")
 	int getChunkY() {
 		return this.chunkY;
-	}
-
-	public int hashCode() {
-		return super.regionX | super.regionY << 8 | this.chunkX << 16 | this.chunkY << 24;
 	}
 
 	public boolean equals(Object var1) {
@@ -156,82 +146,89 @@ public class WorldMapData_1 extends AbstractWorldMapData {
 			return false;
 		} else {
 			WorldMapData_1 var2 = (WorldMapData_1)var1;
-			if (super.regionX == var2.regionX && var2.regionY == super.regionY) {
-				return var2.chunkX == this.chunkX && this.chunkY == var2.chunkY;
+			if (var2.regionX == super.regionX && var2.regionY == super.regionY) {
+				return this.chunkX == var2.chunkX && this.chunkY == var2.chunkY;
 			} else {
 				return false;
 			}
 		}
 	}
 
-	@ObfuscatedName("f")
+	public int hashCode() {
+		return super.regionX | super.regionY << 8 | this.chunkX << 16 | this.chunkY << 24;
+	}
+
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1451049643"
+		garbageValue = "-1587846163"
 	)
-	static void method722() {
-		if (TaskHandler.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-			KeyHandler.KeyHandler_keyCodes[186] = 57;
-			KeyHandler.KeyHandler_keyCodes[187] = 27;
-			KeyHandler.KeyHandler_keyCodes[188] = 71;
-			KeyHandler.KeyHandler_keyCodes[189] = 26;
-			KeyHandler.KeyHandler_keyCodes[190] = 72;
-			KeyHandler.KeyHandler_keyCodes[191] = 73;
-			KeyHandler.KeyHandler_keyCodes[192] = 58;
-			KeyHandler.KeyHandler_keyCodes[219] = 42;
-			KeyHandler.KeyHandler_keyCodes[220] = 74;
-			KeyHandler.KeyHandler_keyCodes[221] = 43;
-			KeyHandler.KeyHandler_keyCodes[222] = 59;
-			KeyHandler.KeyHandler_keyCodes[223] = 28;
-		} else {
-			KeyHandler.KeyHandler_keyCodes[44] = 71;
-			KeyHandler.KeyHandler_keyCodes[45] = 26;
-			KeyHandler.KeyHandler_keyCodes[46] = 72;
-			KeyHandler.KeyHandler_keyCodes[47] = 73;
-			KeyHandler.KeyHandler_keyCodes[59] = 57;
-			KeyHandler.KeyHandler_keyCodes[61] = 27;
-			KeyHandler.KeyHandler_keyCodes[91] = 42;
-			KeyHandler.KeyHandler_keyCodes[92] = 74;
-			KeyHandler.KeyHandler_keyCodes[93] = 43;
-			KeyHandler.KeyHandler_keyCodes[192] = 28;
-			KeyHandler.KeyHandler_keyCodes[222] = 58;
-			KeyHandler.KeyHandler_keyCodes[520] = 59;
+	@Export("savePreferences")
+	static void savePreferences() {
+		AccessFile var0 = null;
+
+		try {
+			var0 = WorldMapRectangle.getPreferencesFile("", class14.field102.name, true);
+			Buffer var1 = WorldMapSection2.clientPreferences.toBuffer();
+			var0.write(var1.array, 0, var1.offset);
+		} catch (Exception var3) {
+		}
+
+		try {
+			if (var0 != null) {
+				var0.closeSync(true);
+			}
+		} catch (Exception var2) {
 		}
 
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("j")
+	static boolean method732(long var0) {
+		return (int)(var0 >>> 16 & 1L) == 1;
+	}
+
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(IIIIIIII)Z",
-		garbageValue = "610798807"
+		signature = "(II)I",
+		garbageValue = "1876587331"
 	)
-	static final boolean method699(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		int var7 = ViewportMouse.ViewportMouse_y + var6;
-		if (var7 < var0 && var7 < var1 && var7 < var2) {
-			return false;
+	public static int method712(int var0) {
+		if (var0 > 0) {
+			return 1;
 		} else {
-			var7 = ViewportMouse.ViewportMouse_y - var6;
-			if (var7 > var0 && var7 > var1 && var7 > var2) {
-				return false;
-			} else {
-				var7 = ViewportMouse.ViewportMouse_x + var6;
-				if (var7 < var3 && var7 < var4 && var7 < var5) {
-					return false;
-				} else {
-					var7 = ViewportMouse.ViewportMouse_x - var6;
-					return var7 <= var3 || var7 <= var4 || var7 <= var5;
-				}
+			return var0 < 0 ? -1 : 0;
+		}
+	}
+
+	@ObfuscatedName("ao")
+	@ObfuscatedSignature(
+		signature = "(ILhj;ZB)V",
+		garbageValue = "89"
+	)
+	static void method731(int var0, Coord var1, boolean var2) {
+		WorldMapArea var3 = GrandExchangeOfferUnitPriceComparator.getWorldMap().getMapArea(var0);
+		int var4 = class192.localPlayer.plane;
+		int var5 = Messages.baseX * 64 + (class192.localPlayer.x >> 7);
+		int var6 = Language.baseY * 64 + (class192.localPlayer.y >> 7);
+		Coord var7 = new Coord(var4, var5, var6);
+		GrandExchangeOfferUnitPriceComparator.getWorldMap().method6377(var3, var7, var1, var2);
+	}
+
+	@ObfuscatedName("gj")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1054316430"
+	)
+	static void method733() {
+		int var0 = Players.Players_count;
+		int[] var1 = Players.Players_indices;
+
+		for (int var2 = 0; var2 < var0; ++var2) {
+			if (var1[var2] != Client.combatTargetPlayerIndex && var1[var2] != Client.localPlayerIndex) {
+				class51.addPlayerToScene(Client.players[var1[var2]], true);
 			}
 		}
-	}
 
-	@ObfuscatedName("hz")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1258797506"
-	)
-	static void method708() {
-		Client.menuOptionsCount = 0;
-		Client.isMenuOpen = false;
 	}
 }

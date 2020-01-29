@@ -4,36 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hj")
 @Implements("Coord")
 public class Coord {
-	@ObfuscatedName("b")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("musicTrackArchive")
-	public static AbstractArchive musicTrackArchive;
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 84466269
+		intValue = 995034769
 	)
 	@Export("plane")
 	public int plane;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 468184679
+		intValue = 1797414909
 	)
 	@Export("x")
 	public int x;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -387366221
+		intValue = 1015808091
 	)
 	@Export("y")
 	public int y;
 
 	@ObfuscatedSignature(
-		signature = "(Lht;)V"
+		signature = "(Lhj;)V"
 	)
 	public Coord(Coord var1) {
 		this.plane = var1.plane;
@@ -58,20 +52,20 @@ public class Coord {
 
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "-72"
+		signature = "(I)I",
+		garbageValue = "6116423"
 	)
 	@Export("packed")
 	public int packed() {
 		return this.plane << 28 | this.x << 14 | this.y;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lht;I)Z",
-		garbageValue = "1703593953"
+		signature = "(Lhj;I)Z",
+		garbageValue = "-557558477"
 	)
 	@Export("equalsCoord")
 	boolean equalsCoord(Coord var1) {
@@ -84,10 +78,10 @@ public class Coord {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "32"
+		garbageValue = "-120"
 	)
 	@Export("toString")
 	String toString(String var1) {
@@ -107,35 +101,6 @@ public class Coord {
 			return true;
 		} else {
 			return !(var1 instanceof Coord) ? false : this.equalsCoord((Coord)var1);
-		}
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(IB)Lig;",
-		garbageValue = "1"
-	)
-	@Export("getObjectDefinition")
-	public static ObjectDefinition getObjectDefinition(int var0) {
-		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
-			var1 = new ObjectDefinition();
-			var1.id = var0;
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			if (var1.isSolid) {
-				var1.interactType = 0;
-				var1.boolean1 = false;
-			}
-
-			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
 	}
 }

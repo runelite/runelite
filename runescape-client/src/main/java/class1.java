@@ -2,77 +2,56 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("i")
+@ObfuscatedName("t")
 final class class1 implements class0 {
-	@ObfuscatedName("f")
+	@ObfuscatedName("fe")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;Lkq;I)V",
-		garbageValue = "-685052934"
+		signature = "Lko;"
 	)
-	public void vmethod53(Object var1, Buffer var2) {
-		this.method8((Integer)var1, var2);
+	@Export("fontBold12")
+	static Font fontBold12;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/Object;Lkp;B)V",
+		garbageValue = "95"
+	)
+	public void vmethod55(Object var1, Buffer var2) {
+		this.method7((Integer)var1, var2);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkq;I)Ljava/lang/Object;",
-		garbageValue = "390816352"
+		signature = "(Lkp;I)Ljava/lang/Object;",
+		garbageValue = "1665636232"
 	)
-	public Object vmethod60(Buffer var1) {
+	public Object vmethod53(Buffer var1) {
 		return var1.readInt();
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Integer;Lkq;I)V",
-		garbageValue = "-1005316457"
+		signature = "(Ljava/lang/Integer;Lkp;I)V",
+		garbageValue = "-890899410"
 	)
-	void method8(Integer var1, Buffer var2) {
+	void method7(Integer var1, Buffer var2) {
 		var2.writeInt(var1);
 	}
 
-	@ObfuscatedName("gv")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZB)V",
-		garbageValue = "-52"
+		signature = "(Lbg;Lbg;IZIZI)I",
+		garbageValue = "-926800273"
 	)
-	@Export("drawLoadingMessage")
-	static final void drawLoadingMessage(String var0, boolean var1) {
-		if (Client.showLoadingMessages) {
-			byte var2 = 4;
-			int var3 = var2 + 6;
-			int var4 = var2 + 6;
-			int var5 = ScriptFrame.fontPlain12.lineWidth(var0, 250);
-			int var6 = ScriptFrame.fontPlain12.lineCount(var0, 250) * 13;
-			Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-			Rasterizer2D.Rasterizer2D_drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
-			ScriptFrame.fontPlain12.drawLines(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-			GameObject.method3297(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
-			if (var1) {
-				IgnoreList.rasterProvider.drawFull(0, 0);
-			} else {
-				int var7 = var3;
-				int var8 = var4;
-				int var9 = var5;
-				int var10 = var6;
-
-				for (int var11 = 0; var11 < Client.rootWidgetCount; ++var11) {
-					if (Client.rootWidgetXs[var11] + Client.rootWidgetWidths[var11] > var7 && Client.rootWidgetXs[var11] < var9 + var7 && Client.rootWidgetHeights[var11] + Client.rootWidgetYs[var11] > var8 && Client.rootWidgetYs[var11] < var10 + var8) {
-						Client.field834[var11] = true;
-					}
-				}
-			}
-
+	static int method19(World var0, World var1, int var2, boolean var3, int var4, boolean var5) {
+		int var6 = MouseHandler.compareWorlds(var0, var1, var2, var3);
+		if (var6 != 0) {
+			return var3 ? -var6 : var6;
+		} else if (var4 == -1) {
+			return 0;
+		} else {
+			int var7 = MouseHandler.compareWorlds(var0, var1, var4, var5);
+			return var5 ? -var7 : var7;
 		}
-	}
-
-	@ObfuscatedName("ij")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;IIIIB)V",
-		garbageValue = "3"
-	)
-	@Export("insertMenuItemNoShift")
-	public static final void insertMenuItemNoShift(String var0, String var1, int var2, int var3, int var4, int var5) {
-		AbstractWorldMapIcon.insertMenuItem(var0, var1, var2, var3, var4, var5, false);
 	}
 }

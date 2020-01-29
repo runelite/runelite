@@ -1,40 +1,41 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gm")
 public class class188 {
-	@ObfuscatedName("x")
+	@ObfuscatedName("rg")
 	@ObfuscatedGetter(
-		intValue = 1663251439
+		intValue = -1778980480
 	)
-	@Export("Interpreter_intStackSize")
-	static int Interpreter_intStackSize;
-	@ObfuscatedName("bq")
-	@ObfuscatedSignature(
-		signature = "Lll;"
-	)
-	@Export("loginType")
-	static LoginType loginType;
+	static int field2346;
+	@ObfuscatedName("c")
+	static int[] field2344;
 
-	@ObfuscatedName("i")
-	static final void method3604(long var0) {
-		try {
-			Thread.sleep(var0);
-		} catch (InterruptedException var3) {
+	static {
+		new Object();
+		field2344 = new int[33];
+		field2344[0] = 0;
+		int var0 = 2;
+
+		for (int var1 = 1; var1 < 33; ++var1) {
+			field2344[var1] = var0 - 1;
+			var0 += var0;
 		}
 
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(ZZB)I",
-		garbageValue = "1"
+		signature = "(I)V",
+		garbageValue = "568041026"
 	)
-	public static int method3601(boolean var0, boolean var1) {
-		byte var2 = 0;
-		int var3 = var2 + NetCache.NetCache_pendingPriorityResponsesCount + NetCache.NetCache_pendingPriorityWritesCount;
-		return var3;
+	static void method3708() {
+		for (ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
+			if (var0.obj != null) {
+				var0.set();
+			}
+		}
+
 	}
 }

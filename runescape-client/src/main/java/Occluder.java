@@ -4,240 +4,150 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("er")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("ix")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1520705785
-	)
-	@Export("selectedItemWidget")
-	static int selectedItemWidget;
-	@ObfuscatedName("f")
-	@ObfuscatedGetter(
-		intValue = -2004521327
+		intValue = -1590617607
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1674295637
+		intValue = -547083531
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1042040177
+		intValue = -50213873
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1841371547
+		intValue = 468551341
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 261600229
+		intValue = 1458013883
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -471906197
+		intValue = 1331967011
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1905687081
+		intValue = -455782375
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -528006911
+		intValue = 819505963
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1092367399
+		intValue = 1618672975
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 1309728231
+		intValue = -1033011613
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1242772351
+		intValue = -1435330577
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("o")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 574320151
+		intValue = 681234965
 	)
-	int field1877;
+	int field1891;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1784945639
+		intValue = 460124457
 	)
-	int field1878;
+	int field1900;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = -947874837
+	)
+	int field1901;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1101467095
+	)
+	int field1903;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = -1920736103
+	)
+	int field1904;
 	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -894832855
+		intValue = -1277839357
 	)
-	int field1879;
-	@ObfuscatedName("s")
+	int field1889;
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -350981301
+		intValue = 461878441
 	)
-	int field1880;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = -186008605
-	)
-	int field1881;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 512854933
-	)
-	int field1875;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = -503970767
-	)
-	int field1872;
+	int field1905;
 
 	Occluder() {
 	}
 
-	@ObfuscatedName("ka")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lha;IIIB)V",
-		garbageValue = "1"
+		signature = "(IB)Lir;",
+		garbageValue = "-54"
 	)
-	@Export("drawMinimap")
-	static final void drawMinimap(Widget var0, int var1, int var2, int var3) {
-		WorldMapLabel.playPcmPlayers();
-		SpriteMask var4 = var0.getSpriteMask(false);
-		if (var4 != null) {
-			Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);
-			if (Client.minimapState != 2 && Client.minimapState != 5) {
-				int var5 = Client.camAngleY & 2047;
-				int var6 = Message.localPlayer.x / 32 + 48;
-				int var7 = 464 - Message.localPlayer.y / 32;
-				Language.sceneMinimapSprite.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, var6, var7, var5, 256, var4.xStarts, var4.xWidths);
-
-				int var8;
-				int var9;
-				int var10;
-				for (var8 = 0; var8 < Client.mapIconCount; ++var8) {
-					var9 = Client.mapIconXs[var8] * 4 + 2 - Message.localPlayer.x / 32;
-					var10 = Client.mapIconYs[var8] * 4 + 2 - Message.localPlayer.y / 32;
-					GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var9, var10, Client.mapIcons[var8], var4);
-				}
-
-				int var11;
-				int var12;
-				for (var8 = 0; var8 < 104; ++var8) {
-					for (var9 = 0; var9 < 104; ++var9) {
-						NodeDeque var15 = Client.groundItems[UrlRequest.Client_plane][var8][var9];
-						if (var15 != null) {
-							var11 = var8 * 4 + 2 - Message.localPlayer.x / 32;
-							var12 = var9 * 4 + 2 - Message.localPlayer.y / 32;
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var11, var12, WorldMapLabel.mapDotSprites[0], var4);
-						}
-					}
-				}
-
-				for (var8 = 0; var8 < Client.npcCount; ++var8) {
-					NPC var16 = Client.npcs[Client.npcIndices[var8]];
-					if (var16 != null && var16.isVisible()) {
-						NPCDefinition var18 = var16.definition;
-						if (var18 != null && var18.transforms != null) {
-							var18 = var18.transform();
-						}
-
-						if (var18 != null && var18.drawMapDot && var18.isInteractable) {
-							var11 = var16.x / 32 - Message.localPlayer.x / 32;
-							var12 = var16.y / 32 - Message.localPlayer.y / 32;
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var11, var12, WorldMapLabel.mapDotSprites[1], var4);
-						}
-					}
-				}
-
-				var8 = Players.Players_count;
-				int[] var19 = Players.Players_indices;
-
-				for (var10 = 0; var10 < var8; ++var10) {
-					Player var17 = Client.players[var19[var10]];
-					if (var17 != null && var17.isVisible() && !var17.isHidden && var17 != Message.localPlayer) {
-						var12 = var17.x / 32 - Message.localPlayer.x / 32;
-						int var13 = var17.y / 32 - Message.localPlayer.y / 32;
-						boolean var14 = false;
-						if (Message.localPlayer.team != 0 && var17.team != 0 && var17.team == Message.localPlayer.team) {
-							var14 = true;
-						}
-
-						if (var17.isFriend()) {
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var12, var13, WorldMapLabel.mapDotSprites[3], var4);
-						} else if (var14) {
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var12, var13, WorldMapLabel.mapDotSprites[4], var4);
-						} else if (var17.isClanMember()) {
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var12, var13, WorldMapLabel.mapDotSprites[5], var4);
-						} else {
-							GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var12, var13, WorldMapLabel.mapDotSprites[2], var4);
-						}
-					}
-				}
-
-				if (Client.hintArrowType != 0 && Client.cycle % 20 < 10) {
-					if (Client.hintArrowType == 1 && Client.hintArrowNpcIndex >= 0 && Client.hintArrowNpcIndex < Client.npcs.length) {
-						NPC var20 = Client.npcs[Client.hintArrowNpcIndex];
-						if (var20 != null) {
-							var11 = var20.x / 32 - Message.localPlayer.x / 32;
-							var12 = var20.y / 32 - Message.localPlayer.y / 32;
-							InvDefinition.worldToMinimap(var1, var2, var11, var12, Varps.mapMarkerSprites[1], var4);
-						}
-					}
-
-					if (Client.hintArrowType == 2) {
-						var10 = Client.hintArrowX * 4 - MusicPatchPcmStream.baseX * 256 + 2 - Message.localPlayer.x / 32;
-						var11 = Client.hintArrowY * 4 - ScriptEvent.baseY * 256 + 2 - Message.localPlayer.y / 32;
-						InvDefinition.worldToMinimap(var1, var2, var10, var11, Varps.mapMarkerSprites[1], var4);
-					}
-
-					if (Client.hintArrowType == 10 && Client.hintArrowPlayerIndex >= 0 && Client.hintArrowPlayerIndex < Client.players.length) {
-						Player var21 = Client.players[Client.hintArrowPlayerIndex];
-						if (var21 != null) {
-							var11 = var21.x / 32 - Message.localPlayer.x / 32;
-							var12 = var21.y / 32 - Message.localPlayer.y / 32;
-							InvDefinition.worldToMinimap(var1, var2, var11, var12, Varps.mapMarkerSprites[1], var4);
-						}
-					}
-				}
-
-				if (Client.destinationX != 0) {
-					var10 = Client.destinationX * 4 + 2 - Message.localPlayer.x / 32;
-					var11 = Client.destinationY * 4 + 2 - Message.localPlayer.y / 32;
-					GrandExchangeOfferNameComparator.drawSpriteOnMinimap(var1, var2, var10, var11, Varps.mapMarkerSprites[0], var4);
-				}
-
-				if (!Message.localPlayer.isHidden) {
-					Rasterizer2D.Rasterizer2D_fillRectangle(var4.width / 2 + var1 - 1, var4.height / 2 + var2 - 1, 3, 3, 16777215);
-				}
-			} else {
-				Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
+	@Export("getObjectDefinition")
+	public static ObjectDefinition getObjectDefinition(int var0) {
+		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
+		} else {
+			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
+			var1 = new ObjectDefinition();
+			var1.id = var0;
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			Client.field834[var3] = true;
+			var1.postDecode();
+			if (var1.isSolid) {
+				var1.interactType = 0;
+				var1.boolean1 = false;
+			}
+
+			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "(I)[Lgb;",
+		garbageValue = "1401703013"
+	)
+	@Export("ServerPacket_values")
+	public static ServerPacket[] ServerPacket_values() {
+		return new ServerPacket[]{ServerPacket.field2127, ServerPacket.field2129, ServerPacket.field2168, ServerPacket.field2118, ServerPacket.field2119, ServerPacket.field2120, ServerPacket.field2121, ServerPacket.field2122, ServerPacket.field2123, ServerPacket.field2124, ServerPacket.field2159, ServerPacket.field2126, ServerPacket.field2165, ServerPacket.field2145, ServerPacket.field2200, ServerPacket.field2169, ServerPacket.field2131, ServerPacket.field2132, ServerPacket.field2117, ServerPacket.field2134, ServerPacket.field2135, ServerPacket.field2136, ServerPacket.field2137, ServerPacket.field2138, ServerPacket.field2139, ServerPacket.field2140, ServerPacket.field2141, ServerPacket.field2142, ServerPacket.field2181, ServerPacket.field2151, ServerPacket.field2173, ServerPacket.field2146, ServerPacket.field2178, ServerPacket.field2183, ServerPacket.field2172, ServerPacket.field2150, ServerPacket.field2148, ServerPacket.field2152, ServerPacket.field2153, ServerPacket.field2125, ServerPacket.field2143, ServerPacket.field2116, ServerPacket.field2157, ServerPacket.field2144, ServerPacket.field2115, ServerPacket.field2160, ServerPacket.field2161, ServerPacket.field2149, ServerPacket.field2163, ServerPacket.field2164, ServerPacket.field2133, ServerPacket.field2166, ServerPacket.field2128, ServerPacket.field2156, ServerPacket.field2162, ServerPacket.field2155, ServerPacket.field2171, ServerPacket.field2193, ServerPacket.field2167, ServerPacket.field2174, ServerPacket.field2175, ServerPacket.field2176, ServerPacket.field2177, ServerPacket.field2154, ServerPacket.field2179, ServerPacket.field2180, ServerPacket.field2158, ServerPacket.field2182, ServerPacket.field2130, ServerPacket.field2184, ServerPacket.field2187, ServerPacket.field2186, ServerPacket.field2147, ServerPacket.field2188, ServerPacket.field2189, ServerPacket.field2190, ServerPacket.field2191, ServerPacket.field2192, ServerPacket.field2170, ServerPacket.field2194, ServerPacket.field2195, ServerPacket.field2196, ServerPacket.field2197, ServerPacket.field2198, ServerPacket.field2199, ServerPacket.field2185};
 	}
 }

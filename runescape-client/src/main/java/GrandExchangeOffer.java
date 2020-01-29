@@ -4,56 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("m")
 @Implements("GrandExchangeOffer")
 public class GrandExchangeOffer {
-	@ObfuscatedName("x")
+	@ObfuscatedName("du")
+	@ObfuscatedSignature(
+		signature = "Lia;"
+	)
+	@Export("archive11")
+	static Archive archive11;
+	@ObfuscatedName("hd")
 	@ObfuscatedGetter(
-		intValue = -1279002911
+		intValue = -1999981463
 	)
-	@Export("musicTrackFileId")
-	static int musicTrackFileId;
-	@ObfuscatedName("o")
-	@ObfuscatedSignature(
-		signature = "Lli;"
-	)
-	static IndexedSprite field64;
-	@ObfuscatedName("fa")
-	@ObfuscatedSignature(
-		signature = "Lko;"
-	)
-	@Export("fontBold12")
-	static Font fontBold12;
-	@ObfuscatedName("f")
+	@Export("cameraPitch")
+	static int cameraPitch;
+	@ObfuscatedName("c")
 	@Export("state")
 	byte state;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 903381877
+		intValue = 1202522813
 	)
 	@Export("id")
 	public int id;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1525595903
+		intValue = -286950223
 	)
 	@Export("unitPrice")
 	public int unitPrice;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -181305079
+		intValue = -191142567
 	)
 	@Export("totalQuantity")
 	public int totalQuantity;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -1020605845
+		intValue = -1418175861
 	)
 	@Export("currentQuantity")
 	public int currentQuantity;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 824366687
+		intValue = 45465727
 	)
 	@Export("currentPrice")
 	public int currentPrice;
@@ -62,7 +57,7 @@ public class GrandExchangeOffer {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Lkq;Z)V",
+		signature = "(Lkp;Z)V",
 		garbageValue = "0"
 	)
 	public GrandExchangeOffer(Buffer var1, boolean var2) {
@@ -74,42 +69,42 @@ public class GrandExchangeOffer {
 		this.currentPrice = var1.readInt();
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-519143415"
+		signature = "(B)I",
+		garbageValue = "-51"
 	)
 	@Export("status")
 	public int status() {
 		return this.state & 7;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "-1944649855"
+		signature = "(B)I",
+		garbageValue = "-96"
 	)
 	@Export("type")
 	public int type() {
 		return (this.state & 8) == 8 ? 1 : 0;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "-26019402"
+		signature = "(IB)V",
+		garbageValue = "-38"
 	)
-	void method99(int var1) {
+	void method120(int var1) {
 		this.state &= -8;
 		this.state = (byte)(this.state | var1 & 7);
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(II)V",
-		garbageValue = "-1969903695"
+		garbageValue = "-59985742"
 	)
-	void method100(int var1) {
+	void method112(int var1) {
 		this.state &= -9;
 		if (var1 == 1) {
 			this.state = (byte)(this.state | 8);
@@ -117,34 +112,65 @@ public class GrandExchangeOffer {
 
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "-2077652257"
+		signature = "(IB)I",
+		garbageValue = "-27"
 	)
-	static final void method114(int var0, int var1, int var2, int var3) {
-		for (int var4 = var1; var4 <= var3 + var1; ++var4) {
-			for (int var5 = var0; var5 <= var0 + var2; ++var5) {
-				if (var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-					Tiles.field496[0][var5][var4] = 127;
-					if (var0 == var5 && var5 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 - 1][var4];
-					}
+	public static int method128(int var0) {
+		long var2 = ViewportMouse.ViewportMouse_entityTags[var0];
+		int var1 = (int)(var2 >>> 0 & 127L);
+		return var1;
+	}
 
-					if (var5 == var0 + var2 && var5 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 + 1][var4];
-					}
-
-					if (var4 == var1 && var4 > 0) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 - 1];
-					}
-
-					if (var4 == var3 + var1 && var4 < 103) {
-						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 + 1];
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "1764789679"
+	)
+	public static boolean method129() {
+		try {
+			if (class197.field2414 == 2) {
+				if (FileSystem.musicTrack == null) {
+					FileSystem.musicTrack = MusicTrack.readTrack(UserComparator5.musicTrackArchive, class197.musicTrackGroupId, class83.musicTrackFileId);
+					if (FileSystem.musicTrack == null) {
+						return false;
 					}
 				}
+
+				if (class197.soundCache == null) {
+					class197.soundCache = new SoundCache(UserComparator10.soundEffectsArchive, class197.musicSamplesArchive);
+				}
+
+				if (class197.midiPcmStream.loadMusicTrack(FileSystem.musicTrack, class197.musicPatchesArchive, class197.soundCache, 22050)) {
+					class197.midiPcmStream.clearAll();
+					class197.midiPcmStream.setPcmStreamVolume(AttackOption.musicTrackVolume);
+					class197.midiPcmStream.setMusicTrack(FileSystem.musicTrack, KeyHandler.musicTrackBoolean);
+					class197.field2414 = 0;
+					FileSystem.musicTrack = null;
+					class197.soundCache = null;
+					UserComparator5.musicTrackArchive = null;
+					return true;
+				}
 			}
+		} catch (Exception var1) {
+			var1.printStackTrace();
+			class197.midiPcmStream.clear();
+			class197.field2414 = 0;
+			FileSystem.musicTrack = null;
+			class197.soundCache = null;
+			UserComparator5.musicTrackArchive = null;
 		}
 
+		return false;
+	}
+
+	@ObfuscatedName("kn")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "1055020085"
+	)
+	static void method127(int var0) {
+		Client.oculusOrbState = var0;
 	}
 }

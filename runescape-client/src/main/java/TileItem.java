@@ -4,18 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("cf")
 @Implements("TileItem")
 public final class TileItem extends Entity {
-	@ObfuscatedName("f")
+	@ObfuscatedName("sf")
+	@ObfuscatedSignature(
+		signature = "Lky;"
+	)
+	@Export("masterDisk")
+	static ArchiveDisk masterDisk;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -402020319
+		intValue = -1909413627
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 260716727
+		intValue = -1504274747
 	)
 	@Export("quantity")
 	int quantity;
@@ -23,13 +29,13 @@ public final class TileItem extends Entity {
 	TileItem() {
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(I)Ldw;",
-		garbageValue = "822221372"
+		signature = "(I)Ldx;",
+		garbageValue = "-2133076860"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		return PacketBufferNode.ItemDefinition_get(this.id).getModel(this.quantity);
+		return HealthBarDefinition.ItemDefinition_get(this.id).getModel(this.quantity);
 	}
 }

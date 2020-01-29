@@ -1,30 +1,15 @@
-import java.util.Iterator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hs")
 public class class216 {
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Z",
-		garbageValue = "-1882269787"
+	@ObfuscatedName("t")
+	@Export("javaVersion")
+	public static String javaVersion;
+	@ObfuscatedName("ag")
+	@ObfuscatedGetter(
+		intValue = 276241037
 	)
-	static boolean method4017(String var0, int var1) {
-		return GrandExchangeEvent.method79(var0, var1, "openjs");
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "178095242"
-	)
-	static void method4013() {
-		Iterator var0 = Messages.Messages_hashTable.iterator();
-
-		while (var0.hasNext()) {
-			Message var1 = (Message)var0.next();
-			var1.clearIsFromFriend();
-		}
-
-	}
+	static int field2559;
 }

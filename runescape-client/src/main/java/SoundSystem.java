@@ -3,21 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("dl")
 @Implements("SoundSystem")
 public class SoundSystem implements Runnable {
-	@ObfuscatedName("r")
-	@Export("BZip2Decompressor_block")
-	static int[] BZip2Decompressor_block;
-	@ObfuscatedName("dq")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lif;"
-	)
-	@Export("archive12")
-	static Archive archive12;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "[Lcw;"
+		signature = "[Ldw;"
 	)
 	@Export("players")
 	volatile PcmPlayer[] players;
@@ -35,52 +26,76 @@ public class SoundSystem implements Runnable {
 				}
 			}
 		} catch (Exception var4) {
-			DesktopPlatformInfoProvider.RunException_sendStackTrace((String)null, var4);
+			class225.RunException_sendStackTrace((String)null, var4);
 		}
 
 	}
 
-	@ObfuscatedName("kf")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Lha;B)V",
-		garbageValue = "9"
+		signature = "(Lii;Lii;Lii;Lii;I)V",
+		garbageValue = "-1591363880"
 	)
-	static final void method2507(Widget var0) {
-		int var1 = var0.contentType;
-		if (var1 == 324) {
-			if (Client.field893 == -1) {
-				Client.field893 = var0.spriteId2;
-				Client.field894 = var0.spriteId;
-			}
+	public static void method2562(AbstractArchive var0, AbstractArchive var1, AbstractArchive var2, AbstractArchive var3) {
+		class197.Widget_archive = var0;
+		Calendar.Widget_modelsArchive = var1;
+		Username.Widget_spritesArchive = var2;
+		class162.Widget_fontsArchive = var3;
+		WorldMapLabel.Widget_interfaceComponents = new Widget[class197.Widget_archive.getGroupCount()][];
+		class197.Widget_loadedInterfaces = new boolean[class197.Widget_archive.getGroupCount()];
+	}
 
-			if (Client.playerAppearance.isFemale) {
-				var0.spriteId2 = Client.field893;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(I)Z",
+		garbageValue = "-660130030"
+	)
+	@Export("isKeyDown")
+	public static final boolean isKeyDown() {
+		synchronized(KeyHandler.KeyHandler_instance) {
+			if (KeyHandler.field408 == KeyHandler.field406) {
+				return false;
 			} else {
-				var0.spriteId2 = Client.field894;
+				RouteStrategy.field2102 = KeyHandler.field403[KeyHandler.field406];
+				class51.field432 = KeyHandler.field410[KeyHandler.field406];
+				KeyHandler.field406 = KeyHandler.field406 + 1 & 127;
+				return true;
 			}
-
-		} else if (var1 == 325) {
-			if (Client.field893 == -1) {
-				Client.field893 = var0.spriteId2;
-				Client.field894 = var0.spriteId;
-			}
-
-			if (Client.playerAppearance.isFemale) {
-				var0.spriteId2 = Client.field894;
-			} else {
-				var0.spriteId2 = Client.field893;
-			}
-
-		} else if (var1 == 327) {
-			var0.modelAngleX = 150;
-			var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-			var0.modelType = 5;
-			var0.modelId = 0;
-		} else if (var1 == 328) {
-			var0.modelAngleX = 150;
-			var0.modelAngleY = (int)(Math.sin((double)Client.cycle / 40.0D) * 256.0D) & 2047;
-			var0.modelType = 5;
-			var0.modelId = 1;
 		}
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1995069725"
+	)
+	static void method2563() {
+		Messages.Messages_channels.clear();
+		Messages.Messages_hashTable.clear();
+		Messages.Messages_queue.clear();
+		Messages.Messages_count = 0;
+	}
+
+	@ObfuscatedName("aq")
+	@ObfuscatedSignature(
+		signature = "(Lir;I)Z",
+		garbageValue = "-676934548"
+	)
+	static boolean method2565(ObjectDefinition var0) {
+		if (var0.transforms != null) {
+			int[] var1 = var0.transforms;
+
+			for (int var2 = 0; var2 < var1.length; ++var2) {
+				int var3 = var1[var2];
+				ObjectDefinition var4 = Occluder.getObjectDefinition(var3);
+				if (var4.mapIconId != -1) {
+					return true;
+				}
+			}
+		} else if (var0.mapIconId != -1) {
+			return true;
+		}
+
+		return false;
 	}
 }

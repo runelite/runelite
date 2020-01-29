@@ -1,77 +1,75 @@
+import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bw")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-	@ObfuscatedName("fw")
-	@ObfuscatedGetter(
-		intValue = -2041683927
-	)
-	@Export("baseY")
-	static int baseY;
-	@ObfuscatedName("f")
+	@ObfuscatedName("ef")
+	@Export("secureRandom")
+	static SecureRandom secureRandom;
+	@ObfuscatedName("c")
 	@Export("args")
 	Object[] args;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("isMouseInputEvent")
 	boolean isMouseInputEvent;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lhn;"
 	)
 	@Export("widget")
 	Widget widget;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 884179391
+		intValue = -1331050905
 	)
 	@Export("mouseX")
 	int mouseX;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 990811435
+		intValue = 1279210295
 	)
 	@Export("mouseY")
 	int mouseY;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1259454631
+		intValue = -1465065173
 	)
 	@Export("opIndex")
 	int opIndex;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Lha;"
+		signature = "Lhn;"
 	)
 	@Export("dragTarget")
 	Widget dragTarget;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 49600395
+		intValue = -268491807
 	)
 	@Export("keyTyped")
 	int keyTyped;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -601686953
+		intValue = 1412457419
 	)
 	@Export("keyPressed")
 	int keyPressed;
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@Export("targetName")
 	String targetName;
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1957089865
+		intValue = 1385894557
 	)
-	int field557;
-	@ObfuscatedName("o")
+	int field582;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 1339404961
+		intValue = -891059655
 	)
 	@Export("type")
 	int type;
@@ -80,118 +78,80 @@ public class ScriptEvent extends Node {
 		this.type = 76;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "([Ljava/lang/Object;I)V",
-		garbageValue = "-2080962304"
+		garbageValue = "-2105798075"
 	)
 	@Export("setArgs")
 	public void setArgs(Object[] var1) {
 		this.args = var1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "33"
+		signature = "(II)V",
+		garbageValue = "350345560"
 	)
 	@Export("setType")
 	public void setType(int var1) {
 		this.type = var1;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-9"
+		signature = "(Ljava/lang/CharSequence;II)I",
+		garbageValue = "2038755818"
 	)
-	public static void method1183() {
-		if (class297.NetCache_socket != null) {
-			class297.NetCache_socket.close();
-		}
-
+	public static int method1202(CharSequence var0, int var1) {
+		return KitDefinition.parseIntCustomRadix(var0, var1, true);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("he")
 	@ObfuscatedSignature(
-		signature = "(III)I",
-		garbageValue = "-135239713"
+		signature = "(ILjava/lang/String;I)V",
+		garbageValue = "43843350"
 	)
-	static final int method1184(int var0, int var1) {
-		if (var0 == -2) {
-			return 12345678;
-		} else if (var0 == -1) {
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
+	static void method1203(int var0, String var1) {
+		int var2 = Players.Players_count;
+		int[] var3 = Players.Players_indices;
+		boolean var4 = false;
+		Username var5 = new Username(var1, class192.loginType);
 
-			return var1;
-		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
+		for (int var6 = 0; var6 < var2; ++var6) {
+			Player var7 = Client.players[var3[var6]];
+			if (var7 != null && var7 != class192.localPlayer && var7.username != null && var7.username.equals(var5)) {
+				PacketBufferNode var8;
+				if (var0 == 1) {
+					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2282, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.writeByte(0);
+					var8.packetBuffer.writeShort(var3[var6]);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 4) {
+					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2216, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.writeByte(0);
+					var8.packetBuffer.writeShortLE(var3[var6]);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 6) {
+					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2221, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.method5787(var3[var6]);
+					var8.packetBuffer.writeByte(0);
+					Client.packetWriter.addNode(var8);
+				} else if (var0 == 7) {
+					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2266, Client.packetWriter.isaacCipher);
+					var8.packetBuffer.method5787(var3[var6]);
+					var8.packetBuffer.method5602(0);
+					Client.packetWriter.addNode(var8);
+				}
 
-			return (var0 & 65408) + var1;
-		}
-	}
-
-	@ObfuscatedName("gk")
-	@ObfuscatedSignature(
-		signature = "(Lbv;I)V",
-		garbageValue = "-2035180318"
-	)
-	static final void method1180(Actor var0) {
-		int var1 = var0.field950 - Client.cycle;
-		int var2 = var0.field921 * 128 + var0.field925 * 64;
-		int var3 = var0.field966 * 128 + var0.field925 * 64;
-		var0.x += (var2 - var0.x) / var1;
-		var0.y += (var3 - var0.y) / var1;
-		var0.field980 = 0;
-		var0.orientation = var0.field970;
-	}
-
-	@ObfuscatedName("hx")
-	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "1464658365"
-	)
-	@Export("getTileHeight")
-	static final int getTileHeight(int var0, int var1, int var2) {
-		int var3 = var0 >> 7;
-		int var4 = var1 >> 7;
-		if (var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-			int var5 = var2;
-			if (var2 < 3 && (Tiles.Tiles_renderFlags[1][var3][var4] & 2) == 2) {
-				var5 = var2 + 1;
-			}
-
-			int var6 = var0 & 127;
-			int var7 = var1 & 127;
-			int var8 = (128 - var6) * Tiles.Tiles_heights[var5][var3][var4] + var6 * Tiles.Tiles_heights[var5][var3 + 1][var4] >> 7;
-			int var9 = var6 * Tiles.Tiles_heights[var5][var3 + 1][var4 + 1] + Tiles.Tiles_heights[var5][var3][var4 + 1] * (128 - var6) >> 7;
-			return var9 * var7 + var8 * (128 - var7) >> 7;
-		} else {
-			return 0;
-		}
-	}
-
-	@ObfuscatedName("jv")
-	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "103"
-	)
-	static boolean method1185(int var0) {
-		for (int var1 = 0; var1 < Client.field849; ++var1) {
-			if (Client.field851[var1] == var0) {
-				return true;
+				var4 = true;
+				break;
 			}
 		}
 
-		return false;
+		if (!var4) {
+			ClientPreferences.addGameMessage(4, "", "Unable to find " + var1);
+		}
+
 	}
 }

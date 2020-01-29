@@ -1,5 +1,3 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -9,33 +7,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("al")
 @Implements("WorldMapEvent")
 public class WorldMapEvent {
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "[Lli;"
-	)
-	@Export("modIconSprites")
-	static IndexedSprite[] modIconSprites;
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -458237055
+		intValue = 937006651
 	)
 	@Export("mapElement")
 	public int mapElement;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lhj;"
 	)
 	@Export("coord1")
 	public Coord coord1;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lht;"
+		signature = "Lhj;"
 	)
 	@Export("coord2")
 	public Coord coord2;
 
 	@ObfuscatedSignature(
-		signature = "(ILht;Lht;)V"
+		signature = "(ILhj;Lhj;)V"
 	)
 	public WorldMapEvent(int var1, Coord var2, Coord var3) {
 		this.mapElement = var1;
@@ -43,88 +35,123 @@ public class WorldMapEvent {
 		this.coord2 = var3;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("hm")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "111"
+		signature = "(III)V",
+		garbageValue = "560855047"
 	)
-	static final void method764() {
-		if (!ViewportMouse.ViewportMouse_false0) {
-			int var0 = Scene.Scene_cameraPitchSine;
-			int var1 = Scene.Scene_cameraPitchCosine;
-			int var2 = Scene.Scene_cameraYawSine;
-			int var3 = Scene.Scene_cameraYawCosine;
-			byte var4 = 50;
-			short var5 = 3500;
-			int var6 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var4 / Rasterizer3D.Rasterizer3D_zoom;
-			int var7 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var4 / Rasterizer3D.Rasterizer3D_zoom;
-			int var8 = (ViewportMouse.ViewportMouse_x - Rasterizer3D.Rasterizer3D_clipMidX) * var5 / Rasterizer3D.Rasterizer3D_zoom;
-			int var9 = (ViewportMouse.ViewportMouse_y - Rasterizer3D.Rasterizer3D_clipMidY) * var5 / Rasterizer3D.Rasterizer3D_zoom;
-			int var10 = Rasterizer3D.method3019(var7, var4, var1, var0);
-			int var11 = Rasterizer3D.method3020(var7, var4, var1, var0);
-			var7 = var10;
-			var10 = Rasterizer3D.method3019(var9, var5, var1, var0);
-			int var12 = Rasterizer3D.method3020(var9, var5, var1, var0);
-			var9 = var10;
-			var10 = Rasterizer3D.method3017(var6, var11, var3, var2);
-			var11 = Rasterizer3D.method3083(var6, var11, var3, var2);
-			var6 = var10;
-			var10 = Rasterizer3D.method3017(var8, var12, var3, var2);
-			var12 = Rasterizer3D.method3083(var8, var12, var3, var2);
-			ViewportMouse.field1717 = (var10 + var6) / 2;
-			class30.field245 = (var9 + var7) / 2;
-			ViewportMouse.field1718 = (var12 + var11) / 2;
-			ViewportMouse.field1719 = (var10 - var6) / 2;
-			WorldMapCacheName.field293 = (var9 - var7) / 2;
-			class40.field336 = (var12 - var11) / 2;
-			ViewportMouse.field1720 = Math.abs(ViewportMouse.field1719);
-			class247.field3261 = Math.abs(WorldMapCacheName.field293);
-			MusicPatch.field2472 = Math.abs(class40.field336);
+	@Export("updateItemPile")
+	static final void updateItemPile(int var0, int var1) {
+		NodeDeque var2 = Client.groundItems[Clock.Client_plane][var0][var1];
+		if (var2 == null) {
+			ServerBuild.scene.removeGroundItemPile(Clock.Client_plane, var0, var1);
+		} else {
+			long var3 = -99999999L;
+			TileItem var5 = null;
+
+			TileItem var6;
+			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+				ItemDefinition var7 = HealthBarDefinition.ItemDefinition_get(var6.id);
+				long var8 = (long)var7.price;
+				if (var7.isStackable == 1) {
+					var8 *= (long)(var6.quantity + 1);
+				}
+
+				if (var8 > var3) {
+					var3 = var8;
+					var5 = var6;
+				}
+			}
+
+			if (var5 == null) {
+				ServerBuild.scene.removeGroundItemPile(Clock.Client_plane, var0, var1);
+			} else {
+				var2.addLast(var5);
+				TileItem var12 = null;
+				TileItem var11 = null;
+
+				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
+					if (var5.id != var6.id) {
+						if (var12 == null) {
+							var12 = var6;
+						}
+
+						if (var12.id != var6.id && var11 == null) {
+							var11 = var6;
+						}
+					}
+				}
+
+				long var9 = GameShell.calculateTag(var0, var1, 3, false, 0);
+				ServerBuild.scene.newGroundItemPile(Clock.Client_plane, var0, var1, WorldMapSectionType.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Clock.Client_plane), var5, var9, var12, var11);
+			}
 		}
 	}
 
-	@ObfuscatedName("ah")
+	@ObfuscatedName("jh")
 	@ObfuscatedSignature(
-		signature = "(Lfl;IIS)Lcw;",
-		garbageValue = "14902"
+		signature = "([Lhn;IB)V",
+		garbageValue = "-29"
 	)
-	public static final PcmPlayer method763(TaskHandler var0, int var1, int var2) {
-		if (var1 >= 0 && var1 < 2) {
-			if (var2 < 256) {
-				var2 = 256;
-			}
-
-			try {
-				PcmPlayer var3 = ChatChannel.pcmPlayerProvider.player();
-				var3.samples = new int[(SoundCache.PcmPlayer_stereo ? 2 : 1) * 256];
-				var3.field1373 = var2;
-				var3.init();
-				var3.capacity = (var2 & -1024) + 1024;
-				if (var3.capacity > 16384) {
-					var3.capacity = 16384;
-				}
-
-				var3.open(var3.capacity);
-				if (NPC.field1103 > 0 && HealthBar.soundSystem == null) {
-					HealthBar.soundSystem = new SoundSystem();
-					FriendSystem.soundSystemExecutor = Executors.newScheduledThreadPool(1);
-					FriendSystem.soundSystemExecutor.scheduleAtFixedRate(HealthBar.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
-				}
-
-				if (HealthBar.soundSystem != null) {
-					if (HealthBar.soundSystem.players[var1] != null) {
-						throw new IllegalArgumentException();
+	@Export("drawModelComponents")
+	static final void drawModelComponents(Widget[] var0, int var1) {
+		for (int var2 = 0; var2 < var0.length; ++var2) {
+			Widget var3 = var0[var2];
+			if (var3 != null && var3.parentId == var1 && (!var3.isIf3 || !VarcInt.isComponentHidden(var3))) {
+				if (var3.type == 0) {
+					if (!var3.isIf3 && VarcInt.isComponentHidden(var3) && var3 != GrandExchangeOfferUnitPriceComparator.mousedOverWidgetIf1) {
+						continue;
 					}
 
-					HealthBar.soundSystem.players[var1] = var3;
+					drawModelComponents(var0, var3.id);
+					if (var3.children != null) {
+						drawModelComponents(var3.children, var3.id);
+					}
+
+					InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3.id);
+					if (var4 != null) {
+						GrandExchangeOfferNameComparator.method150(var4.group);
+					}
 				}
 
-				return var3;
-			} catch (Throwable var4) {
-				return new PcmPlayer();
+				if (var3.type == 6) {
+					int var5;
+					if (var3.sequenceId != -1 || var3.sequenceId2 != -1) {
+						boolean var7 = ScriptFrame.runCs1(var3);
+						if (var7) {
+							var5 = var3.sequenceId2;
+						} else {
+							var5 = var3.sequenceId;
+						}
+
+						if (var5 != -1) {
+							SequenceDefinition var6 = GraphicsDefaults.SequenceDefinition_get(var5);
+
+							for (var3.modelFrameCycle += Client.field707; var3.modelFrameCycle > var6.frameLengths[var3.modelFrame]; NPCDefinition.invalidateWidget(var3)) {
+								var3.modelFrameCycle -= var6.frameLengths[var3.modelFrame];
+								++var3.modelFrame;
+								if (var3.modelFrame >= var6.frameIds.length) {
+									var3.modelFrame -= var6.frameCount;
+									if (var3.modelFrame < 0 || var3.modelFrame >= var6.frameIds.length) {
+										var3.modelFrame = 0;
+									}
+								}
+							}
+						}
+					}
+
+					if (var3.field2696 != 0 && !var3.isIf3) {
+						int var8 = var3.field2696 >> 16;
+						var5 = var3.field2696 << 16 >> 16;
+						var8 *= Client.field707;
+						var5 *= Client.field707;
+						var3.modelAngleX = var8 + var3.modelAngleX & 2047;
+						var3.modelAngleY = var5 + var3.modelAngleY & 2047;
+						NPCDefinition.invalidateWidget(var3);
+					}
+				}
 			}
-		} else {
-			throw new IllegalArgumentException();
 		}
+
 	}
 }

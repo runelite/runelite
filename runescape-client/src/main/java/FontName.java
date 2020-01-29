@@ -1,48 +1,70 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kk")
+@ObfuscatedName("kq")
 @Implements("FontName")
 public class FontName {
-	@ObfuscatedName("f")
+	@ObfuscatedName("qm")
+	@ObfuscatedGetter(
+		intValue = -1887929743
+	)
+	static int field3660;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_plain11")
 	public static final FontName FontName_plain11;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_plain12")
 	public static final FontName FontName_plain12;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_bold12")
 	public static final FontName FontName_bold12;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana11")
 	public static final FontName FontName_verdana11;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana13")
 	public static final FontName FontName_verdana13;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lkk;"
+		signature = "Lkq;"
 	)
 	@Export("FontName_verdana15")
 	public static final FontName FontName_verdana15;
-	@ObfuscatedName("e")
+	@ObfuscatedName("eh")
+	@ObfuscatedGetter(
+		intValue = -1770194779
+	)
+	static int field3650;
+	@ObfuscatedName("gt")
+	@ObfuscatedGetter(
+		intValue = -1472159493
+	)
+	static int field3663;
+	@ObfuscatedName("lo")
+	@ObfuscatedGetter(
+		intValue = 1238804293
+	)
+	@Export("selectedSpellWidget")
+	static int selectedSpellWidget;
+	@ObfuscatedName("d")
 	@Export("name")
 	String name;
 
@@ -59,35 +81,21 @@ public class FontName {
 		this.name = var1;
 	}
 
-	@ObfuscatedName("az")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lig;B)Z",
-		garbageValue = "9"
+		signature = "(B)I",
+		garbageValue = "2"
 	)
-	static boolean method5377(ObjectDefinition var0) {
-		if (var0.transforms != null) {
-			int[] var1 = var0.transforms;
-
-			for (int var2 = 0; var2 < var1.length; ++var2) {
-				int var3 = var1[var2];
-				ObjectDefinition var4 = Coord.getObjectDefinition(var3);
-				if (var4.mapIconId != -1) {
-					return true;
-				}
-			}
-		} else if (var0.mapIconId != -1) {
-			return true;
-		}
-
-		return false;
+	public static int method5401() {
+		return KeyHandler.KeyHandler_idleCycles;
 	}
 
-	@ObfuscatedName("lc")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "-46"
+		signature = "(I)V",
+		garbageValue = "-1505118855"
 	)
-	static void method5376(int var0) {
-		Client.oculusOrbState = var0;
+	public static void method5402() {
+		KitDefinition.KitDefinition_cached.clear();
 	}
 }
