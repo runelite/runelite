@@ -192,29 +192,17 @@ public class WikiPlugin extends Plugin
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
-		if (config.swapLookupSearch())
+		final int position = config.swapLookupSearch() ? 4 : 5;
+		icon.setAction(position, "Search"); // Start at option 4 so the target op is below the Search menuentry
+		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			icon.setAction(4, "Search"); // Start at option 4 so the target op is below the Search menuentry
-			icon.setOnOpListener((JavaScriptCallback) ev ->
+			if (ev.getOp() == (position + 1))
 			{
-				if (ev.getOp() == 5)
-				{
-					openSearchInput();
-				}
+				openSearchInput();
+			}
 
-			});
-		}
-		else
-		{
-			icon.setAction(5, "Search"); // Start at option 5 so the target op is on top
-			icon.setOnOpListener((JavaScriptCallback) ev ->
-			{
-				if (ev.getOp() == 6)
-				{
-					openSearchInput();
-				}
-			});
-		}
+		});
+
 
 		// This doesn't always run because we cancel the menuop
 		icon.setOnTargetLeaveListener((JavaScriptCallback) ev -> onDeselect());
