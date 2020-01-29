@@ -107,7 +107,7 @@ public class WorldMapData_0 extends AbstractWorldMapData {
 	public static void method189(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
 		int var6 = var1.getGroupId(var2);
 		int var7 = var1.getFileId(var6, var3);
-		TaskHandler.method3554(var0, var1, var6, var7, var4, var5);
+		TaskHandler.playMusicTrack(var0, var1, var6, var7, var4, var5);
 	}
 
 	@ObfuscatedName("i")

@@ -286,7 +286,7 @@ public class BufferedSink implements Runnable {
 			class197.field2414 = 1;
 			UserComparator5.musicTrackArchive = null;
 		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field881) {
-			TaskHandler.method3554(2, MouseHandler.archive6, var0, 0, Client.musicVolume, false);
+			TaskHandler.playMusicTrack(2, MouseHandler.archive6, var0, 0, Client.musicVolume, false);
 		}
 
 		Client.currentTrackGroupId = var0;
