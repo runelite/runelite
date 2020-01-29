@@ -387,8 +387,8 @@ public class WikiPlugin extends Plugin
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
-					 ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId();
-					 ourEntry--)
+					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId();
+					ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];
 				}
