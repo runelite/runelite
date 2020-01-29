@@ -192,17 +192,16 @@ public class WikiPlugin extends Plugin
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
+		// set position to 5 if we want Lookup on left-click, or set position to 4 if we want Search
 		final int position = config.swapLookupSearch() ? 4 : 5;
-		icon.setAction(position, "Search"); // Start at option 4 so the target op is below the Search menuentry
+		icon.setAction(position, "Search");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
 			if (ev.getOp() == (position + 1))
 			{
 				openSearchInput();
 			}
-
 		});
-
 
 		// This doesn't always run because we cancel the menuop
 		icon.setOnTargetLeaveListener((JavaScriptCallback) ev -> onDeselect());
