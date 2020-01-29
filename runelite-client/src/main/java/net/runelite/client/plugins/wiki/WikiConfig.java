@@ -31,7 +31,6 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("wiki")
 public interface WikiConfig extends Config
 {
-
 	@ConfigItem(
 		keyName = "swapLookupSearch",
 		name = "Swap Lookup and Search",
@@ -42,5 +41,4 @@ public interface WikiConfig extends Config
 	{
 		return false;
 	}
-
 }
