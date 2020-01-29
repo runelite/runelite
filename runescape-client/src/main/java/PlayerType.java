@@ -4,62 +4,62 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hu")
 @Implements("PlayerType")
 public enum PlayerType implements Enumerated {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_normal")
 	PlayerType_normal(0, -1, true, false, true),
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_playerModerator")
 	PlayerType_playerModerator(1, 0, true, true, true),
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_jagexModerator")
 	PlayerType_jagexModerator(2, 1, true, true, false),
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_ironman")
 	PlayerType_ironman(3, 2, false, false, true),
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_ultimateIronman")
 	PlayerType_ultimateIronman(4, 3, false, false, true),
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lhp;"
+		signature = "Lhu;"
 	)
 	@Export("PlayerType_hardcoreIronman")
 	PlayerType_hardcoreIronman(5, 10, false, false, true);
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1619956353
+		intValue = 82247459
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -441584621
+		intValue = 583511619
 	)
 	@Export("modIcon")
 	public final int modIcon;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@Export("isPrivileged")
 	public final boolean isPrivileged;
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@Export("isUser")
 	public final boolean isUser;
 
@@ -70,13 +70,22 @@ public enum PlayerType implements Enumerated {
 		this.isUser = var7;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "-57"
+		garbageValue = "1"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
+	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "([BI)Laf;",
+		garbageValue = "1601863224"
+	)
+	static WorldMapSprite method4204(byte[] var0) {
+		return var0 == null ? new WorldMapSprite() : new WorldMapSprite(class14.convertJpgToSprite(var0).pixels);
 	}
 }

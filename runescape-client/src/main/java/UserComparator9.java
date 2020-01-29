@@ -4,22 +4,15 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("eo")
 @Implements("UserComparator9")
 public class UserComparator9 extends AbstractUserComparator {
-	@ObfuscatedName("et")
-	@ObfuscatedSignature(
-		signature = "Lif;"
-	)
-	@Export("archive20")
-	static Archive archive20;
-	@ObfuscatedName("hg")
+	@ObfuscatedName("nx")
 	@ObfuscatedGetter(
-		intValue = -864409125
+		intValue = 76612023
 	)
-	@Export("cameraZ")
-	static int cameraZ;
-	@ObfuscatedName("f")
+	static int field1965;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -27,10 +20,10 @@ public class UserComparator9 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljt;Ljt;I)I",
-		garbageValue = "1918568840"
+		signature = "(Lje;Lje;I)I",
+		garbageValue = "-393804908"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
@@ -45,24 +38,57 @@ public class UserComparator9 extends AbstractUserComparator {
 		return this.compareBuddy((Buddy)var1, (Buddy)var2);
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IB)Liq;",
-		garbageValue = "35"
+		signature = "(II)Lce;",
+		garbageValue = "-1024902697"
 	)
-	public static VarbitDefinition method3319(int var0) {
-		VarbitDefinition var1 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
+	@Export("getScript")
+	static Script getScript(int var0) {
+		Script var1 = (Script)Script.Script_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
 		} else {
-			byte[] var2 = VarbitDefinition.VarbitDefinition_archive.takeFile(14, var0);
-			var1 = new VarbitDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+			byte[] var2 = MilliClock.archive12.takeFile(var0, 0);
+			if (var2 == null) {
+				return null;
+			} else {
+				var1 = Clock.newScript(var2);
+				Script.Script_cached.put(var1, (long)var0);
+				return var1;
 			}
-
-			VarbitDefinition.VarbitDefinition_cached.put(var1, (long)var0);
-			return var1;
 		}
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(II)Lkx;",
+		garbageValue = "-1930566086"
+	)
+	public static PrivateChatMode method3461(int var0) {
+		PrivateChatMode[] var1 = class289.method5359();
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			PrivateChatMode var3 = var1[var2];
+			if (var0 == var3.field3787) {
+				return var3;
+			}
+		}
+
+		return null;
+	}
+
+	@ObfuscatedName("v")
+	static final void method3460(long var0) {
+		ViewportMouse.ViewportMouse_entityTags[++ViewportMouse.ViewportMouse_entityCount - 1] = var0;
+	}
+
+	@ObfuscatedName("ae")
+	@ObfuscatedSignature(
+		signature = "(Lcx;I)V",
+		garbageValue = "1045276574"
+	)
+	public static final void method3462(class99 var0) {
+		PcmPlayer.pcmPlayerProvider = var0;
 	}
 }

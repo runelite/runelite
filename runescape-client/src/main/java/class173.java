@@ -1,35 +1,27 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fo")
 public class class173 {
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@Export("directions")
 	public static int[][] directions;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@Export("distances")
 	public static int[][] distances;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1981163643
+		intValue = -1572714133
 	)
-	public static int field2072;
-	@ObfuscatedName("x")
+	public static int field2093;
+	@ObfuscatedName("l")
 	@Export("bufferX")
 	public static int[] bufferX;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@Export("bufferY")
 	public static int[] bufferY;
-	@ObfuscatedName("ca")
-	@ObfuscatedSignature(
-		signature = "Lbo;"
-	)
-	@Export("mouseRecorder")
-	static MouseRecorder mouseRecorder;
 
 	static {
 		directions = new int[128][128];
@@ -38,62 +30,22 @@ public class class173 {
 		bufferY = new int[4096];
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(Lhz;IIIZI)V",
-		garbageValue = "1828345963"
+		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+		garbageValue = "-1943215083"
 	)
-	@Export("playMusicTrack")
-	public static void playMusicTrack(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
-		class197.field2392 = 1;
-		Coord.musicTrackArchive = var0;
-		class16.musicTrackGroupId = var1;
-		GrandExchangeOffer.musicTrackFileId = var2;
-		class197.musicTrackVolume = var3;
-		WorldMapDecoration.musicTrackBoolean = var4;
-		ParamDefinition.field3275 = 10000;
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Ljava/io/File;ZI)Z",
-		garbageValue = "969136252"
-	)
-	static boolean method3561(File var0, boolean var1) {
-		try {
-			RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-			int var3 = var2.read();
-			var2.seek(0L);
-			var2.write(var3);
-			var2.seek(0L);
-			var2.close();
-			if (var1) {
-				var0.delete();
-			}
-
-			return true;
-		} catch (Exception var4) {
-			return false;
+	@Export("addChatMessage")
+	static void addChatMessage(int var0, String var1, String var2, String var3) {
+		ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
+		if (var4 == null) {
+			var4 = new ChatChannel();
+			Messages.Messages_channels.put(var0, var4);
 		}
-	}
 
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-974427465"
-	)
-	public static void method3560() {
-		while (true) {
-			ArchiveDiskAction var0;
-			synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-				var0 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_responseQueue.removeLast();
-			}
-
-			if (var0 == null) {
-				return;
-			}
-
-			var0.archive.load(var0.archiveDisk, (int)var0.key, var0.data, false);
-		}
+		Message var5 = var4.addMessage(var0, var1, var2, var3);
+		Messages.Messages_hashTable.put(var5, (long)var5.count);
+		Messages.Messages_queue.add(var5);
+		Client.chatCycle = Client.cycleCntr;
 	}
 }

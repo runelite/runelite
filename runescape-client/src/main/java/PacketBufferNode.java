@@ -3,51 +3,44 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("fz")
+@ObfuscatedName("gs")
 @Implements("PacketBufferNode")
 public class PacketBufferNode extends Node {
-	@ObfuscatedName("rf")
-	@ObfuscatedGetter(
-		intValue = -1075361135
-	)
-	static int field2310;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "[Lfz;"
+		signature = "[Lgs;"
 	)
 	@Export("PacketBufferNode_packetBufferNodes")
-	public static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
-	@ObfuscatedName("b")
+	static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1681870953
+		intValue = -1322970171
 	)
 	@Export("PacketBufferNode_packetBufferNodeCount")
-	public static int PacketBufferNode_packetBufferNodeCount;
-	@ObfuscatedName("o")
-	@Export("Tiles_lightness")
-	static int[] Tiles_lightness;
-	@ObfuscatedName("f")
+	static int PacketBufferNode_packetBufferNodeCount;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lfh;"
+		signature = "Lgi;"
 	)
 	@Export("clientPacket")
 	public ClientPacket clientPacket;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1093975901
+		intValue = 631809601
 	)
 	@Export("clientPacketLength")
 	public int clientPacketLength;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lkl;"
+		signature = "Lks;"
 	)
 	@Export("packetBuffer")
 	public PacketBuffer packetBuffer;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 468956445
+		intValue = -1165954463
 	)
 	@Export("index")
 	public int index;
@@ -57,10 +50,13 @@ public class PacketBufferNode extends Node {
 		PacketBufferNode_packetBufferNodeCount = 0;
 	}
 
-	@ObfuscatedName("i")
+	PacketBufferNode() {
+	}
+
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-2117853277"
+		garbageValue = "660241360"
 	)
 	@Export("release")
 	public void release() {
@@ -69,73 +65,66 @@ public class PacketBufferNode extends Node {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IB)Lii;",
-		garbageValue = "57"
+		signature = "(II)Lis;",
+		garbageValue = "-694311044"
 	)
-	@Export("ItemDefinition_get")
-	public static ItemDefinition ItemDefinition_get(int var0) {
-		ItemDefinition var1 = (ItemDefinition)ItemDefinition.ItemDefinition_cached.get((long)var0);
+	@Export("getParamDefinition")
+	public static ParamDefinition getParamDefinition(int var0) {
+		ParamDefinition var1 = (ParamDefinition)ParamDefinition.ParamDefinition_cached.get((long)var0);
 		if (var1 != null) {
 			return var1;
 		} else {
-			byte[] var2 = UserComparator10.ItemDefinition_archive.takeFile(10, var0);
-			var1 = new ItemDefinition();
-			var1.id = var0;
+			byte[] var2 = ParamDefinition.ParamDefinition_archive.takeFile(11, var0);
+			var1 = new ParamDefinition();
 			if (var2 != null) {
 				var1.decode(new Buffer(var2));
 			}
 
-			var1.post();
-			if (var1.noteTemplate != -1) {
-				var1.genCert(ItemDefinition_get(var1.noteTemplate), ItemDefinition_get(var1.note));
-			}
-
-			if (var1.notedId != -1) {
-				var1.genBought(ItemDefinition_get(var1.notedId), ItemDefinition_get(var1.unnotedId));
-			}
-
-			if (var1.placeholderTemplate != -1) {
-				var1.genPlaceholder(ItemDefinition_get(var1.placeholderTemplate), ItemDefinition_get(var1.placeholder));
-			}
-
-			if (!ItemDefinition.ItemDefinition_inMembersWorld && var1.isMembersOnly) {
-				var1.name = "Members object";
-				var1.isTradable = false;
-				var1.groundActions = null;
-				var1.inventoryActions = null;
-				var1.shiftClickIndex = -1;
-				var1.team = 0;
-				if (var1.params != null) {
-					boolean var3 = false;
-
-					for (Node var4 = var1.params.first(); var4 != null; var4 = var1.params.next()) {
-						ParamDefinition var5 = WorldMapIcon_1.getParamDefinition((int)var4.key);
-						if (var5.autoDisable) {
-							var4.remove();
-						} else {
-							var3 = true;
-						}
-					}
-
-					if (!var3) {
-						var1.params = null;
-					}
-				}
-			}
-
-			ItemDefinition.ItemDefinition_cached.put(var1, (long)var0);
+			var1.postDecode();
+			ParamDefinition.ParamDefinition_cached.put(var1, (long)var0);
 			return var1;
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1234199679"
+		signature = "(II)Lim;",
+		garbageValue = "1232972358"
 	)
-	public static void method3587() {
-		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
+	@Export("WorldMapElement_get")
+	public static WorldMapElement WorldMapElement_get(int var0) {
+		return var0 >= 0 && var0 < WorldMapElement.WorldMapElement_cached.length && WorldMapElement.WorldMapElement_cached[var0] != null ? WorldMapElement.WorldMapElement_cached[var0] : new WorldMapElement(var0);
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(ILce;ZI)I",
+		garbageValue = "1259067102"
+	)
+	static int method3697(int var0, Script var1, boolean var2) {
+		Widget var3 = var2 ? class186.field2331 : MidiPcmStream.field2444;
+		if (var0 == ScriptOpcodes.CC_GETX) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.x;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETY) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.y;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETWIDTH) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.width;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHEIGHT) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.height;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETHIDE) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.isHidden ? 1 : 0;
+			return 1;
+		} else if (var0 == ScriptOpcodes.CC_GETLAYER) {
+			Interpreter.Interpreter_intStack[++class320.Interpreter_intStackSize - 1] = var3.parentId;
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 }

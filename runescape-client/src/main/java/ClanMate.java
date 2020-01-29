@@ -1,31 +1,20 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("jt")
 @Implements("ClanMate")
 public class ClanMate extends Buddy {
-	@ObfuscatedName("ex")
-	@ObfuscatedGetter(
-		intValue = -1283772433
-	)
-	static int field3566;
-	@ObfuscatedName("fm")
-	@ObfuscatedGetter(
-		intValue = 1387790873
-	)
-	static int field3567;
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Ljf;"
+		signature = "Lju;"
 	)
 	@Export("friend")
 	TriBool friend;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Ljf;"
+		signature = "Lju;"
 	)
 	@Export("ignored")
 	TriBool ignored;
@@ -35,20 +24,20 @@ public class ClanMate extends Buddy {
 		this.ignored = TriBool.TriBool_unknown;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1521819508"
+		garbageValue = "-526388551"
 	)
 	@Export("clearIsFriend")
 	void clearIsFriend() {
 		this.friend = TriBool.TriBool_unknown;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "2007555671"
+		garbageValue = "2130139941"
 	)
 	@Export("isFriend")
 	public final boolean isFriend() {
@@ -59,30 +48,30 @@ public class ClanMate extends Buddy {
 		return this.friend == TriBool.TriBool_true;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1569748469"
+		garbageValue = "-2012869833"
 	)
 	@Export("fillIsFriend")
 	void fillIsFriend() {
-		this.friend = Message.friendSystem.friendsList.contains(super.username) ? TriBool.TriBool_true : TriBool.TriBool_false;
+		this.friend = KeyHandler.friendSystem.friendsList.contains(super.username) ? TriBool.TriBool_true : TriBool.TriBool_false;
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(S)V",
-		garbageValue = "3103"
+		signature = "(I)V",
+		garbageValue = "1620040890"
 	)
 	@Export("clearIsIgnored")
 	void clearIsIgnored() {
 		this.ignored = TriBool.TriBool_unknown;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-732818208"
+		signature = "(B)Z",
+		garbageValue = "-84"
 	)
 	@Export("isIgnored")
 	public final boolean isIgnored() {
@@ -93,40 +82,74 @@ public class ClanMate extends Buddy {
 		return this.ignored == TriBool.TriBool_true;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1631625166"
+		garbageValue = "-749177789"
 	)
 	@Export("fillIsIgnored")
 	void fillIsIgnored() {
-		this.ignored = Message.friendSystem.ignoreList.contains(super.username) ? TriBool.TriBool_true : TriBool.TriBool_false;
+		this.ignored = KeyHandler.friendSystem.ignoreList.contains(super.username) ? TriBool.TriBool_true : TriBool.TriBool_false;
 	}
 
-	@ObfuscatedName("jp")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(IIIIII)V",
-		garbageValue = "2022495737"
+		signature = "(Ljava/lang/CharSequence;IZI)Z",
+		garbageValue = "-1733263063"
 	)
-	@Export("drawScrollBar")
-	static final void drawScrollBar(int var0, int var1, int var2, int var3, int var4) {
-		class60.scrollBarSprites[0].drawAt(var0, var1);
-		class60.scrollBarSprites[1].drawAt(var0, var3 + var1 - 16);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.field691);
-		int var5 = var3 * (var3 - 32) / var4;
-		if (var5 < 8) {
-			var5 = 8;
-		}
+	static boolean method5073(CharSequence var0, int var1, boolean var2) {
+		if (var1 >= 2 && var1 <= 36) {
+			boolean var3 = false;
+			boolean var4 = false;
+			int var5 = 0;
+			int var6 = var0.length();
 
-		int var6 = (var3 - 32 - var5) * var2 / (var4 - var3);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var6 + var1 + 16, 16, var5, Client.field692);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0, var6 + var1 + 16, var5, Client.field694);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 1, var6 + var1 + 16, var5, Client.field694);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 16, 16, Client.field694);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 17, 16, Client.field694);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 15, var6 + var1 + 16, var5, Client.field693);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field693);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var5 + var6 + var1 + 15, 16, Client.field693);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0 + 1, var6 + var5 + var1 + 14, 15, Client.field693);
+			for (int var7 = 0; var7 < var6; ++var7) {
+				char var8 = var0.charAt(var7);
+				if (var7 == 0) {
+					if (var8 == '-') {
+						var3 = true;
+						continue;
+					}
+
+					if (var8 == '+') {
+						continue;
+					}
+				}
+
+				int var10;
+				if (var8 >= '0' && var8 <= '9') {
+					var10 = var8 - '0';
+				} else if (var8 >= 'A' && var8 <= 'Z') {
+					var10 = var8 - '7';
+				} else {
+					if (var8 < 'a' || var8 > 'z') {
+						return false;
+					}
+
+					var10 = var8 - 'W';
+				}
+
+				if (var10 >= var1) {
+					return false;
+				}
+
+				if (var3) {
+					var10 = -var10;
+				}
+
+				int var9 = var5 * var1 + var10;
+				if (var9 / var1 != var5) {
+					return false;
+				}
+
+				var5 = var9;
+				var4 = true;
+			}
+
+			return var4;
+		} else {
+			throw new IllegalArgumentException("" + var1);
+		}
 	}
 }

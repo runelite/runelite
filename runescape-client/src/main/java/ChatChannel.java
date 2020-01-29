@@ -4,24 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cq")
 @Implements("ChatChannel")
 public class ChatChannel {
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "Lcz;"
-	)
-	@Export("pcmPlayerProvider")
-	static class97 pcmPlayerProvider;
 	@ObfuscatedName("i")
+	@ObfuscatedGetter(
+		intValue = -899235317
+	)
+	public static int field1289;
+	@ObfuscatedName("k")
+	public static String[] field1291;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "[Lbs;"
+		signature = "[Lbn;"
 	)
 	@Export("messages")
 	Message[] messages;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 510013085
+		intValue = -2026360781
 	)
 	@Export("count")
 	int count;
@@ -30,10 +31,10 @@ public class ChatChannel {
 		this.messages = new Message[100];
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbs;",
-		garbageValue = "481031645"
+		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbn;",
+		garbageValue = "0"
 	)
 	@Export("addMessage")
 	Message addMessage(int var1, String var2, String var3, String var4) {
@@ -61,95 +62,140 @@ public class ChatChannel {
 		return var5;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)Lbs;",
-		garbageValue = "-2132499563"
+		signature = "(II)Lbn;",
+		garbageValue = "187354939"
 	)
 	@Export("getMessage")
 	Message getMessage(int var1) {
 		return var1 >= 0 && var1 < this.count ? this.messages[var1] : null;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "134905957"
+		signature = "(B)I",
+		garbageValue = "40"
 	)
 	@Export("size")
 	int size() {
 		return this.count;
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("hj")
 	@ObfuscatedSignature(
-		signature = "(II)Ljava/lang/String;",
-		garbageValue = "1959752215"
+		signature = "(IIZI)V",
+		garbageValue = "-1620265194"
 	)
-	static String method2269(int var0) {
-		return "<img=" + var0 + ">";
-	}
+	static final void method2302(int var0, int var1, boolean var2) {
+		if (!var2 || var0 != SecureRandomCallable.field530 || Language.field2359 != var1) {
+			SecureRandomCallable.field530 = var0;
+			Language.field2359 = var1;
+			Projectile.updateGameState(25);
+			class197.drawLoadingMessage("Loading - please wait.", true);
+			int var3 = Messages.baseX * 64;
+			int var4 = Language.baseY * 64;
+			Messages.baseX = (var0 - 6) * 8;
+			Language.baseY = (var1 - 6) * 8;
+			int var5 = Messages.baseX * 64 - var3;
+			int var6 = Language.baseY * 64 - var4;
+			var3 = Messages.baseX * 64;
+			var4 = Language.baseY * 64;
 
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-2136093779"
-	)
-	public static void method2259(int var0, int var1) {
-		VarbitDefinition var2 = UserComparator9.method3319(var0);
-		int var3 = var2.baseVar;
-		int var4 = var2.startBit;
-		int var5 = var2.endBit;
-		int var6 = Varps.Varps_masks[var5 - var4];
-		if (var1 < 0 || var1 > var6) {
-			var1 = 0;
+			int var7;
+			int var9;
+			int[] var10000;
+			for (var7 = 0; var7 < 32768; ++var7) {
+				NPC var8 = Client.npcs[var7];
+				if (var8 != null) {
+					for (var9 = 0; var9 < 10; ++var9) {
+						var10000 = var8.pathX;
+						var10000[var9] -= var5;
+						var10000 = var8.pathY;
+						var10000[var9] -= var6;
+					}
+
+					var8.x -= var5 * 128;
+					var8.y -= var6 * 128;
+				}
+			}
+
+			for (var7 = 0; var7 < 2048; ++var7) {
+				Player var21 = Client.players[var7];
+				if (var21 != null) {
+					for (var9 = 0; var9 < 10; ++var9) {
+						var10000 = var21.pathX;
+						var10000[var9] -= var5;
+						var10000 = var21.pathY;
+						var10000[var9] -= var6;
+					}
+
+					var21.x -= var5 * 128;
+					var21.y -= var6 * 128;
+				}
+			}
+
+			byte var20 = 0;
+			byte var18 = 104;
+			byte var22 = 1;
+			if (var5 < 0) {
+				var20 = 103;
+				var18 = -1;
+				var22 = -1;
+			}
+
+			byte var10 = 0;
+			byte var11 = 104;
+			byte var12 = 1;
+			if (var6 < 0) {
+				var10 = 103;
+				var11 = -1;
+				var12 = -1;
+			}
+
+			int var14;
+			for (int var13 = var20; var18 != var13; var13 += var22) {
+				for (var14 = var10; var11 != var14; var14 += var12) {
+					int var15 = var13 + var5;
+					int var16 = var6 + var14;
+
+					for (int var17 = 0; var17 < 4; ++var17) {
+						if (var15 >= 0 && var16 >= 0 && var15 < 104 && var16 < 104) {
+							Client.groundItems[var17][var13][var14] = Client.groundItems[var17][var15][var16];
+						} else {
+							Client.groundItems[var17][var13][var14] = null;
+						}
+					}
+				}
+			}
+
+			for (PendingSpawn var19 = (PendingSpawn)Client.pendingSpawns.last(); var19 != null; var19 = (PendingSpawn)Client.pendingSpawns.previous()) {
+				var19.x -= var5;
+				var19.y -= var6;
+				if (var19.x < 0 || var19.y < 0 || var19.x >= 104 || var19.y >= 104) {
+					var19.remove();
+				}
+			}
+
+			if (Client.destinationX != 0) {
+				Client.destinationX -= var5;
+				Client.destinationY -= var6;
+			}
+
+			Client.soundEffectCount = 0;
+			Client.isCameraLocked = false;
+			HitSplatDefinition.cameraX -= var5 << 7;
+			Actor.cameraZ -= var6 << 7;
+			PendingSpawn.oculusOrbFocalPointX -= var5 << 7;
+			Skeleton.oculusOrbFocalPointY -= var6 << 7;
+			Client.field704 = -1;
+			Client.graphicsObjects.clear();
+			Client.projectiles.clear();
+
+			for (var14 = 0; var14 < 4; ++var14) {
+				Client.collisionMaps[var14].clear();
+			}
+
 		}
-
-		var6 <<= var4;
-		Varps.Varps_main[var3] = Varps.Varps_main[var3] & ~var6 | var1 << var4 & var6;
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(B)Lbe;",
-		garbageValue = "90"
-	)
-	@Export("worldListStart")
-	static World worldListStart() {
-		World.World_listCount = 0;
-		return Friend.getNextWorldListWorld();
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "([BI)Lko;",
-		garbageValue = "65535"
-	)
-	static Font method2270(byte[] var0) {
-		if (var0 == null) {
-			return null;
-		} else {
-			Font var1 = new Font(var0, class325.SpriteBuffer_xOffsets, class325.SpriteBuffer_yOffsets, UserComparator1.SpriteBuffer_spriteWidths, class325.SpriteBuffer_spriteHeights, class268.SpriteBuffer_spritePalette, class290.SpriteBuffer_pixels);
-			Message.method1223();
-			return var1;
-		}
-	}
-
-	@ObfuscatedName("ac")
-	@ObfuscatedSignature(
-		signature = "(Ldl;B)V",
-		garbageValue = "21"
-	)
-	@Export("PcmStream_disable")
-	static final void PcmStream_disable(PcmStream var0) {
-		var0.active = false;
-		if (var0.sound != null) {
-			var0.sound.position = 0;
-		}
-
-		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
-			PcmStream_disable(var1);
-		}
-
 	}
 }

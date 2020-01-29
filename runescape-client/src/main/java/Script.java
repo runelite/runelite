@@ -4,63 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("ce")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("st")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Le;"
-	)
-	@Export("grandExchangeEvents")
-	static GrandExchangeEvents grandExchangeEvents;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "Leb;"
+		signature = "Leh;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("z")
-	@ObfuscatedGetter(
-		intValue = -1585175051
-	)
-	@Export("loginBoxCenter")
-	static int loginBoxCenter;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 465356471
+		intValue = 1871581323
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1243420491
+		intValue = 822375411
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -308424659
+		intValue = -1252836573
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -2632789
+		intValue = -1735199639
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "[Llc;"
+		signature = "[Llp;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -72,34 +60,38 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(IB)[Llc;",
-		garbageValue = "-1"
+		signature = "(IB)[Llp;",
+		garbageValue = "1"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 
-	@ObfuscatedName("fj")
+	@ObfuscatedName("kh")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1158039075"
+		signature = "(IIIILlt;Lhf;I)V",
+		garbageValue = "631816704"
 	)
-	static final void method2244() {
-		if (Projectile.ClanChat_inClanChat) {
-			if (Calendar.clanChat != null) {
-				Calendar.clanChat.sort();
-			}
+	@Export("drawSpriteOnMinimap")
+	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
+		if (var4 != null) {
+			int var6 = Client.camAngleY & 2047;
+			int var7 = var3 * var3 + var2 * var2;
+			if (var7 <= 6400) {
+				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
+				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
+				int var10 = var3 * var8 + var9 * var2 >> 16;
+				int var11 = var3 * var9 - var8 * var2 >> 16;
+				if (var7 > 2500) {
+					var4.method6207(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
+				} else {
+					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
+				}
 
-			for (int var0 = 0; var0 < Players.Players_count; ++var0) {
-				Player var1 = Client.players[Players.Players_indices[var0]];
-				var1.clearIsInClanChat();
 			}
-
-			Projectile.ClanChat_inClanChat = false;
 		}
-
 	}
 }

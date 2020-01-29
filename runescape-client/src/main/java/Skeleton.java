@@ -1,28 +1,40 @@
+import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ec")
 @Implements("Skeleton")
 public class Skeleton extends Node {
-	@ObfuscatedName("f")
+	@ObfuscatedName("hx")
 	@ObfuscatedGetter(
-		intValue = 802738175
+		intValue = 1721561941
+	)
+	@Export("oculusOrbFocalPointY")
+	static int oculusOrbFocalPointY;
+	@ObfuscatedName("jv")
+	@ObfuscatedSignature(
+		signature = "Lhn;"
+	)
+	static Widget field1793;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1632248683
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1993583785
+		intValue = 705396631
 	)
 	@Export("count")
 	int count;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@Export("transformTypes")
 	int[] transformTypes;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@Export("labels")
 	int[][] labels;
 
@@ -50,23 +62,28 @@ public class Skeleton extends Node {
 
 	}
 
-	@ObfuscatedName("aq")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1307556055"
+		garbageValue = "483242164"
 	)
-	protected static final void method3088() {
-		Varps.clock.mark();
+	public static void method3152() {
+		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
+	}
 
-		int var0;
-		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.graphicsTickTimes[var0] = 0L;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(B)Ljava/lang/String;",
+		garbageValue = "91"
+	)
+	static String method3153() {
+		String var0 = "";
+
+		Message var2;
+		for (Iterator var1 = Messages.Messages_hashTable.iterator(); var1.hasNext(); var0 = var0 + var2.sender + ':' + var2.text + '\n') {
+			var2 = (Message)var1.next();
 		}
 
-		for (var0 = 0; var0 < 32; ++var0) {
-			GameShell.clientTickTimes[var0] = 0L;
-		}
-
-		GameShell.gameCyclesToDo = 0;
+		return var0;
 	}
 }

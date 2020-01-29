@@ -4,52 +4,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("io")
 @Implements("KitDefinition")
 public class KitDefinition extends DualNode {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lii;"
 	)
 	@Export("KitDefinition_archive")
 	public static AbstractArchive KitDefinition_archive;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lii;"
 	)
 	@Export("KitDefinition_modelsArchive")
 	public static AbstractArchive KitDefinition_modelsArchive;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Leb;"
+		signature = "Leh;"
 	)
 	@Export("KitDefinition_cached")
-	public static EvictingDualNodeHashTable KitDefinition_cached;
-	@ObfuscatedName("p")
+	static EvictingDualNodeHashTable KitDefinition_cached;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -81480953
+		intValue = -1923547411
 	)
 	@Export("bodypartID")
 	public int bodypartID;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@Export("models2")
 	int[] models2;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("recolorFrom")
 	short[] recolorFrom;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@Export("recolorTo")
 	short[] recolorTo;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@Export("retextureFrom")
 	short[] retextureFrom;
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@Export("retextureTo")
 	short[] retextureTo;
-	@ObfuscatedName("c")
+	@ObfuscatedName("p")
 	@Export("models")
 	int[] models;
-	@ObfuscatedName("o")
+	@ObfuscatedName("h")
 	@Export("nonSelectable")
 	public boolean nonSelectable;
 
@@ -63,10 +63,10 @@ public class KitDefinition extends DualNode {
 		this.nonSelectable = false;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lkq;B)V",
-		garbageValue = "2"
+		signature = "(Lkp;B)V",
+		garbageValue = "1"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -80,10 +80,10 @@ public class KitDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(Lkq;II)V",
-		garbageValue = "1044469626"
+		signature = "(Lkp;II)V",
+		garbageValue = "1396664482"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -126,10 +126,10 @@ public class KitDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "963507021"
+		garbageValue = "16777215"
 	)
 	@Export("ready")
 	public boolean ready() {
@@ -148,10 +148,10 @@ public class KitDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(I)Ldd;",
-		garbageValue = "-2124691524"
+		signature = "(I)Ldg;",
+		garbageValue = "847526652"
 	)
 	@Export("getModelData")
 	public ModelData getModelData() {
@@ -188,12 +188,12 @@ public class KitDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-2147315248"
+		garbageValue = "-464506453"
 	)
-	public boolean method4430() {
+	public boolean method4533() {
 		boolean var1 = true;
 
 		for (int var2 = 0; var2 < 5; ++var2) {
@@ -205,10 +205,10 @@ public class KitDefinition extends DualNode {
 		return var1;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)Ldd;",
-		garbageValue = "285543831"
+		signature = "(I)Ldg;",
+		garbageValue = "-2095950315"
 	)
 	@Export("getKitDefinitionModels")
 	public ModelData getKitDefinitionModels() {
@@ -238,26 +238,100 @@ public class KitDefinition extends DualNode {
 		return var5;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)Lis;",
-		garbageValue = "-2132150843"
+		signature = "(IIIIB)V",
+		garbageValue = "116"
 	)
-	@Export("StructDefinition_getStructDefinition")
-	public static StructDefinition StructDefinition_getStructDefinition(int var0) {
-		StructDefinition var1 = (StructDefinition)StructDefinition.StructDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = StructDefinition.StructDefinition_archive.takeFile(34, var0);
-			var1 = new StructDefinition();
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
+	static final void method4532(int var0, int var1, int var2, int var3) {
+		for (int var4 = var1; var4 <= var3 + var1; ++var4) {
+			for (int var5 = var0; var5 <= var0 + var2; ++var5) {
+				if (var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
+					InterfaceParent.field565[0][var5][var4] = 127;
+					if (var0 == var5 && var5 > 0) {
+						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 - 1][var4];
+					}
+
+					if (var0 + var2 == var5 && var5 < 103) {
+						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5 + 1][var4];
+					}
+
+					if (var4 == var1 && var4 > 0) {
+						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 - 1];
+					}
+
+					if (var4 == var3 + var1 && var4 < 103) {
+						Tiles.Tiles_heights[0][var5][var4] = Tiles.Tiles_heights[0][var5][var4 + 1];
+					}
+				}
+			}
+		}
+
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/CharSequence;IZB)I",
+		garbageValue = "93"
+	)
+	@Export("parseIntCustomRadix")
+	static int parseIntCustomRadix(CharSequence var0, int var1, boolean var2) {
+		if (var1 >= 2 && var1 <= 36) {
+			boolean var3 = false;
+			boolean var4 = false;
+			int var5 = 0;
+			int var6 = var0.length();
+
+			for (int var7 = 0; var7 < var6; ++var7) {
+				char var8 = var0.charAt(var7);
+				if (var7 == 0) {
+					if (var8 == '-') {
+						var3 = true;
+						continue;
+					}
+
+					if (var8 == '+') {
+						continue;
+					}
+				}
+
+				int var10;
+				if (var8 >= '0' && var8 <= '9') {
+					var10 = var8 - '0';
+				} else if (var8 >= 'A' && var8 <= 'Z') {
+					var10 = var8 - '7';
+				} else {
+					if (var8 < 'a' || var8 > 'z') {
+						throw new NumberFormatException();
+					}
+
+					var10 = var8 - 'W';
+				}
+
+				if (var10 >= var1) {
+					throw new NumberFormatException();
+				}
+
+				if (var3) {
+					var10 = -var10;
+				}
+
+				int var9 = var10 + var5 * var1;
+				if (var9 / var1 != var5) {
+					throw new NumberFormatException();
+				}
+
+				var5 = var9;
+				var4 = true;
 			}
 
-			var1.postDecode();
-			StructDefinition.StructDefinition_cached.put(var1, (long)var0);
-			return var1;
+			if (!var4) {
+				throw new NumberFormatException();
+			} else {
+				return var5;
+			}
+		} else {
+			throw new IllegalArgumentException("" + var1);
 		}
 	}
 }

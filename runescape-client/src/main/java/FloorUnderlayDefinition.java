@@ -4,48 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iy")
+@ObfuscatedName("ix")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends DualNode {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhz;"
+		signature = "Lii;"
 	)
 	@Export("FloorUnderlayDefinition_archive")
 	static AbstractArchive FloorUnderlayDefinition_archive;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Leb;"
+		signature = "Leh;"
 	)
 	@Export("FloorUnderlayDefinition_cached")
 	public static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1172468213
+		intValue = 324274119
 	)
 	@Export("rgb")
 	int rgb;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -1800958439
+		intValue = 38778911
 	)
 	@Export("hue")
 	public int hue;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -217803579
+		intValue = -974835439
 	)
 	@Export("saturation")
 	public int saturation;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1888954087
+		intValue = 1002192481
 	)
 	@Export("lightness")
 	public int lightness;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1484017615
+		intValue = 1556624477
 	)
 	@Export("hueMultiplier")
 	public int hueMultiplier;
@@ -58,20 +58,20 @@ public class FloorUnderlayDefinition extends DualNode {
 		this.rgb = 0;
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "47336247"
+		garbageValue = "-667447338"
 	)
 	@Export("postDecode")
 	void postDecode() {
 		this.setHsl(this.rgb);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Lkq;II)V",
-		garbageValue = "790135935"
+		signature = "(Lkp;IB)V",
+		garbageValue = "34"
 	)
 	@Export("decode")
 	void decode(Buffer var1, int var2) {
@@ -85,10 +85,10 @@ public class FloorUnderlayDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(Lkq;III)V",
-		garbageValue = "-1066801871"
+		signature = "(Lkp;IIB)V",
+		garbageValue = "-93"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2, int var3) {
@@ -98,10 +98,10 @@ public class FloorUnderlayDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "395351662"
+		signature = "(IB)V",
+		garbageValue = "15"
 	)
 	@Export("setHsl")
 	void setHsl(int var1) {
@@ -131,7 +131,7 @@ public class FloorUnderlayDefinition extends DualNode {
 		double var16 = (var10 + var8) / 2.0D;
 		if (var10 != var8) {
 			if (var16 < 0.5D) {
-				var14 = (var10 - var8) / (var10 + var8);
+				var14 = (var10 - var8) / (var8 + var10);
 			}
 
 			if (var16 >= 0.5D) {
@@ -140,8 +140,8 @@ public class FloorUnderlayDefinition extends DualNode {
 
 			if (var10 == var2) {
 				var12 = (var4 - var6) / (var10 - var8);
-			} else if (var4 == var10) {
-				var12 = 2.0D + (var6 - var2) / (var10 - var8);
+			} else if (var10 == var4) {
+				var12 = (var6 - var2) / (var10 - var8) + 2.0D;
 			} else if (var10 == var6) {
 				var12 = 4.0D + (var2 - var4) / (var10 - var8);
 			}
@@ -149,7 +149,7 @@ public class FloorUnderlayDefinition extends DualNode {
 
 		var12 /= 6.0D;
 		this.saturation = (int)(var14 * 256.0D);
-		this.lightness = (int)(256.0D * var16);
+		this.lightness = (int)(var16 * 256.0D);
 		if (this.saturation < 0) {
 			this.saturation = 0;
 		} else if (this.saturation > 255) {
@@ -165,23 +165,137 @@ public class FloorUnderlayDefinition extends DualNode {
 		if (var16 > 0.5D) {
 			this.hueMultiplier = (int)((1.0D - var16) * var14 * 512.0D);
 		} else {
-			this.hueMultiplier = (int)(var16 * var14 * 512.0D);
+			this.hueMultiplier = (int)(512.0D * var16 * var14);
 		}
 
 		if (this.hueMultiplier < 1) {
 			this.hueMultiplier = 1;
 		}
 
-		this.hue = (int)((double)this.hueMultiplier * var12);
+		this.hue = (int)(var12 * (double)this.hueMultiplier);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(Lhz;III)Lls;",
-		garbageValue = "-1136853521"
+		signature = "(CLgl;I)C",
+		garbageValue = "-291129938"
 	)
-	@Export("SpriteBuffer_getSprite")
-	public static Sprite SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
-		return !HitSplatDefinition.method4586(var0, var1, var2) ? null : Buffer.method5689();
+	@Export("standardizeChar")
+	static char standardizeChar(char var0, Language var1) {
+		if (var0 >= 192 && var0 <= 255) {
+			if (var0 >= 192 && var0 <= 198) {
+				return 'A';
+			}
+
+			if (var0 == 199) {
+				return 'C';
+			}
+
+			if (var0 >= 200 && var0 <= 203) {
+				return 'E';
+			}
+
+			if (var0 >= 204 && var0 <= 207) {
+				return 'I';
+			}
+
+			if (var0 == 209 && var1 != Language.Language_ES) {
+				return 'N';
+			}
+
+			if (var0 >= 210 && var0 <= 214) {
+				return 'O';
+			}
+
+			if (var0 >= 217 && var0 <= 220) {
+				return 'U';
+			}
+
+			if (var0 == 221) {
+				return 'Y';
+			}
+
+			if (var0 == 223) {
+				return 's';
+			}
+
+			if (var0 >= 224 && var0 <= 230) {
+				return 'a';
+			}
+
+			if (var0 == 231) {
+				return 'c';
+			}
+
+			if (var0 >= 232 && var0 <= 235) {
+				return 'e';
+			}
+
+			if (var0 >= 236 && var0 <= 239) {
+				return 'i';
+			}
+
+			if (var0 == 241 && var1 != Language.Language_ES) {
+				return 'n';
+			}
+
+			if (var0 >= 242 && var0 <= 246) {
+				return 'o';
+			}
+
+			if (var0 >= 249 && var0 <= 252) {
+				return 'u';
+			}
+
+			if (var0 == 253 || var0 == 255) {
+				return 'y';
+			}
+		}
+
+		if (var0 == 338) {
+			return 'O';
+		} else if (var0 == 339) {
+			return 'o';
+		} else if (var0 == 376) {
+			return 'Y';
+		} else {
+			return var0;
+		}
+	}
+
+	@ObfuscatedName("if")
+	@ObfuscatedSignature(
+		signature = "([Lhn;IIIZB)V",
+		garbageValue = "1"
+	)
+	@Export("resizeInterface")
+	static void resizeInterface(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+		for (int var5 = 0; var5 < var0.length; ++var5) {
+			Widget var6 = var0[var5];
+			if (var6 != null && var6.parentId == var1) {
+				UrlRequester.alignWidgetSize(var6, var2, var3, var4);
+				InterfaceParent.alignWidgetPosition(var6, var2, var3);
+				if (var6.scrollX > var6.scrollWidth - var6.width) {
+					var6.scrollX = var6.scrollWidth - var6.width;
+				}
+
+				if (var6.scrollX < 0) {
+					var6.scrollX = 0;
+				}
+
+				if (var6.scrollY > var6.scrollHeight - var6.height) {
+					var6.scrollY = var6.scrollHeight - var6.height;
+				}
+
+				if (var6.scrollY < 0) {
+					var6.scrollY = 0;
+				}
+
+				if (var6.type == 0) {
+					WorldMapIcon_1.revalidateWidgetScroll(var0, var6, var4);
+				}
+			}
+		}
+
 	}
 }

@@ -3,13 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hv")
+@ObfuscatedName("hm")
 @Implements("Skills")
 public class Skills {
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("Skills_enabled")
 	public static final boolean[] Skills_enabled;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@Export("Skills_experienceTable")
 	public static int[] Skills_experienceTable;
 
@@ -27,89 +27,52 @@ public class Skills {
 
 	}
 
-	@ObfuscatedName("ao")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "([BI)[B",
-		garbageValue = "1842420439"
+		signature = "(CB)Z",
+		garbageValue = "88"
 	)
-	@Export("decompressBytes")
-	static final byte[] decompressBytes(byte[] var0) {
-		Buffer var1 = new Buffer(var0);
-		int var2 = var1.readUnsignedByte();
-		int var3 = var1.readInt();
-		if (var3 < 0 || AbstractArchive.field3118 != 0 && var3 > AbstractArchive.field3118) {
-			throw new RuntimeException();
-		} else if (var2 == 0) {
-			byte[] var4 = new byte[var3];
-			var1.readBytes(var4, 0, var3);
-			return var4;
+	@Export("isCharPrintable")
+	public static boolean isCharPrintable(char var0) {
+		if (var0 >= ' ' && var0 <= '~') {
+			return true;
+		} else if (var0 >= 160 && var0 <= 255) {
+			return true;
 		} else {
-			int var6 = var1.readInt();
-			if (var6 >= 0 && (AbstractArchive.field3118 == 0 || var6 <= AbstractArchive.field3118)) {
-				byte[] var5 = new byte[var6];
-				if (var2 == 1) {
-					BZip2Decompressor.BZip2Decompressor_decompress(var5, var6, var0, var3, 9);
-				} else {
-					AbstractArchive.gzipDecompressor.decompress(var1, var5);
-				}
-
-				return var5;
-			} else {
-				throw new RuntimeException();
-			}
+			return var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376;
 		}
 	}
 
-	@ObfuscatedName("hp")
+	@ObfuscatedName("hw")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "381562265"
+		signature = "(IIIIIIIIII)V",
+		garbageValue = "730200228"
 	)
-	@Export("updateItemPile")
-	static final void updateItemPile(int var0, int var1) {
-		NodeDeque var2 = Client.groundItems[UrlRequest.Client_plane][var0][var1];
-		if (var2 == null) {
-			class14.scene.removeGroundItemPile(UrlRequest.Client_plane, var0, var1);
-		} else {
-			long var3 = -99999999L;
-			TileItem var5 = null;
+	@Export("updatePendingSpawn")
+	static final void updatePendingSpawn(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+		PendingSpawn var9 = null;
 
-			TileItem var6;
-			for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-				ItemDefinition var7 = PacketBufferNode.ItemDefinition_get(var6.id);
-				long var8 = (long)var7.price;
-				if (var7.isStackable == 1) {
-					var8 *= (long)(var6.quantity + 1);
-				}
-
-				if (var8 > var3) {
-					var3 = var8;
-					var5 = var6;
-				}
-			}
-
-			if (var5 == null) {
-				class14.scene.removeGroundItemPile(UrlRequest.Client_plane, var0, var1);
-			} else {
-				var2.addLast(var5);
-				TileItem var12 = null;
-				TileItem var11 = null;
-
-				for (var6 = (TileItem)var2.last(); var6 != null; var6 = (TileItem)var2.previous()) {
-					if (var5.id != var6.id) {
-						if (var12 == null) {
-							var12 = var6;
-						}
-
-						if (var12.id != var6.id && var11 == null) {
-							var11 = var6;
-						}
-					}
-				}
-
-				long var9 = KeyHandler.calculateTag(var0, var1, 3, false, 0);
-				class14.scene.newGroundItemPile(UrlRequest.Client_plane, var0, var1, ScriptEvent.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, UrlRequest.Client_plane), var5, var9, var12, var11);
+		for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
+			if (var0 == var10.plane && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+				var9 = var10;
+				break;
 			}
 		}
+
+		if (var9 == null) {
+			var9 = new PendingSpawn();
+			var9.plane = var0;
+			var9.type = var3;
+			var9.x = var1;
+			var9.y = var2;
+			WorldMapDecoration.method347(var9);
+			Client.pendingSpawns.addFirst(var9);
+		}
+
+		var9.id = var4;
+		var9.field933 = var5;
+		var9.orientation = var6;
+		var9.delay = var7;
+		var9.hitpoints = var8;
 	}
 }

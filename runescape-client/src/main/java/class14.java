@@ -1,225 +1,162 @@
+import java.applet.Applet;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("s")
+@ObfuscatedName("x")
 public class class14 {
-	@ObfuscatedName("w")
-	static byte[][][] field88;
-	@ObfuscatedName("v")
-	public static boolean field89;
-	@ObfuscatedName("gs")
-	@ObfuscatedSignature(
-		signature = "Lej;"
+	@ObfuscatedName("q")
+	@ObfuscatedGetter(
+		intValue = 1417647521
 	)
-	@Export("scene")
-	static Scene scene;
-	@ObfuscatedName("je")
+	@Export("clientTickTimeIdx")
+	static int clientTickTimeIdx;
+	@ObfuscatedName("aa")
+	static String field101;
+	@ObfuscatedName("bb")
 	@ObfuscatedSignature(
-		signature = "Ldt;"
+		signature = "Lhx;"
 	)
-	@Export("textureProvider")
-	static TextureProvider textureProvider;
-	@ObfuscatedName("lx")
-	@ObfuscatedSignature(
-		signature = "Lha;"
-	)
-	static Widget field90;
+	static StudioGame field102;
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(IILfx;Lfp;B)Z",
-		garbageValue = "-12"
+		signature = "([BB)Llt;",
+		garbageValue = "-30"
 	)
-	public static final boolean method158(int var0, int var1, RouteStrategy var2, CollisionMap var3) {
-		int var4 = var0;
-		int var5 = var1;
-		byte var6 = 64;
-		byte var7 = 64;
-		int var8 = var0 - var6;
-		int var9 = var1 - var7;
-		class173.directions[var6][var7] = 99;
-		class173.distances[var6][var7] = 0;
-		byte var10 = 0;
-		int var11 = 0;
-		class173.bufferX[var10] = var0;
-		byte var10001 = var10;
-		int var18 = var10 + 1;
-		class173.bufferY[var10001] = var1;
-		int[][] var12 = var3.flags;
+	@Export("convertJpgToSprite")
+	public static final Sprite convertJpgToSprite(byte[] var0) {
+		BufferedImage var1 = null;
 
-		while (var11 != var18) {
-			var4 = class173.bufferX[var11];
-			var5 = class173.bufferY[var11];
-			var11 = var11 + 1 & 4095;
-			int var16 = var4 - var8;
-			int var17 = var5 - var9;
-			int var13 = var4 - var3.xInset;
-			int var14 = var5 - var3.yInset;
-			if (var2.hasArrived(1, var4, var5, var3)) {
-				class268.field3524 = var4;
-				class173.field2072 = var5;
+		try {
+			var1 = ImageIO.read(new ByteArrayInputStream(var0));
+			int var2 = var1.getWidth();
+			int var3 = var1.getHeight();
+			int[] var4 = new int[var2 * var3];
+			PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
+			var5.grabPixels();
+			return new Sprite(var4, var2, var3);
+		} catch (IOException var7) {
+		} catch (InterruptedException var8) {
+		}
+
+		return new Sprite(0, 0);
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
+		garbageValue = "-1466465553"
+	)
+	static boolean method174(String var0, int var1, String var2) {
+		if (var1 == 0) {
+			try {
+				if (!class51.field431.startsWith("win")) {
+					throw new Exception();
+				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
+					throw new Exception();
+				} else {
+					String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+					for (int var4 = 0; var4 < var0.length(); ++var4) {
+						if (var13.indexOf(var0.charAt(var4)) == -1) {
+							throw new Exception();
+						}
+					}
+
+					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+					return true;
+				}
+			} catch (Throwable var8) {
+				return false;
+			}
+		} else if (var1 == 1) {
+			try {
+				Applet var7 = class51.applet;
+				Object[] var5 = new Object[]{(new URL(class51.applet.getCodeBase(), var0)).toString()};
+				Object var3 = JSObject.getWindow(var7).call(var2, var5);
+				return var3 != null;
+			} catch (Throwable var9) {
+				return false;
+			}
+		} else if (var1 == 2) {
+			try {
+				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_blank");
 				return true;
+			} catch (Exception var10) {
+				return false;
+			}
+		} else if (var1 == 3) {
+			try {
+				class47.method857(class51.applet, "loggedout");
+			} catch (Throwable var12) {
 			}
 
-			int var15 = class173.distances[var16][var17] + 1;
-			if (var16 > 0 && class173.directions[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136776) == 0) {
-				class173.bufferX[var18] = var4 - 1;
-				class173.bufferY[var18] = var5;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 - 1][var17] = 2;
-				class173.distances[var16 - 1][var17] = var15;
+			try {
+				class51.applet.getAppletContext().showDocument(new URL(class51.applet.getCodeBase(), var0), "_top");
+				return true;
+			} catch (Exception var11) {
+				return false;
 			}
-
-			if (var16 < 127 && class173.directions[var16 + 1][var17] == 0 && (var12[var13 + 1][var14] & 19136896) == 0) {
-				class173.bufferX[var18] = var4 + 1;
-				class173.bufferY[var18] = var5;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 + 1][var17] = 8;
-				class173.distances[var16 + 1][var17] = var15;
-			}
-
-			if (var17 > 0 && class173.directions[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-				class173.bufferX[var18] = var4;
-				class173.bufferY[var18] = var5 - 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16][var17 - 1] = 1;
-				class173.distances[var16][var17 - 1] = var15;
-			}
-
-			if (var17 < 127 && class173.directions[var16][var17 + 1] == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
-				class173.bufferX[var18] = var4;
-				class173.bufferY[var18] = var5 + 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16][var17 + 1] = 4;
-				class173.distances[var16][var17 + 1] = var15;
-			}
-
-			if (var16 > 0 && var17 > 0 && class173.directions[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-				class173.bufferX[var18] = var4 - 1;
-				class173.bufferY[var18] = var5 - 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 - 1][var17 - 1] = 3;
-				class173.distances[var16 - 1][var17 - 1] = var15;
-			}
-
-			if (var16 < 127 && var17 > 0 && class173.directions[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 - 1] & 19136770) == 0) {
-				class173.bufferX[var18] = var4 + 1;
-				class173.bufferY[var18] = var5 - 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 + 1][var17 - 1] = 9;
-				class173.distances[var16 + 1][var17 - 1] = var15;
-			}
-
-			if (var16 > 0 && var17 < 127 && class173.directions[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
-				class173.bufferX[var18] = var4 - 1;
-				class173.bufferY[var18] = var5 + 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 - 1][var17 + 1] = 6;
-				class173.distances[var16 - 1][var17 + 1] = var15;
-			}
-
-			if (var16 < 127 && var17 < 127 && class173.directions[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 1] & 19136992) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
-				class173.bufferX[var18] = var4 + 1;
-				class173.bufferY[var18] = var5 + 1;
-				var18 = var18 + 1 & 4095;
-				class173.directions[var16 + 1][var17 + 1] = 12;
-				class173.distances[var16 + 1][var17 + 1] = var15;
-			}
-		}
-
-		class268.field3524 = var4;
-		class173.field2072 = var5;
-		return false;
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(IS)I",
-		garbageValue = "255"
-	)
-	public static int method157(int var0) {
-		return var0 >> 11 & 63;
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Llc;ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "47"
-	)
-	static String method151(IterableNodeHashTable var0, int var1, String var2) {
-		if (var0 == null) {
-			return var2;
 		} else {
-			ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-			return var3 == null ? var2 : (String)var3.obj;
+			throw new IllegalArgumentException();
 		}
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(Lhz;Lhz;III)Lko;",
-		garbageValue = "276339523"
-	)
-	public static Font method160(AbstractArchive var0, AbstractArchive var1, int var2, int var3) {
-		return !HitSplatDefinition.method4586(var0, var2, var3) ? null : ChatChannel.method2270(var1.takeFile(var2, var3));
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		signature = "(IS)J",
-		garbageValue = "-206"
-	)
-	public static long method152(int var0) {
-		return ViewportMouse.ViewportMouse_entityTags[var0];
 	}
 
 	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "349411757"
-	)
-	public static void method155() {
-		PlayerAppearance.PlayerAppearance_cachedModels.clear();
+	public static int method169(long var0) {
+		return (int)(var0 >>> 7 & 127L);
 	}
 
-	@ObfuscatedName("gy")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "(Lbn;ZI)V",
-		garbageValue = "558782767"
+		signature = "(CB)Z",
+		garbageValue = "1"
 	)
-	@Export("addPlayerToScene")
-	static void addPlayerToScene(Player var0, boolean var1) {
-		if (var0 != null && var0.isVisible() && !var0.isHidden) {
-			var0.isUnanimated = false;
-			if ((Client.isLowDetail && Players.Players_count > 50 || Players.Players_count > 200) && var1 && var0.readySequence == var0.movementSequence) {
-				var0.isUnanimated = true;
-			}
+	@Export("isDigit")
+	public static boolean isDigit(char var0) {
+		return var0 >= '0' && var0 <= '9';
+	}
 
-			int var2 = var0.x >> 7;
-			int var3 = var0.y >> 7;
-			if (var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-				long var4 = KeyHandler.calculateTag(0, 0, 0, false, var0.index);
-				if (var0.model0 != null && Client.cycle >= var0.animationCycleStart && Client.cycle < var0.animationCycleEnd) {
-					var0.isUnanimated = false;
-					var0.tileHeight = ScriptEvent.getTileHeight(var0.x, var0.y, UrlRequest.Client_plane);
-					var0.playerCycle = Client.cycle;
-					scene.addNullableObject(UrlRequest.Client_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.field605, var0.field606, var0.field607, var0.field608);
-				} else {
-					if ((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-						if (Client.tileLastDrawnActor[var2][var3] == Client.viewportDrawCount) {
-							return;
-						}
-
-						Client.tileLastDrawnActor[var2][var3] = Client.viewportDrawCount;
-					}
-
-					var0.tileHeight = ScriptEvent.getTileHeight(var0.x, var0.y, UrlRequest.Client_plane);
-					var0.playerCycle = Client.cycle;
-					scene.drawEntity(UrlRequest.Client_plane, var0.x, var0.y, var0.tileHeight, 60, var0, var0.rotation, var4, var0.isWalking);
-				}
-			}
+	@ObfuscatedName("af")
+	@ObfuscatedSignature(
+		signature = "(IZIB)V",
+		garbageValue = "14"
+	)
+	public static final void method173(int var0, boolean var1, int var2) {
+		if (var0 >= 8000 && var0 <= 48000) {
+			PcmPlayer.field1398 = var0;
+			PcmPlayer.PcmPlayer_stereo = var1;
+			GrandExchangeEvent.field45 = var2;
+		} else {
+			throw new IllegalArgumentException();
 		}
+	}
 
+	@ObfuscatedName("fs")
+	@ObfuscatedSignature(
+		signature = "(I)I",
+		garbageValue = "970365805"
+	)
+	static int method170() {
+		if (Client.archiveLoaders != null && Client.archiveLoadersDone < Client.archiveLoaders.size()) {
+			int var0 = 0;
+
+			for (int var1 = 0; var1 <= Client.archiveLoadersDone; ++var1) {
+				var0 += ((ArchiveLoader)Client.archiveLoaders.get(var1)).loadedCount;
+			}
+
+			return var0 * 10000 / Client.field813;
+		} else {
+			return 10000;
+		}
 	}
 }

@@ -7,31 +7,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("ff")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("i")
-	@Export("javaVersion")
-	public static String javaVersion;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lfu;"
+		signature = "Lfw;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lfu;"
+		signature = "Lfw;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@Export("isClosed")
 	boolean isClosed;
 
@@ -40,11 +37,11 @@ public class TaskHandler implements Runnable {
 		this.task = null;
 		this.isClosed = false;
 		javaVendor = "Unknown";
-		javaVersion = "1.6";
+		class216.javaVersion = "1.6";
 
 		try {
 			javaVendor = System.getProperty("java.vendor");
-			javaVersion = System.getProperty("java.version");
+			class216.javaVersion = System.getProperty("java.version");
 		} catch (Exception var2) {
 		}
 
@@ -55,10 +52,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1570179220"
+		signature = "(B)V",
+		garbageValue = "-77"
 	)
 	@Export("close")
 	public final void close() {
@@ -74,10 +71,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;B)Lfu;",
-		garbageValue = "-52"
+		signature = "(IIILjava/lang/Object;S)Lfw;",
+		garbageValue = "-10894"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -98,20 +95,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Lfu;",
-		garbageValue = "-1049494534"
+		signature = "(Ljava/lang/String;II)Lfw;",
+		garbageValue = "-260343907"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;II)Lfu;",
-		garbageValue = "1021104095"
+		signature = "(Ljava/lang/Runnable;II)Lfw;",
+		garbageValue = "70274663"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -166,64 +163,37 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("gn")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "-1335905010"
+		signature = "(Lmv;I)I",
+		garbageValue = "1649958240"
 	)
-	@Export("doCheat")
-	static final void doCheat(String var0) {
-		if (var0.equalsIgnoreCase("toggleroof")) {
-			Interpreter.clientPreferences.roofsHidden = !Interpreter.clientPreferences.roofsHidden;
-			FriendSystem.savePreferences();
-			if (Interpreter.clientPreferences.roofsHidden) {
-				class83.addGameMessage(99, "", "Roofs are now all hidden");
-			} else {
-				class83.addGameMessage(99, "", "Roofs will only be removed selectively");
+	public static final int method3540(LoginType var0) {
+		if (var0 == null) {
+			return 12;
+		} else {
+			switch(var0.field4037) {
+			case 6:
+				return 20;
+			default:
+				return 12;
 			}
 		}
+	}
 
-		if (var0.equalsIgnoreCase("displayfps")) {
-			Client.displayFps = !Client.displayFps;
-		}
-
-		if (var0.equalsIgnoreCase("renderself")) {
-			Client.renderSelf = !Client.renderSelf;
-		}
-
-		if (var0.equalsIgnoreCase("mouseovertext")) {
-			Client.showMouseOverText = !Client.showMouseOverText;
-		}
-
-		if (Client.staffModLevel >= 2) {
-			if (var0.equalsIgnoreCase("errortest")) {
-				throw new RuntimeException();
-			}
-
-			if (var0.equalsIgnoreCase("showcoord")) {
-				GrandExchangeEvent.worldMap.showCoord = !GrandExchangeEvent.worldMap.showCoord;
-			}
-
-			if (var0.equalsIgnoreCase("fpson")) {
-				Client.displayFps = true;
-			}
-
-			if (var0.equalsIgnoreCase("fpsoff")) {
-				Client.displayFps = false;
-			}
-
-			if (var0.equalsIgnoreCase("gc")) {
-				System.gc();
-			}
-
-			if (var0.equalsIgnoreCase("clientdrop")) {
-				StudioGame.method4119();
-			}
-		}
-
-		PacketBufferNode var1 = class2.getPacketBufferNode(ClientPacket.field2216, Client.packetWriter.isaacCipher);
-		var1.packetBuffer.writeByte(var0.length() + 1);
-		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
-		Client.packetWriter.addNode(var1);
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(ILii;IIIZI)V",
+		garbageValue = "869410445"
+	)
+	@Export("playMusicTrack")
+	public static void playMusicTrack(int var0, AbstractArchive var1, int var2, int var3, int var4, boolean var5) {
+		class197.field2414 = 1;
+		UserComparator5.musicTrackArchive = var1;
+		class197.musicTrackGroupId = var2;
+		class83.musicTrackFileId = var3;
+		AttackOption.musicTrackVolume = var4;
+		KeyHandler.musicTrackBoolean = var5;
+		class197.field2412 = var0;
 	}
 }

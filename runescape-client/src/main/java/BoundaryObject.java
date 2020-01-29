@@ -4,66 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eu")
 @Implements("BoundaryObject")
 public final class BoundaryObject {
 	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Lhz;"
-	)
-	@Export("Widget_spritesArchive")
-	static AbstractArchive Widget_spritesArchive;
-	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -1534521391
+		intValue = -432640287
 	)
 	@Export("tileHeight")
 	int tileHeight;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1718210699
+		intValue = -970419585
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1666415467
+		intValue = -1376780288
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -211420525
+		intValue = 778552875
 	)
 	@Export("orientationA")
 	int orientationA;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 951647449
+		intValue = -829648765
 	)
 	@Export("orientationB")
 	int orientationB;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Leq;"
 	)
 	@Export("entity1")
 	public Entity entity1;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Lep;"
+		signature = "Leq;"
 	)
 	@Export("entity2")
 	public Entity entity2;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		longValue = 3162324910013074859L
+		longValue = 515248560912133581L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("a")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1096622413
+		intValue = -1262947559
 	)
 	@Export("flags")
 	int flags;
@@ -73,31 +67,44 @@ public final class BoundaryObject {
 		this.flags = 0;
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(IB)V",
-		garbageValue = "-13"
+		signature = "(I)V",
+		garbageValue = "2085601803"
 	)
-	public static void method3273(int var0) {
-		class197.field2392 = 1;
-		Coord.musicTrackArchive = null;
-		class16.musicTrackGroupId = -1;
-		GrandExchangeOffer.musicTrackFileId = -1;
-		class197.musicTrackVolume = 0;
-		WorldMapDecoration.musicTrackBoolean = false;
-		ParamDefinition.field3275 = var0;
-	}
+	public static void method3333() {
+		synchronized(KeyHandler.KeyHandler_instance) {
+			++KeyHandler.KeyHandler_idleCycles;
+			KeyHandler.field406 = KeyHandler.field408;
+			KeyHandler.field405 = 0;
+			int var1;
+			if (KeyHandler.field387 < 0) {
+				for (var1 = 0; var1 < 112; ++var1) {
+					KeyHandler.KeyHandler_pressedKeys[var1] = false;
+				}
 
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)V",
-		garbageValue = "-318547131"
-	)
-	static final void method3274(String var0, int var1) {
-		PacketBufferNode var2 = class2.getPacketBufferNode(ClientPacket.field2219, Client.packetWriter.isaacCipher);
-		var2.packetBuffer.writeByte(ViewportMouse.stringCp1252NullTerminatedByteSize(var0) + 1);
-		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
-		var2.packetBuffer.method5696(var1);
-		Client.packetWriter.addNode(var2);
+				KeyHandler.field387 = KeyHandler.field400;
+			} else {
+				while (KeyHandler.field387 != KeyHandler.field400) {
+					var1 = KeyHandler.field399[KeyHandler.field400];
+					KeyHandler.field400 = KeyHandler.field400 + 1 & 127;
+					if (var1 < 0) {
+						KeyHandler.KeyHandler_pressedKeys[~var1] = false;
+					} else {
+						if (!KeyHandler.KeyHandler_pressedKeys[var1] && KeyHandler.field405 < KeyHandler.field404.length - 1) {
+							KeyHandler.field404[++KeyHandler.field405 - 1] = var1;
+						}
+
+						KeyHandler.KeyHandler_pressedKeys[var1] = true;
+					}
+				}
+			}
+
+			if (KeyHandler.field405 > 0) {
+				KeyHandler.KeyHandler_idleCycles = 0;
+			}
+
+			KeyHandler.field408 = KeyHandler.field407;
+		}
 	}
 }

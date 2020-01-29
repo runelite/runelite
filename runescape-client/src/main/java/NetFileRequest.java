@@ -4,56 +4,53 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("he")
 @Implements("NetFileRequest")
 public class NetFileRequest extends DualNode {
-	@ObfuscatedName("cv")
-	@Export("mouseCam")
-	static boolean mouseCam;
-	@ObfuscatedName("f")
+	@ObfuscatedName("fn")
 	@ObfuscatedSignature(
-		signature = "Lif;"
+		signature = "Lfw;"
+	)
+	@Export("socketTask")
+	static Task socketTask;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lia;"
 	)
 	@Export("archive")
-	public Archive archive;
-	@ObfuscatedName("i")
+	Archive archive;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1793018397
+		intValue = -335622229
 	)
 	@Export("crc")
-	public int crc;
-	@ObfuscatedName("y")
+	int crc;
+	@ObfuscatedName("o")
 	@Export("padding")
-	public byte padding;
+	byte padding;
 
 	NetFileRequest() {
 	}
 
-	@ObfuscatedName("kz")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-		garbageValue = "1995619175"
+		signature = "([I[IB)V",
+		garbageValue = "100"
 	)
-	static String method4121(String var0, boolean var1) {
-		String var2 = var1 ? "https://" : "http://";
-		if (Client.gameBuild == 1) {
-			var0 = var0 + "-wtrc";
-		} else if (Client.gameBuild == 2) {
-			var0 = var0 + "-wtqa";
-		} else if (Client.gameBuild == 3) {
-			var0 = var0 + "-wtwip";
-		} else if (Client.gameBuild == 5) {
-			var0 = var0 + "-wti";
-		} else if (Client.gameBuild == 4) {
-			var0 = "local";
-		}
+	public static void method4217(int[] var0, int[] var1) {
+		if (var0 != null && var1 != null) {
+			ByteArrayPool.ByteArrayPool_alternativeSizes = var0;
+			VerticalAlignment.ByteArrayPool_altSizeArrayCounts = new int[var0.length];
+			ByteArrayPool.ByteArrayPool_arrays = new byte[var0.length][][];
 
-		String var3 = "";
-		if (UserComparator10.field1943 != null) {
-			var3 = "/p=" + UserComparator10.field1943;
-		}
+			for (int var2 = 0; var2 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var2) {
+				ByteArrayPool.ByteArrayPool_arrays[var2] = new byte[var1[var2]][];
+			}
 
-		String var4 = "runescape.com";
-		return var2 + var0 + "." + var4 + "/l=" + Varps.clientLanguage + "/a=" + MouseRecorder.field564 + var3 + "/";
+		} else {
+			ByteArrayPool.ByteArrayPool_alternativeSizes = null;
+			VerticalAlignment.ByteArrayPool_altSizeArrayCounts = null;
+			ByteArrayPool.ByteArrayPool_arrays = null;
+		}
 	}
 }

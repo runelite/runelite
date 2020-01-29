@@ -6,40 +6,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kb")
+@ObfuscatedName("kv")
 @Implements("BufferedSink")
 public class BufferedSink implements Runnable {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@Export("outputStream")
 	OutputStream outputStream;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1559219719
+		intValue = -2050676869
 	)
 	@Export("capacity")
 	int capacity;
-	@ObfuscatedName("w")
+	@ObfuscatedName("e")
 	@Export("buffer")
 	byte[] buffer;
-	@ObfuscatedName("p")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = -196208499
+		intValue = -1109896429
 	)
 	@Export("position")
 	int position;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1767380433
+		intValue = -1699191965
 	)
 	@Export("limit")
 	int limit;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("exception")
 	IOException exception;
-	@ObfuscatedName("x")
+	@ObfuscatedName("l")
 	@Export("closed")
 	boolean closed;
 
@@ -54,10 +54,10 @@ public class BufferedSink implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "649877335"
+		signature = "(B)Z",
+		garbageValue = "-96"
 	)
 	@Export("isClosed")
 	boolean isClosed() {
@@ -79,10 +79,10 @@ public class BufferedSink implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "([BIII)V",
-		garbageValue = "-1804311851"
+		signature = "([BIIB)V",
+		garbageValue = "0"
 	)
 	@Export("write")
 	void write(byte[] var1, int var2, int var3) throws IOException {
@@ -119,10 +119,10 @@ public class BufferedSink implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1910014350"
+		garbageValue = "1954153796"
 	)
 	@Export("close")
 	void close() {
@@ -198,161 +198,141 @@ public class BufferedSink implements Runnable {
 
 	}
 
-	@ObfuscatedName("kr")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1908686960"
+		signature = "(DDIB)[D",
+		garbageValue = "80"
 	)
-	@Export("changeGameOptions")
-	static final void changeGameOptions(int var0) {
-		Buddy.method5211();
-		MouseRecorder.method1187();
-		int var1 = UserComparator8.VarpDefinition_get(var0).type;
-		if (var1 != 0) {
-			int var2 = Varps.Varps_main[var0];
-			if (var1 == 1) {
-				if (var2 == 1) {
-					Rasterizer3D.Rasterizer3D_setBrightness(0.9D);
-					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.9D);
-				}
+	public static double[] method5902(double var0, double var2, int var4) {
+		int var5 = var4 * 2 + 1;
+		double[] var6 = new double[var5];
+		int var7 = -var4;
 
-				if (var2 == 2) {
-					Rasterizer3D.Rasterizer3D_setBrightness(0.8D);
-					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.8D);
-				}
+		for (int var8 = 0; var7 <= var4; ++var8) {
+			var6[var8] = ViewportMouse.method3061((double)var7, var0, var2);
+			++var7;
+		}
 
-				if (var2 == 3) {
-					Rasterizer3D.Rasterizer3D_setBrightness(0.7D);
-					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.7D);
-				}
+		return var6;
+	}
 
-				if (var2 == 4) {
-					Rasterizer3D.Rasterizer3D_setBrightness(0.6D);
-					((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).setBrightness(0.6D);
-				}
+	@ObfuscatedName("i")
+	@ObfuscatedSignature(
+		signature = "([BIIB)Z",
+		garbageValue = "0"
+	)
+	static final boolean method5913(byte[] var0, int var1, int var2) {
+		boolean var3 = true;
+		Buffer var4 = new Buffer(var0);
+		int var5 = -1;
 
-				NetSocket.method3525();
+		label68:
+		while (true) {
+			int var6 = var4.method5589();
+			if (var6 == 0) {
+				return var3;
 			}
 
-			if (var1 == 3) {
-				short var3 = 0;
-				if (var2 == 0) {
-					var3 = 255;
-				}
+			var5 += var6;
+			int var7 = 0;
+			boolean var8 = false;
 
-				if (var2 == 1) {
-					var3 = 192;
-				}
-
-				if (var2 == 2) {
-					var3 = 128;
-				}
-
-				if (var2 == 3) {
-					var3 = 64;
-				}
-
-				if (var2 == 4) {
-					var3 = 0;
-				}
-
-				if (var3 != Client.musicVolume) {
-					if (Client.musicVolume == 0 && Client.currentTrackGroupId != -1) {
-						class173.playMusicTrack(GrandExchangeOfferWorldComparator.archive6, Client.currentTrackGroupId, 0, var3, false);
-						Client.field767 = false;
-					} else if (var3 == 0) {
-						Actor.method1755();
-						Client.field767 = false;
-					} else {
-						TextureProvider.method2796(var3);
+			while (true) {
+				int var9;
+				while (!var8) {
+					var9 = var4.readUShortSmart();
+					if (var9 == 0) {
+						continue label68;
 					}
 
-					Client.musicVolume = var3;
+					var7 += var9 - 1;
+					int var10 = var7 & 63;
+					int var11 = var7 >> 6 & 63;
+					int var12 = var4.readUnsignedByte() >> 2;
+					int var13 = var11 + var1;
+					int var14 = var10 + var2;
+					if (var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
+						ObjectDefinition var15 = Occluder.getObjectDefinition(var5);
+						if (var12 != 22 || !Client.isLowDetail || var15.int1 != 0 || var15.interactType == 1 || var15.boolean2) {
+							if (!var15.needsModelFiles()) {
+								++Client.field700;
+								var3 = false;
+							}
+
+							var8 = true;
+						}
+					}
 				}
+
+				var9 = var4.readUShortSmart();
+				if (var9 == 0) {
+					break;
+				}
+
+				var4.readUnsignedByte();
+			}
+		}
+	}
+
+	@ObfuscatedName("fy")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "-529911776"
+	)
+	@Export("playSong")
+	static void playSong(int var0) {
+		if (var0 == -1 && !Client.field881) {
+			class197.midiPcmStream.clear();
+			class197.field2414 = 1;
+			UserComparator5.musicTrackArchive = null;
+		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && Client.musicVolume != 0 && !Client.field881) {
+			TaskHandler.playMusicTrack(2, MouseHandler.archive6, var0, 0, Client.musicVolume, false);
+		}
+
+		Client.currentTrackGroupId = var0;
+	}
+
+	@ObfuscatedName("km")
+	@ObfuscatedSignature(
+		signature = "(Lhn;I)Z",
+		garbageValue = "-2086851217"
+	)
+	static final boolean method5915(Widget var0) {
+		int var1 = var0.contentType;
+		if (var1 == 205) {
+			Client.logoutTimer = 250;
+			return true;
+		} else {
+			int var2;
+			int var3;
+			if (var1 >= 300 && var1 <= 313) {
+				var2 = (var1 - 300) / 2;
+				var3 = var1 & 1;
+				Client.playerAppearance.changeAppearance(var2, var3 == 1);
 			}
 
-			if (var1 == 4) {
-				if (var2 == 0) {
-					Client.soundEffectVolume = 127;
-				}
-
-				if (var2 == 1) {
-					Client.soundEffectVolume = 96;
-				}
-
-				if (var2 == 2) {
-					Client.soundEffectVolume = 64;
-				}
-
-				if (var2 == 3) {
-					Client.soundEffectVolume = 32;
-				}
-
-				if (var2 == 4) {
-					Client.soundEffectVolume = 0;
-				}
+			if (var1 >= 314 && var1 <= 323) {
+				var2 = (var1 - 314) / 2;
+				var3 = var1 & 1;
+				Client.playerAppearance.method4066(var2, var3 == 1);
 			}
 
-			if (var1 == 5) {
-				Client.leftClickOpensMenu = var2;
+			if (var1 == 324) {
+				Client.playerAppearance.changeSex(false);
 			}
 
-			if (var1 == 6) {
-				Client.chatEffects = var2;
+			if (var1 == 325) {
+				Client.playerAppearance.changeSex(true);
 			}
 
-			if (var1 == 9) {
-				Client.field901 = var2;
+			if (var1 == 326) {
+				PacketBufferNode var4 = TilePaint.getPacketBufferNode(ClientPacket.field2284, Client.packetWriter.isaacCipher);
+				Client.playerAppearance.write(var4.packetBuffer);
+				Client.packetWriter.addNode(var4);
+				return true;
+			} else {
+				return false;
 			}
-
-			if (var1 == 10) {
-				if (var2 == 0) {
-					Client.areaSoundEffectVolume = 127;
-				}
-
-				if (var2 == 1) {
-					Client.areaSoundEffectVolume = 96;
-				}
-
-				if (var2 == 2) {
-					Client.areaSoundEffectVolume = 64;
-				}
-
-				if (var2 == 3) {
-					Client.areaSoundEffectVolume = 32;
-				}
-
-				if (var2 == 4) {
-					Client.areaSoundEffectVolume = 0;
-				}
-			}
-
-			if (var1 == 17) {
-				Client.followerIndex = var2 & 65535;
-			}
-
-			if (var1 == 18) {
-				Client.playerAttackOption = (AttackOption)DynamicObject.findEnumerated(ArchiveDisk.method5908(), var2);
-				if (Client.playerAttackOption == null) {
-					Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
-				}
-			}
-
-			if (var1 == 19) {
-				if (var2 == -1) {
-					Client.combatTargetPlayerIndex = -1;
-				} else {
-					Client.combatTargetPlayerIndex = var2 & 2047;
-				}
-			}
-
-			if (var1 == 22) {
-				Client.npcAttackOption = (AttackOption)DynamicObject.findEnumerated(ArchiveDisk.method5908(), var2);
-				if (Client.npcAttackOption == null) {
-					Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
-				}
-			}
-
 		}
 	}
 }

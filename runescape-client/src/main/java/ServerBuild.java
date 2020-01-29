@@ -4,47 +4,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hi")
+@ObfuscatedName("hq")
 @Implements("ServerBuild")
 public class ServerBuild {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lhi;"
+		signature = "Lhq;"
 	)
 	@Export("LIVE")
-	public static final ServerBuild LIVE;
-	@ObfuscatedName("i")
+	static final ServerBuild LIVE;
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lhi;"
+		signature = "Lhq;"
 	)
 	@Export("BUILDLIVE")
-	public static final ServerBuild BUILDLIVE;
-	@ObfuscatedName("y")
+	static final ServerBuild BUILDLIVE;
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		signature = "Lhi;"
+		signature = "Lhq;"
 	)
 	@Export("RC")
-	public static final ServerBuild RC;
-	@ObfuscatedName("w")
+	static final ServerBuild RC;
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lhi;"
+		signature = "Lhq;"
 	)
 	@Export("WIP")
-	public static final ServerBuild WIP;
-	@ObfuscatedName("dv")
-	@ObfuscatedSignature(
-		signature = "Lif;"
+	static final ServerBuild WIP;
+	@ObfuscatedName("dc")
+	@ObfuscatedGetter(
+		longValue = 1863736648599346965L
 	)
-	@Export("archive10")
-	static Archive archive10;
-	@ObfuscatedName("p")
+	static long field3111;
+	@ObfuscatedName("gl")
+	@ObfuscatedSignature(
+		signature = "Lem;"
+	)
+	@Export("scene")
+	static Scene scene;
+	@ObfuscatedName("i")
 	@Export("name")
 	public final String name;
-	@ObfuscatedName("b")
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 135493903
+		intValue = 1460040921
 	)
-	public final int field3081;
+	final int field3108;
 
 	static {
 		LIVE = new ServerBuild("LIVE", 0);
@@ -55,19 +60,29 @@ public class ServerBuild {
 
 	ServerBuild(String var1, int var2) {
 		this.name = var1;
-		this.field3081 = var2;
+		this.field3108 = var2;
 	}
 
-	@ObfuscatedName("f")
-	public static final void method4111(long var0) {
-		if (var0 > 0L) {
-			if (var0 % 10L == 0L) {
-				class188.method3604(var0 - 1L);
-				class188.method3604(1L);
-			} else {
-				class188.method3604(var0);
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		signature = "(BI)C",
+		garbageValue = "798764142"
+	)
+	public static char method4209(byte var0) {
+		int var1 = var0 & 255;
+		if (var1 == 0) {
+			throw new IllegalArgumentException("" + Integer.toString(var1, 16));
+		} else {
+			if (var1 >= 128 && var1 < 160) {
+				char var2 = class288.cp1252AsciiExtension[var1 - 128];
+				if (var2 == 0) {
+					var2 = '?';
+				}
+
+				var1 = var2;
 			}
 
+			return (char)var1;
 		}
 	}
 }

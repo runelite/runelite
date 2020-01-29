@@ -2,22 +2,19 @@ import java.awt.Component;
 import java.awt.Graphics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("ai")
 @Implements("Canvas")
 public final class Canvas extends java.awt.Canvas {
-	@ObfuscatedName("qn")
-	@ObfuscatedGetter(
-		intValue = 739574061
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "Lii;"
 	)
-	static int field397;
-	@ObfuscatedName("gk")
-	@Export("xteaKeys")
-	static int[][] xteaKeys;
-	@ObfuscatedName("f")
+	@Export("SequenceDefinition_animationsArchive")
+	static AbstractArchive SequenceDefinition_animationsArchive;
+	@ObfuscatedName("c")
 	@Export("component")
 	Component component;
 
@@ -25,76 +22,45 @@ public final class Canvas extends java.awt.Canvas {
 		this.component = var1;
 	}
 
-	public final void update(Graphics var1) {
-		this.component.update(var1);
-	}
-
 	public final void paint(Graphics var1) {
 		this.component.paint(var1);
 	}
 
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "(IIIIB)V",
-		garbageValue = "-7"
-	)
-	@Export("itemContainerSetItem")
-	static void itemContainerSetItem(int var0, int var1, int var2, int var3) {
-		ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var4 == null) {
-			var4 = new ItemContainer();
-			ItemContainer.itemContainers.put(var4, (long)var0);
-		}
-
-		if (var4.ids.length <= var1) {
-			int[] var5 = new int[var1 + 1];
-			int[] var6 = new int[var1 + 1];
-
-			int var7;
-			for (var7 = 0; var7 < var4.ids.length; ++var7) {
-				var5[var7] = var4.ids[var7];
-				var6[var7] = var4.quantities[var7];
-			}
-
-			for (var7 = var4.ids.length; var7 < var1; ++var7) {
-				var5[var7] = -1;
-				var6[var7] = 0;
-			}
-
-			var4.ids = var5;
-			var4.quantities = var6;
-		}
-
-		var4.ids[var1] = var2;
-		var4.quantities[var1] = var3;
+	public final void update(Graphics var1) {
+		this.component.update(var1);
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("fq")
 	@ObfuscatedSignature(
-		signature = "(Lhz;Ljava/lang/String;Ljava/lang/String;I)Lli;",
-		garbageValue = "-1768952191"
+		signature = "(B)V",
+		garbageValue = "-97"
 	)
-	@Export("SpriteBuffer_getIndexedSpriteByName")
-	public static IndexedSprite SpriteBuffer_getIndexedSpriteByName(AbstractArchive var0, String var1, String var2) {
-		int var3 = var0.getGroupId(var1);
-		int var4 = var0.getFileId(var3, var2);
-		IndexedSprite var5;
-		if (!HitSplatDefinition.method4586(var0, var3, var4)) {
-			var5 = null;
-		} else {
-			var5 = WorldMapDecoration.method327();
+	static final void method861() {
+		if (FileSystem.ClanChat_inClanChat) {
+			if (InterfaceParent.clanChat != null) {
+				InterfaceParent.clanChat.sort();
+			}
+
+			DefaultsGroup.method5953();
+			FileSystem.ClanChat_inClanChat = false;
 		}
 
-		return var5;
 	}
 
-	@ObfuscatedName("ey")
+	@ObfuscatedName("hf")
 	@ObfuscatedSignature(
-		signature = "(I)Lld;",
-		garbageValue = "-228805350"
+		signature = "(IIB)I",
+		garbageValue = "-77"
 	)
-	@Export("getWorldMap")
-	static WorldMap getWorldMap() {
-		return GrandExchangeEvent.worldMap;
+	static int method864(int var0, int var1) {
+		int var2 = var1 - 334;
+		if (var2 < 0) {
+			var2 = 0;
+		} else if (var2 > 100) {
+			var2 = 100;
+		}
+
+		int var3 = (Client.zoomWidth - Client.zoomHeight) * var2 / 100 + Client.zoomHeight;
+		return var0 * var3 / 256;
 	}
 }

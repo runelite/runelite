@@ -1,13 +1,41 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kd")
+@ObfuscatedName("ku")
 public class class287 {
-	@ObfuscatedName("f")
-	@Export("cp1252AsciiExtension")
-	public static final char[] cp1252AsciiExtension;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		signature = "Lii;"
+	)
+	@Export("VarbitDefinition_archive")
+	public static AbstractArchive VarbitDefinition_archive;
 
-	static {
-		cp1252AsciiExtension = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+	@ObfuscatedName("jy")
+	@ObfuscatedSignature(
+		signature = "(IIIB)Lbe;",
+		garbageValue = "27"
+	)
+	static final InterfaceParent method5327(int var0, int var1, int var2) {
+		InterfaceParent var3 = new InterfaceParent();
+		var3.group = var1;
+		var3.type = var2;
+		Client.interfaceParents.put(var3, (long)var0);
+		class51.Widget_resetModelFrames(var1);
+		Widget var4 = Varps.getWidget(var0);
+		NPCDefinition.invalidateWidget(var4);
+		if (Client.meslayerContinueWidget != null) {
+			NPCDefinition.invalidateWidget(Client.meslayerContinueWidget);
+			Client.meslayerContinueWidget = null;
+		}
+
+		GameObject.method3360();
+		WorldMapIcon_1.revalidateWidgetScroll(WorldMapLabel.Widget_interfaceComponents[var0 >> 16], var4, false);
+		WorldMapLabelSize.runWidgetOnLoadListener(var1);
+		if (Client.rootInterface != -1) {
+			class226.runIntfCloseListeners(Client.rootInterface, 1);
+		}
+
+		return var3;
 	}
 }

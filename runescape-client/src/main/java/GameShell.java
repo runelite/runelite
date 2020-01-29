@@ -18,185 +18,181 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.ImageObserver;
 import java.net.URL;
-import java.security.SecureRandom;
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bf")
 @Implements("GameShell")
 public abstract class GameShell extends Applet implements Runnable, FocusListener, WindowListener {
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "Lfl;"
+		signature = "Lff;"
 	)
 	@Export("taskHandler")
 	protected static TaskHandler taskHandler;
-	@ObfuscatedName("i")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Lbj;"
+		signature = "Lbf;"
 	)
 	@Export("gameShell")
 	static GameShell gameShell;
-	@ObfuscatedName("p")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -641610179
+		intValue = 196022413
 	)
 	@Export("GameShell_redundantStartThreadCount")
 	static int GameShell_redundantStartThreadCount;
-	@ObfuscatedName("b")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		longValue = 9100784568139966685L
+		longValue = 528235064491181747L
 	)
 	@Export("stopTimeMs")
 	static long stopTimeMs;
-	@ObfuscatedName("e")
+	@ObfuscatedName("i")
 	@Export("isKilled")
 	static boolean isKilled;
-	@ObfuscatedName("d")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = 1686581025
-	)
-	@Export("gameCyclesToDo")
-	static int gameCyclesToDo;
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = 777361689
+		intValue = -1437299021
 	)
 	@Export("cycleDurationMillis")
 	static int cycleDurationMillis;
-	@ObfuscatedName("o")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -224666491
+		intValue = 1661201835
 	)
 	@Export("fiveOrOne")
 	static int fiveOrOne;
-	@ObfuscatedName("v")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 1353428271
+		intValue = 71022173
 	)
 	@Export("fps")
 	protected static int fps;
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "Lfu;"
+	)
+	@Export("clock")
+	static Clock clock;
+	@ObfuscatedName("v")
 	@Export("graphicsTickTimes")
 	static long[] graphicsTickTimes;
-	@ObfuscatedName("j")
-	@Export("clientTickTimes")
-	static long[] clientTickTimes;
 	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = 1909325521
+		intValue = 1251279017
 	)
-	@Export("clientTickTimeIdx")
-	static int clientTickTimeIdx;
-	@ObfuscatedName("an")
+	@Export("graphicsTickTimeIdx")
+	static int graphicsTickTimeIdx;
+	@ObfuscatedName("k")
+	@Export("clientTickTimes")
+	static long[] clientTickTimes;
+	@ObfuscatedName("ax")
+	@Export("fontHelvetica13")
+	static java.awt.Font fontHelvetica13;
+	@ObfuscatedName("as")
 	@ObfuscatedGetter(
-		intValue = 2131484097
+		intValue = -2072327309
 	)
-	static int field442;
-	@ObfuscatedName("ag")
-	@Export("null_string")
-	protected static String null_string;
-	@ObfuscatedName("aj")
+	static int field467;
+	@ObfuscatedName("ao")
 	@Export("volatileFocus")
 	static volatile boolean volatileFocus;
-	@ObfuscatedName("ax")
-	@Export("hasFocus")
-	protected static boolean hasFocus;
-	@ObfuscatedName("af")
+	@ObfuscatedName("ag")
 	@ObfuscatedGetter(
-		longValue = -7455668371205512405L
+		longValue = 8963656007047949345L
 	)
 	@Export("garbageCollectorLastCollectionTime")
 	static long garbageCollectorLastCollectionTime;
-	@ObfuscatedName("ap")
+	@ObfuscatedName("ai")
 	@ObfuscatedGetter(
-		longValue = 4016569584123468349L
+		longValue = 9016661795378889985L
 	)
 	@Export("garbageCollectorLastCheckTimeMs")
 	static long garbageCollectorLastCheckTimeMs;
-	@ObfuscatedName("a")
+	@ObfuscatedName("bw")
+	static String field477;
+	@ObfuscatedName("g")
 	@Export("hasErrored")
 	boolean hasErrored;
-	@ObfuscatedName("u")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1294552549
+		intValue = -1999078243
 	)
 	@Export("contentWidth")
 	protected int contentWidth;
-	@ObfuscatedName("z")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = 1325726667
+		intValue = 1778726039
 	)
 	@Export("contentHeight")
 	protected int contentHeight;
-	@ObfuscatedName("h")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 301736505
+		intValue = -1382967399
 	)
 	@Export("canvasX")
 	int canvasX;
-	@ObfuscatedName("m")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = -380682277
+		intValue = 2050862529
 	)
 	@Export("canvasY")
 	int canvasY;
-	@ObfuscatedName("q")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = 177005865
+		intValue = 2042423139
 	)
-	int field422;
-	@ObfuscatedName("aa")
+	int field459;
+	@ObfuscatedName("ae")
 	@ObfuscatedGetter(
-		intValue = -973414545
+		intValue = 96857059
 	)
-	int field419;
-	@ObfuscatedName("av")
+	int field464;
+	@ObfuscatedName("af")
 	@ObfuscatedGetter(
-		intValue = -1421773905
+		intValue = -460678809
 	)
 	@Export("maxCanvasWidth")
 	int maxCanvasWidth;
-	@ObfuscatedName("aw")
+	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -1295726035
+		intValue = 875531909
 	)
 	@Export("maxCanvasHeight")
 	int maxCanvasHeight;
 	@ObfuscatedName("au")
 	@Export("frame")
 	Frame frame;
-	@ObfuscatedName("ah")
+	@ObfuscatedName("ay")
 	@Export("canvas")
 	java.awt.Canvas canvas;
-	@ObfuscatedName("aq")
-	volatile boolean field441;
-	@ObfuscatedName("ar")
+	@ObfuscatedName("aa")
+	volatile boolean field466;
+	@ObfuscatedName("ak")
 	@Export("resizeCanvasNextFrame")
 	boolean resizeCanvasNextFrame;
-	@ObfuscatedName("az")
+	@ObfuscatedName("ac")
 	@Export("isCanvasInvalid")
 	volatile boolean isCanvasInvalid;
-	@ObfuscatedName("ay")
+	@ObfuscatedName("aw")
 	@ObfuscatedGetter(
-		longValue = -550233093924080547L
+		longValue = -8817424516804380497L
 	)
-	volatile long field418;
+	volatile long field470;
 	@ObfuscatedName("al")
 	@ObfuscatedSignature(
-		signature = "Lad;"
+		signature = "Lao;"
 	)
 	@Export("mouseWheelHandler")
 	MouseWheelHandler mouseWheelHandler;
-	@ObfuscatedName("ae")
+	@ObfuscatedName("ad")
 	@Export("clipboard")
 	Clipboard clipboard;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("am")
 	@Export("eventQueue")
 	final EventQueue eventQueue;
 
@@ -210,7 +206,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		fps = 0;
 		graphicsTickTimes = new long[32];
 		clientTickTimes = new long[32];
-		field442 = 500;
+		field467 = 500;
 		volatileFocus = true;
 		garbageCollectorLastCollectionTime = -1L;
 		garbageCollectorLastCheckTimeMs = -1L;
@@ -220,10 +216,10 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		this.hasErrored = false;
 		this.canvasX = 0;
 		this.canvasY = 0;
-		this.field441 = true;
+		this.field466 = true;
 		this.resizeCanvasNextFrame = false;
 		this.isCanvasInvalid = false;
-		this.field418 = 0L;
+		this.field470 = 0L;
 		EventQueue var1 = null;
 
 		try {
@@ -232,34 +228,34 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 
 		this.eventQueue = var1;
-		FriendLoginUpdate.method5300(new DevicePcmPlayerProvider());
+		UserComparator9.method3462(new DevicePcmPlayerProvider());
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(III)V",
-		garbageValue = "-472959783"
+		garbageValue = "-184957247"
 	)
 	@Export("setMaxCanvasSize")
 	protected final void setMaxCanvasSize(int var1, int var2) {
 		if (this.maxCanvasWidth != var1 || var2 != this.maxCanvasHeight) {
-			this.method936();
+			this.method947();
 		}
 
 		this.maxCanvasWidth = var1;
 		this.maxCanvasHeight = var2;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Object;B)V",
-		garbageValue = "-24"
+		signature = "(Ljava/lang/Object;I)V",
+		garbageValue = "-1941582772"
 	)
 	@Export("post")
 	final void post(Object var1) {
 		if (this.eventQueue != null) {
 			for (int var2 = 0; var2 < 50 && this.eventQueue.peekEvent() != null; ++var2) {
-				ServerBuild.method4111(1L);
+				FriendLoginUpdate.method5325(1L);
 			}
 
 			if (var1 != null) {
@@ -269,10 +265,10 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(I)Lfs;",
-		garbageValue = "-1343369981"
+		signature = "(I)Lfi;",
+		garbageValue = "-1591236478"
 	)
 	@Export("mouseWheel")
 	protected MouseWheel mouseWheel() {
@@ -284,41 +280,44 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		return this.mouseWheelHandler;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-2116975887"
+		signature = "(B)V",
+		garbageValue = "75"
 	)
 	@Export("setUpClipboard")
 	protected void setUpClipboard() {
 		this.clipboard = this.getToolkit().getSystemClipboard();
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;S)V",
-		garbageValue = "-9007"
+		signature = "(Ljava/lang/String;I)V",
+		garbageValue = "794890574"
 	)
 	@Export("clipboardSetString")
 	protected void clipboardSetString(String var1) {
 		this.clipboard.setContents(new StringSelection(var1), (ClipboardOwner)null);
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-54"
+		signature = "(I)V",
+		garbageValue = "-1563804954"
 	)
 	@Export("setUpKeyboard")
 	protected final void setUpKeyboard() {
-		WorldMapData_1.method722();
-		GrandExchangeOfferTotalQuantityComparator.method93(this.canvas);
+		UserComparator4.method3451();
+		java.awt.Canvas var1 = this.canvas;
+		var1.setFocusTraversalKeysEnabled(false);
+		var1.addKeyListener(KeyHandler.KeyHandler_instance);
+		var1.addFocusListener(KeyHandler.KeyHandler_instance);
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-57"
+		signature = "(I)V",
+		garbageValue = "-1024883115"
 	)
 	@Export("setUpMouse")
 	protected final void setUpMouse() {
@@ -328,18 +327,18 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		var1.addFocusListener(MouseHandler.MouseHandler_instance);
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-92"
+		signature = "(I)V",
+		garbageValue = "-1230297818"
 	)
 	@Export("resizeCanvas")
 	final void resizeCanvas() {
 		Container var1 = this.container();
 		if (var1 != null) {
 			Bounds var2 = this.getFrameContentBounds();
-			this.contentWidth = Math.max(var2.highX, this.field422);
-			this.contentHeight = Math.max(var2.highY, this.field419);
+			this.contentWidth = Math.max(var2.highX, this.field459);
+			this.contentHeight = Math.max(var2.highY, this.field464);
 			if (this.contentWidth <= 0) {
 				this.contentWidth = 1;
 			}
@@ -348,43 +347,43 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				this.contentHeight = 1;
 			}
 
-			GrandExchangeOfferTotalQuantityComparator.canvasWidth = Math.min(this.contentWidth, this.maxCanvasWidth);
-			AttackOption.canvasHeight = Math.min(this.contentHeight, this.maxCanvasHeight);
-			this.canvasX = (this.contentWidth - GrandExchangeOfferTotalQuantityComparator.canvasWidth) / 2;
+			Username.canvasWidth = Math.min(this.contentWidth, this.maxCanvasWidth);
+			WorldMapData_1.canvasHeight = Math.min(this.contentHeight, this.maxCanvasHeight);
+			this.canvasX = (this.contentWidth - Username.canvasWidth) / 2;
 			this.canvasY = 0;
-			this.canvas.setSize(GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight);
-			IgnoreList.rasterProvider = new RasterProvider(GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight, this.canvas);
+			this.canvas.setSize(Username.canvasWidth, WorldMapData_1.canvasHeight);
+			DevicePcmPlayerProvider.rasterProvider = new RasterProvider(Username.canvasWidth, WorldMapData_1.canvasHeight, this.canvas);
 			if (var1 == this.frame) {
 				Insets var3 = this.frame.getInsets();
-				this.canvas.setLocation(this.canvasX + var3.left, var3.top + this.canvasY);
+				this.canvas.setLocation(var3.left + this.canvasX, this.canvasY + var3.top);
 			} else {
 				this.canvas.setLocation(this.canvasX, this.canvasY);
 			}
 
-			this.field441 = true;
+			this.field466 = true;
 			this.resizeGame();
 		}
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1309389764"
+		garbageValue = "1781530375"
 	)
 	@Export("resizeGame")
 	protected abstract void resizeGame();
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "14"
+		signature = "(I)V",
+		garbageValue = "-1864888047"
 	)
 	@Export("clearBackground")
 	void clearBackground() {
 		int var1 = this.canvasX;
 		int var2 = this.canvasY;
-		int var3 = this.contentWidth - GrandExchangeOfferTotalQuantityComparator.canvasWidth - var1;
-		int var4 = this.contentHeight - AttackOption.canvasHeight - var2;
+		int var3 = this.contentWidth - Username.canvasWidth - var1;
+		int var4 = this.contentHeight - WorldMapData_1.canvasHeight - var2;
 		if (var1 > 0 || var3 > 0 || var2 > 0 || var4 > 0) {
 			try {
 				Container var5 = this.container();
@@ -419,40 +418,43 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1861012974"
+		garbageValue = "-557275570"
 	)
 	@Export("replaceCanvas")
 	final void replaceCanvas() {
-		ArchiveDiskAction.method4120(this.canvas);
 		java.awt.Canvas var1 = this.canvas;
-		var1.removeMouseListener(MouseHandler.MouseHandler_instance);
-		var1.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
-		var1.removeFocusListener(MouseHandler.MouseHandler_instance);
+		var1.removeKeyListener(KeyHandler.KeyHandler_instance);
+		var1.removeFocusListener(KeyHandler.KeyHandler_instance);
+		KeyHandler.field387 = -1;
+		java.awt.Canvas var2 = this.canvas;
+		var2.removeMouseListener(MouseHandler.MouseHandler_instance);
+		var2.removeMouseMotionListener(MouseHandler.MouseHandler_instance);
+		var2.removeFocusListener(MouseHandler.MouseHandler_instance);
 		MouseHandler.MouseHandler_currentButtonVolatile = 0;
 		if (this.mouseWheelHandler != null) {
 			this.mouseWheelHandler.removeFrom(this.canvas);
 		}
 
 		this.addCanvas();
-		GrandExchangeOfferTotalQuantityComparator.method93(this.canvas);
-		java.awt.Canvas var2 = this.canvas;
-		var2.addMouseListener(MouseHandler.MouseHandler_instance);
-		var2.addMouseMotionListener(MouseHandler.MouseHandler_instance);
-		var2.addFocusListener(MouseHandler.MouseHandler_instance);
+		java.awt.Canvas var3 = this.canvas;
+		var3.setFocusTraversalKeysEnabled(false);
+		var3.addKeyListener(KeyHandler.KeyHandler_instance);
+		var3.addFocusListener(KeyHandler.KeyHandler_instance);
+		BuddyRankComparator.method3505(this.canvas);
 		if (this.mouseWheelHandler != null) {
 			this.mouseWheelHandler.addTo(this.canvas);
 		}
 
-		this.method936();
+		this.method947();
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(IIII)V",
-		garbageValue = "1709387242"
+		signature = "(IIIB)V",
+		garbageValue = "0"
 	)
 	@Export("startThread")
 	protected final void startThread(int var1, int var2, int var3) {
@@ -469,9 +471,9 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			}
 
 			gameShell = this;
-			GrandExchangeOfferTotalQuantityComparator.canvasWidth = var1;
-			AttackOption.canvasHeight = var2;
-			RunException.RunException_revision = var3;
+			Username.canvasWidth = var1;
+			WorldMapData_1.canvasHeight = var2;
+			GZipDecompressor.RunException_revision = var3;
 			RunException.RunException_applet = this;
 			if (taskHandler == null) {
 				taskHandler = new TaskHandler();
@@ -479,16 +481,16 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 			taskHandler.newThreadTask(this, 1);
 		} catch (Exception var5) {
-			DesktopPlatformInfoProvider.RunException_sendStackTrace((String)null, var5);
+			class225.RunException_sendStackTrace((String)null, var5);
 			this.error("crash");
 		}
 
 	}
 
-	@ObfuscatedName("aa")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1793942402"
+		signature = "(B)V",
+		garbageValue = "6"
 	)
 	@Export("addCanvas")
 	final synchronized void addCanvas() {
@@ -498,47 +500,47 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			var1.remove(this.canvas);
 		}
 
-		GrandExchangeOfferTotalQuantityComparator.canvasWidth = Math.max(var1.getWidth(), this.field422);
-		AttackOption.canvasHeight = Math.max(var1.getHeight(), this.field419);
+		Username.canvasWidth = Math.max(var1.getWidth(), this.field459);
+		WorldMapData_1.canvasHeight = Math.max(var1.getHeight(), this.field464);
 		Insets var2;
 		if (this.frame != null) {
 			var2 = this.frame.getInsets();
-			GrandExchangeOfferTotalQuantityComparator.canvasWidth -= var2.left + var2.right;
-			AttackOption.canvasHeight -= var2.top + var2.bottom;
+			Username.canvasWidth -= var2.left + var2.right;
+			WorldMapData_1.canvasHeight -= var2.top + var2.bottom;
 		}
 
 		this.canvas = new Canvas(this);
 		var1.setBackground(Color.BLACK);
 		var1.setLayout((LayoutManager)null);
 		var1.add(this.canvas);
-		this.canvas.setSize(GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight);
+		this.canvas.setSize(Username.canvasWidth, WorldMapData_1.canvasHeight);
 		this.canvas.setVisible(true);
 		this.canvas.setBackground(Color.BLACK);
 		if (var1 == this.frame) {
 			var2 = this.frame.getInsets();
-			this.canvas.setLocation(this.canvasX + var2.left, var2.top + this.canvasY);
+			this.canvas.setLocation(this.canvasX + var2.left, this.canvasY + var2.top);
 		} else {
 			this.canvas.setLocation(this.canvasX, this.canvasY);
 		}
 
 		this.canvas.addFocusListener(this);
 		this.canvas.requestFocus();
-		this.field441 = true;
-		if (IgnoreList.rasterProvider != null && GrandExchangeOfferTotalQuantityComparator.canvasWidth == IgnoreList.rasterProvider.width && AttackOption.canvasHeight == IgnoreList.rasterProvider.height) {
-			((RasterProvider)IgnoreList.rasterProvider).setComponent(this.canvas);
-			IgnoreList.rasterProvider.drawFull(0, 0);
+		this.field466 = true;
+		if (DevicePcmPlayerProvider.rasterProvider != null && Username.canvasWidth == DevicePcmPlayerProvider.rasterProvider.width && WorldMapData_1.canvasHeight == DevicePcmPlayerProvider.rasterProvider.height) {
+			((RasterProvider)DevicePcmPlayerProvider.rasterProvider).setComponent(this.canvas);
+			DevicePcmPlayerProvider.rasterProvider.drawFull(0, 0);
 		} else {
-			IgnoreList.rasterProvider = new RasterProvider(GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight, this.canvas);
+			DevicePcmPlayerProvider.rasterProvider = new RasterProvider(Username.canvasWidth, WorldMapData_1.canvasHeight, this.canvas);
 		}
 
 		this.isCanvasInvalid = false;
-		this.field418 = WorldMapID.currentTimeMillis();
+		this.field470 = WorldMapIcon_0.currentTimeMillis();
 	}
 
-	@ObfuscatedName("av")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "-1830524310"
+		garbageValue = "1249538229"
 	)
 	@Export("checkHost")
 	protected final boolean checkHost() {
@@ -567,52 +569,52 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 	}
 
-	@ObfuscatedName("aw")
+	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-25"
+		garbageValue = "34"
 	)
 	@Export("clientTick")
 	void clientTick() {
-		long var1 = WorldMapID.currentTimeMillis();
-		long var3 = clientTickTimes[clientTickTimeIdx];
-		clientTickTimes[clientTickTimeIdx] = var1;
-		clientTickTimeIdx = clientTickTimeIdx + 1 & 31;
+		long var1 = WorldMapIcon_0.currentTimeMillis();
+		long var3 = clientTickTimes[class14.clientTickTimeIdx];
+		clientTickTimes[class14.clientTickTimeIdx] = var1;
+		class14.clientTickTimeIdx = class14.clientTickTimeIdx + 1 & 31;
 		if (var3 != 0L && var1 > var3) {
 		}
 
 		synchronized(this) {
-			hasFocus = volatileFocus;
+			GrandExchangeOfferTotalQuantityComparator.hasFocus = volatileFocus;
 		}
 
 		this.doCycle();
 	}
 
-	@ObfuscatedName("as")
+	@ObfuscatedName("aj")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-2091999250"
+		garbageValue = "44654688"
 	)
 	@Export("graphicsTick")
 	void graphicsTick() {
 		Container var1 = this.container();
-		long var2 = WorldMapID.currentTimeMillis();
-		long var4 = graphicsTickTimes[class30.graphicsTickTimeIdx];
-		graphicsTickTimes[class30.graphicsTickTimeIdx] = var2;
-		class30.graphicsTickTimeIdx = class30.graphicsTickTimeIdx + 1 & 31;
-		if (0L != var4 && var2 > var4) {
+		long var2 = WorldMapIcon_0.currentTimeMillis();
+		long var4 = graphicsTickTimes[graphicsTickTimeIdx];
+		graphicsTickTimes[graphicsTickTimeIdx] = var2;
+		graphicsTickTimeIdx = graphicsTickTimeIdx + 1 & 31;
+		if (var4 != 0L && var2 > var4) {
 			int var6 = (int)(var2 - var4);
 			fps = ((var6 >> 1) + 32000) / var6;
 		}
 
-		if (++field442 - 1 > 50) {
-			field442 -= 50;
-			this.field441 = true;
-			this.canvas.setSize(GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight);
+		if (++field467 - 1 > 50) {
+			field467 -= 50;
+			this.field466 = true;
+			this.canvas.setSize(Username.canvasWidth, WorldMapData_1.canvasHeight);
 			this.canvas.setVisible(true);
 			if (var1 == this.frame) {
 				Insets var7 = this.frame.getInsets();
-				this.canvas.setLocation(var7.left + this.canvasX, this.canvasY + var7.top);
+				this.canvas.setLocation(this.canvasX + var7.left, this.canvasY + var7.top);
 			} else {
 				this.canvas.setLocation(this.canvasX, this.canvasY);
 			}
@@ -622,21 +624,21 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			this.replaceCanvas();
 		}
 
-		this.method998();
-		this.draw(this.field441);
-		if (this.field441) {
+		this.method938();
+		this.draw(this.field466);
+		if (this.field466) {
 			this.clearBackground();
 		}
 
-		this.field441 = false;
+		this.field466 = false;
 	}
 
-	@ObfuscatedName("ak")
+	@ObfuscatedName("au")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-1"
+		signature = "(I)V",
+		garbageValue = "847743243"
 	)
-	final void method998() {
+	final void method938() {
 		Bounds var1 = this.getFrameContentBounds();
 		if (var1.highX != this.contentWidth || var1.highY != this.contentHeight || this.resizeCanvasNextFrame) {
 			this.resizeCanvas();
@@ -645,19 +647,19 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	}
 
-	@ObfuscatedName("au")
+	@ObfuscatedName("ay")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "24"
+		garbageValue = "-92"
 	)
-	final void method936() {
+	final void method947() {
 		this.resizeCanvasNextFrame = true;
 	}
 
-	@ObfuscatedName("ah")
+	@ObfuscatedName("aa")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "12"
+		garbageValue = "-46"
 	)
 	@Export("kill")
 	final synchronized void kill() {
@@ -688,91 +690,91 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				}
 			}
 
-			this.vmethod1290();
+			this.vmethod1478();
 		}
 	}
 
-	@ObfuscatedName("ao")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "557803519"
+		garbageValue = "159835862"
 	)
 	@Export("setUp")
 	protected abstract void setUp();
 
-	@ObfuscatedName("ae")
+	@ObfuscatedName("ak")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1971545072"
+		garbageValue = "1684911639"
 	)
 	@Export("doCycle")
 	protected abstract void doCycle();
 
-	@ObfuscatedName("ad")
+	@ObfuscatedName("ac")
 	@ObfuscatedSignature(
 		signature = "(ZI)V",
-		garbageValue = "-1655647135"
+		garbageValue = "-1486807503"
 	)
 	@Export("draw")
 	protected abstract void draw(boolean var1);
 
-	@ObfuscatedName("aj")
+	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1818676977"
+		garbageValue = "-2144356516"
 	)
 	@Export("kill0")
 	protected abstract void kill0();
 
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ar")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;ZB)V",
-		garbageValue = "58"
+		signature = "(ILjava/lang/String;ZI)V",
+		garbageValue = "-1421329320"
 	)
 	@Export("drawInitial")
 	protected final void drawInitial(int var1, String var2, boolean var3) {
 		try {
 			Graphics var4 = this.canvas.getGraphics();
-			if (NetSocket.fontHelvetica13 == null) {
-				NetSocket.fontHelvetica13 = new java.awt.Font("Helvetica", 1, 13);
-				WorldMapSprite.loginScreenFontMetrics = this.canvas.getFontMetrics(NetSocket.fontHelvetica13);
+			if (fontHelvetica13 == null) {
+				fontHelvetica13 = new java.awt.Font("Helvetica", 1, 13);
+				class42.loginScreenFontMetrics = this.canvas.getFontMetrics(fontHelvetica13);
 			}
 
 			if (var3) {
 				var4.setColor(Color.black);
-				var4.fillRect(0, 0, GrandExchangeOfferTotalQuantityComparator.canvasWidth, AttackOption.canvasHeight);
+				var4.fillRect(0, 0, Username.canvasWidth, WorldMapData_1.canvasHeight);
 			}
 
 			Color var5 = new Color(140, 17, 17);
 
 			try {
-				if (class189.field2333 == null) {
-					class189.field2333 = this.canvas.createImage(304, 34);
+				if (WorldMapRegion.field254 == null) {
+					WorldMapRegion.field254 = this.canvas.createImage(304, 34);
 				}
 
-				Graphics var6 = class189.field2333.getGraphics();
+				Graphics var6 = WorldMapRegion.field254.getGraphics();
 				var6.setColor(var5);
 				var6.drawRect(0, 0, 303, 33);
 				var6.fillRect(2, 2, var1 * 3, 30);
 				var6.setColor(Color.black);
 				var6.drawRect(1, 1, 301, 31);
 				var6.fillRect(var1 * 3 + 2, 2, 300 - var1 * 3, 30);
-				var6.setFont(NetSocket.fontHelvetica13);
+				var6.setFont(fontHelvetica13);
 				var6.setColor(Color.white);
-				var6.drawString(var2, (304 - WorldMapSprite.loginScreenFontMetrics.stringWidth(var2)) / 2, 22);
-				var4.drawImage(class189.field2333, GrandExchangeOfferTotalQuantityComparator.canvasWidth / 2 - 152, AttackOption.canvasHeight / 2 - 18, (ImageObserver)null);
+				var6.drawString(var2, (304 - class42.loginScreenFontMetrics.stringWidth(var2)) / 2, 22);
+				var4.drawImage(WorldMapRegion.field254, Username.canvasWidth / 2 - 152, WorldMapData_1.canvasHeight / 2 - 18, (ImageObserver)null);
 			} catch (Exception var9) {
-				int var7 = GrandExchangeOfferTotalQuantityComparator.canvasWidth / 2 - 152;
-				int var8 = AttackOption.canvasHeight / 2 - 18;
+				int var7 = Username.canvasWidth / 2 - 152;
+				int var8 = WorldMapData_1.canvasHeight / 2 - 18;
 				var4.setColor(var5);
 				var4.drawRect(var7, var8, 303, 33);
 				var4.fillRect(var7 + 2, var8 + 2, var1 * 3, 30);
 				var4.setColor(Color.black);
 				var4.drawRect(var7 + 1, var8 + 1, 301, 31);
 				var4.fillRect(var7 + var1 * 3 + 2, var8 + 2, 300 - var1 * 3, 30);
-				var4.setFont(NetSocket.fontHelvetica13);
+				var4.setFont(fontHelvetica13);
 				var4.setColor(Color.white);
-				var4.drawString(var2, var7 + (304 - WorldMapSprite.loginScreenFontMetrics.stringWidth(var2)) / 2, var8 + 22);
+				var4.drawString(var2, var7 + (304 - class42.loginScreenFontMetrics.stringWidth(var2)) / 2, var8 + 22);
 			}
 		} catch (Exception var10) {
 			this.canvas.repaint();
@@ -780,21 +782,21 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	}
 
-	@ObfuscatedName("at")
+	@ObfuscatedName("av")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "21"
+		garbageValue = "-36"
 	)
-	protected final void method947() {
-		class189.field2333 = null;
-		NetSocket.fontHelvetica13 = null;
-		WorldMapSprite.loginScreenFontMetrics = null;
+	protected final void method952() {
+		WorldMapRegion.field254 = null;
+		fontHelvetica13 = null;
+		class42.loginScreenFontMetrics = null;
 	}
 
-	@ObfuscatedName("af")
+	@ObfuscatedName("al")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)V",
-		garbageValue = "-2001390999"
+		signature = "(Ljava/lang/String;B)V",
+		garbageValue = "-33"
 	)
 	@Export("error")
 	protected void error(String var1) {
@@ -810,26 +812,26 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		}
 	}
 
-	@ObfuscatedName("ap")
+	@ObfuscatedName("ad")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/awt/Container;",
-		garbageValue = "-1758438210"
+		garbageValue = "103754322"
 	)
 	@Export("container")
 	Container container() {
 		return (Container)(this.frame != null ? this.frame : this);
 	}
 
-	@ObfuscatedName("ai")
+	@ObfuscatedName("am")
 	@ObfuscatedSignature(
-		signature = "(I)Llh;",
-		garbageValue = "1983468330"
+		signature = "(I)Lll;",
+		garbageValue = "1892805538"
 	)
 	@Export("getFrameContentBounds")
 	Bounds getFrameContentBounds() {
 		Container var1 = this.container();
-		int var2 = Math.max(var1.getWidth(), this.field422);
-		int var3 = Math.max(var1.getHeight(), this.field419);
+		int var2 = Math.max(var1.getWidth(), this.field459);
+		int var3 = Math.max(var1.getHeight(), this.field464);
 		if (this.frame != null) {
 			Insets var4 = this.frame.getInsets();
 			var2 -= var4.right + var4.left;
@@ -839,29 +841,29 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 		return new Bounds(var2, var3);
 	}
 
-	@ObfuscatedName("am")
+	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
 		signature = "(B)Z",
-		garbageValue = "67"
+		garbageValue = "101"
 	)
 	@Export("hasFrame")
 	protected final boolean hasFrame() {
 		return this.frame != null;
 	}
 
-	@ObfuscatedName("bj")
+	@ObfuscatedName("an")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1677674321"
+		signature = "(B)V",
+		garbageValue = "-2"
 	)
-	protected abstract void vmethod1290();
+	protected abstract void vmethod1478();
 
 	public final synchronized void paint(Graphics var1) {
 		if (this == gameShell && !isKilled) {
-			this.field441 = true;
-			if (WorldMapID.currentTimeMillis() - this.field418 > 1000L) {
+			this.field466 = true;
+			if (WorldMapIcon_0.currentTimeMillis() - this.field470 > 1000L) {
 				Rectangle var2 = var1.getClipBounds();
-				if (var2 == null || var2.width >= GrandExchangeOfferTotalQuantityComparator.canvasWidth && var2.height >= AttackOption.canvasHeight) {
+				if (var2 == null || var2.width >= Username.canvasWidth && var2.height >= WorldMapData_1.canvasHeight) {
 					this.isCanvasInvalid = true;
 				}
 			}
@@ -871,10 +873,48 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 	public final void destroy() {
 		if (this == gameShell && !isKilled) {
-			stopTimeMs = WorldMapID.currentTimeMillis();
-			ServerBuild.method4111(5000L);
+			stopTimeMs = WorldMapIcon_0.currentTimeMillis();
+			FriendLoginUpdate.method5325(5000L);
 			this.kill();
 		}
+	}
+
+	public final void start() {
+		if (this == gameShell && !isKilled) {
+			stopTimeMs = 0L;
+		}
+	}
+
+	public final void focusGained(FocusEvent var1) {
+		volatileFocus = true;
+		this.field466 = true;
+	}
+
+	public final void windowClosed(WindowEvent var1) {
+	}
+
+	public final void windowDeactivated(WindowEvent var1) {
+	}
+
+	public final void windowDeiconified(WindowEvent var1) {
+	}
+
+	public final void windowIconified(WindowEvent var1) {
+	}
+
+	public final void windowOpened(WindowEvent var1) {
+	}
+
+	public final void stop() {
+		if (this == gameShell && !isKilled) {
+			stopTimeMs = WorldMapIcon_0.currentTimeMillis() + 4000L;
+		}
+	}
+
+	public abstract void init();
+
+	public final void update(Graphics var1) {
+		this.paint(var1);
 	}
 
 	public void run() {
@@ -882,7 +922,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			if (TaskHandler.javaVendor != null) {
 				String var1 = TaskHandler.javaVendor.toLowerCase();
 				if (var1.indexOf("sun") != -1 || var1.indexOf("apple") != -1) {
-					String var2 = TaskHandler.javaVersion;
+					String var2 = class216.javaVersion;
 					if (var2.equals("1.1") || var2.startsWith("1.1.") || var2.equals("1.2") || var2.startsWith("1.2.") || var2.equals("1.3") || var2.startsWith("1.3.") || var2.equals("1.4") || var2.startsWith("1.4.") || var2.equals("1.5") || var2.startsWith("1.5.") || var2.equals("1.6.0")) {
 						this.error("wrongjava");
 						return;
@@ -890,11 +930,11 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 
 					if (var2.startsWith("1.6.0_")) {
 						int var3;
-						for (var3 = 6; var3 < var2.length() && class237.isDigit(var2.charAt(var3)); ++var3) {
+						for (var3 = 6; var3 < var2.length() && class14.isDigit(var2.charAt(var3)); ++var3) {
 						}
 
 						String var4 = var2.substring(6, var3);
-						if (SecureRandomFuture.isNumber(var4) && ArchiveDiskActionHandler.parseInt(var4) < 10) {
+						if (class248.isNumber(var4) && VerticalAlignment.parseInt(var4) < 10) {
 							this.error("wrongjava");
 							return;
 						}
@@ -907,12 +947,12 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			this.setFocusCycleRoot(true);
 			this.addCanvas();
 			this.setUp();
-			Varps.clock = class30.method540();
+			clock = Client.method1432();
 
-			while (0L == stopTimeMs || WorldMapID.currentTimeMillis() < stopTimeMs) {
-				gameCyclesToDo = Varps.clock.wait(cycleDurationMillis, fiveOrOne);
+			while (stopTimeMs == 0L || WorldMapIcon_0.currentTimeMillis() < stopTimeMs) {
+				Fonts.gameCyclesToDo = clock.wait(cycleDurationMillis, fiveOrOne);
 
-				for (int var5 = 0; var5 < gameCyclesToDo; ++var5) {
+				for (int var5 = 0; var5 < Fonts.gameCyclesToDo; ++var5) {
 					this.clientTick();
 				}
 
@@ -920,210 +960,159 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 				this.post(this.canvas);
 			}
 		} catch (Exception var6) {
-			DesktopPlatformInfoProvider.RunException_sendStackTrace((String)null, var6);
+			class225.RunException_sendStackTrace((String)null, var6);
 			this.error("crash");
 		}
 
 		this.kill();
 	}
 
-	public final void start() {
-		if (this == gameShell && !isKilled) {
-			stopTimeMs = 0L;
-		}
+	public final void windowClosing(WindowEvent var1) {
+		this.destroy();
 	}
 
-	public final void update(Graphics var1) {
-		this.paint(var1);
-	}
-
-	public final void stop() {
-		if (this == gameShell && !isKilled) {
-			stopTimeMs = WorldMapID.currentTimeMillis() + 4000L;
-		}
-	}
-
-	public final void focusGained(FocusEvent var1) {
-		volatileFocus = true;
-		this.field441 = true;
+	public final void windowActivated(WindowEvent var1) {
 	}
 
 	public final void focusLost(FocusEvent var1) {
 		volatileFocus = false;
 	}
 
-	public final void windowActivated(WindowEvent var1) {
-	}
-
-	public final void windowClosing(WindowEvent var1) {
-		this.destroy();
-	}
-
-	public final void windowDeactivated(WindowEvent var1) {
-	}
-
-	public final void windowDeiconified(WindowEvent var1) {
-	}
-
-	public final void windowOpened(WindowEvent var1) {
-	}
-
-	public abstract void init();
-
-	public final void windowIconified(WindowEvent var1) {
-	}
-
-	public final void windowClosed(WindowEvent var1) {
-	}
-
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		signature = "(I)Ljava/security/SecureRandom;",
-		garbageValue = "115447225"
+		signature = "(Lii;II)Lgr;",
+		garbageValue = "-1004911552"
 	)
-	static SecureRandom method1069() {
-		SecureRandom var0 = new SecureRandom();
-		var0.nextInt();
-		return var0;
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-693907391"
-	)
-	@Export("getVarbit")
-	public static int getVarbit(int var0) {
-		VarbitDefinition var1 = UserComparator9.method3319(var0);
-		int var2 = var1.baseVar;
-		int var3 = var1.startBit;
-		int var4 = var1.endBit;
-		int var5 = Varps.Varps_masks[var4 - var3];
-		return Varps.Varps_main[var2] >> var3 & var5;
-	}
-
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-		garbageValue = "907753362"
-	)
-	@Export("addChatMessage")
-	static void addChatMessage(int var0, String var1, String var2, String var3) {
-		ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
-		if (var4 == null) {
-			var4 = new ChatChannel();
-			Messages.Messages_channels.put(var0, var4);
-		}
-
-		Message var5 = var4.addMessage(var0, var1, var2, var3);
-		Messages.Messages_hashTable.put(var5, (long)var5.count);
-		Messages.Messages_queue.add(var5);
-		Client.chatCycle = Client.cycleCntr;
+	static MusicPatch method1067(AbstractArchive var0, int var1) {
+		byte[] var2 = var0.takeFileFlat(var1);
+		return var2 == null ? null : new MusicPatch(var2);
 	}
 
 	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		signature = "(IIII)I",
-		garbageValue = "-1840068050"
+		signature = "(Ljava/lang/CharSequence;I)I",
+		garbageValue = "-32048125"
 	)
-	@Export("hslToRgb")
-	static final int hslToRgb(int var0, int var1, int var2) {
-		if (var2 > 179) {
-			var1 /= 2;
+	@Export("hashString")
+	public static int hashString(CharSequence var0) {
+		int var1 = var0.length();
+		int var2 = 0;
+
+		for (int var3 = 0; var3 < var1; ++var3) {
+			var2 = (var2 << 5) - var2 + TextureProvider.charToByteCp1252(var0.charAt(var3));
 		}
 
-		if (var2 > 192) {
-			var1 /= 2;
-		}
-
-		if (var2 > 217) {
-			var1 /= 2;
-		}
-
-		if (var2 > 243) {
-			var1 /= 2;
-		}
-
-		int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-		return var3;
+		return var2;
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(ILcu;ZB)I",
-		garbageValue = "34"
+		signature = "(IIIZII)J",
+		garbageValue = "1623349797"
 	)
-	static int method1068(int var0, Script var1, boolean var2) {
-		Widget var3;
-		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) {
-			var3 = Tile.getWidget(Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize]);
-			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.itemId;
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) {
-			var3 = Tile.getWidget(Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize]);
-			if (var3.itemId != -1) {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = var3.itemQuantity;
-			} else {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = 0;
-			}
+	@Export("calculateTag")
+	public static long calculateTag(int var0, int var1, int var2, boolean var3, int var4) {
+		long var5 = (long)((var0 & 127) << 0 | (var1 & 127) << 7 | (var2 & 3) << 14) | ((long)var4 & 4294967295L) << 17;
+		if (var3) {
+			var5 |= 65536L;
+		}
 
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_HASSUB) {
-			int var5 = Interpreter.Interpreter_intStack[--class188.Interpreter_intStackSize];
-			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var5);
-			if (var4 != null) {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = 1;
-			} else {
-				Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = 0;
-			}
+		return var5;
+	}
 
-			return 1;
-		} else if (var0 == ScriptOpcodes.IF_GETTOP) {
-			Interpreter.Interpreter_intStack[++class188.Interpreter_intStackSize - 1] = Client.rootInterface;
-			return 1;
+	@ObfuscatedName("ff")
+	@ObfuscatedSignature(
+		signature = "(II)V",
+		garbageValue = "856923102"
+	)
+	@Export("getLoginError")
+	static void getLoginError(int var0) {
+		if (var0 == -3) {
+			Tiles.setLoginResponseString("Connection timed out.", "Please try using a different world.", "");
+		} else if (var0 == -2) {
+			Tiles.setLoginResponseString("Error connecting to server.", "Please try using a different world.", "");
+		} else if (var0 == -1) {
+			Tiles.setLoginResponseString("No response from server.", "Please try using a different world.", "");
+		} else if (var0 == 3) {
+			Login.loginIndex = 3;
+			Login.field1193 = 1;
+		} else if (var0 == 4) {
+			Login.loginIndex = 12;
+			Login.field1165 = 0;
+		} else if (var0 == 5) {
+			Login.field1193 = 2;
+			Tiles.setLoginResponseString("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
+		} else if (var0 == 68 || !Client.onMobile && var0 == 6) {
+			Tiles.setLoginResponseString("RuneScape has been updated!", "Please reload this page.", "");
+		} else if (var0 == 7) {
+			Tiles.setLoginResponseString("This world is full.", "Please use a different world.", "");
+		} else if (var0 == 8) {
+			Tiles.setLoginResponseString("Unable to connect.", "Login server offline.", "");
+		} else if (var0 == 9) {
+			Tiles.setLoginResponseString("Login limit exceeded.", "Too many connections from your address.", "");
+		} else if (var0 == 10) {
+			Tiles.setLoginResponseString("Unable to connect.", "Bad session id.", "");
+		} else if (var0 == 11) {
+			Tiles.setLoginResponseString("We suspect someone knows your password.", "Press 'change your password' on front page.", "");
+		} else if (var0 == 12) {
+			Tiles.setLoginResponseString("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+		} else if (var0 == 13) {
+			Tiles.setLoginResponseString("Could not complete login.", "Please try using a different world.", "");
+		} else if (var0 == 14) {
+			Tiles.setLoginResponseString("The server is being updated.", "Please wait 1 minute and try again.", "");
+		} else if (var0 == 16) {
+			Tiles.setLoginResponseString("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+		} else if (var0 == 17) {
+			Tiles.setLoginResponseString("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+		} else if (var0 == 18) {
+			Login.loginIndex = 12;
+			Login.field1165 = 1;
+		} else if (var0 == 19) {
+			Tiles.setLoginResponseString("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+		} else if (var0 == 20) {
+			Tiles.setLoginResponseString("Invalid loginserver requested.", "Please try using a different world.", "");
+		} else if (var0 == 22) {
+			Tiles.setLoginResponseString("Malformed login packet.", "Please try again.", "");
+		} else if (var0 == 23) {
+			Tiles.setLoginResponseString("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+		} else if (var0 == 24) {
+			Tiles.setLoginResponseString("Error loading your profile.", "Please contact customer support.", "");
+		} else if (var0 == 25) {
+			Tiles.setLoginResponseString("Unexpected loginserver response.", "Please try using a different world.", "");
+		} else if (var0 == 26) {
+			Tiles.setLoginResponseString("This computers address has been blocked", "as it was used to break our rules.", "");
+		} else if (var0 == 27) {
+			Tiles.setLoginResponseString("", "Service unavailable.", "");
+		} else if (var0 == 31) {
+			Tiles.setLoginResponseString("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+		} else if (var0 == 32) {
+			Tiles.setLoginResponseString("Your attempt to log into your account was", "unsuccessful.  Don't worry, you can sort", "this out by visiting the billing system.");
+		} else if (var0 == 37) {
+			Tiles.setLoginResponseString("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+		} else if (var0 == 38) {
+			Tiles.setLoginResponseString("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+		} else if (var0 == 55) {
+			Login.loginIndex = 8;
 		} else {
-			return 2;
-		}
-	}
-
-	@ObfuscatedName("kd")
-	@ObfuscatedSignature(
-		signature = "(IS)V",
-		garbageValue = "-12664"
-	)
-	@Export("Widget_resetModelFrames")
-	static final void Widget_resetModelFrames(int var0) {
-		if (MusicPatch.loadInterface(var0)) {
-			Widget[] var1 = UserComparator7.Widget_interfaceComponents[var0];
-
-			for (int var2 = 0; var2 < var1.length; ++var2) {
-				Widget var3 = var1[var2];
-				if (var3 != null) {
-					var3.modelFrame = 0;
-					var3.modelFrameCycle = 0;
-				}
+			if (var0 == 56) {
+				Tiles.setLoginResponseString("Enter the 6-digit code generated by your", "authenticator app.", "");
+				Projectile.updateGameState(11);
+				return;
 			}
 
-		}
-	}
+			if (var0 == 57) {
+				Tiles.setLoginResponseString("The code you entered was incorrect.", "Please try again.", "");
+				Projectile.updateGameState(11);
+				return;
+			}
 
-	@ObfuscatedName("kh")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-120"
-	)
-	@Export("FriendSystem_invalidateIgnoreds")
-	static final void FriendSystem_invalidateIgnoreds() {
-		Iterator var0 = Messages.Messages_hashTable.iterator();
-
-		while (var0.hasNext()) {
-			Message var1 = (Message)var0.next();
-			var1.clearIsFromIgnored();
+			if (var0 == 61) {
+				Login.loginIndex = 7;
+			} else {
+				Tiles.setLoginResponseString("Unexpected server response", "Please try using a different world.", "");
+			}
 		}
 
-		if (Calendar.clanChat != null) {
-			Calendar.clanChat.invalidateIgnoreds();
-		}
-
+		Projectile.updateGameState(10);
 	}
 }
