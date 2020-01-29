@@ -32,7 +32,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("betterHydra")
-public interface HydraConfig extends Config
+public interface AlchemicalHydraConfig extends Config
 {
 	@ConfigSection(
 		keyName = "features",
