@@ -207,7 +207,8 @@ public interface GpuPluginConfig extends Config
 		keyName = "ambientLighting",
 		name = "Ambient Lighting",
 		description = "Produces global lighting based on current fog color",
-		position = 14
+		position = 14,
+		titleSection = "effectsTitle"
 	)
 	default boolean ambientLighting()
 	{
