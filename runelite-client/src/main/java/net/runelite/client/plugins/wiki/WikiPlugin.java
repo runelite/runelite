@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.wiki;
 
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -49,6 +50,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -86,6 +88,9 @@ public class WikiPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
+	private WikiConfig config;
+
+	@Inject
 	private ClientThread clientThread;
 
 	@Inject
@@ -103,6 +108,12 @@ public class WikiPlugin extends Plugin
 	private Widget icon;
 
 	private boolean wikiSelected = false;
+
+	@Provides
+	WikiConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WikiConfig.class);
+	}
 
 	@Override
 	public void startUp()
@@ -180,16 +191,31 @@ public class WikiPlugin extends Plugin
 			icon.setSpriteId(SpriteID.WIKI_SELECTED);
 			client.setAllWidgetsAreOpTargetable(true);
 		});
-		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
-		icon.setOnOpListener((JavaScriptCallback) ev ->
+
+		if (config.swapLookupSearch())
 		{
-			switch (ev.getOp())
+			icon.setAction(4, "Search"); // Start at option 4 so the target op is below the Search menuentry
+			icon.setOnOpListener((JavaScriptCallback) ev ->
 			{
-				case 6:
+				if (ev.getOp() == 5)
+				{
 					openSearchInput();
-					break;
-			}
-		});
+				}
+
+			});
+		}
+		else
+		{
+			icon.setAction(5, "Search"); // Start at option 5 so the target op is on top
+			icon.setOnOpListener((JavaScriptCallback) ev ->
+			{
+				if (ev.getOp() == 6)
+				{
+					openSearchInput();
+				}
+			});
+		}
+
 		// This doesn't always run because we cancel the menuop
 		icon.setOnTargetLeaveListener((JavaScriptCallback) ev -> onDeselect());
 		icon.revalidate();
@@ -373,8 +399,8 @@ public class WikiPlugin extends Plugin
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
-					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId();
-					ourEntry--)
+					 ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId();
+					 ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];
 				}
