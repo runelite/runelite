@@ -72,9 +72,9 @@ public class PvPUtil
 		{
 			if (client.getVar(Varbits.IN_WILDERNESS) != 1)
 			{
-				return Math.abs(client.getLocalPlayer().getCombatLevel() - player.getCombatLevel()) <= 15;
+				return Math.abs(client.getLocalPlayer().getCombatLevel() - player.getCombatLevel()) <= 10;
 			}
-			wildernessLevel = 15;
+			wildernessLevel = 10;
 		}
 		return Math.abs(client.getLocalPlayer().getCombatLevel() - player.getCombatLevel())
 			< (getWildernessLevelFrom(client.getLocalPlayer().getWorldLocation()) + wildernessLevel);

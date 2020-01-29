@@ -70,7 +70,7 @@ public class MiscUtils
 
 		if (client.getWorldType().stream().anyMatch(worldType -> worldType == WorldType.PVP || worldType == WorldType.HIGH_RISK))
 		{
-			wildernessLevel += 15;
+			wildernessLevel += 10;
 		}
 
 		return Math.max(0, wildernessLevel);
