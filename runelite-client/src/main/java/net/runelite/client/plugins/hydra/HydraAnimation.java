@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2020, Dutta64 <https://github.com/dutta64>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,45 +24,38 @@
  */
 package net.runelite.client.plugins.hydra;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.Color;
+import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Singleton
-public class BabyHydraIndicatorOverlay extends Overlay
+@RequiredArgsConstructor
+public enum HydraAnimation
 {
-	private final BabyHydraPlugin plugin;
+	RANGE(8261, "RANGE", new Color(0, 255, 0)),
+	MAGIC(8262, "MAGIC", new Color(52, 152, 219)),
+	POISON(8263, "POISON", new Color(255, 0, 0)); // Not used currently
 
-	private final PanelComponent panelComponent = new PanelComponent();
+	@Getter(AccessLevel.PACKAGE)
+	private final int id;
 
-	@Inject
-	private BabyHydraIndicatorOverlay(final BabyHydraPlugin plugin)
+	@Getter(AccessLevel.PACKAGE)
+	private final String text;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Color color;
+
+	public static HydraAnimation fromId(final int id)
 	{
-		this.plugin = plugin;
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		setPriority(OverlayPriority.MED);
-		panelComponent.setPreferredSize(new Dimension(14, 0));
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		if (plugin.getHydra() != null && plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
+		for (final HydraAnimation hydraAnimation : HydraAnimation.values())
 		{
-			int val = plugin.getHydras().get(plugin.getHydra().getIndex());
-			if (val != 0)
+			if (Objects.equals(hydraAnimation.id, id))
 			{
-				panelComponent.getChildren().clear();
-				panelComponent.getChildren().add(LineComponent.builder().right(Integer.toString(val)).build());
-				return panelComponent.render(graphics);
+				return hydraAnimation;
 			}
 		}
-		return null;
+
+		throw new IllegalArgumentException();
 	}
 }

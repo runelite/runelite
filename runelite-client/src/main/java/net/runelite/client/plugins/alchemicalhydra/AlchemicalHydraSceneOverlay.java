@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 @Singleton
-class HydraSceneOverlay extends Overlay
+class AlchemicalHydraSceneOverlay extends Overlay
 {
 	@Setter(AccessLevel.PACKAGE)
 	private Color poisonBorder;
@@ -61,11 +61,11 @@ class HydraSceneOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private Color badFountain;
 
-	private final HydraPlugin plugin;
+	private final AlchemicalHydraPlugin plugin;
 	private final Client client;
 
 	@Inject
-	public HydraSceneOverlay(final Client client, final HydraPlugin plugin)
+	public AlchemicalHydraSceneOverlay(final Client client, final AlchemicalHydraPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
@@ -76,7 +76,7 @@ class HydraSceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Hydra hydra = plugin.getHydra();
+		AlchemicalHydra hydra = plugin.getHydra();
 		final Map<LocalPoint, Projectile> poisonProjectiles = plugin.getPoisonProjectiles();
 
 		if (plugin.isCounting() && !poisonProjectiles.isEmpty())
@@ -119,7 +119,7 @@ class HydraSceneOverlay extends Overlay
 		graphics.fill(poisonTiles);
 	}
 
-	private void drawFountain(Graphics2D graphics, Hydra hydra)
+	private void drawFountain(Graphics2D graphics, AlchemicalHydra hydra)
 	{
 		Collection<WorldPoint> fountainWorldPoint = WorldPoint.toLocalInstance(client, hydra.getPhase().getFountain()); // thanks
 		if (fountainWorldPoint.size() > 1) // for

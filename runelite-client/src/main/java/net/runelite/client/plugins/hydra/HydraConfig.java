@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Plinko60
+ * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2020, Dutta64 <https://github.com/dutta64>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,66 +23,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.shiftwalker;
+package net.runelite.client.plugins.hydra;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("shiftwalkhere")
-public interface ShiftWalkerConfig extends Config
+@ConfigGroup("hydra")
+public interface HydraConfig extends Config
 {
+
 	@ConfigItem(
-		keyName = "shiftWalk",
-		name = "Shift to Walk",
-		description = "For when you want Walk here as a priority"
+		position = 1,
+		keyName = "attackCounterOverlay",
+		name = "Attack Counter Overlay",
+		description = "Configures if an attack counter overlay is shown."
 	)
-	default boolean shiftWalk()
+	default boolean isAttackCounterOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "boldAttackCounterOverlay",
+		name = "Bold Attack Counter",
+		description = "Configures if the attack counter is <b>bold</b>.<br>Attack Counter Overlay must be enabled."
+	)
+	default boolean isBoldAttackCounterOverlay()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "shiftLoot",
-		name = "Shift to Loot",
-		description = "For when people stand on your loot"
+		position = 3,
+		keyName = "prayerOverlay",
+		name = "Prayer Overlay",
+		description = "Configures if a prayer overlay is shown.<br>This overlay includes a mini attack counter."
 	)
-	default boolean shiftLoot()
-	{
-		return false;
-	}
-/*
-
-	@ConfigItem(
-		keyName = "shiftWalkEverything",
-		name = "Walk Under Everything",
-		description = "Enable this option when you do not want to interact with anything while Shift is pressed. " +
-			"If Walk Here is an option it will be the action taken."
-	)
-	default boolean shiftWalkEverything()
+	default boolean isPrayerOverlay()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "shiftWalkBoxTraps",
-		name = "Walk Under Box Traps",
-		description = "Press \"Shift\" to be able to walk under instead of picking up a Box Trap."
+		position = 4,
+		keyName = "poisonProjectileOverlay",
+		name = "Poison Projectile Overlay",
+		description = "Configures if a poison projectile overlay is shown."
 	)
-	default boolean shiftWalkBoxTraps()
+	default boolean isPoisonOverlay()
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "shiftWalkAttackOption",
-		name = "Walk Under Attack Options",
-		description = "Press \"Shift\" to be able to walk instead of attacking. Make sure Left Click Attack is on."
-	)
-	default boolean shiftWalkAttackOption()
-	{
-		return true;
-	}
-*/
-
 }

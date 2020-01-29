@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://openosrs.com
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,46 +21,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hydra;
+package net.runelite.client.plugins.tmorph;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Data;
 
-@ConfigGroup("hydra")
-public interface BabyHydraConfig extends Config
+@Data
+public class TmorphSet
 {
-
-	@ConfigItem(
-		position = 1,
-		keyName = "textindicators",
-		name = "Text Indicator",
-		description = "Configures if text indicator is shown above hydra's or not."
-	)
-	default boolean TextIndicator()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "countersize",
-		name = "Bold indicator",
-		description = "Configures if text indicator is bold or not."
-	)
-	default boolean BoldText()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "prayerhelper",
-		name = "Prayer Helper",
-		description = "Configures if prayer helper is shown or not."
-	)
-	default boolean PrayerHelper()
-	{
-		return true;
-	}
+	private String name;
+	private int helmet;
+	private int cape;
+	private int amulet;
+	private int weapon;
+	private int torso;
+	private int shield;
+	private int legs;
+	private int hands;
+	private int boots;
 }

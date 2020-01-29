@@ -129,4 +129,24 @@ public interface NpcIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "notifyOnRespawn",
+		name = "Notify on Respawn",
+		description = "Enable notification on respawn")
+	default boolean getNotifyOnRespawn()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "notifyOnRespawnDelay",
+		name = "Notification Delay",
+		description = "Notify when NPC is x ms from respawning")
+	default int getNotifyOnRespawnDelay()
+	{
+		return -1;
+	}
 }

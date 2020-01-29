@@ -1974,7 +1974,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 2,
 		section = "hotkeySwapping"
 	)
-
 	default boolean swapNpcContact()
 	{
 		return false;
@@ -1987,7 +1986,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 3,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankWieldItem()
 	{
 		return false;
@@ -2000,7 +1998,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 4,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankWearItem()
 	{
 		return false;
@@ -2013,7 +2010,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 5,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankEatItem()
 	{
 		return false;
@@ -2026,7 +2022,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 6,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankDrinkItem()
 	{
 		return false;
@@ -2039,7 +2034,6 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 7,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankEquipItem()
 	{
 		return false;
@@ -2052,8 +2046,31 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 8,
 		section = "hotkeySwapping"
 	)
-
 	default boolean bankInvigorateItem()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "hotKeyWalk",
+		name = "Hotkey to Walk",
+		description = "For when you want Walk here as a priority",
+		position = 9,
+		section = "hotkeySwapping"
+	)
+	default boolean hotKeyWalk()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hotKeyLoot",
+		name = "Hotkey to Loot",
+		description = "For when people stand on your loot",
+		position = 10,
+		section = "hotkeySwapping"
+	)
+	default boolean hotKeyLoot()
 	{
 		return false;
 	}

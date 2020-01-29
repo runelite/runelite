@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Dutta64 <https://github.com/dutta64>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.kit;
+package net.runelite.client.plugins.hydra;
 
-import lombok.AllArgsConstructor;
+import java.awt.Graphics2D;
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
+import lombok.Setter;
+import net.runelite.api.NPC;
+import net.runelite.api.Point;
 
-/**
- * Represents an equipment slot in a players composition.
- * <p>
- * These values are intended for use with {PlayerAppearance} equipment
- * slots. For obtaining information about equipment in the local players
- * equipment {net.runelite.api.ItemContainer}, use
- * {net.runelite.api.EquipmentInventorySlot}.
- */
-@Getter
-@AllArgsConstructor
-public enum KitType
+public class Hydra
 {
-	HELMET("Helmet", 0, WidgetInfo.EQUIPMENT_HELMET),
-	CAPE("Cape", 1, WidgetInfo.EQUIPMENT_CAPE),
-	AMULET("Amulet", 2, WidgetInfo.EQUIPMENT_AMULET),
-	WEAPON("Weapon", 3, WidgetInfo.EQUIPMENT_WEAPON),
-	TORSO("Torso", 4, WidgetInfo.EQUIPMENT_BODY),
-	SHIELD("Shield", 5, WidgetInfo.EQUIPMENT_SHIELD),
-	LEGS("Legs", 7, WidgetInfo.EQUIPMENT_LEGS),
-	HEAD("Head", 8, null),
-	HANDS("Hands", 9, WidgetInfo.EQUIPMENT_GLOVES),
-	BOOTS("Boots", 10, WidgetInfo.EQUIPMENT_BOOTS),
-	JAW("Jaw", 11, null),
-	RING("Ring", 12, WidgetInfo.EQUIPMENT_RING),
-	AMMUNITION("Ammo", 13, WidgetInfo.EQUIPMENT_AMMO);
+	static final int MAX_ATTACK_COUNT = 3;
 
-	private final String name;
+	private final NPC npc;
 
-	/**
-	 * Gets the raw equipment index for use in {PlayerAppearance#getEquipmentIds()}.
-	 */
-	private final int index;
+	@Getter(AccessLevel.PACKAGE)
+	private int attackCount;
 
-	private final WidgetInfo widgetInfo;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private HydraAnimation hydraAnimation;
+
+	public Hydra(final NPC npc)
+	{
+		this.npc = npc;
+		this.attackCount = MAX_ATTACK_COUNT;
+		this.hydraAnimation = null;
+	}
+
+	void updateAttackCount()
+	{
+		attackCount = attackCount == 1 ? MAX_ATTACK_COUNT : --attackCount;
+	}
+
+	void resetAttackCount()
+	{
+		attackCount = MAX_ATTACK_COUNT;
+	}
+
+	Point getCanvasTextLocation(final Graphics2D graphics, final String text, final int zOffset)
+	{
+		return npc.getCanvasTextLocation(graphics, text, zOffset);
+	}
+
+	int getLogicalHeight()
+	{
+		return npc.getLogicalHeight();
+	}
 }
