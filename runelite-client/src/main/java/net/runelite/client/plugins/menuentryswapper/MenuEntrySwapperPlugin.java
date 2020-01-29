@@ -149,6 +149,74 @@ public class MenuEntrySwapperPlugin extends Plugin
 		"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
 		"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "random"
 	);
+	
+		private static final AbstractComparableEntry WALK = new AbstractComparableEntry()
+	{
+		private final int hash = "WALK".hashCode() * 79 + getPriority();
+
+		@Override
+		public int hashCode()
+		{
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object entry)
+		{
+			return entry.getClass() == this.getClass() && entry.hashCode() == this.hashCode();
+		}
+
+		@Override
+		public int getPriority()
+		{
+			return 99;
+		}
+
+		@Override
+		public boolean matches(MenuEntry entry)
+		{
+			return
+				entry.getOpcode() == MenuOpcode.WALK.getId() ||
+					entry.getOpcode() == MenuOpcode.WALK.getId() + MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
+		}
+	};
+
+	private static final AbstractComparableEntry TAKE = new AbstractComparableEntry()
+	{
+		private final int hash = "TAKE".hashCode() * 79 + getPriority();
+
+		@Override
+		public int hashCode()
+		{
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object entry)
+		{
+			return entry.getClass() == this.getClass() && entry.hashCode() == this.hashCode();
+		}
+
+		@Override
+		public int getPriority()
+		{
+			return 100;
+		}
+
+		@Override
+		public boolean matches(MenuEntry entry)
+		{
+			int opcode = entry.getOpcode();
+			if (opcode > MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET)
+			{
+				opcode -= MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
+			}
+
+			return
+				opcode >= MenuOpcode.GROUND_ITEM_FIRST_OPTION.getId() &&
+					opcode <= MenuOpcode.GROUND_ITEM_FIFTH_OPTION.getId();
+		}
+	};
 
 	private static final Splitter NEWLINE_SPLITTER = Splitter
 		.on("\n")
@@ -300,6 +368,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean swapWildernessLever;
 	private boolean swapJewelleryBox;
 	private boolean getSwapOffer;
+	private boolean hotKeyLoot;
+	private boolean hotKeyWalk;
 	private final HotkeyListener hotkey = new HotkeyListener(() -> this.hotkeyMod)
 	{
 		@Override
@@ -1525,7 +1595,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			menuManager.addPriorityEntry("climb-up").setPriority(100);
 		}
-
+		if (this.hotKeyLoot)
+		{
+			menuManager.addPriorityEntry(TAKE);
+		}
+		if (this.hotKeyWalk)
+		{
+			menuManager.addPriorityEntry(WALK);
+		}
 		if (this.swapNpcContact)
 		{
 			for (String npccontact : npcContact)
@@ -1551,6 +1628,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		menuManager.removePriorityEntry(new BankComparableEntry("equip", "", false));
 		menuManager.removePriorityEntry(new BankComparableEntry("invigorate", "", false));
 		menuManager.removePriorityEntry("climb-up");
+		menuManager.removePriorityEntry(TAKE);
+		menuManager.removePriorityEntry(WALK);
 
 		for (String npccontact : npcContact)
 		{
@@ -1796,6 +1875,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		this.bankInvigorateItem = config.bankInvigorateItem();
 		this.swapNpcContact = config.swapNpcContact();
 		this.getSwapOffer = config.getSwapOffer();
+		this.hotKeyWalk = config.hotKeyWalk();
+		this.hotKeyLoot = config.hotKeyLoot();
 	}
 
 	private void addBuySellEntries()
