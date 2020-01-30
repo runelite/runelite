@@ -52,6 +52,7 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -108,6 +109,8 @@ public class WikiPlugin extends Plugin
 	private Widget icon;
 
 	private boolean wikiSelected = false;
+
+	private static final String CONFIG_GROUP_KEY = "wiki";
 
 	@Provides
 	WikiConfig getConfig(ConfigManager configManager)
@@ -214,6 +217,17 @@ public class WikiPlugin extends Plugin
 		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
 		{
 			ev.getWidget().setHidden(true);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP_KEY))
+		{
+			// Since the Widget menu is configured on startup, it's easiest to just rebuild it when the config changes
+			shutDown();
+			startUp();
 		}
 	}
 
