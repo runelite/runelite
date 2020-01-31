@@ -90,4 +90,21 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "Ignored groups",
+		description = "Configures which loot groups should be excluded from the panel UI"
+	)
+	default String getIgnoredEvents()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "",
+		description = ""
+	)
+	void setIgnoredEvents(String key);
 }
