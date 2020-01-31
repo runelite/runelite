@@ -128,15 +128,15 @@ class ItemPricesOverlay extends Overlay
 
 						if (config.showInventoryTotalValue() &&
 								(widgetId == RESIZABLE_INVENTORY_TAB_WIDGETID ||
-								 widgetId == FIXED_INVENTORY_TAB_WIDGETID ||
-								 widgetId == RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_WIDGETID))
+								widgetId == FIXED_INVENTORY_TAB_WIDGETID ||
+								widgetId == RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_WIDGETID))
 						{
 							container = client.getItemContainer(InventoryID.INVENTORY);
 						}
 						else if (config.showEquipmentTotalValue() &&
 								(widgetId == RESIZABLE_EQUIPMENT_TAB_WIDGETID ||
-								 widgetId == FIXED_EQUIPMENT_TAB_WIDGETID ||
-								 widgetId == RESIZABLE_BOTTOM_LINE_EQUIPMENT_TAB_WIDGETID))
+								widgetId == FIXED_EQUIPMENT_TAB_WIDGETID ||
+								widgetId == RESIZABLE_BOTTOM_LINE_EQUIPMENT_TAB_WIDGETID))
 						{
 							container = client.getItemContainer(InventoryID.EQUIPMENT);
 						}
@@ -169,7 +169,8 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String makeTotalValueTooltip(ItemContainer container) {
+	private String makeTotalValueTooltip(ItemContainer container)
+	{
 		if (container == null)
 		{
 			return "0";
@@ -180,7 +181,8 @@ class ItemPricesOverlay extends Overlay
 		int id, qty = 0;
 		long total = 0;
 
-		for (Item item : items) {
+		for (Item item : items)
+		{
 			id = item.getId();
 			qty = item.getQuantity();
 
@@ -188,7 +190,8 @@ class ItemPricesOverlay extends Overlay
 			{
 				total += qty;
 				continue;
-			} else if (id == ItemID.PLATINUM_TOKEN)
+			}
+			else if (id == ItemID.PLATINUM_TOKEN)
 			{
 				total += qty * 1000;
 				continue;

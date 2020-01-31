@@ -59,7 +59,10 @@ public interface ItemPricesConfig extends Config
 		description = "Hovering over inventory icon will show total GE value",
 		position = 3
 	)
-	default boolean showInventoryTotalValue() { return true; }
+	default boolean showInventoryTotalValue()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showEquipmentTotalValue",
@@ -67,7 +70,10 @@ public interface ItemPricesConfig extends Config
 		description = "Hovering over equipment icon will show total GE value",
 		position = 4
 	)
-	default boolean showEquipmentTotalValue() { return true; }
+	default boolean showEquipmentTotalValue()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showEA",
@@ -75,7 +81,10 @@ public interface ItemPricesConfig extends Config
 		description = "The price/value of each item should be shown on stacks",
 		position = 5
 	)
-	default boolean showEA() { return true; }
+	default boolean showEA()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "hideInventory",
@@ -83,7 +92,10 @@ public interface ItemPricesConfig extends Config
 		description = "Tooltips should be hidden on items in the inventory",
 		position = 6
 	)
-	default boolean hideInventory() { return true; }
+	default boolean hideInventory()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showAlchProfit",
@@ -91,7 +103,10 @@ public interface ItemPricesConfig extends Config
 		description = "Show the profit from casting high alchemy on items",
 		position = 7
 	)
-	default boolean showAlchProfit() { return false; }
+	default boolean showAlchProfit()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "showWhileAlching",
