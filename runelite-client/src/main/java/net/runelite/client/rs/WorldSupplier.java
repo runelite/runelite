@@ -85,30 +85,4 @@ class WorldSupplier implements Supplier<World>
 
 		return worlds.poll();
 	}
-
-	@Nullable
-	public World get(Predicate<World> filter)
-	{
-		try
-		{
-			List<World> filteredWorlds = new WorldClient(RuneLiteAPI.CLIENT)
-				.lookupWorlds()
-				.getWorlds()
-				.stream()
-				.filter(filter)
-				.collect(Collectors.toList());
-
-			Collections.shuffle(filteredWorlds, random);
-
-			if (filteredWorlds.size() > 0)
-			{
-				return filteredWorlds.get(0);
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Unable to retrieve world list", e);
-		}
-		return null;
-	}
 }
