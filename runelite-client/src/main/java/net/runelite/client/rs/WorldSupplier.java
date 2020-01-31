@@ -31,8 +31,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
@@ -82,5 +85,31 @@ class WorldSupplier implements Supplier<World>
 		}
 
 		return worlds.poll();
+	}
+
+	@Nullable
+	public World get(Predicate<World> filter)
+	{
+		try
+		{
+			List<World> filteredWorlds = new WorldClient(RuneLiteAPI.CLIENT)
+				.lookupWorlds()
+				.getWorlds()
+				.stream()
+				.filter(filter)
+				.collect(Collectors.toList());
+
+			Collections.shuffle(filteredWorlds, random);
+
+			if(filteredWorlds.size() > 0)
+			{
+				return filteredWorlds.get(0);
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("Unable to retrieve world list", e);
+		}
+		return null;
 	}
 }

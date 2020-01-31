@@ -192,7 +192,9 @@ public class RuneLite
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
 			.withRequiredArg().ofType(String.class);
-
+		final ArgumentAcceptingOptionSpec<Integer> worldInfo = parser
+			.accepts("world")
+			.withRequiredArg().ofType(Integer.class);
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
 			.withRequiredArg()
@@ -252,10 +254,16 @@ public class RuneLite
 			}
 		}
 
+		Integer world = null;
+		if(options.has("world"))
+		{
+			world = options.valueOf(worldInfo);
+		}
+
 		SentryClient client = Sentry.init("https://fa31d674e44247fa93966c69a903770f@sentry.io/1811856");
 		client.setRelease(RuneLiteProperties.getPlusVersion());
 
-		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode), world);
 		Completable.fromAction(clientLoader::get)
 			.subscribeOn(Schedulers.computation())
 			.subscribe();

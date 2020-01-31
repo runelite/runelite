@@ -49,14 +49,16 @@ public class ClientLoader implements Supplier<Applet>
 
 	private static final int NUM_ATTEMPTS = 10;
 	private final ClientUpdateCheckMode updateCheckMode;
+	private final Integer worldNumber;
 	private Object client = null;
 
 	private WorldSupplier worldSupplier = new WorldSupplier();
 	private RSConfig config;
 
-	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
+	public ClientLoader(ClientUpdateCheckMode updateCheckMode, Integer worldNumber)
 	{
 		this.updateCheckMode = updateCheckMode;
+		this.worldNumber = worldNumber;
 	}
 
 	@Override
@@ -124,6 +126,18 @@ public class ClientLoader implements Supplier<Applet>
 				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
 				{
 					throw new IOException("Invalid or missing jav_config");
+				}
+
+				if(worldNumber != null)
+				{
+					final World world = worldSupplier.get(w -> w.getId() == worldNumber);
+					if(world == null)
+					{
+						log.warn("The provided world: {} could not be found. Reverting to random P2P world.", worldNumber);
+						return;
+					}
+					log.info("Set world to: {}", worldNumber);
+					config.getAppletProperties().replace("12", worldNumber.toString());
 				}
 
 				return;
