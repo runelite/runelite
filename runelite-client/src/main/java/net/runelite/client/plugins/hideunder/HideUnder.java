@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -71,7 +70,7 @@ public class HideUnder extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			client.setIsHidingEntities(isPlayerRegionAllowed());
+			client.setIsHidingEntities(true);
 		}
 	}
 
@@ -105,21 +104,5 @@ public class HideUnder extends Plugin
 				client.setLocalPlayerHidden(true);
 			}
 		}
-	}
-
-	private boolean isPlayerRegionAllowed()
-	{
-		final Player localPlayer = client.getLocalPlayer();
-
-		if (localPlayer == null)
-		{
-			return true;
-		}
-
-		final WorldPoint playerWp = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation());
-		final int playerRegionID = playerWp == null ? 0 : playerWp.getRegionID();
-
-		// 9520 = Castle Wars
-		return playerRegionID != 9520;
 	}
 }
