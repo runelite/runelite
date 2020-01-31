@@ -255,7 +255,7 @@ public class RuneLite
 		}
 
 		Integer world = null;
-		if(options.has("world"))
+		if (options.has("world"))
 		{
 			world = options.valueOf(worldInfo);
 		}

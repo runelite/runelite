@@ -100,7 +100,7 @@ class WorldSupplier implements Supplier<World>
 
 			Collections.shuffle(filteredWorlds, random);
 
-			if(filteredWorlds.size() > 0)
+			if (filteredWorlds.size() > 0)
 			{
 				return filteredWorlds.get(0);
 			}
