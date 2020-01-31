@@ -110,7 +110,7 @@ public class WikiPlugin extends Plugin
 
 	private boolean wikiSelected = false;
 
-	private static final String CONFIG_GROUP_KEY = "wiki";
+	static final String CONFIG_GROUP_KEY = "wiki";
 
 	@Provides
 	WikiConfig getConfig(ConfigManager configManager)
@@ -126,6 +126,11 @@ public class WikiPlugin extends Plugin
 
 	@Override
 	public void shutDown()
+	{
+		removeWidgets();
+	}
+
+	private void removeWidgets()
 	{
 		clientThread.invokeLater(() ->
 		{
@@ -196,11 +201,11 @@ public class WikiPlugin extends Plugin
 		});
 
 		// set position to 5 if we want Lookup on left-click, or set position to 4 if we want Search
-		final int position = config.swapLookupSearch() ? 4 : 5;
+		final int position = config.leftClickSearch() ? 4 : 5;
 		icon.setAction(position, "Search");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			if (ev.getOp() == (position + 1))
+			if (ev.getOp() == position + 1)
 			{
 				openSearchInput();
 			}
@@ -226,8 +231,8 @@ public class WikiPlugin extends Plugin
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			// Since the Widget menu is configured on startup, it's easiest to just rebuild it when the config changes
-			shutDown();
-			startUp();
+			removeWidgets();
+			clientThread.invokeLater(this::addWidgets);
 		}
 	}
 
