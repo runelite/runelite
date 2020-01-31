@@ -127,34 +127,32 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		removeWidgets();
+		clientThread.invokeLater(this::removeWidgets);
 	}
 
 	private void removeWidgets()
 	{
-		clientThread.invokeLater(() ->
+
+		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+		if (minimapOrbs == null)
 		{
-			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-			if (minimapOrbs == null)
-			{
-				return;
-			}
-			Widget[] children = minimapOrbs.getChildren();
-			if (children == null || children.length < 1)
-			{
-				return;
-			}
-			children[0] = null;
+			return;
+		}
+		Widget[] children = minimapOrbs.getChildren();
+		if (children == null || children.length < 1)
+		{
+			return;
+		}
+		children[0] = null;
 
-			Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-			if (vanilla != null)
-			{
-				vanilla.setHidden(false);
-			}
+		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		if (vanilla != null)
+		{
+			vanilla.setHidden(false);
+		}
 
-			onDeselect();
-			client.setSpellSelected(false);
-		});
+		onDeselect();
+		client.setSpellSelected(false);
 	}
 
 	@Subscribe
@@ -231,7 +229,7 @@ public class WikiPlugin extends Plugin
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
 			// Since the Widget menu is configured on startup, it's easiest to just rebuild it when the config changes
-			removeWidgets();
+			clientThread.invokeLater(this::removeWidgets);
 			clientThread.invokeLater(this::addWidgets);
 		}
 	}
