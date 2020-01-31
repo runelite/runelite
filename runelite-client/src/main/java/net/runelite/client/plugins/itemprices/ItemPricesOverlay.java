@@ -145,9 +145,9 @@ class ItemPricesOverlay extends Overlay
 							return null;
 						}
 
-						final String totalText = getContainerTotalValueText(container);
+						final String totalText = makeTotalValueTooltip(container);
 						tooltipManager.add(new Tooltip("GE Total: " + ColorUtil.wrapWithColorTag(totalText, Color.GREEN) + " gp"));
-						break;
+						return null;
 					case WidgetID.INVENTORY_GROUP_ID:
 						if (config.hideInventory())
 						{
@@ -169,7 +169,7 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String getContainerTotalValueText(ItemContainer container) {
+	private String makeTotalValueTooltip(ItemContainer container) {
 		if (container == null)
 		{
 			return "0";
