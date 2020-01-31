@@ -59,6 +59,65 @@ public class ClientLoader implements Supplier<Applet>
 		this.updateCheckMode = updateCheckMode;
 	}
 
+	private static Applet loadRLPlus(final RSConfig config)
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		RuneLiteSplashScreen.stage(.465, "Starting Open Old School RuneScape");
+
+		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+		{
+			@Override
+			protected Class<?> findClass(String name) throws ClassNotFoundException
+			{
+				String path = name.replace('.', '/').concat(".class");
+				InputStream inputStream = ClientLoader.class.getResourceAsStream(path);
+				if (inputStream == null)
+				{
+					throw new ClassNotFoundException(name + " " + path);
+				}
+				byte[] data;
+				try
+				{
+					data = ByteStreams.toByteArray(inputStream);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+					RuneLiteSplashScreen.setError("Failed to load!", "Failed to load class: " + name + " " + path);
+					throw new RuntimeException("Failed to load class: " + name + " " + path);
+				}
+				return defineClass(name, data, 0, data.length);
+			}
+		};
+		Class<?> clientClass = rsClassLoader.loadClass("client");
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadVanilla(final RSConfig config)
+		throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		RuneLiteSplashScreen.stage(.465, "Starting Vanilla Old School RuneScape");
+
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass)
+		throws IllegalAccessException, InstantiationException
+	{
+		final Applet rs = (Applet) clientClass.newInstance();
+		rs.setStub(new RSAppletStub(config));
+		return rs;
+	}
+
 	@Override
 	public synchronized Applet get()
 	{
@@ -162,64 +221,5 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			throw err; // use error from Jagex's servers
 		}
-	}
-
-	private static Applet loadRLPlus(final RSConfig config)
-		throws ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		RuneLiteSplashScreen.stage(.465, "Starting Open Old School RuneScape");
-
-		ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
-		{
-			@Override
-			protected Class<?> findClass(String name) throws ClassNotFoundException
-			{
-				String path = name.replace('.', '/').concat(".class");
-				InputStream inputStream = ClientLoader.class.getResourceAsStream(path);
-				if (inputStream == null)
-				{
-					throw new ClassNotFoundException(name + " " + path);
-				}
-				byte[] data;
-				try
-				{
-					data = ByteStreams.toByteArray(inputStream);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-					RuneLiteSplashScreen.setError("Failed to load!", "Failed to load class: " + name + " " + path);
-					throw new RuntimeException("Failed to load class: " + name + " " + path);
-				}
-				return defineClass(name, data, 0, data.length);
-			}
-		};
-		Class<?> clientClass = rsClassLoader.loadClass("client");
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadVanilla(final RSConfig config)
-		throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		RuneLiteSplashScreen.stage(.465, "Starting Vanilla Old School RuneScape");
-
-		final String codebase = config.getCodeBase();
-		final String initialJar = config.getInitialJar();
-		final String initialClass = config.getInitialClass();
-		final URL url = new URL(codebase + initialJar);
-
-		// Must set parent classloader to null, or it will pull from
-		// this class's classloader first
-		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
-		final Class<?> clientClass = classloader.loadClass(initialClass);
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass)
-		throws IllegalAccessException, InstantiationException
-	{
-		final Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
-		return rs;
 	}
 }
