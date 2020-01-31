@@ -198,11 +198,11 @@ public class WikiPlugin extends Plugin
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
-		final int index = config.leftClickSearch() ? 4 : 5;
-		icon.setAction(index, "Search");
+		final int searchIndex = config.leftClickSearch() ? 4 : 5;
+		icon.setAction(searchIndex, "Search");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			if (ev.getOp() == index + 1)
+			if (ev.getOp() == searchIndex + 1)
 			{
 				openSearchInput();
 			}
@@ -227,8 +227,10 @@ public class WikiPlugin extends Plugin
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
-			clientThread.invokeLater(this::removeWidgets);
-			clientThread.invokeLater(this::addWidgets);
+			clientThread.invokeLater(() -> {
+				removeWidgets();
+				addWidgets();
+			});
 		}
 	}
 
