@@ -198,12 +198,11 @@ public class WikiPlugin extends Plugin
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
-		// set position to 5 if we want Lookup on left-click, or set position to 4 if we want Search
-		final int position = config.leftClickSearch() ? 4 : 5;
-		icon.setAction(position, "Search");
+		final int index = config.leftClickSearch() ? 4 : 5;
+		icon.setAction(index, "Search");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			if (ev.getOp() == position + 1)
+			if (ev.getOp() == index + 1)
 			{
 				openSearchInput();
 			}
@@ -228,7 +227,6 @@ public class WikiPlugin extends Plugin
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
-			// Since the Widget menu is configured on startup, it's easiest to just rebuild it when the config changes
 			clientThread.invokeLater(this::removeWidgets);
 			clientThread.invokeLater(this::addWidgets);
 		}
