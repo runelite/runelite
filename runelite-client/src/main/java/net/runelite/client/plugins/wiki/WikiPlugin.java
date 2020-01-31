@@ -227,7 +227,8 @@ public class WikiPlugin extends Plugin
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
-			clientThread.invokeLater(() -> {
+			clientThread.invokeLater(() ->
+			{
 				removeWidgets();
 				addWidgets();
 			});
