@@ -37,7 +37,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -98,6 +97,7 @@ class ItemPricesOverlay extends Overlay
 		final MenuAction action = MenuAction.of(menuEntry.getType());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+
 		// Tooltip action type handling
 		switch (action)
 		{
@@ -160,7 +160,7 @@ class ItemPricesOverlay extends Overlay
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
 						{
-							tooltipManager.add(new Tooltip(ColorUtil.wrapWithColorTag(text, new Color(238, 238, 238))));
+							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
 						}
 						break;
 				}
@@ -208,11 +208,6 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			total += (long) itemManager.getItemPrice(id) * qty;
-		}
-
-		if (total < 1000)
-		{
-			return String.valueOf(total);
 		}
 
 		return QuantityFormatter.quantityToStackSize(total);
@@ -316,13 +311,13 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-					.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
-					.append(" gp");
+				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(gePrice))
-						.append(" ea)");
+					.append(QuantityFormatter.quantityToStackSize(gePrice))
+					.append(" ea)");
 			}
 		}
 		if (haValue > 0)
@@ -333,13 +328,13 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-					.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
-					.append(" gp");
+				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(haValue))
-						.append(" ea)");
+					.append(QuantityFormatter.quantityToStackSize(haValue))
+					.append(" ea)");
 			}
 		}
 
@@ -349,13 +344,13 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-					.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
-					.append(" gp");
+				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
-						.append(" ea)");
+					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+					.append(" ea)");
 			}
 		}
 
