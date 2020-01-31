@@ -37,6 +37,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -53,6 +54,12 @@ class ItemPricesOverlay extends Overlay
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
 	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
+	private static final int RESIZABLE_INVENTORY_TAB_WIDGETID = WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB.getPackedId();
+	private static final int RESIZABLE_EQUIPMENT_TAB_WIDGETID = WidgetInfo.RESIZABLE_VIEWPORT_EQUIPMENT_TAB.getPackedId();
+	private static final int RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_WIDGETID = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB.getPackedId();
+	private static final int RESIZABLE_BOTTOM_LINE_EQUIPMENT_TAB_WIDGETID = 10747959;
+	private static final int FIXED_INVENTORY_TAB_WIDGETID = WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB.getPackedId();
+	private static final int FIXED_EQUIPMENT_TAB_WIDGETID = WidgetInfo.FIXED_VIEWPORT_EQUIPMENT_TAB.getPackedId();
 
 	private final Client client;
 	private final ItemPricesConfig config;
@@ -91,7 +98,6 @@ class ItemPricesOverlay extends Overlay
 		final MenuAction action = MenuAction.of(menuEntry.getType());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
-
 		// Tooltip action type handling
 		switch (action)
 		{
@@ -115,6 +121,33 @@ class ItemPricesOverlay extends Overlay
 						{
 							return null;
 						}
+					case WidgetID.FIXED_VIEWPORT_GROUP_ID:
+					case WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID:
+					case WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID:
+						ItemContainer container = null;
+
+						if (config.showInventoryTotalValue() &&
+								(widgetId == RESIZABLE_INVENTORY_TAB_WIDGETID ||
+								 widgetId == FIXED_INVENTORY_TAB_WIDGETID ||
+								 widgetId == RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_WIDGETID))
+						{
+							container = client.getItemContainer(InventoryID.INVENTORY);
+						}
+						else if (config.showEquipmentTotalValue() &&
+								(widgetId == RESIZABLE_EQUIPMENT_TAB_WIDGETID ||
+								 widgetId == FIXED_EQUIPMENT_TAB_WIDGETID ||
+								 widgetId == RESIZABLE_BOTTOM_LINE_EQUIPMENT_TAB_WIDGETID))
+						{
+							container = client.getItemContainer(InventoryID.EQUIPMENT);
+						}
+						else
+						{
+							return null;
+						}
+
+						final String totalText = getContainerTotalValueText(container);
+						tooltipManager.add(new Tooltip("GE Total: " + ColorUtil.wrapWithColorTag(totalText, Color.GREEN) + " gp"));
+						break;
 					case WidgetID.INVENTORY_GROUP_ID:
 						if (config.hideInventory())
 						{
@@ -127,13 +160,62 @@ class ItemPricesOverlay extends Overlay
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
 						{
-							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
+							tooltipManager.add(new Tooltip(ColorUtil.wrapWithColorTag(text, new Color(238, 238, 238))));
 						}
 						break;
 				}
 				break;
 		}
 		return null;
+	}
+
+	private String getContainerTotalValueText(ItemContainer container) {
+		if (container == null)
+		{
+			return "0";
+		}
+
+		Item[] items = container.getItems();
+
+		int id, qty = 0;
+		long total = 0;
+
+		for (Item item : items) {
+			id = item.getId();
+			qty = item.getQuantity();
+
+			if (id == ItemID.COINS_995)
+			{
+				total += qty;
+				continue;
+			} else if (id == ItemID.PLATINUM_TOKEN)
+			{
+				total += qty * 1000;
+				continue;
+			}
+
+			ItemComposition itemDef = itemManager.getItemComposition(id);
+			if (itemDef.getNote() != -1)
+			{
+				id = itemDef.getLinkedNoteId();
+				itemDef = itemManager.getItemComposition(id);
+			}
+
+			// Only check prices for things with store prices
+			if (itemDef.getPrice() <= 0)
+			{
+				continue;
+			}
+
+			total += (long) itemManager.getItemPrice(id) * qty;
+		}
+
+		if (total < 1000)
+		{
+			return String.valueOf(total);
+		}
+
+		return QuantityFormatter.quantityToStackSize(total);
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)
@@ -234,13 +316,13 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
-				.append(" gp");
+					.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(gePrice))
-					.append(" ea)");
+						.append(QuantityFormatter.quantityToStackSize(gePrice))
+						.append(" ea)");
 			}
 		}
 		if (haValue > 0)
@@ -251,13 +333,13 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
-				.append(" gp");
+					.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(haValue))
-					.append(" ea)");
+						.append(QuantityFormatter.quantityToStackSize(haValue))
+						.append(" ea)");
 			}
 		}
 
@@ -267,13 +349,13 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
-				.append(" gp");
+					.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
-					.append(" ea)");
+						.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+						.append(" ea)");
 			}
 		}
 
