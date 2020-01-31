@@ -82,9 +82,9 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "syncPanel",
 		name = "Synchronize panel contents",
-		description = "Synchronize your local loot tracker with your online (requires being logged in). This means" +
-			" that panel is filled with portion of your remote data on startup and deleting data in panel deletes them" +
-			" also on server."
+		description = "Synchronize your local loot tracker with your server data (requires being logged in).<br/>" +
+			" This means the panel is filled with portions of your remote data on startup<br/>" +
+			" and deleting data in the panel also deletes it on the server."
 	)
 	default boolean syncPanel()
 	{
