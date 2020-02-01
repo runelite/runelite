@@ -31,10 +31,11 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Constants;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 
-class ContainerCalculation
+public class ContainerCalculation
 {
 	private final ItemManager itemManager;
 
@@ -48,7 +49,7 @@ class ContainerCalculation
 	}
 
 	@Nullable
-	ContainerPrices calculate(Item[] items)
+	public ContainerPrices calculate(Item[] items, boolean calcNotes)
 	{
 		// Returns last calculation if inventory hasn't changed
 		final int newHash =  hashItems(items);
@@ -65,7 +66,7 @@ class ContainerCalculation
 		for (final Item item : items)
 		{
 			final int qty = item.getQuantity();
-			final int id = item.getId();
+			int id = item.getId();
 
 			if (id <= 0 || qty == 0)
 			{
@@ -83,13 +84,27 @@ class ContainerCalculation
 					alch += qty * 1000L;
 					break;
 				default:
+					ItemComposition itemDef = itemManager.getItemComposition(id);
+
+					//is a noted item
+					if (calcNotes && itemDef.getNote() != -1)
+					{
+						id = itemDef.getLinkedNoteId();
+						itemDef = itemManager.getItemComposition(id);
+
+						// Only check prices for things with store prices
+						if (itemDef.getPrice() <= 0)
+						{
+							break;
+						}
+					}
+
 					final long storePrice = itemManager.getItemComposition(id).getPrice();
 					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 					alch += alchPrice * qty;
 					ge += (long) itemManager.getItemPrice(id) * qty;
 					break;
 			}
-
 		}
 
 		ContainerPrices prices = new ContainerPrices(ge, alch);

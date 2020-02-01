@@ -40,6 +40,8 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.bank.ContainerCalculation;
+import net.runelite.client.plugins.bank.ContainerPrices;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -64,6 +66,9 @@ class ItemPricesOverlay extends Overlay
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+
+	@Inject
+	private ContainerCalculation containerCalculation;
 
 	@Inject
 	ItemManager itemManager;
@@ -177,43 +182,9 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		Item[] items = container.getItems();
+		ContainerPrices prices = containerCalculation.calculate(items, true);
 
-		int id, qty = 0;
-		long total = 0;
-
-		for (Item item : items)
-		{
-			id = item.getId();
-			qty = item.getQuantity();
-
-			if (id == ItemID.COINS_995)
-			{
-				total += qty;
-				continue;
-			}
-			else if (id == ItemID.PLATINUM_TOKEN)
-			{
-				total += qty * 1000;
-				continue;
-			}
-
-			ItemComposition itemDef = itemManager.getItemComposition(id);
-			if (itemDef.getNote() != -1)
-			{
-				id = itemDef.getLinkedNoteId();
-				itemDef = itemManager.getItemComposition(id);
-			}
-
-			// Only check prices for things with store prices
-			if (itemDef.getPrice() <= 0)
-			{
-				continue;
-			}
-
-			total += (long) itemManager.getItemPrice(id) * qty;
-		}
-
-		return QuantityFormatter.quantityToStackSize(total);
+		return QuantityFormatter.quantityToStackSize(prices.getGePrice());
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)

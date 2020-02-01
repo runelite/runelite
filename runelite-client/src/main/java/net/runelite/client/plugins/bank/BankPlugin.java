@@ -174,7 +174,7 @@ public class BankPlugin extends Plugin
 		switch (event.getEventName())
 		{
 			case "setBankTitle":
-				final ContainerPrices prices = bankCalculation.calculate(getBankTabItems());
+				final ContainerPrices prices = bankCalculation.calculate(getBankTabItems(), false);
 				if (prices == null)
 				{
 					return;
@@ -312,7 +312,7 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		final ContainerPrices prices = seedVaultCalculation.calculate(getSeedVaultItems());
+		final ContainerPrices prices = seedVaultCalculation.calculate(getSeedVaultItems(), false);
 		if (prices == null)
 		{
 			return;

@@ -84,7 +84,7 @@ public class ContainerCalculationTest
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
 			.thenReturn(3); // 1b * 3 overflows
 
-		final ContainerPrices prices = containerCalculation.calculate(items);
+		final ContainerPrices prices = containerCalculation.calculate(items, false);
 		assertNotNull(prices);
 
 		assertTrue(prices.getHighAlchPrice() > Integer.MAX_VALUE);
