@@ -59,6 +59,7 @@ fun isNonStable(version: String): Boolean {
 allprojects {
     group = "com.openosrs"
     version = ProjectVersions.rlVersion
+    apply<MavenPublishPlugin>()
 }
 
 subprojects {
@@ -72,7 +73,7 @@ subprojects {
     }
 
     apply<JavaLibraryPlugin>()
-    apply<MavenPublishPlugin>()
+    //apply<MavenPublishPlugin>()
     apply(plugin = Plugins.testLogger.first)
 
     project.extra["gitCommit"] = localGitCommit
