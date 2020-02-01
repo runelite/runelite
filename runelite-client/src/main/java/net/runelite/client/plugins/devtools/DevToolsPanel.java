@@ -43,15 +43,23 @@ class DevToolsPanel extends PluginPanel
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
+	private final ScriptInspector scriptInspector;
 
 	@Inject
-	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector, Notifier notifier)
+	private DevToolsPanel(
+		Client client,
+		DevToolsPlugin plugin,
+		WidgetInspector widgetInspector,
+		VarInspector varInspector,
+		ScriptInspector scriptInspector,
+		Notifier notifier)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
+		this.scriptInspector = scriptInspector;
 		this.notifier = notifier;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -132,6 +140,19 @@ class DevToolsPanel extends PluginPanel
 			notifier.notify("Wow!", TrayIcon.MessageType.ERROR);
 		});
 		container.add(notificationBtn);
+
+		container.add(plugin.getScriptInspector());
+		plugin.getScriptInspector().addActionListener((ev) ->
+		{
+			if (plugin.getScriptInspector().isActive())
+			{
+				scriptInspector.close();
+			}
+			else
+			{
+				scriptInspector.open();
+			}
+		});
 
 		return container;
 	}
