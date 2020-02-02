@@ -45,7 +45,11 @@ public interface InventoryTagsConfig extends Config
 		FIVE("5"),
 		SIX("6"),
 		SEVEN("7"),
-		EIGHT("8");
+		EIGHT("8"),
+		NINE("9"),
+		TEN("10"),
+		ELEVEN("11"),
+		TWELVE("12");
 
 		private final String name;
 
@@ -79,7 +83,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "1 || 2 || 3 || 4 || 5 || 6 || 7 || 8"
+		unhideValue = "1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup1Color()
 	{
@@ -93,7 +97,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "2 || 3 || 4 || 5 || 6 || 7 || 8"
+		unhideValue = "2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup2Color()
 	{
@@ -107,7 +111,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "3 || 4 || 5 || 6 || 7 || 8"
+		unhideValue = "3 || 4 || 5 || 6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup3Color()
 	{
@@ -121,7 +125,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "4 || 5 || 6 || 7 || 8"
+		unhideValue = "4 || 5 || 6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup4Color()
 	{
@@ -135,7 +139,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "5 || 6 || 7 || 8"
+		unhideValue = "5 || 6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup5Color()
 	{
@@ -149,7 +153,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "6 || 7 || 8"
+		unhideValue = "6 || 7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup6Color()
 	{
@@ -163,7 +167,7 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "7 || 8"
+		unhideValue = "7 || 8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup7Color()
 	{
@@ -177,10 +181,66 @@ public interface InventoryTagsConfig extends Config
 		description = "Color of the Tag",
 		hidden = true,
 		unhide = "amount",
-		unhideValue = "8"
+		unhideValue = "8 || 9 || 10 || 11 || 12"
 	)
 	default Color getGroup8Color()
 	{
 		return new Color(104, 105, 255);
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "groupColor9",
+		name = "Group 9 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "9 || 10 || 11 || 12"
+	)
+	default Color getGroup9Color()
+	{
+		return new Color(255, 81, 0);
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "groupColor10",
+		name = "Group 10 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "10 || 11 || 12"
+	)
+	default Color getGroup10Color()
+	{
+		return new Color(255, 107, 229);
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "groupColor11",
+		name = "Group 11 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "11 || 12"
+	)
+	default Color getGroup11Color()
+	{
+		return new Color(121, 255, 157);
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "groupColor12",
+		name = "Group 12 Color",
+		description = "Color of the Tag",
+		hidden = true,
+		unhide = "amount",
+		unhideValue = "12"
+	)
+	default Color getGroup12Color()
+	{
+		return new Color(65, 61, 64);
 	}
 }
