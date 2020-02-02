@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,53 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wintertodt;
+package net.runelite.client.config;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
-import net.runelite.client.config.Units;
-import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@ConfigGroup("wintertodt")
-public interface WintertodtConfig extends Config
+/**
+ * Used with ConfigItem, defines what units are shown to the side of the box.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Units
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "notifyCondition",
-		name = "Notify When",
-		description = "Configures when to send notifications"
-	)
-	default WintertodtNotifyMode notifyCondition()
-	{
-		return WintertodtNotifyMode.ONLY_WHEN_INTERRUPTED;
-	}
+	String MILLISECONDS = "ms";
+	String MINUTES = " mins";
+	String PERCENT = "%";
+	String PIXELS = "px";
+	String SECONDS = "s";
+	String TICKS = " ticks";
 
-	@ConfigItem(
-		position = 2,
-		keyName = "damageNotificationColor",
-		name = "Damage Notification Color",
-		description = "Color of damage notification text in chat"
-	)
-	default Color damageNotificationColor()
-	{
-		return Color.CYAN;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "roundNotification",
-		name = "Wintertodt round notification",
-		description = "Notifies you before the round starts (in seconds)"
-	)
-	@Range(
-		max = 60
-	)
-	@Units(Units.SECONDS)
-	default int roundNotification()
-	{
-		return 5;
-	}
+	String value();
 }
