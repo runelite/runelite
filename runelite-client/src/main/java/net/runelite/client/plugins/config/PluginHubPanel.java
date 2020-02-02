@@ -157,8 +157,8 @@ class PluginHubPanel extends PluginPanel
 			version.setFont(FontManager.getRunescapeSmallFont());
 			version.setToolTipText(manifest.getVersion());
 
-			JLabel description = new JLabel(manifest.getDescription());
-			description.setToolTipText(manifest.getDescription());
+			// wrap in HTML to avoid text ellipsis
+			JLabel description = new JLabel("<html>" + manifest.getDescription() + "</html>");
 
 			JLabel icon = new JLabel();
 			icon.setHorizontalAlignment(JLabel.CENTER);
