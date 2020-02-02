@@ -138,12 +138,12 @@ public class FreezeTimersV2Plugin extends Plugin
 				timerManager.setTimerFor(actor, TimerType.TELEBLOCK, new Timer(this, null));
 			}
 			else if (WorldType.isPvpWorld(worldTypes) &&
-					 MapLocations.getPvpSafeZones(actorLoc.getPlane()).contains(actorLoc.getX(), actorLoc.getY()))
+					MapLocations.getPvpSafeZones(actorLoc.getPlane()).contains(actorLoc.getX(), actorLoc.getY()))
 			{
 				timerManager.setTimerFor(actor, TimerType.TELEBLOCK, new Timer(this, null));
 			}
 			else if (WorldType.isDeadmanWorld(worldTypes) &&
-					 MapLocations.getDeadmanSafeZones(actorLoc.getPlane()).contains(actorLoc.getX(), actorLoc.getY()))
+					MapLocations.getDeadmanSafeZones(actorLoc.getPlane()).contains(actorLoc.getX(), actorLoc.getY()))
 			{
 				timerManager.setTimerFor(actor, TimerType.TELEBLOCK, new Timer(this, null));
 			}
