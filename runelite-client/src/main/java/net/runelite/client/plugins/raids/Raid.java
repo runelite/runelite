@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raids;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
@@ -37,6 +38,20 @@ class Raid
 
 	@Getter
 	private Layout layout;
+
+	// The south west tile of the lobby room
+	@Getter
+	private WorldPoint gridBase;
+
+	// The index of the lobby room in the rooms array
+	@Getter
+	private int lobbyIndex;
+
+	public Raid(WorldPoint gridBase, int lobbyIndex)
+	{
+		this.gridBase = gridBase;
+		this.lobbyIndex = lobbyIndex;
+	}
 
 	void updateLayout(Layout layout)
 	{
