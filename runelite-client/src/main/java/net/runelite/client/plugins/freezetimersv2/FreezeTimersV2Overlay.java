@@ -39,7 +39,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class FreezeTimersV2Overlay extends Overlay
@@ -137,8 +136,7 @@ public class FreezeTimersV2Overlay extends Overlay
 		}
 
 		int yOffset = (offset * (g.getFontMetrics().getHeight() + 2));
-		Rectangle rect = actor.getConvexHull().getBounds();
-		int xOffset = (int) rect.getWidth();
+		int xOffset = 20;
 
 		BufferedImage image = timer.getIcon();
 		Point actorCIL = actor.getCanvasImageLocation(image, 0);
