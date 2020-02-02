@@ -162,16 +162,6 @@ public class FreezeTimersPlugin extends Plugin
 	{
 		prayerTracker.gameTick();
 
-		for (Actor actor : client.getPlayers())
-		{
-			if (prayerTracker.getSpotanimLastTick(actor) != actor.getSpotAnimation())
-			{
-				SpotAnimationChanged callback = new SpotAnimationChanged();
-				callback.setActor(actor);
-				client.getCallbacks().post(SpotAnimationChanged.class, callback);
-			}
-		}
-
 		List<Actor> teleblocked = timers.getAllActorsOnTimer(TimerType.TELEBLOCK);
 
 		if (!teleblocked.isEmpty())
