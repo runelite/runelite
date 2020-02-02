@@ -136,7 +136,7 @@ public class FreezeTimersV2Overlay extends Overlay
 		}
 
 		int yOffset = (offset * (g.getFontMetrics().getHeight() + 2));
-		int xOffset = 20;
+		int xOffset = config.xOffset();
 
 		BufferedImage image = timer.getIcon();
 		Point actorCIL = actor.getCanvasImageLocation(image, 0);

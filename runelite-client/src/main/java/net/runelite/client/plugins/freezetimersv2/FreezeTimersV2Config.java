@@ -155,4 +155,15 @@ public interface FreezeTimersV2Config extends Config
 	{
 		return -1;
 	}
+
+	@ConfigItem(
+		name = "X Offset",
+		keyName = "xOffset",
+		description = "X Offset for overlay rendering",
+		position = 12
+	)
+	default int xOffset()
+	{
+		return 20;
+	}
 }
