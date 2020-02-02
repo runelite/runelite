@@ -1,0 +1,6 @@
+jdk:
+  - openjdk11
+install:
+  - echo "Welcome to OpenOSRS JitPack"
+  - chmod a+x ./gradlew
+  - ./gradlew build publishToMavenLocal -x test

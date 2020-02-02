@@ -59,11 +59,13 @@ fun isNonStable(version: String): Boolean {
 allprojects {
     group = "com.openosrs"
     version = ProjectVersions.rlVersion
+    apply<MavenPublishPlugin>()
 }
 
 subprojects {
     repositories {
-        //mavenLocal()
+        if (System.getenv("JITPACK") != null)
+            mavenLocal()
         jcenter()
         maven(url = "https://mvnrepository.com/artifact")
         maven(url = "https://repo.runelite.net")
@@ -72,7 +74,7 @@ subprojects {
     }
 
     apply<JavaLibraryPlugin>()
-    apply<MavenPublishPlugin>()
+    //apply<MavenPublishPlugin>()
     apply(plugin = Plugins.testLogger.first)
 
     project.extra["gitCommit"] = localGitCommit
