@@ -64,7 +64,8 @@ allprojects {
 
 subprojects {
     repositories {
-        //mavenLocal()
+        if (System.getenv("JITPACK") != null)
+            mavenLocal()
         jcenter()
         maven(url = "https://mvnrepository.com/artifact")
         maven(url = "https://repo.runelite.net")
