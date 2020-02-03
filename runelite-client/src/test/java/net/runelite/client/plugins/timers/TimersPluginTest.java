@@ -31,8 +31,11 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.EnumSet;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -42,7 +45,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -135,5 +141,45 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.DMM_FULLTB, infoBox.getTimer());
+	}
+
+	@Test
+	public void testImbuedHeartBoost()
+	{
+		when(timersConfig.showImbuedHeart()).thenReturn(true);
+		StatChanged event;
+
+		// The following simulates imbued heart boosts at low magic levels, but should not create an imbued heart timer
+		// because it is ambiguous what caused the boost. (Magic essences and potions can create similar boost amounts)
+		for (int level = 1; level < TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL; level++)
+		{
+			event = new StatChanged(Skill.MAGIC, 0, level, level + 1 + (level / 10));
+			timersPlugin.onStatChanged(event);
+			verify(infoBoxManager, never()).addInfoBox(any());
+		}
+
+		// The following simulates magic essence and magic potion boosts and should not create an imbued heart timer
+		for (int level = TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL; level <= Experience.MAX_REAL_LEVEL; level++)
+		{
+			event = new StatChanged(Skill.MAGIC, 0, level, level + 3); // Magic essence
+			timersPlugin.onStatChanged(event);
+			verify(infoBoxManager, never()).addInfoBox(any());
+
+			event = new StatChanged(Skill.MAGIC, 0, level, level + 4);
+			timersPlugin.onStatChanged(event);
+			verify(infoBoxManager, never()).addInfoBox(any());
+		}
+
+		// The following simulates a real imbued heart magic boost and should create imbued heart timers
+		for (int level = TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL, i = 0; level <= Experience.MAX_REAL_LEVEL; level++, i++)
+		{
+			event = new StatChanged(Skill.MAGIC, 0, level, level + 1 + (level / 10));
+			timersPlugin.onStatChanged(event);
+
+			ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+			verify(infoBoxManager, times(i + 1)).addInfoBox(captor.capture());
+			TimerTimer infoBox = (TimerTimer) captor.getValue();
+			assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
+		}
 	}
 }
