@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
@@ -40,6 +41,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -471,5 +473,17 @@ public class SwingUtil
 	public static void addModalTooltip(AbstractButton button, String on, String off)
 	{
 		button.addItemListener(l -> button.setToolTipText(button.isSelected() ? on : off));
+	}
+
+	public static void syncExec(final Runnable r) throws InvocationTargetException, InterruptedException
+	{
+		if (EventQueue.isDispatchThread())
+		{
+			r.run();
+		}
+		else
+		{
+			EventQueue.invokeAndWait(r);
+		}
 	}
 }

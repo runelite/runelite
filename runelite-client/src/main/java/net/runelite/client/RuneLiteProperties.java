@@ -42,6 +42,7 @@ public class RuneLiteProperties
 	private static final String WIKI_LINK = "runelite.wiki.link";
 	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "launcher.version";
+	private static final String PLUGIN_PATH = "plugin.path";
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
@@ -136,5 +137,12 @@ public class RuneLiteProperties
 	{
 		String launcherVersion = properties.getProperty(LAUNCHER_VERSION_PROPERTY);
 		return launcherVersion.equals("-1") ? null : launcherVersion;
+	}
+
+	@Nullable
+	public static String getPluginPath()
+	{
+		String pluginPath = properties.getProperty(PLUGIN_PATH);
+		return pluginPath.equals("") ? null : pluginPath;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Alexander V.
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatboxperformance;
+package net.runelite.client.events;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Data;
+import net.runelite.api.events.Event;
+import net.runelite.client.plugins.Plugin;
 
-@ConfigGroup("chatboxperformance")
-public interface ChatboxPerformanceConfig extends Config
+@Data
+public class ExternalPluginChanged implements Event
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "Chatbox",
-		name = "Toggle gradient",
-		description = "Toggles the gradient inside the chatbox."
-	)
-	default boolean transparentChatBox()
-	{
-		return true; //default enabled, just like in game.
-	}
+	private final String pluginId;
+	private final Plugin plugin;
+	private final boolean added;
 }

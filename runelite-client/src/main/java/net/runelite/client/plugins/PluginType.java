@@ -13,7 +13,7 @@ public enum PluginType
 	SKILLING("Skilling"),
 	UTILITY("Utilities"),
 	MISCELLANEOUS("Miscellaneous"),
-	EXTERNAL("External"),
+	EXTERNAL("Legacy External"),
 	IMPORTANT("System"),
 	MINIGAME("Minigame"),
 	GAMEMODE("Gamemode"),
