@@ -73,6 +73,7 @@ import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -444,6 +445,13 @@ class ConfigPanel extends PluginPanel
 			if (result == JOptionPane.YES_OPTION)
 			{
 				configManager.setDefaultConfiguration(pluginConfig.getConfig(), true);
+
+				// Reset non-config panel keys
+				Plugin plugin = pluginConfig.getPlugin();
+				if (plugin != null)
+				{
+					plugin.resetConfiguration();
+				}
 
 				rebuild();
 			}

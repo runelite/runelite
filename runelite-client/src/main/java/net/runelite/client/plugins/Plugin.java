@@ -45,6 +45,10 @@ public abstract class Plugin implements Module
 	{
 	}
 
+	public void resetConfiguration()
+	{
+	}
+
 	public final Injector getInjector()
 	{
 		return injector;
