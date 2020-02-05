@@ -54,6 +54,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
@@ -63,7 +64,6 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -72,7 +72,9 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.SessionClose;
@@ -88,6 +90,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
@@ -157,6 +160,9 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private EventBus eventBus;
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
@@ -271,13 +277,12 @@ public class LootTrackerPlugin extends Plugin
 
 				executor.submit(() ->
 				{
-					Collection<LootRecord> lootRecords;
-
 					if (!config.syncPanel())
 					{
 						return;
 					}
 
+					Collection<LootAggregate> lootRecords;
 					try
 					{
 						lootRecords = lootTrackerClient.get();
@@ -319,6 +324,23 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	void addLoot(String name, int combatLevel, LootRecordType type, Collection<ItemStack> items)
+	{
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(name, combatLevel, entries));
+
+		if (config.saveLoot())
+		{
+			LootRecord lootRecord = new LootRecord(name, type, toGameItems(items), Instant.now());
+			synchronized (queuedLoots)
+			{
+				queuedLoots.add(lootRecord);
+			}
+		}
+
+		eventBus.post(new LootReceived(name, combatLevel, type, items));
+	}
+
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
@@ -326,17 +348,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = npcLootReceived.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
-		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		addLoot(name, combat, LootRecordType.NPC, items);
 	}
 
 	@Subscribe
@@ -352,17 +365,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = playerLootReceived.getItems();
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
-		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		addLoot(name, combat, LootRecordType.PLAYER, items);
 	}
 
 	@Subscribe
@@ -407,6 +411,10 @@ public class LootTrackerPlugin extends Plugin
 				eventType = "Kingdom of Miscellania";
 				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
 				break;
+			case (WidgetID.FISHING_TRAWLER_REWARD_GROUP_ID):
+				eventType = "Fishing Trawler";
+				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
+				break;
 			default:
 				return;
 		}
@@ -428,17 +436,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
-
-		if (config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-			synchronized (queuedLoots)
-			{
-				queuedLoots.add(lootRecord);
-			}
-		}
+		addLoot(eventType, -1, LootRecordType.EVENT, items);
 	}
 
 	@Subscribe
@@ -594,17 +592,7 @@ public class LootTrackerPlugin extends Plugin
 				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
 				.collect(Collectors.toList());
 
-			final LootTrackerItem[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries));
-
-			if (config.saveLoot())
-			{
-				LootRecord lootRecord = new LootRecord(chestType, LootRecordType.EVENT, toGameItems(items), Instant.now());
-				synchronized (queuedLoots)
-				{
-					queuedLoots.add(lootRecord);
-				}
-			}
+			addLoot(chestType, -1, LootRecordType.EVENT, items);
 
 			inventorySnapshot = null;
 		}
@@ -636,14 +624,16 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final long price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+		final int gePrice = itemManager.getItemPrice(realItemId);
+		final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 		return new LootTrackerItem(
 			itemId,
 			itemComposition.getName(),
 			quantity,
-			price,
+			gePrice,
+			haPrice,
 			ignored);
 	}
 
@@ -661,17 +651,17 @@ public class LootTrackerPlugin extends Plugin
 			.collect(Collectors.toList());
 	}
 
-	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
+	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootAggregate> records)
 	{
 		return records.stream()
-			.sorted(Comparator.comparing(LootRecord::getTime))
+			.sorted(Comparator.comparing(LootAggregate::getLast_time))
 			.map(record ->
 			{
 				LootTrackerItem[] drops = record.getDrops().stream().map(itemStack ->
 					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
 				).toArray(LootTrackerItem[]::new);
 
-				return new LootTrackerRecord(record.getEventId(), "", drops);
+				return new LootTrackerRecord(record.getEventId(), "", drops, record.getAmount());
 			})
 			.collect(Collectors.toCollection(ArrayList::new));
 	}

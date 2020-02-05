@@ -24,144 +24,37 @@
  */
 package net.runelite.client.plugins.raids;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Tile;
+import lombok.RequiredArgsConstructor;
 
-public class RaidRoom
+@RequiredArgsConstructor
+@Getter
+enum RaidRoom
 {
-	public static final int ROOM_MAX_SIZE = 32;
+	START("Start", RoomType.START),
+	END("End", RoomType.END),
+	SCAVENGERS("Scavengers", RoomType.SCAVENGERS),
+	FARMING("Farming", RoomType.FARMING),
+	EMPTY("Empty", RoomType.EMPTY),
 
-	@AllArgsConstructor
-	public enum Type
-	{
-		START("Start", "#"),
-		END("End", "¤"),
-		SCAVENGERS("Scavengers", "S"),
-		FARMING("Farming", "F"),
-		COMBAT("Combat", "C"),
-		PUZZLE("Puzzle", "P"),
-		EMPTY("Empty", " ");
+	TEKTON("Tekton", RoomType.COMBAT),
+	MUTTADILES("Muttadiles", RoomType.COMBAT),
+	GUARDIANS("Guardians", RoomType.COMBAT),
+	VESPULA("Vespula", RoomType.COMBAT),
+	SHAMANS("Shamans", RoomType.COMBAT),
+	VASA("Vasa", RoomType.COMBAT),
+	VANGUARDS("Vanguards", RoomType.COMBAT),
+	MYSTICS("Mystics", RoomType.COMBAT),
+	UNKNOWN_COMBAT("Unknown (combat)", RoomType.COMBAT),
 
-		@Getter
-		private final String name;
+	CRABS("Crabs", RoomType.PUZZLE),
+	ICE_DEMON("Ice Demon", RoomType.PUZZLE),
+	TIGHTROPE("Tightrope", RoomType.PUZZLE),
+	THIEVING("Thieving", RoomType.PUZZLE),
+	UNKNOWN_PUZZLE("Unknown (puzzle)", RoomType.PUZZLE);
 
-		@Getter
-		private final String code;
+	static final int ROOM_MAX_SIZE = 32;
 
-		public static Type fromCode(char code)
-		{
-			for (Type type : Type.values())
-			{
-				if (type.getCode().equalsIgnoreCase(String.valueOf(code)))
-				{
-					return type;
-				}
-			}
-
-			return Type.EMPTY;
-		}
-	}
-
-	@AllArgsConstructor
-	public enum Boss
-	{
-		TEKTON("Tekton"),
-		MUTTADILES("Muttadiles"),
-		GUARDIANS("Guardians"),
-		VESPULA("Vespula"),
-		SHAMANS("Shamans"),
-		VASA("Vasa"),
-		VANGUARDS("Vanguards"),
-		MYSTICS("Mystics"),
-		UNKNOWN("Unknown");
-
-		@Getter
-		private final String name;
-
-		public static Boss fromString(String name)
-		{
-			for (Boss boss : Boss.values())
-			{
-				if (boss.getName().equalsIgnoreCase(name))
-				{
-					return boss;
-				}
-			}
-
-			return null;
-		}
-	}
-
-	@AllArgsConstructor
-	public enum Puzzle
-	{
-		CRABS("Crabs"),
-		ICE_DEMON("Ice Demon"),
-		TIGHTROPE("Tightrope"),
-		THIEVING("Thieving"),
-		UNKNOWN("Unknown");
-
-		@Getter
-		private final String name;
-
-		public static Puzzle fromString(String name)
-		{
-			for (Puzzle puzzle : Puzzle.values())
-			{
-				if (puzzle.getName().equalsIgnoreCase(name))
-				{
-					return puzzle;
-				}
-			}
-
-			return null;
-		}
-	}
-
-	@Getter
-	private final Tile base;
-
-	@Getter
-	@Setter
-	private Type type;
-
-	@Getter
-	@Setter
-	private Boss boss;
-
-	@Getter
-	@Setter
-	private Puzzle puzzle;
-
-	@Getter
-	@Setter
-	private RaidRoom previousRoom;
-
-	@Getter
-	@Setter
-	private RaidRoom nextRoom;
-
-	public RaidRoom(Tile base, Type type)
-	{
-		this.base = base;
-		this.type = type;
-	}
-
-	@Override
-	public String toString()
-	{
-		switch (type)
-		{
-			case COMBAT:
-				return "RaidRoom (type: " + type.getName() + ", " + boss.getName() + ")";
-
-			case PUZZLE:
-				return "RaidRoom (type: " + type.getName() + ", " + puzzle.getName() + ")";
-
-			default:
-				return "RaidRoom (type: " + type.getName() + ")";
-		}
-	}
+	private final String name;
+	private final RoomType type;
 }

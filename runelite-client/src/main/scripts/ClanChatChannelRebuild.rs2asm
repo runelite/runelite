@@ -1,0 +1,802 @@
+.id                 1658
+.int_stack_count    15
+.string_stack_count 0
+.int_var_count      25
+.string_var_count   1
+; Callback "clanChatChannelRebuild" for whenever clan chat is done being built, used inside ClanChatPlugin for ignores
+   iload                  3
+   iconst                 6
+   iconst                 7
+   iconst                 6
+   sconst                 "Sort by rank"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   invoke                 1659
+   iload                  4
+   iconst                 2
+   iconst                 3
+   iconst                 2
+   sconst                 "Sort by name"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   invoke                 1659
+   iload                  5
+   iconst                 8
+   iconst                 9
+   iconst                 9
+   sconst                 "Sort by last world change"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   invoke                 1659
+   iload                  6
+   iconst                 4
+   iconst                 5
+   iconst                 4
+   sconst                 "Sort by world"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   invoke                 1659
+   iload                  7
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   sconst                 "Legacy sort"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   invoke                 1659
+   3644                  
+   get_varc_int           185
+   switch                
+      1: LABEL109
+      2: LABEL112
+      3: LABEL115
+      4: LABEL184
+      5: LABEL212
+      6: LABEL118
+      7: LABEL148
+      8: LABEL178
+      9: LABEL181
+   jump                   LABEL239
+LABEL109:
+   iconst                 0
+   3645                  
+   jump                   LABEL239
+LABEL112:
+   iconst                 1
+   3646                  
+   jump                   LABEL239
+LABEL115:
+   iconst                 0
+   3646                  
+   jump                   LABEL239
+LABEL118:
+   iconst                 1
+   3657                  
+   get_varc_int           206
+   switch                
+      3: LABEL125
+      4: LABEL128
+      5: LABEL135
+      8: LABEL142
+      9: LABEL145
+   iconst                 1
+   3646                  
+   jump                   LABEL147
+LABEL125:
+   iconst                 0
+   3646                  
+   jump                   LABEL147
+LABEL128:
+   iconst                 1
+   3652                  
+   iconst                 1
+   3647                  
+   iconst                 1
+   3646                  
+   jump                   LABEL147
+LABEL135:
+   iconst                 1
+   3652                  
+   iconst                 0
+   3647                  
+   iconst                 1
+   3646                  
+   jump                   LABEL147
+LABEL142:
+   iconst                 1
+   3648                  
+   jump                   LABEL147
+LABEL145:
+   iconst                 0
+   3648                  
+LABEL147:
+   jump                   LABEL239
+LABEL148:
+   iconst                 0
+   3657                  
+   get_varc_int           206
+   switch                
+      3: LABEL155
+      4: LABEL158
+      5: LABEL165
+      8: LABEL172
+      9: LABEL175
+   iconst                 1
+   3646                  
+   jump                   LABEL177
+LABEL155:
+   iconst                 0
+   3646                  
+   jump                   LABEL177
+LABEL158:
+   iconst                 1
+   3652                  
+   iconst                 1
+   3647                  
+   iconst                 1
+   3646                  
+   jump                   LABEL177
+LABEL165:
+   iconst                 1
+   3652                  
+   iconst                 0
+   3647                  
+   iconst                 1
+   3646                  
+   jump                   LABEL177
+LABEL172:
+   iconst                 1
+   3648                  
+   jump                   LABEL177
+LABEL175:
+   iconst                 0
+   3648                  
+LABEL177:
+   jump                   LABEL239
+LABEL178:
+   iconst                 1
+   3648                  
+   jump                   LABEL239
+LABEL181:
+   iconst                 0
+   3648                  
+   jump                   LABEL239
+LABEL184:
+   iconst                 1
+   3652                  
+   iconst                 1
+   3647                  
+   get_varc_int           206
+   switch                
+      3: LABEL193
+      6: LABEL196
+      7: LABEL201
+      8: LABEL206
+      9: LABEL209
+   iconst                 1
+   3646                  
+   jump                   LABEL211
+LABEL193:
+   iconst                 0
+   3646                  
+   jump                   LABEL211
+LABEL196:
+   iconst                 1
+   3657                  
+   iconst                 1
+   3646                  
+   jump                   LABEL211
+LABEL201:
+   iconst                 0
+   3657                  
+   iconst                 1
+   3646                  
+   jump                   LABEL211
+LABEL206:
+   iconst                 1
+   3648                  
+   jump                   LABEL211
+LABEL209:
+   iconst                 0
+   3648                  
+LABEL211:
+   jump                   LABEL239
+LABEL212:
+   iconst                 1
+   3652                  
+   iconst                 0
+   3647                  
+   get_varc_int           206
+   switch                
+      3: LABEL221
+      6: LABEL224
+      7: LABEL229
+      8: LABEL234
+      9: LABEL237
+   iconst                 1
+   3646                  
+   jump                   LABEL239
+LABEL221:
+   iconst                 0
+   3646                  
+   jump                   LABEL239
+LABEL224:
+   iconst                 1
+   3657                  
+   iconst                 1
+   3646                  
+   jump                   LABEL239
+LABEL229:
+   iconst                 0
+   3657                  
+   iconst                 1
+   3646                  
+   jump                   LABEL239
+LABEL234:
+   iconst                 1
+   3648                  
+   jump                   LABEL239
+LABEL237:
+   iconst                 0
+   3648                  
+LABEL239:
+   3655                  
+   iload                  8
+   cc_deleteall          
+   clan_getchatcount     
+   istore                 15
+   get_varbit             6363
+   iconst                 1
+   if_icmpeq              LABEL248
+   jump                   LABEL296
+LABEL248:
+   iload                  15
+   iconst                 0
+   if_icmpgt              LABEL252
+   jump                   LABEL253
+LABEL252:
+   clan_leavechat        
+LABEL253:
+   iconst                 0
+   istore                 15
+   iconst                 0
+   iload                  2
+   if_sethide            
+   iconst                 1
+   iload                  9
+   if_sethide            
+   iload                  11
+   invoke                 2067
+   pop_int               
+   iconst                 -1
+   sconst                 ""
+   iload                  11
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iload                  11
+   if_setonmouseleave    
+   iload                  13
+   invoke                 2067
+   pop_int               
+   iconst                 -1
+   sconst                 ""
+   iload                  13
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iload                  13
+   if_setonmouseleave    
+   sconst                 "<col=7f7f7f>"
+   sconst                 "---"
+   sconst                 "</col>"
+   join_string            3
+   iload                  12
+   if_settext            
+   iload                  12
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  12
+   if_setonop            
+   jump                   LABEL341
+LABEL296:
+   iconst                 1
+   iload                  2
+   if_sethide            
+   iconst                 0
+   iload                  9
+   if_sethide            
+   iload                  11
+   invoke                 486
+   pop_int               
+   iconst                 94
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  11
+   if_setonmouserepeat   
+   iconst                 92
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  11
+   if_setonmouseleave    
+   iload                  13
+   invoke                 486
+   pop_int               
+   iconst                 94
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  13
+   if_setonmouserepeat   
+   iconst                 92
+   iconst                 -2147483645
+   sconst                 "I"
+   iload                  13
+   if_setonmouseleave    
+   sconst                 "Clan Setup"
+   iload                  12
+   if_settext            
+   iconst                 1
+   sconst                 "Clan Setup"
+   iload                  12
+   if_setop              
+   iconst                 489
+   iconst                 -2147483644
+   iconst                 1
+   sconst                 "ii"
+   iload                  12
+   if_setonop            
+LABEL341:
+   sconst                 ""
+   sstore                 0
+   iconst                 -1
+   istore                 16
+   iconst                 -1
+   istore                 17
+   clan_getchatrank      
+   istore                 18
+   clan_getchatminkick   
+   istore                 19
+   iload                  3
+   if_getwidth           
+   istore                 20
+   iconst                 0
+   istore                 21
+   iconst                 0
+   istore                 22
+   iconst                 15
+   istore                 23
+   invoke                 1972
+   iconst                 1
+   if_icmpeq              LABEL364
+   jump                   LABEL369
+LABEL364:
+   iconst                 8
+   iconst                 5
+   iload                  23
+   scale                 
+   istore                 23
+LABEL369:
+   iconst                 0
+   istore                 24
+LABEL371:
+   iload                  24
+   iload                  15
+   if_icmplt              LABEL375
+   jump                   LABEL572
+LABEL375:
+   iload                  24
+   clan_getchatusername  
+   iload                  24
+   clan_getchatuserworld 
+   iload                  24
+   clan_getchatuserrank  
+   istore                 17
+   istore                 16
+   sstore                 0
+   iload                  8
+   iconst                 4
+   iload                  21
+   cc_create             
+   iload                  21
+   iconst                 1
+   add                   
+   istore                 21
+   iload                  20
+   iload                  23
+   iconst                 1
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   iload                  22
+   iconst                 2
+   iconst                 0
+   cc_setposition        
+   iconst                 494
+   cc_settextfont        
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   sload                  0
+   cc_settext            
+   iconst                 16777215
+   cc_setcolour          
+   iconst                 0
+   cc_settextshadow      
+   iload                  8
+   iconst                 4
+   iload                  21
+   cc_create              1
+   iload                  21
+   iconst                 1
+   add                   
+   istore                 21
+   iload                  20
+   iload                  23
+   iconst                 1
+   iconst                 0
+   cc_setsize             1
+   iconst                 0
+   iload                  22
+   iconst                 2
+   iconst                 0
+   cc_setposition         1
+   iconst                 494
+   cc_settextfont         1
+   iconst                 2
+   iconst                 1
+   iconst                 0
+   cc_settextalign        1
+   sconst                 "World "
+   iload                  16
+   tostring              
+   join_string            2
+   cc_settext             1
+   iload                  16
+   map_world             
+   if_icmpeq              LABEL447
+   jump                   LABEL450
+LABEL447:
+   iconst                 901389
+   cc_setcolour           1
+   jump                   LABEL452
+LABEL450:
+   iconst                 16777060
+   cc_setcolour           1
+LABEL452:
+   iconst                 0
+   cc_settextshadow       1
+   iload                  8
+   iconst                 5
+   iload                  21
+   cc_create              1
+   iload                  21
+   iconst                 1
+   add                   
+   istore                 21
+   iconst                 9
+   iconst                 9
+   iconst                 0
+   iconst                 0
+   cc_setsize             1
+   iconst                 1
+   iload                  22
+   iload                  23
+   iconst                 9
+   sub                   
+   iconst                 2
+   div                   
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition         1
+   iconst                 105
+   iconst                 100
+   iconst                 706
+   iload                  17
+   enum                  
+   cc_setgraphic          1
+   iload                  24
+   clan_isself           
+   iconst                 0
+   if_icmpeq              LABEL489
+   jump                   LABEL525
+LABEL489:
+   iload                  24
+   clan_isfriend         
+   iconst                 1
+   if_icmpeq              LABEL494
+   jump                   LABEL501
+LABEL494:
+   iconst                 9
+   sconst                 "Remove friend"
+   cc_setop              
+   iconst                 9
+   sconst                 "Remove friend"
+   cc_setop               1
+   jump                   LABEL525
+LABEL501:
+   iload                  24
+   clan_isignore         
+   iconst                 1
+   if_icmpeq              LABEL506
+   jump                   LABEL513
+LABEL506:
+   iconst                 10
+   sconst                 "Remove ignore"
+   cc_setop              
+   iconst                 10
+   sconst                 "Remove ignore"
+   cc_setop               1
+   jump                   LABEL525
+LABEL513:
+   iconst                 7
+   sconst                 "Add friend"
+   cc_setop              
+   iconst                 7
+   sconst                 "Add friend"
+   cc_setop               1
+   iconst                 8
+   sconst                 "Add ignore"
+   cc_setop              
+   iconst                 8
+   sconst                 "Add ignore"
+   cc_setop               1
+LABEL525:
+   invoke                 1942
+   iconst                 0
+   if_icmpeq              LABEL529
+   jump                   LABEL543
+LABEL529:
+   iload                  18
+   iload                  19
+   if_icmpge              LABEL533
+   jump                   LABEL543
+LABEL533:
+   iload                  18
+   iload                  17
+   if_icmpgt              LABEL537
+   jump                   LABEL543
+LABEL537:
+   iconst                 6
+   sconst                 "Kick user"
+   cc_setop              
+   iconst                 6
+   sconst                 "Kick user"
+   cc_setop               1
+LABEL543:
+   sconst                 "<col=ff9040>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            3
+   cc_setopbase          
+   sconst                 "<col=ff9040>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            3
+   cc_setopbase           1
+   iconst                 214
+   sconst                 "event_opbase"
+   iconst                 -2147483644
+   sconst                 "si"
+   cc_setonop            
+   iconst                 214
+   sconst                 "event_opbase"
+   iconst                 -2147483644
+   sconst                 "si"
+   cc_setonop             1
+   iload                  24
+   iconst                 1
+   add                   
+   iload                  22
+   iload                  23
+   add                   
+   istore                 22
+   istore                 24
+   jump                   LABEL371
+LABEL572:
+   iload                  15
+   iconst                 1
+   if_icmpge              LABEL576
+   jump                   LABEL580
+LABEL576:
+   iload                  22
+   iconst                 5
+   add                   
+   istore                 22
+LABEL580:
+   iload                  10
+   if_clearops           
+   get_varbit             6363
+   iconst                 1
+   if_icmpeq              LABEL586
+   jump                   LABEL605
+LABEL586:
+   sconst                 ""
+   iload                  0
+   if_settext            
+   sconst                 ""
+   iload                  1
+   if_settext            
+   sconst                 "<col=7f7f7f>"
+   sconst                 "---"
+   sconst                 "</col>"
+   join_string            3
+   iload                  10
+   if_settext            
+   iload                  10
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  10
+   if_setonop            
+   jump                   LABEL672
+LABEL605:
+   iload                  15
+   iconst                 0
+   if_icmpgt              LABEL609
+   jump                   LABEL653
+LABEL609:
+   sconst                 "<col=ffff64>"
+   clan_getchatdisplayname
+   sconst                 "</col>"
+   join_string            3
+   iload                  0
+   if_settext            
+   sconst                 "<col=ffffff>"
+   clan_getchatownername 
+   sconst                 "</col>"
+   join_string            3
+   iload                  1
+   if_settext            
+   sconst                 "Leave Chat"
+   iload                  10
+   if_settext            
+   get_varbit             5432
+   iconst                 1
+   if_icmpeq              LABEL631
+   get_varbit             4289
+   iconst                 0
+   if_icmpne              LABEL631
+   jump                   LABEL642
+LABEL631:
+   iconst                 6
+   sconst                 "Leave Chat"
+   iload                  10
+   if_setop              
+   iconst                 194
+   iconst                 -2147483644
+   iconst                 6
+   sconst                 "ii"
+   iload                  10
+   if_setonop            
+   jump                   LABEL652
+LABEL642:
+   iconst                 1
+   sconst                 "Leave Chat"
+   iload                  10
+   if_setop              
+   iconst                 194
+   iconst                 -2147483644
+   iconst                 1
+   sconst                 "ii"
+   iload                  10
+   if_setonop            
+LABEL652:
+   jump                   LABEL672
+LABEL653:
+   sconst                 "Not in chat"
+   iload                  0
+   if_settext            
+   sconst                 "None"
+   iload                  1
+   if_settext            
+   sconst                 "Join Chat"
+   iload                  10
+   if_settext            
+   iconst                 1
+   sconst                 "Join Chat"
+   iload                  10
+   if_setop              
+   iconst                 194
+   iconst                 -2147483644
+   iconst                 1
+   sconst                 "ii"
+   iload                  10
+   if_setonop            
+LABEL672:
+   iload                  22
+   iload                  8
+   if_getheight          
+   if_icmpgt              LABEL677
+   jump                   LABEL687
+LABEL677:
+   iconst                 0
+   iload                  22
+   iload                  8
+   if_setscrollsize      
+   iload                  9
+   iload                  8
+   iload                  8
+   if_getscrolly         
+   invoke                 72
+   jump                   LABEL695
+LABEL687:
+   iconst                 0
+   iconst                 0
+   iload                  8
+   if_setscrollsize      
+   iload                  9
+   iload                  8
+   iconst                 0
+   invoke                 72
+LABEL695:
+   sconst                 "clanChatChannelRebuild"
+   runelite_callback
+   return                

@@ -25,11 +25,16 @@
 
 package net.runelite.client.plugins.objectindicators;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 class ObjectPoint
 {
+	private int id = -1;
 	private String name;
 	private int regionId;
 	private int regionX;

@@ -53,7 +53,6 @@ import net.runelite.client.util.OSType;
 public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	private static final int MAX_USERNAME_LENGTH = 254;
-	private static final int MAX_PASSWORD_LENGTH = 20;
 	private static final int MAX_PIN_LENGTH = 6;
 
 	@Inject
@@ -193,11 +192,6 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 						{
 							// Truncate data to maximum username length if necessary
 							client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
-						}
-						else
-						{
-							// Truncate data to maximum password length if necessary
-							client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
 						}
 
 						break;

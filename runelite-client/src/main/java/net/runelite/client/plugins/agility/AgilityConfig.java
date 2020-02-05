@@ -28,10 +28,22 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
+	@ConfigItem(
+		keyName = "showClickboxes",
+		name = "Show Clickboxes",
+		description = "Show agility course obstacle clickboxes",
+		position = 0
+	)
+	default boolean showClickboxes()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "showLapCount",
 		name = "Show Lap Count",
@@ -45,10 +57,11 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
+		name = "Hide Lap Count",
 		description = "Time until the lap counter hides/resets",
 		position = 2
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;

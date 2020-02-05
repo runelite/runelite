@@ -364,7 +364,7 @@ public class GroundItemsOverlay extends Overlay
 	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
 	{
 		// We can only accurately guess despawn times for our own pvm loot and dropped items
-		if (groundItem.getLootType() != LootType.PVM && !groundItem.isDropped())
+		if (groundItem.getLootType() != LootType.PVM && groundItem.getLootType() != LootType.DROPPED)
 		{
 			return;
 		}
@@ -395,7 +395,7 @@ public class GroundItemsOverlay extends Overlay
 		}
 		else
 		{
-			if (groundItem.isDropped())
+			if (groundItem.getLootType() == LootType.DROPPED)
 			{
 				despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
 			}

@@ -27,20 +27,59 @@ package net.runelite.client.plugins.music;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup("music")
 public interface MusicConfig extends Config
 {
 	@ConfigItem(
-		keyName = "musicVolume",
-		name = "Music Volume",
-		description = "Overrides music volume in game with more granular control",
+		keyName = "muteOwnAreaSounds",
+		name = "Mute player area sounds",
+		description = "Mute area sounds caused by yourself",
+		position = 0
+	)
+	default boolean muteOwnAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaSounds",
+		name = "Mute other players' area sounds",
+		description = "Mute area sounds caused by other players",
 		position = 1
 	)
-	@Range(
-		min = 0,
-		max = 255
+	default boolean muteOtherAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaNPCSounds",
+		name = "Mute NPCs' area sounds",
+		description = "Mute area sounds caused by NPCs",
+		position = 2
+	)
+	default boolean muteNpcAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaEnvironmentSounds",
+		name = "Mute environment area sounds",
+		description = "Mute area sounds caused by neither NPCs nor players",
+		position = 3
+	)
+	default boolean muteEnvironmentAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "musicVolume",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int getMusicVolume()
 	{
@@ -48,14 +87,18 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "soundEffectVolume",
-		name = "Sound Effect Volume",
-		description = "Overrides the sound effect volume in game with more granular control",
-		position = 2
+		keyName = "musicVolume",
+		name = "",
+		description = "",
+		hidden = true
 	)
-	@Range(
-		min = 0,
-		max = 127
+	void setMusicVolume(int vol);
+
+	@ConfigItem(
+		keyName = "soundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int getSoundEffectVolume()
 	{
@@ -63,17 +106,29 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "areaSoundEffectVolume",
-		name = "Area Sound Effect Volume",
-		description = "Overrides the area sound effect volume in game with more granular control",
-		position = 3
+		keyName = "soundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
 	)
-	@Range(
-		min = 0,
-		max = 127
+	void setSoundEffectVolume(int val);
+
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int getAreaSoundEffectVolume()
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "areaSoundEffectVolume",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setAreaSoundEffectVolume(int vol);
 }

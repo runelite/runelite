@@ -26,22 +26,22 @@
 /*
  * Convert a vertex to screen space
  */
-ivec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  int yawSin = int(65536.0f * sin(cameraYaw * UNIT));
-  int yawCos = int(65536.0f * cos(cameraYaw * UNIT));
+vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
+  float yawSin = sin(cameraYaw * UNIT);
+  float yawCos = cos(cameraYaw * UNIT);
 
-  int pitchSin = int(65536.0f * sin(cameraPitch * UNIT));
-  int pitchCos = int(65536.0f * cos(cameraPitch * UNIT));
+  float pitchSin = sin(cameraPitch * UNIT);
+  float pitchCos = cos(cameraPitch * UNIT);
 
-  int rotatedX = ((vertex.z * yawSin) + (vertex.x * yawCos)) >> 16;
-  int rotatedZ = ((vertex.z * yawCos) - (vertex.x * yawSin)) >> 16;
+  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
+  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
 
-  int var13 = ((vertex.y * pitchCos) - (rotatedZ * pitchSin)) >> 16;
-  int var12 = ((vertex.y * pitchSin) + (rotatedZ * pitchCos)) >> 16;
+  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
+  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
 
-  int x = rotatedX * zoom / var12 + centerX;
-  int y = var13 * zoom / var12 + centerY;
-  int z = -var12; // in OpenGL depth is negative
+  float x = rotatedX * zoom / var12 + centerX;
+  float y = var13 * zoom / var12 + centerY;
+  float z = -var12; // in OpenGL depth is negative
 
-  return ivec3(x, y, z);
+  return vec3(x, y, z);
 }

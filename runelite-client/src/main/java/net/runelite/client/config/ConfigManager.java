@@ -61,7 +61,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
@@ -455,7 +455,8 @@ public class ConfigManager
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType(),
 				m.getDeclaredAnnotation(Range.class),
-				m.getDeclaredAnnotation(Alpha.class)
+				m.getDeclaredAnnotation(Alpha.class),
+				m.getDeclaredAnnotation(Units.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
