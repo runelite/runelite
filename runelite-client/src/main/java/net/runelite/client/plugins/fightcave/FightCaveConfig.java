@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("fightcave")
 public interface FightCaveConfig extends Config
@@ -106,6 +107,7 @@ public interface FightCaveConfig extends Config
 		description = "Text Size for Timers.",
 		titleSection = "text"
 	)
+	@Units(Units.POINTS)
 	default int textSize()
 	{
 		return 32;

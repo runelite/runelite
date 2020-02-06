@@ -27,6 +27,7 @@ package net.runelite.client.plugins.performancestats;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("performancestats")
 public interface PerformanceStatsConfig extends Config
@@ -34,9 +35,10 @@ public interface PerformanceStatsConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "submitTimeout",
-		name = "Submit Timeout (seconds)",
+		name = "Submit Timeout",
 		description = "Submits after this many seconds of inactivity"
 	)
+	@Units(Units.SECONDS)
 	default int submitTimeout()
 	{
 		return 30;

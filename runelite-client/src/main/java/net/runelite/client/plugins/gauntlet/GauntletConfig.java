@@ -35,6 +35,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("Gauntlet")
 
@@ -282,6 +283,7 @@ public interface GauntletConfig extends Config
 		description = " change the size of Projectile icons.",
 		titleSection = "boss"
 	)
+	@Units(Units.PIXELS)
 	default int projectileIconSize()
 	{
 		return 20;

@@ -27,6 +27,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("playerscouter")
 public interface PlayerScouterConfig extends Config
@@ -116,6 +117,7 @@ public interface PlayerScouterConfig extends Config
 		description = "Minimum value for the item to be posted on discord.",
 		position = 6
 	)
+	@Units(Units.GP)
 	default int minimumValue()
 	{
 		return 1000;
@@ -157,6 +159,7 @@ public interface PlayerScouterConfig extends Config
 		description = "Minimum amount of ticks before the player can be scouted again. (1 tick = 600ms)",
 		position = 9
 	)
+	@Units(Units.TICKS)
 	default int timeout()
 	{
 		return 500;

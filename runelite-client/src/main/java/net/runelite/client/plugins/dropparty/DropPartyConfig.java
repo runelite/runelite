@@ -8,6 +8,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("drop")
 public interface DropPartyConfig extends Config
@@ -70,6 +71,7 @@ public interface DropPartyConfig extends Config
 		name = "Text Size",
 		description = "Text Size for Timers."
 	)
+	@Units(Units.POINTS)
 	default int textSize()
 	{
 		return 18;

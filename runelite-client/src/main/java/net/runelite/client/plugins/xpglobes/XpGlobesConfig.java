@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("xpglobes")
 public interface XpGlobesConfig extends Config
@@ -152,6 +153,7 @@ public interface XpGlobesConfig extends Config
 		description = "Change the stroke width of the progress arc",
 		position = 10
 	)
+	@Units(Units.PIXELS)
 	default int progressArcStrokeWidth()
 	{
 		return 2;
@@ -163,6 +165,7 @@ public interface XpGlobesConfig extends Config
 		description = "Change the size of the xp orbs",
 		position = 11
 	)
+	@Units(Units.PIXELS)
 	default int xpOrbSize()
 	{
 		return 40;
@@ -174,6 +177,7 @@ public interface XpGlobesConfig extends Config
 		description = "Change the duration the xp orbs are visible",
 		position = 12
 	)
+	@Units(Units.SECONDS)
 	default int xpOrbDuration()
 	{
 		return 10;

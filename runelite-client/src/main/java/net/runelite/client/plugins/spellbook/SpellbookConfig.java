@@ -27,6 +27,7 @@ package net.runelite.client.plugins.spellbook;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("spellbook")
 public interface SpellbookConfig extends Config
@@ -70,6 +71,7 @@ public interface SpellbookConfig extends Config
 		description = "Size (in px) of spells. Normal mobile size is 40px, use common sense for this setting",
 		position = 4
 	)
+	@Units(Units.PIXELS)
 	default int size()
 	{
 		return 40;

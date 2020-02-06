@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2020, Henry Darnell <hjdarnel@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
+package net.runelite.client.plugins.wiki;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
-import lombok.Data;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Data
-public class ImageUploadRequest
+@ConfigGroup(WikiPlugin.CONFIG_GROUP_KEY)
+public interface WikiConfig extends Config
 {
-	private final String image;
-	private final String type;
-
-	public ImageUploadRequest(File imageFile) throws IOException
+	@ConfigItem(
+		keyName = "leftClickSearch",
+		name = "Left Click Search",
+		description = "Swap left-click on the Wiki button to Search",
+		position = 1
+	)
+	default boolean leftClickSearch()
 	{
-		this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-		this.type = "base64";
+		return false;
 	}
 }

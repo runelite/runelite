@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Parker <https://github.com/Judaxx>
+ * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +10,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,48 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.kingdomofmiscellania;
+package net.runelite.client.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@ConfigGroup("kingdomofmiscellania")
-public interface KingdomConfig extends Config
+/**
+ * Used with ConfigItem, defines what units are shown to the side of the box.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Units
 {
-	@ConfigItem(
-		keyName = "showInfoboxAnywhere",
-		name = "Show kingdom infobox anywhere",
-		description = "Show the infobox containing your favor/coffer amount even when outside Miscellania",
-		position = 0
-	)
-	default boolean showInfoboxAnywhere()
-	{
-		return false;
-	}
+	String MILLISECONDS = "ms";
+	String MINUTES = " mins";
+	String PERCENT = "%";
+	String PIXELS = "px";
+	String POINTS = "pt";
+	String SECONDS = "s";
+	String TICKS = " ticks";
+	String LEVELS = " lvls";
+	String FPS = " fps";
+	String GP = " GP";
 
-	@ConfigItem(
-		keyName = "notifyFavorThreshold",
-		name = "Notify chat favor",
-		description = "Sends a message to your chatbox when your kingdom favor percentage is below the threshold. Leave at 0 to disable.",
-		position = 1
-
-	)
-	default int notifyFavorThreshold()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "notifyCofferThreshold",
-		name = "Notify chat coffer value",
-		description = "Sends a message to your chatbox when your kingdom's coffer is below the threshold. Leave at 0 to disable.",
-		position = 2
-	)
-	@Units(Units.GP)
-	default int notifyCofferThreshold()
-	{
-		return 0;
-	}
+	String value();
 }

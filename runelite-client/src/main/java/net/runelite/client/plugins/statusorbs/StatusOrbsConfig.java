@@ -30,6 +30,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("statusorbs")
 public interface StatusOrbsConfig extends Config
@@ -83,11 +84,12 @@ public interface StatusOrbsConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyBeforeHpRegenDuration",
-		name = "Hitpoint Regen Notification (seconds)",
+		name = "Hitpoint Regen Notification",
 		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification.",
 		titleSection = "hp",
 		position = 4
 	)
+	@Units(Units.SECONDS)
 	default int getNotifyBeforeHpRegenSeconds()
 	{
 		return 0;

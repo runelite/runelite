@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
+ * Copyright (c) 2020, Crypthead <https://github.com/Crypthead>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @RequiredArgsConstructor
-public enum UploadStyle
+public enum TooltipPositionType
 {
-	NEITHER("Neither"),
-	IMGUR("Imgur"),
-	CLIPBOARD("Clipboard");
+	ABOVE_CURSOR("Above cursor"),
+	UNDER_CURSOR("Under cursor");
 
-	private final String name;
+	private final String type;
 
 	@Override
 	public String toString()
 	{
-		return name;
+		return type;
 	}
 }

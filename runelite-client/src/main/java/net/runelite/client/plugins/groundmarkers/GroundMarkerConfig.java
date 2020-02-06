@@ -33,6 +33,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("groundMarker")
 public interface GroundMarkerConfig extends Config
@@ -279,6 +280,7 @@ public interface GroundMarkerConfig extends Config
 		name = "Minimap opacity",
 		description = "The opacity of the minimap markers"
 	)
+	@Units(Units.PERCENT)
 	default int minimapOverlayOpacity()
 	{
 		return 100;

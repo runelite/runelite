@@ -41,6 +41,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -88,6 +89,7 @@ import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.PluginManager;
@@ -543,6 +545,7 @@ class ConfigPanel extends PluginPanel
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
+				Units units = cid.getUnits();
 				Range range = cid.getRange();
 				int min = 0, max = Integer.MAX_VALUE;
 				if (range != null)
@@ -558,12 +561,27 @@ class ConfigPanel extends PluginPanel
 				{
 					JLabel sliderValueLabel = new JLabel();
 					JSlider slider = new JSlider(min, max, value);
-					sliderValueLabel.setText(String.valueOf(slider.getValue()));
+					if (units != null)
+					{
+						sliderValueLabel.setText(slider.getValue() + " " + units.value());
+					}
+					else
+					{
+						sliderValueLabel.setText(String.valueOf(slider.getValue()));
+					}
 					slider.setPreferredSize(new Dimension(80, 25));
 					slider.setBackground(Color.WHITE);
 					slider.addChangeListener((l) ->
 						{
-							sliderValueLabel.setText(String.valueOf(slider.getValue()));
+							if (units != null)
+							{
+								sliderValueLabel.setText(slider.getValue() + " " + units.value());
+							}
+							else
+							{
+								sliderValueLabel.setText(String.valueOf(slider.getValue()));
+							}
+
 							if (!slider.getValueIsAdjusting())
 							{
 								changeConfiguration(slider, cd, cid);
@@ -597,7 +615,14 @@ class ConfigPanel extends PluginPanel
 					{
 						changeConfiguration(spinner, cd, cid);
 
-						sliderValueLabel.setText(String.valueOf(spinner.getValue()));
+						if (units != null)
+						{
+							sliderValueLabel.setText(spinner.getValue() + " " + units.value());
+						}
+						else
+						{
+							sliderValueLabel.setText(String.valueOf(spinner.getValue()));
+						}
 						slider.setValue((Integer) spinner.getValue());
 
 						subPanel.add(sliderValueLabel, BorderLayout.WEST);
@@ -640,6 +665,15 @@ class ConfigPanel extends PluginPanel
 					JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 					spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 					spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+
+					if (units != null)
+					{
+						DecimalFormat df = ((JSpinner.NumberEditor) spinner.getEditor()).getFormat();
+						df.setPositiveSuffix(units.value());
+						df.setNegativeSuffix(units.value());
+						// Force update the spinner to have it add the units initially
+						spinnerTextField.setValue(value);
+					}
 
 					item.add(spinner, BorderLayout.EAST);
 				}
@@ -760,6 +794,7 @@ class ConfigPanel extends PluginPanel
 				JPanel dimensionPanel = new JPanel();
 				dimensionPanel.setLayout(new BorderLayout());
 
+				Units units = cid.getUnits();
 				String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 				String[] splitStr = str.split("x");
 				int width = Integer.parseInt(splitStr[0]);
@@ -771,11 +806,29 @@ class ConfigPanel extends PluginPanel
 				JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
 				widthSpinnerTextField.setColumns(4);
 
+				if (units != null)
+				{
+					DecimalFormat df = ((JSpinner.NumberEditor) widthSpinner.getEditor()).getFormat();
+					df.setPositiveSuffix(units.value());
+					df.setNegativeSuffix(units.value());
+					// Force update the spinner to have it add the units initially
+					widthSpinnerTextField.setValue(width);
+				}
+
 				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
 				JSpinner heightSpinner = new JSpinner(heightModel);
 				Component heightEditor = heightSpinner.getEditor();
 				JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
 				heightSpinnerTextField.setColumns(4);
+
+				if (units != null)
+				{
+					DecimalFormat df = ((JSpinner.NumberEditor) heightSpinner.getEditor()).getFormat();
+					df.setPositiveSuffix(units.value());
+					df.setNegativeSuffix(units.value());
+					// Force update the spinner to have it add the units initially
+					heightSpinnerTextField.setValue(height);
+				}
 
 				ChangeListener listener = e ->
 					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());

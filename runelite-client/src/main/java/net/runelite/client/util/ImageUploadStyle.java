@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
 
-import lombok.Data;
+package net.runelite.client.util;
 
-@Data
-public class ImageUploadResponse
+public enum ImageUploadStyle
 {
-	private Data data;
-	private boolean success;
-
-	@lombok.Data
-	public static class Data
-	{
-		private String link;
-	}
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }

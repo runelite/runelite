@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +62,8 @@ public abstract class WidgetItemOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
+		final Rectangle originalClipBounds = graphics.getClipBounds();
+		Widget curClipParent = null;
 		for (WidgetItem widgetItem : itemWidgets)
 		{
 			Widget widget = widgetItem.getWidget();
@@ -72,6 +75,29 @@ public abstract class WidgetItemOverlay extends Overlay
 					&& (widget.getParentId() == BANK_CONTENT_CONTAINER.getId() || widget.getParentId() == BANK_TAB_CONTAINER.getId())))
 			{
 				continue;
+			}
+
+			Widget parent = widget.getParent();
+			Rectangle parentBounds = parent.getBounds();
+			Rectangle itemCanvasBounds = widgetItem.getCanvasBounds();
+
+			boolean shouldClip;
+			shouldClip = itemCanvasBounds.y < parentBounds.y && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y;
+			shouldClip |= itemCanvasBounds.y < parentBounds.y + parentBounds.height && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
+			shouldClip |= itemCanvasBounds.x < parentBounds.x && (itemCanvasBounds.x + itemCanvasBounds.width) >= parentBounds.x;
+			shouldClip |= itemCanvasBounds.x < parentBounds.x + parentBounds.width && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+			if (shouldClip)
+			{
+				if (curClipParent != parent)
+				{
+					graphics.setClip(parentBounds);
+					curClipParent = parent;
+				}
+			}
+			else if (curClipParent != null && curClipParent != parent)
+			{
+				graphics.setClip(originalClipBounds);
+				curClipParent = null;
 			}
 
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
