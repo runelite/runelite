@@ -41,6 +41,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -88,6 +89,7 @@ import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.PluginManager;
@@ -640,6 +642,16 @@ class ConfigPanel extends PluginPanel
 					JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 					spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 					spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+
+					Units units = cid.getUnits();
+					if (units != null)
+					{
+						DecimalFormat df = ((JSpinner.NumberEditor) spinner.getEditor()).getFormat();
+						df.setPositiveSuffix(units.value());
+						df.setNegativeSuffix(units.value());
+						// Force update the spinner to have it add the units initially
+						spinnerTextField.setValue(value);
+					}
 
 					item.add(spinner, BorderLayout.EAST);
 				}

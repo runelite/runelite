@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -600,6 +601,7 @@ public interface GroundItemsConfig extends Config
 		position = 46,
 		titleSection = "miscTitle"
 	)
+	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
 	{
 		return 250;

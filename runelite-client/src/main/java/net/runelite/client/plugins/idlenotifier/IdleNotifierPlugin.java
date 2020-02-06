@@ -782,6 +782,11 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastInteract = null;
 				lastInteracting = null;
+
+				// prevent animation notifications from firing too
+				lastAnimation = IDLE;
+				lastAnimating = null;
+
 				return true;
 			}
 		}
@@ -869,6 +874,11 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastAnimation = IDLE;
 				lastAnimating = null;
+
+				// prevent interaction notifications from firing too
+				lastInteract = null;
+				lastInteracting = null;
+
 				return true;
 			}
 		}

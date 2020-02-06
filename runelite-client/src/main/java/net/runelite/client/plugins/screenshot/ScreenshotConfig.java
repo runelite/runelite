@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.util.ImageUploadStyle;
 
 @ConfigGroup("screenshot")
 public interface ScreenshotConfig extends Config
@@ -115,9 +116,9 @@ public interface ScreenshotConfig extends Config
 		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
 		position = 7
 	)
-	default UploadStyle uploadScreenshot()
+	default ImageUploadStyle uploadScreenshot()
 	{
-		return UploadStyle.NEITHER;
+		return ImageUploadStyle.NEITHER;
 	}
 
 	@ConfigItem(

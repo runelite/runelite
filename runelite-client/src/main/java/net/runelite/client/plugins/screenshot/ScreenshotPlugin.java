@@ -32,26 +32,17 @@ import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
@@ -66,7 +57,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -96,24 +86,14 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
-import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @PluginDescriptor(
@@ -126,10 +106,6 @@ import org.jetbrains.annotations.Nullable;
 @Singleton
 public class ScreenshotPlugin extends Plugin
 {
-	private static final String IMGUR_CLIENT_ID = "30d71e5f6860809";
-	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
-	private static final MediaType JSON = MediaType.parse("application/json");
-
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -196,6 +172,9 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private ImageCapture imageCapture;
+
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
@@ -206,7 +185,7 @@ public class ScreenshotPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			takeScreenshot(format(new Date()));
+			takeScreenshot("");
 		}
 	};
 
@@ -220,7 +199,6 @@ public class ScreenshotPlugin extends Plugin
 	private boolean screenshotLevels;
 	private boolean screenshotKingdom;
 	private boolean screenshotPet;
-	private UploadStyle uploadScreenshot;
 	private boolean screenshotKills;
 	private boolean screenshotBossKills;
 	private boolean screenshotFriendDeath;
@@ -253,7 +231,7 @@ public class ScreenshotPlugin extends Plugin
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date())))
+			.onClick(() -> takeScreenshot(""))
 			.popup(ImmutableMap
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
@@ -353,7 +331,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
-			String fileName = "Kill " + name + " " + format(new Date());
+			String fileName = "Kill " + name;
 			takeScreenshot(fileName);
 		}
 	}
@@ -421,7 +399,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (this.screenshotPet && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Pet " + format(new Date());
+			String fileName = "Pet";
 			takeScreenshot(fileName);
 		}
 
@@ -443,7 +421,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.matches())
 			{
 				String valuableDropName = m.group(1);
-				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
+				String fileName = "Valuable drop " + valuableDropName;
 				takeScreenshot(fileName);
 			}
 		}
@@ -454,7 +432,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.matches())
 			{
 				String untradeableDropName = m.group(1);
-				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
+				String fileName = "Untradeable drop " + untradeableDropName;
 				takeScreenshot(fileName);
 			}
 		}
@@ -703,135 +681,7 @@ public class ScreenshotPlugin extends Plugin
 
 		// Draw the game onto the screenshot
 		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-
-		File playerFolder;
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			final EnumSet<WorldType> worldTypes = client.getWorldType();
-
-			String playerDir = client.getLocalPlayer().getName();
-			if (worldTypes.contains(WorldType.DEADMAN))
-			{
-				playerDir += "-Deadman";
-			}
-			else if (worldTypes.contains(WorldType.LEAGUE))
-			{
-				playerDir += "-League";
-			}
-			playerFolder = new File(SCREENSHOT_DIR, playerDir);
-		}
-		else
-		{
-			playerFolder = SCREENSHOT_DIR;
-		}
-
-		playerFolder.mkdirs();
-
-		if (subdirectory != null)
-		{
-			//uhh just tried to do this as workaround, not sure if it's the best idea tho
-			File actualplayerFolder = new File(playerFolder, subdirectory);
-			actualplayerFolder.mkdir();
-			playerFolder = actualplayerFolder;
-		}
-
-		try
-		{
-			File screenshotFile = new File(playerFolder, fileName + ".png");
-
-			// To make sure that screenshots don't get overwritten, check if file exists,
-			// and if it does create file with same name and suffix.
-			int i = 1;
-			while (screenshotFile.exists())
-			{
-				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
-			}
-
-			ImageIO.write(screenshot, "PNG", screenshotFile);
-			UploadStyle uploadStyle = this.uploadScreenshot;
-
-			if (uploadStyle == UploadStyle.IMGUR)
-			{
-				uploadScreenshot(screenshotFile);
-			}
-			else if (uploadStyle == UploadStyle.CLIPBOARD)
-			{
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
-				clipboard.setContents(transferableBufferedImage, null);
-
-				if (this.notifyWhenTaken)
-				{
-					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
-				}
-			}
-			else if (this.notifyWhenTaken)
-			{
-				notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("error writing screenshot", ex);
-		}
-	}
-
-	/**
-	 * Uploads a screenshot to the Imgur image-hosting service,
-	 * and copies the image link to the clipboard.
-	 *
-	 * @param screenshotFile Image file to upload.
-	 * @throws IOException Thrown if the file cannot be read.
-	 */
-	/**
-	 * Uploads a screenshot to the Imgur image-hosting service,
-	 * and copies the image link to the clipboard.
-	 *
-	 * @param screenshotFile Image file to upload.
-	 * @throws IOException Thrown if the file cannot be read.
-	 */
-	private void uploadScreenshot(File screenshotFile) throws IOException
-	{
-		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
-
-		Request request = new Request.Builder()
-			.url(IMGUR_IMAGE_UPLOAD_URL)
-			.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-			.post(RequestBody.create(JSON, json))
-			.build();
-
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(@NotNull Call call, @NotNull IOException ex)
-			{
-				log.warn("error uploading screenshot", ex);
-			}
-
-			@Override
-			public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
-			{
-				try (InputStream in = response.body().byteStream())
-				{
-					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-						.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
-
-					if (imageUploadResponse.isSuccess())
-					{
-						String link = imageUploadResponse.getData().getLink();
-
-						StringSelection selection = new StringSelection(link);
-						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-						clipboard.setContents(selection, selection);
-
-						if (notifyWhenTaken)
-						{
-							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
-						}
-					}
-				}
-			}
-		});
+		imageCapture.takeScreenshot(screenshot, fileName, config.notifyWhenTaken(), config.uploadScreenshot());
 	}
 
 	@VisibleForTesting
@@ -890,7 +740,6 @@ public class ScreenshotPlugin extends Plugin
 		this.screenshotLevels = config.screenshotLevels();
 		this.screenshotKingdom = config.screenshotKingdom();
 		this.screenshotPet = config.screenshotPet();
-		this.uploadScreenshot = config.uploadScreenshot();
 		this.screenshotKills = config.screenshotKills();
 		this.screenshotBossKills = config.screenshotBossKills();
 		this.screenshotFriendDeath = config.screenshotFriendDeath();

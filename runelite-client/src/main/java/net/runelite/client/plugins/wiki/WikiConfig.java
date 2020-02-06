@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2020, Henry Darnell <hjdarnel@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
+package net.runelite.client.plugins.wiki;
 
-import lombok.Data;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Data
-public class ImageUploadResponse
+@ConfigGroup(WikiPlugin.CONFIG_GROUP_KEY)
+public interface WikiConfig extends Config
 {
-	private Data data;
-	private boolean success;
-
-	@lombok.Data
-	public static class Data
+	@ConfigItem(
+		keyName = "leftClickSearch",
+		name = "Left Click Search",
+		description = "Swap left-click on the Wiki button to Search",
+		position = 1
+	)
+	default boolean leftClickSearch()
 	{
-		private String link;
+		return false;
 	}
 }

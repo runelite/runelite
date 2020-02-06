@@ -50,7 +50,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 @Singleton
 public class TagManager
 {
-	private static final String ITEM_KEY_PREFIX = "item_";
+	static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;

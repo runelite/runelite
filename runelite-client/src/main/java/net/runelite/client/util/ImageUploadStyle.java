@@ -23,22 +23,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.util;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public enum UploadStyle
+public enum ImageUploadStyle
 {
-	NEITHER("Neither"),
-	IMGUR("Imgur"),
-	CLIPBOARD("Clipboard");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }

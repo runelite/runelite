@@ -33,4 +33,5 @@ public class ConfigItemDescriptor
 	private final Class<?> type;
 	private final Range range;
 	private final Alpha alpha;
+	private final Units units;
 }

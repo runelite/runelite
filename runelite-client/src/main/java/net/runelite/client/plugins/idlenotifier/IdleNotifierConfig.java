@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("idlenotifier")
 public interface IdleNotifierConfig extends Config
@@ -144,10 +145,11 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "timeout",
-		name = "Idle Notification Delay (ms)",
+		name = "Idle Notification Delay",
 		description = "The notification delay after the player is idle",
 		position = 11
 	)
+	@Units(Units.MILLISECONDS)
 	default int getIdleNotificationDelay()
 	{
 		return 5000;
@@ -203,6 +205,7 @@ public interface IdleNotifierConfig extends Config
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification.",
 		position = 16
 	)
+	@Units(Units.PERCENT)
 	default int getOxygenThreshold()
 	{
 		return 0;
@@ -214,6 +217,7 @@ public interface IdleNotifierConfig extends Config
 		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification.",
 		position = 17
 	)
+	@Units(Units.PERCENT)
 	default int getSpecEnergyThreshold()
 	{
 		return 0;
