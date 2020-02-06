@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -15,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FreezeTimersV2OverlayTest
+public class EffectTimersOverlayTest
 {
 	@Mock
 	@Bind
@@ -31,10 +31,10 @@ public class FreezeTimersV2OverlayTest
 
 	@Mock
 	@Bind
-	private FreezeTimersV2Config config;
+	private EffectTimersConfig config;
 
 	@Inject
-	private FreezeTimersV2Overlay timersOverlay;
+	private EffectTimersOverlay timersOverlay;
 
 	@Before
 	public void before()

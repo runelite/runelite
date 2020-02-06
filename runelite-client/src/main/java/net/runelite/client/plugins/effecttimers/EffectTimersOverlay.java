@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.runelite.api.Actor;
@@ -41,20 +41,20 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class FreezeTimersV2Overlay extends Overlay
+public class EffectTimersOverlay extends Overlay
 {
 	@Inject
 	private TimerManager timerManager;
 	@Inject
 	private Client client;
 	@Inject
-	private FreezeTimersV2Config config;
+	private EffectTimersConfig config;
 	@Inject
 	private ConfigManager configManager;
 	private final Font timerFont = FontManager.getRunescapeBoldFont().deriveFont(14.0f);
 
 	@Inject
-	public FreezeTimersV2Overlay()
+	public EffectTimersOverlay()
 	{
 		super();
 		setPosition(OverlayPosition.DYNAMIC);
@@ -156,6 +156,9 @@ public class FreezeTimersV2Overlay extends Overlay
 	}
 
 	@VisibleForTesting
+	/*
+		TODO: if the game lags this will go mental
+	 */
 	public String formatTime(long time)
 	{
 		if (time > 59999)

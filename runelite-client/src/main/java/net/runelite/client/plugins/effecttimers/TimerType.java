@@ -22,24 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
-public enum TimeMode
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.util.ImageUtil;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+@Getter
+@RequiredArgsConstructor
+public enum TimerType
 {
+	FREEZE(5, loadImage("freeze"), loadImage("freezeimmune"), "freezeTimers", Color.CYAN), // 3 seconds
+	TELEBLOCK(100, loadImage("teleblock"), loadImage("teleblockimmune"), "teleblockTimers", new Color(0x5254ae)), // this is 60 seconds, might be wrong
+	VENG(0, loadImage("veng"), null, "vengTimers", Color.RED.brighter());
 
-	TICKS("Ticks"),
-	SECONDS("MM:SS");
+	private final int immunityLength;
+	private final BufferedImage icon;
+	private final BufferedImage cooldownIcon;
+	private final String renderConfig;
+	private final Color defaultColor;
 
-	String human;
-
-	TimeMode(String s)
+	private static BufferedImage loadImage(String name)
 	{
-		this.human = s;
+		return ImageUtil.getResourceStreamFromClass(EffectTimersPlugin.class, name + ".png");
 	}
 
-	public String toString()
+	public boolean shouldRender(ConfigManager configManager)
 	{
-		return human;
+		return configManager.getConfiguration("effecttimers", renderConfig, Boolean.class);
 	}
-
 }

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import com.google.inject.Provides;
 import lombok.Getter;
@@ -52,13 +52,13 @@ import javax.inject.Inject;
 import java.util.EnumSet;
 
 @PluginDescriptor(
-	name = "Freeze Timers v2",
-	description = "Freeze/teleblock/veng timer overlay on players",
+	name = "Effect Timers",
+	description = "Effect timer overlay on players",
 	tags = {"freeze", "timers", "barrage", "teleblock", "pklite"},
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
-public class FreezeTimersV2Plugin extends Plugin
+public class EffectTimersPlugin extends Plugin
 {
 	private static final int VORKATH_REGION = 9023;
 	@Inject
@@ -71,9 +71,9 @@ public class FreezeTimersV2Plugin extends Plugin
 	@Inject
 	private TimerManager timerManager;
 	@Inject
-	private FreezeTimersV2Overlay overlay;
+	private EffectTimersOverlay overlay;
 	@Inject
-	private FreezeTimersV2Config config;
+	private EffectTimersConfig config;
 	@Inject
 	private KeyManager keyManager;
 	private int fakeSpotAnim = -1;
@@ -85,15 +85,15 @@ public class FreezeTimersV2Plugin extends Plugin
 		}
 	};
 
-	public FreezeTimersV2Config getConfig()
+	public EffectTimersConfig getConfig()
 	{
 		return config;
 	}
 
 	@Provides
-	public FreezeTimersV2Config getConfig(ConfigManager configManager)
+	public EffectTimersConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(FreezeTimersV2Config.class);
+		return configManager.getConfig(EffectTimersConfig.class);
 	}
 
 	@Override

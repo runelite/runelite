@@ -22,36 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.util.ImageUtil;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
-@Getter
-@RequiredArgsConstructor
-public enum TimerType
+public class HeadIcons
 {
-	FREEZE(5, loadImage("freeze"), loadImage("freezeimmune"), "freezeTimers", Color.CYAN), // 3 seconds
-	TELEBLOCK(100, loadImage("teleblock"), loadImage("teleblockimmune"), "teleblockTimers", new Color(0x5254ae)), // this is 60 seconds, might be wrong
-	VENG(0, loadImage("veng"), null, "vengTimers", Color.RED.brighter());
-
-	private final int immunityLength;
-	private final BufferedImage icon;
-	private final BufferedImage cooldownIcon;
-	private final String renderConfig;
-	private final Color defaultColor;
-
-	private static BufferedImage loadImage(String name)
-	{
-		return ImageUtil.getResourceStreamFromClass(FreezeTimersV2Plugin.class, name + ".png");
-	}
-
-	public boolean shouldRender(ConfigManager configManager)
-	{
-		return configManager.getConfiguration("freezetimersv2", renderConfig, Boolean.class);
-	}
+	public static final int MELEE = 0;
+	public static final int RANGED = 1;
+	public static final int MAGIC = 2;
+	public static final int RETRIBUTION = 3;
+	public static final int SMITE = 4;
+	public static final int REDEMPTION = 5;
+	public static final int RANGE_MAGE = 6;
 }

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -30,8 +30,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 import java.awt.Color;
 
-@ConfigGroup("freezetimersv2")
-public interface FreezeTimersV2Config extends Config
+@ConfigGroup("effecttimers")
+public interface EffectTimersConfig extends Config
 {
 	@ConfigItem(
 		name = "Show NPCs",

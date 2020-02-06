@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
 @EqualsAndHashCode
 public class Timer
 {
-	private FreezeTimersV2Plugin plugin;
+	private EffectTimersPlugin plugin;
 	private Client client;
 	@Setter
 	private int ticksStart;
@@ -47,12 +47,12 @@ public class Timer
 	private TimerType type;
 	private boolean shutdown = false;
 
-	public Timer(FreezeTimersV2Plugin plugin, PlayerSpellEffect effect)
+	public Timer(EffectTimersPlugin plugin, PlayerSpellEffect effect)
 	{
 		this(plugin, effect, false);
 	}
 
-	public Timer(FreezeTimersV2Plugin plugin, PlayerSpellEffect effect, boolean half)
+	public Timer(EffectTimersPlugin plugin, PlayerSpellEffect effect, boolean half)
 	{
 		this.plugin = plugin;
 		this.client = plugin.getClient();

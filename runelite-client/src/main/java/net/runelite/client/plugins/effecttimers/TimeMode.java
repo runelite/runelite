@@ -22,64 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
-@Singleton
-class PrayerTracker
+public enum TimeMode
 {
-	@Inject
-	private Client client;
-	private final Map<Actor, HashMap<String, Integer>> lastTick = new HashMap<>();
-	private final Map<Actor, HashMap<String, Integer>> newTick = new HashMap<>();
 
-	public void gameTick()
+	TICKS("Ticks"),
+	SECONDS("MM:SS");
+
+	String human;
+
+	TimeMode(String s)
 	{
-		lastTick.clear();
-		lastTick.putAll(newTick);
-		newTick.clear();
-		for (Player p : client.getPlayers())
-		{
-			processActor(p);
-		}
-		for (NPC npc : client.getNpcs())
-		{
-			processActor(npc);
-		}
+		this.human = s;
 	}
 
-	private void processActor(Actor actor)
+	public String toString()
 	{
-		if (!newTick.containsKey(actor))
-		{
-			newTick.put(actor, new HashMap<>());
-		}
-		if (actor instanceof Player)
-		{
-			newTick.get(actor).put("PrayerIcon",
-				((Player) actor).getOverheadIcon() == null ? -1 : ((Player) actor).getOverheadIcon().ordinal());
-		}
-		newTick.get(actor).put("SpotAnim", actor.getSpotAnimation());
-	}
-
-	int getPrayerIconLastTick(Actor p)
-	{
-		return lastTick.getOrDefault(p, new HashMap<>()).getOrDefault("PrayerIcon", -1337);
-	}
-
-	int getSpotanimLastTick(Actor p)
-	{
-		return lastTick.getOrDefault(p, new HashMap<>()).getOrDefault("SpotAnim", -1337);
+		return human;
 	}
 
 }

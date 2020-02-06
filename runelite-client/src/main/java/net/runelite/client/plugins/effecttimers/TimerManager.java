@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimersv2;
+package net.runelite.client.plugins.effecttimers;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 public class TimerManager
 {
 	@Inject
-	private FreezeTimersV2Plugin plugin;
+	private EffectTimersPlugin plugin;
 	private HashMap<Actor, HashMap<TimerType, Timer>> timerMap = new HashMap<>();
 
 	private HashMap<TimerType, Timer> getTimersFor(Actor actor)
