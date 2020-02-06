@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Elias <Ezivoz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.crystalmathlabs;
+package net.runelite.client.plugins.templeosrs;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -48,15 +48,15 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
-	name = "Crystal Math Labs",
-	description = "Automatically updates your stats on Crystal Math Labs when you log out",
-	tags = {"cml", "external", "integration"},
+	name = "TempleOSRS",
+	description = "Automatically updates your stats on TempleOSRS when you log out",
+	tags = {"external", "integration"},
 	enabledByDefault = false,
 	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
 @Singleton
-public class CrystalMathLabs extends Plugin
+public class templeOSRS extends Plugin
 {
 	/**
 	 * Amount of EXP that must be gained for an update to be submitted.
@@ -77,7 +77,6 @@ public class CrystalMathLabs extends Plugin
 	protected void startUp()
 	{
 		fetchXp = true;
-
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
@@ -87,6 +86,7 @@ public class CrystalMathLabs extends Plugin
 	{
 		eventBus.unregister(this);
 	}
+
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
@@ -131,18 +131,16 @@ public class CrystalMathLabs extends Plugin
 	{
 		String reformedUsername = username.replace(" ", "_");
 		OkHttpClient httpClient = RuneLiteAPI.CLIENT;
-
 		HttpUrl httpUrl = new HttpUrl.Builder()
 			.scheme("https")
-			.host("crystalmathlabs.com")
-			.addPathSegment("tracker")
-			.addPathSegment("api.php")
-			.addQueryParameter("type", "update")
+			.host("templeosrs.com")
+			.addPathSegment("php")
+			.addPathSegment("add_datapoint.php")
 			.addQueryParameter("player", reformedUsername)
 			.build();
 
 		Request request = new Request.Builder()
-			.header("User-Agent", "RuneLite")
+			.header("User-Agent", "OpenOSRS")
 			.url(httpUrl)
 			.build();
 
@@ -151,7 +149,7 @@ public class CrystalMathLabs extends Plugin
 			@Override
 			public void onFailure(@NotNull Call call, @NotNull IOException e)
 			{
-				log.warn("Error submitting CML update, caused by {}.", e.getMessage());
+				log.warn("Error submitting TempleOSRS update, caused by {}.", e.getMessage());
 			}
 
 			@Override
