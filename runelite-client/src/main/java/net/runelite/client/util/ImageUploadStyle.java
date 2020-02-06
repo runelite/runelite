@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
 
-import lombok.Value;
+package net.runelite.client.util;
 
-@Value
-public class ConfigItemDescriptor
+public enum ImageUploadStyle
 {
-	private final ConfigItem item;
-	private final Class<?> type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }

@@ -48,8 +48,6 @@ public @interface PluginDescriptor
 	 */
 	String[] tags() default {};
 
-	boolean enabledByDefault() default true;
-
 	/**
 	 * Whether or not plugin is hidden from configuration panel
 	 */

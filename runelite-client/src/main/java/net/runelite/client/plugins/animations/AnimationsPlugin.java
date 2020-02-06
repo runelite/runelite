@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,61 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.client.plugins.animations;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.HashMap;
 import javax.inject.Inject;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.CacheControl;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.http.api.animation.AnimationsClient;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class WorldClient
+@PluginDescriptor(
+	name = "Animations",
+	hidden = true
+)
+@Slf4j
+public class AnimationsPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
+	private final AnimationsClient animationsClient = new AnimationsClient();
 
-	private final OkHttpClient client;
-
+	private HashMap<Integer, int[]> animations;
 	@Inject
-	public WorldClient(OkHttpClient client)
+	private Client client;
+
 	{
-		this.client = client;
+		try
+		{
+			animations = animationsClient.get();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
-	public WorldResult lookupWorlds() throws IOException
+	@Subscribe
+	private void onAnimationChanged(AnimationChanged event)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds.js")
-			.build();
-
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.cacheControl(CacheControl.FORCE_NETWORK)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
+		if (event.getActor() instanceof NPC)
 		{
-			if (!response.isSuccessful())
+			if (event.getActor().getAnimation() != -1)
 			{
-				logger.debug("Error looking up worlds: {}", response);
-				throw new IOException("unsuccessful response looking up worlds");
+				if (ArrayUtils.contains(animations.get(((NPC) event.getActor()).getId()), event.getActor().getAnimation()))
+				{
+					return;
+				}
+				int[] newAnimations = ArrayUtils.add(animations.get(((NPC) event.getActor()).getId()), event.getActor().getAnimation());
+				animations.put(((NPC) event.getActor()).getId(), newAnimations);
+				animationsClient.submit(((NPC) event.getActor()).getId(), event.getActor().getAnimation());
 			}
-
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
 		}
 	}
 }

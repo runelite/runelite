@@ -111,7 +111,7 @@ public class PluginManagerPanel extends PluginPanel
 	private final JPanel repositoriesPanel = new JPanel();
 	private final JPanel installedPluginsPanel = new JPanel(new GridBagLayout());
 	private final JPanel availablePluginsPanel = new JPanel(new GridBagLayout());
-	private String filterMode = "Available plugins (All)";
+	private String filterMode = "Available plugins";
 	private int scrollBarPosition;
 	private JScrollBar scrollbar;
 	private Set<String> deps;
@@ -238,68 +238,37 @@ public class PluginManagerPanel extends PluginPanel
 		JRadioButton installed = new JRadioButton("Installed");
 		installed.setSelected(filterMode.contains("Installed"));
 
-		List<UpdateRepository> updateRepositories = externalPluginManager.getRepositories();
-		List<JRadioButton> authors = new ArrayList<>();
-		JRadioButton allPlugins = new JRadioButton("All");
-		allPlugins.setSelected(filterMode.contains("All"));
-
-		authors.add(allPlugins);
-		for (UpdateRepository repository : updateRepositories)
-		{
-			JRadioButton author = new JRadioButton(repository.getId());
-			author.setSelected(filterMode.contains(repository.getId()));
-
-			author.addActionListener(ev -> {
-				filterMode = filterMode.contains("Installed") ? "Installed plugins (" + repository.getId() + ")" : "Available plugins (" + repository.getId() + ")";
-				onSearchBarChanged();
-				buildPanel();
-			});
-
-			authors.add(author);
-		}
-
 		repositories.addActionListener(ev -> {
 			filterMode = "Repositories";
 			buildPanel();
 		});
 
 		plugins.addActionListener(ev -> {
-			filterMode = "Available plugins (All)";
+			filterMode = "Available plugins";
 			onSearchBarChanged();
 			buildPanel();
 		});
 
 		available.addActionListener(ev -> {
-			filterMode = "Available plugins (All)";
+			filterMode = "Available plugins";
 			onSearchBarChanged();
 			buildPanel();
 		});
 
 		installed.addActionListener(ev -> {
-			filterMode = "Installed plugins (All)";
-			onSearchBarChanged();
-			buildPanel();
-		});
-
-		allPlugins.addActionListener(ev -> {
-			filterMode = filterMode.contains("Installed") ? "Installed plugins (All)" : "Available plugins (All)";
+			filterMode = "Installed plugins";
 			onSearchBarChanged();
 			buildPanel();
 		});
 
 		RadioButtonPanel mainRadioPanel = new RadioButtonPanel("Show", repositories, plugins);
 		RadioButtonPanel pluginRadioPanel = new RadioButtonPanel("Plugins", available, installed);
-		RadioButtonPanel authorRadioPanel = new RadioButtonPanel("Author", authors.toArray(new JRadioButton[0]));
 
 		filterPanel.add(mainRadioPanel, BorderLayout.NORTH);
 
 		if (!filterMode.equals("Repositories"))
 		{
 			filterPanel.add(pluginRadioPanel, BorderLayout.CENTER);
-		}
-		if (!filterMode.equals("Repositories") && updateRepositories.size() > 1)
-		{
-			filterPanel.add(authorRadioPanel, BorderLayout.SOUTH);
 		}
 
 		return filterPanel;
@@ -351,8 +320,8 @@ public class PluginManagerPanel extends PluginPanel
 				JTextField owner = new JTextField();
 				JTextField name = new JTextField();
 				Object[] message = {
-					"Repository owner:", owner,
-					"Repository name:", name
+					"Github Repository owner:", owner,
+					"Github Repository name:", name
 				};
 
 				int option = JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
@@ -560,7 +529,7 @@ public class PluginManagerPanel extends PluginPanel
 		JPanel installedPluginsContainer = new JPanel();
 		installedPluginsContainer.setLayout(new BorderLayout(0, 5));
 		installedPluginsContainer.setBorder(new EmptyBorder(0, 10, 10, 10));
-		installedPluginsContainer.add(titleLabel(filterMode.replace(" (All)", "")), BorderLayout.NORTH);
+		installedPluginsContainer.add(titleLabel(filterMode), BorderLayout.NORTH);
 		installedPluginsContainer.add(searchBar, BorderLayout.CENTER);
 		installedPluginsContainer.add(installedPluginsPanel, BorderLayout.SOUTH);
 
@@ -572,7 +541,7 @@ public class PluginManagerPanel extends PluginPanel
 		JPanel availablePluginsContainer = new JPanel();
 		availablePluginsContainer.setLayout(new BorderLayout(0, 5));
 		availablePluginsContainer.setBorder(new EmptyBorder(0, 10, 10, 10));
-		availablePluginsContainer.add(titleLabel(filterMode.replace(" (All)", "")), BorderLayout.NORTH);
+		availablePluginsContainer.add(titleLabel(filterMode), BorderLayout.NORTH);
 		availablePluginsContainer.add(searchBar, BorderLayout.CENTER);
 		availablePluginsContainer.add(availablePluginsPanel, BorderLayout.SOUTH);
 
@@ -587,7 +556,7 @@ public class PluginManagerPanel extends PluginPanel
 
 		for (UpdateRepository repository : externalPluginManager.getRepositories())
 		{
-			String name = repository.getId();
+			String name = repository.getId().replace(repository.getUrl().toString(), "");
 			ExternalBox repositoryBox = new ExternalBox(name, repository.getUrl());
 
 			c.fill = GridBagConstraints.HORIZONTAL;
@@ -610,7 +579,7 @@ public class PluginManagerPanel extends PluginPanel
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					externalPluginManager.removeRepository(name);
+					externalPluginManager.removeRepository(repository.getId());
 
 					repositories();
 					reloadPlugins();
@@ -682,8 +651,7 @@ public class PluginManagerPanel extends PluginPanel
 		for (PluginInfo pluginInfo : installedPluginsList)
 		{
 
-			if ((!search.equals("") && mismatchesSearchTerms(search, pluginInfo)) ||
-				(!filterMode.contains("All") && !filterMode.contains(pluginInfo.getRepositoryId())))
+			if (!search.equals("") && mismatchesSearchTerms(search, pluginInfo))
 			{
 				continue;
 			}
@@ -717,8 +685,7 @@ public class PluginManagerPanel extends PluginPanel
 
 		for (PluginInfo pluginInfo : availablePluginsList)
 		{
-			if ((!search.equals("") && mismatchesSearchTerms(search, pluginInfo)) ||
-				(!filterMode.contains("All") && !filterMode.contains(pluginInfo.getRepositoryId())))
+			if (!search.equals("") && mismatchesSearchTerms(search, pluginInfo))
 			{
 				continue;
 			}

@@ -22,16 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.plugins.sounds;
 
-import lombok.Value;
+import java.io.IOException;
+import java.util.HashMap;
+import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.events.SoundEffectPlayed;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.http.api.sounds.SoundsClient;
+import org.apache.commons.lang3.ArrayUtils;
 
-@Value
-public class ConfigItemDescriptor
+@PluginDescriptor(
+	name = "Sounds",
+	hidden = true
+)
+@Slf4j
+public class SoundsPlugin extends Plugin
 {
-	private final ConfigItem item;
-	private final Class<?> type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
+	private final SoundsClient soundsClient = new SoundsClient();
+
+	private HashMap<Integer, int[]> sounds;
+	@Inject
+	private Client client;
+
+	{
+		try
+		{
+			sounds = soundsClient.get();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Subscribe
+	private void onSoundEffectPlayed(SoundEffectPlayed event)
+	{
+		if (event.getNpcid() != -1)
+		{
+			if (ArrayUtils.contains(sounds.get(event.getNpcid()), event.getSoundId()))
+			{
+				return;
+			}
+			int[] newSounds = ArrayUtils.add(sounds.get(event.getNpcid()), event.getSoundId());
+			sounds.put(event.getNpcid(), newSounds);
+			soundsClient.submit(event.getNpcid(), event.getSoundId());
+		}
+	}
 }

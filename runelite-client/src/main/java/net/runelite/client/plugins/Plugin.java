@@ -110,4 +110,8 @@ public abstract class Plugin implements Module, ExtensionPoint
 		private final EventScheduler subscribe;
 		private final EventScheduler observe;
 	}
+
+	public void resetConfiguration()
+	{
+	}
 }

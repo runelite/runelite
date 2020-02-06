@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,61 +22,76 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.client.plugins.xtea;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.HashMap;
 import javax.inject.Inject;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.CacheControl;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.http.api.xtea.XteaClient;
 
-public class WorldClient
+@PluginDescriptor(
+	name = "Xtea",
+	hidden = true
+)
+@Slf4j
+public class XteaPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
+	private final XteaClient xteaClient = new XteaClient();
 
-	private final OkHttpClient client;
-
-	@Inject
-	public WorldClient(OkHttpClient client)
+	private HashMap<Integer, int[]> xteas;
 	{
-		this.client = client;
+		try
+		{
+			xteas = xteaClient.get();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
-	public WorldResult lookupWorlds() throws IOException
+	@Inject
+	private Client client;
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds.js")
-			.build();
-
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.cacheControl(CacheControl.FORCE_NETWORK)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
-			if (!response.isSuccessful())
+			return;
+		}
+
+		int[] regions = client.getMapRegions();
+		int[][] xteaKeys = client.getXteaKeys();
+
+		for (int idx = 0; idx < regions.length; ++idx)
+		{
+			int region = regions[idx];
+			int[] keys = xteaKeys[idx];
+
+			if (xteas.get(region) != null)
 			{
-				logger.debug("Error looking up worlds: {}", response);
-				throw new IOException("unsuccessful response looking up worlds");
+				continue;
 			}
 
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
+			xteas.put(region, keys);
+
+			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+			//Don't post non encrypted regions
+			if (keys[0] == 0 && keys[1] == 0 && keys[2] == 0 && keys[3] == 0)
+			{
+				continue;
+			}
+
+			xteaClient.submit(region, keys);
 		}
 	}
 }

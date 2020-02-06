@@ -325,6 +325,7 @@ public interface OpenOSRSConfig extends Config
 		position = 19,
 		titleSection = "opacityTitle"
 	)
+	@Units(Units.PERCENT)
 	default int opacityPercentage()
 	{
 		return 100;

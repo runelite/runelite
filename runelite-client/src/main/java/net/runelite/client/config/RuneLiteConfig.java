@@ -52,6 +52,7 @@ public interface RuneLiteConfig extends Config
 		position = 2,
 		titleSection = "uiTitle"
 	)
+	@Units(Units.PIXELS)
 	default Dimension gameSize()
 	{
 		return Constants.GAME_FIXED_SIZE;
@@ -174,6 +175,7 @@ public interface RuneLiteConfig extends Config
 		position = 12,
 		titleSection = "miscTitle"
 	)
+	@Units(Units.PERCENT)
 	default int volume()
 	{
 		return 100;
@@ -333,6 +335,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tooltipPosition",
+		name = "Tooltip Position",
+		description = "Configures whether to show the tooltip above or under the cursor",
+		position = 35
+	)
+	default TooltipPositionType tooltipPosition()
+	{
+		return TooltipPositionType.UNDER_CURSOR;
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
@@ -358,11 +371,12 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "infoBoxSize",
-		name = "Infobox size (px)",
+		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
 		position = 28,
 		titleSection = "infoboxTitle"
 	)
+	@Units(Units.PIXELS)
 	default int infoBoxSize()
 	{
 		return 35;

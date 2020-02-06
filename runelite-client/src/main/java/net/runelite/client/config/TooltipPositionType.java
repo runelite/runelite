@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Crypthead <https://github.com/Crypthead>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,14 +24,21 @@
  */
 package net.runelite.client.config;
 
-import lombok.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
-@Value
-public class ConfigItemDescriptor
+@Getter
+@RequiredArgsConstructor
+public enum TooltipPositionType
 {
-	private final ConfigItem item;
-	private final Class<?> type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
+	ABOVE_CURSOR("Above cursor"),
+	UNDER_CURSOR("Under cursor");
+
+	private final String type;
+
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }

@@ -46,6 +46,7 @@ public class RuneLiteProperties
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
+	private static final String IMGUR_CLIENT_ID = "runelite.imgur.client.id";
 
 	private static final Properties properties = new Properties();
 
@@ -144,5 +145,10 @@ public class RuneLiteProperties
 	{
 		String pluginPath = properties.getProperty(PLUGIN_PATH);
 		return pluginPath.equals("") ? null : pluginPath;
+	}
+
+	public static String getImgurClientId()
+	{
+		return properties.getProperty(IMGUR_CLIENT_ID);
 	}
 }

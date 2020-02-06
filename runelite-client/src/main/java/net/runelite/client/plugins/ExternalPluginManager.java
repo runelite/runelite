@@ -154,8 +154,10 @@ class ExternalPluginManager
 		{
 			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
 			{
-				String[] repository = keyval.split(":", 2);
-				repositories.add(new DefaultUpdateRepository(repository[0], new URL(repository[1])));
+				String id = keyval.substring(0, keyval.lastIndexOf(":https"));
+				String url = keyval.substring(keyval.lastIndexOf("https"));
+
+				repositories.add(new DefaultUpdateRepository(id, new URL(url)));
 			}
 		}
 		catch (MalformedURLException e)
@@ -170,7 +172,7 @@ class ExternalPluginManager
 	{
 		try
 		{
-			DefaultUpdateRepository respository = new DefaultUpdateRepository(owner, toRepositoryUrl(owner, name));
+			DefaultUpdateRepository respository = new DefaultUpdateRepository(owner + toRepositoryUrl(owner, name), toRepositoryUrl(owner, name));
 			updateManager.addRepository(respository);
 			saveConfig();
 		}
