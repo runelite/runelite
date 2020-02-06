@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Alexsuperfly <alexsuperfly@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.crystalmathlabs;
+package net.runelite.client.plugins.xpupdater;
 
 import java.io.IOException;
 import java.util.Objects;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -45,14 +48,23 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Crystal Math Labs",
-	description = "Automatically updates your stats on Crystal Math Labs when you log out",
-	tags = {"cml", "external", "integration"},
+	name = "XP Updater",
+	description = "Automatically updates your stats on selected sites when you log out",
+	tags = {"cml", "templeosrs", "temple", "external", "integration"},
 	enabledByDefault = false
 )
 @Slf4j
-public class CrystalMathLabs extends Plugin
+public class XpUpdaterPlugin extends Plugin
 {
+	@Inject
+	private XpUpdaterConfig config;
+
+	@Provides
+	XpUpdaterConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpUpdaterConfig.class);
+	}
+
 	/**
 	 * Amount of EXP that must be gained for an update to be submitted.
 	 */
@@ -117,33 +129,67 @@ public class CrystalMathLabs extends Plugin
 		String reformedUsername = username.replace(" ", "_");
 		OkHttpClient httpClient = RuneLiteAPI.CLIENT;
 
-		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("crystalmathlabs.com")
-			.addPathSegment("tracker")
-			.addPathSegment("api.php")
-			.addQueryParameter("type", "update")
-			.addQueryParameter("player", reformedUsername)
-			.build();
-
-		Request request = new Request.Builder()
-			.header("User-Agent", "RuneLite")
-			.url(httpUrl)
-			.build();
-
-		httpClient.newCall(request).enqueue(new Callback()
+		if (config.sendCMLUpdate())
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Error submitting CML update, caused by {}.", e.getMessage());
-			}
+			HttpUrl CML_httpUrl = new HttpUrl.Builder()
+					.scheme("https")
+					.host("crystalmathlabs.com")
+					.addPathSegment("tracker")
+					.addPathSegment("api.php")
+					.addQueryParameter("type", "update")
+					.addQueryParameter("player", reformedUsername)
+					.build();
 
-			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			Request CML_request = new Request.Builder()
+					.header("User-Agent", "RuneLite")
+					.url(CML_httpUrl)
+					.build();
+
+			httpClient.newCall(CML_request).enqueue(new Callback()
 			{
-				response.close();
-			}
-		});
+				@Override
+				public void onFailure(Call call, IOException e)
+				{
+					log.warn("Error submitting CML update, caused by {}.", e.getMessage());
+				}
+
+				@Override
+				public void onResponse(Call call, Response response) throws IOException
+				{
+					response.close();
+				}
+			});
+		}
+
+		if (config.sendTempleOSRSUpdate())
+		{
+			HttpUrl TempleOSRS_httpUrl = new HttpUrl.Builder()
+					.scheme("https")
+					.host("templeosrs.com")
+					.addPathSegment("php")
+					.addPathSegment("add_datapoint.php")
+					.addQueryParameter("player", reformedUsername)
+					.build();
+
+			Request TempleOSRS_request = new Request.Builder()
+					.header("User-Agent", "RuneLite")
+					.url(TempleOSRS_httpUrl)
+					.build();
+
+			httpClient.newCall(TempleOSRS_request).enqueue(new Callback()
+			{
+				@Override
+				public void onFailure(Call call, IOException e)
+				{
+					log.warn("Error submitting TempleOSRS update, caused by {}.", e.getMessage());
+				}
+
+				@Override
+				public void onResponse(Call call, Response response) throws IOException
+				{
+					response.close();
+				}
+			});
+		}
 	}
 }
