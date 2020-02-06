@@ -29,6 +29,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("pyramidplunder")
 public interface PyramidPlunderConfig extends Config
@@ -133,6 +134,7 @@ public interface PyramidPlunderConfig extends Config
 		description = "Recolor time left(s)",
 		titleSection = "warningsTitle"
 	)
+	@Units(Units.SECONDS)
 	default int firstWarningTime()
 	{
 		return 90;
@@ -145,6 +147,7 @@ public interface PyramidPlunderConfig extends Config
 		description = "Recolor time left(s)",
 		titleSection = "warningsTitle"
 	)
+	@Units(Units.SECONDS)
 	default int secondWarningTime()
 	{
 		return 30;

@@ -30,6 +30,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("freezetimers")
 public interface FreezeTimersConfig extends Config
@@ -123,6 +124,7 @@ public interface FreezeTimersConfig extends Config
 		position = 8,
 		titleSection = "overlayTitle"
 	)
+	@Units(Units.PIXELS)
 	default int offset()
 	{
 		return 20;
@@ -163,6 +165,7 @@ public interface FreezeTimersConfig extends Config
 		position = 11,
 		titleSection = "overlayTitle"
 	)
+	@Units(Units.POINTS)
 	default int textSize()
 	{
 		return 11;

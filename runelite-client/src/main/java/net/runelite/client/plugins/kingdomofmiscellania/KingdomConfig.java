@@ -26,6 +26,7 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("kingdomofmiscellania")
 public interface KingdomConfig extends Config
@@ -59,6 +60,7 @@ public interface KingdomConfig extends Config
 		description = "Sends a message to your chatbox when your kingdom's coffer is below the threshold. Leave at 0 to disable.",
 		position = 2
 	)
+	@Units(Units.GP)
 	default int notifyCofferThreshold()
 	{
 		return 0;

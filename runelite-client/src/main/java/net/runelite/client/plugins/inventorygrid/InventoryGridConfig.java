@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("inventorygrid")
 public interface InventoryGridConfig extends Config
@@ -74,6 +75,7 @@ public interface InventoryGridConfig extends Config
 		position = 4
 	)
 	@Range(min = 100)
+	@Units(Units.MILLISECONDS)
 	default int dragDelay()
 	{
 		return 100;

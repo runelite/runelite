@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("thieving")
 public interface ThievingConfig extends Config
@@ -40,9 +41,10 @@ public interface ThievingConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
+		name = "Reset stats",
 		description = "Change the time until the thieving session is reset and the overlay is hidden"
 	)
+	@Units(Units.MINUTES)
 	default int statTimeout()
 	{
 		return 5;

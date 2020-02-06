@@ -27,6 +27,7 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 
 @ConfigGroup("statusbars")
@@ -101,9 +102,10 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "hideStatusBarDelay",
-		name = "Delay (seconds)",
+		name = "Delay",
 		description = "Number of seconds after combat to hide the status bars."
 	)
+	@Units(Units.SECONDS)
 	default int hideStatusBarDelay()
 	{
 		return 3;

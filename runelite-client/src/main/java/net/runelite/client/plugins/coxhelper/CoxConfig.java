@@ -35,6 +35,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("Cox")
 
@@ -220,6 +221,7 @@ public interface CoxConfig extends Config
 		description = "Change the Size of the Olm Infobox.",
 		titleSection = "olmTitle"
 	)
+	@Units(Units.PIXELS)
 	default int prayAgainstOlmSize()
 	{
 		return 40;
@@ -390,6 +392,7 @@ public interface CoxConfig extends Config
 		description = "Text Size for Timers.",
 		titleSection = "text"
 	)
+	@Units(Units.POINTS)
 	default int textSize()
 	{
 		return 14;

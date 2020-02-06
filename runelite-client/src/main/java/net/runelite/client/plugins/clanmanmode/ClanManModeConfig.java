@@ -4,6 +4,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("clanmanmode")
 public interface ClanManModeConfig extends Config
@@ -135,6 +136,7 @@ public interface ClanManModeConfig extends Config
 		name = "Ticks to hide",
 		description = "How many ticks after you are logged in that attackbles are hidden (1 tick = 0.6 seconds)"
 	)
+	@Units(Units.TICKS)
 	default int hideTime()
 	{
 		return 5;

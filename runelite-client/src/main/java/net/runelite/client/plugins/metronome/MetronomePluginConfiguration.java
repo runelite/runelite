@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("metronome")
 public interface MetronomePluginConfiguration extends Config
@@ -38,6 +39,7 @@ public interface MetronomePluginConfiguration extends Config
 		name = "Tick count",
 		description = "Configures the number of game ticks between metronome sounds"
 	)
+	@Units(Units.TICKS)
 	default int tickCount()
 	{
 		return 1;
@@ -58,6 +60,7 @@ public interface MetronomePluginConfiguration extends Config
 		name = "Tock every nth \"tick\"",
 		description = "Configures how many \"ticks\" between each \"tock\""
 	)
+	@Units(Units.TICKS)
 	default int tockNumber()
 	{
 		return 2;
@@ -102,6 +105,7 @@ public interface MetronomePluginConfiguration extends Config
 		name = "Volume modification",
 		description = "Configures tick/tock volume; only effects custom sounds."
 	)
+	@Units(Units.PERCENT)
 	default int volume()
 	{
 		return 35;

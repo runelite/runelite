@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
@@ -109,6 +110,7 @@ public interface ObjectIndicatorsConfig extends Config
 		description = "Configures the opacity/alpha of object marker",
 		titleSection = "colorTitle"
 	)
+	@Units(Units.PERCENT)
 	default int objectMarkerAlpha()
 	{
 		return 100;
