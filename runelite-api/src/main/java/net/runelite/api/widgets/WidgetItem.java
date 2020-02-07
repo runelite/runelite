@@ -25,6 +25,7 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -64,19 +65,40 @@ public class WidgetItem
 	 */
 	private final Widget widget;
 	/**
-	 * Whether or not this widget item is being dragged.
+	 * The canvas bounds for the widget, if it is being dragged.
 	 */
-	private final boolean dragging;
+	@Nullable
+	private final Rectangle draggingCanvasBounds;
+
+	/**
+	 * Get the area where the widget item is drawn on the canvas, accounting for drag
+	 * @return
+	 */
+	public Rectangle getCanvasBounds()
+	{
+		return draggingCanvasBounds == null ? canvasBounds : draggingCanvasBounds;
+	}
+
+	/**
+	 * Get the area where the widget item is drawn on the canvas
+	 * @param dragging whether the returned area should account for widget drag
+	 * @return
+	 */
+	public Rectangle getCanvasBounds(boolean dragging)
+	{
+		return dragging ? draggingCanvasBounds : canvasBounds;
+	}
 
 	/**
 	 * Gets the upper-left coordinate of where the widget is being drawn
-	 * on the canvas.
+	 * on the canvas, accounting for drag.
 	 *
 	 * @return the upper-left coordinate of where this widget is drawn
 	 */
 	public Point getCanvasLocation()
 	{
-		return new Point((int) canvasBounds.getX(), (int) canvasBounds.getY());
+		Rectangle bounds = getCanvasBounds();
+		return new Point((int) bounds.getX(), (int) bounds.getY());
 	}
 
 }
