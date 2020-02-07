@@ -788,6 +788,12 @@
     },
     {
       "level": 60,
+      "icon": 24479,
+      "name": "Spice Rack",
+      "xp": 374
+    },
+    {
+      "level": 60,
       "icon": 8178,
       "name": "Yew Tree",
       "xp": 141
