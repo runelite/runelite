@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2020, Elias <Ezivoz@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Alexsuperfly <alexsuperfly@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.templeosrs;
+package net.runelite.client.plugins.xpupdater;
 
 import java.io.IOException;
 import java.util.Objects;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,15 +50,14 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
-	name = "TempleOSRS",
-	description = "Automatically updates your stats on TempleOSRS when you log out",
-	tags = {"external", "integration"},
+	name = "XP Updater",
+	description = "Automatically updates your stats on external xptrackers when you log out",
+	tags = {"cml", "templeosrs", "temple", "external", "integration"},
 	enabledByDefault = false,
 	type = PluginType.MISCELLANEOUS
 )
 @Slf4j
-@Singleton
-public class templeOSRS extends Plugin
+public class XpUpdaterPlugin extends Plugin
 {
 	/**
 	 * Amount of EXP that must be gained for an update to be submitted.
@@ -65,7 +66,7 @@ public class templeOSRS extends Plugin
 
 	@Inject
 	private Client client;
-
+	
 	@Inject
 	private EventBus eventBus;
 
@@ -73,22 +74,31 @@ public class templeOSRS extends Plugin
 	private boolean fetchXp;
 	private long lastXp;
 
+	@Inject
+	private XpUpdaterConfig config;
+
+	@Provides
+	XpUpdaterConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpUpdaterConfig.class);
+	}
+
 	@Override
 	protected void startUp()
 	{
 		fetchXp = true;
+		
 		eventBus.subscribe(GameStateChanged.class, this, this::onGameStateChanged);
 		eventBus.subscribe(GameTick.class, this, this::onGameTick);
 	}
-
+	
 	@Override
 	protected void shutDown()
 	{
 		eventBus.unregister(this);
 	}
 
-
-	private void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -118,7 +128,7 @@ public class templeOSRS extends Plugin
 		}
 	}
 
-	private void onGameTick(GameTick gameTick)
+	public void onGameTick(GameTick gameTick)
 	{
 		if (fetchXp)
 		{
@@ -131,32 +141,68 @@ public class templeOSRS extends Plugin
 	{
 		String reformedUsername = username.replace(" ", "_");
 		OkHttpClient httpClient = RuneLiteAPI.CLIENT;
-		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("templeosrs.com")
-			.addPathSegment("php")
-			.addPathSegment("add_datapoint.php")
-			.addQueryParameter("player", reformedUsername)
-			.build();
 
-		Request request = new Request.Builder()
-			.header("User-Agent", "OpenOSRS")
-			.url(httpUrl)
-			.build();
-
-		httpClient.newCall(request).enqueue(new Callback()
+		if (config.cml())
 		{
-			@Override
-			public void onFailure(@NotNull Call call, @NotNull IOException e)
-			{
-				log.warn("Error submitting TempleOSRS update, caused by {}.", e.getMessage());
-			}
+			HttpUrl url = new HttpUrl.Builder()
+					.scheme("https")
+					.host("crystalmathlabs.com")
+					.addPathSegment("tracker")
+					.addPathSegment("api.php")
+					.addQueryParameter("type", "update")
+					.addQueryParameter("player", reformedUsername)
+					.build();
 
-			@Override
-			public void onResponse(@NotNull Call call, @NotNull Response response)
+			Request request = new Request.Builder()
+					.header("User-Agent", "OpenOSRS")
+					.url(url)
+					.build();
+
+			httpClient.newCall(request).enqueue(new Callback()
 			{
-				response.close();
-			}
-		});
+				@Override
+				public void onFailure(@NotNull Call call, @NotNull IOException e)
+				{
+					log.warn("Error submitting CML update, caused by {}.", e.getMessage());
+				}
+
+				@Override
+				public void onResponse(@NotNull Call call, @NotNull Response response)
+				{
+					response.close();
+				}
+			});
+		}
+
+		if (config.templeosrs())
+		{
+			HttpUrl url = new HttpUrl.Builder()
+					.scheme("https")
+					.host("templeosrs.com")
+					.addPathSegment("php")
+					.addPathSegment("add_datapoint.php")
+					.addQueryParameter("player", reformedUsername)
+					.build();
+
+			Request request = new Request.Builder()
+					.header("User-Agent", "OpenOSRS")
+					.url(url)
+					.build();
+
+			httpClient.newCall(request).enqueue(new Callback()
+			{
+				@Override
+				public void onFailure(@NotNull Call call, @NotNull IOException e)
+				{
+					log.warn("Error submitting TempleOSRS update, caused by {}.", e.getMessage());
+				}
+
+				@Override
+				public void onResponse(@NotNull Call call, @NotNull Response response)
+				{
+					response.close();
+				}
+			});
+		}
 	}
 }
