@@ -612,7 +612,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		config.setIgnoredItems(Text.toCSV(ignoredItemSet));
-		panel.updateIgnoredRecords();
+		// the config changed will update the panel
 	}
 
 	boolean isIgnored(String name)
