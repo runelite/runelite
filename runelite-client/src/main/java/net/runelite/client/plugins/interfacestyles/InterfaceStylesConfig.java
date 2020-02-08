@@ -72,4 +72,14 @@ public interface InterfaceStylesConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "alwaysStack",
+		name = "Always stack bottom bar",
+		description = "Always stack the bottom bar in resizable"
+	)
+	default boolean alwaysStack()
+	{
+		return false;
+	}
 }
