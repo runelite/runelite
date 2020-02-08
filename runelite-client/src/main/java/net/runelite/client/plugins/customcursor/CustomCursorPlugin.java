@@ -25,10 +25,15 @@
 package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import net.runelite.client.events.ConfigChanged;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -38,8 +43,11 @@ import net.runelite.client.ui.ClientUI;
 	description = "Replaces your mouse cursor image",
 	enabledByDefault = false
 )
+@Slf4j
 public class CustomCursorPlugin extends Plugin
 {
+	private static final File CUSTOM_IMAGE_FILE = new File(RuneLite.RUNELITE_DIR, "cursor.png");
+
 	@Inject
 	private ClientUI clientUI;
 
@@ -76,6 +84,34 @@ public class CustomCursorPlugin extends Plugin
 	private void updateCursor()
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
-		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+
+		if (selectedCursor == CustomCursor.CUSTOM_IMAGE)
+		{
+			if (CUSTOM_IMAGE_FILE.exists())
+			{
+				try
+				{
+					BufferedImage image;
+					synchronized (ImageIO.class)
+					{
+						image = ImageIO.read(CUSTOM_IMAGE_FILE);
+					}
+					clientUI.setCursor(image, selectedCursor.getName());
+				}
+				catch (Exception e)
+				{
+					log.error("error setting custom cursor", e);
+					clientUI.resetCursor();
+				}
+			}
+			else
+			{
+				clientUI.resetCursor();
+			}
+			return;
+		}
+
+		assert selectedCursor.getCursorImage() != null;
+		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
 	}
 }
