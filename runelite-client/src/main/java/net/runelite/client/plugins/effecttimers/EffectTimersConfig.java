@@ -122,10 +122,21 @@ public interface EffectTimersConfig extends Config
 	}
 
 	@ConfigItem(
+		name = "SOTD Timers",
+		keyName = "sotdTimers",
+		description = "Should we render staff of the dead timers?",
+		position = 9
+	)
+	default boolean sotdTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		name = "Show Icons",
 		keyName = "showIcons",
 		description = "Should we render the icons? Note disabling this will override all colors",
-		position = 9
+		position = 10
 	)
 	default boolean showIcons()
 	{
@@ -136,7 +147,7 @@ public interface EffectTimersConfig extends Config
 		name = "Debug Keybind",
 		keyName = "debugKeybind",
 		description = "Don't press this unless you know what it does :)",
-		position = 10,
+		position = 11,
 		hidden = true
 	)
 	default Keybind debugKeybind()
@@ -148,7 +159,7 @@ public interface EffectTimersConfig extends Config
 		name = "Debug Integer",
 		keyName = "debugInteger",
 		description = "Related to the keybind in some way :)",
-		position = 11,
+		position = 12,
 		hidden = true
 	)
 	default int debugInteger()
@@ -160,7 +171,7 @@ public interface EffectTimersConfig extends Config
 		name = "X Offset",
 		keyName = "xOffset",
 		description = "X Offset for overlay rendering",
-		position = 12
+		position = 13
 	)
 	default int xOffset()
 	{

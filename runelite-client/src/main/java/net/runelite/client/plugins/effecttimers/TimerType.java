@@ -37,7 +37,8 @@ public enum TimerType
 {
 	FREEZE(5, loadImage("freeze"), loadImage("freezeimmune"), "freezeTimers", Color.CYAN), // 3 seconds
 	TELEBLOCK(100, loadImage("teleblock"), loadImage("teleblockimmune"), "teleblockTimers", new Color(0x5254ae)), // this is 60 seconds, might be wrong
-	VENG(0, loadImage("veng"), null, "vengTimers", Color.RED.brighter());
+	VENG(0, loadImage("veng"), null, "vengTimers", Color.RED.brighter()),
+	SOTD(0, loadImage("sotd"), null, "sotdTimers", Color.YELLOW);
 
 	private final int immunityLength;
 	private final BufferedImage icon;

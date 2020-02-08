@@ -40,7 +40,8 @@ public enum PlayerSpellEffect
 	BARRAGE("Ice Barrage", 369, 32, false, TimerType.FREEZE),
 	TELEBLOCK("Teleblock", 345, 500, true, TimerType.TELEBLOCK),
 	VENG("Vengeance", 726, 50, false, TimerType.VENG),
-	VENG_OTHER("Vengeance Other", 725, 50, false, TimerType.VENG);
+	VENG_OTHER("Vengeance Other", 725, 50, false, TimerType.VENG),
+	STAFF_OF_THE_DEAD("Staff of the Dead", 1288, 100, false, TimerType.SOTD);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final String name;
