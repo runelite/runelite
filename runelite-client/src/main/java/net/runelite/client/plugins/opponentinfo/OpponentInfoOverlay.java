@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -68,6 +69,7 @@ class OpponentInfoOverlay extends Overlay
 	private int lastRatio = 0;
 	private int lastHealthScale = 0;
 	private String opponentName;
+	private String opponentsOpponentName;
 
 	@Inject
 	private OpponentInfoOverlay(
@@ -125,6 +127,17 @@ class OpponentInfoOverlay extends Overlay
 						lastMaxHealth = hp;
 					}
 				}
+			}
+
+			final Actor opponentsOpponent = opponent.getInteracting();
+			if (opponent instanceof NPC && opponentsOpponent != null
+				&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
+			{
+				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
+			}
+			else
+			{
+				opponentsOpponentName = null;
 			}
 		}
 
@@ -203,6 +216,16 @@ class OpponentInfoOverlay extends Overlay
 			}
 
 			panelComponent.getChildren().add(progressBarComponent);
+		}
+
+		// Opponents opponent
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
+		{
+			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
+			panelComponent.setPreferredSize(new Dimension(textWidth, 0));
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(opponentsOpponentName)
+				.build());
 		}
 
 		return panelComponent.render(graphics);
