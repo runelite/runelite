@@ -102,8 +102,10 @@ public class HotColdSolver
 					possibleLocations.removeIf(entry -> isFirstPointCloserRect(lastWorldPoint, worldPoint, entry.getRect()));
 					break;
 				case SAME:
-					// I couldn't figure out a clean implementation for this case
-					// not necessary for quickly determining final location
+					// eliminate spots which are absolutely colder or warmer (as they would not yield a SAME temperature change)
+					possibleLocations.removeIf(entry ->
+						isFirstPointCloserRect(worldPoint, lastWorldPoint, entry.getRect())
+						|| isFirstPointCloserRect(lastWorldPoint, worldPoint, entry.getRect()));
 			}
 		}
 
