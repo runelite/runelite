@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import static net.runelite.api.ItemID.*;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
@@ -89,6 +90,7 @@ public class ClueScrollOverlay extends Overlay
 		this.client = client;
 		setPriority(OverlayPriority.LOW);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "Clue Scroll overlay"));
 	}
 
 	@Override
