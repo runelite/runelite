@@ -47,7 +47,7 @@ public class LootTrackerService
 		"  `first_time` timestamp NOT NULL DEFAULT current_timestamp(),\n" +
 		"  `last_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n" +
 		"  `accountId` int(11) NOT NULL,\n" +
-		"  `type` enum('NPC','PLAYER','EVENT','UNKNOWN') NOT NULL,\n" +
+		"  `type` enum('NPC','PLAYER','EVENT','PICKPOCKET','UNKNOWN') NOT NULL,\n" +
 		"  `eventId` varchar(255) NOT NULL,\n" +
 		"  `amount` int(11) NOT NULL,\n" +
 		"  PRIMARY KEY (`id`),\n" +
