@@ -38,16 +38,21 @@ public class MapLocations
 {
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] MULTICOMBAT = new List[Constants.MAX_Z];
+	private static Area[] MULTICOMBAT_CACHE = new Area[Constants.MAX_Z];
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] NOT_MULTICOMBAT = new List[Constants.MAX_Z];
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] ROUGH_WILDERNESS = new List[Constants.MAX_Z];
+	private static Area[] ROUGH_WILDERNESS_CACHE = new Area[Constants.MAX_Z];
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] WILDERNESS_LEVEL_LINES = new List[Constants.MAX_Z];
+	private static Area[] WILDERNESS_LEVEL_LINES_CACHE = new Area[Constants.MAX_Z];
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] DEADMAN_SAFE_ZONES = new List[Constants.MAX_Z];
+	private static Area[] DEADMAN_SAFE_ZONES_CACHE = new Area[Constants.MAX_Z];
 	@SuppressWarnings("unchecked")
 	private static final List<Shape>[] PVP_WORLD_SAFE_ZONES = new List[Constants.MAX_Z];
+	private static Area[] PVP_SAFE_ZONES_CACHE = new Area[Constants.MAX_Z];
 
 	private static Area getArea(List<Shape> shapes)
 	{
@@ -74,9 +79,13 @@ public class MapLocations
 
 	public static Area getMulticombat(int plane)
 	{
-		Area area = getArea(MULTICOMBAT[plane]);
-		area.subtract(getArea(NOT_MULTICOMBAT[plane]));
-		return area;
+		if (MULTICOMBAT_CACHE[plane] == null)
+		{
+			Area area = getArea(MULTICOMBAT[plane]);
+			area.subtract(getArea(NOT_MULTICOMBAT[plane]));
+			MULTICOMBAT_CACHE[plane] = area;
+		}
+		return MULTICOMBAT_CACHE[plane];
 	}
 
 	public static Area getMulticombat(Rectangle view, int plane)
@@ -88,7 +97,11 @@ public class MapLocations
 
 	public static Area getRoughWilderness(int plane)
 	{
-		return getArea(ROUGH_WILDERNESS[plane]);
+		if (ROUGH_WILDERNESS_CACHE[plane] == null)
+		{
+			ROUGH_WILDERNESS_CACHE[plane] = getArea(ROUGH_WILDERNESS[plane]);
+		}
+		return ROUGH_WILDERNESS_CACHE[plane];
 	}
 
 	public static Area getRoughWilderness(Rectangle view, int plane)
@@ -98,7 +111,11 @@ public class MapLocations
 
 	public static Area getWildernessLevelLines(int plane)
 	{
-		return getArea(WILDERNESS_LEVEL_LINES[plane]);
+		if (WILDERNESS_LEVEL_LINES_CACHE[plane] == null)
+		{
+			WILDERNESS_LEVEL_LINES_CACHE[plane] = getArea(WILDERNESS_LEVEL_LINES[plane]);
+		}
+		return WILDERNESS_LEVEL_LINES_CACHE[plane];
 	}
 
 	public static Area getWildernessLevelLines(Rectangle view, int plane)
@@ -108,7 +125,11 @@ public class MapLocations
 
 	public static Area getDeadmanSafeZones(int plane)
 	{
-		return getArea(DEADMAN_SAFE_ZONES[plane]);
+		if (DEADMAN_SAFE_ZONES_CACHE[plane] == null)
+		{
+			DEADMAN_SAFE_ZONES_CACHE[plane] = getArea(DEADMAN_SAFE_ZONES[plane]);
+		}
+		return DEADMAN_SAFE_ZONES_CACHE[plane];
 	}
 
 	public static Area getDeadmanSafeZones(Rectangle view, int plane)
@@ -118,7 +139,11 @@ public class MapLocations
 
 	public static Area getPvpSafeZones(int plane)
 	{
-		return getArea(PVP_WORLD_SAFE_ZONES[plane]);
+		if (PVP_SAFE_ZONES_CACHE[plane] == null)
+		{
+			PVP_SAFE_ZONES_CACHE[plane] = getArea(PVP_WORLD_SAFE_ZONES[plane]);
+		}
+		return PVP_SAFE_ZONES_CACHE[plane];
 	}
 
 	public static Area getPvpSafeZones(Rectangle view, int plane)
