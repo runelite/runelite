@@ -201,6 +201,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "enableCustomNotifier",
+		name = "Enable notifier overrides",
+		description = "Toggles whether the client will prioritize plugin-specific notification settings.",
+		position = 26
+	)
+	default boolean enableCustomNotifier()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
