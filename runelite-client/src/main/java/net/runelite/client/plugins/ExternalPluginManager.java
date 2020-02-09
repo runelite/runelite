@@ -58,9 +58,9 @@ import org.pf4j.update.VerifyException;
 public
 class ExternalPluginManager
 {
+	public static ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
 	private final PluginManager runelitePluginManager;
 	private final org.pf4j.PluginManager externalPluginManager;
-
 	@Getter(AccessLevel.PUBLIC)
 	private final List<UpdateRepository> repositories = new ArrayList<>();
 	private final OpenOSRSConfig openOSRSConfig;
@@ -304,6 +304,7 @@ class ExternalPluginManager
 			{
 				try
 				{
+					pluginClassLoaders.add(plugin.getClass().getClassLoader());
 					instantiatePlugin(pluginId, plugin);
 				}
 				catch (PluginInstantiationException e)
