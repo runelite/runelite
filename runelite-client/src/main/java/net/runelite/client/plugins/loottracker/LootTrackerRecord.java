@@ -42,13 +42,13 @@ class LootTrackerRecord
 	 * @param id other record id
 	 * @return true if match is made
 	 */
-	boolean matches(final String id)
+	boolean matches(final String id, LootRecordType type)
 	{
 		if (id == null)
 		{
 			return true;
 		}
 
-		return title.equals(id);
+		return title.equals(id) && this.type == type;
 	}
 }

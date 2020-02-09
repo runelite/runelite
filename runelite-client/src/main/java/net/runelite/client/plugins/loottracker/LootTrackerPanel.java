@@ -124,6 +124,7 @@ class LootTrackerPanel extends PluginPanel
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
 	private String currentView;
+	private LootRecordType currentType;
 
 	static
 	{
@@ -236,6 +237,7 @@ class LootTrackerPanel extends PluginPanel
 		backBtn.addActionListener(ev ->
 		{
 			currentView = null;
+			currentType = null;
 			backBtn.setVisible(false);
 			detailsTitle.setText("");
 			rebuild();
@@ -285,9 +287,9 @@ class LootTrackerPanel extends PluginPanel
 			}
 
 			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
-			sessionRecords.removeIf(r -> r.matches(currentView));
-			aggregateRecords.removeIf(r -> r.matches(currentView));
-			boxes.removeIf(b -> b.matches(currentView));
+			sessionRecords.removeIf(r -> r.matches(currentView, currentType));
+			aggregateRecords.removeIf(r -> r.matches(currentView, currentType));
+			boxes.removeIf(b -> b.matches(currentView, currentType));
 			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
@@ -472,7 +474,7 @@ class LootTrackerPanel extends PluginPanel
 	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
-		if (!record.matches(currentView))
+		if (!record.matches(currentView, currentType))
 		{
 			return null;
 		}
@@ -532,7 +534,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			Predicate<LootTrackerRecord> match = groupLoot
 				// With grouped loot, remove any record with this title
-				? r -> r.matches(record.getTitle())
+				? r -> r.matches(record.getTitle(), record.getType())
 				// Otherwise remove specifically this entry
 				: r -> r.equals(record);
 			sessionRecords.removeIf(match);
@@ -557,6 +559,7 @@ class LootTrackerPanel extends PluginPanel
 		details.addActionListener(e ->
 		{
 			currentView = record.getTitle();
+			currentType = record.getType();
 			detailsTitle.setText(currentView);
 			backBtn.setVisible(true);
 			rebuild();
@@ -584,7 +587,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
 		{
-			if (!record.matches(currentView))
+			if (!record.matches(currentView, currentType))
 			{
 				continue;
 			}
