@@ -244,15 +244,9 @@ public class SwingUtil
 		int iconSize,
 		@Nullable final BiConsumer<NavigationButton, JButton> specialCallback)
 	{
-
-		final BufferedImage scaledImage = iconSize > 0
-			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
-			: navigationButton.getIcon();
-
 		final JButton button = new JButton();
-		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
+		setButtonIcon(button, navigationButton.getIcon(), iconSize);
 		button.setToolTipText(navigationButton.getTooltip());
-		button.setIcon(new ImageIcon(scaledImage));
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		button.setFocusable(false);
 		button.addActionListener(e ->
@@ -282,8 +276,28 @@ public class SwingUtil
 			button.setComponentPopupMenu(popupMenu);
 		}
 
+		navigationButton.setOnIconChange(() ->
+			SwingUtilities.invokeLater(() ->
+			{
+				setButtonIcon(button, navigationButton.getIcon(), iconSize);
+				button.revalidate();
+			}));
+
 		navigationButton.setOnSelect(button::doClick);
 		return button;
+	}
+
+	public static void setButtonIcon(
+		@Nonnull final JButton button,
+		@Nonnull final BufferedImage icon,
+		int iconSize)
+	{
+		final BufferedImage scaledImage = iconSize > 0
+			? ImageUtil.resizeImage(icon, iconSize, iconSize)
+			: icon;
+
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
+		button.setIcon(new ImageIcon(scaledImage));
 	}
 
 	public static void removeButtonDecorations(AbstractButton button)

@@ -59,6 +59,9 @@ import net.runelite.http.api.feed.FeedResult;
 @Slf4j
 public class FeedPlugin extends Plugin
 {
+	private final BufferedImage NORMAL_ICON = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
+	private final BufferedImage ALERT_ICON = ImageUtil.getResourceStreamFromClass(getClass(), "icon_alert.png");
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -87,18 +90,25 @@ public class FeedPlugin extends Plugin
 		return null;
 	}, 10, TimeUnit.MINUTES);
 
+	private Runnable resetIconRunnable = () ->
+	{
+		if (navButton.getIcon() == ALERT_ICON)
+		{
+			navButton.setIcon(NORMAL_ICON);
+		}
+	};
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		feedPanel = new FeedPanel(config);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
-
 		navButton = NavigationButton.builder()
 			.tooltip("News Feed")
-			.icon(icon)
+			.icon(NORMAL_ICON)
 			.priority(8)
 			.panel(feedPanel)
+			.onClick(resetIconRunnable)
 			.build();
 
 		clientToolbar.addNavigation(navButton);
@@ -130,7 +140,7 @@ public class FeedPlugin extends Plugin
 
 		feedPanel.rebuildFeed(feed);
 
-		if (config.includeBlogPosts() && openPanelOnChange)
+		if (config.includeBlogPosts())
 		{
 			feed.getItems()
 				.stream()
@@ -141,15 +151,39 @@ public class FeedPlugin extends Plugin
 				.filter(i -> config.lastSeenBlogPostTimestamp().toEpochMilli() < i.getTimestamp())
 				.ifPresent(i ->
 				{
-					if (!navButton.isSelected())
+					if (navButton.isSelected())
+					{
+						// Update last seen timestamp
+						config.lastSeenBlogPostTimestamp(Instant.ofEpochMilli(i.getTimestamp()));
+					}
+					else if (openPanelOnChange)
 					{
 						// If we haven't seen the latest feed item,
 						// open the feed panel.
 						navButton.getOnSelect().run();
-					}
 
-					// Update last seen timestamp
-					config.lastSeenBlogPostTimestamp(Instant.ofEpochMilli(i.getTimestamp()));
+						// Update last seen timestamp
+						config.lastSeenBlogPostTimestamp(Instant.ofEpochMilli(i.getTimestamp()));
+					}
+					else if (navButton.getIcon() != ALERT_ICON)
+					{
+						// Change the icon to an alert icon if there's a new
+						// blog post when we're playing with the panel closed.
+						navButton.setIcon(ALERT_ICON);
+
+						// Wait for user to open feed panel before updating
+						// the timestamp, so that if the user doesn't open it,
+						// the panel will open automatically on restart.
+						navButton.setOnClick(() ->
+						{
+							resetIconRunnable.run();
+
+							// Update last seen timestamp
+							config.lastSeenBlogPostTimestamp(Instant.ofEpochMilli(i.getTimestamp()));
+
+							navButton.setOnClick(resetIconRunnable);
+						});
+					}
 				});
 		}
 	}
