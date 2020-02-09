@@ -134,7 +134,7 @@ public class ClanManager
 
 	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && offset == 0)
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN && offset == 0)
 		{
 			loadClanChatIcons();
 		}

@@ -65,13 +65,16 @@ public class SoundsPlugin extends Plugin
 	{
 		if (event.getNpcid() != -1)
 		{
-			if (ArrayUtils.contains(sounds.get(event.getNpcid()), event.getSoundId()))
+			if (sounds != null)
 			{
-				return;
+				if (ArrayUtils.contains(sounds.get(event.getNpcid()), event.getSoundId()))
+				{
+					return;
+				}
+				int[] newSounds = ArrayUtils.add(sounds.get(event.getNpcid()), event.getSoundId());
+				sounds.put(event.getNpcid(), newSounds);
+				soundsClient.submit(event.getNpcid(), event.getSoundId());
 			}
-			int[] newSounds = ArrayUtils.add(sounds.get(event.getNpcid()), event.getSoundId());
-			sounds.put(event.getNpcid(), newSounds);
-			soundsClient.submit(event.getNpcid(), event.getSoundId());
 		}
 	}
 }
