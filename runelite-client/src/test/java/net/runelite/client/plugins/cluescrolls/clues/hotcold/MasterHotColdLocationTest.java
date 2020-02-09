@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import java.awt.Graphics2D;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Varbits;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
-public abstract class ClueScroll
+public class MasterHotColdLocationTest
 {
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresSpade;
+	private static final Set<HotColdLocation> MASTER_HOT_COLD_LOCATIONS = Arrays.stream(HotColdLocation.values())
+		.filter(l -> !l.isBeginnerClue())
+		.collect(Collectors.toSet());
+	private static final int EXPECTED_DIMENSION_SIZE = 9;
 
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresLight;
-
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private Varbits hasFirePit;
-
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
-
-	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+	@Test
+	public void beginnerHotColdLocationAreaTest()
+	{
+		for (final HotColdLocation location : MASTER_HOT_COLD_LOCATIONS)
+		{
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().height);
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().width);
+		}
+	}
 }

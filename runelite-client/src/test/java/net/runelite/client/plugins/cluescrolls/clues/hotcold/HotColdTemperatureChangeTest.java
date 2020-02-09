@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import java.awt.Graphics2D;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Varbits;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
-public abstract class ClueScroll
+public class HotColdTemperatureChangeTest
 {
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresSpade;
+	private static final String[] VALID_MESSAGES = {
+		"The device is warm, and warmer than last time.",
+		"The device is cold, but colder than last time.",
+		"The device is very hot, and the same temperature as last time.",
+	};
+	private static final String[] INVALID_MESSAGES = {
+		"The device is cold.",
+		"The device is ice cold.",
+		"The device is very cold.",
+		"The device is hot.",
+		"The device is incredibly hot.",
+		"The device is an octopus, and is wetter than last time",
+		"foobar",
+		"a q p w",
+		"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
+		"and warmer than and colder than and the same temperature",
+	};
 
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresLight;
+	@Test
+	public void testValidTemperatureChangeMessages()
+	{
+		for (final String message : VALID_MESSAGES)
+		{
+			assertNotNull(message, HotColdTemperatureChange.of(message));
+		}
+	}
 
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private Varbits hasFirePit;
-
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
-
-	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+	@Test
+	public void testInvalidTemperatureChangeMessages()
+	{
+		for (final String message : INVALID_MESSAGES)
+		{
+			assertNull(message, HotColdTemperatureChange.of(message));
+		}
+	}
 }

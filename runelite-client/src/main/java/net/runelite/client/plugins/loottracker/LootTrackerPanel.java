@@ -63,6 +63,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 
 @Slf4j
@@ -575,8 +576,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	public void rebuild()
 	{
-
-		logsContainer.removeAll();
+		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();
 		int start = 0;
 		records.sort(lootRecordSortType);

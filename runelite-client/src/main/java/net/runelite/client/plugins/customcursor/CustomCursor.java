@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.customcursor;
 
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.util.ImageUtil;
 
+@Getter(AccessLevel.PUBLIC)
 public enum CustomCursor
 {
 	RS3_GOLD("RS3 Gold", "cursor-rs3-gold.png"),
@@ -42,11 +44,18 @@ public enum CustomCursor
 	MOUSE("Mouse", "cursor-mouse.png"),
 	SARADOMIN_GODSWORD("Saradomin Godsword", "cursor-saradomin-godsword.png"),
 	ZAMORAK_GODSWORD("Zamorak Godsword", "cursor-zamorak-godsword.png"),
-	SKILL_SPECS("Skill Specs", "cursor-skill-specs.png");
+	SKILL_SPECS("Skill Specs", "cursor-skill-specs.png"),
+	CUSTOM_IMAGE("Custom Image");
 
 	private final String name;
-	@Getter(AccessLevel.PUBLIC)
+	@Nullable
 	private final BufferedImage cursorImage;
+
+	CustomCursor(String name)
+	{
+		this.name = name;
+		this.cursorImage = null;
+	}
 
 	CustomCursor(final String name, final String icon)
 	{

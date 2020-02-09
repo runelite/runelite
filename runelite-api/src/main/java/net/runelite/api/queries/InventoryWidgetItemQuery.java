@@ -92,8 +92,10 @@ public class InventoryWidgetItemQuery extends WidgetItemQuery
 					}
 					// set bounds to same size as default inventory
 					Rectangle bounds = child.getBounds();
-					bounds.setBounds(bounds.x + dragOffsetX, bounds.y + dragOffsetY, 32, 32);
-					widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i, bounds, child, isDragged));
+					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+					Rectangle dragBounds = child.getBounds();
+					dragBounds.setBounds(bounds.x + dragOffsetX, bounds.y + dragOffsetY, 32, 32);
+					widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i, bounds, child, dragBounds));
 				}
 				break;
 			}
