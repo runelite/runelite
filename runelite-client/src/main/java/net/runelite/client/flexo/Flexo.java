@@ -48,7 +48,10 @@ import java.util.logging.Logger;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ClientUI;
-
+/**
+ * @deprecated This will be removed on 02/16/2020
+ */
+@Deprecated
 public class Flexo extends Robot
 {
 	public ThreadGroup flexoThreads = new ThreadGroup("flexo");
