@@ -341,7 +341,7 @@ public class ConfigManager
 		}
 	}
 
-	public <T> T getConfig(Class<T> clazz)
+	public <T extends Config> T getConfig(Class<T> clazz)
 	{
 		if (!Modifier.isPublic(clazz.getModifiers()))
 		{
@@ -439,7 +439,7 @@ public class ConfigManager
 		eventBus.post(configChanged);
 	}
 
-	public ConfigDescriptor getConfigDescriptor(Object configurationProxy)
+	public ConfigDescriptor getConfigDescriptor(Config configurationProxy)
 	{
 		Class<?> inter = configurationProxy.getClass().getInterfaces()[0];
 		ConfigGroup group = inter.getAnnotation(ConfigGroup.class);
