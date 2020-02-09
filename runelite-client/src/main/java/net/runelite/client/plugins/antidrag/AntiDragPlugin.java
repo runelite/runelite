@@ -32,6 +32,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
@@ -122,7 +124,9 @@ public class AntiDragPlugin extends Plugin
 				clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
 			}
 
-			client.setInventoryDragDelay(config.dragDelay());
+			final int delay = config.dragDelay();
+			client.setInventoryDragDelay(delay);
+			setBankDragDelay(delay);
 		}
 
 		@Override
@@ -130,6 +134,8 @@ public class AntiDragPlugin extends Plugin
 		{
 			overlayManager.remove(overlay);
 			client.setInventoryDragDelay(DEFAULT_DELAY);
+			// In this case, 0 is the default for bank item widgets.
+			setBankDragDelay(0);
 			clientUI.resetCursor();
 		}
 	};
@@ -224,6 +230,7 @@ public class AntiDragPlugin extends Plugin
 		if (!focusChanged.isFocused() && config.reqFocus() && !config.alwaysOn())
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
+			setBankDragDelay(0);
 			overlayManager.remove(overlay);
 		}
 	}
@@ -246,6 +253,19 @@ public class AntiDragPlugin extends Plugin
 		else
 		{
 			keyManager.unregisterKeyListener(toggleListener);
+		}
+	}
+
+	private void setBankDragDelay(int delay)
+	{
+		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankItemContainer != null)
+		{
+			Widget[] items = bankItemContainer.getDynamicChildren();
+			for (Widget item : items)
+			{
+				item.setDragDeadTime(delay);
+			}
 		}
 	}
 }
