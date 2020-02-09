@@ -159,19 +159,20 @@ class LootTrackerBox extends JPanel
 	}
 
 	/**
-	 * Checks if this box matches specified id
+	 * Checks if this box matches specified id and type
 	 *
 	 * @param id other record id
+	 * @param type other record type
 	 * @return true if match is made
 	 */
-	boolean matches(final String id)
+	boolean matches(final String id, final LootRecordType type)
 	{
 		if (id == null)
 		{
 			return true;
 		}
 
-		return this.id.equals(id);
+		return this.id.equals(id) && lootRecordType == type;
 	}
 
 	/**
