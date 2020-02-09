@@ -921,7 +921,9 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
 		}
 
-		if (configManager.getConfiguration(PLUS_CONFIG_GROUP, CONFIG_OPACITY, boolean.class))
+		Boolean opacity = configManager.getConfiguration(PLUS_CONFIG_GROUP, CONFIG_OPACITY, boolean.class);
+
+		if (opacity != null && opacity)
 		{
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice gd = ge.getDefaultScreenDevice();
