@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.events;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.Data;
+import net.runelite.api.events.Event;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Documented
-public @interface PluginDescriptor
-{
-	String name();
-
-	/**
-	 * A short, one-line summary of the plugin.
-	 */
-	String description() default "";
-
-	/**
-	 * A list of plugin keywords, used (together with the name) when searching for plugins.
-	 * Each tag should not contain any spaces, and should be fully lowercase.
-	 */
-	String[] tags() default {};
-
-	/**
-	 * Whether or not plugin is hidden from configuration panel
-	 */
-	boolean hidden() default false;
-
-	boolean developerPlugin() default false;
-
-	boolean loadWhenOutdated() default false;
-
-	PluginType type() default PluginType.UNCATEGORIZED;
-}
+@Data
+public class ExternalPluginsLoaded implements Event
+{}

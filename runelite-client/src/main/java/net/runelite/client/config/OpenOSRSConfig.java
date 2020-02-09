@@ -281,8 +281,8 @@ public interface OpenOSRSConfig extends Config
 
 	@ConfigItem(
 		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
+		name = "Enable loading of legacy external plugins",
+		description = "Enable loading of legacy external plugins",
 		position = 16,
 		titleSection = "externalPluginsTitle"
 	)
@@ -365,4 +365,23 @@ public interface OpenOSRSConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+
+	@ConfigItem(
+		keyName = "externalRepositories",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String getExternalRepositories()
+	{
+		return "OpenOSRS:https://raw.githubusercontent.com/open-osrs/plugin-hosting/master/";
+	}
+
+	@ConfigItem(
+		keyName = "externalRepositories",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setExternalRepositories(String val);
 }

@@ -1175,9 +1175,7 @@ class ConfigPanel extends PluginPanel
 		if (event.getPlugin() == this.pluginConfig.getPlugin())
 		{
 			SwingUtilities.invokeLater(() ->
-			{
-				pluginToggle.setSelected(event.isLoaded());
-			});
+				pluginToggle.setSelected(event.isLoaded()));
 		}
 	}
 }

@@ -45,6 +45,7 @@ import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -63,6 +64,8 @@ import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.plugins.ExternalPluginManager;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -74,18 +77,271 @@ public class ConfigManager
 	private static final String STANDARD_SETTINGS_FILE_NAME = "settings.properties";
 	private static final File SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
 	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, STANDARD_SETTINGS_FILE_NAME);
-
-	@Inject
-	EventBus eventBus;
-
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
+	@Inject
+	EventBus eventBus;
 
 	@Inject
 	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+	}
+
+	@SuppressWarnings("unchecked")
+	static Object stringToObject(String str, Class<?> type)
+	{
+		if (type == boolean.class || type == Boolean.class)
+		{
+			return Boolean.parseBoolean(str);
+		}
+		if (type == int.class)
+		{
+			return Integer.parseInt(str);
+		}
+		if (type == long.class)
+		{
+			return Long.parseLong(str);
+		}
+		if (type == Color.class)
+		{
+			return ColorUtil.fromString(str);
+		}
+		if (type == Dimension.class)
+		{
+			String[] splitStr = str.split("x");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+			return new Dimension(width, height);
+		}
+		if (type == Point.class)
+		{
+			String[] splitStr = str.split(":");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+			return new Point(width, height);
+		}
+		if (type == Rectangle.class)
+		{
+			String[] splitStr = str.split(":");
+			int x = Integer.parseInt(splitStr[0]);
+			int y = Integer.parseInt(splitStr[1]);
+			int width = Integer.parseInt(splitStr[2]);
+			int height = Integer.parseInt(splitStr[3]);
+			return new Rectangle(x, y, width, height);
+		}
+		if (type.isEnum())
+		{
+			return Enum.valueOf((Class<? extends Enum>) type, str);
+		}
+		if (type == Instant.class)
+		{
+			return Instant.parse(str);
+		}
+		if (type == Keybind.class || type == ModifierlessKeybind.class)
+		{
+			String[] splitStr = str.split(":");
+			int code = Integer.parseInt(splitStr[0]);
+			int mods = Integer.parseInt(splitStr[1]);
+			if (type == ModifierlessKeybind.class)
+			{
+				return new ModifierlessKeybind(code, mods);
+			}
+			return new Keybind(code, mods);
+		}
+		if (type == WorldPoint.class)
+		{
+			String[] splitStr = str.split(":");
+			int x = Integer.parseInt(splitStr[0]);
+			int y = Integer.parseInt(splitStr[1]);
+			int plane = Integer.parseInt(splitStr[2]);
+			return new WorldPoint(x, y, plane);
+		}
+		if (type == Duration.class)
+		{
+			return Duration.ofMillis(Long.parseLong(str));
+		}
+		if (type == int[].class)
+		{
+			if (str.contains(","))
+			{
+				return Arrays.stream(str.split(",")).mapToInt(Integer::valueOf).toArray();
+			}
+			return new int[]{Integer.parseInt(str)};
+		}
+		if (type == EnumSet.class)
+		{
+			try
+			{
+				String substring = str.substring(str.indexOf("{") + 1, str.length() - 1);
+				String[] splitStr = substring.split(", ");
+				Class<? extends Enum> enumClass = null;
+				if (!str.contains("{"))
+				{
+					return null;
+				}
+
+				enumClass = findEnumClass(str, ExternalPluginManager.pluginClassLoaders);
+
+				EnumSet enumSet = EnumSet.noneOf(enumClass);
+				for (String s : splitStr)
+				{
+					try
+					{
+						enumSet.add(Enum.valueOf(enumClass, s.replace("[", "").replace("]", "")));
+					}
+					catch (IllegalArgumentException ignore)
+					{
+						return EnumSet.noneOf(enumClass);
+					}
+				}
+				return enumSet;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+
+		}
+		if (type == Map.class)
+		{
+			Map<String, String> output = new HashMap<>();
+			str = str.substring(1, str.length() - 1);
+			String[] splitStr = str.split(", ");
+			for (String s : splitStr)
+			{
+				String[] keyVal = s.split("=");
+				if (keyVal.length > 1)
+				{
+					output.put(keyVal[0], keyVal[1]);
+				}
+			}
+
+			return output;
+		}
+		return str;
+	}
+
+	static String objectToString(Object object)
+	{
+		if (object instanceof Color)
+		{
+			return String.valueOf(((Color) object).getRGB());
+		}
+		if (object instanceof Enum)
+		{
+			return ((Enum) object).name();
+		}
+		if (object instanceof Dimension)
+		{
+			Dimension d = (Dimension) object;
+			return d.width + "x" + d.height;
+		}
+		if (object instanceof Point)
+		{
+			Point p = (Point) object;
+			return p.x + ":" + p.y;
+		}
+		if (object instanceof Rectangle)
+		{
+			Rectangle r = (Rectangle) object;
+			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
+		}
+		if (object instanceof Instant)
+		{
+			return ((Instant) object).toString();
+		}
+		if (object instanceof Keybind)
+		{
+			Keybind k = (Keybind) object;
+			return k.getKeyCode() + ":" + k.getModifiers();
+		}
+		if (object instanceof WorldPoint)
+		{
+			WorldPoint wp = (WorldPoint) object;
+			return wp.getX() + ":" + wp.getY() + ":" + wp.getPlane();
+		}
+		if (object instanceof Duration)
+		{
+			return Long.toString(((Duration) object).toMillis());
+		}
+		if (object instanceof int[])
+		{
+			if (((int[]) object).length == 0)
+			{
+				return String.valueOf(object);
+			}
+			return StringUtils.join(object, ",");
+		}
+		if (object instanceof EnumSet)
+		{
+			if (((EnumSet) object).size() == 0)
+			{
+				return getElementType((EnumSet) object).getCanonicalName() + "{}";
+			}
+
+			return ((EnumSet) object).toArray()[0].getClass().getCanonicalName() + "{" + object.toString() + "}";
+		}
+		if (object instanceof Number)
+		{
+			return String.valueOf(object);
+		}
+		return object.toString();
+	}
+
+	public static <T extends Enum<T>> Class<T> getElementType(EnumSet<T> enumSet)
+	{
+		if (enumSet.isEmpty())
+		{
+			enumSet = EnumSet.complementOf(enumSet);
+		}
+		return enumSet.iterator().next().getDeclaringClass();
+	}
+
+	public static Class<? extends Enum> findEnumClass(String clasz, ArrayList<ClassLoader> classLoaders)
+	{
+		StringBuilder transformedString = new StringBuilder();
+		for (ClassLoader cl : classLoaders)
+		{
+			try
+			{
+				String[] strings = clasz.substring(0, clasz.indexOf("{")).split("\\.");
+				int i = 0;
+				while (i != strings.length)
+				{
+					if (i == 0)
+					{
+						transformedString.append(strings[i]);
+					}
+					else if (i == strings.length - 1)
+					{
+						transformedString.append("$").append(strings[i]);
+					}
+					else
+					{
+						transformedString.append(".").append(strings[i]);
+					}
+					i++;
+				}
+				return (Class<? extends Enum>) cl.loadClass(transformedString.toString());
+			}
+			catch (Exception e2)
+			{
+				// Will likely fail a lot
+			}
+			try
+			{
+				return (Class<? extends Enum>) cl.loadClass(clasz.substring(0, clasz.indexOf("{")));
+			}
+			catch (Exception e)
+			{
+				// Will likely fail a lot
+			}
+			transformedString = new StringBuilder();
+		}
+		throw new RuntimeException("Failed to find Enum for " + clasz.substring(0, clasz.indexOf("{")));
 	}
 
 	public final void switchSession()
@@ -439,213 +695,81 @@ public class ConfigManager
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	static Object stringToObject(String str, Class<?> type)
+	/**
+	 * Initialize the configuration from the default settings, for an external Plugin
+	 *
+	 * @param proxy
+	 */
+	public void setDefaultConfiguration(Object proxy, boolean override, Plugin plugin)
 	{
-		if (type == boolean.class || type == Boolean.class)
+		Class<?> clazz = proxy.getClass().getInterfaces()[0];
+		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
+
+		if (group == null)
 		{
-			return Boolean.parseBoolean(str);
+			return;
 		}
-		if (type == int.class)
+
+		for (Method method : clazz.getDeclaredMethods())
 		{
-			return Integer.parseInt(str);
-		}
-		if (type == long.class)
-		{
-			return Long.parseLong(str);
-		}
-		if (type == Color.class)
-		{
-			return ColorUtil.fromString(str);
-		}
-		if (type == Dimension.class)
-		{
-			String[] splitStr = str.split("x");
-			int width = Integer.parseInt(splitStr[0]);
-			int height = Integer.parseInt(splitStr[1]);
-			return new Dimension(width, height);
-		}
-		if (type == Point.class)
-		{
-			String[] splitStr = str.split(":");
-			int width = Integer.parseInt(splitStr[0]);
-			int height = Integer.parseInt(splitStr[1]);
-			return new Point(width, height);
-		}
-		if (type == Rectangle.class)
-		{
-			String[] splitStr = str.split(":");
-			int x = Integer.parseInt(splitStr[0]);
-			int y = Integer.parseInt(splitStr[1]);
-			int width = Integer.parseInt(splitStr[2]);
-			int height = Integer.parseInt(splitStr[3]);
-			return new Rectangle(x, y, width, height);
-		}
-		if (type.isEnum())
-		{
-			return Enum.valueOf((Class<? extends Enum>) type, str);
-		}
-		if (type == Instant.class)
-		{
-			return Instant.parse(str);
-		}
-		if (type == Keybind.class || type == ModifierlessKeybind.class)
-		{
-			String[] splitStr = str.split(":");
-			int code = Integer.parseInt(splitStr[0]);
-			int mods = Integer.parseInt(splitStr[1]);
-			if (type == ModifierlessKeybind.class)
+			ConfigItem item = method.getAnnotation(ConfigItem.class);
+
+			// only apply default configuration for methods which read configuration (0 args)
+			if (item == null || method.getParameterCount() != 0)
 			{
-				return new ModifierlessKeybind(code, mods);
+				continue;
 			}
-			return new Keybind(code, mods);
-		}
-		if (type == WorldPoint.class)
-		{
-			String[] splitStr = str.split(":");
-			int x = Integer.parseInt(splitStr[0]);
-			int y = Integer.parseInt(splitStr[1]);
-			int plane = Integer.parseInt(splitStr[2]);
-			return new WorldPoint(x, y, plane);
-		}
-		if (type == Duration.class)
-		{
-			return Duration.ofMillis(Long.parseLong(str));
-		}
-		if (type == int[].class)
-		{
-			if (str.contains(","))
+
+			if (!method.isDefault())
 			{
-				return Arrays.stream(str.split(",")).mapToInt(Integer::valueOf).toArray();
+				if (override)
+				{
+					String current = getConfiguration(group.value(), item.keyName());
+					// only unset if already set
+					if (current != null)
+					{
+						unsetConfiguration(group.value(), item.keyName());
+					}
+				}
+				continue;
 			}
-			return new int[]{Integer.parseInt(str)};
-		}
-		if (type == EnumSet.class)
-		{
+
+			if (!override)
+			{
+				// This checks if it is set and is also unmarshallable to the correct type; so
+				// we will overwrite invalid config values with the default
+				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
+				if (current != null)
+				{
+					continue; // something else is already set
+				}
+			}
+
+			Object defaultValue;
 			try
 			{
-				String substring = str.substring(str.indexOf("{") + 1, str.length() - 1);
-				String[] splitStr = substring.split(", ");
-				final Class<? extends Enum> enumClass;
-				if (!str.contains("{"))
-				{
-					return null;
-				}
-				enumClass = (Class<? extends Enum>) Class.forName(str.substring(0, str.indexOf("{")));
-				EnumSet enumSet = EnumSet.noneOf(enumClass);
-				for (String s : splitStr)
-				{
-					try
-					{
-						enumSet.add(Enum.valueOf(enumClass, s.replace("[", "").replace("]", "")));
-					}
-					catch (IllegalArgumentException ignore)
-					{
-						return EnumSet.noneOf(enumClass);
-					}
-				}
-				return enumSet;
+				defaultValue = ConfigInvocationHandler.callDefaultMethod(proxy, method, null);
 			}
-			catch (Exception e)
+			catch (Throwable ex)
 			{
-				e.printStackTrace();
-				return null;
+				log.warn(null, ex);
+				continue;
 			}
 
-		}
-		if (type == Map.class)
-		{
-			Map<String, String> output = new HashMap<>();
-			str = str.substring(1, str.length() - 1);
-			String[] splitStr = str.split(", ");
-			for (String s : splitStr)
+			String current = getConfiguration(group.value(), item.keyName());
+			String valueString = objectToString(defaultValue);
+			// null and the empty string are treated identically in sendConfig and treated as an unset
+			// If a config value defaults to "" and the current value is null, it will cause an extra
+			// unset to be sent, so treat them as equal
+			if (Objects.equals(current, valueString) || (Strings.isNullOrEmpty(current) && Strings.isNullOrEmpty(valueString)))
 			{
-				String[] keyVal = s.split("=");
-				if (keyVal.length > 1)
-				{
-					output.put(keyVal[0], keyVal[1]);
-				}
+				continue; // already set to the default value
 			}
 
-			return output;
-		}
-		return str;
-	}
+			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
 
-	static String objectToString(Object object)
-	{
-		if (object instanceof Color)
-		{
-			return String.valueOf(((Color) object).getRGB());
+			setConfiguration(group.value(), item.keyName(), valueString);
 		}
-		if (object instanceof Enum)
-		{
-			return ((Enum) object).name();
-		}
-		if (object instanceof Dimension)
-		{
-			Dimension d = (Dimension) object;
-			return d.width + "x" + d.height;
-		}
-		if (object instanceof Point)
-		{
-			Point p = (Point) object;
-			return p.x + ":" + p.y;
-		}
-		if (object instanceof Rectangle)
-		{
-			Rectangle r = (Rectangle) object;
-			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
-		}
-		if (object instanceof Instant)
-		{
-			return ((Instant) object).toString();
-		}
-		if (object instanceof Keybind)
-		{
-			Keybind k = (Keybind) object;
-			return k.getKeyCode() + ":" + k.getModifiers();
-		}
-		if (object instanceof WorldPoint)
-		{
-			WorldPoint wp = (WorldPoint) object;
-			return wp.getX() + ":" + wp.getY() + ":" + wp.getPlane();
-		}
-		if (object instanceof Duration)
-		{
-			return Long.toString(((Duration) object).toMillis());
-		}
-		if (object instanceof int[])
-		{
-			if (((int[]) object).length == 0)
-			{
-				return String.valueOf(object);
-			}
-			return StringUtils.join(object, ",");
-		}
-		if (object instanceof EnumSet)
-		{
-			if (((EnumSet) object).size() == 0)
-			{
-				return getElementType((EnumSet) object).getCanonicalName() + "{}";
-			}
-
-			return ((EnumSet) object).toArray()[0].getClass().getCanonicalName() + "{" + object.toString() + "}";
-		}
-		if (object instanceof Number)
-		{
-			return String.valueOf(object);
-		}
-		return object.toString();
-	}
-
-	public static <T extends Enum<T>> Class<T> getElementType(EnumSet<T> enumSet)
-	{
-		if (enumSet.isEmpty())
-		{
-			enumSet = EnumSet.complementOf(enumSet);
-		}
-		return enumSet.iterator().next().getDeclaringClass();
 	}
 
 	public void sendConfig()
