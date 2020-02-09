@@ -61,6 +61,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
@@ -337,10 +338,18 @@ class LootTrackerPanel extends PluginPanel
 	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
 	 * how to display this new data.
 	 */
-	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
+	void add(final String eventName, final LootRecordType type, final int actorLevel, LootTrackerItem[] items)
 	{
-		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, 1);
+		final String subTitle;
+		if (type == LootRecordType.PICKPOCKET)
+		{
+			subTitle = "(pickpocket)";
+		}
+		else
+		{
+			subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
+		}
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, 1);
 		sessionRecords.add(record);
 
 		LootTrackerBox box = buildBox(record);
@@ -487,7 +496,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(),
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
 			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem);
 		box.addKill(record);
 

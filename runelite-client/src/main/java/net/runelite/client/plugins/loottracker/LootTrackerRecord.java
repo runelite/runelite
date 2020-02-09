@@ -25,12 +25,14 @@
 package net.runelite.client.plugins.loottracker;
 
 import lombok.Value;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 @Value
 class LootTrackerRecord
 {
 	private final String title;
 	private final String subTitle;
+	private final LootRecordType type;
 	private final LootTrackerItem[] items;
 	private final int kills;
 

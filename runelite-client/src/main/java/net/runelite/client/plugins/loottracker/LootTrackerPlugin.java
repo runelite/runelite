@@ -348,7 +348,7 @@ public class LootTrackerPlugin extends Plugin
 	void addLoot(String name, int combatLevel, LootRecordType type, Collection<ItemStack> items)
 	{
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, combatLevel, entries));
+		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries));
 
 		if (config.saveLoot())
 		{
@@ -729,7 +729,7 @@ public class LootTrackerPlugin extends Plugin
 					buildLootTrackerItem(itemStack.getId(), itemStack.getQty())
 				).toArray(LootTrackerItem[]::new);
 
-				return new LootTrackerRecord(record.getEventId(), "", drops, record.getAmount());
+				return new LootTrackerRecord(record.getEventId(), "", record.getType(), drops, record.getAmount());
 			})
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
