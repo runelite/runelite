@@ -57,6 +57,7 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 class LootTrackerBox extends JPanel
 {
@@ -70,6 +71,7 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
+	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
 
@@ -84,6 +86,7 @@ class LootTrackerBox extends JPanel
 	LootTrackerBox(
 		final ItemManager itemManager,
 		final String id,
+		final LootRecordType lootRecordType,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
 		final LootTrackerPriceType priceType,
@@ -91,6 +94,7 @@ class LootTrackerBox extends JPanel
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
+		this.lootRecordType = lootRecordType;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
@@ -151,7 +155,7 @@ class LootTrackerBox extends JPanel
 	 */
 	boolean matches(final LootTrackerRecord record)
 	{
-		return record.getTitle().equals(id);
+		return record.getTitle().equals(id) && record.getType() == lootRecordType;
 	}
 
 	/**
