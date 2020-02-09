@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.xpupdater;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("xpupdater")
-public interface XpUpdaterConfig
+public interface XpUpdaterConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
