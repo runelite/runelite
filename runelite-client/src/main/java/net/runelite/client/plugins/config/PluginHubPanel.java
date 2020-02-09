@@ -28,6 +28,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.google.common.html.HtmlEscapers;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -157,8 +158,14 @@ class PluginHubPanel extends PluginPanel
 			version.setFont(FontManager.getRunescapeSmallFont());
 			version.setToolTipText(manifest.getVersion());
 
-			JLabel description = new JLabel(manifest.getDescription());
-			description.setToolTipText(manifest.getDescription());
+			String descriptionText = manifest.getDescription();
+			if (!descriptionText.startsWith("<html>"))
+			{
+				descriptionText = "<html>" + HtmlEscapers.htmlEscaper().escape(descriptionText) + "</html>";
+			}
+			JLabel description = new JLabel(descriptionText);
+			description.setVerticalAlignment(JLabel.TOP);
+			description.setToolTipText(descriptionText);
 
 			JLabel icon = new JLabel();
 			icon.setHorizontalAlignment(JLabel.CENTER);
@@ -277,15 +284,16 @@ class PluginHubPanel extends PluginPanel
 						.addComponent(addrm, 0, 50, GroupLayout.PREFERRED_SIZE)
 						.addGap(5))));
 
+			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
 			layout.setVerticalGroup(layout.createParallelGroup()
-				.addComponent(icon, HEIGHT, HEIGHT, HEIGHT)
+				.addComponent(icon, HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT + lineHeight)
 				.addGroup(layout.createSequentialGroup()
 					.addGap(5)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						.addComponent(pluginName)
 						.addComponent(author))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-					.addComponent(description)
+					.addComponent(description, lineHeight, GroupLayout.PREFERRED_SIZE, lineHeight * 2)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						.addComponent(version, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
