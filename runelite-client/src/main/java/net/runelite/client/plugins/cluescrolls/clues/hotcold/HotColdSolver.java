@@ -125,7 +125,7 @@ public class HotColdSolver
 	 * @see WorldPoint#distanceTo2D
 	 */
 	@VisibleForTesting
-	private static boolean isFirstPointCloserRect(final WorldPoint firstPoint, final WorldPoint secondPoint, final Rectangle rect)
+	static boolean isFirstPointCloserRect(final WorldPoint firstPoint, final WorldPoint secondPoint, final Rectangle rect)
 	{
 		final WorldPoint nePoint = new WorldPoint((rect.x + rect.width), (rect.y + rect.height), 0);
 
@@ -163,7 +163,7 @@ public class HotColdSolver
 	 * @see WorldPoint#distanceTo2D
 	 */
 	@VisibleForTesting
-	private static boolean isFirstPointCloser(final WorldPoint firstPoint, final WorldPoint secondPoint, final WorldPoint worldPoint)
+	static boolean isFirstPointCloser(final WorldPoint firstPoint, final WorldPoint secondPoint, final WorldPoint worldPoint)
 	{
 		return firstPoint.distanceTo2D(worldPoint) < secondPoint.distanceTo2D(worldPoint);
 	}
