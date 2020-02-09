@@ -82,6 +82,13 @@ public abstract class StretchedModeMixin implements RSClient
 
 	@Inject
 	@Override
+	public double getScalingFactor()
+	{
+		return scalingFactor;
+	}
+
+	@Inject
+	@Override
 	public Dimension getRealDimensions()
 	{
 		if (!isStretchedEnabled())

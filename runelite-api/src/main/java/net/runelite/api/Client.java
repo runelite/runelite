@@ -1297,6 +1297,12 @@ public interface Client extends GameShell
 	 */
 	void setScalingFactor(int factor);
 
+
+	/**
+	 * @return Scaling factor that was set for stretched mode.
+	 */
+	double getScalingFactor();
+
 	/**
 	 * Invalidates cached dimensions that are
 	 * used for stretching and scaling.
